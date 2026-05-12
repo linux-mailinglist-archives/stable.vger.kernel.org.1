@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KK0G0lsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:05 +0200
+	id kJ+zJtpuA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF751526C9A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3504452740E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 89CBC303A24D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F47030E72EE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA8D3E075B;
-	Tue, 12 May 2026 17:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583DF33ADBA;
+	Tue, 12 May 2026 18:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jyj/SA5W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwAZ9kFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594F43DD874;
-	Tue, 12 May 2026 17:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC913EDE45;
+	Tue, 12 May 2026 18:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608515; cv=none; b=qoBGnLHn7oUcOy4oah7OQruPLCjPyk2QscE4ol2/kzHrVmaprMe2zpejC2D6iGSPMgp544gG5otqoCQCchtvSdY1xzf7hc67L5+FQj1SXZfGM/4lnkWFpHWiztxMbUlpDvUCTAVsdFK73Le0bXweiGmuGL6F4OzeQ+tEMZnJtDo=
+	t=1778609272; cv=none; b=a6Pix9j+yyUyzoxLT3+8hW2TNciCzWNd4Z5vbd2LJQg2xIiSkYhvICl9x4EpBPsysTOUD+KQ8zKN4gA2mfJFPuoi8rWYNJgywOLJ/ugvxMC2SXcjA4dom/+V+/kdgBtVKStD7i9zumuvGiEKGVTRFmY0v/KfKtotxPBsBSUYVzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608515; c=relaxed/simple;
-	bh=Vwbc3bc0fvDKKjQPgDEEhVohjb626rmlJ/fb6KqdRUE=;
+	s=arc-20240116; t=1778609272; c=relaxed/simple;
+	bh=6x1UTeNCUVtPAL9whcCrZc4LZm6+JYjSo1icYSOls2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJlokSfNWbt/gJJJO8foQnVWJRKsgUMKd51nIsjAWIpzEl5Yc9XRJ+aqNmNDCDvxXbxGBSSAom8As5WaUUcCtIjxRPH3e1hD7NfIR8yWuj6Mrf5SHBlRALl1Qg8+CeB3fRn9WZGKmatCCZEjyhM+g9FCb9DgOi6XCsM9pJCd23E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jyj/SA5W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48F2C2BCB0;
-	Tue, 12 May 2026 17:55:14 +0000 (UTC)
+	 MIME-Version; b=FZGIphNsBCwkssRAIPdc9AckNOUkwfuen7NWcou1dJJGxguRWFKL0LE2tCkZDIlZfJhwMspiWT9lrKOkL9r24aqxSHWbKjY3ig8cQGslaeWhnmYQD8YuoC2klOCOgSZrr8jmiicVqa17Eofrcon9+o1U++0PThP9lx7WpRrUWUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwAZ9kFl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75F8C2BCB0;
+	Tue, 12 May 2026 18:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608515;
-	bh=Vwbc3bc0fvDKKjQPgDEEhVohjb626rmlJ/fb6KqdRUE=;
+	s=korg; t=1778609272;
+	bh=6x1UTeNCUVtPAL9whcCrZc4LZm6+JYjSo1icYSOls2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jyj/SA5WOBIqC6HSmWBL1SgNWvPttjBUuqcB1ciHmxTapdiYtheXpH9TohLLsast1
-	 MHz2cN7BQJrc49l8mOGeM8Luap2u4Q/ZwuV8omAGmgk7DFgV77jhvkmhyS7OAXsDX8
-	 3myg5otXzTT2kPB06xf23CaP4OC5WAm1k9IhNf1Y=
+	b=HwAZ9kFlcIsLhxd+AiaGdlW7Wk9woZutHTmVqe0ECwdOyqxX8Tm7xBjJ1/MBF/ddS
+	 0UeD5mGBErqSpBJmsYZhl3zzBPvRK9ui1BQc+dmh3R5EbMGmXDu1Y64xintFmciFPd
+	 YAz6sY7sgs/49Zg7Ggjnp1khS7fc+IkvBM8K5aiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 108/270] hwmon: (ltc2992) Clamp threshold writes to hardware range
+	Haren Myneni <haren@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 7.0 114/307] pseries/papr-hvpipe: Fix null ptr deref in papr_hvpipe_dev_create_handle()
 Date: Tue, 12 May 2026 19:38:29 +0200
-Message-ID: <20260512173940.732360734@linuxfoundation.org>
+Message-ID: <20260512173942.529406478@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,151 +64,174 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EF751526C9A
+X-Rspamd-Queue-Id: 3504452740E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246161-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246455-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-commit d6cc7c99bf1f73eda7d565d224d791d16239bb41 upstream.
+commit 1b9f7aafa44f5ce852c00509104d10fd9eb0f402 upstream.
 
-ltc2992_set_voltage(), ltc2992_set_current(), and ltc2992_set_power()
-do not validate the user-supplied value before converting it to a
-register value. This can result in:
+commit 6d3789d347a7 ("papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()"),
+changed the create handle to FD_PREPARE(), but it caused kernel
+null-ptr-deref because after call to retain_and_null_ptr(src_info),
+src_info is re-used for adding it to the global list.
 
-1. Negative input values wrapping to large positive register values.
-   For power, the negative long is implicitly cast to u64 in
-   mul_u64_u32_div(), producing an incorrect value. For voltage and
-   current, the negative converted value wraps when passed to
-   ltc2992_write_reg() as a u32.
+Getting the following kernel panic in papr_hvpipe_dev_create_handle()
+when trying to add src_info to the list.
+ Kernel attempted to write user page (0) - exploit attempt? (uid: 0)
+ BUG: Kernel NULL pointer dereference on write at 0x00000000
+ Faulting instruction address: 0xc0000000001b44a0
+ Oops: Kernel access of bad area, sig: 11 [#1]
+ ...
+ Call Trace:
+ papr_hvpipe_dev_ioctl+0x1f4/0x48c (unreliable)
+ sys_ioctl+0x528/0x1064
+ system_call_exception+0x128/0x360
+ system_call_vectored_common+0x15c/0x2ec
 
-2. Intermediate arithmetic exceeding the range representable in u64 on
-   64-bit platforms. In ltc2992_set_voltage(), (u64)val * 1000 can
-   exceed U64_MAX when val is a large positive long. In
-   ltc2992_set_current(), (u64)val * r_sense_uohm can overflow
-   similarly. In ltc2992_set_power(), the computed value may not fit
-   in u64.
+Now, the error handling with FD_PREPARE's file cleanup and __free(kfree) auto
+cleanup is getting too convoluted. This is mainly because we need to
+ensure only 1 user get the srcID handle. To simplify this, we allocate
+prepare the src_info in the beginning and add it to the global list
+under a spinlock after checking that no duplicates exist.
 
-3. Register values exceeding the hardware field width. Voltage and
-   current threshold registers are 12-bit (stored left-justified in
-   16 bits), and power threshold registers are 24-bit. Without
-   clamping, bits above the field width are truncated in
-   ltc2992_write_reg().
+This simplify the error handling where if the FD_ADD fails, we can
+simply remove the src_info from the list and consume any pending msg in
+hvpipe to be cleared, after src_info became visible in the global list.
 
-Fix by clamping negative values to zero, clamping positive values to
-the rounded hardware-representable maximum (the value returned by the
-read path for a full-scale register) to prevent intermediate overflow,
-and clamping the converted register value to the hardware field width
-before writing. The existing conversion formula and rounding behavior
-are preserved.
-
-In the power write path, cancel the factor of 1000 from both the
-numerator (r_sense_uohm * 1000) and the denominator
-(VADC_UV_LSB * IADC_NANOV_LSB) to also eliminate a u32 overflow of
-r_sense_uohm * 1000 when r_sense_uohm exceeds about 4.29 ohms.
-
-Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260416215904.101969-2-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 6d3789d347a7 ("papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()")
+Reported-by: Haren Myneni <haren@linux.ibm.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/31ad94bc89d44156ee700c5bd006cb47a748e3cb.1777606826.git.ritesh.list@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ltc2992.c |   35 ++++++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 7 deletions(-)
+ arch/powerpc/platforms/pseries/papr-hvpipe.c | 57 ++++++++++----------
+ 1 file changed, 30 insertions(+), 27 deletions(-)
 
---- a/drivers/hwmon/ltc2992.c
-+++ b/drivers/hwmon/ltc2992.c
-@@ -431,10 +431,16 @@ static int ltc2992_get_voltage(struct lt
+diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+index 3392874ebdf6..402781299497 100644
+--- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
++++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+@@ -480,23 +480,10 @@ static const struct file_operations papr_hvpipe_handle_ops = {
  
- static int ltc2992_set_voltage(struct ltc2992_state *st, u32 reg, u32 scale, long val)
+ static int papr_hvpipe_dev_create_handle(u32 srcID)
  {
--	val = DIV_ROUND_CLOSEST(val * 1000, scale);
--	val = val << 4;
-+	u32 reg_val;
-+	long vmax;
+-	struct hvpipe_source_info *src_info __free(kfree) = NULL;
++	struct hvpipe_source_info *src_info;
++	int fd;
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+-	/*
+-	 * Do not allow more than one process communicates with
+-	 * each source.
+-	 */
+-	src_info = hvpipe_find_source(srcID);
+-	if (src_info) {
+-		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+-		pr_err("pid(%d) is already using the source(%d)\n",
+-				src_info->tsk->pid, srcID);
+-		return -EALREADY;
+-	}
+-	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+-
+ 	src_info = kzalloc_obj(*src_info, GFP_KERNEL_ACCOUNT);
+ 	if (!src_info)
+ 		return -ENOMEM;
+@@ -505,26 +492,42 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ 	src_info->tsk = current;
+ 	init_waitqueue_head(&src_info->recv_wqh);
+ 
+-	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
+-		   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
+-				      (void *)src_info, O_RDWR));
+-	if (fdf.err)
+-		return fdf.err;
+-
+-	retain_and_null_ptr(src_info);
+-	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+ 	/*
+-	 * If two processes are executing ioctl() for the same
+-	 * source ID concurrently, prevent the second process to
+-	 * acquire FD.
++	 * Do not allow more than one process communicates with
++	 * each source.
+ 	 */
++	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+ 	if (hvpipe_find_source(srcID)) {
+ 		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
++		pr_err("pid(%d) could not get the source(%d)\n",
++				src_info->tsk->pid, srcID);
++		kfree(src_info);
+ 		return -EALREADY;
+ 	}
+ 	list_add(&src_info->list, &hvpipe_src_list);
+ 	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+-	return fd_publish(fdf);
 +
-+	vmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * scale, 1000);
-+	val = max(val, 0L);
-+	val = min(val, vmax);
-+	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * 1000, scale),
-+		      0xFFFULL) << 4;
- 
--	return ltc2992_write_reg(st, reg, 2, val);
-+	return ltc2992_write_reg(st, reg, 2, reg_val);
++	fd = FD_ADD(O_RDONLY | O_CLOEXEC,
++		   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
++				      (void *)src_info, O_RDWR));
++	if (fd < 0) {
++		spin_lock_irqsave(&hvpipe_src_list_lock, flags);
++		list_del(&src_info->list);
++		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
++		/*
++		 * if we fail to add FD, that means no userspace program is
++		 * polling. In that case if there is a msg pending because the
++		 * interrupt was fired after the src_info was added to the
++		 * global list, then let's consume it here, to unblock the
++		 * hvpipe
++		 */
++		if (src_info->hvpipe_status & HVPIPE_MSG_AVAILABLE)
++			hvpipe_rtas_recv_msg(NULL, 0);
++		kfree(src_info);
++		return fd;
++	}
++
++	return fd;
  }
  
- static int ltc2992_read_gpio_alarm(struct ltc2992_state *st, int nr_gpio, u32 attr, long *val)
-@@ -559,9 +565,15 @@ static int ltc2992_get_current(struct lt
- static int ltc2992_set_current(struct ltc2992_state *st, u32 reg, u32 channel, long val)
- {
- 	u32 reg_val;
-+	long cmax;
- 
--	reg_val = DIV_ROUND_CLOSEST(val * st->r_sense_uohm[channel], LTC2992_IADC_NANOV_LSB);
--	reg_val = reg_val << 4;
-+	cmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * LTC2992_IADC_NANOV_LSB,
-+				     st->r_sense_uohm[channel]);
-+	val = max(val, 0L);
-+	val = min(val, cmax);
-+	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * st->r_sense_uohm[channel],
-+					    LTC2992_IADC_NANOV_LSB),
-+		      0xFFFULL) << 4;
- 
- 	return ltc2992_write_reg(st, reg, 2, reg_val);
- }
-@@ -634,9 +646,18 @@ static int ltc2992_get_power(struct ltc2
- static int ltc2992_set_power(struct ltc2992_state *st, u32 reg, u32 channel, long val)
- {
- 	u32 reg_val;
-+	u64 pmax, uval;
- 
--	reg_val = mul_u64_u32_div(val, st->r_sense_uohm[channel] * 1000,
--				  LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB);
-+	uval = max(val, 0L);
-+	pmax = mul_u64_u32_div(0xFFFFFFULL,
-+			       LTC2992_VADC_UV_LSB / 1000 *
-+			       LTC2992_IADC_NANOV_LSB,
-+			       st->r_sense_uohm[channel]);
-+	uval = min(uval, pmax);
-+	reg_val = min(mul_u64_u32_div(uval, st->r_sense_uohm[channel],
-+				      LTC2992_VADC_UV_LSB / 1000 *
-+				      LTC2992_IADC_NANOV_LSB),
-+		      0xFFFFFFULL);
- 
- 	return ltc2992_write_reg(st, reg, 3, reg_val);
- }
+ /*
+-- 
+2.54.0
+
 
 
 
