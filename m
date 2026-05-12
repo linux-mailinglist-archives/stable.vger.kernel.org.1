@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMj4JCxvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:24 +0200
+	id 0HLxAixrA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA4D5274DD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D538526930
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8FD553096F96
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B1469309C368
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860513EDE55;
-	Tue, 12 May 2026 18:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D9F3955F2;
+	Tue, 12 May 2026 17:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKCZiq1w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trUcdD6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4986E3EDE5B;
-	Tue, 12 May 2026 18:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C02A3C09E7;
+	Tue, 12 May 2026 17:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609023; cv=none; b=ijuB8KvBxg2CCYP/1o0iiRaiZZAmS81PQavDfywBBq2PSfBQUyK0Y0ZvsUNG+J3Jq9mHFQDqj2UTruqQyQqO6fQRODJacM9ek7kdjf6b5SY1E8T6klbAf4/RfZvqRaDYMYjapz2GYD0rr13+TQZYysNR/Xy4U7JjhGsHSmnPbTI=
+	t=1778608314; cv=none; b=Fuw2eouQhDBIqUGG4nufegxdpCMmrKBExSzXB5Qlba96YFssyWhD/k4jIt/vvODKnNIZ9SJa+MP0SjyBotp5Q2v9iMDqcV78PZyk4Do/CA0dlSoii158aWlwuJ8U5It8Osw8kWh1f3UMmuLQbjuWqO+iqU2/F0Q+VImtLuwDgEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609023; c=relaxed/simple;
-	bh=6bmaOyXcdF4S82blkIf6SZseKYPn8Hqd4L1TnzzWirs=;
+	s=arc-20240116; t=1778608314; c=relaxed/simple;
+	bh=LkAGbcf20sI8+2Ejy2GBJCVQA6oiFT3w8prsb2Qoz4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s1EyPZCdEmfmtZD7oA5cwV2pxXm033jgSwvbXch8LmwcS7o1bJ/djSJ4UCFtrIUnSQZzIxEZPtAMpZkJ5kD3PJ3cb7VsZHCwPPFxY3vrseYPGp8Dlqdo8iCDU0Ks6FvpBZkORgCl5GLmshYrwhCC4yEpDMlxod9NXLkyiAL9oig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKCZiq1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5860C2BCB0;
-	Tue, 12 May 2026 18:03:42 +0000 (UTC)
+	 MIME-Version; b=CUHc/myNWnVeGgMQE7rOXJept7uksn4IZn27Vr4RBOoW3tU/sVmuMoMkjIHOeC/5zxSK1usrrSzzQ3aQBELHNgGRhgmbcBKH3dWLevFbFl4oo5hOubFMMtGUH9Vb0NJeDwejPrWxl4Db5mkNs1ol/LFmatXUCsSkbam02GCuoGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trUcdD6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6899C2BCB0;
+	Tue, 12 May 2026 17:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609023;
-	bh=6bmaOyXcdF4S82blkIf6SZseKYPn8Hqd4L1TnzzWirs=;
+	s=korg; t=1778608314;
+	bh=LkAGbcf20sI8+2Ejy2GBJCVQA6oiFT3w8prsb2Qoz4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKCZiq1wVhOq+nrEA4/CUiY3LefGodyGkURp4hpn5PEYLRH0WKkTIgPFobGzUqt6S
-	 cmsFUlViffEOxosUT9OkwvnIOG9wymXNoVtAjcQWNxAopG60xTy2+eFIKx6p6Sl8V5
-	 lZACY/IWZAAB+FQsiK+MYguu+4+EfrJO8YKFi88I=
+	b=trUcdD6N9BZqU8DbF+vBw6/bbP2H+q0j6OYxo4hcXBznKpiMUkt+Vjdmt2J0hk8O9
+	 7ooqlYIhtj/lisjaxfbujbbX05hD+sEBCLGph7VqXatZ2Jc1IOTyffw6o65FIK+EJB
+	 gaUK0IreXXm0nVqOoplo4SpxxsEX2H374eVN1CCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 036/307] ALSA: usb-audio: midi2: Restart output URBs on resume
+	Tristan Madani <tristan@talencesecurity.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.18 030/270] wifi: b43legacy: enforce bounds check on firmware key index in RX path
 Date: Tue, 12 May 2026 19:37:11 +0200
-Message-ID: <20260512173940.887687412@linuxfoundation.org>
+Message-ID: <20260512173939.091307307@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AAA4D5274DD
+X-Rspamd-Queue-Id: 4D538526930
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246359-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246083-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,talencesecurity.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Tristan Madani <tristan@talencesecurity.com>
 
-commit f3c57c9c2a49a21d784b7c04a2c883bffc070659 upstream.
+commit a035766f970bde2d4298346a31a80685be5c0205 upstream.
 
-USB MIDI 2.0 suspend saves the endpoint running state, clears it and
-kills all endpoint URBs. Resume restores the running state, but only
-restarts input endpoints.
+Same fix as b43: the firmware-controlled key index in b43legacy_rx()
+can exceed dev->max_nr_keys. The existing B43legacy_WARN_ON is
+non-enforcing in production builds, allowing an out-of-bounds read of
+dev->key[].
 
-For a running output endpoint, this leaves the endpoint marked running
-with an empty URB queue. Output transfer progress depends on either the
-rawmidi trigger path starting the queue or an output completion refilling
-it. After suspend there is no completion left, and output data that
-remains queued in the raw UMP or legacy rawmidi buffer can stay stalled
-until userspace happens to trigger the stream again.
+Make the check enforcing by dropping the frame for invalid indices.
 
-Restore the saved state with atomic accessors, keep input endpoints
-restarted as before, and restart output endpoints that were running before
-suspend. Clear the saved suspend state after restoring it.
-
-Fixes: ff49d1df79ae ("ALSA: usb-audio: USB MIDI 2.0 UMP support")
+Fixes: 75388acd0cd8 ("[B43LEGACY]: add mac80211-based driver for legacy BCM43xx devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260504-usb-midi2-output-resume-v1-1-c089cc8ad3c6@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Link: https://patch.msgid.link/20260417111145.2694196-2-tristmd@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/midi2.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/wireless/broadcom/b43legacy/xmit.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/usb/midi2.c
-+++ b/sound/usb/midi2.c
-@@ -227,7 +227,7 @@ static void kill_midi_urbs(struct snd_us
- 	if (!ep)
- 		return;
- 	if (suspending)
--		ep->suspended = ep->running;
-+		atomic_set(&ep->suspended, atomic_read(&ep->running));
- 	atomic_set(&ep->running, 0);
- 	for (i = 0; i < ep->num_urbs; i++) {
- 		if (!ep->urbs[i].urb)
-@@ -1190,10 +1190,11 @@ void snd_usb_midi_v2_suspend_all(struct
+--- a/drivers/net/wireless/broadcom/b43legacy/xmit.c
++++ b/drivers/net/wireless/broadcom/b43legacy/xmit.c
+@@ -476,7 +476,8 @@ void b43legacy_rx(struct b43legacy_wldev
+ 		 * key index, but the ucode passed it slightly different.
+ 		 */
+ 		keyidx = b43legacy_kidx_to_raw(dev, keyidx);
+-		B43legacy_WARN_ON(keyidx >= dev->max_nr_keys);
++		if (B43legacy_WARN_ON(keyidx >= dev->max_nr_keys))
++			goto drop;
  
- static void resume_midi2_endpoint(struct snd_usb_midi2_endpoint *ep)
- {
--	ep->running = ep->suspended;
--	if (ep->direction == STR_IN)
-+	atomic_set(&ep->running, atomic_read(&ep->suspended));
-+	atomic_set(&ep->suspended, 0);
-+
-+	if (ep->direction == STR_IN || atomic_read(&ep->running))
- 		submit_io_urbs(ep);
--	/* FIXME: does it all? */
- }
- 
- void snd_usb_midi_v2_resume_all(struct snd_usb_audio *chip)
+ 		if (dev->key[keyidx].algorithm != B43legacy_SEC_ALGO_NONE) {
+ 			/* Remove PROTECTED flag to mark it as decrypted. */
 
 
 
