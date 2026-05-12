@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-245914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NmiMPpnA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:48:42 +0200
+	id 4BfuFNBuA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D63E526242
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:48:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D51B85273F5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6A6F3081B3D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7FC1630DFD8E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469AD3C8C7D;
-	Tue, 12 May 2026 17:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E1C2DE6E3;
+	Tue, 12 May 2026 18:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbQS4RjF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+NUnBc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093F7385D85;
-	Tue, 12 May 2026 17:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B9C23E356;
+	Tue, 12 May 2026 18:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607880; cv=none; b=n4T8DXA0bgTT3cEq5zIUsDfGdgAJ4rTtKCpOoOCrqTusKhoPBVF2Sv5YtQ5X0aD5CyQp+YVRXpK23m4vMzjAvV4sJ1mbmnUhauAz/I9n8cqHI+Eu0nd2JAm1eTM8DbCdaig2XC5xOJM/pMhg1tfqy5VvrVocuADgW2CImJ/RGAA=
+	t=1778609264; cv=none; b=LOyd90Gos09SB1WzNVWVPoXs1x+cn4SrmyAhuj/HEN7Rk4ctjg5CxHe8Zc1UmmjenF3QwvtlbaZYe55jlurKfd33QHnOTBVJLfd7gKtVDiYkP9iSNq5OeJ/bDYff6A67GXUB8Ghbqpk7lqF56ts/6pcl8XtfV/bSduE/UOAZ3DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607880; c=relaxed/simple;
-	bh=U+rsNnYXQaiJJXLGwNBa7BZvoC9krXPzGteWRRYuPPQ=;
+	s=arc-20240116; t=1778609264; c=relaxed/simple;
+	bh=umW03VSlaCEZtXFiTvZixUY+Y9UC/oiNg0U9eTSONbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=krGJLAKDF+kmKX4Pi98Mi6XNUrmCjhlEmsflqxNA80fvBuG7Lvg2ds898I578F32QWakNF7wQesMeRfzqEnZ6YqPNKHGf4GpPtX7MCyLP9j7a6i+hRU7QiXu0o2HaGyRRsISxd2LUJAwQRLEf2PJ47yOP82d6K/265iLpnzD+EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbQS4RjF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95178C2BCC7;
-	Tue, 12 May 2026 17:44:39 +0000 (UTC)
+	 MIME-Version; b=GqJZaZgK9Keb4GuI4hOZLFIQN/81Vg0L0Sb6W0PRQNHxxSDZMmtogB5un7oZpBLT4jHdoVIieth/ezz26LPX/RUqCvzX/L7USEOmhy0+4yreAKYGhX9m1fsENpoPFVUr440qD4GLTd0DvFpQS4fmWpZUrcWH9FfhCD1Xr68V/A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+NUnBc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050F8C2BCB0;
+	Tue, 12 May 2026 18:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607879;
-	bh=U+rsNnYXQaiJJXLGwNBa7BZvoC9krXPzGteWRRYuPPQ=;
+	s=korg; t=1778609264;
+	bh=umW03VSlaCEZtXFiTvZixUY+Y9UC/oiNg0U9eTSONbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bbQS4RjFsde+k8ZQHSWRcoGgDsxLbq1OHF4c5byMnhhp8kbly9e38SeqGkZ3cLHjF
-	 HgXgEnS08E1pmYYU7Z+ie+xtSp9DH+/D0/4dMJD0V1DeQ1C13BjBIdnrz4Vg+DNw7A
-	 rUwZ+sjaTq5rNUcdm2R9mbe9KP+xy+tQvhtQFq9o=
+	b=V+NUnBc7yOZXLf27ur+5717LC3TF3zDCE1ii4qcYe72h978vwUFMWuwoLwimWeLhi
+	 aY3LWtgxRmjc3vCdwiIyYMObMveKAiUo8lT1jSZVov9rflBNYnfyA33ZiQvElpW25H
+	 vAI1q1wMSrb0JRYYuueCdg30XTcF/D6PZMPjzicg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adithya K V <adithya.kv@samsung.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 072/206] spi: s3c64xx: fix NULL-deref on driver unbind
+	Brian Masney <bmasney@redhat.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 7.0 129/307] clk: rk808: fix OF node reference imbalance
 Date: Tue, 12 May 2026 19:38:44 +0200
-Message-ID: <20260512173934.373918884@linuxfoundation.org>
+Message-ID: <20260512173942.850745298@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +66,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3D63E526242
+X-Rspamd-Queue-Id: D51B85273F5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246452-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245914-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email,msgid.link:url,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sntech.de:email,collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 45daacbead8a009844bd5dba6cfa731332184d17 upstream.
+commit de019f203b0d472c98ead4081ad4f05d92c9b826 upstream.
 
-A change moving DMA channel allocation from probe() back to
-s3c64xx_spi_prepare_transfer() failed to remove the corresponding
-deallocation from remove().
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-Drop the bogus DMA channel release from remove() to avoid triggering a
-NULL-pointer dereference on driver unbind.
+Fix this by using the intended helper for reusing OF nodes.
 
-This issue was flagged by Sashiko when reviewing a controller
-deregistration fix.
-
-Fixes: f52b03c70744 ("spi: s3c64xx: requests spi-dma channel only during data transfer")
-Cc: stable@vger.kernel.org	# 6.0
-Cc: Adithya K V <adithya.kv@samsung.com>
-Link: https://sashiko.dev/#/patchset/20260410081757.503099-1-johan%40kernel.org
+Fixes: 2dc51ca822e4 ("clk: RK808: Reduce 'struct rk808' usage")
+Cc: stable@vger.kernel.org	# 6.5
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410094925.518343-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-s3c64xx.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/clk/clk-rk808.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1404,11 +1404,6 @@ static void s3c64xx_spi_remove(struct pl
+--- a/drivers/clk/clk-rk808.c
++++ b/drivers/clk/clk-rk808.c
+@@ -153,7 +153,7 @@ static int rk808_clkout_probe(struct pla
+ 	struct rk808_clkout *rk808_clkout;
+ 	int ret;
  
- 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
+-	dev->of_node = pdev->dev.parent->of_node;
++	device_set_of_node_from_dev(dev, dev->parent);
  
--	if (!is_polling(sdd)) {
--		dma_release_channel(sdd->rx_dma.ch);
--		dma_release_channel(sdd->tx_dma.ch);
--	}
--
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
+ 	rk808_clkout = devm_kzalloc(dev,
+ 				    sizeof(*rk808_clkout), GFP_KERNEL);
 
 
 
