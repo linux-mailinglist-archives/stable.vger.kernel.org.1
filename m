@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJ+zJtpuA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246455-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:02 +0200
+	id ADA5CtRoA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:52:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3504452740E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D255263FE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F47030E72EE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4BFF305C635
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583DF33ADBA;
-	Tue, 12 May 2026 18:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FBB3D9693;
+	Tue, 12 May 2026 17:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwAZ9kFl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17FJeHbx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC913EDE45;
-	Tue, 12 May 2026 18:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795DB2EBB84;
+	Tue, 12 May 2026 17:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609272; cv=none; b=a6Pix9j+yyUyzoxLT3+8hW2TNciCzWNd4Z5vbd2LJQg2xIiSkYhvICl9x4EpBPsysTOUD+KQ8zKN4gA2mfJFPuoi8rWYNJgywOLJ/ugvxMC2SXcjA4dom/+V+/kdgBtVKStD7i9zumuvGiEKGVTRFmY0v/KfKtotxPBsBSUYVzc=
+	t=1778607980; cv=none; b=NEPVlclN3zFpFx01SG6yOHoRNg1AaCw0fMUDdoUd+bfuFaylohOknKWpD4mJM6kunBMzQNLAS0IvQ91aYdnHK4Lgs4pT9rSwFCtnAyuTIKmln1+wa3BhAo5UxuYN3tUWXJzi7LeQ+c549mR5AOJwkuSGmMMdv9Cf0Is1FLTCaio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609272; c=relaxed/simple;
-	bh=6x1UTeNCUVtPAL9whcCrZc4LZm6+JYjSo1icYSOls2M=;
+	s=arc-20240116; t=1778607980; c=relaxed/simple;
+	bh=vrANMr+i7S8PbgJXsGzOPQAPTkV16j/BDOXQ9axX3bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZGIphNsBCwkssRAIPdc9AckNOUkwfuen7NWcou1dJJGxguRWFKL0LE2tCkZDIlZfJhwMspiWT9lrKOkL9r24aqxSHWbKjY3ig8cQGslaeWhnmYQD8YuoC2klOCOgSZrr8jmiicVqa17Eofrcon9+o1U++0PThP9lx7WpRrUWUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwAZ9kFl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75F8C2BCB0;
-	Tue, 12 May 2026 18:07:51 +0000 (UTC)
+	 MIME-Version; b=bA368ReujHAN0ECuhnHPmwE4lP9KDTwqRB87P76DGmth5/9cA/7FNzO1x3AM020sH98mw1LLIwXFjo0jJzKkY4ELOGl9gazS6VrPfx3AmJOFE2ZSXtwTgrxlqMZ6TULQhxLBkUFGbglcmK1e+BSRjJOGHhM1L34feR1YZrEkR7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17FJeHbx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A03C2BCB0;
+	Tue, 12 May 2026 17:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609272;
-	bh=6x1UTeNCUVtPAL9whcCrZc4LZm6+JYjSo1icYSOls2M=;
+	s=korg; t=1778607980;
+	bh=vrANMr+i7S8PbgJXsGzOPQAPTkV16j/BDOXQ9axX3bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwAZ9kFlcIsLhxd+AiaGdlW7Wk9woZutHTmVqe0ECwdOyqxX8Tm7xBjJ1/MBF/ddS
-	 0UeD5mGBErqSpBJmsYZhl3zzBPvRK9ui1BQc+dmh3R5EbMGmXDu1Y64xintFmciFPd
-	 YAz6sY7sgs/49Zg7Ggjnp1khS7fc+IkvBM8K5aiU=
+	b=17FJeHbxEk+SeqrghsvgqWKUFBTmCCCC0lYSEgX2qAS5nMMsjXVqwpNJNxg2IE3Bf
+	 6KYSuz57lBJioV9PiJiwSfVgRyOj0ya+ihnGx7Jq3wzRY6ubPQ3mLM2pF8FjHjce92
+	 tLClX2yelB20j2I454nsBht39xQz8OFanWzv6WOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haren Myneni <haren@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 7.0 114/307] pseries/papr-hvpipe: Fix null ptr deref in papr_hvpipe_dev_create_handle()
+	David Windsor <dwindsor@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.12 057/206] selinux: dont reserve xattr slot when we wont fill it
 Date: Tue, 12 May 2026 19:38:29 +0200
-Message-ID: <20260512173942.529406478@linuxfoundation.org>
+Message-ID: <20260512173934.048345006@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,174 +63,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3504452740E
+X-Rspamd-Queue-Id: 43D255263FE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246455-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.ibm.com,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245953-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paul-moore.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,paul-moore.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: David Windsor <dwindsor@gmail.com>
 
-commit 1b9f7aafa44f5ce852c00509104d10fd9eb0f402 upstream.
+commit 1e5a8eed7821e7a43a31b4c1b3675a91be6bc6f6 upstream.
 
-commit 6d3789d347a7 ("papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()"),
-changed the create handle to FD_PREPARE(), but it caused kernel
-null-ptr-deref because after call to retain_and_null_ptr(src_info),
-src_info is re-used for adding it to the global list.
-
-Getting the following kernel panic in papr_hvpipe_dev_create_handle()
-when trying to add src_info to the list.
- Kernel attempted to write user page (0) - exploit attempt? (uid: 0)
- BUG: Kernel NULL pointer dereference on write at 0x00000000
- Faulting instruction address: 0xc0000000001b44a0
- Oops: Kernel access of bad area, sig: 11 [#1]
- ...
- Call Trace:
- papr_hvpipe_dev_ioctl+0x1f4/0x48c (unreliable)
- sys_ioctl+0x528/0x1064
- system_call_exception+0x128/0x360
- system_call_vectored_common+0x15c/0x2ec
-
-Now, the error handling with FD_PREPARE's file cleanup and __free(kfree) auto
-cleanup is getting too convoluted. This is mainly because we need to
-ensure only 1 user get the srcID handle. To simplify this, we allocate
-prepare the src_info in the beginning and add it to the global list
-under a spinlock after checking that no duplicates exist.
-
-This simplify the error handling where if the FD_ADD fails, we can
-simply remove the src_info from the list and consume any pending msg in
-hvpipe to be cleared, after src_info became visible in the global list.
+Move lsm_get_xattr_slot() below the SBLABEL_MNT check so we don't leave
+a NULL-named slot in the array when returning -EOPNOTSUPP; filesystem
+initxattrs() callbacks stop iterating at the first NULL ->name, silently
+dropping xattrs installed by later LSMs.
 
 Cc: stable@vger.kernel.org
-Fixes: 6d3789d347a7 ("papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()")
-Reported-by: Haren Myneni <haren@linux.ibm.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/31ad94bc89d44156ee700c5bd006cb47a748e3cb.1777606826.git.ritesh.list@gmail.com
+Signed-off-by: David Windsor <dwindsor@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/papr-hvpipe.c | 57 ++++++++++----------
- 1 file changed, 30 insertions(+), 27 deletions(-)
+ security/selinux/hooks.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-index 3392874ebdf6..402781299497 100644
---- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
-+++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-@@ -480,23 +480,10 @@ static const struct file_operations papr_hvpipe_handle_ops = {
- 
- static int papr_hvpipe_dev_create_handle(u32 srcID)
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -2916,7 +2916,7 @@ static int selinux_inode_init_security(s
  {
--	struct hvpipe_source_info *src_info __free(kfree) = NULL;
-+	struct hvpipe_source_info *src_info;
-+	int fd;
- 	unsigned long flags;
+ 	const struct task_security_struct *tsec = selinux_cred(current_cred());
+ 	struct superblock_security_struct *sbsec;
+-	struct xattr *xattr = lsm_get_xattr_slot(xattrs, xattr_count);
++	struct xattr *xattr;
+ 	u32 newsid, clen;
+ 	u16 newsclass;
+ 	int rc;
+@@ -2942,6 +2942,7 @@ static int selinux_inode_init_security(s
+ 	    !(sbsec->flags & SBLABEL_MNT))
+ 		return -EOPNOTSUPP;
  
--	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
--	/*
--	 * Do not allow more than one process communicates with
--	 * each source.
--	 */
--	src_info = hvpipe_find_source(srcID);
--	if (src_info) {
--		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
--		pr_err("pid(%d) is already using the source(%d)\n",
--				src_info->tsk->pid, srcID);
--		return -EALREADY;
--	}
--	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
--
- 	src_info = kzalloc_obj(*src_info, GFP_KERNEL_ACCOUNT);
- 	if (!src_info)
- 		return -ENOMEM;
-@@ -505,26 +492,42 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
- 	src_info->tsk = current;
- 	init_waitqueue_head(&src_info->recv_wqh);
- 
--	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
--		   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
--				      (void *)src_info, O_RDWR));
--	if (fdf.err)
--		return fdf.err;
--
--	retain_and_null_ptr(src_info);
--	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
- 	/*
--	 * If two processes are executing ioctl() for the same
--	 * source ID concurrently, prevent the second process to
--	 * acquire FD.
-+	 * Do not allow more than one process communicates with
-+	 * each source.
- 	 */
-+	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
- 	if (hvpipe_find_source(srcID)) {
- 		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
-+		pr_err("pid(%d) could not get the source(%d)\n",
-+				src_info->tsk->pid, srcID);
-+		kfree(src_info);
- 		return -EALREADY;
- 	}
- 	list_add(&src_info->list, &hvpipe_src_list);
- 	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
--	return fd_publish(fdf);
-+
-+	fd = FD_ADD(O_RDONLY | O_CLOEXEC,
-+		   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
-+				      (void *)src_info, O_RDWR));
-+	if (fd < 0) {
-+		spin_lock_irqsave(&hvpipe_src_list_lock, flags);
-+		list_del(&src_info->list);
-+		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
-+		/*
-+		 * if we fail to add FD, that means no userspace program is
-+		 * polling. In that case if there is a msg pending because the
-+		 * interrupt was fired after the src_info was added to the
-+		 * global list, then let's consume it here, to unblock the
-+		 * hvpipe
-+		 */
-+		if (src_info->hvpipe_status & HVPIPE_MSG_AVAILABLE)
-+			hvpipe_rtas_recv_msg(NULL, 0);
-+		kfree(src_info);
-+		return fd;
-+	}
-+
-+	return fd;
- }
- 
- /*
--- 
-2.54.0
-
++	xattr = lsm_get_xattr_slot(xattrs, xattr_count);
+ 	if (xattr) {
+ 		rc = security_sid_to_context_force(newsid,
+ 						   &context, &clen);
 
 
 
