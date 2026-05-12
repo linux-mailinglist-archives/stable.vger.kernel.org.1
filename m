@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MElIEYdsA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:07 +0200
+	id yE9XCbdmA2qZ5gEAu9opvQ
+	(envelope-from <stable+bounces-245874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D449C526D5A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C447525FBD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6910319A438
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1843C3017D3E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875D93955D8;
-	Tue, 12 May 2026 17:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1553DC86D;
+	Tue, 12 May 2026 17:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hwXVyZU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5+1h81j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7BA3EDE70;
-	Tue, 12 May 2026 17:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0FB385D85;
+	Tue, 12 May 2026 17:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608551; cv=none; b=uMBPipXyepwednmgmNMCbmGzeFl25PrTY37kLLnn0LaK8yy3tX+Zo+Tuo6VXRmAQm6PAyesABp8pXr0f0u/GnaGj0dkGfho5eXvy3loi0oJpJf/NrAg0Dxj3nvR7cNIQB7siy5IC8Wi6QjfYBQavl3WNZJrafd/SIoFf6GlMTqw=
+	t=1778607777; cv=none; b=iO3mPR2+in5Knrrva5R0DO7Kko9fynVkHXXIArejJkv3HeKDbthLNwXLomJz4FONPa8cT+QDjb9bK0bgtx3tkcmHiKjfTPl/AMhC6eqimJSng9JbWWyuTGIHep1VPynx2KKqAXMqxOhxgz5h1FdQYb45gAMyK7icOo8lShJK+ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608551; c=relaxed/simple;
-	bh=VW22apXuoGghhVhKwhJA3kQvwTCcmmKra76IPvlPTsM=;
+	s=arc-20240116; t=1778607777; c=relaxed/simple;
+	bh=B2xBZBhYNdM10iCvoF09ycPRUc+Z/32cfT934Es3KLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vEkytx8qI/tgZTMxpRwTmulDQXklUh0NXBaMVw8WCZCNA4FLt3Gc6cDKhHqTFoUtxgYcS03HIetBkcG0Ef/dfFpjeVYAIOZ1mSz4pgz8SBV6nfF1ZTVgHFUi0OhhGNzKT/tDSH2N1bE4lJ+Uo9ssmu6TGVHh43LKIyAlBWFydJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hwXVyZU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0350C2BD05;
-	Tue, 12 May 2026 17:55:50 +0000 (UTC)
+	 MIME-Version; b=qTkqK5ii2qogh69OZrNtqX5C6Nq4YbhzCUxRyu0NPbGfzU/XRZb9n82DW+uO9X1eEmGGSlYGlznmnPgY+SDIfW1cAOabN76AV0/bj0tgTLQtbmzb0V1tyz/LkHsO86TdCpf5wlOm8LGsp4YyEQDgMlw24Pzv2wtp3UawT495ESQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5+1h81j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A8FC2BCB0;
+	Tue, 12 May 2026 17:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608551;
-	bh=VW22apXuoGghhVhKwhJA3kQvwTCcmmKra76IPvlPTsM=;
+	s=korg; t=1778607776;
+	bh=B2xBZBhYNdM10iCvoF09ycPRUc+Z/32cfT934Es3KLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hwXVyZUjGE77D0WfpNsuA/4jw4o9K81rokMgT69n7MSZkp6AX3hQJnkaqxX2AZ10
-	 hqIKd1Z8CF6EV08BfXZn/+58pgL/0dThJ868qD6KsX3ZEEFHEiNWxAzB8CK4Tsl9qM
-	 U89y0wvL8XopBnK9shYSEzCrZ8hqht5ncnrfjGpg=
+	b=x5+1h81j1a8s0vDqniZj4cnJ78NDJob0jFT+pgz2p8DYa4q3Cpo64u5LHLKo6wKJ8
+	 pJ2ik3F61EqcnSuKigvutu+Q2bpx8/TwLwI7v/2Q3BA72ArthYHn33TCy99/yBgCqz
+	 V4/QsftBi/fAKGmA4WmsqmW9gR5uHnIhAIukHhgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 081/270] spi: sun6i: fix controller deregistration
-Date: Tue, 12 May 2026 19:38:02 +0200
-Message-ID: <20260512173940.162478960@linuxfoundation.org>
+	Leon Yen <leon.yen@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 031/206] wifi: mt76: mt7921: fix a potential clc buffer length underflow
+Date: Tue, 12 May 2026 19:38:03 +0200
+Message-ID: <20260512173933.489356067@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D449C526D5A
+X-Rspamd-Queue-Id: 4C447525FBD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246175-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245874-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,62 +91,48 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nbd.name:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Leon Yen <leon.yen@mediatek.com>
 
-commit d874a1c33aee0d88fb4ba2f8aeadaa9f1965209a upstream.
+commit 5373f8b19e568b5c217832b9bbef165bd2b2df14 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+The buf_len is used to limit the iterations for retrieving the country
+power setting and may underflow under certain conditions due to changes
+in the power table in CLC.
 
-Fixes: 3558fe900e8a ("spi: sunxi: Add Allwinner A31 SPI controller driver")
-Cc: stable@vger.kernel.org	# 3.15
-Cc: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-20-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This underflow leads to an almost infinite loop or an invalid power
+setting resulting in driver initialization failure.
+
+Cc: stable@vger.kernel.org
+Fixes: fa6ad88e023d ("wifi: mt76: mt7921: fix country count limitation for CLC")
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20251009020158.1923429-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sun6i.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -743,7 +743,7 @@ static int sun6i_spi_probe(struct platfo
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1344,6 +1344,9 @@ int __mt7921_mcu_set_clc(struct mt792x_d
+ 		u16 len = le16_to_cpu(rule->len);
+ 		u16 offset = len + sizeof(*rule);
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "cannot register SPI host\n");
- 		goto err_pm_disable;
-@@ -769,12 +769,18 @@ static void sun6i_spi_remove(struct plat
- {
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 
-+	spi_controller_get(host);
++		if (buf_len < offset)
++			break;
 +
-+	spi_unregister_controller(host);
-+
- 	pm_runtime_force_suspend(&pdev->dev);
- 
- 	if (host->dma_tx)
- 		dma_release_channel(host->dma_tx);
- 	if (host->dma_rx)
- 		dma_release_channel(host->dma_rx);
-+
-+	spi_controller_put(host);
- }
- 
- static const struct sun6i_spi_cfg sun6i_a31_spi_cfg = {
+ 		pos += offset;
+ 		buf_len -= offset;
+ 		if (rule->alpha2[0] != alpha2[0] ||
 
 
 
