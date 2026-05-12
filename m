@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-245851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FgEBZlmA2qZ5gEAu9opvQ
-	(envelope-from <stable+bounces-245851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:42:49 +0200
+	id QNR5DX1rA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8267B525F8C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:42:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FCD526A0D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27253303DABB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 482843125DD7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7F447DD50;
-	Tue, 12 May 2026 17:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514AF3EDE52;
+	Tue, 12 May 2026 17:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVYHkEIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/z3z8qx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED0E42885A;
-	Tue, 12 May 2026 17:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F5E3EDE42;
+	Tue, 12 May 2026 17:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607718; cv=none; b=LtkXCZ/T1VjW8z2hAYNTOt++GVdrIvHxE+QZPxa27G8oYHTZwwpxkSTEG4PgpQgvQ/SLWRPPUkHwFW/YRwX6Kak3E5/MIx7Z1u48VYcrGPixhtpVRnt6FUVw7vMmALSbIUMSfmANs92gpliHlqyAFUc0tKyVd24V50Lrypoeg5M=
+	t=1778608371; cv=none; b=SunE+czgfqP8vgqzExJnSq3+RpLEafrLWgtEed+SMNjNNYy9jL56Bx/qhixrm1MPnEGmbJk/HWf9pYY+HWVJN9VzwORijqqAXyX0kMSqwotYFRshHTZWOeF25OVY2jFnP+XtdQe8J2uqZUGLpf64no5MQTx2aG/wWbbJ7k4vOiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607718; c=relaxed/simple;
-	bh=EvrsSp2cQD58ROxKdyoG8evvuvKeupBplIiHsHmZc2M=;
+	s=arc-20240116; t=1778608371; c=relaxed/simple;
+	bh=bscEAaDAI7ny1CAzBIzg8SRgtKEsxk/fbkBMzenPHaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9GmxVpzz4CKVnAbtkuhPzAZU4uZZ9+gBLoXkQ9g4zBKDMINOEqgcZeAZPQIsZ45i1nWQ8CJ5KJKxBofSGEqEonlQmlxtOY5SVlhXULPv95tW2xmDUv0pMWx6maVFhTQ8Rq+7GhcF30jeJsDuAUWqj4veI+4Kuz5kFmjTFWKeLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVYHkEIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D908C2BCF6;
-	Tue, 12 May 2026 17:41:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qm409+yDGIqGp4fESVQXxoFgGMzYwN+brUAHcCzeDs9MpmjNyVh1UXWmRdFnuLPvP9GxXQWoqDWJlX+8TsofGnHRJpr+lFH7hItFC6YoK3X81HMjR8WpDp5ymjAbmSoPNlTPQlKkGN7rnLVzTRJlHOpD2afzmqgxCeyLN77P8BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/z3z8qx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E308C2BCB0;
+	Tue, 12 May 2026 17:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607717;
-	bh=EvrsSp2cQD58ROxKdyoG8evvuvKeupBplIiHsHmZc2M=;
+	s=korg; t=1778608371;
+	bh=bscEAaDAI7ny1CAzBIzg8SRgtKEsxk/fbkBMzenPHaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVYHkEIiqwHwRf3fpe/7mOCfgiwc2FM445ryW5P7jpI1k6ho1DO5zyhoMPzrLMuQ8
-	 OpXEuSTlJnGm+/TPoiHuuv56IjC5WC0G84vztHRG/XL8QRpoGqOYW+BbRgs2KWwYS6
-	 8zX78LIoAT7v6ku2qdhrlkiCzg8PHwJPtcBm+OHw=
+	b=c/z3z8qxRo+QBLhIovOhqbEVyY3088f1IqJk61JPbpxYPjcbr8N4OQSUdjWbYjLb1
+	 aMDFgJLkkoFCiAbeI+t6FWDf38evKsGKmq4FOlruqcT26DNEPqgf+xWuCHblKXfUJV
+	 VqXZJf8UCeNpEwdq6uTEbnM2G+4zTCO6RvDhQxVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 001/206] scsi: target: configfs: Bound snprintf() return in tg_pt_gp_members_show()
-Date: Tue, 12 May 2026 19:37:33 +0200
-Message-ID: <20260512173932.845061309@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 053/270] ALSA: seq: Fix UMP group 16 filtering
+Date: Tue, 12 May 2026 19:37:34 +0200
+Message-ID: <20260512173939.567818013@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +62,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8267B525F8C
+X-Rspamd-Queue-Id: C4FCD526A0D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245851-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246105-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 772a896a56e0e3ef9424a025cec9176f9d8f4552 upstream.
+commit 92429ca999db99febced82f23362a71b2ba4c1d8 upstream.
 
-target_tg_pt_gp_members_show() formats LUN paths with snprintf() into a
-256-byte stack buffer, then will memcpy() cur_len bytes from that
-buffer.  snprintf() returns the length the output would have had, which
-can exceed the buffer size when the fabric WWN is long because iSCSI IQN
-names can be up to 223 bytes.  The check at the memcpy() site only
-guards the destination page write, not the source read, so memcpy() will
-read past the stack buffer and copy adjacent stack contents to the sysfs
-reader, which when CONFIG_FORTIFY_SOURCE is enabled, fortify_panic()
-will be triggered.
+The sequencer UAPI defines group_filter as an unsigned int bitmap.
+Bit 0 filters groupless messages and bits 1-16 filter UMP groups 1-16.
 
-Commit 27e06650a5ea ("scsi: target: target_core_configfs: Add length
-check to avoid buffer overflow") added the same bound to the
-target_lu_gp_members_show() but the tg_pt_gp variant was missed so
-resolve that here.
+The internal snd_seq_client storage is only unsigned short, so bit 16
+is truncated when userspace sets the filter. The same truncation affects
+the automatic UMP client filter used to avoid delivery to inactive
+groups, so events for group 16 cannot be filtered.
 
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026041159-garter-theft-3be0@gregkh
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Store the internal bitmap as unsigned int and keep both userspace-provided
+and automatically generated values limited to the defined UAPI bits.
+
+Fixes: d2b706077792 ("ALSA: seq: Add UMP group filter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260506-alsa-seq-ump-group16-filter-v1-1-b75160bf6993@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_configfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/seq/seq_clientmgr.c  |    2 +-
+ sound/core/seq/seq_clientmgr.h  |    5 ++++-
+ sound/core/seq/seq_ump_client.c |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -3172,7 +3172,7 @@ static ssize_t target_tg_pt_gp_members_s
- 			config_item_name(&lun->lun_group.cg_item));
- 		cur_len++; /* Extra byte for NULL terminator */
+--- a/sound/core/seq/seq_clientmgr.c
++++ b/sound/core/seq/seq_clientmgr.c
+@@ -1252,7 +1252,7 @@ static int snd_seq_ioctl_set_client_info
+ 	if (client->user_pversion >= SNDRV_PROTOCOL_VERSION(1, 0, 3))
+ 		client->midi_version = client_info->midi_version;
+ 	memcpy(client->event_filter, client_info->event_filter, 32);
+-	client->group_filter = client_info->group_filter;
++	client->group_filter = client_info->group_filter & SND_SEQ_GROUP_FILTER_MASK;
  
--		if ((cur_len + len) > PAGE_SIZE) {
-+		if (cur_len > TG_PT_GROUP_NAME_BUF || (cur_len + len) > PAGE_SIZE) {
- 			pr_warn("Ran out of lu_gp_show_attr"
- 				"_members buffer\n");
- 			break;
+ 	/* notify the change */
+ 	snd_seq_system_client_ev_client_change(client->number);
+--- a/sound/core/seq/seq_clientmgr.h
++++ b/sound/core/seq/seq_clientmgr.h
+@@ -14,6 +14,9 @@
+ 
+ /* client manager */
+ 
++#define SND_SEQ_GROUP_FILTER_MASK	GENMASK(SNDRV_UMP_MAX_GROUPS, 0)
++#define SND_SEQ_GROUP_FILTER_GROUPS	GENMASK(SNDRV_UMP_MAX_GROUPS, 1)
++
+ struct snd_seq_user_client {
+ 	struct file *file;	/* file struct of client */
+ 	/* ... */
+@@ -40,7 +43,7 @@ struct snd_seq_client {
+ 	int number;		/* client number */
+ 	unsigned int filter;	/* filter flags */
+ 	DECLARE_BITMAP(event_filter, 256);
+-	unsigned short group_filter;
++	unsigned int group_filter;
+ 	snd_use_lock_t use_lock;
+ 	int event_lost;
+ 	/* ports */
+--- a/sound/core/seq/seq_ump_client.c
++++ b/sound/core/seq/seq_ump_client.c
+@@ -369,7 +369,7 @@ static void setup_client_group_filter(st
+ 	cptr = snd_seq_kernel_client_get(client->seq_client);
+ 	if (!cptr)
+ 		return;
+-	filter = ~(1U << 0); /* always allow groupless messages */
++	filter = SND_SEQ_GROUP_FILTER_GROUPS; /* always allow groupless messages */
+ 	for (p = 0; p < SNDRV_UMP_MAX_GROUPS; p++) {
+ 		if (client->ump->groups[p].active)
+ 			filter &= ~(1U << (p + 1));
 
 
 
