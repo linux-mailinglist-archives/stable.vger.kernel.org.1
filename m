@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-246415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246416-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJbWBG1sA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:41 +0200
+	id MBH9Jd9vA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246416-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A711F526D19
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0A45276E9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C62AD3058D47
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 588E831F1000
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5CC364959;
-	Tue, 12 May 2026 18:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415382D060B;
+	Tue, 12 May 2026 18:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klvcbjE0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfxEcncc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316143EDE61;
-	Tue, 12 May 2026 18:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042CC3EDE61;
+	Tue, 12 May 2026 18:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609167; cv=none; b=BSDmfv0YS4bhnoPUek+XxbS+jG2LH47+rmcPYI4vzHVSbAnTCVYbUWJ6XfB30G4+nlCan6aWNsb9Ku+TxR/pddzxWI8VgsXDejTfy03f21FffY+AvCLBumDxE87WtOzS2DpQoRyfVHyYAXbj9Z+DmAfWn25JV1o2v8VWzZeqQ64=
+	t=1778609170; cv=none; b=V/H+n3yGA3ABrPb3tkggnvMCfJuDsha/6WgHz5+/6YwVlH6O3kPYxmJkaFImum59fTNjVN31kdfw5+HBk43mIVy2nQ6upcTRIq7vez4Xnt+UDziegGG064YANMH3PvM77D9VvZ7zImAkxIwR7A8pf4+yLoKulgFT91EfT3SZw8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609167; c=relaxed/simple;
-	bh=SO9o8OftRVVqTJWM5/j4AjsDwaMZHhToYJ6x4Uw3onQ=;
+	s=arc-20240116; t=1778609170; c=relaxed/simple;
+	bh=5wOuXH3400GUIgZIMN5z/QmriLZwugMO94nURtVNOSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYRCWrx3cGpSDIx3pBwkKMKo60p7oqnEnqPBumvYPvLrmL79VZmcJzeSgStcZFrMGsBa2IGvzubhxPAqd+xQURzwGcma8IBjsYBOxtDUmlfGsx87Lg7S6n13t9aXoWS3KLGGocS32HoXGnGPc1z8WCWzwtCHi3LnKWS+951HumQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klvcbjE0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD47CC2BCB0;
-	Tue, 12 May 2026 18:06:06 +0000 (UTC)
+	 MIME-Version; b=ieb5nJIhX2jjYVElWLgDgx0ERkpCIDqACVfz0tnCzUJ8pgy9B8fFV5y9chD09+oBaTMYhnLwCTfFHXDJJrEXEl48zmfyBApvcJbPJLne0CSOrINeffASTLpK6ZWX1hfylNDieQxKhaMwsOp134TpRJejrPhkVpke/Y2oWQfqlJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfxEcncc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A06C2BCB0;
+	Tue, 12 May 2026 18:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609167;
-	bh=SO9o8OftRVVqTJWM5/j4AjsDwaMZHhToYJ6x4Uw3onQ=;
+	s=korg; t=1778609169;
+	bh=5wOuXH3400GUIgZIMN5z/QmriLZwugMO94nURtVNOSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=klvcbjE0JpIaHyKnB1EDeWqzwVQfEs7H5frH0je9fT9Iy7eyH3NDO1llIAcnl6H97
-	 dOM468Xoq0e4XL+sm+ZLuowAlv6wfE6HqX0RYefF/IopuDoRGKLYegSkUM0WML7HOY
-	 d7rdfsTIc/YLdyr1NS7RuIRCTpstU0EEWm/2cvDc=
+	b=WfxEcncct7aTWax+BHMIy1G/Sji/9hLcWmIe+zDBT1+T1gVugCAF1gjuaVgPqiT8B
+	 nMMJmus93juuPmEx3tna0BTfcdUQH5Ri1Qzg4ntVwDSqxm7dAUqH+wtaUz+uFu6Rxd
+	 nrWLzhOQjK2U2POQYIavhyBT76TIYkq7uqnYxyrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martyn Welch <martyn@welchs.me.uk>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 7.0 091/307] staging: vme_user: fix root device leak on init failure
-Date: Tue, 12 May 2026 19:38:06 +0200
-Message-ID: <20260512173942.049423038@linuxfoundation.org>
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 7.0 092/307] fanotify: fix false positive on permission events
+Date: Tue, 12 May 2026 19:38:07 +0200
+Message-ID: <20260512173942.069660653@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
 References: <20260512173940.117428952@linuxfoundation.org>
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A711F526D19
+X-Rspamd-Queue-Id: ED0A45276E9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246415-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246416-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,41 +90,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,welchs.me.uk:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.cz:email]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit 32c91e8ee039777d0b95b914633fc6a42607959c upstream.
+commit 7746e3bd4cc19b5092e00d32d676e329bfcb6900 upstream.
 
-Make sure to deregister and free the root device in case module
-initialisation fails.
+fsnotify_get_mark_safe() may return false for a mark on an unrelated group,
+which results in bypassing the permission check.
 
-Fixes: 658bcdae9c67 ("vme: Adding Fake VME driver")
-Cc: stable@vger.kernel.org	# 4.9
-Cc: Martyn Welch <martyn@welchs.me.uk>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260424104910.2619349-1-johan@kernel.org
+Fix by skipping over detached marks that are not in the current group.
+
+CC: stable@vger.kernel.org
+Fixes: abc77577a669 ("fsnotify: Provide framework for dropping SRCU lock in ->handle_event")
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://patch.msgid.link/20260410144950.156160-1-mszeredi@redhat.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/vme_user/vme_fake.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/notify/fsnotify.c             |    2 +-
+ fs/notify/mark.c                 |   18 +++++++++++-------
+ include/linux/fsnotify_backend.h |    1 +
+ 3 files changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/staging/vme_user/vme_fake.c
-+++ b/drivers/staging/vme_user/vme_fake.c
-@@ -1230,6 +1230,8 @@ err_master:
- err_driver:
- 	kfree(fake_bridge);
- err_struct:
-+	root_device_unregister(vme_root);
-+
- 	return retval;
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -388,7 +388,7 @@ static struct fsnotify_mark *fsnotify_fi
+ 	return hlist_entry_safe(node, struct fsnotify_mark, obj_list);
  }
+ 
+-static struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark)
++struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark)
+ {
+ 	struct hlist_node *node = NULL;
+ 
+--- a/fs/notify/mark.c
++++ b/fs/notify/mark.c
+@@ -457,9 +457,6 @@ EXPORT_SYMBOL_GPL(fsnotify_put_mark);
+  */
+ static bool fsnotify_get_mark_safe(struct fsnotify_mark *mark)
+ {
+-	if (!mark)
+-		return true;
+-
+ 	if (refcount_inc_not_zero(&mark->refcnt)) {
+ 		spin_lock(&mark->lock);
+ 		if (mark->flags & FSNOTIFY_MARK_FLAG_ATTACHED) {
+@@ -500,15 +497,22 @@ bool fsnotify_prepare_user_wait(struct f
+ 	int type;
+ 
+ 	fsnotify_foreach_iter_type(type) {
++		struct fsnotify_mark *mark = iter_info->marks[type];
++
+ 		/* This can fail if mark is being removed */
+-		if (!fsnotify_get_mark_safe(iter_info->marks[type])) {
+-			__release(&fsnotify_mark_srcu);
+-			goto fail;
++		while (mark && !fsnotify_get_mark_safe(mark)) {
++			if (mark->group == iter_info->current_group) {
++				__release(&fsnotify_mark_srcu);
++				goto fail;
++			}
++			/* This is a mark in an unrelated group, skip */
++			mark = fsnotify_next_mark(mark);
++			iter_info->marks[type] = mark;
+ 		}
+ 	}
+ 
+ 	/*
+-	 * Now that both marks are pinned by refcount in the inode / vfsmount
++	 * Now that all marks are pinned by refcount in the inode / vfsmount / etc
+ 	 * lists, we can drop SRCU lock, and safely resume the list iteration
+ 	 * once userspace returns.
+ 	 */
+--- a/include/linux/fsnotify_backend.h
++++ b/include/linux/fsnotify_backend.h
+@@ -915,6 +915,7 @@ extern void fsnotify_clear_marks_by_grou
+ 					  unsigned int obj_type);
+ extern void fsnotify_get_mark(struct fsnotify_mark *mark);
+ extern void fsnotify_put_mark(struct fsnotify_mark *mark);
++struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark);
+ extern void fsnotify_finish_user_wait(struct fsnotify_iter_info *iter_info);
+ extern bool fsnotify_prepare_user_wait(struct fsnotify_iter_info *iter_info);
  
 
 
