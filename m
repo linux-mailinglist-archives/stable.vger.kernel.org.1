@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-246155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HPbCQBqA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:20 +0200
+	id GMzEHwlwA2qI5wEAu9opvQ
+	(envelope-from <stable+bounces-246435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD5052654E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C9F527756
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 527CE304385D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6AA23217970
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399543DD866;
-	Tue, 12 May 2026 17:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D7F23E356;
+	Tue, 12 May 2026 18:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUK8ktK+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akaACL3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC073C0A19;
-	Tue, 12 May 2026 17:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9183EDE48;
+	Tue, 12 May 2026 18:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608500; cv=none; b=YIcmygN62kbj5el6N67thWSuqYqifb9gwLystxDfhq2EwwddgKJIsAYO1OKy6spUSn4pwJ/rLIZuC0lsJez0btnAJbE64MfrGGPaT8XSn6TwC9BAsLEkeXxq7ap9aOoLeLAS96wLz+pChcMVCp95x5tW9iKMfwZBHZ/8YXYwHyE=
+	t=1778609221; cv=none; b=LbpD/OMVjQFHkcYyPv5+XSm4PBKisRAmK4DfPjFY+hOdf5YJG2Z+E2oyrVXl3d+cEOZckmMDx5lABGKbhpRZD0yO/XcrYZm7CWauV6r1SSF14q1Z+mt9kRXIIIMfaMt3djtqGnfDDPZ0CgXJNRPNxbU0uitHICvwzMS+GRqorSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608500; c=relaxed/simple;
-	bh=FeQoxhpa8KMUjcdmodSj86ygyM/AyIQvufcdDG6A9TA=;
+	s=arc-20240116; t=1778609221; c=relaxed/simple;
+	bh=/SImp8vQ4fpxQiueuu22C7MMjLmJbJ2leTknd+7VN2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cz30DVSRmIZx+xfv5RsLNx2ejbC+NDBjANhv+291BE+w+UY2GvBVDMpRVmKdWZn1CLDf/qUNEZXbwtHIsCfFqcMduFXLTnIuhRqD7WEJw0wy9o0ak536W+63R18xfE8jJkhCHuIKI55GSLsH4ihT2gqBswTK5j+bAkp0SJOCi8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUK8ktK+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796FEC2BCB0;
-	Tue, 12 May 2026 17:54:59 +0000 (UTC)
+	 MIME-Version; b=WBtTxccQvrH4wGXpZ7N6q/lBgNtnXvv/RFE3BQlEZeYhWnQ/Gzgpn89gI9vgvzvwj2G5Yyo1xQ/JDC7FJT4yp7rFnsPNgJRuXX5m8Wi7L0XeW93oFBGPFMEz6B0Y44srtJJkev1jaYaXmeeME1Mlk1rrJpC4NMCNi6mRCdC2hyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akaACL3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835A2C2BCB0;
+	Tue, 12 May 2026 18:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608499;
-	bh=FeQoxhpa8KMUjcdmodSj86ygyM/AyIQvufcdDG6A9TA=;
+	s=korg; t=1778609220;
+	bh=/SImp8vQ4fpxQiueuu22C7MMjLmJbJ2leTknd+7VN2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aUK8ktK+cMO4fxgNWq10ab4kifykXfPwcD2Wi5le5ZIPj3EzYZW5+SvB3CgbMQzlm
-	 Jv5wpCBq9H2iz4MS+cynqhW95pNHBGuu3e7pL6rgOsVB2PP4hV4xfj+bgrkX7v8/UI
-	 07Wa1deLj9qysjo5v5kdjfeWFaPD5pAgdQl8SRW4=
+	b=akaACL3+a1Eqbd1JAWxBvgD2fDtvKGrCYiU1x7fO2HCxriHvsUXg/+50AufQua0DK
+	 Zs2xkUOuCPCJ6whO95CKZOsTD+gZjunz+rmXuozKFOhxslsvTRRLkWuxi2JOf/lciu
+	 cnusyTf3bz+NfsiCGmo8zWIUEq6p538+TAR8DYRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Xiao Liu <lx24@stu.ynu.edu.cn>,
-	Nan Li <tonanli66@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Allison Henderson <achender@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 103/270] net/rds: handle zerocopy send cleanup before the message is queued
+	Thomas Gleixner <tglx@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dmitry Vyukov <dvyukov@google.com>
+Subject: [PATCH 7.0 109/307] selftests/rseq: Expand for optimized RSEQ ABI v2
 Date: Tue, 12 May 2026 19:38:24 +0200
-Message-ID: <20260512173940.626809338@linuxfoundation.org>
+Message-ID: <20260512173942.425609406@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,126 +64,333 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AAD5052654E
+X-Rspamd-Queue-Id: D6C9F527756
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[ynu.edu.cn:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,stu.ynu.edu.cn,redhat.com];
-	TAGGED_FROM(0.00)[bounces-246155-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_SPAM(0.00)[0.494];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246435-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ynu.edu.cn:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,run_syscall_errors_test.sh:url,librseq.so:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,run_timeslice_test.sh:url,run_param_test.sh:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nan Li <tonanli66@gmail.com>
+From: Thomas Gleixner <tglx@kernel.org>
 
-commit 44b550d88b267320459d518c0743a241ab2108fa upstream.
+commit e744060076871eebc2647b24420b550ff44b2b65 upstream.
 
-A zerocopy send can fail after user pages have been pinned but before
-the message is attached to the sending socket.
+Update the selftests so they are executed for legacy (32 bytes RSEQ region)
+and optimized RSEQ ABI v2 mode.
 
-The purge path currently infers zerocopy state from rm->m_rs, so an
-unqueued message can be cleaned up as if it owned normal payload pages.
-However, zerocopy ownership is really determined by the presence of
-op_mmp_znotifier, regardless of whether the message has reached the
-socket queue.
-
-Capture op_mmp_znotifier up front in rds_message_purge() and use it as
-the cleanup discriminator. If the message is already associated with a
-socket, keep the existing completion path. Otherwise, drop the pinned
-page accounting directly and release the notifier before putting the
-payload pages.
-
-This keeps early send failure cleanup consistent with the zerocopy
-lifetime rules without changing the normal queued completion path.
-
-Fixes: 0cebaccef3ac ("rds: zerocopy Tx support.")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Xiao Liu <lx24@stu.ynu.edu.cn>
-Signed-off-by: Xiao Liu <lx24@stu.ynu.edu.cn>
-Signed-off-by: Nan Li <tonanli66@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/d2ea98a6313d5467bac00f7c9fef8c7acddb9258.1777550074.git.tonanli66@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d6200245c75e ("rseq: Allow registering RSEQ with slice extension")
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Tested-by: Dmitry Vyukov <dvyukov@google.com>
+Link: https://patch.msgid.link/20260428224428.009121296%40kernel.org
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/message.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ tools/testing/selftests/rseq/Makefile         | 11 ++++--
+ .../testing/selftests/rseq/check_optimized.c  | 17 ++++++++
+ tools/testing/selftests/rseq/param_test.c     | 25 +++++++-----
+ .../testing/selftests/rseq/run_param_test.sh  | 39 +++++++++++++++++++
+ .../selftests/rseq/run_timeslice_test.sh      | 14 +++++++
+ tools/testing/selftests/rseq/slice_test.c     |  2 +-
+ 6 files changed, 95 insertions(+), 13 deletions(-)
+ create mode 100644 tools/testing/selftests/rseq/check_optimized.c
+ create mode 100755 tools/testing/selftests/rseq/run_timeslice_test.sh
 
---- a/net/rds/message.c
-+++ b/net/rds/message.c
-@@ -129,24 +129,34 @@ static void rds_rm_zerocopy_callback(str
-  */
- static void rds_message_purge(struct rds_message *rm)
- {
-+	struct rds_znotifier *znotifier;
- 	unsigned long i, flags;
--	bool zcopy = false;
-+	bool zcopy;
+diff --git a/tools/testing/selftests/rseq/Makefile b/tools/testing/selftests/rseq/Makefile
+index 0293a2f17f51..50d69e22ee7a 100644
+--- a/tools/testing/selftests/rseq/Makefile
++++ b/tools/testing/selftests/rseq/Makefile
+@@ -15,7 +15,7 @@ LDLIBS += -lpthread -ldl
+ OVERRIDE_TARGETS = 1
  
- 	if (unlikely(test_bit(RDS_MSG_PAGEVEC, &rm->m_flags)))
- 		return;
+ TEST_GEN_PROGS = basic_test basic_percpu_ops_test basic_percpu_ops_mm_cid_test \
+-		 param_test_benchmark param_test_mm_cid_benchmark slice_test
++		 param_test_benchmark param_test_mm_cid_benchmark
  
- 	spin_lock_irqsave(&rm->m_rs_lock, flags);
-+	znotifier = rm->data.op_mmp_znotifier;
-+	rm->data.op_mmp_znotifier = NULL;
-+	zcopy = !!znotifier;
+ TEST_GEN_PROGS_EXTENDED = librseq.so \
+ 	param_test \
+@@ -23,9 +23,11 @@ TEST_GEN_PROGS_EXTENDED = librseq.so \
+ 	param_test_mm_cid \
+ 	param_test_mm_cid_compare_twice \
+ 	syscall_errors_test \
+-	legacy_check
++	legacy_check \
++	slice_test \
++	check_optimized
+ 
+-TEST_PROGS = run_param_test.sh run_syscall_errors_test.sh run_legacy_check.sh
++TEST_PROGS = run_param_test.sh run_syscall_errors_test.sh run_legacy_check.sh run_timeslice_test.sh
+ 
+ TEST_FILES := settings
+ 
+@@ -66,3 +68,6 @@ $(OUTPUT)/syscall_errors_test: syscall_errors_test.c $(TEST_GEN_PROGS_EXTENDED)
+ 
+ $(OUTPUT)/slice_test: slice_test.c $(TEST_GEN_PROGS_EXTENDED) rseq.h rseq-*.h
+ 	$(CC) $(CFLAGS) $< $(LDLIBS) -lrseq -o $@
 +
- 	if (rm->m_rs) {
- 		struct rds_sock *rs = rm->m_rs;
++$(OUTPUT)/check_optimized: check_optimized.c $(TEST_GEN_PROGS_EXTENDED) rseq.h rseq-*.h
++	$(CC) $(CFLAGS) $< $(LDLIBS) -lrseq -o $@
+diff --git a/tools/testing/selftests/rseq/check_optimized.c b/tools/testing/selftests/rseq/check_optimized.c
+new file mode 100644
+index 000000000000..a13e3f2c8fc6
+--- /dev/null
++++ b/tools/testing/selftests/rseq/check_optimized.c
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: LGPL-2.1
++#define _GNU_SOURCE
++#include <assert.h>
++#include <sched.h>
++#include <signal.h>
++#include <stdio.h>
++#include <string.h>
++#include <sys/time.h>
++
++#include "rseq.h"
++
++int main(int argc, char **argv)
++{
++	if (__rseq_register_current_thread(true, false))
++		return -1;
++	return 0;
++}
+diff --git a/tools/testing/selftests/rseq/param_test.c b/tools/testing/selftests/rseq/param_test.c
+index 05d03e679e06..e1e98dbabe4b 100644
+--- a/tools/testing/selftests/rseq/param_test.c
++++ b/tools/testing/selftests/rseq/param_test.c
+@@ -38,7 +38,7 @@ static int opt_modulo, verbose;
+ static int opt_yield, opt_signal, opt_sleep,
+ 		opt_disable_rseq, opt_threads = 200,
+ 		opt_disable_mod = 0, opt_test = 's';
+-
++static bool opt_rseq_legacy;
+ static long long opt_reps = 5000;
  
--		if (rm->data.op_mmp_znotifier) {
--			zcopy = true;
--			rds_rm_zerocopy_callback(rs, rm->data.op_mmp_znotifier);
-+		if (znotifier) {
-+			rds_rm_zerocopy_callback(rs, znotifier);
- 			rds_wake_sk_sleep(rs);
--			rm->data.op_mmp_znotifier = NULL;
- 		}
- 		sock_put(rds_rs_to_sk(rs));
- 		rm->m_rs = NULL;
-+	} else if (znotifier) {
-+		/*
-+		 * Zerocopy can fail before the message is queued on the
-+		 * socket, so there is no rs to carry the notification.
-+		 */
-+		mm_unaccount_pinned_pages(&znotifier->z_mmp);
-+		kfree(rds_info_from_znotifier(znotifier));
- 	}
- 	spin_unlock_irqrestore(&rm->m_rs_lock, flags);
+ static __thread __attribute__((tls_model("initial-exec")))
+@@ -281,9 +281,12 @@ unsigned int yield_mod_cnt, nr_abort;
+ 	} \
+ }
  
++#define rseq_no_glibc			true
++
+ #else
+ 
+ #define printf_verbose(fmt, ...)
++#define rseq_no_glibc			false
+ 
+ #endif /* BENCHMARK */
+ 
+@@ -481,7 +484,7 @@ void *test_percpu_spinlock_thread(void *arg)
+ 	long long i, reps;
+ 
+ 	if (!opt_disable_rseq && thread_data->reg &&
+-	    rseq_register_current_thread())
++	    __rseq_register_current_thread(rseq_no_glibc, opt_rseq_legacy))
+ 		abort();
+ 	reps = thread_data->reps;
+ 	for (i = 0; i < reps; i++) {
+@@ -558,7 +561,7 @@ void *test_percpu_inc_thread(void *arg)
+ 	long long i, reps;
+ 
+ 	if (!opt_disable_rseq && thread_data->reg &&
+-	    rseq_register_current_thread())
++	    __rseq_register_current_thread(rseq_no_glibc, opt_rseq_legacy))
+ 		abort();
+ 	reps = thread_data->reps;
+ 	for (i = 0; i < reps; i++) {
+@@ -712,7 +715,7 @@ void *test_percpu_list_thread(void *arg)
+ 	long long i, reps;
+ 	struct percpu_list *list = (struct percpu_list *)arg;
+ 
+-	if (!opt_disable_rseq && rseq_register_current_thread())
++	if (!opt_disable_rseq && __rseq_register_current_thread(rseq_no_glibc, opt_rseq_legacy))
+ 		abort();
+ 
+ 	reps = opt_reps;
+@@ -895,7 +898,7 @@ void *test_percpu_buffer_thread(void *arg)
+ 	long long i, reps;
+ 	struct percpu_buffer *buffer = (struct percpu_buffer *)arg;
+ 
+-	if (!opt_disable_rseq && rseq_register_current_thread())
++	if (!opt_disable_rseq && __rseq_register_current_thread(rseq_no_glibc, opt_rseq_legacy))
+ 		abort();
+ 
+ 	reps = opt_reps;
+@@ -1105,7 +1108,7 @@ void *test_percpu_memcpy_buffer_thread(void *arg)
+ 	long long i, reps;
+ 	struct percpu_memcpy_buffer *buffer = (struct percpu_memcpy_buffer *)arg;
+ 
+-	if (!opt_disable_rseq && rseq_register_current_thread())
++	if (!opt_disable_rseq && __rseq_register_current_thread(rseq_no_glibc, opt_rseq_legacy))
+ 		abort();
+ 
+ 	reps = opt_reps;
+@@ -1258,7 +1261,7 @@ void *test_membarrier_worker_thread(void *arg)
+ 	const int iters = opt_reps;
+ 	int i;
+ 
+-	if (rseq_register_current_thread()) {
++	if (__rseq_register_current_thread(rseq_no_glibc, opt_rseq_legacy)) {
+ 		fprintf(stderr, "Error: rseq_register_current_thread(...) failed(%d): %s\n",
+ 			errno, strerror(errno));
+ 		abort();
+@@ -1323,7 +1326,7 @@ void *test_membarrier_manager_thread(void *arg)
+ 	intptr_t expect_a = 0, expect_b = 0;
+ 	int cpu_a = 0, cpu_b = 0;
+ 
+-	if (rseq_register_current_thread()) {
++	if (__rseq_register_current_thread(rseq_no_glibc, opt_rseq_legacy)) {
+ 		fprintf(stderr, "Error: rseq_register_current_thread(...) failed(%d): %s\n",
+ 			errno, strerror(errno));
+ 		abort();
+@@ -1475,6 +1478,7 @@ static void show_usage(int argc, char **argv)
+ 	printf("	[-D M] Disable rseq for each M threads\n");
+ 	printf("	[-T test] Choose test: (s)pinlock, (l)ist, (b)uffer, (m)emcpy, (i)ncrement, membarrie(r)\n");
+ 	printf("	[-M] Push into buffer and memcpy buffer with memory barriers.\n");
++	printf("	[-O] Test with optimized RSEQ\n");
+ 	printf("	[-v] Verbose output.\n");
+ 	printf("	[-h] Show this help.\n");
+ 	printf("\n");
+@@ -1602,6 +1606,9 @@ int main(int argc, char **argv)
+ 		case 'M':
+ 			opt_mo = RSEQ_MO_RELEASE;
+ 			break;
++		case 'L':
++			opt_rseq_legacy = true;
++			break;
+ 		default:
+ 			show_usage(argc, argv);
+ 			goto error;
+@@ -1618,7 +1625,7 @@ int main(int argc, char **argv)
+ 	if (set_signal_handler())
+ 		goto error;
+ 
+-	if (!opt_disable_rseq && rseq_register_current_thread())
++	if (!opt_disable_rseq && __rseq_register_current_thread(rseq_no_glibc, opt_rseq_legacy))
+ 		goto error;
+ 	if (!opt_disable_rseq && !rseq_validate_cpu_id()) {
+ 		fprintf(stderr, "Error: cpu id getter unavailable\n");
+diff --git a/tools/testing/selftests/rseq/run_param_test.sh b/tools/testing/selftests/rseq/run_param_test.sh
+index 8d31426ab41f..69a3fa049929 100755
+--- a/tools/testing/selftests/rseq/run_param_test.sh
++++ b/tools/testing/selftests/rseq/run_param_test.sh
+@@ -34,6 +34,11 @@ REPS=1000
+ SLOW_REPS=100
+ NR_THREADS=$((6*${NR_CPUS}))
+ 
++# Prevent GLIBC from registering RSEQ so the selftest can run in legacy and
++# performance optimized mode.
++GLIBC_TUNABLES="${GLIBC_TUNABLES:-}:glibc.pthread.rseq=0"
++export GLIBC_TUNABLES
++
+ function do_tests()
+ {
+ 	local i=0
+@@ -103,6 +108,40 @@ function inject_blocking()
+ 	NR_LOOPS=
+ }
+ 
++echo "Testing in legacy RSEQ mode"
++echo "Yield injection (25%)"
++inject_blocking -m 4 -y -L
++
++echo "Yield injection (50%)"
++inject_blocking -m 2 -y -L
++
++echo "Yield injection (100%)"
++inject_blocking -m 1 -y -L
++
++echo "Kill injection (25%)"
++inject_blocking -m 4 -k -L
++
++echo "Kill injection (50%)"
++inject_blocking -m 2 -k -L
++
++echo "Kill injection (100%)"
++inject_blocking -m 1 -k -L
++
++echo "Sleep injection (1ms, 25%)"
++inject_blocking -m 4 -s 1 -L
++
++echo "Sleep injection (1ms, 50%)"
++inject_blocking -m 2 -s 1 -L
++
++echo "Sleep injection (1ms, 100%)"
++inject_blocking -m 1 -s 1 -L
++
++./check_optimized || {
++    echo "Skipping optimized RSEQ mode test. Not supported";
++    exit 0
++}
++
++echo "Testing in optimized RSEQ mode"
+ echo "Yield injection (25%)"
+ inject_blocking -m 4 -y
+ 
+diff --git a/tools/testing/selftests/rseq/run_timeslice_test.sh b/tools/testing/selftests/rseq/run_timeslice_test.sh
+new file mode 100755
+index 000000000000..551ebed71ec6
+--- /dev/null
++++ b/tools/testing/selftests/rseq/run_timeslice_test.sh
+@@ -0,0 +1,14 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0+
++
++# Prevent GLIBC from registering RSEQ so the selftest can run in legacy
++# and performance optimized mode.
++GLIBC_TUNABLES="${GLIBC_TUNABLES:-}:glibc.pthread.rseq=0"
++export GLIBC_TUNABLES
++
++./check_optimized || {
++    echo "Skipping optimized RSEQ mode test. Not supported";
++    exit 0
++}
++
++./slice_test
+diff --git a/tools/testing/selftests/rseq/slice_test.c b/tools/testing/selftests/rseq/slice_test.c
+index 77e668ff74d7..e402d4440bc2 100644
+--- a/tools/testing/selftests/rseq/slice_test.c
++++ b/tools/testing/selftests/rseq/slice_test.c
+@@ -124,7 +124,7 @@ FIXTURE_SETUP(slice_ext)
+ {
+ 	cpu_set_t affinity;
+ 
+-	if (rseq_register_current_thread())
++	if (__rseq_register_current_thread(true, false))
+ 		SKIP(return, "RSEQ not supported\n");
+ 
+ 	if (prctl(PR_RSEQ_SLICE_EXTENSION, PR_RSEQ_SLICE_EXTENSION_SET,
+-- 
+2.54.0
+
 
 
 
