@@ -1,320 +1,309 @@
-Return-Path: <stable+bounces-245956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245961-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBQkAntnA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245956-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:35 +0200
+	id ICw0G5FnA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245961-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29ADA526150
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2147F52618B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 61C98300E4B6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D6E22308E81D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B1E3E075C;
-	Tue, 12 May 2026 17:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8533E1725;
+	Tue, 12 May 2026 17:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="Iwo0uzcF"
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b="mEv+zTkN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+Received: from mail-qk1-f195.google.com (mail-qk1-f195.google.com [209.85.222.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE48A3E0754
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 17:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607986; cv=pass; b=Km/4mb92sgQe8xPcNpjwCn83f7NKslOEuhWg8uvayNrcZrgIvS0eoFvHQfJ8aw1HsQ4LjyDITefht2czCHu2T2prG4UE4KZVaCedIzcskY+aph+4eU90wQTz/K6hwoFIwJ7WUqH/aVd/7b50I4nek/9btXFDwWdF+3r1J7Rz1Z4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607986; c=relaxed/simple;
-	bh=Mrgr6G0kHwIbc8j4jUJh1eocVZ1V3eXYBjlfyutvb4s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b2zKnjGYBC0mYmQY4bfxyICvUBoAcDYZewLZ0dq4e1OqDMzgDswrfEJudaYqeMZ3V3+PYPhFLg7ISjrGiDJVAM78AhE3FWHbtBX1vOAGcWVZOJa81TSu99PyeDD52sg7f4BQ8Oyyf0gLRjVoEnZSXxUjgbUmxMDDM1989LRLMmw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=Iwo0uzcF; arc=pass smtp.client-ip=209.85.161.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-694907f7967so376879eaf.1
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 10:46:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778607984; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OCRpBhe36kEmiO7wE5X5nOHSCWNIE96h1JW5g1DNPeL0vreQ9UUrz6YMB2Ex+FWmg9
-         UXwsj1O9ffwect9b5HO59KWH0BqxTuzrxZdtVUQsNxo8QR74aKwmt9vmA1bho+b7a5B/
-         ZOTviD101LmfKOgNhN3S/Tf3ySNfrQhZS93qjLGbwJDmyC8RyephTcf5vYHnENdjIZ12
-         xiwkAQTtVrzYC8YkjXj6yjVOpWvhj7EHKHqP8W0yWcvqi0v8dIOmojCv0sv+dGZLIOzE
-         1UYHI3JM2eIpexHD4qkPuc27ZGYeFl3znytRedVvD+Pvb+SZa0w8Wf0ROQAnECBXEuFF
-         kqjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DQqZ8jWA6UtiE0JieZxssjde34NvWN5pSABKzZp5lDE=;
-        fh=BH/91FvRcQxSX2zB2G0Y8rrjmWM+O8uuEuETCpulcx0=;
-        b=Y2l0T62QwybN6wXaWqD/0yLgMtS5PhA6DLzqvwWK7NKDLtI1xAm0NB0D6Xed/J+Km7
-         PmUOa829PqbsbBYbyJTtkwbok8vj32mXvPKhvoX0u/O5nLWDU1BpPhU8LeNOJEKBtijC
-         U/5K7gjnyoap443TUt84Sl7/iVB84N5MY400LYW6KxlNx82cbOXXAVKRoyuYg6YpwO9z
-         GMwOkjAhJAQnWO17Hhzx7tR9Xhe7gspQ2zTNBS8JIbdzXRi4fEl5HTg/nVBlJH7C6Lco
-         9x3HNC3dveospyYayP9S0JCkzVj+buwu+xoCus+cIv2a8Wo8+4RTWBbQwp73uKBu0TPM
-         wCOg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944A83E0749
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 17:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778607998; cv=none; b=s/kZEERJ6QoPRKKpTVyUURhsHYGKK3UZhGjqO8euE0L7nquFQBTk1eCvY+saG5Yhb2cuPkrwkjzWQwatayUCY7MxvTSY7keN4y1Lu3liW6Rf7IYDe/hA5LFo8Pm+S1psltDqTaN7Z3b6LilaTCMD9746S+EEWaCLLPvDg1fJDDQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778607998; c=relaxed/simple;
+	bh=Y3LXvkfeP40YhnuQMi3EnRdvaOPX/0EUrPKaHasgNRs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RbnpNq64nVMtPHcbNsKegwIUCBjFKxMCzdg8nD9LSobu+w4F1D1TKCtdE7FRSoFdvTMlYt0Aq6gxMNVOq2idx+UFWeoEZHXBN2cMXSMqxHhzQ4LSbLtZ2t1Ezt5dqqcsDUbOdUkoOnFfxRHt7Jjt8lUyoh9H2/pBh76C6dpXNnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b=mEv+zTkN; arc=none smtp.client-ip=209.85.222.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
+Received: by mail-qk1-f195.google.com with SMTP id af79cd13be357-8d65f4073bfso797320585a.3
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 10:46:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1778607984; x=1779212784; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DQqZ8jWA6UtiE0JieZxssjde34NvWN5pSABKzZp5lDE=;
-        b=Iwo0uzcFki397oJwDPOoTKXwX1nbJ21i+0UA23U/HMR1954yhI51NNMAwSbN4+VuAY
-         JCXwclucYyC6+XY6eamugvaLMwtAe73F/1ZKE0FMYgABDLRlJmcmbtDv6f8kAsnNyP0B
-         GHAQpFkyVIdLRQMF/ttQ/E82YQKEEtPKUGqASLbdD4SlXL6bnDHUOLV4cHdPY5sPegC2
-         w5k0PJkKe9L4bz1VFL2llk0m/UghXimx+DsxXv1Woqhqj8X4BL60MgWGjZDp24zc24Tw
-         Ydvr5JBrTbMfECbIJnwlkhFqI0o8ZPsq0nKoQekxU1kiixc9vhXp5CKrvxJTJkSzTPHt
-         ECmA==
+        d=ndufresne-ca.20251104.gappssmtp.com; s=20251104; t=1778607994; x=1779212794; darn=vger.kernel.org;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jP9tWH7lEqQ6vi1mfPA7yERZk2UiFb9oifwgNqskWVM=;
+        b=mEv+zTkNLkU6P4fPBt7+tEQuJPbvwGQkxZHdi4OQOJhwgeRE+fFNqgY0KvYpZJV6iF
+         XRogm2avMGZyZZwZdbsfMg8BZrP/ssIIl61HggfjfjuluIcP3GSgc0H8fBoKdBBn4qFI
+         C4xBSJDg6L+LGgF2fwzXvd54OnFsPAQAUoalEJVOvzgFlXeo02OMv8f782S25Kxto2se
+         MLP7+Ii9u4GxHo05ZsTUI8zA2TXzlV+djmuzTWWfAct7mr3RtTXKw0GAzidgMKcubKow
+         96b8dGEXnsil7bE/RL0NbrG4LMJFibXcz1tHHxT017XKx/yTmlYqoqrz5L2pTnpcFeJD
+         FTOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778607984; x=1779212784;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DQqZ8jWA6UtiE0JieZxssjde34NvWN5pSABKzZp5lDE=;
-        b=gcjd1AWLzL+R+9ABVnXhWVNGxBtn1joI2tBcS2CTTTzryAMK4hvCFZ1BWbIrpeeiX5
-         ye8Jyt+VCHnzB6kyJTAt3JhhenK5fleGFsMSlWE/uUtlpgsozFf0NkaVmrwAQHfX8hJB
-         mVS8DQiRmVMzvZpjoOPSPRDI4Rjo3ly4qEmMcs5o9zhtxc1KhOz4uFTrxt5HKf6O8jeo
-         l1/bzzC2hBmOqBKVVGpaU0yGIS2B2yaH9koDB1QSKU53WUXzskyKVw2bX/W43V7XhBHq
-         T5t3rDL1omSt0++CJ5jdikqQ+vqCkljIP9Sp8mZYO1ArWiFNoKzG4Ige4KimyqmGBy1V
-         dzFg==
-X-Forwarded-Encrypted: i=1; AFNElJ8X5Gpq0tA9KMbypOCUkO6DtVDWWUFIm4/mB/MUARsghaTkXeR+IltGjkw6fqdnvsc1Ubqpn8k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUzFtGkYF2rDmP9US6vO/C4nIyvMhc9l07CSCP7SBeABBJhnXa
-	u+2XVK6h5I79Y2GLibe/aMn/NAonVwGmERErNIRYySTJcECSsNh1FUliSL+Rp3Wg6xmtaAVr9he
-	YIWdaQ53A+GrLYXGnL4BNJnw90PJplx9uX3MtY1Ww0w==
-X-Gm-Gg: Acq92OGyew66j3K7hutUxjZlidT0IQUnF5C+LS2KdvCSRIclzYtH6uHqAw2Cams40YW
-	ogrE7kUFbTkKsxp3Kv5sVXJLcNkCTPvzkBPS/Ox9cwuLKQMc1ajKfkxlJh6Dhhj9fUh5WolTpRz
-	eYlCk6Y2BryYXWjwzrNEQ19kJmdZYwg8AhjBWO2emI2KXuhXOqLkuEPgKXJGwc4bRocOOU+Gi5h
-	Qmp4ZsU3QC/BmfPobAbaJXF0darRmh6zpRqaNOvLYiw6prBr2y04bcvoZ0JlZsZXMyMKNmzy2VR
-	+RmdZzWN
-X-Received: by 2002:a4a:ba84:0:b0:696:1d76:9dc with SMTP id
- 006d021491bc7-6999a3b813fmr6694789eaf.3.1778607983722; Tue, 12 May 2026
- 10:46:23 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778607994; x=1779212794;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jP9tWH7lEqQ6vi1mfPA7yERZk2UiFb9oifwgNqskWVM=;
+        b=csmH2Zn1Bd5L9wvWUkD6t2XP5FcOnJIiIzoNd5nh7JeQ/lRyDogoT2T3Sc0Rbuh2g6
+         XpsPG4Gr+USeRy9dGpJyO1Q8NYoUTsoGXplw/Ywvs8SiUghD7N7W6jKy3uGwrs1unXvf
+         NIcsPhvr/MEtLM4pbiJk028odTKvtMtdLXwh1SWvAPhr9F6u5NlYctKeLhGJY2fjztEQ
+         be6NJMzOCeszkTKwmca7oTOEuuHIA+xgtOEi67kpEdxCkGEXXoBvrWVREsuINo6flbtr
+         ONH0kxV/NDwCPoZIXrR8GEIOxhLQOoJLO6Se//nlY9323KxSjcXSaCvt/zToK/nK8aLX
+         fWBQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8hQD/V393OIORN2cmC4O46jpq5bK6bxiara7F7PzScO8SPN9yKg3pZAiBZjkyOIflyOSmHrLU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFS9oNEZhsEV25wGZJi9oRF9jv8WReYuIE9znfqOtB81BKUG0k
+	IyZFJEGUHHdkds3JrWrYIdtb+8bomPyus2/1HEUsnt6E90W60/UsgFgAC30h2AgtTcwwZMSsn+5
+	/0nnz4QWOwq5m
+X-Gm-Gg: Acq92OEAgGkKC9dF0JCp26JMcMgjAmFGZbjS1J862nakbto7M1cDOUhETk6zU+a33w2
+	0/oyW5AP5rvX6k6MNGFxvYGLWBHAOIkraUIz8SPCaap4H7YT+aoSZV2VJM7TXlBGOGEdkBZRqBm
+	mTr7Fd2bGvNb/xpsMlTSfJDuqdCIm9aSXSIAhY9iS/SRBGH8lXwW/QGhd1OV7FyYxv6Wt++g8Bb
+	M2JCyewUW32XpmIN2lQr1YyIEuQIusuUyUpIJa1EtkeUwRLQwNuiYjcKe44eEICCX/3rGtTe47S
+	6/mGmp3TsJiDG/4lJoYZOlWo0Z1OHY38EmPvE8pVw9DKodbXqcJg6/k+S9UqdIniqMUAFkDvNFM
+	6k6OEcJLW0uPGHK3Syab4QsfGPe9Xp6umBq/iCPXZ1ktRxIRQ4Fx3aJMpkmkNLF6e51S414PQsp
+	7o3/wDm0oZjCU7b5H2SxhoRx3icC3dgzsO1XRBYVI=
+X-Received: by 2002:a05:620a:4608:b0:8f8:8860:fbad with SMTP id af79cd13be357-90cfe7d673fmr552242385a.57.1778607994443;
+        Tue, 12 May 2026 10:46:34 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:15:e06b::c41? ([2606:6d00:15:e06b::c41])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-907b87bd588sm1543591985a.29.2026.05.12.10.46.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 10:46:33 -0700 (PDT)
+Message-ID: <ba485144c4d469c834b0f65ed3ce753a331e207a.camel@ndufresne.ca>
+Subject: Re: [PATCH] media: rzv2h-ivc: Wait for frame end in stop_streaming
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, Daniel Scally	
+ <dan.scally@ideasonboard.com>, =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?=	
+ <barnabas.pocze@ideasonboard.com>, Laurent Pinchart	
+ <laurent.pinchart@ideasonboard.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>,  Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Jacopo Mondi
+	 <jacopo.mondi+renesas@ideasonboard.com>, stable@vger.kernel.org
+Date: Tue, 12 May 2026 13:46:31 -0400
+In-Reply-To: <20260401-ivc-stop-streaming-v1-1-b7599982c280@ideasonboard.com>
+References: <20260401-ivc-stop-streaming-v1-1-b7599982c280@ideasonboard.com>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-8KgwzaVvsr4d37d+Iy32"
+User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260512170525.357573-1-dmantipov@yandex.ru>
-In-Reply-To: <20260512170525.357573-1-dmantipov@yandex.ru>
-From: Caleb Sander Mateos <csander@purestorage.com>
-Date: Tue, 12 May 2026 10:46:11 -0700
-X-Gm-Features: AVHnY4KWcjBva7nw0Ibsy4xgzTd5kc75h1GtStF_42Kjh1hgALO9DNt1vTHxy7Y
-Message-ID: <CADUfDZqnV5BRwZq3c3Atu8w3gOm87AbmtexL=MenWcSbTVOgvw@mail.gmail.com>
-Subject: Re: [PATCH v2] lib: free pagelist on error in iov_iter_extract_pages()
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	lvc-project@linuxtesting.org, stable@vger.kernel.org, 
-	Fedor Pchelkin <pchelkin@ispras.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 29ADA526150
+X-Rspamd-Queue-Id: 2147F52618B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[purestorage.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[purestorage.com:s=google2022];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[ndufresne-ca.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[ndufresne.ca : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245956-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[yandex.ru];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[purestorage.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[csander@purestorage.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ndufresne-ca.20251104.gappssmtp.com:+];
+	TAGGED_FROM(0.00)[bounces-245961-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nicolas@ndufresne.ca,stable@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[purestorage.com:dkim,mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ndufresne-ca.20251104.gappssmtp.com:dkim,ideasonboard.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,10bit:email]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026 at 10:05=E2=80=AFAM Dmitry Antipov <dmantipov@yandex.r=
-u> wrote:
->
-> Users of 'iov_iter_extract_pages()' may provide small, likely
-> stack-allocated, array of pages by itself and then reject to
-> use it if it's considered too small. In such a case, passing
-> NULL pointer means that 'iov_iter_extract_pages()' should
-> allocate array of pages internally (via 'want_pages_array()').
-> An overall scenario may be:
->
-> ...
-> struct page *stack_pages[SMALL];
-> struct page **pages =3D stack_pages;
-> ...
-> if (not_enough_pages(SMALL))
->         pages =3D NULL;
 
-The example is a bit over-complicated, this can just be:
-struct page **pages =3D NULL;
+--=-8KgwzaVvsr4d37d+Iy32
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> ...
-> if (iov_iter_extract_pages(..., &pages, ...) <=3D 0) {
->         /* Even in case of error, new array of pages may be allocated */
->         if (pages !=3D stack_pages)
-
-And these checks could be simplified to just if (pages)
-
->                 kvfree(pages);                                  [1]
->         /* The rest of error handling and return */
-> }
-> /* Regular flow */
-> ...
-> if (pages !=3D stack_pages)
->         kvfree(pages);
-> ...
->
-> That is, if you're unlucky so SMALL amount of pages wasn't enough and
-> new array of pages was allocated, missing [1] causes the memory leak.
->
-> Currently 'bio_integrity_map_user()' seems the only place where such
-> a leak looks possible. Older kernels may have more. In particular,
-> 6.12.x has this type of leak in 'bio_map_user_iov()', and it was
-> found with syzkaller and reproduced experimentally.
->
-> So adjust 'iov_iter_extract_pages()' to make cleanup [1] itself rather
-> than rely on caller's handling on error paths.
->
-> Fixes: 7d58fe731028 ("iov_iter: Add a function to extract a page list fro=
-m an iterator")
+Le mercredi 01 avril 2026 =C3=A0 17:35 +0200, Jacopo Mondi a =C3=A9crit=C2=
+=A0:
+> From: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+>=20
+> The rzv2h-ivc driver fails to handle back-2-back streaming sessions that
+> do not go through a peripheral reset. As the driver uses an autosuspend
+> delay of 2 seconds, it is quite possible that two consecutive streaming
+> sessions won't go through a suspend/resume sequence.
+>=20
+> If the peripheral is not reset the second streaming session hangs and no
+> frames are delivered to the ISP.
+>=20
+> This is because the stop_streaming() procedure implemented in the driver
+> doesn't match what's prescribed by the chip datasheet:
+>=20
+> 1) The chip manual suggests to poll the RZV2H_IVC_FM_INT_STAT_STPEND bit
+> =C2=A0=C2=A0 of RZV2H_IVC_REG_FM_INT_STA instead of polling on RZV2H_IVC_=
+REG_FM_STOP
+> =C2=A0=C2=A0 and prescribes to clear the bit after polling has completed
+>=20
+> 2) More importantly: the RZV2H_IVC_REG_FM_STOP_FSTOP bit has to be set
+> =C2=A0=C2=A0 on RZV2H_IVC_REG_FM_STOP -only- if a frame transfer to the I=
+SP is in
+> =C2=A0=C2=A0 progress. Setting the RZV2H_IVC_REG_FM_STOP_FSTOP bit when n=
+o frame is
+> =C2=A0=C2=A0 being transferred causes the polling routine to timeout and =
+the next
+> =C2=A0=C2=A0 streaming session fails to start
+>=20
+> As a frame transfer of an image in 1920x1080@10bi takes 5 milliseconds
+> at most, it is quite possible that the frame transfer completion interrup=
+t
+> races with the stop procedure.
+>=20
+> Instead of forcing a frame transfer abort, simply wait for the
+> in-progress transfer to complete by polling the ivc->vvalid_ifp status
+> variable in an hand-rolled loop that allows to inspect the variable
+> while holding the spinlock, to allow the irq handler to complete the
+> current buffer.
+>=20
+> With this change, streaming back-2-back without suspending the
+> peripheral works successfully.
+>=20
 > Cc: stable@vger.kernel.org
-> Suggested-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control bl=
+ock
+> driver")
+> Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
 > ---
-> v2: fix commit message and issues observed by Sashiko
+> As detailed in the commit message, re-starting a streaming session
+> without going through a peripheral reset doesn't currently work.
+>=20
+> I initially thought this is because the stop_streaming() procedure
+> implemented in the rzv2h-ivc driver does not comply with what is
+> prescribed by the chip manual.
+>=20
+> So I went and modified it according to the manual.
+>=20
+> Unfortunately, even by following the suggested procedure, once
+> RZV2H_IVC_REG_FM_STOP is set and a forceful frame transfer abort is
+> started, the RZV2H_IVC_FM_INT_STAT_STPEND bit takes a long time to
+> clear, during which is most often times the case the current in-progress
+> transfer completes by itself. If this happen, then a peripheral
+> reset is required to restart streaming regardless if I forcefully clear
+> the RZV2H_IVC_REG_FM_STOP_FSTOP and RZV2H_IVC_FM_INT_STAT_STPEND bits.
+>=20
+> I have tried several strategies to properly forcefully stop an
+> in-progress transfer and handle the potential race betwee the
+> transfer-complete irq and the polling the RZV2H_IVC_REG_FM_INT_STA
+> register (which could potentially sleep), but it's still quite easy to
+> get races between frame completion and the forced stop procedure unless
+> I hold on to the ivc->spinlock preventing the irq handler to run.
+>=20
+> Once I timed the transfer time for a 1920x1080@10bit frame to 5 milli-sec=
+onds
+> at most I decided to simply wait for the current in-progress transfer to
+> complete, as this seems the most reliable way to be able to re-start
+> streaming without resetting the peripheral.
 > ---
->  lib/iov_iter.c | 54 ++++++++++++++++++++++++++++++--------------------
->  1 file changed, 33 insertions(+), 21 deletions(-)
->
-> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-> index 243662af1af7..30c5baccc6a9 100644
-> --- a/lib/iov_iter.c
-> +++ b/lib/iov_iter.c
-> @@ -1807,7 +1807,8 @@ static ssize_t iov_iter_extract_user_pages(struct i=
-ov_iter *i,
->   *  (*) Use with ITER_DISCARD is not supported as that has no content.
->   *
->   * On success, the function sets *@pages to the new pagelist, if allocat=
-ed, and
-> - * sets *offset0 to the offset into the first page.
-> + * sets *offset0 to the offset into the first page. On error, new pageli=
-st
-> + * is freed if was allocated, and *@pages sets back to its original valu=
-e.
-
-Clarify that "error" includes a length of 0 but not a positive length?
-
-Also not sure it's necessary to say "freed if allocated"; from the
-caller's perspective, it just looks like it was never allocated.
-
->   *
->   * It may also return -ENOMEM and -EFAULT.
->   */
-> @@ -1818,31 +1819,42 @@ ssize_t iov_iter_extract_pages(struct iov_iter *i=
-,
->                                iov_iter_extraction_t extraction_flags,
->                                size_t *offset0)
->  {
-> +       struct page **oldpages =3D *pages;
-
-I think a bool would suffice, as pages will only be allocated if the
-initial *pages was NULL.
-
-> +       ssize_t ret;
+> =C2=A0.../platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c=C2=A0=C2=A0 | 31 +=
++++++++++++++++++---
+> -
+> =C2=A01 file changed, 26 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+> b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+> index b167f1bab7ef..932fed38cf3f 100644
+> --- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+> +++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+> @@ -297,12 +297,33 @@ static int rzv2h_ivc_start_streaming(struct vb2_que=
+ue
+> *q, unsigned int count)
+> =C2=A0static void rzv2h_ivc_stop_streaming(struct vb2_queue *q)
+> =C2=A0{
+> =C2=A0	struct rzv2h_ivc *ivc =3D vb2_get_drv_priv(q);
+> -	u32 val =3D 0;
+> +	unsigned int loop =3D 5;
+> =C2=A0
+> -	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_FM_STOP,
+> RZV2H_IVC_REG_FM_STOP_FSTOP);
+> -	readl_poll_timeout(ivc->base + RZV2H_IVC_REG_FM_STOP,
+> -			=C2=A0=C2=A0 val, !(val & RZV2H_IVC_REG_FM_STOP_FSTOP),
+> -			=C2=A0=C2=A0 10 * USEC_PER_MSEC, 250 * USEC_PER_MSEC);
+> +	/*
+> +	 * If no frame transfer is in progress, we're done, otherwise, wait
+> for
+> +	 * the transfer to complete.
+> +	 *
+> +	 * Transferring a 1920x1080@10bit frame to the ISP takes less than 5
+> +	 * msec so sleep for 2.5 msec (+- 25%) and give up after 5 attempts.
+> +	 */
+> +	for (; loop > 0; loop--) {
+> +		unsigned int vvalid_ifp;
 > +
->         maxsize =3D min_t(size_t, min_t(size_t, maxsize, i->count), MAX_R=
-W_COUNT);
->         if (!maxsize)
->                 return 0;
->
->         if (likely(user_backed_iter(i)))
-> -               return iov_iter_extract_user_pages(i, pages, maxsize,
-> -                                                  maxpages, extraction_f=
-lags,
-> -                                                  offset0);
-> -       if (iov_iter_is_kvec(i))
-> -               return iov_iter_extract_kvec_pages(i, pages, maxsize,
-> -                                                  maxpages, extraction_f=
-lags,
-> -                                                  offset0);
-> -       if (iov_iter_is_bvec(i))
-> -               return iov_iter_extract_bvec_pages(i, pages, maxsize,
-> -                                                  maxpages, extraction_f=
-lags,
-> -                                                  offset0);
-> -       if (iov_iter_is_folioq(i))
-> -               return iov_iter_extract_folioq_pages(i, pages, maxsize,
-> -                                                    maxpages, extraction=
-_flags,
-> -                                                    offset0);
-> -       if (iov_iter_is_xarray(i))
-> -               return iov_iter_extract_xarray_pages(i, pages, maxsize,
-> -                                                    maxpages, extraction=
-_flags,
-> -                                                    offset0);
-> -       return -EFAULT;
-> +               ret =3D iov_iter_extract_user_pages(i, pages, maxsize,
-> +                                                 maxpages, extraction_fl=
-ags,
-> +                                                 offset0);
-> +       else if (iov_iter_is_kvec(i))
-> +               ret =3D iov_iter_extract_kvec_pages(i, pages, maxsize,
-> +                                                 maxpages, extraction_fl=
-ags,
-> +                                                 offset0);
-> +       else if (iov_iter_is_bvec(i))
-> +               ret =3D iov_iter_extract_bvec_pages(i, pages, maxsize,
-> +                                                 maxpages, extraction_fl=
-ags,
-> +                                                 offset0);
-> +       else if (iov_iter_is_folioq(i))
-> +               ret =3D iov_iter_extract_folioq_pages(i, pages, maxsize,
-> +                                                   maxpages, extraction_=
-flags,
-> +                                                   offset0);
-> +       else if (iov_iter_is_xarray(i))
-> +               ret =3D iov_iter_extract_xarray_pages(i, pages, maxsize,
-> +                                                   maxpages, extraction_=
-flags,
-> +                                                   offset0);
-> +       else
-> +               ret =3D -EFAULT;
+> +		/*
+> +		 * Inspect the ivc->vvalid_ifp variable holding the spinlock
+> not
+> +		 * to the race with the rzv2h_ivc_buffer_done() call in the
+> irq
+> +		 * handler.
+> +		 */
+> +		scoped_guard(spinlock_irq, &ivc->spinlock) {
+> +			vvalid_ifp =3D ivc->vvalid_ifp;
+> +		}
+> +		if (vvalid_ifp < 2)
+> +			break;
 > +
-> +       if (unlikely(ret <=3D 0) && *pages && *pages !=3D oldpages) {
+> +		fsleep(2500);
+> +	}
+> +	if (!loop)
+> +		dev_err(ivc->dev, "Failed to stop streaming\n");
 
-The mismatch between ret <=3D 0 here and ret < 0 in
-bio_integrity_map_user() would result in a use-after-free in the ret
-=3D=3D 0 case, no? I guess this should be fixed by the "block:
-bio-integrity: Fix null-ptr-deref in bio_integrity_map_user()" patch
-that landed today.
+Would simply using vb2_wait_for_all_buffers() worked for your use case ? Or=
+ does
+RZV2H_IVC_REG_FM_STOP mask off IRQ causing buffers to never be signalled ?
 
-Best,
-Caleb
+> =C2=A0
+> =C2=A0	rzv2h_ivc_return_buffers(ivc, VB2_BUF_STATE_ERROR);
+> =C2=A0	video_device_pipeline_stop(&ivc->vdev.dev);
+>=20
+> ---
+> base-commit: 4fbeef21f5387234111b5d52924e77757626faa5
+> change-id: 20260331-ivc-stop-streaming-2c992277b050
+>=20
+> Best regards,
 
-> +               kvfree(*pages);
-> +               *pages =3D oldpages;
-> +       }
-> +
-> +       return ret;
->  }
->  EXPORT_SYMBOL_GPL(iov_iter_extract_pages);
->
-> --
-> 2.54.0
->
+--=-8KgwzaVvsr4d37d+Iy32
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCagNndwAKCRDZQZRRKWBy
+9Fl5AQDbDPP5l66uW59iOzFARn4kwcdklC3/keZpGJzbWJ2ZkwD+PDGlwkBonyGD
+mFsO08OF7Quw08qvOTFUjlPf8pSOIgw=
+=yuTG
+-----END PGP SIGNATURE-----
+
+--=-8KgwzaVvsr4d37d+Iy32--
 
