@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-245974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uO0EAMFoA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:52:01 +0200
+	id uEbDC8tqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1437D5263D7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DAD5267F0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 56BC83059132
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:48:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 40AB5307EFF6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806543C09E2;
-	Tue, 12 May 2026 17:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669763EDE56;
+	Tue, 12 May 2026 17:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wH7C2kdn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M78IJuGo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4062F3E1725;
-	Tue, 12 May 2026 17:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DB63EDE43;
+	Tue, 12 May 2026 17:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608031; cv=none; b=R2gNLQO+g2UYbWQ0FqeVx4Ch7lGZVxoQVI1lJZXTF/52YisIzBuo4VGamvzSws4OK7vZbCVpgiKUPh7MGqRnpndQd4nZ+NXCK+VLlSRwgYs1Q9V2Xj+ctIClUHWIVwIOZIj2m1Ou9yCpKXlpDUfC726mBjblb/XtnVpOX+Q+XoM=
+	t=1778608696; cv=none; b=HT3iBLmNZhsyvo57TAlMiAEnwrX2fR488eTLyOMCUNmY4hajHDIbMEyp6t+YEG1csOYguIAP2zep/0O4IiDOCe4d5cmfzYVASPt0MqOayWs/iyGpde8rJsNTo+qojM/oYF7KQ4Jx/cCccZQT5AJth3Icxo9vg20rnvk9KoRHrqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608031; c=relaxed/simple;
-	bh=GksQ2CY2P060zMEdmIOrw8Jr5kFvoBjwRj8W965KMhY=;
+	s=arc-20240116; t=1778608696; c=relaxed/simple;
+	bh=bwqrtumsju9GVnLIYXqBb7d7M9Qa8TWurUJveLyjfms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUhOxeZEBUNRo/TnZ8a8klJF5iQD6QVR+veBfnNsYHqSJyz3bJZ0E20XVlKi3lk6rywlyp2xNr8hVSULC6U8TsYISHpb+irCY4tfpXT+uxNjXqSN7KW8/apJR3T3dYRotqEpxp64pn/knPJyWw1LMxknm/iREX90XrLEbAr5aks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wH7C2kdn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D24AC32782;
-	Tue, 12 May 2026 17:47:10 +0000 (UTC)
+	 MIME-Version; b=rS5D6GgP3PRD06u78E60JUPCoPsSVCgcApyUEbnm7BWjIVk2Zob1Ta1HvzxlIXlypMxBCtvYY7rS29h5TYKRLpx2FNVP/dVRfngnQ3aIUVkhExaqDAVX0wnmRbiAd9fMDMSz7xQyPbY69V3YMDcEYpscqq59BfQ8ywC+984Mc1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M78IJuGo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7E1C2BCC7;
+	Tue, 12 May 2026 17:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608031;
-	bh=GksQ2CY2P060zMEdmIOrw8Jr5kFvoBjwRj8W965KMhY=;
+	s=korg; t=1778608696;
+	bh=bwqrtumsju9GVnLIYXqBb7d7M9Qa8TWurUJveLyjfms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wH7C2kdn2qoToez2Y3etElAMYvJrAzQWAmUs0UaAKCJvGo2KOGlAmGcRoDozZ7/WE
-	 FmXFk1AtuY6c1KPlZSPVKwusWvuKe4OLccPLXxmPVuJrEH1v1mZKJrXC5TaMiFSw4q
-	 5OeaCx7r9AkPBwj3PJ2kIdLPSubyQpjXtxJogtJU=
+	b=M78IJuGoxD+k4/i693f2PBJWf8DH4HZg/2Vt+xfmYgRU5qUF7/MgeEIiQlrPQNtlx
+	 zQfiuvkY+XcvBou5nGbufLeygu69Nt1wU987lXgFvqZSv9rNnmnarPsJ0dEHfQMPZS
+	 37nXJjoPH9toBdNd5BihtQFYtogW6gZ9brQu0Kfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 129/206] nvme-apple: drop invalid put of admin queue reference count
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 180/270] smb: client: validate dacloffset before building DACL pointers
 Date: Tue, 12 May 2026 19:39:41 +0200
-Message-ID: <20260512173935.590599225@linuxfoundation.org>
+Message-ID: <20260512173942.238251256@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +63,153 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1437D5263D7
+X-Rspamd-Queue-Id: E7DAD5267F0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245974-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246231-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxtesting.org:url,ispras.ru:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit ba9d308ccd6732dd97ed8080d834a4a89e758e14 upstream.
+commit f98b48151cc502ada59d9778f0112d21f2586ca3 upstream.
 
-Commit 03b3bcd319b3 ("nvme: fix admin request_queue lifetime") moved the
-admin queue reference ->put call into nvme_free_ctrl() - a controller
-device release callback performed for every nvme driver doing
-nvme_init_ctrl().
+parse_sec_desc(), build_sec_desc(), and the chown path in
+id_mode_to_cifs_acl() all add the server-supplied dacloffset to pntsd
+before proving a DACL header fits inside the returned security
+descriptor.
 
-nvme-apple sets refcount of the admin queue to 1 at allocation during the
-probe function and then puts it twice now:
+On 32-bit builds a malicious server can return dacloffset near
+U32_MAX, wrap the derived DACL pointer below end_of_acl, and then slip
+past the later pointer-based bounds checks. build_sec_desc() and
+id_mode_to_cifs_acl() can then dereference DACL fields from the wrapped
+pointer in the chmod/chown rewrite paths.
 
-nvme_free_ctrl()
-  blk_put_queue(ctrl->admin_q) // #1
-  ->free_ctrl()
-    apple_nvme_free_ctrl()
-      blk_put_queue(anv->ctrl.admin_q) // #2
+Validate dacloffset numerically before building any DACL pointer and
+reuse the same helper at the three DACL entry points.
 
-Note that there is a commit 941f7298c70c ("nvme-apple: remove an extra
-queue reference") which intended to drop taking an extra admin queue
-reference.  Looks like at that moment it accidentally fixed a refcount
-leak, which existed since the driver's introduction.  There were two ->get
-calls at driver's probe function and a single ->put inside
-apple_nvme_free_ctrl().
-
-However now after commit 03b3bcd319b3 ("nvme: fix admin request_queue
-lifetime") the refcount is imbalanced again.  Fix it by removing extra
-->put call from apple_nvme_free_ctrl().  anv->dev and ctrl->dev point to
-the same device, so use ctrl->dev directly for simplification.  Compile
-tested only.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 03b3bcd319b3 ("nvme: fix admin request_queue lifetime")
+Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
 Cc: stable@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/apple.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/smb/client/cifsacl.c |   35 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 3 deletions(-)
 
---- a/drivers/nvme/host/apple.c
-+++ b/drivers/nvme/host/apple.c
-@@ -1210,11 +1210,7 @@ static int apple_nvme_get_address(struct
- 
- static void apple_nvme_free_ctrl(struct nvme_ctrl *ctrl)
- {
--	struct apple_nvme *anv = ctrl_to_apple_nvme(ctrl);
--
--	if (anv->ctrl.admin_q)
--		blk_put_queue(anv->ctrl.admin_q);
--	put_device(anv->dev);
-+	put_device(ctrl->dev);
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -1215,6 +1215,17 @@ static int parse_sid(struct smb_sid *psi
+ 	return 0;
  }
  
- static const struct nvme_ctrl_ops nvme_ctrl_ops = {
++static bool dacl_offset_valid(unsigned int acl_len, __u32 dacloffset)
++{
++	if (acl_len < sizeof(struct smb_acl))
++		return false;
++
++	if (dacloffset < sizeof(struct smb_ntsd))
++		return false;
++
++	return dacloffset <= acl_len - sizeof(struct smb_acl);
++}
++
+ 
+ /* Convert CIFS ACL to POSIX form */
+ static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
+@@ -1235,7 +1246,6 @@ static int parse_sec_desc(struct cifs_sb
+ 	group_sid_ptr = (struct smb_sid *)((char *)pntsd +
+ 				le32_to_cpu(pntsd->gsidoffset));
+ 	dacloffset = le32_to_cpu(pntsd->dacloffset);
+-	dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
+ 	cifs_dbg(NOISY, "revision %d type 0x%x ooffset 0x%x goffset 0x%x sacloffset 0x%x dacloffset 0x%x\n",
+ 		 pntsd->revision, pntsd->type, le32_to_cpu(pntsd->osidoffset),
+ 		 le32_to_cpu(pntsd->gsidoffset),
+@@ -1266,11 +1276,18 @@ static int parse_sec_desc(struct cifs_sb
+ 		return rc;
+ 	}
+ 
+-	if (dacloffset)
++	if (dacloffset) {
++		if (!dacl_offset_valid(acl_len, dacloffset)) {
++			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
++			return -EINVAL;
++		}
++
++		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
+ 		parse_dacl(dacl_ptr, end_of_acl, owner_sid_ptr,
+ 			   group_sid_ptr, fattr, get_mode_from_special_sid);
+-	else
++	} else {
+ 		cifs_dbg(FYI, "no ACL\n"); /* BB grant all or default perms? */
++	}
+ 
+ 	return rc;
+ }
+@@ -1293,6 +1310,11 @@ static int build_sec_desc(struct smb_nts
+ 
+ 	dacloffset = le32_to_cpu(pntsd->dacloffset);
+ 	if (dacloffset) {
++		if (!dacl_offset_valid(secdesclen, dacloffset)) {
++			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
++			return -EINVAL;
++		}
++
+ 		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
+ 		if (end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size)) {
+ 			cifs_dbg(VFS, "Server returned illegal ACL size\n");
+@@ -1669,6 +1691,12 @@ id_mode_to_cifs_acl(struct inode *inode,
+ 		nsecdesclen = sizeof(struct smb_ntsd) + (sizeof(struct smb_sid) * 2);
+ 		dacloffset = le32_to_cpu(pntsd->dacloffset);
+ 		if (dacloffset) {
++			if (!dacl_offset_valid(secdesclen, dacloffset)) {
++				cifs_dbg(VFS, "Server returned illegal DACL offset\n");
++				rc = -EINVAL;
++				goto id_mode_to_cifs_acl_exit;
++			}
++
+ 			dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
+ 			if (mode_from_sid)
+ 				nsecdesclen +=
+@@ -1705,6 +1733,7 @@ id_mode_to_cifs_acl(struct inode *inode,
+ 		rc = ops->set_acl(pnntsd, nsecdesclen, inode, path, aclflag);
+ 		cifs_dbg(NOISY, "set_cifs_acl rc: %d\n", rc);
+ 	}
++id_mode_to_cifs_acl_exit:
+ 	cifs_put_tlink(tlink);
+ 
+ 	kfree(pnntsd);
 
 
 
