@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-245878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOKOBEpnA2qj5gEAu9opvQ
-	(envelope-from <stable+bounces-245878-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:46 +0200
+	id OGr0DvNuA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE2E5260C5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 821EF52743D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91E743045229
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB7CE3210044
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8269E385D85;
-	Tue, 12 May 2026 17:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E5E3C0A0F;
+	Tue, 12 May 2026 17:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiYLvbjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRTUCDA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452B23B1EE2;
-	Tue, 12 May 2026 17:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F703C0A08;
+	Tue, 12 May 2026 17:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607787; cv=none; b=cvad7GtdD0m0h6+NvlyUofLwxCavbhJ9gG4LVKBuiEl7uXF6jxOces2cgVaxQ8nHCFW4BsQT50SKGjkZMeXehv8IOMjOhqeROh8Tt96Z4PxgqcTAvfes5o1wWJN+rd3MWTS/1jXu/ZA0q6CNUq7YwEqbofZepZtPQB54Ccnm4Hg=
+	t=1778608453; cv=none; b=mEopc5YCNa4pMm3MCNG1OTt02xV+/wUTMNOCYXjb8u2JYgTYdlFyh6HeRItt9iouITkOmZItp0yvwLzJda8GMhvN9VnC41dYVNZZsG4qaqWGVivkbIrPpESImpkvo76Jw1X29igMrURDBHsd2U9IwlBO8OZjLKoYTEOF13FzMxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607787; c=relaxed/simple;
-	bh=dMnJsfpnslbwzM1I50I8oa3YYPQQpYl95tc74VXLodM=;
+	s=arc-20240116; t=1778608453; c=relaxed/simple;
+	bh=kYmGEHClSLH8Rp9szG7Haa90BpBn1CUSsDA5iQnqHxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YytGFLiBcYUkXNCGl9+PmAbCODkhIMvDICWBN78MCkkA2jcc59PcuRhG9JyZkZ1oA+HABedgTF1bjwKp98HLsP7/EXSav4608IJUnr30x5/QCbtHsgojT23SGKAK4cfKWYDvvwDzqigEghVAS8Bmss2By3PllsmYp5jP0WovduU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiYLvbjW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1854C2BCB0;
-	Tue, 12 May 2026 17:43:06 +0000 (UTC)
+	 MIME-Version; b=Ka0q3fBFWmi777EEvFvShi6Iqhgfi04mUSvPizCSab2YhhFyxut+W+tWCF6smg5J8mUjLEVZ2w3fBLntfIVXEm7UEIEIjcASX4PBrUrpOM0qHnce+yVwylvLIjobDULsL8E9G5f4LVZ/JNomWaj7XwSxn32ob5bFg3aZw0noWf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRTUCDA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F47FC2BCC7;
+	Tue, 12 May 2026 17:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607787;
-	bh=dMnJsfpnslbwzM1I50I8oa3YYPQQpYl95tc74VXLodM=;
+	s=korg; t=1778608453;
+	bh=kYmGEHClSLH8Rp9szG7Haa90BpBn1CUSsDA5iQnqHxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wiYLvbjW7sLywcesTsPy7dGUnfd7SXYUZRBCEv2PhePp16+R/J9tiKLjg39Kv3LDW
-	 J7XyJasTIBvEoITh/qVdy18MKjhEqidgudrX6nt9wUSwultIkiYgzMUFgcKgshQWNu
-	 qO1QVUxm9qN7TbWiXZqgzMce7GXniH8OEnhnOBfQ=
+	b=mRTUCDA5DlTm4V0FNwxV9Fo8/3o7PSUlXqjc67o5HFV6IAzpaclhHoTb2pLDmClZW
+	 kmwu9mkGL5IBkNaauUFdLaqTtGXqkWULseb5oEnoPoW2CTi1FA+slCuri8hVvNb7z2
+	 Unfyy1jhpS+YUQ1EKqM+QoTh0lMthvZrzzZfYdUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 035/206] wifi: rsi: fix kthread lifetime race between self-exit and external-stop
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.18 086/270] KVM: arm64: Fix kvm_vcpu_initialized() macro parameter
 Date: Tue, 12 May 2026 19:38:07 +0200
-Message-ID: <20260512173933.574439962@linuxfoundation.org>
+Message-ID: <20260512173940.270912423@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6CE2E5260C5
+X-Rspamd-Queue-Id: 821EF52743D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245878-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246137-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,5de83f57cd8531f55596];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Fuad Tabba <tabba@google.com>
 
-commit db57a1aa54ff68669781976e4edb045e09e2b65b upstream.
+commit d89fdda7dd8a488f922e1175e6782f781ba8a23b upstream.
 
-RSI driver use both self-exit(kthread_complete_and_exit) and external-stop
-(kthread_stop) when killing a kthread. Generally, kthread_stop() is called
-first, and in this case, no particular issues occur.
+The macro is defined with parameter 'v' but the body references the
+literal token 'vcpu' instead, causing it to silently operate on whatever
+'vcpu' resolves to in the caller's scope rather than the value passed by
+the caller. All current call sites happen to use a variable named 'vcpu',
+so the bug is latent.
 
-However, in rare instances where kthread_complete_and_exit() is called
-first and then kthread_stop() is called, a UAF occurs because the kthread
-object, which has already exited and been freed, is accessed again.
-
-Therefore, to prevent this with minimal modification, you must remove
-kthread_stop() and change the code to wait until the self-exit operation
-is completed.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69e5d03b.a00a0220.1bd0ca.0064.GAE@google.com/
-Fixes: 4c62764d0fc2 ("rsi: improve kernel thread handling to fix kernel panic")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://patch.msgid.link/20260422173846.37640-1-aha310510@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: e016333745c7 ("KVM: arm64: Only reset vCPU-scoped feature ID regs once")
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Link: https://patch.msgid.link/20260424084908.370776-5-tabba@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/rsi/rsi_common.h |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm64/include/asm/kvm_host.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/rsi/rsi_common.h
-+++ b/drivers/net/wireless/rsi/rsi_common.h
-@@ -70,12 +70,11 @@ static inline int rsi_create_kthread(str
- 	return 0;
- }
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -1476,7 +1476,7 @@ static inline bool __vcpu_has_feature(co
+ #define kvm_vcpu_has_feature(k, f)	__vcpu_has_feature(&(k)->arch, (f))
+ #define vcpu_has_feature(v, f)	__vcpu_has_feature(&(v)->kvm->arch, (f))
  
--static inline int rsi_kill_thread(struct rsi_thread *handle)
-+static inline void rsi_kill_thread(struct rsi_thread *handle)
- {
- 	atomic_inc(&handle->thread_done);
- 	rsi_set_event(&handle->event);
--
--	return kthread_stop(handle->task);
-+	wait_for_completion(&handle->completion);
- }
+-#define kvm_vcpu_initialized(v) vcpu_get_flag(vcpu, VCPU_INITIALIZED)
++#define kvm_vcpu_initialized(v) vcpu_get_flag(v, VCPU_INITIALIZED)
  
- void rsi_mac80211_detach(struct rsi_hw *hw);
+ int kvm_trng_call(struct kvm_vcpu *vcpu);
+ #ifdef CONFIG_KVM
 
 
 
