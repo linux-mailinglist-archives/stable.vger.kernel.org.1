@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLOJEWxtA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:56 +0200
+	id GO6/EaxtA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD87D526FE9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5B952708F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00F013164134
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9708830F87EA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9825E343D9D;
-	Tue, 12 May 2026 18:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5F03EDE6B;
+	Tue, 12 May 2026 17:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDbewy3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HN2bztN5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A22633B6CC;
-	Tue, 12 May 2026 18:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5B13EDE46;
+	Tue, 12 May 2026 17:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608838; cv=none; b=mPGQMHTnUM70TaZRVhsPhTGwhcxAx5EJXlxY2reFHzfdxbP+4I11ReRVurAhFdqddoZT9Z9mLfjn1QtWsQ5GShcx4isWXCfN5JF+cWaxQhxtifJ2Cj0a9gFQVglKostMeMMt/xM4qvMOp8MQa8FiesTQA1cWoXRJU9ht7p0G5sA=
+	t=1778608178; cv=none; b=lKXfYTXo6PGj/jOVZKYb8lSS7eoz0RDtdAAd8y00Qnv7ljMj3n+WK5FTDTOY8t6aHD7nuALJPhJCKdmbL+FVKMhOg6UcahXaQeOqy1hBjpltyNzQfr1jYUFTNrzeK8y06OmCBWZ9EKmQyaLasCt6LPUXvJZr1ir8oCPwYnSsztE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608838; c=relaxed/simple;
-	bh=rQg/b53NwfpBPyLSFK1pSE0TfZJg3cIIydEEqsh+bNs=;
+	s=arc-20240116; t=1778608178; c=relaxed/simple;
+	bh=FkoISWk1+sXjaBEmdnFtgW+ouTm6WvJfgJOdcgXQ5Zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gxogxvbQ6NYPFH4K63Rchl9DpxdmvfflcU5ZbLJhuJTUsqcanlQZO0WbWktPC9wJ0WHeyYVviLHYT64o2kI0ABUAgyvAuWwNHq5eWDVVEzrucWuuKK8k3ZZgHZKajsKc1/rO+zotfRTzCrZsARNHJxKPJqqagiERO6Q7jBW1S1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDbewy3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C17C2BCB0;
-	Tue, 12 May 2026 18:00:37 +0000 (UTC)
+	 MIME-Version; b=JpbKyhJCgCYhAfEDPKq25dpFzD4OAGlI+L/kf4ZehVnXbbnHgNEoPvYrwM+gjlSHy8K2+x92c1U9f31xAJEeJ6y4pr1wXP2uyWWVZWyYICjZN6XeG3AsUBcFZN0K2mLwocx9JwfO2Z0Bcbp+EFDzY7CJ7mVhOYHmoLAYiVoScGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HN2bztN5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D8BC2BCF6;
+	Tue, 12 May 2026 17:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608838;
-	bh=rQg/b53NwfpBPyLSFK1pSE0TfZJg3cIIydEEqsh+bNs=;
+	s=korg; t=1778608178;
+	bh=FkoISWk1+sXjaBEmdnFtgW+ouTm6WvJfgJOdcgXQ5Zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XDbewy3v2gcNpAY8ZiUZ/nkje3dr6RfisgWjcP01ZO4xMfN8PcdEZ6ZmkgxPv0FM2
-	 JWGpIC1oQk9JlEh2d5nwo7U4I5WLgH0lZh8nKNaSfGgVMj7129HbtrsPgW1we7LNfJ
-	 egZVxQX59Ebzh0VRcq4YUw3TFWmgWqsiawI7qE50=
+	b=HN2bztN5r0j6XdGMQFMV4eTEpCjt35mTUmOFTFWY04XvAbcNSnEVI6dODBJGc4a+a
+	 +X95ijdhQEeqEw4mh/LCTzQEy4QdvN3mTnIWFpa0FTkyjojX1uUlyOqechXctvCcPC
+	 sr6tdwLiT1c2+FW5Y4GoyJdTkTWt3reiwBAWQ4dU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.18 234/270] KVM: arm64: vgic: Fix IIDR revision field extracted from wrong value
-Date: Tue, 12 May 2026 19:40:35 +0200
-Message-ID: <20260512173943.370431498@linuxfoundation.org>
+	David Carlier <devnexen@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 184/206] octeon_ep_vf: add NULL check for napi_build_skb()
+Date: Tue, 12 May 2026 19:40:36 +0200
+Message-ID: <20260512173936.760178307@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AD87D526FE9
+X-Rspamd-Queue-Id: DB5B952708F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246287-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246030-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,amazon.co.uk:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: David Carlier <devnexen@gmail.com>
 
-commit a0e6ae45af17e8b27958830595799c702ffbab8d upstream.
+[ Upstream commit dd66b42854705e4e4ee7f14d260f86c578bed3e3 ]
 
-The uaccess write handlers for GICD_IIDR in both GICv2 and GICv3
-extract the revision field from 'reg' (the current IIDR value read back
-from the emulated distributor) instead of 'val' (the value userspace is
-trying to write). This means userspace can never actually change the
-implementation revision — the extracted value is always the current one.
+napi_build_skb() can return NULL on allocation failure. In
+__octep_vf_oq_process_rx(), the result is used directly without a NULL
+check in both the single-buffer and multi-fragment paths, leading to a
+NULL pointer dereference.
 
-Fix the FIELD_GET to use 'val' so that userspace can select a different
-revision for migration compatibility.
+Add NULL checks after both napi_build_skb() calls, properly advancing
+descriptors and consuming remaining fragments on failure.
 
-Fixes: 49a1a2c70a7f ("KVM: arm64: vgic-v3: Advertise GICR_CTLR.{IR, CES} as a new GICD_IIDR revision")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://patch.msgid.link/20260407210949.2076251-2-dwmw2@infradead.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Fixes: 1cd3b407977c ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
 Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Link: https://patch.msgid.link/20260409184009.930359-3-devnexen@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ inlined missing octep_vf_oq_next_idx() helper as read_idx++ with wraparound ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-mmio-v2.c |    2 +-
- arch/arm64/kvm/vgic/vgic-mmio-v3.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c |   36 +++++++++++++++-
+ 1 file changed, 34 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-@@ -91,7 +91,7 @@ static int vgic_mmio_uaccess_write_v2_mi
- 		 * migration from old kernels to new kernels with legacy
- 		 * userspace.
- 		 */
--		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, reg);
-+		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
- 		switch (reg) {
- 		case KVM_VGIC_IMP_REV_2:
- 		case KVM_VGIC_IMP_REV_3:
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -194,7 +194,7 @@ static int vgic_mmio_uaccess_write_v3_mi
- 		if ((reg ^ val) & ~GICD_IIDR_REVISION_MASK)
- 			return -EINVAL;
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+@@ -409,10 +409,17 @@ static int __octep_vf_oq_process_rx(stru
+ 			data_offset = OCTEP_VF_OQ_RESP_HW_SIZE;
+ 			rx_ol_flags = 0;
+ 		}
+-		rx_bytes += buff_info->len;
+-
+ 		if (buff_info->len <= oq->max_single_buffer_size) {
+ 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
++			if (!skb) {
++				oq->stats->alloc_failures++;
++				desc_used++;
++				read_idx++;
++				if (read_idx == oq->max_count)
++					read_idx = 0;
++				continue;
++			}
++			rx_bytes += buff_info->len;
+ 			skb_reserve(skb, data_offset);
+ 			skb_put(skb, buff_info->len);
+ 			read_idx++;
+@@ -424,6 +431,31 @@ static int __octep_vf_oq_process_rx(stru
+ 			u16 data_len;
  
--		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, reg);
-+		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
- 		switch (reg) {
- 		case KVM_VGIC_IMP_REV_2:
- 		case KVM_VGIC_IMP_REV_3:
+ 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
++			if (!skb) {
++				oq->stats->alloc_failures++;
++				desc_used++;
++				read_idx++;
++				if (read_idx == oq->max_count)
++					read_idx = 0;
++				data_len = buff_info->len - oq->max_single_buffer_size;
++				while (data_len) {
++					dma_unmap_page(oq->dev, oq->desc_ring[read_idx].buffer_ptr,
++						       PAGE_SIZE, DMA_FROM_DEVICE);
++					buff_info = (struct octep_vf_rx_buffer *)
++						    &oq->buff_info[read_idx];
++					buff_info->page = NULL;
++					if (data_len < oq->buffer_size)
++						data_len = 0;
++					else
++						data_len -= oq->buffer_size;
++					desc_used++;
++					read_idx++;
++					if (read_idx == oq->max_count)
++						read_idx = 0;
++				}
++				continue;
++			}
++			rx_bytes += buff_info->len;
+ 			skb_reserve(skb, data_offset);
+ 			/* Head fragment includes response header(s);
+ 			 * subsequent fragments contains only data.
 
 
 
