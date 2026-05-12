@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-246334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246085-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJJGDuJtA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:54 +0200
+	id QNlFGTNrA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246085-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1097527137
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F59C526941
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6ED5E311EBEE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:02:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E03031C1BA2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F43355F54;
-	Tue, 12 May 2026 18:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D153BB11C;
+	Tue, 12 May 2026 17:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jay6Olya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsYWU84H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B983EDE5B;
-	Tue, 12 May 2026 18:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C323EDE4E;
+	Tue, 12 May 2026 17:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608959; cv=none; b=jnZEkxSkNgwEAkXusc3PL7h/5YjX81wtEpaCJNzb/ynJPGbHUCtWeX8uDVy9jvhrSqd4qmKQtipHF266s4yvpPG70fWifXTxJesLhR36DmHHS0UmMQb93eMBL8P7NBgIvLJ1ZJXn9CoTPoIFsJj1Hd48Zap4lGQ6mJR5QRjnwvw=
+	t=1778608319; cv=none; b=i4qhR9/AhP1bvj/plIXf8CX2HDTMbZbTE6mk/5+8ozqJnXg1qYWPY2gCJ/C0Ry8EpiXQigYDs4RmoOkdjPou5OCmjTBgPixskXd6W73Vf5X8qx0bagt031z+Bbs3m+NF+hP0to3ivHPycm1rLD0EOUVhUJBnir4qIgNID8G7CgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608959; c=relaxed/simple;
-	bh=DT2BGnXSoxgHjJGqGWdmOb80UIDb90stQ4CS4rzhdgE=;
+	s=arc-20240116; t=1778608319; c=relaxed/simple;
+	bh=3P73eVuHnq3wNZhPFYRXCrGk5B3XUfo7uSchJj4LtLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcqAKi+BEwq0Mq4hFp5t/Tkd53/PVU5+96gb6g2Uhx2xiz8d0e11fbYQfVnlsaYNDS3t6+En9a2ZHISmCU5Xc2LFjNyW/8M+XLAZzEc4IVS9BJbWKff7Wkk6kW9r2/Ml0p4rAKTKNf6vZLov4GMxjEJmrM/J4Hy/niMs/BcvKcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jay6Olya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE75C2BCC7;
-	Tue, 12 May 2026 18:02:38 +0000 (UTC)
+	 MIME-Version; b=QQznqq4o1yIlNfrx42ZBA8eZEz7fbqlNrZsaFsrvZIJ3XyM/UbQ5Y9XHWRraDMKn1uoTNA0Q1XvrqJfJvi5VHhb5JgLsIyyUC0cJQDDBJd6GYoA1xN+m/8xMEh2PHshaHtncWIIsnoe6rRtkYrtoYijDROPsjvptq700WoX8h6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsYWU84H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6FFC2BCB0;
+	Tue, 12 May 2026 17:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608958;
-	bh=DT2BGnXSoxgHjJGqGWdmOb80UIDb90stQ4CS4rzhdgE=;
+	s=korg; t=1778608319;
+	bh=3P73eVuHnq3wNZhPFYRXCrGk5B3XUfo7uSchJj4LtLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jay6OlyasqxEg1MMeVgtrdbk3q+eZZ9X+mlpn5sW0F1UorUsHDJasODt7qPOXpku+
-	 ZS7vFVnzCaLshv5vv0WN1OR9zpQsh2izBSuvtpoqPC/Ui0+vfqeN6XH7Sbh1DC1eVE
-	 4uTtNeimmIl+/YrVoGuX6YawcATsSFcXqiVoHzGQ=
+	b=GsYWU84Ho1BHtojXDUtFqkKLYeLdievt5SOhe3Cj4Huiqy00ONlYap2WylnZQz3sS
+	 IdXcY38L2fLneEX1D/FnYVugF03A/bORts9CuGmWnN3GmvIuS+LlqQBYM8boYUz03Q
+	 cGVLXcHlLHZSU8Ey3G0/D/tHwwngxUPN9R1QDpwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	David Carlier <devnexen@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 7.0 011/307] tracepoint: balance regfunc() on func_add() failure in tracepoint_add_func()
+	Rajat Gupta <rajgupt@qti.qualcomm.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.18 005/270] fbdev: udlfb: add vm_ops to dlfb_ops_mmap to prevent use-after-free
 Date: Tue, 12 May 2026 19:36:46 +0200
-Message-ID: <20260512173940.362821475@linuxfoundation.org>
+Message-ID: <20260512173938.568859000@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +63,148 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E1097527137
+X-Rspamd-Queue-Id: 0F59C526941
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,efficios.com,gmail.com,goodmis.org];
-	TAGGED_FROM(0.00)[bounces-246334-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246085-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qti.qualcomm.com,gmx.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,efficios.com:email,goodmis.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Rajat Gupta <rajgupt@qti.qualcomm.com>
 
-commit fad217e16fded7f3c09f8637b0f6a224d58b5f2e upstream.
+commit 8de779dc40d35d39fa07387b6f921eb11df0f511 upstream.
 
-When a tracepoint goes through the 0 -> 1 transition, tracepoint_add_func()
-invokes the subsystem's ext->regfunc() before attempting to install the
-new probe via func_add(). If func_add() then fails (for example, when
-allocate_probes() cannot allocate a new probe array under memory pressure
-and returns -ENOMEM), the function returns the error without calling the
-matching ext->unregfunc(), leaving the side effects of regfunc() behind
-with no installed probe to justify them.
+dlfb_ops_mmap() uses remap_pfn_range() to map vmalloc framebuffer pages
+to userspace but sets no vm_ops on the VMA. This means the kernel cannot
+track active mmaps. When dlfb_realloc_framebuffer() replaces the backing
+buffer via FBIOPUT_VSCREENINFO, existing mmap PTEs are not invalidated.
+On USB disconnect, dlfb_ops_destroy() calls vfree() on the old pages
+while userspace PTEs still reference them, resulting in a use-after-free:
+the process retains read/write access to freed kernel pages.
 
-For syscall tracepoints this is particularly unpleasant: syscall_regfunc()
-bumps sys_tracepoint_refcount and sets SYSCALL_TRACEPOINT on every task.
-After a leaked failure, the refcount is stuck at a non-zero value with no
-consumer, and every task continues paying the syscall trace entry/exit
-overhead until reboot. Other subsystems providing regfunc()/unregfunc()
-pairs exhibit similarly scoped persistent state.
+Add vm_operations_struct with open/close callbacks that maintain an
+atomic mmap_count on struct dlfb_data. In dlfb_realloc_framebuffer(),
+check mmap_count and return -EBUSY if the buffer is currently mapped,
+preventing buffer replacement while userspace holds stale PTEs.
 
-Mirror the existing 1 -> 0 cleanup and call ext->unregfunc() in the
-func_add() error path, gated on the same condition used there so the
-unwind is symmetric with the registration.
+Tested with PoC using dummy_hcd + raw_gadget USB device emulation.
 
-Fixes: 8cf868affdc4 ("tracing: Have the reg function allow to fail")
+Signed-off-by: Rajat Gupta <rajgupt@qti.qualcomm.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260413190601.21993-1-devnexen@gmail.com
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/tracepoint.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/fbdev/udlfb.c |   31 ++++++++++++++++++++++++++++++-
+ include/video/udlfb.h       |    1 +
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
---- a/kernel/tracepoint.c
-+++ b/kernel/tracepoint.c
-@@ -300,6 +300,8 @@ static int tracepoint_add_func(struct tr
- 			lockdep_is_held(&tracepoints_mutex));
- 	old = func_add(&tp_funcs, func, prio);
- 	if (IS_ERR(old)) {
-+		if (tp->ext && tp->ext->unregfunc && !static_key_enabled(&tp->key))
-+			tp->ext->unregfunc();
- 		WARN_ON_ONCE(warn && PTR_ERR(old) != -ENOMEM);
- 		return PTR_ERR(old);
+--- a/drivers/video/fbdev/udlfb.c
++++ b/drivers/video/fbdev/udlfb.c
+@@ -321,12 +321,32 @@ static int dlfb_set_video_mode(struct dl
+ 	return retval;
+ }
+ 
++static void dlfb_vm_open(struct vm_area_struct *vma)
++{
++	struct dlfb_data *dlfb = vma->vm_private_data;
++
++	atomic_inc(&dlfb->mmap_count);
++}
++
++static void dlfb_vm_close(struct vm_area_struct *vma)
++{
++	struct dlfb_data *dlfb = vma->vm_private_data;
++
++	atomic_dec(&dlfb->mmap_count);
++}
++
++static const struct vm_operations_struct dlfb_vm_ops = {
++	.open  = dlfb_vm_open,
++	.close = dlfb_vm_close,
++};
++
+ static int dlfb_ops_mmap(struct fb_info *info, struct vm_area_struct *vma)
+ {
+ 	unsigned long start = vma->vm_start;
+ 	unsigned long size = vma->vm_end - vma->vm_start;
+ 	unsigned long offset = vma->vm_pgoff << PAGE_SHIFT;
+ 	unsigned long page, pos;
++	struct dlfb_data *dlfb = info->par;
+ 
+ 	if (info->fbdefio)
+ 		return fb_deferred_io_mmap(info, vma);
+@@ -358,6 +378,9 @@ static int dlfb_ops_mmap(struct fb_info
+ 			size = 0;
  	}
+ 
++	vma->vm_ops = &dlfb_vm_ops;
++	vma->vm_private_data = dlfb;
++	atomic_inc(&dlfb->mmap_count);
+ 	return 0;
+ }
+ 
+@@ -1176,7 +1199,6 @@ static void dlfb_deferred_vfree(struct d
+ 
+ /*
+  * Assumes &info->lock held by caller
+- * Assumes no active clients have framebuffer open
+  */
+ static int dlfb_realloc_framebuffer(struct dlfb_data *dlfb, struct fb_info *info, u32 new_len)
+ {
+@@ -1188,6 +1210,13 @@ static int dlfb_realloc_framebuffer(stru
+ 	new_len = PAGE_ALIGN(new_len);
+ 
+ 	if (new_len > old_len) {
++		if (atomic_read(&dlfb->mmap_count) > 0) {
++			dev_warn(info->dev,
++				"refusing realloc: %d active mmaps\n",
++				atomic_read(&dlfb->mmap_count));
++			return -EBUSY;
++		}
++
+ 		/*
+ 		 * Alloc system memory for virtual framebuffer
+ 		 */
+--- a/include/video/udlfb.h
++++ b/include/video/udlfb.h
+@@ -56,6 +56,7 @@ struct dlfb_data {
+ 	spinlock_t damage_lock;
+ 	struct work_struct damage_work;
+ 	struct fb_ops ops;
++	atomic_t mmap_count;
+ 	/* blit-only rendering path metrics, exposed through sysfs */
+ 	atomic_t bytes_rendered; /* raw pixel-bytes driver asked to render */
+ 	atomic_t bytes_identical; /* saved effort with backbuffer comparison */
 
 
 
