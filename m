@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246289-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDk8Jg91A2oV6AEAu9opvQ
-	(envelope-from <stable+bounces-246569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:44:31 +0200
+	id gGxnM25tA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246289-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08765280BF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:44:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 826EB526FF0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B879632CBF7D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E2E753164BAD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1A3352F86;
-	Tue, 12 May 2026 18:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A634633DEF7;
+	Tue, 12 May 2026 18:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSKUH0Af"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaWkI4bi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D207317557E;
-	Tue, 12 May 2026 18:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C9133B6CC;
+	Tue, 12 May 2026 18:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609563; cv=none; b=u1b9j2HNQ0+fkGQsDSJlgzw/V6Mes6avsPgSATB91/k2Zr/NkHIanET+wygisjbDe4qkEbPga334WOxgo6TKARt+/dC9/hqAlykadH8I4nH0N1+sKCun9BtPTQK0id4WZhB4z8CBWj6oIaDaFcgeOfl0HkhMQDnGi4MY5euoJZ8=
+	t=1778608843; cv=none; b=qg+yRiS+/M2ral6RG64vjl0iWBzpxXHYcFI3FAQifm+dJtJMNyrCuf2N1wEJdKheI2vopGelGNOa/ixYSaFA4vDTBmSXjd5tI7/UteV7FLA0fJSaOCFOebJpwTEBcxx925Abwacb4zlKgLiAd+FEaEuA5HMvSH97tNdjBWpSLLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609563; c=relaxed/simple;
-	bh=qQpFmwm28B7kfJiZ2QWwx9oufMnF9nAdr6npxZ/oPrc=;
+	s=arc-20240116; t=1778608843; c=relaxed/simple;
+	bh=JgVcc5/jROLQ1hbcnMYDvV/EmRiXl5UYIjX8H4sFqiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYatMMS+HIqxjwcpCBvAuJQ7xnV5LUyN7fcskSDpaShKtRhZsboENUetgCf6zBynWRm8eNpSpdyniGR8PiFaMareqWMgdGzS6JVk2wUt1950+sU2M29/tOOXgmLG18D2bx4l4E9fmYQ8G8nRQBXSkHAUinc5mQBVHUZqNKkrYYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSKUH0Af; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2E7C2BCB0;
-	Tue, 12 May 2026 18:12:43 +0000 (UTC)
+	 MIME-Version; b=bU7/NPJ5/M+4QwgBTGyWKUjvhJ0OMTbd5v7wjfkq3GkXNh14qt2GkSUZ18afhtFjDc5bMJenlHfjubGKGeiP9qF0Hp1sYH2w/Ufq7/dmIGSBe7f/GrxLaVVz6ho1FRo5X/1Xns91+PQwPos40J/ArypGFYbU3U+9fxqMcUScl2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaWkI4bi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46D8C2BCB0;
+	Tue, 12 May 2026 18:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609563;
-	bh=qQpFmwm28B7kfJiZ2QWwx9oufMnF9nAdr6npxZ/oPrc=;
+	s=korg; t=1778608843;
+	bh=JgVcc5/jROLQ1hbcnMYDvV/EmRiXl5UYIjX8H4sFqiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSKUH0AfTPV2j1bTSIzfB70bhc26ll1CApANdhSP+HXnrVQ6QyPSqgKzVzhYWxWup
-	 jHxB3x/kmiVv+mLKg+k7WiJbMUQfyqDs6yEg2GlbcypMzwQ6eUmjwRUQW0+MlrDQCi
-	 36OQ/5OczvGgg3BeRyDTzT04R4Gv6nvDHWBkS3l4=
+	b=iaWkI4biRE0KUoLytZxatxlbSgLr3xX0dyTCao3qSL+pa0t0x6PI73fwLU3wJdJE7
+	 H25y7c1OY9UQAuQ4sMFOq7CSkC0qA9kK2yRUDZ0XRX64UeZeBOi7d/+uloTkB3EXNw
+	 4iBJuTopZUh+542/5f74Vf/AJWTIbjHap3iOHD9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 7.0 242/307] RDMA/rxe: Reject unknown opcodes before ICRC processing
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.18 236/270] KVM: arm64: Fix FEAT_SPE_FnE to use PMSIDR_EL1.FnE, not PMSVer
 Date: Tue, 12 May 2026 19:40:37 +0200
-Message-ID: <20260512173945.230347315@linuxfoundation.org>
+Message-ID: <20260512173943.411321550@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,132 +63,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F08765280BF
+X-Rspamd-Queue-Id: 826EB526FF0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246569-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246289-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Fuad Tabba <tabba@google.com>
 
-commit 4c6f86d85d03cdb33addce86aa69aa795ca6c47a upstream.
+commit 08d715338287a1affb4c7ad5733decef4558a5c8 upstream.
 
-Even after applying commit 7244491dab34 ("RDMA/rxe: Validate pad and ICRC
-before payload_size() in rxe_rcv"), a single unauthenticated UDP packet
-can still trigger panic.  That patch handled payload_size() underflow only
-for valid opcodes with short packets, not for packets carrying an unknown
-opcode.  The unknown-opcode OOB read described below predates that commit
-and reaches back to the initial Soft RoCE driver.
+FEAT_SPE_FnE is architecturally detected via PMSIDR_EL1.FnE [6], not
+ID_AA64DFR0_EL1.PMSVer. The FEAT_X macro form (register, field, value)
+cannot encode a PMSIDR_EL1-based feature, so FEAT_SPE_FnE was defined
+identically to FEAT_SPEv1p2 (ID_AA64DFR0_EL1, PMSVer, V1P2), producing
+a duplicate that used PMSVer >= V1P2 as a proxy.
 
-The check added there reads
+Replace the macro with feat_spe_fne(), following the same pattern as
+the sibling feat_spe_fds(): guard on FEAT_SPEv1p2 and read
+PMSIDR_EL1.FnE [6] directly. Wire the two NEEDS_FEAT consumers to use
+the new function.
 
-    pkt->paylen < header_size(pkt) + bth_pad(pkt) + RXE_ICRC_SIZE
+Remove the now-unused FEAT_SPE_FnE macro.
 
-where header_size(pkt) expands to rxe_opcode[pkt->opcode].length.  The
-rxe_opcode[] array has 256 entries but is only populated for defined IB
-opcodes; any other entry (for example opcode 0xff) is zero-initialized, so
-length == 0 and the check degenerates to
-
-    pkt->paylen < 0 + bth_pad(pkt) + RXE_ICRC_SIZE
-
-which does not constrain pkt->paylen enough.  rxe_icrc_hdr() then computes
-
-    rxe_opcode[pkt->opcode].length - RXE_BTH_BYTES
-
-which underflows when length == 0 and passes a huge value to rxe_crc32(),
-causing an out-of-bounds read of the skb payload.
-
-Reproduced on v7.0-rc7 with that fix applied, QEMU/KVM with
-CONFIG_RDMA_RXE=y and CONFIG_KASAN=y, after
-
-    rdma link add rxe0 type rxe netdev eth0
-
-A single 48-byte UDP packet to port 4791 with BTH opcode=0xff and
-QPN=IB_MULTICAST_QPN triggers:
-
-    BUG: KASAN: slab-out-of-bounds in crc32_le+0x115/0x170
-    Read of size 1 at addr ...
-    The buggy address is located 0 bytes to the right of
-     allocated 704-byte region
-    Call Trace:
-     crc32_le+0x115/0x170
-     rxe_icrc_hdr.isra.0+0x226/0x300
-     rxe_icrc_check+0x13f/0x3a0
-     rxe_rcv+0x6e1/0x16e0
-     rxe_udp_encap_recv+0x20a/0x320
-     udp_queue_rcv_one_skb+0x7ed/0x12c0
-
-Subsequent packets with the same shape fault on unmapped memory and panic
-the kernel.  The trigger requires only module load and "rdma link add"; no
-QP, no connection, and no authentication.
-
-Fix this by rejecting packets whose opcode has no rxe_opcode[] entry,
-detected via the zero mask or zero length, before any length arithmetic
-runs.
-
+Fixes: 63d423a7635b ("KVM: arm64: Switch to table-driven FGU configuration")
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Link: https://patch.msgid.link/20260424084908.370776-4-tabba@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Link: https://patch.msgid.link/r/20260414111555.3386793-1-michael.bommarito@gmail.com
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe_recv.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm64/kvm/config.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/infiniband/sw/rxe/rxe_recv.c
-+++ b/drivers/infiniband/sw/rxe/rxe_recv.c
-@@ -330,6 +330,17 @@ void rxe_rcv(struct sk_buff *skb)
- 	pkt->qp = NULL;
- 	pkt->mask |= rxe_opcode[pkt->opcode].mask;
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -127,7 +127,6 @@ struct reg_feat_map_desc {
+ 	}
  
+ #define FEAT_SPE		ID_AA64DFR0_EL1, PMSVer, IMP
+-#define FEAT_SPE_FnE		ID_AA64DFR0_EL1, PMSVer, V1P2
+ #define FEAT_BRBE		ID_AA64DFR0_EL1, BRBE, IMP
+ #define FEAT_TRC_SR		ID_AA64DFR0_EL1, TraceVer, IMP
+ #define FEAT_PMUv3		ID_AA64DFR0_EL1, PMUVer, IMP
+@@ -294,6 +293,16 @@ static bool feat_spe_fds(struct kvm *kvm
+ 		(read_sysreg_s(SYS_PMSIDR_EL1) & PMSIDR_EL1_FDS));
+ }
+ 
++static bool feat_spe_fne(struct kvm *kvm)
++{
 +	/*
-+	 * Unknown opcodes have a zero-initialized rxe_opcode[] entry, so
-+	 * both mask and length are 0.  Reject them before any length math:
-+	 * rxe_icrc_hdr() would otherwise compute length - RXE_BTH_BYTES
-+	 * and pass the underflowed value to rxe_crc32(), producing an
-+	 * out-of-bounds read.
++	 * Revisit this if KVM ever supports SPE -- this really should
++	 * look at the guest's view of PMSIDR_EL1.
 +	 */
-+	if (unlikely(!rxe_opcode[pkt->opcode].mask ||
-+		     !rxe_opcode[pkt->opcode].length))
-+		goto drop;
++	return (kvm_has_feat(kvm, FEAT_SPEv1p2) &&
++		(read_sysreg_s(SYS_PMSIDR_EL1) & PMSIDR_EL1_FnE));
++}
 +
- 	if (unlikely(pkt->paylen < header_size(pkt) + bth_pad(pkt) +
- 		       RXE_ICRC_SIZE))
- 		goto drop;
+ static bool feat_trbe_mpam(struct kvm *kvm)
+ {
+ 	/*
+@@ -547,7 +556,7 @@ static const struct reg_bits_to_feat_map
+ 		   HDFGRTR_EL2_PMBPTR_EL1	|
+ 		   HDFGRTR_EL2_PMBLIMITR_EL1,
+ 		   FEAT_SPE),
+-	NEEDS_FEAT(HDFGRTR_EL2_nPMSNEVFR_EL1, FEAT_SPE_FnE),
++	NEEDS_FEAT(HDFGRTR_EL2_nPMSNEVFR_EL1, feat_spe_fne),
+ 	NEEDS_FEAT(HDFGRTR_EL2_nBRBDATA		|
+ 		   HDFGRTR_EL2_nBRBCTL		|
+ 		   HDFGRTR_EL2_nBRBIDR,
+@@ -615,7 +624,7 @@ static const struct reg_bits_to_feat_map
+ 		   HDFGWTR_EL2_PMBPTR_EL1	|
+ 		   HDFGWTR_EL2_PMBLIMITR_EL1,
+ 		   FEAT_SPE),
+-	NEEDS_FEAT(HDFGWTR_EL2_nPMSNEVFR_EL1, FEAT_SPE_FnE),
++	NEEDS_FEAT(HDFGWTR_EL2_nPMSNEVFR_EL1, feat_spe_fne),
+ 	NEEDS_FEAT(HDFGWTR_EL2_nBRBDATA		|
+ 		   HDFGWTR_EL2_nBRBCTL,
+ 		   FEAT_BRBE),
 
 
 
