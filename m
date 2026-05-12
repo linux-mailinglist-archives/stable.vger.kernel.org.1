@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEbDC8tqA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:43 +0200
+	id sOhvLhJvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DAD5267F0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA44527492
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 40AB5307EFF6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6829D30EF6F2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669763EDE56;
-	Tue, 12 May 2026 17:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB1A356741;
+	Tue, 12 May 2026 18:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M78IJuGo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVDSZfwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DB63EDE43;
-	Tue, 12 May 2026 17:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E56A33ADBA;
+	Tue, 12 May 2026 18:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608696; cv=none; b=HT3iBLmNZhsyvo57TAlMiAEnwrX2fR488eTLyOMCUNmY4hajHDIbMEyp6t+YEG1csOYguIAP2zep/0O4IiDOCe4d5cmfzYVASPt0MqOayWs/iyGpde8rJsNTo+qojM/oYF7KQ4Jx/cCccZQT5AJth3Icxo9vg20rnvk9KoRHrqU=
+	t=1778609414; cv=none; b=cg49k1POs9JMbck0lTyXclK1r/Pfnt5FaCk6J0nzhhy23IsQYl4qjVcI1rVSDbw/hCL9ctP5eYRGnBzOijTWXyFI9mJPeFqQGo+sHt2AljEUQAzTcxCRJtsxqgdSvpNGu3EeDQeEtLhzK+O4onaET0KDRnBS0ftPVRUyl2yG1uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608696; c=relaxed/simple;
-	bh=bwqrtumsju9GVnLIYXqBb7d7M9Qa8TWurUJveLyjfms=;
+	s=arc-20240116; t=1778609414; c=relaxed/simple;
+	bh=9pmw+mWZNKigYH7rjiS9+2Nu8JS9HFf90xGTx1LyGr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rS5D6GgP3PRD06u78E60JUPCoPsSVCgcApyUEbnm7BWjIVk2Zob1Ta1HvzxlIXlypMxBCtvYY7rS29h5TYKRLpx2FNVP/dVRfngnQ3aIUVkhExaqDAVX0wnmRbiAd9fMDMSz7xQyPbY69V3YMDcEYpscqq59BfQ8ywC+984Mc1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M78IJuGo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7E1C2BCC7;
-	Tue, 12 May 2026 17:58:15 +0000 (UTC)
+	 MIME-Version; b=l5e19ielg1/6i2P4nYl7GAb+5Lh8eOCxy4Tsj+zxGn+xxIt2aPGAAE2TNKmAxxKBVoMDW4rZf6lt1JxsZxJQIafe8iyGsrukeRNyXrUGOZiPwY06tBhdLHG5oFxk9bjs9ykYjknmTuTvOqPOjT99UOhCWrK9bHIAS4r3F+ifG8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVDSZfwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0682EC2BCB0;
+	Tue, 12 May 2026 18:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608696;
-	bh=bwqrtumsju9GVnLIYXqBb7d7M9Qa8TWurUJveLyjfms=;
+	s=korg; t=1778609414;
+	bh=9pmw+mWZNKigYH7rjiS9+2Nu8JS9HFf90xGTx1LyGr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M78IJuGoxD+k4/i693f2PBJWf8DH4HZg/2Vt+xfmYgRU5qUF7/MgeEIiQlrPQNtlx
-	 zQfiuvkY+XcvBou5nGbufLeygu69Nt1wU987lXgFvqZSv9rNnmnarPsJ0dEHfQMPZS
-	 37nXJjoPH9toBdNd5BihtQFYtogW6gZ9brQu0Kfc=
+	b=oVDSZfwJ5c00nryI76R8VSB7l049S7XHXR7rIS5IqpTHfwQkjWgOnVxL51AKUBHX/
+	 f4N8/zrc4xWRHrrWRkgfD9ScVhJfnw0jZ0wnWSmoJNf1TFhmyLggxh5qSCFTnVOgn5
+	 t5XVHz6LPMkmvzyIqwDgCR1zRGJlGt1IPSFskaqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 180/270] smb: client: validate dacloffset before building DACL pointers
+	Shubhankar Mishra <shubhankarm@google.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 7.0 186/307] dm-verity-fec: fix corrected block count stat
 Date: Tue, 12 May 2026 19:39:41 +0200
-Message-ID: <20260512173942.238251256@linuxfoundation.org>
+Message-ID: <20260512173944.041956189@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,153 +64,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E7DAD5267F0
+X-Rspamd-Queue-Id: 7AA44527492
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246231-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246511-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit f98b48151cc502ada59d9778f0112d21f2586ca3 upstream.
+commit 48640c88a8ddd482b6456fcbc084b08dd2bac083 upstream.
 
-parse_sec_desc(), build_sec_desc(), and the chown path in
-id_mode_to_cifs_acl() all add the server-supplied dacloffset to pntsd
-before proving a DACL header fits inside the returned security
-descriptor.
+dm_verity_fec::corrected seems to have been intended to count the number
+of corrected blocks.  However, it actually counted the number of calls
+to fec_decode_bufs() that corrected at least one error.  That's not the
+same thing.  For example, in low-memory situations correcting a single
+block can require many calls to fec_decode_bufs().
 
-On 32-bit builds a malicious server can return dacloffset near
-U32_MAX, wrap the derived DACL pointer below end_of_acl, and then slip
-past the later pointer-based bounds checks. build_sec_desc() and
-id_mode_to_cifs_acl() can then dereference DACL fields from the wrapped
-pointer in the chmod/chown rewrite paths.
+Fix it to count corrected blocks instead.
 
-Validate dacloffset numerically before building any DACL pointer and
-reuse the same helper at the three DACL entry points.
-
-Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
+Fixes: ae97648e14f7 ("dm verity fec: Expose corrected block count via status")
+Cc: Shubhankar Mishra <shubhankarm@google.com>
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsacl.c |   35 ++++++++++++++++++++++++++++++++---
- 1 file changed, 32 insertions(+), 3 deletions(-)
+ drivers/md/dm-verity-fec.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -1215,6 +1215,17 @@ static int parse_sid(struct smb_sid *psi
- 	return 0;
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -163,11 +163,9 @@ error:
+ 	if (r < 0 && neras)
+ 		DMERR_LIMIT("%s: FEC %llu: failed to correct: %d",
+ 			    v->data_dev->name, (unsigned long long)rsb, r);
+-	else if (r > 0) {
++	else if (r > 0)
+ 		DMWARN_LIMIT("%s: FEC %llu: corrected %d errors",
+ 			     v->data_dev->name, (unsigned long long)rsb, r);
+-		atomic64_inc(&v->fec->corrected);
+-	}
+ 
+ 	return r;
  }
- 
-+static bool dacl_offset_valid(unsigned int acl_len, __u32 dacloffset)
-+{
-+	if (acl_len < sizeof(struct smb_acl))
-+		return false;
-+
-+	if (dacloffset < sizeof(struct smb_ntsd))
-+		return false;
-+
-+	return dacloffset <= acl_len - sizeof(struct smb_acl);
-+}
-+
- 
- /* Convert CIFS ACL to POSIX form */
- static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
-@@ -1235,7 +1246,6 @@ static int parse_sec_desc(struct cifs_sb
- 	group_sid_ptr = (struct smb_sid *)((char *)pntsd +
- 				le32_to_cpu(pntsd->gsidoffset));
- 	dacloffset = le32_to_cpu(pntsd->dacloffset);
--	dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
- 	cifs_dbg(NOISY, "revision %d type 0x%x ooffset 0x%x goffset 0x%x sacloffset 0x%x dacloffset 0x%x\n",
- 		 pntsd->revision, pntsd->type, le32_to_cpu(pntsd->osidoffset),
- 		 le32_to_cpu(pntsd->gsidoffset),
-@@ -1266,11 +1276,18 @@ static int parse_sec_desc(struct cifs_sb
- 		return rc;
+@@ -439,6 +437,7 @@ int verity_fec_decode(struct dm_verity *
  	}
  
--	if (dacloffset)
-+	if (dacloffset) {
-+		if (!dacl_offset_valid(acl_len, dacloffset)) {
-+			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
-+			return -EINVAL;
-+		}
-+
-+		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
- 		parse_dacl(dacl_ptr, end_of_acl, owner_sid_ptr,
- 			   group_sid_ptr, fattr, get_mode_from_special_sid);
--	else
-+	} else {
- 		cifs_dbg(FYI, "no ACL\n"); /* BB grant all or default perms? */
-+	}
+ 	memcpy(dest, fio->output, 1 << v->data_dev_block_bits);
++	atomic64_inc(&v->fec->corrected);
  
- 	return rc;
- }
-@@ -1293,6 +1310,11 @@ static int build_sec_desc(struct smb_nts
- 
- 	dacloffset = le32_to_cpu(pntsd->dacloffset);
- 	if (dacloffset) {
-+		if (!dacl_offset_valid(secdesclen, dacloffset)) {
-+			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
-+			return -EINVAL;
-+		}
-+
- 		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
- 		if (end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size)) {
- 			cifs_dbg(VFS, "Server returned illegal ACL size\n");
-@@ -1669,6 +1691,12 @@ id_mode_to_cifs_acl(struct inode *inode,
- 		nsecdesclen = sizeof(struct smb_ntsd) + (sizeof(struct smb_sid) * 2);
- 		dacloffset = le32_to_cpu(pntsd->dacloffset);
- 		if (dacloffset) {
-+			if (!dacl_offset_valid(secdesclen, dacloffset)) {
-+				cifs_dbg(VFS, "Server returned illegal DACL offset\n");
-+				rc = -EINVAL;
-+				goto id_mode_to_cifs_acl_exit;
-+			}
-+
- 			dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
- 			if (mode_from_sid)
- 				nsecdesclen +=
-@@ -1705,6 +1733,7 @@ id_mode_to_cifs_acl(struct inode *inode,
- 		rc = ops->set_acl(pnntsd, nsecdesclen, inode, path, aclflag);
- 		cifs_dbg(NOISY, "set_cifs_acl rc: %d\n", rc);
- 	}
-+id_mode_to_cifs_acl_exit:
- 	cifs_put_tlink(tlink);
- 
- 	kfree(pnntsd);
+ done:
+ 	fio->level--;
 
 
 
