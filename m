@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAF4C5w5A2qh1wEAu9opvQ
-	(envelope-from <stable+bounces-245748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:30:52 +0200
+	id +HuoAaM5A2qh1wEAu9opvQ
+	(envelope-from <stable+bounces-245749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:30:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9835228A5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 937FA5228B4
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA9DE30ECABD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:21:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B29AD3172F35
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34703B101C;
-	Tue, 12 May 2026 14:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB9F3B1EC1;
+	Tue, 12 May 2026 14:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5+Nwuf9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyQKFOfu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958793A873B
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FCA3B1034
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778595704; cv=none; b=b5AL62oZ02wNXQuYklUyD6rjSqecPZLCLqMdlyi1Sf4S+SqAn56Fi5e5k6AivOIo7MFI2abBzMYwYQa+gL3JT1mLi650JTEJRySL5PeEtxUFGKxpww8bpJ3qoXEV4Lpl/ZIjQDfSLl3Gtok3SKmbZnVtBEVvWMNg+F9ueVL8Jw8=
+	t=1778595708; cv=none; b=KwkNKntfzqP8FNSSstVe9XjA8F5+V/rtRRM3UZbgLJzW6JAyI19qTSGOxyEURG8QBA6AeHuLyXgeiccKEen4i4gSwF/UREUFBpwf45p2K6CmBNVEcmTq3jsaYtcyC4lI3dDKw4wbnDrbIhoGcG9E1TGr34t3HknVTifXA5mq9BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778595704; c=relaxed/simple;
-	bh=sLq+vxupOanCDuzYBm0D0KXroBY1iea4fI3ylzejZq8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mYcb2x6jyRilJSCJ5XQVvkuolxFAMJytbOmPGpG8LZWUOzJnkkZVyCaHkvU7LAUZUTtcY7FFrXNDXLaAYdSqMKbn9e9ScFYrL9kVrKvXDIXhcZ7vhlCCOuWxZ07zHVVl8enSGXh5gB3MuorBXpJLU3mm7I5ZflnDQsN2j3O6RM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5+Nwuf9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211C7C2BCB0;
-	Tue, 12 May 2026 14:21:43 +0000 (UTC)
+	s=arc-20240116; t=1778595708; c=relaxed/simple;
+	bh=1ZhuAJtpK0g3H8K0J2TfLagU/DnLgJmu8GmANHqUPis=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XsycAWvysfWR0kCqruERPh2HpffRaEPEJ4/mTlLo16NPS1JrGt45803LSzQircVfqdsv8jXMyp8BaJRvDT275sVew7FiYSoAfDXI3t+D3+OUULiYszn4Qu3tja6k2QgPoP4vVTE0s5H7RSHvcPRcvX7rDwj+wOIhggRGPQ+M67E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyQKFOfu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C9FC2BCF5;
+	Tue, 12 May 2026 14:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778595704;
-	bh=sLq+vxupOanCDuzYBm0D0KXroBY1iea4fI3ylzejZq8=;
+	s=korg; t=1778595708;
+	bh=1ZhuAJtpK0g3H8K0J2TfLagU/DnLgJmu8GmANHqUPis=;
 	h=Subject:To:Cc:From:Date:From;
-	b=K5+Nwuf95snlPNIh0cEwpTv8LxjlOXMjf/gr6K7Jpuivkj6BtHRyfpenSX++g1vIF
-	 L06ou1byYMxEXxrMzP94emzQiC/1Cn9rT6aeBYDfz2LUoVMExmXPv6cyA5OrL7vnUh
-	 1/rIilUMbGHxTb/HIyg7ByfRVykAKmNCyqUFj1to=
-Subject: FAILED: patch "[PATCH] mptcp: pm: ADD_ADDR rtx: always decrease sk refcount" failed to apply to 5.15-stable tree
+	b=HyQKFOfuJASOKd4swGR+hxj9Otp+l8yL0pjT2u6Mf4sshXjgL3XPqzTChRsJSB5fx
+	 aYMCefBgYBIMl7jwMJ/SR0CzBdvg27q3yG6Toirw/XYMrQh5H++as3sI8tzzrG+4Qs
+	 UcTcAqHdgjOvHgOV2yinchWgeeS4SIu2u2EixYSU=
+Subject: FAILED: patch "[PATCH] mptcp: pm: ADD_ADDR rtx: free sk if last" failed to apply to 6.6-stable tree
 To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 16:21:32 +0200
-Message-ID: <2026051231-caucasian-twisty-3275@gregkh>
+Date: Tue, 12 May 2026 16:21:42 +0200
+Message-ID: <2026051242-guidance-marine-37a7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,19 +54,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AE9835228A5
+X-Rspamd-Queue-Id: 937FA5228B4
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245748-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245749-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -87,19 +87,19 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9634cb35af17019baec21ca648516ce376fa10e6
+git cherry-pick -x b7b9a461569734d33d3259d58d2507adfac107ed
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051231-caucasian-twisty-3275@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051242-guidance-marine-37a7@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,54 +111,116 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9634cb35af17019baec21ca648516ce376fa10e6 Mon Sep 17 00:00:00 2001
+From b7b9a461569734d33d3259d58d2507adfac107ed Mon Sep 17 00:00:00 2001
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 5 May 2026 17:00:52 +0200
-Subject: [PATCH] mptcp: pm: ADD_ADDR rtx: always decrease sk refcount
+Date: Tue, 5 May 2026 17:00:53 +0200
+Subject: [PATCH] mptcp: pm: ADD_ADDR rtx: free sk if last
 
-When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer().
-It should then be released in all cases at the end.
+When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer(),
+and released at the end.
 
-Some (unlikely) checks were returning directly instead of calling
-sock_put() to decrease the refcount. Jump to a new 'exit' label to call
-__sock_put() (which will become sock_put() in the next commit) to fix
-this potential leak.
+If at that moment, it was the last reference being held, the sk would
+not be freed. sock_put() should then be called instead of __sock_put().
 
-While at it, drop the '!msk' check which cannot happen because it is
-never reset, and explicitly mark the remaining one as "unlikely".
+But that's not enough: if it is the last reference, sock_put() will call
+sk_free(), which will end up calling sk_stop_timer_sync() on the same
+timer, and waiting indefinitely to finish. So it is needed to mark that
+the timer is done at the end of the timer handler when it has not been
+rescheduled, not to call sk_stop_timer_sync() on "itself".
 
 Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-4-fca8091060a4@kernel.org
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-5-fca8091060a4@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
-index 3912128d9b86..2a01bf1b5bfd 100644
+index 2a01bf1b5bfd..8899327e59a1 100644
 --- a/net/mptcp/pm.c
 +++ b/net/mptcp/pm.c
-@@ -331,11 +331,8 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+@@ -16,6 +16,7 @@ struct mptcp_pm_add_entry {
+ 	struct list_head	list;
+ 	struct mptcp_addr_info	addr;
+ 	u8			retrans_times;
++	bool			timer_done;
+ 	struct timer_list	add_timer;
+ 	struct mptcp_sock	*sock;
+ 	struct rcu_head		rcu;
+@@ -327,22 +328,22 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 							      add_timer);
+ 	struct mptcp_sock *msk = entry->sock;
+ 	struct sock *sk = (struct sock *)msk;
+-	unsigned int timeout;
++	unsigned int timeout = 0;
  
  	pr_debug("msk=%p\n", msk);
  
--	if (!msk)
--		return;
+-	if (unlikely(inet_sk_state_load(sk) == TCP_CLOSE))
+-		goto exit;
 -
--	if (inet_sk_state_load(sk) == TCP_CLOSE)
--		return;
-+	if (unlikely(inet_sk_state_load(sk) == TCP_CLOSE))
-+		goto exit;
- 
  	bh_lock_sock(sk);
++	if (unlikely(inet_sk_state_load(sk) == TCP_CLOSE))
++		goto out;
++
  	if (sock_owned_by_user(sk)) {
-@@ -373,6 +370,7 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 		/* Try again later. */
+-		sk_reset_timer(sk, timer, jiffies + HZ / 20);
++		timeout = HZ / 20;
+ 		goto out;
+ 	}
+ 
+ 	if (mptcp_pm_should_add_signal_addr(msk)) {
+-		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
++		timeout = TCP_RTO_MAX / 8;
+ 		goto out;
+ 	}
+ 
+@@ -360,8 +361,9 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 	}
+ 
+ 	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
+-		sk_reset_timer(sk, timer,
+-			       jiffies + (timeout << entry->retrans_times));
++		timeout <<= entry->retrans_times;
++	else
++		timeout = 0;
+ 
+ 	spin_unlock_bh(&msk->pm.lock);
+ 
+@@ -369,9 +371,13 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 		mptcp_pm_subflow_established(msk);
  
  out:
++	if (timeout)
++		sk_reset_timer(sk, timer, jiffies + timeout);
++	else
++		/* if sock_put calls sk_free: avoid waiting for this timer */
++		entry->timer_done = true;
  	bh_unlock_sock(sk);
-+exit:
- 	__sock_put(sk);
+-exit:
+-	__sock_put(sk);
++	sock_put(sk);
  }
  
+ struct mptcp_pm_add_entry *
+@@ -434,6 +440,7 @@ bool mptcp_pm_alloc_anno_list(struct mptcp_sock *msk,
+ 
+ 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
+ reset_timer:
++	add_entry->timer_done = false;
+ 	timeout = mptcp_adjust_add_addr_timeout(msk);
+ 	if (timeout)
+ 		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
+@@ -454,7 +461,8 @@ static void mptcp_pm_free_anno_list(struct mptcp_sock *msk)
+ 	spin_unlock_bh(&msk->pm.lock);
+ 
+ 	list_for_each_entry_safe(entry, tmp, &free_list, list) {
+-		sk_stop_timer_sync(sk, &entry->add_timer);
++		if (!entry->timer_done)
++			sk_stop_timer_sync(sk, &entry->add_timer);
+ 		kfree_rcu(entry, rcu);
+ 	}
+ }
 
 
