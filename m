@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JuoDh06A2qh1wEAu9opvQ
-	(envelope-from <stable+bounces-245651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:33:01 +0200
+	id iICpB9Y/A2rO2AEAu9opvQ
+	(envelope-from <stable+bounces-245652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:57:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDD1522956
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:33:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BE2523191
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:57:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A19F7317F1BA
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:02:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C487130AE04A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FAAD3A59BA;
-	Tue, 12 May 2026 14:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C00C3A75B7;
+	Tue, 12 May 2026 14:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYzciFdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8C/SJ39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116E23A8393
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23A03A71B6
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778594545; cv=none; b=HW0dy/FTqKZqI0U29BwN3Mm1HDZfJq6a+5gpzlVGium32/jSGMoKk5A8VpziuJ0IIv+5pj1YurMvEKS+lbYFdWwxdIk9lMqdADLU2GWJIpzD5KAQbGzVsGRjiu9PUT1z/grJUg2oPm8hMaUDbTM7pHYms6A/EeC/c/bjan/wzqA=
+	t=1778594547; cv=none; b=aKakN0Yncb0dXkGkj6+VIcgCmlH650MYjGCD5UPSaOApoYL6wXsY/ZfOb7fscruJRapV3MiP3POyOGhTtVnvEIzleOylHx8VegVb+0RUHxa3A2l5zC03NBibUAvweSREAaiDFdM/fbBKhacg3X2jJkCKjzdYsAZRGptdjXn61Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778594545; c=relaxed/simple;
-	bh=AUHfxirK4YU0pfheFjyvy40pBXlmeGOV1MC1IwyLuwg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VlfFIBjALBzjpkWB29CRu17xoASd3oarQ3HRNdSEhH+4rJ4EOoQwi4qIV7tmhBajleWerovAW3AFx9hCyNEUL2YSafTz573TLQOr/0yWJsTnitqAUE2EFgA6cW7Ics5lQedCMgUwGPAprUdxziMWYXa+4lUBmbhqwn4P6TBq+q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYzciFdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2C2C2BCF6;
-	Tue, 12 May 2026 14:02:24 +0000 (UTC)
+	s=arc-20240116; t=1778594547; c=relaxed/simple;
+	bh=i7bT5d9PuVwB23DrkuPx7Pnw1ESjUWu7wdZ/tn9KdCE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=onS3PQOdjSc+3YvmAyYj1UGGeHS7VMc6TROgF1r8YGBLBPvRYJcNU9rxhI3Dbu7Sy0pZ8eZ1gbsJ489Pzf/eLTqtPdQG9J2cz/PtLMXwWU7TTVUqgdo3nfbBtCds7rD7E1hnnKfR1krbO+pi1Af9Esa1vxiRxjgZ5oA4hfNs9J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8C/SJ39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1B7C2BCB0;
+	Tue, 12 May 2026 14:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778594545;
-	bh=AUHfxirK4YU0pfheFjyvy40pBXlmeGOV1MC1IwyLuwg=;
+	s=korg; t=1778594547;
+	bh=i7bT5d9PuVwB23DrkuPx7Pnw1ESjUWu7wdZ/tn9KdCE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bYzciFdhAsxfveYhAe5CL1m/u6i56pcy3HAWeVQ5M/oxUplxKAd8kxAW5tg7RfPd9
-	 y8dcmdSHKbGSFV4Kb8URxF90thQVuLSb9fONyOPXHfNYMJNrWwlPmgxuXVbglxyHw9
-	 8HeT27czBTstJQl7vZV9+59zYa2EmZQqITxlZ8yc=
-Subject: FAILED: patch "[PATCH] eventfs: Use list_add_tail_rcu() for SRCU-protected children" failed to apply to 6.18-stable tree
-To: devnexen@gmail.com,rostedt@goodmis.org
+	b=x8C/SJ39PBeT/rlDxAiG1KbyuTjPwjzxhVRdEOHzRDcgBF7bn7l7aUN/lyTMAlmWy
+	 ioJfQXLVMfJMiVJ8jcfdmiInbXHn0+yXVbNizLg4jk540N4SAwzik6sRZsMgJa76fS
+	 r0dn5NBjiNJ0+T0jOZJIrCkcq/mH/UumusSJCPx4=
+Subject: FAILED: patch "[PATCH] dm-verity-fec: fix reading parity bytes split across blocks" failed to apply to 6.12-stable tree
+To: ebiggers@kernel.org,mpatocka@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 15:59:33 +0200
-Message-ID: <2026051233-marauding-delete-836e@gregkh>
+Date: Tue, 12 May 2026 16:00:04 +0200
+Message-ID: <2026051204-roundness-motto-5e2a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,24 +54,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4BDD1522956
+X-Rspamd-Queue-Id: 92BE2523191
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245652-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245651-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com,goodmis.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -81,26 +80,26 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,goodmis.org:email,linuxfoundation.org:dkim,gregkh:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x f67950b2887fa10df50c4317a1fe98a65bc6875b
+git cherry-pick -x 430a05cb926f6bdf53e81460a2c3a553257f3f61
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051233-marauding-delete-836e@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051204-roundness-motto-5e2a@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,40 +111,180 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f67950b2887fa10df50c4317a1fe98a65bc6875b Mon Sep 17 00:00:00 2001
-From: David Carlier <devnexen@gmail.com>
-Date: Sat, 18 Apr 2026 16:22:50 +0100
-Subject: [PATCH] eventfs: Use list_add_tail_rcu() for SRCU-protected children
- list
+From 430a05cb926f6bdf53e81460a2c3a553257f3f61 Mon Sep 17 00:00:00 2001
+From: Eric Biggers <ebiggers@kernel.org>
+Date: Thu, 5 Feb 2026 20:59:24 -0800
+Subject: [PATCH] dm-verity-fec: fix reading parity bytes split across blocks
+ (take 3)
 
-Commit d2603279c7d6 ("eventfs: Use list_del_rcu() for SRCU protected
-list variable") converted the removal side to pair with the
-list_for_each_entry_srcu() walker in eventfs_iterate(). The insertion
-in eventfs_create_dir() was left as a plain list_add_tail(), which on
-weakly-ordered architectures can expose a new entry to the SRCU reader
-before its list pointers and fields are observable.
+fec_decode_bufs() assumes that the parity bytes of the first RS codeword
+it decodes are never split across parity blocks.
 
-Use list_add_tail_rcu() so the publication pairs with the existing
-list_del_rcu() and list_for_each_entry_srcu().
+This assumption is false.  Consider v->fec->block_size == 4096 &&
+v->fec->roots == 17 && fio->nbufs == 1, for example.  In that case, each
+call to fec_decode_bufs() consumes v->fec->roots * (fio->nbufs <<
+DM_VERITY_FEC_BUF_RS_BITS) = 272 parity bytes.
 
-Fixes: 43aa6f97c2d0 ("eventfs: Get rid of dentry pointers without refcounts")
+Considering that the parity data for each message block starts on a
+block boundary, the byte alignment in the parity data will iterate
+through 272*i mod 4096 until the 3 parity blocks have been consumed.  On
+the 16th call (i=15), the alignment will be 4080 bytes into the first
+block.  Only 16 bytes remain in that block, but 17 parity bytes will be
+needed.  The code reads out-of-bounds from the parity block buffer.
+
+Fortunately this doesn't normally happen, since it can occur only for
+certain non-default values of fec_roots *and* when the maximum number of
+buffers couldn't be allocated due to low memory.  For example with
+block_size=4096 only the following cases are affected:
+
+    fec_roots=17: nbufs in [1, 3, 5, 15]
+    fec_roots=19: nbufs in [1, 229]
+    fec_roots=21: nbufs in [1, 3, 5, 13, 15, 39, 65, 195]
+    fec_roots=23: nbufs in [1, 89]
+
+Regardless, fix it by refactoring how the parity blocks are read.
+
+Fixes: 6df90c02bae4 ("dm-verity FEC: Fix RS FEC repair for roots unaligned to block size (take 2)")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260418152251.199343-1-devnexen@gmail.com
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 81df94038f2e..8dd554508828 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -706,7 +706,7 @@ struct eventfs_inode *eventfs_create_dir(const char *name, struct eventfs_inode
+diff --git a/drivers/md/dm-verity-fec.c b/drivers/md/dm-verity-fec.c
+index 1e776e0d6be5..e5d38bb3f16f 100644
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -33,36 +33,6 @@ static inline u64 fec_interleave(struct dm_verity *v, u64 offset)
+ 	return offset + mod * (v->fec->rounds << v->data_dev_block_bits);
+ }
  
- 	scoped_guard(mutex, &eventfs_mutex) {
- 		if (!parent->is_freed)
--			list_add_tail(&ei->list, &parent->children);
-+			list_add_tail_rcu(&ei->list, &parent->children);
+-/*
+- * Read error-correcting codes for the requested RS block. Returns a pointer
+- * to the data block. Caller is responsible for releasing buf.
+- */
+-static u8 *fec_read_parity(struct dm_verity *v, u64 rsb, int index,
+-			   unsigned int *offset, unsigned int par_buf_offset,
+-			   struct dm_buffer **buf, unsigned short ioprio)
+-{
+-	u64 position, block, rem;
+-	u8 *res;
+-
+-	/* We have already part of parity bytes read, skip to the next block */
+-	if (par_buf_offset)
+-		index++;
+-
+-	position = (index + rsb) * v->fec->roots;
+-	block = div64_u64_rem(position, v->fec->io_size, &rem);
+-	*offset = par_buf_offset ? 0 : (unsigned int)rem;
+-
+-	res = dm_bufio_read_with_ioprio(v->fec->bufio, block, buf, ioprio);
+-	if (IS_ERR(res)) {
+-		DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
+-		      v->data_dev->name, (unsigned long long)rsb,
+-		      (unsigned long long)block, PTR_ERR(res));
+-		*buf = NULL;
+-	}
+-
+-	return res;
+-}
+-
+ /* Loop over each allocated buffer. */
+ #define fec_for_each_buffer(io, __i) \
+ 	for (__i = 0; __i < (io)->nbufs; __i++)
+@@ -102,15 +72,29 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
+ {
+ 	int r, corrected = 0, res;
+ 	struct dm_buffer *buf;
+-	unsigned int n, i, j, offset, par_buf_offset = 0;
++	unsigned int n, i, j, parity_pos, to_copy;
+ 	uint16_t par_buf[DM_VERITY_FEC_RSM - DM_VERITY_FEC_MIN_RSN];
+ 	u8 *par, *block;
++	u64 parity_block;
+ 	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
+ 
+-	par = fec_read_parity(v, rsb, block_offset, &offset,
+-			      par_buf_offset, &buf, bio->bi_ioprio);
+-	if (IS_ERR(par))
++	/*
++	 * Compute the index of the first parity block that will be needed and
++	 * the starting position in that block.  Then read that block.
++	 *
++	 * io_size is always a power of 2, but roots might not be.  Note that
++	 * when it's not, a codeword's parity bytes can span a block boundary.
++	 */
++	parity_block = (rsb + block_offset) * v->fec->roots;
++	parity_pos = parity_block & (v->fec->io_size - 1);
++	parity_block >>= v->data_dev_block_bits;
++	par = dm_bufio_read_with_ioprio(v->fec->bufio, parity_block, &buf,
++					bio->bi_ioprio);
++	if (IS_ERR(par)) {
++		DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
++		      v->data_dev->name, rsb, parity_block, PTR_ERR(par));
+ 		return PTR_ERR(par);
++	}
+ 
+ 	/*
+ 	 * Decode the RS blocks we have in bufs. Each RS block results in
+@@ -118,8 +102,32 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
+ 	 */
+ 	fec_for_each_buffer_rs_block(fio, n, i) {
+ 		block = fec_buffer_rs_block(v, fio, n, i);
+-		for (j = 0; j < v->fec->roots - par_buf_offset; j++)
+-			par_buf[par_buf_offset + j] = par[offset + j];
++
++		/*
++		 * Copy the next 'roots' parity bytes to 'par_buf', reading
++		 * another parity block if needed.
++		 */
++		to_copy = min(v->fec->io_size - parity_pos, v->fec->roots);
++		for (j = 0; j < to_copy; j++)
++			par_buf[j] = par[parity_pos++];
++		if (to_copy < v->fec->roots) {
++			parity_block++;
++			parity_pos = 0;
++
++			dm_bufio_release(buf);
++			par = dm_bufio_read_with_ioprio(v->fec->bufio,
++							parity_block, &buf,
++							bio->bi_ioprio);
++			if (IS_ERR(par)) {
++				DMERR("%s: FEC %llu: parity read failed (block %llu): %ld",
++				      v->data_dev->name, rsb, parity_block,
++				      PTR_ERR(par));
++				return PTR_ERR(par);
++			}
++			for (; j < v->fec->roots; j++)
++				par_buf[j] = par[parity_pos++];
++		}
++
+ 		/* Decode an RS block using Reed-Solomon */
+ 		res = decode_rs8(fio->rs, block, par_buf, v->fec->rsn,
+ 				 NULL, neras, fio->erasures, 0, NULL);
+@@ -134,26 +142,6 @@ static int fec_decode_bufs(struct dm_verity *v, struct dm_verity_io *io,
+ 		block_offset++;
+ 		if (block_offset >= 1 << v->data_dev_block_bits)
+ 			goto done;
+-
+-		/* Read the next block when we run out of parity bytes */
+-		offset += (v->fec->roots - par_buf_offset);
+-		/* Check if parity bytes are split between blocks */
+-		if (offset < v->fec->io_size && (offset + v->fec->roots) > v->fec->io_size) {
+-			par_buf_offset = v->fec->io_size - offset;
+-			for (j = 0; j < par_buf_offset; j++)
+-				par_buf[j] = par[offset + j];
+-			offset += par_buf_offset;
+-		} else
+-			par_buf_offset = 0;
+-
+-		if (offset >= v->fec->io_size) {
+-			dm_bufio_release(buf);
+-
+-			par = fec_read_parity(v, rsb, block_offset, &offset,
+-					      par_buf_offset, &buf, bio->bi_ioprio);
+-			if (IS_ERR(par))
+-				return PTR_ERR(par);
+-		}
  	}
- 	/* Was the parent freed? */
- 	if (list_empty(&ei->list)) {
+ done:
+ 	r = corrected;
 
 
