@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-246579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245991-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uACMJOJvA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:26 +0200
+	id 4LYvJQtqA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-245991-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF485276F1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B58F526573
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D19013107093
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 59774304754B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BBF36A378;
-	Tue, 12 May 2026 18:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCB03955E2;
+	Tue, 12 May 2026 17:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMnUONKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGEGx9Ow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096CE36C9E4;
-	Tue, 12 May 2026 18:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6A33955C9;
+	Tue, 12 May 2026 17:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609587; cv=none; b=ZoiUNxDoUckwwOhfOj7iltkq1wgm/ap2nTSF0s5Wpw9dLjyJW0s3zFUVy3Af39C+YgwaOEdYLKEwIKbUFYA59yDGFHLM2RRIkXLFRb8HBrVeZuxjUW9DCzG2g3Be/NqqeRZTUAiIjCmak+PwcsEnjgZCfNFq0nUVT9quIVfwUZs=
+	t=1778608077; cv=none; b=pI1A+4ILMN2RZ3N8XQdWAI7lxNzIW6Y04ghsYbTnu62izhDkQzhsevwf759dcwX/JqeDmJVm9NKvZrKTIqGCu/ubKikBTp03uFSN3A5Jp2kgbX8ba1yYBftq9DdxintSghxyI1crAqedyVbfrk5FYEDhhUTs17oGT0DFytf4+pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609587; c=relaxed/simple;
-	bh=OHEPTOwYxo8jvRiqvOjUrPJZj1wjVwMbDOorHD39o10=;
+	s=arc-20240116; t=1778608077; c=relaxed/simple;
+	bh=hVzHcsANmsnLzY/6iAi3drsXQgEmEuJ8dlswyu885Ig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kp6zX7djje3DfJsRZ9brb9vFgD6CiOS9/kgzy3yhLHy3YGv6tmDoFAVzEZnAu8upfyMz/nUgL3bnnwYzzx0ZJFsSGt53yFbcQAc010nMm7j/BYpmKjeTgp4tyY9fUvciyDmU8tRIU8FOmOb5uXcuMTJm6sPONvRjkU2XNZmnyLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMnUONKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9453DC2BCB0;
-	Tue, 12 May 2026 18:13:06 +0000 (UTC)
+	 MIME-Version; b=Olfpa99jKlp8x9Jfn6+e6551I2fCfMp0HkAr8Lw1rbzvHWENlPTFjv4+f8POpqRGq4xvrVHS50GZxcEE2/Y80elRESTUib0PRAsVPT0cpLCY7sb2YAdlaPvqXwS/Jr1vh3z6iiQJaAbS0yTADPsx8/n0pMoh+G4ZhxEfm57Ia5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGEGx9Ow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B960AC2BCB0;
+	Tue, 12 May 2026 17:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609586;
-	bh=OHEPTOwYxo8jvRiqvOjUrPJZj1wjVwMbDOorHD39o10=;
+	s=korg; t=1778608077;
+	bh=hVzHcsANmsnLzY/6iAi3drsXQgEmEuJ8dlswyu885Ig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xMnUONKQD46i6USZJGpe1HoLUwJSC7xZCNAHFoB/78G63OyPDR1frNqJgBib629KI
-	 BUx49jIFzMWMTdeCJYyNNHUCDMAnoA4YyrTRDVOKYmeCMLOn0U9ibb+PXix5xptxLK
-	 sCIYHZtonPxJqwFpmJKGxragHfuqwhIk+s/3ssU0=
+	b=hGEGx9OwpfE3AeWPlkIGPjOE0zIYfgVv4AYC9p0PsdTvY9JxMh4p4HPK7Fvhqgcz+
+	 VWWwog6oiYSsIpKknYhVAX5sNcMbCrKsoVxjeCpHKqKKKjcZYTTHlYSCyl0sSuTK/V
+	 Ya0lUSkL1T91mGL0vwUtS25wsseXm02bPqVeFf6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivam Kumar <skumar47@syr.edu>,
-	Shivam Kumar <kumar.shivam43666@gmail.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 7.0 201/307] nvmet-tcp: fix race between ICReq handling and queue teardown
+	Lukas Wunner <lukas@wunner.de>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCH 6.12 144/206] PCI/AER: Clear only error bits in PCIe Device Status
 Date: Tue, 12 May 2026 19:39:56 +0200
-Message-ID: <20260512173944.362976120@linuxfoundation.org>
+Message-ID: <20260512173935.912610024@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +65,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0FF485276F1
+X-Rspamd-Queue-Id: 8B58F526573
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-246579-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syr.edu,gmail.com,nvidia.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245991-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,syr.edu:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,alibaba.com:email,wunner.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 5293a8882c549fab4a878bc76b0b6c951f980a61 upstream.
+commit a8aeea1bf3c80cc87983689e0118770e019bd4f3 upstream.
 
-nvmet_tcp_handle_icreq() updates queue->state after sending an
-Initialization Connection Response (ICResp), but it does so without
-serializing against target-side queue teardown.
+Currently, pcie_clear_device_status() clears the entire PCIe Device Status
+register (PCI_EXP_DEVSTA) by writing back the value read from the register,
+which affects not only the error status bits but also other writable bits.
 
-If an NVMe/TCP host sends an Initialization Connection Request
-(ICReq) and immediately closes the connection, target-side teardown
-may start in softirq context before io_work drains the already
-buffered ICReq. In that case, nvmet_tcp_schedule_release_queue()
-sets queue->state to NVMET_TCP_Q_DISCONNECTING and drops the queue
-reference under state_lock.
+According to PCIe r7.0, sec 7.5.3.5, this register contains:
 
-If io_work later processes that ICReq, nvmet_tcp_handle_icreq() can
-still overwrite the state back to NVMET_TCP_Q_LIVE. That defeats the
-DISCONNECTING-state guard in nvmet_tcp_schedule_release_queue() and
-allows a later socket state change to re-enter teardown and issue a
-second kref_put() on an already released queue.
+  - RW1C error status bits (CED, NFED, FED, URD at bits 0-3): These are the
+    four error status bits that need to be cleared.
 
-The ICResp send failure path has the same problem. If teardown has
-already moved the queue to DISCONNECTING, a send error can still
-overwrite the state with NVMET_TCP_Q_FAILED, again reopening the
-window for a second teardown path to drop the queue reference.
+  - Read-only bits (AUXPD at bit 4, TRPND at bit 5): Writing to these has
+    no effect.
 
-Fix this by serializing both post-send state transitions with
-state_lock and bailing out if teardown has already started.
+  - Emergency Power Reduction Detected (bit 6): A RW1C non-error bit
+    introduced in PCIe r5.0 (2019). This is currently the only writable
+    non-error bit in the Device Status register. Unconditionally clearing
+    this bit can interfere with other software components that rely on this
+    power management indication.
 
-Use -ESHUTDOWN as an internal sentinel for that bail-out path rather
-than propagating it as a transport error like -ECONNRESET. Keep
-nvmet_tcp_socket_error() setting rcv_state to NVMET_TCP_RECV_ERR before
-honoring that sentinel so receive-side parsing stays quiesced until the
-existing release path completes.
+  - Reserved bits (RsvdZ): These bits are required to be written as zero.
+    Writing 1s to them (as the current implementation may do) violates the
+    specification.
 
-Fixes: c46a6465bac2 ("nvmet-tcp: add NVMe over TCP target driver")
+To prevent unintended side effects, modify pcie_clear_device_status() to
+only write 1s to the four error status bits (CED, NFED, FED, URD), leaving
+the Emergency Power Reduction Detected bit and reserved bits unaffected.
+
+Fixes: ec752f5d54d7 ("PCI/AER: Clear device status bits during ERR_FATAL and ERR_NONFATAL")
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Cc: stable@vger.kernel.org
-Reported-by: Shivam Kumar <skumar47@syr.edu>
-Tested-by: Shivam Kumar <kumar.shivam43666@gmail.com>
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Link: https://patch.msgid.link/20260211124624.49656-1-xueshuai@linux.alibaba.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c |   26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/pci/pci.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -398,6 +398,19 @@ static void nvmet_tcp_build_pdu_iovec(st
- 
- static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2321,10 +2321,9 @@ EXPORT_SYMBOL_GPL(pci_set_pcie_reset_sta
+ #ifdef CONFIG_PCIEAER
+ void pcie_clear_device_status(struct pci_dev *dev)
  {
-+	/*
-+	 * Keep rcv_state at RECV_ERR even for the internal -ESHUTDOWN path.
-+	 * nvmet_tcp_handle_icreq() can return -ESHUTDOWN after the ICReq has
-+	 * already been consumed and queue teardown has started.
-+	 *
-+	 * If nvmet_tcp_data_ready() or nvmet_tcp_write_space() queues
-+	 * nvmet_tcp_io_work() again before nvmet_tcp_release_queue_work()
-+	 * cancels it, the queue must not keep that old receive state.
-+	 * Otherwise the next nvmet_tcp_io_work() run can reach
-+	 * nvmet_tcp_done_recv_pdu() and try to handle the same ICReq again.
-+	 *
-+	 * That is why queue->rcv_state needs to be updated before we return.
-+	 */
- 	queue->rcv_state = NVMET_TCP_RECV_ERR;
- 	if (queue->nvme_sq.ctrl)
- 		nvmet_ctrl_fatal_error(queue->nvme_sq.ctrl);
-@@ -922,11 +935,24 @@ static int nvmet_tcp_handle_icreq(struct
- 	iov.iov_len = sizeof(*icresp);
- 	ret = kernel_sendmsg(queue->sock, &msg, &iov, 1, iov.iov_len);
- 	if (ret < 0) {
-+		spin_lock_bh(&queue->state_lock);
-+		if (queue->state == NVMET_TCP_Q_DISCONNECTING) {
-+			spin_unlock_bh(&queue->state_lock);
-+			return -ESHUTDOWN;
-+		}
- 		queue->state = NVMET_TCP_Q_FAILED;
-+		spin_unlock_bh(&queue->state_lock);
- 		return ret; /* queue removal will cleanup */
- 	}
- 
-+	spin_lock_bh(&queue->state_lock);
-+	if (queue->state == NVMET_TCP_Q_DISCONNECTING) {
-+		spin_unlock_bh(&queue->state_lock);
-+		/* Tell nvmet_tcp_socket_error() teardown is in progress. */
-+		return -ESHUTDOWN;
-+	}
- 	queue->state = NVMET_TCP_Q_LIVE;
-+	spin_unlock_bh(&queue->state_lock);
- 	nvmet_prepare_receive_pdu(queue);
- 	return 0;
+-	u16 sta;
+-
+-	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
+-	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
++	pcie_capability_write_word(dev, PCI_EXP_DEVSTA,
++				   PCI_EXP_DEVSTA_CED | PCI_EXP_DEVSTA_NFED |
++				   PCI_EXP_DEVSTA_FED | PCI_EXP_DEVSTA_URD);
  }
+ #endif
+ 
 
 
 
