@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-246304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246007-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OMKBrJvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:38 +0200
+	id uIU9Kv1pA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246007-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782F2527659
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D227752653C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF23430FE39E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 028123145DE9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E83633B6CC;
-	Tue, 12 May 2026 18:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A4C3DD873;
+	Tue, 12 May 2026 17:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKF087i/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oX2//S/i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDBB3EDE57;
-	Tue, 12 May 2026 18:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8623DD86B;
+	Tue, 12 May 2026 17:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608882; cv=none; b=TFKSXIBdv59eQxdr0AM+2oLagvNY/8QqoW5C5/R4dILQj4wH3vQwCQJ1QekaAit57kmEpBJaKghW+e+8DzSjxBULhyFs/7U/QO7fKEmpD7oWybjcAmBca6bRYJ+MsLUy2m+0bQPXyl7SqeOj3+XT30kY8GqDaGi/QknbOkfTiGY=
+	t=1778608119; cv=none; b=t8R/hWDtYmHrg2OvpezOcqJEqBlBGK77FNgvaUYjHMGfnNYE/W+AIgR9TB5wizZ7zUnyhUD5Ijm7twvB3bPT57J56O7KDI3v7NZ/e4ZPMhKjy0x2CgUx/2t8GGeB5yWkB6FSJzFvewFYpfIJqj/pRi0Mwh4Wx1/J5JD+u7ApXFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608882; c=relaxed/simple;
-	bh=2V9Iaq5lksugNmDg8JpeV1NHQEwZJJrsEyviZbD7Rvw=;
+	s=arc-20240116; t=1778608119; c=relaxed/simple;
+	bh=hjoG7+F0fS4RZ9nTuy+AOZSPAQzp3EQehGnJt3CHMjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WkU8NX/PscDguFUZI692xzZ7tfI6mCymIUeIP2AurOK+fxUHTk+9Ey/6kDWesoFwl5RizywU6IqmZolrJNGJu7PWju+d8I4jLLUw5qjk3VJvSZhkO7UaxJ19DsowuFWBt79WXvQioPDg0AoUA9gKEZO3zA+6wDlfxdc69bmmjV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKF087i/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA1DC2BCB0;
-	Tue, 12 May 2026 18:01:21 +0000 (UTC)
+	 MIME-Version; b=lPtpnwrFuwtupqZNpUOEsSnOQsGv0sI9yYO+HXtkv/+uknh5AKVezjoAqInuWw7nxt/fQ0KEw9NL1y6uWBhIfrjZa1ylmCwJ1kQ5Xxpx0XSRszraY/huXoYg1KTcZo41KMvEkJsOU4XetsfHdP+/M1jCqvJrFJl43jEOtcS/twY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oX2//S/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8233AC2BCB0;
+	Tue, 12 May 2026 17:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608881;
-	bh=2V9Iaq5lksugNmDg8JpeV1NHQEwZJJrsEyviZbD7Rvw=;
+	s=korg; t=1778608118;
+	bh=hjoG7+F0fS4RZ9nTuy+AOZSPAQzp3EQehGnJt3CHMjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oKF087i/+lZ13KrRtgcJczDGePzLaH0ot7xGN81Z8yyeRFmZQn081+5AVgatZIBo4
-	 xlF1EKp2C5J+HCP+FvYi0BLEoWSuZGCHuMgmoizcp92nCzwuhmy3l1eiIe5HtIGqMm
-	 VjB9dqKTZysy8PEg6g92lAVPrqfl5sLe/NOrxCoM=
+	b=oX2//S/iy/0p/MhOPacNltpHa9t7UQgyQrXTSdZnYYm/vx2Yd1F6+KGmKDnGysRcg
+	 F0v4Yvc+hhyxpOaMIT0D/yP5+/GeBIkfYBIYHOH3HpZUQ7bkB8HqLIrk8lzW2xYEGZ
+	 36VIMaBVDhuCzvypHkzFB0+05WbH4cketWLzGB8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Gang Yan <yangang@kylinos.cn>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 214/270] mptcp: fix scheduling with atomic in timestamp sockopt
+Subject: [PATCH 6.12 163/206] mptcp: fix scheduling with atomic in timestamp sockopt
 Date: Tue, 12 May 2026 19:40:15 +0200
-Message-ID: <20260512173942.951758049@linuxfoundation.org>
+Message-ID: <20260512173936.315813956@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,13 +65,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 782F2527659
+X-Rspamd-Queue-Id: D227752653C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246304-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246007-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,15 +88,15 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,kylinos.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
