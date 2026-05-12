@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-246048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMBXM6lqA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246048-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:09 +0200
+	id gLHXFPlvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E32552677C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5ED527733
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 95D493193800
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B59F3089273
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EB63BB11A;
-	Tue, 12 May 2026 17:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F0330BB80;
+	Tue, 12 May 2026 18:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mh0EBIe5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5JoXQ9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849303955E1;
-	Tue, 12 May 2026 17:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180EB3EDE63;
+	Tue, 12 May 2026 18:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608224; cv=none; b=e/AKhFiL6Xo2jVZxDMEXsJVt4SwiNqTwbKfI80XSIjnOG3Tdjc5jL878nz1qXQkXoMkstgyUrymDSG58zDm3/SNtON3gjIkiaE0f5QlGVTr1BGnBZQKD9F3XuUjPG5u/lryfaqXC73D1DTETX4Ff2aixAp5PzJKJzTdJ4A+78x0=
+	t=1778608874; cv=none; b=MfQcx7sJ1BFoS4DGJNehckA+hHPqTi6C4POnvKO3PzXCjbqUEpLeKCqXM+28GHWUDoahjdWkgYVFjt4v4t4wNEZhbBoARpIJhHiTZ0s7eT4Tsyb8r4Eyiju06RE4x+OiFzZtlmloEWShDlgZitQnu4LvuZZSF5wuLRoJ6l06K/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608224; c=relaxed/simple;
-	bh=x+evND+hXLIq/hm+fVoZraLTLkBS8pLrTEDSNG5dhrE=;
+	s=arc-20240116; t=1778608874; c=relaxed/simple;
+	bh=3+9BVRrQ0BZ5HrG/xgqQ7+LjrsjQbgcxNg7kCNaylSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvpcNnFD+Q+tdb2O3KlB7TX9qV/qwStFOfPRx19bBn+MFdnb1WLT6FyQ0hiAxWT0NYDOqJNHozSPtOGZ/2pUSbV/nlvr87DTDC0X9iqIDTj1czY0rW5e32mZrcobrOGwSi6rZTTo0SL1QiPxiq3A9GZYTgNjG8UBiqYBcV8v+FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mh0EBIe5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AD8C2BCB0;
-	Tue, 12 May 2026 17:50:23 +0000 (UTC)
+	 MIME-Version; b=thoGN9/qcjIdeOJ/ESFyyNWDkxRyBfbw4yQAzxhtuXUOwpZ+iukBrboYo59wOli45c2lYC3R0rNvD8HicdRBvN/6aixQCbIMD6sxmhYddQKVyt9uEhNKnDzDQi2CpGBK1NrJj47Js9lXoRV1x6081X3sv7BPO3Vb3Vkl1PMmwZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5JoXQ9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A557C2BCB0;
+	Tue, 12 May 2026 18:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608224;
-	bh=x+evND+hXLIq/hm+fVoZraLTLkBS8pLrTEDSNG5dhrE=;
+	s=korg; t=1778608873;
+	bh=3+9BVRrQ0BZ5HrG/xgqQ7+LjrsjQbgcxNg7kCNaylSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mh0EBIe5MJ9rhKxLh6zaXN+DCvQEEMmIAue5B/iIwlfZUKESGfqzSw10FLIZfrgQ2
-	 ZoyXsg0AaHOQQvN4ClQxJR4xBcFVxQtl9Gko5cJFhSgyGr3sQpnF5Yq91jpmeHHLYD
-	 ho4CziSoxtn9+k4yogekqQ5EEXc2Lo807WNQKXMM=
+	b=X5JoXQ9hEZ9TEZGH15lErFXJCiqBiVllKjqv8wZ37xbJZXcfsjBCfeP7SRngMuhfk
+	 XTyUpqf8/BS3Kd9jLvAAgrz9zGGS42/ZqWoZdiDUzmkxgZtyNNzJtFVqRqDAXgswhF
+	 e8AWE/O0YpFpBXMcanOHFQhgHfr6hf0tYqUs4ato=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	John Ogness <john.ogness@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 196/206] printk: add print_hex_dump_devel()
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 247/270] io_uring/tw: serialize ctx->retry_llist with ->uring_lock
 Date: Tue, 12 May 2026 19:40:48 +0200
-Message-ID: <20260512173937.024533201@linuxfoundation.org>
+Message-ID: <20260512173943.639027649@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2E32552677C
+X-Rspamd-Queue-Id: AA5ED527733
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -76,71 +73,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246048-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246301-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linutronix.de:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit d134feeb5df33fbf77f482f52a366a44642dba09 ]
+Commit 17666e2d7592c3e85260cafd3950121524acc2c5 upstream.
 
-Add print_hex_dump_devel() as the hex dump equivalent of pr_devel(),
-which emits output only when DEBUG is enabled, but keeps call sites
-compiled otherwise.
+The DEFER_TASKRUN local task work paths all run under ctx->uring_lock,
+which serializes them with each other and with the rest of the ring's
+hot paths. io_move_task_work_from_local() is the exception - it's called
+from io_ring_exit_work() on a kworker without holding the lock and from
+the iopoll cancelation side right after dropping it.
 
-Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 177730a273b1 ("crypto: caam - guard HMAC key hex dumps in hash_digest_key")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+->work_llist is fine with this, as it's only ever updated via the
+expected paths. But the ->retry_llist is updated while runing, and hence
+it could potentially race between normal task_work running and the
+task-has-exited shutdown path.
+
+Simply grab ->uring_lock while moving the local work to the fallback
+list for exit purposes, which nicely serializes it across both the
+normal additions and the exit prune path.
+
+Cc: stable@vger.kernel.org
+Fixes: f46b9cdb22f7 ("io_uring: limit local tw done")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/printk.h |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ io_uring/io_uring.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -786,6 +786,19 @@ static inline void print_hex_dump_debug(
- }
- #endif
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1370,8 +1370,18 @@ void io_req_task_work_add_remote(struct
  
-+#if defined(DEBUG)
-+#define print_hex_dump_devel(prefix_str, prefix_type, rowsize,		\
-+			     groupsize, buf, len, ascii)		\
-+	print_hex_dump(KERN_DEBUG, prefix_str, prefix_type, rowsize,	\
-+		       groupsize, buf, len, ascii)
-+#else
-+static inline void print_hex_dump_devel(const char *prefix_str, int prefix_type,
-+					int rowsize, int groupsize,
-+					const void *buf, size_t len, bool ascii)
-+{
-+}
-+#endif
-+
- /**
-  * print_hex_dump_bytes - shorthand form of print_hex_dump() with default params
-  * @prefix_str: string to prefix each line with;
+ static void __cold io_move_task_work_from_local(struct io_ring_ctx *ctx)
+ {
+-	struct llist_node *node = llist_del_all(&ctx->work_llist);
++	struct llist_node *node;
+ 
++	/*
++	 * Running the work items may utilize ->retry_llist as a means
++	 * for capping the number of task_work entries run at the same
++	 * time. But that list can potentially race with moving the work
++	 * from here, if the task is exiting. As any normal task_work
++	 * running holds ->uring_lock already, just guard this slow path
++	 * with ->uring_lock to avoid racing on ->retry_llist.
++	 */
++	guard(mutex)(&ctx->uring_lock);
++	node = llist_del_all(&ctx->work_llist);
+ 	__io_fallback_tw(node, false);
+ 	node = llist_del_all(&ctx->retry_llist);
+ 	__io_fallback_tw(node, false);
 
 
 
