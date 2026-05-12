@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-246439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGDLLLZzA2rf5wEAu9opvQ
-	(envelope-from <stable+bounces-246439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:46 +0200
+	id cAe0GvRmA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174AD527E73
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B10526025
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85204321CDCB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5AADE30055C4
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7C3342509;
-	Tue, 12 May 2026 18:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885FF3CDBDD;
+	Tue, 12 May 2026 17:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZN7Fv4u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZHutEDG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328F92DE6E3;
-	Tue, 12 May 2026 18:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAB3385D85;
+	Tue, 12 May 2026 17:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609231; cv=none; b=WEtN5ByEJ1X078ZEMNmcgU8T83Uw4DdYK+esHALNp25pY7MT7InxDll+Igef+3PslU0Pttc9nyeIkoCjYn73BBlCL7a907mmz28uOVTkkcZhR2URa4Y1ruPEnWH3hkHLF8XcYYARjO+QTEt4AyVmNaMfcC2SyaxdOvGsT0u/g5Q=
+	t=1778607854; cv=none; b=BCJg0gKN1HgPgz5VV6bcoEQxQy/8/NHowl1Z26I0c8FNE7lCWYUmTMbstti4fHH676+BjcX42fgGvTQEncfzrS1WG+C5oqvqlahcZlfspaJYGP3tSCS0kCRLLNuoJffCJm5KGy+E3ehAn0LskSFFqO+7euOQXXSWsM11KN84uZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609231; c=relaxed/simple;
-	bh=Gv7lVlOXq+KtJf4BxmFb63p3vtuws3j5YD6O83/uoVM=;
+	s=arc-20240116; t=1778607854; c=relaxed/simple;
+	bh=hN3L+Fy2bSnT6BSEwJNd+1Mh+h6odVsqpwh6oic4ppU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjpYNkHvQoPVfKNEwh9iW0myCwNiyi2oIAxGNJ4r6+2ql1nA5UV9X2hEWuh9/1NItUjCRpzLbf55/Pck8WzKsxbY2dccgZSQrzA/7BiFZ8ngzOv3ZZCvMoFepyv482uBJDboDYSqOINFmuN+jTdzEcnC/jBN9Ke+wz7eMp2Hha8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZN7Fv4u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B546DC2BCB0;
-	Tue, 12 May 2026 18:07:10 +0000 (UTC)
+	 MIME-Version; b=uvCp3AE6VQqz4KuBXd26R/2XomtZSzkAvQq8d3euYDivMsWtesESBDSUsvi1PWNRAn6GwA6KASkIvBZcA8pbFQC91PBj5wMUvCTXJNfjPLXDbCLH1utlseJAEGZMOXhZWFa2Hu4k8X1tkH8Q/1mLHfHSlYWihRmPowaMY9t/zes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZHutEDG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7308C2BCB0;
+	Tue, 12 May 2026 17:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609231;
-	bh=Gv7lVlOXq+KtJf4BxmFb63p3vtuws3j5YD6O83/uoVM=;
+	s=korg; t=1778607854;
+	bh=hN3L+Fy2bSnT6BSEwJNd+1Mh+h6odVsqpwh6oic4ppU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZN7Fv4urkV5MLU9y7TOqIOeKbdkJIVC6SpFIAcoRC/Rp0pa8FSb6uplgbPRBiU2d
-	 WoVVgk75pYVDVMpGeknl31jQwwsxokdIZZ2NbkGvr0FZ5kWJPMGGm9nfSVEqFESsgV
-	 8vFBaPW0nHik+CSRtf3w7FzsQi9XSzi8gHvTHIxU=
+	b=AZHutEDGhWExVBN9hkRfh0hbGHAzv4oAJXZiE+ZWzip63wmaX3kOq2E5RAsql+y6x
+	 gAZ8s6LecasiuqHRa0UjQMqSMoCS/MUMJPvGJUX02PPjkUg/Fa/IeYRa/YretvlCZZ
+	 UNLCZnhSuT+Vhlf6T9rCj1sVLMMCqzHIwbDmCsOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Siwei Zhang <oss@fourdim.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 7.0 074/307] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_new_connection_cb()
+	Alexander Bulekov <bkov@amazon.com>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 017/206] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
 Date: Tue, 12 May 2026 19:37:49 +0200
-Message-ID: <20260512173941.683776274@linuxfoundation.org>
+Message-ID: <20260512173933.186710313@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +66,174 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 174AD527E73
+X-Rspamd-Queue-Id: 64B10526025
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245904-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246439-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siwei Zhang <oss@fourdim.xyz>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 0a120d96166301d7a95be75b52f843837dbd1219 upstream.
+commit 0cb2af2ea66ad8ff195c156ea690f11216285bdf upstream.
 
-Add the same NULL guard already present in
-l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
+The shadow MMU computes GFNs for direct shadow pages using sp->gfn plus
+the SPTE index. This assumption breaks for shadow paging if the guest
+page tables are modified between VM entries (similar to commit
+aad885e77496, "KVM: x86/mmu: Drop/zap existing present SPTE even
+when creating an MMIO SPTE", 2026-03-27).  The flow is as follows:
 
-Fixes: 80808e431e1e ("Bluetooth: Add l2cap_chan_ops abstraction")
-Cc: stable@kernel.org
-Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- a PDE is installed for a 2MB mapping, and a page in that area is
+  accessed.  KVM creates a kvm_mmu_page consisting of 512 4KB pages;
+  the kvm_mmu_page is marked by FNAME(fetch) as direct-mapped because
+  the guest's mapping is a huge page (and thus contiguous).
+
+- the PDE mapping is changed from outside the guest.
+
+- the guest accesses another page in the same 2MB area.  KVM installs
+  a new leaf SPTE and rmap entry; the SPTE uses the "correct" GFN
+  (i.e. based on the new mapping, as changed in the previous step) but
+  that GFN is outside of the [sp->gfn, sp->gfn + 511] range; therefore
+  the rmap entry cannot be found and removed when the kvm_mmu_page
+  is zapped.
+
+- the memslot that covers the first 2MB mapping is deleted, and the
+  kvm_mmu_page for the now-invalid GPA is zapped.  However, rmap_remove()
+  only looks at the [sp->gfn, sp->gfn + 511] range established in step 1,
+  and fails to find the rmap entry that was recorded by step 3.
+
+- any operation that causes an rmap walk for the same page accessed
+  by step 3 then walks a stale rmap and dereferences a freed kvm_mmu_page.
+  This includes dirty logging or MMU notifier invalidations (e.g., from
+  MADV_DONTNEED).
+
+The underlying issue is that KVM's walking of shadow PTEs assumes that
+if a SPTE is present when KVM wants to install a non-leaf SPTE, then the
+existing kvm_mmu_page must be for the correct gfn.  Because the only way
+for the gfn to be wrong is if KVM messed up and failed to zap a SPTE...
+which shouldn't happen, but *actually* only happens in response to a
+guest write.
+
+That bug dates back literally forever, as even the first version of KVM
+assumes that the GFN matches and walks into the "wrong" shadow page.
+However, that was only an imprecision until 2032a93d66fa ("KVM: MMU:
+Don't allocate gfns page for direct mmu pages") came along.
+
+Fix it by checking for a target gfn mismatch and zapping the existing
+SPTE.  That way the old SP and rmap entries are gone, KVM installs
+the rmap in the right location, and everyone is happy.
+
+Fixes: 2032a93d66fa ("KVM: MMU: Don't allocate gfns page for direct mmu pages")
+Fixes: 6aa8b732ca01 ("kvm: userspace interface")
+Reported-by: Alexander Bulekov <bkov@amazon.com>
+Reported-by: Fred Griffoul <fgriffo@amazon.co.uk>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://patch.msgid.link/20260503201029.106481-1-pbonzini@redhat.com/
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kvm/mmu/mmu.c | 35 ++++++++++++++---------------------
+ 1 file changed, 14 insertions(+), 21 deletions(-)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1498,6 +1498,9 @@ static struct l2cap_chan *l2cap_sock_new
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 2c11819bd216c..d288c60ae200b 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -182,6 +182,8 @@ struct kmem_cache *mmu_page_header_cache;
+ static struct percpu_counter kvm_total_used_mmu_pages;
+ 
+ static void mmu_spte_set(u64 *sptep, u64 spte);
++static int mmu_page_zap_pte(struct kvm *kvm, struct kvm_mmu_page *sp,
++			    u64 *spte, struct list_head *invalid_list);
+ 
+ struct kvm_mmu_role_regs {
+ 	const unsigned long cr0;
+@@ -1187,19 +1189,6 @@ static void drop_spte(struct kvm *kvm, u64 *sptep)
+ 		rmap_remove(kvm, sptep);
+ }
+ 
+-static void drop_large_spte(struct kvm *kvm, u64 *sptep, bool flush)
+-{
+-	struct kvm_mmu_page *sp;
+-
+-	sp = sptep_to_sp(sptep);
+-	WARN_ON_ONCE(sp->role.level == PG_LEVEL_4K);
+-
+-	drop_spte(kvm, sptep);
+-
+-	if (flush)
+-		kvm_flush_remote_tlbs_sptep(kvm, sptep);
+-}
+-
+ /*
+  * Write-protect on the specified @sptep, @pt_protect indicates whether
+  * spte write-protection is caused by protecting shadow page table.
+@@ -2342,7 +2331,8 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
  {
- 	struct sock *sk, *parent = chan->data;
+ 	union kvm_mmu_page_role role;
  
-+	if (!parent)
-+		return NULL;
+-	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep))
++	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep) &&
++	    spte_to_child_sp(*sptep) && spte_to_child_sp(*sptep)->gfn == gfn)
+ 		return ERR_PTR(-EEXIST);
+ 
+ 	role = kvm_mmu_child_role(sptep, direct, access);
+@@ -2420,13 +2410,16 @@ static void __link_shadow_page(struct kvm *kvm,
+ 
+ 	BUILD_BUG_ON(VMX_EPT_WRITABLE_MASK != PT_WRITABLE_MASK);
+ 
+-	/*
+-	 * If an SPTE is present already, it must be a leaf and therefore
+-	 * a large one.  Drop it, and flush the TLB if needed, before
+-	 * installing sp.
+-	 */
+-	if (is_shadow_present_pte(*sptep))
+-		drop_large_spte(kvm, sptep, flush);
++	if (is_shadow_present_pte(*sptep)) {
++		struct kvm_mmu_page *parent_sp;
++		LIST_HEAD(invalid_list);
 +
- 	lock_sock(parent);
++		parent_sp = sptep_to_sp(sptep);
++		WARN_ON_ONCE(parent_sp->role.level == PG_LEVEL_4K);
++
++		mmu_page_zap_pte(kvm, parent_sp, sptep, &invalid_list);
++		kvm_mmu_remote_flush_or_zap(kvm, &invalid_list, true);
++	}
  
- 	/* Check for backlog size */
+ 	spte = make_nonleaf_spte(sp->spt, sp_ad_disabled(sp));
+ 
+-- 
+2.53.0
+
 
 
 
