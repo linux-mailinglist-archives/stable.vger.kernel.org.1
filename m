@@ -1,290 +1,287 @@
-Return-Path: <stable+bounces-245394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHS1L8jJAmrmwgEAu9opvQ
-	(envelope-from <stable+bounces-245394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:33:44 +0200
+	id sIjfHmLKAmo+wwEAu9opvQ
+	(envelope-from <stable+bounces-245396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:36:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D1051B135
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:33:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8F651B1E0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7A5930F67CB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 06:27:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E953E309E6B8
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 06:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A14225B0AD;
-	Tue, 12 May 2026 06:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFF84F7996;
+	Tue, 12 May 2026 06:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bMI1na/+";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hif2veEs";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="AxQcbV3G";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="AbmOTUUj"
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="EnwlDz/y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253DE4E379B
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 06:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778567221; cv=none; b=M5BuSHonMkMjOZt5U2RBHyb+0G4Xv9vfrjK4Y3zumr9GV0+zODglj49P8UO5eXsI0f0WJcpbA47qqCo+T/VTK+XceNj2s/nN+Gt3fKV44qgUUHTvoIeFF9roVkZ6BFQChL7kooyLWe9yloWOnif8MNaGZa2HKmGqSUHSoT0Ti/Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778567221; c=relaxed/simple;
-	bh=CIiKjFJY7S48sBhowbP4ajNlaMKpYLp2FH4BZzz1QZ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E6AGKaXRovnbvY/PKU3JALuu6Zi3tW6BKlW3qgreMZlOKuPIZAgPPrhdJMKlLIXouyor9VkdYb/sRIcvEdwWglycS0WWYuGPjX8Fd//niU8MdkRsekmPqQYMPt9SBv15vETG0Oo3Szisy0IUgzOOCtmO6igYEFCSlEhwzWi5+CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bMI1na/+; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hif2veEs; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=AxQcbV3G; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=AbmOTUUj; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B65806BF76;
-	Tue, 12 May 2026 06:26:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778567204; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gGdWoPQ+bTNVcVEUOfkou5v7qcXtSEQgxjBxBCUyGCE=;
-	b=bMI1na/+MwgF73Y2ASNGKrvdDI/K0uQLRmUvEhgq/0Peo5PPcSjbeaCQvZWbA1WeXpQ7yy
-	4aaywo3/figlXf4rWVk/cCxc4r0xs5jElnVHL1Iey5mG8hwudxJ45+ljFTdtbxTfD3CQ7L
-	/EHsTGyzjc1gGWyoKa0AD6cwnL3/e4c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778567204;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gGdWoPQ+bTNVcVEUOfkou5v7qcXtSEQgxjBxBCUyGCE=;
-	b=hif2veEshB0axeHWNyB7e8p1RW10HMLQ8g7FS5y+gIVqPebE3mIeAXtr/mQEJNvr4NCBvO
-	kedSyLIOvNYnFrCw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AxQcbV3G;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=AbmOTUUj
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778567203; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gGdWoPQ+bTNVcVEUOfkou5v7qcXtSEQgxjBxBCUyGCE=;
-	b=AxQcbV3GlqLmFFAz3Ni3tIVK4mpYq0+fvg8k6zOkX6TM7DpOMKBUFtIcTYuE4XGA7eemuY
-	OFmk3T1ZuFHhyMeoZQ8kEx9/wxFLEZrLlY9XXLNpeZN+YG57EsVRBDK0+cEINJxBg8iWiB
-	SmF7BRNzi/K1Gsmhvi0gNaqQpllRVMI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778567203;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gGdWoPQ+bTNVcVEUOfkou5v7qcXtSEQgxjBxBCUyGCE=;
-	b=AbmOTUUjK09ClLzW0nEHrosDDhRW9jG/PFYPUs+v8j8pGVWNCOh+lhIWNftofeg6fDoKHJ
-	276r+bzYuDSVm5Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 06DC3593A9;
-	Tue, 12 May 2026 06:26:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Eol4OyHIAmqbAgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 12 May 2026 06:26:41 +0000
-Message-ID: <eb236f5d-e185-418c-9ea1-780e8b1f985b@suse.de>
-Date: Tue, 12 May 2026 08:26:41 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC9835B632;
+	Tue, 12 May 2026 06:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778567438; cv=fail; b=f0QbnGP8yDjQsI+ZxHNrNInDo90S+vqg1ZXW42EgA/FVldb4SSJ9e8kaIvfwooZfll2bXKBa+OmUuCLN4A7Rf2m0Lff+OU+Oi9NP+FcORSp2CnVID2Y6n5gsXIpOp48WNdTce3Q/1Txv7aeF2zzSgmQhsphVNImtWaTZfjCrvAY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778567438; c=relaxed/simple;
+	bh=At2xLHdlap8N/pikDnoueBrBLRyB92jCBMOcBTobJeE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=bo2+dhwOpjQO7MwqTj+qmwTEeQw0NWEFqE7ZVlxkx8JKa2iPvni2uhw44GFae6Ab+wupBL+VJ0UJebFR6jizTv7tCNKaeekllPUtZhaKz3jBLJVS6cB70FLzCNmOMP3BHGK6HdLFjfsWEfusIYfQC6Fl7Kfe70hZA8kLFtWEOuw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=EnwlDz/y; arc=fail smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64C5Xc4G3495136;
+	Tue, 12 May 2026 06:28:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=DerP8h69o
+	YsNwRDazKIotIf9k4jCImsh+nhxxdNVOTw=; b=EnwlDz/ytyvpjEcflA8rAtDgp
+	DkfI4Vwe7cml8e5kWG7pRypLDt1XDZdU5IlwT7B8waohnV9MYL7ajqu3+K/BCS76
+	FD+GQHTWCkZid8KnSSXE5qtNEg36/BhAHzNqWd0mdp3I4dIkp6M3VnKYEjZ64J/L
+	A/vvvu9zEXz7VMIHE+EhfsUzSiG/HPe2E+iXrBnpRUQn0BIj5Hu0JDsGC/NmQcqa
+	EvRwMhlOTnqT8ELUnjjkUbELbUMkd1aVf0+nSymTMeu2F7gU01+5tusKRuTjeeTP
+	3VEoOtb6SwBCU3GMhRNNXp+NcTFyWe118Bq4lkbTREwCaFUxdUj8t9KmA1uAg==
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010048.outbound.protection.outlook.com [52.101.61.48])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4e3nvhrgek-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2026 06:28:34 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HcAuB0mp1LOBq9EFCJjPTm03auQMoUJAg3Qj9m1FKC1yXHJatjolXJ+3AuE6bPZdzgi9bIIY75I5zXmeblMM+One1iUt2he7B7n3gqhkihRZROpl+I7EazeSbUclr56ccRozDNeOxVIwd2nt5gUeE0q97Tuym/0Vo0p0Bi3m3sScUE4b9DYBEAn9klBGAzJir3WstbpgGyKQGMtGCMigJA+omstIpYHdRXnkjnGMHpGJ4MFh3TnoaJUnyGuAwDUEOp2w3Cubk8GgXWexLqlxHJPCYILu40p7B7ireQG8mn03yEXiZIdn/VmOIIfmXMKYyEOJzH7XOGWBOAPoloXZAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DerP8h69oYsNwRDazKIotIf9k4jCImsh+nhxxdNVOTw=;
+ b=ZCzL5oJUTmHmJqHgG0NKVdMDgRD+VbBnsFgzStVXPARdJf5LHk0inLRIWbi7ewUJ4lGr5iN+mWH5rxiB59V6ULANT0pNorpX14CmCWq4nUrEfXsbXb3HD6E39Y9j+Qyz0RsBmQwB4FFG9HCxgGK0anpc/bwI9o7phbVrv9Dq5fLGP3xzfP26Lf1MNOhthHg+4OSI6GfuLFWWMypRIlME8xk9vkzR4M36YuUhrp4xchj/VHpsDtnQulLhSohDKcPmYvUgWcGCVWXZ1C/eLUx7/HFI9e19O8hm6TaG/mg2FtStJXv2Fb1q6owVXruS15qAZI2dylryNt9FTA1lWkFHTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from SJ2PR11MB7546.namprd11.prod.outlook.com (2603:10b6:a03:4cc::8)
+ by PH7PR11MB6723.namprd11.prod.outlook.com (2603:10b6:510:1af::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
+ 2026 06:28:31 +0000
+Received: from SJ2PR11MB7546.namprd11.prod.outlook.com
+ ([fe80::ca9b:dcf:8881:bced]) by SJ2PR11MB7546.namprd11.prod.outlook.com
+ ([fe80::ca9b:dcf:8881:bced%4]) with mapi id 15.20.9891.021; Tue, 12 May 2026
+ 06:28:31 +0000
+From: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>
+To: axboe@kernel.dk, linux-block@vger.kernel.org
+Cc: bigeasy@linutronix.de, bvanassche@acm.org, clrkwllms@kernel.org,
+        rostedt@goodmis.org, ming.lei@redhat.com, muchun.song@linux.dev,
+        mkhalfella@purestorage.com, chris.friesen@windriver.com,
+        linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+        linux-rt-users@vger.kernel.org, stable@vger.kernel.org,
+        ionut_n2001@yahoo.com, sunlightlinux@gmail.com,
+        Ionut Nechita <ionut.nechita@windriver.com>
+Subject: [PATCH v7 0/1] block/blk-mq: use atomic_t for quiesce_depth to avoid lock contention on RT
+Date: Tue, 12 May 2026 09:28:14 +0300
+Message-ID: <20260512062815.10815-1-ionut.nechita@windriver.com>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI1PR04CA0119.eurprd04.prod.outlook.com
+ (2603:10a6:803:f0::17) To SJ2PR11MB7546.namprd11.prod.outlook.com
+ (2603:10b6:a03:4cc::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/loongson: clean up KMS polling on probe failure
-To: Icenowy Zheng <zhengxingda@iscas.ac.cn>, Myeonghun Pak
- <mhun512@gmail.com>, dri-devel@lists.freedesktop.org
-Cc: Sui Jingfeng <suijingfeng@loongson.cn>, Jianmin Lv
- <lvjianmin@loongson.cn>, Qianhai Wu <wuqianhai@loongson.cn>,
- Huacai Chen <chenhuacai@kernel.org>, Mingcong Bai <jeffbai@aosc.io>,
- Xi Ruoyao <xry111@xry111.site>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
-References: <20260511170152.16957-1-mhun512@gmail.com>
- <3ee00ebc4ff5bcf2a8754466f8d9d04b24f81858.camel@iscas.ac.cn>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <3ee00ebc4ff5bcf2a8754466f8d9d04b24f81858.camel@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 21D1051B135
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR11MB7546:EE_|PH7PR11MB6723:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1fe55502-81a7-4255-fbdc-08deafefaf64
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|376014|1800799024|366016|10070799003|11063799003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	9aB+cn5iMTmqq8gYutF3nVAJbNKygC2FRS8HeZk8T+ktA/PJDe9Yr9/+Mkk2YXsnumQ09Y6n1We5xjZgO6AkBAx9hb3P5hnaz3FW8QoUSG3pSrbgwnGQjJv8tvm+ImyaHmElZDVfnbZeU1M8iS+LOrcw0tnxxkphDKWBW9B1hj8W1PoEaw4ySCJF5DvBIhiveoxAQLH5s5UTs2bujEvWO8fhi53eW4l0YHdMyrgk0A8dHqEhr93SRqAu3RmDOv5D8bTWMwcaEwWm8cBLfbiFFhzwnGldoKF+35T/UsSh6FoKayhBnFqVijEONuD4X9NDnpJqiDV1R5A08wtSUIR/b8WsReTeJpLfrLxr3c1HWXpxTVXYsLQwnBBD5Y4SKxCW4yEcNYuxtrqpDsGDyxuPbG89HYQh7u/gi+fyQ867draLl/Q2t/hVsApfHQpWWQCCsk77kx/vHYsOkBfnYE1MRg94CTCeUEpyN0dHjsjplhhdYE03D93N5t6nvFkK042NKp9yNOjTeqClRmBkJgRMvoOdpQO67cayNLhm2CoTH8FTBSAGjo7FbH0iOExMkHygwd2x/S0Fxusg2/kpm4gbsz3EU7H8cBaeIgfTPJqT9MdrIQ+6PBOXoYms00R3v/Il8xGDEn9rgAD1w+2yWDfGJuGO8oqtTjzx4aooyA6pWOTMgLc50H6yrZKJB7XMQ6uI5tHkcmmWo9wVsMbkyj1PqQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB7546.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(1800799024)(366016)(10070799003)(11063799003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?d53MYgr/+s46L9SGZ6R4M3yb4ansBHfH1XOT5fuMT+3or6gmRptBY1lxb+KF?=
+ =?us-ascii?Q?DnXXnWsl2q6sPt56A/uJC+ON7YsuGhZNACjWhit9hHnYGl07oep7Svzv76VQ?=
+ =?us-ascii?Q?6ORw8uvhQuJjtFh/C+/9KJAyAvj8eVR5G4w+BoT+sQAuTMfef8apcejypzT4?=
+ =?us-ascii?Q?B5RMgizeEXlV13XRyEUa/VfsZc0wN2cfxz0dZqKkIp0xzItZ+uyayT4NnVD3?=
+ =?us-ascii?Q?BVkVkG5TFaUpiTZJpDS7u4eVj3s+erIeJWaqbFyndyMcAr7h09dWF39Gj8bR?=
+ =?us-ascii?Q?QdgefHCNgVPd6lTiqAdXKkniUT7I4Nt/SOVchkXuMxswaynkD4C/x8SZ41Vt?=
+ =?us-ascii?Q?TOXyPWqUQBKgp+0UKdyuw9Z59nPN+3xjrS/5CMMNoC6kNtr6N3zgXdo/l3K7?=
+ =?us-ascii?Q?V6sY/ySLGauc/7CIw790yN2I9NwwKTeNuMyrCKDdEQrXuOAQtfSYJsQqEnfL?=
+ =?us-ascii?Q?8q1LgTlGc2hPMCln/FbhyVZCXuWJivF1cNE9WRlakQh6WBqyzj1W+gqMQ2U0?=
+ =?us-ascii?Q?NlWs3A2Yo3cjXNnFHtkZWO0Kgt2FLEKBxoOk5EjWRpvtNhMX1nZ8J+LsgjjE?=
+ =?us-ascii?Q?555BUkwiAhrNI+5HeTODYsA6SekvN0pd2Slhzx6Rzz2yHr6e4xNsf83kJbwa?=
+ =?us-ascii?Q?og9rbO0AATXlrZN9CIGlBPjf9pAiPWEYf2A4OfiuZD6tBfXylKIRd2GBRD22?=
+ =?us-ascii?Q?Ofax1FJVRoR3YbZOMVfFWw1cOSlw5EO6J9n5SIu+JEOBlKmNXKUTWlTniggc?=
+ =?us-ascii?Q?TWWXd1Re/bOJ5RRHLp4LOLvyMkic+iXP3Dk3IkS1xDKuoqOogYYHtu1EhgGD?=
+ =?us-ascii?Q?v0HoAqlB7/jKUhWnceb19UBqKfOtkA42B2Ndg5t2533AXCYllHFSjcAfn+Uy?=
+ =?us-ascii?Q?xZFs8Ypq7612zobji7DWnHnt6zsIzxiSjaKAcOTDqXiq45EtUnP3mpAvTNhX?=
+ =?us-ascii?Q?QNbefzQ2f/ZAZd74GW6Z/DTRx4UF71iB+QyqLPO+nOEzXomvB/XlfwGczvjg?=
+ =?us-ascii?Q?bgnMeSuNhIa+Q75JwQR8gpmi4xsrpsQhDDPeTvMxRG4DaD9v2YTAsjD+Nv7C?=
+ =?us-ascii?Q?7qt8c25l8iydM+kCa6+1a1epv/eNtC/bK1RKNV/16HsXbrKA+9ik61w5gvYK?=
+ =?us-ascii?Q?78oe6I9ykF79L9fLACOaRbxa5+AyUWkFXt1IlcIZFGgPhsEX6KK/0AI6HBkH?=
+ =?us-ascii?Q?hXu5DXqDYnJAc3Bumc5hhq4+of1R7gTRHlJsh2FQnQ1vWf93eRGozBIli/N4?=
+ =?us-ascii?Q?Id/719xv2rHQCoT2/iLw1igi34FKGtjGOTZU8Bt+RlfEDloFo3cE77Ue3pYg?=
+ =?us-ascii?Q?LksnOMuY1/mbdi9YUaURLMlqEirRW6OoagKCwBded4d5mpilQtkoRvC/BYB5?=
+ =?us-ascii?Q?NSPBSoxfYZVbBFa0MDaJyMEplTr6JOmTCldC3LSSo67UFVEv6+5rWr/Vd7GR?=
+ =?us-ascii?Q?GOr8qK/ZIq4qYeL7nybycwdpIKucLJ/fNudz2JU0kAuUTdRdxFxqmXc3sITc?=
+ =?us-ascii?Q?ZOeq7MtRKH2w96zdDOBeEIwmEXDprac1lvdEYIRTenV3hqhYstSf5pTULSqq?=
+ =?us-ascii?Q?tfxw64TXeuCZd9667CboU+EQ6BLLE7u2lxfBQknJ7UuTuW9ig9mRZA7/gNmL?=
+ =?us-ascii?Q?T/C5Lxm24DEFJd/ELjejWXbMilDMEgFtYeeyfql/WtmmmVwZQ1JvhhiLUnrd?=
+ =?us-ascii?Q?oz8xaCphRVD9ELeU8DSayZMCoexbyin33fmRecLFb5cWJcUU8l2Ru0Q6CSBV?=
+ =?us-ascii?Q?HNt7hJuYzTqimifGtev54QAowY6p3/0avHTHdCXdezJ5oijrrT7k0n7BRn/i?=
+X-MS-Exchange-AntiSpam-MessageData-1: QWR2IxS3LJuKoODrINECOVuM7wIo9hpRQ7k=
+X-Exchange-RoutingPolicyChecked:
+	LDXvC/dJjDa6RHwlkNPjRf417RKNrEku6ADfORYZbgDamJGecqYjCOx6zXtfcQuPR+LLI0KWfrG4qkHVdUtfuOVmp+3OF7pG0Fd7SVM2FqeWAK4BCmx/7WQymQLVa+rXmInkIfjURyr8g1Co2F2NGG+iXtJiVE/i/RgpLZJWfQhlEYfKvJky97Hq+mnNuqRGdkxxPjTeTKdwIYnObTuMKeAIwBA+Yld2gTYc0yV+rSq+7ZAlLB/GhkUffc+eKxG4y6n6brzPcDtrhuSZY0wCndLfjjTsLaRRyy0uBn0FqUP87vOpgrhPMEvSBUNEYxfDT7IJW1/a2cWnAaZAWIDh/Q==
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1fe55502-81a7-4255-fbdc-08deafefaf64
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7546.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 06:28:31.1025
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /kSLantPCUupsXeZY/h3IVy8ZJCRo/YsYWVxNDxTfEblzyAk7+m+kCUjVYSdOysYw+mXx0yumJ2tKYdkXPf/xRbeCc8bVwT48UI4rzH3V9M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6723
+X-Proofpoint-GUID: rzU6iQnX_fRV9JE4wt6NbzZLBnYo4oSy
+X-Proofpoint-ORIG-GUID: rzU6iQnX_fRV9JE4wt6NbzZLBnYo4oSy
+X-Authority-Analysis: v=2.4 cv=b4mCJNGx c=1 sm=1 tr=0 ts=6a02c892 cx=c_pps
+ a=MmwiYf2CWIeG5bfvH5NISQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=bi6dqmuHe4P4UrxVR6um:22 a=klDOsUkWDRETUCZYPvoE:22 a=VwQbUJbxAAAA:8
+ a=t7CeM3EgAAAA:8 a=sDdoM26yXg4Nh-bVvhEA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDA2MSBTYWx0ZWRfX71ir4thUa67A
+ XMrHUxfwFw/FWJJWFS9HXuDFQy4bBbBDzw/ojHHW06/zXWiIVkcsfhSQAq+SF6DhGkcIF5//wEr
+ ZD7nEj24jgSV1fHIMWARt6zev7uXjNZ6wcZ+3XKupVS2Vr6VdJKW9lots6SBK6DcPAEqX1lGEqT
+ 9p+vIAzJCAYnL6DJ0bBwtMOUYsPjjf1JNZSiDcCLN9QD0/6iUl3Ly4YSyuds4CHdTZ3jzFh6/AX
+ hsdaNrnNL/gJOhBMdKR437weHn/Oa386ZvLr97LhIjw8TMDOF9lPDNeL3e9CuXljy+bDHZeFqZX
+ BS5z/SQtQH4ZsKIxJoyN9wHGTTaFcrk4bLVEDwUUIP0TV8IhczXIaiTdzFi2xcP7tv8mYyWwtgm
+ 0eCm3HXX/YBN2WVV3FEZiyTaqRFZkzUp8LUAoNbN47obT7r6Bpb7UrfyFR3xZP0m/WW1wfR78Vp
+ 1/GL7k/+XatKOJBibyg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ suspectscore=0 impostorscore=0 bulkscore=0 malwarescore=0 adultscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605050000
+ definitions=main-2605120061
+X-Rspamd-Queue-Id: CD8F651B1E0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[windriver.com,reject];
+	R_DKIM_ALLOW(-0.20)[windriver.com:s=PPS06212021];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[loongson.cn,kernel.org,aosc.io,xry111.site,linux.intel.com,gmail.com,ffwll.ch,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-245394-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[iscas.ac.cn,gmail.com,lists.freedesktop.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_CC(0.00)[linutronix.de,acm.org,kernel.org,goodmis.org,redhat.com,linux.dev,purestorage.com,windriver.com,vger.kernel.org,lists.linux.dev,yahoo.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245396-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ionut.nechita@windriver.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[windriver.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,windriver.com:email,windriver.com:mid,windriver.com:dkim];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:mid,suse.de:dkim,suse.com:url]
+	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-Hi
+From: Ionut Nechita <ionut.nechita@windriver.com>
 
-Am 11.05.26 um 19:22 schrieb Icenowy Zheng:
-> 在 2026-05-12二的 02:01 +0900，Myeonghun Pak写道：
->> lsdc_pci_probe() initializes KMS polling before setting up vblank
->> support,
->> requesting the IRQ and registering the DRM device. If any of those
->> later
->> steps fails, probe returns without finalizing polling. The remove
->> path has
->> the same lifetime gap when tearing down a successfully registered
->> device.
->>
->> Route those probe failures through a poll cleanup label. Also
->> finalize
->> polling from remove before unregistering the DRM device.
-> Interesting, but it looks like a `drmm_kms_helper_poll_init` function
-> exists (while rarely used).
->
-> Maybe it's better to switch to this? Or maybe there's some reason not
-> to use this?
+Hi Jens,
 
-Agreed. DRM drivers are advised to use managed cleanup for their data 
-structures. So rather switch to drmm_kms_helper_poll_init(). That also 
-resolves the problem that loongson never calls poll_fini on regular 
-removals.
+This is v7 of the fix for the PREEMPT_RT performance regression caused by
+commit 6bda857bcbb86 ("block: fix ordering between checking
+QUEUE_FLAG_QUIESCED request adding").
 
-Best regards
-Thomas
+Changes since v6 (May 6):
+- Reader-side barrier in blk_mq_run_hw_queue() changed from smp_rmb() to
+  smp_mb().  The race closed by commit 6bda857bcbb86 is a store-buffer
+  pattern: one CPU inserts a request and then reads the quiesce state,
+  another CPU unquiesces and then reads "has pending work".  A full
+  barrier is needed on *both* sides, not just a read barrier on the
+  reader, so smp_mb() now pairs with the existing writer-side
+  smp_mb__after_atomic().  Thanks to Bart Van Assche for pointing out
+  that smp_rmb() was insufficient.
+- Rewrote the in-code comments and the commit message to spell out which
+  ordering the removed q->queue_lock acquisitions provided and how it is
+  preserved:
+    * blk_mq_quiesce_queue_nowait(): the lock only published the state
+      change; the actual visibility/drain guarantee comes from the
+      synchronize_srcu()/synchronize_rcu() in blk_mq_wait_quiesce_done()
+      that every caller invokes.  The smp_mb__after_atomic() is kept so
+      the helper stays self-contained for the few callers that defer
+      that wait.
+    * blk_mq_unquiesce_queue(): write side of the store-buffer pattern,
+      a full barrier between the quiesce_depth store and the
+      blk_mq_hctx_has_pending() load (atomic_dec_if_positive() already
+      orders the decrement on success; the barrier is spelled out for
+      clarity).
+    * blk_mq_run_hw_queue(): read side, a full barrier between the
+      request insert and the quiesce-state re-check.
+- Also note in the changelog that this is the memory-barrier alternative
+  commit 6bda857bcbb86's own changelog described (and rejected as
+  "harder to maintain"), and that making quiesce_depth atomic_t turns
+  the lockless blk_queue_quiesced() read into a clean atomic load
+  instead of a plain-int read racing with a spin_lock-protected update.
+- Rebased on linux-next (next-20260505).  No other code changes; the
+  atomic_t conversion and removal of QUEUE_FLAG_QUIESCED are unchanged
+  from v6.
 
->
-> Thanks,
-> Icenowy
->
->> This issue was identified during our ongoing static-analysis research
->> while
->> reviewing kernel code.
->>
->> Fixes: f39db26c5428 ("drm: Add kms driver for loongson display
->> controller")
->> Cc: stable@vger.kernel.org
->> Co-developed-by: Ijae Kim <ae878000@gmail.com>
->> Signed-off-by: Ijae Kim <ae878000@gmail.com>
->> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
->> ---
->>   drivers/gpu/drm/loongson/lsdc_drv.c | 11 ++++++++---
->>   1 file changed, 8 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/loongson/lsdc_drv.c
->> b/drivers/gpu/drm/loongson/lsdc_drv.c
->> index abf5bf68ee..3db1f8690a 100644
->> --- a/drivers/gpu/drm/loongson/lsdc_drv.c
->> +++ b/drivers/gpu/drm/loongson/lsdc_drv.c
->> @@ -297,7 +297,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev,
->> const struct pci_device_id *ent)
->>   	if (loongson_vblank) {
->>   		ret = drm_vblank_init(ddev, descp->num_of_crtc);
->>   		if (ret)
->> -			return ret;
->> +			goto err_poll_fini;
->>   
->>   		ret = devm_request_irq(&pdev->dev, pdev->irq,
->>   				       descp->funcs->irq_handler,
->> @@ -305,7 +305,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev,
->> const struct pci_device_id *ent)
->>   				       dev_name(&pdev->dev), ddev);
->>   		if (ret) {
->>   			drm_err(ddev, "Failed to register interrupt:
->> %d\n", ret);
->> -			return ret;
->> +			goto err_poll_fini;
->>   		}
->>   
->>   		drm_info(ddev, "registered irq: %u\n", pdev->irq);
->> @@ -313,17 +313,22 @@ static int lsdc_pci_probe(struct pci_dev *pdev,
->> const struct pci_device_id *ent)
->>   
->>   	ret = drm_dev_register(ddev, 0);
->>   	if (ret)
->> -		return ret;
->> +		goto err_poll_fini;
->>   
->>   	drm_client_setup(ddev, NULL);
->>   
->>   	return 0;
->> +
->> +err_poll_fini:
->> +	drm_kms_helper_poll_fini(ddev);
->> +	return ret;
->>   }
->>   
->>   static void lsdc_pci_remove(struct pci_dev *pdev)
->>   {
->>   	struct drm_device *ddev = pci_get_drvdata(pdev);
->>   
->> +	drm_kms_helper_poll_fini(ddev);
->>   	drm_dev_unregister(ddev);
->>   	drm_atomic_helper_shutdown(ddev);
->>   }
+Sebastian's Reviewed-by is carried over: the approach (atomic counter +
+barrier instead of the spinlock) is the one he suggested and reviewed;
+the only functional change in v7 is upgrading the reader-side barrier to
+a full one.
+
+Changes since v5 (Mar 3):
+- Rewrote the memory-ordering comments per Bart Van Assche's review.
+- Rebased on top of linux-next.  No code-generation changes.
+
+The problem: on PREEMPT_RT, the spinlock_t q->queue_lock that commit
+6bda857bcbb86 added to blk_mq_run_hw_queue() converts to a sleeping
+rt_mutex.  blk_mq_run_hw_queue() runs from every MSI-X IRQ thread and
+hits that lock on the common "nothing pending" path, so all IRQ threads
+serialise and go to D-state.  On a Broadcom/LSI MegaRAID 12GSAS/PCIe
+Secure SAS39xx (megaraid_sas, 128 MSI-X vectors, 120 hw queues),
+throughput drops from 640 MB/s to 153 MB/s.
+
+The fix takes the memory-barrier alternative and folds the quiesce
+indicator into quiesce_depth itself: quiesce_depth becomes atomic_t,
+QUEUE_FLAG_QUIESCED goes away, and no lock is left on the dispatch hot
+path.
+
+v6: https://lore.kernel.org/linux-block/cover.1778048987.git.ionut.nechita@windriver.com/
+
+Ionut Nechita (1):
+  block/blk-mq: use atomic_t for quiesce_depth to avoid lock contention
+    on RT
+
+ block/blk-core.c       |  1 +
+ block/blk-mq-debugfs.c |  1 -
+ block/blk-mq.c         | 69 ++++++++++++++++++++++++++----------------
+ include/linux/blkdev.h |  9 ++++--
+ 4 files changed, 50 insertions(+), 30 deletions(-)
 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
+2.54.0
 
 
