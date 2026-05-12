@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCq4GuREA2ri2QEAu9opvQ
-	(envelope-from <stable+bounces-245783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:19:00 +0200
+	id KMnYCKBEA2ri2QEAu9opvQ
+	(envelope-from <stable+bounces-245786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:17:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E955237C6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:18:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A8B523750
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E563630D63B0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:24:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0635F31DD63C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBC7360EE7;
-	Tue, 12 May 2026 14:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4CD3A4278;
+	Tue, 12 May 2026 14:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5VcPB+/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRL5uofY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF3B30674C
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E8F39AD34
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778595863; cv=none; b=fVKt5meQrmdNC1whhgTHdMsRNJPpEPcRaVgpRlaSAcTgr1zMOzWybkYe6rGFzeOmBRQwZQWie+V6nO4MzKGlhPhx2FGk1DVFspiXelJFXWoapMXuENEUP6jF2GQe0jHR3AElPSqHzeieucR+N9WltB5v/L3jqWQDKwv5omlxN+c=
+	t=1778595870; cv=none; b=bXIhkSrzNMwM3WB/f/+ihsvEJN4WQxfr6dnfC//kd8ALSpYRWfB8mkMVy9mjpevcKWCMXwryXIaa7wQfrvQ3e+c8LHpmI+v2BAWMmdOpMaPFgnQ4oV2k8RPh/Qs195rY1uLtgb7kKUBdtiH/GtiSDmOqOUX6BUFWmJcfWx/lQZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778595863; c=relaxed/simple;
-	bh=YEzkWmkGXIgxIPinRqqDUSJMk59Wywe5n+YyCQlLtOo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pcCZ/gM3wdeONzw/0xidwgWEUrunTbw7OMToa6TJlwim5nrCoNWDjebUzaU0ocBulwQSvOMQFmL0g8we7s7LT4yGxLtuBImyFV78vli0tkYEVHMiIfBiZNu1G+br5b4vZs3U7ljrtFuYvA9KGJ9OBr2+xuOmaE2QyiYJAH+H3OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5VcPB+/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4E0C2BCB0;
-	Tue, 12 May 2026 14:24:22 +0000 (UTC)
+	s=arc-20240116; t=1778595870; c=relaxed/simple;
+	bh=CVj7FZHKgNs95Yb0m2XhJxyv8GrYa+fHQX6TrBMULmY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mH8j8rIxttuzAPrAcpR+9qnzl3+x71Uw3arjFWr18Wua4yJDWO4wMTr5VaUYvLOXY0ZeuRloGi0q5gSVhXZiwvpWAbPtt9WnfbTaCzO6F7P4BhiWzJ7cQ9vMsvpPHVZVU53pitL4YxGTB3zPaAX3RAH41bK5BYmVP78n/nare0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRL5uofY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1831CC2BCB0;
+	Tue, 12 May 2026 14:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778595862;
-	bh=YEzkWmkGXIgxIPinRqqDUSJMk59Wywe5n+YyCQlLtOo=;
+	s=korg; t=1778595870;
+	bh=CVj7FZHKgNs95Yb0m2XhJxyv8GrYa+fHQX6TrBMULmY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=i5VcPB+/tMmtcbHYMgnmjQcFpr16ndjOO1P6qLeupFxfdydbB1lTZZTHuA8ugsMgl
-	 zNmqk7Qyw+GjFJVikZ/uZmu+gei3CFOiFBcBHU6cpytG/I+4UXefz2vjQcQhsaskXn
-	 RHwrBxEfo4SyybeL0C6kM9PZ1gY9g97hxQAeR13Q=
-Subject: FAILED: patch "[PATCH] f2fs: fix fsck inconsistency caused by FGGC of node block" failed to apply to 6.1-stable tree
+	b=RRL5uofYDv+IG+QeN6vSKEpDsXJSkljWz6S3hAu7O16RTRbYTa5WEiqRv7IaozCxV
+	 ldoPfmvCS4XpoI3/Xj+HdVdQwFphp7xt+aWVMnGH9McEE1qgX54+QnL9bDatRP/TDF
+	 AX0lT1VdzSWthCeAF2tlI5SOkYe3LoS2GXK42ad0=
+Subject: FAILED: patch "[PATCH] f2fs: fix fsck inconsistency caused by FGGC of node block" failed to apply to 5.15-stable tree
 To: yangyongpeng@xiaomi.com,chao@kernel.org,jaegeuk@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 16:24:17 +0200
-Message-ID: <2026051217-shortlist-cartwheel-01b0@gregkh>
+Date: Tue, 12 May 2026 16:24:18 +0200
+Message-ID: <2026051218-sixtyfold-reversion-7131@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,19 +54,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 05E955237C6
+X-Rspamd-Queue-Id: A2A8B523750
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245783-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245786-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -80,26 +80,26 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vm:email,xiaomi.com:email,linuxfoundation.org:dkim,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x c3e238bd1f56993f205ef83889d406dfeaf717a8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051217-shortlist-cartwheel-01b0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051218-sixtyfold-reversion-7131@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
