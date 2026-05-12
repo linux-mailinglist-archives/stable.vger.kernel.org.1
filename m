@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-246608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJ2LJiBuA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:56 +0200
+	id 6OaIJSBwA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF5D527203
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4473C5277AF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B007530623DB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:14:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4442312B2BC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490F937F742;
-	Tue, 12 May 2026 18:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB8837F8D9;
+	Tue, 12 May 2026 18:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2IBCq/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqnkZdp9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC8036F900;
-	Tue, 12 May 2026 18:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE4F36C5A1;
+	Tue, 12 May 2026 18:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609659; cv=none; b=nvefVgAnnamvcdZhxOkyAKAQgGwcQGyP+mFJaN6nDohhy+7DwOCMk/m0lEPxYMV1ZKb0LyAQTc3l1HjCCSCjT2qBfmIf7GvKloaXiRU8Wwf/oW4SeLeLUv1Yj52rsLJVyesIHC8EQObdpKP7DAMYPHrT4qfkpBbzat0a4+5oKxI=
+	t=1778609661; cv=none; b=gCOxpH55XxbSlWkWQlfo6trLN26h2E6Tef54B/5hUXKMPsrOn6XSBEzhPFCZ7I9bdJegZAlrSNtQRcut03JudPlNRf3koKz70OKYsQV42uR3bApJ1fmDg087T6Kt1WPz6xXJmHDkgR8dPwYritWjY3P1vIvEnh4plxtsHak+j7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609659; c=relaxed/simple;
-	bh=fTvcUXzVRUbbO5Xu5X2a/BYfvOgKtfdthbQaj4nsjwE=;
+	s=arc-20240116; t=1778609661; c=relaxed/simple;
+	bh=19SpEmfWLHt0eMtdknSRlLQwQL2Qft35cSDYs+9GC6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1cW6QU6Sy9ccV2XBhUsxTyyLwqmv2Yy7CldYayN0Wcs6SV3MCdhZz/darDOYbGTLbkDtaNIUX7y72LYZS6uQXn4s4pv10PZFBQeuhO9zdBjeIATmd44p5wD+LVpb78WxhjkpXp3H9vvCvQMKXixrIeFjjQXSJEZYUwLiDThrfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2IBCq/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9903CC2BCFA;
-	Tue, 12 May 2026 18:14:18 +0000 (UTC)
+	 MIME-Version; b=erCcYpHMhHQsVxvkme1Sb+GeuUmyGUqJPkYdS4nrhRtxsxIfZq59YgYWathhjQgM/aDesZqvxZnLyytDpUZEdNMl4jSmKyO7B3ImSQqZFvUuWvtI/4/DzlQW8sjGE5hNF80Y3hDQ6xWQWHo/uClSydHoSzyhqUdW25nDQuVLZec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqnkZdp9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28142C2BCF5;
+	Tue, 12 May 2026 18:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609658;
-	bh=fTvcUXzVRUbbO5Xu5X2a/BYfvOgKtfdthbQaj4nsjwE=;
+	s=korg; t=1778609661;
+	bh=19SpEmfWLHt0eMtdknSRlLQwQL2Qft35cSDYs+9GC6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X2IBCq/tcyE45tXHgy9Ig+DahXYCGSD7NNUyVq99x4YVr4wdi+QCkQG9AoYwh6DuW
-	 3CCOM6mr4CVL/Axm+qMLax7niylTEwPTXnN6pQKdMoh10PF0XSwkuqGEqhLPebsQzD
-	 HAwOrlF83Om4byd+PzRcHI7o+S7GAUacyrl9oJ9A=
+	b=PqnkZdp9lWjeqk9zJyhjUaKmnT4455XKgMY3CS+OEf86r5wQyRvyE1L7YU62wlfFv
+	 SMwa3CuS5/PJgxwpappOLRZlj0m3p7QghyoaoxqK/mgvt32UdLDji8+fIM7jMdrnxS
+	 3NT7DHFjWcNafOJ2De4JludOVO8tBkeRk/ci722s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Perret <qperret@google.com>,
 	Fuad Tabba <tabba@google.com>,
 	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 7.0 280/307] KVM: arm64: Fix initialisation order in __pkvm_init_finalise()
-Date: Tue, 12 May 2026 19:41:15 +0200
-Message-ID: <20260512173946.037377996@linuxfoundation.org>
+Subject: [PATCH 7.0 281/307] KVM: arm64: Fix FEAT_SPE_FnE to use PMSIDR_EL1.FnE, not PMSVer
+Date: Tue, 12 May 2026 19:41:16 +0200
+Message-ID: <20260512173946.058169151@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
 References: <20260512173940.117428952@linuxfoundation.org>
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6FF5D527203
+X-Rspamd-Queue-Id: 4473C5277AF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246608-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246609-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,67 +88,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Perret <qperret@google.com>
+From: Fuad Tabba <tabba@google.com>
 
-commit 5bb0aed57ba944f8c201e4e82ec066e0187e0f85 upstream.
+commit 08d715338287a1affb4c7ad5733decef4558a5c8 upstream.
 
-fix_host_ownership() walks the hypervisor's stage-1 page-table to
-adjust the host's stage-2 accordingly. Any such adjustment that
-requires cache maintenance operations depends on the per-CPU hyp
-fixmap being present. However, fix_host_ownership() is currently
-called before fix_hyp_pgtable_refcnt() and hyp_create_fixmap(), so
-the fixmap does not yet exist when it runs.
+FEAT_SPE_FnE is architecturally detected via PMSIDR_EL1.FnE [6], not
+ID_AA64DFR0_EL1.PMSVer. The FEAT_X macro form (register, field, value)
+cannot encode a PMSIDR_EL1-based feature, so FEAT_SPE_FnE was defined
+identically to FEAT_SPEv1p2 (ID_AA64DFR0_EL1, PMSVer, V1P2), producing
+a duplicate that used PMSVer >= V1P2 as a proxy.
 
-This is benign today because the host stage-2 starts empty and no
-CMOs are needed, but it becomes a latent crash as soon as
-fix_host_ownership() is extended to operate on a non-empty
-page-table.
+Replace the macro with feat_spe_fne(), following the same pattern as
+the sibling feat_spe_fds(): guard on FEAT_SPEv1p2 and read
+PMSIDR_EL1.FnE [6] directly. Wire the two NEEDS_FEAT consumers to use
+the new function.
 
-Reorder the calls so that fix_hyp_pgtable_refcnt() and
-hyp_create_fixmap() complete before fix_host_ownership() is invoked.
+Remove the now-unused FEAT_SPE_FnE macro.
 
-Fixes: 0d16d12eb26e ("KVM: arm64: Fix-up hyp stage-1 refcounts for all pages mapped at EL2")
-Signed-off-by: Quentin Perret <qperret@google.com>
+Fixes: 63d423a7635b ("KVM: arm64: Switch to table-driven FGU configuration")
 Signed-off-by: Fuad Tabba <tabba@google.com>
-Link: https://patch.msgid.link/20260424084908.370776-7-tabba@google.com
+Link: https://patch.msgid.link/20260424084908.370776-4-tabba@google.com
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/hyp/nvhe/setup.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/kvm/config.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kvm/hyp/nvhe/setup.c
-+++ b/arch/arm64/kvm/hyp/nvhe/setup.c
-@@ -312,15 +312,15 @@ void __noreturn __pkvm_init_finalise(voi
- 	};
- 	pkvm_pgtable.mm_ops = &pkvm_pgtable_mm_ops;
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -131,7 +131,6 @@ struct reg_feat_map_desc {
+ 	}
  
--	ret = fix_host_ownership();
-+	ret = fix_hyp_pgtable_refcnt();
- 	if (ret)
- 		goto out;
+ #define FEAT_SPE		ID_AA64DFR0_EL1, PMSVer, IMP
+-#define FEAT_SPE_FnE		ID_AA64DFR0_EL1, PMSVer, V1P2
+ #define FEAT_BRBE		ID_AA64DFR0_EL1, BRBE, IMP
+ #define FEAT_TRC_SR		ID_AA64DFR0_EL1, TraceVer, IMP
+ #define FEAT_PMUv3		ID_AA64DFR0_EL1, PMUVer, IMP
+@@ -301,6 +300,16 @@ static bool feat_spe_fds(struct kvm *kvm
+ 		(read_sysreg_s(SYS_PMSIDR_EL1) & PMSIDR_EL1_FDS));
+ }
  
--	ret = fix_hyp_pgtable_refcnt();
-+	ret = hyp_create_fixmap();
- 	if (ret)
- 		goto out;
- 
--	ret = hyp_create_fixmap();
-+	ret = fix_host_ownership();
- 	if (ret)
- 		goto out;
- 
++static bool feat_spe_fne(struct kvm *kvm)
++{
++	/*
++	 * Revisit this if KVM ever supports SPE -- this really should
++	 * look at the guest's view of PMSIDR_EL1.
++	 */
++	return (kvm_has_feat(kvm, FEAT_SPEv1p2) &&
++		(read_sysreg_s(SYS_PMSIDR_EL1) & PMSIDR_EL1_FnE));
++}
++
+ static bool feat_trbe_mpam(struct kvm *kvm)
+ {
+ 	/*
+@@ -536,7 +545,7 @@ static const struct reg_bits_to_feat_map
+ 		   HDFGRTR_EL2_PMBPTR_EL1	|
+ 		   HDFGRTR_EL2_PMBLIMITR_EL1,
+ 		   FEAT_SPE),
+-	NEEDS_FEAT(HDFGRTR_EL2_nPMSNEVFR_EL1, FEAT_SPE_FnE),
++	NEEDS_FEAT(HDFGRTR_EL2_nPMSNEVFR_EL1, feat_spe_fne),
+ 	NEEDS_FEAT(HDFGRTR_EL2_nBRBDATA		|
+ 		   HDFGRTR_EL2_nBRBCTL		|
+ 		   HDFGRTR_EL2_nBRBIDR,
+@@ -604,7 +613,7 @@ static const struct reg_bits_to_feat_map
+ 		   HDFGWTR_EL2_PMBPTR_EL1	|
+ 		   HDFGWTR_EL2_PMBLIMITR_EL1,
+ 		   FEAT_SPE),
+-	NEEDS_FEAT(HDFGWTR_EL2_nPMSNEVFR_EL1, FEAT_SPE_FnE),
++	NEEDS_FEAT(HDFGWTR_EL2_nPMSNEVFR_EL1, feat_spe_fne),
+ 	NEEDS_FEAT(HDFGWTR_EL2_nBRBDATA		|
+ 		   HDFGWTR_EL2_nBRBCTL,
+ 		   FEAT_BRBE),
 
 
 
