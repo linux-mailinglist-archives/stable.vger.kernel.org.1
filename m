@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-246076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGFJNw5rA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246076-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:50 +0200
+	id +IduNH1uA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:16:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 618685268BB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE93527335
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 829E431BA310
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E7E2031491E6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A4A3955CC;
-	Tue, 12 May 2026 17:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0062C351C25;
+	Tue, 12 May 2026 18:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWK16DQS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFEEcgJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A553955C8;
-	Tue, 12 May 2026 17:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B695F349AF5;
+	Tue, 12 May 2026 18:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608296; cv=none; b=AJ7XBiGEBBmTvO/cEjw/cPISvwDw+4GqAPfsUnRRub1++aNQPaOCRfU2I3IB+54na+OgQwXyxC2sI9AoZssmuDMRJ7xmWaq1/ZwBHZahUIEyPa/YxX9l2Fv4lM1AnG8n5FmSx14c8n6+xVP1C1BQlnm2mb4v9FKGVGp3Y+BVuCE=
+	t=1778609120; cv=none; b=n3sOJeL3toaiIZvJkG4Uh1tXKa+L8w6lEplYMqHNt9Ws0KPsEOUVtVUa2DNce/Frq2UCjOWdzHwPCA3pi9P1yY82WU2SjJJGchTrMryZpp4tQJySdA3Ipkfu93wXMe1m0LFcCm0uWdkrR6kurUVxUctw+xQ2Y5zR+Tyc1ehkxcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608296; c=relaxed/simple;
-	bh=N4mg2tnzaBMVjclYoKN3C4bWj2VFTUkC9M1FpiWovBQ=;
+	s=arc-20240116; t=1778609120; c=relaxed/simple;
+	bh=hwlyQ/iOFcEwDOe6Rn4lJQpYefUEaUHQaCtai2q2OdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLzbjfiJxJFBoz+/icURUCz31H7Xbfh5wCZIUy57IVj60+h1qzsFtBTH50ewKm94hvuTX0g4QWbYa3sEVYpqXU/Lqgl4s8IDG1bR+kQtrhKl5yFfW0/5OcLwyFgMbZBdnG680jFPDaTMJnlcd14e7z7SzaSSB9FPMNmx2TbqqS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWK16DQS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E196EC2BCB0;
-	Tue, 12 May 2026 17:51:35 +0000 (UTC)
+	 MIME-Version; b=F+yQjMeV+eG7YggZf505GwFvNS9XmqGoEzVGL4TqO571XRMYSYQrXKZV5gaKThU5P5RNR4HpMT5fPzzEAMl+HIG8mnxYr9ps1mFOPNrSshdF16pBKXFmJLimEaiL6vDtf5xDd9CmJ1EvRh7yR/7djeUkHC8ILIxOOiBukq4rCjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFEEcgJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D40FC2BCC7;
+	Tue, 12 May 2026 18:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608296;
-	bh=N4mg2tnzaBMVjclYoKN3C4bWj2VFTUkC9M1FpiWovBQ=;
+	s=korg; t=1778609120;
+	bh=hwlyQ/iOFcEwDOe6Rn4lJQpYefUEaUHQaCtai2q2OdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VWK16DQStcZMegeVwLbJbjKAj2azcO7ogNALAoJ0nwxmlZJ2qotBms9tQdQsdB0+7
-	 JnJ4+wZzpMOU8lzTxGHvzWc4yb9tCoYeAJqdGZdE0L6phsCCRhbCQZFGyea4OJ8lUD
-	 XUg6nHi1fQuny6/V/B1bxfyBmJfS9RnyCIoXrsj0=
+	b=tFEEcgJf3Aico3KFj3PaOFq8oNHLMzSy6n8ZGNRunn4uHyU3N/RmTfx5NuEaOCBJl
+	 wqjmfjcz9YId+O8KfRT6vMX6DL0/cwxfN/E/McZDCvT1mBkDUwO6z91s51CcB0ysEc
+	 6beYAGZDhLXAx04BUKk+mveeeNhF14JmCFykPMKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manas <ghandatmanas@gmail.com>,
-	Rakshit Awasthi <rakshitawasthi17@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 024/270] net/sched: sch_red: Replace direct dequeue call with peek and qdisc_dequeue_peeked
-Date: Tue, 12 May 2026 19:37:05 +0200
-Message-ID: <20260512173938.965100520@linuxfoundation.org>
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 7.0 031/307] wifi: mac80211: remove station if connection prep fails
+Date: Tue, 12 May 2026 19:37:06 +0200
+Message-ID: <20260512173940.782841316@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,113 +63,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 618685268BB
+X-Rspamd-Queue-Id: 6DE93527335
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-246076-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-246397-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 458d5615272d3de535748342eb68ca492343048c upstream.
+commit 283fc9e44ff5b5ac967439b4951b80bd4299f4e4 upstream.
 
-When red qdisc has children (eg qfq qdisc) whose peek() callback is
-qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
-qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
-its child (red in this case), it will do the following:
- 1a. do a peek() - and when sensing there's an skb the child can offer, then
-     - the child in this case(red) calls its child's (qfq) peek.
-        qfq does the right thing and will return the gso_skb queue packet.
-        Note: if there wasnt a gso_skb entry then qfq will store it there.
- 1b. invoke a dequeue() on the child (red). And herein lies the problem.
-     - red will call the child's dequeue() which will essentially just
-       try to grab something of qfq's queue.
+If connection preparation fails for MLO connections, then the
+interface is completely reset to non-MLD. In this case, we must
+not keep the station since it's related to the link of the vif
+being removed. Delete an existing station. Any "new_sta" is
+already being removed, so that doesn't need changes.
 
-[   78.667668][  T363] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
-[   78.667927][  T363] CPU: 1 UID: 0 PID: 363 Comm: ping Not tainted 7.1.0-rc1-00033-g46f74a3f7d57-dirty #790 PREEMPT(full)
-[   78.668263][  T363] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[   78.668486][  T363] RIP: 0010:qfq_dequeue+0x446/0xc90 [sch_qfq]
-[   78.668718][  T363] Code: 54 c0 e8 dd 90 00 f1 48 c7 c7 e0 03 54 c0 48 89 de e8 ce 90 00 f1 48 8d 7b 48 b8 ff ff 37 00 48 89 fa 48 c1 e0 2a 48 c1 ea 03 <80> 3c 02 00 74 05 e8 ef a1 e1 f1 48 8b 7b 48 48 8d 54 24 58 48 8d
-[   78.669312][  T363] RSP: 0018:ffff88810de573e0 EFLAGS: 00010216
-[   78.669533][  T363] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[   78.669790][  T363] RDX: 0000000000000009 RSI: 0000000000000004 RDI: 0000000000000048
-[   78.670044][  T363] RBP: ffff888110dc4000 R08: ffffffffb1b0885a R09: fffffbfff6ba9078
-[   78.670297][  T363] R10: 0000000000000003 R11: ffff888110e31c80 R12: 0000001880000000
-[   78.670560][  T363] R13: ffff888110dc4150 R14: ffff888110dc42b8 R15: 0000000000000200
-[   78.670814][  T363] FS:  00007f66a8f09c40(0000) GS:ffff888163428000(0000) knlGS:0000000000000000
-[   78.671110][  T363] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   78.671324][  T363] CR2: 000055db4c6a30a8 CR3: 000000010da67000 CR4: 0000000000750ef0
-[   78.671585][  T363] PKRU: 55555554
-[   78.671713][  T363] Call Trace:
-[   78.671843][  T363]  <TASK>
-[   78.671936][  T363]  ? __pfx_qfq_dequeue+0x10/0x10 [sch_qfq]
-[   78.672148][  T363]  ? __pfx__printk+0x10/0x10
-[   78.672322][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.672496][  T363]  ? lockdep_hardirqs_on_prepare+0xa8/0x1a0
-[   78.672706][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.672875][  T363]  ? trace_hardirqs_on+0x19/0x1a0
-[   78.673047][  T363]  red_dequeue+0x65/0x270 [sch_red]
-[   78.673217][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.673385][  T363]  tbf_dequeue.cold+0xb0/0x70c [sch_tbf]
-[   78.673566][  T363]  __qdisc_run+0x169/0x1900
+This fixes a use-after-free/double-free in debugfs if that's
+enabled, because a vif going from MLD (and to MLD, but that's
+not relevant here) recreates its entire debugfs.
 
-The right thing to do in #1b is to grab the skb off gso_skb queue.
-This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
-method instead.
-
-Fixes: 77be155cba4e ("pkt_sched: Add peek emulation for non-work-conserving qdiscs.")
-Reported-by: Manas <ghandatmanas@gmail.com>
-Reported-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260430152957.194015-2-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260505151533.c4e52deb06ad.Iafe56cec7de8512626169496b134bce3a6c17010@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_red.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/mlme.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -155,7 +155,7 @@ static struct sk_buff *red_dequeue(struc
- 	struct red_sched_data *q = qdisc_priv(sch);
- 	struct Qdisc *child = q->qdisc;
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -9053,7 +9053,7 @@ static int ieee80211_prep_connection(str
+ 	struct ieee80211_bss *bss = (void *)cbss->priv;
+ 	struct sta_info *new_sta = NULL;
+ 	struct ieee80211_link_data *link;
+-	bool have_sta = false;
++	struct sta_info *have_sta = NULL;
+ 	bool mlo;
+ 	int err;
+ 	u16 new_links;
+@@ -9072,11 +9072,8 @@ static int ieee80211_prep_connection(str
+ 		mlo = false;
+ 	}
  
--	skb = child->dequeue(child);
-+	skb = qdisc_dequeue_peeked(child);
- 	if (skb) {
- 		qdisc_bstats_update(sch, skb);
- 		qdisc_qstats_backlog_dec(sch, skb);
+-	if (assoc) {
+-		rcu_read_lock();
++	if (assoc)
+ 		have_sta = sta_info_get(sdata, ap_mld_addr);
+-		rcu_read_unlock();
+-	}
+ 
+ 	if (mlo && !have_sta &&
+ 	    WARN_ON(sdata->vif.valid_links || sdata->vif.active_links))
+@@ -9239,6 +9236,8 @@ static int ieee80211_prep_connection(str
+ out_release_chan:
+ 	ieee80211_link_release_channel(link);
+ out_err:
++	if (mlo && have_sta)
++		WARN_ON(__sta_info_destroy(have_sta));
+ 	ieee80211_vif_set_links(sdata, 0, 0);
+ 	return err;
+ }
 
 
 
