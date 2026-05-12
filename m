@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246045-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFqWGetsA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246263-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:47 +0200
+	id aM47FXpqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246045-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC351526EBF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6198526703
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 719F631B6457
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2562630956B0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF023EDE69;
-	Tue, 12 May 2026 17:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4113B83E3;
+	Tue, 12 May 2026 17:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHyJ8MgA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3BL5klw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17493EDE4E;
-	Tue, 12 May 2026 17:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F9B3BB101;
+	Tue, 12 May 2026 17:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608775; cv=none; b=XdIbD0Bz1DTvLisx2hU9BQI5JYnkM0RrsxLNxwSkkWCKC/VCZFdixmvkxWg46mFnJqeF/3LmUr2gS28A0ct881f+WjogELBu5XkTl1muhDmDsACBcb4j8fYWgUXRlSKbrgbEGaOu2mW3+ZmI3Z7Dp9RbGBUP1EeltGOJfKXAj/o=
+	t=1778608216; cv=none; b=Lgo7RfksLiHd0H8IyZlZ5ejOeHfb63E1Hlhv6cqt12LJ+PITIaXbq/hBBvwYWQmwAmhsvEcRU0WpngQo65DqAr09KZduSQQD0+rdK9otvRnU46qN7gDFDJHOeqp7mdIL6ydTr+f/L++wxzhGZz0TmS4Xru73Ybp2ceG0Gn2niSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608775; c=relaxed/simple;
-	bh=UnfWgyD7Sm1kukTyPy5qQH9AjbKPFt8w0schBYZXUdI=;
+	s=arc-20240116; t=1778608216; c=relaxed/simple;
+	bh=G3/jdEaJvMjZ5K9sDgzeevnbUlFylJjqZQY5oZNdld0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8EAYAa8Xoi7fOOlz8ypvqDNJ2CSj5f5J2zFRWp90oc4TAEKIJRaxiQYPvA/odIOJFD+sYzEGbmtDsjYApA6Z1QfJB0p+Iby01f/+PO641nyW7bNhhZZtOGLHIOB4A/1u6Ad3axBpYad4Qjgt877M644m7gBNpZTC1fZEmh8h3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHyJ8MgA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C9AC2BCC7;
-	Tue, 12 May 2026 17:59:35 +0000 (UTC)
+	 MIME-Version; b=WwtI0468lq+MUhARe3MCL/DQwqaw/pojV9PuszZd3NhSKZ85l1WOy1YKp4AmpYPPc49ZBB2W+KoY8mSS9C4uaHZqKEau4AddXXGOSC9E3HZqTrTsuFIKf6MwFF8nekJqdjxI4zCYL4sDMaezzKC8B4EMO0Yrnuqzv4gC3pNPpq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3BL5klw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C2DC2BCF5;
+	Tue, 12 May 2026 17:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608775;
-	bh=UnfWgyD7Sm1kukTyPy5qQH9AjbKPFt8w0schBYZXUdI=;
+	s=korg; t=1778608216;
+	bh=G3/jdEaJvMjZ5K9sDgzeevnbUlFylJjqZQY5oZNdld0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHyJ8MgAydGnxwIMoh+XjZrsyHHWJnVoJIpS6TSUk9CuCCP1nQDT/m7fkjOzbsiQG
-	 TBGjHiIByeKbu05/mP8lPZmXoCVpmV7MdVaQZyEmwqHqe2VLWySIDEA/Ux4HrWlRp1
-	 kdtRy1Lyjet6aGFMUmGUISRWRhATOw3jp+LSgiDg=
+	b=O3BL5klw++LO5vUyPRUQiEPTYkzvYC+QRGlp+FNwhq37nToKaSwIt6YpoBDSHiAeq
+	 YZFyCtmKnyg3r+dk46+uTbIdSXir37VjUAF6PajO8C7yXQtnhnJZDjgV/c3uaxedHH
+	 Io9zawFjqQiSWUfbiIXQ/Hb67UV/ju3ZRsHxrOKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Tuller <lance@lance0.com>,
 	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 208/270] mptcp: fastclose msk when linger time is 0
+Subject: [PATCH 6.12 157/206] selftests: mptcp: check output: catch cmd errors
 Date: Tue, 12 May 2026 19:40:09 +0200
-Message-ID: <20260512173942.826998244@linuxfoundation.org>
+Message-ID: <20260512173936.187491953@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DC351526EBF
+X-Rspamd-Queue-Id: C6198526703
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -76,76 +75,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246263-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246045-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,lance0.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit f14d6e9c3678a067f304abba561e0c5446c7e845 upstream.
+commit 65db7b27b90e2ea8d4966935aa9a50b6a60c31ac upstream.
 
-The SO_LINGER socket option has been supported for a while with MPTCP
-sockets [1], but it didn't cause the equivalent of a TCP reset as
-expected when enabled and its time was set to 0. This was causing some
-behavioural differences with TCP where some connections were not
-promptly stopped as expected.
+Using '${?}' inside the if-statement to check the returned value from
+the command that was evaluated as part of the if-statement is not
+correct: here, '${?}' will be linked to the previous instruction, not
+the one that is expected here (${cmd}).
 
-To fix that, an extra condition is checked at close() time before
-sending an MP_FASTCLOSE, the MPTCP equivalent of a TCP reset.
+Instead, simply mark the error, except if an error is expected. If
+that's the case, 1 can be passed as the 4th argument of this helper.
+Three checks from pm_netlink.sh expect an error.
 
-Note that backporting up to [1] will be difficult as more changes are
-needed to be able to send MP_FASTCLOSE. It seems better to stop at [2],
-which was supposed to already imitate TCP.
+While at it, improve the error message when the command unexpectedly
+fails or succeeds.
 
-Validated with MPTCP packetdrill tests [3].
+Note that we could expect a specific returned value, but the checks
+currently expecting an error can be used with 'ip mptcp' or 'pm_nl_ctl',
+and these two tools don't return the same error code.
 
-Fixes: 268b12387460 ("mptcp: setsockopt: support SO_LINGER") [1]
-Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios") [2]
+Fixes: 2d0c1d27ea4e ("selftests: mptcp: add mptcp_lib_check_output helper")
 Cc: stable@vger.kernel.org
-Reported-by: Lance Tuller <lance@lance0.com>
-Closes: https://github.com/lance0/xfr/pull/67
-Link: https://github.com/multipath-tcp/packetdrill/pull/196 [3]
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-3-7432b7f279fa@kernel.org
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-10-fca8091060a4@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh  |   16 ++++++++++------
+ tools/testing/selftests/net/mptcp/pm_netlink.sh |   10 ++++++----
+ 2 files changed, 16 insertions(+), 10 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3162,7 +3162,8 @@ bool __mptcp_close(struct sock *sk, long
- 		goto cleanup;
- 	}
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -407,20 +407,24 @@ mptcp_lib_wait_local_port_listen() {
+ 	wait_local_port_listen "${@}" "tcp"
+ }
  
--	if (mptcp_data_avail(msk) || timeout < 0) {
-+	if (mptcp_data_avail(msk) || timeout < 0 ||
-+	    (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime)) {
- 		/* If the msk has read data, or the caller explicitly ask it,
- 		 * do the MPTCP equivalent of TCP reset, aka MPTCP fastclose
- 		 */
++# $1: error file, $2: cmd, $3: expected msg, [$4: expected error]
+ mptcp_lib_check_output() {
+ 	local err="${1}"
+ 	local cmd="${2}"
+ 	local expected="${3}"
++	local exp_error="${4:-0}"
+ 	local cmd_ret=0
+ 	local out
+ 
+-	if ! out=$(${cmd} 2>"${err}"); then
+-		cmd_ret=${?}
+-	fi
++	out=$(${cmd} 2>"${err}") || cmd_ret=1
+ 
+-	if [ ${cmd_ret} -ne 0 ]; then
+-		mptcp_lib_pr_fail "command execution '${cmd}' stderr"
+-		cat "${err}"
++	if [ "${cmd_ret}" != "${exp_error}" ]; then
++		mptcp_lib_pr_fail "unexpected returned code for '${cmd}', info:"
++		if [ "${exp_error}" = 0 ]; then
++			cat "${err}"
++		else
++			echo "${out}"
++		fi
+ 		return 2
+ 	elif [ "${out}" = "${expected}" ]; then
+ 		return 0
+--- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
++++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
+@@ -121,10 +121,12 @@ check()
+ 	local cmd="$1"
+ 	local expected="$2"
+ 	local msg="$3"
++	local exp_error="$4"
+ 	local rc=0
+ 
+ 	mptcp_lib_print_title "$msg"
+-	mptcp_lib_check_output "${err}" "${cmd}" "${expected}" || rc=${?}
++	mptcp_lib_check_output "${err}" "${cmd}" "${expected}" "${exp_error}" ||
++		rc=${?}
+ 	if [ ${rc} -eq 2 ]; then
+ 		mptcp_lib_result_fail "${msg} # error ${rc}"
+ 		ret=${KSFT_FAIL}
+@@ -157,13 +159,13 @@ check "show_endpoints" \
+ 			    "3,10.0.1.3,signal backup")" "dump addrs"
+ 
+ del_endpoint 2
+-check "get_endpoint 2" "" "simple del addr"
++check "get_endpoint 2" "" "simple del addr" 1
+ check "show_endpoints" \
+ 	"$(format_endpoints "1,10.0.1.1" \
+ 			    "3,10.0.1.3,signal backup")" "dump addrs after del"
+ 
+ add_endpoint 10.0.1.3 2>/dev/null
+-check "get_endpoint 4" "" "duplicate addr"
++check "get_endpoint 4" "" "duplicate addr" 1
+ 
+ add_endpoint 10.0.1.4 flags signal
+ check "get_endpoint 4" "$(format_endpoints "4,10.0.1.4,signal")" "id addr increment"
+@@ -172,7 +174,7 @@ for i in $(seq 5 9); do
+ 	add_endpoint "10.0.1.${i}" flags signal >/dev/null 2>&1
+ done
+ check "get_endpoint 9" "$(format_endpoints "9,10.0.1.9,signal")" "hard addr limit"
+-check "get_endpoint 10" "" "above hard addr limit"
++check "get_endpoint 10" "" "above hard addr limit" 1
+ 
+ del_endpoint 9
+ for i in $(seq 10 255); do
 
 
 
