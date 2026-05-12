@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMIONihwA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:36 +0200
+	id WLJDAlZuA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:15:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3F95277CB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03FD5272B1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 444E2305C635
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2AFA43063DEC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5C53EDE71;
-	Tue, 12 May 2026 18:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E6A36EAA4;
+	Tue, 12 May 2026 18:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ny7SyRmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kIKZgIvy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813663EDE41;
-	Tue, 12 May 2026 18:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAD23EDE51;
+	Tue, 12 May 2026 18:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608871; cv=none; b=RKSajSUe9+LGj+TMjQBBT4NPfCxnFvk0cMLeO0vaP2/WAPeU49rM3nDACu7uOu9W+j54JVWVpNelBI/eq5ubZZhc86t8HRsDRfeOe0CXTc8Fpo1PGSnkakPsf5h5W5Z8CwAs2b4tw2mdAI8G4bM6FoGcXDiOXr/C7Pw6moFAuEs=
+	t=1778609692; cv=none; b=HSDJFjddGDBtBp6LChVX4+VPt1BvQm3+2tlxEonjal5/ALyRtdD3uWvWAfzjhMr7OK2YlOP2XQb724cuVkRKkt4A8SZzrqoQLd0mGR4l33vVLU7zJL8I/WrYp4Kx1+9eniCUL61oAT8xs1xYdgvxU0FqQxZkN6Wypraz1E+0law=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608871; c=relaxed/simple;
-	bh=J/ge+W46mKGibAKo2RByEWzmYwR/KK692KAaysP/p5Y=;
+	s=arc-20240116; t=1778609692; c=relaxed/simple;
+	bh=9Ko/qEKfPuh/yIM+YrZa5404iRrzkpvgqU4YkBnTbfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0ViwrHZbxNZ9V4Xx7DKY95V2zWgEpXZeewLRItdf2K3fBRIWwNyL8a806Bcg+DxkDl+G/s9la0fkrpoKydeOYgl0zzqyxfMGSCvBipKsRxU/2zfu3xsqTA2zaNkRSlp2bhPaX7x0tYVRi37vOWgCJTbmUJ7saMrit2QtpfAMGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ny7SyRmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA7DC2BCB0;
-	Tue, 12 May 2026 18:01:10 +0000 (UTC)
+	 MIME-Version; b=l9flYDMBqpbsLnACKyPtIowXn06g82q7oieO+sC8kb369wCWGq3KNJd30gH9M4Ju8rsc7dIy2gKsSiwCZRFpiCzRH+AlBw/4CA76I7y866oI4bhu3edN31kKI9ucAV7HjKb2mmodWFtj+QNGnpyC5Wv0CyE95wsNQf+pBj+HNDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kIKZgIvy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008D9C2BCC7;
+	Tue, 12 May 2026 18:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608871;
-	bh=J/ge+W46mKGibAKo2RByEWzmYwR/KK692KAaysP/p5Y=;
+	s=korg; t=1778609692;
+	bh=9Ko/qEKfPuh/yIM+YrZa5404iRrzkpvgqU4YkBnTbfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ny7SyRmvYdYFuzWoid8qSgxN9GpQNhQGtmYuz5kW3mGRqruhiv062PbIKHBTolLHD
-	 MFyOrDXgdmf9WPV01f77eJZINpiPQelMdL9qVAFxgb6K7WmqjGXI839iC4Wzpo+jW3
-	 MiAIYii1ZGZt+xvWtTuLCyZ6cDnYSV7KIRw9j5fg=
+	b=kIKZgIvyBo2juIDIk8d5FuwyYA7Kqd36aqHD+ljX6qExeyopAvMzMCj1lbb/5maN/
+	 z0cOcbWncek6MbTB0eb0flIKA/AK6Bj5ZWYQgBTOEGZINIGdiycwgys2h3M98l9ons
+	 w62yyTZAy1CcALtAiBqm0ZuOtWRGRwWZWevOcFZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Michaelis <code@mgjm.de>,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.18 246/270] io_uring/kbuf: support min length left for incremental buffers
-Date: Tue, 12 May 2026 19:40:47 +0200
-Message-ID: <20260512173943.618767671@linuxfoundation.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 253/307] mptcp: use MPTCP_RST_EMPTCP for ACK HMAC validation failure
+Date: Tue, 12 May 2026 19:40:48 +0200
+Message-ID: <20260512173945.466202269@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6E3F95277CB
+X-Rspamd-Queue-Id: C03FD5272B1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246300-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246621-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,108 +91,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,mgjm.de:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mpiricsoftware.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Michaelis <code@mgjm.de>
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-Commit 7deba791ad495ce1d7921683f4f7d1190fa210d1 upstream.
+commit a6da02d4c00fdda2417e42ad2b762a9209e6cc49 upstream.
 
-Incrementally consumed buffer rings are generally fully consumed, but
-it's quite possible that the application has a minimum size it needs to
-meet to avoid truncation. Currently that minimum limit is 1 byte, but
-this should be a setting that is the hands of the application. For
-recvmsg multishot, a prime use case for incrementally consumed buffers,
-the application may get spurious -EFAULT returned at the end of an
-incrementally consumed buffer, as less space is available than the
-headers need.
+When HMAC validation fails on a received ACK + MP_JOIN in
+subflow_syn_recv_sock(), the subflow is reset with reason
+MPTCP_RST_EPROHIBIT ("Administratively prohibited"). This is
+incorrect: HMAC validation failure is an MPTCP protocol-level
+error, not an administrative policy denial.
 
-Grab a u32 field in struct io_uring_buf_reg, which the application can
-use to inform the kernel of the minimum size that should be available
-in an incrementally consumed buffer. If less than that is available,
-the current buffer is fully processed and the next one will be picked.
+The mirror site on the client, in subflow_finish_connect(), already
+uses MPTCP_RST_EMPTCP ("MPTCP-specific error") for the same kind of
+HMAC failure on the SYN/ACK + MP_JOIN. Use the same reason on the
+server side for symmetry and accuracy.
 
+Suggested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 443041deb5ef ("mptcp: fix NULL pointer in can_accept_new_subflow")
 Cc: stable@vger.kernel.org
-Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-Link: https://github.com/axboe/liburing/issues/1433
-Signed-off-by: Martin Michaelis <code@mgjm.de>
-[axboe: write commit message, change io_buffer_list member name]
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260501-net-mptcp-misc-fixes-7-1-rc3-v1-2-b70118df778e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/io_uring.h |    3 ++-
- io_uring/kbuf.c               |   12 +++++++++---
- io_uring/kbuf.h               |    7 +++++++
- 3 files changed, 18 insertions(+), 4 deletions(-)
+ net/mptcp/subflow.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/uapi/linux/io_uring.h
-+++ b/include/uapi/linux/io_uring.h
-@@ -864,7 +864,8 @@ struct io_uring_buf_reg {
- 	__u32	ring_entries;
- 	__u16	bgid;
- 	__u16	flags;
--	__u64	resv[3];
-+	__u32	min_left;
-+	__u32	resv[5];
- };
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -908,7 +908,7 @@ create_child:
  
- /* argument for IORING_REGISTER_PBUF_STATUS */
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -47,9 +47,9 @@ static bool io_kbuf_inc_commit(struct io
- 		this_len = min_t(u32, len, buf_len);
- 		buf_len -= this_len;
- 		/* Stop looping for invalid buffer length of 0 */
--		if (buf_len || !this_len) {
--			buf->addr = READ_ONCE(buf->addr) + this_len;
--			buf->len = buf_len;
-+		if (buf_len > bl->min_left_sub_one || !this_len) {
-+			WRITE_ONCE(buf->addr, READ_ONCE(buf->addr) + this_len);
-+			WRITE_ONCE(buf->len, buf_len);
- 			return false;
- 		}
- 		buf->len = 0;
-@@ -637,6 +637,10 @@ int io_register_pbuf_ring(struct io_ring
- 	if (reg.ring_entries >= 65536)
- 		return -EINVAL;
- 
-+	/* minimum left byte count is a property of incremental buffers */
-+	if (!(reg.flags & IOU_PBUF_RING_INC) && reg.min_left)
-+		return -EINVAL;
-+
- 	bl = io_buffer_get_list(ctx, reg.bgid);
- 	if (bl) {
- 		/* if mapped buffer ring OR classic exists, don't allow */
-@@ -684,6 +688,8 @@ int io_register_pbuf_ring(struct io_ring
- 	bl->mask = reg.ring_entries - 1;
- 	bl->flags |= IOBL_BUF_RING;
- 	bl->buf_ring = br;
-+	if (reg.min_left)
-+		bl->min_left_sub_one = reg.min_left - 1;
- 	if (reg.flags & IOU_PBUF_RING_INC)
- 		bl->flags |= IOBL_INC;
- 	ret = io_buffer_add_list(ctx, bl, reg.bgid);
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -34,6 +34,13 @@ struct io_buffer_list {
- 
- 	__u16 flags;
- 
-+	/*
-+	 * minimum required amount to be left to reuse an incrementally
-+	 * consumed buffer. If less than this is left at consumption time,
-+	 * buffer is done and head is incremented to the next buffer.
-+	 */
-+	__u32 min_left_sub_one;
-+
- 	struct io_mapped_region region;
- };
+ 			if (!subflow_hmac_valid(subflow_req, &mp_opt)) {
+ 				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
+-				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
++				subflow_add_reset_reason(skb, MPTCP_RST_EMPTCP);
+ 				goto dispose_child;
+ 			}
  
 
 
