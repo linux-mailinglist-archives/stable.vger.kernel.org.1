@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246175-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBCJMGhzA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246410-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:28 +0200
+	id MElIEYdsA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246175-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC49527DED
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D449C526D5A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 555BF31D4098
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D6910319A438
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914BA351C25;
-	Tue, 12 May 2026 18:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875D93955D8;
+	Tue, 12 May 2026 17:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAA7pTE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hwXVyZU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541D234405B;
-	Tue, 12 May 2026 18:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7BA3EDE70;
+	Tue, 12 May 2026 17:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609154; cv=none; b=HLsmOmmlLQJR7ErmahfI96nL0kdWgf+T6NJlkyw4LEhcYEBgWyvUdGgCEUPgJ8datbmmHe0SRo/4XgAUjS+3eYdBk3fe6N32Gz+SbhapMe7Rd97WKRWVJk1pr7DHVFmr2WSAvfdHJt63Kq8Do7wXZZLUmQ0qanMAiJccjk9duEw=
+	t=1778608551; cv=none; b=uMBPipXyepwednmgmNMCbmGzeFl25PrTY37kLLnn0LaK8yy3tX+Zo+Tuo6VXRmAQm6PAyesABp8pXr0f0u/GnaGj0dkGfho5eXvy3loi0oJpJf/NrAg0Dxj3nvR7cNIQB7siy5IC8Wi6QjfYBQavl3WNZJrafd/SIoFf6GlMTqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609154; c=relaxed/simple;
-	bh=lrRoHLooTkS5FpufrLQcbv6LuXBB/nhU10LNpPrgSUQ=;
+	s=arc-20240116; t=1778608551; c=relaxed/simple;
+	bh=VW22apXuoGghhVhKwhJA3kQvwTCcmmKra76IPvlPTsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jpzVnc6W8Ac4G1v132M4Cbfxy9bRX8OqnwpPq5OSRCIH1uk3/aReyJy4Km53OryqQpY2g9XPrVO573Y7dVpRpZwX+waIy3jU4NZ3XbpAuOBh6zi6MlXRqWSWQWUiuADeASneHuRGRuXeLvObk3OulIhytkTUn96hCLrDasxQW8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAA7pTE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16F0C4AF0B;
-	Tue, 12 May 2026 18:05:53 +0000 (UTC)
+	 MIME-Version; b=vEkytx8qI/tgZTMxpRwTmulDQXklUh0NXBaMVw8WCZCNA4FLt3Gc6cDKhHqTFoUtxgYcS03HIetBkcG0Ef/dfFpjeVYAIOZ1mSz4pgz8SBV6nfF1ZTVgHFUi0OhhGNzKT/tDSH2N1bE4lJ+Uo9ssmu6TGVHh43LKIyAlBWFydJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hwXVyZU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0350C2BD05;
+	Tue, 12 May 2026 17:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609154;
-	bh=lrRoHLooTkS5FpufrLQcbv6LuXBB/nhU10LNpPrgSUQ=;
+	s=korg; t=1778608551;
+	bh=VW22apXuoGghhVhKwhJA3kQvwTCcmmKra76IPvlPTsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAA7pTE51DN7tqFnzx0UcLIh3BTvewCAJv4sBf48Chhdb7Ad72mPO3iYFEMcVEaKS
-	 ihGxQpIFc14US+n03KR78iiCv/4iJygv0VaBBVk7uZ4zgjFmwRAXh22mBfUOKLRTLx
-	 RZFYwQEDnxXLqg0GMjJ5lLfcdxU7uZ+bgWiTImrI=
+	b=0hwXVyZUjGE77D0WfpNsuA/4jw4o9K81rokMgT69n7MSZkp6AX3hQJnkaqxX2AZ10
+	 hqIKd1Z8CF6EV08BfXZn/+58pgL/0dThJ868qD6KsX3ZEEFHEiNWxAzB8CK4Tsl9qM
+	 U89y0wvL8XopBnK9shYSEzCrZ8hqht5ncnrfjGpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjit Waghmode <ranjit.waghmode@xilinx.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 087/307] spi: zynqmp-gqspi: fix controller deregistration
+Subject: [PATCH 6.18 081/270] spi: sun6i: fix controller deregistration
 Date: Tue, 12 May 2026 19:38:02 +0200
-Message-ID: <20260512173941.962353431@linuxfoundation.org>
+Message-ID: <20260512173940.162478960@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CCC49527DED
+X-Rspamd-Queue-Id: D449C526D5A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246410-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246175-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,53 +91,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,xilinx.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 6895fc4faafc9082e15e4e624b23dd5f0c98feb5 upstream.
+commit d874a1c33aee0d88fb4ba2f8aeadaa9f1965209a upstream.
 
 Make sure to deregister the controller before disabling underlying
 resources like clocks during driver unbind.
 
-Fixes: dfe11a11d523 ("spi: Add support for Zynq Ultrascale+ MPSoC GQSPI controller")
-Cc: stable@vger.kernel.org	# 4.2: 64640f6c972e
-Cc: stable@vger.kernel.org	# 4.2
-Cc: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+Fixes: 3558fe900e8a ("spi: sunxi: Add Allwinner A31 SPI controller driver")
+Cc: stable@vger.kernel.org	# 3.15
+Cc: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-26-johan@kernel.org
+Link: https://patch.msgid.link/20260410081757.503099-20-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sun6i.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -1324,7 +1324,7 @@ static int zynqmp_qspi_probe(struct plat
- 	ctlr->dev.of_node = np;
- 	ctlr->auto_runtime_pm = true;
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -743,7 +743,7 @@ static int sun6i_spi_probe(struct platfo
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
  	if (ret) {
- 		dev_err(&pdev->dev, "spi_register_controller failed\n");
- 		goto clk_dis_all;
-@@ -1362,6 +1362,8 @@ static void zynqmp_qspi_remove(struct pl
+ 		dev_err(&pdev->dev, "cannot register SPI host\n");
+ 		goto err_pm_disable;
+@@ -769,12 +769,18 @@ static void sun6i_spi_remove(struct plat
+ {
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
  
- 	pm_runtime_get_sync(&pdev->dev);
- 
-+	spi_unregister_controller(xqspi->ctlr);
++	spi_controller_get(host);
 +
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
++	spi_unregister_controller(host);
++
+ 	pm_runtime_force_suspend(&pdev->dev);
  
- 	pm_runtime_disable(&pdev->dev);
+ 	if (host->dma_tx)
+ 		dma_release_channel(host->dma_tx);
+ 	if (host->dma_rx)
+ 		dma_release_channel(host->dma_rx);
++
++	spi_controller_put(host);
+ }
+ 
+ static const struct sun6i_spi_cfg sun6i_a31_spi_cfg = {
 
 
 
