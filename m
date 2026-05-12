@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-245903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFKtNL1nA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:41 +0200
+	id WAJIDetrA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F94C5261F1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE64526B86
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A87330AE07B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 211C23202804
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18593DC85B;
-	Tue, 12 May 2026 17:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECAB3955F5;
+	Tue, 12 May 2026 17:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXXgDJ8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tb0MSHc1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52CC385D85;
-	Tue, 12 May 2026 17:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4134A3EDE4E;
+	Tue, 12 May 2026 17:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607851; cv=none; b=Zxy6Fgj7saLyESn6xSJuQNZLM5RlJX4uAXdJCW6dIthUwgbkKsaZoJUi265Bo0fTzXeSeS9nLXtcUC0NTHnBK5xGgzertKMrGWwnVrK1YScOB4VbHpyserBPY6PxD4LjgAMZKB4N19ej2FC2B3NFxFooFKXF27qM+9boSlVNaRs=
+	t=1778608412; cv=none; b=rEIJBaulFN3lWPzNlC5RBTpQT56ZupF0jRvM3oW/kooRvAE/JRgOUvB7evJmNBIGAuJSQFDm0KcjVzVXVjHQC8s19dFOMrNNiJyAm0fVg/0fSdGL8kDwM7XLp1IkQq2BblZnKFxxxZZ8ZH+iRLvlq713mNfAHich9k4I3zLKb+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607851; c=relaxed/simple;
-	bh=a7pnDQBddgO+VlUoE4BD0uai40YUmqRxGh4G9ueWWU4=;
+	s=arc-20240116; t=1778608412; c=relaxed/simple;
+	bh=Wer6YXPGpfsHYKIreelSiAge0ThVSRlpRwCcmXd3ZPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XopZmgswIVEy9EbYY93Q5LsEStDnirCsY/8jbBwXtzMvFY7SJ16BCLnDjhiJ/JWL6TRo4Kt75Z3bFwugeo9jHujgsohEToInZJEt6xSpOr5wU+DZFzzpxtqRydVBs0VHAh+3iFldi4xqKMqStG5Ist3NcKxGXFMTRImeLHE1Caw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXXgDJ8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3F5C2BCB0;
-	Tue, 12 May 2026 17:44:11 +0000 (UTC)
+	 MIME-Version; b=RK2+wScDaKCcXFjW8fPxLzSK1Cqu3xnRgw1VLTD5YuhuFYdaOyUaz955kulTSJsL1sX4KciijBAFMK48YNZHmT1fKg6lU3EDdn+BwZL2ICm2WDIHbr+XL9svWM7QEbqUOu1GvZyPdaYNWAxYKdlcvEFd9cXDJlgxtpOA+UQblV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tb0MSHc1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE653C2BCB0;
+	Tue, 12 May 2026 17:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607851;
-	bh=a7pnDQBddgO+VlUoE4BD0uai40YUmqRxGh4G9ueWWU4=;
+	s=korg; t=1778608412;
+	bh=Wer6YXPGpfsHYKIreelSiAge0ThVSRlpRwCcmXd3ZPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mXXgDJ8jMUkyJ5hzqP3YXqoQN/0gHl7z6iLji5lyyZ4RJN2COXuIFqcSamVE84u9y
-	 xBXQ1gsxPv5FCaIdnKMcIagT+oEfzdG4hpLtqVCBW4ykQcvlvp7hxT+QtmGoMNaE/7
-	 39br/vRxREB7jS0m2LPrL9o1sho5EFWjcyj3it+k=
+	b=tb0MSHc1f/e/nxDpXC9iDbQGFy0u5AX2dv75h9pWT6LFXcRFNUhq9dUnL1PVzpwjI
+	 I4rhXURqx1ESiXvtN1yfmKAg011+NVp4TYIgoqm711vxLk37+OUCr1M5PtGKlG/pAN
+	 qnvdgWpp9iDGrjbWlro4b2puUGTyJoNyCaIXjbvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/206] x86/shstk: Prevent deadlock during shstk sigreturn
-Date: Tue, 12 May 2026 19:37:48 +0200
-Message-ID: <20260512173933.164829250@linuxfoundation.org>
+	Soenke Huster <soenke.huster@eknoes.de>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.18 068/270] Bluetooth: virtio_bt: clamp rx length before skb_put
+Date: Tue, 12 May 2026 19:37:49 +0200
+Message-ID: <20260512173939.882027338@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,173 +64,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5F94C5261F1
+X-Rspamd-Queue-Id: ACE64526B86
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245903-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246121-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,eknoes.de,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,eknoes.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 9874b2917b9fbc30956fee209d3c4aa47201c64e ]
+commit 21bd244b6de5d2fe1063c23acc93fbdd2b20d112 upstream.
 
-During sigreturn the shadow stack signal frame is popped. The kernel does
-this by reading the shadow stack using normal read accesses. When it can't
-assume the memory is shadow stack, it takes extra steps to makes sure it is
-reading actual shadow stack memory and not other normal readable memory. It
-does this by holding the mmap read lock while doing the access and checking
-the flags of the VMA.
+virtbt_rx_work() calls skb_put(skb, len) where len comes directly
+from virtqueue_get_buf() with no validation against the buffer we
+posted to the device. The RX skb is allocated in virtbt_add_inbuf()
+and exposed to virtio as exactly 1000 bytes via sg_init_one().
 
-Unfortunately that is not safe. If the read of the shadow stack sigframe
-hits a page fault, the fault handler will try to recursively grab another
-mmap read lock. This normally works ok, but if a writer on another CPU is
-also waiting, the second read lock could fail and cause a deadlock.
+Checking len against skb_tailroom(skb) is not sufficient because
+alloc_skb() can leave more tailroom than the 1000 bytes actually
+handed to the device. A malicious or buggy backend can therefore
+report used.len between 1001 and skb_tailroom(skb), causing skb_put()
+to include uninitialized kernel heap bytes that were never written by
+the device.
 
-Fix this by doing the read of the userspace memory via gup. Embed it in the
-get_shstk_data() helper.
+The same path also accepts len == 0, in which case skb_put(skb, 0)
+leaves the skb empty but virtbt_rx_handle() still reads the pkt_type
+byte from skb->data, consuming uninitialized memory.
 
-Currently there is a check that skips the lookup work when the SSP can be
-assumed to be on a shadow stack. While reorganizing the function, remove
-the optimization to make the tricky code flows more common, such that
-issues like this cannot escape detection for so long.
+Define VIRTBT_RX_BUF_SIZE once and reuse it in alloc_skb() and
+sg_init_one(), and gate virtbt_rx_work() on that same constant so
+the bound checked matches the buffer actually exposed to the device.
+Reject used.len == 0 in the same gate so an empty completion can
+no longer reach virtbt_rx_handle().
 
-[Due to missing per-vma MM sequence counter, use a simpler GUP based
-solution for the backport]
-Cc: <stable@vger.kernel.org> # Depends on https://lore.kernel.org/all/20260504205856.536296-1-rick.p.edgecombe@intel.com/
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use bt_dev_err_ratelimited() because the length value comes from an
+untrusted backend that can otherwise flood the kernel log.
+
+Same class of bug as commit c04db81cd028 ("net/9p: Fix buffer
+overflow in USB transport layer"), which hardened the USB 9p
+transport against unchecked device-reported length.
+
+Fixes: 160fbcf3bfb9 ("Bluetooth: virtio_bt: Use skb_put to set length")
+Cc: stable@vger.kernel.org
+Cc: Soenke Huster <soenke.huster@eknoes.de>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/shstk.c | 46 ++++++++++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 17 deletions(-)
+ drivers/bluetooth/virtio_bt.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index 0dc983b33b003..373a44a5c478f 100644
---- a/arch/x86/kernel/shstk.c
-+++ b/arch/x86/kernel/shstk.c
-@@ -18,6 +18,7 @@
- #include <linux/sizes.h>
- #include <linux/user.h>
- #include <linux/syscalls.h>
-+#include <linux/highmem.h>
- #include <asm/msr.h>
- #include <asm/fpu/xstate.h>
- #include <asm/fpu/types.h>
-@@ -262,11 +263,29 @@ static int put_shstk_data(u64 __user *addr, u64 data)
- 	return 0;
- }
+--- a/drivers/bluetooth/virtio_bt.c
++++ b/drivers/bluetooth/virtio_bt.c
+@@ -12,6 +12,7 @@
+ #include <net/bluetooth/hci_core.h>
  
-+/* Copy from aligned address in userspace without risk of page fault. */
-+static int shstk_copy_user_gup(unsigned long *ldata, unsigned long __user *addr)
-+{
-+	struct page *page;
-+	void *kaddr;
-+
-+	mmap_assert_locked(current->mm);
-+	if (get_user_pages((unsigned long)addr, 1, 0, &page) != 1)
-+		return -EFAULT;
-+
-+	kaddr = kmap_local_page(page);
-+	*ldata = *(unsigned long *)(kaddr + offset_in_page(addr));
-+	kunmap_local(kaddr);
-+	put_page(page);
-+
-+	return 0;
-+}
-+
- static int get_shstk_data(unsigned long *data, unsigned long __user *addr)
- {
- 	unsigned long ldata;
+ #define VERSION "0.1"
++#define VIRTBT_RX_BUF_SIZE 1000
  
--	if (unlikely(get_user(ldata, addr)))
-+	if (shstk_copy_user_gup(&ldata, addr))
- 		return -EFAULT;
+ enum {
+ 	VIRTBT_VQ_TX,
+@@ -33,11 +34,11 @@ static int virtbt_add_inbuf(struct virti
+ 	struct sk_buff *skb;
+ 	int err;
  
- 	if (!(ldata & SHSTK_DATA_BIT))
-@@ -296,7 +315,6 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- {
- 	struct vm_area_struct *vma;
- 	unsigned long token_addr;
--	bool need_to_check_vma;
- 	int err = 1;
+-	skb = alloc_skb(1000, GFP_KERNEL);
++	skb = alloc_skb(VIRTBT_RX_BUF_SIZE, GFP_KERNEL);
+ 	if (!skb)
+ 		return -ENOMEM;
  
- 	/*
-@@ -308,26 +326,21 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- 	if (!IS_ALIGNED(*ssp, 8))
- 		return -EINVAL;
+-	sg_init_one(sg, skb->data, 1000);
++	sg_init_one(sg, skb->data, VIRTBT_RX_BUF_SIZE);
  
--	need_to_check_vma = PAGE_ALIGN(*ssp) == *ssp;
--
--	if (need_to_check_vma)
--		if (mmap_read_lock_killable(current->mm))
--			return -EINTR;
-+	if (mmap_read_lock_killable(current->mm))
-+		return -EINTR;
+ 	err = virtqueue_add_inbuf(vq, sg, 1, skb, GFP_KERNEL);
+ 	if (err < 0) {
+@@ -227,8 +228,15 @@ static void virtbt_rx_work(struct work_s
+ 	if (!skb)
+ 		return;
  
- 	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
- 	if (unlikely(err))
- 		goto out_err;
+-	skb_put(skb, len);
+-	virtbt_rx_handle(vbt, skb);
++	if (!len || len > VIRTBT_RX_BUF_SIZE) {
++		bt_dev_err_ratelimited(vbt->hdev,
++				       "rx reply len %u outside [1, %u]\n",
++				       len, VIRTBT_RX_BUF_SIZE);
++		kfree_skb(skb);
++	} else {
++		skb_put(skb, len);
++		virtbt_rx_handle(vbt, skb);
++	}
  
--	if (need_to_check_vma) {
--		vma = find_vma(current->mm, *ssp);
--		if (!vma || !(vma->vm_flags & VM_SHADOW_STACK)) {
--			err = -EFAULT;
--			goto out_err;
--		}
--
--		mmap_read_unlock(current->mm);
-+	vma = find_vma(current->mm, *ssp);
-+	if (!vma || !(vma->vm_flags & VM_SHADOW_STACK)) {
-+		err = -EFAULT;
-+		goto out_err;
- 	}
- 
-+	mmap_read_unlock(current->mm);
-+
- 	/* Restore SSP aligned? */
- 	if (unlikely(!IS_ALIGNED(token_addr, 8)))
- 		return -EINVAL;
-@@ -340,8 +353,7 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- 
- 	return 0;
- out_err:
--	if (need_to_check_vma)
--		mmap_read_unlock(current->mm);
-+	mmap_read_unlock(current->mm);
- 	return err;
- }
- 
--- 
-2.53.0
-
+ 	if (virtbt_add_inbuf(vbt) < 0)
+ 		return;
 
 
 
