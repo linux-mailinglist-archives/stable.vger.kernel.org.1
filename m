@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-246108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2E4EEUhtA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:20 +0200
+	id iI4vFClzA2q55wEAu9opvQ
+	(envelope-from <stable+bounces-246387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:36:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0701E526FA0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5DD527D7E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:36:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BEB9C301FB0B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:54:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D313D31A8429
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A40E3EDE59;
-	Tue, 12 May 2026 17:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF431DED4C;
+	Tue, 12 May 2026 18:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lg5O4kmI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Olh/3GVB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29EE3EDE70;
-	Tue, 12 May 2026 17:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006EF3EDE67;
+	Tue, 12 May 2026 18:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608379; cv=none; b=NS82ccJsltZZRCwY6XMUZLWrzHqqo1IYH0bjRzVeKU7Akylw+Q1srNmVV5CdU4hp7cqe12X81PT5W6WLsBmbq0TCD0NQAXlKYzCHKV9SCNjgyBDGQcNVjFG1NCrFsygnewrYu+HizbkGiZNZ2NRSFEL/w2ajl1EFMBoI9xwK7NE=
+	t=1778609095; cv=none; b=FetysWHOm9HWBb6com68KSTsR4tLlIYL4kg5F/g7onWtZOPnGBenoAd2SEW4uabSXNK0yYqsJiTZjYkuCkAyLra7KCUra2jm0Yjmg6YHl1v66hz+L5nZwly6twRjnarmRT3tXeGjKB+LTy7VQR848FMY5rHoYfQg2itT7r9kHmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608379; c=relaxed/simple;
-	bh=hUljUSIK3nq6A/LgXbPMF3E4NPO0EKI7sd91NNtQyTs=;
+	s=arc-20240116; t=1778609095; c=relaxed/simple;
+	bh=9nR/Lhu6/CCrZcJyqaK7J61mLJB7IDDbc5JNd4M2Wmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uynIPw49zUnH02ORUE9lB6hbq2qDuSxX8iGuJstMAA2lkiHnYYWN4EmaZdRJ4bwgguzPsZYLo0BZag3d5sqOWN2bWwoe7Q84XRcDb57P/bqqw92Zlsd1K3aHrttc1y6Z4BUnPxs/Oab3buQeaSQ8QvYOxFPVOtkkl6J1VoSnxxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lg5O4kmI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D72AC2BCB0;
-	Tue, 12 May 2026 17:52:58 +0000 (UTC)
+	 MIME-Version; b=aU5cR6I40/jYjJVxEmAKfAqu0SHzaI/9fbbN7vmbjmIugyrnz0+AKMn+mIgBHyWxjVMWKyIC90tQNZaCfBj8JXrEmqZQS5p4za0nIgzSYcDu+7h7Wdb3vBr4z+vf1PoHNH5T+RNe6oshCk9ZFF6aDzBMem1/p08ft9WZ83GgUdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Olh/3GVB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C555C2BCB0;
+	Tue, 12 May 2026 18:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608378;
-	bh=hUljUSIK3nq6A/LgXbPMF3E4NPO0EKI7sd91NNtQyTs=;
+	s=korg; t=1778609094;
+	bh=9nR/Lhu6/CCrZcJyqaK7J61mLJB7IDDbc5JNd4M2Wmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lg5O4kmIPx+WM+cNujOHwYQRslH3CXQxBvl6mNHkq9nb0D/yV/dp856GM/Figihf0
-	 joJdVcK/nrV6NJ9GebjKmjSJB4vqm3pd1wMIUlHAaLQN5/POprv7WICy7Hh8nGc8Ry
-	 iMY7CWUK27fXfO514+VX8FQPAUCno4L2QBJbK4+c=
+	b=Olh/3GVBUg07eXLsGXvUFEkQAGYUYFMDy4m1ibkFfZNjJCnPu/ucSSbVOjIg5Kk0d
+	 xRP2RSagOWA6zGBaDTDi2jgq620Y7H5IpCqVM7HHXOVO66zaEUKnHrE/HKIA4bckAI
+	 3BvbC1i2HtO+sSGG8eY0qvtcpgN7OHBeR71V9iRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ruijie Li <ruijieli51@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.18 056/270] xfrm: provide message size for XFRM_MSG_MAPPING
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 7.0 062/307] selinux: prune /sys/fs/selinux/checkreqprot
 Date: Tue, 12 May 2026 19:37:37 +0200
-Message-ID: <20260512173939.630773585@linuxfoundation.org>
+Message-ID: <20260512173941.430261536@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +63,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0701E526FA0
+X-Rspamd-Queue-Id: EF5DD527D7E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,secunet.com];
-	TAGGED_FROM(0.00)[bounces-246108-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,secunet.com:email]
+	TAGGED_FROM(0.00)[bounces-246387-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paul-moore.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,paul-moore.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruijie Li <ruijieli51@gmail.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-commit 28465227c80fe417b4013c432be1f3737cb9f9a3 upstream.
+commit 644132a48f4e28a1d949d162160869286f3e75de upstream.
 
-The compat 64=>32 translation path handles XFRM_MSG_MAPPING, but
-xfrm_msg_min[] does not provide the native payload size for this
-message type.
+commit a7e4676e8e2cb ("selinux: remove the 'checkreqprot'
+functionality") removed the ability to modify the checkreqprot setting
+but left everything except the updating of the checkreqprot value
+intact. Aside from unnecessary processing, this could produce a local
+DoS from log spam and incorrectly calls selinux_ima_measure_state() on
+each write even though no state has changed. Prune it to just log an
+error message once and return count (i.e. all bytes written
+successfully) so that userspace never breaks.
 
-Add the missing XFRM_MSG_MAPPING entry so compat translation can size
-and translate mapping notifications correctly.
-
-Fixes: 5461fc0c8d9f ("xfrm/compat: Add 64=>32-bit messages translator")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_user.c |    1 +
- 1 file changed, 1 insertion(+)
+ security/selinux/selinuxfs.c |   47 ++++++-------------------------------------
+ 1 file changed, 7 insertions(+), 40 deletions(-)
 
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3314,6 +3314,7 @@ const int xfrm_msg_min[XFRM_NR_MSGTYPES]
- 	[XFRM_MSG_GETSADINFO  - XFRM_MSG_BASE] = sizeof(u32),
- 	[XFRM_MSG_NEWSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
- 	[XFRM_MSG_GETSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
-+	[XFRM_MSG_MAPPING     - XFRM_MSG_BASE] = XMSGSIZE(xfrm_user_mapping),
- 	[XFRM_MSG_SETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
- 	[XFRM_MSG_GETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
- };
+--- a/security/selinux/selinuxfs.c
++++ b/security/selinux/selinuxfs.c
+@@ -687,46 +687,13 @@ static ssize_t sel_read_checkreqprot(str
+ static ssize_t sel_write_checkreqprot(struct file *file, const char __user *buf,
+ 				      size_t count, loff_t *ppos)
+ {
+-	char *page;
+-	ssize_t length;
+-	unsigned int new_value;
+-
+-	length = avc_has_perm(current_sid(), SECINITSID_SECURITY,
+-			      SECCLASS_SECURITY, SECURITY__SETCHECKREQPROT,
+-			      NULL);
+-	if (length)
+-		return length;
+-
+-	if (count >= PAGE_SIZE)
+-		return -ENOMEM;
+-
+-	/* No partial writes. */
+-	if (*ppos != 0)
+-		return -EINVAL;
+-
+-	page = memdup_user_nul(buf, count);
+-	if (IS_ERR(page))
+-		return PTR_ERR(page);
+-
+-	if (sscanf(page, "%u", &new_value) != 1) {
+-		length = -EINVAL;
+-		goto out;
+-	}
+-	length = count;
+-
+-	if (new_value) {
+-		char comm[sizeof(current->comm)];
+-
+-		strscpy(comm, current->comm);
+-		pr_err("SELinux: %s (%d) set checkreqprot to 1. This is no longer supported.\n",
+-		       comm, current->pid);
+-	}
+-
+-	selinux_ima_measure_state();
+-
+-out:
+-	kfree(page);
+-	return length;
++	/*
++	 * Setting checkreqprot is no longer supported, see
++	 * https://github.com/SELinuxProject/selinux-kernel/wiki/DEPRECATE-checkreqprot
++	 */
++	pr_err_once("SELinux: %s (%d) wrote to checkreqprot. This is no longer supported.\n",
++		    current->comm, current->pid);
++	return count;
+ }
+ static const struct file_operations sel_checkreqprot_ops = {
+ 	.read		= sel_read_checkreqprot,
 
 
 
