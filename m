@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-246065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOPjGK1qA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:13 +0200
+	id eM4JFA9uA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD72526791
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E214C5271B2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4C246315966B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05435312D50B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8C63DD86E;
-	Tue, 12 May 2026 17:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DF8366831;
+	Tue, 12 May 2026 18:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNARStp1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8TD02Km"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0073C0A1B;
-	Tue, 12 May 2026 17:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55F03EDE55;
+	Tue, 12 May 2026 18:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608268; cv=none; b=G0qAGPP6/P59aqSHOdjWy7RqNW1T5S7DSYVjhYhF61TDExpelcumIbvLNqwctDe8rq6hQKM8dz66QYHrxSFSgBlK8+kxg2d/HIMkmHXECaTJbJb0lCHhc8EsUMGnKxP367uhEScu5U33nM5DFbv3rV1C6/Uh/jJz+Fi2m5rgBHc=
+	t=1778608984; cv=none; b=ioYfvndOrQmEWOWlO0ZlZlqh0c7GhSABr5gtL1y4WCz2OFiOPhUVZJHEHAzg4kTOkfL1yEJMuXgSx0V9fzCGBORzAOJbfpq6Lqhj9Y7TnUslrNsST0n0ABKH2KfdXVdcBcw4Db8FBELcZ4y1NW7t74m4COHGcevFYn2UB0Bf3pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608268; c=relaxed/simple;
-	bh=Jhc2dBKn9rJ0k/+SlRpfplM6hHLElJwqbpqoeKZsg8g=;
+	s=arc-20240116; t=1778608984; c=relaxed/simple;
+	bh=LDI8UqjqKJ6meNubwE4wc/R3b7aLxFCynp0sGSrp6zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpSnsd7HuiHeVnw7XKAByyfToTFRYCJuzvi0Uq2UPhjC1JbqinLlYyl9A2JU0vyjxP0OMu/CQI/6pa/DmlA3i4joeytwZaW+9dMRLb/pfi9opyfRbPm1u+O7i028o6FTeWlpy5mTwEUIcR/RYzR9+teQY3G/ZErVNj0A0VzGD3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNARStp1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5411C2BCB0;
-	Tue, 12 May 2026 17:51:07 +0000 (UTC)
+	 MIME-Version; b=vE/t1IWmmdPK7e3DBAUa0k1Vf5M+ji4WbuVxmte9/WjaCqHvs0v+EAnBTahCOZihBs2FRx1tIrBQzthpZFqUYGMOA858DmWaN+l+mBJTzZin/gVkT7oNf1Lxw7j+SjM7NLX7xb2NZytnmLVdBpiWzUEWUP55DFlkqNNi1zXzJBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8TD02Km; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D128C2BCB0;
+	Tue, 12 May 2026 18:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608268;
-	bh=Jhc2dBKn9rJ0k/+SlRpfplM6hHLElJwqbpqoeKZsg8g=;
+	s=korg; t=1778608984;
+	bh=LDI8UqjqKJ6meNubwE4wc/R3b7aLxFCynp0sGSrp6zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cNARStp1P83wEDZMOxcw3R5ddAFPIhCgKVP7M+NJDvjIboBMQ/OvzJGBy7Z/Rw1s0
-	 kgTuG6GPwg36YKl7lTcXLyv5UAhf5wKTBk7QKPnvh6frOTSwf5OYDWyvh1gFanbwLK
-	 mXsUZoo6BnaC1KYbdKKs2zvw8j4te1GyyP7ntRbA=
+	b=w8TD02KmpPN+veNhCsneDDz0FSHMHzTfeXIZO0wPvVFCa+cJPZv6EBxQ1asbjsr8K
+	 zgiMCBS9xzm6NptRJYOqmf9GMkbWTVcOpqbEV40zY9Sn0B6iR/xOz6JaScFlW4jReJ
+	 tKoLvnS9gxAbCaUdhTKJLM3r3+Z3fWnDUzOGdjJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	addy ke <addy.ke@rock-chips.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 014/270] spi: rockchip: fix controller deregistration
+	Manas <ghandatmanas@gmail.com>,
+	Rakshit Awasthi <rakshitawasthi17@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 020/307] net/sched: sch_red: Replace direct dequeue call with peek and qdisc_dequeue_peeked
 Date: Tue, 12 May 2026 19:36:55 +0200
-Message-ID: <20260512173938.755921046@linuxfoundation.org>
+Message-ID: <20260512173940.552908523@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +66,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CCD72526791
+X-Rspamd-Queue-Id: E214C5271B2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-246344-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246065-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mojatatu.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-commit 53e7a16070feb7d1d4d81a583eaac5e25048b9c3 upstream.
+commit 458d5615272d3de535748342eb68ca492343048c upstream.
 
-Make sure to deregister the controller before freeing underlying
-resources like DMA channels during driver unbind.
+When red qdisc has children (eg qfq qdisc) whose peek() callback is
+qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
+qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
+its child (red in this case), it will do the following:
+ 1a. do a peek() - and when sensing there's an skb the child can offer, then
+     - the child in this case(red) calls its child's (qfq) peek.
+        qfq does the right thing and will return the gso_skb queue packet.
+        Note: if there wasnt a gso_skb entry then qfq will store it there.
+ 1b. invoke a dequeue() on the child (red). And herein lies the problem.
+     - red will call the child's dequeue() which will essentially just
+       try to grab something of qfq's queue.
 
-Fixes: 64e36824b32b ("spi/rockchip: add driver for Rockchip RK3xxx SoCs integrated SPI")
-Cc: stable@vger.kernel.org	# 3.17
-Cc: addy ke <addy.ke@rock-chips.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260324082326.901043-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[   78.667668][  T363] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
+[   78.667927][  T363] CPU: 1 UID: 0 PID: 363 Comm: ping Not tainted 7.1.0-rc1-00033-g46f74a3f7d57-dirty #790 PREEMPT(full)
+[   78.668263][  T363] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[   78.668486][  T363] RIP: 0010:qfq_dequeue+0x446/0xc90 [sch_qfq]
+[   78.668718][  T363] Code: 54 c0 e8 dd 90 00 f1 48 c7 c7 e0 03 54 c0 48 89 de e8 ce 90 00 f1 48 8d 7b 48 b8 ff ff 37 00 48 89 fa 48 c1 e0 2a 48 c1 ea 03 <80> 3c 02 00 74 05 e8 ef a1 e1 f1 48 8b 7b 48 48 8d 54 24 58 48 8d
+[   78.669312][  T363] RSP: 0018:ffff88810de573e0 EFLAGS: 00010216
+[   78.669533][  T363] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
+[   78.669790][  T363] RDX: 0000000000000009 RSI: 0000000000000004 RDI: 0000000000000048
+[   78.670044][  T363] RBP: ffff888110dc4000 R08: ffffffffb1b0885a R09: fffffbfff6ba9078
+[   78.670297][  T363] R10: 0000000000000003 R11: ffff888110e31c80 R12: 0000001880000000
+[   78.670560][  T363] R13: ffff888110dc4150 R14: ffff888110dc42b8 R15: 0000000000000200
+[   78.670814][  T363] FS:  00007f66a8f09c40(0000) GS:ffff888163428000(0000) knlGS:0000000000000000
+[   78.671110][  T363] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   78.671324][  T363] CR2: 000055db4c6a30a8 CR3: 000000010da67000 CR4: 0000000000750ef0
+[   78.671585][  T363] PKRU: 55555554
+[   78.671713][  T363] Call Trace:
+[   78.671843][  T363]  <TASK>
+[   78.671936][  T363]  ? __pfx_qfq_dequeue+0x10/0x10 [sch_qfq]
+[   78.672148][  T363]  ? __pfx__printk+0x10/0x10
+[   78.672322][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   78.672496][  T363]  ? lockdep_hardirqs_on_prepare+0xa8/0x1a0
+[   78.672706][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   78.672875][  T363]  ? trace_hardirqs_on+0x19/0x1a0
+[   78.673047][  T363]  red_dequeue+0x65/0x270 [sch_red]
+[   78.673217][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   78.673385][  T363]  tbf_dequeue.cold+0xb0/0x70c [sch_tbf]
+[   78.673566][  T363]  __qdisc_run+0x169/0x1900
+
+The right thing to do in #1b is to grab the skb off gso_skb queue.
+This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
+method instead.
+
+Fixes: 77be155cba4e ("pkt_sched: Add peek emulation for non-work-conserving qdiscs.")
+Reported-by: Manas <ghandatmanas@gmail.com>
+Reported-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260430152957.194015-2-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-rockchip.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/sched/sch_red.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -909,7 +909,7 @@ static int rockchip_spi_probe(struct pla
- 		break;
- 	}
+--- a/net/sched/sch_red.c
++++ b/net/sched/sch_red.c
+@@ -155,7 +155,7 @@ static struct sk_buff *red_dequeue(struc
+ 	struct red_sched_data *q = qdisc_priv(sch);
+ 	struct Qdisc *child = q->qdisc;
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to register controller\n");
- 		goto err_free_dma_rx;
-@@ -937,6 +937,8 @@ static void rockchip_spi_remove(struct p
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 
-+	spi_unregister_controller(ctlr);
-+
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
+-	skb = child->dequeue(child);
++	skb = qdisc_dequeue_peeked(child);
+ 	if (skb) {
+ 		qdisc_bstats_update(sch, skb);
+ 		qdisc_qstats_backlog_dec(sch, skb);
 
 
 
