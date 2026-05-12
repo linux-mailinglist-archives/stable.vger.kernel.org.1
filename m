@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aF64JhtwA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246299-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:23 +0200
+	id YFJ3IVRuA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:15:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EAC052779F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4324C5272AA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:15:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6288D3058154
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 55897305B27C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7053EDE71;
-	Tue, 12 May 2026 18:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19160371D10;
+	Tue, 12 May 2026 18:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RA0QXdCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyd0OypS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68EA3EDE48;
-	Tue, 12 May 2026 18:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC0933B6CC;
+	Tue, 12 May 2026 18:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608869; cv=none; b=J9TyvUnDbpoYzxLQNo0tKs6smAK+MCV8obwAducPQLxVTRVboUH0sGjP344S6naH1RJ2YmFLBGuXcVOjIyqVN7614ls/cmgs53NkYRXUL+lKdJ8x/Fvao4eqo+U0Ii/N7Xv8WSSqOSxRS2nWLk6Sfu2D21HYjuB9ouoRW3/D2qQ=
+	t=1778609689; cv=none; b=QWHceqsM0RbCo+PSyOx8SGMHKL5fYfCujxfMH8gWWxQVDA1hQVKJ3Xqcx4bdSeVWPbUPF9GVhRMJR9YuTClIKxyQSkhjkKoylvzsVHhXsudlP6nPWFEpuRYTt/CL45dFcp/I11jUQENIKs7ImAG6QT7bL9+1/f7+8Oz5/Xwo86M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608869; c=relaxed/simple;
-	bh=aSypBrGsJkDKlMIXCEap6hOcoWJKvEtmSNJ5euEtlFo=;
+	s=arc-20240116; t=1778609689; c=relaxed/simple;
+	bh=Yy5Bo+tRlnD6YAe+cHUo31tkGdGdQBAUVFV6acA6A4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfT4Q7Jnujf7XZjzKpo0JuvVB+YDKxy40Xq08H5RaGiiUaPMvb8+/9+Gin3HhCZtd+5faMwWPJB3dsYJXz6/VjbVxAbmDsz6GoNa+3LYEhvHB1ng866n9s1ofOTSFOin8S0gXB/CVfoDFPrfkQIcJJ1S3imDxdu1vPBMgC7JwAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA0QXdCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9BFC2BCB0;
-	Tue, 12 May 2026 18:01:08 +0000 (UTC)
+	 MIME-Version; b=R28Pl3qj+FIpLGnxnZO2w1RVAle59BV/mw8vdJW4/Ml0+8g39sV3tvTkvmKMxSAVZ1dV/6IVXNpMnydF+BX4nFcF0xi/Ln0qommML0ukPB3+l8Z1xXg+Z5XgfHlToAarRx8NTLyJI8zYmzbU4i0TepVNHJ0Rr8p1nXKoU1bFfdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyd0OypS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66797C2BCF6;
+	Tue, 12 May 2026 18:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608868;
-	bh=aSypBrGsJkDKlMIXCEap6hOcoWJKvEtmSNJ5euEtlFo=;
+	s=korg; t=1778609689;
+	bh=Yy5Bo+tRlnD6YAe+cHUo31tkGdGdQBAUVFV6acA6A4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RA0QXdCQK60Sn0v2wMZFKOdQ75NonffztBOlqEliXDNdlpfzDQ5N62MIAAHQ52e4s
-	 e+QRYMxA5HGW68mwS7SgF24cF5O5vtQ1fAd521DlI4QSTwzESnXW/F48g9nn0rl+xX
-	 ypIq1yurN8FoFMqaBQhONlpAVWmeVvi8O/9U3lgo=
+	b=eyd0OypSLH7z3q4KfwyFRk0nDsg0tEcyYArDV37iHuKE71A7lzVmhQgczjGMH0IHv
+	 GYPTR2nVj/Kk25zwnFaiPLcuWUiLDp5mqTHFik9sZU+yyqXvN/Z8Vs+c/cQ8RM7va0
+	 TEcZojR7Gh9XJq6cuqxeS8gwSjaOJxgQFfQKORHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Li <lichao@loongson.cn>,
-	Dongyan Qian <qiandongyan@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 245/270] LoongArch: Use per-root-bridge PCIH flag to skip mem resource fixup
-Date: Tue, 12 May 2026 19:40:46 +0200
-Message-ID: <20260512173943.597585318@linuxfoundation.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 252/307] mptcp: use MPJoinSynAckHMacFailure for SynAck HMAC failure
+Date: Tue, 12 May 2026 19:40:47 +0200
+Message-ID: <20260512173945.445085114@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0EAC052779F
+X-Rspamd-Queue-Id: 4324C5272AA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,78 +80,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246299-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246620-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mpiricsoftware.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-commit 49f33840dcc907d21313d369e34872880846b61c upstream.
+commit c4a99a921949cddc590b22bb14eeb23dffcc3ba6 upstream.
 
-When firmware enables 64-bit PCI host bridge support, some root bridges
-already provide valid 64-bit mem resource windows through ACPI.
+In subflow_finish_connect(), HMAC validation of the server's HMAC
+in SYN/ACK + MP_JOIN increments MPTCP_MIB_JOINACKMAC ("HMAC was
+wrong on ACK + MP_JOIN") on failure. The function processes the
+SYN/ACK, not the ACK; the matching MPTCP_MIB_JOINSYNACKMAC counter
+("HMAC was wrong on SYN/ACK + MP_JOIN") exists but is not
+incremented anywhere in the tree.
 
-In this case, the LoongArch-specific mem resource high-bits fixup in
-acpi_prepare_root_resources() should not be applied unconditionally.
-Otherwise, the kernel may override the native resource layout derived
-from firmware, and later BAR assignment can fail to place device BARs
-into the intended 64-bit address space correctly.
+The mirror site on the server, subflow_syn_recv_sock(), already
+uses JOINACKMAC correctly for ACK HMAC failure. Use JOINSYNACKMAC
+at the SYN/ACK validation site so each counter reflects the packet
+whose HMAC actually failed.
 
-Add a per-root-bridge ACPI flag, PCIH, and evaluate it from the current
-root bridge device scope. When PCIH is set, skip the mem resource high-
-bits fixup path and let the kernel use the firmware-provided resource
-description directly. When PCIH is absent or cleared, keep the existing
-behavior and continue filling the high address bits from the host bridge
-address.
-
-This makes the behavior per-root-bridge configurable and avoids breaking
-valid 64-bit BAR space allocation on bridges whose 64-bit windows have
-already been fully described by firmware.
-
+Suggested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: fc518953bc9c ("mptcp: add and use MIB counter infrastructure")
 Cc: stable@vger.kernel.org
-Suggested-by: Chao Li <lichao@loongson.cn>
-Tested-by: Dongyan Qian <qiandongyan@loongson.cn>
-Signed-off-by: Dongyan Qian <qiandongyan@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260501-net-mptcp-misc-fixes-7-1-rc3-v1-1-b70118df778e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/pci/acpi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/mptcp/subflow.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/pci/acpi.c
-+++ b/arch/loongarch/pci/acpi.c
-@@ -61,11 +61,16 @@ static void acpi_release_root_info(struc
- static int acpi_prepare_root_resources(struct acpi_pci_root_info *ci)
- {
- 	int status;
-+	unsigned long long pci_h = 0;
- 	struct resource_entry *entry, *tmp;
- 	struct acpi_device *device = ci->bridge;
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -581,7 +581,7 @@ static void subflow_finish_connect(struc
+ 			 subflow->backup);
  
- 	status = acpi_pci_probe_root_resources(ci);
- 	if (status > 0) {
-+		acpi_evaluate_integer(device->handle, "PCIH", NULL, &pci_h);
-+		if (pci_h)
-+			return status;
-+
- 		resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
- 			if (entry->res->flags & IORESOURCE_MEM) {
- 				entry->offset = ci->root->mcfg_addr & GENMASK_ULL(63, 40);
+ 		if (!subflow_thmac_valid(subflow)) {
+-			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINACKMAC);
++			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKMAC);
+ 			subflow->reset_reason = MPTCP_RST_EMPTCP;
+ 			goto do_reset;
+ 		}
 
 
 
