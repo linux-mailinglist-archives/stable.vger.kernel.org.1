@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oD90FZpAA2ro2AEAu9opvQ
-	(envelope-from <stable+bounces-245686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:00:42 +0200
+	id 8IVEHeI3A2qK1wEAu9opvQ
+	(envelope-from <stable+bounces-245688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:23:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9BD523262
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:00:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB46522565
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA11C33C924A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:06:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B2FA2309AAC9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C0C3ADBB5;
-	Tue, 12 May 2026 14:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5180A3A59A0;
+	Tue, 12 May 2026 14:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DchqDzpQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9VnlziV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BC23A7D68
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1477D3A5997
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778594715; cv=none; b=Nn4HQgyNJJA4t43UtY0N9DL1KiF8ZgAAh1uDed40NoPyEIRDiKAA3DxIM98E/U4JibMXgQr/cTtPMIxo/CiPW9ss8zwqUTcTq/pSIsyiQBhKbNoHFsqtNTFcA7ptNWfv1BNnFU/4gkyk2sx4P/0RCdMlM0O/voLae02x66mIc5U=
+	t=1778594745; cv=none; b=D4+wuiFj9QsK1XaUJAfZeS5i8YYbXax9hsyA0v1Y5tAqb0+zTpbfq/v7sj2FMFxg94tKTqwJjXXdnl0b/5btC4XIsb5AHWX+Xw6VPuXlxvJ3dVnXJ3wPSa/+Tr2Om+3+2MZszvem8Jo4wSJwstoFLWNcEHZibKLybEbS+D7ixc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778594715; c=relaxed/simple;
-	bh=KA3pKn7giIZQlogFjcfRR9F8UUnFEeae/llK6d6L47Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HPsYGcOZNVcf7h2xVsHo2dNyjubVYHtpcRr6i7kL97EroUhdoR48y2liHD+pvb8M4d5oYdpBDAHoUJNYXAQzHmaknGU+sjjbrH02oC8z0uLMfPBYs31VdOsV08By+gN4y45h7X7k41CGmDMX4aCSbO/4OtQP5lm13cqC1DgO+HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DchqDzpQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9782CC2BCF5;
-	Tue, 12 May 2026 14:05:14 +0000 (UTC)
+	s=arc-20240116; t=1778594745; c=relaxed/simple;
+	bh=G8ztXHRstphjcQOi51WFxtSGuUAvBzEsHrDi0lSHaII=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VPDYzzmkgvJknjjSFtAqSttmdigmTDhXhyqi8h3lTU4RoMC82yoVs4TjflYJZG9hJoWM6Y1kn4qW4ZB9OqSoQKCdktyZ57l/SFIYcsfjdNMtI+QOH8Zumb+jSb5r3xpaMXyyr2gRbxwVutaC/WVR0zKW4y5vA+KoLemOwyUGhvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9VnlziV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F576C2BCB0;
+	Tue, 12 May 2026 14:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778594714;
-	bh=KA3pKn7giIZQlogFjcfRR9F8UUnFEeae/llK6d6L47Y=;
+	s=korg; t=1778594745;
+	bh=G8ztXHRstphjcQOi51WFxtSGuUAvBzEsHrDi0lSHaII=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DchqDzpQ4yIiBL1wIJ3066K6bVJji6yx8F6xmWGnZ8lEMVa2eZGXgF5VeY/cMQthC
-	 hS2rTEGb4AZnta0lV5SW0lm5Gdz6mjxiNkY01nbKX7bAw0fC4S4vNyFVAlH1U2NqLj
-	 PrSyXXnG2TkPkV+24ZsBfjM5IS6Hkoyxh0gj7WD8=
-Subject: FAILED: patch "[PATCH] smb: client: Use FullSessionKey for AES-256 encryption key" failed to apply to 5.10-stable tree
-To: s.piyush1024@gmail.com,bharathsm@microsoft.com,psachdeva@microsoft.com,stable@vger.kernel.org,stfrench@microsoft.com
+	b=Q9VnlziVSru48V3UoBz2/ybNOwGsmNXzMsUbiKO3yzWw0VbAQpGHS17W6ZoCSLZq9
+	 Uq0u+vvc/nF1EzrWFfPJUQlSr6JH9OoQdZsgyfzaIHWmrjqmoE6Bkm9FkJQUEvy85l
+	 MCysncC80lQeXHRG0vQQDLGPx7N/N+aPSZECYAgQ=
+Subject: FAILED: patch "[PATCH] mm/damon/lru_sort: detect and use fresh enabled and" failed to apply to 6.12-stable tree
+To: sj@kernel.org,aethernet65535@gmail.com,akpm@linux-foundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 16:05:04 +0200
-Message-ID: <2026051204-landside-tartly-eedd@gregkh>
+Date: Tue, 12 May 2026 16:05:41 +0200
+Message-ID: <2026051241-thievish-uncurious-73fe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,54 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4B9BD523262
+X-Rspamd-Queue-Id: 9FB46522565
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245686-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245688-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,microsoft.com,vger.kernel.org];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,linux-foundation.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gregkh:email,linux-foundation.org:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5be7a0cef3229fb3b63a07c0d289daf752545424
+git cherry-pick -x b98b7ff6025ae82570d4915e083f0cbd8d48b3cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051204-landside-tartly-eedd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051241-thievish-uncurious-73fe@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -113,143 +112,222 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5be7a0cef3229fb3b63a07c0d289daf752545424 Mon Sep 17 00:00:00 2001
-From: Piyush Sachdeva <s.piyush1024@gmail.com>
-Date: Thu, 7 May 2026 22:22:13 +0530
-Subject: [PATCH] smb: client: Use FullSessionKey for AES-256 encryption key
- derivation
+From b98b7ff6025ae82570d4915e083f0cbd8d48b3cf Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Sun, 19 Apr 2026 09:10:01 -0700
+Subject: [PATCH] mm/damon/lru_sort: detect and use fresh enabled and
+ kdamond_pid values
 
-When Kerberos authentication is used with AES-256 encryption (AES-256-CCM
-or AES-256-GCM), the SMB3 encryption and decryption keys must be derived
-using the full session key (Session.FullSessionKey) rather than just the
-first 16 bytes (Session.SessionKey).
+DAMON_LRU_SORT updates 'enabled' and 'kdamond_pid' parameter values, which
+represents the running status of its kdamond, when the user explicitly
+requests start/stop of the kdamond.  The kdamond can, however, be stopped
+in events other than the explicit user request in the following three
+events.
 
-Per MS-SMB2 section 3.2.5.3.1, when Connection.Dialect is "3.1.1" and
-Connection.CipherId is AES-256-CCM or AES-256-GCM, Session.FullSessionKey
-must be set to the full cryptographic key from the GSS authentication
-context. The encryption and decryption key derivation (SMBC2SCipherKey,
-SMBS2CCipherKey) must use this FullSessionKey as the KDF input. The
-signing key derivation continues to use Session.SessionKey (first 16
-bytes) in all cases.
+1. ctx->regions_score_histogram allocation failure at beginning of the
+   execution,
+2. damon_commit_ctx() failure due to invalid user input, and
+3. damon_commit_ctx() failure due to its internal allocation failures.
 
-Previously, generate_key() hardcoded SMB2_NTLMV2_SESSKEY_SIZE (16) as the
-HMAC-SHA256 key input length for all derivations. When Kerberos with
-AES-256 provides a 32-byte session key, the KDF for encryption/decryption
-was using only the first 16 bytes, producing keys that did not match the
-server's, causing mount failures with sec=krb5 and require_gcm_256=1.
+Hence, if the kdamond is stopped by the above three events, the values of
+the status parameters can be stale.  Users could show the stale values and
+be confused.  This is already bad, but the real consequence is worse.
+DAMON_LRU_SORT avoids unnecessary damon_start() and damon_stop() calls
+based on the 'enabled' parameter value.  And the update of 'enabled'
+parameter value depends on the damon_start() and damon_stop() call
+results.  Hence, once the kdamond has stopped by the unintentional events,
+the user cannot restart the kdamond before the system reboot.  For
+example, the issue can be reproduced via below steps.
 
-Add a full_key_size parameter to generate_key() and pass the appropriate
-size from generate_smb3signingkey():
- - Signing: always SMB2_NTLMV2_SESSKEY_SIZE (16 bytes)
- - Encryption/Decryption: ses->auth_key.len when AES-256, otherwise 16
+    # cd /sys/module/damon_lru_sort/parameters
+    #
+    # # start DAMON_LRU_SORT
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
+    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # commit wrong input to stop kdamond withou explicit stop request
+    # echo 3 > addr_unit
+    # echo Y > commit_inputs
+    bash: echo: write error: Invalid argument
+    #
+    # # confirm kdamond is stopped
+    # ps -ef | grep kdamond
+    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # users casn now show stable status
+    # cat enabled
+    Y
+    # cat kdamond_pid
+    806
+    #
+    # # even after fixing the wrong parameter,
+    # # kdamond cannot be restarted.
+    # echo 1 > addr_unit
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
 
-Also fix cifs_dump_full_key() to report the actual session key length for
-AES-256 instead of hardcoded CIFS_SESS_KEY_SIZE, so that userspace tools
-like Wireshark receive the correct key for decryption.
+The problem will only rarely happen in real and common setups for the
+following reasons.  The allocation failures are unlikely in such setups
+since those allocations are arguably too small to fail.  Also sane users
+on real production environments may not commit wrong input parameters.
+But once it happens, the consequence is quite bad.  And the bug is a bug.
 
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
-Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The issue stems from the fact that there are multiple events that can
+change the status, and following all the events is challenging.
+Dynamically detect and use the fresh status for the parameters when those
+are requested.
 
-diff --git a/fs/smb/client/ioctl.c b/fs/smb/client/ioctl.c
-index 9afab3237e54..17408bb8ab65 100644
---- a/fs/smb/client/ioctl.c
-+++ b/fs/smb/client/ioctl.c
-@@ -296,7 +296,7 @@ static int cifs_dump_full_key(struct cifs_tcon *tcon, struct smb3_full_key_debug
- 		break;
- 	case SMB2_ENCRYPTION_AES256_CCM:
- 	case SMB2_ENCRYPTION_AES256_GCM:
--		out.session_key_length = CIFS_SESS_KEY_SIZE;
-+		out.session_key_length = ses->auth_key.len;
- 		out.server_in_key_length = out.server_out_key_length = SMB3_GCM256_CRYPTKEY_SIZE;
- 		break;
- 	default:
-diff --git a/fs/smb/client/smb2transport.c b/fs/smb/client/smb2transport.c
-index 41009039b4cb..e8eeff9e50d6 100644
---- a/fs/smb/client/smb2transport.c
-+++ b/fs/smb/client/smb2transport.c
-@@ -251,7 +251,8 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
+Link: https://lore.kernel.org/20260419161003.79176-3-sj@kernel.org
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.0.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 554559d72976..8494040b1ee4 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -161,15 +161,6 @@ module_param(monitor_region_end, ulong, 0600);
+  */
+ static unsigned long addr_unit __read_mostly = 1;
+ 
+-/*
+- * PID of the DAMON thread
+- *
+- * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
+- * Else, -1.
+- */
+-static int kdamond_pid __read_mostly = -1;
+-module_param(kdamond_pid, int, 0400);
+-
+ static struct damos_stat damon_lru_sort_hot_stat;
+ DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_lru_sort_hot_stat,
+ 		lru_sort_tried_hot_regions, lru_sorted_hot_regions,
+@@ -386,12 +377,8 @@ static int damon_lru_sort_turn(bool on)
+ {
+ 	int err;
+ 
+-	if (!on) {
+-		err = damon_stop(&ctx, 1);
+-		if (!err)
+-			kdamond_pid = -1;
+-		return err;
+-	}
++	if (!on)
++		return damon_stop(&ctx, 1);
+ 
+ 	err = damon_lru_sort_apply_parameters();
+ 	if (err)
+@@ -400,9 +387,6 @@ static int damon_lru_sort_turn(bool on)
+ 	err = damon_start(&ctx, 1, true);
+ 	if (err)
+ 		return err;
+-	kdamond_pid = damon_kdamond_pid(ctx);
+-	if (kdamond_pid < 0)
+-		return kdamond_pid;
+ 	return damon_call(ctx, &call_control);
  }
  
- static void generate_key(struct cifs_ses *ses, struct kvec label,
--			 struct kvec context, __u8 *key, unsigned int key_size)
-+			 struct kvec context, __u8 *key, unsigned int key_size,
-+			 unsigned int full_key_size)
+@@ -430,42 +414,83 @@ module_param_cb(addr_unit, &addr_unit_param_ops, &addr_unit, 0600);
+ MODULE_PARM_DESC(addr_unit,
+ 	"Scale factor for DAMON_LRU_SORT to ops address conversion (default: 1)");
+ 
++static bool damon_lru_sort_enabled(void)
++{
++	if (!ctx)
++		return false;
++	return damon_is_running(ctx);
++}
++
+ static int damon_lru_sort_enabled_store(const char *val,
+ 		const struct kernel_param *kp)
  {
- 	unsigned char zero = 0x0;
- 	__u8 i[4] = {0, 0, 0, 1};
-@@ -265,7 +266,7 @@ static void generate_key(struct cifs_ses *ses, struct kvec label,
- 	memset(key, 0x0, key_size);
+-	bool is_enabled = enabled;
+-	bool enable;
+ 	int err;
  
- 	hmac_sha256_init_usingrawkey(&hmac_ctx, ses->auth_key.response,
--				     SMB2_NTLMV2_SESSKEY_SIZE);
-+				     full_key_size);
- 	hmac_sha256_update(&hmac_ctx, i, 4);
- 	hmac_sha256_update(&hmac_ctx, label.iov_base, label.iov_len);
- 	hmac_sha256_update(&hmac_ctx, &zero, 1);
-@@ -298,6 +299,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 			struct TCP_Server_Info *server,
- 			const struct derivation_triplet *ptriplet)
+-	err = kstrtobool(val, &enable);
++	err = kstrtobool(val, &enabled);
+ 	if (err)
+ 		return err;
+ 
+-	if (is_enabled == enable)
++	if (damon_lru_sort_enabled() == enabled)
+ 		return 0;
+ 
+ 	/* Called before init function.  The function will handle this. */
+ 	if (!damon_initialized())
+-		goto set_param_out;
++		return 0;
+ 
+-	err = damon_lru_sort_turn(enable);
+-	if (err)
+-		return err;
++	return damon_lru_sort_turn(enabled);
++}
+ 
+-set_param_out:
+-	enabled = enable;
+-	return err;
++static int damon_lru_sort_enabled_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	return sprintf(buffer, "%c\n", damon_lru_sort_enabled() ? 'Y' : 'N');
+ }
+ 
+ static const struct kernel_param_ops enabled_param_ops = {
+ 	.set = damon_lru_sort_enabled_store,
+-	.get = param_get_bool,
++	.get = damon_lru_sort_enabled_load,
+ };
+ 
+ module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
+ MODULE_PARM_DESC(enabled,
+ 	"Enable or disable DAMON_LRU_SORT (default: disabled)");
+ 
++static int damon_lru_sort_kdamond_pid_store(const char *val,
++		const struct kernel_param *kp)
++{
++	/*
++	 * kdamond_pid is read-only, but kernel command line could write it.
++	 * Do nothing here.
++	 */
++	return 0;
++}
++
++static int damon_lru_sort_kdamond_pid_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	int kdamond_pid = -1;
++
++	if (ctx) {
++		kdamond_pid = damon_kdamond_pid(ctx);
++		if (kdamond_pid < 0)
++			kdamond_pid = -1;
++	}
++	return sprintf(buffer, "%d\n", kdamond_pid);
++}
++
++static const struct kernel_param_ops kdamond_pid_param_ops = {
++	.set = damon_lru_sort_kdamond_pid_store,
++	.get = damon_lru_sort_kdamond_pid_load,
++};
++
++/*
++ * PID of the DAMON thread
++ *
++ * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
++ * Else, -1.
++ */
++module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
++
+ static int __init damon_lru_sort_init(void)
  {
-+	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
- 	bool is_binding = false;
- 	int chan_index = 0;
- 
-@@ -330,12 +332,24 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 	if (is_binding) {
- 		generate_key(ses, ptriplet->signing.label,
- 			     ptriplet->signing.context,
--			     ses->chans[chan_index].signkey,
--			     SMB3_SIGN_KEY_SIZE);
-+			     ses->chans[chan_index].signkey, SMB3_SIGN_KEY_SIZE,
-+			     SMB2_NTLMV2_SESSKEY_SIZE);
- 	} else {
- 		generate_key(ses, ptriplet->signing.label,
--			     ptriplet->signing.context,
--			     ses->smb3signingkey, SMB3_SIGN_KEY_SIZE);
-+			     ptriplet->signing.context, ses->smb3signingkey,
-+			     SMB3_SIGN_KEY_SIZE, SMB2_NTLMV2_SESSKEY_SIZE);
-+
-+		/*
-+		 * Per MS-SMB2 3.2.5.3.1, signing key always uses Session.SessionKey
-+		 * (first 16 bytes). Encryption/decryption keys use
-+		 * Session.FullSessionKey when dialect is 3.1.1 and cipher is
-+		 * AES-256-CCM or AES-256-GCM, otherwise Session.SessionKey.
-+		 */
-+
-+		if (server->dialect == SMB311_PROT_ID &&
-+		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
-+		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
-+			full_key_size = ses->auth_key.len;
- 
- 		/* safe to access primary channel, since it will never go away */
- 		spin_lock(&ses->chan_lock);
-@@ -345,10 +359,13 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 
- 		generate_key(ses, ptriplet->encryption.label,
- 			     ptriplet->encryption.context,
--			     ses->smb3encryptionkey, SMB3_ENC_DEC_KEY_SIZE);
-+			     ses->smb3encryptionkey, SMB3_ENC_DEC_KEY_SIZE,
-+			     full_key_size);
-+
- 		generate_key(ses, ptriplet->decryption.label,
- 			     ptriplet->decryption.context,
--			     ses->smb3decryptionkey, SMB3_ENC_DEC_KEY_SIZE);
-+			     ses->smb3decryptionkey, SMB3_ENC_DEC_KEY_SIZE,
-+			     full_key_size);
- 	}
- 
- #ifdef CONFIG_CIFS_DEBUG_DUMP_KEYS
-@@ -361,7 +378,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 			&ses->Suid);
- 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
- 	cifs_dbg(VFS, "Session Key   %*ph\n",
--		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
-+		 (int)ses->auth_key.len, ses->auth_key.response);
- 	cifs_dbg(VFS, "Signing Key   %*ph\n",
- 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
- 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
+ 	int err;
 
 
