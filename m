@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-245987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBs/NP1pA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-245987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:17 +0200
+	id uC7XMhluA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5E552653D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0345271D7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F3C823078018
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:49:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2025D3017313
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA093955CD;
-	Tue, 12 May 2026 17:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9218C3EDE55;
+	Tue, 12 May 2026 17:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F01FfwXt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnQpLEAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3E93EDE4F;
-	Tue, 12 May 2026 17:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567163EDE41;
+	Tue, 12 May 2026 17:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608067; cv=none; b=Y0rKyrw7L062Mppbn8fPIahRpyTPdE2q2hBFp7mFBx2h8o7mE7Lnbtlrx32/E1nbLUQOjDAjmQU5D7fBJtQHe8yHJMJY4EJxcdzpcGb+JuW9pztXhfEW0yEX2wg9f9Hn1sjMf9Pnt/aQ60EEFJoB5lBAFokAXokmRHNzOT837G4=
+	t=1778608729; cv=none; b=qOVFTIN8541xwJa49W6mTOymroZJK1fM3Az0/dFFFp6v/jrHm43ZHedPRKrJqteqalG1sfXsAdpkMMR1LvclD8tL35R78jFdjfbelqQh7ox5uVsxSEqgIkgAQLoBhksRdK6IsScBqOS1KNxUaQbDdGRk6Q8Sh99JueFkX1yf8CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608067; c=relaxed/simple;
-	bh=GLgvA5C8PXmJmqsN5424rjtZK8s2O0tEHWSzt0R4OSw=;
+	s=arc-20240116; t=1778608729; c=relaxed/simple;
+	bh=IAgHFtwG7oElHZtgxMi76Y9pr4C8WucO6wPlXg8zAn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tw4QvB39FLti2EXr6GxJRp8e/usqPepHltmn+krWId2B5cp7AFRKQBNbx2gz5N3giUZ8RxBEKiWUCZCBMUjrE5HIL/7iCkL2iaxpQP+cb/vjJa4uq01V0r8EnCUQf2nbr1iPDQ0onyWovekkRzlEPNhg9HIVhuN5IM4rVNEYVLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F01FfwXt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CEAC2BCB0;
-	Tue, 12 May 2026 17:47:46 +0000 (UTC)
+	 MIME-Version; b=J3436OzAIFcOFqgjg8no8Pkaw17b9mEgshkbVZDfP6saMmDr+ss/ZIigU+BL99PfxZz9bqIrvXq4KZId4Q81G+suousqs3BrrAsyc2Z5D6bFg/M9hSpLUE3ZnV/GXzCqIEYQUWG23d7Ak7F5q+iXVwT7IOYREo2z/D5FKmJJHZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnQpLEAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BB5C2BCB0;
+	Tue, 12 May 2026 17:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608066;
-	bh=GLgvA5C8PXmJmqsN5424rjtZK8s2O0tEHWSzt0R4OSw=;
+	s=korg; t=1778608729;
+	bh=IAgHFtwG7oElHZtgxMi76Y9pr4C8WucO6wPlXg8zAn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F01FfwXtJdrr9+qTMEXjZ3++OzVuv/l+vlmCPEQdIlMa+KvGrPK1JvpB4hibDmu3z
-	 rH8CNUFGdzoVI0+iRWT3YtYEoESWYQ8WmX7LWd+0wGiAYQtW+aBsZ/Tu+dhtkaXTEq
-	 te7Fsx4nmTqvSeoKrR3N6hs1ABysvI4WdFBwDPCk=
+	b=EnQpLEAvE2FXsOMl9jvi7jdtpJTEXLWTAUBfekkAr0vCyGq/EagqYttIes2IRZ9aC
+	 UMlnjofb3wlHxmS64hJA7PUd+JuUwy+7LlRuuE0qIYLd4+o2zaXmpL0WI8DzfaXrUZ
+	 fVPpFdu7zKj5zksY+ppwX/FkNZg7cshm0p2MJrVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 141/206] KVM: x86: check for nEPT/nNPT in slow flush hypercalls
+	Kai Aizen <kai.aizen.dev@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.18 192/270] RDMA/ionic: bound node_desc sysfs read with %.64s
 Date: Tue, 12 May 2026 19:39:53 +0200
-Message-ID: <20260512173935.847148099@linuxfoundation.org>
+Message-ID: <20260512173942.491565383@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DE5E552653D
+X-Rspamd-Queue-Id: 2A0345271D7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245987-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246244-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Kai Zen <kai.aizen.dev@gmail.com>
 
-commit 464af6fc2b1dcc74005b7f58ee3812b17777efee upstream.
+commit 654a27f25530d052eeedf086e6c3e2d585c203bd upstream.
 
-Checking is_guest_mode(vcpu) is incorrect, because translate_nested_gpa()
-is only valid if an L2 guest is running *with nested EPT/NPT enabled*.
-Instead use the same condition as translate_nested_gpa() itself.
+node_desc[64] in struct ib_device is not guaranteed to be NUL-
+terminated. The core IB sysfs handler uses "%.64s" for exactly this
+reason (drivers/infiniband/core/sysfs.c:1307), since node_desc_store()
+performs a raw memcpy of up to IB_DEVICE_NODE_DESC_MAX bytes with no NUL
+termination:
+
+  memcpy(desc.node_desc, buf, min_t(int, count, IB_DEVICE_NODE_DESC_MAX));
+
+If exactly 64 bytes are written via the node_desc sysfs file, the array
+contains no NUL byte. The ionic hca_type_show() handler uses unbounded
+"%s" and will read past the end of node_desc into adjacent fields of
+struct ib_device until it encounters a NUL.
+
+ionic supports IB_DEVICE_MODIFY_NODE_DESC, so this is triggerable by
+userspace.
+
+Match the core handler and bound the format specifier.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Fixes: aee738236dca ("KVM: x86: Prepare kvm_hv_flush_tlb() to handle L2's GPAs", 2022-11-18)
-Link: https://patch.msgid.link/20260503200905.106077-1-pbonzini@redhat.com/
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 2075bbe8ef03 ("RDMA/ionic: Register device ops for miscellaneous functionality")
+Link: https://patch.msgid.link/r/CALynFi7NAbhDCt1tdaDbf6TnLvAqbaHa6-Wqf6OkzREbA_PAfg@mail.gmail.com
+Signed-off-by: Kai Aizen <kai.aizen.dev@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/hyperv.c |    2 +-
+ drivers/infiniband/hw/ionic/ionic_ibdev.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2038,7 +2038,7 @@ static u64 kvm_hv_flush_tlb(struct kvm_v
- 	 * flush).  Translate the address here so the memory can be uniformly
- 	 * read with kvm_read_guest().
- 	 */
--	if (!hc->fast && is_guest_mode(vcpu)) {
-+	if (!hc->fast && mmu_is_nested(vcpu)) {
- 		hc->ingpa = translate_nested_gpa(vcpu, hc->ingpa, 0, NULL);
- 		if (unlikely(hc->ingpa == INVALID_GPA))
- 			return HV_STATUS_INVALID_HYPERCALL_INPUT;
+diff --git a/drivers/infiniband/hw/ionic/ionic_ibdev.c b/drivers/infiniband/hw/ionic/ionic_ibdev.c
+index bd4c73e530d0..0382a64839d2 100644
+--- a/drivers/infiniband/hw/ionic/ionic_ibdev.c
++++ b/drivers/infiniband/hw/ionic/ionic_ibdev.c
+@@ -185,7 +185,7 @@ static ssize_t hca_type_show(struct device *device,
+ 	struct ionic_ibdev *dev =
+ 		rdma_device_to_drv_device(device, struct ionic_ibdev, ibdev);
+ 
+-	return sysfs_emit(buf, "%s\n", dev->ibdev.node_desc);
++	return sysfs_emit(buf, "%s.64\n", dev->ibdev.node_desc);
+ }
+ static DEVICE_ATTR_RO(hca_type);
+ 
+-- 
+2.54.0
+
 
 
 
