@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJ2iG2o+A2qr2AEAu9opvQ
-	(envelope-from <stable+bounces-245718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:51:22 +0200
+	id sBsMHoM4A2qK1wEAu9opvQ
+	(envelope-from <stable+bounces-245722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:26:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E10522F4E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:51:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E12952268A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A9F8A30C3748
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:19:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D80193099E9C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD8B3B2D2A;
-	Tue, 12 May 2026 14:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7435C3AEB26;
+	Tue, 12 May 2026 14:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxKFaj7o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y69aq0ix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FB33B2D23
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EFC3B442D
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778595529; cv=none; b=vGdV+CqpDpl74xxC+mIfvhGaKFHmmlR8LBsjbOKs4lQnEhvzOvlmALmevOMCcVO+j2KHjiOXgvrPbsWzRMif42fWeOZ0DUkj45FhLpcKRecNvM6nBDehWFmBIC6uPO2L6C6gI1eSCjgWmOqJ8tGKgt0sGLJeG/fwvhLr5WGOy+E=
+	t=1778595539; cv=none; b=uHromG9UJdVNjkXojkY27zEXC7nqoGFRHCD5aDkfCUJSScj35xD0+d8f+grue2nT3LI+0o/yvtNXY7U+TNaUK7iIUaUQJyu7vfZXFaxYcwb5b3mPdsfD0CjBjaIP1lgrDkaHB5sJHSqn2acqrUA1XU+RqcYuTX7AOPxfK5BniwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778595529; c=relaxed/simple;
-	bh=Ju4jT0lNMn/Bkm9nCowCyosL/5of+lK3OoigCJXfW+4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LakSVFX2hyCKIgxAAyVhifQCCa6UqDodXnfi00uXccTHvox6DZQnQNhuG5Khnlls5gepBV+MX6H5zwO7y/o2bnv3CBSmB0sUdP/JhpZSYA+3R41Xbg8p9qELHUIJXO8N4kR2yvKDflWDIfKwQPWyJ5ng90VwgAIt/rNjJYS0VUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxKFaj7o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380CAC2BCFA;
-	Tue, 12 May 2026 14:18:48 +0000 (UTC)
+	s=arc-20240116; t=1778595539; c=relaxed/simple;
+	bh=xM+KtY/rJYpaRbLIQyffgkjfjDadpB05X626OPMM2Tg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EcFvylK3MYSGMG9ozcsf4qzwtYgsnqlkFQohtVYm7P7mDUR2/Xo8fY4qICQQ1pxKkruhmlmltq4SHueukVnSxwEjSAk4uzWqbQYfESSK+5+b67khIgOJvHKb24PcxM0Aq8tdrAGFom/j3dc8WxBCtXeoH6geYG4CoiSojys8u+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y69aq0ix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1503C2BCF7;
+	Tue, 12 May 2026 14:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778595528;
-	bh=Ju4jT0lNMn/Bkm9nCowCyosL/5of+lK3OoigCJXfW+4=;
+	s=korg; t=1778595539;
+	bh=xM+KtY/rJYpaRbLIQyffgkjfjDadpB05X626OPMM2Tg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=nxKFaj7ogfn5Tc4L4UhqlLdd27VVeW4tD8lf5a8wXQoVn4hXMQcw5NDVHWczm17WA
-	 m+ulMTFuBdQSPy2lw4HOXHFIqgkcjpXvIn+cs2xjATBekJuHMqzGlnFt+ReCuhOsQw
-	 IVA7t9tg8Ahxta7pT7Q34Hk9oIv0dpQL9ZomOqCI=
-Subject: FAILED: patch "[PATCH] sched_ext: Pass held rq to SCX_CALL_OP() for" failed to apply to 6.18-stable tree
-To: tj@kernel.org,arighi@nvidia.com,clm@meta.com
+	b=y69aq0ixLK3v5jEAX0JXhohdLYWgob52h2bTZCAj1GFbxKYL/04UxEC2TJnK0C2mz
+	 acKnS2T5rwpG2B+ZV60ZarzeI4ososfm+FtgSYu00mi+Il+4ZH5bp6ZhJ14ygGxFmo
+	 N5rB+XO3qyN517jYYldpFqySd/uQLmjbDUiIzHdg=
+Subject: FAILED: patch "[PATCH] mptcp: fastclose msk when linger time is 0" failed to apply to 5.15-stable tree
+To: matttbe@kernel.org,kuba@kernel.org,lance@lance0.com,martineau@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 16:18:23 +0200
-Message-ID: <2026051223-catfight-unfounded-5cda@gregkh>
+Date: Tue, 12 May 2026 16:19:01 +0200
+Message-ID: <2026051201-unread-unease-fea3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,23 +54,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 74E10522F4E
+X-Rspamd-Queue-Id: 1E12952268A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245718-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245722-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -78,28 +78,28 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,nvidia.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,lance0.com:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 207d76a372fb1bb324eadc8cb5bcaa0a8da7cefd
+git cherry-pick -x f14d6e9c3678a067f304abba561e0c5446c7e845
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051223-catfight-unfounded-5cda@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051201-unread-unease-fea3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,76 +111,50 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 207d76a372fb1bb324eadc8cb5bcaa0a8da7cefd Mon Sep 17 00:00:00 2001
-From: Tejun Heo <tj@kernel.org>
-Date: Fri, 24 Apr 2026 14:31:36 -1000
-Subject: [PATCH] sched_ext: Pass held rq to SCX_CALL_OP() for
- dump_cpu/dump_task
+From f14d6e9c3678a067f304abba561e0c5446c7e845 Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Mon, 27 Apr 2026 21:54:35 +0200
+Subject: [PATCH] mptcp: fastclose msk when linger time is 0
 
-scx_dump_state() walks CPUs with rq_lock_irqsave() held and invokes
-ops.dump_cpu / ops.dump_task with NULL locked_rq, leaving
-scx_locked_rq_state NULL. If the BPF callback calls a kfunc that
-re-acquires rq based on scx_locked_rq() - e.g. scx_bpf_cpuperf_set(cpu)
-- it re-acquires the already-held rq.
+The SO_LINGER socket option has been supported for a while with MPTCP
+sockets [1], but it didn't cause the equivalent of a TCP reset as
+expected when enabled and its time was set to 0. This was causing some
+behavioural differences with TCP where some connections were not
+promptly stopped as expected.
 
-Pass the held rq to SCX_CALL_OP(). Thread it into scx_dump_task() too.
-The pre-loop ops.dump call runs before rq_lock_irqsave() so keeps
-rq=NULL.
+To fix that, an extra condition is checked at close() time before
+sending an MP_FASTCLOSE, the MPTCP equivalent of a TCP reset.
 
-Fixes: 07814a9439a3 ("sched_ext: Print debug dump after an error exit")
-Cc: stable@vger.kernel.org # v6.12+
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Note that backporting up to [1] will be difficult as more changes are
+needed to be able to send MP_FASTCLOSE. It seems better to stop at [2],
+which was supposed to already imitate TCP.
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 26968d0a6752..73d629559d6d 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -6117,9 +6117,8 @@ static void ops_dump_exit(void)
- 	scx_dump_data.cpu = -1;
- }
- 
--static void scx_dump_task(struct scx_sched *sch,
--			  struct seq_buf *s, struct scx_dump_ctx *dctx,
--			  struct task_struct *p, char marker)
-+static void scx_dump_task(struct scx_sched *sch, struct seq_buf *s, struct scx_dump_ctx *dctx,
-+			  struct rq *rq, struct task_struct *p, char marker)
- {
- 	static unsigned long bt[SCX_EXIT_BT_LEN];
- 	struct scx_sched *task_sch = scx_task_sched(p);
-@@ -6160,7 +6159,7 @@ static void scx_dump_task(struct scx_sched *sch,
- 
- 	if (SCX_HAS_OP(sch, dump_task)) {
- 		ops_dump_init(s, "    ");
--		SCX_CALL_OP(sch, dump_task, NULL, dctx, p);
-+		SCX_CALL_OP(sch, dump_task, rq, dctx, p);
- 		ops_dump_exit();
+Validated with MPTCP packetdrill tests [3].
+
+Fixes: 268b12387460 ("mptcp: setsockopt: support SO_LINGER") [1]
+Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios") [2]
+Cc: stable@vger.kernel.org
+Reported-by: Lance Tuller <lance@lance0.com>
+Closes: https://github.com/lance0/xfr/pull/67
+Link: https://github.com/multipath-tcp/packetdrill/pull/196 [3]
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-3-7432b7f279fa@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 718e910ff23f..4546a8b09884 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3302,7 +3302,8 @@ bool __mptcp_close(struct sock *sk, long timeout)
+ 		goto cleanup;
  	}
  
-@@ -6284,8 +6283,7 @@ static void scx_dump_state(struct scx_sched *sch, struct scx_exit_info *ei,
- 		used = seq_buf_used(&ns);
- 		if (SCX_HAS_OP(sch, dump_cpu)) {
- 			ops_dump_init(&ns, "  ");
--			SCX_CALL_OP(sch, dump_cpu, NULL,
--				    &dctx, cpu, idle);
-+			SCX_CALL_OP(sch, dump_cpu, rq, &dctx, cpu, idle);
- 			ops_dump_exit();
- 		}
- 
-@@ -6308,11 +6306,11 @@ static void scx_dump_state(struct scx_sched *sch, struct scx_exit_info *ei,
- 
- 		if (rq->curr->sched_class == &ext_sched_class &&
- 		    (dump_all_tasks || scx_task_on_sched(sch, rq->curr)))
--			scx_dump_task(sch, &s, &dctx, rq->curr, '*');
-+			scx_dump_task(sch, &s, &dctx, rq, rq->curr, '*');
- 
- 		list_for_each_entry(p, &rq->scx.runnable_list, scx.runnable_node)
- 			if (dump_all_tasks || scx_task_on_sched(sch, p))
--				scx_dump_task(sch, &s, &dctx, p, ' ');
-+				scx_dump_task(sch, &s, &dctx, rq, p, ' ');
- 	next:
- 		rq_unlock_irqrestore(rq, &rf);
- 	}
+-	if (mptcp_data_avail(msk) || timeout < 0) {
++	if (mptcp_data_avail(msk) || timeout < 0 ||
++	    (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime)) {
+ 		/* If the msk has read data, or the caller explicitly ask it,
+ 		 * do the MPTCP equivalent of TCP reset, aka MPTCP fastclose
+ 		 */
 
 
