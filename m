@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFaxF9VrA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:09 +0200
+	id mHa6CetmA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE0F526B38
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70823526010
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8127B313DD7D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 76E8F302712B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D7B495510;
-	Tue, 12 May 2026 17:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF203DC87F;
+	Tue, 12 May 2026 17:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1k5Oe93"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfOKwEMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E5647AF65;
-	Tue, 12 May 2026 17:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C883DC86D;
+	Tue, 12 May 2026 17:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608387; cv=none; b=IbrKZWjorMUWFbKupXAuwOnEHzcF1f5HKrPl2M7YTU2z1jxvudlHBildmAIjPgC4L9I3GAlk5WJOgLLYL/Gbyv9knBST4mgMmpEkQ9SRmuIT60Cs9yYMhTS+7zTdQI1L4TKMLpfwLRQ2JM3glTsyRCHDnoffRNRVirsA9vV5tSg=
+	t=1778607735; cv=none; b=UsUmKfeRW6BCAhK7abunV+4UrY/prD+RMqLXut0knYhjKve7VZKPomqZUV81uYSdLzbe6lWPgV41seEzWQm1O3kLkUthIeOMLghIXN5hfICnWyC7B09Yftq9f6J23TxUZ6UAvcdSusdS2p3jnJTeXxxvR2n/IeFsuLUV+MihSPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608387; c=relaxed/simple;
-	bh=qRd6dLPgdQvZiLF8gk7v3k/o6IL9SK9U9q4QeGvD5R8=;
+	s=arc-20240116; t=1778607735; c=relaxed/simple;
+	bh=Qlad+NTbFROxZ+MlAq86/+fhw1LBsTGs0mQJNGsd9sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBeDlse7UxdSwhfwAUrDWnNsOX2WOZMk/kj4OlRDxXRMwwIwHN2RwP6eWr2OmE5OmdNNXVI99Hv30zZ5+x+6MFmIb5Lz8xUf3bPha0wnmogY/fOV6JxlkbLxiwpF/uMiiagxPZFsZ5ZOeSM5g9yCmMO4qFf459uZeSavihrFDqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1k5Oe93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311E6C2BCC7;
-	Tue, 12 May 2026 17:53:06 +0000 (UTC)
+	 MIME-Version; b=CQKsOs4OQPJ5rHkt8hSj/QDMZVSFtgiRm/+6d+FANHjZY1dP8C6+h501seMB8wAm/nWVJINNdfcC84y6TvrJqMG9iDeijp+13COhsF2HzSCBnj5ZGXWkYhzK9WwBeDvPihBZ2qcJtZUg8FWW5nGUKmGY+iCWZ9wcSztGul2uKyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfOKwEMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BD3C2BCB0;
+	Tue, 12 May 2026 17:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608386;
-	bh=qRd6dLPgdQvZiLF8gk7v3k/o6IL9SK9U9q4QeGvD5R8=;
+	s=korg; t=1778607735;
+	bh=Qlad+NTbFROxZ+MlAq86/+fhw1LBsTGs0mQJNGsd9sA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1k5Oe93euGlvmwsWUAWEUI6pcoe1od2v0TaGnhd3tGGEUxYlFwZUm/dqNf2/PyJG
-	 4gE6C7tIWNJpyOoO+H0kY3IhPr+2zcbim0SK0Qu2BnRqKI9DqmzQKqlXJr7s9/hwk3
-	 Fqub77fE2nfa6aQ+G+9lZbkiYiR1L/VrIsVC30FM=
+	b=qfOKwEMhoWif5pB9KU0ZXt2TpRnJfXBrG3+MqDAY5UFhWxwfsv91S6Mnc11z8SvB9
+	 jENQLSTHrQba9OBEc4Iq5rw7eOo1jCbuHtguV21/Ag7WmDuXx1tFIjgMWQOrufZlJQ
+	 j2bA573J3P0Q9A1Oz3ZzY9FrwO6bcr6MzczLsHwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.18 059/270] xfrm: ah: account for ESN high bits in async callbacks
+	Sean Kelley <skelley@nvidia.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 008/206] ACPI: CPPC: Fix related_cpus inconsistency during CPU hotplug
 Date: Tue, 12 May 2026 19:37:40 +0200
-Message-ID: <20260512173939.694860305@linuxfoundation.org>
+Message-ID: <20260512173932.994893968@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,166 +64,176 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CAE0F526B38
+X-Rspamd-Queue-Id: 70823526010
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246111-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245858-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,test.sh:url,msgid.link:url,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit ec54093e6a8f87e800bb6aa15eb7fc1e33faa524 upstream.
+commit 75141a770f4f8225d316f6c7e146723a32e9720e upstream.
 
-AH allocates its temporary auth/ICV layout differently when ESN is enabled:
-the async ahash setup appends a 4-byte seqhi slot before the ICV or
-auth_data area, but the async completion callbacks still reconstruct the
-temporary layout as if seqhi were absent.
+When concurrently bringing up and down two SMT threads of a physical
+core, many warning call traces occur as below:
 
-With an async AH implementation selected, that makes AH copy or compare
-the wrong bytes on both the IPv4 and IPv6 paths. In UML repro on IPv4 AH
-with ESN and forced async hmac(sha1), ping fails with 100% packet loss,
-and the callback logs show the pre-fix drift:
+The issue timeline is as follows:
 
-  ah4 output_done: esn=1 err=0 icv_off=20 expected_off=24
-  ah4 input_done: esn=1 auth_off=20 expected_auth_off=24 icv_off=32 expected_icv_off=36
+ 1. When the system starts,
+    cpufreq: CPU: 220, policy->related_cpus: 220-221, policy->cpus: 220-221
 
-Reconstruct the callback-side layout the same way the setup path built it
-by skipping the ESN seqhi slot before locating the saved auth_data or ICV.
-Per RFC 4302, the ESN high-order 32 bits participate in the AH ICV
-computation, so the async callbacks must account for the seqhi slot.
+ 2. Offline CPU 220 and CPU 221.
 
-Post-fix, the same IPv4 AH+ESN+forced-async-hmac(sha1) UML repro shows
-the corrected offset (ah4 output_done: esn=1 err=0 icv_off=24
-expected_off=24) and ping succeeds; net/ipv4/ah4.o and net/ipv6/ah6.o
-build clean at W=1. IPv6 AH+ESN was not exercised at runtime, and the
-change has not been tested against a real async hardware AH engine.
+ 3. Online CPU 220
+    - CPU 221 is now offline, as acpi_get_psd_map() use
+      for_each_online_cpu(), so the cpu_data->shared_cpu_map,
+      policy->cpus, and related_cpus has only CPU 220.
 
-Fixes: d4d573d0334d ("{IPv4,xfrm} Add ESN support for AH egress part")
-Fixes: d8b2a8600b0e ("{IPv4,xfrm} Add ESN support for AH ingress part")
-Fixes: 26dd70c3fad3 ("{IPv6,xfrm} Add ESN support for AH egress part")
-Fixes: 8d6da6f32557 ("{IPv6,xfrm} Add ESN support for AH ingress part")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5-4
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+    cpufreq: CPU: 220, policy->related_cpus: 220, policy->cpus: 220
+
+ 4. Offline CPU 220
+
+ 5. Online CPU 221, the below call trace occurs:
+    - Since CPU 220 and CPU 221 share one policy, and
+      policy->related_cpus = 220 after step 3, so CPU 221
+      is not in policy->related_cpus but
+      per_cpu(cpufreq_cpu_data, cpu221) is not NULL.
+
+After reverting commit 56eb0c0ed345 ("ACPI: CPPC: Fix remaining
+for_each_possible_cpu() to use online CPUs"), the issue disappeared.
+
+The _PSD (P-State Dependency) defines the hardware-level dependency of
+frequency control across CPU cores. Since this relationship is a physical
+attribute of the hardware topology, it remains constant regardless of the
+online or offline status of the CPUs.
+
+Using for_each_online_cpu() in acpi_get_psd_map() is problematic. If a
+CPU is offline, it will be excluded from the shared_cpu_map.
+Consequently, if that CPU is brought online later, the kernel will fail
+to recognize it as part of any shared frequency domain.
+
+Switch back to for_each_possible_cpu() to ensure that all cores defined
+in the ACPI tables are correctly mapped into their respective performance
+domains from the start. This aligns with the logic of policy->related_cpus,
+which must encompass all potentially available cores in the domain to
+prevent logic gaps during CPU hotplug operations.
+
+To resolve the original issue regarding the "nosmt" or "nosmt=force"
+boot parameter, as send_pcc_cmd() function already does if (!desc)
+continue, so reverting that loop back to for_each_possible_cpu() is ok,
+only need to change the match_cpc_ptr NULL case in acpi_get_psd_map() to
+continue as Sean suggested.
+
+How to reproduce, on arm64 machine with SMT support which use acpi cppc
+cpufreq driver:
+
+	bash test.sh 220 & bash test.sh 221 &
+
+	The test.sh is as below:
+		while true
+			do
+			echo 0 > /sys/devices/system/cpu/cpu${1}/online
+			sleep 0.5
+			cat /sys/devices/system/cpu/cpu${1}/cpufreq/related_cpus
+			echo 1 >  /sys/devices/system/cpu/cpu${1}/online
+			cat /sys/devices/system/cpu/cpu${1}/cpufreq/related_cpus
+		done
+
+	CPU: 221 PID: 1119 Comm: cpuhp/221 Kdump: loaded Not tainted 6.6.0debug+ #5
+	Hardware name: To be filled by O.E.M. S920X20/BC83AMDA01-7270Z, BIOS 20.39 09/04/2024
+	pstate: a1400009 (NzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+	pc : cpufreq_online+0x8ac/0xa90
+	lr : cpuhp_cpufreq_online+0x18/0x30
+	sp : ffff80008739bce0
+	x29: ffff80008739bce0 x28: 0000000000000000 x27: ffff28400ca32200
+	x26: 0000000000000000 x25: 0000000000000003 x24: ffffd483503ff000
+	x23: ffffd483504051a0 x22: ffffd48350024a00 x21: 00000000000000dd
+	x20: 000000000000001d x19: ffff28400ca32000 x18: 0000000000000000
+	x17: 0000000000000020 x16: ffffd4834e6a3fc8 x15: 0000000000000020
+	x14: 0000000000000008 x13: 0000000000000001 x12: 00000000ffffffff
+	x11: 0000000000000040 x10: ffffd48350430728 x9 : ffffd4834f087c78
+	x8 : 0000000000000001 x7 : ffff2840092bdf00 x6 : ffffd483504264f0
+	x5 : ffffd48350405000 x4 : ffff283f7f95cc60 x3 : 0000000000000000
+	x2 : ffff53bc2f94b000 x1 : 00000000000000dd x0 : 0000000000000000
+	Call trace:
+	 cpufreq_online+0x8ac/0xa90
+	 cpuhp_cpufreq_online+0x18/0x30
+	 cpuhp_invoke_callback+0x128/0x580
+	 cpuhp_thread_fun+0x110/0x1b0
+	 smpboot_thread_fn+0x140/0x190
+	 kthread+0xec/0x100
+	 ret_from_fork+0x10/0x20
+	---[ end trace 0000000000000000 ]---
+
+Cc: All applicable <stable@vger.kernel.org>
+Fixes: 56eb0c0ed345 ("ACPI: CPPC: Fix remaining for_each_possible_cpu() to use online CPUs")
+Co-developed-by: Sean Kelley <skelley@nvidia.com>
+Signed-off-by: Sean Kelley <skelley@nvidia.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+[ rjw: Changelog edits ]
+Link: https://patch.msgid.link/20260417040112.3727756-1-ruanjinjie@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ah4.c |   14 ++++++++++++--
- net/ipv6/ah6.c |   14 ++++++++++++--
- 2 files changed, 24 insertions(+), 4 deletions(-)
+ drivers/acpi/cppc_acpi.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/ipv4/ah4.c
-+++ b/net/ipv4/ah4.c
-@@ -124,9 +124,14 @@ static void ah_output_done(void *data, i
- 	struct iphdr *top_iph = ip_hdr(skb);
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	int ihl = ip_hdrlen(skb);
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -349,7 +349,7 @@ static int send_pcc_cmd(int pcc_ss_id, u
+ end:
+ 	if (cmd == CMD_WRITE) {
+ 		if (unlikely(ret)) {
+-			for_each_online_cpu(i) {
++			for_each_possible_cpu(i) {
+ 				struct cpc_desc *desc = per_cpu(cpc_desc_ptr, i);
  
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	iph = AH_SKB_CB(skb)->tmp;
--	icv = ah_tmp_icv(iph, ihl);
-+	seqhi = (__be32 *)((char *)iph + ihl);
-+	icv = ah_tmp_icv(seqhi, seqhi_len);
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 				if (!desc)
+@@ -511,13 +511,13 @@ int acpi_get_psd_map(unsigned int cpu, s
+ 	else if (pdomain->coord_type == DOMAIN_COORD_TYPE_SW_ANY)
+ 		cpu_data->shared_type = CPUFREQ_SHARED_TYPE_ANY;
  
- 	top_iph->tos = iph->tos;
-@@ -270,12 +275,17 @@ static void ah_input_done(void *data, in
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	int ihl = ip_hdrlen(skb);
- 	int ah_hlen = (ah->hdrlen + 2) << 2;
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
+-	for_each_online_cpu(i) {
++	for_each_possible_cpu(i) {
+ 		if (i == cpu)
+ 			continue;
  
- 	if (err)
- 		goto out;
+ 		match_cpc_ptr = per_cpu(cpc_desc_ptr, i);
+ 		if (!match_cpc_ptr)
+-			goto err_fault;
++			continue;
  
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	work_iph = AH_SKB_CB(skb)->tmp;
--	auth_data = ah_tmp_auth(work_iph, ihl);
-+	seqhi = (__be32 *)((char *)work_iph + ihl);
-+	auth_data = ah_tmp_auth(seqhi, seqhi_len);
- 	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
- 
- 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -317,14 +317,19 @@ static void ah6_output_done(void *data,
- 	struct ipv6hdr *top_iph = ipv6_hdr(skb);
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	struct tmp_ext *iph_ext;
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
- 
- 	extlen = skb_network_header_len(skb) - sizeof(struct ipv6hdr);
- 	if (extlen)
- 		extlen += sizeof(*iph_ext);
- 
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	iph_base = AH_SKB_CB(skb)->tmp;
- 	iph_ext = ah_tmp_ext(iph_base);
--	icv = ah_tmp_icv(iph_ext, extlen);
-+	seqhi = (__be32 *)((char *)iph_ext + extlen);
-+	icv = ah_tmp_icv(seqhi, seqhi_len);
- 
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
- 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
-@@ -471,13 +476,18 @@ static void ah6_input_done(void *data, i
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	int hdr_len = skb_network_header_len(skb);
- 	int ah_hlen = ipv6_authlen(ah);
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
- 
- 	if (err)
- 		goto out;
- 
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	work_iph = AH_SKB_CB(skb)->tmp;
- 	auth_data = ah_tmp_auth(work_iph, hdr_len);
--	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
-+	seqhi = (__be32 *)(auth_data + ahp->icv_trunc_len);
-+	icv = ah_tmp_icv(seqhi, seqhi_len);
- 
- 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
- 	if (err)
+ 		match_pdomain = &(match_cpc_ptr->domain_info);
+ 		if (match_pdomain->domain != pdomain->domain)
 
 
 
