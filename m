@@ -1,479 +1,197 @@
-Return-Path: <stable+bounces-245839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WH1kOXNaA2r75AEAu9opvQ
-	(envelope-from <stable+bounces-245839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:50:59 +0200
+	id uMQfDrBdA2qE5QEAu9opvQ
+	(envelope-from <stable+bounces-245840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:04:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D113A5251A5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:50:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D06B52561D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0098330623E6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:44:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 973463018D64
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951663D45E6;
-	Tue, 12 May 2026 16:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147523D45EF;
+	Tue, 12 May 2026 16:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="FEZ3GBnG";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BDOyRkp1"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mc8xxAhZ"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013000.outbound.protection.outlook.com [40.93.196.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF20D3D45C7;
-	Tue, 12 May 2026 16:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778604227; cv=none; b=pvxyOYYqVumwJzjgMZtQbR+l0UhnYQy8cJCeAIl1/rcGSjO4ZI+DVm9m2Ww0wwIENFL8mFQnJ2BmY+Wn4Z6Ut9KSPMGGt81kYVl0C3tFq9KxTVfFr6IBaDc+MMEXY2jrst+NG0TwxaJ1lXce1caU9RgfSeMrO+puJGZicItc44k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778604227; c=relaxed/simple;
-	bh=qcj3iOESOlauHOt1fmvYEm2yycvOkAPzH1E03en8/bs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gyXOl/2iSYVRmXiT2lqXmJQF/6Mz0PrmKKBZ0nbYcfuhxedqfCcgXvNG5XKS2Ukeavlt8hFWyGIBKXvdZYYZyMiYRBfecMVI+4hwYWpyh9out6KSgJnIAFZWOGGM1sQ9ow2jHDwAiS3Cjs1nECVuZT5mmc8TBJJy8j+njdHkwOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=FEZ3GBnG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BDOyRkp1; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id CF0FC7A00D0;
-	Tue, 12 May 2026 12:43:42 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Tue, 12 May 2026 12:43:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1778604222;
-	 x=1778690622; bh=snBPVnccTw7tGX8WQJmdH9eg3kWovtsiPEGOOel5pNY=; b=
-	FEZ3GBnGoiGwVVpxX65IwpN1cJuMcNyj0ELgWbiizhCvCczMJUzRVEslSWHb3z+B
-	himF+NO93rysKPuN6wM/DrV2ox71kuxc6RAGaVtioese6k60k/UP/ry3MHOFDflj
-	9Dgizmz5i4L9cnpgnhuMXfaC0qy14nUCJLFFY/agqUzJvTI3uMPnbDhLe3oaIGHK
-	/exbo9WNKuCEf72yy+EQpAASwDINJusvGHnskGgZnDyB78m8rsffJ3WBF2r10BJS
-	WaVKqpkmA6hQM4S0thAlOn7pWMNgO7eVx08E1PzxrJ0+jOak0p6VOXW8ErztOguA
-	hJMxpac6245WbFML5sUAIQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778604222; x=
-	1778690622; bh=snBPVnccTw7tGX8WQJmdH9eg3kWovtsiPEGOOel5pNY=; b=B
-	DOyRkp1jbC5f7KTk84KcQw0AMKV1zPGpeNRRVMSir3RQY5D6yXXQfbL856t5RmVT
-	30hD7AqwJ3Lxg6ypWqv18B7CtkqXLFF9be0mPn9xhYF65NP4uSmYnPPUQBbouVBR
-	MiDWTqJIt7vPYr5IAtPffprOGutw973NX3qDT53oVOYVCt7D1k4UT4GXQW3AizPs
-	YOjezhoZ7TAuTR+hRqJKFANSGjtZi9P4hFtmRgpww/9I2IrSFyrVd+h5q+AvDnDb
-	MKulp6ZjQ9/019zzVRQ09DdzBtxojPSv1xfWm8oxsau0ZWyTipcnHuU+xV4v2zJV
-	d5eaLVGsiLfeLQkZBVRQg==
-X-ME-Sender: <xms:vlgDanL2EH4ZN4doyOzAmR4or186lxxTPUpI64ciHfTZAx6WdNw4cQ>
-    <xme:vlgDamF564bN71s2JUBeZhDwd6FYqCRkYeqs5VKh5IUhSZF-XQ-vuSJqf8Io6LSyR
-    mjX_6GUIJmhwh9jv_gAOCch1oUC_HiNg84a7hPmWj7YbvVAzAA2JEU>
-X-ME-Received: <xmr:vlgDautKxBKaFW_MRc_Q2KxPKHmxv2n8siuIYMvjukfwGJ4gWc7UFQIi0xPZZV4Iehe727YqPvkxc4E58xi5ApgjueScu72X6Gh->
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvddvfeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefpihhklhgr
-    shcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrg
-    htvggthhdrshgvqeenucggtffrrghtthgvrhhnpeevteegtddvvdfhtdekgefhfeefheet
-    heekkeegfeejudeiudeuleegtdehkeekteenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhn
-    rghtvggthhdrshgvpdhnsggprhgtphhtthhopeeipdhmohguvgepshhmthhpohhuthdprh
-    gtphhtthhopehlrghurhgvnhhtrdhpihhntghhrghrthdorhgvnhgvshgrshesihguvggr
-    shhonhgsohgrrhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqmhgvughirgesvhhgvg
-    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhrvghnvghsrghsqdhs
-    ohgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhivghrrghnrdgsih
-    hnghhhrghmsehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehjrggtohhp
-    ohdrmhhonhguihesihguvggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohepshhtrg
-    gslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:vlgDalsMVTJugSkRvQbIFiU62a2vsYT92KWYYoUT0DrjrJhHxmu9lg>
-    <xmx:vlgDasDgdxC1Dcal-HTYx0aN_qYflBMR6uHK3ULAlwOf2bhNmQw0Ww>
-    <xmx:vlgDavOfpvb50V4j7Qkh4QgTyi1QFK9BDG6uJiqWV-cr6g_O5uvZUg>
-    <xmx:vlgDatxAXy7tFlplkJL6lovcpSEJfDYGHNeh7E2X00gAdXGSIBBN_g>
-    <xmx:vlgDaht-wrUIIzwD1I34kHKEaLotzkYQf2d1xhN0E1qqdffqaBCyq-1x>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 May 2026 12:43:41 -0400 (EDT)
-Date: Tue, 12 May 2026 18:43:39 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32CE3B5F5D
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 16:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778604385; cv=fail; b=DiqdQUEJXmW3CUV8fdgAqLalzLIbaZrYmvIknNlzvt47T1DpjBME3zbMktiqNLuyVkE4Q3Wz0qEL8cwhhHBvDtog4MKswmitLjARs0p3JRCVgfVD9pknaiQpmgdRO0B0Qj7nL0W5pqJd881dMlmB+jWTBpD6CZhKE8ljmmabZMg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778604385; c=relaxed/simple;
+	bh=/a6JYo+5gnPdV0056ZK55BaQ865o28yvADYwxeOnOgQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=XPxWjsfqdMfoRSv/g2ABzh2K1lnyrq8UPL2732yVgxs0N+b1sqYmumBY5E3D1nHt96hO5LLqgkIQH5e0XsIW49vRlaDe7pb6fQaX5TPbIb1JQYIvYXR1Ir7VcXDSUtl0RG+hjK18OQfyv380wLjt7PgCjSWMye0f3fO4RE8HOUg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mc8xxAhZ; arc=fail smtp.client-ip=40.93.196.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UNH15q4bhb7YzMO7DdhrRlXMru/NXVRsOE7LcrdB2HEmfeG2NGwW4SLJzR4Ep/W8qrztI0ZyPBzKmWdH8Fha46vf50Wi/stEkS3NQWOWOd3e2cMe3gvyLCyHp02hqY3Fqpsbe+WngR5qcH51rK2uHZdNUbgiZoJMSBK/R0Q62HDkNbm8qXcJxcx69A9axrYl0WJaY/anFi2EHZXV8L9Giim4K2l2PqzK1RfGId/kN6EHVInbqauBKPCUNzRvJ047kGHRYM4BzJvxwePAOSQWjzHGKYpel80smqMt8V+npcFOYqaSpyxrTfxbTIV/6iWTgGlu5of9qzMs5lhr1ySOVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BtwQtfx1enuxlL8rZM+iG/+/Cx1JXyoprALYOVBlHsY=;
+ b=axk8gSQUJp+8Gz4vsKYlNSNcYkTU8j86BVik0ajjIH0REyyTNTXslYVsp8i+xVeqAaRpdVlnHXDq9ccJY4YDWuAEJYjTXolpP7b0gip/Z/ll59Dd+wDnTVeI4bkxplyYmv4JIRofOrfWuQMXuGUHK8AfVVnOAKEqHlZEOHYRkpx+7yPyw0OdWJ71pq+5b7a3qvtnmGX1yu3r0QhiDit70HyyQui8NAMVBBSKxBMG+xxJ5SVSawP9vfR7WrTBBicnZZhzQiqzGeub3NjPbKhjJa4EQJWCP7werfxR2huzxB0mhCES8yBVEXbtNqh/iEJKXlEXoYKfPPptJD7JcpiBEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BtwQtfx1enuxlL8rZM+iG/+/Cx1JXyoprALYOVBlHsY=;
+ b=mc8xxAhZCvzK/0D8VshySuk1He0HiI5UJVnvehm/S8v5db4b08qNKjhaUHwk/gJhga5widpPtjwEz1wHHgS0KpYOeIy/rWYqK1BGDinIXFt6o0wRR/xFRpUucTOlMrfREH6XgYf6wjf5NFqElCEobxQK7/wuKWBwxT+GTtBwcFSglGiRGnqz+Mj9EZ2hv4nsqZWc/FtwNYMsnzcQRHEu45mxNsifQix0T02RpCzERcZohYBXaHPYAzASU+bZTim4Y/o9FEFRqfoQVxpLkpulGPtjVHaTIzwADd9lU6ZK10bqkPAfCX9SrXOczFkz2h8Oaw0Nj9zNJjMQ0SxYZI59lQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CY1PR12MB9601.namprd12.prod.outlook.com (2603:10b6:930:107::16)
+ by PH7PR12MB9173.namprd12.prod.outlook.com (2603:10b6:510:2ee::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 12 May
+ 2026 16:46:20 +0000
+Received: from CY1PR12MB9601.namprd12.prod.outlook.com
+ ([fe80::cd76:b497:475f:4de3]) by CY1PR12MB9601.namprd12.prod.outlook.com
+ ([fe80::cd76:b497:475f:4de3%5]) with mapi id 15.20.9913.009; Tue, 12 May 2026
+ 16:46:19 +0000
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: iommu@lists.linux.dev,
+	Joerg Roedel <joro@8bytes.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>
+Cc: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	patches@lists.linux.dev,
+	Pranjal Shrivastava <praan@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Mostafa Saleh <smostafa@google.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] media: renesas: vsp1: Fix race condition when stopping
- display pipeline
-Message-ID: <20260512164339.GB332351@ragnatech.se>
-References: <20260511223832.3385049-1-laurent.pinchart+renesas@ideasonboard.com>
- <20260512153557.GA332351@ragnatech.se>
+Subject: [PATCH rc 0/5] Fix some iommupt mistakes from Sashiko
+Date: Tue, 12 May 2026 13:46:12 -0300
+Message-ID: <0-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR22CA0002.namprd22.prod.outlook.com
+ (2603:10b6:208:238::7) To CY1PR12MB9601.namprd12.prod.outlook.com
+ (2603:10b6:930:107::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260512153557.GA332351@ragnatech.se>
-X-Rspamd-Queue-Id: D113A5251A5
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY1PR12MB9601:EE_|PH7PR12MB9173:EE_
+X-MS-Office365-Filtering-Correlation-Id: 70a7b465-cb34-4cf8-6127-08deb045fda4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|56012099003|18002099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	U2Z9v1PAhf+T+11ltEwFdYanR8v+0X+ZtptyC8eX1MV11i8UD9nDjffDoNRr+ozPe15VMVqN2ZrtNrMAlB541sfREknTTbQiqt8AZg9KNaxqZ4JoLaWtWm7L6xACJ6QqS1cyC0bvdCMbRdw959GmEP1Skr8Gr6t1aqutlOOoUAINEoyvLMBeDlp9HRhwecBAL0bb8dGMEqXj0gze+6CjifrVaruOKzxPEPQGmZ87Gm1TRafsMGYHZ7jILaVAzQBBsirSRERJejuUQh/BZ/6TGZw8kv3zX8s/zOgEr63Of6jdPgp0MoCRSo80xXRD+aSPG3g2rfCrgrqbkz6/E+vnfYPrcTnhVu7DQ+bJA8OXVT9K03VU2j9y5MMJ1lGrBBPMHaM/0lWcjIHokAtUaR4TQ4PbVnUDlLW5izg9nL/16zLaqRcpQCPoayndYiHhG5hWihKmCQDDFLEsGHz8OaJz0nN7we5PSXNkp3jWzNsvfjHqaDh1sd1xg88iuTMe9Lw2erpqqyrU7yivvt5KRoDVFm9W/uHlOzTgMVNa0vjfcQ3lh5/uDSldH43OgKUF/fQP2xO+D3SLRa0y7t48BLF6WbNwce1ERhs27h6LCRl6yEV687lJkRKcpG29RHYr2rhVLYBeCGgTXdaT4VCuzvw2AStiySQ5Q/nPWw4OdbxomWjd42aDhgwvO/OIw83aHLWd
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9601.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(56012099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?V7BfKCEQFcPp2sHD0S9/MYfzQsPgcP8RsMakVyXUssUgLLXbQO01sdJTLhpv?=
+ =?us-ascii?Q?eqx8ppEC2uMC2lnu+7UWOxCAX2KNtf4b/uT+9EF54t3LBrdotmOEBOWc31bc?=
+ =?us-ascii?Q?p1UiMpSvQlWK6ZBYRkYXDH0Ao9yDDeYUx0/1tNu82j53171STxPGyhG0XSSW?=
+ =?us-ascii?Q?vVLtGrD8F5Bo/gsSfNoUFAnSpxPZBcoxejzBaDowDmk7Fx5zogZQgkYBzH+f?=
+ =?us-ascii?Q?6PfI4fylJBT2N/TE/y55DD+GIPJCJ++Jtl1cHoRXn+QREUh3tgfbx5Rtge4t?=
+ =?us-ascii?Q?ElpZkKmVyDs8gs8FVEwyvxPCe7QxmXDfx9C+otamCTlke01A/yekpj5rhYyR?=
+ =?us-ascii?Q?yYeiEPdbbVrzvjProJVbGAU44Dm6g246IADeddy/M7zZaZ93dkT8SifjzmjK?=
+ =?us-ascii?Q?TtPMcNfYFr2ISlAy/mz691igQ2U7X33rRYRYWzs+082pq7SURjnj6O/nujPw?=
+ =?us-ascii?Q?IhDM8VcFhmME497zlsyRUKc9Y5YKrM9eZpnc2drP7BdcgSpLYDGgwGzaOq4S?=
+ =?us-ascii?Q?KBSlmq0yOC4d82lvA9lDDpKEaZGAfbSd1bCZm5pXS6fEahyLL3NwzKPoD9pE?=
+ =?us-ascii?Q?T//JSegN/NhPo/Tyj+k53lPJ8X08ObQ9c/dq/+39EextFV22fze4q20JcF3d?=
+ =?us-ascii?Q?OkYcMlf4bnOqth5+hsqaAtaWj+NWLc6p5j1HazJ/RLVE3FrQCrlcM23G+xP+?=
+ =?us-ascii?Q?fmIYswgaD+eUE0jjMnhwJfUcjbU/iW3Q/uZ9Wszd8xw8RWRn2t7WC0D8N1qk?=
+ =?us-ascii?Q?Mt4LGK79IEOpdvLsqerRYqM00D009JgguOpbaYiayvteM4BUXlmw9LKPWd3x?=
+ =?us-ascii?Q?Kx40XtUNPGf14e9hjUimeQzfkttNOa1TtML81Btqvr1JgUykpgZiaKSR2Dlh?=
+ =?us-ascii?Q?qExEUkg2DnHPc89BSAtGR0iqaslHl9CzHc+gS3hqXgBjOqF/uPUM52SMhbN/?=
+ =?us-ascii?Q?yphcbJFxujEmfJgtNEqTBTqOFpY1R/Nkn6PwgYLY1DB8x5m/g3/nxtpV9+K+?=
+ =?us-ascii?Q?OeFoUnjsg2Fks/JxUjyFIJks8YVvS5/s1V4lpWPnJFLm+zPkSFJ6+6KaUDzo?=
+ =?us-ascii?Q?c5zgS3XgSFrLQxYYRQ49aTpBX5z/Pf1jjxYWeM/0XxDHlNIuB6Tu9oYaWx20?=
+ =?us-ascii?Q?dbK7Ys5oAZS/IkZlUhfJSdwC+EG5J2nPbysk/yE3VHmZ4iktBNDK3tJCtQeu?=
+ =?us-ascii?Q?ThkrVT77nv5ZNyf7gXqIrHZrVuMwlh1m7DJhFZsMp6Fa9DucfCuArr3D24EE?=
+ =?us-ascii?Q?m9pb2ipL6zKsAP35oFPcOaUg6dRRTIqvM2Jk7X1n6eIzEyXvVLWY5PZ0CbI1?=
+ =?us-ascii?Q?AZjyLe9q3zG8KabltUO5OtS0Jmha7tlTThxB5pj83lFMrll9DSUYn8uqblPp?=
+ =?us-ascii?Q?UDzdUa6ln2A0GiXrl9pl8pzXGU7h/864Twnyw52mv77jdjs0FjCkOCdyiLA1?=
+ =?us-ascii?Q?AlDhPomCjOfNqKkpx8fksWCcpz84II6YfLXMWSuEAZpBnchJy2di5BM180C4?=
+ =?us-ascii?Q?093OFKHnKZrCm0FF/fo9P2f2uvJbJ4PAq/cQxmwFJERbVuysvx78wThsdbo4?=
+ =?us-ascii?Q?sxt+YRp1uZqsBzox3lfoHakPnIwMKay0jXdh2OcOBMRlXL9K8i1v7aWDcXhN?=
+ =?us-ascii?Q?jBocc9pn8Ztp551q3QjZ3oLay2rZZ0rYwRosFSlpQaHdjQwbkj5dYvBANORd?=
+ =?us-ascii?Q?hVh/09L5mbBckHGU9nEWQYSFPgjTuABb1SreqOih8NMi4wOx?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70a7b465-cb34-4cf8-6127-08deb045fda4
+X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9601.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 16:46:19.0039
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NV9tL02Df52f2tChBszcD8HeqZToCFPfBkjIsO/JxbHbF/asrV8CBh+jKLUxuGs3
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9173
+X-Rspamd-Queue-Id: 3D06B52561D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ragnatech.se,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[ragnatech.se:s=fm2,messagingengine.com:s=fm3];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[ragnatech.se:+,messagingengine.com:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245839-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245840-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[niklas.soderlund@ragnatech.se,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ragnatech.se:mid,ragnatech.se:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,nvidia.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Hello again,
+Josua found there was an errant !ret, so I ran the original series through
+Sashiko, which found some other interesting things, a few miskates were
+made while rebasing across the iommu_debug_map() series, and a few other
+interesting remarks.
 
-On 2026-05-12 17:36:01 +0200, Niklas Söderlund wrote:
-> Hi Laurent,
-> 
-> Thanks for your work.
-> 
-> On 2026-05-12 01:38:32 +0300, Laurent Pinchart wrote:
-> > When stopping a display pipeline, the vsp1_du_setup_lif() function first
-> > stops the hardware by calling vsp1_pipeline_stop(), and then resets
-> > drm_pipe->du_complete to NULL. Stopping the hardware ensures no new
-> > interrupt is generated, but does not wait for completion of any running
-> > interrupt handler. This creates a race with vsp1_du_pipeline_frame_end()
-> > which tests drm_pipe->du_complete before calling the function pointer.
-> > If the drm_pipe->du_complete pointer is reset to NULL between those two
-> > operations, a NULL pointer derefence will occur.
-> > 
-> > Fix this by setting pipe->state to STOPPING before stopping the
-> > hardware, and avoid calling the frame end handler if the state is not
-> > RUNNING. Condition the latter to the display pipeline, as the other
-> > pipeline use a different stop procedure that waits for the frame end
-> > handler to set the state to STOPPED.
-> > 
-> > The state check needs to be protected by the pipe->irqlock. The lock is
-> > used by the video and vspx completion handlers already, so move it one
-> > level up to vsp1_pipeline_frame_end().
-> 
-> Running with this and the still out-of-tree ISP driver I hit a splat. It 
-> might be an issue in the ISP driver, I will dig some more. But for 
-> reference I log the splat here. My stress test also seems to trigger the 
-> deadlock.
+Jason Gunthorpe (5):
+  iommu: Fix loss of errno on map failure for classic ops
+  iommu: Fix up map/unmap debugging for iommupt domains
+  iommu: Handle unmap error when iommu_debug is enabled
+  iommupt: Check for missing PAGE_SIZE in the pgsize_bitmap
+  iommupt: Fix the end_index calculation in __map_range_leaf()
 
-I did some more digging, and indeed the deadlock is a combination of the 
-R-Car ISP driver and this change. The usage pattern by the ISP is,
+ drivers/iommu/generic_pt/iommu_pt.h | 24 +++++----
+ drivers/iommu/iommu.c               | 82 +++++++++++++----------------
+ 2 files changed, 51 insertions(+), 55 deletions(-)
 
-void prepare_next_job_for_vspx(...)
-{
-    lockdep_assert_held(&core->lock);
 
-    /*
-     * Collect resources protected by core->lock into the next VSPX job.
-     */
-    myjob = ...;
-
-    if(vsp1_isp_job_run(myjob)) {
-       /* Error path, clean up. */
-
-       vsp1_isp_job_release(myjob);
-
-       /* Cleanup resources protected by core->lock */
-    }
-}
-
-void risp_vspx_frame_end_callback(...)
-{
-    /* I am called by the VSPX from vsp1_pipeline_frame_end() */
-
-    guard(spinlock_irqsave)(&core->lock);
-
-    /* 
-     * Act on resources protected by core->lock that the VSPX is now 
-     * done processing.
-     */
-
-    prepare_next_job_for_vspx(...);
-}
-
-void start_work_by_queueing_first_job_to_vspx(...)
-{
-    /*
-     * I'm called at stream on time in this example to get the ball 
-     * rolling.
-     */
-
-    guard(spinlock_irqsave)(&core->lock);
-
-    prepare_next_job_for_vspx(...)
-}
-
-The R-Car ISP driver could possibly be reworked to release the 
-core->lock before calling vsp1_isp_job_run(). But it would then need to 
-retake the lock in the error path, which seems messy.
-
-If it all possible do think this patch can be reworked to call the user 
-registered callback... (see below)
-
-> 
-> [   32.111727] ======================================================
-> [   32.112507] WARNING: possible circular locking dependency detected
-> [   32.113287] 7.1.0-rc1-arm64-renesas-02551-g0fc35b78411a #17 Not tainted
-> [   32.114122] ------------------------------------------------------
-> [   32.114900] swapper/0/0 is trying to acquire lock:
-> [   32.115506] ffff000442e1ef30 (&core->lock){-...}-{3:3}, at: risp_core_svspx_frame_end+0x24/0x60
-> [   32.116624]
->                but task is already holding lock:
-> [   32.117358] ffff000442e16cc8 (&pipe->irqlock){-...}-{3:3}, at: vsp1_pipeline_frame_end+0x4c/0xc0
-> [   32.118478]
->                which lock already depends on the new lock.
-> 
-> [   32.119511]
->                the existing dependency chain (in reverse order) is:
-> [   32.120457]
->                -> #1 (&pipe->irqlock){-...}-{3:3}:
-> [   32.121223]        lock_acquire+0x27c/0x3fc
-> [   32.121764]        _raw_spin_lock_irqsave+0x58/0x80
-> [   32.122392]        vsp1_isp_job_run+0x84/0xf8
-> [   32.122952]        risp_core_job_run+0x1e4/0x2a4
-> [   32.123540]        risp_core_start_streaming+0x3d8/0x440
-> [   32.124215]        risp_io_start_streaming+0x64/0xe0
-> [   32.124846]        vb2_start_streaming+0x64/0x168
-> [   32.125449]        vb2_core_streamon+0xd0/0x1b8
-> [   32.126028]        vb2_ioctl_streamon+0x50/0x8c
-> [   32.126606]        v4l_streamon+0x20/0x28
-> [   32.127120]        __video_do_ioctl+0x344/0x3f0
-> [   32.127698]        video_usercopy+0x2e8/0x9f0
-> [   32.128254]        video_ioctl2+0x14/0x80
-> [   32.128766]        v4l2_ioctl+0x3c/0x60
-> [   32.129254]        __arm64_sys_ioctl+0x88/0xe0
-> [   32.129825]        invoke_syscall.constprop.0+0x3c/0x100
-> [   32.130504]        el0_svc_common.constprop.0+0x34/0xcc
-> [   32.131170]        do_el0_svc+0x18/0x20
-> [   32.131661]        el0_svc+0x3c/0x2b8
-> [   32.132131]        el0t_64_sync_handler+0x98/0xe0
-> [   32.132731]        el0t_64_sync+0x154/0x158
-> [   32.133265]
->                -> #0 (&core->lock){-...}-{3:3}:
-> [   32.133999]        check_prev_add+0x10c/0xda0
-> [   32.134554]        __lock_acquire+0x129c/0x1584
-> [   32.135131]        lock_acquire+0x27c/0x3fc
-> [   32.135665]        _raw_spin_lock_irqsave+0x58/0x80
-> [   32.136286]        risp_core_svspx_frame_end+0x24/0x60
-> [   32.136939]        vsp1_vspx_pipeline_frame_end+0x1c/0x28
-> [   32.137626]        vsp1_pipeline_frame_end+0xa8/0xc0
-> [   32.138260]        vsp1_irq_handler+0xfc/0x12c
-> [   32.138828]        __handle_irq_event_percpu+0xa8/0x4cc
-> [   32.139497]        handle_irq_event+0x40/0x100
-> [   32.140065]        handle_fasteoi_irq+0xe8/0x210
-> [   32.140655]        handle_irq_desc+0x30/0x58
-> [   32.141202]        generic_handle_domain_irq+0x14/0x1c
-> [   32.141857]        gic_handle_irq+0x50/0xe0
-> [   32.142389]        call_on_irq_stack+0x30/0x60
-> [   32.142955]        do_interrupt_handler+0x78/0x7c
-> [   32.143555]        el1_interrupt+0x34/0x50
-> [   32.144079]        el1h_64_irq_handler+0x14/0x1c
-> [   32.144668]        el1h_64_irq+0x6c/0x70
-> [   32.145168]        cpuidle_enter_state+0xf4/0x440
-> [   32.145769]        cpuidle_enter+0x30/0x40
-> [   32.146295]        do_idle+0x16c/0x2d0
-> [   32.146776]        cpu_startup_entry+0x30/0x40
-> [   32.147342]        kernel_init+0x0/0x130
-> [   32.147842]        do_one_initcall+0x0/0x248
-> [   32.148392]        __primary_switched+0x88/0x90
-> [   32.148970]
->                other info that might help us debug this:
-> 
-> [   32.149983]  Possible unsafe locking scenario:
-> 
-> [   32.150741]        CPU0                    CPU1
-> [   32.151325]        ----                    ----
-> [   32.151908]   lock(&pipe->irqlock);
-> [   32.152366]                                lock(&core->lock);
-> [   32.153110]                                lock(&pipe->irqlock);
-> [   32.153886]   lock(&core->lock);
-> [   32.154311]
->                 *** DEADLOCK ***
-> 
-> [   32.155073] 1 lock held by swapper/0/0:
-> [   32.155572]  #0: ffff000442e16cc8 (&pipe->irqlock){-...}-{3:3}, at: vsp1_pipeline_frame_end+0x4c/0xc0
-> [   32.156780]
->                stack backtrace:
-> [   32.157347] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.1.0-rc1-arm64-renesas-02551-g0fc35b78411a #17 PREEMPT
-> [   32.157359] Hardware name: Retronix Sparrow Hawk board based on r8a779g3 (DT)
-> [   32.157365] Call trace:
-> [   32.157369]  show_stack+0x14/0x1c (C)
-> [   32.157388]  dump_stack_lvl+0x6c/0x90
-> [   32.157396]  dump_stack+0x14/0x1c
-> [   32.157404]  print_circular_bug+0x254/0x2a0
-> [   32.157413]  check_noncircular+0x170/0x190
-> [   32.157422]  check_prev_add+0x10c/0xda0
-> [   32.157431]  __lock_acquire+0x129c/0x1584
-> [   32.157440]  lock_acquire+0x27c/0x3fc
-> [   32.157449]  _raw_spin_lock_irqsave+0x58/0x80
-> [   32.157460]  risp_core_svspx_frame_end+0x24/0x60
-> [   32.157468]  vsp1_vspx_pipeline_frame_end+0x1c/0x28
-> [   32.157480]  vsp1_pipeline_frame_end+0xa8/0xc0
-> [   32.157494]  vsp1_irq_handler+0xfc/0x12c
-> [   32.157507]  __handle_irq_event_percpu+0xa8/0x4cc
-> [   32.157522]  handle_irq_event+0x40/0x100
-> [   32.157537]  handle_fasteoi_irq+0xe8/0x210
-> [   32.157547]  handle_irq_desc+0x30/0x58
-> [   32.157560]  generic_handle_domain_irq+0x14/0x1c
-> [   32.157574]  gic_handle_irq+0x50/0xe0
-> [   32.157581]  call_on_irq_stack+0x30/0x60
-> [   32.157590]  do_interrupt_handler+0x78/0x7c
-> [   32.157600]  el1_interrupt+0x34/0x50
-> [   32.157611]  el1h_64_irq_handler+0x14/0x1c
-> [   32.157623]  el1h_64_irq+0x6c/0x70
-> [   32.157630]  cpuidle_enter_state+0xf4/0x440 (P)
-> [   32.157645]  cpuidle_enter+0x30/0x40
-> [   32.157655]  do_idle+0x16c/0x2d0
-> [   32.157665]  cpu_startup_entry+0x30/0x40
-> [   32.157675]  kernel_init+0x0/0x130
-> [   32.157682]  do_one_initcall+0x0/0x248
-> [   32.157694]  __primary_switched+0x88/0x90
-> 
-> > 
-> > Fixes: d7ade201ae7f ("v4l: vsp1: Extend VSP1 module API to allow DRM callbacks")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-> > ---
-> > 
-> > I have noticed this race condition while debugging a separate issue and
-> > adding printk() statements in the display pipeline frame end. I have
-> > tested the fix with the DU test suite and VSP test suite, exercising
-> > both the display and video pipelines. I'm fairly confident that the VSPX
-> > pipeline won't be negatively affected, but it would be good to
-> > double-check that. Jacopo, Niklas, would you be able to give test it ?
-> > 
-> > ---
-> >  drivers/media/platform/renesas/vsp1/vsp1_pipe.c  | 12 ++++++++++--
-> >  drivers/media/platform/renesas/vsp1/vsp1_video.c |  5 -----
-> >  drivers/media/platform/renesas/vsp1/vsp1_vspx.c  | 13 +++++--------
-> >  3 files changed, 15 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/drivers/media/platform/renesas/vsp1/vsp1_pipe.c b/drivers/media/platform/renesas/vsp1/vsp1_pipe.c
-> > index 5d769cc42fe1..aaec1aa15091 100644
-> > --- a/drivers/media/platform/renesas/vsp1/vsp1_pipe.c
-> > +++ b/drivers/media/platform/renesas/vsp1/vsp1_pipe.c
-> > @@ -509,6 +509,10 @@ int vsp1_pipeline_stop(struct vsp1_pipeline *pipe)
-> >  		 * When using display lists in continuous frame mode the only
-> >  		 * way to stop the pipeline is to reset the hardware.
-> >  		 */
-> > +		scoped_guard(spinlock_irqsave, &pipe->irqlock) {
-> > +			pipe->state = VSP1_PIPELINE_STOPPING;
-> > +		}
-> > +
-> >  		ret = vsp1_reset_wpf(vsp1, pipe->output->entity.index);
-> >  		if (ret == 0) {
-> >  			spin_lock_irqsave(&pipe->irqlock, flags);
-> > @@ -583,8 +587,12 @@ void vsp1_pipeline_frame_end(struct vsp1_pipeline *pipe)
-> >  	 * Regardless of frame completion we still need to notify the pipe
-> >  	 * frame_end to account for vblank events.
-> >  	 */
-> > -	if (pipe->frame_end)
-> > -		pipe->frame_end(pipe, flags);
-> > +	scoped_guard(spinlock_irqsave, &pipe->irqlock) {
-> > +		if (pipe->state == VSP1_PIPELINE_RUNNING || !pipe->lif) {
-> > +			if (pipe->frame_end)
-> > +				pipe->frame_end(pipe, flags);
-
-.. here without holding the pipe->irqlock? AFIK this would be safe as 
-the user is in control on when the next VSPX job is scheduled. And would 
-IMHO make the API nicer as the user would be able to hold it's own locks 
-in the interaction of queueing new jobs from the frame_end callback.
-
-I'm willing to try and rework the R-Car ISP driver for this, but will 
-await your feedback if you think it would be safe to avoid this issue in 
-the API design between VSPX provider and user.
-
-> > +		}
-> > +	}
-> >  
-> >  	pipe->sequence++;
-> >  }
-> > diff --git a/drivers/media/platform/renesas/vsp1/vsp1_video.c b/drivers/media/platform/renesas/vsp1/vsp1_video.c
-> > index fe1dac11d4ae..a8db94bdb670 100644
-> > --- a/drivers/media/platform/renesas/vsp1/vsp1_video.c
-> > +++ b/drivers/media/platform/renesas/vsp1/vsp1_video.c
-> > @@ -325,14 +325,11 @@ static void vsp1_video_pipeline_frame_end(struct vsp1_pipeline *pipe,
-> >  {
-> >  	struct vsp1_device *vsp1 = pipe->output->entity.vsp1;
-> >  	enum vsp1_pipeline_state state;
-> > -	unsigned long flags;
-> >  	unsigned int i;
-> >  
-> >  	/* M2M Pipelines should never call here with an incomplete frame. */
-> >  	WARN_ON_ONCE(!(completion & VSP1_DL_FRAME_END_COMPLETED));
-> >  
-> > -	spin_lock_irqsave(&pipe->irqlock, flags);
-> > -
-> >  	/* Complete buffers on all video nodes. */
-> >  	for (i = 0; i < vsp1->info->rpf_count; ++i) {
-> >  		if (!pipe->inputs[i])
-> > @@ -354,8 +351,6 @@ static void vsp1_video_pipeline_frame_end(struct vsp1_pipeline *pipe,
-> >  		wake_up(&pipe->wq);
-> >  	else if (vsp1_pipeline_ready(pipe))
-> >  		vsp1_video_pipeline_run(pipe);
-> > -
-> > -	spin_unlock_irqrestore(&pipe->irqlock, flags);
-> >  }
-> >  
-> >  static int vsp1_video_pipeline_build_branch(struct vsp1_pipeline *pipe,
-> > diff --git a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
-> > index 1673479be0ff..26c477708858 100644
-> > --- a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
-> > +++ b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
-> > @@ -176,14 +176,11 @@ static void vsp1_vspx_pipeline_frame_end(struct vsp1_pipeline *pipe,
-> >  {
-> >  	struct vsp1_vspx_pipeline *vspx_pipe = to_vsp1_vspx_pipeline(pipe);
-> >  
-> > -	scoped_guard(spinlock_irqsave, &pipe->irqlock) {
-> > -		/*
-> > -		 * Operating the vsp1_pipe in singleshot mode requires to
-> > -		 * manually set the pipeline state to stopped when a transfer
-> > -		 * is completed.
-> > -		 */
-> > -		pipe->state = VSP1_PIPELINE_STOPPED;
-> > -	}
-> > +	/*
-> > +	 * Operating the vsp1_pipe in singleshot mode requires to manually set
-> > +	 * the pipeline state to stopped when a transfer is completed.
-> > +	 */
-> > +	pipe->state = VSP1_PIPELINE_STOPPED;
-> >  
-> >  	if (vspx_pipe->vspx_frame_end)
-> >  		vspx_pipe->vspx_frame_end(vspx_pipe->frame_end_data);
-> > 
-> > base-commit: bc1ba628e37c93cf2abeb2c79716f49087f8a024
-> > -- 
-> > Regards,
-> > 
-> > Laurent Pinchart
-> > 
-> 
-> -- 
-> Kind Regards,
-> Niklas Söderlund
-
+base-commit: be93d186ae88a92e7aa77e122d4e661fa57b1e39
 -- 
-Kind Regards,
-Niklas Söderlund
+2.43.0
+
 
