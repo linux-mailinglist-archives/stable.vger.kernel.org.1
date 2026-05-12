@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDmDAC9vA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246167-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:27 +0200
+	id aDyyIb9oA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8525274E4
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 035DA5263D0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 023C4322C413
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EAB0630597AF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108173E5A14;
-	Tue, 12 May 2026 17:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C0863B83E3;
+	Tue, 12 May 2026 17:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xlf12YUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEBtZrLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79413E5A04;
-	Tue, 12 May 2026 17:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3000B21FF21;
+	Tue, 12 May 2026 17:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608530; cv=none; b=LzgeJJ2AF6mfCVJ0N+D6Jy821QJBPxc2jCaEtU8clIfJ1+gUwOo6S2JH5WjaomxEnHWtvreFV4HjCeTVIh9w4O/qMlMYPvHJqEXVbg2D4ulQ8Yuyh1OqY3fYpIXEjMQyD6DBXD2n0cjdfCsle+K7s4JnBbSphwIrS9H8qi/Tyxw=
+	t=1778607970; cv=none; b=N+hU/5i69iX7K7OROaaLgetN8PtTmWfRXu2qHbtyJllJbhz8btHKuZy+ovKMnHDoq2ArShibeZS36AZuvhZDZnWzZTcRUT7ETXUElgSqe4ygefTCkOzV+z8YgWSTIPDMTTcwXZeluMSTdnbfOozCNkiL24lUZJCRCzaN4HYjTnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608530; c=relaxed/simple;
-	bh=K+XFbcjyz7At82nCvTdANR+dzLp+HrKsifrOu0OWx3o=;
+	s=arc-20240116; t=1778607970; c=relaxed/simple;
+	bh=7d0nH+sbVkEPlJSAaSlzIMWl8hi2j/8YYyIGhIOXIYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjVgH2iRqHjcztPgg6Q/ACSQy97JKWBXiV+4anRB3C3n/UQk/EMeXVHveIY7+VS3fHnTscpMBvVg+SKpWO5XagXYfnWpVZL8R3yLQDu1jLLkkSYUYw0cRkHQo3UsUf3HKOtMcwV03yRqCly/uZT/UgHBhQzMucOUzVFbcJIaQng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xlf12YUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D986C2BCB0;
-	Tue, 12 May 2026 17:55:30 +0000 (UTC)
+	 MIME-Version; b=eoFHLQSz+XI2zkvG7+ro5cwKHLN4wpRamvVKwDSt01kv+XcMvT4wsI9HoB+69WOkmBN3uOXydxxQRR5xK7Kop94X2dl9D3MdG//qUOlf3THN1XJBkmgNU1vAmiN7BxQEyhNPbbSyo5tfC2v40kDZcV+NZurXjbd9rLHBZU9/Tg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEBtZrLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF71C2BCB0;
+	Tue, 12 May 2026 17:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608530;
-	bh=K+XFbcjyz7At82nCvTdANR+dzLp+HrKsifrOu0OWx3o=;
+	s=korg; t=1778607970;
+	bh=7d0nH+sbVkEPlJSAaSlzIMWl8hi2j/8YYyIGhIOXIYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xlf12YUv+NZ1etIc3umcaQ84L6S2FOyUjm4cjeGtA8qPSEK4XVu/2DciUUrVXJfJV
-	 zMZgU0no+jdnzott7roP6kR5/cIFniid0sS99MdCFGE2Pv1tQPkjAbP5/xgXcJOJlt
-	 fXEXxLR6eSEZJ8J+K7UBOEpq/r7Zwj36qFvS/qLc=
+	b=oEBtZrLDhn0Ha9AaXeLOIdxEGjWZbvcGOT+OaY69Cl//SXqxmbTVNh0w38RlogHMz
+	 D8p22TpjTSHGniJiF+1jZbqjA4MkXnsX9xUe+adCFfAJcn2ixBJOGywKOtEBvp9JgP
+	 yfkFod2vzstn1FoXcjbsW0fGMiHMksQzF1BNlYxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.18 114/270] pmdomain: mediatek: fix use-after-free in scpsys_get_bus_protection_legacy()
+	Tristan Madani <tristan@talencesecurity.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 063/206] Bluetooth: btmtk: validate WMT event SKB length before struct access
 Date: Tue, 12 May 2026 19:38:35 +0200
-Message-ID: <20260512173940.859094222@linuxfoundation.org>
+Message-ID: <20260512173934.176477735@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3D8525274E4
+X-Rspamd-Queue-Id: 035DA5263D0
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246167-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245949-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,65 +91,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,talencesecurity.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Tristan Madani <tristan@talencesecurity.com>
 
-commit ec1fcddb3117d9452210e838fd37389ee61e10e8 upstream.
+commit 634a4408c0615c523cf7531790f4f14a422b9206 upstream.
 
-In scpsys_get_bus_protection_legacy(), of_find_node_with_property()
-returns a device node with its reference count incremented. The function
-then calls of_node_put(node) before checking whether
-syscon_regmap_lookup_by_phandle() returns an error. If an error occurs,
-dev_err_probe() dereferences the node pointer to print diagnostic
-information, but the node memory may have already been freed due to the
-earlier of_node_put(), leading to a use-after-free vulnerability.
+btmtk_usb_hci_wmt_sync() casts the WMT event response SKB data to
+struct btmtk_hci_wmt_evt (7 bytes) and struct btmtk_hci_wmt_evt_funcc
+(9 bytes) without first checking that the SKB contains enough data.
+A short firmware response causes out-of-bounds reads from SKB tailroom.
 
-Fix this by moving the of_node_put() call after the error check, ensuring
-the node is still valid when accessed in the error path.
+Use skb_pull_data() to validate and advance past the base WMT event
+header. For the FUNC_CTRL case, pull the additional status field bytes
+before accessing them.
 
-Fixes: c29345fa5f66 ("pmdomain: mediatek: Refactor bus protection regmaps retrieval")
+Fixes: d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/mediatek/mtk-pm-domains.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/bluetooth/btmtk.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/pmdomain/mediatek/mtk-pm-domains.c
-+++ b/drivers/pmdomain/mediatek/mtk-pm-domains.c
-@@ -757,6 +757,7 @@ static int scpsys_get_bus_protection_leg
- 	struct device_node *node, *smi_np;
- 	int num_regmaps = 0, i, j;
- 	struct regmap *regmap[3];
-+	int ret = 0;
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -654,8 +654,13 @@ static int btmtk_usb_hci_wmt_sync(struct
+ 	if (data->evt_skb == NULL)
+ 		goto err_free_wc;
  
- 	/*
- 	 * Legacy code retrieves a maximum of three bus protection handles:
-@@ -807,11 +808,14 @@ static int scpsys_get_bus_protection_leg
- 	if (node) {
- 		regmap[2] = syscon_regmap_lookup_by_phandle(node, "mediatek,infracfg-nao");
- 		num_regmaps++;
--		of_node_put(node);
--		if (IS_ERR(regmap[2]))
--			return dev_err_probe(dev, PTR_ERR(regmap[2]),
-+		if (IS_ERR(regmap[2])) {
-+			ret = dev_err_probe(dev, PTR_ERR(regmap[2]),
- 					     "%pOF: failed to get infracfg regmap\n",
- 					     node);
-+			of_node_put(node);
-+			return ret;
+-	/* Parse and handle the return WMT event */
+-	wmt_evt = (struct btmtk_hci_wmt_evt *)data->evt_skb->data;
++	wmt_evt = skb_pull_data(data->evt_skb, sizeof(*wmt_evt));
++	if (!wmt_evt) {
++		bt_dev_err(hdev, "WMT event too short (%u bytes)",
++			   data->evt_skb->len);
++		err = -EINVAL;
++		goto err_free_skb;
++	}
+ 	if (wmt_evt->whdr.op != hdr->op) {
+ 		bt_dev_err(hdev, "Wrong op received %d expected %d",
+ 			   wmt_evt->whdr.op, hdr->op);
+@@ -671,6 +676,12 @@ static int btmtk_usb_hci_wmt_sync(struct
+ 			status = BTMTK_WMT_PATCH_DONE;
+ 		break;
+ 	case BTMTK_WMT_FUNC_CTRL:
++		if (!skb_pull_data(data->evt_skb,
++				   sizeof(wmt_evt_funcc->status))) {
++			err = -EINVAL;
++			goto err_free_skb;
 +		}
-+		of_node_put(node);
- 	} else {
- 		regmap[2] = NULL;
- 	}
++
+ 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
+ 		if (be16_to_cpu(wmt_evt_funcc->status) == 0x404)
+ 			status = BTMTK_WMT_ON_DONE;
 
 
 
