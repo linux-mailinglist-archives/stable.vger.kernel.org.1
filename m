@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JpMGoJrA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246324-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:46 +0200
+	id iI5GJTx1A2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27EAD526A2B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0320052810B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3C39B304BB02
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:02:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEC4532E8A79
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6400630BB80;
-	Tue, 12 May 2026 18:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891C236C9C2;
+	Tue, 12 May 2026 18:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnpmE+W9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3YINYiL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B4E3EDE4B;
-	Tue, 12 May 2026 18:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A17636C5A1;
+	Tue, 12 May 2026 18:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608933; cv=none; b=LxlIJYTRW+tA6UEFPuIjh+gUKWA/w/RGQeCiQklFw87RVObiJ37LS24Vz0QcAxsTLtsEOg089bNtoDelapUMH2r8znkP5l1yxm3YmL6aJGDh9aO31SeOmbTO7wBEMNIzM60Jqqfk4URBSXo/rIkQSaykiBqa11yV7uXnq3X5NA8=
+	t=1778609610; cv=none; b=tlkqQdRu5kKRVImzcwNrTFcONMyFJsOLj73fEasApThhryCt5WY43hNW/8twx1CnHvMKoHp8XWOmCXvM23mblKX1jzO0W7reSHDZbnsuPtAUaIVla/HMLJDub4vhNOXU9WwcQ9+Yx48rS4nMrWlA4UMj6dVHTJH90o/gDTCIZ/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608933; c=relaxed/simple;
-	bh=CfklKcyJg06WOIDQLYgNQyJx8IKtqx58W38KPGlac7s=;
+	s=arc-20240116; t=1778609610; c=relaxed/simple;
+	bh=hUot0dTvA3/bbzyLNaeLvsWvUb2ydi7Hg+mazhJymmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDaKfQNsCPlWi8SVwa8jkTuFIsHjeOz9DSoTX8WfKohzK2mm3OL++WDBKcl+ztOcJ3jld8KPnmuCwq3DnElsDzOIAdj7wN83KIab0BdoazVkIegcVJxLjqkj9TRAKoAu8ubIkPjr2b43h4ckCGQ440b/zMXemd5YHICfltD2S3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnpmE+W9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2BD2C2BCB0;
-	Tue, 12 May 2026 18:02:12 +0000 (UTC)
+	 MIME-Version; b=upYKonzMv/t9sfJuOtJi+8kVbm8EUona/GYg6zXbYL2aTRKARehb1YcUMx5gUy/lpKC0lltowGWuVPKOWcxLeD6PuJnTKhQtGN0sSIeffweR09Lr9bbZCd7n0UcvE8EdsZBGPt8nA/iXAfkGNPxWoWLOvj7rMCsPYF/HQ0BWDlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3YINYiL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66C2C2BCB0;
+	Tue, 12 May 2026 18:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608933;
-	bh=CfklKcyJg06WOIDQLYgNQyJx8IKtqx58W38KPGlac7s=;
+	s=korg; t=1778609610;
+	bh=hUot0dTvA3/bbzyLNaeLvsWvUb2ydi7Hg+mazhJymmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnpmE+W9/PyJRVDsNYdqx4TOOblg7krXkLUOOibJgc3MWwzSaPUmBk0zuE+OUg7wA
-	 83KsRQT35ML7Ahftcf30TsV7AjjEU6NA7ZlKex/z4qOECtpNFcuORJA1AUUuM0a1ti
-	 c4H6N1tLyEbqyo5/KqOpKra2OdOiZIoaNIQ3wefU=
+	b=m3YINYiLpB0nKCrDUQe8ChzKivAqCRTUbz7ygfwwqFszcujjBRkmvbq/jdDaJJY3J
+	 b+Z8Epu3QN8KbU5/YLHEg74GNBsBQVP9dKb2EnaPUlESwdf6NW5Esydhpk3VbbiClw
+	 2j5NAjlteiAQKcvK2ysARXYNIg9YtaNcnolWB7YQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 257/270] crypto: qat - fix indentation of macros in qat_hal.c
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 263/307] mptcp: pm: ADD_ADDR rtx: always decrease sk refcount
 Date: Tue, 12 May 2026 19:40:58 +0200
-Message-ID: <20260512173943.857315308@linuxfoundation.org>
+Message-ID: <20260512173945.679894197@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +64,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 27EAD526A2B
+X-Rspamd-Queue-Id: 0320052810B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246324-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246588-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 4963b39e3a3feed07fbf4d5cc2b5df8498888285 ]
+commit 9634cb35af17019baec21ca648516ce376fa10e6 upstream.
 
-The macros in qat_hal.c were using a mixture of tabs and spaces.
-Update all macro indentation to use tabs consistently, matching the
-predominant style.
+When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer().
+It should then be released in all cases at the end.
 
-This does not introduce any functional change.
+Some (unlikely) checks were returning directly instead of calling
+sock_put() to decrease the refcount. Jump to a new 'exit' label to call
+__sock_put() (which will become sock_put() in the next commit) to fix
+this potential leak.
 
-Signed-off-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: e7dcb722bb75 ("crypto: qat - fix firmware loading failure for GEN6 devices")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While at it, drop the '!msk' check which cannot happen because it is
+never reset, and explicitly mark the remaining one as "unlikely".
+
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-4-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/intel/qat/qat_common/qat_hal.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ net/mptcp/pm.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/crypto/intel/qat/qat_common/qat_hal.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_hal.c
-@@ -9,17 +9,17 @@
- #include "icp_qat_hal.h"
- #include "icp_qat_uclo.h"
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -344,11 +344,8 @@ static void mptcp_pm_add_timer(struct ti
  
--#define BAD_REGADDR	       0xffff
--#define MAX_RETRY_TIMES	   10000
--#define INIT_CTX_ARB_VALUE	0x0
--#define INIT_CTX_ENABLE_VALUE     0x0
--#define INIT_PC_VALUE	     0x0
--#define INIT_WAKEUP_EVENTS_VALUE  0x1
--#define INIT_SIG_EVENTS_VALUE     0x1
--#define INIT_CCENABLE_VALUE       0x2000
--#define RST_CSR_QAT_LSB	   20
--#define RST_CSR_AE_LSB		  0
--#define MC_TIMESTAMP_ENABLE       (0x1 << 7)
-+#define BAD_REGADDR			0xffff
-+#define MAX_RETRY_TIMES			10000
-+#define INIT_CTX_ARB_VALUE		0x0
-+#define INIT_CTX_ENABLE_VALUE		0x0
-+#define INIT_PC_VALUE			0x0
-+#define INIT_WAKEUP_EVENTS_VALUE	0x1
-+#define INIT_SIG_EVENTS_VALUE		0x1
-+#define INIT_CCENABLE_VALUE		0x2000
-+#define RST_CSR_QAT_LSB			20
-+#define RST_CSR_AE_LSB			0
-+#define MC_TIMESTAMP_ENABLE		(0x1 << 7)
+ 	pr_debug("msk=%p\n", msk);
  
- #define IGNORE_W1C_MASK ((~(1 << CE_BREAKPOINT_BITPOS)) & \
- 	(~(1 << CE_CNTL_STORE_PARITY_ERROR_BITPOS)) & \
+-	if (!msk)
+-		return;
+-
+-	if (inet_sk_state_load(sk) == TCP_CLOSE)
+-		return;
++	if (unlikely(inet_sk_state_load(sk) == TCP_CLOSE))
++		goto exit;
+ 
+ 	bh_lock_sock(sk);
+ 	if (sock_owned_by_user(sk)) {
+@@ -386,6 +383,7 @@ static void mptcp_pm_add_timer(struct ti
+ 
+ out:
+ 	bh_unlock_sock(sk);
++exit:
+ 	__sock_put(sk);
+ }
+ 
 
 
 
