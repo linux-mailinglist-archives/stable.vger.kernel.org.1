@@ -1,136 +1,162 @@
-Return-Path: <stable+bounces-246661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNVWBjaQA2ru7QEAu9opvQ
-	(envelope-from <stable+bounces-246661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:40:22 +0200
+	id SKuLA7WOA2qM7QEAu9opvQ
+	(envelope-from <stable+bounces-246662-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:33:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2895296FA
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:40:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A690752945F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DE42630C4FE3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 609EC30F188B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53FF3C277F;
-	Tue, 12 May 2026 20:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A593C0A0A;
+	Tue, 12 May 2026 20:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vFgIX3Cx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fAR1p592"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A934B3AF646
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 20:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778617486; cv=none; b=JEOzbocoJf7Og+USDf5H2uViZLN1oI8fvDxcxLKyxGWxM10t0GXgGeN8f6BPQ+sgY87Thk/O3ch8uk/U9W9GO6/YOOTM1t3p4/4ic/ZAA1Mk/j0SwtFmw0MoIxI0JWsW9SVaTtCQWZTBIgtOn8ZSn6fO7qCfkOcZT8Z5LPLHbtg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778617486; c=relaxed/simple;
-	bh=xacbW+Wl6peUre2gYAzbj/4sgl6sTi+VTDCe9eRVMF8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCvdftLyQEoWsCloNbER14GE3b3ZRYucRpOEX1fCYLS3WzGvQ269a0n+ndJI4MHmyNdryLiSpUUiOTdMyVIZ0rEwtdzPGrRbBmFCAl2Ey7/0UKbHgm7JzroaP9i+nJgvKpEkSRCEKlJDb0WemzSNX+PaOkBoyMxPwHFiFeGLjTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vFgIX3Cx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9CFC2BCB0;
-	Tue, 12 May 2026 20:24:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778617486;
-	bh=xacbW+Wl6peUre2gYAzbj/4sgl6sTi+VTDCe9eRVMF8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFgIX3CxxOl2KDxDx1G4J+u6JB0HcKpWjg0q4OXFpyf3fHT6rjEm0qLMh17TMnnom
-	 Cj8Y6w8FCHDEQXq6my0TZDEa8o00EesLxeWj8R6WmvukQBQuYxWaXxZ0zsf31toqbU
-	 c6j3fSjLw+2HYO1qyg/SU4U51peND2n/0HM8Zppll1NdShDMxD6kHcDUkEk8v+VmNU
-	 N4b7UiMoRq5wITapfzUXoM54wrdLqYvQjXjv5KlvxKUcTH8euKj+/GDsHvgcxvzWpu
-	 IMaGe+QlD574KehqzCG3rng0OK+qHSSNTjVJzkPuWWA4Y77ddBV8OmFQIdJUxreQPQ
-	 fZMc9ay19mlFA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: stable@vger.kernel.org
-Cc: gary@garyguo.net,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12.y] rust: allow `clippy::collapsible_if` globally
-Date: Tue, 12 May 2026 22:24:39 +0200
-Message-ID: <20260512202439.308523-1-ojeda@kernel.org>
-In-Reply-To: <20260512201618.304954-1-ojeda@kernel.org>
-References: <20260512201618.304954-1-ojeda@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DDC357D01
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 20:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778617596; cv=pass; b=q14dubAAkPnZ1jXCikMbp0BPGi8PrGTOdaNrjudqroqwmTee0Ucc0ifiBJuEiMO7SQaX+Ygq3zdQZz3mea0YBk/1jG6VJUDqIUMLXH6N0GYg92rFBmEqdnLyXK+CNeBN9udwv5zmNJDNvNmIRq5hG6+BoNolkDNsMGPDuChW7ps=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778617596; c=relaxed/simple;
+	bh=XbTwXNuP8w0c6cHkmvOGpAGHQqu6Pjafgwdj1+1EgU4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TmxfoOLnWmJGibC6V8MH3EED0Nuu+svcY1O5EcrFOk04p/ds0oVl74W6/ATxFBui0UZxR3zBJTw3VoOGhNdc+WwH4AtaS+3KPooIWw7qOtKf0jdLYGSQ7YCEZWPV9nJ2P/1AqiZUDF5Elsa1lRnpf4RSeL51t3YOfAtq8rqUAM4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fAR1p592; arc=pass smtp.client-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2f5879d63ffso298615eec.1
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 13:26:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778617594; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NTpoVCLN6tDL6VKZfEr/0kLqHfME8OQr6ZyQU7Vn/B/13JT1g0YM1VUFaaBNpWObO3
+         qHngRYPHOKG2JqJEkwXYYJNi0Yt8Vlx9vWl55fNf4zZ+qUCETJ+opV6BV01IvvZKmbOk
+         P8Yz5tlqFWTydPEekdjd9XhGLupsqYWklQnI19miTP0xm8kY7Bw5gvNUUm8awNQjJHLJ
+         NsiMz/55U1nC38v7B1ELWeJEZlh7gLBRhpBgDbZOjcgLm2gFgEbGP5DGXlYJ3nfY0tFt
+         CUiA5RMNM4Cf/3Jtn+r5h+9IHzRFqCV9lYmQSU6WRYd6/0u0UUkrNVv2vxwxmIVbEVxE
+         VpIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6hXVTb0pqIRZJ44Mtixdn5J/S2HeUbFpgh874wfuHTk=;
+        fh=qHm86IPevQoWC4JDUfTUtPncp3mL76oF0ZUGLzovtFA=;
+        b=VDJtZiRtZkUgFsEFDuToTXh2pb/NiVbtep7+JZpBtlRoExnj8F5yqq+Z5qOzqa4TqN
+         Qe2yRIk4kZIKqsdsIWyC6SjzQff5fdDTyuy3kvP/o6oUwUd5Qko1jlVl7MN/4XAmCwsI
+         LlcFRhY1HNIUHeU8P2L+Oo52Tp3CsL0UYxHrWEoLwV1yAzBwWld9dbNcuQqwr2U7Zp5R
+         7m4lAyCeZGYul5eJf+NGodj4C6f5o4LhK7CECMZUNseO00nsukUQea72EgOys/gsALhG
+         8POEX2+hMgKWcbpSdJFU+jqnfQVvFS1rW3ypTPcyjVdCEkluF97ZMW12KqqyVFKcBGfy
+         INIQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778617594; x=1779222394; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6hXVTb0pqIRZJ44Mtixdn5J/S2HeUbFpgh874wfuHTk=;
+        b=fAR1p592O69BRYUwpK/u186dxgNP3B6Va8rweyGdUiNLK0ZiOtBdAhkOgS1Xnlv6MB
+         emNEFGKW2V+naqab/T9tIUENLctO9NBICvk92uhiqbBmVR53HuTretA/5BcBmIOSAxlt
+         JeLGpn9t7kQ6/gmvU/lwOuz+hD/rpJrAqFz+KSoRTA3mzFmcEf6EYYJt6t7lS3n0MNFl
+         f8nSy6diF2HjvcvU2uLTl/qP1z1bK1qpORQ7NZPAk7Z8sP0j7JF67ChY1bg+3qahh5y/
+         Nh05KFTZroYwhpfcIzyC7YlDWi0vzMokAaZd8EmkeCPLIK8Gn/vMGG3CypMTPxcsTTzo
+         ADhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778617594; x=1779222394;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6hXVTb0pqIRZJ44Mtixdn5J/S2HeUbFpgh874wfuHTk=;
+        b=KWnYQZ8c2IQxBEGYekWQKqUhTI4g17ykzayb5G6fNiYdXc/vO6KGR5MrNLRz0uIFds
+         umQwvdF3s0Q0w7oL1AMrv9geKzqLU6gnKdHc3R2CvnJpsf3zIRxrfdGCXmoyX7YpipVh
+         OcPm6mHe81Ix7YjLNkYPBS39HBhZMpF+oDkujV0W1+ndlxFHwuE6fVK51ReGct7pQ7MS
+         +duZ/GKSorZ5X5GzHWz/IXSZ2qhZDDN4Vty3bQ2/nAG4vwa2h1+/cg40f8yjuLtRpnsp
+         x9cJiBj9+Wy13hhgE2E1pnbxE9v29CvEq86iqTGxRApRrwKYrMEOdRm30YPoKOa8IEBT
+         ReCw==
+X-Forwarded-Encrypted: i=1; AFNElJ8YMM9hE4iKApO0HDEB/nLQkj5SHv/ujI/6kOUtMhUC8q2XI0jSIq4KKO9fdd9Fj6guwWlPZbc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWqYiNWE3Y9ljyOkvwRXY3nF8NgewxgC/k160h9+SFOc/BmJeD
+	TjGTi112Vrf0ZVvOj1ePYpb+AXqYWSKM7fXqMfXLe7YE8eYQqXlia55qtnym8+wqS+8aIjH45ng
+	2k87/xKpNKhncNPh+7ig7HIpKKIj+BxQQ9eFRsNA=
+X-Gm-Gg: Acq92OHWuKwW2jpyHWWxC7IynRUW7oItENYMjAT6qk8SSJxb3UaVc5fp78lGdPNhg70
+	AsGF0UozgnbhLpLO1ffQNZpvMgAQg0fK3wtGG+Bfsp0zum2dvCRQblBFIJdehW8Cfg1vYp0/fCy
+	TG+B/ptjE8XWhBikBWhQsHIhUyJT8TJG23H+zLcWeRY4pufogdiin80u7j75dRTrAb5PMyRmSU/
+	zOYWzlt0zrHZTY+l+polO3b/RgnYBYcMQRXrl6+YpRzf7Aaa+hYXwwz76ZHu0cy4Sxc5JKqwQCO
+	AT+MUsk/ZbrkMnt+nmvIEMaptSy9m2qbcbieIx7O5oN/08sDNHI7h2797ChIBZ2jsnCq2QXmiiX
+	Qe6PsfIEEbx+Ri20EdXWQzJo=
+X-Received: by 2002:a05:693c:2b0d:b0:2c4:acef:291a with SMTP id
+ 5a478bee46e88-3011929d0bbmr175004eec.4.1778617593993; Tue, 12 May 2026
+ 13:26:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0E2895296FA
+References: <2026051210-epic-emblaze-b4eb@gregkh>
+In-Reply-To: <2026051210-epic-emblaze-b4eb@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 12 May 2026 22:26:21 +0200
+X-Gm-Features: AVHnY4Idw-XUjfoyaxJoqHGCp8kfpYy00o78jQE8gQS88lY_Fiev1sSnd6OgpmA
+Message-ID: <CANiq72nDoE3COXhcdU2uAuCSW_5__smjukQckWbByKT+wUHp9g@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] rust: allow `clippy::collapsible_if`
+ globally" failed to apply to 6.12-stable tree
+To: gregkh@linuxfoundation.org
+Cc: ojeda@kernel.org, gary@garyguo.net, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A690752945F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [8.84 / 15.00];
-	URIBL_BLACK(7.50)[rust-lang.github.io:url];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246661-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	GREYLIST(0.00)[pass,meta];
-	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-246662-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c15:e001:75::/64:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	NEURAL_SPAM(0.00)[0.413];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,garyguo.net:email,rust-lang.github.io:url]
-X-Rspamd-Action: add header
-X-Spam: Yes
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Action: no action
 
-Similar to `clippy::collapsible_match` (globally allowed in the previous
-commit), the `clippy::collapsible_if` lint [1] can make code harder to
-read in certain cases.
+On Tue, May 12, 2026 at 2:46=E2=80=AFPM <gregkh@linuxfoundation.org> wrote:
+>
+> The patch below does not apply to the 6.12-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-Thus just let developers decide on their own.
+Since otherwise there would be conflicts, I sent it as a reply to the other=
+ one:
 
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DGROP5CHU1QZ.1OKJRAUZXE9WC@garyguo.net/
-Link: https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if [1]
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260426144201.227108-2-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-(cherry picked from commit 2adc8664018c1cc595c7c0c98474a33c7fe32a85)
-[ Removed Binder change. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-Greg/Sasha: I based this on the other one, i.e. this needs to be applied
-after the one I am replying to.
+  https://lore.kernel.org/stable/20260512202439.308523-1-ojeda@kernel.org/
 
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
+(I could have made them a series)
 
-diff --git a/Makefile b/Makefile
-index 2c6b5339c471..fe352fdd6d7c 100644
---- a/Makefile
-+++ b/Makefile
-@@ -453,6 +453,7 @@ export rust_common_flags := --edition=2021 \
- 			    -Wrust_2018_idioms \
- 			    -Wunreachable_pub \
- 			    -Wclippy::all \
-+			    -Aclippy::collapsible_if \
- 			    -Aclippy::collapsible_match \
- 			    -Wclippy::ignored_unit_patterns \
- 			    -Wclippy::mut_mut \
---
-2.54.0
+Cheers,
+Miguel
 
