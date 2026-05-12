@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDVHOZZtA2pS5wEAu9opvQ
-	(envelope-from <stable+bounces-246022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:38 +0200
+	id KCMpDlhtA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717E952703C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9437526FD9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9563830EBCAA
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3A38A315E2D7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E453D3E1721;
-	Tue, 12 May 2026 17:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9B033D51A;
+	Tue, 12 May 2026 18:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c3C57L6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpQq/DrQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F213E5A2A;
-	Tue, 12 May 2026 17:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B5823E356;
+	Tue, 12 May 2026 18:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608157; cv=none; b=ZPBYAho7NgqfM4ayTAiklLlOBUljogj4wg8rtwPgBFCrj33f0V4HD9yKti1HEJvi6p5gNR+mYL0MBAXu1sbgP/PC697Py+A1X7shh2fjtezb5D4PIk/ryzODfQnPR4sHLK45RonsWO/Ai46vv1KGn/zY+JdLBfynGruXsWlzNDE=
+	t=1778608823; cv=none; b=lLCq0f6vpKrFEXjSeEnGDuJPhh80cUhQ2X7Lw+H73L9pTKGWu9wKYWCWL/uszeGQ/cG+9SqkmIS/QlLC/JR+lr+ut9uSsyOvPGmTuVHVw9qnwY+dp4pCKo3yfGPchWt7OCor+f8Jqej/E5X00wzMq84ZrhLP9wU0gX46KgD+3qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608157; c=relaxed/simple;
-	bh=nSUVsWgzdZohcXrzJJch+CQEBAyCc0APCP77GmMQdTw=;
+	s=arc-20240116; t=1778608823; c=relaxed/simple;
+	bh=nqchJuUUfVW6rltgw9EDAJLAz/CTrGuQn8Sc4sWmtxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qcsD97Nm0cvUC3PjR3HWoOFwtpX1mek2Ne69rYyGyZVXClG5NixMWz05cnGWXDdKAa1Y+IwSzY68Il3gP7XVhicgcfBlwdBytJeYoyiXwgncq5EQJ5la34vvyKpC9UEXsnuvByVOhE5BcY82QTkjJk3WLxg2b0nHCDuTjEjRwMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c3C57L6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3C8C2BCC7;
-	Tue, 12 May 2026 17:49:17 +0000 (UTC)
+	 MIME-Version; b=leG1OWRtzdNr+huntwQ0HsMS5SF4XxAqBHaDzqgGjaYk/dWjzAanm/aSI6gbbS3N7zja5jX+hsF3R5KqTNEQ2SGZPqb0hTHviWhKoYvnfBK0gMF/T8aFEXxpdeYQkT78n7AtO2Xoysaarb8cz1HyD7gDD1ut+tDv7nfddeLdRuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpQq/DrQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8BEC2BCB0;
+	Tue, 12 May 2026 18:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608157;
-	bh=nSUVsWgzdZohcXrzJJch+CQEBAyCc0APCP77GmMQdTw=;
+	s=korg; t=1778608822;
+	bh=nqchJuUUfVW6rltgw9EDAJLAz/CTrGuQn8Sc4sWmtxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2c3C57L6OX4wpLV9LwmDW4TqOCiNNCkZ9bhp24hcTluV7nNEXRS5x2PtBpeKc2u6J
-	 CCWHeDI8HIbC46NG7Bk+C2CDPuiz2EhZiCyY1LoVe8H7MT2+X/i0ZbKcTHNFOg0voL
-	 niLU4UwL88xLL5g78gkxQUHW4rI0rhFpB155MqTw=
+	b=NpQq/DrQMm8qfQ1fAL+dwvcBTKGdwkhssfRjxSAyHnn4vXP+i+e55/XlefRRZzU0R
+	 pbhJ4ePzHv5dMg1LLuuXo51DIJSTMcpDFEDXXhiRD9MI80ON28e1aXnTVM6uZ20S3f
+	 73NrRNLlQpYSEVxllLLF5OK9Shg0AzrEYbvl9ReQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Li <lichao@loongson.cn>,
-	Dongyan Qian <qiandongyan@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 177/206] LoongArch: Use per-root-bridge PCIH flag to skip mem resource fixup
-Date: Tue, 12 May 2026 19:40:29 +0200
-Message-ID: <20260512173936.609258085@linuxfoundation.org>
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.18 229/270] f2fs: fix uninitialized kobject put in f2fs_init_sysfs()
+Date: Tue, 12 May 2026 19:40:30 +0200
+Message-ID: <20260512173943.267685875@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +64,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 717E952703C
+X-Rspamd-Queue-Id: C9437526FD9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246281-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246022-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 49f33840dcc907d21313d369e34872880846b61c upstream.
+commit b635f2ecdb5ad34f9c967cabb704d6bed9382fd0 upstream.
 
-When firmware enables 64-bit PCI host bridge support, some root bridges
-already provide valid 64-bit mem resource windows through ACPI.
+In f2fs_init_sysfs(), all failure paths after kset_register() jump to
+put_kobject, which unconditionally releases both f2fs_tune and
+f2fs_feat.
 
-In this case, the LoongArch-specific mem resource high-bits fixup in
-acpi_prepare_root_resources() should not be applied unconditionally.
-Otherwise, the kernel may override the native resource layout derived
-from firmware, and later BAR assignment can fail to place device BARs
-into the intended 64-bit address space correctly.
+If kobject_init_and_add(&f2fs_feat, ...) fails, f2fs_tune has not been
+initialized yet, so calling kobject_put(&f2fs_tune) is invalid.
 
-Add a per-root-bridge ACPI flag, PCIH, and evaluate it from the current
-root bridge device scope. When PCIH is set, skip the mem resource high-
-bits fixup path and let the kernel use the firmware-provided resource
-description directly. When PCIH is absent or cleared, keep the existing
-behavior and continue filling the high address bits from the host bridge
-address.
+Fix this by splitting the unwind path so each error path only releases
+objects that were successfully initialized.
 
-This makes the behavior per-root-bridge configurable and avoids breaking
-valid 64-bit BAR space allocation on bridges whose 64-bit windows have
-already been fully described by firmware.
-
+Fixes: a907f3a68ee26ba4 ("f2fs: add a sysfs entry to reclaim POSIX_FADV_NOREUSE pages")
 Cc: stable@vger.kernel.org
-Suggested-by: Chao Li <lichao@loongson.cn>
-Tested-by: Dongyan Qian <qiandongyan@loongson.cn>
-Signed-off-by: Dongyan Qian <qiandongyan@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/pci/acpi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/f2fs/sysfs.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/pci/acpi.c
-+++ b/arch/loongarch/pci/acpi.c
-@@ -61,11 +61,16 @@ static void acpi_release_root_info(struc
- static int acpi_prepare_root_resources(struct acpi_pci_root_info *ci)
- {
- 	int status;
-+	unsigned long long pci_h = 0;
- 	struct resource_entry *entry, *tmp;
- 	struct acpi_device *device = ci->bridge;
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -1935,24 +1935,26 @@ int __init f2fs_init_sysfs(void)
+ 	ret = kobject_init_and_add(&f2fs_feat, &f2fs_feat_ktype,
+ 				   NULL, "features");
+ 	if (ret)
+-		goto put_kobject;
++		goto unregister_kset;
  
- 	status = acpi_pci_probe_root_resources(ci);
- 	if (status > 0) {
-+		acpi_evaluate_integer(device->handle, "PCIH", NULL, &pci_h);
-+		if (pci_h)
-+			return status;
-+
- 		resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
- 			if (entry->res->flags & IORESOURCE_MEM) {
- 				entry->offset = ci->root->mcfg_addr & GENMASK_ULL(63, 40);
+ 	ret = kobject_init_and_add(&f2fs_tune, &f2fs_tune_ktype,
+ 				   NULL, "tuning");
+ 	if (ret)
+-		goto put_kobject;
++		goto put_feat;
+ 
+ 	f2fs_proc_root = proc_mkdir("fs/f2fs", NULL);
+ 	if (!f2fs_proc_root) {
+ 		ret = -ENOMEM;
+-		goto put_kobject;
++		goto put_tune;
+ 	}
+ 
+ 	return 0;
+ 
+-put_kobject:
++put_tune:
+ 	kobject_put(&f2fs_tune);
++put_feat:
+ 	kobject_put(&f2fs_feat);
++unregister_kset:
+ 	kset_unregister(&f2fs_kset);
+ 	return ret;
+ }
 
 
 
