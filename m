@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245852-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNR5DX1rA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:41 +0200
+	id 4GBbJ7VmA2qZ5gEAu9opvQ
+	(envelope-from <stable+bounces-245852-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FCD526A0D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05918525FB6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 482843125DD7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:54:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5046730571AF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514AF3EDE52;
-	Tue, 12 May 2026 17:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FBB3E0759;
+	Tue, 12 May 2026 17:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/z3z8qx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqcwEnjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F5E3EDE42;
-	Tue, 12 May 2026 17:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6663E0752;
+	Tue, 12 May 2026 17:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608371; cv=none; b=SunE+czgfqP8vgqzExJnSq3+RpLEafrLWgtEed+SMNjNNYy9jL56Bx/qhixrm1MPnEGmbJk/HWf9pYY+HWVJN9VzwORijqqAXyX0kMSqwotYFRshHTZWOeF25OVY2jFnP+XtdQe8J2uqZUGLpf64no5MQTx2aG/wWbbJ7k4vOiU=
+	t=1778607720; cv=none; b=ohoc7OJswE4y4Ty8LxhhS56WI/uNN4K1UUqdA6XOfc2dwK74YVSwo5Fy36z+1Xh3tpTPFfOGAAj+EVE3BKmfxFOfjpzmtgw874UYwBHHN5uyA10L2Fs2dXPggQRXlCONY79AzGYEXKWo8X4L0LhKEQ1fN9Cgb5mWoYrukoRctPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608371; c=relaxed/simple;
-	bh=bscEAaDAI7ny1CAzBIzg8SRgtKEsxk/fbkBMzenPHaI=;
+	s=arc-20240116; t=1778607720; c=relaxed/simple;
+	bh=KBQjCxPpgm3TbLHSpAKFPx/u2l98Mc3eEkrfB1/PiNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qm409+yDGIqGp4fESVQXxoFgGMzYwN+brUAHcCzeDs9MpmjNyVh1UXWmRdFnuLPvP9GxXQWoqDWJlX+8TsofGnHRJpr+lFH7hItFC6YoK3X81HMjR8WpDp5ymjAbmSoPNlTPQlKkGN7rnLVzTRJlHOpD2afzmqgxCeyLN77P8BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/z3z8qx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E308C2BCB0;
-	Tue, 12 May 2026 17:52:50 +0000 (UTC)
+	 MIME-Version; b=VG9wMlcLsXVhsqmzD4FnWMfZ3nTgJZe3h6GALHWvQD9ISAvebfAAv4dH9CtekX6ey4BVDmPtS1jiYC7bMaGOU2ViYlisdG9RjndUusmY1l4/xWp2Eldno20IfWK/SIQbmNf4WaTD6pTTNQJgvnlOU+PdpVtCzanRTSlR55pSTYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqcwEnjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF073C2BCC7;
+	Tue, 12 May 2026 17:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608371;
-	bh=bscEAaDAI7ny1CAzBIzg8SRgtKEsxk/fbkBMzenPHaI=;
+	s=korg; t=1778607720;
+	bh=KBQjCxPpgm3TbLHSpAKFPx/u2l98Mc3eEkrfB1/PiNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/z3z8qxRo+QBLhIovOhqbEVyY3088f1IqJk61JPbpxYPjcbr8N4OQSUdjWbYjLb1
-	 aMDFgJLkkoFCiAbeI+t6FWDf38evKsGKmq4FOlruqcT26DNEPqgf+xWuCHblKXfUJV
-	 VqXZJf8UCeNpEwdq6uTEbnM2G+4zTCO6RvDhQxVU=
+	b=XqcwEnjLtsBglxeVCzDbVc9Aph9yybODcoIgLVFmVZOZIXWelyt07day7sSoPoNhF
+	 4Il8SV5svZN3NBrnaOE6bi+lQrEtMlMdnlR3n1xfJvF3wj6X9/Bf97StKlKEzktMhK
+	 cJWhBlgDxz2ASfcpULCA+Inw4aLldEDBAWT28C5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 053/270] ALSA: seq: Fix UMP group 16 filtering
+	Matt Fleming <mfleming@cloudflare.com>,
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.12 002/206] ipmi: Add limits to event and receive message requests
 Date: Tue, 12 May 2026 19:37:34 +0200
-Message-ID: <20260512173939.567818013@linuxfoundation.org>
+Message-ID: <20260512173932.866975201@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +62,246 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C4FCD526A0D
+X-Rspamd-Queue-Id: 05918525FB6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246105-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245852-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[minyard.net:email,cloudflare.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit 92429ca999db99febced82f23362a71b2ba4c1d8 upstream.
+commit c4cca236968683eb0d59abfb12d5c7e4d8514227 upstream.
 
-The sequencer UAPI defines group_filter as an unsigned int bitmap.
-Bit 0 filters groupless messages and bits 1-16 filter UMP groups 1-16.
+The driver would just fetch events and receive messages until the
+BMC said it was done.  To avoid issues with BMCs that never say they are
+done, add a limit of 10 fetches at a time.
 
-The internal snd_seq_client storage is only unsigned short, so bit 16
-is truncated when userspace sets the filter. The same truncation affects
-the automatic UMP client filter used to avoid delivery to inactive
-groups, so events for group 16 cannot be filtered.
+In addition, an si interface has an attn state it can return from the
+hardware which is supposed to cause a flag fetch to see if the driver
+needs to fetch events or message or a few other things.  If the attn
+bit gets stuck, it's a similar problem.  So allow messages in between
+flag fetches so the driver itself doesn't get stuck.
 
-Store the internal bitmap as unsigned int and keep both userspace-provided
-and automatically generated values limited to the defined UAPI bits.
+This is a more general fix than the previous fix for the specific bad
+BMC, but should fix the more general issue of a BMC that won't stop
+saying it has data.
 
-Fixes: d2b706077792 ("ALSA: seq: Add UMP group filter")
+This has been there from the beginning of the driver.  It's not a bug
+per-se, but it is accounting for bugs in BMCs.
+
+Reported-by: Matt Fleming <mfleming@cloudflare.com>
+Closes: https://lore.kernel.org/lkml/20260415115930.3428942-1-matt@readmodwrite.com/
+Fixes: <1da177e4c3f4> ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260506-alsa-seq-ump-group16-filter-v1-1-b75160bf6993@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/seq/seq_clientmgr.c  |    2 +-
- sound/core/seq/seq_clientmgr.h  |    5 ++++-
- sound/core/seq/seq_ump_client.c |    2 +-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/char/ipmi/ipmi_si_intf.c |   54 +++++++++++++++++++++++++++++++--------
+ drivers/char/ipmi/ipmi_ssif.c    |   23 +++++++++++++++-
+ 2 files changed, 64 insertions(+), 13 deletions(-)
 
---- a/sound/core/seq/seq_clientmgr.c
-+++ b/sound/core/seq/seq_clientmgr.c
-@@ -1252,7 +1252,7 @@ static int snd_seq_ioctl_set_client_info
- 	if (client->user_pversion >= SNDRV_PROTOCOL_VERSION(1, 0, 3))
- 		client->midi_version = client_info->midi_version;
- 	memcpy(client->event_filter, client_info->event_filter, 32);
--	client->group_filter = client_info->group_filter;
-+	client->group_filter = client_info->group_filter & SND_SEQ_GROUP_FILTER_MASK;
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -162,6 +162,10 @@ struct smi_info {
+ 			     OEM2_DATA_AVAIL)
+ 	unsigned char       msg_flags;
  
- 	/* notify the change */
- 	snd_seq_system_client_ev_client_change(client->number);
---- a/sound/core/seq/seq_clientmgr.h
-+++ b/sound/core/seq/seq_clientmgr.h
-@@ -14,6 +14,9 @@
- 
- /* client manager */
- 
-+#define SND_SEQ_GROUP_FILTER_MASK	GENMASK(SNDRV_UMP_MAX_GROUPS, 0)
-+#define SND_SEQ_GROUP_FILTER_GROUPS	GENMASK(SNDRV_UMP_MAX_GROUPS, 1)
++	/* When requesting events and messages, don't do it forever. */
++	unsigned int        num_requests_in_a_row;
++	bool		    last_was_flag_fetch;
 +
- struct snd_seq_user_client {
- 	struct file *file;	/* file struct of client */
- 	/* ... */
-@@ -40,7 +43,7 @@ struct snd_seq_client {
- 	int number;		/* client number */
- 	unsigned int filter;	/* filter flags */
- 	DECLARE_BITMAP(event_filter, 256);
--	unsigned short group_filter;
-+	unsigned int group_filter;
- 	snd_use_lock_t use_lock;
- 	int event_lost;
- 	/* ports */
---- a/sound/core/seq/seq_ump_client.c
-+++ b/sound/core/seq/seq_ump_client.c
-@@ -369,7 +369,7 @@ static void setup_client_group_filter(st
- 	cptr = snd_seq_kernel_client_get(client->seq_client);
- 	if (!cptr)
- 		return;
--	filter = ~(1U << 0); /* always allow groupless messages */
-+	filter = SND_SEQ_GROUP_FILTER_GROUPS; /* always allow groupless messages */
- 	for (p = 0; p < SNDRV_UMP_MAX_GROUPS; p++) {
- 		if (client->ump->groups[p].active)
- 			filter &= ~(1U << (p + 1));
+ 	/* Does the BMC have an event buffer? */
+ 	bool		    has_event_buffer;
+ 
+@@ -394,7 +398,10 @@ static void start_getting_msg_queue(stru
+ 
+ 	start_new_msg(smi_info, smi_info->curr_msg->data,
+ 		      smi_info->curr_msg->data_size);
+-	smi_info->si_state = SI_GETTING_MESSAGES;
++	if (smi_info->si_state != SI_GETTING_MESSAGES) {
++		smi_info->num_requests_in_a_row = 0;
++		smi_info->si_state = SI_GETTING_MESSAGES;
++	}
+ }
+ 
+ static void start_getting_events(struct smi_info *smi_info)
+@@ -405,7 +412,10 @@ static void start_getting_events(struct
+ 
+ 	start_new_msg(smi_info, smi_info->curr_msg->data,
+ 		      smi_info->curr_msg->data_size);
+-	smi_info->si_state = SI_GETTING_EVENTS;
++	if (smi_info->si_state != SI_GETTING_EVENTS) {
++		smi_info->num_requests_in_a_row = 0;
++		smi_info->si_state = SI_GETTING_EVENTS;
++	}
+ }
+ 
+ /*
+@@ -579,6 +589,7 @@ static void handle_transaction_done(stru
+ 			smi_info->si_state = SI_NORMAL;
+ 		} else {
+ 			smi_info->msg_flags = msg[3];
++			smi_info->last_was_flag_fetch = true;
+ 			handle_flags(smi_info);
+ 		}
+ 		break;
+@@ -624,6 +635,11 @@ static void handle_transaction_done(stru
+ 		} else {
+ 			smi_inc_stat(smi_info, events);
+ 
++			smi_info->num_requests_in_a_row++;
++			if (smi_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				smi_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
++
+ 			/*
+ 			 * Do this before we deliver the message
+ 			 * because delivering the message releases the
+@@ -662,6 +678,11 @@ static void handle_transaction_done(stru
+ 		} else {
+ 			smi_inc_stat(smi_info, incoming_messages);
+ 
++			smi_info->num_requests_in_a_row++;
++			if (smi_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				smi_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
++
+ 			/*
+ 			 * Do this before we deliver the message
+ 			 * because delivering the message releases the
+@@ -790,6 +811,26 @@ restart:
+ 	}
+ 
+ 	/*
++	 * If we are currently idle, or if the last thing that was
++	 * done was a flag fetch and there is a message pending, try
++	 * to start the next message.
++	 *
++	 * We do the waiting message check to avoid a stuck flag
++	 * completely wedging the driver.  Let a message through
++	 * in between flag operations if that happens.
++	 */
++	if (si_sm_result == SI_SM_IDLE ||
++	    (si_sm_result == SI_SM_ATTN && smi_info->waiting_msg &&
++	     smi_info->last_was_flag_fetch)) {
++		smi_info->last_was_flag_fetch = false;
++		smi_inc_stat(smi_info, idles);
++
++		si_sm_result = start_next_msg(smi_info);
++		if (si_sm_result != SI_SM_IDLE)
++			goto restart;
++	}
++
++	/*
+ 	 * We prefer handling attn over new messages.  But don't do
+ 	 * this if there is not yet an upper layer to handle anything.
+ 	 */
+@@ -822,15 +863,6 @@ restart:
+ 		}
+ 	}
+ 
+-	/* If we are currently idle, try to start the next message. */
+-	if (si_sm_result == SI_SM_IDLE) {
+-		smi_inc_stat(smi_info, idles);
+-
+-		si_sm_result = start_next_msg(smi_info);
+-		if (si_sm_result != SI_SM_IDLE)
+-			goto restart;
+-	}
+-
+ 	if ((si_sm_result == SI_SM_IDLE)
+ 	    && (atomic_read(&smi_info->req_events))) {
+ 		/*
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -225,6 +225,9 @@ struct ssif_info {
+ 	bool		    has_event_buffer;
+ 	bool		    supports_alert;
+ 
++	/* When requesting events and messages, don't do it forever. */
++	unsigned int        num_requests_in_a_row;
++
+ 	/*
+ 	 * Used to tell what we should do with alerts.  If we are
+ 	 * waiting on a response, read the data immediately.
+@@ -413,7 +416,10 @@ static void start_event_fetch(struct ssi
+ 	}
+ 
+ 	ssif_info->curr_msg = msg;
+-	ssif_info->ssif_state = SSIF_GETTING_EVENTS;
++	if (ssif_info->ssif_state != SSIF_GETTING_EVENTS) {
++		ssif_info->num_requests_in_a_row = 0;
++		ssif_info->ssif_state = SSIF_GETTING_EVENTS;
++	}
+ 	ipmi_ssif_unlock_cond(ssif_info, flags);
+ 
+ 	msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
+@@ -436,7 +442,10 @@ static void start_recv_msg_fetch(struct
+ 	}
+ 
+ 	ssif_info->curr_msg = msg;
+-	ssif_info->ssif_state = SSIF_GETTING_MESSAGES;
++	if (ssif_info->ssif_state != SSIF_GETTING_MESSAGES) {
++		ssif_info->num_requests_in_a_row = 0;
++		ssif_info->ssif_state = SSIF_GETTING_MESSAGES;
++	}
+ 	ipmi_ssif_unlock_cond(ssif_info, flags);
+ 
+ 	msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
+@@ -843,6 +852,11 @@ static void msg_done_handler(struct ssif
+ 			ssif_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
+ 			handle_flags(ssif_info, flags);
+ 		} else {
++			ssif_info->num_requests_in_a_row++;
++			if (ssif_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				ssif_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
++
+ 			handle_flags(ssif_info, flags);
+ 			ssif_inc_stat(ssif_info, events);
+ 			deliver_recv_msg(ssif_info, msg);
+@@ -876,6 +890,11 @@ static void msg_done_handler(struct ssif
+ 			ssif_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
+ 			handle_flags(ssif_info, flags);
+ 		} else {
++			ssif_info->num_requests_in_a_row++;
++			if (ssif_info->num_requests_in_a_row > 10)
++				/* Stop if we do this too many times. */
++				ssif_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
++
+ 			ssif_inc_stat(ssif_info, incoming_messages);
+ 			handle_flags(ssif_info, flags);
+ 			deliver_recv_msg(ssif_info, msg);
 
 
 
