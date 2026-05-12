@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-246308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246584-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFJxIr1uA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246308-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:33 +0200
+	id oL1kKZ1xA2q55wEAu9opvQ
+	(envelope-from <stable+bounces-246584-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:29:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9AD95273C9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3779C527A1D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ED396302A048
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC98E32E397E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDD633B6CC;
-	Tue, 12 May 2026 18:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E40636D4E4;
+	Tue, 12 May 2026 18:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pb9GrQmd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJVpLZlO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE1F23E356;
-	Tue, 12 May 2026 18:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0235D36AB5B;
+	Tue, 12 May 2026 18:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608892; cv=none; b=pscHfMV2HtDy1RvXkszlTuj9gtOpQk0T4q5NBSyvISHF2J+ez89a9nssfFMdvsL3H3sZ6QHQawIluwhMY6wL45GXw6NluyNOn5ZdXzEgnN2uDkid+ylQG/AwCjWGqbWEmrfSUFCFWOk6KDIb5jr+25HqldzZ0xpCiZ2arfztZxk=
+	t=1778609600; cv=none; b=EuAGpzGQ10UoVHnrcXpzDH+zkQbEqO4idku13ZZ8Qq3kkb/tHK96BgsWeJENVyISRGtclM08HpEAcL2ktMbk/Pd+3vyn+6ts+ieNFpz0RSBXTtNNkFov89YCv6gD+JdVBBH+a7B/mL4lag6l5nsxQ+rj+Xn9n/1fIWK5QfGyu/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608892; c=relaxed/simple;
-	bh=54DObUGOvAR9vQ9duWHc7VKGpZnC9xGUmJrTmfm/kyg=;
+	s=arc-20240116; t=1778609600; c=relaxed/simple;
+	bh=gniwqgc0hIViTmgPmfh9BqNxYrXyxVL/GczQg/JvR8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSrbzYG04sU4LwP7GltAxCkpVPBPDL97WGRJT1MzNsLtAQn2hdpt0oJRv0On8JUf4wZ0qbn4AcbVKjed2tNnzlRP3AS9ik9Gt+7/oM+13FiNm+LxFNKCUEVELsLIJm5w7wUUG5b3pylAmkTld1POLvIup6rdst76abQp1T7b80A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pb9GrQmd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F63C2BCB0;
-	Tue, 12 May 2026 18:01:31 +0000 (UTC)
+	 MIME-Version; b=a8ybWvvl2KZMOXf8N8fftbMPAtEllmad9I/2FmX27PoNz2M0i+wl4WjshO0HPlKwJ3iITFtTllj7ll7sO8uAei6Sd3wXSF3AlNTsz5AlDw4gxkx6R4lEPySAUXPIciaz5L9WXmFQ+S5xBnnOW+1kKlZzaUog874+R/dfG+sRSGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJVpLZlO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDA4C2BCB0;
+	Tue, 12 May 2026 18:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608891;
-	bh=54DObUGOvAR9vQ9duWHc7VKGpZnC9xGUmJrTmfm/kyg=;
+	s=korg; t=1778609599;
+	bh=gniwqgc0hIViTmgPmfh9BqNxYrXyxVL/GczQg/JvR8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pb9GrQmdA19/bxnyWkN1AKdYAN5cZAxaB3gl5DBbzxb6CpAMp1uukc0bEkUoGph+t
-	 LXoedrKTyzgYG2tZREN1rTivqqiVSH3an1YG1viOZDYPPCYtdDn6Lw5MXm1U0YnQlf
-	 Apnx6/+Bjsv3nNcIryWO1lDlao453F1uNXjTxvYY=
+	b=dJVpLZlOlry/KjMTAWeejV8YqA4P2c/R92IbI0qCDwuSJ0Q0kXcnemhIkxEXTb1w+
+	 gma/FvizpxqOJ6gO4U3iybqe7o5YvGR8/ms4mCS9Q02QVmVo+lrnV/trpj4n00V+t4
+	 kq78LPl53FfXpx9FaUk7vWTxy/ZuDwgLAK/g/drM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 253/270] octeon_ep_vf: add NULL check for napi_build_skb()
+	Sashiko <sashiko-bot@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 259/307] mptcp: pm: kernel: reset fullmesh counter after flush
 Date: Tue, 12 May 2026 19:40:54 +0200
-Message-ID: <20260512173943.768990747@linuxfoundation.org>
+Message-ID: <20260512173945.593352954@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +65,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C9AD95273C9
+X-Rspamd-Queue-Id: 3779C527A1D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246308-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246584-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit dd66b42854705e4e4ee7f14d260f86c578bed3e3 ]
+commit 1774d3cf3cf17baaf30c095606cda496268283b3 upstream.
 
-napi_build_skb() can return NULL on allocation failure. In
-__octep_vf_oq_process_rx(), the result is used directly without a NULL
-check in both the single-buffer and multi-fragment paths, leading to a
-NULL pointer dereference.
+This variable counts how many MPTCP endpoints have a 'fullmesh' flag
+set. After having flushed all MPTCP endpoints, it is then needed to
+reset this counter.
 
-Add NULL checks after both napi_build_skb() calls, properly advancing
-descriptors and consuming remaining fragments on failure.
+Without this reset, this counter exposed to the userspace is wrong, but
+also non-fullmesh endpoints added after the flush will not be taken into
+account to create subflows in reaction to ADD_ADDRs.
 
-Fixes: 1cd3b407977c ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
+Fixes: f88191c7f361 ("mptcp: pm: in-kernel: record fullmesh endp nb")
 Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Link: https://patch.msgid.link/20260409184009.930359-3-devnexen@gmail.com
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260422-mptcp-inc-limits-v6-0-903181771530%40kernel.org?part=15
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-4-7432b7f279fa@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ inlined missing octep_vf_oq_next_idx() helper as read_idx++ with wraparound ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c |   36 +++++++++++++++-
- 1 file changed, 34 insertions(+), 2 deletions(-)
+ net/mptcp/pm_kernel.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-@@ -409,10 +409,17 @@ static int __octep_vf_oq_process_rx(stru
- 			data_offset = OCTEP_VF_OQ_RESP_HW_SIZE;
- 			rx_ol_flags = 0;
- 		}
--		rx_bytes += buff_info->len;
--
- 		if (buff_info->len <= oq->max_single_buffer_size) {
- 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
-+			if (!skb) {
-+				oq->stats->alloc_failures++;
-+				desc_used++;
-+				read_idx++;
-+				if (read_idx == oq->max_count)
-+					read_idx = 0;
-+				continue;
-+			}
-+			rx_bytes += buff_info->len;
- 			skb_reserve(skb, data_offset);
- 			skb_put(skb, buff_info->len);
- 			read_idx++;
-@@ -424,6 +431,31 @@ static int __octep_vf_oq_process_rx(stru
- 			u16 data_len;
+--- a/net/mptcp/pm_kernel.c
++++ b/net/mptcp/pm_kernel.c
+@@ -1278,6 +1278,7 @@ static void __reset_counters(struct pm_n
+ 	WRITE_ONCE(pernet->endp_signal_max, 0);
+ 	WRITE_ONCE(pernet->endp_subflow_max, 0);
+ 	WRITE_ONCE(pernet->endp_laminar_max, 0);
++	WRITE_ONCE(pernet->endp_fullmesh_max, 0);
+ 	pernet->endpoints = 0;
+ }
  
- 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
-+			if (!skb) {
-+				oq->stats->alloc_failures++;
-+				desc_used++;
-+				read_idx++;
-+				if (read_idx == oq->max_count)
-+					read_idx = 0;
-+				data_len = buff_info->len - oq->max_single_buffer_size;
-+				while (data_len) {
-+					dma_unmap_page(oq->dev, oq->desc_ring[read_idx].buffer_ptr,
-+						       PAGE_SIZE, DMA_FROM_DEVICE);
-+					buff_info = (struct octep_vf_rx_buffer *)
-+						    &oq->buff_info[read_idx];
-+					buff_info->page = NULL;
-+					if (data_len < oq->buffer_size)
-+						data_len = 0;
-+					else
-+						data_len -= oq->buffer_size;
-+					desc_used++;
-+					read_idx++;
-+					if (read_idx == oq->max_count)
-+						read_idx = 0;
-+				}
-+				continue;
-+			}
-+			rx_bytes += buff_info->len;
- 			skb_reserve(skb, data_offset);
- 			/* Head fragment includes response header(s);
- 			 * subsequent fragments contains only data.
 
 
 
