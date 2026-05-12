@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-246306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LL4K7VuA2p45wEAu9opvQ
-	(envelope-from <stable+bounces-246306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:25 +0200
+	id MK6HHLluA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FBD5273B4
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD265273C2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 21B063085018
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8F63030510FF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B353EDE59;
-	Tue, 12 May 2026 18:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF43E30BB80;
+	Tue, 12 May 2026 18:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1gsMIxH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r61Eslgh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCA7342524;
-	Tue, 12 May 2026 18:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FA23EDE48;
+	Tue, 12 May 2026 18:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608886; cv=none; b=FxBBICrBzI/65f9M1PgXs9AcNsZOQsO9gjbPTBb4L98Bxa/sUrjnijWNHXUZDZ320rdZN2mriwUf3dGDYsQbzUTOeQayP33+cD0d5c6oJmiTXAlePy76Cb9gq7NLJyHgpby+naEkiJkmzmZCEkt86tkkbDUEhH61RUNGLXdxiHI=
+	t=1778608889; cv=none; b=qeiDTlQODhN2+70fJLr+/AvzzKWVazGj6cAa0Wz82fP+Sc6l5es4O9sPrzNTgo7vnHI2md2cVDRbZuqj5n6xzdLmbmnLTBEVVnNoSX6CIanGbJjWj+6xNbT9qG/UBljgsR1INkaXuH72tLIZ7d94ZJdtZyRC599lkX2kTbDFGec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608886; c=relaxed/simple;
-	bh=Fqo2Jf4Jx4BnxkPew6/dIV9Tvz4O8wy42XiGWABj+N0=;
+	s=arc-20240116; t=1778608889; c=relaxed/simple;
+	bh=Bs11X0jCgq6oyH6sqXwezVOi6M3eS1Kgnv8rtgv+4yM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rv5Q+LK9cxNdt3JrZt944dMTarSVZMpvCJHmZcsraajjhpFTpW2WX+Vvn4iGxXi4J5xopMmXjUTuu4xpmAQhzezeNkHEat6gxqx/A8spUmFmJKDORG6WPxLuCsbHoa+VKay+t8fEFdlGOju0tZQpI0TixGVU3OOAgIQBVFRys5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1gsMIxH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752D8C2BCB0;
-	Tue, 12 May 2026 18:01:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lFqt4hBPJWT+gjLoSvzUPedNnCOomhE+UHA9Mh1LMlMqvflFBt/bwdT+9i8Nh0A0aoWo5CbHVNTIp/KuXLsskeVAwz6OfnUx4EqrMIy1DFtnc5z41h3kVm8/Yq4HpygmKcfz0aDnPBfwB999NuPgmvsJaUml8aj719j3OFp83uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r61Eslgh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E9AC2BCB0;
+	Tue, 12 May 2026 18:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608886;
-	bh=Fqo2Jf4Jx4BnxkPew6/dIV9Tvz4O8wy42XiGWABj+N0=;
+	s=korg; t=1778608889;
+	bh=Bs11X0jCgq6oyH6sqXwezVOi6M3eS1Kgnv8rtgv+4yM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b1gsMIxHvLaRXVNnUZ3k7wjj1L/VHwA/WYaae0ljY8iMs0n3+mjgffblJ+pBAEXWR
-	 t0D8wfHF8k97cC3ChgIpBwj2bCDTHBCS5B26/o15tdwRCAcYK3IZ20aXvOg/RCP594
-	 AJaWbG6usmaDTWtOYX5n3UUi3LB6qto8jGvcb9L4=
+	b=r61EslghmhBswK4Jpnr1JLi8W5hGgxk8ZB/NejM0ih/GIUS5u5JlH0ixvPQFcr6Eb
+	 siMoaEmy8kvbl4IHvSnMLD4AtNWbUtWxt7omRcl58RuWNwRlgAuguPZvyrphCQn61M
+	 ZWFtoJyiN7i8rz/oehIJur30G3FyiQi/SlzccofE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 251/270] dma-mapping: add __dma_from_device_group_begin()/end()
-Date: Tue, 12 May 2026 19:40:52 +0200
-Message-ID: <20260512173943.725526389@linuxfoundation.org>
+Subject: [PATCH 6.18 252/270] hwmon: (powerz) Avoid cacheline sharing for DMA buffer
+Date: Tue, 12 May 2026 19:40:53 +0200
+Message-ID: <20260512173943.746936825@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
 References: <20260512173938.452574370@linuxfoundation.org>
@@ -64,103 +63,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C7FBD5273B4
+X-Rspamd-Queue-Id: 3AD265273C2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246306-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246307-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,samsung.com:email,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,roeck-us.net:email,weissschuh.net:email]
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Michael S. Tsirkin" <mst@redhat.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit ca085faabb42c31ee204235facc5a430cb9e78a9 ]
+[ Upstream commit 3023c050af3600bf451153335dea5e073c9a3088 ]
 
-When a structure contains a buffer that DMA writes to alongside fields
-that the CPU writes to, cache line sharing between the DMA buffer and
-CPU-written fields can cause data corruption on non-cache-coherent
-platforms.
+Depending on the architecture the transfer buffer may share a cacheline
+with the following mutex. As the buffer may be used for DMA, that is
+problematic.
 
-Add __dma_from_device_group_begin()/end() annotations to ensure proper
-alignment to prevent this:
+Use the high-level DMA helpers to make sure that cacheline sharing can
+not happen.
 
-struct my_device {
-	spinlock_t lock1;
-	__dma_from_device_group_begin();
-	char dma_buffer1[16];
-	char dma_buffer2[16];
-	__dma_from_device_group_end();
-	spinlock_t lock2;
-};
+Also drop the comment, as the helpers are documentation enough.
 
-Message-ID: <19163086d5e4704c316f18f6da06bc1c72968904.1767601130.git.mst@redhat.com>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Petr Tesarik <ptesarik@suse.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Stable-dep-of: 3023c050af36 ("hwmon: (powerz) Avoid cacheline sharing for DMA buffer")
+https://sashiko.dev/#/message/20260408175814.934BFC19421%40smtp.kernel.org
+
+Fixes: 4381a36abdf1c ("hwmon: add POWER-Z driver")
+Cc: stable@vger.kernel.org # ca085faabb42: dma-mapping: add __dma_from_device_group_begin()/end()
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20260408-powerz-cacheline-alias-v1-1-1254891be0dd@weissschuh.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/dma-mapping.h |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/hwmon/powerz.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -7,6 +7,7 @@
- #include <linux/dma-direction.h>
- #include <linux/scatterlist.h>
- #include <linux/bug.h>
-+#include <linux/cache.h>
+--- a/drivers/hwmon/powerz.c
++++ b/drivers/hwmon/powerz.c
+@@ -6,6 +6,7 @@
  
- /**
-  * List of possible attributes associated with a DMA mapping. The semantics
-@@ -710,6 +711,18 @@ static inline int dma_get_cache_alignmen
- }
- #endif
+ #include <linux/completion.h>
+ #include <linux/device.h>
++#include <linux/dma-mapping.h>
+ #include <linux/hwmon.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+@@ -33,7 +34,9 @@ struct powerz_sensor_data {
+ } __packed;
  
-+#ifdef ARCH_HAS_DMA_MINALIGN
-+#define ____dma_from_device_aligned __aligned(ARCH_DMA_MINALIGN)
-+#else
-+#define ____dma_from_device_aligned
-+#endif
-+/* Mark start of DMA buffer */
-+#define __dma_from_device_group_begin(GROUP)			\
-+	__cacheline_group_begin(GROUP) ____dma_from_device_aligned
-+/* Mark end of DMA buffer */
-+#define __dma_from_device_group_end(GROUP)			\
-+	__cacheline_group_end(GROUP) ____dma_from_device_aligned
-+
- static inline void *dmam_alloc_coherent(struct device *dev, size_t size,
- 		dma_addr_t *dma_handle, gfp_t gfp)
- {
+ struct powerz_priv {
+-	char transfer_buffer[64];	/* first member to satisfy DMA alignment */
++	__dma_from_device_group_begin();
++	char transfer_buffer[64];
++	__dma_from_device_group_end();
+ 	struct mutex mutex;
+ 	struct completion completion;
+ 	struct urb *urb;
 
 
 
