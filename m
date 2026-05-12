@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-246543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4D/aMtF0A2rf5wEAu9opvQ
-	(envelope-from <stable+bounces-246543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:43:29 +0200
+	id 6OMKBrJvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1FA528047
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:43:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 782F2527659
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB2EA315BB35
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:11:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF23430FE39E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACECC343D9D;
-	Tue, 12 May 2026 18:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E83633B6CC;
+	Tue, 12 May 2026 18:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KygW2WRJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKF087i/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCDB336891;
-	Tue, 12 May 2026 18:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDBB3EDE57;
+	Tue, 12 May 2026 18:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609497; cv=none; b=oZX4hmBNk4BQXEXZVGw9JWjkEf3a5xN8FmJ6QjHDS58ZMxaK6UGu9r04Mk3dmSvUryT27jBgvPYbO9nqV/jYLnOZOldBbS6vx3B0gJb/tnrDG+WJME8T4h+gt89LgUenRS/VkRRy6GDjIyRRHiJ8aLPV3KTX/6+kEpWWwp0hk4A=
+	t=1778608882; cv=none; b=TFKSXIBdv59eQxdr0AM+2oLagvNY/8QqoW5C5/R4dILQj4wH3vQwCQJ1QekaAit57kmEpBJaKghW+e+8DzSjxBULhyFs/7U/QO7fKEmpD7oWybjcAmBca6bRYJ+MsLUy2m+0bQPXyl7SqeOj3+XT30kY8GqDaGi/QknbOkfTiGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609497; c=relaxed/simple;
-	bh=2F4nI40DFkUMCQ6e5aFfCFNUGnv1VKwg1SnUKP/1ZsM=;
+	s=arc-20240116; t=1778608882; c=relaxed/simple;
+	bh=2V9Iaq5lksugNmDg8JpeV1NHQEwZJJrsEyviZbD7Rvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaWtZ0BMoSyZVNKLRL67r4szvOqQtKtdGQwfrGPgBgUoLIRW8DMlbNcSpTukuv5i9I9nh14hb+RwvfkdTKLEN3znPzS0HopYvBNZiId6apZkHYwY9qsr/PTWMj/ZVYmJlliSU3gJbvrKkL/7jdtFUGiObOrK0linNiipXJiVWLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KygW2WRJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F0EC2BCB0;
-	Tue, 12 May 2026 18:11:36 +0000 (UTC)
+	 MIME-Version; b=WkU8NX/PscDguFUZI692xzZ7tfI6mCymIUeIP2AurOK+fxUHTk+9Ey/6kDWesoFwl5RizywU6IqmZolrJNGJu7PWju+d8I4jLLUw5qjk3VJvSZhkO7UaxJ19DsowuFWBt79WXvQioPDg0AoUA9gKEZO3zA+6wDlfxdc69bmmjV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKF087i/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA1DC2BCB0;
+	Tue, 12 May 2026 18:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609497;
-	bh=2F4nI40DFkUMCQ6e5aFfCFNUGnv1VKwg1SnUKP/1ZsM=;
+	s=korg; t=1778608881;
+	bh=2V9Iaq5lksugNmDg8JpeV1NHQEwZJJrsEyviZbD7Rvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KygW2WRJNJcTbhNlqaGMoSECAvynHX9XDfmVIuMx8BdBASrYKHDJcS9AMQ8Zi2kaF
-	 uaqSEwVFzjV1afeJSEe+HKronF2fXY9hUCbJ1U//WyPLes7AiU0OCLh3Iu0K/+n7+h
-	 fQ+Dgh35I8VhyiV51soy26IooSes3if2ed8p1iks=
+	b=oKF087i/+lZ13KrRtgcJczDGePzLaH0ot7xGN81Z8yyeRFmZQn081+5AVgatZIBo4
+	 xlF1EKp2C5J+HCP+FvYi0BLEoWSuZGCHuMgmoizcp92nCzwuhmy3l1eiIe5HtIGqMm
+	 VjB9dqKTZysy8PEg6g92lAVPrqfl5sLe/NOrxCoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Liew Rui Yan <aethernet65535@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 219/307] mm/damon/stat: detect and use fresh enabled value
-Date: Tue, 12 May 2026 19:40:14 +0200
-Message-ID: <20260512173944.738269146@linuxfoundation.org>
+	Sashiko <sashiko-bot@kernel.org>,
+	Gang Yan <yangang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 214/270] mptcp: fix scheduling with atomic in timestamp sockopt
+Date: Tue, 12 May 2026 19:40:15 +0200
+Message-ID: <20260512173942.951758049@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,152 +65,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6E1FA528047
+X-Rspamd-Queue-Id: 782F2527659
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246543-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246304-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Gang Yan <yangang@kylinos.cn>
 
-commit f98590bc08d4aea435e1c2213e38bae0d9e9a7bb upstream.
+commit b5c52908d52c6c8eb8933264aa6087a0600fd892 upstream.
 
-DAMON_STAT updates 'enabled' parameter value, which represents the running
-status of its kdamond, when the user explicitly requests start/stop of the
-kdamond.  The kdamond can, however, be stopped even if the user explicitly
-requested the stop, if ctx->regions_score_histogram allocation failure at
-beginning of the execution of the kdamond.  Hence, if the kdamond is
-stopped by the allocation failure, the value of the parameter can be
-stale.
+Using lock_sock_fast() (atomic context) around sock_set_timestamp()
+and sock_set_timestamping() is unsafe, as both helpers can sleep.
 
-Users could show the stale value and be confused.  The problem will only
-rarely happen in real and common setups because the allocation is arguably
-too small to fail.  Also, unlike the similar bugs that are now fixed in
-DAMON_RECLAIM and DAMON_LRU_SORT, kdamond can be restarted in this case,
-because DAMON_STAT force-updates the enabled parameter value for user
-inputs.  The bug is a bug, though.
+Replace lock_sock_fast() with sleepable lock_sock()/release_sock()
+to avoid scheduling while atomic panic.
 
-The issue stems from the fact that there are multiple events that can
-change the status, and following all the events is challenging.
-Dynamically detect and use the fresh status for the parameters when those
-are requested.
-
-The issue was dicovered [1] by Sashiko.
-
-Link: https://lore.kernel.org/20260419161003.79176-4-sj@kernel.org
-Link: https://lore.kernel.org/20260416040602.88665-1-sj@kernel.org [1]
-Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9061f24bf82e ("mptcp: sockopt: propagate timestamp request to subflows")
+Cc: stable@vger.kernel.org
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260420093343.16443-1-gang.yan@linux.dev
+Signed-off-by: Gang Yan <yangang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-2-7432b7f279fa@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/stat.c |   30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ net/mptcp/sockopt.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -19,14 +19,17 @@
- static int damon_stat_enabled_store(
- 		const char *val, const struct kernel_param *kp);
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -159,10 +159,10 @@ static int mptcp_setsockopt_sol_socket_t
+ 	lock_sock(sk);
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+-		bool slow = lock_sock_fast(ssk);
  
-+static int damon_stat_enabled_load(char *buffer,
-+		const struct kernel_param *kp);
-+
- static const struct kernel_param_ops enabled_param_ops = {
- 	.set = damon_stat_enabled_store,
--	.get = param_get_bool,
-+	.get = damon_stat_enabled_load,
- };
++		lock_sock(ssk);
+ 		sock_set_timestamp(ssk, optname, !!val);
+-		unlock_sock_fast(ssk, slow);
++		release_sock(ssk);
+ 	}
  
- static bool enabled __read_mostly = IS_ENABLED(
- 	CONFIG_DAMON_STAT_ENABLED_DEFAULT);
--module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
-+module_param_cb(enabled, &enabled_param_ops, NULL, 0600);
- MODULE_PARM_DESC(enabled, "Enable of disable DAMON_STAT");
+ 	release_sock(sk);
+@@ -235,10 +235,10 @@ static int mptcp_setsockopt_sol_socket_t
  
- static unsigned long estimated_memory_bandwidth __read_mostly;
-@@ -273,17 +276,23 @@ static void damon_stat_stop(void)
- 	damon_stat_context = NULL;
- }
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+-		bool slow = lock_sock_fast(ssk);
  
-+static bool damon_stat_enabled(void)
-+{
-+	if (!damon_stat_context)
-+		return false;
-+	return damon_is_running(damon_stat_context);
-+}
-+
- static int damon_stat_enabled_store(
- 		const char *val, const struct kernel_param *kp)
- {
--	bool is_enabled = enabled;
- 	int err;
++		lock_sock(ssk);
+ 		sock_set_timestamping(ssk, optname, timestamping);
+-		unlock_sock_fast(ssk, slow);
++		release_sock(ssk);
+ 	}
  
- 	err = kstrtobool(val, &enabled);
- 	if (err)
- 		return err;
- 
--	if (is_enabled == enabled)
-+	if (damon_stat_enabled() == enabled)
- 		return 0;
- 
- 	if (!damon_initialized())
-@@ -293,16 +302,17 @@ static int damon_stat_enabled_store(
- 		 */
- 		return 0;
- 
--	if (enabled) {
--		err = damon_stat_start();
--		if (err)
--			enabled = false;
--		return err;
--	}
-+	if (enabled)
-+		return damon_stat_start();
- 	damon_stat_stop();
- 	return 0;
- }
- 
-+static int damon_stat_enabled_load(char *buffer, const struct kernel_param *kp)
-+{
-+	return sprintf(buffer, "%c\n", damon_stat_enabled() ? 'Y' : 'N');
-+}
-+
- static int __init damon_stat_init(void)
- {
- 	int err = 0;
+ 	release_sock(sk);
 
 
 
