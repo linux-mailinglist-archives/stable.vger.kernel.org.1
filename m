@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246114-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QI4gArpyA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:34:34 +0200
+	id yM5jAKJtA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246114-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF20527CB6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:34:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF07352706A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74B4731B0705
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6CBA5306E7A9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4D53EDE68;
-	Tue, 12 May 2026 18:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E473955E6;
+	Tue, 12 May 2026 17:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npz0AXLg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCKY/PRC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69E63EDE55;
-	Tue, 12 May 2026 18:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBCD3955D7;
+	Tue, 12 May 2026 17:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609107; cv=none; b=ZSdG5MZUA/vv1K+YRQjo2oQroo9WA3t2a4H69I14PXO2sDJMmDZG5lLOzNnq5EIlhpQcv5vFDw3Kek/XPBc+IsjcomAwA693hgzBqrKoaZcvuPDLrdpyoUAHveQ2WTuZmox1DwTwDS9R9fNQknm7dQFNZ24Z07MQcdxqMCoXRuo=
+	t=1778608394; cv=none; b=BpGTb+0oH+lQ0GnW1Tisyhh/NPel11sKpHGxfOHSk5WcDuSz3dTmSwERFp4eoE1DkiNeSyBQYwv0j8FKNtEzhlURkp/tOkzBg6TeWATikRd30K4cTjNiqs7y3mrQNqpJRP+lx4cpt6zRnAFRWIuRR5+kyO4tWJmx7lddtueC1MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609107; c=relaxed/simple;
-	bh=sIkspz4YWRVP8nMfA6kjGTz9VwRvGYsxGS4JZgbv2AE=;
+	s=arc-20240116; t=1778608394; c=relaxed/simple;
+	bh=T3V6DAFXQR3+N7AX7ZsIaAQfJeSf2VBHj1XY08pO1lE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=morJBwBOBoeVPW7Fry4R6VoS9WXSh7nzUZk2DlDf82Ms6OM3dOrh9nhETsS7E23ps838hJtC791ahCRp8a2/QNr6j6/uIIfyA3AzX1XhBQruHdCVvVv2AJpuzNWcH2k1zBhOR1VoiekGURScBuDUAu+BYepsu613CcsPOp9nYnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npz0AXLg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF69C2BCB0;
-	Tue, 12 May 2026 18:05:07 +0000 (UTC)
+	 MIME-Version; b=nYjR0vUm5j/Ly4nbSANRITTwGpWtgF5mWbZQdMv9ch8tkMUplAI3o+weGNqbGGQkbJvUvZoRDmgXj97JZ4rvuDOwVS7OT+p8UUfhqMmD1oBplhFCWkp9YSd2EyiWgl9uE76jQvGEWyhzjdDW9yf1g+Isi+ZHXGxNw+ufaqSV5Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCKY/PRC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66E2C2BCB0;
+	Tue, 12 May 2026 17:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609107;
-	bh=sIkspz4YWRVP8nMfA6kjGTz9VwRvGYsxGS4JZgbv2AE=;
+	s=korg; t=1778608394;
+	bh=T3V6DAFXQR3+N7AX7ZsIaAQfJeSf2VBHj1XY08pO1lE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=npz0AXLg8ZtE7u80zAQAF+r7W1Id0zzaSGCQHkTwMLFZC2Z/gMoyeGP1cx6vndsLM
-	 npICFRbyo5uJZcem0sqkRS0Y3cmgqhIbgLTmLtGItER6nSCKkp4qETDuyfFB9K4AXB
-	 5vl0YpV4BAYJT6HLZ922tfrTb3uAt2CmGEMF9lgs=
+	b=bCKY/PRCAy6wLTkbHJhFcwLraRTSbVEIdNmlw1fiHDwCmlO+3229t7RiSz/YhvYuL
+	 hg//XBwVhWdW3veuHiIGkMBDDcL/fMA68UpC7ZpYO/KPBcLjf1D6g9+Ms4bT7oFFrw
+	 J+y467WnMahDbOVfgEKYZ3uurluHTTC7UkCzCcXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Michaelis <code@mgjm.de>,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 7.0 066/307] io_uring/kbuf: support min length left for incremental buffers
-Date: Tue, 12 May 2026 19:37:41 +0200
-Message-ID: <20260512173941.514817409@linuxfoundation.org>
+	Zongyao Chen <ZongYao.Chen@linux.alibaba.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.18 061/270] selinux: use sk blob accessor in socket permission helpers
+Date: Tue, 12 May 2026 19:37:42 +0200
+Message-ID: <20260512173939.736407534@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5FF20527CB6
+X-Rspamd-Queue-Id: EF07352706A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246392-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246114-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,107 +88,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,mgjm.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,paul-moore.com:email,alibaba.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Michaelis <code@mgjm.de>
+From: Zongyao Chen <ZongYao.Chen@linux.alibaba.com>
 
-commit 7deba791ad495ce1d7921683f4f7d1190fa210d1 upstream.
+commit 032e70aff025d7c519af9ab791cd084380619263 upstream.
 
-Incrementally consumed buffer rings are generally fully consumed, but
-it's quite possible that the application has a minimum size it needs to
-meet to avoid truncation. Currently that minimum limit is 1 byte, but
-this should be a setting that is the hands of the application. For
-recvmsg multishot, a prime use case for incrementally consumed buffers,
-the application may get spurious -EFAULT returned at the end of an
-incrementally consumed buffer, as less space is available than the
-headers need.
+SELinux socket state lives in the composite LSM socket blob.
 
-Grab a u32 field in struct io_uring_buf_reg, which the application can
-use to inform the kernel of the minimum size that should be available
-in an incrementally consumed buffer. If less than that is available,
-the current buffer is fully processed and the next one will be picked.
+sock_has_perm() and nlmsg_sock_has_extended_perms() currently
+dereference sk->sk_security directly, which assumes the SELinux socket
+blob is at offset zero.
 
-Cc: stable@vger.kernel.org
-Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-Link: https://github.com/axboe/liburing/issues/1433
-Signed-off-by: Martin Michaelis <code@mgjm.de>
-[axboe: write commit message, change io_buffer_list member name]
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+In stacked configurations that assumption does not hold. If another LSM
+allocates socket blob storage before SELinux, these helpers may read the
+wrong blob and feed invalid SID and class values into AVC checks.
+
+Use selinux_sock() instead of accessing sk->sk_security directly.
+
+Fixes: d1d991efaf34 ("selinux: Add netlink xperm support")
+Cc: stable@vger.kernel.org # v6.13+
+Signed-off-by: Zongyao Chen <ZongYao.Chen@linux.alibaba.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/io_uring.h |    3 ++-
- io_uring/kbuf.c               |    8 +++++++-
- io_uring/kbuf.h               |    7 +++++++
- 3 files changed, 16 insertions(+), 2 deletions(-)
+ security/selinux/hooks.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/uapi/linux/io_uring.h
-+++ b/include/uapi/linux/io_uring.h
-@@ -898,7 +898,8 @@ struct io_uring_buf_reg {
- 	__u32	ring_entries;
- 	__u16	bgid;
- 	__u16	flags;
--	__u64	resv[3];
-+	__u32	min_left;
-+	__u32	resv[5];
- };
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -4780,7 +4780,7 @@ static bool sock_skip_has_perm(u32 sid)
  
- /* argument for IORING_REGISTER_PBUF_STATUS */
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -47,7 +47,7 @@ static bool io_kbuf_inc_commit(struct io
- 		this_len = min_t(u32, len, buf_len);
- 		buf_len -= this_len;
- 		/* Stop looping for invalid buffer length of 0 */
--		if (buf_len || !this_len) {
-+		if (buf_len > bl->min_left_sub_one || !this_len) {
- 			WRITE_ONCE(buf->addr, READ_ONCE(buf->addr) + this_len);
- 			WRITE_ONCE(buf->len, buf_len);
- 			return false;
-@@ -637,6 +637,10 @@ int io_register_pbuf_ring(struct io_ring
- 	if (reg.ring_entries >= 65536)
- 		return -EINVAL;
+ static int sock_has_perm(struct sock *sk, u32 perms)
+ {
+-	struct sk_security_struct *sksec = sk->sk_security;
++	struct sk_security_struct *sksec = selinux_sock(sk);
+ 	struct common_audit_data ad;
+ 	struct lsm_network_audit net;
  
-+	/* minimum left byte count is a property of incremental buffers */
-+	if (!(reg.flags & IOU_PBUF_RING_INC) && reg.min_left)
-+		return -EINVAL;
-+
- 	bl = io_buffer_get_list(ctx, reg.bgid);
- 	if (bl) {
- 		/* if mapped buffer ring OR classic exists, don't allow */
-@@ -684,6 +688,8 @@ int io_register_pbuf_ring(struct io_ring
- 	bl->mask = reg.ring_entries - 1;
- 	bl->flags |= IOBL_BUF_RING;
- 	bl->buf_ring = br;
-+	if (reg.min_left)
-+		bl->min_left_sub_one = reg.min_left - 1;
- 	if (reg.flags & IOU_PBUF_RING_INC)
- 		bl->flags |= IOBL_INC;
- 	ret = io_buffer_add_list(ctx, bl, reg.bgid);
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -33,6 +33,13 @@ struct io_buffer_list {
+@@ -6087,7 +6087,7 @@ static unsigned int selinux_ip_postroute
  
- 	__u16 flags;
- 
-+	/*
-+	 * minimum required amount to be left to reuse an incrementally
-+	 * consumed buffer. If less than this is left at consumption time,
-+	 * buffer is done and head is incremented to the next buffer.
-+	 */
-+	__u32 min_left_sub_one;
-+
- 	struct io_mapped_region region;
- };
- 
+ static int nlmsg_sock_has_extended_perms(struct sock *sk, u32 perms, u16 nlmsg_type)
+ {
+-	struct sk_security_struct *sksec = sk->sk_security;
++	struct sk_security_struct *sksec = selinux_sock(sk);
+ 	struct common_audit_data ad;
+ 	u8 driver;
+ 	u8 xperm;
 
 
 
