@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-245948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPZvNbpoA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:54 +0200
+	id 2JnKIjZ0A2rl5wEAu9opvQ
+	(envelope-from <stable+bounces-246486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:40:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0D85263C2
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E444F527F6A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5092330FE55F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCB86311387F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73CF3D25D2;
-	Tue, 12 May 2026 17:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669C334E744;
+	Tue, 12 May 2026 18:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpkX8PJ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="equ02+2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB7D2EBB84;
-	Tue, 12 May 2026 17:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B5834405B;
+	Tue, 12 May 2026 18:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607967; cv=none; b=kxAhXCu60KUOxRw4LZLN1vEm2aTxkAmFF55/IrOr55Rj0HTGjasmLYnr32nltpU9XscsqM6bt88+c7QpzQqBCpZpuq39CQbCLQIGwYjoYMzAaCF6cUNTIjUgiXw1dIYWlHIYjdBLtjLlOy+uCEkLxY4Bbb5f5XhfDKEygZj02nk=
+	t=1778609350; cv=none; b=SYng9HmGegBYhuMuNd036/SdaOA8PO7Fy1mvXhN3iscTfsv4bi22DV9RoXzYmgIPcx0wiSp8GmzDu8PVHq59JfqfygDlSKh1kIDVpdBpF5OUFsFZl+gh5QLzTwdBcilfe7HWW4MiFJY4KJhNpxaFde+zoFYcFSl/eoNsfMRi4Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607967; c=relaxed/simple;
-	bh=9GN70lvB4mJUJmkFeTu1hfjSncyNmwfdIh0195HB1/M=;
+	s=arc-20240116; t=1778609350; c=relaxed/simple;
+	bh=yidKdEa1MhvAKfPJMIIVol9fyN2vbgRHhrhnny+8/kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9PhbvAR8P3TOa/PKYZ6jk6/nDcB2fyklJu7gB49fnz0qwOU2NaAG/qy9cz1m9Hq9ngOlAep0KVyWaaYNskMo0AVhpvmOBaeJj6AcFTflcS5n1wsBXTBdA20Vi0BntoeQ6bmml0D+4wsW8Cxav//tix4GwZuY4Wi6TuAIv1kPcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpkX8PJ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3152DC2BCC7;
-	Tue, 12 May 2026 17:46:07 +0000 (UTC)
+	 MIME-Version; b=Vnloh31TCoAFE1fBeZjpzDL0iKlxIfl0gUrtz3wjlhwMWx0whNo90IQlRlkCR0tLa3kQRJWOHa6HT0o/yQ80sd47Ve0eUFZfbs2BU+x3EyDubLiZr24J8MIh3dHoL9N4v6cCm2I/t3lQf8CAsyVhQ6QNYmoLEOf4Yyp06uUjB1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=equ02+2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D625C2BCB0;
+	Tue, 12 May 2026 18:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607967;
-	bh=9GN70lvB4mJUJmkFeTu1hfjSncyNmwfdIh0195HB1/M=;
+	s=korg; t=1778609350;
+	bh=yidKdEa1MhvAKfPJMIIVol9fyN2vbgRHhrhnny+8/kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QpkX8PJ6vFLmtiAxEGuHmJPTrEkJCF/Gh7zbfGHKtbURF21xHHCfRX/Sfpo2SjqGQ
-	 pUPqOybV0eJfoL0CKKvAP/gQaJfANxcJ2xAiCYk6vhVWPXVWwfZ8uqghqc+QLhxVaa
-	 4prTHYVWf2XnCkFLApP295HT8q95BCR4FNh/xSI4=
+	b=equ02+2eLCSjUVF3GroOoAAKXntF3DWeqDOtrHxfd05IvWyoSDtQFgorkNTOBT5+U
+	 e97/7NzuGu6D9kFQ1ZQ0PMUuFaHjDU0jKO5dvZLLUp2zD0wzCtcud+KaErV7CHYKv3
+	 ojiVY5ECNsbZCj6Ju9ehc16FMzIR+YXPfT//ZviU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Soenke Huster <soenke.huster@eknoes.de>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 062/206] Bluetooth: virtio_bt: validate rx pkt_type header length
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 119/307] net: libwx: use request_irq for VF misc interrupt
 Date: Tue, 12 May 2026 19:38:34 +0200
-Message-ID: <20260512173934.155614781@linuxfoundation.org>
+Message-ID: <20260512173942.638814594@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +63,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5F0D85263C2
+X-Rspamd-Queue-Id: E444F527F6A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245948-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,eknoes.de,gmail.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246486-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,eknoes.de:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-commit daf23014e5d975e72ea9c02b5160d3fcf070ea47 upstream.
+commit 7a33345153eeeda195c55f15be27074e4c3b5109 upstream.
 
-virtbt_rx_handle() reads the leading pkt_type byte from the RX skb
-and forwards the remainder to hci_recv_frame() for every
-event/ACL/SCO/ISO type, without checking that the remaining payload
-is at least the fixed HCI header for that type.
+Currently, request_threaded_irq() is used with a primary handler but a
+NULL threaded handler, while also setting the IRQF_ONESHOT flag. This
+specific combination triggers a WARNING since the commit aef30c8d569c
+("genirq: Warn about using IRQF_ONESHOT without a threaded handler").
 
-After the preceding patch bounds the backend-supplied used.len to
-[1, VIRTBT_RX_BUF_SIZE], a one-byte completion still reaches
-hci_recv_frame() with skb->len already pulled to 0. If the byte
-happened to be HCI_ACLDATA_PKT, the ACL-vs-ISO classification
-fast-path in hci_dev_classify_pkt_type() dereferences
-hci_acl_hdr(skb)->handle whenever the HCI device has an active
-CIS_LINK, BIS_LINK, or PA_LINK connection, reading two bytes of
-uninitialized RX-buffer data. The same hazard exists for every
-packet type the driver accepts because none of the switch cases in
-virtbt_rx_handle() check skb->len against the per-type minimum HCI
-header size before handing the frame to the core.
+WARNING: kernel/irq/manage.c:1502 at __setup_irq+0x4fa/0x760
 
-After stripping pkt_type, require skb->len to cover the fixed
-header size for the selected type (event 2, ACL 4, SCO 3, ISO 4)
-before calling hci_recv_frame(); drop ratelimited otherwise.
-Unknown pkt_type values still take the original kfree_skb() default
-path.
+Fix the issue by switching to request_irq(), which is the appropriate
+interface or a non-threaded interrupt handler, and removing the
+unnecessary IRQF_ONESHOT flag.
 
-Use bt_dev_err_ratelimited() because both the length and pkt_type
-values come from an untrusted backend that can otherwise flood the
-kernel log.
-
-Fixes: 160fbcf3bfb9 ("Bluetooth: virtio_bt: Use skb_put to set length")
+Fixes: eb4898fde1de ("net: libwx: add wangxun vf common api")
 Cc: stable@vger.kernel.org
-Cc: Soenke Huster <soenke.huster@eknoes.de>
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/786DDC7D5CCA6D0A+20260429083743.88961-2-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/virtio_bt.c |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_vf_common.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/bluetooth/virtio_bt.c
-+++ b/drivers/bluetooth/virtio_bt.c
-@@ -198,6 +198,7 @@ static int virtbt_shutdown_generic(struc
- 
- static void virtbt_rx_handle(struct virtio_bluetooth *vbt, struct sk_buff *skb)
- {
-+	size_t min_hdr;
- 	__u8 pkt_type;
- 
- 	pkt_type = *((__u8 *) skb->data);
-@@ -205,16 +206,32 @@ static void virtbt_rx_handle(struct virt
- 
- 	switch (pkt_type) {
- 	case HCI_EVENT_PKT:
-+		min_hdr = sizeof(struct hci_event_hdr);
-+		break;
- 	case HCI_ACLDATA_PKT:
-+		min_hdr = sizeof(struct hci_acl_hdr);
-+		break;
- 	case HCI_SCODATA_PKT:
-+		min_hdr = sizeof(struct hci_sco_hdr);
-+		break;
- 	case HCI_ISODATA_PKT:
--		hci_skb_pkt_type(skb) = pkt_type;
--		hci_recv_frame(vbt->hdev, skb);
-+		min_hdr = sizeof(struct hci_iso_hdr);
- 		break;
- 	default:
- 		kfree_skb(skb);
--		break;
-+		return;
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+@@ -98,8 +98,8 @@ int wx_request_msix_irqs_vf(struct wx *w
+ 		}
  	}
-+
-+	if (skb->len < min_hdr) {
-+		bt_dev_err_ratelimited(vbt->hdev,
-+				       "rx pkt_type 0x%02x payload %u < hdr %zu\n",
-+				       pkt_type, skb->len, min_hdr);
-+		kfree_skb(skb);
-+		return;
-+	}
-+
-+	hci_skb_pkt_type(skb) = pkt_type;
-+	hci_recv_frame(vbt->hdev, skb);
- }
  
- static void virtbt_rx_work(struct work_struct *work)
+-	err = request_threaded_irq(wx->msix_entry->vector, wx_msix_misc_vf,
+-				   NULL, IRQF_ONESHOT, netdev->name, wx);
++	err = request_irq(wx->msix_entry->vector, wx_msix_misc_vf,
++			  0, netdev->name, wx);
+ 	if (err) {
+ 		wx_err(wx, "request_irq for msix_other failed: %d\n", err);
+ 		goto free_queue_irqs;
 
 
 
