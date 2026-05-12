@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-245918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YNXiDxRnA2qj5gEAu9opvQ
-	(envelope-from <stable+bounces-245918-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:52 +0200
+	id 8CA1CmtvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5AD52605B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9498C52759F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49CEC3033F5E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D257D3168EF7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16583D966A;
-	Tue, 12 May 2026 17:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D243EDE55;
+	Tue, 12 May 2026 17:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmyjN+I8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19ukOjWo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5922F3B1EE2;
-	Tue, 12 May 2026 17:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FAA3EDE67;
+	Tue, 12 May 2026 17:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607890; cv=none; b=NqFuVHQYsYn4YubzOQ6y1FIxDR1QrQhzdAt1m4UjsIDQGtglI1rnRp9mA0PUR3H84MRQGiTFECczyZDXg2f1Ased9WHKiYoUV3cLFaWas58ahTZXwX+lh0BYOH2TkabVkK5RKr7DhRzr+3ceJU56Szo5/LhS7MwhNlFcyoxgcCs=
+	t=1778608668; cv=none; b=XTvCBXk1NjJkvGW5t4bulMplQN8xAbQ5aXK2uExsm7C/T1jdjOnDHZumLPegyvaBO1V08IfSjJlcRT+U9ES7hsL4cJFQ6ypEOCLvf7hwyaj/itOkuzwPZKR0i0TWtG/pjQBgAd080Csff2rlrKZmZVfS3HRDsKjDYitPQ5SfYHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607890; c=relaxed/simple;
-	bh=WbQVusx2gnbSBj/SFpxgmxlusmQaHgYroaBenyUd3BM=;
+	s=arc-20240116; t=1778608668; c=relaxed/simple;
+	bh=YewymG7X8VRKz9nh63WYgaBIldurkJzHn0emHnpEoHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRIi9wCo4EdFpoOI35KUizZQHIuqyUzyzFOCaSlEqoALsTSs7yJkc9cPk1VpQuURqw05rR+O92sr9/gh8dlDk5ofvoaC2TLSJ8zf+t5BnboLl7Jl2mEi6Yq25IaJsoTzAkBr6qZlv5gNJwS9bJSZzoVXhyE8SbCTqFqrK54IkGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmyjN+I8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6401C2BCF5;
-	Tue, 12 May 2026 17:44:49 +0000 (UTC)
+	 MIME-Version; b=fk7k46qzYAEZZPPvmCMghDL/SboCDPAqp/LuH9gi9C0HGz6TGTtdYOwulYwLSV9app8vvr62vjRAFXWh6BUXR5UZZB9mVrfsV9OE71QiYbe2UmaCT156aWuR71mTagvJbq3uBJsy45+LfgSSURT/JbtYAIpgzTMNUw1mrjsXghg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19ukOjWo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DECC2BCF6;
+	Tue, 12 May 2026 17:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607890;
-	bh=WbQVusx2gnbSBj/SFpxgmxlusmQaHgYroaBenyUd3BM=;
+	s=korg; t=1778608667;
+	bh=YewymG7X8VRKz9nh63WYgaBIldurkJzHn0emHnpEoHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmyjN+I8MSq3cZLxFu5OspYrcYN9y7LgdXOgkgM6OKVorviGOG1rrvMFdK++bvXOd
-	 i0BGSPD0SiWbNerzDEK9kgq1j+GZEwh6eqOKqhOiDDu3KRz/OaXIw6xlhHuh7XHkB2
-	 et66Ta0najiw4bDvcAn9APD1lh7JgdaH+wcnlt6k=
+	b=19ukOjWoBZ2Uj03zA66qflZH08pGT2Om3pNacFwAV2Og+cXzsea11cVQoOfc65Gql
+	 wKLqZnu+A6uw6L9EzFX7UrEQ4hW0pKCyf9z1cKSrmsEkSrUQBgt0xEHV47E8EB8Tad
+	 7EV8GV7mUpm+pYvO1pfnLxdn5H+2GgtTOVWcLuYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 076/206] mtd: spi-nor: debugfs: fix out-of-bounds read in spi_nor_params_show()
+	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>,
+	Johan Hovold <johan@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 127/270] spi: microchip-core-qspi: fix controller deregistration
 Date: Tue, 12 May 2026 19:38:48 +0200
-Message-ID: <20260512173934.460301810@linuxfoundation.org>
+Message-ID: <20260512173941.127883864@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,13 +65,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EB5AD52605B
+X-Rspamd-Queue-Id: 9498C52759F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245918-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246220-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,73 +88,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,infineon.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit e47029b977e747cb3a9174308fd55762cce70147 upstream.
+commit e6464140d439f2d42f072eb422a5b1fec470c5a6 upstream.
 
-Sashiko noticed an out-of-bounds read [1].
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind.
 
-In spi_nor_params_show(), the snor_f_names array is passed to
-spi_nor_print_flags() using sizeof(snor_f_names).
-
-Since snor_f_names is an array of pointers, sizeof() returns the total
-number of bytes occupied by the pointers
-	(element_count * sizeof(void *))
-rather than the element count itself. On 64-bit systems, this makes the
-passed length 8x larger than intended.
-
-Inside spi_nor_print_flags(), the 'names_len' argument is used to
-bounds-check the 'names' array access. An out-of-bounds read occurs
-if a flag bit is set that exceeds the array's actual element count
-but is within the inflated byte-size count.
-
-Correct this by using ARRAY_SIZE() to pass the actual number of
-string pointers in the array.
-
-Cc: stable@vger.kernel.org
-Fixes: 0257be79fc4a ("mtd: spi-nor: expose internal parameters via debugfs")
-Closes: https://sashiko.dev/#/patchset/20260417-die-erase-fix-v2-1-73bb7004ebad%40infineon.com [1]
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Takahiro Kuwano <takahiro.kuwano@infineon.com>
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
+Cc: stable@vger.kernel.org	# 6.1
+Cc: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20260409120419.388546-19-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/debugfs.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-microchip-core-qspi.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/mtd/spi-nor/debugfs.c
-+++ b/drivers/mtd/spi-nor/debugfs.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
+--- a/drivers/spi/spi-microchip-core-qspi.c
++++ b/drivers/spi/spi-microchip-core-qspi.c
+@@ -692,7 +692,7 @@ static int mchp_coreqspi_probe(struct pl
+ 		return -ENOMEM;
  
-+#include <linux/array_size.h>
- #include <linux/debugfs.h>
- #include <linux/mtd/spi-nor.h>
- #include <linux/spi/spi.h>
-@@ -92,7 +93,8 @@ static int spi_nor_params_show(struct se
- 	seq_printf(s, "address nbytes\t%u\n", nor->addr_nbytes);
+ 	qspi = spi_controller_get_devdata(ctlr);
+-	platform_set_drvdata(pdev, qspi);
++	platform_set_drvdata(pdev, ctlr);
  
- 	seq_puts(s, "flags\t\t");
--	spi_nor_print_flags(s, nor->flags, snor_f_names, sizeof(snor_f_names));
-+	spi_nor_print_flags(s, nor->flags, snor_f_names,
-+			    ARRAY_SIZE(snor_f_names));
- 	seq_puts(s, "\n");
+ 	qspi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(qspi->regs))
+@@ -732,7 +732,7 @@ static int mchp_coreqspi_probe(struct pl
+ 	ctlr->num_chipselect = 2;
+ 	ctlr->use_gpio_descriptors = true;
  
- 	seq_puts(s, "\nopcodes\n");
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret)
+ 		return dev_err_probe(&pdev->dev, ret,
+ 				     "spi_register_controller failed\n");
+@@ -742,9 +742,13 @@ static int mchp_coreqspi_probe(struct pl
+ 
+ static void mchp_coreqspi_remove(struct platform_device *pdev)
+ {
+-	struct mchp_coreqspi *qspi = platform_get_drvdata(pdev);
+-	u32 control = readl_relaxed(qspi->regs + REG_CONTROL);
++	struct spi_controller *ctlr = platform_get_drvdata(pdev);
++	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
++	u32 control;
+ 
++	spi_unregister_controller(ctlr);
++
++	control = readl_relaxed(qspi->regs + REG_CONTROL);
+ 	mchp_coreqspi_disable_ints(qspi);
+ 	control &= ~CONTROL_ENABLE;
+ 	writel_relaxed(control, qspi->regs + REG_CONTROL);
 
 
 
