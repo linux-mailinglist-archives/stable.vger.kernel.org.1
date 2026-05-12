@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246097-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLVkDipsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246376-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:06:34 +0200
+	id GNPYGOJrA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246097-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43FC526C49
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:06:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DD9526B69
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92A95306637B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:04:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 52B503124F22
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D70349AF5;
-	Tue, 12 May 2026 18:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53243DD843;
+	Tue, 12 May 2026 17:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlpGHVDG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNtPNlvN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B850523E356;
-	Tue, 12 May 2026 18:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787603D45ED;
+	Tue, 12 May 2026 17:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609066; cv=none; b=JBR1YOsc7u9pU2bdvOcYSUn50tI1rfUSIcoHyjaJjQy5hZWJG8+Ad7jO4grpU/iraoql40mBtuZyLnBH7+XWUDr+Qu89R+BDj/I15V0VTEuIIpW0JqcFBSZd65Tm60+db3jZamVoxPg5f2h6KvSyunA5ThPjLhmjA9+WOhejlR8=
+	t=1778608350; cv=none; b=Kv+bgp8k84yl/fWC8ZcvjOTKsw/XuU1MMo+Qh5MwYqCogszntCviSiCuvTnkyyRtrIyYDNbQc36UJOsXjBfbUxgAwP6qzkS07ikQgockrT3ystb5XzdT3mDxSF64KFrlHI0MBjqGS/hwD3kMfIcEuCchNprcPFuqa2bTyOT/qyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609066; c=relaxed/simple;
-	bh=xbTyiqvdcXReqJ5+RXw3yLgXqnCtTlJC/tN96LRz83U=;
+	s=arc-20240116; t=1778608350; c=relaxed/simple;
+	bh=20WK3yRwnLPav4ti0nMdzwyWhBA0pPaSGzSgzVhyYD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXyibSqeWnrovscsThp7r+11NFKH2LSHZTxO/8G9dr47HFtSQoajAJ4x3TeKevf6onySbTfkJAt6+0nuWEePQmD7YEg30W2Gqim75wuKGzBaOGYl92QQoDSWPzYDnMGldVNOoWrdTxa/I3hOGODLq2NOMram1eWs7WEDPlevteE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlpGHVDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D78AC2BCB0;
-	Tue, 12 May 2026 18:04:26 +0000 (UTC)
+	 MIME-Version; b=VGzyttXDFJSogMRhZEQVSctvg+wsitzV8aa60KugFTf0vzXrdYMEI4dmpI9MxZkoHUFS3W3iSAsRA6263evSuQWxTjfQPYqJlVNey+uUshplyLoMuxc2p9Q/WMePUOa1DhB2IWIFHx+f28uDLcB9+9HwO09+u77B9oJe4cVXP+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNtPNlvN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4C2C2BCB0;
+	Tue, 12 May 2026 17:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609066;
-	bh=xbTyiqvdcXReqJ5+RXw3yLgXqnCtTlJC/tN96LRz83U=;
+	s=korg; t=1778608350;
+	bh=20WK3yRwnLPav4ti0nMdzwyWhBA0pPaSGzSgzVhyYD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HlpGHVDG3YlZvhccO440aR7mtz+K3LO+wrIO3//8dt9FOkhtUk5zp1U32HiaWzcHs
-	 l64b3FIIyzKKHnP2OyO0aalD+qSgbH8m7/pnnnnZ9Tjy3JApDIidVrdJKa1F9ORsnM
-	 MNvcPS3syRHKO+7FIgQn9OLkjRB5tSDD3zpwsLZI=
+	b=wNtPNlvNEeqvOQJeHj+1laalW/1BSi3aEnA+gR6hZ2UzFMqYNps9uYJOeHIzDz2MK
+	 Btks9Vrkuh9m48XnSbJhlsK0rq7OvzEJrVAo4dnUn3op5w7ZThRz/chk+E0ApsDXsR
+	 2Jc9hGvJ3o+UDygLOyjtxVX4m0pho6EpBUKY3zws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Ivan Hu <ivan.hu@canonical.com>,
-	x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 7.0 052/307] x86/efi: Restore IRQ state in EFI page fault handler
+	stable <stable@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.18 046/270] usb: ulpi: fix memory leak on ulpi_register() error paths
 Date: Tue, 12 May 2026 19:37:27 +0200
-Message-ID: <20260512173941.221879650@linuxfoundation.org>
+Message-ID: <20260512173939.421973772@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +64,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C43FC526C49
+X-Rspamd-Queue-Id: C7DD9526B69
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246376-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246097-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit 2c340aab5485ebe9e33c01437dd4815ef33c8df5 upstream.
+commit 0b9fcab1b8608d429e5f239afb197de928d4de7d upstream.
 
-The kernel's softirq API does not permit re-enabling softirqs while IRQs
-are disabled. The reason for this is that local_bh_enable() will not
-only re-enable delivery of softirqs over the back of IRQs, it will also
-handle any pending softirqs immediately, regardless of whether IRQs are
-enabled at that point.
+Commit 01af542392b5 ("usb: ulpi: fix double free in
+ulpi_register_interface() error path") removed kfree(ulpi) from
+ulpi_register_interface() to fix a double-free when device_register()
+fails.
 
-For this reason, commit
+But when ulpi_of_register() or ulpi_read_id() fail before
+device_register() is called, the ulpi allocation is leaked.
 
-  d02198550423 ("x86/fpu: Improve crypto performance by making kernel-mode FPU reliably usable in softirqs")
+Add kfree(ulpi) on both error paths to properly clean up the allocation.
 
-disables softirqs only when IRQs are enabled, as it is not permitted
-otherwise, but also unnecessary, given that asynchronous softirq
-delivery never happens to begin with while IRQs are disabled.
-
-However, this does mean that entering a kernel mode FPU section with
-IRQs enabled and leaving it with IRQs disabled leads to problems, as
-identified by Sashiko [0]: the EFI page fault handler is called from
-page_fault_oops() with IRQs disabled, and thus ends the kernel mode FPU
-section with IRQs disabled as well, regardless of whether IRQs were
-enabled when it was started. This may result in schedule() being called
-with a non-zero preempt_count, causing a BUG().
-
-So take care to re-enable IRQs when handling any EFI page faults if they
-were taken with IRQs enabled.
-
-[0] https://sashiko.dev/#/patchset/20260430074107.27051-1-ivan.hu%40canonical.com
-
-Cc: Eric Biggers <ebiggers@kernel.org>
-Cc: Ivan Hu <ivan.hu@canonical.com>
-Cc: x86@kernel.org
-Cc: <stable@vger.kernel.org>
-Fixes: d02198550423 ("x86/fpu: Improve crypto performance by making kernel-mode FPU reliably usable in softirqs")
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 01af542392b5 ("usb: ulpi: fix double free in ulpi_register_interface() error path")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260407-ulpi-v1-1-f3fafe53f7b2@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/efi.h     |    3 ++-
- arch/x86/mm/fault.c            |    2 +-
- arch/x86/platform/efi/quirks.c |   11 ++++++++++-
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/usb/common/ulpi.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -137,7 +137,8 @@ extern void __init efi_dump_pagetable(vo
- extern void __init efi_apply_memmap_quirks(void);
- extern int __init efi_reuse_config(u64 tables, int nr_tables);
- extern void efi_delete_dummy_variable(void);
--extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
-+extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr,
-+					       const struct pt_regs *regs);
- extern void efi_unmap_boot_services(void);
+--- a/drivers/usb/common/ulpi.c
++++ b/drivers/usb/common/ulpi.c
+@@ -286,12 +286,15 @@ static int ulpi_register(struct device *
+ 	ACPI_COMPANION_SET(&ulpi->dev, ACPI_COMPANION(dev));
  
- void arch_efi_call_virt_setup(void);
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -686,7 +686,7 @@ page_fault_oops(struct pt_regs *regs, un
- 	 * avoid hanging the system.
- 	 */
- 	if (IS_ENABLED(CONFIG_EFI))
--		efi_crash_gracefully_on_page_fault(address);
-+		efi_crash_gracefully_on_page_fault(address, regs);
+ 	ret = ulpi_of_register(ulpi);
+-	if (ret)
++	if (ret) {
++		kfree(ulpi);
+ 		return ret;
++	}
  
- 	/* Only not-present faults should be handled by KFENCE. */
- 	if (!(error_code & X86_PF_PROT) &&
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -761,7 +761,8 @@ int efi_capsule_setup_info(struct capsul
-  * @return: Returns, if the page fault is not handled. This function
-  * will never return if the page fault is handled successfully.
-  */
--void efi_crash_gracefully_on_page_fault(unsigned long phys_addr)
-+void efi_crash_gracefully_on_page_fault(unsigned long phys_addr,
-+					const struct pt_regs *regs)
- {
- 	if (!IS_ENABLED(CONFIG_X86_64))
- 		return;
-@@ -811,6 +812,14 @@ void efi_crash_gracefully_on_page_fault(
+ 	ret = ulpi_read_id(ulpi);
+ 	if (ret) {
+ 		of_node_put(ulpi->dev.of_node);
++		kfree(ulpi);
+ 		return ret;
  	}
  
- 	/*
-+	 * The API does not permit entering a kernel mode FPU section with
-+	 * interrupts enabled and leaving it with interrupts disabled.  So
-+	 * re-enable interrupts now if they were enabled when the page fault
-+	 * occurred.
-+	 */
-+	local_irq_restore(regs->flags);
-+
-+	/*
- 	 * Before calling EFI Runtime Service, the kernel has switched the
- 	 * calling process to efi_mm. Hence, switch back to task_mm.
- 	 */
 
 
 
