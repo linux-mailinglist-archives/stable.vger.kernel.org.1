@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uF7bME11A2oV6AEAu9opvQ
-	(envelope-from <stable+bounces-246594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:33 +0200
+	id YPbGMq5uA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D68528138
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F40C5273AD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2FC63198803
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 77301308B576
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BA2365A19;
-	Tue, 12 May 2026 18:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29A234B410;
+	Tue, 12 May 2026 18:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbgDtpjg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFsqc49d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C45343D9D;
-	Tue, 12 May 2026 18:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CA834DB52;
+	Tue, 12 May 2026 18:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609625; cv=none; b=b5chiA3vtfVmk/Gec3fy91wesS3hMm24O/YezT7QfFYIC2MVOy3hrY3cgI9ZK259czozL8NVC8zZG6F4kZ3qtNlgZuutOz23K8K9Q5yr47Vpsjx+astV45UCcClVAxXwWO6JF9GgPzZ3WEfrsob3DBqrVaaX7TyleCcDjbjiXVo=
+	t=1778608948; cv=none; b=pL+yFTlpFSJuZ5NxpjtKTPS2mgVfntDY9yX/gKaE1WVTHk8McN0ufkjOZCKk+p/hpjaC3mBchf47VfCRu1HyjmXMR1Wbq8jbF4vk2yoTu4gZPNi+AcCnnA5wx5wWaV0FYuTv1ksMX/KsGkt4OjJ3KGFFIR1Leant6K9OtvaPuTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609625; c=relaxed/simple;
-	bh=p7FySz3AHoTMIl8MGGUePt5ao+MXfB23oaH1mBXZSGo=;
+	s=arc-20240116; t=1778608948; c=relaxed/simple;
+	bh=MUtJA5uwOHUo7ssmVgx4x+8cDs1z+dz0EDSFYc3GTI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Az3zoiigp5vgsRumWXnvXalHIe5P2N/Y6us12lAGQW9TEUvdgf9jO8ZWECGJgX2Z3UkZjDtWTGG/m2CpkOLUnIFsDHWa6Ow8v/f6PU8TjVb7qB1k2dDgRNaGT6dBA3oSb1Q3HzJtuDcf5QJAG+yjnDKhfxByKvBKM+c4xN+3n30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbgDtpjg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D258C2BCC7;
-	Tue, 12 May 2026 18:13:45 +0000 (UTC)
+	 MIME-Version; b=QPhpDXSayULv/tmbUaSTGW86kg4cz2e4nOoPTsPcT56gIoX7lou2BYeBrTfBQBCJC5cxIVNrpEyxul6qQUtmgVjpgNuwmcnpXq4KkK42nmZYrStza8b3Qt/6SHrg3oHVpHNWRIKxxoww1kS5AGbWaxfIlmaq7nRgtQDsE2oiQnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFsqc49d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B76DC2BCB0;
+	Tue, 12 May 2026 18:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609625;
-	bh=p7FySz3AHoTMIl8MGGUePt5ao+MXfB23oaH1mBXZSGo=;
+	s=korg; t=1778608948;
+	bh=MUtJA5uwOHUo7ssmVgx4x+8cDs1z+dz0EDSFYc3GTI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbgDtpjgeEZ89UmY2aoaDnBwpX3BRNUfuEIYf1RXGHKv0uOBaU49CMp79tI05EXTm
-	 DXkhj5zMhFPuySZmiFQKLpE6w+4/NRuVyHp/l23pelF7LX6/iSXXRuz3tIQ3+h6oU0
-	 86M4iyrMNeeybuDRIAsvJZfDiAJry9T/4xxkBnWA=
+	b=BFsqc49dJg7gxwnb95UfNrQRYfOp70yvbDT0n9dL9ZkdG2bveLyPbDIVAFxYXfAHl
+	 0AMg5hcsm/+wKZtQAgDqFRcWoSasODbfu5F/zABMlR8qV5JiHsukyMFkfjEz4c2g3i
+	 uLUuvdigvw+0dc/5OhGoTIyypTMwieretc1zqNk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
 	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 7.0 268/307] f2fs: fix false alarm of lockdep on cp_global_sem lock
-Date: Tue, 12 May 2026 19:41:03 +0200
-Message-ID: <20260512173945.783926031@linuxfoundation.org>
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 263/270] erofs: tidy up z_erofs_lz4_handle_overlap()
+Date: Tue, 12 May 2026 19:41:04 +0200
+Message-ID: <20260512173943.986338404@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,133 +64,172 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 66D68528138
+X-Rspamd-Queue-Id: 0F40C5273AD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246594-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246330-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,wdc.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 6a5e3de9c2bb0b691d16789a5d19e9276a09b308 upstream.
+[ Upstream commit 9ae77198d4815c63fc8ebacc659c71d150d1e51b ]
 
-lockdep reported a potential deadlock:
+ - Add some useful comments to explain inplace I/Os and decompression;
 
-a) TCMU device removal context:
- - call del_gendisk() to get q->q_usage_counter
- - call start_flush_work() to get work_completion of wb->dwork
-b) f2fs writeback context:
- - in wb_workfn(), which holds work_completion of wb->dwork
- - call f2fs_balance_fs() to get sbi->gc_lock
-c) f2fs vfs_write context:
- - call f2fs_gc() to get sbi->gc_lock
- - call f2fs_write_checkpoint() to get sbi->cp_global_sem
-d) f2fs mount context:
- - call recover_fsync_data() to get sbi->cp_global_sem
- - call f2fs_check_and_fix_write_pointer() to call blkdev_report_zones()
-   that goes down to blk_mq_alloc_request and get q->q_usage_counter
+ - Rearrange the code to get rid of one unnecessary goto.
 
-Original callstack is in Closes tag.
-
-However, I think this is a false alarm due to before mount returns
-successfully (context d), we can not access file therein via vfs_write
-(context c).
-
-Let's introduce per-sb cp_global_sem_key, and assign the key for
-cp_global_sem, so that lockdep can recognize cp_global_sem from
-different super block correctly.
-
-A lot of work are done by Shin'ichiro Kawasaki, thanks a lot for
-the work.
-
-Fixes: c426d99127b1 ("f2fs: Check write pointer consistency of open zones")
-Cc: stable@kernel.org
-Reported-and-tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Closes: https://lore.kernel.org/linux-f2fs-devel/20260218125237.3340441-1-shinichiro.kawasaki@wdc.com
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Stable-dep-of: 21e161de2dc6 ("erofs: fix unsigned underflow in z_erofs_lz4_handle_overlap()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h  |    3 +++
- fs/f2fs/super.c |   11 +++++++++++
- 2 files changed, 14 insertions(+)
+ fs/erofs/decompressor.c |   85 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 46 insertions(+), 39 deletions(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -2042,6 +2042,9 @@ struct f2fs_sb_info {
- 	spinlock_t iostat_lat_lock;
- 	struct iostat_lat_info *iostat_io_lat;
- #endif
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	struct lock_class_key cp_global_sem_key;
-+#endif
- };
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -105,44 +105,58 @@ static int z_erofs_lz4_prepare_dstpages(
+ 	return kaddr ? 1 : 0;
+ }
  
- /* Definitions to access f2fs_sb_info */
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4953,6 +4953,11 @@ try_onemore:
- 	init_f2fs_rwsem_trace(&sbi->gc_lock, sbi, LOCK_NAME_GC_LOCK);
- 	mutex_init(&sbi->writepages);
- 	init_f2fs_rwsem_trace(&sbi->cp_global_sem, sbi, LOCK_NAME_CP_GLOBAL);
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	lockdep_register_key(&sbi->cp_global_sem_key);
-+	lockdep_set_class(&sbi->cp_global_sem.internal_rwsem,
-+					&sbi->cp_global_sem_key);
-+#endif
- 	init_f2fs_rwsem_trace(&sbi->node_write, sbi, LOCK_NAME_NODE_WRITE);
- 	init_f2fs_rwsem_trace(&sbi->node_change, sbi, LOCK_NAME_NODE_CHANGE);
- 	spin_lock_init(&sbi->stat_lock);
-@@ -5424,6 +5429,9 @@ free_options:
- free_sb_buf:
- 	kfree(raw_super);
- free_sbi:
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+	lockdep_unregister_key(&sbi->cp_global_sem_key);
-+#endif
- 	kfree(sbi);
- 	sb->s_fs_info = NULL;
+-static void *z_erofs_lz4_handle_overlap(struct z_erofs_decompress_req *rq,
++static void *z_erofs_lz4_handle_overlap(const struct z_erofs_decompress_req *rq,
+ 			void *inpage, void *out, unsigned int *inputmargin,
+ 			int *maptype, bool may_inplace)
+ {
+-	unsigned int oend, omargin, total, i;
++	unsigned int oend, omargin, cnt, i;
+ 	struct page **in;
+-	void *src, *tmp;
+-
+-	if (rq->inplace_io) {
+-		oend = rq->pageofs_out + rq->outputsize;
+-		omargin = PAGE_ALIGN(oend) - oend;
+-		if (rq->partial_decoding || !may_inplace ||
+-		    omargin < LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize))
+-			goto docopy;
++	void *src;
  
-@@ -5505,6 +5513,9 @@ static void kill_f2fs_super(struct super
- 	/* Release block devices last, after fscrypt_destroy_keyring(). */
- 	if (sbi) {
- 		destroy_device_list(sbi);
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+		lockdep_unregister_key(&sbi->cp_global_sem_key);
-+#endif
- 		kfree(sbi);
- 		sb->s_fs_info = NULL;
++	/*
++	 * If in-place I/O isn't used, for example, the bounce compressed cache
++	 * can hold data for incomplete read requests. Just map the compressed
++	 * buffer as well and decompress directly.
++	 */
++	if (!rq->inplace_io) {
++		if (rq->inpages <= 1) {
++			*maptype = 0;
++			return inpage;
++		}
++		kunmap_local(inpage);
++		src = erofs_vm_map_ram(rq->in, rq->inpages);
++		if (!src)
++			return ERR_PTR(-ENOMEM);
++		*maptype = 1;
++		return src;
++	}
++	/*
++	 * Then, deal with in-place I/Os. The reasons why in-place I/O is useful
++	 * are: (1) It minimizes memory footprint during the I/O submission,
++	 * which is useful for slow storage (including network devices and
++	 * low-end HDDs/eMMCs) but with a lot inflight I/Os; (2) If in-place
++	 * decompression can also be applied, it will reuse the unique buffer so
++	 * that no extra CPU D-cache is polluted with temporary compressed data
++	 * for extreme performance.
++	 */
++	oend = rq->pageofs_out + rq->outputsize;
++	omargin = PAGE_ALIGN(oend) - oend;
++	if (!rq->partial_decoding && may_inplace &&
++	    omargin >= LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize)) {
+ 		for (i = 0; i < rq->inpages; ++i)
+ 			if (rq->out[rq->outpages - rq->inpages + i] !=
+ 			    rq->in[i])
+-				goto docopy;
+-		kunmap_local(inpage);
+-		*maptype = 3;
+-		return out + ((rq->outpages - rq->inpages) << PAGE_SHIFT);
++				break;
++		if (i >= rq->inpages) {
++			kunmap_local(inpage);
++			*maptype = 3;
++			return out + ((rq->outpages - rq->inpages) << PAGE_SHIFT);
++		}
  	}
+-
+-	if (rq->inpages <= 1) {
+-		*maptype = 0;
+-		return inpage;
+-	}
+-	kunmap_local(inpage);
+-	src = erofs_vm_map_ram(rq->in, rq->inpages);
+-	if (!src)
+-		return ERR_PTR(-ENOMEM);
+-	*maptype = 1;
+-	return src;
+-
+-docopy:
+-	/* Or copy compressed data which can be overlapped to per-CPU buffer */
+-	in = rq->in;
++	/*
++	 * If in-place decompression can't be applied, copy compressed data that
++	 * may potentially overlap during decompression to a per-CPU buffer.
++	 */
+ 	src = z_erofs_get_gbuf(rq->inpages);
+ 	if (!src) {
+ 		DBG_BUGON(1);
+@@ -150,20 +164,13 @@ docopy:
+ 		return ERR_PTR(-EFAULT);
+ 	}
+ 
+-	tmp = src;
+-	total = rq->inputsize;
+-	while (total) {
+-		unsigned int page_copycnt =
+-			min_t(unsigned int, total, PAGE_SIZE - *inputmargin);
+-
++	for (i = 0, in = rq->in; i < rq->inputsize; i += cnt, ++in) {
++		cnt = min_t(u32, rq->inputsize - i, PAGE_SIZE - *inputmargin);
+ 		if (!inpage)
+ 			inpage = kmap_local_page(*in);
+-		memcpy(tmp, inpage + *inputmargin, page_copycnt);
++		memcpy(src + i, inpage + *inputmargin, cnt);
+ 		kunmap_local(inpage);
+ 		inpage = NULL;
+-		tmp += page_copycnt;
+-		total -= page_copycnt;
+-		++in;
+ 		*inputmargin = 0;
+ 	}
+ 	*maptype = 2;
 
 
 
