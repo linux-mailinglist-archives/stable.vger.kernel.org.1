@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNuWGRZqA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:42 +0200
+	id ILIeFB10A2rl5wEAu9opvQ
+	(envelope-from <stable+bounces-246478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:40:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C668526588
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C91527F46
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7E45B3053733
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D80432698F6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3467C3DD857;
-	Tue, 12 May 2026 17:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F19734405B;
+	Tue, 12 May 2026 18:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sghnCB54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OBI0xjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4F73E0759;
-	Tue, 12 May 2026 17:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22B023E356;
+	Tue, 12 May 2026 18:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608517; cv=none; b=oUI/VbTB7V+Zy7O+nf0WqMQywjtPZ3kk7JdLv2uoma0uHBkAkEuIELeinJDnMFfy2+Sz/TPdtkxLsAoLj4f6LwEuAl3n4SnPj55P1d2X58QAcq6+5JxUi2CBA9Ql4mPn9+HkK2lf6plteev9iS9K+zZFjt7UtwdGq4xsKjTbl0Y=
+	t=1778609329; cv=none; b=Ii4o0yfpogTLXJfuBf/DN3ndUxVS4dY3jAKezqM/BH/GNi9Ixkl8gEOxSPKkXvycOYpnAYw2bSFYF49gcpxTYOF22/7SSUZN0YZ6lqsqNV+Q06U4dstjTWed/WvC5wiO/hQ2K39RvQ64GI5XnIr0lWztsXihaFtVQVuW1MqiRF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608517; c=relaxed/simple;
-	bh=l3JsFnsT/3JaqC366vYvB2ZFVYCnHryeNImEs5A354w=;
+	s=arc-20240116; t=1778609329; c=relaxed/simple;
+	bh=3PkyPpF7UZIrWh551sgJK+lNxYJ+I95I/NQMvkBmYvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ChjSVgS6emoued1q89OZQ4EQBZkxA9jOZ9e7OCPXLuFgwmmHVPzpsWqr2vgFVkyufCtzfDHcpR0D17T6cCK4FLPx5gVmMSBeFwJVEvkzsaId45GDNoAB+vX/6J3zH8CcVvEMkAOQuYqO5BbU+xJpSF/T+pZRS01bLphVYu9cKcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sghnCB54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759C8C2BCB0;
-	Tue, 12 May 2026 17:55:17 +0000 (UTC)
+	 MIME-Version; b=IUAB3cPpeApemn9b7KUaDHPZtTonZrZP89J86tdY+xYKKTbvsRFh2tmmWfnK+e3u6wAL6Qk9z4dgiiK2fvfvPcipZ/PQk2a+mV1fR+xDudpgCTjbzp66EZRz+kU3Y/rtHwgjpR4csRetfV87pXwS0Poa5dSxsruuNecwSvyqng0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OBI0xjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D26C2BCB0;
+	Tue, 12 May 2026 18:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608517;
-	bh=l3JsFnsT/3JaqC366vYvB2ZFVYCnHryeNImEs5A354w=;
+	s=korg; t=1778609328;
+	bh=3PkyPpF7UZIrWh551sgJK+lNxYJ+I95I/NQMvkBmYvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sghnCB54jcgHqcs2vY38P096vOTbM2mraxGNGPS7oKYgwlql9VFIWAWJesRa0/qYt
-	 Bc9T3TR4desk4EhQpgH+tNiL4ae9NtndiJkh1bosJwPBA23CRZcbMBi4OZVQW8SghR
-	 qxKRUPrJkk2ceIKA2yH3k2xlmetXHdCOy5DdYevY=
+	b=2OBI0xjomJXGOlW9ygVGaCU6LqJXe5dsekqlyVfDxSRDzaSfEc1vYkorh5zTe8jQ9
+	 spuzYf1uO3KvHtHwNucH8rzCWbGc9ybklRfezGxT0fb81Rm3dMfh0IhgYT/jpoxq+F
+	 UKvFvUl+5g/682D7wPlQjhVALedNRTNhnZw4qnO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 109/270] hwmon: (ltc2992) Fix u32 overflow in power read path
-Date: Tue, 12 May 2026 19:38:30 +0200
-Message-ID: <20260512173940.753493563@linuxfoundation.org>
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 7.0 116/307] pseries/papr-hvpipe: Fix the usage of copy_to_user()
+Date: Tue, 12 May 2026 19:38:31 +0200
+Message-ID: <20260512173942.574080232@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,135 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1C668526588
+X-Rspamd-Queue-Id: 82C91527F46
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246162-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246478-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,juniper.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-commit 2da0c1fd01dbd6b22844e8676585153dfc660cbe upstream.
+commit d48654bd8b1a75f662e224d257db54de475120dc upstream.
 
-ltc2992_get_power() computes the divisor for mul_u64_u32_div() as
-r_sense_uohm * 1000. This multiplication overflows u32 when
-r_sense_uohm exceeds about 4.29 ohms (4294967 micro-ohms), producing
-a truncated divisor and an incorrect power reading.
+copy_to_user() return bytes_not_copied to the user buffer. If there was
+an error writing bytes into the user buffer, i.e. if copy_to_user
+returns a non-zero value, then we should simply return -EFAULT from the
+->read() call.
 
-Cancel the factor of 1000 from both the numerator
-(VADC_UV_LSB * IADC_NANOV_LSB = 312500000) and the divisor
-(r_sense_uohm * 1000), giving (VADC_UV_LSB / 1000) * IADC_NANOV_LSB
-= 312500 as the numerator and plain r_sense_uohm as the divisor.
-The cancellation is exact because LTC2992_VADC_UV_LSB (25000) is
-divisible by 1000.
+Otherwise, in the non-patched version, we may end up mixing
+"bytes_not_copied + bytes_copied (HVPIPE_HDR_LEN)" as the return value
+to the user in ->read() call
 
-This is the read-path counterpart of the write-path fix applied in
-the preceding patch.
+Also let's make sure we clear the hvpipe_status flag, if we have
+consumed the hvpipe msg by making the rtas call. ret = -EFAULT means
+copy_to_user has failed but that still means that the msg was read from
+the hvpipe, hence for both cases, success & -EFAULT, we should clear the
+HVPIPE_MSG_AVAILABLE flag in hvpipe_status.
 
-Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260416215904.101969-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: cebdb522fd3edd1 ("powerpc/pseries: Receive payload with ibm,receive-hvpipe-msg RTAS")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/8fda3212a1ad48879c174e92f67472d9b9f1c3b7.1777606826.git.ritesh.list@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ltc2992.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/pseries/papr-hvpipe.c |   23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
---- a/drivers/hwmon/ltc2992.c
-+++ b/drivers/hwmon/ltc2992.c
-@@ -637,8 +637,10 @@ static int ltc2992_get_power(struct ltc2
- 	if (reg_val < 0)
- 		return reg_val;
+--- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
++++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+@@ -206,10 +206,11 @@ static int hvpipe_rtas_recv_msg(char __u
+ 					bytes_written, size);
+ 				bytes_written = size;
+ 			}
+-			ret = copy_to_user(buf,
++			if (copy_to_user(buf,
+ 					rtas_work_area_raw_buf(work_area),
+-					bytes_written);
+-			if (!ret)
++					bytes_written))
++				ret = -EFAULT;
++			else
+ 				ret = bytes_written;
+ 		}
+ 	} else {
+@@ -328,7 +329,7 @@ static ssize_t papr_hvpipe_handle_read(s
  
--	*val = mul_u64_u32_div(reg_val, LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB,
--			       st->r_sense_uohm[channel] * 1000);
-+	*val = mul_u64_u32_div(reg_val,
-+			       LTC2992_VADC_UV_LSB / 1000 *
-+			       LTC2992_IADC_NANOV_LSB,
-+			       st->r_sense_uohm[channel]);
+ 	struct hvpipe_source_info *src_info = file->private_data;
+ 	struct papr_hvpipe_hdr hdr = {};
+-	long ret;
++	ssize_t ret = 0;
  
- 	return 0;
+ 	/*
+ 	 * Return -ENXIO during migration
+@@ -376,7 +377,7 @@ static ssize_t papr_hvpipe_handle_read(s
+ 
+ 	ret = copy_to_user(buf, &hdr, HVPIPE_HDR_LEN);
+ 	if (ret)
+-		return ret;
++		return -EFAULT;
+ 
+ 	/*
+ 	 * Message event has payload, so get the payload with
+@@ -385,19 +386,23 @@ static ssize_t papr_hvpipe_handle_read(s
+ 	if (hdr.flags & HVPIPE_MSG_AVAILABLE) {
+ 		ret = hvpipe_rtas_recv_msg(buf + HVPIPE_HDR_LEN,
+ 				size - HVPIPE_HDR_LEN);
+-		if (ret > 0) {
++		/*
++		 * Always clear MSG_AVAILABLE once the RTAS call has drained
++		 * the message, regardless of whether copy_to_user succeeded.
++		 */
++		if (ret >= 0 || ret == -EFAULT)
+ 			src_info->hvpipe_status &= ~HVPIPE_MSG_AVAILABLE;
+-			ret += HVPIPE_HDR_LEN;
+-		}
+ 	} else if (hdr.flags & HVPIPE_LOST_CONNECTION) {
+ 		/*
+ 		 * Hypervisor is closing the pipe for the specific
+ 		 * source. So notify user space.
+ 		 */
+ 		src_info->hvpipe_status &= ~HVPIPE_LOST_CONNECTION;
+-		ret = HVPIPE_HDR_LEN;
+ 	}
+ 
++	if (ret >= 0)
++		ret += HVPIPE_HDR_LEN;
++
+ 	return ret;
  }
+ 
 
 
 
