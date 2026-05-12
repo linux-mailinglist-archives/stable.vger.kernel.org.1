@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-246214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDHIL6NsA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:35 +0200
+	id qKrSFgFoA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:48:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB88526DA1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FB8526259
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:48:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2C65308C966
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E0CBB3081CE6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820C530BB80;
-	Tue, 12 May 2026 17:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3FA3E0721;
+	Tue, 12 May 2026 17:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OVeDT8u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8Dx9fBy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453173EDE5E;
-	Tue, 12 May 2026 17:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E7E3CDBDD;
+	Tue, 12 May 2026 17:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608652; cv=none; b=WeS3Bo1IUsGhBBJr1aizzQm46OfnMr20r+a4iFFrPoJa+4oJ4wba4cxdkXf76kTlUepJc78UHaTSMemhQ9aAXVHbvyn69xKiFVvw9GLqdYBndcnVUrzgZYgjSgaI1ed0dNP50H9n+CLu27nhPJabILiriibwQxs9+tHoaH3Mwws=
+	t=1778607885; cv=none; b=uiq34Mv6G+p3QEcqcNkR+XJXXpPFdmbxlImhLit0rQnCZGYN9RqXKxdSi7sYtzbae/jkskkFXLGhWwDdH3ATTz9k0Rw93NB6jxHC+WA7327kEQEUgHo/EqB+1Id0wxouHC4Qq7RdsAOO3fui82AEl0cNgepHjxVjDFqcXcOFgXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608652; c=relaxed/simple;
-	bh=830RYLoXSESuE9sdMpQEShGZHfza82+IMiahQcRAXtQ=;
+	s=arc-20240116; t=1778607885; c=relaxed/simple;
+	bh=aXdk/m6LPw3ILPLAPJPCDZ9nF2Zm/GHcJS2oshbqEXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VyJOxgSaYIfMDLAQICaq6a8MYdYpfyHf3atEeXEBfxwKZU2lo8Zem01v4Q6i49tUwxHAZZQYuah2vEggudVmJ9wzYM6cJ8b8CG62YSvD15KHRgaCGbV/u9SPrCgI4LRVWH9bimFGVN9QbtF83KUtspY0HMbnE9/O/0ThXerf+Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OVeDT8u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6133C2BCB0;
-	Tue, 12 May 2026 17:57:31 +0000 (UTC)
+	 MIME-Version; b=cqIKhUrP3v4RHySvhs+6wzR2hfEJgBF2HgMvlT5pxXPinV6gCXQtPuKAleJJMGevnHEgQ/ogD7Gp+EE4oBzy1o0v0soNkTCWsSNN7W4hGW59P6rN/A6UdQNSQzxCc3Ug+xMVWuoduRWvKUI6vzaG6HmWythKCLYgWyk+I+Z7ixY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8Dx9fBy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3B2C2BCB0;
+	Tue, 12 May 2026 17:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608652;
-	bh=830RYLoXSESuE9sdMpQEShGZHfza82+IMiahQcRAXtQ=;
+	s=korg; t=1778607885;
+	bh=aXdk/m6LPw3ILPLAPJPCDZ9nF2Zm/GHcJS2oshbqEXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1OVeDT8u02GZAceZ2nA7ImDu14cKtOCF6xzg9vs1le4hQG/dvz5WVjjnLJemHXNBC
-	 o3cellto9RFcVj4d35NyI+5FBwwpzTMrBdGhJwSmM70HSDOhVVw2I40bTftPseFxw9
-	 WhNRp/Whv8pkhUjQapubDo46qVcnUGOFDCLjEres=
+	b=p8Dx9fBy4eMdET3zVplccFCurwDqn55KaBoLwXIYjTeV62UBdNWI5xwcILZF9S23N
+	 s/qG9nPxJF+cHZxrhdbIgpKCuvBYfO8BHMJFPE/tQ9SDpRw95Is3AjtZ6L0u0uSfsT
+	 oYo3u79FERBRkakcIWqWRpLYtsScKKCJC/JwaK4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian King <bjking1@linux.ibm.com>,
-	Shaik Abdulla <shaik.abdulla1@ibm.com>,
-	Naveed Ahmed <naveedaus@in.ibm.com>,
-	Mingming Cao <mmc@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 125/270] ibmveth: Disable GSO for packets with small MSS
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.12 074/206] fanotify: fix false positive on permission events
 Date: Tue, 12 May 2026 19:38:46 +0200
-Message-ID: <20260512173941.086899710@linuxfoundation.org>
+Message-ID: <20260512173934.416754288@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,135 +63,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4AB88526DA1
+X-Rspamd-Queue-Id: D5FB8526259
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246214-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245916-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingming Cao <mmc@linux.ibm.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit cc427d24ac6442ffdeafd157a63c7c5b73ed4de4 upstream.
+commit 7746e3bd4cc19b5092e00d32d676e329bfcb6900 upstream.
 
-Some physical adapters on Power systems do not support segmentation
-offload when the MSS is less than 224 bytes. Attempting to send such
-packets causes the adapter to freeze, stopping all traffic until
-manually reset.
+fsnotify_get_mark_safe() may return false for a mark on an unrelated group,
+which results in bypassing the permission check.
 
-Implement ndo_features_check to disable GSO for packets with small MSS
-values. The network stack will perform software segmentation instead.
+Fix by skipping over detached marks that are not in the current group.
 
-The 224-byte minimum matches ibmvnic
-commit <f10b09ef687f> ("ibmvnic: Enforce stronger sanity checks
-on GSO packets")
-which uses the same physical adapters in SEA configurations.
-
-The issue occurs specifically when the hardware attempts to perform
-segmentation (gso_segs > 1) with a small MSS. Single-segment GSO packets
-(gso_segs == 1) do not trigger the problematic LSO code path and are
-transmitted normally without segmentation.
-
-Add an ndo_features_check callback to disable GSO when MSS < 224 bytes.
-Also call vlan_features_check() to ensure proper handling of VLAN packets,
-particularly QinQ (802.1ad) configurations where the hardware parser may
-not support certain offload features.
-
-Validated using iptables to force small MSS values. Without the fix,
-the adapter freezes. With the fix, packets are segmented in software
-and transmission succeeds. Comprehensive regression testing completedd
-(MSS tests, performance, stability).
-
-Fixes: 8641dd85799f ("ibmveth: Add support for TSO")
-Cc: stable@vger.kernel.org
-Reviewed-by: Brian King <bjking1@linux.ibm.com>
-Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
-Tested-by: Naveed Ahmed <naveedaus@in.ibm.com>
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Link: https://patch.msgid.link/20260424162917.65725-1-mmc@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: abc77577a669 ("fsnotify: Provide framework for dropping SRCU lock in ->handle_event")
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://patch.msgid.link/20260410144950.156160-1-mszeredi@redhat.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmveth.c |   22 ++++++++++++++++++++++
- drivers/net/ethernet/ibm/ibmveth.h |    1 +
- 2 files changed, 23 insertions(+)
+ fs/notify/fsnotify.c             |    2 +-
+ fs/notify/mark.c                 |   18 +++++++++++-------
+ include/linux/fsnotify_backend.h |    1 +
+ 3 files changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1756,6 +1756,27 @@ static int ibmveth_set_mac_addr(struct n
- 	return 0;
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -421,7 +421,7 @@ static struct fsnotify_mark *fsnotify_fi
+ 	return hlist_entry_safe(node, struct fsnotify_mark, obj_list);
  }
  
-+static netdev_features_t ibmveth_features_check(struct sk_buff *skb,
-+						struct net_device *dev,
-+						netdev_features_t features)
-+{
-+	/* Some physical adapters do not support segmentation offload with
-+	 * MSS < 224. Disable GSO for such packets to avoid adapter freeze.
-+	 * Note: Single-segment packets (gso_segs == 1) don't need this check
-+	 * as they bypass the LSO path and are transmitted without segmentation.
-+	 */
-+	if (skb_is_gso(skb)) {
-+		if (skb_shinfo(skb)->gso_size < IBMVETH_MIN_LSO_MSS) {
-+			netdev_warn_once(dev,
-+					 "MSS %u too small for LSO, disabling GSO\n",
-+					 skb_shinfo(skb)->gso_size);
-+			features &= ~NETIF_F_GSO_MASK;
-+		}
-+	}
-+
-+	return vlan_features_check(skb, features);
-+}
-+
- static const struct net_device_ops ibmveth_netdev_ops = {
- 	.ndo_open		= ibmveth_open,
- 	.ndo_stop		= ibmveth_close,
-@@ -1767,6 +1788,7 @@ static const struct net_device_ops ibmve
- 	.ndo_set_features	= ibmveth_set_features,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_set_mac_address    = ibmveth_set_mac_addr,
-+	.ndo_features_check	= ibmveth_features_check,
- #ifdef CONFIG_NET_POLL_CONTROLLER
- 	.ndo_poll_controller	= ibmveth_poll_controller,
- #endif
---- a/drivers/net/ethernet/ibm/ibmveth.h
-+++ b/drivers/net/ethernet/ibm/ibmveth.h
-@@ -37,6 +37,7 @@
- #define IBMVETH_ILLAN_IPV4_TCP_CSUM		0x0000000000000002UL
- #define IBMVETH_ILLAN_ACTIVE_TRUNK		0x0000000000000001UL
+-static struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark)
++struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark)
+ {
+ 	struct hlist_node *node = NULL;
  
-+#define IBMVETH_MIN_LSO_MSS		224	/* Minimum MSS for LSO */
- /* hcall macros */
- #define h_register_logical_lan(ua, buflst, rxq, fltlst, mac) \
-   plpar_hcall_norets(H_REGISTER_LOGICAL_LAN, ua, buflst, rxq, fltlst, mac)
+--- a/fs/notify/mark.c
++++ b/fs/notify/mark.c
+@@ -446,9 +446,6 @@ EXPORT_SYMBOL_GPL(fsnotify_put_mark);
+  */
+ static bool fsnotify_get_mark_safe(struct fsnotify_mark *mark)
+ {
+-	if (!mark)
+-		return true;
+-
+ 	if (refcount_inc_not_zero(&mark->refcnt)) {
+ 		spin_lock(&mark->lock);
+ 		if (mark->flags & FSNOTIFY_MARK_FLAG_ATTACHED) {
+@@ -489,15 +486,22 @@ bool fsnotify_prepare_user_wait(struct f
+ 	int type;
+ 
+ 	fsnotify_foreach_iter_type(type) {
++		struct fsnotify_mark *mark = iter_info->marks[type];
++
+ 		/* This can fail if mark is being removed */
+-		if (!fsnotify_get_mark_safe(iter_info->marks[type])) {
+-			__release(&fsnotify_mark_srcu);
+-			goto fail;
++		while (mark && !fsnotify_get_mark_safe(mark)) {
++			if (mark->group == iter_info->current_group) {
++				__release(&fsnotify_mark_srcu);
++				goto fail;
++			}
++			/* This is a mark in an unrelated group, skip */
++			mark = fsnotify_next_mark(mark);
++			iter_info->marks[type] = mark;
+ 		}
+ 	}
+ 
+ 	/*
+-	 * Now that both marks are pinned by refcount in the inode / vfsmount
++	 * Now that all marks are pinned by refcount in the inode / vfsmount / etc
+ 	 * lists, we can drop SRCU lock, and safely resume the list iteration
+ 	 * once userspace returns.
+ 	 */
+--- a/include/linux/fsnotify_backend.h
++++ b/include/linux/fsnotify_backend.h
+@@ -847,6 +847,7 @@ static inline void fsnotify_clear_sb_mar
+ }
+ extern void fsnotify_get_mark(struct fsnotify_mark *mark);
+ extern void fsnotify_put_mark(struct fsnotify_mark *mark);
++struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark);
+ extern void fsnotify_finish_user_wait(struct fsnotify_iter_info *iter_info);
+ extern bool fsnotify_prepare_user_wait(struct fsnotify_iter_info *iter_info);
+ 
 
 
 
