@@ -1,300 +1,287 @@
-Return-Path: <stable+bounces-246650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cMAbHSd4A2ri6AEAu9opvQ
-	(envelope-from <stable+bounces-246650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:57:43 +0200
+	id WEeFNZJ5A2oR6QEAu9opvQ
+	(envelope-from <stable+bounces-246651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:03:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EB95284C6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:57:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F37F528666
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:03:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 142D5301232D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:55:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D75230970CB
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA70357CEE;
-	Tue, 12 May 2026 18:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE55357A3E;
+	Tue, 12 May 2026 18:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOlmy01b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6wQtfYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A568357A3E
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 18:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DCC2D7D2E
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 18:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778612109; cv=none; b=KU3UPkPaD6DDKiYK8VGJEuM1b/q8SYZHk5vwmYG+3b5gxFA89BAgEdT3GZOmKVpNvnd1yWJbUx92EVIReA4+T4sQiHv9UgmlfO6aeqlybW/F/qc+a0FJMuIbBYEQAips5m7e3XDA9wl2/5U+9heusZvQsfwQTjWDdcKccLKDpeg=
+	t=1778612155; cv=none; b=Oad110cVewF3U9MzYt/o6k5ZM4d6Wkxv/4VdINQluL/Jhriz9JFNnZZ2bMMHPvg5pVtiOotgWcOE7eysUJB2rlYBDgFkOx9+OtaDCQFYtAd65l0Uu9vytiMgDZADD8yVt9ZxIP7GVRAUL3ogOH8hit9A4Ei3scp2JXUPloTjTx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778612109; c=relaxed/simple;
-	bh=b2M4Bs9Hv1b6UoBmB+3vmjIMo28MsoVjaNisWlPy5DM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=okYWtzjTxOIqqJJxU8yYtzcXrwJu4J9S5Juyc+Fn8k/MVwH1g1FFYqMRfOlPNabVsM9HxYgmCqGL1G78kkE/Pvwmdx5LB8yQ7sNFJtEizFyh7a4A7jX8sxpNTFrCbYDvtpjX5a6NGlrCUKfD38WrD9WLGeTplGmrLg6BZ766DBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QOlmy01b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04001C2BCFA
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 18:55:09 +0000 (UTC)
+	s=arc-20240116; t=1778612155; c=relaxed/simple;
+	bh=YpNkICHwO3jCdKAl0LL5HmWKMFmNgj4OCEDikfq3svo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aOYPay8lk+VnAcQJZvKTYpdhvcqQgkauM91Kt1YrpaTCbdUQrN7yCNqb6kmxstRb+6UDTyhIV40PkC2cc4TmKLHOo9PlO+7vJntMc4PAuQNwLwptvOqSJ/TamTP2nUlmOsel0hXtUgdaC8zIaBF/vS8ona8UflhwTEl7R7bQZWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6wQtfYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A10C2BCB0;
+	Tue, 12 May 2026 18:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778612109;
-	bh=b2M4Bs9Hv1b6UoBmB+3vmjIMo28MsoVjaNisWlPy5DM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QOlmy01bntKY1htYIOHOaO6SnHEE7/etbgfw+dHqzXJFPZ6RC+HrEc/CMMiHdUZ1c
-	 zMPaGh6wFxQ5SNpDPKxwIu4Dk5eUAz/NzN7sflx655FU+Re/mOpt/ec0aoBXDcJNIr
-	 Zrp/UvS/uZQ8oaacOsiVcBYLWGiyiS5YjNksWLiwIQI9IPsti/8iLZAuGx/AlulVsr
-	 ETs6+Qo8ZOGYqrSzY8/wDsnr+BqFJ8+FveTn/Tyfmk8YfPyy8P8iUtvYR32FpEVdeW
-	 KpsFKC9w95b/TcaBI7RBodtb+Kh7iGM6YKA9oSJgXmgz1mGWbChIjWET7DDR8fnMU4
-	 3kyDaWGyotPbw==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a887ebb416so5531646e87.2
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 11:55:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8M/ZCLHKRnTFReu2GcYmtve8xEFTHUM5JNPRgpK1bneNnESh9JJ10Pk6J7TJ4W5oTYp5ShJG4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAV2vryYBVr6A0QRis6hwpjE7OpWTnCjF5l3OBCUkuvUQWP+7F
-	WzOo1kquD4kgw2usMb7Zvjoi49NMuugvvGkhZ7kjtb2SxtGShxUyChAxflcSWG+Q4YlaQdp9Dx6
-	tH07x33s+vFd67mHDzQEuwTBETdoi1vg=
-X-Received: by 2002:a05:6512:65cc:20b0:5a8:f03c:fb1e with SMTP id
- 2adb3069b0e04-5a8f03d061emr16991e87.18.1778612107325; Tue, 12 May 2026
- 11:55:07 -0700 (PDT)
+	s=k20201202; t=1778612154;
+	bh=YpNkICHwO3jCdKAl0LL5HmWKMFmNgj4OCEDikfq3svo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Q6wQtfYON2Lo65wpxSC2KY3N3ETpsdAh0mAs3IpVAIoLlyWrSEoAGOwtAXQy/kQV2
+	 b5kcexlK+Zc/LTP6q608vEkFO9tLtb+LmsFA7M0fqFtsfgghYyLvU0f3yK1GESb67N
+	 bs5iwV/1KijpkOlb9Sk7dgOZML1JcNDPTaxdjmph6JRGeB67If/iWuYKST0m1XGc7/
+	 3i8f88qIW1XWfXworlXF9yKKH1oXVujLBEM8ylGEkUw0jO1SeGhFycTkiTxqqL89ow
+	 j6Dwlx3xX6ISfWUQ+1dztTeKihqzLo0/CVuK3QpFdpHlf9F5cKFSn5lLiuuoJ0DFGU
+	 rhk+2ZqAMbljA==
+Message-ID: <113dddc5-27e3-4e9e-a90c-f076a4629f51@kernel.org>
+Date: Tue, 12 May 2026 20:55:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260511235328.2018458-1-srinivas.pandruvada@linux.intel.com>
- <CAJZ5v0gVK7qF9Bfw952Vkb+-5WPOH+_M9-bRAwjJvHX3U=WOOg@mail.gmail.com>
- <3a6b3499a8f2d39bac2bcf483ee48123823795d9.camel@linux.intel.com>
- <CAJZ5v0imv=-NRy1e1mvEYFcyryr7kqyCu+nEzGW=S+PSzDJHWA@mail.gmail.com> <d2c5b841302df2538ffb634d9a86c5643122a509.camel@linux.intel.com>
-In-Reply-To: <d2c5b841302df2538ffb634d9a86c5643122a509.camel@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 12 May 2026 20:54:55 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iLkFxf_gN4xYmYfFtedKBqg5RehV_xMO-fKco5KoHvrg@mail.gmail.com>
-X-Gm-Features: AVHnY4LHdDS1jSsnTLv3gf1sS_X-dD3hAdVjylB4h-z4_RJrJj1XUWZQdToiAuw
-Message-ID: <CAJZ5v0iLkFxf_gN4xYmYfFtedKBqg5RehV_xMO-fKco5KoHvrg@mail.gmail.com>
-Subject: Re: [PATCH] cpufreq: intel_pstate: Fix Raptor Lake-E cpufreq limits
-To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, viresh.kumar@linaro.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Henry Tseng <henrytseng@qnap.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 31EB95284C6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check before
+ return device-private pmd
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Balbir Singh <balbirs@nvidia.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, sj@kernel.org, ziy@nvidia.com,
+ linux-mm@kvack.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ stable@vger.kernel.org
+References: <20260508013728.21285-1-richard.weiyang@gmail.com>
+ <5e9ee072-b927-41e0-ba98-c9fdf11eccbc@nvidia.com>
+ <0aab59b8-71c5-4059-8281-5dd876946528@kernel.org>
+ <20260512143542.izpp3gu4iqxttw3f@master>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260512143542.izpp3gu4iqxttw3f@master>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 3F37F528666
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246650-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246651-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qnap.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,intel.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026 at 8:45=E2=80=AFPM srinivas pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
->
-> On Tue, 2026-05-12 at 14:37 +0200, Rafael J. Wysocki wrote:
-> > On Tue, May 12, 2026 at 1:15=E2=80=AFPM srinivas pandruvada
-> > <srinivas.pandruvada@linux.intel.com> wrote:
-> > >
-> > > On Tue, 2026-05-12 at 12:20 +0200, Rafael J. Wysocki wrote:
-> > > > On Tue, May 12, 2026 at 1:53=E2=80=AFAM Srinivas Pandruvada
-> > > > <srinivas.pandruvada@linux.intel.com> wrote:
-> > > > >
-> > > > > Raptor Lake-E processors are not correctly showing cpufreq
-> > > > > frequency
-> > > > > limits.
-> > > > >
-> > > > > These CPUs don't set X86_FEATURE_HYBRID_CPU and have no E-
-> > > > > cores,
-> > > > > but
-> > > > > P-cores still use hybrid scaling factor.
-> > > > >
-> > > > > commit 0fcfc9e51990 ("cpufreq: intel_pstate: Fix scaling for
-> > > > > hybrid-capable systems with disabled E-cores") added support
-> > > > > for
-> > > > > such configuration. Here using CPPC nominal freq and perf was
-> > > > > compared
-> > > > > to still return hybrid scaling factor.
-> > > > >
-> > > > > Commit 9b18d536b124 ("cpufreq: intel_pstate: Use CPPC to get
-> > > > > scaling
-> > > > > factors") restructured hwp_get_cpu_scaling() and added an
-> > > > > explicit
-> > > > > check
-> > > > > for X86_FEATURE_HYBRID_CPU and when not set returns core
-> > > > > scaling
-> > > > > factor.
-> > > > >
-> > > > > To address this remove check for X86_FEATURE_HYBRID_CPU and
-> > > > > call
-> > > > > intel_pstate_cppc_get_scaling().
-> > > > >
-> > > > > Ideally this change should be enough. But using CPPC for
-> > > > > scaling
-> > > > > factor
-> > > > > results in rounding error, so still doesn't restore the
-> > > > > original
-> > > > > behavior.
-> > > > >
-> > > > > In intel_pstate_cppc_get_scaling() return core scaling factor
-> > > > > when
-> > > > > ACPI CPPC is not present or when CPPC nominal frequency or
-> > > > > nominal
-> > > > > performance are invalid.
-> > > > >
-> > > > > Use hybrid_scaling_factor for P-cores when defined for a CPU,
-> > > > > if
-> > > > > not
-> > > > > calculate from ACPI CPPC nominal frequency and performance.
-> > > > >
-> > > > > Fixes: 9b18d536b124 ("cpufreq: intel_pstate: Use CPPC to get
-> > > > > scaling factors")
-> > > > > Reported-by: Henry Tseng <henrytseng@qnap.com>
-> > > > > Closes:
-> > > > > https://lore.kernel.org/linux-pm/20260508063032.3248602-1-henryts=
-eng@qnap.com/
-> > > > > Signed-off-by: Srinivas Pandruvada
-> > > > > <srinivas.pandruvada@linux.intel.com>
-> > > > > Cc: stable@vger.kernel.org
-> > > > > ---
-> > > > >  drivers/cpufreq/intel_pstate.c | 29 +++++++++++++++-----------
-> > > > > ---
-> > > > >  1 file changed, 15 insertions(+), 14 deletions(-)
-> > > > >
-> > > > > diff --git a/drivers/cpufreq/intel_pstate.c
-> > > > > b/drivers/cpufreq/intel_pstate.c
-> > > > > index 1292da53e5fc..0379efdee5f8 100644
-> > > > > --- a/drivers/cpufreq/intel_pstate.c
-> > > > > +++ b/drivers/cpufreq/intel_pstate.c
-> > > > > @@ -421,15 +421,23 @@ static int
-> > > > > intel_pstate_cppc_get_scaling(int
-> > > > > cpu)
-> > > > >  {
-> > > > >         struct cppc_perf_caps cppc_perf;
-> > > > >
-> > > > > +       if (cppc_get_perf_caps(cpu, &cppc_perf) ||
-> > > > > !cppc_perf.nominal_freq ||
-> > > > > +           !cppc_perf.nominal_perf)
-> > > > > +               goto core_scaling;
-> > > > > +
-> > > > > +       if (cppc_perf.nominal_perf * 100 =3D=3D
-> > > > > cppc_perf.nominal_freq)
-> > > > > +               goto core_scaling;
-> > > > > +
-> > > > > +       if (hybrid_scaling_factor)
-> > > > > +               return hybrid_scaling_factor;
-> > > > > +
-> > > > >         /*
-> > > > > -        * Compute the perf-to-frequency scaling factor for the
-> > > > > given CPU if
-> > > > > -        * possible, unless it would be 0.
-> > > > > +        * Compute the perf-to-frequency scaling factor for the
-> > > > > given CPU
-> > > > > +        * from nominal freq and nominal_perf
-> > > > >          */
-> > > > > -       if (!cppc_get_perf_caps(cpu, &cppc_perf) &&
-> > > > > -           cppc_perf.nominal_perf && cppc_perf.nominal_freq)
-> > > > > -               return div_u64(cppc_perf.nominal_freq *
-> > > > > KHZ_PER_MHZ,
-> > > > > -                              cppc_perf.nominal_perf);
-> > > > > +       return div_u64(cppc_perf.nominal_freq * KHZ_PER_MHZ,
-> > > > > cppc_perf.nominal_perf);
-> > > > >
-> > > > > +core_scaling:
-> > > > >         return core_get_scaling();
-> > > > >  }
-> > > > >
-> > > > > @@ -2281,17 +2289,10 @@ static int hwp_get_cpu_scaling(int cpu)
-> > > > >                  */
-> > > > >                 if (hybrid_get_cpu_type(cpu) =3D=3D
-> > > > > INTEL_CPU_TYPE_CORE)
-> > > > >                         return hybrid_scaling_factor;
-> > > > > -
-> > > > > -               return core_get_scaling();
-> > > >
-> > > > Why is this change necessary or even useful?
-> > > >
-> > > > This is about E-cores (because P-cores have been covered above)
-> > > > and
-> > > > if
-> > > > hybrid_scaling_factor is set, it is known that the processor is
-> > > > hybrid
-> > > > and E-cores have the "core" scaling factor.
-> > > >
-> > > > Or is Raptor Lake-E covered by one of the
-> > > > intel_hybrid_scaling_factor[] entries and
-> > > > hybrid_get_cpu_type(cpu)
-> > > > doesn't return INTEL_CPU_TYPE_CORE on it?  This piece of
-> > > > information
-> > > > is missing from the changelog.
-> > >
-> > > Raptor Lake-E (Xeon) uses CPU model as Raptor Lake-S, for which
-> > > there
-> > > is already a hardcoded scaling factor in the driver.
-> >
-> > This piece of information needs to be added to the changelog in the
-> > first place because it is key here.
-> >
-> > > So this "if" block will enter. But since there is no hybrid CPUID
-> > > feature is defined,
-> > > hybrid_get_cpu_type(cpu) will return 0 for P-core or E-core. Here
-> > > there
-> > > are no E-cores. So need to remove core_get_scaling() as this will
-> > > return non hybrid factor.
-> >
-> > Well, what about this:
-> >
-> > ---
-> >  drivers/cpufreq/intel_pstate.c |    2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > --- a/drivers/cpufreq/intel_pstate.c
-> > +++ b/drivers/cpufreq/intel_pstate.c
-> > @@ -2279,7 +2279,7 @@ static int hwp_get_cpu_scaling(int cpu)
-> >           * Return the hybrid scaling factor for P-cores and use the
-> >           * default core scaling for E-cores.
-> >           */
-> > -        if (hybrid_get_cpu_type(cpu) =3D=3D INTEL_CPU_TYPE_CORE)
-> > +        if (hybrid_get_cpu_type(cpu) !=3D INTEL_CPU_TYPE_ATOM)
-> >              return hybrid_scaling_factor;
-> >
-> >          return core_get_scaling();
-> >
-> > Or is the original Raptor Lake-S scaling factor unsuitable for Raptor
-> > Lake-E?
->
-> This will work for RPL-E.
+On 5/12/26 16:35, Wei Yang wrote:
+> On Tue, May 12, 2026 at 02:43:54PM +0200, David Hildenbrand (Arm) wrote:
+>> On 5/9/26 00:48, Balbir Singh wrote:
+>>>
+>>> Could you elaborate a more on the improper situation?
+>>>
+>>>
+>>> Do we need to check softleaf_is_device_private() twice, can't we hold the pmd
+>>> lock and check once?
+>>
+>> I think what we try to do here is, is to only grab the lock if we verified that there is something of interest in there.
+>>
+>> I wonder if we should rewrite that whole thing to just do a pmd_same() check after grabbing the lock.
+>>
+>> Something a lot cleaner like:
+>>
+>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>> index a4d52fdb3056..de6a255cc847 100644
+>> --- a/mm/page_vma_mapped.c
+>> +++ b/mm/page_vma_mapped.c
+>> @@ -242,40 +242,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>                 */
+>>                pmde = pmdp_get_lockless(pvmw->pmd);
+>>
+>> -               if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
+>> -                       pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>> -                       pmde = *pvmw->pmd;
+>> -                       if (!pmd_present(pmde)) {
+>> -                               softleaf_t entry;
+>> -
+>> -                               if (!thp_migration_supported() ||
+>> -                                   !(pvmw->flags & PVMW_MIGRATION))
+>> -                                       return not_found(pvmw);
+>> -                               entry = softleaf_from_pmd(pmde);
+>> -
+>> -                               if (!softleaf_is_migration(entry) ||
+>> -                                   !check_pmd(softleaf_to_pfn(entry), pvmw))
+>> -                                       return not_found(pvmw);
+>> -                               return true;
+>> -                       }
+>> -                       if (likely(pmd_trans_huge(pmde))) {
+>> -                               if (pvmw->flags & PVMW_MIGRATION)
+>> -                                       return not_found(pvmw);
+>> -                               if (!check_pmd(pmd_pfn(pmde), pvmw))
+>> -                                       return not_found(pvmw);
+>> -                               return true;
+>> -                       }
+>> -                       /* THP pmd was split under us: handle on pte level */
+>> -                       spin_unlock(pvmw->ptl);
+>> -                       pvmw->ptl = NULL;
+>> -               } else if (!pmd_present(pmde)) {
+>> -                       const softleaf_t entry = softleaf_from_pmd(pmde);
+>> -
+>> -                       if (softleaf_is_device_private(entry)) {
+>> -                               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>> -                               return true;
+>> -                       }
+>> +               if (pmd_present(pmde)) {
+>> +                       if (!pmd_leaf(pmde))
+>> +                               goto pte_table;
+>> +                       if (pvmw->flags & PVMW_MIGRATION)
+>> +                               return not_found(pvmw);
+>> +                       if (!check_pmd(pmd_pfn(pmde), pvmw))
+>> +                               return not_found(pvmw);
+>> +               } else if (pmd_is_migration_entry(pmde)) {
+>> +                       softleaf_t entry = softleaf_from_pmd(pmde);
+>> +
+>> +                       if (!(pvmw->flags & PVMW_MIGRATION))
+>> +                               return not_found(pvmw);
+>> +                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+>> +                               return not_found(pvmw);
+>> +               } else if (pmd_is_device_private_entry(pmde)) {
+>> +                       softleaf_t entry = softleaf_from_pmd(pmde);
+>>
+>> +                       if (pvmw->flags & PVMW_MIGRATION)
+>> +                               return not_found(pvmw);
+>> +                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+>> +                               return not_found(pvmw);
+>> +               } else {
+>>                        if ((pvmw->flags & PVMW_SYNC) &&
+>>                            thp_vma_suitable_order(vma, pvmw->address,
+>>                                                   PMD_ORDER) &&
+>> @@ -285,6 +273,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>                        step_forward(pvmw, PMD_SIZE);
+>>                        continue;
+>>                }
+>> +
+>> +               /* Double-check under PTL that the PMD didn't change. */
+>> +               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>> +               if (pmd_same(pmde, pmdp_get(pvmw->pmd)))
+>> +                       return true;
+>> +               spin_unlock(pvmw->ptl);
+>> +               pvmw->ptl = NULL;
+>> +               goto restart;
+>> +pte_table:
+>>                if (!map_pte(pvmw, &pmde, &ptl)) {
+>>                        if (!pvmw->pte)
+>>
+>>
+>>
+>>
+>> There is likely room to clean this up / compress it further.
+> 
+> I tried to compress above logic like this, hope it could look cleaner.
+> 
+> 	if (pmd_trans_huge(pmde) || pmd_is_valid_softleaf(pmde)) {
+> 		unsigned long pfn;
+> 		bool is_migration = pmd_is_migration_entry(pmde);
+> 		bool for_migration = !!(pvmw->flags & PVMW_MIGRATION);
+> 
+> 		if (is_migration != for_migration)
+> 			return not_found(pvmw);
+> 
+> 		if (pmd_trans_huge(pmde))
+> 			pfn = pmd_pfn(pmde);
+> 		else
+> 			pfn = softleaf_to_pfn(softleaf_from_pmd(pmde));
+> 
+> 		if (!check_pmd(pfn, pvmw))
+> 			return not_found(pvmw);
+> 	} else if (!pmd_present(pmde)) {
 
-OK
+It's more compact, but not necessarily cleaner. In particular, I detest
+pmd_trans_huge(), we should phase it out.
 
-> But the original change also accounted for
-> core scaling on hybrid. There was some embedded hybrid capable with P
-> core only, used core scaling. Don't find that system details anymore.
+if (pmd_present(pmde) && !pmd_leaf(pmde)) {
+	goto pte_table;
+} else if (pmd_present(pmde) || pmd_is_valid_softleaf(pmde))
 
-It's better to address this one separately IMV.
+...
 
-> But fine, we can live with this change with added Bartlett Lake scaling
-> factor.
+Might work as well. But once we add support for other softleaf types, we'll have
+to touch it again. So I'd rather just list what we actually expect.
 
-OK
+-- 
+Cheers,
 
-Let me send a proper patch for the above change and I assume that
-there will be a separate patch adding the Bartlett Lake scaling
-factor.
+David
 
