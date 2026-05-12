@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDXDCPpzA2rl5wEAu9opvQ
-	(envelope-from <stable+bounces-246465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:39:54 +0200
+	id ABS/LGRsA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A557527EF2
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:39:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22DED526CED
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 871573247BE1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD6F6303B7F9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C67B33ADBA;
-	Tue, 12 May 2026 18:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D4B3BB105;
+	Tue, 12 May 2026 17:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z030Jfrv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcjyHcp4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE463EDE45;
-	Tue, 12 May 2026 18:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6AE3EDE4E;
+	Tue, 12 May 2026 17:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609295; cv=none; b=KRwi6CAy6HzvjCExqbNxehaBVo5DcF8kVWhlZruqKQZ5FdTzXXtWMNY4+k4vzYP8s5j3q0/uktU5TKeM5Zejh8KHMPPLbTiB8vyqZWT3lyK3PJWP7Gz5lkm9CmS74xvlDWIFwQC3EMjYnt/aJ8s4AaZzabcGGstSevr7y0UGR0s=
+	t=1778608579; cv=none; b=Lx1hUgXETvuGwZp0N/hhYcUog2BJR5x10Sck/nkA/DIublnwBKSVjajqZl6It97Szx/fEC0E7WETmJ8dmNT0YGhu7OXi3Ak4+hV/0hlj/hWrTXz5slSKKDB6ALN3wpqBrO3BBK1Cb/4zW9I9wSvtVRuWBiXp6iaF6qdmJtxkTM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609295; c=relaxed/simple;
-	bh=OC2GBWM7/5aSVMlMapBsG37wnvo+qde+cn+jkHG7CFk=;
+	s=arc-20240116; t=1778608579; c=relaxed/simple;
+	bh=P9TWLgKuAs65NEQ1FmRde6tZkwRSaVTzJqMzhMVdi00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nk+VqgfgtrI+he0eK2NHxN7oX4G8jbWPJdnQIU0vq7mTFCPLpqDa0VWV26XDybiCk0AKD3fNfMlrmHZ6n9D8ni4iPwGimuuAkwZvo85LAeWTYe+DZkwgXtXWGoHslmNGOwawo+0CCZz2n+UR8HF5w9hM4d2iFH4m91ttFK/7LSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z030Jfrv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3A4C2BCB0;
-	Tue, 12 May 2026 18:08:14 +0000 (UTC)
+	 MIME-Version; b=t48rdm5lw1CE3ZFj/Pf0oNOhS4QeEXtIgB1eMdHKI0N64n/tnnUlod9Nn2+EOhVloa3y/n0N+GM857kOiyL8HZ7n1QgTGSo9Hg1q4wuOVZPb0wV8UKcn6uZQs4GdRgtj+bFozC5xt6ZazWGM3QgcUY2L8X0NF6GYx1mGKxP1V9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcjyHcp4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C48EC2BCB0;
+	Tue, 12 May 2026 17:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609295;
-	bh=OC2GBWM7/5aSVMlMapBsG37wnvo+qde+cn+jkHG7CFk=;
+	s=korg; t=1778608579;
+	bh=P9TWLgKuAs65NEQ1FmRde6tZkwRSaVTzJqMzhMVdi00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z030JfrvXcmUG8sKv5LDoP7YFIoG3dgDSN/TtB4R3jD5UTfbFP5emjEO32rNpQtGn
-	 Q2BgRQRdqW9XrO/W+PcsGaHROggEEdgb3iDZWgo4/nFltsPa+f+llnHtKMoxnas6Cc
-	 il81zJZz7peuklbdQ+XE4gSkgTmRM60z0ixAcH5U=
+	b=HcjyHcp4mdnhbvvx3wIXFaUibfmjZN6qjLAPNTUr3AQO8Ll2OJFm8r6D6F+5M6IhZ
+	 XAOxhEgiiA/ZgxI3ExUdti+FhVYAsFyuA1a83oAuA1Xpwkdw+MR59XkiUenAGnPkwL
+	 zdDk8+dIQo2KuzW8d9hekr03f82DlxHpfJp+Ucs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 7.0 140/307] fbcon: Avoid OOB font access if console rotation fails
-Date: Tue, 12 May 2026 19:38:55 +0200
-Message-ID: <20260512173943.082034296@linuxfoundation.org>
+	Masayuki Ohtake <masa-korg@dsn.okisemi.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 135/270] spi: topcliff-pch: fix controller deregistration
+Date: Tue, 12 May 2026 19:38:56 +0200
+Message-ID: <20260512173941.294050688@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7A557527EF2
+X-Rspamd-Queue-Id: 22DED526CED
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246465-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmx.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246186-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:url,gmx.de:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,okisemi.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Johan Hovold <johan@kernel.org>
 
-commit e4ef723d8975a2694cc90733a6b888a5e2841842 upstream.
+commit 5d6f477d6fc0767c57c5e1e6f55a1662820eef87 upstream.
 
-Clear the font buffer if the reallocation during console rotation fails
-in fbcon_rotate_font(). The putcs implementations for the rotated buffer
-will return early in this case. See [1] for an example.
+Make sure to deregister the controller before disabling and releasing
+underlying resources like interrupts and DMA during driver unbind.
 
-Currently, fbcon_rotate_font() keeps the old buffer, which is too small
-for the rotated font. Printing to the rotated console with a high-enough
-character code will overflow the font buffer.
-
-v2:
-- fix typos in commit message
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 6cc50e1c5b57 ("[PATCH] fbcon: Console Rotation - Add support to rotate font bitmap")
-Cc: stable@vger.kernel.org # v2.6.15+
-Link: https://elixir.bootlin.com/linux/v6.19/source/drivers/video/fbdev/core/fbcon_ccw.c#L144 # [1]
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: e8b17b5b3f30 ("spi/topcliff: Add topcliff platform controller hub (PCH) spi bus driver")
+Cc: stable@vger.kernel.org	# 2.6.37
+Cc: Masayuki Ohtake <masa-korg@dsn.okisemi.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260414134319.978196-8-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbcon_rotate.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-topcliff-pch.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/core/fbcon_rotate.c
-+++ b/drivers/video/fbdev/core/fbcon_rotate.c
-@@ -46,6 +46,10 @@ int fbcon_rotate_font(struct fb_info *in
- 		info->fbops->fb_sync(info);
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1406,6 +1406,10 @@ static void pch_spi_pd_remove(struct pla
+ 	dev_dbg(&plat_dev->dev, "%s:[ch%d] irq=%d\n",
+ 		__func__, plat_dev->id, board_dat->pdev->irq);
  
- 	if (par->fd_size < d_cellsize * len) {
-+		kfree(par->fontbuffer);
-+		par->fontbuffer = NULL;
-+		par->fd_size = 0;
++	spi_controller_get(data->host);
 +
- 		dst = kmalloc_array(len, d_cellsize, GFP_KERNEL);
++	spi_unregister_controller(data->host);
++
+ 	if (use_dma)
+ 		pch_free_dma_buf(board_dat, data);
  
- 		if (dst == NULL) {
-@@ -54,7 +58,6 @@ int fbcon_rotate_font(struct fb_info *in
- 		}
- 
- 		par->fd_size = d_cellsize * len;
--		kfree(par->fontbuffer);
- 		par->fontbuffer = dst;
+@@ -1433,7 +1437,8 @@ static void pch_spi_pd_remove(struct pla
  	}
  
+ 	pci_iounmap(board_dat->pdev, data->io_remap_addr);
+-	spi_unregister_controller(data->host);
++
++	spi_controller_put(data->host);
+ }
+ #ifdef CONFIG_PM
+ static int pch_spi_pd_suspend(struct platform_device *pd_dev,
 
 
 
