@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEf5K6BrA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246154-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:04:16 +0200
+	id AD29BaZnA2qj5gEAu9opvQ
+	(envelope-from <stable+bounces-245896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67844526AA3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:04:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E815261A2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D7FA31906BF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6C8B307122F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B103DD85C;
-	Tue, 12 May 2026 17:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051D93D966A;
+	Tue, 12 May 2026 17:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSJ45QH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2Ysd2O/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F833DD858;
-	Tue, 12 May 2026 17:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD749385D85;
+	Tue, 12 May 2026 17:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608497; cv=none; b=U5E0nmjPiYcMWXZb9evuObIymnGzdzzSIiXc4ssMC8qdWR8XG/TseD8Dqvm4RWeYedh5dNAVDdsvq85mj+7UKnMCqTwwxHAStKlDephD9L/eSQmfLOMmgoLF/dAnsBy7EkMIOiT2noxXIMXBYqs6qoAGKXJ8ktxYxZmYCsk1Liw=
+	t=1778607833; cv=none; b=RajoTkCHMNTAHrweyHbaj491UDGgGe1x08gAO9GrU2dkEnUrr9ko8EJ+H9Y6Ioe4nYgt9IRFXp73HEYe+xEz5qKxVzdF6lxf5Oqy1RVnMYARbTTuV4sEBM1uQ2e3lsAap8Wf4Mg3nGjnjVNtYKTmjacbs5VoUEksvW4a/JZrDCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608497; c=relaxed/simple;
-	bh=PyYm+Y3e0cwcZ8dUCvFfAqWvZZaKpJXRdHaxiWyjJIM=;
+	s=arc-20240116; t=1778607833; c=relaxed/simple;
+	bh=Kaa277mV3N4otI4uwpkkY+RusGLGmaAofPumTEUM6/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T6nPSrVW7I6WSGXe4xwFs16u3EC3FaCcbFa/lyFUCLW5ho0aY5G2OL9m5GWydEURuxPNqD23VIsoaL6r643lUGwAt/g28F9ZBDcJwCoeP919ZUuL/D6ZDgTm9IBmDdQ5RARV94l+KxIYDDsXzGJSgiOxLIoPTwzTNwOPalMZ0Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSJ45QH3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E003AC2BCF5;
-	Tue, 12 May 2026 17:54:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T1IYeRLwwRKm6hdKtDZ2jxnsd8zviYBqOF+DDwKJxmTIojIu9qkoxVoPZoVB/Jdhi1u3kjm04yYgaLn1R3JkQplHaAlsx8f5dHBMKjnxuTT9K3j5gfenoSAJjfMKdJv9/1KehasSOtbMsdtMkfnhp+Sf/1BsoRfoIFAgLPh3CFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2Ysd2O/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E62C2BCB0;
+	Tue, 12 May 2026 17:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608497;
-	bh=PyYm+Y3e0cwcZ8dUCvFfAqWvZZaKpJXRdHaxiWyjJIM=;
+	s=korg; t=1778607833;
+	bh=Kaa277mV3N4otI4uwpkkY+RusGLGmaAofPumTEUM6/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nSJ45QH3N1ViDfhP/3fWcb7WQln8itEWZjCyQnTJCtOOdz1eYVen148qGDWx4h7ku
-	 EqyaWZ+t+tzYfFRSEQ18azRQDfHqCrIKdpvQE8rLiVM3adepwaKSiHWQ4eslHeLldz
-	 m/oTqbgsP9u4w1QJZdL34EyqunL3PCnW1Hki8NxU=
+	b=m2Ysd2O/CQuYBVlPJEK2fnQHHMcYf8VDtMt9uzZc3RHeXsKI7u5IbDDSgkcxa4jbL
+	 woderXQ1XKuAFyKxP5zDWDpewb1F05dDhrxhCQ7USGpNujpt5BIgAMd+HOfpZeh46x
+	 Nzjc9Xm06shZXADadUmi1p/OCg12brNFHZZR2ZV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 102/270] netpoll: pass buffer size to egress_dev() to avoid MAC truncation
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 051/206] ALSA: firewire-tascam: Do not drop unread control events
 Date: Tue, 12 May 2026 19:38:23 +0200
-Message-ID: <20260512173940.606021397@linuxfoundation.org>
+Message-ID: <20260512173933.918492234@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,166 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 67844526AA3
+X-Rspamd-Queue-Id: 71E815261A2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245896-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246154-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sakamocchi.jp,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,sakamocchi.jp:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 76b93a8107574006b25495664304ea9237494d70 upstream.
+commit 0749daa8eb5ab90334aaad3b0671efd7150d43b1 upstream.
 
-egress_dev() formats np->dev_mac via snprintf() but receives buf as
-a bare char *, so it cannot derive the buffer size from the pointer. The
-size argument was hardcoded to MAC_ADDR_STR_LEN (3 * ETH_ALEN - 1 = 17),
-which is silly wrong in two ways:
+tscm_hwdep_read_queue() copies as many queued control events as fit in
+the userspace buffer. When the buffer is smaller than the current
+contiguous queue segment, length is rounded down to the number of bytes
+that can be copied.
 
- 1) misleading kernel log output on the MAC-selected target path
-    (np->dev_name[0] == '\0'); for example "aa:bb:cc:dd:ee:ff doesn't
-    exist, aborting" was logged as "aa:bb:cc:dd:ee:f doesn't exist,
-    aborting".
+However, after copying that shortened length, the code advances pull_pos
+to the original tail_pos, marking the whole contiguous segment as
+consumed. Any events between the copied portion and tail_pos are lost.
 
- 2) the second argument of snprintf is the size of the buffer, not the
-    size of what you want to write.
+Limit tail_pos to the position after the entries actually copied before
+updating pull_pos. When the whole segment fits, this is equivalent to the
+old tail_pos update; when the buffer is smaller, the remaining events
+stay queued for the next read.
 
-Add a bufsz parameter to egress_dev() and pass sizeof(buf) from each
-caller, matching the standard snprintf() idiom and removing the
-hardcoded size from the helper.
-
-Every caller already declares "char buf[MAC_ADDR_STR_LEN + 1]" so the
-formatted MAC continues to fit.
-
-Tested by booting with
-  netconsole=6665@/aa:bb:cc:dd:ee:ff,6666@10.0.0.1/00:11:22:33:44:55
-on a kernel without a matching device. Pre-fix dmesg shows
-"aa:bb:cc:dd:ee:f doesn't exist, aborting"; post-fix shows the full
-"aa:bb:cc:dd:ee:ff doesn't exist, aborting".
-
-Fixes: f8a10bed32f5 ("netconsole: allow selection of egress interface via MAC address")
+Fixes: a8c0d13267a4 ("ALSA: firewire-tascam: notify events of change of state for userspace applications")
 Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260501-netpoll_snprintf_fix-v1-1-84b0566e6597@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Co-developed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260503-alsa-firewire-tascam-read-queue-v2-1-126c6efd7642@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netpoll.c |   23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ sound/firewire/tascam/tascam-hwdep.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -608,14 +608,16 @@ EXPORT_SYMBOL_GPL(__netpoll_setup);
- /*
-  * Returns a pointer to a string representation of the identifier used
-  * to select the egress interface for the given netpoll instance. buf
-- * must be a buffer of length at least MAC_ADDR_STR_LEN + 1.
-+ * is used to format np->dev_mac when np->dev_name is empty; bufsz must
-+ * be at least MAC_ADDR_STR_LEN + 1 to fit the formatted MAC address
-+ * and its NUL terminator.
-  */
--static char *egress_dev(struct netpoll *np, char *buf)
-+static char *egress_dev(struct netpoll *np, char *buf, size_t bufsz)
- {
- 	if (np->dev_name[0])
- 		return np->dev_name;
+--- a/sound/firewire/tascam/tascam-hwdep.c
++++ b/sound/firewire/tascam/tascam-hwdep.c
+@@ -73,6 +73,7 @@ static long tscm_hwdep_read_queue(struct
+ 			length = rounddown(remained, sizeof(*entries));
+ 		if (length == 0)
+ 			break;
++		tail_pos = head_pos + length / sizeof(*entries);
  
--	snprintf(buf, MAC_ADDR_STR_LEN, "%pM", np->dev_mac);
-+	snprintf(buf, bufsz, "%pM", np->dev_mac);
- 	return buf;
- }
- 
-@@ -645,7 +647,7 @@ static int netpoll_take_ipv6(struct netp
- 
- 	if (!IS_ENABLED(CONFIG_IPV6)) {
- 		np_err(np, "IPv6 is not supported %s, aborting\n",
--		       egress_dev(np, buf));
-+		       egress_dev(np, buf, sizeof(buf)));
- 		return -EINVAL;
- 	}
- 
-@@ -667,7 +669,7 @@ static int netpoll_take_ipv6(struct netp
- 	}
- 	if (err) {
- 		np_err(np, "no IPv6 address for %s, aborting\n",
--		       egress_dev(np, buf));
-+		       egress_dev(np, buf, sizeof(buf)));
- 		return err;
- 	}
- 
-@@ -687,14 +689,14 @@ static int netpoll_take_ipv4(struct netp
- 	in_dev = __in_dev_get_rtnl(ndev);
- 	if (!in_dev) {
- 		np_err(np, "no IP address for %s, aborting\n",
--		       egress_dev(np, buf));
-+		       egress_dev(np, buf, sizeof(buf)));
- 		return -EDESTADDRREQ;
- 	}
- 
- 	ifa = rtnl_dereference(in_dev->ifa_list);
- 	if (!ifa) {
- 		np_err(np, "no IP address for %s, aborting\n",
--		       egress_dev(np, buf));
-+		       egress_dev(np, buf, sizeof(buf)));
- 		return -EDESTADDRREQ;
- 	}
- 
-@@ -719,7 +721,8 @@ int netpoll_setup(struct netpoll *np)
- 		ndev = dev_getbyhwaddr(net, ARPHRD_ETHER, np->dev_mac);
- 
- 	if (!ndev) {
--		np_err(np, "%s doesn't exist, aborting\n", egress_dev(np, buf));
-+		np_err(np, "%s doesn't exist, aborting\n",
-+		       egress_dev(np, buf, sizeof(buf)));
- 		err = -ENODEV;
- 		goto unlock;
- 	}
-@@ -727,14 +730,14 @@ int netpoll_setup(struct netpoll *np)
- 
- 	if (netdev_master_upper_dev_get(ndev)) {
- 		np_err(np, "%s is a slave device, aborting\n",
--		       egress_dev(np, buf));
-+		       egress_dev(np, buf, sizeof(buf)));
- 		err = -EBUSY;
- 		goto put;
- 	}
- 
- 	if (!netif_running(ndev)) {
- 		np_info(np, "device %s not up yet, forcing it\n",
--			egress_dev(np, buf));
-+			egress_dev(np, buf, sizeof(buf)));
- 
- 		err = dev_open(ndev, NULL);
- 		if (err) {
+ 		spin_unlock_irq(&tscm->lock);
+ 		if (copy_to_user(pos, &entries[head_pos], length))
 
 
 
