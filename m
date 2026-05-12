@@ -1,80 +1,82 @@
-Return-Path: <stable+bounces-245371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CqVL1KGAmrVtwEAu9opvQ
-	(envelope-from <stable+bounces-245371-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 03:45:54 +0200
+	id WIIsHFyGAmrVtwEAu9opvQ
+	(envelope-from <stable+bounces-245372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 03:46:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EAAA518629
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 03:45:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B9A51863F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 03:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D560302C347
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:45:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE02E30309D6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1402C08BC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86ECD25F7A5;
 	Tue, 12 May 2026 01:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O9vG7Nlq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dtAlxA+G"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8963E287263
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 01:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE95299959
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 01:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778550303; cv=none; b=DyY9Zw1TDZp+zuVZIV0SQhFLo/Kzpm06us1QhKTEsPOkegCuTptj4LDfKi3iOAn0Qp46x/Sg9YqXbNljE1QjNzqOGFQjBUhtEgkWoQy2HqmLV/wFtSE+I7HUU7sStC9CUsujPtQIBnjtnELJxkejO9Q7EZfClVexe1bwZl94xAE=
+	t=1778550304; cv=none; b=C5DPLLx102wqsgIbzjIcqzGv9nPfmXRqsv1nJA1Cu5KuXTCzKqLPathexkjCOKOgHHAwvO+gDyS6Xqs6cnL1EpOYv88mrOBl+0nDFcPweiM0OxASUNaPLdpxWTOfUaA6tN/w8fF3bpm2DdDW1quWfJ6FTWPrUKy55SfnFvlCw2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778550303; c=relaxed/simple;
-	bh=CM1/CZ6HdJnVUKbVAC2ZuNemS78xv0T3WdNYnJONcu4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eChPQkDpmscC/XtReNcMSz1B3MWlWMLLAo5VZYTnBDAv20zbBL5hH1T/9xR23RmQumEiXbnlDG32U5kr4bd8i83WcK/2VpfRKZKn2D0b0HSakTuDKolnCn8r+hVUmcTuyULIIobN29lH+j7SqTcIVN9P2iWM53aQQWd+NsmKAkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O9vG7Nlq; arc=none smtp.client-ip=74.125.82.182
+	s=arc-20240116; t=1778550304; c=relaxed/simple;
+	bh=04mrtEa5PdHocCigzzaMYLeTA1Gx1ZWtCa5+sch8j3A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R6cwMhA8VXizKj6JBgL4woGa/N6dx56P3Nt68hQ9cilrU3PqOWrzEB/WWjv3LSzNk+NVqF9jjM7kxHOqfelijcXTRpZ+4ia5+2oioFzBVEwNX7kRDmecM6UhxFurn9l8Qz+Xj7QqVOsepcCjNPLIJvm06OOqL0CnNHWlvQb2AJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dtAlxA+G; arc=none smtp.client-ip=74.125.82.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2ef38cf04f0so7574805eec.1
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 18:45:00 -0700 (PDT)
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2f03d6cf77bso5542954eec.0
+        for <stable@vger.kernel.org>; Mon, 11 May 2026 18:45:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778550300; x=1779155100; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zoZ3CghkLfLolXcFlwo+7ShlWPK5OjniN/Ru2vBn9zw=;
-        b=O9vG7NlqOekDNLmP3JUnFI2aVVfAq4kSKx6BxEvSeU0InmO45uYMH8koG5wi+Y7ZY7
-         DMEqEvxHrqaDPi2d2yJ/UjnBN3ZMjFnCvcCZM3bFPzIVA2RBJbcv64AKIDRbsFvw5IxC
-         GhCs5uUfR1uAd7B24oZ0egwaB+zy0mOF2EvY7q/lz3Yn0v+jIVr3H9S5bBMRif+740sd
-         OkNVHh7Ubdr+RDdwSeZ6Wgrgy96hbbuKw76a6QBiryksMoQtse41TiDKAbOZVLfeifW+
-         i+kPTwPvsWgMvnrEbm98Qxpz5eG7GOr6PycBcDJK3jNGC3pNrZ2XclUdYhMnKI5+RBPy
-         a8Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778550300; x=1779155100;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778550302; x=1779155102; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zoZ3CghkLfLolXcFlwo+7ShlWPK5OjniN/Ru2vBn9zw=;
-        b=B98nSF+jGtA3l+8q8ObjntYQk/HrDfqSkGpHLqQNS2HhRA+/OwJselhFOrlhDMjxmU
-         jqYJ3wqFd2Ak6yX49R+Xs2PHVrN9VJ42Ws8i89WVrQwqts8ZvSR5O2TeNky0K2VmiHGO
-         aOZsvJJykSis/miT1HxuXWHeIi+Kbj2n78TUAxsH3+OCHQqKV2Mj3SjHb0kyFVepbXgv
-         ZGLHNwOSNGi1bhrjDFk2UoYi+Dn7lT7i8z2Zh/WbUC6Bha+7m6z7a2fXyDG3UYebLcNu
-         hAgCjFNKfJllwZCVCdmtzVBNm/GHGFvfDYJbcwrQPy6OQhuellXQlg39LTmCbSkFtOvY
-         z37w==
-X-Forwarded-Encrypted: i=1; AFNElJ+VQg1iLVH53B5zKEYDmC/NV0154oDtIxXr+EEnPKdBNoob6P8dhBLZrgYRpvxrz5SbE6+H9LI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU2ZWkcurGEPMMJYWq0nABbxObycbsKJf8Dp1dfiOR0w3KfHlO
-	mqUOXNRRtPzdJn4nDv/hiAqmHQDJqGPgPOxKvDFUpnYqbEQ0ctsWvkga
-X-Gm-Gg: Acq92OFJj5mc0PWxn7trB5JpzgZ/mYpOczLtrjESDsAlt0dAe0Hctp0Zeomocfv4UBI
-	/GAX7ITri0cKPFIX0Mr0F12viNeUpBpl9hdyxEzYGl0993ww3pkqmx57YG7ToRkBxEDSAIgU1We
-	ynkyBZBgPdk4oBonoc08m9XCyeNRgOUL3K/tXjHaDRTdShEk5qX/EIkFZTH8SVUcyKrLjVw6hBX
-	Vd5pTvGJPu+XtpzoVSwM9UpI8yb1/YA1HAoETSbVxXB7+HFgl3G31OfUuvGzIuHriUZAasKHHRq
-	4sGl/QFEcqGb1mdvrWnnn+V+QDZK/sYhxCLoXSC8oAIHSgjUwRzntSycUJAn2DEAT3ZhSx/tgr5
-	yFQDD27P+9Mzgy4jB5DoT7+vtkzrbaOlNgt9KcgVbAKYZhKARGrWfgaTVxvtXBH46WIdKEh8o2b
-	BNTWPSGMeT0WSEHMKA6x8A3inUIK8hPHLIY7c/zsHtqfCFRclfHvrXhyQuiywtp1J5UckfbFa8O
-	1Rcduc=
-X-Received: by 2002:a05:7300:478f:b0:2f2:6dde:df53 with SMTP id 5a478bee46e88-2fb4b733e84mr6826603eec.17.1778550299405;
-        Mon, 11 May 2026 18:44:59 -0700 (PDT)
+        bh=8RsKAyjFR0CIqyuPNV+dz707ncCEoIu00NYQpJfyiZw=;
+        b=dtAlxA+GUm8Z5RLovRDbklaGFHvQJT4TV5md+qyHbxo+wQbjj1hUZl8kFjgXHNHMr4
+         WCqyYNKwGBOC8vC1H0Z4EATdgQB7XmfJPIxpHORv+MbTIFXw54XV2j0psVcMml8Ykpyy
+         TReyZh42CczkuxuRCjaIfsvqo1uugrOl4P2Pto02mMghT8n0MnGa58w5KddccllBWWnf
+         BHZiKYEstOUPlnvtyif5VouBzLaaHa7BbQsW1oRM4wXNZVkioqjJHTqA/D5NztgPlIB9
+         UdKKOU4uYgp0q9LSR5cf/S2ZsTZYo4Qcguq7DGoDzxzyEk8UQaYg6pC4hA5xX5XX7cGt
+         RXsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778550302; x=1779155102;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8RsKAyjFR0CIqyuPNV+dz707ncCEoIu00NYQpJfyiZw=;
+        b=GTjjPmWAI/NitSAK8FZUnOhtEMUFEUbD6cB9UCz9uVZp5Nj3wHtrf0XyMSdqm0PrJp
+         L1FEShAkfp75xQS/cSPS1fkX0K9SG9I8az6dJQXPjsQo+Fov21p8/IoL3ZrpwiMs789G
+         4xf0+xp3DBjbTHuGT4FApK94fYB+X3qOl6/bBeqZZJ8REo+j+mom98rHgNnnxey/daxu
+         Bsy9FskMnIoantAUyjhMl6FIZLCtSutJZUzaID3yOKexnqqsn8IjmdPn6zmmH1M/3SlO
+         ABPe1lFeDb/wfgnC09/E8v3eyoxPGh+9RK0O7liNcOUBv6Xi6FxaVb8bKHpToJx8eTEm
+         CoFg==
+X-Forwarded-Encrypted: i=1; AFNElJ+8uY2YjKAdhEA3cKvye31YMDBG1DEoIhgJJQKSvayfmFFQTouBMedWj62fg6N1AZyyGq0El4o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVxzLXSpqYRxM6bpyJAy4NZ/kSPn3E4Wz6bukcOxCP5tK4RAHw
+	9QHAnwTN7K4Wg4C9ll5O6ZjDMVtJTHPkqhZ5mnkl1qRpv8GuFQR1BBcg
+X-Gm-Gg: Acq92OFXqejm6HyOw/0xpc8wo22wY3MMSnzYRcKeTHtz3hRXyiGYYtBovF+yCia2kjn
+	XHGEwNN2DeH1FTt3UNpY02JVuXQqMIRQN6k6VsOyvIZei43oIcz9DZtErxCHPDJYMg/AdbbMBHm
+	FWHbBQwEJnz2T/ZulScH/4IAiErITM5IvO5yJ0hVfrp5k9gO1eqZFMOuBYeOVf9BOKqGqi3U42+
+	3o3H7pJCFAkhKN6EhYRnUmOq/K0NUrVwayjZ53hdBcKfwAxrldLr/Wxc83SZ5kZaBqgXNeWzzzr
+	W9cb6cPxJ++r4RSiU4H2FxlbwGUfQcHgjoxxo+PxzDMOitLu2YjYffaqy/8Bst8W+vLgeUls6nn
+	6/w1lIxEthbgUioGgBEMBnFsCFgLinvA0fc8ZVbNhE5W7GkMDXwtQVg2TGmfEEBgPKA2j6UNX9i
+	UHiGto/63asyezIrIfZ0+A391H+y4LmWqypDyD6Fujz5PMmYfox8YLFDdJXOQNjUJiuugALrCVd
+	ymbfIqEbva7eN6BRA==
+X-Received: by 2002:a05:7300:7244:b0:2ea:e93a:ff9b with SMTP id 5a478bee46e88-2ffd5cbbb6emr603958eec.13.1778550301525;
+        Mon, 11 May 2026 18:45:01 -0700 (PDT)
 Received: from localhost.localdomain ([50.231.3.67])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f888e4016asm15816499eec.28.2026.05.11.18.44.58
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f888e4016asm15816499eec.28.2026.05.11.18.44.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 18:44:58 -0700 (PDT)
+        Mon, 11 May 2026 18:45:00 -0700 (PDT)
 From: Shayaun Nejad <snejad123@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: linux-staging@lists.linux.dev,
@@ -82,10 +84,12 @@ Cc: linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Shayaun Nejad <snejad123@gmail.com>
-Subject: [PATCH 0/2] staging: rtl8723bs: fix two remote frame-handling bugs
-Date: Mon, 11 May 2026 18:44:54 -0700
-Message-ID: <cover.1778550157.git.snejad123@gmail.com>
+Subject: [PATCH 1/2] staging: rtl8723bs: fix use-after-free in validate_80211w_mgmt after decryptor()
+Date: Mon, 11 May 2026 18:44:55 -0700
+Message-ID: <0f4cbf05a7a594be4629ca4d7c108e6df1463321.1778550157.git.snejad123@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1778550157.git.snejad123@gmail.com>
+References: <cover.1778550157.git.snejad123@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,14 +97,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3EAAA518629
+X-Rspamd-Queue-Id: 17B9A51863F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -108,7 +112,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245371-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245372-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -121,34 +125,54 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-Fix two rtl8723bs receive-side bugs reachable while handling remote
-802.11 management frames.
+decryptor() can release precv_frame and return NULL when protected
+management frame decryption fails.
 
-The first patch fixes a use-after-free in validate_80211w_mgmt(),
-where decryptor() can release the receive frame and return NULL before
-the caller reuses cached pointers into that frame.
+validate_80211w_mgmt() still uses ptr and pattrib saved from that frame
+for two memcpy() calls before checking the returned frame pointer.
 
-The second patch bounds the combined SUPP_RATES and EXT_SUPP_RATES IE
-lengths copied from beacon/probe response data into the 16-byte
-support_rate[] stack buffer in rtw_check_beacon_data().
+Check the returned frame before any further access, then refresh ptr and
+pattrib from the returned frame.
 
-Both issues were found by Kuzushi + deep-audit (Sonnet 4.6) and
-manually verified against mainline.
-
-Shayaun Nejad (2):
-  staging: rtl8723bs: fix use-after-free in validate_80211w_mgmt after
-    decryptor()
-  staging: rtl8723bs: bound SUPP_RATES IE length in
-    rtw_check_beacon_data
-
- drivers/staging/rtl8723bs/core/rtw_ap.c   | 6 +++++-
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shayaun Nejad <snejad123@gmail.com>
+---
  drivers/staging/rtl8723bs/core/rtw_recv.c | 9 +++++++--
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/staging/rtl8723bs/core/rtw_recv.c b/drivers/staging/rtl8723bs/core/rtw_recv.c
+index f78194d508..0e1d248d8f 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_recv.c
++++ b/drivers/staging/rtl8723bs/core/rtw_recv.c
+@@ -1433,6 +1433,13 @@ static signed int validate_80211w_mgmt(struct adapter *adapter, union recv_frame
+ 			if (!mgmt_DATA)
+ 				goto validate_80211w_fail;
+ 			precv_frame = decryptor(adapter, precv_frame);
++			if (!precv_frame) {
++				kfree(mgmt_DATA);
++				goto validate_80211w_fail;
++			}
++
++			pattrib = &precv_frame->u.hdr.attrib;
++			ptr = precv_frame->u.hdr.rx_data;
+ 			/* save actual management data frame body */
+ 			memcpy(mgmt_DATA, ptr + pattrib->hdrlen + pattrib->iv_len, data_len);
+ 			/* overwrite the iv field */
+@@ -1440,8 +1447,6 @@ static signed int validate_80211w_mgmt(struct adapter *adapter, union recv_frame
+ 			/* remove the iv and icv length */
+ 			pattrib->pkt_len = pattrib->pkt_len - pattrib->iv_len - pattrib->icv_len;
+ 			kfree(mgmt_DATA);
+-			if (!precv_frame)
+-				goto validate_80211w_fail;
+ 		} else if (is_multicast_ether_addr(GetAddr1Ptr(ptr)) &&
+ 			(subtype == WIFI_DEAUTH || subtype == WIFI_DISASSOC)) {
+ 			signed int BIP_ret = _SUCCESS;
 -- 
 2.43.0
+
 
