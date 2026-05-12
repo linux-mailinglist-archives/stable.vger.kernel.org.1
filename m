@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245631-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMgHCek2A2ow1wEAu9opvQ
-	(envelope-from <stable+bounces-245630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:19:21 +0200
+	id wExHBtc8A2oq2AEAu9opvQ
+	(envelope-from <stable+bounces-245631-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:44:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476A9522378
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:19:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9A3522CFC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 53E863035671
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:50:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD6D4304971E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF40397B1B;
-	Tue, 12 May 2026 13:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D39399CFB;
+	Tue, 12 May 2026 13:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qW8RL5PZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuagmRsB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4804395AF5
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AD2399CE9
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778593810; cv=none; b=eO5N3Mtl0kteqvvDgZA8lj5SHRFy94Igc4D3qZ0oLWkUes617LuHWx1Z2jr6UTOMHzwicUREvqYpOCIjKos3RUSvsi6hm3KERNFfvz9i+IHAAnrxrEQ91XUZbtfmmkiOOOuKJt/QmhTUnDvaSwjBRumQg6eT9utcQpbrpJpJcSc=
+	t=1778593820; cv=none; b=qbvB7hzeWfWuoGy4nHtUC2BYgw3IUqGl3/SAGSbh9+aj/imOF+bgEmPXnfiG0DVQk0OSkAoX3nimrJ0j5Vsb9gfD8c+GBOniPOENCpUMcZOY31RpobIEJhSENdnV8da95Janfm/cJimXg0SkyY4HpkBjoA9H2dkC7LBjVywrKw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778593810; c=relaxed/simple;
-	bh=vyCJ/CnnDD3UN7dYXpwZmjJLXyPi/FylfbarDMaS3wI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mmKFNIxw7wM2/mk1VVGNejY2a6l+sFD40GwMHvg4Uc5t/8E9O+GVxDHvLdU3MGh/ldYc9bc0dJzEnwXqP7yXYVrXyRFXbQ/K2wtJfTrsRyKmVQ+KoBkEQ3IAQ0p1PUqmXXrXYFILxyW4j9BvqWchZU5t1bqgBbk2cEoqsFIgC7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qW8RL5PZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED0EC2BCB0;
-	Tue, 12 May 2026 13:50:09 +0000 (UTC)
+	s=arc-20240116; t=1778593820; c=relaxed/simple;
+	bh=ry5byYNnXFu/UiPbZOuZcN+cIJpOWu0S+gl2a09/zvw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RV5V0/oqnU5446k0N0RJElxiQEV37TVxf5SiDEIWGdVq1Z0kno+hFFisj9xKD8tMWCiM1m5vU3bHdfYuMxnshEe4pLEs9cARm0KxmLQ4S18iQvHUryK0bZvVgQuIqCEuSiU42NP8GAGlKKgUj4wz2u0nnKuUtX94ZdOLfZdf12g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuagmRsB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA16C2BCB0;
+	Tue, 12 May 2026 13:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778593809;
-	bh=vyCJ/CnnDD3UN7dYXpwZmjJLXyPi/FylfbarDMaS3wI=;
+	s=korg; t=1778593820;
+	bh=ry5byYNnXFu/UiPbZOuZcN+cIJpOWu0S+gl2a09/zvw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qW8RL5PZH2CAuLJM2RQ1c0uixsR03e9ZLjNrR7vTTBmtojXdv91e4iFVkv+5duU6t
-	 ismrCEYASjckW1xJA4bh91GsMqyzzh+bOsiDeW8IbzEaXx1Yi0ZUzEFsnnpQFEucnZ
-	 +WaP6SW6vdCyWez4jtne6Thm7M5gNcABTaBPetZw=
-Subject: FAILED: patch "[PATCH] tracing/fprobe: Unregister fprobe even if memory allocation" failed to apply to 6.18-stable tree
-To: mhiramat@kernel.org
+	b=iuagmRsBUXZUOTdNwGQJ1U6IEWkCeeec2tEQgPBRXMRnBaimx1jWmUx91LJpzo+3A
+	 5JH7UkgRxKrxy40mc2uK77U14vesapQhmy/30C0L48siK3hifVQEgkgC1ik0SmxLF8
+	 gYDOuJGc/Q/2kfxptvL0uXMONk7YD2WM5BASroLw=
+Subject: FAILED: patch "[PATCH] tracing/probes: Limit size of event probe to 3K" failed to apply to 6.12-stable tree
+To: rostedt@goodmis.org,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 15:50:14 +0200
-Message-ID: <2026051214-retool-routing-618c@gregkh>
+Date: Tue, 12 May 2026 15:50:25 +0200
+Message-ID: <2026051225-opulently-perfume-b54e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,52 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 476A9522378
+X-Rspamd-Queue-Id: 6C9A3522CFC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245630-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245631-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goodmis.org:email,linuxfoundation.org:dkim,gregkh:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1aec9e5c3e31ce1e28f914427fb7f90b91d310df
+git cherry-pick -x b2aa3b4d64e460ac606f386c24e7d8a873ce6f1a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051214-retool-routing-618c@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051225-opulently-perfume-b54e@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,82 +111,65 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1aec9e5c3e31ce1e28f914427fb7f90b91d310df Mon Sep 17 00:00:00 2001
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Date: Mon, 20 Apr 2026 23:00:56 +0900
-Subject: [PATCH] tracing/fprobe: Unregister fprobe even if memory allocation
- fails
+From b2aa3b4d64e460ac606f386c24e7d8a873ce6f1a Mon Sep 17 00:00:00 2001
+From: Steven Rostedt <rostedt@goodmis.org>
+Date: Tue, 28 Apr 2026 12:23:02 -0400
+Subject: [PATCH] tracing/probes: Limit size of event probe to 3K
 
-unregister_fprobe() can fail under memory pressure because of memory
-allocation failure, but this maybe called from module unloading, and
-usually there is no way to retry it. Moreover. trace_fprobe does not
-check the return value.
+There currently isn't a max limit an event probe can be. One could make an
+event greater than PAGE_SIZE, which makes the event useless because if
+it's bigger than the max event that can be recorded into the ring buffer,
+then it will never be recorded.
 
-To fix this problem, unregister fprobe and fprobe_hash_node even if
-working memory allocation fails.
-Anyway, if the last fprobe is removed, the filter will be freed.
+A event probe should never need to be greater than 3K, so make that the
+max size. As long as the max is less than the max that can be recorded
+onto the ring buffer, it should be fine.
 
-Link: https://lore.kernel.org/all/177669365629.132053.8433032896213721288.stgit@mhiramat.tok.corp.google.com/
-
-Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 93ccae7a22274 ("tracing/kprobes: Support basic types on dynamic events")
+Link: https://patch.msgid.link/20260428122302.706610ba@gandalf.local.home
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 
-diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-index af9ba7250874..a2b659006e0e 100644
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -324,9 +324,10 @@ static void fprobe_ftrace_remove_ips(unsigned long *addrs, int num)
- 	lockdep_assert_held(&fprobe_mutex);
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index e1c73065dae5..e0d3a0da26af 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -1523,6 +1523,12 @@ static int traceprobe_parse_probe_arg_body(const char *argv, ssize_t *size,
+ 	parg->offset = *size;
+ 	*size += parg->type->size * (parg->count ?: 1);
  
- 	fprobe_ftrace_active--;
--	if (!fprobe_ftrace_active)
-+	if (!fprobe_ftrace_active) {
- 		unregister_ftrace_function(&fprobe_ftrace_ops);
--	if (num)
-+		ftrace_free_filter(&fprobe_ftrace_ops);
-+	} else if (num)
- 		ftrace_set_filter_ips(&fprobe_ftrace_ops, addrs, num, 1, 0);
- }
++	if (*size > MAX_PROBE_EVENT_SIZE) {
++		ret = -E2BIG;
++		trace_probe_log_err(ctx->offset, EVENT_TOO_BIG);
++		goto fail;
++	}
++
+ 	if (parg->count) {
+ 		len = strlen(parg->type->fmttype) + 6;
+ 		parg->fmt = kmalloc(len, GFP_KERNEL);
+diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
+index 9fc56c937130..262d8707a3df 100644
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -38,6 +38,7 @@
+ #define MAX_BTF_ARGS_LEN	128
+ #define MAX_DENTRY_ARGS_LEN	256
+ #define MAX_STRING_SIZE		PATH_MAX
++#define MAX_PROBE_EVENT_SIZE	3072
  
-@@ -525,10 +526,10 @@ static void fprobe_graph_remove_ips(unsigned long *addrs, int num)
+ /* Reserved field names */
+ #define FIELD_STRING_IP		"__probe_ip"
+@@ -561,7 +562,8 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
+ 	C(BAD_TYPE4STR,		"This type does not fit for string."),\
+ 	C(NEED_STRING_TYPE,	"$comm and immediate-string only accepts string type"),\
+ 	C(TOO_MANY_ARGS,	"Too many arguments are specified"),	\
+-	C(TOO_MANY_EARGS,	"Too many entry arguments specified"),
++	C(TOO_MANY_EARGS,	"Too many entry arguments specified"),	\
++	C(EVENT_TOO_BIG,	"Event too big (too many fields?)"),
  
- 	fprobe_graph_active--;
- 	/* Q: should we unregister it ? */
--	if (!fprobe_graph_active)
-+	if (!fprobe_graph_active) {
- 		unregister_ftrace_graph(&fprobe_graph_ops);
--
--	if (num)
-+		ftrace_free_filter(&fprobe_graph_ops.ops);
-+	} else if (num)
- 		ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 1, 0);
- }
- 
-@@ -932,15 +933,19 @@ int unregister_fprobe(struct fprobe *fp)
- 
- 	hlist_array = fp->hlist_array;
- 	addrs = kcalloc(hlist_array->size, sizeof(unsigned long), GFP_KERNEL);
--	if (!addrs) {
--		ret = -ENOMEM;	/* TODO: Fallback to one-by-one loop */
--		goto out;
--	}
-+	/*
-+	 * This will remove fprobe_hash_node from the hash table even if
-+	 * memory allocation fails. However, ftrace_ops will not be updated.
-+	 * Anyway, when the last fprobe is unregistered, ftrace_ops is also
-+	 * unregistered.
-+	 */
-+	if (!addrs)
-+		pr_warn("Failed to allocate working array. ftrace_ops may not sync.\n");
- 
- 	/* Remove non-synonim ips from table and hash */
- 	count = 0;
- 	for (i = 0; i < hlist_array->size; i++) {
--		if (!delete_fprobe_node(&hlist_array->array[i]))
-+		if (!delete_fprobe_node(&hlist_array->array[i]) && addrs)
- 			addrs[count++] = hlist_array->array[i].addr;
- 	}
- 	del_fprobe_hash(fp);
+ #undef C
+ #define C(a, b)		TP_ERR_##a
 
 
