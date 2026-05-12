@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-246062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cP/xAlBqA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:40 +0200
+	id uC+mDettA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08CA52664F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA57B527145
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 92E3430FFDD6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6A3F4311C09A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89813C09FA;
-	Tue, 12 May 2026 17:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D6533D51A;
+	Tue, 12 May 2026 18:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQ5KYvxn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wd+sYuKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6976536A378;
-	Tue, 12 May 2026 17:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE4B3EDE42;
+	Tue, 12 May 2026 18:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608260; cv=none; b=noONy0LMoT+7UCkToHscbEoz+7ZkZx40nUpQIgN/KuyYVJi5Ir5NZt24eqcj8KqeMMjAmB1nw4+xgtVLrT4BBU7nCt9rcTPNyfRczUWrmZuRmmfPwlozweiXvYHH1cvCGCKaD0EaACT9St0RAPm6uvB0/gmGtPP51/2ZDGQ1Kco=
+	t=1778608974; cv=none; b=urbdNT0PsXoT5xV7myP29DM8nTi4UAVcm4idytxFMga2so2jHvAYBzJoZNJ9MntcNlEdcaMcO11EasYXypfbNzyqlkFxWeHzZ4kwQVHp9oFg6jzoTJ/2ldD7fUuAZqREMaPVc68Jl/z443a3+VuIZPUXbI3+8SHWGkShYeK/iM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608260; c=relaxed/simple;
-	bh=L2/JZ3+07AAfHYvDHG5n8dW7mPFWYBlj0RbjGFHAt2c=;
+	s=arc-20240116; t=1778608974; c=relaxed/simple;
+	bh=aL1StQnI+rR4vXSymUJDMLZfz0HWaUGSB6bAh62XPcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pa2ChdsJSZMRA9XGFMbnqeO0ls72YCRKwXwWVLFMU0scUQLbsbNR26D0XcYkBi3Zp0FEIc6Y5bMPaC09EFkwVWEmLuYvqmRxRSlrM6T4w4hoVK6pnPLDlNb/tyPQtZJyxgf3bF9pM6zMg81AAJ8BYFsCr+7zRPbqARHA0gfLgLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQ5KYvxn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F340CC2BCB0;
-	Tue, 12 May 2026 17:50:59 +0000 (UTC)
+	 MIME-Version; b=iowbWMQQNSDe5cK1pj6JEGwBjtWYXMjqHI2A7E++/wR4Xk5LdM8rYa5oTKGqHJzKrT7Np667N7Kp8+w/6XQaIFL2QsPSlSD2I1fizwsfzemXO63cfCS4/NpuLp5F5mfKW28ECaqQ15PkvJf1rDsYdg5/syoRsKAdpZlv3Nz6y2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wd+sYuKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB204C2BCB0;
+	Tue, 12 May 2026 18:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608260;
-	bh=L2/JZ3+07AAfHYvDHG5n8dW7mPFWYBlj0RbjGFHAt2c=;
+	s=korg; t=1778608974;
+	bh=aL1StQnI+rR4vXSymUJDMLZfz0HWaUGSB6bAh62XPcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQ5KYvxnTnTxSaNPuLkPtJaxBAgx3We27A+rhRUEXBG6Oj3DHie4gucHgdcpP5/iu
-	 jPEEVP7pV6EgtDTKqt91aa9yqOUsMKoYWPVgJCm4LcQVPB5X3cMNVJnLsOHIaUauY0
-	 CN5yaY66M7dtPL+5Ow08QYhi+RQd4n/GUNKfLCI8=
+	b=wd+sYuKVdi3lMjA/SUVU32Z8+pvB/rozh3ROftTArEZPzgGZH/FsHsOOqFk3Cnb1W
+	 CWicgd7MBeMJ7r5g+cg+EUwJzQb4kJlTT6b4rN10IGmBo+UHRd1BDEor9VrAnlSFsD
+	 vgknkKBswS+2m2QVb/Zl011InrV/6SeQZN0VMhz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sina Hassani <sina@openai.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.18 011/270] iommufd: Fix a race with concurrent allocation and unmap
+	Alexander Bulekov <bkov@amazon.com>,
+	Fred Griffoul <fgriffo@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 017/307] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
 Date: Tue, 12 May 2026 19:36:52 +0200
-Message-ID: <20260512173938.692378023@linuxfoundation.org>
+Message-ID: <20260512173940.490213813@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +66,174 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A08CA52664F
+X-Rspamd-Queue-Id: DA57B527145
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246340-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246062-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,openai.com:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,amazon.co.uk:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sina Hassani <sina@openai.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 8602018b1f17fbdaa5e5d79f4c8603ad20640c12 upstream.
+commit 0cb2af2ea66ad8ff195c156ea690f11216285bdf upstream.
 
-iopt_unmap_iova_range() releases the lock on iova_rwsem inside the loop
-body when getting to the more expensive unmap operations. This is fine on
-its own, except the loop condition is based on the first area that matches
-the unmap address range. If a concurrent call to map picks an area that
-was unmapped in previous iterations, the loop mistakenly tries to unmap
-it.
+The shadow MMU computes GFNs for direct shadow pages using sp->gfn plus
+the SPTE index. This assumption breaks for shadow paging if the guest
+page tables are modified between VM entries (similar to commit
+aad885e77496, "KVM: x86/mmu: Drop/zap existing present SPTE even
+when creating an MMIO SPTE", 2026-03-27).  The flow is as follows:
 
-This is reproducible by having one userspace thread map buffers and pass
-them to another thread that unmaps them. The problem manifests as EBUSY
-errors with single page mappings.
+- a PDE is installed for a 2MB mapping, and a page in that area is
+  accessed.  KVM creates a kvm_mmu_page consisting of 512 4KB pages;
+  the kvm_mmu_page is marked by FNAME(fetch) as direct-mapped because
+  the guest's mapping is a huge page (and thus contiguous).
 
-Fix this by advancing the start pointer after unmapping an area. This
-ensures each iteration only examines the IOVA range that remains mapped,
-which is guaranteed not to have overlaps.
+- the PDE mapping is changed from outside the guest.
 
+- the guest accesses another page in the same 2MB area.  KVM installs
+  a new leaf SPTE and rmap entry; the SPTE uses the "correct" GFN
+  (i.e. based on the new mapping, as changed in the previous step) but
+  that GFN is outside of the [sp->gfn, sp->gfn + 511] range; therefore
+  the rmap entry cannot be found and removed when the kvm_mmu_page
+  is zapped.
+
+- the memslot that covers the first 2MB mapping is deleted, and the
+  kvm_mmu_page for the now-invalid GPA is zapped.  However, rmap_remove()
+  only looks at the [sp->gfn, sp->gfn + 511] range established in step 1,
+  and fails to find the rmap entry that was recorded by step 3.
+
+- any operation that causes an rmap walk for the same page accessed
+  by step 3 then walks a stale rmap and dereferences a freed kvm_mmu_page.
+  This includes dirty logging or MMU notifier invalidations (e.g., from
+  MADV_DONTNEED).
+
+The underlying issue is that KVM's walking of shadow PTEs assumes that
+if a SPTE is present when KVM wants to install a non-leaf SPTE, then the
+existing kvm_mmu_page must be for the correct gfn.  Because the only way
+for the gfn to be wrong is if KVM messed up and failed to zap a SPTE...
+which shouldn't happen, but *actually* only happens in response to a
+guest write.
+
+That bug dates back literally forever, as even the first version of KVM
+assumes that the GFN matches and walks into the "wrong" shadow page.
+However, that was only an imprecision until 2032a93d66fa ("KVM: MMU:
+Don't allocate gfns page for direct mmu pages") came along.
+
+Fix it by checking for a target gfn mismatch and zapping the existing
+SPTE.  That way the old SP and rmap entries are gone, KVM installs
+the rmap in the right location, and everyone is happy.
+
+Fixes: 2032a93d66fa ("KVM: MMU: Don't allocate gfns page for direct mmu pages")
+Fixes: 6aa8b732ca01 ("kvm: userspace interface")
+Reported-by: Alexander Bulekov <bkov@amazon.com>
+Reported-by: Fred Griffoul <fgriffo@amazon.co.uk>
 Cc: stable@vger.kernel.org
-Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
-Link: https://patch.msgid.link/r/CAAJpGJSR4r_ds1JOjmkqHtsBPyxu8GntoeW08Sk5RNQPmgi+tg@mail.gmail.com
-Signed-off-by: Sina Hassani <sina@openai.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://patch.msgid.link/20260503201029.106481-1-pbonzini@redhat.com/
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/io_pagetable.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/kvm/mmu/mmu.c | 35 ++++++++++++++---------------------
+ 1 file changed, 14 insertions(+), 21 deletions(-)
 
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -777,6 +777,16 @@ again:
- 		unmapped_bytes += area_last - area_first + 1;
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index dd06453d5b72c..729240bc00a26 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -182,6 +182,8 @@ static struct kmem_cache *pte_list_desc_cache;
+ struct kmem_cache *mmu_page_header_cache;
  
- 		down_write(&iopt->iova_rwsem);
+ static void mmu_spte_set(u64 *sptep, u64 spte);
++static int mmu_page_zap_pte(struct kvm *kvm, struct kvm_mmu_page *sp,
++			    u64 *spte, struct list_head *invalid_list);
+ 
+ struct kvm_mmu_role_regs {
+ 	const unsigned long cr0;
+@@ -1287,19 +1289,6 @@ static void drop_spte(struct kvm *kvm, u64 *sptep)
+ 		rmap_remove(kvm, sptep);
+ }
+ 
+-static void drop_large_spte(struct kvm *kvm, u64 *sptep, bool flush)
+-{
+-	struct kvm_mmu_page *sp;
+-
+-	sp = sptep_to_sp(sptep);
+-	WARN_ON_ONCE(sp->role.level == PG_LEVEL_4K);
+-
+-	drop_spte(kvm, sptep);
+-
+-	if (flush)
+-		kvm_flush_remote_tlbs_sptep(kvm, sptep);
+-}
+-
+ /*
+  * Write-protect on the specified @sptep, @pt_protect indicates whether
+  * spte write-protection is caused by protecting shadow page table.
+@@ -2466,7 +2455,8 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
+ {
+ 	union kvm_mmu_page_role role;
+ 
+-	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep))
++	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep) &&
++	    spte_to_child_sp(*sptep) && spte_to_child_sp(*sptep)->gfn == gfn)
+ 		return ERR_PTR(-EEXIST);
+ 
+ 	role = kvm_mmu_child_role(sptep, direct, access);
+@@ -2544,13 +2534,16 @@ static void __link_shadow_page(struct kvm *kvm,
+ 
+ 	BUILD_BUG_ON(VMX_EPT_WRITABLE_MASK != PT_WRITABLE_MASK);
+ 
+-	/*
+-	 * If an SPTE is present already, it must be a leaf and therefore
+-	 * a large one.  Drop it, and flush the TLB if needed, before
+-	 * installing sp.
+-	 */
+-	if (is_shadow_present_pte(*sptep))
+-		drop_large_spte(kvm, sptep, flush);
++	if (is_shadow_present_pte(*sptep)) {
++		struct kvm_mmu_page *parent_sp;
++		LIST_HEAD(invalid_list);
 +
-+		/*
-+		 * After releasing the iova_rwsem concurrent allocation could
-+		 * place new areas at IOVAs we have already unmapped. Keep
-+		 * moving the start of the search forward to ignore the area
-+		 * already unmapped.
-+		 */
-+		if (area_last >= last)
-+			break;
-+		start = area_last + 1;
- 	}
++		parent_sp = sptep_to_sp(sptep);
++		WARN_ON_ONCE(parent_sp->role.level == PG_LEVEL_4K);
++
++		mmu_page_zap_pte(kvm, parent_sp, sptep, &invalid_list);
++		kvm_mmu_remote_flush_or_zap(kvm, &invalid_list, true);
++	}
  
- out_unlock_iova:
+ 	spte = make_nonleaf_spte(sp->spt, sp_ad_disabled(sp));
+ 
+-- 
+2.53.0
+
 
 
 
