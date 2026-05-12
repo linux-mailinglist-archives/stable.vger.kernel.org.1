@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMq4OqJxA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246586-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:29:54 +0200
+	id 6BAGEE9wA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:24:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525F6527A2B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:29:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1269527819
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:24:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1AB632E61E3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E99D3318946B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D31736AB5B;
-	Tue, 12 May 2026 18:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC2833B6CC;
+	Tue, 12 May 2026 18:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFkUt5t2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdaixcXn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAA336B043;
-	Tue, 12 May 2026 18:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139803EDE4A;
+	Tue, 12 May 2026 18:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609605; cv=none; b=GEtL89LvbZa6ZSq1pEyyi1OCUkt/JptuNzIObaOA9iWbszoYhviVtaHvOEbxbNTrqwTdu0Uow8j6CHC6wtp7HSGqyUq0nxX83zMZjpfFPo/xORNh9ShqK5BCd9t1CaKok0whWAmBOoEst04og/S74QDMVgWes/9silf7HL18X58=
+	t=1778608910; cv=none; b=XA1U5vbyLIujp1ARRFj0OVRTnkEQCQ2ScBgx1sr05T/4PKku+O2TyBe2IgRdNCCUBp4Q6uwIt79KCbVeSjhZPtqivtmEPbaAq73FQ5vc3kg0zs/BihKFGLnCtgvAEvRPP/m3XAvj77tFDN16cJapkLXdcJ0i4P3p32/rH3/Q/mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609605; c=relaxed/simple;
-	bh=4eLS3Psc2czLJ73eCjaL6bofqbT+KyyU20s6xV8tr5M=;
+	s=arc-20240116; t=1778608910; c=relaxed/simple;
+	bh=VTmT0I7Rf3FqvZlU14/dbz6Zz8ZkLf5G4h3D8tTaYlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdL5o/Tyn197OyY/jbWw12zMVmjp0xrISUoCLbpyN5o/5ycFq8pS8ApMyzcD5lf3zOb8nf+N4QpIpmuHsxIzfMEluKyFRdEkeYin7s5fiyR0fiAP/ogPpx9aLKEWMlERcgZsZzbaB4V3U/l2sThNbkv2moRzHgc8MsvJWduC5dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFkUt5t2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B700FC2BCB0;
-	Tue, 12 May 2026 18:13:24 +0000 (UTC)
+	 MIME-Version; b=FqS2K69bUkaBOdjwNfle9eXuq/a43wjbHpyiejHZOD2HLwRhTRaqWYZgXYOquxuQn+ZFEgYfvl5ip5gl/fAQJsfRh+sOXXHKRuTrGt25fci1oTec/lSKmJcWitOn8zdeyzR+Z3jj2l7oIV37u7EZgzOqJZC/8EasUlTwGgndLGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdaixcXn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A124DC2BCB0;
+	Tue, 12 May 2026 18:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609605;
-	bh=4eLS3Psc2czLJ73eCjaL6bofqbT+KyyU20s6xV8tr5M=;
+	s=korg; t=1778608910;
+	bh=VTmT0I7Rf3FqvZlU14/dbz6Zz8ZkLf5G4h3D8tTaYlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFkUt5t2EXg67zYj4c5rNyPJbWp28J1ANmuMRwQ/I5anuXJCA6zkg6mNAMpfrzvuC
-	 vDPZHp2CI1GkMevENgwJW9ccB0Tgz/6+bZKBHsMFeYcqDGg3u300d3ndpYE2n7uG6m
-	 hGqTE5UC2mwJWptauNvIvJYnJVLCHQ+bpwicHUfY=
+	b=RdaixcXntdZRtBjNE9/HmtAUEO3LYMyZeea8TOW6aDk+svXMUbNvVd1MUqhiwPFTn
+	 JCiqwxz2HYKxYkJ/rpYEk27pbF/grkKYBcnI/hTeeXPczHkzj57cCiaXyLeaZoK2PC
+	 uBXtPJxpGa0k0Pi/+OvgKu32Qy8ohpVmlSccviaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 261/307] mptcp: pm: ADD_ADDR rtx: allow ID 0
+	Avri Altman <avri.altman@sandisk.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 255/270] mmc: core: Add quirk for incorrect manufacturing date
 Date: Tue, 12 May 2026 19:40:56 +0200
-Message-ID: <20260512173945.636122599@linuxfoundation.org>
+Message-ID: <20260512173943.813076046@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 525F6527A2B
+X-Rspamd-Queue-Id: B1269527819
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,59 +80,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246586-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246315-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sandisk.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Avri Altman <avri.altman@sandisk.com>
 
-commit 03f324f3f1f7619a47b9c91282cb12775ab0a2f1 upstream.
+[ Upstream commit 263ff314cc5602599d481b0912a381555fcbad28 ]
 
-ADD_ADDR can be sent for the ID 0, which corresponds to the local
-address and port linked to the initial subflow.
+Some eMMC vendors need to report manufacturing dates beyond 2025 but are
+reluctant to update the EXT_CSD revision from 8 to 9. Changing the
+Updating the EXT_CSD revision may involve additional testing or
+qualification steps with customers. To ease this transition and avoid a
+full re-qualification process, a workaround is needed. This
+patch introduces a temporary quirk that re-purposes the year codes
+corresponding to 2010, 2011, and 2012 to represent the years 2026, 2027,
+and 2028, respectively. This solution is only valid for this three-year
+period.
 
-Indeed, this address could be removed, and re-added later on, e.g. what
-is done in the "delete re-add signal" MPTCP Join selftests. So no reason
-to ignore it.
+After 2028, vendors must update their firmware to set EXT_CSD_REV=9 to
+continue reporting the correct manufacturing date in compliance with the
+JEDEC standard.
 
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-2-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The `MMC_QUIRK_BROKEN_MDT` is introduced and enabled for all Sandisk
+devices to handle this behavior.
+
+Signed-off-by: Avri Altman <avri.altman@sandisk.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: d6bf2e64dec8 ("mmc: core: Optimize time for secure erase/trim for some Kingston eMMCs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/mmc/core/card.h   |    6 ++++++
+ drivers/mmc/core/mmc.c    |    5 +++++
+ drivers/mmc/core/quirks.h |    3 +++
+ include/linux/mmc/card.h  |    1 +
+ 4 files changed, 15 insertions(+)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -350,9 +350,6 @@ static void mptcp_pm_add_timer(struct ti
- 	if (inet_sk_state_load(sk) == TCP_CLOSE)
- 		return;
+--- a/drivers/mmc/core/card.h
++++ b/drivers/mmc/core/card.h
+@@ -89,6 +89,7 @@ struct mmc_fixup {
+ #define CID_MANFID_MICRON       0x13
+ #define CID_MANFID_SAMSUNG      0x15
+ #define CID_MANFID_APACER       0x27
++#define CID_MANFID_SANDISK_MMC  0x45
+ #define CID_MANFID_SWISSBIT     0x5D
+ #define CID_MANFID_KINGSTON     0x70
+ #define CID_MANFID_HYNIX	0x90
+@@ -305,4 +306,9 @@ static inline int mmc_card_no_uhs_ddr50_
+ 	return c->quirks & MMC_QUIRK_NO_UHS_DDR50_TUNING;
+ }
  
--	if (!entry->addr.id)
--		return;
--
- 	if (mptcp_pm_should_add_signal_addr(msk)) {
- 		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
- 		goto out;
++static inline int mmc_card_broken_mdt(const struct mmc_card *c)
++{
++	return c->quirks & MMC_QUIRK_BROKEN_MDT;
++}
++
+ #endif
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -676,6 +676,11 @@ static int mmc_decode_ext_csd(struct mmc
+ 			/* Adjust production date as per JEDEC JESD84-B51B September 2025 */
+ 			if (card->cid.year < 2023)
+ 				card->cid.year += 16;
++		} else {
++			/* Handle vendors with broken MDT reporting */
++			if (mmc_card_broken_mdt(card) && card->cid.year >= 2010 &&
++			    card->cid.year <= 2012)
++				card->cid.year += 16;
+ 		}
+ 	}
+ 
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -170,6 +170,9 @@ static const struct mmc_fixup __maybe_un
+ 	MMC_FIXUP_EXT_CSD_REV(CID_NAME_ANY, CID_MANFID_NUMONYX,
+ 			      0x014e, add_quirk, MMC_QUIRK_BROKEN_HPI, 6),
+ 
++	MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_MMC, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_MDT),
++
+ 	END_FIXUP
+ };
+ 
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -330,6 +330,7 @@ struct mmc_card {
+ #define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
+ #define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
+ #define MMC_QUIRK_NO_UHS_DDR50_TUNING	(1<<18) /* Disable DDR50 tuning */
++#define MMC_QUIRK_BROKEN_MDT    (1<<19) /* Wrong manufacturing year */
+ 
+ 	bool			written_flag;	/* Indicates eMMC has been written since power on */
+ 	bool			reenable_cmdq;	/* Re-enable Command Queue */
 
 
 
