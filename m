@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHzmG+psA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:46 +0200
+	id eETYH3BqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA8D526EB1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ECE45266E5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 27D8B3024A8D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 73C063055255
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BB634B410;
-	Tue, 12 May 2026 18:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5F63EDE79;
+	Tue, 12 May 2026 17:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/fWuBZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPwI047J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380D823E356;
-	Tue, 12 May 2026 18:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB063EDE65;
+	Tue, 12 May 2026 17:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609334; cv=none; b=MAZBGLT7Xg9c1pPWNrpbxWKM9Wtr/PtzjUQHR9B9RfD5gj4ZnjH0/YAl6kai1us7U1Mj11tMd3zkrzg2M92xRsieRrdwI/bWHeDDA6cj7OCT9e0W+5wIWYAH6FtO3B6RZiJdDKUWnVuOkcvyFAVxbM51YRxJc1pHKy3jtuFVpK0=
+	t=1778608613; cv=none; b=aow5V04RFkbSEYCSowhAdhSllBgC5f4DDo6qcN8KfkgDGDY0dYwK5ugCDAGqCeInDsT/tKIxcQHzCzsMouFDWeNbhkbkGLqjqR0CJ6jtFy/aXfzC6zkiJTFSfNwYjcrEGL8xxMzqfN3nCurR1Gn1bDxSwanK/zpSwoi4hjjeMxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609334; c=relaxed/simple;
-	bh=FzYCulwLy6PHZwJVVAi/lq7BnpIds/ZjPenmXdFrlTw=;
+	s=arc-20240116; t=1778608613; c=relaxed/simple;
+	bh=dG8dkAVtKaKlzjQX2hpBSns8tV4IiUHrEfdbtNJ0IPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WC+x4XgC1l+KzS/mMIIut7xM0NVHyoLiSa9+pZ27CfWtnceiu57c/zWUii2vI5X4TYeX28aAqsjTjfEofBbOanRM1j5Ox2c9P2/ChfAqst00JBj9oJ72kOjn3lQzHIAn/RIMj8xIqy8km96SQt0xe9Yq+vLDrYT43wvr/vDSz/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/fWuBZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46F8C2BCB0;
-	Tue, 12 May 2026 18:08:53 +0000 (UTC)
+	 MIME-Version; b=GT333hv9JvTH/qPbVxZ/5+CC3vEpk9M2xUqRYDNNHzqYREzodgWQt71t+5a2qdlHkw5PvIEDN0h78P8x565bjlKgu3gLj2GGyN2EyYfCHdPYgei6krX4+WoKSgzTndkCDBB6ZsltUbXQgUxlu2EuYXKd76JzjduRBH+SGBO4dnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPwI047J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F6CC2BCB0;
+	Tue, 12 May 2026 17:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609334;
-	bh=FzYCulwLy6PHZwJVVAi/lq7BnpIds/ZjPenmXdFrlTw=;
+	s=korg; t=1778608613;
+	bh=dG8dkAVtKaKlzjQX2hpBSns8tV4IiUHrEfdbtNJ0IPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/fWuBZThFf3+JSWgzwBk16YxtZPX+tIwlAaMVWdNVYtWSuZQFWzBQN/qEyudYd0Z
-	 O0yl24hnakz1o7qqJCZ6KgLNKaN6RnbcUb/9Vu4AaeIKYJrE7DYDSZ9GMxwbpRuzuW
-	 TAlQ+VObuWsomdYTP2g44MF57RN4xf7p1VysMVcs=
+	b=wPwI047JXs9KSWvg3UK7QYM/DRgoK91A7bT6QwY2T8WpZlZa85d43urZRVQH/437t
+	 UyZLHI+QmtmC1G3IHgoEiH+z7DFS6h370bxF7IkbPTx1HqeokcON2CKmCar7doTicW
+	 M+ErC8zmWZqJbuhJr+YDDUzlLjtAJuevbONrVx7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 7.0 153/307] udf: reject descriptors with oversized CRC length
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 147/270] ASoC: qcom: q6apm: remove child devices when apm is removed
 Date: Tue, 12 May 2026 19:39:08 +0200
-Message-ID: <20260512173943.355362162@linuxfoundation.org>
+Message-ID: <20260512173941.543158921@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EBA8D526EB1
+X-Rspamd-Queue-Id: 5ECE45266E5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246480-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246199-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.cz:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 55d41b0a20128e86b9e960dd2e3f0a2d69a18df7 upstream.
+commit 4a0e1bcc98f7281d1605768bd2fe71eacc34f9b7 upstream.
 
-udf_read_tagged() skips CRC verification when descCRCLength +
-sizeof(struct tag) exceeds the block size.  A crafted UDF image can
-set descCRCLength to an oversized value to bypass CRC validation
-entirely; the descriptor is then accepted based solely on the 8-bit
-tag checksum, which is trivially recomputable.
+looks like q6apm driver does not remove the child driver q6apm-dai and
+q6apm-bedais when the this driver is removed.
 
-Reject such descriptors instead of silently accepting them.  A
-legitimate single-block descriptor should never have a CRC length that
-exceeds the block.
+Fix this by depopulating them in remove callback.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260413211240.853662-1-michael.bommarito@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+With this change when the dsp is shutdown all the devices associated with
+q6apm will now be removed.
+
+Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260402081118.348071-3-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/misc.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/udf/misc.c
-+++ b/fs/udf/misc.c
-@@ -230,8 +230,12 @@ struct buffer_head *udf_read_tagged(stru
- 	}
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -784,6 +784,7 @@ static int apm_probe(gpr_device_t *gdev)
  
- 	/* Verify the descriptor CRC */
--	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize ||
--	    le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
-+	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize) {
-+		udf_err(sb, "block %u: CRC length %u exceeds block size\n",
-+			block, le16_to_cpu(tag_p->descCRCLength));
-+		goto error_out;
-+	}
-+	if (le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
- 					bh->b_data + sizeof(struct tag),
- 					le16_to_cpu(tag_p->descCRCLength)))
- 		return bh;
+ static void apm_remove(gpr_device_t *gdev)
+ {
++	of_platform_depopulate(&gdev->dev);
+ 	snd_soc_unregister_component(&gdev->dev);
+ }
+ 
 
 
 
