@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-245901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MJxI7ZnA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:34 +0200
+	id MPR0Oa1zA2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C0F45261CE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7434A527E55
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B7FD30753B3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 944803226087
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BF13B1EE2;
-	Tue, 12 May 2026 17:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD6F23E356;
+	Tue, 12 May 2026 18:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cjOMYTi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeiRJXz2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FE93D966A;
-	Tue, 12 May 2026 17:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A4C3EDE45;
+	Tue, 12 May 2026 18:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607846; cv=none; b=qYOKfNIDZoqMcVcIMCwOUlrVeID7H5CxoNB0hFwdQf74CjuRgV7ZhacS2e155rb0txXNPxImKI7FHjJM46XyjIJCLIsxjqRJxBrPZf6fHJaSh9mDpG7jX+HBzp2NBzgl/NAsCJdvfF5tYgD+R/Db/usGFNXPtdvgF8mZKcHzGNk=
+	t=1778609244; cv=none; b=r7JOntmyvvoZIBR45sV/Sowus4v4M6liUmkR/UG1v70V8PMWGkBvVFqbHkCiEwTJZ0VxCbL+Its86KQZ1pXOUtZaOe1EpyIOF9Koljw2/EtTb1k5K0dNHteIppXT2nbIQXLD76OdX5vfOMbjjlo7g2sDTZadUh5qE4yZ/IVHgxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607846; c=relaxed/simple;
-	bh=Fb7OyrbBcicSKkvRdu6tDdOGCkTh7A5/9ZFxQN7LS0k=;
+	s=arc-20240116; t=1778609244; c=relaxed/simple;
+	bh=JCyfv6J3qQD8r1e0ZFgcdVKdR6YicraR49tLSllVf+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aO7AB/zwudGJsdjc8hMr6e0WeebExjAPvd+M0Ma2KcYQiDV27oe1jUwpSmn2bRfv0Lr3MuUUPK9OgXN9UNdT2AbQEVpntmJ55ETegWfPeJBZ4gwckNXCVfkX1x0ksKS0dokPbmYsi9btSHs4c+z6NhGraAY+QKKdo088898n4rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cjOMYTi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A446C2BCB0;
-	Tue, 12 May 2026 17:44:06 +0000 (UTC)
+	 MIME-Version; b=uTn20IlEMBP0oNwVtMwzXzDCHMLz4iijQe2kyi7c9HsBYBTSvctc0vjWomJUTaW4cwDiikNH8PHnwtfCabt6p/BpAUJaXcHMbShMbMTNTV3ImF8XIpsGU+R7HCgf5OmLxTy6LMitLCQpaLIPcjr8dBWNwGjgcf6wHETs3PhhxqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeiRJXz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA1EC2BCB0;
+	Tue, 12 May 2026 18:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607846;
-	bh=Fb7OyrbBcicSKkvRdu6tDdOGCkTh7A5/9ZFxQN7LS0k=;
+	s=korg; t=1778609243;
+	bh=JCyfv6J3qQD8r1e0ZFgcdVKdR6YicraR49tLSllVf+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cjOMYTifBFDmX1WDFloG8PbiqLggrUxVeP6/FuIZ4+/zd0wP0mFX0ogHdOGhy3l/
-	 +miuctGuS3EZa+HKTCPhVURVL2MgqiJhKaOlcBCXvW+TNj92Pbe/rVovkg5hFd0xpQ
-	 4ugDxEv/nYH0AlIAd4TMCUEzFvqqbg7KE8nTHDJY=
+	b=jeiRJXz2LspzkC6q9NiPfBp00x5USzbDAhZPqSTmQ1KB3l7ghUGaTg/yakBgvXE7F
+	 mQQxfE8M6Z9P6nJkK5WEbtwsu+sJzw1azW+R6QDU/U0smHMLJdcQO8FE5UxGzHBvfy
+	 arCgddsRQzbpj632UYt6n39Bea1nK7TZzICGOqDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.12 056/206] xfrm: ah: account for ESN high bits in async callbacks
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 7.0 113/307] pseries/papr-hvpipe: Prevent kernel stack memory leak to userspace
 Date: Tue, 12 May 2026 19:38:28 +0200
-Message-ID: <20260512173934.027143303@linuxfoundation.org>
+Message-ID: <20260512173942.508645307@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1C0F45261CE
+X-Rspamd-Queue-Id: 7434A527E55
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -77,9 +77,9 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245901-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246444-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
@@ -93,136 +93,45 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-commit ec54093e6a8f87e800bb6aa15eb7fc1e33faa524 upstream.
+commit cefeed44296261173a806bef988b26bc565da4be upstream.
 
-AH allocates its temporary auth/ICV layout differently when ESN is enabled:
-the async ahash setup appends a 4-byte seqhi slot before the ICV or
-auth_data area, but the async completion callbacks still reconstruct the
-temporary layout as if seqhi were absent.
+The hdr variable is allocated on the stack and only hdr.version and
+hdr.flags are initialized explicitly. Because the struct papr_hvpipe_hdr
+contains reserved padding bytes (reserved[3] and reserved2[40]), these
+could leak the uninitialized bytes to userspace after copy_to_user().
 
-With an async AH implementation selected, that makes AH copy or compare
-the wrong bytes on both the IPv4 and IPv6 paths. In UML repro on IPv4 AH
-with ESN and forced async hmac(sha1), ping fails with 100% packet loss,
-and the callback logs show the pre-fix drift:
+This patch fixes that by initializing the whole struct to 0.
 
-  ah4 output_done: esn=1 err=0 icv_off=20 expected_off=24
-  ah4 input_done: esn=1 auth_off=20 expected_auth_off=24 icv_off=32 expected_icv_off=36
-
-Reconstruct the callback-side layout the same way the setup path built it
-by skipping the ESN seqhi slot before locating the saved auth_data or ICV.
-Per RFC 4302, the ESN high-order 32 bits participate in the AH ICV
-computation, so the async callbacks must account for the seqhi slot.
-
-Post-fix, the same IPv4 AH+ESN+forced-async-hmac(sha1) UML repro shows
-the corrected offset (ah4 output_done: esn=1 err=0 icv_off=24
-expected_off=24) and ping succeeds; net/ipv4/ah4.o and net/ipv6/ah6.o
-build clean at W=1. IPv6 AH+ESN was not exercised at runtime, and the
-change has not been tested against a real async hardware AH engine.
-
-Fixes: d4d573d0334d ("{IPv4,xfrm} Add ESN support for AH egress part")
-Fixes: d8b2a8600b0e ("{IPv4,xfrm} Add ESN support for AH ingress part")
-Fixes: 26dd70c3fad3 ("{IPv6,xfrm} Add ESN support for AH egress part")
-Fixes: 8d6da6f32557 ("{IPv6,xfrm} Add ESN support for AH ingress part")
 Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5-4
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: cebdb522fd3ed ("powerpc/pseries: Receive payload with ibm,receive-hvpipe-msg RTAS")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/7bfe03b65a282c856ed8182d1871bb973c0b78f2.1777606826.git.ritesh.list@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ah4.c |   14 ++++++++++++--
- net/ipv6/ah6.c |   14 ++++++++++++--
- 2 files changed, 24 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/pseries/papr-hvpipe.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/ah4.c
-+++ b/net/ipv4/ah4.c
-@@ -124,9 +124,14 @@ static void ah_output_done(void *data, i
- 	struct iphdr *top_iph = ip_hdr(skb);
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	int ihl = ip_hdrlen(skb);
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
+--- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
++++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+@@ -327,7 +327,7 @@ static ssize_t papr_hvpipe_handle_read(s
+ {
  
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	iph = AH_SKB_CB(skb)->tmp;
--	icv = ah_tmp_icv(iph, ihl);
-+	seqhi = (__be32 *)((char *)iph + ihl);
-+	icv = ah_tmp_icv(seqhi, seqhi_len);
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	struct hvpipe_source_info *src_info = file->private_data;
+-	struct papr_hvpipe_hdr hdr;
++	struct papr_hvpipe_hdr hdr = {};
+ 	long ret;
  
- 	top_iph->tos = iph->tos;
-@@ -270,12 +275,17 @@ static void ah_input_done(void *data, in
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	int ihl = ip_hdrlen(skb);
- 	int ah_hlen = (ah->hdrlen + 2) << 2;
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
- 
- 	if (err)
- 		goto out;
- 
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	work_iph = AH_SKB_CB(skb)->tmp;
--	auth_data = ah_tmp_auth(work_iph, ihl);
-+	seqhi = (__be32 *)((char *)work_iph + ihl);
-+	auth_data = ah_tmp_auth(seqhi, seqhi_len);
- 	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
- 
- 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -317,14 +317,19 @@ static void ah6_output_done(void *data,
- 	struct ipv6hdr *top_iph = ipv6_hdr(skb);
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	struct tmp_ext *iph_ext;
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
- 
- 	extlen = skb_network_header_len(skb) - sizeof(struct ipv6hdr);
- 	if (extlen)
- 		extlen += sizeof(*iph_ext);
- 
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	iph_base = AH_SKB_CB(skb)->tmp;
- 	iph_ext = ah_tmp_ext(iph_base);
--	icv = ah_tmp_icv(iph_ext, extlen);
-+	seqhi = (__be32 *)((char *)iph_ext + extlen);
-+	icv = ah_tmp_icv(seqhi, seqhi_len);
- 
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
- 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
-@@ -471,13 +476,18 @@ static void ah6_input_done(void *data, i
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	int hdr_len = skb_network_header_len(skb);
- 	int ah_hlen = ipv6_authlen(ah);
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
- 
- 	if (err)
- 		goto out;
- 
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	work_iph = AH_SKB_CB(skb)->tmp;
- 	auth_data = ah_tmp_auth(work_iph, hdr_len);
--	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
-+	seqhi = (__be32 *)(auth_data + ahp->icv_trunc_len);
-+	icv = ah_tmp_icv(seqhi, seqhi_len);
- 
- 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
- 	if (err)
+ 	/*
 
 
 
