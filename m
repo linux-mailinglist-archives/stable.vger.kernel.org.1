@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-245559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBEZD3MwA2qN1QEAu9opvQ
-	(envelope-from <stable+bounces-245559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:51:47 +0200
+	id 7I29NXQwA2oA1gEAu9opvQ
+	(envelope-from <stable+bounces-245562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:51:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCF3521ADE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A369521AE6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8DB55307B38A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:54:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D328B31E5BF3
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243D93A719A;
-	Tue, 12 May 2026 12:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96263911D6;
+	Tue, 12 May 2026 12:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wdYfXI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0xwkaLt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B00379C51
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132543A718F
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778590226; cv=none; b=eBLU3sM0rMstGfPzJnJWkA5cyVl9eebWX+sviqYbgeVWB4omD59KEiesrBgODUcLyPvR4wceT2UVYCZ+ZH4IfgVCzv5tsGohi/TskO9lOYLrRaKGLoDvIcF3EWt/NSNV/zb/mcivO6nogsdmIMnqDRwF7oy6OO8EuAx38uGBZQ4=
+	t=1778590230; cv=none; b=Nl6rztTUD9AdjL5TbtHd4BfkcxojphcDMmjoVAr++nNpL/LLgdMo2LOPpMVM2bSxwApXQWCOhvhlasVLExTirMou0eIMV1LCu8Qy5ruJTfYeRVZg4F6G61b75e0UFy4msE2Q2BphKe45Ay7GJOoAqlMZrkozyWujyO2j17I01Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778590226; c=relaxed/simple;
+	s=arc-20240116; t=1778590230; c=relaxed/simple;
 	bh=5M8rYw5+mVsL/LpXpZyd/fSErYIKkfaZUpsrhABouaw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TukXFEPAoaOgOuHv5ldi5mzMlShrYwfM74xW3EY+yvrPGq2yPAgZ8LsPKjjTlH4eqLf/dN3FvMMV8VZfU1DDgGV0Fje3d5L3xHPjZ8yBNPGohcAj1/5ctMBazvxGBZNOzu6FV1hkBr1uxSUCtuRYz7x6/Jg2riydHBmki55WJ/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wdYfXI5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA778C2BCF5;
-	Tue, 12 May 2026 12:50:25 +0000 (UTC)
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nt/p2t9aG/c26NeEGRIcG6nyhwVpzMxa4381w4Qw1PJ9hbn8GTMYKsD6qUFhmcvhQa073meU3bA2K1co6idrJpgwRSYXpGUqN1ah2omub7UY51znI1dSguKzIgVVdS59+Q8qoJVnmva4IkwybnhgcQMB6y3L6UpX5dM0qv0nDfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0xwkaLt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AEBC2BCF6;
+	Tue, 12 May 2026 12:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778590226;
+	s=korg; t=1778590229;
 	bh=5M8rYw5+mVsL/LpXpZyd/fSErYIKkfaZUpsrhABouaw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2wdYfXI5rVUrQ7YhbK4fakA4eeIOuVH2FA0/86aK4TB3z5muh9OTVJKYxd971i3Kb
-	 GW6GBUDy6X3hGpxdwBfP6NmKWBXS6HVYwBO627OfEwxuP/RmjU1/yt/AlYMQ07LxOR
-	 Kav9j0LNgY+J/OBJwIZi+ePdyk23mrCJfzRXwFQw=
+	b=U0xwkaLtIveAEtBMR8po7rfW0Uc7FydmKh00V7nSxU+Ud/KP7s51TcK2jTrZoowF9
+	 IuZAnn2VGzuAhEk1VAg+JCmilO5/50+33rrF8MeR6tP6H55Pt4AdZGz0AHRxGO3ZNm
+	 DwPzd/Zij1xV9/A8ULfhpsjyJPKsnB+LKKYj0XL8=
 Subject: FAILED: patch "[PATCH] spi: s3c64xx: fix NULL-deref on driver unbind" failed to apply to 6.1-stable tree
 To: johan@kernel.org,adithya.kv@samsung.com,broonie@kernel.org
 Cc: <stable@vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BBCF3521ADE
+X-Rspamd-Queue-Id: 3A369521AE6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -66,7 +66,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245559-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245562-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
