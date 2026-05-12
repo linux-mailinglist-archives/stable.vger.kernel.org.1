@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-245909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FqNL+tnA2qj5gEAu9opvQ
-	(envelope-from <stable+bounces-245909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:48:27 +0200
+	id YLK7EzNvA2qI5wEAu9opvQ
+	(envelope-from <stable+bounces-246172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D08526226
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E243F5274F9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86CCB30C23C3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73DEB303AA88
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625E03D966A;
-	Tue, 12 May 2026 17:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84513E5A21;
+	Tue, 12 May 2026 17:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/A8SAJP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+NLm1ZJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2594A3DC85B;
-	Tue, 12 May 2026 17:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C16B3EDE7F;
+	Tue, 12 May 2026 17:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607867; cv=none; b=SEEVVugUUS5l/+SAHCUw/zp2At6m/rwqbsgliA0j86CVzMrk3JRdEyoFVo/qZfte20FRK/WQig2Ffs0iVmAFdE7k3F5uwB+JZVIvqbRjlX+mytl/ECBCji8m5BTnqzRcKUw8Ds7W1vkjesoahCW1O/DWEhMkdDe3sRjm0f5G+98=
+	t=1778608543; cv=none; b=U9tX+qgmdv6MX4dTmY6HI5dL433YOfzZ6mA1tugPOEz/Plsyi292sPJUxG0gJ5H7qyAKLYvPsCDnegeq+g368ygmXfItyqq/KGywAnp3gEdCmtKKdhYQ64YX7LRoU34TOAvDRpvCQTxSWPImPvn/1Swq9y31rylV3JBDGfH572I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607867; c=relaxed/simple;
-	bh=Aq4KItGy3IkCf4WomuX8WX3cjBlOO3JkGQWmnaK/Sl8=;
+	s=arc-20240116; t=1778608543; c=relaxed/simple;
+	bh=+uoyPnfUkUKTc/Y6WzY3LBE9vwpLvdZjt3zLBCKGTkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPElAQsZ15xsHRvaeg4G++OJJqcv/Z739ixAZk68BTUlkKw+2GWf8PqId2ZFO/oievHtZbbcoSxG3HasgNdDIejHRHNU7z0Lb/rMdszr3/KtXA/J0JapuJ11DMXp6okZO4y6wbw65nZCArop0tTRDnf2Xn0fb5xw6Prz1kzTn8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/A8SAJP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAC7C2BCB0;
-	Tue, 12 May 2026 17:44:26 +0000 (UTC)
+	 MIME-Version; b=tmXk29QUqNMSG7/CM0VntfBflOOftTTBrc+/c0R6j3zQahjVvqZhWru81veoh4uXQsP3QRDL/oeLqflRvE2jSQyNsv+GPK/tmi8ESJzsy5TGVtmYbt4QPDec3vyokfnIk2ORzrqAs+R4nc3jGnHSnx1TLa6qOcX1mQfP64FVst0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+NLm1ZJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F5AC2BCB0;
+	Tue, 12 May 2026 17:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607867;
-	bh=Aq4KItGy3IkCf4WomuX8WX3cjBlOO3JkGQWmnaK/Sl8=;
+	s=korg; t=1778608543;
+	bh=+uoyPnfUkUKTc/Y6WzY3LBE9vwpLvdZjt3zLBCKGTkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/A8SAJPwutsYvOaDxoUQ6JmFS2R4t74uchl5EfxdY1vcBqpQ7QTqadrPYfCJhrgn
-	 iZfmEJF4dJFBGXRoWXFWWs5FY0ciVV5DT4OmJ9z/GLGLdejo8R7txNEnRnPOsVrBMy
-	 JqJHil6vC422BYs7ONskeFxMxgKEpLm1XYEaFRgA=
+	b=p+NLm1ZJu/jKWsTyGGB3pnP0U52p4EsJa6gR/JcJFXAx/0dpxqF2cIxS8dYC15BF0
+	 t15R7qa1fHEwbIYmXb41kcroGwiVzCjIsE+2mxiO+slwEO2mc3QukRKdiQdNrLTlyC
+	 eI7liDLQ3O6+GkPlwDN9GEioomVp6K8/nhEsAfNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahisa Kojima <masahisa.kojima@linaro.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 067/206] spi: syncuacer: fix controller deregistration
+	Bharath SM <bharathsm@microsoft.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 118/270] cifs: change_conf needs to be called for session setup
 Date: Tue, 12 May 2026 19:38:39 +0200
-Message-ID: <20260512173934.263701794@linuxfoundation.org>
+Message-ID: <20260512173940.942172146@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C5D08526226
+X-Rspamd-Queue-Id: E243F5274F9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245909-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246172-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,58 +92,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 75d849c3452e9611de031db45b3149ba9a99035f upstream.
+commit c208a2b95811d6e1ebae65d0d2fc13f73707f8e7 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Today we skip calling change_conf for negotiates and session setup
+requests. This can be a problem for mchan as the immediate next call
+after session setup could be due to an I/O that is made on the
+mount point. For single channel, this is not a problem as
+there will be several calls after setting up session.
 
-Fixes: b0823ee35cf9 ("spi: Add spi driver for Socionext SynQuacer platform")
-Cc: stable@vger.kernel.org	# 5.3
-Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-21-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This change enforces calling change_conf when the total credits contain
+enough for reservations for echoes and oplocks. We expect this to happen
+during the last session setup response. This way, echoes and oplocks are
+not disabled before the first request to the server. So if that first
+request is an open, it does not need to disable requesting leases.
+
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-synquacer.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/smb/client/smb2ops.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/spi/spi-synquacer.c
-+++ b/drivers/spi/spi-synquacer.c
-@@ -719,7 +719,7 @@ static int synquacer_spi_probe(struct pl
- 	pm_runtime_set_active(sspi->dev);
- 	pm_runtime_enable(sspi->dev);
- 
--	ret = devm_spi_register_controller(sspi->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret)
- 		goto disable_pm;
- 
-@@ -740,9 +740,15 @@ static void synquacer_spi_remove(struct
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -111,10 +111,21 @@ smb2_add_credits(struct TCP_Server_Info
+ 				      cifs_trace_rw_credits_zero_in_flight);
+ 	}
+ 	server->in_flight--;
 +
-+	spi_unregister_controller(host);
-+
- 	pm_runtime_disable(sspi->dev);
- 
- 	clk_disable_unprepare(sspi->clk);
-+
-+	spi_controller_put(host);
- }
- 
- static int __maybe_unused synquacer_spi_suspend(struct device *dev)
++	/*
++	 * Rebalance credits when an op drains in_flight. For session setup,
++	 * do this only when the total accumulated credits are high enough (>2)
++	 * so that a newly established secondary channel can reserve credits for
++	 * echoes and oplocks. We expect this to happen at the end of the final
++	 * session setup response.
++	 */
+ 	if (server->in_flight == 0 &&
+ 	   ((optype & CIFS_OP_MASK) != CIFS_NEG_OP) &&
+ 	   ((optype & CIFS_OP_MASK) != CIFS_SESS_OP))
+ 		rc = change_conf(server);
++	else if (server->in_flight == 0 &&
++		 ((optype & CIFS_OP_MASK) == CIFS_SESS_OP) && *val > 2)
++		rc = change_conf(server);
+ 	/*
+ 	 * Sometimes server returns 0 credits on oplock break ack - we need to
+ 	 * rebalance credits in this case.
 
 
 
