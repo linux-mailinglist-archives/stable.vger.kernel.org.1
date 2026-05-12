@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-246407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245870-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEsDHF9zA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:19 +0200
+	id MNMvO7FmA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245870-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4A1527DC9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B74E525FA8
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E00693145D6C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 02E3F30136FD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82F650276;
-	Tue, 12 May 2026 18:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7573E0750;
+	Tue, 12 May 2026 17:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZp+I/b5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRmjJhs1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBD43EDE55;
-	Tue, 12 May 2026 18:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16423DB980;
+	Tue, 12 May 2026 17:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609146; cv=none; b=P7FCVniHWPf3+4TnFSV1Xg3qLkBCVCtslDmqXQywZXFE02Hh757ZE07tcFX4KIPcXD6ac4Nr98SU+KCercpq8tJN8YuX81iRs2bCa+YgLfuEzoWgtRWkpW9puENBGA14YouCs0TYejtme9mBQ9EewyD1re559Zdu1TJBeYVqUSg=
+	t=1778607767; cv=none; b=AFwHW1UrQf8Qc7BCkdGccu854tO7X5S6cICgKy64aYlfoP8wMvqGD57dLZwc3Aa/ZNet3OsFiIgO9TEkWez+zlG7fo2f6GOgVmjA54uVbHklUo7wbXmSpClcqSwWzC+CdKJ0e7JCRgNVwV1grf2aZMimp/WOKIl2Urt/Qd2Hkk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609146; c=relaxed/simple;
-	bh=Qvg60DiZaM7RipZZBVDxB8DmLsWAYIOhmLm7EkFj3Ho=;
+	s=arc-20240116; t=1778607767; c=relaxed/simple;
+	bh=HJaBFEES+mRzquYlPqHKGp7gtUfbmasX1MhgVCfM3JY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgNNikj1ots+cYmTAEbNz7+X2IyvXpihQBACLFIjl/FqT/cGTrZ3woklZF7RarG079IHurT7MFWyGcLP+DM4f1gQ55w85c6EsHb+PziK8NC2vh0cAJgP6IO9Y8GdejGrI+hhHIW7AuyYEVoFpWd/PSI8owrW/4FexUNQlQ+pyFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZp+I/b5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021DEC2BCB0;
-	Tue, 12 May 2026 18:05:45 +0000 (UTC)
+	 MIME-Version; b=G9R0Mrqp16eCIdQGhpSw+iYqrM/ZdeVKTgJg/ypJmi4RAGEdrVAac94vBsKFvTA+Wi4jl6e/dGyrwCxVytC5mjKMQ7o78klWqs8OhDihfobFp8EOlNEEicKaGbeil46Qmyk86qqKsNduQ89gLEuPI7m+gfKcithU/bDdjtcgxdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRmjJhs1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54659C2BCB0;
+	Tue, 12 May 2026 17:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609146;
-	bh=Qvg60DiZaM7RipZZBVDxB8DmLsWAYIOhmLm7EkFj3Ho=;
+	s=korg; t=1778607766;
+	bh=HJaBFEES+mRzquYlPqHKGp7gtUfbmasX1MhgVCfM3JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zZp+I/b5CaHb5EkoXMexFpTqwRuC9dTOvqOOVDWKQla9LutzDytTt1cNZUER641bo
-	 ykt/AdyE5zg8rwK4j8mxYEh5VXnImnfEYDuxVcIMCiVDEVHgzd1TAMSNZfmcC9xs+g
-	 g5p2gCY4nb6FMhsOxKKiHiwQQ0Lcu5mHRY8wgRBk=
+	b=QRmjJhs19qlXKvRkqf+1SB9VmpP2YP0J3CG7SIzSL0YqFAfT/JYaCWUccskT98NEz
+	 kVm4zTn0oHcXVG6VaZpHMhB5D41aWx6wG8yMFiME4+XHFcm3NOGXjjYjl65eGkv31Q
+	 /jh+z5kfFgT3oTwpM8fIUPlH6zSeoLfFobwc47Jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 084/307] spi: ti-qspi: fix controller deregistration
-Date: Tue, 12 May 2026 19:37:59 +0200
-Message-ID: <20260512173941.894648769@linuxfoundation.org>
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.12 028/206] exit: prevent preemption of oopsing TASK_DEAD task
+Date: Tue, 12 May 2026 19:38:00 +0200
+Message-ID: <20260512173933.425539152@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +65,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EA4A1527DC9
+X-Rspamd-Queue-Id: 0B74E525FA8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245870-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246407-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jann Horn <jannh@google.com>
 
-commit 0c18a1bacbb1d8b8aa34d3d004a2cb8226c8b1ea upstream.
+commit c1fa0bb633e4a6b11e83ffc57fa5abe8ebb87891 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+When an already-exiting task oopses, make_task_dead() currently calls
+do_task_dead() with preemption enabled.  That is forbidden:
+do_task_dead() calls __schedule(), which has a comment saying "WARNING:
+must be called with preemption disabled!".
 
-Note that the controller is suspended before disabling and releasing
-resources since commit 3ac066e2227c ("spi: spi-ti-qspi: Suspend the
-queue before removing the device") which avoids issues like unclocked
-accesses but prevents SPI device drivers from doing I/O during
-deregistration.
+If an oopsing task is preempted in do_task_dead(), between becoming
+TASK_DEAD and entering the scheduler explicitly, bad things happen:
+finish_task_switch() assumes that once the scheduler has switched away
+from a TASK_DEAD task, the task can never run again and its stack is no
+longer needed; but that assumption apparently doesn't hold if the dead
+task was preempted (the SM_PREEMPT case).
 
-Fixes: 3b3a80019ff1 ("spi: ti-qspi: one only one interrupt handler")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-24-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This means that the scheduler ends up repeatedly dropping references on
+the dead task's stack, which can lead to use-after-free or double-free
+of the entire task stack; in other words, two tasks can end up running
+on the same stack, resulting in various kinds of memory corruption.
+
+(This does not just affect "recursively oopsing" tasks; it is enough to
+oops once during task exit, for example in a file_operations::release
+handler)
+
+Fixes: 7f80a2fd7db9 ("exit: Stop poorly open coding do_task_dead in make_task_dead")
+Cc: stable@kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-ti-qspi.c |   14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ kernel/exit.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -888,7 +888,7 @@ no_dma:
- 	qspi->mmap_enabled = false;
- 	qspi->current_cs = -1;
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -1045,6 +1045,7 @@ void __noreturn make_task_dead(int signr
+ 		futex_exit_recursive(tsk);
+ 		tsk->exit_state = EXIT_DEAD;
+ 		refcount_inc(&tsk->rcu_users);
++		preempt_disable();
+ 		do_task_dead();
+ 	}
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (!ret)
- 		return 0;
- 
-@@ -903,19 +903,17 @@ free_host:
- static void ti_qspi_remove(struct platform_device *pdev)
- {
- 	struct ti_qspi *qspi = platform_get_drvdata(pdev);
--	int rc;
- 
--	rc = spi_controller_suspend(qspi->host);
--	if (rc) {
--		dev_alert(&pdev->dev, "spi_controller_suspend() failed (%pe)\n",
--			  ERR_PTR(rc));
--		return;
--	}
-+	spi_controller_get(qspi->host);
-+
-+	spi_unregister_controller(qspi->host);
- 
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 
- 	ti_qspi_dma_cleanup(qspi);
-+
-+	spi_controller_put(qspi->host);
- }
- 
- static const struct dev_pm_ops ti_qspi_pm_ops = {
 
 
 
