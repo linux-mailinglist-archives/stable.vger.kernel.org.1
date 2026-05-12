@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-246140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNx5H1JsA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246140-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:14 +0200
+	id WGeqJ1NnA2qv5gEAu9opvQ
+	(envelope-from <stable+bounces-245881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0DAC526CBA
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF555260E3
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 52812318784C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5BC430557EE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD333EDE51;
-	Tue, 12 May 2026 17:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AE63E0731;
+	Tue, 12 May 2026 17:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X65y8gef"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBdLU7u3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B0C3EDE49;
-	Tue, 12 May 2026 17:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AE83B1EE2;
+	Tue, 12 May 2026 17:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608461; cv=none; b=armdKu0YAYcN32/OyL7uu1iLTjJwY36/TxPGxbbwv/yfSq60PheMAjmq84e++VvIqD+1xneM3Nn2NihQxNb8fqADJH+9F4M1a/zACbAo2AtvLw3JpaURBmAiSrl5TLk7Qn/A0jhuZFmPvvk++2sJDmi4L6BIgvxKyBtDYH48ljU=
+	t=1778607795; cv=none; b=LdTltYZeZEJpi2Gq0xg7MHfV7kV3P4SYawcQivjeOJw0NgbIlOexoMojMVCCBqD8zHyxdKB40B1yTNu9yJ5KgjigcWPjw3alaX+gGPGm+3unL+pOKhkoq9axjXiJvV9P2qXMsAzudlPuyD2UZMUDv9zRxC3h57vhNT3xttAZNv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608461; c=relaxed/simple;
-	bh=W+rxMPl2G3rPPYFg/LG6FL9tbekM4KEMMP+s64JS8XA=;
+	s=arc-20240116; t=1778607795; c=relaxed/simple;
+	bh=XeTZ6t5wUMM+wt1f+WOoJLr7gYMkhx5IA+zt5eZW8z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBdpuf7B/5A5nP3FymNk6S2O1WhubsQabnuLIoEAnlgOwHZRnFJg7DfR3bJ92AIKKUZqF0nt3MTNNgm9otP5tAit7wp6QFfukB7rCCYjd0ZU2zdLQsqAxuTMdJeQOvty3IdxlEjsdeY7jPi1IJlzb/HlYP+67vxgBURVu/bzykc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X65y8gef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF90AC2BCB0;
-	Tue, 12 May 2026 17:54:20 +0000 (UTC)
+	 MIME-Version; b=OkEjz0eotSGnb6mVtAFOEQDQgeffN5trrF2mTDNiEYx0z1w0JGpqxYr57BiCbJkHAD/zJx9aokdLb0xiwr9TLFsx6BptQ+WIgr4XQ3ju9IKcjKnyFWOz9Ggx0KTQOY1+XY4a6LP1orJKI87u9bKc99HZiVVzgchyxXbAUc1aYRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBdLU7u3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC857C2BCB0;
+	Tue, 12 May 2026 17:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608461;
-	bh=W+rxMPl2G3rPPYFg/LG6FL9tbekM4KEMMP+s64JS8XA=;
+	s=korg; t=1778607795;
+	bh=XeTZ6t5wUMM+wt1f+WOoJLr7gYMkhx5IA+zt5eZW8z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X65y8gefFP+TKMhoZFgCPbYQGO4BlqLvkVR13eoupXfmVHHMrNVf1DkvGI1lMywqF
-	 PcIGmL1KJnXG6ODgWHN2zLfTA7AO2gGEqkhOHs2pkQT3OWf/xjbkdNozm/mBIHsfhU
-	 Lh+Lf1Lqlo8ijpP8DNdrEChTX19MnVCU03mBlBuE=
+	b=mBdLU7u3IORMH+xAr8YzHej9mcgHRHzotqf3+AJivxIoYsqbq/+EFQmJ/fTS/dl9L
+	 E+86i7JOMMMkMtLJj55ouqPaebSe+8w+20b67dy7CIVqUHSe+GxVvLyQhynWk3T9nR
+	 MVNd2C2e/n15OYa2uUzfUcVkq/cQqAlH9XUygNPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 089/270] mm/hugetlb_cma: round up per_node before logging it
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 038/206] wifi: mac80211: remove station if connection prep fails
 Date: Tue, 12 May 2026 19:38:10 +0200
-Message-ID: <20260512173940.334694986@linuxfoundation.org>
+Message-ID: <20260512173933.638973704@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +63,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E0DAC526CBA
+X-Rspamd-Queue-Id: 4AF555260E3
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org,suse.de,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-246140-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-245881-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,suse.de:email,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 8f5ce56b76303c55b78a87af996e2e0f8535f979 upstream.
+commit 283fc9e44ff5b5ac967439b4951b80bd4299f4e4 upstream.
 
-When the user requests a total hugetlb CMA size without per-node
-specification, hugetlb_cma_reserve() computes per_node from
-hugetlb_cma_size and the number of nodes that have memory
+If connection preparation fails for MLO connections, then the
+interface is completely reset to non-MLD. In this case, we must
+not keep the station since it's related to the link of the vif
+being removed. Delete an existing station. Any "new_sta" is
+already being removed, so that doesn't need changes.
 
-        per_node = DIV_ROUND_UP(hugetlb_cma_size,
-                                nodes_weight(hugetlb_bootmem_nodes));
+This fixes a use-after-free/double-free in debugfs if that's
+enabled, because a vif going from MLD (and to MLD, but that's
+not relevant here) recreates its entire debugfs.
 
-The reservation loop later computes
-
-        size = round_up(min(per_node, hugetlb_cma_size - reserved),
-                          PAGE_SIZE << order);
-
-So the actually reserved per_node size is multiple of (PAGE_SIZE <<
-order), but the logged per_node is not rounded up, so it may be smaller
-than the actual reserved size.
-
-For example, as the existing comment describes, if a 3 GB area is
-requested on a machine with 4 NUMA nodes that have memory, 1 GB is
-allocated on the first three nodes, but the printed log is
-
-        hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
-
-Round per_node up to (PAGE_SIZE << order) before logging so that the
-printed log always matches the actual reserved size.  No functional change
-to the actual reservation size, as the following case analysis shows
-
-1. remaining (hugetlb_cma_size - reserved) >= rounded per_node
- - AS-IS: min() picks unrounded per_node;
-    round_up() returns rounded per_node
- - TO-BE: min() picks rounded per_node;
-    round_up() returns rounded per_node (no-op)
-2. remaining < unrounded per_node
- - AS-IS: min() picks remaining;
-    round_up() returns round_up(remaining)
- - TO-BE: min() picks remaining;
-    round_up() returns round_up(remaining)
-3. unrounded per_node <= remaining < rounded per_node
- - AS-IS: min() picks unrounded per_node;
-    round_up() returns rounded per_node
- - TO-BE: min() picks remaining;
-    round_up() returns round_up(remaining) equals rounded per_node
-
-Link: https://lore.kernel.org/20260422143353.852257-1-ekffu200098@gmail.com
-Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma") # 5.7
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260505151533.c4e52deb06ad.Iafe56cec7de8512626169496b134bce3a6c17010@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb_cma.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/mlme.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -193,6 +193,7 @@ void __init hugetlb_cma_reserve(int orde
- 		 */
- 		per_node = DIV_ROUND_UP(hugetlb_cma_size,
- 					nodes_weight(hugetlb_bootmem_nodes));
-+		per_node = round_up(per_node, PAGE_SIZE << order);
- 		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
- 			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -8177,7 +8177,7 @@ static int ieee80211_prep_connection(str
+ 	struct ieee80211_bss *bss = (void *)cbss->priv;
+ 	struct sta_info *new_sta = NULL;
+ 	struct ieee80211_link_data *link;
+-	bool have_sta = false;
++	struct sta_info *have_sta = NULL;
+ 	bool mlo;
+ 	int err;
+ 
+@@ -8215,11 +8215,8 @@ static int ieee80211_prep_connection(str
+ 		goto out_err;
  	}
+ 
+-	if (assoc) {
+-		rcu_read_lock();
++	if (assoc)
+ 		have_sta = sta_info_get(sdata, ap_mld_addr);
+-		rcu_read_unlock();
+-	}
+ 
+ 	if (!have_sta) {
+ 		if (mlo)
+@@ -8352,6 +8349,8 @@ static int ieee80211_prep_connection(str
+ out_release_chan:
+ 	ieee80211_link_release_channel(link);
+ out_err:
++	if (mlo && have_sta)
++		WARN_ON(__sta_info_destroy(have_sta));
+ 	ieee80211_vif_set_links(sdata, 0, 0);
+ 	return err;
+ }
 
 
 
