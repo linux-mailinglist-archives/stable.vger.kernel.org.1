@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-246388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246073-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qACzEitzA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:36:27 +0200
+	id IPSzIwxuA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246073-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D7B527D86
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6873527195
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37DA831A9A30
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:04:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 508C831B9562
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB49C23E356;
-	Tue, 12 May 2026 18:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367083BB108;
+	Tue, 12 May 2026 17:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eemw6R4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGI+mm0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB143EDE5D;
-	Tue, 12 May 2026 18:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3F03EDE44;
+	Tue, 12 May 2026 17:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609097; cv=none; b=CoS96us1Tt8qvohwoYBOl27cwNCeSsNINrXeUx814tVAO7I+mWzPRb9aik0uebP6M5wauxo2u0vIdi2SLu8WbUhXdt8YBZbg4FUTotGIE635hfjNr8SYrcoGAwRNv/dkw//jTi2toWVAZ43yrKwQNG7AViUir0486gllFqg18A4=
+	t=1778608289; cv=none; b=TTm3qlV42EHZfk7ecLxlTxcpX90ZXoaOL5/95FJUuLyDtRCEPF1y8YsaZBchPuXMsLlsnY4B2bAo0aHk7zUhuTXTBn8HNRlOB18UsC1kg7wmRDW3zvTfxSKNzwXxkJYzfKI60AU4ZqRQ3UTYKmd/g7sy4oZiZ2P5b9r9ybL4nWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609097; c=relaxed/simple;
-	bh=1hbogNVnGAvoqR05TLjMKpINC/m6PS4fLqa15/ECKXo=;
+	s=arc-20240116; t=1778608289; c=relaxed/simple;
+	bh=mdWcHS321seFRXAw8DD1FPFT4+zz4YLPIEwrRJ9QncY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6BeJzE8RQr8yRSu/C6Ay1wjum8H3ETIWZhwNRxitO0aQ3ap80nl4Ug+KveMwFs/Y54ulqiWJHhMpyVKF9xheD6bQqJkQGXfznmJ7pmqY2ZkHvLQZooAmJFL3bZEMqfLjEYqBMo4c2ZEx6GsmKcatw2qnvp9IO+j/CYXKZQ1Cd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eemw6R4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EE4C2BCB0;
-	Tue, 12 May 2026 18:04:56 +0000 (UTC)
+	 MIME-Version; b=Hhj0R0uuUM1bNf5UKkobWUfE3jPbh+d7HNgdWgPvXEoaKJBfsncMS6OLs7MEGODRBJFxYNtCkbUkjyFry4B6Nbr9ovqW1wpq7VNOcIaVvaK6v+82cxKP+oPzsH2G7XhbbikBY8G4h3aMYb1n1fHq7FFh96IuOLA58PUCLQr081s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGI+mm0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C811C2BCB0;
+	Tue, 12 May 2026 17:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609097;
-	bh=1hbogNVnGAvoqR05TLjMKpINC/m6PS4fLqa15/ECKXo=;
+	s=korg; t=1778608288;
+	bh=mdWcHS321seFRXAw8DD1FPFT4+zz4YLPIEwrRJ9QncY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eemw6R4+E7ZAJmvwqU9pzdPWwTjPzng/8lKUNsS4/AWpbTpHE3+XY9NpwIvJg0C4b
-	 XaQvgFde5PezRFH5zpW0MPRRa0l2MA/kbFJTLEEw3cQKSX8sFaut9JnV4EG6RIssg5
-	 ITL/XiGiEpEyQ6JEOctt2IJI+8Hxor/hAu6q99L8=
+	b=AGI+mm0/MRPt2ceH7RkEu25mDPvkvgKrrLQoOsHpwsmZPumOoUrhpIfM+oytaRuIz
+	 kwxsCazoglSruBQgGOQKXWWgs0K4gZrQX3qPb3W1CbqxWM8JCs87SPS80KBkTzVhqB
+	 9FiILGnD/nQYhf8lPBsW+e4ekpuyOmj7q4WymnMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catherine <enderaoelyther@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 7.0 027/307] wifi: mac80211: drop stray static from fast-RX rx_result
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Xiao Liu <lx24@stu.ynu.edu.cn>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 021/270] net: af_key: zero aligned sockaddr tail in PF_KEY exports
 Date: Tue, 12 May 2026 19:37:02 +0200
-Message-ID: <20260512173940.697911221@linuxfoundation.org>
+Message-ID: <20260512173938.904263388@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +69,184 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C1D7B527D86
+X-Rspamd-Queue-Id: C6873527195
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[ynu.edu.cn:email];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246388-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,stu.ynu.edu.cn,secunet.com,kernel.org];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-246073-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_SPAM(0.00)[0.789];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:email,lzu.edu.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ynu.edu.cn:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catherine <enderaoelyther@gmail.com>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-commit 7a5b81e0c87a075afd572f659d8eb68c9c4cd2ba upstream.
+[ Upstream commit 426c355742f02cf743b347d9d7dbdc1bfbfa31ef ]
 
-ieee80211_invoke_fast_rx() is documented as safe for parallel RX, but
-its per-invocation rx_result is declared static. Concurrent callers then
-share one instance and can overwrite each other's result between
-ieee80211_rx_mesh_data() and the switch on res.
+PF_KEY export paths use `pfkey_sockaddr_size()` when reserving sockaddr
+payload space, so IPv6 addresses occupy 32 bytes on the wire. However,
+`pfkey_sockaddr_fill()` initializes only the first 28 bytes of
+`struct sockaddr_in6`, leaving the final 4 aligned bytes uninitialized.
 
-That can make a packet that was queued or consumed by
-ieee80211_rx_mesh_data() fall through into ieee80211_rx_8023(), or make
-a packet that should continue return as queued.
+Not every PF_KEY message is affected. The state and policy dump builders
+already zero the whole message buffer before filling the sockaddr
+payloads. Keep the fix to the export paths that still append aligned
+sockaddr payloads with plain `skb_put()`:
 
-Make res an automatic variable so each invocation keeps its own result.
+  - `SADB_ACQUIRE`
+  - `SADB_X_NAT_T_NEW_MAPPING`
+  - `SADB_X_MIGRATE`
 
-Fixes: 3468e1e0c639 ("wifi: mac80211: add mesh fast-rx support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Catherine <enderaoelyther@gmail.com>
-Link: https://patch.msgid.link/20260424131435.83212-2-enderaoelyther@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix those paths by clearing only the aligned sockaddr tail after
+`pfkey_sockaddr_fill()`.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 08de61beab8a ("[PFKEYV2]: Extension for dynamic update of endpoint address(es)")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Xiao Liu <lx24@stu.ynu.edu.cn>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/key/af_key.c | 52 +++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 34 insertions(+), 18 deletions(-)
 
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4928,7 +4928,7 @@ static bool ieee80211_invoke_fast_rx(str
- 	struct sk_buff *skb = rx->skb;
- 	struct ieee80211_hdr *hdr = (void *)skb->data;
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
--	static ieee80211_rx_result res;
-+	ieee80211_rx_result res;
- 	int orig_len = skb->len;
- 	int hdrlen = ieee80211_hdrlen(hdr->frame_control);
- 	int snap_offs = hdrlen;
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index ceaa82bc78acc..e01939ab81039 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -757,6 +757,22 @@ static unsigned int pfkey_sockaddr_fill(const xfrm_address_t *xaddr, __be16 port
+ 	return 0;
+ }
+ 
++static unsigned int pfkey_sockaddr_fill_zero_tail(const xfrm_address_t *xaddr,
++						  __be16 port,
++						  struct sockaddr *sa,
++						  unsigned short family)
++{
++	unsigned int prefixlen;
++	int sockaddr_len = pfkey_sockaddr_len(family);
++	int sockaddr_size = pfkey_sockaddr_size(family);
++
++	prefixlen = pfkey_sockaddr_fill(xaddr, port, sa, family);
++	if (sockaddr_size > sockaddr_len)
++		memset((u8 *)sa + sockaddr_len, 0, sockaddr_size - sockaddr_len);
++
++	return prefixlen;
++}
++
+ static struct sk_buff *__pfkey_xfrm_state2msg(const struct xfrm_state *x,
+ 					      int add_keys, int hsc)
+ {
+@@ -3206,9 +3222,9 @@ static int pfkey_send_acquire(struct xfrm_state *x, struct xfrm_tmpl *t, struct
+ 	addr->sadb_address_proto = 0;
+ 	addr->sadb_address_reserved = 0;
+ 	addr->sadb_address_prefixlen =
+-		pfkey_sockaddr_fill(&x->props.saddr, 0,
+-				    (struct sockaddr *) (addr + 1),
+-				    x->props.family);
++		pfkey_sockaddr_fill_zero_tail(&x->props.saddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      x->props.family);
+ 	if (!addr->sadb_address_prefixlen)
+ 		BUG();
+ 
+@@ -3221,9 +3237,9 @@ static int pfkey_send_acquire(struct xfrm_state *x, struct xfrm_tmpl *t, struct
+ 	addr->sadb_address_proto = 0;
+ 	addr->sadb_address_reserved = 0;
+ 	addr->sadb_address_prefixlen =
+-		pfkey_sockaddr_fill(&x->id.daddr, 0,
+-				    (struct sockaddr *) (addr + 1),
+-				    x->props.family);
++		pfkey_sockaddr_fill_zero_tail(&x->id.daddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      x->props.family);
+ 	if (!addr->sadb_address_prefixlen)
+ 		BUG();
+ 
+@@ -3421,9 +3437,9 @@ static int pfkey_send_new_mapping(struct xfrm_state *x, xfrm_address_t *ipaddr,
+ 	addr->sadb_address_proto = 0;
+ 	addr->sadb_address_reserved = 0;
+ 	addr->sadb_address_prefixlen =
+-		pfkey_sockaddr_fill(&x->props.saddr, 0,
+-				    (struct sockaddr *) (addr + 1),
+-				    x->props.family);
++		pfkey_sockaddr_fill_zero_tail(&x->props.saddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      x->props.family);
+ 	if (!addr->sadb_address_prefixlen)
+ 		BUG();
+ 
+@@ -3443,9 +3459,9 @@ static int pfkey_send_new_mapping(struct xfrm_state *x, xfrm_address_t *ipaddr,
+ 	addr->sadb_address_proto = 0;
+ 	addr->sadb_address_reserved = 0;
+ 	addr->sadb_address_prefixlen =
+-		pfkey_sockaddr_fill(ipaddr, 0,
+-				    (struct sockaddr *) (addr + 1),
+-				    x->props.family);
++		pfkey_sockaddr_fill_zero_tail(ipaddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      x->props.family);
+ 	if (!addr->sadb_address_prefixlen)
+ 		BUG();
+ 
+@@ -3474,15 +3490,15 @@ static int set_sadb_address(struct sk_buff *skb, int sasize, int type,
+ 	switch (type) {
+ 	case SADB_EXT_ADDRESS_SRC:
+ 		addr->sadb_address_prefixlen = sel->prefixlen_s;
+-		pfkey_sockaddr_fill(&sel->saddr, 0,
+-				    (struct sockaddr *)(addr + 1),
+-				    sel->family);
++		pfkey_sockaddr_fill_zero_tail(&sel->saddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      sel->family);
+ 		break;
+ 	case SADB_EXT_ADDRESS_DST:
+ 		addr->sadb_address_prefixlen = sel->prefixlen_d;
+-		pfkey_sockaddr_fill(&sel->daddr, 0,
+-				    (struct sockaddr *)(addr + 1),
+-				    sel->family);
++		pfkey_sockaddr_fill_zero_tail(&sel->daddr, 0,
++					      (struct sockaddr *)(addr + 1),
++					      sel->family);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+-- 
+2.53.0
+
 
 
 
