@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-245892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJapN3lnA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:33 +0200
+	id OB8yJpNsA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6D9526149
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CA0526D69
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F3DCB308BD6F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 78848303EFB9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C625F3CDBDD;
-	Tue, 12 May 2026 17:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C881A33A6E2;
+	Tue, 12 May 2026 18:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiDnnnaN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXeBcx+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AF8385D85;
-	Tue, 12 May 2026 17:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC633EDE68;
+	Tue, 12 May 2026 18:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607823; cv=none; b=MOvjgMAzJwMI71iews8Yh6zaflsPik52rd5vyI2Rns8vPC24TZAfhSKPe1OYE6Gibila2hU8hSKRCDLhO8LY+B3tN2iD70GED2RjlJDopunW1mcpdBF5FpjIRXbrEor8OeiLAuPlrjoQy+aLdLX+iESE54PB0BS8OAPpEQxzBiw=
+	t=1778609210; cv=none; b=EgwPafyfSYi5hqlCqMcqvusF9d1xnlWRLL3/2A2sTntnbgv4m8SprkRXvtmAI8qpgOivyY1zWJ3gzuXSTmHJq9s13qp16Nkl9JTfTZAlC7MQELbBk2JjfSr53msJ8OtXcoUeI3wzGhseMB5phg1HLJrHxjZL7CMhnSZ44+4XtKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607823; c=relaxed/simple;
-	bh=9JHJQH+uwGO/OAmvLpTruCbaJYyPb1r4TOXdmEOO9cE=;
+	s=arc-20240116; t=1778609210; c=relaxed/simple;
+	bh=7PX58gXgbTb9kHd++5Fo8a2LJEyrGVTZLLyvfmBj2Oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMBcv98pQvqtUYpOvA/uCw5Dc+c7KZxIzfTnuK2kZtqq6zg4wg38B1I7Utui2oE6rVyWbPV19dJqUjsS3fA1U7mDSM7r/Cn09dpiHkv6svb/RpEFGeUL6NjzFOoTmrHjr8u5jz74DohsdvD70d8dKsVZL/6MnHdkwguUEiVwB+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiDnnnaN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B68C2BCB0;
-	Tue, 12 May 2026 17:43:42 +0000 (UTC)
+	 MIME-Version; b=iL2ACza+Nvg+XTZfLStmSMIQGNWR+6BLYTnEvpLa/dQBPwmQqs3cdnq//iwJWNV1DwymJ4IWViHlSjN+gJ5fe3nSivttvyMZSKRTKdnjucvph2XEo4x9Pt94tlaCVKSmCAn+upLSV6oOXteDehYIVOsKjOmcD5af1Bsifjz0qes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXeBcx+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2066DC2BCB0;
+	Tue, 12 May 2026 18:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607823;
-	bh=9JHJQH+uwGO/OAmvLpTruCbaJYyPb1r4TOXdmEOO9cE=;
+	s=korg; t=1778609210;
+	bh=7PX58gXgbTb9kHd++5Fo8a2LJEyrGVTZLLyvfmBj2Oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jiDnnnaNII+2J9Yp23TjKcl8hBvfmTwRb6gvrcLVM2IwoUBwwexKNFG1N4golTTMP
-	 zb1o0Cnd5+lL+cJWqBKUuY+fy7ztNF4Ch9/c8AfiMCoTXilZL5EMSaG5pkhnzoOkuu
-	 QfpkYi0Jy/zSFJIhPzZa83FXXpAqS+o1xOGa0TMo=
+	b=yXeBcx+YxbYlufpYEdLZuwW0MtpP4/wGa4+9tBGNyETuoYTqBdBJAdC8VaBnb1S1F
+	 jgNte7Mjhi4/5Fec5AQphk0Wgw+SiQbbDYEcN13EBj7U6Vulh0OALftYNYJRkbY4lN
+	 Gi9VhhOFfOENNUF2VA3nJzkct2NJ6UHc3quzIMdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 048/206] USB: serial: option: add Telit Cinterion LE910Cx compositions
-Date: Tue, 12 May 2026 19:38:20 +0200
-Message-ID: <20260512173933.854398604@linuxfoundation.org>
+	Thomas Gleixner <tglx@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dmitry Vyukov <dvyukov@google.com>
+Subject: [PATCH 7.0 106/307] selftests/rseq: Make registration flexible for legacy and optimized mode
+Date: Tue, 12 May 2026 19:38:21 +0200
+Message-ID: <20260512173942.362880375@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,173 +64,207 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6B6D9526149
+X-Rspamd-Queue-Id: 37CA0526D69
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245892-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246431-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Thomas Gleixner <tglx@kernel.org>
 
-commit 100201d349edd226ca3470c894c92dccc67ee7a8 upstream.
+commit d97cb2ef0b221b068e90b6058aa97faa0626bdab upstream.
 
-Add the following Telit Cinterion LE910Cx compositions:
+rseq_register_current_thread() either uses the glibc registered RSEQ region
+or registers it's own region with the legacy size of 32 bytes.
 
-0x1251: RNDIS + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (SAP)
-T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=108 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1251 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=LE910C1-EU
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=02 Prot=ff Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+That worked so far, but becomes a problem when the kernel implements a
+distinction between legacy and performance optimized behavior based on the
+registration size as that does not allow to test both modes with the self
+test suite.
 
-0x1253: ECM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (SAP)
-T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=121 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1253 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=LE910C1-EU
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+Add two arguments to the function. One to enforce that the registration is
+not using libc provided mode and one to tell the registration to use the
+legacy size and not the kernel advertised size.
 
-0x1254: tty (AT) + tty (AT)
-T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=122 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1254 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=LE910C1-EU
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 2 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+Rename it and make the original one a inline wrapper which preserves the
+existing behavior.
 
-0x1255: tty (AT/NMEA) + tty (AT) + tty (AT) + tty (SAP)
-T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=123 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1255 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=LE910C1-EU
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
+Fixes: 566d8015f7ee ("rseq: Avoid CPU/MM CID updates when no event pending")
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Tested-by: Dmitry Vyukov <dvyukov@google.com>
+Link: https://patch.msgid.link/20260428224427.677889423%40kernel.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/rseq/rseq-abi.h |    7 ++++-
+ tools/testing/selftests/rseq/rseq.c     |   39 ++++++++++++++------------------
+ tools/testing/selftests/rseq/rseq.h     |    8 +++++-
+ 3 files changed, 31 insertions(+), 23 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1513,7 +1513,11 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1231, 0xff),	/* Telit LE910Cx (RNDIS) */
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x1250, 0xff, 0x00, 0x00) },	/* Telit LE910Cx (rmnet) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1251, 0xff) },	/* Telit LE910Cx (RNDIS) */
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1252, 0xff) },	/* Telit LE910Cx (MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1253, 0xff) },	/* Telit LE910Cx (ECM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1254, 0xff) },	/* Telit LE910Cx */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1255, 0xff) },	/* Telit LE910Cx */
- 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x1260),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x1261),
+--- a/tools/testing/selftests/rseq/rseq-abi.h
++++ b/tools/testing/selftests/rseq/rseq-abi.h
+@@ -192,9 +192,14 @@ struct rseq_abi {
+ 	struct rseq_abi_slice_ctrl slice_ctrl;
+ 
+ 	/*
++	 * Place holder to push the size above 32 bytes.
++	 */
++	__u8 __reserved;
++
++	/*
+ 	 * Flexible array member at end of structure, after last feature field.
+ 	 */
+ 	char end[];
+-} __attribute__((aligned(4 * sizeof(__u64))));
++} __attribute__((aligned(256)));
+ 
+ #endif /* _RSEQ_ABI_H */
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -56,6 +56,7 @@ ptrdiff_t rseq_offset;
+  * unsuccessful.
+  */
+ unsigned int rseq_size = -1U;
++static unsigned int rseq_alloc_size;
+ 
+ /* Flags used during rseq registration.  */
+ unsigned int rseq_flags;
+@@ -115,29 +116,17 @@ bool rseq_available(void)
+ 	}
+ }
+ 
+-/* The rseq areas need to be at least 32 bytes. */
+-static
+-unsigned int get_rseq_min_alloc_size(void)
+-{
+-	unsigned int alloc_size = rseq_size;
+-
+-	if (alloc_size < ORIG_RSEQ_ALLOC_SIZE)
+-		alloc_size = ORIG_RSEQ_ALLOC_SIZE;
+-	return alloc_size;
+-}
+-
+ /*
+  * Return the feature size supported by the kernel.
+  *
+  * Depending on the value returned by getauxval(AT_RSEQ_FEATURE_SIZE):
+  *
+- * 0:   Return ORIG_RSEQ_FEATURE_SIZE (20)
++ *   0: Return ORIG_RSEQ_FEATURE_SIZE (20)
+  * > 0: Return the value from getauxval(AT_RSEQ_FEATURE_SIZE).
+  *
+  * It should never return a value below ORIG_RSEQ_FEATURE_SIZE.
+  */
+-static
+-unsigned int get_rseq_kernel_feature_size(void)
++static unsigned int get_rseq_kernel_feature_size(void)
+ {
+ 	unsigned long auxv_rseq_feature_size, auxv_rseq_align;
+ 
+@@ -152,15 +141,24 @@ unsigned int get_rseq_kernel_feature_siz
+ 		return ORIG_RSEQ_FEATURE_SIZE;
+ }
+ 
+-int rseq_register_current_thread(void)
++int __rseq_register_current_thread(bool nolibc, bool legacy)
+ {
++	unsigned int size;
+ 	int rc;
+ 
+ 	if (!rseq_ownership) {
+ 		/* Treat libc's ownership as a successful registration. */
+-		return 0;
++		return nolibc ? -EBUSY : 0;
+ 	}
+-	rc = sys_rseq(&__rseq.abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
++
++	/* The minimal allocation size is 32, which is the legacy allocation size */
++	size = get_rseq_kernel_feature_size();
++	if (legacy || size < ORIG_RSEQ_ALLOC_SIZE)
++		rseq_alloc_size = ORIG_RSEQ_ALLOC_SIZE;
++	else
++		rseq_alloc_size = size;
++
++	rc = sys_rseq(&__rseq.abi, rseq_alloc_size, 0, RSEQ_SIG);
+ 	if (rc) {
+ 		/*
+ 		 * After at least one thread has registered successfully
+@@ -179,9 +177,8 @@ int rseq_register_current_thread(void)
+ 	 * The first thread to register sets the rseq_size to mimic the libc
+ 	 * behavior.
+ 	 */
+-	if (RSEQ_READ_ONCE(rseq_size) == 0) {
+-		RSEQ_WRITE_ONCE(rseq_size, get_rseq_kernel_feature_size());
+-	}
++	if (RSEQ_READ_ONCE(rseq_size) == 0)
++		RSEQ_WRITE_ONCE(rseq_size, size);
+ 
+ 	return 0;
+ }
+@@ -194,7 +191,7 @@ int rseq_unregister_current_thread(void)
+ 		/* Treat libc's ownership as a successful unregistration. */
+ 		return 0;
+ 	}
+-	rc = sys_rseq(&__rseq.abi, get_rseq_min_alloc_size(), RSEQ_ABI_FLAG_UNREGISTER, RSEQ_SIG);
++	rc = sys_rseq(&__rseq.abi, rseq_alloc_size, RSEQ_ABI_FLAG_UNREGISTER, RSEQ_SIG);
+ 	if (rc)
+ 		return -1;
+ 	return 0;
+--- a/tools/testing/selftests/rseq/rseq.h
++++ b/tools/testing/selftests/rseq/rseq.h
+@@ -8,6 +8,7 @@
+ #ifndef RSEQ_H
+ #define RSEQ_H
+ 
++#include <assert.h>
+ #include <stdint.h>
+ #include <stdbool.h>
+ #include <pthread.h>
+@@ -142,7 +143,12 @@ static inline struct rseq_abi *rseq_get_
+  * succeed. A restartable sequence executed from a non-registered
+  * thread will always fail.
+  */
+-int rseq_register_current_thread(void);
++int __rseq_register_current_thread(bool nolibc, bool legacy);
++
++static inline int rseq_register_current_thread(void)
++{
++	return __rseq_register_current_thread(false, false);
++}
+ 
+ /*
+  * Unregister rseq for current thread.
 
 
 
