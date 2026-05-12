@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-246476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PTLHg9vA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246476-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:55 +0200
+	id sCN7LmtqA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3247F527484
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739E85266C1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CDE7630AF027
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DC03F303EADA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2593134405B;
-	Tue, 12 May 2026 18:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F2C3EDE7C;
+	Tue, 12 May 2026 17:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkWuGl3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8p3+viM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92662DE6E3;
-	Tue, 12 May 2026 18:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C0D3EDE78;
+	Tue, 12 May 2026 17:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609323; cv=none; b=CiFConIwtNv2hiHRW0NuNWBB+dpYdQ87kyu7c9QzdiFACwYNIRpMwvvvZhiz00Q5kCZgDo1sFLjlp/AzbmJgZlBx9gFMpvDp1Ie+7yp/RbWGQA9U5HCkXjS5lGYsMSv/+GaS/lDR2pU5Did67eHQhZSSk5zAG5GLIkNjOEtXFdU=
+	t=1778608605; cv=none; b=YyIOG9Lxf3zz2e9nj/YUxG9e97cISmSdaBpsvt6yBYozUoIKm/iVNdavm4zWkBwm4DU7ezM8LjWpWDVjypEX7vOIXhf/L1yHn7FtvQP5WnHqhlm0ieT4MVu962sdOdMiMrR2KCAkkRDX+sykp41gRNWKfLE9J/WHlPLOw10H73Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609323; c=relaxed/simple;
-	bh=lvpaXdLD3xUkwDK/Dwa27LVj4CnuWqrG/F5g7QPtBEM=;
+	s=arc-20240116; t=1778608605; c=relaxed/simple;
+	bh=N8vvAgx+AUMqeNFrh/aD2Hr1ZAN7qQIq03Qt3AETqMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyxaEpm3lsPjPsz9Ek/ay5upesnbI3j5/zbSWS8m3ry/B93lU2dS5kkv7/yaJIRvwABgNmpHxQc1Ncfoo+gzVwgktv5F7QRgVwgzrB5wyaYFw75N+um9i3J7zseDTmN0ON32PQrqkvnivsb877Q6merFNBspU/Wz/ngSZQY2Ge0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkWuGl3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E15AC2BCB0;
-	Tue, 12 May 2026 18:08:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E2+hnvRbUCegO2ZiVZPgPso1SGF+20XNgg77jEG5YmIN4EjmVpGoeMOVNYZMwIMe8WALJ9AqkXRVtGbxFBrISF19mRaBrsnh5fW0iMVG7/pTs+iGzfct3stl4jUIG2CU3WWiy6XvyRNAD6l1C2VSDB+UcvOhFtbDtOYGqQooj6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8p3+viM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D867C2BCB0;
+	Tue, 12 May 2026 17:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609323;
-	bh=lvpaXdLD3xUkwDK/Dwa27LVj4CnuWqrG/F5g7QPtBEM=;
+	s=korg; t=1778608605;
+	bh=N8vvAgx+AUMqeNFrh/aD2Hr1ZAN7qQIq03Qt3AETqMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkWuGl3iA2AHq6QLRHKKa79rAvnsveEPTrcJTMPIERm08XcdvZZU7jIL981DcK4Ny
-	 7NIhOjUTqYHTbxIe/OaRgsaeIfzMIFL9GF+DmOFCT5zZDAhDtxaHrOi6QnJ9m/RuYh
-	 Tts0B4Oz2Pnbkl85C83s9vL1kJnqKXhzM+Sellgg=
+	b=J8p3+viMF1PA55097SiCsfD9lm3VengR7zzNKwHIp+KyCazJkqBU2rZuKPhkrZ21L
+	 9XkXGWyK9M5X6JAwvAS6ldIjc5IkJjxo/MDC5D6drdpxF8pdhqcTGKrivhramuFzgU
+	 4mAWY2+ZnnGix2px3G58hNdnq8pyUynsKaJ6a3pM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 150/307] spi: microchip-core-qspi: dont attempt to transmit during emulated read-only dual/quad operations
+Subject: [PATCH 6.18 144/270] ASoC: Intel: bytcr_wm5102: Fix MCLK leak on platform_clock_control error
 Date: Tue, 12 May 2026 19:39:05 +0200
-Message-ID: <20260512173943.294114625@linuxfoundation.org>
+Message-ID: <20260512173941.481301728@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +64,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3247F527484
+X-Rspamd-Queue-Id: 739E85266C1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,oss.qualcomm.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246476-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-246196-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit eb56deaabf127e8985fc91fa6c97bf8a3b062844 upstream.
+commit 13d30682e8dee191ac04e93642f0372a723e8b0c upstream.
 
-The core will deal with reads by creating clock cycles itself, there's
-no need to generate clock cycles by transmitting garbage data at the
-driver level. Further, transmitting garbage data just bricks the transfer
-since QSPI doesn't have a dedicated master-out line like MOSI in regular
-SPI. I'm not entirely sure if the transfer is bricked because of the
-garbage data being transmitted on the bus or because the core loses
-track of whether it is supposed to be sending or receiving data.
+If byt_wm5102_prepare_and_enable_pll1() fails in the
+SND_SOC_DAPM_EVENT_ON() path, platform_clock_control() returns after
+clk_prepare_enable(priv->mclk) without disabling the clock again.
 
-Fixes: 8f9cf02c88528 ("spi: microchip-core-qspi: Add regular transfers")
-CC: stable@vger.kernel.org
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20260430-freezing-saloon-95b1f3d9dad0@spud
+This leaks an MCLK enable reference on failed power-up attempts. Add the
+missing clk_disable_unprepare() on the error path, matching the unwind
+used by the other Intel platform_clock_control() implementations.
+
+Fixes: 9a87fc1e0619 ("ASoC: Intel: bytcr_wm5102: Add machine driver for BYT/WM5102")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260427-bytcr-wm5102-mclk-leak-v1-1-02b96d08e99c@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-microchip-core-qspi.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ sound/soc/intel/boards/bytcr_wm5102.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -662,18 +662,28 @@ static int mchp_coreqspi_transfer_one(st
- 				      struct spi_transfer *t)
- {
- 	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
-+	bool dual_quad = false;
- 
- 	qspi->tx_len = t->len;
- 
-+	if (t->tx_nbits == SPI_NBITS_QUAD || t->rx_nbits == SPI_NBITS_QUAD ||
-+			t->tx_nbits == SPI_NBITS_DUAL ||
-+			t->rx_nbits == SPI_NBITS_DUAL)
-+		dual_quad = true;
-+
- 	if (t->tx_buf)
- 		qspi->txbuf = (u8 *)t->tx_buf;
- 
- 	if (!t->rx_buf) {
- 		mchp_coreqspi_write_op(qspi);
--	} else {
-+	} else if (!dual_quad) {
- 		qspi->rxbuf = (u8 *)t->rx_buf;
- 		qspi->rx_len = t->len;
- 		mchp_coreqspi_write_read_op(qspi);
-+	} else {
-+		qspi->rxbuf = (u8 *)t->rx_buf;
-+		qspi->rx_len = t->len;
-+		mchp_coreqspi_read_op(qspi);
- 	}
- 
- 	return 0;
+--- a/sound/soc/intel/boards/bytcr_wm5102.c
++++ b/sound/soc/intel/boards/bytcr_wm5102.c
+@@ -171,6 +171,7 @@ static int platform_clock_control(struct
+ 		ret = byt_wm5102_prepare_and_enable_pll1(codec_dai, 48000);
+ 		if (ret) {
+ 			dev_err(card->dev, "Error setting codec sysclk: %d\n", ret);
++			clk_disable_unprepare(priv->mclk);
+ 			return ret;
+ 		}
+ 	} else {
 
 
 
