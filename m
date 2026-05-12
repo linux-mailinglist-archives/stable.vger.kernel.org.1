@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245962-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLjvKNpsA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:30 +0200
+	id UK6HM51sA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-245962-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B439526E5C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C62526D85
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0446930EFC3B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C3FD3102E51
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549263EDE42;
-	Tue, 12 May 2026 17:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7823E1728;
+	Tue, 12 May 2026 17:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULlT9ba5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypTcJg6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D243EDE48;
-	Tue, 12 May 2026 17:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711383E0757;
+	Tue, 12 May 2026 17:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608737; cv=none; b=TJBv9F32tWWj1U/LsLahv0G4yED+8m3DBojItROf2WHzBkxYfV0o2/BvipMIRkofGw0XCz4dNh/gBsAEvCf7PS/uEJEbrmJHINOMVsfx6VzgBMgQxbywG4DcTFHb6wJQY8x1ob6XMA4x+pG4e5TSPO1BplZZAZ8ROZwjtnAdaNY=
+	t=1778607998; cv=none; b=gk5E5vs4tnqxQJSISRxDCrX9LPokIcuryiQjOrMxPMohzVhbs8KdcM9pFz1xKsz3WJE4vfcLZ05VSwdhV7ltyAvP6eZYBfevxAyZzqrP3I63Z+6lhxBdrQMiihHxF0/65eLwyliu0WSpz+domjK7vH4GAZHLrJcZ9AUoRyTaof8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608737; c=relaxed/simple;
-	bh=/AV4m3aj5fnaOZX8Q7oh/p3/nZR0cewi74FNJHhWMy8=;
+	s=arc-20240116; t=1778607998; c=relaxed/simple;
+	bh=emEsOPB1o9dJIwPyXMNW7t6RAvm0stF20pycHgxOc60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gu7/NuhcWD/OuEsfsFAikx/2x4cqwfm6tAvnHfs363lpuRStos8XaHgpaIa/NlrKUWTQ5PBi8Zp4kLbiRaBbBhoaBu1djrCXrrCPPcqghDcezyn5av3Zbi6FxjiDeffiirDeQNEtorgNGtpNmkMPIFh7TN1ZUhiId01stLC7L+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULlT9ba5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E2CC2BCF5;
-	Tue, 12 May 2026 17:58:56 +0000 (UTC)
+	 MIME-Version; b=Nj2dZvs0mIhNCkGco0bIWY3931TGKIpMMrqxYjZcK4LEK3KZfCE/DuDlyjnCtUcfLrLBIYprnTJf65OfLtBG4gJrFydEWygUMft0WV5NhLcwGy9LyQtfzRwS1AFZUi/BS71gf9Usju2geDqdFgABnQnSteUYTHwQVXuJWipOCD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypTcJg6q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C4FC2BCF5;
+	Tue, 12 May 2026 17:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608737;
-	bh=/AV4m3aj5fnaOZX8Q7oh/p3/nZR0cewi74FNJHhWMy8=;
+	s=korg; t=1778607998;
+	bh=emEsOPB1o9dJIwPyXMNW7t6RAvm0stF20pycHgxOc60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULlT9ba50nH9+w+CMqv3mTStso8uojAE8aI+8QrzQc3CLOQREiasdZTCcSJi2zcFJ
-	 X2J9Swl4oG6hHXUOCvbPgrJ0xkrIconO04D/62MGi8Tcxr9d3l9+iGDpwfnnAHE67+
-	 wgBF+3wyTe8LNEKCSSP6jv8GFEchP+MqUwt+aSCc=
+	b=ypTcJg6qq9aPiGCfUpRkoqXHUU/eD5icDjNJJyHH8QCF63CkJMhlDXd6I8gbKhfF9
+	 kmS84XOK8LIXCua0eF2HAQEPzTI+6bqzz69R/D01tdtyyifqu4dfSMGSkeINPgIN2K
+	 O5lwS6o9WgeRQoDC3taUs0gX3DFQlf5DiHLBwj0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.18 168/270] nvmet: avoid recursive nvmet-wq flush in nvmet_ctrl_free
-Date: Tue, 12 May 2026 19:39:29 +0200
-Message-ID: <20260512173941.985808407@linuxfoundation.org>
+	David Carlier <devnexen@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.12 118/206] eventfs: Hold eventfs_mutex and SRCU when remount walks events
+Date: Tue, 12 May 2026 19:39:30 +0200
+Message-ID: <20260512173935.355159404@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,173 +63,159 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0B439526E5C
+X-Rspamd-Queue-Id: 48C62526D85
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-245962-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,goodmis.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246247-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qemu.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit aade8abd8b868b6ffa9697aadaea28ec7f65bee6 upstream.
+commit 07004a8c4b572171934390148ee48c4175c77eed upstream.
 
-nvmet_tcp_release_queue_work() runs on nvmet-wq and can drop the
-final controller reference through nvmet_cq_put(). If that triggers
-nvmet_ctrl_free(), the teardown path flushes ctrl->async_event_work on
-the same nvmet-wq.
+Commit 340f0c7067a9 ("eventfs: Update all the eventfs_inodes from the
+events descriptor") had eventfs_set_attrs() recurse through ei->children
+on remount.  The walk only holds the rcu_read_lock() taken by
+tracefs_apply_options() over tracefs_inodes, which is wrong:
 
-Call chain:
+  - list_for_each_entry over ei->children races with the list_del_rcu()
+    in eventfs_remove_rec() -- LIST_POISON1 deref, same shape as
+    d2603279c7d6.
+  - eventfs_inodes are freed via call_srcu(&eventfs_srcu, ...).
+    rcu_read_lock() does not extend an SRCU grace period, so ti->private
+    can be reclaimed under the walk.
+  - The writes to ei->attr race with eventfs_set_attr(), which holds
+    eventfs_mutex.
 
- nvmet_tcp_schedule_release_queue()
-   kref_put(&queue->kref, nvmet_tcp_release_queue)
-     nvmet_tcp_release_queue()
-       queue_work(nvmet_wq, &queue->release_work) <--- nvmet_wq
-         process_one_work()
-           nvmet_tcp_release_queue_work()
-             nvmet_cq_put(&queue->nvme_cq)
-               nvmet_cq_destroy()
-                 nvmet_ctrl_put(cq->ctrl)
-                   nvmet_ctrl_free()
-                     flush_work(&ctrl->async_event_work) <--- nvmet_wq
+Reproducer:
 
-                      Previously Scheduled by :-
-		        nvmet_add_async_event
-		          queue_work(nvmet_wq, &ctrl->async_event_work);
+  while :; do mount -o remount,uid=$((RANDOM%1000)) /sys/kernel/tracing; done &
+  while :; do
+      echo "p:kp submit_bio" > /sys/kernel/tracing/kprobe_events
+      echo > /sys/kernel/tracing/kprobe_events
+  done
 
-This trips lockdep with a possible recursive locking warning.
+Wrap the events portion of tracefs_apply_options() in
+eventfs_remount_lock()/_unlock() that take eventfs_mutex and
+srcu_read_lock(&eventfs_srcu).  eventfs_set_attrs() doesn't sleep so the
+nested rcu_read_lock() is fine; lockdep_assert_held() pins the contract.
 
-[ 5223.015876] run blktests nvme/003 at 2026-04-07 20:53:55
-[ 5223.061801] loop0: detected capacity change from 0 to 2097152
-[ 5223.072206] nvmet: adding nsid 1 to subsystem blktests-subsystem-1
-[ 5223.088368] nvmet_tcp: enabling port 0 (127.0.0.1:4420)
-[ 5223.126086] nvmet: Created discovery controller 1 for subsystem nqn.2014-08.org.nvmexpress.discovery for NQN nqn.2014-08.org.nvmexpress:uuid:0f01fb42-9f7f-4856-b0b3-51e60b8de349.
-[ 5223.128453] nvme nvme1: new ctrl: NQN "nqn.2014-08.org.nvmexpress.discovery", addr 127.0.0.1:4420, hostnqn: nqn.2014-08.org.nvmexpress:uuid:0f01fb42-9f7f-4856-b0b3-51e60b8de349
-[ 5233.199447] nvme nvme1: Removing ctrl: NQN "nqn.2014-08.org.nvmexpress.discovery"
+Comment in tracefs_drop_inode() said "RCU cycle" -- it is SRCU.
 
-[ 5233.227718] ============================================
-[ 5233.231283] WARNING: possible recursive locking detected
-[ 5233.234696] 7.0.0-rc3nvme+ #20 Tainted: G           O     N
-[ 5233.238434] --------------------------------------------
-[ 5233.241852] kworker/u192:6/2413 is trying to acquire lock:
-[ 5233.245429] ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: touch_wq_lockdep_map+0x26/0x90
-[ 5233.251438]
-               but task is already holding lock:
-[ 5233.255254] ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x5cc/0x6e0
-[ 5233.261125]
-               other info that might help us debug this:
-[ 5233.265333]  Possible unsafe locking scenario:
-
-[ 5233.269217]        CPU0
-[ 5233.270795]        ----
-[ 5233.272436]   lock((wq_completion)nvmet-wq);
-[ 5233.275241]   lock((wq_completion)nvmet-wq);
-[ 5233.278020]
-                *** DEADLOCK ***
-
-[ 5233.281793]  May be due to missing lock nesting notation
-
-[ 5233.286195] 3 locks held by kworker/u192:6/2413:
-[ 5233.289192]  #0: ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x5cc/0x6e0
-[ 5233.294569]  #1: ffffc9000e2a7e40 ((work_completion)(&queue->release_work)){+.+.}-{0:0}, at: process_one_work+0x1c5/0x6e0
-[ 5233.300128]  #2: ffffffff82d7dc40 (rcu_read_lock){....}-{1:3}, at: __flush_work+0x62/0x530
-[ 5233.304290]
-               stack backtrace:
-[ 5233.306520] CPU: 4 UID: 0 PID: 2413 Comm: kworker/u192:6 Tainted: G           O     N  7.0.0-rc3nvme+ #20 PREEMPT(full)
-[ 5233.306524] Tainted: [O]=OOT_MODULE, [N]=TEST
-[ 5233.306525] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-[ 5233.306527] Workqueue: nvmet-wq nvmet_tcp_release_queue_work [nvmet_tcp]
-[ 5233.306532] Call Trace:
-[ 5233.306534]  <TASK>
-[ 5233.306536]  dump_stack_lvl+0x73/0xb0
-[ 5233.306552]  print_deadlock_bug+0x225/0x2f0
-[ 5233.306556]  __lock_acquire+0x13f0/0x2290
-[ 5233.306563]  lock_acquire+0xd0/0x300
-[ 5233.306565]  ? touch_wq_lockdep_map+0x26/0x90
-[ 5233.306571]  ? __flush_work+0x20b/0x530
-[ 5233.306573]  ? touch_wq_lockdep_map+0x26/0x90
-[ 5233.306577]  touch_wq_lockdep_map+0x3b/0x90
-[ 5233.306580]  ? touch_wq_lockdep_map+0x26/0x90
-[ 5233.306583]  ? __flush_work+0x20b/0x530
-[ 5233.306585]  __flush_work+0x268/0x530
-[ 5233.306588]  ? __pfx_wq_barrier_func+0x10/0x10
-[ 5233.306594]  ? xen_error_entry+0x30/0x60
-[ 5233.306600]  nvmet_ctrl_free+0x140/0x310 [nvmet]
-[ 5233.306617]  nvmet_cq_put+0x74/0x90 [nvmet]
-[ 5233.306629]  nvmet_tcp_release_queue_work+0x19f/0x360 [nvmet_tcp]
-[ 5233.306634]  process_one_work+0x206/0x6e0
-[ 5233.306640]  worker_thread+0x184/0x320
-[ 5233.306643]  ? __pfx_worker_thread+0x10/0x10
-[ 5233.306646]  kthread+0xf1/0x130
-[ 5233.306648]  ? __pfx_kthread+0x10/0x10
-[ 5233.306651]  ret_from_fork+0x355/0x450
-[ 5233.306653]  ? __pfx_kthread+0x10/0x10
-[ 5233.306656]  ret_from_fork_asm+0x1a/0x30
-[ 5233.306664]  </TASK>
-
-There is also no need to flush async_event_work from controller
-teardown. The admin queue teardown already fails outstanding AER
-requests before the final controller put :-
-
- nvmet_sq_destroy(admin sq)
-    nvmet_async_events_failall(ctrl)
-
-The controller has already been removed from the subsystem list before
-nvmet_ctrl_free() quiesces outstanding work.
-
-Replace flush_work() with cancel_work_sync() so a pending
-async_event_work item is canceled and a running instance is waited on
-without recursing into the same workqueue.
-
-Fixes: 06406d81a2d7 ("nvmet: cancel fatal error and flush async work before free controller")
+Fixes: 340f0c7067a9 ("eventfs: Update all the eventfs_inodes from the events descriptor")
 Cc: stable@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Link: https://patch.msgid.link/20260418191737.10289-1-devnexen@gmail.com
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/tracefs/event_inode.c |   14 ++++++++++++++
+ fs/tracefs/inode.c       |    5 ++++-
+ fs/tracefs/internal.h    |    3 +++
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -1746,7 +1746,7 @@ static void nvmet_ctrl_free(struct kref
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -250,6 +250,8 @@ static void eventfs_set_attrs(struct eve
+ {
+ 	struct eventfs_inode *ei_child;
  
- 	nvmet_stop_keep_alive_timer(ctrl);
++	lockdep_assert_held(&eventfs_mutex);
++
+ 	/* Update events/<system>/<event> */
+ 	if (WARN_ON_ONCE(level > 3))
+ 		return;
+@@ -912,3 +914,15 @@ void eventfs_remove_events_dir(struct ev
+ 	d_invalidate(dentry);
+ 	dput(dentry);
+ }
++
++int eventfs_remount_lock(void)
++{
++	mutex_lock(&eventfs_mutex);
++	return srcu_read_lock(&eventfs_srcu);
++}
++
++void eventfs_remount_unlock(int srcu_idx)
++{
++	srcu_read_unlock(&eventfs_srcu, srcu_idx);
++	mutex_unlock(&eventfs_mutex);
++}
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -336,6 +336,7 @@ static int tracefs_apply_options(struct
+ 	struct inode *inode = d_inode(sb->s_root);
+ 	struct tracefs_inode *ti;
+ 	bool update_uid, update_gid;
++	int srcu_idx;
+ 	umode_t tmp_mode;
  
--	flush_work(&ctrl->async_event_work);
-+	cancel_work_sync(&ctrl->async_event_work);
- 	cancel_work_sync(&ctrl->fatal_err_work);
+ 	/*
+@@ -360,6 +361,7 @@ static int tracefs_apply_options(struct
+ 		update_uid = fsi->opts & BIT(Opt_uid);
+ 		update_gid = fsi->opts & BIT(Opt_gid);
  
- 	nvmet_destroy_auth(ctrl);
++		srcu_idx = eventfs_remount_lock();
+ 		rcu_read_lock();
+ 		list_for_each_entry_rcu(ti, &tracefs_inodes, list) {
+ 			if (update_uid) {
+@@ -381,6 +383,7 @@ static int tracefs_apply_options(struct
+ 				eventfs_remount(ti, update_uid, update_gid);
+ 		}
+ 		rcu_read_unlock();
++		eventfs_remount_unlock(srcu_idx);
+ 	}
+ 
+ 	return 0;
+@@ -426,7 +429,7 @@ static int tracefs_drop_inode(struct ino
+ 	 * This inode is being freed and cannot be used for
+ 	 * eventfs. Clear the flag so that it doesn't call into
+ 	 * eventfs during the remount flag updates. The eventfs_inode
+-	 * gets freed after an RCU cycle, so the content will still
++	 * gets freed after an SRCU cycle, so the content will still
+ 	 * be safe if the iteration is going on now.
+ 	 */
+ 	ti->flags &= ~TRACEFS_EVENT_INODE;
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -76,4 +76,7 @@ struct inode *tracefs_get_inode(struct s
+ void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid);
+ void eventfs_d_release(struct dentry *dentry);
+ 
++int eventfs_remount_lock(void);
++void eventfs_remount_unlock(int srcu_idx);
++
+ #endif /* _TRACEFS_INTERNAL_H */
 
 
 
