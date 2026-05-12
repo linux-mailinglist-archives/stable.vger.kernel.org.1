@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-245868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLZYLydnA2qj5gEAu9opvQ
-	(envelope-from <stable+bounces-245868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:11 +0200
+	id 0LUiNK5vA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9C2526095
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD5F527644
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0DE613039394
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E922A31CCB35
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2F03E0738;
-	Tue, 12 May 2026 17:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D56423E356;
+	Tue, 12 May 2026 18:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGxMYeld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq5vFfsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3033B1EE2;
-	Tue, 12 May 2026 17:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D520C50276;
+	Tue, 12 May 2026 18:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607761; cv=none; b=QNz99Txeh60SGwsvCalLXI7ua9eqz/9aqwAVM6ifgwVPF3a2cdEmmFt+OAtGuaewfRamTEpUtmUSNCO9701RMFP++YF276aHmQ8mBp7GmsGqmPhEzkfhUAuAx9Q3byeo31H42eNb2TSQ37zoPlZAkw0YeDcn9slOK5S1Nn4vDAc=
+	t=1778609143; cv=none; b=saFIlkhetTxQhurPrI8oPnhzeO4zgTapChzPaH4PsdEOO0f7TwrXtvjlyrwqnT46PoJOcz5WWmfKBHa6eCoj54QC9yuM07O7axNZTtPWr7AOc/uSVCXr4AXMn9LtC8MCVBKx7UqiIBasE2zJJGJ46puGZMbJqEjyw4+6YJN19vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607761; c=relaxed/simple;
-	bh=8UoSB76PEeOOzuX9KrFIbqYSlUZy7CMSdDiwdFpre/Q=;
+	s=arc-20240116; t=1778609143; c=relaxed/simple;
+	bh=39AXJJxOdxC2gO8CyFY0RPg6XiFwavbp2FtDk1uw3II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ER0wLECvEuQI65hwn8LfGXScn00qgltc0PZ2E53DQ9EOxaroYeU8d6e+dTParzS1dfJ8QdtZ76fAh5vPxRDstU9DF4w3hyoOStoeqq/IsUPiEOfpwUei75DT2dCODhpVrSwQihpo1kPAW4MLgJT4ycwzhXMPyPKlHZXpC1OvYdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGxMYeld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 018DCC2BCB0;
-	Tue, 12 May 2026 17:42:40 +0000 (UTC)
+	 MIME-Version; b=EYwPm3zjIqceFRItNRMiciUGMprOuQikp9LSLSoQuAOmDzDWc7gtuz8jxV/8mxCDVGXzyGhqm5WUnyOmivMnyUwLpIYR0t6kt0a9dcDTJ07GN9tIqNb+BMkVgSqrcz1UAJB/eQI4IhTLjJUDA0KysAeluQsy/UQvJWF1XPhm7Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq5vFfsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5F3C2BCB0;
+	Tue, 12 May 2026 18:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607761;
-	bh=8UoSB76PEeOOzuX9KrFIbqYSlUZy7CMSdDiwdFpre/Q=;
+	s=korg; t=1778609143;
+	bh=39AXJJxOdxC2gO8CyFY0RPg6XiFwavbp2FtDk1uw3II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xGxMYeldTDl23u8Zw3nKfEZWzNIkaUZ1xQgUdn1ZcuAg/JzxB6PxomoAfji7zgSGt
-	 wBlo7F+toPVQRZfdDGRGn+4cNUuI5Z2ATJmfdBShQmfqZwaDQz2n87a2GbP/qpTUNB
-	 lO2FWcDlb+mdfa8tHGzEfqEEyk3Vm+kRzKaSDjhE=
+	b=Tq5vFfsJInRoj8giQoAkRnvMtLkBQCovE/lnnQq2np3e7Pf38+0UXeQ6Dth3Taulc
+	 U9qYHg7EE+qSNyrVx+h9t1TTK1PbI6gyL6i8G2sgX3yUUK/jXB9kO51EEQ8T+W1nMz
+	 CI1/+PfU6mR2YmhLcR4E1HtXts0wChlnzhfc6etM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/206] rxrpc: Fix conn-level packet handling to unshare RESPONSE packets
+	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 083/307] spi: zynq-qspi: fix controller deregistration
 Date: Tue, 12 May 2026 19:37:58 +0200
-Message-ID: <20260512173933.381706230@linuxfoundation.org>
+Message-ID: <20260512173941.872305463@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1A9C2526095
+X-Rspamd-Queue-Id: 4DD5F527644
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -86,8 +80,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245868-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-246406-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,110 +89,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xilinx.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 24481a7f573305706054c59e275371f8d0fe919f upstream.
+commit c9c012706c9fa8ca6d129a9161caf92ab625a3fd upstream.
 
-The security operations that verify the RESPONSE packets decrypt bits of it
-in place - however, the sk_buff may be shared with a packet sniffer, which
-would lead to the sniffer seeing an apparently corrupt packet (actually
-decrypted).
+Make sure to deregister the controller before disabling it during driver
+unbind.
 
-Fix this by handing a copy of the packet off to the specific security
-handler if the packet was cloned.
+Note that clocks were also disabled before the recent commit
+1f8fd9490e31 ("spi: zynq-qspi: Simplify clock handling with
+devm_clk_get_enabled()").
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-5-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Readd rxrpc_skb_put_response_copy which missed in bf20f46d94f1 in v6.12.86]
-Stable-dep-of: aa54b1d27fe0 ("rxrpc: Also unshare DATA/RESPONSE packets when
-paged frags are present")
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
+Cc: stable@vger.kernel.org	# 5.2: 8eb2fd00f65a
+Cc: stable@vger.kernel.org	# 5.2
+Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-27-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/rxrpc.h |  1 +
- net/rxrpc/conn_event.c       | 29 ++++++++++++++++++++++++++++-
- 2 files changed, 29 insertions(+), 1 deletion(-)
+ drivers/spi/spi-zynq-qspi.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 9377acad0c5f9..63efc9e4e4102 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -146,6 +146,7 @@
- 	EM(rxrpc_skb_put_jumbo_subpacket,	"PUT jumbo-sub") \
- 	EM(rxrpc_skb_put_last_nack,		"PUT last-nack") \
- 	EM(rxrpc_skb_put_purge,			"PUT purge    ") \
-+	EM(rxrpc_skb_put_response_copy,		"PUT resp-cpy ") \
- 	EM(rxrpc_skb_put_rotate,		"PUT rotate   ") \
- 	EM(rxrpc_skb_put_unknown,		"PUT unknown  ") \
- 	EM(rxrpc_skb_see_conn_work,		"SEE conn-work") \
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 82cc72123c9c9..6dcfaed1f7485 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -226,6 +226,33 @@ static void rxrpc_call_is_secure(struct rxrpc_call *call)
- 		rxrpc_notify_socket(call);
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -643,7 +643,7 @@ static int zynq_qspi_probe(struct platfo
+ 
+ 	xqspi = spi_controller_get_devdata(ctlr);
+ 	xqspi->dev = dev;
+-	platform_set_drvdata(pdev, xqspi);
++	platform_set_drvdata(pdev, ctlr);
+ 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(xqspi->regs)) {
+ 		ret = PTR_ERR(xqspi->regs);
+@@ -702,9 +702,9 @@ static int zynq_qspi_probe(struct platfo
+ 	/* QSPI controller initializations */
+ 	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
++		dev_err(&pdev->dev, "failed to register controller\n");
+ 		goto remove_ctlr;
+ 	}
+ 
+@@ -728,9 +728,16 @@ remove_ctlr:
+  */
+ static void zynq_qspi_remove(struct platform_device *pdev)
+ {
+-	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
++	struct spi_controller *ctlr = platform_get_drvdata(pdev);
++	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
++
++	spi_controller_get(ctlr);
++
++	spi_unregister_controller(ctlr);
+ 
+ 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
++
++	spi_controller_put(ctlr);
  }
  
-+static int rxrpc_verify_response(struct rxrpc_connection *conn,
-+				 struct sk_buff *skb)
-+{
-+	int ret;
-+
-+	if (skb_cloned(skb)) {
-+		/* Copy the packet if shared so that we can do in-place
-+		 * decryption.
-+		 */
-+		struct sk_buff *nskb = skb_copy(skb, GFP_NOFS);
-+
-+		if (nskb) {
-+			rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
-+			ret = conn->security->verify_response(conn, nskb);
-+			rxrpc_free_skb(nskb, rxrpc_skb_put_response_copy);
-+		} else {
-+			/* OOM - Drop the packet. */
-+			rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
-+			ret = -ENOMEM;
-+		}
-+	} else {
-+		ret = conn->security->verify_response(conn, skb);
-+	}
-+
-+	return ret;
-+}
-+
- /*
-  * connection-level Rx packet processor
-  */
-@@ -253,7 +280,7 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
- 		}
- 		spin_unlock(&conn->state_lock);
- 
--		ret = conn->security->verify_response(conn, skb);
-+		ret = rxrpc_verify_response(conn, skb);
- 		if (ret < 0)
- 			return ret;
- 
--- 
-2.53.0
-
+ static const struct of_device_id zynq_qspi_of_match[] = {
 
 
 
