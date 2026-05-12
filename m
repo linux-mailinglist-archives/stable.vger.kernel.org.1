@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMyzCBduA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:47 +0200
+	id YMj4JCxvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15DD5271C6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA4D5274DD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4641631BC142
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8FD553096F96
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CCB3955E8;
-	Tue, 12 May 2026 17:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860513EDE55;
+	Tue, 12 May 2026 18:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlXAbIPF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKCZiq1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F7A3955DD;
-	Tue, 12 May 2026 17:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4986E3EDE5B;
+	Tue, 12 May 2026 18:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608309; cv=none; b=Ks4AFJTKmsDJtFHxG0q1jF3iNLdI0D8m8lFBmPrKX3lGvUDwgyS7OHakBeisDg6oCn6A2CZmR+xQM2CbuUObZCxOHnH284RZLcG4lZ9f8RSCE36b94CwwlWS6RaTF8guJ7URwlGk1nWGhV3MdRzAr3xqTlBuwDa1RKr+YYOEP4A=
+	t=1778609023; cv=none; b=ijuB8KvBxg2CCYP/1o0iiRaiZZAmS81PQavDfywBBq2PSfBQUyK0Y0ZvsUNG+J3Jq9mHFQDqj2UTruqQyQqO6fQRODJacM9ek7kdjf6b5SY1E8T6klbAf4/RfZvqRaDYMYjapz2GYD0rr13+TQZYysNR/Xy4U7JjhGsHSmnPbTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608309; c=relaxed/simple;
-	bh=o5b5frwb3u0MwSPRkhW5WlwCubQzXLmMXaTXRap+JPs=;
+	s=arc-20240116; t=1778609023; c=relaxed/simple;
+	bh=6bmaOyXcdF4S82blkIf6SZseKYPn8Hqd4L1TnzzWirs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrGZwqIOZ1y5RfQoyZCjDaP7Q1/cezFqoGJl2uWjeqRp2ftyOM489MiZJ609Z2kYLTtYN6Nn8lJ0E7MloxeNsYYXZBCaHdLBmUb3iODIkCVBON7WE5e1GNOebwoAGwAS+Wg+ya9Lu5rSMsP6cDOI9D2TXVtpVp7ZLUOOy7YQzHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlXAbIPF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C072EC2BCF6;
-	Tue, 12 May 2026 17:51:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s1EyPZCdEmfmtZD7oA5cwV2pxXm033jgSwvbXch8LmwcS7o1bJ/djSJ4UCFtrIUnSQZzIxEZPtAMpZkJ5kD3PJ3cb7VsZHCwPPFxY3vrseYPGp8Dlqdo8iCDU0Ks6FvpBZkORgCl5GLmshYrwhCC4yEpDMlxod9NXLkyiAL9oig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKCZiq1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5860C2BCB0;
+	Tue, 12 May 2026 18:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608309;
-	bh=o5b5frwb3u0MwSPRkhW5WlwCubQzXLmMXaTXRap+JPs=;
+	s=korg; t=1778609023;
+	bh=6bmaOyXcdF4S82blkIf6SZseKYPn8Hqd4L1TnzzWirs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlXAbIPFYhyOKXWoyFG98y4dn5Ev6h8CAbHxt6NKGdnkr1YQHpOLWbDXm6tBEF2G2
-	 q2mGp1uHBZXT568hUig3PmSIln0do3Eg3ciQAb5X8P2BT+1Tg3q5+HsZauddmPXIye
-	 SpkUMMM9SO1R6LMwB/HxNF6Rnx52+YaEmsOxt3ew=
+	b=UKCZiq1wVhOq+nrEA4/CUiY3LefGodyGkURp4hpn5PEYLRH0WKkTIgPFobGzUqt6S
+	 cmsFUlViffEOxosUT9OkwvnIOG9wymXNoVtAjcQWNxAopG60xTy2+eFIKx6p6Sl8V5
+	 lZACY/IWZAAB+FQsiK+MYguu+4+EfrJO8YKFi88I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quan Zhou <quan.zhou@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.18 029/270] wifi: mt76: mt7921: fix ROC abort flow interruption in mt7921_roc_work
-Date: Tue, 12 May 2026 19:37:10 +0200
-Message-ID: <20260512173939.071081380@linuxfoundation.org>
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 036/307] ALSA: usb-audio: midi2: Restart output URBs on resume
+Date: Tue, 12 May 2026 19:37:11 +0200
+Message-ID: <20260512173940.887687412@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +62,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A15DD5271C6
+X-Rspamd-Queue-Id: AAA4D5274DD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246359-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246081-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,nbd.name:email,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit fdfa39f9f4fbae532b162da913a67b2410caf38f upstream.
+commit f3c57c9c2a49a21d784b7c04a2c883bffc070659 upstream.
 
-The mt7921_set_roc API may be executed concurrently with mt7921_roc_work,
-specifically between the following code paths:
+USB MIDI 2.0 suspend saves the endpoint running state, clears it and
+kills all endpoint URBs. Resume restores the running state, but only
+restarts input endpoints.
 
-- The check and clear of MT76_STATE_ROC in mt7921_roc_work:
-    if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
-        return;
+For a running output endpoint, this leaves the endpoint marked running
+with an empty URB queue. Output transfer progress depends on either the
+rawmidi trigger path starting the queue or an output completion refilling
+it. After suspend there is no completion left, and output data that
+remains queued in the raw UMP or legacy rawmidi buffer can stay stalled
+until userspace happens to trigger the stream again.
 
-- The execution of ieee80211_iterate_active_interfaces.
+Restore the saved state with atomic accessors, keep input endpoints
+restarted as before, and restart output endpoints that were running before
+suspend. Clear the saved suspend state after restoring it.
 
-This race condition can interrupt the ROC abort flow, resulting in
-the ROC process failing to abort as expected.
-
-To address this defect, the modification of MT76_STATE_ROC is now
-protected by mt792x_mutex_acquire(phy->dev). This ensures that
-changes to the ROC state are properly synchronized, preventing
-race conditions and ensuring the ROC abort flow is not interrupted.
-
-Fixes: 034ae28b56f1 ("wifi: mt76: mt7921: introduce remain_on_channel support")
+Fixes: ff49d1df79ae ("ALSA: usb-audio: USB MIDI 2.0 UMP support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Reviewed-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/2568ece8b557e5dda79391414c834ef3233049b6.1769133724.git.quan.zhou@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260504-usb-midi2-output-resume-v1-1-c089cc8ad3c6@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/usb/midi2.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -387,10 +387,11 @@ void mt7921_roc_work(struct work_struct
- 	phy = (struct mt792x_phy *)container_of(work, struct mt792x_phy,
- 						roc_work);
+--- a/sound/usb/midi2.c
++++ b/sound/usb/midi2.c
+@@ -227,7 +227,7 @@ static void kill_midi_urbs(struct snd_us
+ 	if (!ep)
+ 		return;
+ 	if (suspending)
+-		ep->suspended = ep->running;
++		atomic_set(&ep->suspended, atomic_read(&ep->running));
+ 	atomic_set(&ep->running, 0);
+ 	for (i = 0; i < ep->num_urbs; i++) {
+ 		if (!ep->urbs[i].urb)
+@@ -1190,10 +1190,11 @@ void snd_usb_midi_v2_suspend_all(struct
  
--	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
--		return;
--
- 	mt792x_mutex_acquire(phy->dev);
-+	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state)) {
-+		mt792x_mutex_release(phy->dev);
-+		return;
-+	}
- 	ieee80211_iterate_active_interfaces(phy->mt76->hw,
- 					    IEEE80211_IFACE_ITER_RESUME_ALL,
- 					    mt7921_roc_iter, phy);
+ static void resume_midi2_endpoint(struct snd_usb_midi2_endpoint *ep)
+ {
+-	ep->running = ep->suspended;
+-	if (ep->direction == STR_IN)
++	atomic_set(&ep->running, atomic_read(&ep->suspended));
++	atomic_set(&ep->suspended, 0);
++
++	if (ep->direction == STR_IN || atomic_read(&ep->running))
+ 		submit_io_urbs(ep);
+-	/* FIXME: does it all? */
+ }
+ 
+ void snd_usb_midi_v2_resume_all(struct snd_usb_audio *chip)
 
 
 
