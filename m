@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-246113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AI5pMNxrA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:16 +0200
+	id wHV9Ke9rA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA83526B40
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49353526B96
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B70D31FDA37
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E5333204227
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DDE3955E8;
-	Tue, 12 May 2026 17:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EB33ADB9A;
+	Tue, 12 May 2026 17:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leF5i3Mk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHQb5Yhw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6052EB5A6;
-	Tue, 12 May 2026 17:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB283EDE4E;
+	Tue, 12 May 2026 17:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608391; cv=none; b=lLkNt/M9sJMrXrNgrONqgWK4Kwcqz+iTBNz3EePU7CaeObFnIB/RM3FBs0mVBhufXX/sMA7Ci8unk7LoErSoSL4nup1m6VUX+PVRh1ksWXQzjEI9xoxbAu+6CEKtrKwXgvB+s65qwJQc0WMgPZu46LDtsJM9yv4kqUa5KcvQQYE=
+	t=1778608420; cv=none; b=VLqrDZwXm7d+7JO7YNecwacnpx/gU3SLrw2loj7gBJjZkCWiorus02DX005tVh+llNK+VNiJFXVIYwK8Gpng3kSXxHN5PgfYaGGgjloHV+skdGXRVG+q0+kxbL+Lhk7MjlPtskhvfB16YA/Tu9HHAFDQOjSbEQ96R3luuOranfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608391; c=relaxed/simple;
-	bh=Nw4dpsvHqbwUjVKYT5UtrCa5lqMxkMZCXIXCfkVjcvY=;
+	s=arc-20240116; t=1778608420; c=relaxed/simple;
+	bh=x+dBPVf8g2mejnqmz4uUQrEPHofRpIUmsi4VYgp6Ido=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oemeFK8SGk+JhRXafDbTj8W+gjMOiMzrkUUt0gnCBbci36MgH9I2Be4AoHf3w1FhSXjhpVEGrua1UFprTN7EQIJCLkkGegfhSJDrXbdlDhn5jQUjGeewGciXA6Th2ZOs2fv1vy6QW0wpLiiEK+tE7JY9zyC0Z13VJekMk1Nq8Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leF5i3Mk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51980C2BCB0;
-	Tue, 12 May 2026 17:53:11 +0000 (UTC)
+	 MIME-Version; b=Tom8JNPC37L7ZF9Ln/++7WnhQJypmoyDZKHx09YS8zHhdmxDV1i0cw3b4es8WU61ekr65NK2cCNULCj367vozOQFPMZ8sZTK/jvDmdo5YagPm6rYSSb/M+Hh4RA+KJ/r0+7SXjkQiQCMgMCzrvB78GxOgIrqjpY1h1gd1rJro+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHQb5Yhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809C9C2BCB0;
+	Tue, 12 May 2026 17:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608391;
-	bh=Nw4dpsvHqbwUjVKYT5UtrCa5lqMxkMZCXIXCfkVjcvY=;
+	s=korg; t=1778608419;
+	bh=x+dBPVf8g2mejnqmz4uUQrEPHofRpIUmsi4VYgp6Ido=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=leF5i3MkWGyff1I3hoBwDTbp8E7u63BDmwQbKQM4rUM8WS9bQjQomYqedUed6Z4v0
-	 USBdgWXDLwU23Wrv0tUPg1XKtOGGuYLIEIlPSPdIDZlo5p2scCHkt7MwiwEQvzZFjT
-	 iA0y3KY9Hh1wd6fAGxkId5sdKS7v5yqFcnGVJ0bw=
+	b=uHQb5YhwScBMa/bOAJgtEZ9Q/0gTdDdW7dyPUapdTmJWsMd66aGJvL44BOs+KCp6k
+	 ki9Gg1K+SJsAsRjEmUSfhXlhrDGz52BH4tD7PzBLjiAdXjOFApARLkmPixAO6KbFDW
+	 b6vXsfDZuXS5EAAJPPIv8aZDa3/7th3PBKzX5vaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Vincent Danjean <vdanjean@debian.org>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.18 034/270] wifi: ath5k: do not access array OOB
-Date: Tue, 12 May 2026 19:37:15 +0200
-Message-ID: <20260512173939.173655175@linuxfoundation.org>
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.18 035/270] wifi: mac80211: remove station if connection prep fails
+Date: Tue, 12 May 2026 19:37:16 +0200
+Message-ID: <20260512173939.194978459@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
 References: <20260512173938.452574370@linuxfoundation.org>
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1BA83526B40
+X-Rspamd-Queue-Id: 49353526B96
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246113-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246124-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,74 +88,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit d748603f12baff112caa3ab7d39f50100f010dbd upstream.
+commit 283fc9e44ff5b5ac967439b4951b80bd4299f4e4 upstream.
 
-Vincent reports:
-> The ath5k driver seems to do an array-index-out-of-bounds access as
-> shown by the UBSAN kernel message:
-> UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath5k/base.c:1741:20
-> index 4 is out of range for type 'ieee80211_tx_rate [4]'
-> ...
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x5d/0x80
->  ubsan_epilogue+0x5/0x2b
->  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
->  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
->  tasklet_action_common+0xb5/0x1c0
+If connection preparation fails for MLO connections, then the
+interface is completely reset to non-MLD. In this case, we must
+not keep the station since it's related to the link of the vif
+being removed. Delete an existing station. Any "new_sta" is
+already being removed, so that doesn't need changes.
 
-It is real. 'ts->ts_final_idx' can be 3 on 5212, so:
-   info->status.rates[ts->ts_final_idx + 1].idx = -1;
-with the array defined as:
-   struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
-while the size is:
-   #define IEEE80211_TX_MAX_RATES  4
-is indeed bogus.
+This fixes a use-after-free/double-free in debugfs if that's
+enabled, because a vif going from MLD (and to MLD, but that's
+not relevant here) recreates its entire debugfs.
 
-Set this 'idx = -1' sentinel only if the array index is less than the
-array size. As mac80211 will not look at rates beyond the size
-(IEEE80211_TX_MAX_RATES).
-
-Note: The effect of the OOB write is negligible. It just overwrites the
-next member of info->status, i.e. ack_signal.
-
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Reported-by: Vincent Danjean <vdanjean@debian.org>
-Link: https://lore.kernel.org/all/aQYUkIaT87ccDCin@eldamar.lan
-Closes: https://bugs.debian.org/1119093
-Fixes: 6d7b97b23e11 ("ath5k: fix tx status reporting issues")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251209100459.2253198-1-jirislaby@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260505151533.c4e52deb06ad.Iafe56cec7de8512626169496b134bce3a6c17010@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath5k/base.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/mlme.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/net/wireless/ath/ath5k/base.c
-+++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -1738,7 +1738,8 @@ ath5k_tx_frame_completed(struct ath5k_hw
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -8926,7 +8926,7 @@ static int ieee80211_prep_connection(str
+ 	struct ieee80211_bss *bss = (void *)cbss->priv;
+ 	struct sta_info *new_sta = NULL;
+ 	struct ieee80211_link_data *link;
+-	bool have_sta = false;
++	struct sta_info *have_sta = NULL;
+ 	bool mlo;
+ 	int err;
+ 	u16 new_links;
+@@ -8945,11 +8945,8 @@ static int ieee80211_prep_connection(str
+ 		mlo = false;
  	}
  
- 	info->status.rates[ts->ts_final_idx].count = ts->ts_final_retry;
--	info->status.rates[ts->ts_final_idx + 1].idx = -1;
-+	if (ts->ts_final_idx + 1 < IEEE80211_TX_MAX_RATES)
-+		info->status.rates[ts->ts_final_idx + 1].idx = -1;
+-	if (assoc) {
+-		rcu_read_lock();
++	if (assoc)
+ 		have_sta = sta_info_get(sdata, ap_mld_addr);
+-		rcu_read_unlock();
+-	}
  
- 	if (unlikely(ts->ts_status)) {
- 		ah->stats.ack_fail++;
+ 	if (mlo && !have_sta &&
+ 	    WARN_ON(sdata->vif.valid_links || sdata->vif.active_links))
+@@ -9108,6 +9105,8 @@ static int ieee80211_prep_connection(str
+ out_release_chan:
+ 	ieee80211_link_release_channel(link);
+ out_err:
++	if (mlo && have_sta)
++		WARN_ON(__sta_info_destroy(have_sta));
+ 	ieee80211_vif_set_links(sdata, 0, 0);
+ 	return err;
+ }
 
 
 
