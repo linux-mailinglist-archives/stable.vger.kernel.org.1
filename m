@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDDhCSlvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:21 +0200
+	id UPZvNbpoA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A091F5274D5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F0D85263C2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6217F322848B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5092330FE55F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F88B3E172E;
-	Tue, 12 May 2026 17:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73CF3D25D2;
+	Tue, 12 May 2026 17:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByKwt6lQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpkX8PJ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DB63DD874;
-	Tue, 12 May 2026 17:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB7D2EBB84;
+	Tue, 12 May 2026 17:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608528; cv=none; b=hJJSHu5fB+dq2R65J3OkYIRyUgzpUU5xvNLuwz2wa5eRMrR9SZrlfYPx1xq+0sBtQ5eIR9sbuoVXG1lh3kwRWAMoZ5wncmdNO8b2UwdOr4NdCEVw0d7jSHg1/WR9sQQDU53E2mfCsK7EuXquGelzWq0B0b0cJlhMCpz30u7k1Hs=
+	t=1778607967; cv=none; b=kxAhXCu60KUOxRw4LZLN1vEm2aTxkAmFF55/IrOr55Rj0HTGjasmLYnr32nltpU9XscsqM6bt88+c7QpzQqBCpZpuq39CQbCLQIGwYjoYMzAaCF6cUNTIjUgiXw1dIYWlHIYjdBLtjLlOy+uCEkLxY4Bbb5f5XhfDKEygZj02nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608528; c=relaxed/simple;
-	bh=akyyWW8IwkcQYz29bpwuDu9KLRR2ywqJmNw2kH7I9vY=;
+	s=arc-20240116; t=1778607967; c=relaxed/simple;
+	bh=9GN70lvB4mJUJmkFeTu1hfjSncyNmwfdIh0195HB1/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4nKuDVrgXgjDpnOkCBnxZsI6uq60AxH9QmXxGv/1WA9o+yVIZpSMtPMbhI2xq8k9LjP8trY9qfIMjiz18UAQcrghvtkHbA7AkxKIRJKfYzS6BOCdJPodhP1z3t/luAub6gQPKw1EUWFbJg722pTqolPnLYRTDc+qzO7vuoKaig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByKwt6lQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB679C2BCF6;
-	Tue, 12 May 2026 17:55:27 +0000 (UTC)
+	 MIME-Version; b=B9PhbvAR8P3TOa/PKYZ6jk6/nDcB2fyklJu7gB49fnz0qwOU2NaAG/qy9cz1m9Hq9ngOlAep0KVyWaaYNskMo0AVhpvmOBaeJj6AcFTflcS5n1wsBXTBdA20Vi0BntoeQ6bmml0D+4wsW8Cxav//tix4GwZuY4Wi6TuAIv1kPcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpkX8PJ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3152DC2BCC7;
+	Tue, 12 May 2026 17:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608528;
-	bh=akyyWW8IwkcQYz29bpwuDu9KLRR2ywqJmNw2kH7I9vY=;
+	s=korg; t=1778607967;
+	bh=9GN70lvB4mJUJmkFeTu1hfjSncyNmwfdIh0195HB1/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ByKwt6lQoLodHwtBtbFnv/BPRP9ZkNOumTIuJQkLPoRFuH+K8A8f+KyCQ7QRnGn9/
-	 yj+E8n9F+mXaUx3w/CR1Cs7rbk4QNxew4+53Csuh0pRtGI7qPI000BU+S9Lgzq3kL5
-	 WjMGc+FHJSdRmrd0wxnymJI/ZFTN+12TzPoIgy04=
+	b=QpkX8PJ6vFLmtiAxEGuHmJPTrEkJCF/Gh7zbfGHKtbURF21xHHCfRX/Sfpo2SjqGQ
+	 pUPqOybV0eJfoL0CKKvAP/gQaJfANxcJ2xAiCYk6vhVWPXVWwfZ8uqghqc+QLhxVaa
+	 4prTHYVWf2XnCkFLApP295HT8q95BCR4FNh/xSI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.18 113/270] arm64/fpsimd: ptrace: zero targets fpsimd_state, not the tracers
+	Soenke Huster <soenke.huster@eknoes.de>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 062/206] Bluetooth: virtio_bt: validate rx pkt_type header length
 Date: Tue, 12 May 2026 19:38:34 +0200
-Message-ID: <20260512173940.838544148@linuxfoundation.org>
+Message-ID: <20260512173934.155614781@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +64,131 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A091F5274D5
+X-Rspamd-Queue-Id: 5F0D85263C2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246166-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245948-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,eknoes.de,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,eknoes.de:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 5cbb61bf4168859d97c068d88d364f4f1f440325 upstream.
+commit daf23014e5d975e72ea9c02b5160d3fcf070ea47 upstream.
 
-sve_set_common() is the backend for PTRACE_SETREGSET(NT_ARM_SVE) and
-PTRACE_SETREGSET(NT_ARM_SSVE). Every write in the function operates on
-the tracee (target) - except a single memset that uses current instead,
-zeroing the tracer's saved V0-V31 / FPSR / FPCR shadow on every ptrace
-SETREGSET call.
+virtbt_rx_handle() reads the leading pkt_type byte from the RX skb
+and forwards the remainder to hci_recv_frame() for every
+event/ACL/SCO/ISO type, without checking that the remaining payload
+is at least the fixed HCI header for that type.
 
-The memset is meant to give the tracee a defined zero register image
-before the user-supplied payload is copied in (for partial writes,
-header-only writes, and FPSIMD<->SVE format switches). Aiming it at
-current both denies the tracee that clean slate and silently corrupts
-the tracer.
+After the preceding patch bounds the backend-supplied used.len to
+[1, VIRTBT_RX_BUF_SIZE], a one-byte completion still reaches
+hci_recv_frame() with skb->len already pulled to 0. If the byte
+happened to be HCI_ACLDATA_PKT, the ACL-vs-ISO classification
+fast-path in hci_dev_classify_pkt_type() dereferences
+hci_acl_hdr(skb)->handle whenever the HCI device has an active
+CIS_LINK, BIS_LINK, or PA_LINK connection, reading two bytes of
+uninitialized RX-buffer data. The same hazard exists for every
+packet type the driver accepts because none of the switch cases in
+virtbt_rx_handle() check skb->len against the per-type minimum HCI
+header size before handing the frame to the core.
 
-The corruption of the tracer's saved FPSIMD state is not always
-observable. Where the tracer's state is live on a CPU, this may be
-reused without loading the corrupted state from memory, and will
-eventually be written back over the corrupted state. Where the tracer's
-state is saved in SVE_PT_REGS_SVE format, only the FPSR and FPCR are
-clobbered, and the effective copy of the vectors is in the task's
-sve_state.
+After stripping pkt_type, require skb->len to cover the fixed
+header size for the selected type (event 2, ACL 4, SCO 3, ISO 4)
+before calling hci_recv_frame(); drop ratelimited otherwise.
+Unknown pkt_type values still take the original kfree_skb() default
+path.
 
-Reproducible on an arm64 kernel with SVE: a single-threaded tracer that
-loads a known pattern into V0-V31, issues PTRACE_SETREGSET(NT_ARM_SVE)
-on a child, and reads V0-V31 back observes them all zeroed within tens
-of thousands of iterations when a sibling thread keeps stealing the
-FPSIMD CPU binding.
+Use bt_dev_err_ratelimited() because both the length and pkt_type
+values come from an untrusted backend that can otherwise flood the
+kernel log.
 
-Fixes: 316283f276eb ("arm64/fpsimd: ptrace: Consistently handle partial writes to NT_ARM_(S)SVE")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 160fbcf3bfb9 ("Bluetooth: virtio_bt: Use skb_put to set length")
+Cc: stable@vger.kernel.org
+Cc: Soenke Huster <soenke.huster@eknoes.de>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/ptrace.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/bluetooth/virtio_bt.c |   23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -957,8 +957,8 @@ static int sve_set_common(struct task_st
+--- a/drivers/bluetooth/virtio_bt.c
++++ b/drivers/bluetooth/virtio_bt.c
+@@ -198,6 +198,7 @@ static int virtbt_shutdown_generic(struc
+ 
+ static void virtbt_rx_handle(struct virtio_bluetooth *vbt, struct sk_buff *skb)
+ {
++	size_t min_hdr;
+ 	__u8 pkt_type;
+ 
+ 	pkt_type = *((__u8 *) skb->data);
+@@ -205,16 +206,32 @@ static void virtbt_rx_handle(struct virt
+ 
+ 	switch (pkt_type) {
+ 	case HCI_EVENT_PKT:
++		min_hdr = sizeof(struct hci_event_hdr);
++		break;
+ 	case HCI_ACLDATA_PKT:
++		min_hdr = sizeof(struct hci_acl_hdr);
++		break;
+ 	case HCI_SCODATA_PKT:
++		min_hdr = sizeof(struct hci_sco_hdr);
++		break;
+ 	case HCI_ISODATA_PKT:
+-		hci_skb_pkt_type(skb) = pkt_type;
+-		hci_recv_frame(vbt->hdev, skb);
++		min_hdr = sizeof(struct hci_iso_hdr);
+ 		break;
+ 	default:
+ 		kfree_skb(skb);
+-		break;
++		return;
  	}
++
++	if (skb->len < min_hdr) {
++		bt_dev_err_ratelimited(vbt->hdev,
++				       "rx pkt_type 0x%02x payload %u < hdr %zu\n",
++				       pkt_type, skb->len, min_hdr);
++		kfree_skb(skb);
++		return;
++	}
++
++	hci_skb_pkt_type(skb) = pkt_type;
++	hci_recv_frame(vbt->hdev, skb);
+ }
  
- 	/* Always zero V regs, FPSR, and FPCR */
--	memset(&current->thread.uw.fpsimd_state, 0,
--	       sizeof(current->thread.uw.fpsimd_state));
-+	memset(&target->thread.uw.fpsimd_state, 0,
-+	       sizeof(target->thread.uw.fpsimd_state));
- 
- 	/* Registers: FPSIMD-only case */
- 
+ static void virtbt_rx_work(struct work_struct *work)
 
 
 
