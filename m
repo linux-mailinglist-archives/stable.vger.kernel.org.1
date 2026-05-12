@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNA+FKVvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:25 +0200
+	id gCY9NT9qA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E775B527630
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A8C52660B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4AE4B31630B0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:11:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5949E30E3C5E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F9836C5A1;
-	Tue, 12 May 2026 18:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7535F3DD869;
+	Tue, 12 May 2026 17:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRJa2yoH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAu9fCXy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D3036604C;
-	Tue, 12 May 2026 18:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374E739060B;
+	Tue, 12 May 2026 17:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609512; cv=none; b=ZAeSHlz9hU+k6okzZ67JlOvM3fHw9xJmDhoo8CE5Gw7ULPHplgODPXDHINCa5zC0v7zmVmPc/2AD6nCxDYTYkJi7p/8cUzX20n7BcmXvKPEZRABQ1yIIf00qjPkRTMb90zXeaK1oMDEo87QrVO5VeGEJBb8LIBBI3h09mOtmT04=
+	t=1778608129; cv=none; b=MiB0VQfCWzehXSVMiCPzDwQAJNz+A90EUXELXGDmp76MeJgLVqKE5B0KQg0LVMBcq9Hzo8r7AKABy+RXElfsbjgBv5K323jP/9eQ/FpOIb4MutFZdhNEKLJpcyKDnvmvpgGpWz4FnHK//LKslo1aQRZvxzK/qFePKkSHjeO9mGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609512; c=relaxed/simple;
-	bh=KRdXcyJfRGIOdxyB7C1GffNqfpOeAxcM2scWyR4kFYE=;
+	s=arc-20240116; t=1778608129; c=relaxed/simple;
+	bh=sp94E3ak3R3963PJrVQGj1oJZqBEk/F6PlklPpJ2iNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yb9MlCeXR3a/ZBT5RRtOhzm3ikvZVlhnGZ9U5DFBBfz35HX/BCn22BDWSvIly85B7qF+8bAyXAwylcjSKtvSjrglqxPg7l5VJlwi+XpmcJT+DPSZtUNIOel3szq6CYyA8o6YpZV4U/FvU4ddq1WYiMXnoui+6xhWxRtiNBm1xvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRJa2yoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E67FC2BCB0;
-	Tue, 12 May 2026 18:11:51 +0000 (UTC)
+	 MIME-Version; b=QTr10nofRV9qN7KC3x0uryd+Au7jvhHgRFYqMHaLvMixuwYyPOjjfd+Qa2qZ8EWm+CAs9LDK8XnzDrkJA6fIFNKS9UCDDhAkHEylHcsbEZprjgHef7wSKdlEal6Hk0lDjLFSh80wUTzOXMQyJEdfiw5ybeiPD5bvCMKLUjjY4g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAu9fCXy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C228BC2BCB0;
+	Tue, 12 May 2026 17:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609512;
-	bh=KRdXcyJfRGIOdxyB7C1GffNqfpOeAxcM2scWyR4kFYE=;
+	s=korg; t=1778608129;
+	bh=sp94E3ak3R3963PJrVQGj1oJZqBEk/F6PlklPpJ2iNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRJa2yoHeufZRpb4cyHdG3ZaBOHGkPd8YYbwHfjJez/6dKc9ExChviL7bBdDIwpsz
-	 Ok51Gr3+uqBD2w4nSfHPx5F7lEsxbX9rUrhLtcL6yfLylzxHGIK9eK24IZej/SqB/i
-	 wnhi3szCGMrfNK7NtBsc/PcN2aI1uRmI7qhAumcg=
+	b=ZAu9fCXytXYh0cFjeW7m6ag5M6DHIP5X1BGLDmOZYNNYP+PTk6bMcnKmi4p66yMEx
+	 pm6D5xpOIMdrRRV2KAPXT8cdq0YPirv5T21kxzMq5WxiMi+yUode/FoV3xo8khdVNK
+	 0oAIVsBSBfLFes3ydA7gjpMKJkntVUQLmVoLuodc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Stefan Roese <stefan.roese@mailbox.org>
-Subject: [PATCH 7.0 224/307] PCI/AER: Stop ruling out unbound devices as error source
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.12 167/206] f2fs: fix node_cnt race between extent node destroy and writeback
 Date: Tue, 12 May 2026 19:40:19 +0200
-Message-ID: <20260512173944.846041126@linuxfoundation.org>
+Message-ID: <20260512173936.399758151@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E775B527630
+X-Rspamd-Queue-Id: 31A8C52660B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246549-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246011-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,62 +91,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,wunner.de:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,xiaomi.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-commit 1ab4a3c805084d752ec571efc78272295a9f2f74 upstream.
+commit ed78aeebef05212ef7dca93bd931e4eff67c113f upstream.
 
-When searching for the error source, the AER driver rules out devices whose
-enable_cnt is zero.  This was introduced in 2009 by commit 28eb27cf0839
-("PCI AER: support invalid error source IDs") without providing a
-rationale.
+f2fs_destroy_extent_node() does not set FI_NO_EXTENT before clearing
+extent nodes. When called from f2fs_drop_inode() with I_SYNC set,
+concurrent kworker writeback can insert new extent nodes into the same
+extent tree, racing with the destroy and triggering f2fs_bug_on() in
+__destroy_extent_node(). The scenario is as follows:
 
-Drivers typically call pci_enable_device() on probe, hence the enable_cnt
-check essentially filters out unbound devices.  At the time of the commit,
-drivers had to opt in to AER by calling pci_enable_pcie_error_reporting()
-and so any AER-enabled device could be assumed to be bound to a driver.
-The check thus made sense because it allowed skipping config space accesses
-to devices which were known not to be the error source.
+drop inode                            writeback
+ - iput
+  - f2fs_drop_inode  // I_SYNC set
+   - f2fs_destroy_extent_node
+    - __destroy_extent_node
+     - while (node_cnt) {
+        write_lock(&et->lock)
+        __free_extent_tree
+        write_unlock(&et->lock)
+                                       - __writeback_single_inode
+                                        - f2fs_outplace_write_data
+                                         - f2fs_update_read_extent_cache
+                                          - __update_extent_tree_range
+                                           // FI_NO_EXTENT not set,
+                                           // insert new extent node
+       } // node_cnt == 0, exit while
+     - f2fs_bug_on(node_cnt)  // node_cnt > 0
 
-But since 2022, AER is universally enabled on all devices when they are
-enumerated, cf. commit f26e58bf6f54 ("PCI/AER: Enable error reporting when
-AER is native").
+Additionally, __update_extent_tree_range() only checks FI_NO_EXTENT for
+EX_READ type, leaving EX_BLOCK_AGE updates completely unprotected.
 
-Errors may very well be reported by unbound devices, e.g. due to link
-instability.  By ruling them out as error source, errors reported by them
-are neither logged nor cleared.  When they do get bound and another error
-occurs, the earlier error is reported together with the new error, which
-may confuse users.  Stop doing so.
+This patch set FI_NO_EXTENT under et->lock in __destroy_extent_node(),
+consistent with other callers (__update_extent_tree_range and
+__drop_extent_tree) and check FI_NO_EXTENT for both EX_READ and
+EX_BLOCK_AGE tree.
 
-Fixes: f26e58bf6f54 ("PCI/AER: Enable error reporting when AER is native")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Stefan Roese <stefan.roese@mailbox.org>
-Cc: stable@vger.kernel.org # v6.0+
-Link: https://patch.msgid.link/734338c2e8b669db5a5a3b45d34131b55ffebfca.1774605029.git.lukas@wunner.de
+Fixes: 3fc5d5a182f6 ("f2fs: fix to shrink read extent node in batches")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pcie/aer.c |    2 --
- 1 file changed, 2 deletions(-)
+ fs/f2fs/extent_cache.c |   17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1041,8 +1041,6 @@ static bool is_error_source(struct pci_d
- 	 *      3) There are multiple errors and prior ID comparing fails;
- 	 * We check AER status registers to find possible reporter.
- 	 */
--	if (atomic_read(&dev->enable_cnt) == 0)
--		return false;
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -86,9 +86,10 @@ static bool __may_extent_tree(struct ino
+ 	if (!__init_may_extent_tree(inode, type))
+ 		return false;
  
- 	/* Check if AER is enabled */
- 	pcie_capability_read_word(dev, PCI_EXP_DEVCTL, &reg16);
++	if (is_inode_flag_set(inode, FI_NO_EXTENT))
++		return false;
++
+ 	if (type == EX_READ) {
+-		if (is_inode_flag_set(inode, FI_NO_EXTENT))
+-			return false;
+ 		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
+ 				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
+ 			return false;
+@@ -601,6 +602,8 @@ static unsigned int __destroy_extent_nod
+ 
+ 	while (atomic_read(&et->node_cnt)) {
+ 		write_lock(&et->lock);
++		if (!is_inode_flag_set(inode, FI_NO_EXTENT))
++			set_inode_flag(inode, FI_NO_EXTENT);
+ 		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
+ 		write_unlock(&et->lock);
+ 	}
+@@ -636,12 +639,12 @@ static void __update_extent_tree_range(s
+ 
+ 	write_lock(&et->lock);
+ 
+-	if (type == EX_READ) {
+-		if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
+-			write_unlock(&et->lock);
+-			return;
+-		}
++	if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
++		write_unlock(&et->lock);
++		return;
++	}
+ 
++	if (type == EX_READ) {
+ 		prev = et->largest;
+ 		dei.len = 0;
+ 
 
 
 
