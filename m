@@ -1,293 +1,185 @@
-Return-Path: <stable+bounces-245548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +A+CNKsnA2qw1AEAu9opvQ
-	(envelope-from <stable+bounces-245548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:14:19 +0200
+	id kDpXC0MnA2qw1AEAu9opvQ
+	(envelope-from <stable+bounces-245564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:12:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0D3520E6E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:14:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9842D520DBE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:12:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87764307A390
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:54:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1778530F5685
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6B13911C7;
-	Tue, 12 May 2026 12:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FE93812E5;
+	Tue, 12 May 2026 13:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bOhuXdqc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsxOwoWF"
 X-Original-To: stable@vger.kernel.org
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010056.outbound.protection.outlook.com [52.101.85.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2833812DE;
-	Tue, 12 May 2026 12:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778590212; cv=fail; b=ZXs3oF9Tc9oa+q+qnVCrRdDMYclG9cHzeJgOM4Mnb0HR6V+L4XlzVil2lLbJAP3xjWh1C0bBUo+Yp4ZUjawQ+LTzvWMoobfulHwDcLII5a0rTcLMD9whRPwKlLdDK/9WEKARW50zyEkAIm08bb9627O4077uk/75wvfOfirAKRU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778590212; c=relaxed/simple;
-	bh=tTTmOAIlATXMtbDyfioCPANUFmIc1Fdkk3jA92Ic3mQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=B3bbR8c7IFdAeNV8IGVbH+iqoczE43JiSE5SUiP1lWwKAT3xyQV9PuNifjVHbUJHVSjltobhVUKMBrOvWEOBk/XJFyw2RXzXtt9z0ZX24iyvxxg9zhoyM8XftjUQl6fSdSSkxF1x+893olMPrfLWkhPC+D+1ZUO5IWJ5WVSUNSU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bOhuXdqc; arc=fail smtp.client-ip=52.101.85.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VWMKOt/BNBgT16LjpBRehxyjz2s5qrVveK3JEFGlWzvmaIYQmFbvg/aBjEERp8PaGpL2Oc0NUkiLrgGYEsgVn16wun6T9qI+jl8Jfg1XPEph0Vz3Ut/ziNGgyBK/ahz4TBqMKdgjf/q/NfQINYTBp8hCooe9Xb2JO+w4FYeTxSvax8SZ39OxfteiNPSdJBkuqBrPOMNcryePfIiUjTNcrrlJ2IXZ+ublf+eoyb6LyQC5+B3edwln4/Gh8BhptCdSV2UlmjldkQgVrSw97Nmx32rM/pmXSwywzW4Q5hLlYmp4SgqC0ZR8hIxFJFltZjp6eyBEXWlg2o0BQQqaF9BOzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wq4x7RB6aHUqOaBfTxJFL1AbLNVxnuKlzmBIKXgZPs8=;
- b=UpXTwFzCx/AyZJA/Dz+qvUuj/KFSjDDleEFseJwNYEtvtYlSYtitn9Zj9go2maMICf7DxlGu9ti8z2BawA8xgJeSQQBkuCgvz+aXaV2P82wgal3iphe04hgMDxWEKDqx0zR26ZNACgGAP8F68P105diRvKopshgjXaHC6caZGZSkNcoEsWh5HZUOpWGcQ3UBz2IeO6GD/dBjdgCy7wp8B8IJl9ppzgoR8J3O8xMHyq0nDANBUWbTCU/IcQ5Z4jXrfQLX1atWMN0jO/8Ju4T9vcklJnh00Pth1TH1mGUNb8PCZgY0KOxpeVkNw2OCFHJf0H8fBIiTYN6gOI1M2DzU2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wq4x7RB6aHUqOaBfTxJFL1AbLNVxnuKlzmBIKXgZPs8=;
- b=bOhuXdqc/ZEkNSdvooGuqMPwQVU3Facu6jRu3KfacvDBylRHg3N9kqhYjcykyi6brfjOquMW94vO2TDsd37PQo3DV32SaXjH9atZRGWg/qK6niSDeyuZ8M1S+SEYMO+Fl/xwhSt9VJlbLYjYbH/picPSmNxSZ1Vq4H3DQclXh9Y=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CY8PR12MB7433.namprd12.prod.outlook.com (2603:10b6:930:53::22)
- by DS7PR12MB8370.namprd12.prod.outlook.com (2603:10b6:8:eb::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 12 May
- 2026 12:50:04 +0000
-Received: from CY8PR12MB7433.namprd12.prod.outlook.com
- ([fe80::faae:d638:bdc9:4bf6]) by CY8PR12MB7433.namprd12.prod.outlook.com
- ([fe80::faae:d638:bdc9:4bf6%3]) with mapi id 15.20.9891.021; Tue, 12 May 2026
- 12:50:04 +0000
-Message-ID: <14a803f0-4872-4e5b-a2b4-4a26cc4cb27b@amd.com>
-Date: Tue, 12 May 2026 14:49:47 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fs/dax: check for empty/zero entries before calling
- pfn_to_page()
-To: Souvik Banerjee <souvik@amlalabs.com>, djbw@kernel.org
-Cc: david@kernel.org, willy@infradead.org, jack@suse.cz, apopple@nvidia.com,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260511214020.208939-1-souvik@amlalabs.com>
-Content-Language: en-US
-From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
-In-Reply-To: <20260511214020.208939-1-souvik@amlalabs.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0139.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:95::13) To CY8PR12MB7433.namprd12.prod.outlook.com
- (2603:10b6:930:53::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847D937DAC1;
+	Tue, 12 May 2026 13:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778590948; cv=none; b=Lm3Ce/A6TTRirKxmyJ+bD/43XJrah5CCkg9M1LNOKkS+Q4LwLqGhLBtrBUjeur89uc4ECoZD0X6J/jh+PSzu1OoQVOUFcPSf11z5tJDNsC4wEf+8aCgfP3VAqMgzNl5DJX6KwApccu7qxRP38ZshuLe2g4wCEMNhakh+p251yhc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778590948; c=relaxed/simple;
+	bh=f1Cmp6x7er93//nyD3TawZv0vsj07LKElhYzhE9mgUA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TOMLeTq3kIExr8y5v+Xt9WbVWJRoRxWj1RKXabmHH8WYxcjvkcTtOG5yKa217bD6YUtBYsEgWl+eAct4bw7iIpIlrVkUa7ts4HnywBCPbtwEaFdEYhOSZQLydPjpl2JwXzE5CzsNk91fnZGmpLr3ygww/Lv43yDYEbxrOOi0zds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsxOwoWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47591C2BCB0;
+	Tue, 12 May 2026 13:02:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778590948;
+	bh=f1Cmp6x7er93//nyD3TawZv0vsj07LKElhYzhE9mgUA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XsxOwoWF67H2XEf/xVTeAJlQVGVO5Cx0h5UifrJMBevWdPjUn7bKn5L+OouFDf4/M
+	 QtEt4YjpdDdBKFuzS6/cUvJ2XZUthYfLJJRylJu/q1Lr9FsbpAllICbkkyIS7qedF7
+	 IOntVcQbTvr2bUwEf8ANcKzrGJRt1PPPJ8lLWKCk/h4dGOTBFd6bTLToHJVT89r2bD
+	 N42V8CcbTkYvarUR2Fe6VZkwO4aoYgg30CkwRRkQZDbofLYTVYLvLHjHccLsswiD2l
+	 eJ0AdwHmzU/gf7pdBLKFYrUwzZs3Jgk2+KD5RxFfmanV96rFm1rJtzdDlG/w6GMsnM
+	 ZNTqinlGhvguQ==
+Message-ID: <03ad4927-6bde-45c4-a90c-92ecfa0a680f@kernel.org>
+Date: Tue, 12 May 2026 15:02:20 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB7433:EE_|DS7PR12MB8370:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b9d06a4-ba4e-41e2-6259-08deb024fc50
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|22082099003|18002099003|56012099003|11063799003;
-X-Microsoft-Antispam-Message-Info:
-	VmaHznCpfd9OrceSzWBBrXOZTklv9Wo2dJ3BIwo2isBF/A0E65w/AuUKPRVjQtIWrb1mLBeFUaI8eHJWKY7vCivrZFHFnLVQ79AQQmzhCVMPZiftx3/yvLdtysHW9epyTO2Ll+n4bTja4VZqcMQgZeH4OOq5B4WofIZ+HxQC2QICTM6fv4pGc7frPmQjGYwHdRsyKX4ShuzsZS/iydzff83r6p36cK/pg9gIDgGUS1TNQqo14Y4zoOeI0AXUshq83eOO8dH5jiOD09cN2940CS6kWkeUKNJlWiwzRd8gqPMYKLlvOm5Yrrsp7NRhAsrIs6mXt9jE9zDYvscWVl4IRg0wrdI5fwW9+oFRtRJEuh/Nq3AP9zfpJkbzoRrAvwodX4xitBLQvlYoruyYeYwmavwN3GG8LSSV4KF4lWaR7wm3ePOByKWPwY09ZNZ+vqH/J4SlpwoepJcyz+l5a+4teZJSCFvva82Tr5g4g3+4oMQjCzJt8k1rqkfCVPvg3SP3DqK+1rsJq429P/JwaUSTqUT3v8zVn0/hpiFnDCFF9n935zdep+8hcPL7MWR05sdBwPQjntL+sh+RksIsTI8VByCgvnjMbv0NJSpPlHdP7T88obPNB4ZMD+/rmgTDFDVc/Ot9DTUnSSOXjdmNEvehCJEYAc8x8pqfWNUFs2HXuVeE3Sw36PGCA39tcccb2pF1uemgIKk97jyctv/DjiE2Ag==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7433.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(22082099003)(18002099003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bWdta1NQZHY0WnFTeko2TDY3SzNZc2R0QjNlSk90L00ybWdHQmMrNkdqaGxv?=
- =?utf-8?B?UmVKcU9BTjJ1WE9lSmphSGhBYWlzRFpjWkxLN0FwSlFhSnRuZ1FqUzkyRmtQ?=
- =?utf-8?B?NXJ2RkpRMENlUkVlZXR6aWlTQktCOHZZWmlZMnJsbmJpTkl4TlRDajJYT3Rr?=
- =?utf-8?B?d1dYbnhtZEk4TnJza3RrSjRlakdXSDI5TU95ZFNtaXZra2duSlYyaFJ2Qlhx?=
- =?utf-8?B?Qm50aW5NeWZEVmxGNm9ldFdJWWRQSWh3Tk1QbG5oSjhYVTJLajUrSlhWK2tI?=
- =?utf-8?B?SWVnQVhqV2d6Z2h2RFZYNElidFJKRmVVeUdJVExZc0hodHk4Q01RN3JQa2JI?=
- =?utf-8?B?S0dJbnlnYkxzVDZyL1hGWDJaUXQ5UlNpRm42QmZVSUZHcGVlZldDZVVlOEU5?=
- =?utf-8?B?MUtCTXdmR05EMXNoWXV5elJtSFh6MkxOR3VlQ01SN2FNeFpKcnZvMDNRMUpT?=
- =?utf-8?B?V0IxcWpvQTdFZlZZRTZ4Wkx6MzlLRkRXRy83TXR0SzIwaGtiQVBFNURNeTZP?=
- =?utf-8?B?WG9nOUw4MWk3M1hpYjA1NHdmUGc3Zk56RllaQncweTFLb1dxejdDaGdIRC9S?=
- =?utf-8?B?TDJRNE9nanhLU0k0SGJaczJqb2hkdmlvNWN0MzF2OW5LRWc3VDl6eE95S1NF?=
- =?utf-8?B?MXNLK1ZabkNaZlorbnBaTjY5ZEdLME5pTHJ5bng5cWpPdVBJTFZQUzJ1aXY2?=
- =?utf-8?B?QlhicEx1cER5Tjl2NmpMYm9xOUd1c2xaOVNqMUtjaEN1NVNSS3hGL1hjWFg1?=
- =?utf-8?B?T2NnN2RwM2Fvc1VNdFZiSUQ4UklNelRUK0ZzbktGckNJUSszUjQyUEpJVVVy?=
- =?utf-8?B?WXN6UVp3Z0lpaS9GM2tjM2hYSDZIY3d3cFZIM2pSYmpCbm4xOXZJNmN3bzBh?=
- =?utf-8?B?SENzVnIvUVN5R2tVZXFvYStINGdwaHV5NGN1Z1VqditTQm5LZ0ZxZStXVmFQ?=
- =?utf-8?B?bU1Db1lGTlpUcHdKSWgvbUdLK3VoVU1ncXpGWU8rc1JFanhNQStneWVTNXcw?=
- =?utf-8?B?dmlpbW5yUk11bFhua2wyOHRMQnZiZXRQZjZGMlIvRytVOE95ZXZFRGhTTWVs?=
- =?utf-8?B?Y0NMeHBKOHduYXpQOEpHNStvbGNQNHZMSm82MCtqRVVJdmZCRUJiWkNKUWdN?=
- =?utf-8?B?RmJkRERzSHI2eUV6MHY2V0RsRGFHaC9yTlFhZEY4dEk0K0FRQ3o2WDBCQ1lw?=
- =?utf-8?B?Wk9vbnFmT2NKbWJNeXJ2cXo1SXEzZXIzRmhYcVdYZG5yOUtKdTQxbjE1OHN5?=
- =?utf-8?B?cTZwOFlOcitBanRkZ1RvWGR0WGxkQnE5T1RqUTI2WCt1UlQ3ZGpDaHhTdjhO?=
- =?utf-8?B?WUVTZUVsb0NFa0g4OERQbEc3eHJmNFFQU2p0YjJUc3FUOXNDZ1RyMHM5SFov?=
- =?utf-8?B?UGF5NFJscDJ2eEVRLzBUQkFERlJjbUFSUW93UTFhYzNJUEpYbis3VnFkbkln?=
- =?utf-8?B?aXBmR083cTdqbkNkb21tK0RaMklVVm5FOS85SFJMZ2w3WUVXblBqZ2U2NXZ5?=
- =?utf-8?B?Nm1iR0xBWkpaK2x0UmtSY21mZ1VoTTZYQWdtZitMaVZ4RlN1cEI4ekZsT0Ji?=
- =?utf-8?B?LzNOU0Z4MHdNTm5yRDFBQ1FTdXlVbDdDRENFYjNzeUxpd0x5NER5NzJDQStx?=
- =?utf-8?B?TEVTZFFvSVJuRnB3eDFWT0t2R29hM01HL0ZzenRXbkhHM1grZXF4TytMWGp1?=
- =?utf-8?B?WDhWelJ5T1FweDAvQVRNQUIzYjByZEJYNDgzQnllbzE1dWQ0R0dnT1NzVWRv?=
- =?utf-8?B?UTN0Uzd0RDM2NjM0c0wwY0xiTmd6bzgzTjBnamxNTjBiL0tZT244bXQ1MmpD?=
- =?utf-8?B?eXppaWhtbzlOU293cVFIbWJEcS83aHdkTVA5eUhjR0F4L1g5em1aSTltNU1k?=
- =?utf-8?B?d3JMckhRSnQzUXZkcFZpZUkxdU43TUZGbjBXN1BVL1JkR0V5bDZGMS90VThJ?=
- =?utf-8?B?SFF5Uno5dDBGOXpnYyt1amFKc1FXa0hnQVphWk1YZGd1d3J0eXVNQlZvcXBS?=
- =?utf-8?B?czM3WDdwWEdhVzIyMnlCVlcvNUxXV1cramkxalIvTlRrdmpBMUNhUllzMFBz?=
- =?utf-8?B?WDQzeTFVMkJEaTlvV25oMWVWMVVNUCtNYXZDRkdaaG9OZWZKaUk3RVB0TjVV?=
- =?utf-8?B?eDdQY2grQUZ1SjhZQW1oZnhpVDRLTEwyYTNPNFlBZllJdkk4Z2FSaW11c0Uv?=
- =?utf-8?B?bjB1YWRiaU1oQkxWTWpvQU5ISGN4Tk5ObHRrSmRLYlUvcTdvclNOcURZdC9R?=
- =?utf-8?B?UjhGeU9FSy9xRUh0RTAyS2ZYZ3lveU1VUWg0RDE1a0I5R3d3aWJaME1BbWNM?=
- =?utf-8?Q?Bby1m/cfqfNy84KbmW?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b9d06a4-ba4e-41e2-6259-08deb024fc50
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7433.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 12:50:03.6157
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /bJcj3ngvpOFhEiooPPJEnqTXeMYPw1QcABhpXw/6CrT5VWohCTspkLdjf0OHCWLyTQfa1OZ8F7K4SXZl6rgpA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8370
-X-Rspamd-Queue-Id: 3D0D3520E6E
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net 5/5] mptcp: update window_clamp on subflows when
+ SO_RCVBUF is set
+Content-Language: fr
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Gang Yan <yangang@kylinos.cn>,
+ stable@vger.kernel.org
+References: <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-0-5ee57cb2b7eb@kernel.org>
+ <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-5-5ee57cb2b7eb@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-5-5ee57cb2b7eb@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9842D520DBE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245548-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[amd.com:+];
+	TAGGED_FROM(0.00)[bounces-245564-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pankaj.gupta@amd.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amlalabs.com:email,amd.com:email,amd.com:mid,amd.com:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-> Commit 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> added zero/empty-entry early returns to dax_associate_entry() and
-> dax_disassociate_entry(), but placed them *after* the
-> `struct folio *folio = dax_to_folio(entry);` line.  dax_to_folio()
-> expands to page_folio(pfn_to_page(dax_to_pfn(entry))), which calls
-> _compound_head() and performs READ_ONCE(page->compound_info) -- a real
-> dereference of the struct page pointer derived from a bogus PFN
-> extracted from the empty/zero XA value.
->
-> On systems where vmemmap covers all of RAM that dereference reads
-> garbage and is harmless: the early return then discards the result.
-> On virtio-pmem with altmap (vmemmap stored inside the device), only
-> the real device PFN range is mapped, so the dereference triggers a
-> kernel paging fault from the truncate / invalidate path and from the
-> PMD-downgrade branch of dax_iomap_pte_fault when an entry is being
-> freed:
->
->    Unable to handle kernel paging request at
->    virtual address ffff_fdff_bf00_0008 (vmemmap region)
->    Call trace:
->     dax_disassociate_entry.isra.0+0x20/0x50
->     dax_iomap_pte_fault
->     dax_iomap_fault
->     erofs_dax_fault
->
-> Close the residual gap by moving the dax_to_folio() call after the
-> zero/empty guard in both dax_associate_entry() and
-> dax_disassociate_entry().  Apply the same treatment to dax_busy_page(),
-> which has the identical pattern but was not touched by the prior fix.
-> dax_associate_entry() is reachable with a zero entry via
-> dax_insert_entry() -> dax_associate_entry(new_entry, ...), where
-> new_entry can carry DAX_ZERO_PAGE (built by dax_make_entry() in
-> dax_load_hole() / dax_pmd_load_hole()).  dax_disassociate_entry() and
-> dax_busy_page() additionally see DAX_EMPTY entries created by
-> grab_mapping_entry().
->
-> The remaining users of dax_to_folio() / dax_to_pfn() in fs/dax.c are
-> either guarded or only reachable on real-PFN entries, so this exhausts
-> the anti-pattern.
->
-> Fixes: 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> Fixes: 38607c62b34b ("fs/dax: properly refcount fs dax pages")
-> Cc: stable@vger.kernel.org # v6.15+
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Souvik Banerjee <souvik@amlalabs.com>
+Hello,
 
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+On 11/05/2026 17:46, Matthieu Baerts (NGI0) wrote:
+> From: Gang Yan <yangang@kylinos.cn>
+> 
+> Add __mptcp_subflow_set_rcvbuf() helper to write the subflow sk_rcvbuf,
+> but also to call the recently added tcp_set_rcvbuf() helper to update
+> window_clamp. This is needed because the window clap is updated when
+> scaling_ratio changes, in tcp_measure_rcv_mss(). Until scaling_ratio
+> changes, the subflow is stuck with the old window clamp which may be
+> based on a small initial buffer.
+> 
+> Use this new helper in both mptcp_sol_socket_sync_intval() (setsockopt
+> path) and sync_socket_options() (new subflow creation path).
 
-> ---
-> Changes in v2:
->    - Also fix dax_associate_entry() (Suggested-by: David Hildenbrand,
->      confirmed by Alistair Popple).  The same anti-pattern existed there:
->      dax_to_folio(entry) ran before the zero/empty guard.  new_entry on
->      that path can carry DAX_ZERO_PAGE via dax_load_hole() /
->      dax_pmd_load_hole(), so the dereference reads a struct page derived
->      from the zero-page PFN before the early return discards it.
->    - Audited remaining dax_to_folio() / dax_to_pfn() call sites in fs/dax.c;
->      no further instances of the pattern.
->    - Updated the page_folio() expansion in the commit message to refer to
->      the current field name (page->compound_info via _compound_head()).
->
-> v1: https://lore.kernel.org/all/20260501233933.2614302-1-souvik@amlalabs.com/
->
->   fs/dax.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 6d175cd47a99..4bca6e2bc342 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -480,11 +480,12 @@ static void dax_associate_entry(void *entry, struct address_space *mapping,
->                                  unsigned long address, bool shared)
->   {
->          unsigned long size = dax_entry_size(entry), index;
-> -       struct folio *folio = dax_to_folio(entry);
-> +       struct folio *folio;
->
->          if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->                  return;
->
-> +       folio = dax_to_folio(entry);
->          index = linear_page_index(vma, address & ~(size - 1));
->          if (shared && (folio->mapping || dax_folio_is_shared(folio))) {
->                  if (folio->mapping)
-> @@ -505,21 +506,23 @@ static void dax_associate_entry(void *entry, struct address_space *mapping,
->   static void dax_disassociate_entry(void *entry, struct address_space *mapping,
->                                  bool trunc)
->   {
-> -       struct folio *folio = dax_to_folio(entry);
-> +       struct folio *folio;
->
->          if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->                  return;
->
-> +       folio = dax_to_folio(entry);
->          dax_folio_put(folio);
->   }
->
->   static struct page *dax_busy_page(void *entry)
->   {
-> -       struct folio *folio = dax_to_folio(entry);
-> +       struct folio *folio;
->
->          if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->                  return NULL;
->
-> +       folio = dax_to_folio(entry);
->          if (folio_ref_count(folio) - folio_mapcount(folio))
->                  return &folio->page;
->          else
-> --
-> 2.51.1
->
->
+(...)
+
+> diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+> index 1cf608e7357b..1544e3563852 100644
+> --- a/net/mptcp/sockopt.c
+> +++ b/net/mptcp/sockopt.c
+> @@ -67,6 +67,12 @@ static int mptcp_get_int_option(struct mptcp_sock *msk, sockptr_t optval,
+>  	return 0;
+>  }
+>  
+> +static inline void __mptcp_subflow_set_rcvbuf(struct sock *ssk, int val)
+
+Arf, I missed that when reviewing this patch: the 'inline' keyword
+should be dropped here.
+
+This patch can be dropped from the series as it is not related with the
+rest, or I can send a v2 for the whole series later on.
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
 
