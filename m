@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIsuCGF0A2rf5wEAu9opvQ
-	(envelope-from <stable+bounces-246501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:41:37 +0200
+	id COWzJ1pvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2EA527FC1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:41:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7BD752757D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50673312D5C9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B58FA30E054A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023C636604C;
-	Tue, 12 May 2026 18:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE233955CF;
+	Tue, 12 May 2026 17:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgfiLAjA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muUCicms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D103537D0;
-	Tue, 12 May 2026 18:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDA13955C2;
+	Tue, 12 May 2026 17:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609388; cv=none; b=gxo6fLSH0nApAzP3djJi/DF4mW60WwPYUq/WkwnlPzZ+7hRf9y216RHEaeC2JTQYsa+c/tdMslMlcmYAsocukvgIk+n7zM37Ds7MNYquOeG+Wp24nuuJ2AUzxA558VLOaXs58K++gMnSHNQRJyyhELqZTF/qAepbIPnZqiq658g=
+	t=1778608634; cv=none; b=o31odGVH2G32SmMt/SnO0yhT1/5xRVwkvpk7rtWmtIlfmex1fO3yIPdY9bcaqTCgu0fKH9OvhtEO4SeYkta7+7eisXMQuIjlDqndgk9sTjXBJwYETz2wGdEETrXRiH9Xuk3iLhauzdO4TLPfA0pLzRKLSPFLBOGgHbr3hBAKgIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609388; c=relaxed/simple;
-	bh=kLgCiIGnpveX18htEjRaY12cTV1IPP4yGIOiyiQc9VY=;
+	s=arc-20240116; t=1778608634; c=relaxed/simple;
+	bh=dcAuj50dMPMyi9qL/sG68eZq4zX5vV7J8pjhmrrXQ7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AhXr1pydJGVwOj33a/PURHNh8e9YXbKEG01UQqQKUAGWjfreAdUbCqJccr5CSzFdXvWt2jQ1lKtv5zF5xxPnSQObLOv3Y/KeLyCSsE5LvZRoxKMLKVGftfHMMbYFbNFJEllD7vAVO+sgpWumkgCdHLURoX6tfgJUCj6j2cfDwBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgfiLAjA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE22C2BCB0;
-	Tue, 12 May 2026 18:09:48 +0000 (UTC)
+	 MIME-Version; b=qyYs2w5jDOfBpTUkzYAZvFOd/4BdNo+Epek8f1MxD+ZymtXGm1adyMiB6WSNeqgzdAQGHz2F7m0yEcD6PeZDt2AAgX/lVDSVHFlkLfAHzswMwgh8vdBqgewYF54ZXDuHD9BWLVCZetzyYzwOOew490MOC4tvnNsOJFgLQ5vKgeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muUCicms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B935AC2BCB0;
+	Tue, 12 May 2026 17:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609388;
-	bh=kLgCiIGnpveX18htEjRaY12cTV1IPP4yGIOiyiQc9VY=;
+	s=korg; t=1778608634;
+	bh=dcAuj50dMPMyi9qL/sG68eZq4zX5vV7J8pjhmrrXQ7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tgfiLAjAD0x9og+SmSTQ2X3siDIDbmiROvBT+u6IBIfbBrHf3CCw7QW5mWlqI18bM
-	 eKe8OQI1yw94tgLx8gcddiIYKjGKGjCu8+GaOp4rOHmib720pV+nJQVrW2JJ32SQGd
-	 uodmWNqMBfcLMAKy2fEiy8Lx+VRKFS0oKk2RBnfk=
+	b=muUCicms3w4OdPxubjY5R7beGmmUp3Ne6vgQuh7rF/9+B5kBqoOKzsWb06rCDRbho
+	 V1WNnZRKR158OKNGgKZbk4FAuGogYV81s5jyRgQO9Ef99FXqmwV7iRHQHEtxNoQzi3
+	 pjY4lvJ3SHVHy4Sx0HRkHtuYzf/Dt9HfdwE79YP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 159/307] spi: topcliff-pch: fix use-after-free on unbind
-Date: Tue, 12 May 2026 19:39:14 +0200
-Message-ID: <20260512173943.479607966@linuxfoundation.org>
+	Eric Biggers <ebiggers@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.18 154/270] dm-verity-fec: correctly reject too-small FEC devices
+Date: Tue, 12 May 2026 19:39:15 +0200
+Message-ID: <20260512173941.691596936@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8E2EA527FC1
+X-Rspamd-Queue-Id: E7BD752757D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246501-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246207-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,56 +88,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,okisemi.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 9d72732fe70c11424bc90ed466c7ccfa58b42a9a upstream.
+commit 2b14e0bb63cc671120e7791658f5c494fc66d072 upstream.
 
-Give the driver a chance to flush its queue before releasing the DMA
-buffers on driver unbind
+Fix verity_fec_ctr() to reject too-small FEC devices by correctly
+computing the number of parity blocks as 'f->rounds * f->roots'.
+Previously it incorrectly used 'div64_u64(f->rounds * f->roots,
+v->fec->roots << SECTOR_SHIFT)' which is a much smaller value.
 
-Fixes: c37f3c2749b5 ("spi/topcliff_pch: DMA support")
-Cc: stable@vger.kernel.org	# 3.1
-Cc: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-9-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Note that the units of 'rounds' are blocks, not bytes.  This matches the
+units of the value returned by dm_bufio_get_device_size(), which are
+also blocks.  A later commit will give 'rounds' a clearer name.
+
+Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-topcliff-pch.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/md/dm-verity-fec.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1410,9 +1410,6 @@ static void pch_spi_pd_remove(struct pla
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -657,7 +657,7 @@ int verity_fec_ctr(struct dm_verity *v)
+ {
+ 	struct dm_verity_fec *f = v->fec;
+ 	struct dm_target *ti = v->ti;
+-	u64 hash_blocks, fec_blocks;
++	u64 hash_blocks;
+ 	int ret;
  
- 	spi_unregister_controller(data->host);
+ 	if (!verity_fec_is_enabled(v)) {
+@@ -738,8 +738,7 @@ int verity_fec_ctr(struct dm_verity *v)
  
--	if (use_dma)
--		pch_free_dma_buf(board_dat, data);
--
- 	/* check for any pending messages; no action is taken if the queue
- 	 * is still full; but at least we tried.  Unload anyway */
- 	count = 500;
-@@ -1436,6 +1433,9 @@ static void pch_spi_pd_remove(struct pla
- 		free_irq(board_dat->pdev->irq, data);
+ 	dm_bufio_set_sector_offset(f->bufio, f->start << (v->data_dev_block_bits - SECTOR_SHIFT));
+ 
+-	fec_blocks = div64_u64(f->rounds * f->roots, v->fec->roots << SECTOR_SHIFT);
+-	if (dm_bufio_get_device_size(f->bufio) < fec_blocks) {
++	if (dm_bufio_get_device_size(f->bufio) < f->rounds * f->roots) {
+ 		ti->error = "FEC device is too small";
+ 		return -E2BIG;
  	}
- 
-+	if (use_dma)
-+		pch_free_dma_buf(board_dat, data);
-+
- 	pci_iounmap(board_dat->pdev, data->io_remap_addr);
- 
- 	spi_controller_put(data->host);
 
 
 
