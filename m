@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246498-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNPmDIRvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:52 +0200
+	id 6K0qF6FwA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246498-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:25:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED715275EF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 001D95278ED
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:25:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4571D30E6DC2
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E98A8327852D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9BC3EDE41;
-	Tue, 12 May 2026 17:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD4E366548;
+	Tue, 12 May 2026 18:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0/P3Q7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AigZDkP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF393EDE42;
-	Tue, 12 May 2026 17:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000953537D0;
+	Tue, 12 May 2026 18:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608708; cv=none; b=PCa5C+yuX6gXbATxAlgUILiFxeaUvwjUNprgDk9FQ2/WQkjSdXan8ElnK68PVYzkwYcWWk01LOhMzvKCrbKO6yM0jZO70C4ODjIsZK7dZnyMx28LtyqrfIdselmLG36CtRk/AyNGzWEFOqKW8Fq2Zu4TtqmfR/lP/WVgfA8xhTw=
+	t=1778609381; cv=none; b=W460IVWUDmOGd+GuOUUtDQwX975EeAC/g+2lML3ZBAIQATlmbbxQDyDAR0wpwzOU/Jtbj6cWTddjZi+231naAgYkv+qJTeu8WDnvt7pikv7iuRo7S/mKl0p/ub7JuLcQXSwPIpY2DevGddwY+qjtPGp+5+HFACYwXoLvGn5WYbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608708; c=relaxed/simple;
-	bh=N3VOl6W1yXZgLbkjhGYek2fr+RxfBwR6lzRM36C9MRo=;
+	s=arc-20240116; t=1778609381; c=relaxed/simple;
+	bh=NYIBzE7IHGujvOuOWHxOA9q0ZytjvIyg7QCPirC3pRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7cDfL0wQ/sygLYQ+7aTxVZ1vogJziJah8Mz5jVwf/FMng1WNXL8+AGEGiQlF+EOO8/yPPIQRNKmkrogklJYNa9TnTII0W0MW62hMCDXxYY+Y5IDmZXJ4NSJ4fycnNrBioFRg5oJQI7I9WzEwZzqGnYfNSqhJ1MfYK9XJHoCtTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0/P3Q7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D50C2BCB0;
-	Tue, 12 May 2026 17:58:28 +0000 (UTC)
+	 MIME-Version; b=mmLamVgMqJTZIS75kPMB9IekempQEkjWlWX7Bf4h+h9zeAUL9kkueKRxul2CzQCzyJ4zZ4uXCLfLFC994g/Q83zMx9KhkXfCMHvY4ZbNLuGYSH5hZQ+7apZixXBTbmB/C52II97HMk0o5TvHNEkchZj0DrGAORRpCOIcKRhNT8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AigZDkP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8C4C2BCB0;
+	Tue, 12 May 2026 18:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608708;
-	bh=N3VOl6W1yXZgLbkjhGYek2fr+RxfBwR6lzRM36C9MRo=;
+	s=korg; t=1778609380;
+	bh=NYIBzE7IHGujvOuOWHxOA9q0ZytjvIyg7QCPirC3pRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h0/P3Q7OgPUx55gzTtfVbKlPVlTyAlUFN6T4I4XBBfVM9y2xWACqj17CRFfpLD7Kz
-	 KsVyzeLVrSGautxQ33arWwtKsYqRyeKEeileVptJ1AXreKexdYv6c4hdw5k3KmNv90
-	 7bIcDwgmyXRDXWVFla7O9oHF1Ogx2v0PF5WFb+78=
+	b=AigZDkP9Oxz73GfB0ZfCOZNoWwmFhC3QAJA4qryHGVmng9FPfydBIrlOXYJxiRFWb
+	 d+X/dCCwM9fqAMYbhHQb7KXyKEJIeB/YyZsMl0WgMNcoZx5posAfVUm6+0GQNRPeY0
+	 YXYV/I/O804U7H1p1knY/bU4fsVpU8D5DHvBXK1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivam Kumar <skumar47@syr.edu>,
-	Shivam Kumar <kumar.shivam43666@gmail.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.18 167/270] nvmet-tcp: fix race between ICReq handling and queue teardown
-Date: Tue, 12 May 2026 19:39:28 +0200
-Message-ID: <20260512173941.964940005@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 174/307] ASoC: qcom: q6apm: remove child devices when apm is removed
+Date: Tue, 12 May 2026 19:39:29 +0200
+Message-ID: <20260512173943.790040801@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8ED715275EF
+X-Rspamd-Queue-Id: 001D95278ED
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-246236-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syr.edu,gmail.com,nvidia.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246498-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syr.edu:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 5293a8882c549fab4a878bc76b0b6c951f980a61 upstream.
+commit 4a0e1bcc98f7281d1605768bd2fe71eacc34f9b7 upstream.
 
-nvmet_tcp_handle_icreq() updates queue->state after sending an
-Initialization Connection Response (ICResp), but it does so without
-serializing against target-side queue teardown.
+looks like q6apm driver does not remove the child driver q6apm-dai and
+q6apm-bedais when the this driver is removed.
 
-If an NVMe/TCP host sends an Initialization Connection Request
-(ICReq) and immediately closes the connection, target-side teardown
-may start in softirq context before io_work drains the already
-buffered ICReq. In that case, nvmet_tcp_schedule_release_queue()
-sets queue->state to NVMET_TCP_Q_DISCONNECTING and drops the queue
-reference under state_lock.
+Fix this by depopulating them in remove callback.
 
-If io_work later processes that ICReq, nvmet_tcp_handle_icreq() can
-still overwrite the state back to NVMET_TCP_Q_LIVE. That defeats the
-DISCONNECTING-state guard in nvmet_tcp_schedule_release_queue() and
-allows a later socket state change to re-enter teardown and issue a
-second kref_put() on an already released queue.
+With this change when the dsp is shutdown all the devices associated with
+q6apm will now be removed.
 
-The ICResp send failure path has the same problem. If teardown has
-already moved the queue to DISCONNECTING, a send error can still
-overwrite the state with NVMET_TCP_Q_FAILED, again reopening the
-window for a second teardown path to drop the queue reference.
-
-Fix this by serializing both post-send state transitions with
-state_lock and bailing out if teardown has already started.
-
-Use -ESHUTDOWN as an internal sentinel for that bail-out path rather
-than propagating it as a transport error like -ECONNRESET. Keep
-nvmet_tcp_socket_error() setting rcv_state to NVMET_TCP_RECV_ERR before
-honoring that sentinel so receive-side parsing stays quiesced until the
-existing release path completes.
-
-Fixes: c46a6465bac2 ("nvmet-tcp: add NVMe over TCP target driver")
-Cc: stable@vger.kernel.org
-Reported-by: Shivam Kumar <skumar47@syr.edu>
-Tested-by: Shivam Kumar <kumar.shivam43666@gmail.com>
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260402081118.348071-3-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c |   26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ sound/soc/qcom/qdsp6/q6apm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -398,6 +398,19 @@ static void nvmet_tcp_build_pdu_iovec(st
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -764,6 +764,7 @@ static int apm_probe(gpr_device_t *gdev)
  
- static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
+ static void apm_remove(gpr_device_t *gdev)
  {
-+	/*
-+	 * Keep rcv_state at RECV_ERR even for the internal -ESHUTDOWN path.
-+	 * nvmet_tcp_handle_icreq() can return -ESHUTDOWN after the ICReq has
-+	 * already been consumed and queue teardown has started.
-+	 *
-+	 * If nvmet_tcp_data_ready() or nvmet_tcp_write_space() queues
-+	 * nvmet_tcp_io_work() again before nvmet_tcp_release_queue_work()
-+	 * cancels it, the queue must not keep that old receive state.
-+	 * Otherwise the next nvmet_tcp_io_work() run can reach
-+	 * nvmet_tcp_done_recv_pdu() and try to handle the same ICReq again.
-+	 *
-+	 * That is why queue->rcv_state needs to be updated before we return.
-+	 */
- 	queue->rcv_state = NVMET_TCP_RECV_ERR;
- 	if (queue->nvme_sq.ctrl)
- 		nvmet_ctrl_fatal_error(queue->nvme_sq.ctrl);
-@@ -923,11 +936,24 @@ static int nvmet_tcp_handle_icreq(struct
- 	iov.iov_len = sizeof(*icresp);
- 	ret = kernel_sendmsg(queue->sock, &msg, &iov, 1, iov.iov_len);
- 	if (ret < 0) {
-+		spin_lock_bh(&queue->state_lock);
-+		if (queue->state == NVMET_TCP_Q_DISCONNECTING) {
-+			spin_unlock_bh(&queue->state_lock);
-+			return -ESHUTDOWN;
-+		}
- 		queue->state = NVMET_TCP_Q_FAILED;
-+		spin_unlock_bh(&queue->state_lock);
- 		return ret; /* queue removal will cleanup */
- 	}
- 
-+	spin_lock_bh(&queue->state_lock);
-+	if (queue->state == NVMET_TCP_Q_DISCONNECTING) {
-+		spin_unlock_bh(&queue->state_lock);
-+		/* Tell nvmet_tcp_socket_error() teardown is in progress. */
-+		return -ESHUTDOWN;
-+	}
- 	queue->state = NVMET_TCP_Q_LIVE;
-+	spin_unlock_bh(&queue->state_lock);
- 	nvmet_prepare_receive_pdu(queue);
- 	return 0;
++	of_platform_depopulate(&gdev->dev);
+ 	snd_soc_unregister_component(&gdev->dev);
  }
+ 
 
 
 
