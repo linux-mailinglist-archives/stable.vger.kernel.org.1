@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-246461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEguCNpuA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:02 +0200
+	id cLohMRZoA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:49:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B75952740A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BBD52628B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7EAD3134E3E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B398302F586
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA00356741;
-	Tue, 12 May 2026 18:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1543CDBDD;
+	Tue, 12 May 2026 17:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyQPaU/z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHB0a4cN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AA123E356;
-	Tue, 12 May 2026 18:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDCD385D85;
+	Tue, 12 May 2026 17:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609285; cv=none; b=IEPDpw4yFu4o4+ehwRLpYh69agvCW4/fP7FOlQ9Zppd8z+uVex+2D8hTNYVv+R/Dvw8BQoE0IDXEmLqZ6J49Sl6ci2/Ito6PZcYyLUoQh2lbULc2cFPMJUbc+TZ3SBFn4IKY5ty/ldsFICWCwF3ciM0Yl5vGjKjGKcyNd3+v+8o=
+	t=1778607900; cv=none; b=il8Ur4zzceg3jwVDYTFAse6BCcgTKyBEDgWJ00V+kIQYE9vcBez9pkNUYNB1NPEFD1iq1qMZ7EQ6LR1y7AwWsEhXDBrS33KGd5cSKDXbRGy13INybHqc/bQoetXV+thEtzmSQUbzsr9lx2bnEwcExapK9MCX4Lo4v3eNz3EZeF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609285; c=relaxed/simple;
-	bh=kdlkF1CGOcIl3dH5IRZReaw6oW5BPWe5H2KSF1FbF08=;
+	s=arc-20240116; t=1778607900; c=relaxed/simple;
+	bh=APTNtsFHkrmrEVqRkzzRfLicMMRLEhWvAl1sIBp0aWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpEEejvMaNkwJGq2BLjksR18KUNehNyXvNbFK8vVBKh4WLUBSM/aq++ra6LfDpUPyCf7s4nZ0F4LbZaLFF3TpbsJTxDm1qEivsO+uulzR0GpRUDvwi5GQL1yL/OMcvgSDJLyTq2Dz1XYXGt8BZgM2AOy5gFCv/a6N4bFc4OaGAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyQPaU/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EC5C2BCB0;
-	Tue, 12 May 2026 18:08:04 +0000 (UTC)
+	 MIME-Version; b=ZA0A6i5IOsS+ahLcqaUvsoy7vPE1IllrZM9gy9Uh5kfuRa1RJreW+BlRWR7hKnDIAUU3+NJov64eD4GkQQBDwYvMXjJKGmO1zEjd2BEpMnPP5nLlCngmii06Bm2cYKF16mdz6X17fkSmb4n7EoeehoC/jROZyEgG/MYzkjFxK8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHB0a4cN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367A9C2BCB0;
+	Tue, 12 May 2026 17:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609285;
-	bh=kdlkF1CGOcIl3dH5IRZReaw6oW5BPWe5H2KSF1FbF08=;
+	s=korg; t=1778607900;
+	bh=APTNtsFHkrmrEVqRkzzRfLicMMRLEhWvAl1sIBp0aWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wyQPaU/zd9sF715bxpJM8A3+f/rl+XhPJoocdSCKCpO7eK519G91skHpDIA5e37/m
-	 RfW1EmCfYXVo5eGfayqcXKolq2rPsQUJpM+UgFOYCFNRtmz8wkfPr3UmkCloirA7qK
-	 MIVVTDpzAhq34gM7Qmny/PgJHVGeSgvL7BJuAJ5Y=
+	b=HHB0a4cNFvccBTLq5wRegknkNI2mTXP9OhL+79tIt8qucSDHrYsl0pjd9QS08RmLR
+	 TQMC2czMzI9o9pXYGSMEHbjjjD9FFA791BEyfPzy7rcdftXqI5VWL2d9vlikxOSpqU
+	 LBdG0KFHT5I/v9AjOP6RCeu7FUeWS5eoXwI1KMds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 7.0 136/307] block: only read from sqe on initial invocation of blkdev_uring_cmd()
+	SeungJu Cheon <suunj1331@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 079/206] sound: ua101: fix division by zero at probe
 Date: Tue, 12 May 2026 19:38:51 +0200
-Message-ID: <20260512173942.999038556@linuxfoundation.org>
+Message-ID: <20260512173934.524585496@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +63,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7B75952740A
+X-Rspamd-Queue-Id: 25BBD52628B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246461-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245922-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: SeungJu Cheon <suunj1331@gmail.com>
 
-commit 212ec34e4e726e8cd4af7bea4740db24de8a9dab upstream.
+commit d1f73f169c1014463b5060e3f60813e13ddc7b87 upstream.
 
-This passthrough helper currently only supports discards. Part of that
-command is the start and length, which is read from the SQE. It does
-so on every invocation, where it really should just make it stable
-on the first invocation. This avoids needing to copy the SQE upfront,
-as we only really need those two 8b values stored in our per-req
-payload.
+Add a missing sanity check for bNrChannels in detect_usb_format()
+to prevent a division by zero in playback_urb_complete() and
+capture_urb_complete().
 
-Cc: stable@vger.kernel.org # 6.17+
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+USB core does not validate class-specific descriptor fields such
+as bNrChannels, so drivers must verify them before use. If a
+device provides bNrChannels = 0, frame_bytes becomes zero and is
+later used as a divisor in the URB completion handlers, leading
+to a kernel crash.
+
+Fixes: 63978ab3e3e9 ("sound: add Edirol UA-101 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
+Link: https://patch.msgid.link/20260426111239.103296-1-suunj1331@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/ioctl.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ sound/usb/misc/ua101.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -864,6 +864,8 @@ long compat_blkdev_ioctl(struct file *fi
- #endif
+--- a/sound/usb/misc/ua101.c
++++ b/sound/usb/misc/ua101.c
+@@ -994,6 +994,13 @@ static int detect_usb_format(struct ua10
  
- struct blk_iou_cmd {
-+	u64 start;
-+	u64 len;
- 	int res;
- 	bool nowait;
- };
-@@ -953,23 +955,27 @@ int blkdev_uring_cmd(struct io_uring_cmd
- {
- 	struct block_device *bdev = I_BDEV(cmd->file->f_mapping->host);
- 	struct blk_iou_cmd *bic = io_uring_cmd_to_pdu(cmd, struct blk_iou_cmd);
--	const struct io_uring_sqe *sqe = cmd->sqe;
- 	u32 cmd_op = cmd->cmd_op;
--	uint64_t start, len;
- 
--	if (unlikely(sqe->ioprio || sqe->__pad1 || sqe->len ||
--		     sqe->rw_flags || sqe->file_index))
--		return -EINVAL;
-+	/* Read what we need from the SQE on the first issue */
-+	if (!(issue_flags & IORING_URING_CMD_REISSUE)) {
-+		const struct io_uring_sqe *sqe = cmd->sqe;
-+
-+		if (unlikely(sqe->ioprio || sqe->__pad1 || sqe->len ||
-+			     sqe->rw_flags || sqe->file_index))
-+			return -EINVAL;
-+
-+		bic->start = READ_ONCE(sqe->addr);
-+		bic->len = READ_ONCE(sqe->addr3);
+ 	ua->capture.channels = fmt_capture->bNrChannels;
+ 	ua->playback.channels = fmt_playback->bNrChannels;
++	if (!ua->capture.channels || !ua->playback.channels) {
++		dev_err(&ua->dev->dev,
++			"invalid channel count: capture %u, playback %u\n",
++			ua->capture.channels, ua->playback.channels);
++		return -EINVAL;
 +	}
- 
- 	bic->res = 0;
- 	bic->nowait = issue_flags & IO_URING_F_NONBLOCK;
- 
--	start = READ_ONCE(sqe->addr);
--	len = READ_ONCE(sqe->addr3);
--
- 	switch (cmd_op) {
- 	case BLOCK_URING_CMD_DISCARD:
--		return blkdev_cmd_discard(cmd, bdev, start, len, bic->nowait);
-+		return blkdev_cmd_discard(cmd, bdev, bic->start, bic->len,
-+					  bic->nowait);
- 	}
- 	return -EINVAL;
- }
++
+ 	ua->capture.frame_bytes =
+ 		fmt_capture->bSubframeSize * ua->capture.channels;
+ 	ua->playback.frame_bytes =
 
 
 
