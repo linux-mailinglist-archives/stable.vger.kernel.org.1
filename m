@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-245991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LYvJQtqA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-245991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:31 +0200
+	id eBFDGt1tA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B58F526573
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B10052710E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 59774304754B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:49:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0E68E3048C0B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCB03955E2;
-	Tue, 12 May 2026 17:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAEE3EDE77;
+	Tue, 12 May 2026 17:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGEGx9Ow"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAbyStbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6A33955C9;
-	Tue, 12 May 2026 17:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDB73EDE72;
+	Tue, 12 May 2026 17:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608077; cv=none; b=pI1A+4ILMN2RZ3N8XQdWAI7lxNzIW6Y04ghsYbTnu62izhDkQzhsevwf759dcwX/JqeDmJVm9NKvZrKTIqGCu/ubKikBTp03uFSN3A5Jp2kgbX8ba1yYBftq9DdxintSghxyI1crAqedyVbfrk5FYEDhhUTs17oGT0DFytf4+pw=
+	t=1778608739; cv=none; b=oVaaCthaprgQrLLmFyck/Qr3mIrdg2khoUpn0Ir+5hO8TAXLtRlPl2Bz6nkU1ZTfiPZlLSyjZDgNobQfwLjOuHAXUAbHcjIdVjwcNnlgueNmWC+Aog/E2Of0uzz5xSveFcSmH80eFZq+pANn67JB3ozx4fhWebhVwrvnIC13zbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608077; c=relaxed/simple;
-	bh=hVzHcsANmsnLzY/6iAi3drsXQgEmEuJ8dlswyu885Ig=;
+	s=arc-20240116; t=1778608739; c=relaxed/simple;
+	bh=CR7XbRC5EXYB5fUdZE4wMuMpf8NanoL/rewb54r3HLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Olfpa99jKlp8x9Jfn6+e6551I2fCfMp0HkAr8Lw1rbzvHWENlPTFjv4+f8POpqRGq4xvrVHS50GZxcEE2/Y80elRESTUib0PRAsVPT0cpLCY7sb2YAdlaPvqXwS/Jr1vh3z6iiQJaAbS0yTADPsx8/n0pMoh+G4ZhxEfm57Ia5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGEGx9Ow; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B960AC2BCB0;
-	Tue, 12 May 2026 17:47:56 +0000 (UTC)
+	 MIME-Version; b=gHg0jYpgK56d9kPFSOkP3N3op/G5vUJSgwoq07HE+2FSXOS3K1gaYJpQ5dpzEog421OPcaYCMxI/PuRZzrzYcRfE/aJneKLTj+VGRcVj/fRgOayp99tlfnQoy/u5iLWeFEAB+vhpvCkliDwoNnDyxWwyD042fCDyBGSfzt//22M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAbyStbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364B7C2BCC7;
+	Tue, 12 May 2026 17:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608077;
-	bh=hVzHcsANmsnLzY/6iAi3drsXQgEmEuJ8dlswyu885Ig=;
+	s=korg; t=1778608739;
+	bh=CR7XbRC5EXYB5fUdZE4wMuMpf8NanoL/rewb54r3HLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hGEGx9OwpfE3AeWPlkIGPjOE0zIYfgVv4AYC9p0PsdTvY9JxMh4p4HPK7Fvhqgcz+
-	 VWWwog6oiYSsIpKknYhVAX5sNcMbCrKsoVxjeCpHKqKKKjcZYTTHlYSCyl0sSuTK/V
-	 Ya0lUSkL1T91mGL0vwUtS25wsseXm02bPqVeFf6k=
+	b=qAbyStbge40B9V8w0w9LAfg9bfFK1o7JdVLrxJ4DXD/2MEXLqpd6lKeI9uqCh+wTK
+	 TOApY9UVdqImJHf/Gn3eIiHLRM7D+pZ/q+KR0Iq/RYtbePDdBzRqnWAenT2TYT1SgT
+	 QX7gwBBfJBOgFUWYbs5MykF0CtPyDpOdTAArbuNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH 6.12 144/206] PCI/AER: Clear only error bits in PCIe Device Status
+	Long Li <longli@microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.18 195/270] RDMA/mana: Fix mana_destroy_wq_obj() cleanup in mana_ib_create_qp_rss()
 Date: Tue, 12 May 2026 19:39:56 +0200
-Message-ID: <20260512173935.912610024@linuxfoundation.org>
+Message-ID: <20260512173942.555289999@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8B58F526573
+X-Rspamd-Queue-Id: 7B10052710E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -76,88 +74,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245991-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246249-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,alibaba.com:email,wunner.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sashiko.dev:url]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit a8aeea1bf3c80cc87983689e0118770e019bd4f3 upstream.
+commit 34ecf795692ee57c393109f4a24ccc313091e137 upstream.
 
-Currently, pcie_clear_device_status() clears the entire PCIe Device Status
-register (PCI_EXP_DEVSTA) by writing back the value read from the register,
-which affects not only the error status bits but also other writable bits.
+Sashiko points out there are two bugs here in the error unwind flow, both
+related to how the WQ table is unwound.
 
-According to PCIe r7.0, sec 7.5.3.5, this register contains:
+First there is a double i-- on the first failure path due to the while loop
+having a i--, remove it.
 
-  - RW1C error status bits (CED, NFED, FED, URD at bits 0-3): These are the
-    four error status bits that need to be cleared.
+Second if mana_ib_install_cq_cb() fails then mana_create_wq_obj() is not
+undone due to the above i--.
 
-  - Read-only bits (AUXPD at bit 4, TRPND at bit 5): Writing to these has
-    no effect.
-
-  - Emergency Power Reduction Detected (bit 6): A RW1C non-error bit
-    introduced in PCIe r5.0 (2019). This is currently the only writable
-    non-error bit in the Device Status register. Unconditionally clearing
-    this bit can interfere with other software components that rely on this
-    power management indication.
-
-  - Reserved bits (RsvdZ): These bits are required to be written as zero.
-    Writing 1s to them (as the current implementation may do) violates the
-    specification.
-
-To prevent unintended side effects, modify pcie_clear_device_status() to
-only write 1s to the four error status bits (CED, NFED, FED, URD), leaving
-the Emergency Power Reduction Detected bit and reserved bits unaffected.
-
-Fixes: ec752f5d54d7 ("PCI/AER: Clear device status bits during ERR_FATAL and ERR_NONFATAL")
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260211124624.49656-1-xueshuai@linux.alibaba.com
+Fixes: c15d7802a424 ("RDMA/mana_ib: Add CQ interrupt support for RAW QP")
+Link: https://sashiko.dev/#/patchset/0-v2-1c49eeb88c48%2B91-rdma_udata_rep_jgg%40nvidia.com?part=1
+Link: https://patch.msgid.link/r/6-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/mana/qp.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -2321,10 +2321,9 @@ EXPORT_SYMBOL_GPL(pci_set_pcie_reset_sta
- #ifdef CONFIG_PCIEAER
- void pcie_clear_device_status(struct pci_dev *dev)
- {
--	u16 sta;
--
--	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
--	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
-+	pcie_capability_write_word(dev, PCI_EXP_DEVSTA,
-+				   PCI_EXP_DEVSTA_CED | PCI_EXP_DEVSTA_NFED |
-+				   PCI_EXP_DEVSTA_FED | PCI_EXP_DEVSTA_URD);
- }
- #endif
+--- a/drivers/infiniband/hw/mana/qp.c
++++ b/drivers/infiniband/hw/mana/qp.c
+@@ -194,11 +194,8 @@ static int mana_ib_create_qp_rss(struct
+ 
+ 		ret = mana_create_wq_obj(mpc, mpc->port_handle, GDMA_RQ,
+ 					 &wq_spec, &cq_spec, &wq->rx_object);
+-		if (ret) {
+-			/* Do cleanup starting with index i-1 */
+-			i--;
++		if (ret)
+ 			goto fail;
+-		}
+ 
+ 		/* The GDMA regions are now owned by the WQ object */
+ 		wq->queue.gdma_region = GDMA_INVALID_DMA_REGION;
+@@ -218,8 +215,10 @@ static int mana_ib_create_qp_rss(struct
+ 
+ 		/* Create CQ table entry */
+ 		ret = mana_ib_install_cq_cb(mdev, cq);
+-		if (ret)
++		if (ret) {
++			mana_destroy_wq_obj(mpc, GDMA_RQ, wq->rx_object);
+ 			goto fail;
++		}
+ 	}
+ 	resp.num_entries = i;
  
 
 
