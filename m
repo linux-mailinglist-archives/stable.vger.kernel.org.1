@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-246344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eM4JFA9uA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:39 +0200
+	id YKfkCdtsA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E214C5271B2
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66425526E5D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 05435312D50B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1D80F30B0464
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DF8366831;
-	Tue, 12 May 2026 18:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE41A3DD85A;
+	Tue, 12 May 2026 17:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8TD02Km"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYjFKZmw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55F03EDE55;
-	Tue, 12 May 2026 18:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BBF32ED32;
+	Tue, 12 May 2026 17:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608984; cv=none; b=ioYfvndOrQmEWOWlO0ZlZlqh0c7GhSABr5gtL1y4WCz2OFiOPhUVZJHEHAzg4kTOkfL1yEJMuXgSx0V9fzCGBORzAOJbfpq6Lqhj9Y7TnUslrNsST0n0ABKH2KfdXVdcBcw4Db8FBELcZ4y1NW7t74m4COHGcevFYn2UB0Bf3pw=
+	t=1778608270; cv=none; b=Fne+fJp4jxi2y4Z8zOtTe6d8OCjfnGLItLf2oHgbVHoth9lseVXVUysKr52pX/OnwIGlpLfuDWB317wbTRPSQr0p1lTw59IZ3eqvzj3m5eW/RtJjhblzvHO6zMRWDMTPyIEt5oGGWP7JxPZnoFaEs8d7U7aopyYkDQC6d1tJx/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608984; c=relaxed/simple;
-	bh=LDI8UqjqKJ6meNubwE4wc/R3b7aLxFCynp0sGSrp6zk=;
+	s=arc-20240116; t=1778608270; c=relaxed/simple;
+	bh=xcpNzpVBVWJy9Wqh/X16hX5C+XDs84UJKJFlrFvVim8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vE/t1IWmmdPK7e3DBAUa0k1Vf5M+ji4WbuVxmte9/WjaCqHvs0v+EAnBTahCOZihBs2FRx1tIrBQzthpZFqUYGMOA858DmWaN+l+mBJTzZin/gVkT7oNf1Lxw7j+SjM7NLX7xb2NZytnmLVdBpiWzUEWUP55DFlkqNNi1zXzJBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8TD02Km; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D128C2BCB0;
-	Tue, 12 May 2026 18:03:04 +0000 (UTC)
+	 MIME-Version; b=mwhYB771BJK3QKJXLTnUAIVjYCBT+Bxx/urtemwP5YxZQ+bsYaTn24MsglS5kKZ2UQkJ59QUFc4WnCYDFiaVmW/1pxYqTONqk80sQN1LEfzyfNzlFsx1/Z6+ORaeaJeY383tLHDrQYbVQpf0tq+xHb5fYx6rqBYdxr0Vq+8oYWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYjFKZmw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395F0C2BCB0;
+	Tue, 12 May 2026 17:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608984;
-	bh=LDI8UqjqKJ6meNubwE4wc/R3b7aLxFCynp0sGSrp6zk=;
+	s=korg; t=1778608270;
+	bh=xcpNzpVBVWJy9Wqh/X16hX5C+XDs84UJKJFlrFvVim8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8TD02KmpPN+veNhCsneDDz0FSHMHzTfeXIZO0wPvVFCa+cJPZv6EBxQ1asbjsr8K
-	 zgiMCBS9xzm6NptRJYOqmf9GMkbWTVcOpqbEV40zY9Sn0B6iR/xOz6JaScFlW4jReJ
-	 tKoLvnS9gxAbCaUdhTKJLM3r3+Z3fWnDUzOGdjJ4=
+	b=BYjFKZmwzxmjWSYeQ0jjG9MmhNer/dnojLd8f1+vhnMCA1Ex0pnAsSbMgFpjZDOEP
+	 MPTSr5bzQs07hVxWfCBVO/N9fu/CJQT5RUBVvQWP9c9iF5VlTaGfAV3/sRdvpodfiJ
+	 j6SZ+InOcU1kYwJpXJiL6tlolIThfzCPzwjXzYmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manas <ghandatmanas@gmail.com>,
-	Rakshit Awasthi <rakshitawasthi17@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 020/307] net/sched: sch_red: Replace direct dequeue call with peek and qdisc_dequeue_peeked
-Date: Tue, 12 May 2026 19:36:55 +0200
-Message-ID: <20260512173940.552908523@linuxfoundation.org>
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 015/270] ksmbd: rewrite stop_sessions() with restartable iteration
+Date: Tue, 12 May 2026 19:36:56 +0200
+Message-ID: <20260512173938.777061306@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,113 +64,227 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E214C5271B2
+X-Rspamd-Queue-Id: 66425526E5D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-246344-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246066-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,mojatatu.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-commit 458d5615272d3de535748342eb68ca492343048c upstream.
+commit c444139cb747bf6de1922b39900fdf02281490f4 upstream.
 
-When red qdisc has children (eg qfq qdisc) whose peek() callback is
-qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
-qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
-its child (red in this case), it will do the following:
- 1a. do a peek() - and when sensing there's an skb the child can offer, then
-     - the child in this case(red) calls its child's (qfq) peek.
-        qfq does the right thing and will return the gso_skb queue packet.
-        Note: if there wasnt a gso_skb entry then qfq will store it there.
- 1b. invoke a dequeue() on the child (red). And herein lies the problem.
-     - red will call the child's dequeue() which will essentially just
-       try to grab something of qfq's queue.
+stop_sessions() walks conn_list with hash_for_each() and, for every
+entry, drops conn_list_lock across the transport ->shutdown() call
+before re-acquiring the read lock to continue the loop.  The hash
+walk relies on cross-iteration state (the current bucket and the
+hlist position), which is not preserved across unlock/relock: if
+another thread performs a list mutation during the unlocked window,
+the ongoing iteration becomes unreliable and can re-visit
+connections that have already been handled or skip connections that
+have not.  The outer `if (!hash_empty(conn_list)) goto again;` retry
+masks the symptom in the common case but does not address the
+unsafe iteration itself.
 
-[   78.667668][  T363] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
-[   78.667927][  T363] CPU: 1 UID: 0 PID: 363 Comm: ping Not tainted 7.1.0-rc1-00033-g46f74a3f7d57-dirty #790 PREEMPT(full)
-[   78.668263][  T363] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[   78.668486][  T363] RIP: 0010:qfq_dequeue+0x446/0xc90 [sch_qfq]
-[   78.668718][  T363] Code: 54 c0 e8 dd 90 00 f1 48 c7 c7 e0 03 54 c0 48 89 de e8 ce 90 00 f1 48 8d 7b 48 b8 ff ff 37 00 48 89 fa 48 c1 e0 2a 48 c1 ea 03 <80> 3c 02 00 74 05 e8 ef a1 e1 f1 48 8b 7b 48 48 8d 54 24 58 48 8d
-[   78.669312][  T363] RSP: 0018:ffff88810de573e0 EFLAGS: 00010216
-[   78.669533][  T363] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[   78.669790][  T363] RDX: 0000000000000009 RSI: 0000000000000004 RDI: 0000000000000048
-[   78.670044][  T363] RBP: ffff888110dc4000 R08: ffffffffb1b0885a R09: fffffbfff6ba9078
-[   78.670297][  T363] R10: 0000000000000003 R11: ffff888110e31c80 R12: 0000001880000000
-[   78.670560][  T363] R13: ffff888110dc4150 R14: ffff888110dc42b8 R15: 0000000000000200
-[   78.670814][  T363] FS:  00007f66a8f09c40(0000) GS:ffff888163428000(0000) knlGS:0000000000000000
-[   78.671110][  T363] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   78.671324][  T363] CR2: 000055db4c6a30a8 CR3: 000000010da67000 CR4: 0000000000750ef0
-[   78.671585][  T363] PKRU: 55555554
-[   78.671713][  T363] Call Trace:
-[   78.671843][  T363]  <TASK>
-[   78.671936][  T363]  ? __pfx_qfq_dequeue+0x10/0x10 [sch_qfq]
-[   78.672148][  T363]  ? __pfx__printk+0x10/0x10
-[   78.672322][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.672496][  T363]  ? lockdep_hardirqs_on_prepare+0xa8/0x1a0
-[   78.672706][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.672875][  T363]  ? trace_hardirqs_on+0x19/0x1a0
-[   78.673047][  T363]  red_dequeue+0x65/0x270 [sch_red]
-[   78.673217][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.673385][  T363]  tbf_dequeue.cold+0xb0/0x70c [sch_tbf]
-[   78.673566][  T363]  __qdisc_run+0x169/0x1900
+Reframe the loop so it never relies on iterator state across
+unlock/relock.  Under conn_list_lock held for read, pick the first
+connection whose ->shutdown() has not yet been issued by this path,
+pin it by taking an extra reference, record that fact on the
+connection and mark it EXITING while still inside the locked walk,
+then drop the lock.  Then call ->shutdown() outside the lock, drop
+the pin (freeing the connection if the handler already released its
+reference), and restart from the top.
 
-The right thing to do in #1b is to grab the skb off gso_skb queue.
-This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
-method instead.
+Use a new per-connection flag, conn->stop_called, as the "shutdown
+issued from stop_sessions()" marker rather than reusing the status
+state.  ksmbd_conn_set_exiting() is also invoked by
+ksmbd_sessions_deregister() on sibling channels of a multichannel
+session without issuing a transport shutdown, so treating
+KSMBD_SESS_EXITING as "already handled here" would skip connections
+that still need shutdown() to wake their handler out of recv(),
+leaving the outer retry waiting indefinitely for the hash to drain.
+stop_sessions() is serialised by init_lock in
+ksmbd_conn_transport_destroy(), so writing stop_called under the
+read lock has no other writer.
 
-Fixes: 77be155cba4e ("pkt_sched: Add peek emulation for non-work-conserving qdiscs.")
-Reported-by: Manas <ghandatmanas@gmail.com>
-Reported-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260430152957.194015-2-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Set EXITING inside the locked walk so the selection, the stop_called
+marker, and the status transition all happen together, and guard
+against regressing a connection that has already advanced to
+KSMBD_SESS_RELEASING on its own (for example, if the handler exited
+its receive loop for an unrelated reason between teardown steps).
+
+When the pin drop is the last put, release the transport and pair
+ida_destroy(&target->async_ida) with the ida_init() done in
+ksmbd_conn_alloc(), so stop_sessions() retiring a connection on its
+own does not leak the xarray backing of the embedded async_ida.
+
+The outer retry with msleep() is kept to wait for handler threads to
+reach ksmbd_conn_free() and drain the hash.
+
+Observed with an instrumented build that logs one line per visit and
+widens the unlocked window before ->shutdown() by 200 ms, under
+five concurrent cifs mounts (nosharesock, one connection each):
+
+  * Current code: the same connection address is revisited many
+    times during a single stop_sessions() call and ->shutdown() is
+    invoked well beyond the number of live connections before the
+    hash finally drains.
+
+  * Rewritten code: each live connection produces exactly one
+    ->shutdown() call; the function returns as soon as the hash is
+    empty.
+
+Functional teardown via `ksmbd.control --shutdown` with the same
+five mounts completes cleanly on the rewritten path.
+
+Performance is observably unchanged.  Tearing down N concurrent
+nosharesock cifs connections with `ksmbd.control --shutdown` +
+`rmmod ksmbd` takes essentially the same wall time before and after
+the rewrite:
+
+    N        before        after
+    10       4.93s         5.34s
+    30       7.34s         7.03s
+    50       7.31s         7.01s     (3-run avg: 7.04s vs 7.25s)
+   100       6.98s         6.78s
+   200       6.77s         6.89s
+
+and the number of ->shutdown() calls equals the number of live
+connections on both paths when the race is not widened.  The
+teardown is dominated by the msleep(100)-based outer retry waiting
+for handler threads to run ksmbd_conn_free(), not by the iteration
+itself; the restartable loop's worst-case O(N^2) visit cost is in
+the microseconds even at N=200 and sits far below the msleep(100)
+granularity.
+
+Applied alone on top of ksmbd-for-next-next, this patch does not
+introduce a new leak site.  Under the same reproducer (10x
+concurrent-holders + ss -K + ksmbd.control --shutdown + rmmod), the
+tree still shows the pre-existing per-connection transport leak
+count that arises when the last refcount drop lands in one of
+ksmbd_conn_r_count_dec(), __free_opinfo() or session_fd_check() -
+all of which end with a bare kfree() today.  kmemleak backtraces
+for the unreferenced objects point into the TCP accept path
+(sk_clone -> inet_csk_clone_lock, sock_alloc_inode) and none
+involve stop_sessions().  Plugging those bare-kfree sites is the
+responsibility of the follow-up patch.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_red.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/connection.c |   46 +++++++++++++++++++++++++++++++++++++--------
+ fs/smb/server/connection.h |    1 
+ 2 files changed, 39 insertions(+), 8 deletions(-)
 
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -155,7 +155,7 @@ static struct sk_buff *red_dequeue(struc
- 	struct red_sched_data *q = qdisc_priv(sch);
- 	struct Qdisc *child = q->qdisc;
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -476,24 +476,54 @@ out:
  
--	skb = child->dequeue(child);
-+	skb = qdisc_dequeue_peeked(child);
- 	if (skb) {
- 		qdisc_bstats_update(sch, skb);
- 		qdisc_qstats_backlog_dec(sch, skb);
+ static void stop_sessions(void)
+ {
+-	struct ksmbd_conn *conn;
++	struct ksmbd_conn *conn, *target;
+ 	struct ksmbd_transport *t;
++	bool any;
+ 	int bkt;
+ 
++	/*
++	 * Serialised via init_lock; no concurrent stop_sessions() can
++	 * touch conn->stop_called, so writing it under the read lock is
++	 * safe.
++	 */
+ again:
++	target = NULL;
++	any = false;
+ 	down_read(&conn_list_lock);
+ 	hash_for_each(conn_list, bkt, conn, hlist) {
+-		t = conn->transport;
+-		ksmbd_conn_set_exiting(conn);
+-		if (t->ops->shutdown) {
+-			up_read(&conn_list_lock);
++		any = true;
++		if (conn->stop_called)
++			continue;
++		atomic_inc(&conn->refcnt);
++		conn->stop_called = true;
++		/*
++		 * Mark the connection EXITING while still holding the
++		 * read lock so the selection and the status transition
++		 * happen together.  Do not regress a connection that has
++		 * already advanced to RELEASING on its own (e.g. the
++		 * handler exited its receive loop for an unrelated
++		 * reason).
++		 */
++		if (READ_ONCE(conn->status) != KSMBD_SESS_RELEASING)
++			ksmbd_conn_set_exiting(conn);
++		target = conn;
++		break;
++	}
++	up_read(&conn_list_lock);
++
++	if (target) {
++		t = target->transport;
++		if (t->ops->shutdown)
+ 			t->ops->shutdown(t);
+-			down_read(&conn_list_lock);
++		if (atomic_dec_and_test(&target->refcnt)) {
++			ida_destroy(&target->async_ida);
++			t->ops->free_transport(t);
++			kfree(target);
+ 		}
++		goto again;
+ 	}
+-	up_read(&conn_list_lock);
+ 
+-	if (!hash_empty(conn_list)) {
++	if (any) {
+ 		msleep(100);
+ 		goto again;
+ 	}
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -48,6 +48,7 @@ struct ksmbd_conn {
+ 	struct mutex			srv_mutex;
+ 	int				status;
+ 	unsigned int			cli_cap;
++	bool				stop_called;
+ 	union {
+ 		__be32			inet_addr;
+ #if IS_ENABLED(CONFIG_IPV6)
 
 
 
