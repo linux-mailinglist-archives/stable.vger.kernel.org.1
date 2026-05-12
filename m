@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-246026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLUSFzFqA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:09 +0200
+	id OGKsNrpvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6EB5265B7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 772BB52767D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85D633094067
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 34C3A30E65D9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7CF3EDE59;
-	Tue, 12 May 2026 17:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11B1349AF5;
+	Tue, 12 May 2026 18:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAo7GGzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOPEzM1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E769A3EDE49;
-	Tue, 12 May 2026 17:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51BF306B11;
+	Tue, 12 May 2026 18:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608168; cv=none; b=S7cZ12tqf83Y5Q92Rm03aUFf5YcrPySx4Ea7ypkJvZUlPOtgQZZqIKbyg6gU5y3BD5vEJKBxAmVuCrPFLowx0shmkx3RQeBm5q02sIr0FOrhfmjSF5yywmfGoGmt77nOKWyiCFWIUqgQXAW6DSNUuJPJXxPeqFMkOm/qpsue5Ug=
+	t=1778609548; cv=none; b=topUK3Dze0cPjTiJCL8zMrlFcvOmy+5vIdtEInGruzxns1nuOBLSvYaza+/JfXQj7aAY+3/BfATOm1Jly3/uhuRh78PyxsjRt4xSBGeFACt9AIBIQlOdBqju918NImqyYsAtk3q5jFWWEK3kAK3uimEih9Z8BNhWZJ2WUcvfIck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608168; c=relaxed/simple;
-	bh=kWtPhROQqPhgoX3k0skKuZmLauLRMJdtRbw6LdrvqoM=;
+	s=arc-20240116; t=1778609548; c=relaxed/simple;
+	bh=arm+N3/w5O8t+YQbKMFakkpFICRzpx7BJz9VIPuGZzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zpo669t0Cc9+yFe6iw89J2K+LQqwzbTQT0Qldond106LfDc4i4XFp39rf8k8NC/bVeq46NHXXf+Mp63bsFtsu7yDE357UU0GJKV7TOkbaEVUrceFu9ACYNJNpM9ZAn/YK/owlJEdfuBIv3WveHqhwFIjLcNiyG4d/Gw/S0eecZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAo7GGzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6C1C2BCB0;
-	Tue, 12 May 2026 17:49:27 +0000 (UTC)
+	 MIME-Version; b=UkKcWBs4U8xVT3g3czzlx2SfVZ+iJ1ecKHGp9JMYtIza9D4q76QkdbFLiez8HCRMAXwF02Uqg/2h5uzb2Yy+sFw0BIbFKBXVyCwIyLQG5yQkfNbvrVbTfmSf/OET+sWfxkJh0Z5LIvFuS/wtpJozGjKMuqFkNHzCGTPtEVx7/qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOPEzM1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B8AC2BCB0;
+	Tue, 12 May 2026 18:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608167;
-	bh=kWtPhROQqPhgoX3k0skKuZmLauLRMJdtRbw6LdrvqoM=;
+	s=korg; t=1778609548;
+	bh=arm+N3/w5O8t+YQbKMFakkpFICRzpx7BJz9VIPuGZzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qAo7GGzbW6tm2Y0FCwrSa8In5SHBjj1nb705/70h7atPe8vP79CFXgn04InnyenHI
-	 khwrl9Dm4ejH+ITWzNdgbGHgL2Q2UlQm0Tulwxi6lBfFxVvpZJGUaLOQ43UMgsp4vh
-	 VGg0z0mgLbLlWBbta93/4W97tau/LwT5GXmXyduw=
+	b=zOPEzM1ldrdW2CkkQmth6WmWbOMvqfR/r2CjfM2OX0FD5svLPHYZh+mQbvEz1IVV2
+	 yhVGjcOtOlvO6pQ6iDYxwEKaF+Ql+iBKl+UQLQgSqrEOo+gQQgGGKnENJcAaRLPTOl
+	 gNhY9d1HuKCwt3n64IQuakjv//7UjjKumr175HWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-unionfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org,
-	Amir Goldstein <amir73il@gmail.com>,
-	Serge Hallyn <serge@hallyn.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 180/206] fs: prepare for adding LSM blob to backing_file
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 7.0 237/307] RDMA/mlx4: Fix mis-use of RCU in mlx4_srq_event()
 Date: Tue, 12 May 2026 19:40:32 +0200
-Message-ID: <20260512173936.672348670@linuxfoundation.org>
+Message-ID: <20260512173945.123460675@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,116 +62,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1D6EB5265B7
+X-Rspamd-Queue-Id: 772BB52767D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,lists.ozlabs.org,gmail.com,hallyn.com,paul-moore.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-246026-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246563-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hallyn.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,paul-moore.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 880bd496ec72a6dcb00cb70c430ef752ba242ae7 ]
+commit c9341307ea16b9395c2e4c9c94d8499d91fe31d0 upstream.
 
-In preparation to adding LSM blob to backing_file struct, factor out
-helpers init_backing_file() and backing_file_free().
+Sashiko points out the radix_tree itself is RCU safe, but nothing ever
+frees the mlx4_srq struct with RCU, and it isn't even accessed within the
+RCU critical section. It also will crash if an event is delivered before
+the srq object is finished initializing.
+
+Use the spinlock since it isn't easy to make RCU work, use
+refcount_inc_not_zero() to protect against partially initialized objects,
+and order the refcount_set() to be after the srq is fully initialized.
 
 Cc: stable@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-unionfs@vger.kernel.org
-Cc: linux-erofs@lists.ozlabs.org
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Serge Hallyn <serge@hallyn.com>
-[PM: use the term "LSM blob", fix comment style to match file]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-[ Used kfree() instead of kmem_cache_free(bfilp_cachep, ff) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 30353bfc43a1 ("net/mlx4_core: Use RCU to perform radix tree lookup for SRQ")
+Link: https://sashiko.dev/#/patchset/0-v2-1c49eeb88c48%2B91-rdma_udata_rep_jgg%40nvidia.com?part=5
+Link: https://patch.msgid.link/r/12-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file_table.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/srq.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/fs/file_table.c
-+++ b/fs/file_table.c
-@@ -60,6 +60,12 @@ struct path *backing_file_user_path(stru
- }
- EXPORT_SYMBOL_GPL(backing_file_user_path);
- 
-+static inline void backing_file_free(struct backing_file *ff)
-+{
-+	path_put(&ff->user_path);
-+	kfree(ff);
-+}
-+
- static inline void file_free(struct file *f)
+--- a/drivers/net/ethernet/mellanox/mlx4/srq.c
++++ b/drivers/net/ethernet/mellanox/mlx4/srq.c
+@@ -44,13 +44,14 @@ void mlx4_srq_event(struct mlx4_dev *dev
  {
- 	security_file_free(f);
-@@ -67,8 +73,7 @@ static inline void file_free(struct file
- 		percpu_counter_dec(&nr_files);
- 	put_cred(f->f_cred);
- 	if (unlikely(f->f_mode & FMODE_BACKING)) {
--		path_put(backing_file_user_path(f));
--		kfree(backing_file(f));
-+		backing_file_free(backing_file(f));
- 	} else {
- 		kmem_cache_free(filp_cachep, f);
- 	}
-@@ -255,6 +260,12 @@ struct file *alloc_empty_file_noaccount(
- 	return f;
- }
+ 	struct mlx4_srq_table *srq_table = &mlx4_priv(dev)->srq_table;
+ 	struct mlx4_srq *srq;
++	unsigned long flags;
  
-+static int init_backing_file(struct backing_file *ff)
-+{
-+	memset(&ff->user_path, 0, sizeof(ff->user_path));
-+	return 0;
-+}
-+
- /*
-  * Variant of alloc_empty_file() that allocates a backing_file container
-  * and doesn't check and modify nr_files.
-@@ -277,7 +288,14 @@ struct file *alloc_empty_backing_file(in
- 		return ERR_PTR(error);
+-	rcu_read_lock();
++	spin_lock_irqsave(&srq_table->lock, flags);
+ 	srq = radix_tree_lookup(&srq_table->tree, srqn & (dev->caps.num_srqs - 1));
+-	rcu_read_unlock();
+-	if (srq)
+-		refcount_inc(&srq->refcount);
+-	else {
++	if (!srq || !refcount_inc_not_zero(&srq->refcount))
++		srq = NULL;
++	spin_unlock_irqrestore(&srq_table->lock, flags);
++	if (!srq) {
+ 		mlx4_warn(dev, "Async event for bogus SRQ %08x\n", srqn);
+ 		return;
  	}
+@@ -203,8 +204,8 @@ int mlx4_srq_alloc(struct mlx4_dev *dev,
+ 	if (err)
+ 		goto err_radix;
  
-+	/* The f_mode flags must be set before fput(). */
- 	ff->file.f_mode |= FMODE_BACKING | FMODE_NOACCOUNT;
-+	error = init_backing_file(ff);
-+	if (unlikely(error)) {
-+		fput(&ff->file);
-+		return ERR_PTR(error);
-+	}
-+
- 	return &ff->file;
- }
+-	refcount_set(&srq->refcount, 1);
+ 	init_completion(&srq->free);
++	refcount_set_release(&srq->refcount, 1);
+ 
+ 	return 0;
  
 
 
