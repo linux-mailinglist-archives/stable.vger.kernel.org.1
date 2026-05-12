@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-246219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245917-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GVeOmVvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:21 +0200
+	id wGiyJANoA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245917-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:48:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D71B52758D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3545D526260
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98D0F3241310
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C7BC3084AE4
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C853EDE4C;
-	Tue, 12 May 2026 17:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100143DB980;
+	Tue, 12 May 2026 17:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqOYRMTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8jw76Mz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D693EDE43;
-	Tue, 12 May 2026 17:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7481385D85;
+	Tue, 12 May 2026 17:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608665; cv=none; b=QvAA4jPJrK6ZTqhT3xmXk69AiPhOU7/ufFxt7pDYJlP6lQj5RgUO1riI8m6UyEdaNjNINzv8qz/nku78kK4U3lIkkvLbfRBqrA8CI8bEalnsJb/7jzDU3ivJAv9bqFf/JgLOVG2EJRi6tu2+GMKGxN8p2JGmeYGH2tSUQgfM2z8=
+	t=1778607887; cv=none; b=CIOPWeaIs+1nrj3QenrOw7ez0d9YjCzuhcYyWQ6zMjleKJTEjLkLAVhS49g2XG9xdufiqBwv7rVtnFkM1UCChvqjLGIGxF17CNKaPLT686d0qVkLOnDQJHwEpZvvhgomPn6seuddjj+gNw1r/x6CAR6jzf+G9QvDzKSNth3roiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608665; c=relaxed/simple;
-	bh=oUGk2M2HiT/inv2G3DjeB4Bkq1yT4JMlN1dz1EazMpA=;
+	s=arc-20240116; t=1778607887; c=relaxed/simple;
+	bh=lHRxPlETwdwhPjwPBk5uOsP/2aYAje0npiLUoIQqeLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPw86rHc+n7ReuBiiGaUBz+JtSoVzzmQpcQAW/WQW0W/kdMG6Yr4wMmEHKSY6g2kwPoS7F58wn4gAvE5AwtSpML6vXuKYDwGUxE66HsBtyO40LLmE8oIAZwTdWHeUsgcfnlkguq7znS3EWKqkCVnIPifY1PitI51rdahehlP6FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqOYRMTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFCAC2BCF6;
-	Tue, 12 May 2026 17:57:44 +0000 (UTC)
+	 MIME-Version; b=LjBOAHi5gR04OWBRhCulB/KtAWzJHBxnHhFQ0iVsuP5DMwHoL4wYU9VBNjpHkcuK6fx3kTSYB8iN9DgE3miIJjrliMwtvGhEG5sO+BUh1b/zIzdoaU1I/si3iYzDds5Q3Fpe2tIdiFVeM4bDivyTWIcQOFA1tzQq0C6uDRRxL4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8jw76Mz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56748C2BCB0;
+	Tue, 12 May 2026 17:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608665;
-	bh=oUGk2M2HiT/inv2G3DjeB4Bkq1yT4JMlN1dz1EazMpA=;
+	s=korg; t=1778607887;
+	bh=lHRxPlETwdwhPjwPBk5uOsP/2aYAje0npiLUoIQqeLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqOYRMTn85O6+Mpct4V78DH+OUovliFqeQ1H194kfR9KoOOR8qBA15cGfDiD2qlnd
-	 LS0mQkMAVdFrUPKE8uozi/bOq9XYC8ZXWkzS8ohZsLCU6ninzCm/EdI89CBbOmDRKu
-	 F6mKkfedYc3j40+4jysggGPhVQR4mbjElFlzwE2U=
+	b=C8jw76MziU4vFCwEsjN5PDQJki/Mh709x9KHZR4u5eKOd+09fkJlh0qFRyBPNf9r2
+	 gp1t7pBnYSm4gaQU4M7MYYi+dp+q4l+eaDyf0d7gndY7K+843y+882EybEcMeBOqE6
+	 0PU30CK/SnO2n1zvGra2nuRPcmOq7qj8TMnBr+68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 126/270] ice: fix double free in ice_sf_eth_activate() error path
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.12 075/206] KVM: arm64: Fix kvm_vcpu_initialized() macro parameter
 Date: Tue, 12 May 2026 19:38:47 +0200
-Message-ID: <20260512173941.107755223@linuxfoundation.org>
+Message-ID: <20260512173934.438384283@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5D71B52758D
+X-Rspamd-Queue-Id: 3545D526260
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -77,69 +74,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-246219-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-245917-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Fuad Tabba <tabba@google.com>
 
-commit 9aab1c3d7299285e2569cbc0ed5892d631a241b2 upstream.
+commit d89fdda7dd8a488f922e1175e6782f781ba8a23b upstream.
 
-When auxiliary_device_add() fails, ice_sf_eth_activate() jumps to
-aux_dev_uninit and calls auxiliary_device_uninit(&sf_dev->adev).
+The macro is defined with parameter 'v' but the body references the
+literal token 'vcpu' instead, causing it to silently operate on whatever
+'vcpu' resolves to in the caller's scope rather than the value passed by
+the caller. All current call sites happen to use a variable named 'vcpu',
+so the bug is latent.
 
-The device release callback ice_sf_dev_release() frees sf_dev, but
-the current error path falls through to sf_dev_free and calls
-kfree(sf_dev) again, causing a double free.
-
-Keep kfree(sf_dev) for the auxiliary_device_init() failure path, but
-avoid falling through to sf_dev_free after auxiliary_device_uninit().
-
-Fixes: 13acc5c4cdbe ("ice: subfunction activation and base devlink ops")
+Fixes: e016333745c7 ("KVM: arm64: Only reset vCPU-scoped feature ID regs once")
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Link: https://patch.msgid.link/20260424084908.370776-5-tabba@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-3-686c33c9828d@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sf_eth.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/include/asm/kvm_host.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-@@ -305,6 +305,8 @@ ice_sf_eth_activate(struct ice_dynamic_p
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -1390,7 +1390,7 @@ static inline bool __vcpu_has_feature(co
  
- aux_dev_uninit:
- 	auxiliary_device_uninit(&sf_dev->adev);
-+	return err;
-+
- sf_dev_free:
- 	kfree(sf_dev);
- xa_erase:
+ #define vcpu_has_feature(v, f)	__vcpu_has_feature(&(v)->kvm->arch, (f))
+ 
+-#define kvm_vcpu_initialized(v) vcpu_get_flag(vcpu, VCPU_INITIALIZED)
++#define kvm_vcpu_initialized(v) vcpu_get_flag(v, VCPU_INITIALIZED)
+ 
+ int kvm_trng_call(struct kvm_vcpu *vcpu);
+ #ifdef CONFIG_KVM
 
 
 
