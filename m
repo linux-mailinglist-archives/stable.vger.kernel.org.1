@@ -1,90 +1,77 @@
-Return-Path: <stable+bounces-245376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245378-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DiDD06JAmrVtwEAu9opvQ
-	(envelope-from <stable+bounces-245376-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 03:58:38 +0200
+	id CGvOGEGLAmrVtwEAu9opvQ
+	(envelope-from <stable+bounces-245378-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 04:06:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7EB518877
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 03:58:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2709518AAA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 04:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 003A7301B93D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 01:58:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41D28301DED1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 02:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6372628F948;
-	Tue, 12 May 2026 01:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9232DA76F;
+	Tue, 12 May 2026 02:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WR/7129v"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="VbqDWwwe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E525383329
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 01:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6B32DB7A9
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 02:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778551112; cv=none; b=ApSGXFB48iKGNnz/bp3PrPtJaugV7wAJlo/eH0fIcjdOrdjLLPNPf4b6/6fD6XTOyXstKriAALLiC8wF2H1oGEsbUe7gl/6lJM0BMGdWP5l4KR2feSAXy/eHJhnA/IFWJZt5kHkqRB8BLkSzFuZJ1vDXiWIiGWtkXauuYLhrekw=
+	t=1778551594; cv=none; b=MQskzYkfruIFeWfbPlbk+9qyMKEZxShU39GyqxoCnMpHiGWbkLwCAX6mrIEhjAdqMSR+eMLb78PE0psiv5UCt+aq3jQ6Na6ewzPwI/ZWqtdYldpFKLcnUJ8tmHfOlszEMZUw410I25LScw56YM4uKm3cADRV/9B7F+GAkavchgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778551112; c=relaxed/simple;
-	bh=xAs7soMkHl5ZEqelkAMU+KxZY7zEQ+JNb1bToXX50h8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q0q+KJ5jTaAefsL3KL+Kg+iOiiRmoD9mqDyUTnrS9huHG07hmjds8TVXlGBy6JOfuvzLyC92Wh4IGTPBxvyWzT3+z3wZMtnOG3IEr6/OhiO9x7EaXDKMxE0lraMI3EqlEmywGbIV0JcVZztjRYIlwBdd4Iqg9GgXix+GmtknKNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WR/7129v; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3683157ec13so393360a91.2
-        for <stable@vger.kernel.org>; Mon, 11 May 2026 18:58:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778551110; x=1779155910; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bv5IUYRwwH6Sa8774zC9j8VUEUymXFEHfk8vFZ4aRM8=;
-        b=WR/7129vb+jWv3QWTRw9pmZzSjj346vj3/fEyUDHArsUiAfEHec9+2W6PwSOg9Ln7M
-         5VDv7M8bgaa51u58vqz+cwgJcML719XAqTg5dzhtf4Esq/3lMt8lALx60uhlcim/8qyq
-         7tyWASGeT8gJwf00KxeGtZzKm89BCptyr22h0+CY8hRt6Oa0mMHAHXokGhZWOKn/zire
-         mA94RPjfsNlrSPuUlVuteCqpZIM3OSykADQYmobyp0HNA5h0KF0oHqF3QPFtm+Xoml4Z
-         87RNG3uxJuk5UmOZZ3hXvkokUb6PHp4FSqJEkbcQdC37Cdb7OZefcRQW4b091vKLyitL
-         UlTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778551110; x=1779155910;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bv5IUYRwwH6Sa8774zC9j8VUEUymXFEHfk8vFZ4aRM8=;
-        b=QcZ7QbDGF6oBj3YNT7jlGOQJ2sLDpOVWUn8US/m0QZGas/BkgzNLvgH8j+IQHT3dUL
-         K4xMZOx2ikwRhOX8TWoc9KGT7TlaEr8N06cieEdcYzk1TAgLishFuxHFDgnL+6EJtTi5
-         kzoxOJNXopn1iAGOw8wGnpTjTVgwatuAJ0VPzOOWf9+enZkCdUmLvow7yhTGL9c9rDi9
-         4xB+uQE36LL6ZhVlH/LqtNzWtjDpvkNGBaX2c19GqrvICpQfFIG3Vty+OVZ4rdbBY9sG
-         e1uQjr6l5pmMyOdFxcD0X5O0NdpOk7QSJRHiHkBkfAwI5MBX3iD8T0uiW/8eVSylNXeV
-         aZMg==
-X-Forwarded-Encrypted: i=1; AFNElJ/u03gkxIaLd8vOoK5qKYmTxr0cG/gC3yPxNI8zRkJjv90EMdz9hK+p4p4iO80oACOZuxJ39ZA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxmqBIaiczQvK1IBK4dyQu/atOscKbyK+B2bW5g4WKv3UNywO8
-	I4QulKjAj9ngrfTWA13oaikmCqQREqBsI4Y2HKokXsxANiLvHaY9Iz7O8fDju5JaNmVgcw==
-X-Gm-Gg: Acq92OEuSuIlo/rZ5LvsfJSCapY5x0hI+A5kUL5gJVcrhBbqcy2y/j0/UtEBz9OXPkk
-	G5VH+rhf9vVa76vfqQk5SkfjLfIodTkUZzuENa2D03y26kf3LucfuUW4FCQoAAEVhzEAOPeRIeL
-	vf6pjmXJ4aWm6hgDtDWrgz/a1nvy8bLSfErcwuDvt3YOeOwEcQcUuDNK1mvgEj8RA3idIx31mxJ
-	LEXUoyFhzjqR3tc5/SO6lC4gIzYyqYLepb6cKh0gP0poUoZYe/gj5CGZM62v575qixqgF2yxN8+
-	48mCYQCZH4xksnl4ZPk2P/32MdA4LOzrNXeIyAEuGcNpxb9YNxvmPKLHUyJ50Jr1pj2egcSXJ09
-	hHrzJ259hP4+h7TPbOWyto//2Ezd4bRQNH4SuQw1zifHRBDOiihWejfW6JFYGPLBHRL4GHTEzeB
-	nGkMEKsDuEIaA7kCnbaJWS5pfMzMFqtF7v21mpaM+UJtQ=
-X-Received: by 2002:a17:903:457:b0:2bc:ee93:ddc1 with SMTP id d9443c01a7336-2bcee93e22amr13323735ad.4.1778551110341;
-        Mon, 11 May 2026 18:58:30 -0700 (PDT)
-Received: from SH-7N5RBY3.aixin-chip.com ([113.106.167.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d27055sm117932915ad.6.2026.05.11.18.58.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 18:58:29 -0700 (PDT)
-From: hlleng <a909204013@gmail.com>
-To: jikos@kernel.org,
-	bentiss@kernel.org
-Cc: linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	hlleng <a909204013@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] HID: quirks: Add ALWAYS_POLL quirk for SIGMACHIP USB mouse
-Date: Tue, 12 May 2026 09:57:37 +0800
-Message-ID: <20260512015737.8919-1-a909204013@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1778551594; c=relaxed/simple;
+	bh=RIuefCFKPrv0JQDV6zMwmpxjA934p38aj5atlMN6Caw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=dDfzgQgx5hPpl1onLKtNBR8yWj3/H/z8hRVqfbR9Evct8/NS3TtvlZZCEAYIUsw2iGWXSgEFMAKhqWXNfJzakTtGLZQuTvgE2cKJYV8WkLMKdqfzr+QJ8S8PumSqT4WYfBRlT6mcVUyp9r03JYlJY0Yo1DV+5qnbANUOuSFta5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=VbqDWwwe; arc=none smtp.client-ip=54.243.244.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1778551547;
+	bh=RIuefCFKPrv0JQDV6zMwmpxjA934p38aj5atlMN6Caw=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=VbqDWwweX2ZoFU3MFABU82K0mNs6gAa/JII13XBdflrMTxy4MSrJ3F3FlpVzJbjM0
+	 lJrEeFqd5lxtwpKuQ1qOwgOCKNwsR71iQVoqT6gd12CAx1US2my5Srk2YQhA+5TLUX
+	 woM0xRWU8/a5P5LWtLj2c3Vo0B1lqGr02P8kpy0k=
+X-QQ-mid: zesmtpip3t1778551530tc7f86e2c
+X-QQ-Originating-IP: kgBge4GMdRjXFINEkBLt4uzoSLD/jwBTNmCUJCn3P2U=
+Received: from localhost.localdomain ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 12 May 2026 10:05:27 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 2599855699344231170
+EX-QQ-RecipientCnt: 15
+From: Wentao Guan <guanwentao@uniontech.com>
+To: sashal@kernel.org
+Cc: dhowells@redhat.com,
+	gregkh@linuxfoundation.org,
+	guanwentao@uniontech.com,
+	harshit.m.mogalapalli@oracle.com,
+	horms@kernel.org,
+	imv4bel@gmail.com,
+	jaltman@auristor.com,
+	jiayuan.chen@linux.dev,
+	kuba@kernel.org,
+	linux-afs@lists.infradead.org,
+	marc.dionne@auristor.com,
+	stable@kernel.org,
+	stable@vger.kernel.org,
+	torvalds@linux-foundation.org
+Subject: Re: Re: [PATCH 6.12.y v3 1/2] rxrpc: Fix conn-level packet handling to unshare RESPONSE packets
+Date: Tue, 12 May 2026 10:04:11 +0800
+Message-Id: <20260512020411.129938-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260511220000.stable-reply-item003@kernel.org>
+References: <20260511220000.stable-reply-item003@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,81 +79,67 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EE7EB518877
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: Mxh1r6NAWu990gNGKz2F3nunQyufNByGGbPiI+t74KXhvElZbU/ext4y
+	CiW9IiAACT9aYq3TVy28D1BEN4WROpoLUv2aDaT6Ew+w6asFgfdqtU+HyphqXC90yyt3403
+	v3+wJAgYWxbGCNfE3lg/jl9GllHBx3xIwianUH45S6CZzpYCPgR32N0CdMp+8hA50U27U0D
+	4gR+/+1JADez1wOO7h3TCO0Zsp2a7oGUjs48p4xQ6qBI6EukylXp32sCwd1kSHNL0/IFXVx
+	XJ8Y8Gde+neb6i3oQq3NM6T/q8R9++Yo9qqSDCB6Ua1Smzsi2AkuMmnUngNSkSPcmTQ/WSm
+	jJzu7o762dNK8Vp4ClLO6CK4H6hrrOR5IXW7VLuYsro0H1qEXa8y+b07yryCUya3ag8l6Z8
+	X1Kbh3Kz4t3KEQ/NGTA+00jTvSBSKQx9XZ2TLUS+stFZS+jawQrub5Fq5KBJjfEfFJFeWoX
+	BPxSSYLqVaU7/KTsB2rZV2opuqKhH+iEe+mpWI5gry9ImXCObmw/8kws4bfQLXR8KT1c5H1
+	FPPiSJfy5e/7k9FsBpkSDrIW8A+MgHsTPDalCnZrzbSlhsIkCZbOJ5osC3lbttxDdyX5znN
+	zclDcBCOy8UAbv+MGiEcWs/ZjXki3IcCC8UtImmgFB6Z1co7dT6KsJfpi3Q9hoiVpOrCrzq
+	KgQGv7Hn2M4eLB+8olLkp1gHAKw0aZ4AEjQqb+SAdhvOZhnnRWlzY7by13zCIXJbibem1KP
+	uCIK6DMGO7HKnZm/3qBOQYUSeRgrUj1OkzxVcJgK/EEa35O55nk3NyZ2W5upEdwggZN3yfG
+	xsAIO1Hp2UPQiy+0Sm9xJ5PYchl1wItOaldgM/cyUxqievnv675fGEuvJriqEJpsJY0p/f+
+	TTfr7Fl6mtmXnwjZVVjdUavmiB5AMo5StoWIYR5fclHsMQwfzfYiEcPkPimbyEeQZEveWbH
+	qtllG++GJhbSGWW36/oiOw+mLRy7w3IjAUbZcOjIbt2pGAzh0G8ooJDKl5YezohJPViMyMb
+	j7uJWIZSBJpX0YLAhFNEaRHgmdDJw8a5zkJ7DoWvQMmiSIQJdAvsARyl0wfrqsJsaPKqJPi
+	jvk26U6sx632MxtedrX5Lw=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: C2709518AAA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-245376-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[redhat.com,linuxfoundation.org,uniontech.com,oracle.com,kernel.org,gmail.com,auristor.com,linux.dev,lists.infradead.org,vger.kernel.org,linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-245378-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[a909204013@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,uniontech.com:mid,uniontech.com:dkim]
 X-Rspamd-Action: no action
 
-The SIGMACHIP USB mouse with VID/PID 1c4f:0034 can disconnect and
-re-enumerate repeatedly after it has been enumerated if its interrupt
-endpoint is not continuously polled.
+> Queued for 6.12 (both 1/2 and 2/2), thanks.
 
-This was observed with the device reporting itself as "SIGMACHIP Usb
-Mouse". Keeping the input event device open avoids the disconnects.
+> I fixed up the bracket annotation at apply time per Harshit's review:
+> the trace event was actually dropped in bf20f46d94f1 ("rxrpc: Fix
+> potential UAF after skb_unshare() failure"), not 016725807ce3, so the
+> queued changelog references bf20f46d94f1.
 
-Add HID_QUIRK_ALWAYS_POLL for this device so the HID core keeps polling
-it even when there is no userspace input consumer.
+Thanks.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: hlleng <a909204013@gmail.com>
----
- drivers/hid/hid-ids.h    | 1 +
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 0cf637423..c07e90dbd 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1280,6 +1280,7 @@
- 
- #define USB_VENDOR_ID_SIGMA_MICRO	0x1c4f
- #define USB_DEVICE_ID_SIGMA_MICRO_KEYBOARD	0x0002
-+#define USB_DEVICE_ID_SIGMA_MICRO_USB_MOUSE	0x0034
- #define USB_DEVICE_ID_SIGMA_MICRO_KEYBOARD2	0x0059
- 
- #define USB_VENDOR_ID_SIGMATEL		0x066F
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 9e88c9d6c..800b8f76d 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -187,6 +187,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SEMICO, USB_DEVICE_ID_SEMICO_USB_KEYKOARD), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SENNHEISER, USB_DEVICE_ID_SENNHEISER_BTD500USB), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIGMA_MICRO, USB_DEVICE_ID_SIGMA_MICRO_KEYBOARD), HID_QUIRK_NO_INIT_REPORTS },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_SIGMA_MICRO, USB_DEVICE_ID_SIGMA_MICRO_USB_MOUSE), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIGMATEL, USB_DEVICE_ID_SIGMATEL_STMP3780), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIS_TOUCH, USB_DEVICE_ID_SIS1030_TOUCH), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIS_TOUCH, USB_DEVICE_ID_SIS817_TOUCH), HID_QUIRK_NOGET },
--- 
-2.54.0
-
+BRs
+Wentao Guan
 
