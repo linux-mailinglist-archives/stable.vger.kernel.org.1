@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-246600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDncHghwA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:04 +0200
+	id 0Bd/G7JtA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E70C52774F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EEB85270A5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A4713110B74
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:14:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 671713104A2D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EE9368972;
-	Tue, 12 May 2026 18:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA893EDE48;
+	Tue, 12 May 2026 18:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXP+z1FW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctfQOkU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFD03EDE51;
-	Tue, 12 May 2026 18:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26C63EDE57;
+	Tue, 12 May 2026 18:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609641; cv=none; b=Vs1X1WuhLoeFt3nAKCW8ZOMmJVg1PbdFR3RyXldz397WRol5pNpfeE/LUoV8M/tWMitHYmj831uJRUjHbI1WIVzaMtI9JgAtEPiFhyglbITATLBVfjsKheuX/zYhlhQcC6NhLlXC36Cvc7sELnkjh44slRpCTLHRqfKL6oS3/J4=
+	t=1778608923; cv=none; b=ncXqhodiFbu4tHekHyNyHQCzwxuuAax3hT0iSpio3Emb1jyKcVwIxS1nbqvFS8f9G+5NHUGNeLg4Kp9iRUgmJ8JNkEIu92yss3XEup3jQu9Tez7cWIyC7N8jfwIXE/ZNMn6HugyBPCx0HRVqc0g+qwWm+CZYJFNeu/B80612HPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609641; c=relaxed/simple;
-	bh=x9FyGUwNpDgf5nuZ0LuJG7V32GPoqJUUAKXqLMCcnCM=;
+	s=arc-20240116; t=1778608923; c=relaxed/simple;
+	bh=lbJgHM9+WZYmKw73BWLMBb24QrDgpLFcb23Esf49Vd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0zHlvefVLnX4Uh24kq95nsyJrVc2DM+uoj6diV+lotBIqeiPaF0I4pMxvh99EPmvXafq60hOZ9zOdUfMa58KJW2r9ccTZWj0Rbrt2sF5KRZ1dVnyWPvEx9YuMGSZx8s1XCdO0+4lLH33PuPiu1wO4jPmJSwodULc6Bg8MqhH70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXP+z1FW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A585BC2BCFB;
-	Tue, 12 May 2026 18:14:00 +0000 (UTC)
+	 MIME-Version; b=qJ1sGXT0o6BVPLgQvRqxNwd4DIt1AXZ6z8tvJhlOl7QDSM5CrAenhXb9wrh1hUvGhR5XTg5blw02KbuckB5CTwcPIBcrr6+96afmYWXmMif+78OAnDydDYM2qjjsUNvYY4qsQfcIhsMJ/Q5HcMuDfdkpcI7K1xM0ozbAwn6nvA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctfQOkU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F60C2BCB0;
+	Tue, 12 May 2026 18:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609641;
-	bh=x9FyGUwNpDgf5nuZ0LuJG7V32GPoqJUUAKXqLMCcnCM=;
+	s=korg; t=1778608922;
+	bh=lbJgHM9+WZYmKw73BWLMBb24QrDgpLFcb23Esf49Vd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BXP+z1FWxzXE9omMdkvMnS9Czd33sMKcH2Ci7FBLsuJB7Cn7I35REM1+wehCsLa2O
-	 T907FNFu376elTAQDzctG2OYhFPEMaFA8EW0sT+7PrCRNhVJklyMnGA2yWZmgnCeSm
-	 O95qcwiDYaliMypaf+0SsjIy+ohP/i0cTX9oYQ3c=
+	b=ctfQOkU/96RsreUP2Hq8Y6JbfR676KTgf3RPuVr/M9Ge0cAEHfN4gIld71ZYZV/ds
+	 MBvQU993pL7fX+qxLkmizsRwEZXbPz/I2wbsXwjlk+bTDROcu5JHlcsD8AUiUpMIdB
+	 kRuBin86eIvmA58lhujO810/ABC1J9KLenFYEyqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 7.0 274/307] f2fs: fix uninitialized kobject put in f2fs_init_sysfs()
+	Russell King <linux@armlinux.org.uk>,
+	Sam Edwards <CFSworks@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 268/270] net: stmmac: Prevent NULL deref when RX memory exhausted
 Date: Tue, 12 May 2026 19:41:09 +0200
-Message-ID: <20260512173945.908103813@linuxfoundation.org>
+Message-ID: <20260512173944.091971121@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +65,154 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0E70C52774F
+X-Rspamd-Queue-Id: 1EEB85270A5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246600-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,armlinux.org.uk,gmail.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-246320-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,armlinux.org.uk:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Sam Edwards <cfsworks@gmail.com>
 
-commit b635f2ecdb5ad34f9c967cabb704d6bed9382fd0 upstream.
+[ Upstream commit 0bb05e6adfa99a2ea1fee1125cc0953409f83ed8 ]
 
-In f2fs_init_sysfs(), all failure paths after kset_register() jump to
-put_kobject, which unconditionally releases both f2fs_tune and
-f2fs_feat.
+The CPU receives frames from the MAC through conventional DMA: the CPU
+allocates buffers for the MAC, then the MAC fills them and returns
+ownership to the CPU. For each hardware RX queue, the CPU and MAC
+coordinate through a shared ring array of DMA descriptors: one
+descriptor per DMA buffer. Each descriptor includes the buffer's
+physical address and a status flag ("OWN") indicating which side owns
+the buffer: OWN=0 for CPU, OWN=1 for MAC. The CPU is only allowed to set
+the flag and the MAC is only allowed to clear it, and both must move
+through the ring in sequence: thus the ring is used for both
+"submissions" and "completions."
 
-If kobject_init_and_add(&f2fs_feat, ...) fails, f2fs_tune has not been
-initialized yet, so calling kobject_put(&f2fs_tune) is invalid.
+In the stmmac driver, stmmac_rx() bookmarks its position in the ring
+with the `cur_rx` index. The main receive loop in that function checks
+for rx_descs[cur_rx].own=0, gives the corresponding buffer to the
+network stack (NULLing the pointer), and increments `cur_rx` modulo the
+ring size. After the loop exits, stmmac_rx_refill(), which bookmarks its
+position with `dirty_rx`, allocates fresh buffers and rearms the
+descriptors (setting OWN=1). If it fails any allocation, it simply stops
+early (leaving OWN=0) and will retry where it left off when next called.
 
-Fix this by splitting the unwind path so each error path only releases
-objects that were successfully initialized.
+This means descriptors have a three-stage lifecycle (terms my own):
+- `empty` (OWN=1, buffer valid)
+- `full` (OWN=0, buffer valid and populated)
+- `dirty` (OWN=0, buffer NULL)
 
-Fixes: a907f3a68ee26ba4 ("f2fs: add a sysfs entry to reclaim POSIX_FADV_NOREUSE pages")
+But because stmmac_rx() only checks OWN, it confuses `full`/`dirty`. In
+the past (see 'Fixes:'), there was a bug where the loop could cycle
+`cur_rx` all the way back to the first descriptor it dirtied, resulting
+in a NULL dereference when mistaken for `full`. The aforementioned
+commit resolved that *specific* failure by capping the loop's iteration
+limit at `dma_rx_size - 1`, but this is only a partial fix: if the
+previous stmmac_rx_refill() didn't complete, then there are leftover
+`dirty` descriptors that the loop might encounter without needing to
+cycle fully around. The current code therefore panics (see 'Closes:')
+when stmmac_rx_refill() is memory-starved long enough for `cur_rx` to
+catch up to `dirty_rx`.
+
+Fix this by explicitly checking, before advancing `cur_rx`, if the next
+entry is dirty; exit the loop if so. This prevents processing of the
+final, used descriptor until stmmac_rx_refill() succeeds, but
+fully prevents the `cur_rx == dirty_rx` ambiguity as the previous bugfix
+intended: so remove the clamp as well. Since stmmac_rx_zc() is a
+copy-paste-and-tweak of stmmac_rx() and the code structure is identical,
+any fix to stmmac_rx() will also need a corresponding fix for
+stmmac_rx_zc(). Therefore, apply the same check there.
+
+In stmmac_rx() (not stmmac_rx_zc()), a related bug remains: after the
+MAC sets OWN=0 on the final descriptor, it will be unable to send any
+further DMA-complete IRQs until it's given more `empty` descriptors.
+Currently, the driver simply *hopes* that the next stmmac_rx_refill()
+succeeds, risking an indefinite stall of the receive process if not. But
+this is not a regression, so it can be addressed in a future change.
+
+Fixes: b6cb4541853c7 ("net: stmmac: avoid rx queue overrun")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221010
 Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Suggested-by: Russell King <linux@armlinux.org.uk>
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+Link: https://patch.msgid.link/20260422044503.5349-1-CFSworks@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/sysfs.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -1984,24 +1984,26 @@ int __init f2fs_init_sysfs(void)
- 	ret = kobject_init_and_add(&f2fs_feat, &f2fs_feat_ktype,
- 				   NULL, "features");
- 	if (ret)
--		goto put_kobject;
-+		goto unregister_kset;
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5282,9 +5282,12 @@ read_again:
+ 			break;
  
- 	ret = kobject_init_and_add(&f2fs_tune, &f2fs_tune_ktype,
- 				   NULL, "tuning");
- 	if (ret)
--		goto put_kobject;
-+		goto put_feat;
+ 		/* Prefetch the next RX descriptor */
+-		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
+-						priv->dma_conf.dma_rx_size);
+-		next_entry = rx_q->cur_rx;
++		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
++					       priv->dma_conf.dma_rx_size);
++		if (unlikely(next_entry == rx_q->dirty_rx))
++			break;
++
++		rx_q->cur_rx = next_entry;
  
- 	f2fs_proc_root = proc_mkdir("fs/f2fs", NULL);
- 	if (!f2fs_proc_root) {
- 		ret = -ENOMEM;
--		goto put_kobject;
-+		goto put_tune;
- 	}
+ 		if (priv->extend_desc)
+ 			np = (struct dma_desc *)(rx_q->dma_erx + next_entry);
+@@ -5422,7 +5425,6 @@ static int stmmac_rx(struct stmmac_priv
  
- 	return 0;
+ 	dma_dir = page_pool_get_dma_dir(rx_q->page_pool);
+ 	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
+-	limit = min(priv->dma_conf.dma_rx_size - 1, (unsigned int)limit);
  
--put_kobject:
-+put_tune:
- 	kobject_put(&f2fs_tune);
-+put_feat:
- 	kobject_put(&f2fs_feat);
-+unregister_kset:
- 	kset_unregister(&f2fs_kset);
- 	return ret;
- }
+ 	if (netif_msg_rx_status(priv)) {
+ 		void *rx_head;
+@@ -5478,9 +5480,12 @@ read_again:
+ 		if (unlikely(status & dma_own))
+ 			break;
+ 
+-		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
+-						priv->dma_conf.dma_rx_size);
+-		next_entry = rx_q->cur_rx;
++		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
++					       priv->dma_conf.dma_rx_size);
++		if (unlikely(next_entry == rx_q->dirty_rx))
++			break;
++
++		rx_q->cur_rx = next_entry;
+ 
+ 		if (priv->extend_desc)
+ 			np = (struct dma_desc *)(rx_q->dma_erx + next_entry);
 
 
 
