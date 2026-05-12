@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-246472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mId3LHpwA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:24:58 +0200
+	id EBkML5VsA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5690F52788C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:24:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C79526D70
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09AD53265F53
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7C001319E8B0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C87F342509;
-	Tue, 12 May 2026 18:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DD93EDE51;
+	Tue, 12 May 2026 17:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzMniXSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lz0bCHhp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE5C2D060B;
-	Tue, 12 May 2026 18:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FF03EDE43;
+	Tue, 12 May 2026 17:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609313; cv=none; b=NmvAJFNEuih7Jj9pSTNv22yiYBiLJyJy1xAfol0hj/KVc7Bvhz2stPxReAgpsRBKajC4YOkiBxTqb7W3MdWTsyT6yKuEH8ujViq2VJjxbpyHFzNYU/lMQjbuPf8/NXOTzIbrcubQglqOzJOP/V9B3jKrnXpHAgyIcTubfyJpzO8=
+	t=1778608592; cv=none; b=O8VaBDX0aOgKeAR0aqYBeOeWncm6RWFy7+ub2guvu3TX1G32ADPUy8VRLA1EkKtTj3Fcn/7RTgr8UrDEDBy/jvdEIiM9DYxwDyPxyx2o6Zb7rTmZVU/YcLmsJRfKH1sSm9orovXJ3Yzhu5H5/t8DI0g3/6BZYcAXGSZ0M8LkZTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609313; c=relaxed/simple;
-	bh=1wXDQmpHT0KWnPLdF8BfFqWqTWZAsdh+KChYLpRDaf4=;
+	s=arc-20240116; t=1778608592; c=relaxed/simple;
+	bh=CeHgZQ0sp7z5kaC3FghAt+HWLattitru/AXAz/2cOjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s7Q2A4sCTfl1EE7f+h4XP8SabaDO5qOp3vfSO2XZh/kXlgBVXNV+IQ/SZi4w9atJfRVhGlapuHixeVGLVdq/CFSncDPUBHL/hOK54CFAoDb1UK1ryI2ec3pMSTCXKsDOvJbVkmdmpbZ53qydbL1SWhnlIDJMva2TTHsk0EwjcDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzMniXSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8587C2BCB0;
-	Tue, 12 May 2026 18:08:32 +0000 (UTC)
+	 MIME-Version; b=QwpvDtO1trYcwRfoXt1rR1y0GQ+F37qim4zJ6KTlIDzCt/a5VpK0/+M9fKOma5nAozC/xlRpLkw2KeuGekOgCnI3/QZ9LzhoF8HH/X4V726ElRWKw0PUUSnAYWZiByb8kOAUqmbUKQZKxLD6RvyUt5327sCYQP08Udh+U2r8d4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lz0bCHhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD56C2BCB0;
+	Tue, 12 May 2026 17:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609313;
-	bh=1wXDQmpHT0KWnPLdF8BfFqWqTWZAsdh+KChYLpRDaf4=;
+	s=korg; t=1778608592;
+	bh=CeHgZQ0sp7z5kaC3FghAt+HWLattitru/AXAz/2cOjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzMniXSJ66vkTgT2wVgkw/+gf8J5GTV9GJ91GlgkbW3N3Vn4/z/eL3MRz+eI+A6ma
-	 Mcm6X30VafZmfH29UA+Ygg6iNXimE6Z64peAup7zI5dOTSuM5CwyAXvz9DDuNnelKP
-	 tnB+7bsDLxgFS21lolZNb1t1xvU6aAc3BX/1dI88=
+	b=Lz0bCHhp9c4PJKq8wYPhh8OZTlgLQWtlaDg98gPzIUaoISbzXKQXQZld+02lg4d2M
+	 okVeTDRJryPXvUAW+1LVAQpGaaFGFzVLQ/RQMR9zKcZMxph831YEXOLODRAcyCzXgj
+	 6aOWRqSFIoq7a3AJNTU9RUpW5OALEs4q7A+NqCYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian King <bjking1@linux.ibm.com>,
-	Shaik Abdulla <shaik.abdulla1@ibm.com>,
-	Naveed Ahmed <naveedaus@in.ibm.com>,
-	Mingming Cao <mmc@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 146/307] ibmveth: Disable GSO for packets with small MSS
+	"Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.18 140/270] cpuidle: powerpc: avoid double clear when breaking snooze
 Date: Tue, 12 May 2026 19:39:01 +0200
-Message-ID: <20260512173943.209959584@linuxfoundation.org>
+Message-ID: <20260512173941.398629323@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,135 +64,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5690F52788C
+X-Rspamd-Queue-Id: 34C79526D70
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246191-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246472-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingming Cao <mmc@linux.ibm.com>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-commit cc427d24ac6442ffdeafd157a63c7c5b73ed4de4 upstream.
+commit 64ed1e3e728afb57ba9acb59e69de930ead847d9 upstream.
 
-Some physical adapters on Power systems do not support segmentation
-offload when the MSS is less than 224 bytes. Attempting to send such
-packets causes the adapter to freeze, stopping all traffic until
-manually reset.
+snooze_loop is done often in any system which has fair bit of
+idle time. So it qualifies for even micro-optimizations.
 
-Implement ndo_features_check to disable GSO for packets with small MSS
-values. The network stack will perform software segmentation instead.
+When breaking the snooze due to timeout, TIF_POLLING_NRFLAG is cleared
+twice. Clearing the bit invokes atomics. Avoid double clear and thereby
+avoid one atomic write.
 
-The 224-byte minimum matches ibmvnic
-commit <f10b09ef687f> ("ibmvnic: Enforce stronger sanity checks
-on GSO packets")
-which uses the same physical adapters in SEA configurations.
+dev->poll_time_limit indicates whether the loop was broken due to
+timeout. Use that instead of defining a new variable.
 
-The issue occurs specifically when the hardware attempts to perform
-segmentation (gso_segs > 1) with a small MSS. Single-segment GSO packets
-(gso_segs == 1) do not trigger the problematic LSO code path and are
-transmitted normally without segmentation.
-
-Add an ndo_features_check callback to disable GSO when MSS < 224 bytes.
-Also call vlan_features_check() to ensure proper handling of VLAN packets,
-particularly QinQ (802.1ad) configurations where the hardware parser may
-not support certain offload features.
-
-Validated using iptables to force small MSS values. Without the fix,
-the adapter freezes. With the fix, packets are segmented in software
-and transmission succeeds. Comprehensive regression testing completedd
-(MSS tests, performance, stability).
-
-Fixes: 8641dd85799f ("ibmveth: Add support for TSO")
+Fixes: 7ded429152e8 ("cpuidle: powerpc: no memory barrier after break from idle")
 Cc: stable@vger.kernel.org
-Reviewed-by: Brian King <bjking1@linux.ibm.com>
-Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
-Tested-by: Naveed Ahmed <naveedaus@in.ibm.com>
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Link: https://patch.msgid.link/20260424162917.65725-1-mmc@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260311061709.1230440-1-sshegde@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmveth.c |   22 ++++++++++++++++++++++
- drivers/net/ethernet/ibm/ibmveth.h |    1 +
- 2 files changed, 23 insertions(+)
+ drivers/cpuidle/cpuidle-powernv.c |    5 ++++-
+ drivers/cpuidle/cpuidle-pseries.c |    5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1756,6 +1756,27 @@ static int ibmveth_set_mac_addr(struct n
- 	return 0;
- }
+--- a/drivers/cpuidle/cpuidle-powernv.c
++++ b/drivers/cpuidle/cpuidle-powernv.c
+@@ -95,7 +95,10 @@ static int snooze_loop(struct cpuidle_de
  
-+static netdev_features_t ibmveth_features_check(struct sk_buff *skb,
-+						struct net_device *dev,
-+						netdev_features_t features)
-+{
-+	/* Some physical adapters do not support segmentation offload with
-+	 * MSS < 224. Disable GSO for such packets to avoid adapter freeze.
-+	 * Note: Single-segment packets (gso_segs == 1) don't need this check
-+	 * as they bypass the LSO path and are transmitted without segmentation.
-+	 */
-+	if (skb_is_gso(skb)) {
-+		if (skb_shinfo(skb)->gso_size < IBMVETH_MIN_LSO_MSS) {
-+			netdev_warn_once(dev,
-+					 "MSS %u too small for LSO, disabling GSO\n",
-+					 skb_shinfo(skb)->gso_size);
-+			features &= ~NETIF_F_GSO_MASK;
-+		}
-+	}
+ 	HMT_medium();
+ 	ppc64_runlatch_on();
+-	clear_thread_flag(TIF_POLLING_NRFLAG);
 +
-+	return vlan_features_check(skb, features);
-+}
-+
- static const struct net_device_ops ibmveth_netdev_ops = {
- 	.ndo_open		= ibmveth_open,
- 	.ndo_stop		= ibmveth_close,
-@@ -1767,6 +1788,7 @@ static const struct net_device_ops ibmve
- 	.ndo_set_features	= ibmveth_set_features,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_set_mac_address    = ibmveth_set_mac_addr,
-+	.ndo_features_check	= ibmveth_features_check,
- #ifdef CONFIG_NET_POLL_CONTROLLER
- 	.ndo_poll_controller	= ibmveth_poll_controller,
- #endif
---- a/drivers/net/ethernet/ibm/ibmveth.h
-+++ b/drivers/net/ethernet/ibm/ibmveth.h
-@@ -37,6 +37,7 @@
- #define IBMVETH_ILLAN_IPV4_TCP_CSUM		0x0000000000000002UL
- #define IBMVETH_ILLAN_ACTIVE_TRUNK		0x0000000000000001UL
++	/* Avoid double clear when breaking */
++	if (!dev->poll_time_limit)
++		clear_thread_flag(TIF_POLLING_NRFLAG);
  
-+#define IBMVETH_MIN_LSO_MSS		224	/* Minimum MSS for LSO */
- /* hcall macros */
- #define h_register_logical_lan(ua, buflst, rxq, fltlst, mac) \
-   plpar_hcall_norets(H_REGISTER_LOGICAL_LAN, ua, buflst, rxq, fltlst, mac)
+ 	local_irq_disable();
+ 
+--- a/drivers/cpuidle/cpuidle-pseries.c
++++ b/drivers/cpuidle/cpuidle-pseries.c
+@@ -64,7 +64,10 @@ int snooze_loop(struct cpuidle_device *d
+ 	}
+ 
+ 	HMT_medium();
+-	clear_thread_flag(TIF_POLLING_NRFLAG);
++
++       /* Avoid double clear when breaking */
++	if (!dev->poll_time_limit)
++		clear_thread_flag(TIF_POLLING_NRFLAG);
+ 
+ 	raw_local_irq_disable();
+ 
 
 
 
