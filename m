@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QE5YMjR1A2rf5wEAu9opvQ
-	(envelope-from <stable+bounces-246582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:08 +0200
+	id CFBLObZqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356695280FC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB835267B1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8BA4332E160F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3841C3196B46
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218B1371CEA;
-	Tue, 12 May 2026 18:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F733955DB;
+	Tue, 12 May 2026 17:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8sPE5yC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrQ/ARML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87DF370D71;
-	Tue, 12 May 2026 18:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9F43BB119;
+	Tue, 12 May 2026 17:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609594; cv=none; b=U0YVorGp1QXUU+eoy/YpuQl7bQvJLYuqCUt9sAMRJDm/J5I8Zk4TLVdSDtczxWR2w/2kmtB66B56CiIjVmBAiRZAFOV1VHZja7B4bKUao9CJAes4uVQn8WaMrSpk1rzms9cA5UiybksRgw/qaFRZWWHsfJKIjK8zJD8oULr0JE8=
+	t=1778608239; cv=none; b=CU1a6/fAPocfrDhB43/heEil1Q7olAA2+Sb2md58Slz+kzdB5Io1GzPiEG0V2JK2liNe1oWkB0a3pjMQO/i2yOa4tcmkHhGy2mFpxQc5hKKev8jZe2Idak5W+uWyL9Gj9QaWTMyBQM3cOPVWMKlujOI4bpCceJu/UQR4R0vFXHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609594; c=relaxed/simple;
-	bh=vt9NNC5qczxp4b5zU/p0EYOMqEfIq4+gaqlqE6v+miU=;
+	s=arc-20240116; t=1778608239; c=relaxed/simple;
+	bh=It9oS5jVDVAD+CFvEwNgXN8cPCUqqXdRPRGvgyMaecM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A61JwHqL8UR4KvItr+PNcswNJM1rXu0OWn2PhXLYPY6sWZfuGA0KF+EDg9wgWBIf6OtKb/aQMz1rr+BShs5yjIgR31UZJ5v2T1OIKwoohjp2XBK2wHvTT+e7Vd4q2E6vw+WD9z/fewH7sqfPDWwXdhErOWidYOuMl5toU6H3Cn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8sPE5yC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5C7C2BCB0;
-	Tue, 12 May 2026 18:13:14 +0000 (UTC)
+	 MIME-Version; b=kTRvy17YWDUjkWaookhCPbtQljTjiBtf9G6q1n5fynLv3oI0J4yjyXb7IxPdQC5mePV6YUFsuDL5QUY5liutk5IcIo8PEHmQiWlW/zE6srzGafLOpJZgS2d0IXOXDfMW5Vr3sWdkFoeSD0JFY9ppwF4zovTWS+68vcB5fjjqu6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrQ/ARML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE03C2BCB0;
+	Tue, 12 May 2026 17:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609594;
-	bh=vt9NNC5qczxp4b5zU/p0EYOMqEfIq4+gaqlqE6v+miU=;
+	s=korg; t=1778608239;
+	bh=It9oS5jVDVAD+CFvEwNgXN8cPCUqqXdRPRGvgyMaecM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8sPE5yCt/WlbJtONdtVIgnPuAJM19Y+gZLNmXVDUUlih820QDDYAj4X974W3wpAe
-	 MQwNQeYiqKGSeQtjbPUvMP5mKvVtK1CAvkD0bm5HUHJVR0Ot/W6FFmioe8sNt6fz1V
-	 jsdOOmplyf9iK0k5KK9GRALnFFDGBoe0StmKbzEg=
+	b=nrQ/ARMLhnnPhNiwEf91+4q4xgu+a+Z65xgwy+Xjde7mg6ANIUmVclfGFQMYpTVRa
+	 0eXhiWQ8JHrUfqEudi6w7rYZ1YdOaE1zEMcYHGEm0904eO4OW3QCWTdstzLb0zwGnV
+	 MpkMO1zXzsaocuhIERiGmsGPggUMnmIj+/+J20W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sashiko <sashiko-bot@kernel.org>,
-	Gang Yan <yangang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 257/307] mptcp: fix scheduling with atomic in timestamp sockopt
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 200/206] net: stmmac: rename STMMAC_GET_ENTRY() -> STMMAC_NEXT_ENTRY()
 Date: Tue, 12 May 2026 19:40:52 +0200
-Message-ID: <20260512173945.550886885@linuxfoundation.org>
+Message-ID: <20260512173937.110800924@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +64,215 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 356695280FC
+X-Rspamd-Queue-Id: 7DB835267B1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246054-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246582-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable,kernel];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,sashiko.dev:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,armlinux.org.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 
-commit b5c52908d52c6c8eb8933264aa6087a0600fd892 upstream.
+[ Upstream commit 6b4286e0550814cdc4b897f881ec1fa8b0313227 ]
 
-Using lock_sock_fast() (atomic context) around sock_set_timestamp()
-and sock_set_timestamping() is unsafe, as both helpers can sleep.
+STMMAC_GET_ENTRY() doesn't describe what this macro is doing - it is
+incrementing the provided index for the circular array of descriptors.
+Replace "GET" with "NEXT" as this better describes the action here.
 
-Replace lock_sock_fast() with sleepable lock_sock()/release_sock()
-to avoid scheduling while atomic panic.
-
-Fixes: 9061f24bf82e ("mptcp: sockopt: propagate timestamp request to subflows")
-Cc: stable@vger.kernel.org
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260420093343.16443-1-gang.yan@linux.dev
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-2-7432b7f279fa@kernel.org
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/E1w2vba-0000000DbWo-1oL5@rmk-PC.armlinux.org.uk
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 0bb05e6adfa9 ("net: stmmac: Prevent NULL deref when RX memory exhausted")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/sockopt.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/chain_mode.c  |    2 -
+ drivers/net/ethernet/stmicro/stmmac/common.h      |    2 -
+ drivers/net/ethernet/stmicro/stmmac/ring_mode.c   |    2 -
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   26 +++++++++++-----------
+ 4 files changed, 16 insertions(+), 16 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -159,10 +159,10 @@ static int mptcp_setsockopt_sol_socket_t
- 	lock_sock(sk);
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
--		bool slow = lock_sock_fast(ssk);
+--- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
++++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
+@@ -47,7 +47,7 @@ static int jumbo_frm(struct stmmac_tx_qu
  
-+		lock_sock(ssk);
- 		sock_set_timestamp(ssk, optname, !!val);
--		unlock_sock_fast(ssk, slow);
-+		release_sock(ssk);
+ 	while (len != 0) {
+ 		tx_q->tx_skbuff[entry] = NULL;
+-		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
++		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
+ 		desc = tx_q->dma_tx + entry;
+ 
+ 		if (len > bmax) {
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -55,7 +55,7 @@
+ #define DMA_MIN_RX_SIZE		64
+ #define DMA_MAX_RX_SIZE		1024
+ #define DMA_DEFAULT_RX_SIZE	512
+-#define STMMAC_GET_ENTRY(x, size)	((x + 1) & (size - 1))
++#define STMMAC_NEXT_ENTRY(x, size)	((x + 1) & (size - 1))
+ 
+ #undef FRAME_FILTER_DEBUG
+ /* #define FRAME_FILTER_DEBUG */
+--- a/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
++++ b/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
+@@ -51,7 +51,7 @@ static int jumbo_frm(struct stmmac_tx_qu
+ 		stmmac_prepare_tx_desc(priv, desc, 1, bmax, csum,
+ 				STMMAC_RING_MODE, 0, false, skb->len);
+ 		tx_q->tx_skbuff[entry] = NULL;
+-		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
++		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
+ 
+ 		if (priv->extend_desc)
+ 			desc = (struct dma_desc *)(tx_q->dma_etx + entry);
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2583,7 +2583,7 @@ static bool stmmac_xdp_xmit_zc(struct st
+ 		xsk_tx_metadata_to_compl(meta,
+ 					 &tx_q->tx_skbuff_dma[entry].xsk_meta);
+ 
+-		tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
++		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
+ 		entry = tx_q->cur_tx;
+ 	}
+ 	u64_stats_update_begin(&txq_stats->napi_syncp);
+@@ -2754,7 +2754,7 @@ static int stmmac_tx_clean(struct stmmac
+ 
+ 		stmmac_release_tx_desc(priv, p, priv->mode);
+ 
+-		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
++		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
+ 	}
+ 	tx_q->dirty_tx = entry;
+ 
+@@ -4076,7 +4076,7 @@ static bool stmmac_vlan_insert(struct st
+ 		return false;
+ 
+ 	stmmac_set_tx_owner(priv, p);
+-	tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
++	tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
+ 	return true;
+ }
+ 
+@@ -4104,7 +4104,7 @@ static void stmmac_tso_allocator(struct
+ 	while (tmp_len > 0) {
+ 		dma_addr_t curr_addr;
+ 
+-		tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx,
++		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx,
+ 						priv->dma_conf.dma_tx_size);
+ 		WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]);
+ 
+@@ -4250,7 +4250,7 @@ static netdev_tx_t stmmac_tso_xmit(struc
+ 
+ 		stmmac_set_mss(priv, mss_desc, mss);
+ 		tx_q->mss = mss;
+-		tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx,
++		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx,
+ 						priv->dma_conf.dma_tx_size);
+ 		WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]);
+ 	}
+@@ -4369,7 +4369,7 @@ static netdev_tx_t stmmac_tso_xmit(struc
+ 	 * ndo_start_xmit will fill this descriptor the next time it's
+ 	 * called and stmmac_tx_clean may clean up to this descriptor.
+ 	 */
+-	tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
++	tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
+ 
+ 	if (unlikely(stmmac_tx_avail(priv, queue) <= (MAX_SKB_FRAGS + 1))) {
+ 		netif_dbg(priv, hw, priv->dev, "%s: stop transmitted packets\n",
+@@ -4568,7 +4568,7 @@ static netdev_tx_t stmmac_xmit(struct sk
+ 		int len = skb_frag_size(frag);
+ 		bool last_segment = (i == (nfrags - 1));
+ 
+-		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
++		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
+ 		WARN_ON(tx_q->tx_skbuff[entry]);
+ 
+ 		if (likely(priv->extend_desc))
+@@ -4638,7 +4638,7 @@ static netdev_tx_t stmmac_xmit(struct sk
+ 	 * ndo_start_xmit will fill this descriptor the next time it's
+ 	 * called and stmmac_tx_clean may clean up to this descriptor.
+ 	 */
+-	entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
++	entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
+ 	tx_q->cur_tx = entry;
+ 
+ 	if (netif_msg_pktdata(priv)) {
+@@ -4807,7 +4807,7 @@ static inline void stmmac_rx_refill(stru
+ 		dma_wmb();
+ 		stmmac_set_rx_owner(priv, p, use_rx_wd);
+ 
+-		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_rx_size);
++		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_rx_size);
+ 	}
+ 	rx_q->dirty_rx = entry;
+ 	rx_q->rx_tail_addr = rx_q->dma_rx_phy +
+@@ -4941,7 +4941,7 @@ static int stmmac_xdp_xmit_xdpf(struct s
+ 
+ 	stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
+ 
+-	entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
++	entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
+ 	tx_q->cur_tx = entry;
+ 
+ 	return STMMAC_XDP_TX;
+@@ -5175,7 +5175,7 @@ static bool stmmac_rx_refill_zc(struct s
+ 		dma_wmb();
+ 		stmmac_set_rx_owner(priv, rx_desc, use_rx_wd);
+ 
+-		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_rx_size);
++		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_rx_size);
  	}
  
- 	release_sock(sk);
-@@ -235,10 +235,10 @@ static int mptcp_setsockopt_sol_socket_t
+ 	if (rx_desc) {
+@@ -5270,7 +5270,7 @@ read_again:
+ 			break;
  
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
--		bool slow = lock_sock_fast(ssk);
+ 		/* Prefetch the next RX descriptor */
+-		rx_q->cur_rx = STMMAC_GET_ENTRY(rx_q->cur_rx,
++		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
+ 						priv->dma_conf.dma_rx_size);
+ 		next_entry = rx_q->cur_rx;
  
-+		lock_sock(ssk);
- 		sock_set_timestamping(ssk, optname, timestamping);
--		unlock_sock_fast(ssk, slow);
-+		release_sock(ssk);
- 	}
+@@ -5466,7 +5466,7 @@ read_again:
+ 		if (unlikely(status & dma_own))
+ 			break;
  
- 	release_sock(sk);
+-		rx_q->cur_rx = STMMAC_GET_ENTRY(rx_q->cur_rx,
++		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
+ 						priv->dma_conf.dma_rx_size);
+ 		next_entry = rx_q->cur_rx;
+ 
 
 
 
