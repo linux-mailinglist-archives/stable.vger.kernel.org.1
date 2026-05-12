@@ -1,188 +1,161 @@
-Return-Path: <stable+bounces-246683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEWhBKudA2rr8AEAu9opvQ
-	(envelope-from <stable+bounces-246683-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 23:37:47 +0200
+	id gHcdBEagA2pL8QEAu9opvQ
+	(envelope-from <stable+bounces-246684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 23:48:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784D552A66E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 23:37:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A4C52A993
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 23:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C837F3047DDF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:37:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6E1573035954
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F051386554;
-	Tue, 12 May 2026 21:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E585392C47;
+	Tue, 12 May 2026 21:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="k/JrJtlD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oCegvFLV";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DwWCaDSd";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/oXPBfFy"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="duksbW89"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E061F3822B4
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 21:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C363C386C28;
+	Tue, 12 May 2026 21:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778621858; cv=none; b=OSRwaBuvJSc7uRTSzzzvy+HCoQlWRwPF6eF3uwlThP8Fbu7TXX8sqYUQ909uLbNQU/UOsW2mqsz+kRdw9bAgdBZxLL3d+VJ36xiWyEBI8wAAwhSo+vvhBc+G1bYccDehyrNJ9FFIBe1r6/tQjigYeYxXAVJ8vS35dlf1hSFYjCM=
+	t=1778622530; cv=none; b=RqWYPyE+IQFTdIES/WsKMKvpkRXySuRUtdUol8e1lbcvtzcjHda2dq52Ik7Op9Oso49xOplBTiosu8Q43UJ4dVquz2Avx2YE8J4/HeNWbHtVFJVWVCrQc/CTxzrS7CIFABvZPHphhqBGBp7iZvSlXrnYyN3CqxFSNrgXaRAleEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778621858; c=relaxed/simple;
-	bh=qGhetvw8/qiNI22y8XLXztl/MOWRXxK7B8fh7ij6z9Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oqQaHLMMeFkcHb5U79VE7V3WCsy8f4k/tZQhHGeZxf3t04H2IuCsCMSry3eVQFMLJHCja2pV7LSY7od8auwZLE+D0ltpuRC3B0Vl9+FQJ2sQj8A90E6E9Rj2FZX/cv64gSN19jixygs5Sc89Pg7TTAfrrh4ar7drczHYv4z9ohY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=k/JrJtlD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oCegvFLV; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DwWCaDSd; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/oXPBfFy; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7BCF66AAF8;
-	Tue, 12 May 2026 21:37:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778621855; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=k/JrJtlD/NsIePuwTQzI4rEy1mBYisPW4AZOqyt1UoORyg/S2l2Lm4bK6PWM9pH6LcEh4d
-	ev7qvSUy3Yay/FWdSUGAlp7iKJJFnUmUcxi7Mcd3dmBXEcNXf6QKJ1yPMf2HCt789ei1zt
-	5hf6Fbed6Li9KxpRy4yUU37znJS9YTw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778621855;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=oCegvFLVRawbDU3Bg7vneUP0SR3TBJsgo4QGYcuqvzQyNQ9iNHSnHvl+m1ZLjnSslepg3p
-	OexTajrtOffS95AA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DwWCaDSd;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/oXPBfFy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778621854; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=DwWCaDSdZWWxp+ygnkSg0WlLNYgtRV12MqurvwNSF6zacncgQDwhAO1Z8Zy1ol7dJVaPrK
-	/G+QbMdKnupG7je2BeBANAqYaClYXPp2SezorOPoOLiUE3AijjixUGW9sJx7V4tUNI+B4W
-	pDtl3vYtTpHqHUr7WJEg+XjHOrOK3N4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778621854;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=/oXPBfFy4y2IOUmLsKnMctUnnRGalFPQHrzbGs7fNVcLOKtzP3WhmuUANMmukySaMAOQCJ
-	30/uXm/oKCCwNFBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ABB38593A9;
-	Tue, 12 May 2026 21:37:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bYI2J52dA2p6OQAAD6G6ig
-	(envelope-from <clopez@suse.de>); Tue, 12 May 2026 21:37:33 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: kas@kernel.org,
-	rick.p.edgecombe@intel.com,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev
-Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	stable@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	kvm@vger.kernel.org (open list:X86 TRUST DOMAIN EXTENSIONS (TDX))
-Subject: [PATCH] x86/tdx: Fix zero-extension for CPUID emulation
-Date: Tue, 12 May 2026 23:37:19 +0200
-Message-ID: <20260512213719.20974-1-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1778622530; c=relaxed/simple;
+	bh=QyxVqxguFhbFcM8GTf2Un1e3RN/fK15mcPt8MXWN1DM=;
+	h=Date:To:From:Subject:Message-Id; b=IMgKirpvD/GGJCNn53omiN1uAYbwniUrsY+BdKiUv/OpHN7FyW9IWCrcfLCDFF0824WIi2U70VWb/TObbX8jkjH+MBlUlYzgs1gyQsrB+8e7HQbYcFmbx5vSqdQii5uhjd/Phmz/Da4r8EPekZ94rlvFea3U8S342eTHx6I2MYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=duksbW89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE80C2BCB0;
+	Tue, 12 May 2026 21:48:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778622530;
+	bh=QyxVqxguFhbFcM8GTf2Un1e3RN/fK15mcPt8MXWN1DM=;
+	h=Date:To:From:Subject:From;
+	b=duksbW893MuuL/pIi9RPfLe/Yzag0vI5fKBODQmS0MvQqIEi0dD/bODVzWaxIK3yJ
+	 6cfd4eTpXyuQ3clTsZnT1w510deNJrYBEEvzwRM4U8F4fe23OFXJnPQw/DkMPSyNX6
+	 UR9hIgM6fXyPa1rgg4xIfzNFCgUKFpq1ZhFO88E4=
+Date: Tue, 12 May 2026 14:48:49 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,senozhatsky@chromium.org,minchan@kernel.org,hannes@cmpxchg.org,gourry@gourry.net,dan.j.williams@intel.com,chengming.zhou@linux.dev,contact.kartikn@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + zsmalloc-zero-initialize-zspage-memory-to-prevent-kmsan-uninit-reads.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260512214850.3AE80C2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Rspamd-Queue-Id: 784D552A66E
+X-Rspamd-Queue-Id: A4A4C52A993
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246683-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246684-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[clopez@suse.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,chromium.org,kernel.org,cmpxchg.org,gourry.net,intel.com,linux.dev,gmail.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,suse.de:mid,suse.de:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,intel.com:email,linux.dev:email,smtp.kernel.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,chromium.org:email]
 X-Rspamd-Action: no action
 
-In the x86 architecture, 32-bit operations zero-extend the result in the
-destination register to 64 bits. This includes the CPUID instruction,
-which writes 32-bit values EAX/EBX/ECX/EDX.
 
-When handling the CPUID instruction via #VE, copy only the lower 32-bits
-provided by the hypervisor for the output registers, and zero out the
-upper half.
+The patch titled
+     Subject: zsmalloc: zero-initialize zspage memory to prevent KMSAN uninit reads
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     zsmalloc-zero-initialize-zspage-memory-to-prevent-kmsan-uninit-reads.patch
 
-Fixes: c141fa2c2bba ("x86/tdx: Handle CPUID via #VE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos López <clopez@suse.de>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zsmalloc-zero-initialize-zspage-memory-to-prevent-kmsan-uninit-reads.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Kartik Nair <contact.kartikn@gmail.com>
+Subject: zsmalloc: zero-initialize zspage memory to prevent KMSAN uninit reads
+Date: Tue, 12 May 2026 03:06:58 +0530
+
+Pages allocated via alloc_zpdesc() use alloc_pages_node() without
+__GFP_ZERO, leaving physical memory uninitialized.  When a compressed
+object spans two physical pages in a zspage, zs_obj_read_sg_begin() sets
+up a scatterlist pointing directly at the raw second page.  If the second
+page was freshly allocated and never written beyond the object boundary,
+KMSAN detects reads of uninitialized memory downstream in the decompressor
+(e.g.  sw842_decompress reading the CRC trailer).
+
+Fix this by passing __GFP_ZERO to alloc_zpdesc() in alloc_zspage() so
+all pages backing a zspage are zero-initialized at allocation time.
+
+Link: https://lore.kernel.org/20260511213658.25273-1-contact.kartikn@gmail.com
+Fixes: 56e5a103a721 ("zsmalloc: prefer the the original page's node for compressed data")
+Reported-by: syzbot+8f77ff6144a73f0cf71b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8f77ff6144a73f0cf71b
+Signed-off-by: Kartik Nair <contact.kartikn@gmail.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/x86/coco/tdx/tdx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c8b9e86d0488..a2fe1ae019bd 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -543,10 +543,10 @@ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
- 	 * EAX, EBX, ECX, EDX registers after the CPUID instruction execution.
- 	 * So copy the register contents back to pt_regs.
- 	 */
--	regs->ax = args.r12;
--	regs->bx = args.r13;
--	regs->cx = args.r14;
--	regs->dx = args.r15;
-+	regs->ax = lower_32_bits(args.r12);
-+	regs->bx = lower_32_bits(args.r13);
-+	regs->cx = lower_32_bits(args.r14);
-+	regs->dx = lower_32_bits(args.r15);
+ mm/zsmalloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/zsmalloc.c~zsmalloc-zero-initialize-zspage-memory-to-prevent-kmsan-uninit-reads
++++ a/mm/zsmalloc.c
+@@ -951,7 +951,7 @@ static struct zspage *alloc_zspage(struc
+ 	for (i = 0; i < class->pages_per_zspage; i++) {
+ 		struct zpdesc *zpdesc;
  
- 	return ve_instr_len(ve);
- }
--- 
-2.51.0
+-		zpdesc = alloc_zpdesc(gfp, nid);
++		zpdesc = alloc_zpdesc(gfp | __GFP_ZERO, nid);
+ 		if (!zpdesc) {
+ 			while (--i >= 0) {
+ 				zpdesc_dec_zone_page_state(zpdescs[i]);
+_
+
+Patches currently in -mm which might be from contact.kartikn@gmail.com are
+
+zsmalloc-zero-initialize-zspage-memory-to-prevent-kmsan-uninit-reads.patch
 
 
