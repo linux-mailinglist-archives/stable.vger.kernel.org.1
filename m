@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDDHCdltA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:45 +0200
+	id 2GOeFjB1A2oV6AEAu9opvQ
+	(envelope-from <stable+bounces-246583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 909735270F5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3B45280EA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 594713197745
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE75232E2E61
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA463C09E0;
-	Tue, 12 May 2026 17:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A8B36CDE0;
+	Tue, 12 May 2026 18:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJZDZZCN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njQ69AEv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F99A3BB119;
-	Tue, 12 May 2026 17:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F9636B043;
+	Tue, 12 May 2026 18:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608242; cv=none; b=lteWCDfaA/XIcfxHZbZei1wQkJ0TrYiZ7xoWmH0ZrKU7wM4o08I2QFND6WVy05eJlFvS/PQr5oLrsm+/EKD0VsXNqTOzFe5zqmhR1HRer9cDNXQ12LWTUoGElsVULWWskIo+LBOjP5FM4RprEdZg0bJ4b6oyIgAyfVL9qN9s28c=
+	t=1778609597; cv=none; b=fJE4Loc1Zl7NJr9oMlTG/UF67vMmxFajZeC9cncXgZwjouWZ7EHrYIOJ7wMWr4fKI2eh1757OXgc0VJB2rqknxwQ978NyMxXXCpH0y+keg49XRktr8MQDSqsBXfDSRoz3/DWrVcFUT2s5WugLNwtdKAO3a0k7HyWzjcLFtp3ZGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608242; c=relaxed/simple;
-	bh=wx/cldMJiQokNitJRNn6dZdtmCpEgHxJUgC64eM7QCg=;
+	s=arc-20240116; t=1778609597; c=relaxed/simple;
+	bh=b+NECFNAu5phWEpEGamdMirVM5I7unoBSyzlXp67Rqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cAbPoXrrO23M9rHSgFF9aaxC4trI5Xz4iirqCi8apIiB38akJ+4YGazF+rv1V0cbXYhpLW/5GaksqViRdg/QjYQPRzkTIqrDSrU55yXxp7wOoaPP0JXhYqwRYbrTTCMVjJEkBX0dqM09/MdE7uqNutaosMelYuxOj5+Z1F98rLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJZDZZCN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C22C2BCF5;
-	Tue, 12 May 2026 17:50:41 +0000 (UTC)
+	 MIME-Version; b=mFFCQthaEiXTyFZ/GqGiMa+lMXa+jWqWjSPdKGe4s3V7aEfmzuiDn877ZGaKXxLC16kTNcosmJJpJcd5PHnZMe98FE9+RlJemj0+4EUYtBWX7E7obq6YOGE6U92COExPUSFymmsGZMEGdAexnlCjT0bHQWSETCxOFKFijY17Zts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njQ69AEv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC07C2BCB0;
+	Tue, 12 May 2026 18:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608242;
-	bh=wx/cldMJiQokNitJRNn6dZdtmCpEgHxJUgC64eM7QCg=;
+	s=korg; t=1778609597;
+	bh=b+NECFNAu5phWEpEGamdMirVM5I7unoBSyzlXp67Rqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJZDZZCNPfl6MEFinPclcTzyZu3zMewa6o1eXAz/2jvSg+yMcYHIgo1bHHTb9SCWO
-	 YUJ6ewO6OimlGldUIyllqAh5Ztpd7U9XCOJQ+PGZ5/EZ9AU3xL8o9vd259j5Mg3U6m
-	 4PXau2K/7Y63DMI8zLJ6wfzd0tzm1Znxijesxmjs=
+	b=njQ69AEvoqA4lOr2eb+o24rhot1YqU5ZTaMYhdYz1AD0G0vZV9cLIysIdj9SFsaVJ
+	 jux/k9syMM5HlIs9MpQeeR6FD2fINCzqyrDUg4guRzdRn0QUelJkSceg+Qfek04LCA
+	 Uo2rrTTPn/O83R0euBmKpk0z87FJryApKG5NTtR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Russell King <linux@armlinux.org.uk>,
-	Sam Edwards <CFSworks@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 201/206] net: stmmac: Prevent NULL deref when RX memory exhausted
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 258/307] mptcp: pm: prio: skip closed subflows
 Date: Tue, 12 May 2026 19:40:53 +0200
-Message-ID: <20260512173937.132300704@linuxfoundation.org>
+Message-ID: <20260512173945.572318563@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,154 +64,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 909735270F5
+X-Rspamd-Queue-Id: CE3B45280EA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,armlinux.org.uk,gmail.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-246055-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-246583-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,armlinux.org.uk:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Edwards <cfsworks@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 0bb05e6adfa99a2ea1fee1125cc0953409f83ed8 ]
+commit 166b78344031bf7ac9f55cb5282776cfd85f220e upstream.
 
-The CPU receives frames from the MAC through conventional DMA: the CPU
-allocates buffers for the MAC, then the MAC fills them and returns
-ownership to the CPU. For each hardware RX queue, the CPU and MAC
-coordinate through a shared ring array of DMA descriptors: one
-descriptor per DMA buffer. Each descriptor includes the buffer's
-physical address and a status flag ("OWN") indicating which side owns
-the buffer: OWN=0 for CPU, OWN=1 for MAC. The CPU is only allowed to set
-the flag and the MAC is only allowed to clear it, and both must move
-through the ring in sequence: thus the ring is used for both
-"submissions" and "completions."
+When sending an MP_PRIO, closed subflows need to be skipped.
 
-In the stmmac driver, stmmac_rx() bookmarks its position in the ring
-with the `cur_rx` index. The main receive loop in that function checks
-for rx_descs[cur_rx].own=0, gives the corresponding buffer to the
-network stack (NULLing the pointer), and increments `cur_rx` modulo the
-ring size. After the loop exits, stmmac_rx_refill(), which bookmarks its
-position with `dirty_rx`, allocates fresh buffers and rearms the
-descriptors (setting OWN=1). If it fails any allocation, it simply stops
-early (leaving OWN=0) and will retry where it left off when next called.
+This fixes the case where the initial subflow got closed, re-opened
+later, then an MP_PRIO is needed for the same local address.
 
-This means descriptors have a three-stage lifecycle (terms my own):
-- `empty` (OWN=1, buffer valid)
-- `full` (OWN=0, buffer valid and populated)
-- `dirty` (OWN=0, buffer NULL)
+Note that explicit MP_PRIO cannot be sent during the 3WHS, so it is fine
+to use __mptcp_subflow_active().
 
-But because stmmac_rx() only checks OWN, it confuses `full`/`dirty`. In
-the past (see 'Fixes:'), there was a bug where the loop could cycle
-`cur_rx` all the way back to the first descriptor it dirtied, resulting
-in a NULL dereference when mistaken for `full`. The aforementioned
-commit resolved that *specific* failure by capping the loop's iteration
-limit at `dma_rx_size - 1`, but this is only a partial fix: if the
-previous stmmac_rx_refill() didn't complete, then there are leftover
-`dirty` descriptors that the loop might encounter without needing to
-cycle fully around. The current code therefore panics (see 'Closes:')
-when stmmac_rx_refill() is memory-starved long enough for `cur_rx` to
-catch up to `dirty_rx`.
-
-Fix this by explicitly checking, before advancing `cur_rx`, if the next
-entry is dirty; exit the loop if so. This prevents processing of the
-final, used descriptor until stmmac_rx_refill() succeeds, but
-fully prevents the `cur_rx == dirty_rx` ambiguity as the previous bugfix
-intended: so remove the clamp as well. Since stmmac_rx_zc() is a
-copy-paste-and-tweak of stmmac_rx() and the code structure is identical,
-any fix to stmmac_rx() will also need a corresponding fix for
-stmmac_rx_zc(). Therefore, apply the same check there.
-
-In stmmac_rx() (not stmmac_rx_zc()), a related bug remains: after the
-MAC sets OWN=0 on the final descriptor, it will be unable to send any
-further DMA-complete IRQs until it's given more `empty` descriptors.
-Currently, the driver simply *hopes* that the next stmmac_rx_refill()
-succeeds, risking an indefinite stall of the receive process if not. But
-this is not a regression, so it can be addressed in a future change.
-
-Fixes: b6cb4541853c7 ("net: stmmac: avoid rx queue overrun")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221010
+Fixes: 067065422fcd ("mptcp: add the outgoing MP_PRIO support")
 Cc: stable@vger.kernel.org
-Suggested-by: Russell King <linux@armlinux.org.uk>
-Signed-off-by: Sam Edwards <CFSworks@gmail.com>
-Link: https://patch.msgid.link/20260422044503.5349-1-CFSworks@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-9-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ net/mptcp/pm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5270,9 +5270,12 @@ read_again:
- 			break;
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -283,6 +283,9 @@ int mptcp_pm_mp_prio_send_ack(struct mpt
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+ 		struct mptcp_addr_info local, remote;
  
- 		/* Prefetch the next RX descriptor */
--		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
--						priv->dma_conf.dma_rx_size);
--		next_entry = rx_q->cur_rx;
-+		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
-+					       priv->dma_conf.dma_rx_size);
-+		if (unlikely(next_entry == rx_q->dirty_rx))
-+			break;
++		if (!__mptcp_subflow_active(subflow))
++			continue;
 +
-+		rx_q->cur_rx = next_entry;
- 
- 		if (priv->extend_desc)
- 			np = (struct dma_desc *)(rx_q->dma_erx + next_entry);
-@@ -5410,7 +5413,6 @@ static int stmmac_rx(struct stmmac_priv
- 
- 	dma_dir = page_pool_get_dma_dir(rx_q->page_pool);
- 	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
--	limit = min(priv->dma_conf.dma_rx_size - 1, (unsigned int)limit);
- 
- 	if (netif_msg_rx_status(priv)) {
- 		void *rx_head;
-@@ -5466,9 +5468,12 @@ read_again:
- 		if (unlikely(status & dma_own))
- 			break;
- 
--		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
--						priv->dma_conf.dma_rx_size);
--		next_entry = rx_q->cur_rx;
-+		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
-+					       priv->dma_conf.dma_rx_size);
-+		if (unlikely(next_entry == rx_q->dirty_rx))
-+			break;
-+
-+		rx_q->cur_rx = next_entry;
- 
- 		if (priv->extend_desc)
- 			np = (struct dma_desc *)(rx_q->dma_erx + next_entry);
+ 		mptcp_local_address((struct sock_common *)ssk, &local);
+ 		if (!mptcp_addresses_equal(&local, addr, addr->port))
+ 			continue;
 
 
 
