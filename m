@@ -1,189 +1,358 @@
-Return-Path: <stable+bounces-246663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246665-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEYMDNuOA2qM7QEAu9opvQ
-	(envelope-from <stable+bounces-246663-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:34:35 +0200
+	id sKOdCQCRA2ru7QEAu9opvQ
+	(envelope-from <stable+bounces-246665-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:43:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8C75294C3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:34:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C22F95297E0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5C04430F8961
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:29:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 23AE431CE9F4
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C357D3CC33C;
-	Tue, 12 May 2026 20:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B753C0A0E;
+	Tue, 12 May 2026 20:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.sh header.i=@gibson.sh header.b="NSzlILHS"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BITGTzDu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-42a9.mail.infomaniak.ch (smtp-42a9.mail.infomaniak.ch [84.16.66.169])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013035.outbound.protection.outlook.com [40.107.159.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CAD3C9EF8
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 20:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778617618; cv=none; b=UviHo0zaJVBQcfrNW8FYNBiXQzcii4FwwtMhu9i4sils059QP1hpS6FktIzq5FU2+fg/uKn6Yj3AXIdL/M+wBMybnoCQWh+I+53i0XhMMq1+6b6BuCM/caGhWSA6RBh+f6imJhZLnb4XKlKyJHQgl/f7xqp21qh98iUd7d00Pdw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778617618; c=relaxed/simple;
-	bh=isRXKxL0q1oc209W6uQUczP4eb2xyKf6+5fC3UTV5Hw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mz3wtC+oRj966EAORIFVrS/fUVzigK9nhGPMTEHndr7ZIe1/TuqXw2F0M+8rNoCKwHmLRo2Im0n37/QS5fpi3xB/gV6a8Mm5Tb3AWobaXsCTUZTG7+meW//7C+1co5ESpJuerQW5wbVWhd6hdwvXaBIW04a819WURCdH9ojubBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.sh; spf=pass smtp.mailfrom=gibson.sh; dkim=pass (2048-bit key) header.d=gibson.sh header.i=@gibson.sh header.b=NSzlILHS; arc=none smtp.client-ip=84.16.66.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.sh
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gibson.sh
-Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6b])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gFSms2GkqzxcL
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 22:26:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gibson.sh;
-	s=20260228; t=1778617613;
-	bh=s7u6TuEJ24aqktW/yoYHaCvxZsxRD1OEAJRsO0CmXcw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSzlILHS5VoRHpfj52hnMm+xJ2P3t1YNj6JLGgWvGB2MY6QoHQEx8eQ5qyZfYpz9Z
-	 brDdqCQb+sx9DVGyEAhBU2mGfusBqGrPQ8OWDZfT7fvwwZ9BdhAOohYQuBj3UpKLtT
-	 0jzXI6Jbd1bZMUf4sG/+eXpkO47IMCpAVxRTVZsUXXG3HipJBEPP7sj0t5njHyzlh2
-	 qmI+A7+UpxLlYBL8aIaJ8MzCigJXBkcHiWfF6EhM+eQsapfAW0JQNJcpf+5zno1gg0
-	 hAfA9nQhicX6x/e1WUz2tZuchs5JY70n0HaUu2aCp5QhQpkA4PAWjwDjMFbqwSRCMD
-	 L+fWUwURMy3Fw==
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4gFSmr6TyFzCvy
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 22:26:52 +0200 (CEST)
-Received: from unknown by spiderdemon.horst.lan (DragonFly Mail Agent v0.13);
-	Tue, 12 May 2026 22:26:52 +0200
-From: Daniel Gibson <daniel@gibson.sh>
-To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mario Limonciello <superm1@kernel.org>
-Cc: Daniel Gibson <daniel@gibson.sh>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED51F357D01;
+	Tue, 12 May 2026 20:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778617754; cv=fail; b=iJ2xrdjN7VBz39C5D9HoJz0+inpqXilOiLyu8beT5h/w+vesLD/qoJr94MqplJgSAIp+OY3IrDyX5X0C85vaG5/12w6rfi1LB90CyiLE2745bhQQyk+TFnmgnSr2Ab75PjnZ7VkTXOMuBCi7CYxjISeH4NroDCFXObE5lMhlSgY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778617754; c=relaxed/simple;
+	bh=5PSgA/fIgVKcLoCQz9Wk5YFN1hSHDCS1W2uDajZ+UFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=c6l+yxQD1OHbkge4oDBjpsb8ts9tJcsh2Io0fGxcvxEYjirPZduNjBCfFyW2NTdjYaOjA6FQQCEV5lne+v+/I8LqKLxzSEPOqsDjLpUHpXXuyP/D5BExpkAUG3mCKGcl39Svzd4PubzPMlJZNCOYqVuVXs3mMlqqIVrBCBRPBho=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BITGTzDu; arc=fail smtp.client-ip=40.107.159.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y9SiPhQpLoaYgkdVRTK22xGTjOQMjzo0iXt0A7g01B8qZbqOisztUnv1CPRhxbBWBurXPj9ydbR4zxcWzE7sCQ8tt1J4p+vrjwEGnJmn9XxBwa7Nx1Uq4ufHUL/DQIzFb+u+84QYW6YVbgfFlccg5FibOiyMCzF+g9EIs88V0ajzmL5wBVKX4l5HMu84Q/LQFmXG83OAF5CZspKU//Gm4FxNrsPGsbGz4U7qVEMLlVDiO9LERbe2GCUO5lTXKtRYEpl5P9uw1iIUSubGBhY0YSDwBqJ50J2/MoZOGDm8Qe1wUOoi6L5lK+IFhC/6MOq319TD2W16t2yhHZWCTq277g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0zNPldR76TB3Ja5jkTt3PoItX61hiRrG7ayWmB6Y23A=;
+ b=vPpJkyHizhYu55UDlWYvhXLlYKsIcBGQvRDAioJHMbOmgle4MnB8QfO4xvZv79Rh8m1dYFYp4pQUuuXiiL8QEdglC+XOq1no4iji4Wmg0i9zrmHajhb4AK+jYHIncoDTT8ePhqVA5f3V9QiAx9wD8nQN0nh1Pr7kTWRc+nOPQ/tRYoDVaeM+QB6Um7eGIKItR+ph8oo73NWD1HQhIpmTvkTYgz+yHFnrA6ywQ4R5XzsUExzEz2yPo0nGBe1ULNEE5nlsVqFwjPyHM1g7Pu/GPjoTZvbHFc8FVM5qOCSP5tmpoZTgShtBmprQtONTn/OUN/85bGMYykTmmQWFd9obEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0zNPldR76TB3Ja5jkTt3PoItX61hiRrG7ayWmB6Y23A=;
+ b=BITGTzDugE0XRo8X1eucTrv0k8Tbd4HfBChwNXnx3vzhMPvHtXxixQZI1HiLfTIrdLdo97sy6r1wRQW3IwkQNoG9qE2CzAdTC8Nw+zjKf00fnxydz8fwDd8/MdlXyZaP/2+K27EaPoR5+6kdfWjL8GyrrpE429sftJWXuVGVLTkJhhhYjOXf4hpMfiMHqw+CswvAP8pLh8KnDIe00WJVcmYJTG42rvH4LdKjfoNe6yiunx1rnMl9UT7/FlCT448yv3+Rp+NWFxEqewmaZ9lxv9fJBpVFsYt0w6YznVjse/P3dYQOdnGt3VJdQ/cNEXzbuKBHNnJMTtp1E8HcLHDgcQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PA1PR04MB10914.eurprd04.prod.outlook.com (2603:10a6:102:480::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
+ 2026 20:29:06 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.20.9891.021; Tue, 12 May 2026
+ 20:29:06 +0000
+Date: Tue, 12 May 2026 16:28:58 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Cc: vkoul@kernel.org, Frank.Li@kernel.org, lgirdwood@gmail.com,
+	broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+	biju.das.jz@bp.renesas.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+	p.zabel@pengutronix.de, geert+renesas@glider.be,
+	fabrizio.castro.jz@renesas.com, kuninori.morimoto.gx@renesas.com,
+	long.luu.ur@renesas.com, claudiu.beznea@kernel.org,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v3 3/5] platform/x86/amd/pmc: Add delay_suspend module parameter
-Date: Tue, 12 May 2026 22:26:43 +0200
-Message-ID: <20260512202645.1549111-4-daniel@gibson.sh>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260512202645.1549111-1-daniel@gibson.sh>
-References: <20260512202645.1549111-1-daniel@gibson.sh>
+Subject: Re: [PATCH v5 01/17] dmaengine: sh: rz-dmac: Move interrupt request
+ after everything is set up
+Message-ID: <agONitk0FUgq2Bwf@lizhi-Precision-Tower-5810>
+References: <20260512121219.216159-1-claudiu.beznea.uj@bp.renesas.com>
+ <20260512121219.216159-2-claudiu.beznea.uj@bp.renesas.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512121219.216159-2-claudiu.beznea.uj@bp.renesas.com>
+X-ClientProxiedBy: SN7PR04CA0185.namprd04.prod.outlook.com
+ (2603:10b6:806:126::10) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-X-Rspamd-Queue-Id: EB8C75294C3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PA1PR04MB10914:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72933b89-2047-4561-1c09-08deb0651d08
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|52116014|7416014|376014|1800799024|18002099003|22082099003|11063799003|38350700014|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	kZUv4/oSATRoyWOcpgAGMf8w4LAcTqjCoNa/8QKpiWTRIm6zQO6Q7qARbZhujaPY/dgzmeNtV1WTorp9bW6ZoMBEtfgyaOKXgAk7d9wBuQglgUTM6SXE86bOeDJLK7cynEXWjP1+wOdbeIOdt3r2tF2gXRS/ekyotGXl57VQ5/Hnn9WYbRU6Jvt+c/OAiSmDBlVAgqohhKxEEb5+bcMQsVZR46E/rIadltfSFHBGUy49XdNtiXIwd2fCX8awO+9WA+YB9xiVd0sq5U5I2H0Xh+mNXzTAYFkDj2t3HyGiQpGd3NG+stUHaKbHTGVLn9uSftX6ZMFUtGkvqnVXZfAb3sJTXSCi5d68mLmgFkJLNv5wibEYhfcOY9GHuNAUs9bSeKM9On9Z+LoDTySyWOwcd5yQmJ3nEpsaojAfW83SLSlsWBAdbTvi2MOFa5Dos/F5+Uw9q6bdrB48a3TlWXLyRIgQO9WipOPoO3REfbTBa0kcP++otQtSkSHYGV3e+dlJyPfFN81TnNQ55iY2pKRroLBLAQz5H56FkDcs9aYsoXn8gq7FQKxfTJVU80HTfcZM4KnBO3hQglqKTPbSSalOhwGbF10I1uKinB1ZLn7c6lHgt6/eKhFhpdldXtYYIQvKLMT/tN4MiCd3N2NVyLrMX5qJ3iBqDNz0/BG/Iyyq2R/y2GZ7aPTiue4SI7APx6Jim8or60Hh1UUVlLSsomFwWEjDJExQVRkERVvbOtsN++6tFi3WorKQn5zOhG/WNLsN
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(52116014)(7416014)(376014)(1800799024)(18002099003)(22082099003)(11063799003)(38350700014)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lHiJ/MTyfK8LJLMdDdez0UtRzTDgaTK3cSF4vFZWjf/q+XBVoTAEwYAnwwoM?=
+ =?us-ascii?Q?hrc8J9C7hNOYIbXYew2SC/h+fa1raWNUeAhx90Tb2bD+0HBAIn53dbrYquUe?=
+ =?us-ascii?Q?ptEt5YI6CnOG9DMzt8XLBdIMO/q26DS5DPt3MXaYQfPEOXss48IXIAj4+qIY?=
+ =?us-ascii?Q?X9Ilm7/e9aOCCCQxlmFUcXyMnXmTbklGDhQmyDxr5jOlJSoJTSRCohTs0Cih?=
+ =?us-ascii?Q?b19gf+uvByfKteU6b8i5eEyY2tIWdxbfjRj5aRK5FCrKpyzjqoGAm1wyanfj?=
+ =?us-ascii?Q?rNoBO5jdPYqUO7ZQxVyY/NLSclz3PQDv/qOq6QaDKCgmWxWuxHz6KtyMydjr?=
+ =?us-ascii?Q?5NoDz/bD0qTk6ZaQ5BxCQG5rhGx4iu3TvT2hdCMlPHAMq+dXbPsntQGQDMjH?=
+ =?us-ascii?Q?jDZF2n0g0A5l94F1VsdCYQwcxQbcNfpHwAfz5/JPagtbtA8LeXKco8XoYStM?=
+ =?us-ascii?Q?4qwo8ZC/eMNOoZQdU0kpzpA3gEtT7ytJ5Tg1yY9PNv6DGdtXn911aRU2atHk?=
+ =?us-ascii?Q?RdN5fvo7OF1hxCv6GLRvUIHcspG04tdEWU/jYAVTIGvRRJjOqGdBa3n6LcN4?=
+ =?us-ascii?Q?f0hzd1a4rTP95YIQXdocZhQGLDcJv5eIG4vdq+qmgm5uFBbYxDhm64XNJsVJ?=
+ =?us-ascii?Q?IdZUgldWt8K0kAdegGG2BLBNAGGXgVRsYGwJUuJ4/JbFkh03jzxayUs3zbsc?=
+ =?us-ascii?Q?GcAD0IZVGvpH6nfQnB3/wLeLiKf9x90ukRL1iqgGkTlgkw95ug03cLn25Oel?=
+ =?us-ascii?Q?tD2w9eqY1wYiMp4GYL9SSHQSCafWXtIMMgeYOPj+G+b8rh0Si5b8r4kDtYd1?=
+ =?us-ascii?Q?B5q/Bgd9sAvjrWMGS3C4z7Nx6Glxy0/7iLQb78ZzZeylKrqRGowvKW/QI6lj?=
+ =?us-ascii?Q?tUgAh9TFRZQZ0ilY68JkcZtMI4Ns55bWPmD1uAKlc63mCn+RWW74BcxrER3A?=
+ =?us-ascii?Q?/4y5OnRGVgzROmtcs8UwCy+psIGg8n90lRvATwPIR+v1bm2ezJhKr5SQqD++?=
+ =?us-ascii?Q?WENpuS/Map6L9DN73nLlZMsxo+ivzjU7kywSBb02xFxuSuSo7ZbRIgXUsFNe?=
+ =?us-ascii?Q?4sQ3Loo+EkeDnA6vBefY+HhCEA2V9oja8/F8J0FiS9DZwvGvFt2e9Ixwiyo/?=
+ =?us-ascii?Q?3YSFtTgPcWF+RflLwCJ9dD0lUS45PKXyNXEr0iyJ/vD/cb9mKqeaP1pEBFFE?=
+ =?us-ascii?Q?WzyviEVFi8aoiTPIsGPPTf6/dQ0wXYLU9WPqJZtxHR1tK45P1xRX6IQTrNZ4?=
+ =?us-ascii?Q?JqCld9aUxrIQg2cX80fjgaDSyK0x924BTHocCd2HfscsSHv9k+87O6oIQPmZ?=
+ =?us-ascii?Q?5pgRVxpQ+2FsQxt3YJF0l+9rmWAgQUzVm0pHpztnzPhqMtpwROTkEFjN+2VX?=
+ =?us-ascii?Q?N1wLifzajBqh/bwvieFa/09R18sLrm4ICFw/jffbjqI8e1eVvKNBl4C40tsL?=
+ =?us-ascii?Q?SEYqwpnWbu20y8GG/V7DrR761QjcHgPyCAxKbcwen0j3dGiC2zzon3DYnQf/?=
+ =?us-ascii?Q?3xl+OJktRNpo9JFgGaK1/iHlQqwM+C96ixeVs5g2wW2uQHugNPeWnKCSy/U5?=
+ =?us-ascii?Q?kvyq/01MPkZB3PA2szzVp2/8AkqG/STay8KteYCKbSIs0PeaGPnIWkC0xDFy?=
+ =?us-ascii?Q?zLzicqZwy8rLAF6fjZQ7p4pzdR4ilMn0vyHF+RqnOb2rBBTvju8wB8CE0n/T?=
+ =?us-ascii?Q?90xDOn7cq7o5YMfqeNmI9fpy3RiDybaEFvt4nIz6o7FMFUQKNzqvHvU3/sIl?=
+ =?us-ascii?Q?1Y8pnCxWiA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72933b89-2047-4561-1c09-08deb0651d08
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 20:29:06.1381
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DN7zrM7uOo0T2+mgEcJXEfX9R7lJXaz8Ve6KluxVViREl8S+yQBBK1JblyOOKIvZ2rK2VPxA9m4yy8YoMM2ErQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10914
+X-Rspamd-Queue-Id: C22F95297E0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gibson.sh:s=20260228];
+X-Spamd-Result: default: False [1.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gibson.sh:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246665-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246663-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[gibson.sh];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[daniel@gibson.sh,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,perex.cz,suse.com,bp.renesas.com,pengutronix.de,glider.be,renesas.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,nxp.com:dkim]
 X-Rspamd-Action: no action
 
-Enabling the new delay_suspend module parameter delays suspend for
-2.5 seconds which is known to help for some AMD-based Lenovo Laptops
-that otherwise failed to send/receive events for key presses or the
-lid switch after s2idle. Apparently the EC needs to do some things
-in the background before suspend or it gets into a bad state.
+On Tue, May 12, 2026 at 03:12:02PM +0300, Claudiu Beznea wrote:
+> Once the interrupt is requested, the interrupt handler may run immediately.
+> Since the IRQ handler can access channel->ch_base, which is initialized
+> only after requesting the IRQ, this may lead to invalid memory access.
+> Likewise, the IRQ thread may access uninitialized data (the ld_free,
+> ld_queue, and ld_active lists), which may also lead to issues.
+>
+> Request the interrupts only after everything is set up. To keep the error
+> path simpler, use dmam_alloc_coherent() instead of dma_alloc_coherent().
+>
+> Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> ---
 
-There are many reports of AMD-based laptops (mostly but not exclusively
-IdeaPads) about similar issues on the web; this parameter gives
-affected users an easy way to try out if their issues have the same
-root cause and to work around them until their specific device is added
-to the quirks list.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-The parameter description has a note encouraging users to report
-their device so it can be added to the quirks list, inspired by a
-similar request in parameter descriptions of the ideapad-laptop module.
-
-The module parameter can be set to "1" to explicitly enable it,
-"0" to disable it even on devices that are assumed to be affected,
-or -1 (the default) to enable it if the device is assumed to be affected
-(according to fwbug_list[])
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221383
-Signed-off-by: Daniel Gibson <daniel@gibson.sh>
-Cc: stable@vger.kernel.org
----
- drivers/platform/x86/amd/pmc/pmc.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
-index 6bafd8661d68..2d3d180c15d2 100644
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -16,6 +16,7 @@
- #include <linux/bits.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
-+#include <linux/dmi.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/limits.h>
-@@ -89,6 +90,11 @@ static bool disable_workarounds;
- module_param(disable_workarounds, bool, 0644);
- MODULE_PARM_DESC(disable_workarounds, "Disable workarounds for platform bugs");
- 
-+static int delay_suspend = -1;
-+module_param(delay_suspend, int, 0644);
-+MODULE_PARM_DESC(delay_suspend,
-+		 "Delays s2idle by 2.5 seconds to work around buggy ECs, often causing keyboard issues after suspend. 0: don't delay, 1: do delay, -1 (default): let amd_pmc decide. If you need this please report this to: platform-driver-x86@vger.kernel.org");
-+
- static struct amd_pmc_dev pmc;
- 
- static inline u32 amd_pmc_reg_read(struct amd_pmc_dev *dev, int reg_offset)
-@@ -625,8 +631,23 @@ static bool amd_pmc_want_suspend_delay(struct amd_pmc_dev *pdev)
- 	 *
- 	 * See https://bugzilla.kernel.org/show_bug.cgi?id=221383
- 	 */
--	if (!disable_workarounds && amd_pmc_quirk_need_suspend_delay(pdev)) {
--		dev_info(pdev->dev, "Delaying suspend by 2.5s to avoid platform bug\n");
-+	if (amd_pmc_quirk_need_suspend_delay(pdev)) {
-+		/*
-+		 * delay_suspend=1 force-enables this, otherwise it can be
-+		 * disabled with disable_workarounds or delay_suspend=0
-+		 */
-+		if (delay_suspend == 1 || (delay_suspend == -1 && !disable_workarounds)) {
-+			dev_info(pdev->dev, "Delaying suspend by 2.5s to avoid platform bug\n");
-+			return true;
-+		}
-+		dev_info(pdev->dev, "Not delaying suspend because of module parameter, even though your device is assumed to need it!\n");
-+	} else if (delay_suspend == 1) {
-+		dev_info(pdev->dev, "Delaying suspend by 2.5s because delay_suspend=1. If this solves problems on your machine, please report this whole line to: platform-driver-x86@vger.kernel.org so it can be automatically detected as affected in the future. System Vendor: \"%s\" Product Name: \"%s\" Product Family: \"%s\" Board Vendor: \"%s\" Board Name: \"%s\"\n",
-+			 dmi_get_system_info(DMI_SYS_VENDOR),
-+			 dmi_get_system_info(DMI_PRODUCT_NAME),
-+			 dmi_get_system_info(DMI_PRODUCT_FAMILY),
-+			 dmi_get_system_info(DMI_BOARD_VENDOR),
-+			 dmi_get_system_info(DMI_BOARD_NAME));
- 		return true;
- 	}
- 	return false;
--- 
-2.48.1
-
+>
+> Changes in v5:
+> - none
+>
+> Changes in v4:
+> - none, this patch is new
+>
+>  drivers/dma/sh/rz-dmac.c | 88 +++++++++++++++-------------------------
+>  1 file changed, 33 insertions(+), 55 deletions(-)
+>
+> diff --git a/drivers/dma/sh/rz-dmac.c b/drivers/dma/sh/rz-dmac.c
+> index 625ff29024de..9f206a33dcc6 100644
+> --- a/drivers/dma/sh/rz-dmac.c
+> +++ b/drivers/dma/sh/rz-dmac.c
+> @@ -981,25 +981,6 @@ static int rz_dmac_chan_probe(struct rz_dmac *dmac,
+>  	channel->index = index;
+>  	channel->mid_rid = -EINVAL;
+>
+> -	/* Request the channel interrupt. */
+> -	scnprintf(pdev_irqname, sizeof(pdev_irqname), "ch%u", index);
+> -	irq = platform_get_irq_byname(pdev, pdev_irqname);
+> -	if (irq < 0)
+> -		return irq;
+> -
+> -	irqname = devm_kasprintf(dmac->dev, GFP_KERNEL, "%s:%u",
+> -				 dev_name(dmac->dev), index);
+> -	if (!irqname)
+> -		return -ENOMEM;
+> -
+> -	ret = devm_request_threaded_irq(dmac->dev, irq, rz_dmac_irq_handler,
+> -					rz_dmac_irq_handler_thread, 0,
+> -					irqname, channel);
+> -	if (ret) {
+> -		dev_err(dmac->dev, "failed to request IRQ %u (%d)\n", irq, ret);
+> -		return ret;
+> -	}
+> -
+>  	/* Set io base address for each channel */
+>  	if (index < 8) {
+>  		channel->ch_base = dmac->base + CHANNEL_0_7_OFFSET +
+> @@ -1012,9 +993,9 @@ static int rz_dmac_chan_probe(struct rz_dmac *dmac,
+>  	}
+>
+>  	/* Allocate descriptors */
+> -	lmdesc = dma_alloc_coherent(&pdev->dev,
+> -				    sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
+> -				    &channel->lmdesc.base_dma, GFP_KERNEL);
+> +	lmdesc = dmam_alloc_coherent(&pdev->dev,
+> +				     sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
+> +				     &channel->lmdesc.base_dma, GFP_KERNEL);
+>  	if (!lmdesc) {
+>  		dev_err(&pdev->dev, "Can't allocate memory (lmdesc)\n");
+>  		return -ENOMEM;
+> @@ -1030,7 +1011,24 @@ static int rz_dmac_chan_probe(struct rz_dmac *dmac,
+>  	INIT_LIST_HEAD(&channel->ld_free);
+>  	INIT_LIST_HEAD(&channel->ld_active);
+>
+> -	return 0;
+> +	/* Request the channel interrupt. */
+> +	scnprintf(pdev_irqname, sizeof(pdev_irqname), "ch%u", index);
+> +	irq = platform_get_irq_byname(pdev, pdev_irqname);
+> +	if (irq < 0)
+> +		return irq;
+> +
+> +	irqname = devm_kasprintf(dmac->dev, GFP_KERNEL, "%s:%u",
+> +				 dev_name(dmac->dev), index);
+> +	if (!irqname)
+> +		return -ENOMEM;
+> +
+> +	ret = devm_request_threaded_irq(dmac->dev, irq, rz_dmac_irq_handler,
+> +					rz_dmac_irq_handler_thread, 0,
+> +					irqname, channel);
+> +	if (ret)
+> +		dev_err(dmac->dev, "failed to request IRQ %u (%d)\n", irq, ret);
+> +
+> +	return ret;
+>  }
+>
+>  static void rz_dmac_put_device(void *_dev)
+> @@ -1099,7 +1097,6 @@ static int rz_dmac_probe(struct platform_device *pdev)
+>  	const char *irqname = "error";
+>  	struct dma_device *engine;
+>  	struct rz_dmac *dmac;
+> -	int channel_num;
+>  	int ret;
+>  	int irq;
+>  	u8 i;
+> @@ -1132,18 +1129,6 @@ static int rz_dmac_probe(struct platform_device *pdev)
+>  			return PTR_ERR(dmac->ext_base);
+>  	}
+>
+> -	/* Register interrupt handler for error */
+> -	irq = platform_get_irq_byname_optional(pdev, irqname);
+> -	if (irq > 0) {
+> -		ret = devm_request_irq(&pdev->dev, irq, rz_dmac_irq_handler, 0,
+> -				       irqname, NULL);
+> -		if (ret) {
+> -			dev_err(&pdev->dev, "failed to request IRQ %u (%d)\n",
+> -				irq, ret);
+> -			return ret;
+> -		}
+> -	}
+> -
+>  	/* Initialize the channels. */
+>  	INIT_LIST_HEAD(&dmac->engine.channels);
+>
+> @@ -1169,6 +1154,18 @@ static int rz_dmac_probe(struct platform_device *pdev)
+>  			goto err;
+>  	}
+>
+> +	/* Register interrupt handler for error */
+> +	irq = platform_get_irq_byname_optional(pdev, irqname);
+> +	if (irq > 0) {
+> +		ret = devm_request_irq(&pdev->dev, irq, rz_dmac_irq_handler, 0,
+> +				       irqname, NULL);
+> +		if (ret) {
+> +			dev_err(&pdev->dev, "failed to request IRQ %u (%d)\n",
+> +				irq, ret);
+> +			goto err;
+> +		}
+> +	}
+> +
+>  	/* Register the DMAC as a DMA provider for DT. */
+>  	ret = of_dma_controller_register(pdev->dev.of_node, rz_dmac_of_xlate,
+>  					 NULL);
+> @@ -1210,16 +1207,6 @@ static int rz_dmac_probe(struct platform_device *pdev)
+>  dma_register_err:
+>  	of_dma_controller_free(pdev->dev.of_node);
+>  err:
+> -	channel_num = i ? i - 1 : 0;
+> -	for (i = 0; i < channel_num; i++) {
+> -		struct rz_dmac_chan *channel = &dmac->channels[i];
+> -
+> -		dma_free_coherent(&pdev->dev,
+> -				  sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
+> -				  channel->lmdesc.base,
+> -				  channel->lmdesc.base_dma);
+> -	}
+> -
+>  	reset_control_assert(dmac->rstc);
+>  err_pm_runtime_put:
+>  	pm_runtime_put(&pdev->dev);
+> @@ -1232,18 +1219,9 @@ static int rz_dmac_probe(struct platform_device *pdev)
+>  static void rz_dmac_remove(struct platform_device *pdev)
+>  {
+>  	struct rz_dmac *dmac = platform_get_drvdata(pdev);
+> -	unsigned int i;
+>
+>  	dma_async_device_unregister(&dmac->engine);
+>  	of_dma_controller_free(pdev->dev.of_node);
+> -	for (i = 0; i < dmac->n_channels; i++) {
+> -		struct rz_dmac_chan *channel = &dmac->channels[i];
+> -
+> -		dma_free_coherent(&pdev->dev,
+> -				  sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
+> -				  channel->lmdesc.base,
+> -				  channel->lmdesc.base_dma);
+> -	}
+>  	reset_control_assert(dmac->rstc);
+>  	pm_runtime_put(&pdev->dev);
+>  	pm_runtime_disable(&pdev->dev);
+> --
+> 2.43.0
+>
 
