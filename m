@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPdiNCc3A2ow1wEAu9opvQ
-	(envelope-from <stable+bounces-245708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:20:23 +0200
+	id CPQID0o4A2qK1wEAu9opvQ
+	(envelope-from <stable+bounces-245709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:25:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6705852241F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:20:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAF6522636
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B796630C6F88
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:18:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AF98A3081BCF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537643AFB06;
-	Tue, 12 May 2026 14:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DE63B1023;
+	Tue, 12 May 2026 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcwJQknM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Au3jNyKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1508539DBD9
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FBB3B1036
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778595503; cv=none; b=lQFSdW5hcZXVPC5E6CMjP1CgZwQ12/VUVCmkwGmTg80dTi4d9ldxA65EpYV/xtRI8R9DQGpqPTSAGuRBl6oov3rHdS5puoxQfQj0bIdG7JcYiYGgBbj9NVgUhfGWP12RGFzA2rDgji0jNwrRAlZWmBzFwC65GWmouEK7peMCkzQ=
+	t=1778595505; cv=none; b=eFak1abVMYnKduv/ELJ7BFXKawp+ezUJMV6okaWalzcCSoKtAyVW30eKoTeVYRK+34RV2nEDdrLi/nqn5RozxWp09Mlx8CskbdnSBFiaixTXExBJaNHyRXWQLrLk6oauP9fV2fUI5qScyfvDMhmNJbNOpmqZJJzZ64qmQpQ+ZQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778595503; c=relaxed/simple;
-	bh=5IVqa0avsWs/b6UF8WCRHgfi+ca3hkm2mItb0nM4NyU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jOxHagJNzDJGcnqeXqFYcpdUUOuy6EjGpjUAj/5Yyn4Sbf53k/NabP/uLY1h22dDxDY8Aqf7PSC5T6CpQ38Y0qHjxP4TyoXUAoZ0vTYvUBOUAnfsqh22/I0S61MqABGkQLhoZP8V70JLzEsIb4nhrudT6xkztGhXgdmuBhNSZ0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcwJQknM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D848C2BCB0;
-	Tue, 12 May 2026 14:18:22 +0000 (UTC)
+	s=arc-20240116; t=1778595505; c=relaxed/simple;
+	bh=rS/52BkgjUjiTA6inGwUoY0BQ7vR4ryl6W4uzoPAiZg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VWJvljYWKY57FRdHy2o6t8xiBF7MroRQShC5IflUXZGyDyYG29Opytb076YPmSFA9qe2hHisQ1U5REvz9uwzQCHqxcQkEbR/Sp16YZZVa7dxHPyYvG/C/IJQo33/qPpx4QvcI8evbRm9wrwy/OjG5Zc9RTs8sG9thW2rf49EQTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Au3jNyKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F7BC2BCB0;
+	Tue, 12 May 2026 14:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778595502;
-	bh=5IVqa0avsWs/b6UF8WCRHgfi+ca3hkm2mItb0nM4NyU=;
+	s=korg; t=1778595505;
+	bh=rS/52BkgjUjiTA6inGwUoY0BQ7vR4ryl6W4uzoPAiZg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rcwJQknMFGWivtz/bsANG3O4E4/7zkVEHjRb0+pXq47yXmsN/MyqHpVqOcS1Rl3y4
-	 7Le6S5VO7HV/C5lE6j4NgG2uh3gn1JyIB+N7+P60Txr8lR8SOLfojMM5rMyChckuw7
-	 wlnuERlIX56Bvu73hryEe/GZIXRVNML/z5HAsji8=
-Subject: FAILED: patch "[PATCH] power: supply: cw2015: Free allocated workqueue" failed to apply to 5.15-stable tree
-To: krzysztof.kozlowski@oss.qualcomm.com,andriy.shevchenko@linux.intel.com,sebastian.reichel@collabora.com
+	b=Au3jNyKRrFZ+ZtU+qI+i5FP+Lm7GQb/h4WG2Q3+AmNyj9fQiMJgwqb8Wiru8rYeaq
+	 dH50HLeyoxrKImtF3mHiKPdA+clDmtvu7Oc0hTm2m6HVy1WUYf2kStwpziJ1eGuw7L
+	 joLh4gDx+W5Jm5slFHLln5UEmEBuEMrPuFvCqzts=
+Subject: FAILED: patch "[PATCH] perf/x86/intel: Disable PMI for self-reloaded ACR events" failed to apply to 6.18-stable tree
+To: dapeng1.mi@linux.intel.com,ak@linux.intel.com,peterz@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 16:14:25 +0200
-Message-ID: <2026051225-roast-saga-5764@gregkh>
+Date: Tue, 12 May 2026 16:14:50 +0200
+Message-ID: <2026051250-afflicted-express-5419@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,19 +54,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6705852241F
+X-Rspamd-Queue-Id: DCAF6522636
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245708-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245709-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -80,26 +80,26 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,gregkh:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,collabora.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,gregkh:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,infradead.org:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x db254b0b232358ab1aeadebe8d147c99a3569559
+git cherry-pick -x 1271aeccc307066315b2d3b0d5af2510e27018b5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051225-roast-saga-5764@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051250-afflicted-express-5419@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,39 +111,93 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From db254b0b232358ab1aeadebe8d147c99a3569559 Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Date: Thu, 5 Mar 2026 22:45:41 +0100
-Subject: [PATCH] power: supply: cw2015: Free allocated workqueue
+From 1271aeccc307066315b2d3b0d5af2510e27018b5 Mon Sep 17 00:00:00 2001
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Date: Thu, 30 Apr 2026 08:25:56 +0800
+Subject: [PATCH] perf/x86/intel: Disable PMI for self-reloaded ACR events
 
-Use devm interface so allocated workqueue will be freed during device
-removal and error paths, thus fixing a memory leak.
+On platforms with Auto Counter Reload (ACR) support, such as NVL, a
+"NMI received for unknown reason 30" warning is observed when running
+multiple events in a group with ACR enabled:
 
-Change is not equivalent in the workqueue itself: use non-legacy API
-which does not set (__WQ_LEGACY | WQ_MEM_RECLAIM).  The workqueue is
-used to read updated data from the battery, thus there is no point to
-run it for memory reclaim.
+  $ perf record -e '{instructions/period=20000,acr_mask=0x2/u,\
+    cycles/period=40000,acr_mask=0x3/u}' ./test
 
+The warning occurs because the Performance Monitoring Interrupt (PMI)
+is enabled for the self-reloaded event (the cycles event in this case).
+According to the Intel SDM, the overflow bit
+(IA32_PERF_GLOBAL_STATUS.PMCn_OVF) is never set for self-reloaded events.
+Since the bit is not set, the perf NMI handler cannot identify the source
+of the interrupt, leading to the "unknown reason" message.
+
+Furthermore, enabling PMI for self-reloaded events is unnecessary and
+can lead to extraneous records that pollute the user's requested data.
+
+Disable the interrupt bit for all events configured with ACR self-reload.
+
+Fixes: ec980e4facef ("perf/x86/intel: Support auto counter reload")
+Reported-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Fixes: b4c7715c10c1 ("power: supply: add CellWise cw2015 fuel gauge driver")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260305-workqueue-devm-v2-2-66a38741c652@oss.qualcomm.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://patch.msgid.link/20260430002558.712334-4-dapeng1.mi@linux.intel.com
 
-diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supply/cw2015_battery.c
-index a05dcc4a48f2..286524d2318c 100644
---- a/drivers/power/supply/cw2015_battery.c
-+++ b/drivers/power/supply/cw2015_battery.c
-@@ -694,7 +694,8 @@ static int cw_bat_probe(struct i2c_client *client)
- 			 "No monitored battery, some properties will be missing\n");
- 	}
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index f8deb67b3c51..ead6d95cec6a 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3118,11 +3118,11 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
+ 	intel_set_masks(event, idx);
  
--	cw_bat->battery_workqueue = create_singlethread_workqueue("rk_battery");
-+	cw_bat->battery_workqueue = devm_alloc_ordered_workqueue(&client->dev,
-+								 "rk_battery", 0);
- 	if (!cw_bat->battery_workqueue)
- 		return -ENOMEM;
+ 	/*
+-	 * Enable IRQ generation (0x8), if not PEBS,
+-	 * and enable ring-3 counting (0x2) and ring-0 counting (0x1)
+-	 * if requested:
++	 * Enable IRQ generation (0x8), if not PEBS or self-reloaded
++	 * ACR event, and enable ring-3 counting (0x2) and ring-0
++	 * counting (0x1) if requested:
+ 	 */
+-	if (!event->attr.precise_ip)
++	if (!event->attr.precise_ip && !is_acr_self_reload_event(event))
+ 		bits |= INTEL_FIXED_0_ENABLE_PMI;
+ 	if (hwc->config & ARCH_PERFMON_EVENTSEL_USR)
+ 		bits |= INTEL_FIXED_0_USER;
+@@ -3306,6 +3306,15 @@ static void intel_pmu_enable_event(struct perf_event *event)
+ 		intel_set_masks(event, idx);
+ 		static_call_cond(intel_pmu_enable_acr_event)(event);
+ 		static_call_cond(intel_pmu_enable_event_ext)(event);
++		/*
++		 * For self-reloaded ACR event, don't enable PMI since
++		 * HW won't set overflow bit in GLOBAL_STATUS. Otherwise,
++		 * the PMI would be recognized as a suspicious NMI.
++		 */
++		if (is_acr_self_reload_event(event))
++			hwc->config &= ~ARCH_PERFMON_EVENTSEL_INT;
++		else if (!event->attr.precise_ip)
++			hwc->config |= ARCH_PERFMON_EVENTSEL_INT;
+ 		__x86_pmu_enable_event(hwc, enable_mask);
+ 		break;
+ 	case INTEL_PMC_IDX_FIXED ... INTEL_PMC_IDX_FIXED_BTS - 1:
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index fad87d3c8b2c..524668dcf4cc 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -137,6 +137,16 @@ static inline bool is_acr_event_group(struct perf_event *event)
+ 	return check_leader_group(event->group_leader, PERF_X86_EVENT_ACR);
+ }
  
++static inline bool is_acr_self_reload_event(struct perf_event *event)
++{
++	struct hw_perf_event *hwc = &event->hw;
++
++	if (hwc->idx < 0)
++		return false;
++
++	return test_bit(hwc->idx, (unsigned long *)&hwc->config1);
++}
++
+ struct amd_nb {
+ 	int nb_id;  /* NorthBridge id */
+ 	int refcnt; /* reference count */
 
 
