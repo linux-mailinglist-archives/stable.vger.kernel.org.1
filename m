@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COCNKkh1A2oV6AEAu9opvQ
-	(envelope-from <stable+bounces-246593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:28 +0200
+	id sBJZB4trA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28298528122
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:45:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7405526A50
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 628093059007
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F342A3048B0B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E67A36A378;
-	Tue, 12 May 2026 18:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDDE3EDE47;
+	Tue, 12 May 2026 18:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pf0LIKfs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFrGOpUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32122366831;
-	Tue, 12 May 2026 18:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E113EDE5B;
+	Tue, 12 May 2026 18:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609623; cv=none; b=kDu1Y3gwQ2vxbgUd7wOO1eapSbA74+9Nnqg19ODTaXdV6rN5AAJavusWGWNPXn0+gEDixOtyaYR3eyHw/4Fsj4wdwaNphue0D+t/1WXYjQP0ke1hwZGFwIjFLDRbaZxk2BKxO+KPg9LgM3iyrZ41DuEhOZ8QH8UCU7oXC9Lp+cM=
+	t=1778608946; cv=none; b=GO8kK36lQcykD7slzodS+9QjnH3PCoDSlpaiToyUePZNK8vJ88F6UTv4xmVRK/ovkfRtJvPnQlA63heuCTjxn7Zk3+fLwyd2WpoYRjvj4JxqniZHK7lQQuf3oltVvMNdfbrzIe1M8913aterlSuu9JhOAB2yLY2+YJRdnMsmfyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609623; c=relaxed/simple;
-	bh=pN95bPvlKC0jX3TSwhBR4rCCcXdKsZsWXheeU851UG8=;
+	s=arc-20240116; t=1778608946; c=relaxed/simple;
+	bh=jwVf139gsJR2eHI34I35kqK0H2EVbQWvD1HrdeybIa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tiDG/k7fAEeO8Dxsct1mx4XvQPaVMQk0fkKNbcsZacEpOVRTc9SKXIXQhsALfdfOVwVMNSYC7mynaDzUtiQZCp/UJxg+2mGHEMgFGQ79vu/14AWIq1iU655LrO9FxAN6T7OR/pFFllg78rnIGO3DCDINkz0UwwbRaPwR/doNt7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pf0LIKfs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41FDC2BCB0;
-	Tue, 12 May 2026 18:13:42 +0000 (UTC)
+	 MIME-Version; b=Dwah9gY/dj6gZNA1/sHV7emP+KnZx8dF+r5blD76dtg/S0ASnMzcjGK8C+sT/A3jNKHZrJjLgCBWY84K0wySdspK5kRS9ffFeQ6kLYpq4zAgoKjnigdFWg7i+jYFAXi31B8ZbJLF5XiXJgvO0+oCVaOhvN3fHKahGw+mo85qAH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFrGOpUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E06C2BCB0;
+	Tue, 12 May 2026 18:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609623;
-	bh=pN95bPvlKC0jX3TSwhBR4rCCcXdKsZsWXheeU851UG8=;
+	s=korg; t=1778608945;
+	bh=jwVf139gsJR2eHI34I35kqK0H2EVbQWvD1HrdeybIa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pf0LIKfsBvvd+vzFWOgF8ORo1lL666Bmw1KmLAfvBAgqAQTMlbTn58zSL96GBSVcI
-	 eiMKBcDkw/uSx4S1jleacnEHVdo7AUnDnlXtb+PyhOnpc3fsdASbLYgQw9rv5q3085
-	 btxx2EKWiVrF5dJjgxSYEVbMkhWh9JJtn18mXNEg=
+	b=rFrGOpUU8ULe0syLDzCgCmgNR1aDMa7kWJuau0yucmI+T0RuwY2xpEfp1ZQ8RUgKQ
+	 7By7rA+3/kQnx3M7yNjHZPDi4ysFu0qrXw723rFVRCnHcpGbw34HbsoMMJ07dJOKsv
+	 XtDPM0wx3eivkhPMMndOL6s46I/57H27lcTqu7ZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cen Zhang <zzzccc427@gmail.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 7.0 267/307] f2fs: add READ_ONCE() for i_blocks in f2fs_update_inode()
-Date: Tue, 12 May 2026 19:41:02 +0200
-Message-ID: <20260512173945.763470019@linuxfoundation.org>
+	Zilin Guan <zilin@seu.edu.cn>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 262/270] hfsplus: fix held lock freed on hfsplus_fill_super()
+Date: Tue, 12 May 2026 19:41:03 +0200
+Message-ID: <20260512173943.965196751@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,175 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 28298528122
+X-Rspamd-Queue-Id: B7405526A50
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246593-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246329-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cen Zhang <zzzccc427@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 5471834a96fb697874be2ca0b052e74bcf3c23d1 upstream.
+[ Upstream commit 90c500e4fd83fa33c09bc7ee23b6d9cc487ac733 ]
 
-f2fs_update_inode() reads inode->i_blocks without holding i_lock to
-serialize it to the on-disk inode, while concurrent truncate or
-allocation paths may modify i_blocks under i_lock.  Since blkcnt_t is
-u64, this risks torn reads on 32-bit architectures.
+hfsplus_fill_super() calls hfs_find_init() to initialize a search
+structure, which acquires tree->tree_lock. If the subsequent call to
+hfsplus_cat_build_key() fails, the function jumps to the out_put_root
+error label without releasing the lock. The later cleanup path then
+frees the tree data structure with the lock still held, triggering a
+held lock freed warning.
 
-Following the approach in ext4_inode_blocks_set(), add READ_ONCE() to prevent
-potential compiler-induced tearing.
+Fix this by adding the missing hfs_find_exit(&fd) call before jumping
+to the out_put_root error label. This ensures that tree->tree_lock is
+properly released on the error path.
 
-Fixes: 19f99cee206c ("f2fs: add core inode operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+The bug was originally detected on v6.13-rc1 using an experimental
+static analysis tool we are developing, and we have verified that the
+issue persists in the latest mainline kernel. The tool is specifically
+designed to detect memory management issues. It is currently under active
+development and not yet publicly available.
+
+We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
+lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
+used GDB to dynamically shrink the max_unistr_len parameter to 1 before
+hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
+return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
+exercises the faulty error path. The following warning was observed
+during mount:
+
+	=========================
+	WARNING: held lock freed!
+	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
+	-------------------------
+	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
+	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+	2 locks held by mount/174:
+	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
+	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+
+	stack backtrace:
+	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+	Call Trace:
+	<TASK>
+	dump_stack_lvl+0x82/0xd0
+	debug_check_no_locks_freed+0x13a/0x180
+	kfree+0x16b/0x510
+	? hfsplus_fill_super+0xcb4/0x18a0
+	hfsplus_fill_super+0xcb4/0x18a0
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? bdev_open+0x65f/0xc30
+	? srso_return_thunk+0x5/0x5f
+	? pointer+0x4ce/0xbf0
+	? trace_contention_end+0x11c/0x150
+	? __pfx_pointer+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? bdev_open+0x79b/0xc30
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? vsnprintf+0x6da/0x1270
+	? srso_return_thunk+0x5/0x5f
+	? __mutex_unlock_slowpath+0x157/0x740
+	? __pfx_vsnprintf+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? mark_held_locks+0x49/0x80
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? irqentry_exit+0x17b/0x5e0
+	? trace_irq_disable.constprop.0+0x116/0x150
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	get_tree_bdev_flags+0x302/0x580
+	? __pfx_get_tree_bdev_flags+0x10/0x10
+	? vfs_parse_fs_qstr+0x129/0x1a0
+	? __pfx_vfs_parse_fs_qstr+0x3/0x10
+	vfs_get_tree+0x89/0x320
+	fc_mount+0x10/0x1d0
+	path_mount+0x5c5/0x21c0
+	? __pfx_path_mount+0x10/0x10
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? kmem_cache_free+0x307/0x540
+	? user_path_at+0x51/0x60
+	? __x64_sys_mount+0x212/0x280
+	? srso_return_thunk+0x5/0x5f
+	__x64_sys_mount+0x212/0x280
+	? __pfx___x64_sys_mount+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? srso_return_thunk+0x5/0x5f
+	do_syscall_64+0x111/0x680
+	entry_SYSCALL_64_after_hwframe+0x77/0x7f
+	RIP: 0033:0x7ffacad55eae
+	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
+	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
+	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
+	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
+	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
+	</TASK>
+
+After applying this patch, the warning no longer appears.
+
+Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
+CC: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hfsplus/super.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -687,7 +687,7 @@ void f2fs_update_inode(struct inode *ino
- 	ri->i_uid = cpu_to_le32(i_uid_read(inode));
- 	ri->i_gid = cpu_to_le32(i_gid_read(inode));
- 	ri->i_links = cpu_to_le32(inode->i_nlink);
--	ri->i_blocks = cpu_to_le64(SECTOR_TO_BLOCK(inode->i_blocks) + 1);
-+	ri->i_blocks = cpu_to_le64(SECTOR_TO_BLOCK(READ_ONCE(inode->i_blocks)) + 1);
- 
- 	if (!f2fs_is_atomic_file(inode) ||
- 			is_inode_flag_set(inode, FI_ATOMIC_COMMITTED))
+--- a/fs/hfsplus/super.c
++++ b/fs/hfsplus/super.c
+@@ -569,8 +569,10 @@ static int hfsplus_fill_super(struct sup
+ 	if (err)
+ 		goto out_put_root;
+ 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+-	if (unlikely(err < 0))
++	if (unlikely(err < 0)) {
++		hfs_find_exit(&fd);
+ 		goto out_put_root;
++	}
+ 	if (!hfsplus_brec_read_cat(&fd, &entry)) {
+ 		hfs_find_exit(&fd);
+ 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
 
 
 
