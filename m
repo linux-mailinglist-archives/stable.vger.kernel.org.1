@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245886-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILiJAiVsA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:06:29 +0200
+	id aFcbL8FmA2qZ5gEAu9opvQ
+	(envelope-from <stable+bounces-245886-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DC7526C3B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:06:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65EC8525FCB
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36E1830CBBFF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B3C9C303403A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2543EDE67;
-	Tue, 12 May 2026 17:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9E43E0721;
+	Tue, 12 May 2026 17:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9ZZq+s9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TparNzz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807173EDE52;
-	Tue, 12 May 2026 17:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFB53B1EE2;
+	Tue, 12 May 2026 17:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608471; cv=none; b=Jc2U4wEtQqz1KSKMSW4cXzOPULsg/XvHCTp4FbK9rgHmyY3nZqMF9Oo+c15coZobF6rTaaXh7a9CwkfNdKG1iQxkRdSOz9uFyaoLx88eJlhU6sOdfR+hfwRGctb5xl+/JgYU5xsP0oVtuENjpvwkx5bpWisYOxLZJJB7LNaUI4g=
+	t=1778607808; cv=none; b=cSm5T+XZXLiekrq0ibD7OSQkJCJvHoa1ImwnOumAPYmrs/XZBoL6bOLIbMhKpWFnorHDPKQQuf0U0u+qtMTylA0WB7Xramm8XfrTYLFuGHVLA0ok3iSpAgeC5igHmzNtniE8I4cYAa2g3J12QSDUTIUr1IV9kCc1lyvOgcWaUFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608471; c=relaxed/simple;
-	bh=mCzI50zNgR7gSqyF6Csn8HF/wLtuWv9Pp2yvauYwFR8=;
+	s=arc-20240116; t=1778607808; c=relaxed/simple;
+	bh=XBmwdlIQSoxwdq04qJn27LCXi1Pan8kjBnPZHzB/Sro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkLxSRHtFgGIUieJdvRXxbH/pPI8FdIadPEQzRGtypqgpbcPhQsGT27ce9yrmPKN9STt82VnvNPTUE445mELQ2b6nlskSZeDiKMMuJ/SnyNJS6xPgwiEPNs/MC2VgOJk77IZaijbK7SD56uxsZ04IgCUINOBC6UhImNX+ZGCLEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9ZZq+s9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146D7C2BCB0;
-	Tue, 12 May 2026 17:54:30 +0000 (UTC)
+	 MIME-Version; b=VQRJEJtzeBp51ZpfOgtHV1DCgS+8QfqE3fySQ9m6L78ovgdS3ZmTFt+Bp08tAXrbZNoxr2DyB+qIrf6qoTyvlH18b7Vw7cS3at89H+lSIG6lODHsQUUM9FSgLKRyiAvuye7CX9dnqEHqzGT1YgEHf2KxYNOEK5k/nAaCFHc9JoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TparNzz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05F1C2BCB0;
+	Tue, 12 May 2026 17:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608471;
-	bh=mCzI50zNgR7gSqyF6Csn8HF/wLtuWv9Pp2yvauYwFR8=;
+	s=korg; t=1778607808;
+	bh=XBmwdlIQSoxwdq04qJn27LCXi1Pan8kjBnPZHzB/Sro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9ZZq+s9Vj3c6Iqbnj1dGySpmsT3e+DKkgN0TlpkQ58uU49ekww0k0cLKgbJEHisk
-	 +Lr5ZqF+cUcqphvf3RASJ6RVIOVIZtoonHV3uWXANsyjK+pkOJr6C9/zTySS4RQS6D
-	 ZLzYsskhHRRsKYB12AB83qga1Miskd0w2265oyYM=
+	b=TparNzz9rsahjj1tIt+8l52zGKy07FcyMdLE1fF4DLMKy/+qi4loPrKP7P1u5h426
+	 MSGMI7cWGA39vHR5l1SoKh54+aTG+GbUb9npATt6XxRpfE2LcH/zZ7T+PsoV8xPd5w
+	 b5qm4PhqIE7a7Bq/CK5ZQDSmftwEu82GdwmcJPt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 093/270] mptcp: pm: ADD_ADDR rtx: skip inactive subflows
+	Pete Zaitcev <zaitcev@redhat.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 042/206] usb: usblp: fix uninitialized heap leak via LPGETSTATUS ioctl
 Date: Tue, 12 May 2026 19:38:14 +0200
-Message-ID: <20260512173940.417964488@linuxfoundation.org>
+Message-ID: <20260512173933.725656870@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 97DC7526C3B
+X-Rspamd-Queue-Id: 65EC8525FCB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246144-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245886-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,75 +88,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit c6d395e2de1306b5fef0344a3c3835fbbfaa18be upstream.
+commit b38e53cbfb9d84732e5984fbd73e128d592415c5 upstream.
 
-When looking at the maximum RTO amongst the subflows, inactive subflows
-were taken into account: that includes stale ones, and the initial one
-if it has been already been closed.
+Just like in a previous problem in this driver, usblp_ctrl_msg() will
+collapse the usb_control_msg() return value to 0/-errno, discarding the
+actual number of bytes transferred.
 
-Unusable subflows are now simply skipped. Stale ones are used as an
-alternative: if there are only stale ones, to take their maximum RTO and
-avoid to eventually fallback to net.mptcp.add_addr_timeout, which is set
-to 2 minutes by default.
+Ideally that short command should be detected and error out, but many
+printers are known to send "incorrect" responses back so we can't just
+do that.
 
-Fixes: 30549eebc4d8 ("mptcp: make ADD_ADDR retransmission timeout adaptive")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-7-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+statusbuf is kmalloc(8) at probe time and never filled before the first
+LPGETSTATUS ioctl.
+
+usblp_read_status() requests 1 byte. If a malicious printer responds
+with zero bytes, *statusbuf is one byte of stale kmalloc heap,
+sign-extended into the local int status, which the LPGETSTATUS path then
+copy_to_user()s directly to the ioctl caller.
+
+Fix this all by just zapping out the memory buffer when allocated at
+probe time.  If a later call does a short read, the data will be
+identical to what the device sent it the last time, so there is no
+"leak" of information happening.
+
+Cc: Pete Zaitcev <zaitcev@redhat.com>
+Assisted-by: gkh_clanker_t1000
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/2026042011-shredder-savage-48c6@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/usb/class/usblp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -305,18 +305,28 @@ static unsigned int mptcp_adjust_add_add
- 	const struct net *net = sock_net((struct sock *)msk);
- 	unsigned int rto = mptcp_get_add_addr_timeout(net);
- 	struct mptcp_subflow_context *subflow;
--	unsigned int max = 0;
-+	unsigned int max = 0, max_stale = 0;
- 
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 		struct inet_connection_sock *icsk = inet_csk(ssk);
- 
--		if (icsk->icsk_rto > max)
-+		if (!__mptcp_subflow_active(subflow))
-+			continue;
-+
-+		if (unlikely(subflow->stale)) {
-+			if (icsk->icsk_rto > max_stale)
-+				max_stale = icsk->icsk_rto;
-+		} else if (icsk->icsk_rto > max) {
- 			max = icsk->icsk_rto;
-+		}
+--- a/drivers/usb/class/usblp.c
++++ b/drivers/usb/class/usblp.c
+@@ -1166,7 +1166,7 @@ static int usblp_probe(struct usb_interf
  	}
  
--	if (max && max < rto)
--		rto = max;
-+	if (max)
-+		return min(max, rto);
-+
-+	if (max_stale)
-+		return min(max_stale, rto);
- 
- 	return rto;
- }
+ 	/* Allocate buffer for printer status */
+-	usblp->statusbuf = kmalloc(STATUS_BUF_SIZE, GFP_KERNEL);
++	usblp->statusbuf = kzalloc(STATUS_BUF_SIZE, GFP_KERNEL);
+ 	if (!usblp->statusbuf) {
+ 		retval = -ENOMEM;
+ 		goto abort;
 
 
 
