@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBQnLrNvA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:39 +0200
+	id KDrfMcJmA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B917E527661
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0BCA525FCC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E5FA930A436B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C39223005334
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94D3356741;
-	Tue, 12 May 2026 18:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C164A3DC85B;
+	Tue, 12 May 2026 17:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="riLAyl7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m23DM8IN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A511342509;
-	Tue, 12 May 2026 18:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8446D385D85;
+	Tue, 12 May 2026 17:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609182; cv=none; b=Qv+DNIXhun+vlsgKuT5bKiaSJ7MK5AifRSGBE1imqCi7NBr/8FLYySZQNM5pF8cTnjZ558BkI5mlA4Rsybc6TRSqOlmD/RvDv1bhWNvwfgvZOrPKwdo/akb9Knv3ImqnxyYFFg43eNsLEzC+QvJAIv2Aws+FB0xwfuBCTu+eLko=
+	t=1778607803; cv=none; b=aBEOUQD7Rk7vSvXJGte1Tw7HCQj4iC2howCvYuQGqswAV2Foc2F0xcZgZbfX4ZtlXCwdQYxMAIzmAih9baglR/PBG/P2D4sQaAulohHZXDUSWUG9U4d+zDu6BlWzWmPJGUZ1HFGX4ZSWJmFepBtGt8l0XxZfBbfYRfGmFAd5p6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609182; c=relaxed/simple;
-	bh=QMyr1/4xYSttMz4VSfQjxuLKMMyP1EafPteJt1xSn9U=;
+	s=arc-20240116; t=1778607803; c=relaxed/simple;
+	bh=p7L2ILFS8v1nirILhGlhUMqh7YxOvX8k3V4rSRQ3crA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTfIu28zokopYjXcw0O7SuNK/MoOqm9ZgKTcUqwVG+VVAhX8tmj05DRifsZCB0GXH+kYrc+94CpEDQ+IA+yKMqJA8j9XZyzlTR3Q1te+o5pjqNn54TzwKRzuVYind69dKeUwX6gWAg0BuZOcCL4RUVdXNrqOvjboRRECJjPoHqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=riLAyl7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7F6C2BCB0;
-	Tue, 12 May 2026 18:06:22 +0000 (UTC)
+	 MIME-Version; b=WZZPCPozXeJ/mnalgk2dv0B2Bv6Po+IR0n7KTSK95NOzuTkUk2oR483iLpyN9owjrcj+lBOzYlPNzNgzl83HD7GCnhuq2n2WtDmkOtuRuAWf3HYdXt9Qt1k9yV3M9Az3HhGdjZ4ejwrawiHnsba1ONi+gqSZO0KD/ZPz4dRTtZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m23DM8IN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E459C2BCB0;
+	Tue, 12 May 2026 17:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609182;
-	bh=QMyr1/4xYSttMz4VSfQjxuLKMMyP1EafPteJt1xSn9U=;
+	s=korg; t=1778607802;
+	bh=p7L2ILFS8v1nirILhGlhUMqh7YxOvX8k3V4rSRQ3crA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=riLAyl7WRo7SyxHNILvbpUW6/N2xgtzbQnpSwSPX8SPJj7m06x2Tsv5BfAuriAKqO
-	 uRq9jdJ2C96izqkjVc5iS4j8x+dfpQ695aFisLQywsAIjwMdQljw+z/pkXN8jTf4Ca
-	 U0ODwXt0ERu/fr7ccaCPf2ezuoX7JCKntNf3Sx4w=
+	b=m23DM8INR1MRE914wq1wA2O6SIRlxyZMMtQUkV0PZHz4k0dUjv8Gxvco/IcAAi2q9
+	 Ek7G7y3rcn9eAC3a62EuB9G5Jd4Zy/Cnk9fO4rAot+7Wy0/sZNcHe9r90KF9wVBwAp
+	 4nL7ea8/iVeV2EUXmJMzuBXhblJUEk/QNM1uTDr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 7.0 097/307] LoongArch: Fix SYM_SIGFUNC_START definition for 32BIT
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 040/206] wifi: brcmfmac: Fix potential use-after-free issue when stopping watchdog task
 Date: Tue, 12 May 2026 19:38:12 +0200
-Message-ID: <20260512173942.174193920@linuxfoundation.org>
+Message-ID: <20260512173933.682066053@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B917E527661
+X-Rspamd-Queue-Id: C0BCA525FCC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246421-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245884-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,44 +89,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,xry111.site:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,samsung.com:email,broadcom.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit 98b8aebb14fdc0133939fd8fe07d0d98333dc976 upstream.
+commit c623b63580880cc742255eaed3d79804c1b91143 upstream.
 
-The SYM_SIGFUNC_START definition should match sigcontext that the length
-of GPRs are 8 bytes for both 32BIT and 64BIT. So replace SZREG with 8 to
-fix it.
+Watchdog task might end between send_sig() and kthread_stop() calls, what
+results in the use-after-free issue. Fix this by increasing watchdog task
+reference count before calling send_sig() and dropping it by switching to
+kthread_stop_put().
 
 Cc: stable@vger.kernel.org
-Fixes: e4878c37f6679fde ("LoongArch: vDSO: Emit GNU_EH_FRAME correctly")
-Suggested-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 373c83a801f1 ("brcmfmac: stop watchdog before detach and free everything")
+Fixes: a9ffda88be74 ("brcm80211: fmac: abstract bus_stop interface function pointer")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20260416093339.2066829-1-m.szyprowski@samsung.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/linkage.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/include/asm/linkage.h
-+++ b/arch/loongarch/include/asm/linkage.h
-@@ -69,7 +69,7 @@
- 		  9,  10, 11, 12, 13, 14, 15, 16,	\
- 		  17, 18, 19, 20, 21, 22, 23, 24,	\
- 		  25, 26, 27, 28, 29, 30, 31;		\
--	.cfi_offset \num, SC_REGS + \num * SZREG;	\
-+	.cfi_offset \num, SC_REGS + \num * 8;		\
- 	.endr;						\
- 							\
- 	nop;						\
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -2475,8 +2475,9 @@ static void brcmf_sdio_bus_stop(struct d
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 
+ 	if (bus->watchdog_tsk) {
++		get_task_struct(bus->watchdog_tsk);
+ 		send_sig(SIGTERM, bus->watchdog_tsk, 1);
+-		kthread_stop(bus->watchdog_tsk);
++		kthread_stop_put(bus->watchdog_tsk);
+ 		bus->watchdog_tsk = NULL;
+ 	}
+ 
+@@ -4557,8 +4558,9 @@ void brcmf_sdio_remove(struct brcmf_sdio
+ 	if (bus) {
+ 		/* Stop watchdog task */
+ 		if (bus->watchdog_tsk) {
++			get_task_struct(bus->watchdog_tsk);
+ 			send_sig(SIGTERM, bus->watchdog_tsk, 1);
+-			kthread_stop(bus->watchdog_tsk);
++			kthread_stop_put(bus->watchdog_tsk);
+ 			bus->watchdog_tsk = NULL;
+ 		}
+ 
 
 
 
