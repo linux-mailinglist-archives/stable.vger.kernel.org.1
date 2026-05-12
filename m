@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246413-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gI+5EzRvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:32 +0200
+	id yI9YDtlvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246413-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC606527500
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD085276E2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2FB7322F8FD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B46A5314A16F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9F130BB80;
-	Tue, 12 May 2026 17:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E248372698;
+	Tue, 12 May 2026 18:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cn+Nix6c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsGtMiWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5DB3955CE;
-	Tue, 12 May 2026 17:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F67F36EAB2;
+	Tue, 12 May 2026 18:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608554; cv=none; b=Fe8lq/JDyIVOF9hMAbdlnMf8eM9+FEsmbiUVVT3hfC5xqShB026iQqqYd6S2TSTi7gAROnJIuSD3q5wgnIVRpw0uCCXAw3dB4Px4+Qy3R7QZ6oYceo2l96hkm8p8uz552DLLuUNw9WlCsm4S1pNezPSLyrq9bT+lNAZRJ4uEr2I=
+	t=1778609162; cv=none; b=Ydd3NL/IoOH2sgpWpFAbR95Ms8FEKobH50ZqjiCszx5oGNOUNLmj3R4Y1ZsC+QE1cMj5TOXwTzPZG/9oRJnm+q3gllTDq659WxsNnh3EqfMqDq5fV2MjM0DXmF87IKGw16QiFg/JJJ66arNSCufGSeDFULDDAgbskv7gSfAcDfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608554; c=relaxed/simple;
-	bh=SpqhYc7Nrm+FqKXqijFK1tJrDlhgHdf6Xes+FM5qjlk=;
+	s=arc-20240116; t=1778609162; c=relaxed/simple;
+	bh=Zd10WfvvfQftuAYHoUdbN8nsywPyql9ygTU+LiA8fUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfPyXqxhFpS2NEIWbdqlY+O7ftEQ24VfEx8OcKnjlkKtLwybu0ANYrYPtZPFo4+NS+XaziFNgdExmFeLu/c9kv1qZy14RxlQ6yVOVOTA9UFXU7KoEUB3WoSLMSYKU6asF0nHa50xofVhfM5poMauXxmiGceCoZrLr0sKXTf+gbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cn+Nix6c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCEFC2BCB0;
-	Tue, 12 May 2026 17:55:53 +0000 (UTC)
+	 MIME-Version; b=Cf7r+Lx0Vz0jKCa0oqIBwNjXqlAYyO0WBpy/88+jfKKerexoBGw3nrLbdCxIQ4S5BPaecdyCqnehqN0iQ/x48b441Uw4Q0O5e7IWoK2JO16EflosHT7JSV2kfEzssKpAXLI0YU0NkOFj3SuGZycCbrii/lqFBD8Yl5xOOApGW78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsGtMiWE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDB6C2BCC7;
+	Tue, 12 May 2026 18:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608553;
-	bh=SpqhYc7Nrm+FqKXqijFK1tJrDlhgHdf6Xes+FM5qjlk=;
+	s=korg; t=1778609162;
+	bh=Zd10WfvvfQftuAYHoUdbN8nsywPyql9ygTU+LiA8fUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cn+Nix6cCE49HR6EAe8V4/yV3AfdTy+6sn4Ulax6ugBSV1+JXaVX/MyQG+C1/PDh0
-	 39Pc90K29jnhjYdceFAbS9w8jXsdQPxdPjUqoSMxWQ4gbRLRfdQ7zlId6OgbyFnB3S
-	 SJnEALfZGtiP0bjVcFp9yxE8/epzgxNaru1/645U=
+	b=qsGtMiWEDU6nE/RTAWgecJ19X9vvK49ZAqzKFrkJ3hHn39M5NOerJdur+DT2GHAw9
+	 6PAoFMF3SRc/Np7jch1zGxWeFL2n0HiqtQGQM7ek08OvgBfRD42awRHhlx3tSLJCk9
+	 K5t19LdIocmjWni2jBtQic9OfU6xITMtU4LsAp70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjit Waghmode <ranjit.waghmode@xilinx.com>,
+	Adithya K V <adithya.kv@samsung.com>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 082/270] spi: zynqmp-gqspi: fix controller deregistration
-Date: Tue, 12 May 2026 19:38:03 +0200
-Message-ID: <20260512173940.184353392@linuxfoundation.org>
+Subject: [PATCH 7.0 089/307] spi: s3c64xx: fix NULL-deref on driver unbind
+Date: Tue, 12 May 2026 19:38:04 +0200
+Message-ID: <20260512173942.007764101@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BC606527500
+X-Rspamd-Queue-Id: 8BD085276E2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246176-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246413-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,52 +92,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,xilinx.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sashiko.dev:url,samsung.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 6895fc4faafc9082e15e4e624b23dd5f0c98feb5 upstream.
+commit 45daacbead8a009844bd5dba6cfa731332184d17 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+A change moving DMA channel allocation from probe() back to
+s3c64xx_spi_prepare_transfer() failed to remove the corresponding
+deallocation from remove().
 
-Fixes: dfe11a11d523 ("spi: Add support for Zynq Ultrascale+ MPSoC GQSPI controller")
-Cc: stable@vger.kernel.org	# 4.2: 64640f6c972e
-Cc: stable@vger.kernel.org	# 4.2
-Cc: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+Drop the bogus DMA channel release from remove() to avoid triggering a
+NULL-pointer dereference on driver unbind.
+
+This issue was flagged by Sashiko when reviewing a controller
+deregistration fix.
+
+Fixes: f52b03c70744 ("spi: s3c64xx: requests spi-dma channel only during data transfer")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: Adithya K V <adithya.kv@samsung.com>
+Link: https://sashiko.dev/#/patchset/20260410081757.503099-1-johan%40kernel.org
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-26-johan@kernel.org
+Link: https://patch.msgid.link/20260410094925.518343-1-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -1324,7 +1324,7 @@ static int zynqmp_qspi_probe(struct plat
- 	ctlr->dev.of_node = np;
- 	ctlr->auto_runtime_pm = true;
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1401,11 +1401,6 @@ static void s3c64xx_spi_remove(struct pl
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret) {
- 		dev_err(&pdev->dev, "spi_register_controller failed\n");
- 		goto clk_dis_all;
-@@ -1362,6 +1362,8 @@ static void zynqmp_qspi_remove(struct pl
+ 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
  
- 	pm_runtime_get_sync(&pdev->dev);
- 
-+	spi_unregister_controller(xqspi->ctlr);
-+
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
- 
+-	if (!is_polling(sdd)) {
+-		dma_release_channel(sdd->rx_dma.ch);
+-		dma_release_channel(sdd->tx_dma.ch);
+-	}
+-
+ 	pm_runtime_put_noidle(&pdev->dev);
  	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
 
 
 
