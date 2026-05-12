@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIJqN6VtA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:53 +0200
+	id KC+FKJZsA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3682A527080
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A034526D77
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3E44530D1AA3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C46B73044FAA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607203955F7;
-	Tue, 12 May 2026 17:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A742D060B;
+	Tue, 12 May 2026 18:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vodwju3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgpA/ySX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2374A3955EF;
-	Tue, 12 May 2026 17:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85083EDE45;
+	Tue, 12 May 2026 18:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608407; cv=none; b=MCwLtjqby/3+Fk5UQhA8hbTnFjM0GNq7xsKLZhdTyJ3XT8SauiyZ21Ul4jy2+MHwsqDRhtpUcIRx5cWQsuLrWFbuWdAlotTMmEGkzQZnqiL3dSY4B/Oy8h/ujrDEWoFmaSaR5Wz7UTeCPCEeqD/Erw7JUbfG2iff+Hz29aWgkxM=
+	t=1778609216; cv=none; b=frGuXlj8dDQRkQLKWMpy5oTu3dsSM8gr7LmouDBkig/Mk1JylIMBrCB2EfvBdx57tsglzCggTMq5nsiAkg1N608kjK+hdzuoa+MFPFOWt1GDKqVnMxEbEJWtq300asEQTvbD5toFhO+0rGEXwX6f7dZya7oaXglpgSIKldEs3Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608407; c=relaxed/simple;
-	bh=+Lxrlb9WzL/LrZiJ8NTdLrSA0WaXM1AHo4J/f9ArJYc=;
+	s=arc-20240116; t=1778609216; c=relaxed/simple;
+	bh=OAGghbs0fzwfGVjHmAu+aPkR5EqF63NQXegM6F9WzNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCdc17wQbDlPEwKhaT/BcfIxGeKgCqdTCZB7FQgN9sXyxWh1RSPyJajtHNZSoKXos5lFdDqTPdWpoO6q/pTX2hIjUkFpmAS2CKFGQrhX/ky2ZutXIjDukACv5lIG6NYNcIz2hJinY2paookXIo8bRbRjqLmFfT7BG+TlFFP1bvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vodwju3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5FAC2BCB0;
-	Tue, 12 May 2026 17:53:26 +0000 (UTC)
+	 MIME-Version; b=XSjGZNsW32w3F5ErQYWkop08aEioeVErlsFjVeKGYvuzFJh/xVt+Q4Pyu9vnseVwIvhpw78n89QABn43diG9Du4OJCj0qb0KFtAGN5t4NbMmVts0jdf7nPZbtTyX+S8jVPu2WK0gv3gimQxZ+TvVfsM5eXdWes73ottjhDwtZwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgpA/ySX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42300C2BCB0;
+	Tue, 12 May 2026 18:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608407;
-	bh=+Lxrlb9WzL/LrZiJ8NTdLrSA0WaXM1AHo4J/f9ArJYc=;
+	s=korg; t=1778609215;
+	bh=OAGghbs0fzwfGVjHmAu+aPkR5EqF63NQXegM6F9WzNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vodwju3rDrLdLCop+JyO3IKS9w26G5/KoJyxi8ooA/XlKdIS7FFffigReVBjA6spZ
-	 8fx+hACMqT869lH8PUM8SiS0QghhZwddi2n2x7+Ob/coz9AQdNt6yb08WW37XSGJp4
-	 yhkT2SeXY4vKGyMhV5uAhkz33+y0u7x5owBMUsP0=
+	b=VgpA/ySXBHv149X3I01OO+3oHEEzkE2cCFhulXV2ykPZFN1b/2uvcDgytrOndFuiH
+	 01hjG0N1u9vdoYB85cQL8FXZOSWrHka4qLbVfDj/TkiSBCAEgdXr+ME0weyu75+sZM
+	 sohVwGWTyrzSiBYeg7kxTHqODShbQr8Ony96PVCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.18 066/270] selinux: prune /sys/fs/selinux/user
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH 7.0 072/307] Bluetooth: hci_conn: fix potential UAF in create_big_sync
 Date: Tue, 12 May 2026 19:37:47 +0200
-Message-ID: <20260512173939.840575522@linuxfoundation.org>
+Message-ID: <20260512173941.641940452@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,335 +63,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3682A527080
+X-Rspamd-Queue-Id: 6A034526D77
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246119-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paul-moore.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246433-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,paul-moore.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit ad1ac3d740cc6b858a99ab9c45c8c0574be7d1d3 upstream.
+commit 0beddb0c380bed5f5b8e61ddbe14635bb73d0b41 upstream.
 
-Remove the previously deprecated /sys/fs/selinux/user interface aside
-from a residual stub for userspace compatibility.
+Add hci_conn_valid() check in create_big_sync() to detect stale
+connections before proceeding with BIG creation. Handle the
+resulting -ECANCELED in create_big_complete() and re-validate the
+connection under hci_dev_lock() before dereferencing, matching the
+pattern used by create_le_conn_complete() and create_pa_complete().
 
-Commit d7b6918e22c7 ("selinux: Deprecate /sys/fs/selinux/user") started
-the deprecation process for /sys/fs/selinux/user:
+Keep the hci_conn object alive across the async boundary by taking
+a reference via hci_conn_get() when queueing create_big_sync(), and
+dropping it in the completion callback. The refcount and the lock
+are complementary: the refcount keeps the object allocated, while
+hci_dev_lock() serializes hci_conn_hash_del()'s list_del_rcu() on
+hdev->conn_hash, as required by hci_conn_del().
 
-    The selinuxfs "user" node allows userspace to request a list
-    of security contexts that can be reached for a given SELinux
-    user from a given starting context. This was used by libselinux
-    when various login-style programs requested contexts for
-    users, but libselinux stopped using it in 2020.
-    Kernel support will be removed no sooner than Dec 2025.
+hci_conn_put() is called outside hci_dev_unlock() so the final put
+(which resolves to kfree() via bt_link_release) does not run under
+hdev->lock, though the release path would be safe either way.
 
-A pr_warn() message has been in place since Linux v6.13, and a 5
-second sleep was introduced since Linux v6.17 to help make it more
-noticeable.
+Without this, create_big_complete() would unconditionally
+dereference the conn pointer on error, causing a use-after-free
+via hci_connect_cfm() and hci_conn_del().
 
-We are now past the stated deadline of Dec 2025, so remove the
-underlying functionality and replace it with a stub that returns a
-'0\0' buffer to avoid breaking userspace. This also avoids a local DoS
-from logspam and an uninterruptible sleep delay.
-
+Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
 Cc: stable@vger.kernel.org
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Co-developed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../{obsolete => removed}/sysfs-selinux-user  |   0
- Documentation/ABI/obsolete/sysfs-selinux-user |   12 --
- Documentation/ABI/removed/sysfs-selinux-user  |   12 ++
- security/selinux/include/security.h           |    2 
- security/selinux/selinuxfs.c                  |   68 +-------------
- security/selinux/ss/services.c                |  125 --------------------------
- 5 files changed, 17 insertions(+), 202 deletions(-)
- rename Documentation/ABI/{obsolete => removed}/sysfs-selinux-user (100%)
+ net/bluetooth/hci_conn.c |   19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/Documentation/ABI/obsolete/sysfs-selinux-user
-+++ /dev/null
-@@ -1,12 +0,0 @@
--What:		/sys/fs/selinux/user
--Date:		April 2005 (predates git)
--KernelVersion:	2.6.12-rc2 (predates git)
--Contact:	selinux@vger.kernel.org
--Description:
--
--	The selinuxfs "user" node allows userspace to request a list
--	of security contexts that can be reached for a given SELinux
--	user from a given starting context. This was used by libselinux
--	when various login-style programs requested contexts for
--	users, but libselinux stopped using it in 2020.
--	Kernel support will be removed no sooner than Dec 2025.
---- /dev/null
-+++ b/Documentation/ABI/removed/sysfs-selinux-user
-@@ -0,0 +1,12 @@
-+What:		/sys/fs/selinux/user
-+Date:		April 2005 (predates git)
-+KernelVersion:	2.6.12-rc2 (predates git)
-+Contact:	selinux@vger.kernel.org
-+Description:
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -2130,6 +2130,9 @@ static int create_big_sync(struct hci_de
+ 	u32 flags = 0;
+ 	int err;
+ 
++	if (!hci_conn_valid(hdev, conn))
++		return -ECANCELED;
 +
-+	The selinuxfs "user" node allows userspace to request a list
-+	of security contexts that can be reached for a given SELinux
-+	user from a given starting context. This was used by libselinux
-+	when various login-style programs requested contexts for
-+	users, but libselinux stopped using it in 2020.
-+	Kernel support will be removed no sooner than Dec 2025.
---- a/security/selinux/include/security.h
-+++ b/security/selinux/include/security.h
-@@ -301,8 +301,6 @@ int security_context_to_sid_default(cons
- int security_context_to_sid_force(const char *scontext, u32 scontext_len,
- 				  u32 *sid);
+ 	if (qos->bcast.out.phys == BIT(1))
+ 		flags |= MGMT_ADV_FLAG_SEC_2M;
  
--int security_get_user_sids(u32 fromsid, const char *username, u32 **sids, u32 *nel);
--
- int security_port_sid(u8 protocol, u16 port, u32 *out_sid);
+@@ -2204,11 +2207,24 @@ static void create_big_complete(struct h
  
- int security_ib_pkey_sid(u64 subnet_prefix, u16 pkey_num, u32 *out_sid);
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -1005,69 +1005,11 @@ out:
+ 	bt_dev_dbg(hdev, "conn %p", conn);
  
- static ssize_t sel_write_user(struct file *file, char *buf, size_t size)
- {
--	char *con = NULL, *user = NULL, *ptr;
--	u32 sid, *sids = NULL;
--	ssize_t length;
--	char *newcon;
--	int rc;
--	u32 i, len, nsids;
--
--	pr_warn_ratelimited("SELinux: %s (%d) wrote to /sys/fs/selinux/user!"
--		" This will not be supported in the future; please update your"
--		" userspace.\n", current->comm, current->pid);
--	ssleep(5);
--
--	length = avc_has_perm(current_sid(), SECINITSID_SECURITY,
--			      SECCLASS_SECURITY, SECURITY__COMPUTE_USER,
--			      NULL);
--	if (length)
--		goto out;
--
--	length = -ENOMEM;
--	con = kzalloc(size + 1, GFP_KERNEL);
--	if (!con)
--		goto out;
--
--	length = -ENOMEM;
--	user = kzalloc(size + 1, GFP_KERNEL);
--	if (!user)
--		goto out;
--
--	length = -EINVAL;
--	if (sscanf(buf, "%s %s", con, user) != 2)
--		goto out;
--
--	length = security_context_str_to_sid(con, &sid, GFP_KERNEL);
--	if (length)
--		goto out;
--
--	length = security_get_user_sids(sid, user, &sids, &nsids);
--	if (length)
--		goto out;
--
--	length = sprintf(buf, "%u", nsids) + 1;
--	ptr = buf + length;
--	for (i = 0; i < nsids; i++) {
--		rc = security_sid_to_context(sids[i], &newcon, &len);
--		if (rc) {
--			length = rc;
--			goto out;
--		}
--		if ((length + len) >= SIMPLE_TRANSACTION_LIMIT) {
--			kfree(newcon);
--			length = -ERANGE;
--			goto out;
--		}
--		memcpy(ptr, newcon, len);
--		kfree(newcon);
--		ptr += len;
--		length += len;
--	}
--out:
--	kfree(sids);
--	kfree(user);
--	kfree(con);
--	return length;
-+	pr_err_once("SELinux: %s (%d) wrote to user. This is no longer supported.\n",
-+		    current->comm, current->pid);
-+	buf[0] = '0';
-+	buf[1] = 0;
-+	return 2;
++	if (err == -ECANCELED)
++		goto done;
++
++	hci_dev_lock(hdev);
++
++	if (!hci_conn_valid(hdev, conn))
++		goto unlock;
++
+ 	if (err) {
+ 		bt_dev_err(hdev, "Unable to create BIG: %d", err);
+ 		hci_connect_cfm(conn, err);
+ 		hci_conn_del(conn);
+ 	}
++
++unlock:
++	hci_dev_unlock(hdev);
++done:
++	hci_conn_put(conn);
  }
  
- static ssize_t sel_write_member(struct file *file, char *buf, size_t size)
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -2746,131 +2746,6 @@ out:
- 	return rc;
- }
+ struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst, __u8 sid,
+@@ -2336,10 +2352,11 @@ struct hci_conn *hci_connect_bis(struct
+ 				 BT_BOUND, &data);
  
--#define SIDS_NEL 25
--
--/**
-- * security_get_user_sids - Obtain reachable SIDs for a user.
-- * @fromsid: starting SID
-- * @username: username
-- * @sids: array of reachable SIDs for user
-- * @nel: number of elements in @sids
-- *
-- * Generate the set of SIDs for legal security contexts
-- * for a given user that can be reached by @fromsid.
-- * Set *@sids to point to a dynamically allocated
-- * array containing the set of SIDs.  Set *@nel to the
-- * number of elements in the array.
-- */
--
--int security_get_user_sids(u32 fromsid,
--			   const char *username,
--			   u32 **sids,
--			   u32 *nel)
--{
--	struct selinux_policy *policy;
--	struct policydb *policydb;
--	struct sidtab *sidtab;
--	struct context *fromcon, usercon;
--	u32 *mysids = NULL, *mysids2, sid;
--	u32 i, j, mynel, maxnel = SIDS_NEL;
--	struct user_datum *user;
--	struct role_datum *role;
--	struct ebitmap_node *rnode, *tnode;
--	int rc;
--
--	*sids = NULL;
--	*nel = 0;
--
--	if (!selinux_initialized())
--		return 0;
--
--	mysids = kcalloc(maxnel, sizeof(*mysids), GFP_KERNEL);
--	if (!mysids)
--		return -ENOMEM;
--
--retry:
--	mynel = 0;
--	rcu_read_lock();
--	policy = rcu_dereference(selinux_state.policy);
--	policydb = &policy->policydb;
--	sidtab = policy->sidtab;
--
--	context_init(&usercon);
--
--	rc = -EINVAL;
--	fromcon = sidtab_search(sidtab, fromsid);
--	if (!fromcon)
--		goto out_unlock;
--
--	rc = -EINVAL;
--	user = symtab_search(&policydb->p_users, username);
--	if (!user)
--		goto out_unlock;
--
--	usercon.user = user->value;
--
--	ebitmap_for_each_positive_bit(&user->roles, rnode, i) {
--		role = policydb->role_val_to_struct[i];
--		usercon.role = i + 1;
--		ebitmap_for_each_positive_bit(&role->types, tnode, j) {
--			usercon.type = j + 1;
--
--			if (mls_setup_user_range(policydb, fromcon, user,
--						 &usercon))
--				continue;
--
--			rc = sidtab_context_to_sid(sidtab, &usercon, &sid);
--			if (rc == -ESTALE) {
--				rcu_read_unlock();
--				goto retry;
--			}
--			if (rc)
--				goto out_unlock;
--			if (mynel < maxnel) {
--				mysids[mynel++] = sid;
--			} else {
--				rc = -ENOMEM;
--				maxnel += SIDS_NEL;
--				mysids2 = kcalloc(maxnel, sizeof(*mysids2), GFP_ATOMIC);
--				if (!mysids2)
--					goto out_unlock;
--				memcpy(mysids2, mysids, mynel * sizeof(*mysids2));
--				kfree(mysids);
--				mysids = mysids2;
--				mysids[mynel++] = sid;
--			}
--		}
--	}
--	rc = 0;
--out_unlock:
--	rcu_read_unlock();
--	if (rc || !mynel) {
--		kfree(mysids);
--		return rc;
--	}
--
--	rc = -ENOMEM;
--	mysids2 = kcalloc(mynel, sizeof(*mysids2), GFP_KERNEL);
--	if (!mysids2) {
--		kfree(mysids);
--		return rc;
--	}
--	for (i = 0, j = 0; i < mynel; i++) {
--		struct av_decision dummy_avd;
--		rc = avc_has_perm_noaudit(fromsid, mysids[i],
--					  SECCLASS_PROCESS, /* kernel value */
--					  PROCESS__TRANSITION, AVC_STRICT,
--					  &dummy_avd);
--		if (!rc)
--			mysids2[j++] = mysids[i];
--		cond_resched();
--	}
--	kfree(mysids);
--	*sids = mysids2;
--	*nel = j;
--	return 0;
--}
--
- /**
-  * __security_genfs_sid - Helper to obtain a SID for a file in a filesystem
-  * @policy: policy
+ 	/* Queue start periodic advertising and create BIG */
+-	err = hci_cmd_sync_queue(hdev, create_big_sync, conn,
++	err = hci_cmd_sync_queue(hdev, create_big_sync, hci_conn_get(conn),
+ 				 create_big_complete);
+ 	if (err < 0) {
+ 		hci_conn_drop(conn);
++		hci_conn_put(conn);
+ 		return ERR_PTR(err);
+ 	}
+ 
 
 
 
