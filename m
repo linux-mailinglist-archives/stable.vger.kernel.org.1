@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-246296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJ55MSBwA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:28 +0200
+	id qMdgAqxxA2q55wEAu9opvQ
+	(envelope-from <stable+bounces-246591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:30:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 510FF5277B0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F8E527A59
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:30:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C0263041A56
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:01:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B901F30595AF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749E833DEF7;
-	Tue, 12 May 2026 18:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57568366831;
+	Tue, 12 May 2026 18:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7KJpbLV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyE9CB8E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3600730BB80;
-	Tue, 12 May 2026 18:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D3A364959;
+	Tue, 12 May 2026 18:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608861; cv=none; b=VIFlxWEoDBdxPUR1Y9rhtgym+VSsUwDZJUiqtN2J0l3ea0cdJUuCVM+l2QjyB+P9OrbbhSIJsUjJ/G4Gbb+cYIsMXooAWPPc37XmMbQgXY/rW8qOYC/gs95mizEBdqNTP83bVJw0TEiG51sxkiu9ulcKv3xchG0wCApW4AZfUc4=
+	t=1778609618; cv=none; b=a377ecyhnRJsgSnBI7zae5PF6S1gjI3wVDHmKQk1njzQxuyAkJfBbI2hC7ujR6o7DzPwofUUl3TysN1yb1Z61SEXy1l/qrK4NfZa57yoTpXk2JfGCFadsAstubkvLSb/ehZWKi4xnJm/6gbuzG/2NYHkjBEgkiarRJTXlUidouU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608861; c=relaxed/simple;
-	bh=sL92adRtFWvCYn6uRoHm842rowjSTpAPGU/9v2YJed0=;
+	s=arc-20240116; t=1778609618; c=relaxed/simple;
+	bh=TEh8kxenU2OWLIglqZHAErCa133EZhFh48f4n+j0IwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZMLEG6KGdzSvSc1v+1PRJFDCkjC8azK9hpKLJtwtu2ThEjakTPANrKewwJdK/ZWOnc5rMAKMk99vAyoLMGsq5c/TK/vr4mkSvCaXMbeAsKJNPTTQ6FmRQmPUiFXKxziBwXnhYE8J2/zhNmQm4ZqOI3ztzE6dv60PcFtQIKGvoz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7KJpbLV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00C2C2BCB0;
-	Tue, 12 May 2026 18:01:00 +0000 (UTC)
+	 MIME-Version; b=I9H4YJjL6NV6h3CeLLwHnc75URf03g3WsMToOsFcJ3Mj37yqOSN3wyE3Jx2mxpilR59Mk8T5AKRDagGE3w82L8cLEEO04Wi7sf6M35mBqOaSEL8M0CdXT5/Hws1dRAEjToKROAftO4l0NPGwnw5AKoAb2MpiV9+deTd8Z+Lq3yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyE9CB8E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E60C2BCB0;
+	Tue, 12 May 2026 18:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608861;
-	bh=sL92adRtFWvCYn6uRoHm842rowjSTpAPGU/9v2YJed0=;
+	s=korg; t=1778609617;
+	bh=TEh8kxenU2OWLIglqZHAErCa133EZhFh48f4n+j0IwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7KJpbLVO2JV48WsX9IGDvqy7BcQ0mhPVz3N71L1nHx5R/yLJToy1TB/aasAbgPs/
-	 sseiAbs4j6QllKwYmeftV/PkR68rkvCvaaZUizetuTTBmqxX4NcrLICKP7hihfgM1Y
-	 RgkcWlUJcR4OYiapdke364Kw1yqXm5VFqLSZ5yzk=
+	b=wyE9CB8E+haKSCf5xhVWlKVk8UGcEj5wbCAs/x02Pn+yxvVMAZ/3RmfLPfPCZZVrp
+	 W5RaoBJMF/h0ZoAmMZfl/uzxGwNuO33yMeIfBhqxqDHO2WolskSCwSGHHZScq33trO
+	 WDtA9XI7R12X60oBXEZ5NQZu1gambiIK7B4J1MnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 242/270] LoongArch: KVM: Fix HW timer interrupt lost when inject interrupt by software
+	Chris Mason <clm@meta.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
+	Ryan Newton <newton@meta.com>
+Subject: [PATCH 7.0 248/307] sched_ext: Use dsq->first_task instead of list_empty() in dispatch_enqueue() FIFO-tail
 Date: Tue, 12 May 2026 19:40:43 +0200
-Message-ID: <20260512173943.534563977@linuxfoundation.org>
+Message-ID: <20260512173945.360002090@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 510FF5277B0
+X-Rspamd-Queue-Id: 88F8E527A59
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -74,99 +76,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246591-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246296-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Tejun Heo <tj@kernel.org>
 
-commit 2433f3f5724b3af569d9fb411ba728629524738b upstream.
+commit 2f2ea77092660b53bfcbc4acc590b57ce9ab5dce upstream.
 
-With passthrough HW timer, timer interrupt is injected by HW. When
-inject emulated CPU interrupt by software such SIP0/SIP1/IPI, HW timer
-interrupt may be lost.
+dispatch_enqueue()'s FIFO-tail path used list_empty(&dsq->list) to decide
+whether to set dsq->first_task on enqueue. dsq->list can contain parked BPF
+iterator cursors (SCX_DSQ_LNODE_ITER_CURSOR), so list_empty() is not a
+reliable "no real task" check. If the last real task is unlinked while a
+cursor is parked, first_task becomes NULL; the next FIFO-tail enqueue then
+sees list_empty() == false and skips the first_task update, leaving
+scx_bpf_dsq_peek() returning NULL for a non-empty DSQ.
 
-Here check whether there is timer tick value inversion before and after
-injecting emulated CPU interrupt by software, timer enabling by reading
-timer cfg register is skipped. If the timer tick value is detected with
-changing, then timer should be enabled. And inject a timer interrupt by
-software if there is.
+Test dsq->first_task directly, which already tracks only real tasks and is
+maintained under dsq->lock.
 
-Cc: <stable@vger.kernel.org>
-Fixes: f45ad5b8aa93 ("LoongArch: KVM: Implement vcpu interrupt operations").
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 44f5c8ec5b9a ("sched_ext: Add lockless peek operation for DSQs")
+Cc: stable@vger.kernel.org # v6.19+
+Reported-by: Chris Mason <clm@meta.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Cc: Ryan Newton <newton@meta.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/interrupt.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ kernel/sched/ext.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/kvm/interrupt.c
-+++ b/arch/loongarch/kvm/interrupt.c
-@@ -26,6 +26,7 @@ static unsigned int priority_to_irq[EXCC
- static int kvm_irq_deliver(struct kvm_vcpu *vcpu, unsigned int priority)
- {
- 	unsigned int irq = 0;
-+	unsigned long old, new;
- 
- 	clear_bit(priority, &vcpu->arch.irq_pending);
- 	if (priority < EXCCODE_INT_NUM)
-@@ -36,7 +37,13 @@ static int kvm_irq_deliver(struct kvm_vc
- 	case INT_IPI:
- 	case INT_SWI0:
- 	case INT_SWI1:
-+		old = kvm_read_hw_gcsr(LOONGARCH_CSR_TVAL);
- 		set_gcsr_estat(irq);
-+		new = kvm_read_hw_gcsr(LOONGARCH_CSR_TVAL);
-+
-+		/* Inject TI if TVAL inverted */
-+		if (new > old)
-+			set_gcsr_estat(CPU_TIMER);
- 		break;
- 
- 	case INT_HWI0 ... INT_HWI7:
-@@ -53,6 +60,7 @@ static int kvm_irq_deliver(struct kvm_vc
- static int kvm_irq_clear(struct kvm_vcpu *vcpu, unsigned int priority)
- {
- 	unsigned int irq = 0;
-+	unsigned long old, new;
- 
- 	clear_bit(priority, &vcpu->arch.irq_clear);
- 	if (priority < EXCCODE_INT_NUM)
-@@ -63,7 +71,13 @@ static int kvm_irq_clear(struct kvm_vcpu
- 	case INT_IPI:
- 	case INT_SWI0:
- 	case INT_SWI1:
-+		old = kvm_read_hw_gcsr(LOONGARCH_CSR_TVAL);
- 		clear_gcsr_estat(irq);
-+		new = kvm_read_hw_gcsr(LOONGARCH_CSR_TVAL);
-+
-+		/* Inject TI if TVAL inverted */
-+		if (new > old)
-+			set_gcsr_estat(CPU_TIMER);
- 		break;
- 
- 	case INT_HWI0 ... INT_HWI7:
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -1093,11 +1093,13 @@ static void dispatch_enqueue(struct scx_
+ 			if (!(dsq->id & SCX_DSQ_FLAG_BUILTIN))
+ 				rcu_assign_pointer(dsq->first_task, p);
+ 		} else {
+-			bool was_empty;
+-
+-			was_empty = list_empty(&dsq->list);
++			/*
++			 * dsq->list can contain parked BPF iterator cursors, so
++			 * list_empty() here isn't a reliable proxy for "no real
++			 * task in the DSQ". Test dsq->first_task directly.
++			 */
+ 			list_add_tail(&p->scx.dsq_list.node, &dsq->list);
+-			if (was_empty && !(dsq->id & SCX_DSQ_FLAG_BUILTIN))
++			if (!dsq->first_task && !(dsq->id & SCX_DSQ_FLAG_BUILTIN))
+ 				rcu_assign_pointer(dsq->first_task, p);
+ 		}
+ 	}
 
 
 
