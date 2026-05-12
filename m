@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-245889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIoCMW5nA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245889-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:22 +0200
+	id 2GPrHvFvA2qI5wEAu9opvQ
+	(envelope-from <stable+bounces-246427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032DE526124
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB5852771B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C7513060C8C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D15E632034F8
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECE33E0731;
-	Tue, 12 May 2026 17:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78191343D9D;
+	Tue, 12 May 2026 18:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijz088VT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3ghane6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128763DB980;
-	Tue, 12 May 2026 17:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7443EDE55;
+	Tue, 12 May 2026 18:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607816; cv=none; b=n078jV3YYgi1qNb2vy/jKV2KvPIp3qI/nEvmjAkicrwE9DsSc3aihKMc5a511eIetByEgDdaW8N3aQV4NGDA6IjrnuuLYozLBa6Tin5us8+uWSJUR8+I+M1UGsMQNZpc4cajo+Dg5Ckf+Wu9C6naepj8fLUJzQl/o04frxp8wBY=
+	t=1778609200; cv=none; b=cUsFVzOZioWopDpB7czX4py9N2UGddKJcxFGvdGsmNC/YMEguMvMnPfvLBvwc+gN69uOcgzI7S0JrrOoc7hyWXIj+jNoyyXt8s5Eopl6uJsnpmMmcV6MEZXyioNI+njd9agZnhlRp0UwG0edlSM42Iz2VbBcvDx0yB6WgQNuUvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607816; c=relaxed/simple;
-	bh=Y6Nqp1YkX1gaHbWZeggzwQt1JbEfXDCScyJ6PAv3h00=;
+	s=arc-20240116; t=1778609200; c=relaxed/simple;
+	bh=gSlcBN/8L9kqV9B9ShjacLpnAf7sEdf5Flxmf9E36PU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pedESdsjR26kkSW1yIxs3fynmE80+tT04vSTTfal0O9HG8Xz3oLpGPy+zLyGqmgmX24EszKlF124fJeuotmPoNbBcWTNjgWUOuoRAkGmzoLCa2Rt4YcvfzqfWPiDSJJ33GdBDZXh0eqO7X2MRLRv4H8o1kDDQPtYuN/7j4vnm9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijz088VT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614BAC2BCB0;
-	Tue, 12 May 2026 17:43:35 +0000 (UTC)
+	 MIME-Version; b=LEFkhYlVZf/2Bs2k/jUwRMNeMB8+tHjBtM9RAdJAwI9sq8M9djReXloxHTIpDN1kOpKzyFbjyzWfeHLNbBCzVXKOAGQ9m0ZmC7jRLp+KrJg6T7Deami69SiYq8A2UnJLk0eKDZ2pBv+zGBI2yukNLF7BCcno6XyS3uN/9p1ApmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3ghane6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06F6C2BCB0;
+	Tue, 12 May 2026 18:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607815;
-	bh=Y6Nqp1YkX1gaHbWZeggzwQt1JbEfXDCScyJ6PAv3h00=;
+	s=korg; t=1778609200;
+	bh=gSlcBN/8L9kqV9B9ShjacLpnAf7sEdf5Flxmf9E36PU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijz088VTWcXh7Wc9AMzt1BwRyhvfAakkKoMoSMzP4W7NRVxPWxgGfDtuE6Ef8SnQU
-	 IHGS7nl+XFaR/88jJH/nfu1pYUPBHP+QvVedKtmpn3eY5LCWnE1gW4LTu5l/RJXaYJ
-	 8TUsqnoa4nmXLIIiO4bPOsd3nDlEvxuieU8Vb5XU=
+	b=K3ghane6e3iFPj0U3Z38yNT+yIwu92mVdmbCdd6oFugyeSaK+BcNZ7n0bnh5/ypGr
+	 bPPEtDUZVB9VIrzd1zq9zplfeKnlk7XCyXJ/2QhdSsGO70enyVXoXFqI84cQv6KhZ6
+	 oxgRb2r3EEl3yEaER6r3fStOE1kz/aVAGhZ61rGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 045/206] ALSA: usb-audio: Fix UAC3 cluster descriptor size check
+	Mark Brown <broonie@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 7.0 102/307] selftests/rseq: Dont run tests with runner scripts outside of the scripts
 Date: Tue, 12 May 2026 19:38:17 +0200
-Message-ID: <20260512173933.789516459@linuxfoundation.org>
+Message-ID: <20260512173942.278083420@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 032DE526124
+X-Rspamd-Queue-Id: DCB5852771B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245889-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246427-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,librseq.so:url,run_syscall_errors_test.sh:url]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 26265dd69da32d88a88d21987853cec899d9e21f upstream.
+commit cb48828f06afa232cc330f0f4d6be101067810b3 upstream.
 
-The UAC3 cluster descriptor length check in
-snd_usb_get_audioformat_uac3()was added to
-make sure that the buffer is large enough for
-a struct uac3_cluster_header_descriptor before the
-returned data is cast and used.
+The rseq selftests include two runner scripts run_param_test.sh and
+run_syscall_errors_test.sh which set up the environment for test binaries
+and run them with various parameters. Currently we list these test binaries
+in TEST_GEN_PROGS but this results in the kselftest framework running them
+directly as well as via the runners, resulting in duplication and spurious
+failures when the environment is not correctly set up (eg, if glibc tries
+to use rseq).
 
-However, the check uses sizeof(cluster), where cluster
-is a pointer, not the size of the descriptor header.
-This makes the validation depend on the architecture
-pointer size and does not match the intended object size.
+Move the binaries the runners invoke to TEST_GEN_PROGS_EXTENDED, binaries
+listed there are built but not run by the framework.  The param_test
+benchmarks are not moved since they are not run by run_param_test.sh.
 
-Check against sizeof(*cluster) instead.
+Fixes: 830969e7821a ("selftests/rseq: Implement time slice extension test")
 
-Fixes: fb4e2a6e8f28 ("ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260423-selftests-rseq-use-runner-v1-1-e13a133754c1@kernel.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260424-alsa-usb-uac3-cluster-size-v1-1-99a5808898a3@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/rseq/Makefile | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -998,7 +998,7 @@ snd_usb_get_audioformat_uac3(struct snd_
- 	 * and request Cluster Descriptor
- 	 */
- 	wLength = le16_to_cpu(hc_header.wLength);
--	if (wLength < sizeof(cluster))
-+	if (wLength < sizeof(*cluster))
- 		return NULL;
- 	cluster = kzalloc(wLength, GFP_KERNEL);
- 	if (!cluster)
+diff --git a/tools/testing/selftests/rseq/Makefile b/tools/testing/selftests/rseq/Makefile
+index 4ef90823b652..0d1947c0d623 100644
+--- a/tools/testing/selftests/rseq/Makefile
++++ b/tools/testing/selftests/rseq/Makefile
+@@ -14,12 +14,15 @@ LDLIBS += -lpthread -ldl
+ # still track changes to header files and depend on shared object.
+ OVERRIDE_TARGETS = 1
+ 
+-TEST_GEN_PROGS = basic_test basic_percpu_ops_test basic_percpu_ops_mm_cid_test param_test \
+-		param_test_benchmark param_test_compare_twice param_test_mm_cid \
+-		param_test_mm_cid_benchmark param_test_mm_cid_compare_twice \
+-		syscall_errors_test slice_test
++TEST_GEN_PROGS = basic_test basic_percpu_ops_test basic_percpu_ops_mm_cid_test \
++		 param_test_benchmark param_test_mm_cid_benchmark slice_test
+ 
+-TEST_GEN_PROGS_EXTENDED = librseq.so
++TEST_GEN_PROGS_EXTENDED = librseq.so \
++	param_test \
++	param_test_compare_twice \
++	param_test_mm_cid \
++	param_test_mm_cid_compare_twice \
++	syscall_errors_test
+ 
+ TEST_PROGS = run_param_test.sh run_syscall_errors_test.sh
+ 
+-- 
+2.54.0
+
 
 
 
