@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IC5kDL9wA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:26:07 +0200
+	id sKr2NTVpA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-245979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:53:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FE952790A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:26:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BF0526443
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22B483286623
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 20B833122839
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951EF366831;
-	Tue, 12 May 2026 18:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F0C3E9C3A;
+	Tue, 12 May 2026 17:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzDhY/EP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2B535dMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CE735F185;
-	Tue, 12 May 2026 18:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B053E9C2D;
+	Tue, 12 May 2026 17:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609427; cv=none; b=IpOgVdzjz6kX2mjOiPxPbYCdL70Kgf4voTeXRDQ1gszgT0ZBspug/EAv09fk0Tw0ISetvN6av3SnAKlNDcfRdtrnAkZpQw11DttJQK2nAhyoeLbR/QlaX04X7IKw966rssBLbIRjj+Z2KI7lIsbAbprjCvmU/pvFdxx/SQofjBI=
+	t=1778608045; cv=none; b=MzQpTpodanW6+lkdH3t/ihWsYq7Y9cN5cncKDm+Lip+cs6Tv2gh7W2ld5A6ljZ8wG+N+bSBBomo5O6YLJfaio5yLfLqxFnUHAIi81RUfQwDYwie/g/3QXSsVnGiVI8xgKM3jcoJq4uWMrqrZUdaVxghcHAn5NQKZyx9k+1DObDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609427; c=relaxed/simple;
-	bh=mqAzRNoAL73Fmz37WV3+kaIY9DCdcEnZwmHTFgxZD/A=;
+	s=arc-20240116; t=1778608045; c=relaxed/simple;
+	bh=JmKbMO010C53vdcGDZS9AYbIxBVOdoiN4Wijl4ahHmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvNLR9OYpsJ74QCE4BY0XduH5HaGUVCpdQ+WCbUWmSiXpug0NqzOSzeMEuy4oo/EA0ADH/Xtu6xUgyp6lbRUht1sbnlaAdia2uKIE4K+LIMC1VuNB4JWNOl7bb+vukpx+DJ0nb2W43fmy97m40ljBdAWrplVwDt5XjiV/S09/dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzDhY/EP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12AAC2BCB0;
-	Tue, 12 May 2026 18:10:26 +0000 (UTC)
+	 MIME-Version; b=mU/y5XZiqoNWCNYrxwAYPMxfdqgJniDlWEpY/xRV4LhF7Un9fA18tL/Ul7AxKrygTY3ebZSovYa+QeZQEzGIGNiw287/9fmmutF/0mvoOPc4HWsgG67j0B5ZUksDwGbjFGicsAmmtuM1ufKApHc6Or+opaJa5ZDSKl3jhbI0/WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2B535dMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8B0C4AF17;
+	Tue, 12 May 2026 17:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609427;
-	bh=mqAzRNoAL73Fmz37WV3+kaIY9DCdcEnZwmHTFgxZD/A=;
+	s=korg; t=1778608045;
+	bh=JmKbMO010C53vdcGDZS9AYbIxBVOdoiN4Wijl4ahHmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzDhY/EPUse0DNvDp0foaQ7Zk5YjmlNG1hdn8i8yyQ/+QWomMmA4yy8rp7zRAMJIi
-	 Ldu+VNb7hN4rUKI3x5yVVvOI7YNkIeFIUAg9IY6qD6rGfVV+k2rm/v6cEMBLBArPju
-	 dx0e+BBcrgakt5KFr3kHTsnd8Oio5kksVRVyedS4=
+	b=2B535dMFMZbDVxiwGT8DiimvZEXhRtGTrQGekKalRArdTNdpd2FtlgBX6dAy2miHd
+	 r4eqEoEHK8LQp8M3KH1a7mQjWSi1xGXPBSXFQ8DOjVhrhlF9ZTM6mmybPEoNkU9Am8
+	 Wod9JVETCH1MYUIc6A4QiKym+nHrJU2H8ZU+NTCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 7.0 190/307] isofs: validate block number from NFS file handle in isofs_export_iget
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 133/206] pmdomain: core: Fix detach procedure for virtual devices in genpd
 Date: Tue, 12 May 2026 19:39:45 +0200
-Message-ID: <20260512173944.126608586@linuxfoundation.org>
+Message-ID: <20260512173935.674798322@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +64,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 87FE952790A
+X-Rspamd-Queue-Id: 46BF0526443
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246516-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245979-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-m68k.org:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit 24376458138387fb251e782e624c7776e9826796 upstream.
+commit 26735dfdd8930d9ef1fa92e590a9bf77726efdf6 upstream.
 
-isofs_fh_to_dentry() and isofs_fh_to_parent() pass an attacker-
-controlled block number (ifid->block or ifid->parent_block) from
-the NFS file handle to isofs_export_iget(), which only rejects
-block == 0 before calling isofs_iget() and ultimately sb_bread().
-A crafted file handle with fh_len sufficient to pass the check
-added by commit 0405d4b63d08 ("isofs: Prevent the use of too small
-fid") can still drive the server to read any in-range block on the
-backing device as if it were an iso_directory_record.  That earlier
-fix was assigned CVE-2025-37780.
+If a device is attached to a PM domain through genpd_dev_pm_attach_by_id(),
+genpd calls pm_runtime_enable() for the corresponding virtual device that
+it registers. While this avoids boilerplate code in drivers, there is no
+corresponding call to pm_runtime_disable() in genpd_dev_pm_detach().
 
-sb_bread() on an out-of-range block returns NULL cleanly via the
-EIO path, so there is no memory-safety violation.  For in-range
-reads of adjacent-partition data on the same block device, the
-unrelated bytes end up in iso_inode_info fields that reach the NFS
-client as dentry metadata.  The deployment surface (isofs exported
-over NFS from loop-mounted images) is narrow and requires an
-authenticated NFS peer, but the malformed-file-handle class is
-reportable as hardening next to the existing CVE-2025-37780 fix.
+This means these virtual devices are typically detached from its genpd,
+while runtime PM remains enabled for them, which is not how things are
+designed to work. In worst cases it may lead to critical errors, like a
+NULL pointer dereference bug in genpd_runtime_suspend(), which was recently
+reported. For another case, we may end up keeping an unnecessary vote for a
+performance state for the device.
 
-Reject block >= ISOFS_SB(sb)->s_nzones in isofs_export_iget() so
-the check covers both isofs_fh_to_dentry() and isofs_fh_to_parent()
-call sites with a single line.
+To fix these problems, let's add this missing call to pm_runtime_disable()
+in genpd_dev_pm_detach().
 
-Fixes: 0405d4b63d08 ("isofs: Prevent the use of too small fid")
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/all/CAMuHMdWapT40hV3c+CSBqFOW05aWcV1a6v_NiJYgoYi0i9_PDQ@mail.gmail.com/
+Fixes: 3c095f32a92b ("PM / Domains: Add support for multi PM domains per device to genpd")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419212155.2169382-3-michael.bommarito@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/export.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pmdomain/core.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/fs/isofs/export.c
-+++ b/fs/isofs/export.c
-@@ -24,7 +24,7 @@ isofs_export_iget(struct super_block *sb
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -2900,6 +2900,7 @@ static const struct bus_type genpd_bus_t
+ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
  {
- 	struct inode *inode;
+ 	struct generic_pm_domain *pd;
++	bool is_virt_dev;
+ 	unsigned int i;
+ 	int ret = 0;
  
--	if (block == 0)
-+	if (block == 0 || block >= ISOFS_SB(sb)->s_nzones)
- 		return ERR_PTR(-ESTALE);
- 	inode = isofs_iget(sb, block, offset);
- 	if (IS_ERR(inode))
+@@ -2909,6 +2910,13 @@ static void genpd_dev_pm_detach(struct d
+ 
+ 	dev_dbg(dev, "removing from PM domain %s\n", pd->name);
+ 
++	/* Check if the device was created by genpd at attach. */
++	is_virt_dev = dev->bus == &genpd_bus_type;
++
++	/* Disable runtime PM if we enabled it at attach. */
++	if (is_virt_dev)
++		pm_runtime_disable(dev);
++
+ 	/* Drop the default performance state */
+ 	if (dev_gpd_data(dev)->default_pstate) {
+ 		dev_pm_genpd_set_performance_state(dev, 0);
+@@ -2934,7 +2942,7 @@ static void genpd_dev_pm_detach(struct d
+ 	genpd_queue_power_off_work(pd);
+ 
+ 	/* Unregister the device if it was created by genpd. */
+-	if (dev->bus == &genpd_bus_type)
++	if (is_virt_dev)
+ 		device_unregister(dev);
+ }
+ 
 
 
 
