@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAt+EEBtA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:12 +0200
+	id WDWbHbpsA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-245968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD007526F99
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03EA8526E23
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 510C430B235C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D15A30A27FC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F27F3EDE70;
-	Tue, 12 May 2026 17:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EA04B8DFB;
+	Tue, 12 May 2026 17:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLfYE/Rl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CInC+Gch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119BA3EDE4E;
-	Tue, 12 May 2026 17:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE8C2EBB84;
+	Tue, 12 May 2026 17:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608791; cv=none; b=UsEtCPQcnfcU+8Ri7bKzYjyd0HplNEygjpJoftBXuKONQQmQS8UEH5ANOzb/oXJcp3sk8aQsrWM+LOu71FSb9GlT0D3gsndmmCdtXUKufXKToSnEiC2R4OPJ+sIyKSSRySZq1j2qW9imfTelIo9rjlozHoA5aJb2XVpP5HlYRjE=
+	t=1778608014; cv=none; b=aHhdM5wnb7Kz+Zz1cWGMYssHH0CsHd9Hzw5YQ//JpcHllAqdnt2DVhTkRFgv+TIpO80WaUm4Wcvcio8ipGqpEU6OeY3BxeeGUaAfNMlmKU0HuSN86Wx/RdP35UOoIa6Jm7cdCbZzrX0fb8GtsWp1zQTzTWy8cYx26HK7sS1eNg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608791; c=relaxed/simple;
-	bh=a7xF+1S2zVsnrTy8J1Vrw0L3iitEI3PdUfMk2q/93CA=;
+	s=arc-20240116; t=1778608014; c=relaxed/simple;
+	bh=7sZ8+kkoz+U4MDljfBHHC+MqtQ7jlqaTksmOwbih2NM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tllvmYllj5NchvSa5wuU/h1QL2HAAO8Tppke9usADayB8e/+2LrCkGQDo25bWxX8Ag5K8H/sp2cJAY/nvtfgvdPf+5aFMxe2LwEcwe5ukmTFXqwgwDa0dry+AGDbfuE0e8IOXwCbuJAJYQMeyO7WUWZLdFbs7e0sISDGIQrMJ0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLfYE/Rl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D588C2BCB0;
-	Tue, 12 May 2026 17:59:50 +0000 (UTC)
+	 MIME-Version; b=Ofew6ghBl3uYOclmgUUTb+35gjp9mh4BPGM6giqQ7W0CnUIJlZu4pTecxxhQIJR0pwcDTWkrAT3fJVWtJsBxWionB5Esb3BX3JGHWH1FUf5ojqtUlyZcWUiqy8lihD7u/ENykMoFRzutQ3KIlf8tKa26jjNSupyRncMrKV75u/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CInC+Gch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79995C2BCFC;
+	Tue, 12 May 2026 17:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608791;
-	bh=a7xF+1S2zVsnrTy8J1Vrw0L3iitEI3PdUfMk2q/93CA=;
+	s=korg; t=1778608014;
+	bh=7sZ8+kkoz+U4MDljfBHHC+MqtQ7jlqaTksmOwbih2NM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLfYE/RluNxRcgZsYODsdMJ+7XInn3Y2RZZvwiWngiyByUlK+3NdtC38wNalhsT+F
-	 Il+MemH2xeh0N8GrBr32lSOuGG1aGdUguhQAEQQ0hwqj1OcPJsQgXgbOjZHysgORr3
-	 QJFgZxgLWzfKq7QvnWcrXz0uQ2rnJF/SMR+1s8Jw=
+	b=CInC+GchgJnblal7ignhIRONVCMi56vup5Gh8Xt1hRMHP/pBtIudsDpfuADkip5XP
+	 hKOUvawYpSq6qir9zNz73gBcnu/7Mfu759q9OWiN88n0gmePE3ubD5NJd+iw7P1zot
+	 FNbparM0ndYMpLZ76E2xJeRsqbe+7QUgNNnZfZtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.18 174/270] s390/debug: Reject zero-length input in debug_input_flush_fn()
+	Will Deacon <will@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>
+Subject: [PATCH 6.12 123/206] iommu/arm-smmu-v3: Add a missing dma_wmb() for hitless STE update
 Date: Tue, 12 May 2026 19:39:35 +0200
-Message-ID: <20260512173942.110701402@linuxfoundation.org>
+Message-ID: <20260512173935.460398160@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CD007526F99
+X-Rspamd-Queue-Id: 03EA8526E23
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246269-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245968-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,49 +91,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Gorbik <gor@linux.ibm.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit e14622a7584f9608927c59a7d6ae4a0999dc545e upstream.
+commit 6fabce53f6b9c2419012a9103e1a46d40888cefa upstream.
 
-debug_input_flush_fn() always copies one byte from the userspace buffer
-with copy_from_user() regardless of the supplied write length. A
-zero-length write therefore reads one byte beyond the caller's buffer.
-If the stale byte happens to be '-' or a digit the debug log is
-silently flushed. With an unmapped buffer the call returns -EFAULT.
+When writing a new (previously invalid) valid IOPTE to a page table, then
+installing the page table into an STE hitlesslessly (e.g. in S2TTB field),
+there is a window before an STE invalidation, where the page-table may be
+accessed by SMMU but the new IOPTE is still siting in the CPU cache.
 
-Reject zero-length writes before copying from userspace.
+This could occur when we allocate an iommu_domain and immediately install
+it hitlessly, while there would be no dma_wmb() for the page table memory
+prior to the earliest point of HW reading the STE.
 
-Cc: stable@vger.kernel.org # v5.10+
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fix it by adding a dma_wmb() prior to updating the STE.
+
+Fixes: 56e1a4cc2588 ("iommu/arm-smmu-v3: Add unit tests for arm_smmu_write_entry")
+Cc: stable@vger.kernel.org
+Reported-by: Will Deacon <will@kernel.org>
+Closes: https://lore.kernel.org/linux-iommu/aXdlnLLFUBwjT0V5@willie-the-truck/
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/debug.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/s390/kernel/debug.c
-+++ b/arch/s390/kernel/debug.c
-@@ -1586,6 +1586,11 @@ static int debug_input_flush_fn(debug_in
- 	char input_buf[1];
- 	int rc = user_len;
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -1161,6 +1161,13 @@ void arm_smmu_write_entry(struct arm_smm
+ 	__le64 unused_update[NUM_ENTRY_QWORDS];
+ 	u8 used_qword_diff;
  
-+	if (!user_len) {
-+		rc = -EINVAL;
-+		goto out;
-+	}
++	/*
++	 * Many of the entry structures have pointers to other structures that
++	 * need to have their updates be visible before any writes of the entry
++	 * happen.
++	 */
++	dma_wmb();
 +
- 	if (user_len > 0x10000)
- 		user_len = 0x10000;
- 	if (*offset != 0) {
+ 	used_qword_diff =
+ 		arm_smmu_entry_qword_diff(writer, entry, target, unused_update);
+ 	if (hweight8(used_qword_diff) == 1) {
 
 
 
