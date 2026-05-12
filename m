@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-246547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDDKGaJvA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:22 +0200
+	id MAofJNxqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6211527627
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4738526833
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 51D2A315E8D8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:11:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E6357309059E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E8036EAA4;
-	Tue, 12 May 2026 18:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14DC3DD868;
+	Tue, 12 May 2026 17:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wg5+EbPd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="teVK9hc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6344236604C;
-	Tue, 12 May 2026 18:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DEA3DD843;
+	Tue, 12 May 2026 17:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609507; cv=none; b=CBQjDOQjnj9ZjXX8+QkGY9JA73SVl8FaLQ09ZNSGHlebjHmDuYdQ+inF1P6ZNl1GtebYNuNhgvt7Ncq4wRO/mF9spCd/wdlitTk/x19f8guusSITY9PRgSZFZdIQ/lplfulWytkZHwjhiJk2pH67/XifBPBm4889koSm0VpdRuc=
+	t=1778608124; cv=none; b=u3x7XLjKOj3dwci6b2o/dWj6O6M1JfRTcF2HQqbjF5InmepcotaQOHLxVINVfHLXVRVOlpHj5bCgI/4WlNs8U98vRDaeJG6lt/VmGyPAfHnutosiVx9ZB49ipj5R4JeLGKIVfLQ9ZF6A6WDU6acB9PtxJBSwbbZJq7Rzq8StEEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609507; c=relaxed/simple;
-	bh=UIUr3mJhG/qqFspXVW6Dk3MaS4OWCZZ31nI6GaAHbRg=;
+	s=arc-20240116; t=1778608124; c=relaxed/simple;
+	bh=Iyxl+h/mcxPf8wfF02BPSsPrDKnREFnN+sCB7Xic0gI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjsCSgWz7A0jGvkTT1j1vV4U8ctQXEc651eXHLIBnUBJ7fr8HUOyRBd+b0o5HNTbwk43dv9e+DgpLxbTn8koOS9JgEvGhWk+GPeanSMJ5fRnfAuAVLePBkn8bFI3i6n91Rz6rGATM5ahXZt8WeLHsRm+JXh+IdUU8rBFteYLEyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wg5+EbPd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4226C2BCB0;
-	Tue, 12 May 2026 18:11:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zso8hUT1mzuKalVBvbR4wbfwL1WfUJFLzl3HnAbj7L0eNkbazA2kI3hJR/95h+ccGMsRD5637IfZWeU8rgdqzZEH66HtPa8ZyaMxKahMlH1KsE/8CqIXldFVa6nduZkA7RRRVpEldaAcf2NLnCWNpz0qcISt/YiKBAHqY+4F7Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=teVK9hc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1CF8C2BCB0;
+	Tue, 12 May 2026 17:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609507;
-	bh=UIUr3mJhG/qqFspXVW6Dk3MaS4OWCZZ31nI6GaAHbRg=;
+	s=korg; t=1778608124;
+	bh=Iyxl+h/mcxPf8wfF02BPSsPrDKnREFnN+sCB7Xic0gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wg5+EbPdvrmR2C5UFWF0E1JEQuWpI8Qo/SHrA5tmnsRkCqDIiRln9fbuUFHWIzbzU
-	 eD5QDee6QrbObvv7T/2bcSXQgFsD/IIojcXWQV1fwL9lKaqaxLBpv7jB86kLLpoglm
-	 4J4/xRmcbnWYus80DkDD/8RulPVVvm7uhvY6hfSc=
+	b=teVK9hc3Y0uVynzFuafTAerhbhEtLjh89fqGTH9H/+H4PQr4x5Z/JV7yPDlNLC4ly
+	 KBZ1sJvpKGUIl3dgZuacONUUr04mDbmvkeHdv3e/c68Nl+q7wl22f2B9OpC0lv7lFA
+	 ogy+KZwqx94Md76eQ2Om5DVvzX9YyogeIkM+lFkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernd Schumacher <bernd@bschu.de>,
-	"Alexandre N." <an.tech@mailo.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 7.0 222/307] PCI: Update saved_config_space upon resource assignment
+	stable@kernel.org,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.12 165/206] f2fs: fix fiemap boundary handling when read extent cache is incomplete
 Date: Tue, 12 May 2026 19:40:17 +0200
-Message-ID: <20260512173944.804040516@linuxfoundation.org>
+Message-ID: <20260512173936.357458732@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,134 +64,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D6211527627
+X-Rspamd-Queue-Id: A4738526833
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246547-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-246009-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mailo.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,wunner.de:email,msgid.link:url]
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,xiaomi.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-commit 909f7bf9b080c10df3c3b38533906dbf09ff1d8b upstream.
+commit 95e159ad3e52f7478cfd22e44ec37c9f334f8993 upstream.
 
-Bernd reports passthrough failure of a Digital Devices Cine S2 V6 DVB
-adapter plugged into an ASRock X570S PG Riptide board with BIOS version
-P5.41 (09/07/2023):
+f2fs_fiemap() calls f2fs_map_blocks() to obtain the block mapping a
+file, and then merges contiguous mappings into extents. If the mapping
+is found in the read extent cache, node blocks do not need to be read.
+However, in the following scenario, a contiguous extent can be split
+into two extents:
 
-  ddbridge 0000:05:00.0: detected Digital Devices Cine S2 V6 DVB adapter
-  ddbridge 0000:05:00.0: cannot read registers
-  ddbridge 0000:05:00.0: fail
+$ dd if=/dev/zero of=data.128M bs=1M count=128
+$ losetup -f data.128M
+$ mkfs.f2fs /dev/loop0 -f
+$ mount -o mode=lfs /dev/loop0 /mnt/f2fs/
+$ cd /mnt/f2fs/
+$ dd if=/dev/zero of=data.72M bs=1M count=72 && sync
+$ dd if=/dev/zero of=data.4M bs=1M count=4 && sync
+$ dd if=/dev/zero of=data.4M bs=1M count=2 seek=2 conv=notrunc && sync
+$ echo 3 > /proc/sys/vm/drop_caches
+$ dd if=/dev/zero of=data.4M bs=1M count=2 seek=0 conv=notrunc && sync
+$ dd if=/dev/zero of=data.4M bs=1M count=2 seek=0 conv=notrunc && sync
+$ f2fs_io fiemap 0 1024 data.4M
+Fiemap: offset = 0 len = 1024
+logical addr.    physical addr.   length           flags
+0	0000000000000000 0000000006400000 0000000000200000 00001000
+1	0000000000200000 0000000006600000 0000000000200000 00001001
 
-BIOS assigns an incorrect BAR to the DVB adapter which doesn't fit into the
-upstream bridge window.  The kernel corrects the BAR assignment:
+Although the physical addresses of the ranges 0～2MB and 2M～4MB are
+contiguous, the mapping for the 2M～4MB range is not present in memory.
+When the physical addresses for the 0～2MB range are updated, no merge
+happens because the adjacent mapping is missing from the in-memory
+cache. As a result, fiemap reports two separate extents instead of a
+single contiguous one.
 
-  pci 0000:07:00.0: BAR 0 [mem 0xfffffffffc500000-0xfffffffffc50ffff 64bit]: can't claim; no compatible bridge window
-  pci 0000:07:00.0: BAR 0 [mem 0xfc500000-0xfc50ffff 64bit]: assigned
+The root cause is that the read extent cache does not guarantee that all
+blocks of an extent are present in memory. Therefore, when the extent
+length returned by f2fs_map_blocks_cached() is smaller than maxblocks,
+the remaining mappings are retrieved via f2fs_get_dnode_of_data() to
+ensure correct fiemap extent boundary handling.
 
-Correction of the BAR assignment happens in an x86-specific fs_initcall,
-pcibios_assign_resources(), after device enumeration in a subsys_initcall.
-This order was introduced at the behest of Linus in 2004:
-
-  https://git.kernel.org/tglx/history/c/a06a30144bbc
-
-No other architecture performs such a late BAR correction.
-
-Bernd bisected the issue to commit a2f1e22390ac ("PCI/ERR: Ensure error
-recoverability at all times"), but it only occurs in the absence of commit
-4d4c10f763d7 ("PCI: Explicitly put devices into D0 when initializing").
-This combination exists in stable kernel v6.12.70, but not in mainline,
-hence Bernd cannot reproduce the issue with mainline.
-
-Since a2f1e22390ac, config space is saved on enumeration, prior to BAR
-correction.  Upon passthrough, the corrected BAR is overwritten with the
-incorrect saved value by:
-
-  vfio_pci_core_register_device()
-    vfio_pci_set_power_state()
-      pci_restore_state()
-
-But only if the device's current_state is PCI_UNKNOWN, as it was prior to
-commit 4d4c10f763d7.  Since the commit, it is PCI_D0, which changes the
-behavior of vfio_pci_set_power_state() to no longer restore the state
-without saving it first.
-
-Alexandre is reporting the same issue as Bernd, but in his case, mainline
-is affected as well.  The difference is that on Alexandre's system, the
-host kernel binds a driver to the device which is unbound prior to
-passthrough, whereas on Bernd's system no driver gets bound by the host
-kernel.
-
-Unbinding sets current_state to PCI_UNKNOWN in pci_device_remove(), so when
-vfio-pci is subsequently bound to the device, pci_restore_state() is once
-again called without invoking pci_save_state() first.
-
-To robustly fix the issue, always update saved_config_space upon resource
-assignment.
-
-Reported-by: Bernd Schumacher <bernd@bschu.de>
-Closes: https://lore.kernel.org/r/acfZrlP0Ua_5D3U4@eldamar.lan/
-Reported-by: Alexandre N. <an.tech@mailo.com>
-Closes: https://lore.kernel.org/r/dd3c3358-de0f-4a56-9c81-04aceaab4058@mailo.com/
-Fixes: a2f1e22390ac ("PCI/ERR: Ensure error recoverability at all times")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Bernd Schumacher <bernd@bschu.de>
-Tested-by: Alexandre N. <an.tech@mailo.com>
-Cc: stable@vger.kernel.org # v6.12+
-Link: https://patch.msgid.link/febc3f354e0c1f5a9f5b3ee9ffddaa44caccf651.1776268054.git.lukas@wunner.de
+Cc: stable@kernel.org
+Fixes: cd8fc5226bef ("f2fs: remove the create argument to f2fs_map_blocks")
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/setup-res.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/data.c |   25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/setup-res.c
-+++ b/drivers/pci/setup-res.c
-@@ -102,6 +102,7 @@ static void pci_std_update_resource(stru
- 	}
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1564,8 +1564,26 @@ int f2fs_map_blocks(struct inode *inode,
+ 	if (!maxblocks)
+ 		return 0;
  
- 	pci_write_config_dword(dev, reg, new);
-+	dev->saved_config_space[reg / 4] = new;
- 	pci_read_config_dword(dev, reg, &check);
+-	if (!map->m_may_create && f2fs_map_blocks_cached(inode, map, flag))
+-		goto out;
++	if (!map->m_may_create && f2fs_map_blocks_cached(inode, map, flag)) {
++		struct extent_info ei;
++
++		/*
++		 * 1. If map->m_multidev_dio is true, map->m_pblk cannot be
++		 * waitted by f2fs_wait_on_block_writeback_range() and are not
++		 * mergeable.
++		 * 2. If pgofs hits the read extent cache, it means the mapping
++		 * is already cached in the extent cache, but it is not
++		 * mergeable, and there is no need to query the mapping again
++		 * via f2fs_get_dnode_of_data().
++		 */
++		pgofs =	(pgoff_t)map->m_lblk + map->m_len;
++		if (map->m_len == maxblocks ||
++			map->m_multidev_dio ||
++			f2fs_lookup_read_extent_cache(inode, pgofs, &ei))
++			goto out;
++		ofs = map->m_len;
++		goto map_more;
++	}
  
- 	if ((new ^ check) & mask) {
-@@ -112,6 +113,7 @@ static void pci_std_update_resource(stru
- 	if (res->flags & IORESOURCE_MEM_64) {
- 		new = region.start >> 16 >> 16;
- 		pci_write_config_dword(dev, reg + 4, new);
-+		dev->saved_config_space[(reg + 4) / 4] = new;
- 		pci_read_config_dword(dev, reg + 4, &check);
- 		if (check != new) {
- 			pci_err(dev, "%s: error updating (high %#010x != %#010x)\n",
+ 	map->m_bdev = inode->i_sb->s_bdev;
+ 	map->m_multidev_dio =
+@@ -1576,7 +1594,8 @@ int f2fs_map_blocks(struct inode *inode,
+ 
+ 	/* it only supports block size == page size */
+ 	pgofs =	(pgoff_t)map->m_lblk;
+-	end = pgofs + maxblocks;
++map_more:
++	end = (pgoff_t)map->m_lblk + maxblocks;
+ 
+ next_dnode:
+ 	if (map->m_may_create) {
 
 
 
