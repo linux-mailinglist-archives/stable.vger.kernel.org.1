@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MI7HuFpA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246149-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:56:49 +0200
+	id cOoNM55zA2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239C95264FC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:56:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E05527E38
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09A8D303C676
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCA9C320D296
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A184E3C0A1E;
-	Tue, 12 May 2026 17:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950CB364959;
+	Tue, 12 May 2026 18:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaIusU8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/gJfvit"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628653BB108;
-	Tue, 12 May 2026 17:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5850D33ADBA;
+	Tue, 12 May 2026 18:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608484; cv=none; b=jV2/WnxAoyHUqw7fpkWLLQ5A9a99RgUl6QHgAnMIZlsuBLXia1+grjl+CJBY6SnHG2Vw7aApr20NDuy7Q4Mcdh+xipfqMuudOTPYE26TVTojusYTVJaj8Xe6Cx2kBYWm1aqxjK9VG9nkmb4K9oTl0RrKbxLyBhVsdCC170yIaTA=
+	t=1778609205; cv=none; b=msaurBvB/8lu8sxL7qNuZDOKrBjSgwLQkJvGMrDKdfxu+mF1ABDGUNfW1d/sqL1zWdILWmluvMTtqwKIIzuJ4N9B3bdBamGG5sYp7a7e38bSauVMu117tltS2yc+7FQLIwX+6cCfLTeOHN6co287ggvBxlXzYKulMV8pmhVF3pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608484; c=relaxed/simple;
-	bh=S6MasRi51/Nz7DGB37ffF4D5C/r78E71aog2a8C4KXE=;
+	s=arc-20240116; t=1778609205; c=relaxed/simple;
+	bh=ccFcH7UM7U6cJcwhEGYgPVsbmsUblQjXPloMwLIE+6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yz1zI+QjnSm+cc/W3EtFyvu9xfgOuUzEu1rRTaWssnkhBtJh5ogXI/PPRSyajrYS7VNR9R6iXs7TI4Sf2/8mTWROYxQt8DEejqFYnLPc9pLm6TP8Nq5ICXYQJQbzz1DxYwLr2IrpVCedoO8idiJU/+Rtcap5kXoX215e8pNOJak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaIusU8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECAD3C2BCB0;
-	Tue, 12 May 2026 17:54:43 +0000 (UTC)
+	 MIME-Version; b=YoHJqVqHD5E+ME0Ncj4UViykk2BsFhPgIaffYjsCnjQV3W8EEqec5MNbL504W1M6jm1y7LtoI/PgNgAeVXN8/9w6Qcgw0c4dxQc3XUuGNEIciClEj+8P8eL/ETI12WIP9zToH8Um/TQNRpx6n5p+vSCCUMuA1gTyB6ZEuDWv+3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/gJfvit; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4844C2BCF6;
+	Tue, 12 May 2026 18:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608484;
-	bh=S6MasRi51/Nz7DGB37ffF4D5C/r78E71aog2a8C4KXE=;
+	s=korg; t=1778609205;
+	bh=ccFcH7UM7U6cJcwhEGYgPVsbmsUblQjXPloMwLIE+6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eaIusU8KlMH9F5NxIq2kKsptr2QeswaHOjngTgd8UW28Ld1MeOAXFvvJ7z53p996U
-	 WTADqx5DhGo+M4XtXuFlBIlCFrZhHJf4xZHWmX9XKo6voL5WYh5crgg7OdV9JYdq0d
-	 9PeJukvPLwE/3wwCt8JSYPAxh/2zxxgl7TdaVXU4=
+	b=r/gJfvitwjOZ9kPDbncdJWCNo3FsTSaDLfFlA9lLDZKvBHpJFT96EP6q49Lxjnl2H
+	 8e1/BkLNobsfjj86eiNm2WSlM+zyMN26kS1io5Avvh0v/qa9ad5OaxqBFtwQFNlb+q
+	 eTuYRHRbxfLnE/vHoBUsIEH1xJOYdTg2zITIHjyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.18 097/270] pseries/papr-hvpipe: Fix & simplify error handling in papr_hvpipe_init()
-Date: Tue, 12 May 2026 19:38:18 +0200
-Message-ID: <20260512173940.502292187@linuxfoundation.org>
+	Dmitry Vyukov <dvyukov@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 7.0 104/307] rseq: Protect rseq_reset() against interrupts
+Date: Tue, 12 May 2026 19:38:19 +0200
+Message-ID: <20260512173942.320424371@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 239C95264FC
+X-Rspamd-Queue-Id: E0E05527E38
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246149-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246429-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Thomas Gleixner <tglx@kernel.org>
 
-commit 713e468cdbc2277db6ce949c32c1acbd83501733 upstream.
+commit e9766e6f7d330dce7530918d8c6e3ec96d6c6e24 upstream.
 
-Remove such 3 levels of nesting patterns to check success return values
-from function calls.
+rseq_reset() uses memset() to clear the tasks rseq data. That's racy
+against membarrier() and preemption.
 
-ret = enable_hvpipe_IRQ()
-    if (!ret)
-	    ret = set_hvpipe_sys_param(1)
-	        if (!ret)
-		    ret = misc_register()
+Guard it with irqsave to cure this.
 
-Instead just bail out to "out*:" labels, in case of any error. This
-simplifies the init flow.
-
-While at it let's also fix the following error handling logic:
-We have already enabled interrupt sources and enabled hvpipe to received
-interrupts, if misc_register() fails, we will destroy the workqueue, but
-the HMC might send us a msg via hvpipe which will call, queue work on
-the workqueue which might be destroyed.
-
-So instead, let's reverse the order of enabling set_hvpipe_sys_param(1)
-and in case of an error let's remove the misc dev by calling
-misc_deregister().
-
+Fixes: faba9d250eae ("rseq: Introduce struct rseq_data")
+Reported-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Tested-by: Dmitry Vyukov <dvyukov@google.com>
+Link: https://patch.msgid.link/20260428224427.353887714%40kernel.org
 Cc: stable@vger.kernel.org
-Fixes: 39a08a4f94980 ("powerpc/pseries: Enable hvpipe with ibm,set-system-parameter RTAS")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/f2141eafb80e7780395e03aa9a22e8a37be80513.1777606826.git.ritesh.list@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/papr-hvpipe.c |   28 ++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ include/linux/rseq.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
-+++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-@@ -796,23 +796,29 @@ static int __init papr_hvpipe_init(void)
- 	}
+--- a/include/linux/rseq.h
++++ b/include/linux/rseq.h
+@@ -119,6 +119,8 @@ static inline void rseq_virt_userspace_e
  
- 	ret = enable_hvpipe_IRQ();
--	if (!ret) {
--		ret = set_hvpipe_sys_param(1);
--		if (!ret)
--			ret = misc_register(&papr_hvpipe_dev);
--	}
-+	if (ret)
-+		goto out_wq;
- 
--	if (!ret) {
--		pr_info("hvpipe feature is enabled\n");
--		hvpipe_feature = true;
--		return 0;
--	}
-+	ret = misc_register(&papr_hvpipe_dev);
-+	if (ret)
-+		goto out_wq;
- 
--	pr_err("hvpipe feature is not enabled %d\n", ret);
-+	ret = set_hvpipe_sys_param(1);
-+	if (ret)
-+		goto out_misc;
-+
-+	pr_info("hvpipe feature is enabled\n");
-+	hvpipe_feature = true;
-+	return 0;
-+
-+out_misc:
-+	misc_deregister(&papr_hvpipe_dev);
-+out_wq:
- 	destroy_workqueue(papr_hvpipe_wq);
- out:
- 	kfree(papr_hvpipe_work);
- 	papr_hvpipe_work = NULL;
-+	pr_err("hvpipe feature is not enabled %d\n", ret);
- 	return ret;
+ static inline void rseq_reset(struct task_struct *t)
+ {
++	/* Protect against preemption and membarrier IPI */
++	guard(irqsave)();
+ 	memset(&t->rseq, 0, sizeof(t->rseq));
+ 	t->rseq.ids.cpu_id = RSEQ_CPU_ID_UNINITIALIZED;
  }
- machine_device_initcall(pseries, papr_hvpipe_init);
 
 
 
