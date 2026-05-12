@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAwzJ/Q/A2ro2AEAu9opvQ
-	(envelope-from <stable+bounces-245666-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:57:56 +0200
+	id QJhUAKI7A2oq2AEAu9opvQ
+	(envelope-from <stable+bounces-245668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:39:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DBF25231B6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:57:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE35522BAE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:39:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6421311568C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:03:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2E77A30419DF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122543A7D82;
-	Tue, 12 May 2026 14:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EB53A83B4;
+	Tue, 12 May 2026 14:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hii+mpb+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcVNOgM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BC53A599D
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8953A7D9C
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778594584; cv=none; b=UIC9+uWe7yn0TolEN1uR+wUcHyw1uTmoZZ7Zx2gkleE1iXjpw4+DHbgZqMbk4Sz43ilpxAYM+++GJcvdoGtvcrF5m1t1l9UX1otXO2tFGXLtyB71nRRkrF19eWkb/c1G4A0UNPoQXz59rtwZSaSnUjOF8sIWXoDq8J0Ei+I5Ags=
+	t=1778594589; cv=none; b=GbGuwX9PiqQuV4vR0qUAQ2FZZmRTiCbyf24EhcHtKhmbOFQguyXGlkVl9oE6iIZD9qGxCrHr+Mavdy36o7lR0T3N8M/ehg+m1rrWTsmNLjmg8sU7sYUnQfFeqhbrqOBUxtEJaRkI3VhWiuAmT6SIeB7Ez2AwmCjjUl7KvMcBBU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778594584; c=relaxed/simple;
-	bh=UfWVhppF8FFovefg26z1N+jEE3li+sUfniu9oVUmYcY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GPq+FZVhGQXfHRz/Ncip6SDDhPgmwATTzFartkqMJP8mFySRMI+7ST5cScw6T43LO6VwmjKLnpNkTJb2ca7pKN5Gg/KJ+8mv8X5ZYfdl84XK6P+eJvXjupKIHmEFJrhZsz/Ru1R3mhNOtuXnuT7d99q6Y/XPUe4056Bj9bJiRPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hii+mpb+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8F2C2BCB0;
-	Tue, 12 May 2026 14:03:03 +0000 (UTC)
+	s=arc-20240116; t=1778594589; c=relaxed/simple;
+	bh=Tqcv6QpQTJTj5SQqlbwlKnhV/ixEe+lHq7CvnL8GrKU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RvSoUH+4+PukS4CRx4l9oJbvfs1Lx9Ew50C/yS0bzKPQVqauEqdGJW7ycKcZFejM5opRgEYG2e79xcG5fU7y832djPcyQGgYQC/DPHWe8dd8PL4Renup3IdpvSUboxPORHF5GpT47RbbTgWR2TSqieLV8ganQux8NuIUHy1tu0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcVNOgM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9402CC2BCF5;
+	Tue, 12 May 2026 14:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778594583;
-	bh=UfWVhppF8FFovefg26z1N+jEE3li+sUfniu9oVUmYcY=;
+	s=korg; t=1778594588;
+	bh=Tqcv6QpQTJTj5SQqlbwlKnhV/ixEe+lHq7CvnL8GrKU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hii+mpb+z+hnSacsvB0p8n1FUnpzCv43U7LUW/RdFIxPuNjpbcCysXFopwGjhbKi3
-	 KqQJfGryxuJ3HdSnmCy54EzmBZT9nd8N79axxZwbInLHWSDBZsEajMsrGBV9ob+1/Y
-	 1dlQHHfEU4zev0lmZsWaM4IokWAy6i2BlrG7WqoY=
-Subject: FAILED: patch "[PATCH] lib/crc: tests: Make crc_kunit test only the enabled CRC" failed to apply to 6.18-stable tree
-To: ebiggers@kernel.org
+	b=FcVNOgM95Z3v9jWMyBBTPXs1Q2tFULF0r42t8XYQBBT9UgCEhLn48IYpW5PdUI3I8
+	 BYFCxz19F9GxTyMEbn+LvhMZ3+1q+ZAVkjJy9KTOfw58WXbnR46Cw+9l6xe32DX5qC
+	 1P7L+ub+mQ+ECXzKc2h1MMmN74rbgsZvpsJhRQvs=
+Subject: FAILED: patch "[PATCH] pmdomain: core: Fix detach procedure for virtual devices in" failed to apply to 6.6-stable tree
+To: ulfh@kernel.org,geert+renesas@glider.be,geert@linux-m68k.org,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 16:01:34 +0200
-Message-ID: <2026051234-enjoyer-prankster-e471@gregkh>
+Date: Tue, 12 May 2026 16:03:02 +0200
+Message-ID: <2026051202-enjoyably-emcee-b24b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,24 +54,25 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2DBF25231B6
+X-Rspamd-Queue-Id: 0EE35522BAE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-245668-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245666-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
@@ -79,27 +80,27 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,glider.be:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.18-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 85c9f3a2b805eb96d899da7bcc38a16459aa3c16
+git cherry-pick -x 26735dfdd8930d9ef1fa92e590a9bf77726efdf6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051234-enjoyer-prankster-e471@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051202-enjoyably-emcee-b24b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,145 +112,68 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 85c9f3a2b805eb96d899da7bcc38a16459aa3c16 Mon Sep 17 00:00:00 2001
-From: Eric Biggers <ebiggers@kernel.org>
-Date: Thu, 5 Mar 2026 19:35:55 -0800
-Subject: [PATCH] lib/crc: tests: Make crc_kunit test only the enabled CRC
- variants
+From 26735dfdd8930d9ef1fa92e590a9bf77726efdf6 Mon Sep 17 00:00:00 2001
+From: Ulf Hansson <ulfh@kernel.org>
+Date: Fri, 17 Apr 2026 13:13:31 +0200
+Subject: [PATCH] pmdomain: core: Fix detach procedure for virtual devices in
+ genpd
 
-Like commit 4478e8eeb871 ("lib/crypto: tests: Depend on library options
-rather than selecting them") did with the crypto library tests, make
-crc_kunit depend on the code it tests rather than selecting it.  This
-follows the standard convention for KUnit and fixes an issue where
-enabling KUNIT_ALL_TESTS enabled non-test code.
+If a device is attached to a PM domain through genpd_dev_pm_attach_by_id(),
+genpd calls pm_runtime_enable() for the corresponding virtual device that
+it registers. While this avoids boilerplate code in drivers, there is no
+corresponding call to pm_runtime_disable() in genpd_dev_pm_detach().
 
-crc_kunit does differ from the crypto library tests in that it
-consolidates the tests for multiple CRC variants, with 5 kconfig
-options, into one KUnit suite.  Since depending on *all* of these
-kconfig options would greatly restrict the ability to enable crc_kunit,
-instead just depend on *any* of these options.  Update crc_kunit
-accordingly to test only the reachable code.
+This means these virtual devices are typically detached from its genpd,
+while runtime PM remains enabled for them, which is not how things are
+designed to work. In worst cases it may lead to critical errors, like a
+NULL pointer dereference bug in genpd_runtime_suspend(), which was recently
+reported. For another case, we may end up keeping an unnecessary vote for a
+performance state for the device.
 
-Alternatively we could split crc_kunit into 5 test suites.  But keeping
-it as one is simpler for now.
+To fix these problems, let's add this missing call to pm_runtime_disable()
+in genpd_dev_pm_detach().
 
-Fixes: e47d9b1a76ed ("lib/crc_kunit.c: add KUnit test suite for CRC library functions")
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/all/CAMuHMdWapT40hV3c+CSBqFOW05aWcV1a6v_NiJYgoYi0i9_PDQ@mail.gmail.com/
+Fixes: 3c095f32a92b ("PM / Domains: Add support for multi PM domains per device to genpd")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20260306033557.250499-2-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/lib/crc/Kconfig b/lib/crc/Kconfig
-index 70e7a6016de3..9ddfd1a29757 100644
---- a/lib/crc/Kconfig
-+++ b/lib/crc/Kconfig
-@@ -99,13 +99,8 @@ config CRC_OPTIMIZATIONS
+diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
+index 4d32fc676aaf..71e930e80178 100644
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -3089,6 +3089,7 @@ static const struct bus_type genpd_bus_type = {
+ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
+ {
+ 	struct generic_pm_domain *pd;
++	bool is_virt_dev;
+ 	unsigned int i;
+ 	int ret = 0;
  
- config CRC_KUNIT_TEST
- 	tristate "KUnit tests for CRC functions" if !KUNIT_ALL_TESTS
--	depends on KUNIT
-+	depends on KUNIT && (CRC7 || CRC16 || CRC_T10DIF || CRC32 || CRC64)
- 	default KUNIT_ALL_TESTS
--	select CRC7
--	select CRC16
--	select CRC_T10DIF
--	select CRC32
--	select CRC64
- 	help
- 	  Unit tests for the CRC library functions.
+@@ -3098,6 +3099,13 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
  
-diff --git a/lib/crc/tests/crc_kunit.c b/lib/crc/tests/crc_kunit.c
-index 9a450e25ac81..9428cd913625 100644
---- a/lib/crc/tests/crc_kunit.c
-+++ b/lib/crc/tests/crc_kunit.c
-@@ -268,8 +268,7 @@ crc_benchmark(struct kunit *test,
- 	}
- }
+ 	dev_dbg(dev, "removing from PM domain %s\n", pd->name);
  
--/* crc7_be */
--
-+#if IS_REACHABLE(CONFIG_CRC7)
- static u64 crc7_be_wrapper(u64 crc, const u8 *p, size_t len)
- {
- 	/*
-@@ -294,9 +293,9 @@ static void crc7_be_benchmark(struct kunit *test)
- {
- 	crc_benchmark(test, crc7_be_wrapper);
- }
-+#endif /* CONFIG_CRC7 */
- 
--/* crc16 */
--
-+#if IS_REACHABLE(CONFIG_CRC16)
- static u64 crc16_wrapper(u64 crc, const u8 *p, size_t len)
- {
- 	return crc16(crc, p, len);
-@@ -318,9 +317,9 @@ static void crc16_benchmark(struct kunit *test)
- {
- 	crc_benchmark(test, crc16_wrapper);
- }
-+#endif /* CONFIG_CRC16 */
- 
--/* crc_t10dif */
--
-+#if IS_REACHABLE(CONFIG_CRC_T10DIF)
- static u64 crc_t10dif_wrapper(u64 crc, const u8 *p, size_t len)
- {
- 	return crc_t10dif_update(crc, p, len);
-@@ -342,6 +341,9 @@ static void crc_t10dif_benchmark(struct kunit *test)
- {
- 	crc_benchmark(test, crc_t10dif_wrapper);
- }
-+#endif /* CONFIG_CRC_T10DIF */
++	/* Check if the device was created by genpd at attach. */
++	is_virt_dev = dev->bus == &genpd_bus_type;
 +
-+#if IS_REACHABLE(CONFIG_CRC32)
- 
- /* crc32_le */
- 
-@@ -414,6 +416,9 @@ static void crc32c_benchmark(struct kunit *test)
- {
- 	crc_benchmark(test, crc32c_wrapper);
- }
-+#endif /* CONFIG_CRC32 */
++	/* Disable runtime PM if we enabled it at attach. */
++	if (is_virt_dev)
++		pm_runtime_disable(dev);
 +
-+#if IS_REACHABLE(CONFIG_CRC64)
+ 	/* Drop the default performance state */
+ 	if (dev_gpd_data(dev)->default_pstate) {
+ 		dev_pm_genpd_set_performance_state(dev, 0);
+@@ -3123,7 +3131,7 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
+ 	genpd_queue_power_off_work(pd);
  
- /* crc64_be */
- 
-@@ -463,24 +468,35 @@ static void crc64_nvme_benchmark(struct kunit *test)
- {
- 	crc_benchmark(test, crc64_nvme_wrapper);
+ 	/* Unregister the device if it was created by genpd. */
+-	if (dev->bus == &genpd_bus_type)
++	if (is_virt_dev)
+ 		device_unregister(dev);
  }
-+#endif /* CONFIG_CRC64 */
- 
- static struct kunit_case crc_test_cases[] = {
-+#if IS_REACHABLE(CONFIG_CRC7)
- 	KUNIT_CASE(crc7_be_test),
- 	KUNIT_CASE(crc7_be_benchmark),
-+#endif
-+#if IS_REACHABLE(CONFIG_CRC16)
- 	KUNIT_CASE(crc16_test),
- 	KUNIT_CASE(crc16_benchmark),
-+#endif
-+#if IS_REACHABLE(CONFIG_CRC_T10DIF)
- 	KUNIT_CASE(crc_t10dif_test),
- 	KUNIT_CASE(crc_t10dif_benchmark),
-+#endif
-+#if IS_REACHABLE(CONFIG_CRC32)
- 	KUNIT_CASE(crc32_le_test),
- 	KUNIT_CASE(crc32_le_benchmark),
- 	KUNIT_CASE(crc32_be_test),
- 	KUNIT_CASE(crc32_be_benchmark),
- 	KUNIT_CASE(crc32c_test),
- 	KUNIT_CASE(crc32c_benchmark),
-+#endif
-+#if IS_REACHABLE(CONFIG_CRC64)
- 	KUNIT_CASE(crc64_be_test),
- 	KUNIT_CASE(crc64_be_benchmark),
- 	KUNIT_CASE(crc64_nvme_test),
- 	KUNIT_CASE(crc64_nvme_benchmark),
-+#endif
- 	{},
- };
  
 
 
