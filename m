@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCWjM15rA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:10 +0200
+	id kMYVIEZvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E235269A0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A29527542
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D4DFC30796C9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 21DA53182745
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784B533D51A;
-	Tue, 12 May 2026 18:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF963EDE57;
+	Tue, 12 May 2026 18:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtUJTjK5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S46EYfnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B30F3EDE47;
-	Tue, 12 May 2026 18:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DDE34E744;
+	Tue, 12 May 2026 18:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608820; cv=none; b=t/kFqSLWqaGKkS0M8dxRg9IB6Ii/KF274bPu7wz4ceABhaXKiLSSY7LhESFagFhoSCh/NcYXx5trAJDpSfev0ETDCcaDMrC2l62PN/9hg5UVVwfwk5W/s1gQzqroRnrn8CAUoAH6T2DZz3Y9cUKMk7YeXWxh6VYbr7xBQLAqcj8=
+	t=1778609540; cv=none; b=YKFZqZusSJxjCYVKA0Hx1QqaAEmbwPtdV1zBRvcGwHxW6ycGn3wVwtozo+8nPnlqLlI8UJI/106VxYFwZvYoyhkiSelhw+4xyIkOllLegeu0AY4aW1ULqKP+UQdFYfx6abjX2D7jGu64IocwRNLHUpuXGQzzUAc4JNncVJJpqUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608820; c=relaxed/simple;
-	bh=t6Y3wZyy4xZr8WSXFOFarAC4w2tosVGTzdwc21etsNY=;
+	s=arc-20240116; t=1778609540; c=relaxed/simple;
+	bh=0F4g7JSXPj+biescB8wB9GE0OBs/9hzcSI+b/3dg4iE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXy3KAhsY4lOQTrxcxLD48GryWFz7d3wKNKKShlPuOUIZJtSZTBh7V8+m+7ZjLku5cC48qem9vEpe8xhJVKTM6cPluhwpYxAjuJCzfx+gzUTcb4nI/3o0Z6+SEl7bj2gXjeZRSnNM0sw3pWy9zNttOxgSCthqbQkxUM7DR+/Yag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtUJTjK5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5F0C2BCB0;
-	Tue, 12 May 2026 18:00:19 +0000 (UTC)
+	 MIME-Version; b=I9MQAmLhabUhu/YOYSCTbsVtMk+9fD/4wInxjlGeTSJ13t0HQCAjB+7kIH82+iDb+Abc0CLObzfWsD4cE1411/3850gd9bPLTNPZ76MlOvm1oSbpA/+jh46zMib12YUr8jU9/x5XElxdDMJr08jz6xFFkYgAP2E4cVhuehcJviI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S46EYfnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CF6C2BCB0;
+	Tue, 12 May 2026 18:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608820;
-	bh=t6Y3wZyy4xZr8WSXFOFarAC4w2tosVGTzdwc21etsNY=;
+	s=korg; t=1778609540;
+	bh=0F4g7JSXPj+biescB8wB9GE0OBs/9hzcSI+b/3dg4iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DtUJTjK5Bx9OMem0G+4JNDfW6Tzgo4TmEVXEwXFDcSLxmc9BVoNq5eiHt8Soz9bVu
-	 5i9qgNqf9yzx+nskFCmw4qYiO1DW1sBWe3Iqer9GLmILGd2KWmC315Z5QpqwX5UAWP
-	 UJW4C5JtOxxJoZDJmmkz72Nf9TZp+N8Ul0Fm0K7Y=
+	b=S46EYfnIu9G5LhPhth3mP6CB8RnxzuZCoJaBk5N8JFiWYmhwl53AgxJYefBhVTdPx
+	 faU5kPIJcZOnJVF+6rW7a8sm14W4UmPrkGFfzMMt5MVcU6zGBJNCm7sSlVmINjjrDS
+	 oDkO8W58hUmwoDAH1d7XyC2bxanKkNV9Hltr5gIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.18 228/270] f2fs: fix node_cnt race between extent node destroy and writeback
+	Long Li <longli@microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 7.0 234/307] RDMA/mana: Fix mana_destroy_wq_obj() cleanup in mana_ib_create_qp_rss()
 Date: Tue, 12 May 2026 19:40:29 +0200
-Message-ID: <20260512173943.246192625@linuxfoundation.org>
+Message-ID: <20260512173945.059848137@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B0E235269A0
+X-Rspamd-Queue-Id: 37A29527542
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246280-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246560-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,103 +88,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,xiaomi.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit ed78aeebef05212ef7dca93bd931e4eff67c113f upstream.
+commit 34ecf795692ee57c393109f4a24ccc313091e137 upstream.
 
-f2fs_destroy_extent_node() does not set FI_NO_EXTENT before clearing
-extent nodes. When called from f2fs_drop_inode() with I_SYNC set,
-concurrent kworker writeback can insert new extent nodes into the same
-extent tree, racing with the destroy and triggering f2fs_bug_on() in
-__destroy_extent_node(). The scenario is as follows:
+Sashiko points out there are two bugs here in the error unwind flow, both
+related to how the WQ table is unwound.
 
-drop inode                            writeback
- - iput
-  - f2fs_drop_inode  // I_SYNC set
-   - f2fs_destroy_extent_node
-    - __destroy_extent_node
-     - while (node_cnt) {
-        write_lock(&et->lock)
-        __free_extent_tree
-        write_unlock(&et->lock)
-                                       - __writeback_single_inode
-                                        - f2fs_outplace_write_data
-                                         - f2fs_update_read_extent_cache
-                                          - __update_extent_tree_range
-                                           // FI_NO_EXTENT not set,
-                                           // insert new extent node
-       } // node_cnt == 0, exit while
-     - f2fs_bug_on(node_cnt)  // node_cnt > 0
+First there is a double i-- on the first failure path due to the while loop
+having a i--, remove it.
 
-Additionally, __update_extent_tree_range() only checks FI_NO_EXTENT for
-EX_READ type, leaving EX_BLOCK_AGE updates completely unprotected.
+Second if mana_ib_install_cq_cb() fails then mana_create_wq_obj() is not
+undone due to the above i--.
 
-This patch set FI_NO_EXTENT under et->lock in __destroy_extent_node(),
-consistent with other callers (__update_extent_tree_range and
-__drop_extent_tree) and check FI_NO_EXTENT for both EX_READ and
-EX_BLOCK_AGE tree.
-
-Fixes: 3fc5d5a182f6 ("f2fs: fix to shrink read extent node in batches")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: c15d7802a424 ("RDMA/mana_ib: Add CQ interrupt support for RAW QP")
+Link: https://sashiko.dev/#/patchset/0-v2-1c49eeb88c48%2B91-rdma_udata_rep_jgg%40nvidia.com?part=1
+Link: https://patch.msgid.link/r/6-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/extent_cache.c |   17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/infiniband/hw/mana/qp.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -119,9 +119,10 @@ static bool __may_extent_tree(struct ino
- 	if (!__init_may_extent_tree(inode, type))
- 		return false;
+--- a/drivers/infiniband/hw/mana/qp.c
++++ b/drivers/infiniband/hw/mana/qp.c
+@@ -193,11 +193,8 @@ static int mana_ib_create_qp_rss(struct
  
-+	if (is_inode_flag_set(inode, FI_NO_EXTENT))
-+		return false;
-+
- 	if (type == EX_READ) {
--		if (is_inode_flag_set(inode, FI_NO_EXTENT))
--			return false;
- 		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
- 				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
- 			return false;
-@@ -644,6 +645,8 @@ static unsigned int __destroy_extent_nod
- 
- 	while (atomic_read(&et->node_cnt)) {
- 		write_lock(&et->lock);
-+		if (!is_inode_flag_set(inode, FI_NO_EXTENT))
-+			set_inode_flag(inode, FI_NO_EXTENT);
- 		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
- 		write_unlock(&et->lock);
- 	}
-@@ -688,12 +691,12 @@ static void __update_extent_tree_range(s
- 
- 	write_lock(&et->lock);
- 
--	if (type == EX_READ) {
--		if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
--			write_unlock(&et->lock);
--			return;
+ 		ret = mana_create_wq_obj(mpc, mpc->port_handle, GDMA_RQ,
+ 					 &wq_spec, &cq_spec, &wq->rx_object);
+-		if (ret) {
+-			/* Do cleanup starting with index i-1 */
+-			i--;
++		if (ret)
+ 			goto fail;
 -		}
-+	if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
-+		write_unlock(&et->lock);
-+		return;
-+	}
  
-+	if (type == EX_READ) {
- 		prev = et->largest;
- 		dei.len = 0;
+ 		/* The GDMA regions are now owned by the WQ object */
+ 		wq->queue.gdma_region = GDMA_INVALID_DMA_REGION;
+@@ -217,8 +214,10 @@ static int mana_ib_create_qp_rss(struct
+ 
+ 		/* Create CQ table entry */
+ 		ret = mana_ib_install_cq_cb(mdev, cq);
+-		if (ret)
++		if (ret) {
++			mana_destroy_wq_obj(mpc, GDMA_RQ, wq->rx_object);
+ 			goto fail;
++		}
+ 	}
+ 	resp.num_entries = i;
  
 
 
