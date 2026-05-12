@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-245995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yII/FlJtA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-245995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:30 +0200
+	id yB/hHQ11A2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:44:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57C3526FC3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F04A45280B1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C51D2315A102
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:49:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90EC130EDCC0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D311B3955E5;
-	Tue, 12 May 2026 17:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F199133B6CC;
+	Tue, 12 May 2026 18:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M36VdqY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxQn/7Sf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9463A3955C1;
-	Tue, 12 May 2026 17:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36A0306B11;
+	Tue, 12 May 2026 18:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608087; cv=none; b=iZneUOWsCMBKgtdmonLtGLvwWn5NRkLgz4nJTW7u1yjlHotmx5PgAUTFa55npG2R4VqdUsG/0pnkyBh5nZC600IZUc9iHwESsUWA64Ov0P4QyxxMEc4rKKEE/qgEt4A88nf4zGauPirmg+k7x+4BSvIM8OgpN7LlKXsyEj/B9Pw=
+	t=1778609558; cv=none; b=WPPa1C2bBrKWZqa7wtXDeEO5ZQh5PLGDJ0NfVowsOFaT2KkbnAhmc9W5AcvpuiVkiffZ2uzyxNq2wgU3taEDk4FhNRhlZ7tBSXNc+qE8pDTDwl5aDJL/cG+p1tc/DgyrhdmFUQKgIN3nT0xNi2lsYTlyYJt6fLL75ttiRgIFeoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608087; c=relaxed/simple;
-	bh=vzfDWyuVMbaC9EamXFrz222EQyzijZ1AqaDwSayO3gU=;
+	s=arc-20240116; t=1778609558; c=relaxed/simple;
+	bh=fEuW3QQOYcmF5BGeK3BTeQn1g77s5RlE5rng7EzPs1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NcBnkc7WMCoBpt4sE8mhVkbmqVP8AVUvevW+M0ZVzvsz7qTEjzi3b40nwTvgYY3VI0CrVj/9/r4qFMJ2lIJKNYFRNSHcwA6DdEawVcy9ha8r7FElSF7Gsq1JNKHvbmtqMAeXnuUw4vOgFOwSgXe/9/RHRACliy4aGcyGZfna6iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M36VdqY0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29223C2BCB0;
-	Tue, 12 May 2026 17:48:07 +0000 (UTC)
+	 MIME-Version; b=QoXEBHyqYbP+fGKt73Sg8EUKwVQufyX2bsUKgGJAZxFAnllmdb6ao65841f681cG2BUsUOT9D5KOMzhioWzRdA0GGRrn80yZDDz59QIHLINaHc1huhaZZdHqe7rQRgVu9qVk9YMxcy2GyXl49Ynu1cPYpx1vDM35oGTpc3iZxDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxQn/7Sf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C50C2BCC7;
+	Tue, 12 May 2026 18:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608087;
-	bh=vzfDWyuVMbaC9EamXFrz222EQyzijZ1AqaDwSayO3gU=;
+	s=korg; t=1778609558;
+	bh=fEuW3QQOYcmF5BGeK3BTeQn1g77s5RlE5rng7EzPs1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M36VdqY05+PfN0efIAop/i5bAj7dnzstb9ApraYUdi9GAjDxoMywNZUaIt2ngw/ne
-	 bUwV2IDyXnP3JAVUwAjBE1j9SJUg8sC6uUCC1osB1gcZScjsDqQX+VwKdplHJ3rOmA
-	 67aVqq80s1Bv/SR2BzVv5eQWP/a+dtcAGP0eo+ic=
+	b=TxQn/7SfWNkQ+zJawlTPBvE0lSZwvq3PdUhVIqaAZV877peYMOGQIqC/UZNxV+OTS
+	 ra7IWBKsh406gddEGH718VBENHP31eWZZHu7rlZ7ztELslgURhYgvbUc2tv2zpCcQ/
+	 GbgrBVs7Rzxg4sYwO2Z3S7B0IfFVnu9fpEhhGRdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.12 148/206] RDMA/mana: Fix error unwind in mana_ib_create_qp_rss()
+	Willem de Bruijn <willemb@google.com>,
+	Daniel Zahka <daniel.zahka@gmail.com>,
+	David Carlier <devnexen@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 205/307] psp: strip variable-length PSP header in psp_dev_rcv()
 Date: Tue, 12 May 2026 19:40:00 +0200
-Message-ID: <20260512173935.996891014@linuxfoundation.org>
+Message-ID: <20260512173944.443814931@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +65,154 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A57C3526FC3
+X-Rspamd-Queue-Id: F04A45280B1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245995-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246567-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sashiko.dev:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit 6aaa978c6b6218cfac15fe1dab17c76fe229ce3f upstream.
+commit 30cb24f97d44f6b81c14b85c5323de62eef1fb7f upstream.
 
-Sashiko points out that mana_ib_cfg_vport_steering() is leaked, the normal
-destroy path cleans it up.
+psp_dev_rcv() unconditionally removes a fixed PSP_ENCAP_HLEN, even
+when psph->hdrlen indicates that the PSP header carries optional
+fields. A frame whose PSP header advertises a non-zero VC or any
+extension would therefore be silently mis-decapsulated: option bytes
+would spill into the inner packet head and downstream parsing would
+fail on a corrupted skb.
 
+Compute the full PSP header length from psph->hdrlen, pull the
+optional bytes into the linear region, and strip the whole header
+when decapsulating. Optional fields (VC, ...) are still ignored,
+just discarded with the rest of the header instead of leaking.
+crypt_offset and the VIRT flag are intentionally not validated here
+- callers know their device's PSP implementation and can decide.
+
+Both in-tree callers gate on hardware-validated PSP, so this is a
+correctness fix rather than a reachable corruption path under
+current configurations.
+
+Fixes: 0eddb8023cee ("psp: provide decapsulation and receive helper for drivers")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
 Cc: stable@vger.kernel.org
-Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
-Link: https://sashiko.dev/#/patchset/0-v1-e911b76a94d1%2B65d95-rdma_udata_rep_jgg%40nvidia.com?part=4
-Link: https://patch.msgid.link/r/7-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Link: https://patch.msgid.link/20260502141945.14484-1-devnexen@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/qp.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/psp/psp_main.c |   42 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 31 insertions(+), 11 deletions(-)
 
---- a/drivers/infiniband/hw/mana/qp.c
-+++ b/drivers/infiniband/hw/mana/qp.c
-@@ -236,13 +236,15 @@ static int mana_ib_create_qp_rss(struct
- 		ibdev_dbg(&mdev->ib_dev,
- 			  "Failed to copy to udata create rss-qp, %d\n",
- 			  ret);
--		goto fail;
-+		goto err_disable_vport_rx;
+--- a/net/psp/psp_main.c
++++ b/net/psp/psp_main.c
+@@ -263,15 +263,16 @@ EXPORT_SYMBOL(psp_dev_encapsulate);
+ 
+ /* Receive handler for PSP packets.
+  *
+- * Presently it accepts only already-authenticated packets and does not
+- * support optional fields, such as virtualization cookies. The caller should
+- * ensure that skb->data is pointing to the mac header, and that skb->mac_len
+- * is set. This function does not currently adjust skb->csum (CHECKSUM_COMPLETE
+- * is not supported).
++ * Accepts only already-authenticated packets. The full PSP header is
++ * stripped according to psph->hdrlen; any optional fields it advertises
++ * (virtualization cookies, etc.) are ignored and discarded along with the
++ * rest of the header. The caller should ensure that skb->data is pointing
++ * to the mac header, and that skb->mac_len is set. This function does not
++ * currently adjust skb->csum (CHECKSUM_COMPLETE is not supported).
+  */
+ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
+ {
+-	int l2_hlen = 0, l3_hlen, encap;
++	int l2_hlen = 0, l3_hlen, encap, psp_hlen;
+ 	struct psp_skb_ext *pse;
+ 	struct psphdr *psph;
+ 	struct ethhdr *eth;
+@@ -312,18 +313,36 @@ int psp_dev_rcv(struct sk_buff *skb, u16
+ 	if (unlikely(uh->dest != htons(PSP_DEFAULT_UDP_PORT)))
+ 		return -EINVAL;
+ 
+-	pse = skb_ext_add(skb, SKB_EXT_PSP);
+-	if (!pse)
++	psph = (struct psphdr *)(skb->data + l2_hlen + l3_hlen +
++				 sizeof(struct udphdr));
++
++	/* Strip the full PSP header per psph->hdrlen; VC/options are pulled
++	 * into the linear region only so they can be discarded with the
++	 * rest of the header.
++	 */
++	psp_hlen = (psph->hdrlen + 1) * 8;
++
++	if (unlikely(psp_hlen < sizeof(struct psphdr)))
++		return -EINVAL;
++
++	if (psp_hlen > sizeof(struct psphdr) &&
++	    !pskb_may_pull(skb, l2_hlen + l3_hlen +
++				sizeof(struct udphdr) + psp_hlen))
+ 		return -EINVAL;
+ 
+ 	psph = (struct psphdr *)(skb->data + l2_hlen + l3_hlen +
+ 				 sizeof(struct udphdr));
++
++	pse = skb_ext_add(skb, SKB_EXT_PSP);
++	if (!pse)
++		return -EINVAL;
++
+ 	pse->spi = psph->spi;
+ 	pse->dev_id = dev_id;
+ 	pse->generation = generation;
+ 	pse->version = FIELD_GET(PSPHDR_VERFL_VERSION, psph->verfl);
+ 
+-	encap = PSP_ENCAP_HLEN;
++	encap = sizeof(struct udphdr) + psp_hlen;
+ 	encap += strip_icv ? PSP_TRL_SIZE : 0;
+ 
+ 	if (proto == htons(ETH_P_IP)) {
+@@ -340,8 +359,9 @@ int psp_dev_rcv(struct sk_buff *skb, u16
+ 		ipv6h->payload_len = htons(ntohs(ipv6h->payload_len) - encap);
  	}
  
- 	kfree(mana_ind_table);
+-	memmove(skb->data + PSP_ENCAP_HLEN, skb->data, l2_hlen + l3_hlen);
+-	skb_pull(skb, PSP_ENCAP_HLEN);
++	memmove(skb->data + sizeof(struct udphdr) + psp_hlen,
++		skb->data, l2_hlen + l3_hlen);
++	skb_pull(skb, sizeof(struct udphdr) + psp_hlen);
  
- 	return 0;
- 
-+err_disable_vport_rx:
-+	mana_disable_vport_rx(mpc);
- fail:
- 	while (i-- > 0) {
- 		ibwq = ind_tbl->ind_tbl[i];
+ 	if (strip_icv)
+ 		pskb_trim(skb, skb->len - PSP_TRL_SIZE);
 
 
 
