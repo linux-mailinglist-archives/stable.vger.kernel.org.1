@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246477-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJkGOm1qA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:09 +0200
+	id 6Ht+O4ZwA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246477-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:25:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C345266D0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FC95278C1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CEC213045CE6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 102123268989
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BA02EB5A6;
-	Tue, 12 May 2026 17:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13FB351C25;
+	Tue, 12 May 2026 18:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt+UTbSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnk54o95"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942B23EDE62;
-	Tue, 12 May 2026 17:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FA334405B;
+	Tue, 12 May 2026 18:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608608; cv=none; b=eTyExxjlz3q7RS0H0k4ES3+keDNg+PO1kOwddRL9IX+nDQXeRd2PjQX9fI3Zt9RylP/XMmDDsUMO5KYvcrOXkvUHSPmB5JBrg4j7S9Ctenq7kQOzO3rRvLC9wvahmzwm2Twulp9MKswOQfZhDabQRvo8Gl+PG2CDB/ywfozS+BY=
+	t=1778609326; cv=none; b=YXZe0wiOb0fSNKG7HmmKY8OXOBn2q7KkLj7eUnGGzLteC+5SPPFNuHqAhmAvq7Ysgd19jiHhBp7/T8IUR62qkvdfHsK6F6bTjRKKEr1qeiQpKUErP3il7cxZCOWwYJIAjBgYXcm+tGnC63eQtB4BTenEi5SlTEIx1tgNumdsSU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608608; c=relaxed/simple;
-	bh=wtA+Ah5VEE6IMgqsJoxXXOmwHFUqeIXhVGfgNc1o5tQ=;
+	s=arc-20240116; t=1778609326; c=relaxed/simple;
+	bh=PcfwWOMTxnRk3BnsjM3Do0j/tQvaRrh/lJbQ8vxPWos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLiKG4qPHmt8B76JD2qZkSZPxlJi9MSptXtiXa+IbYPjgtBps4cPB+5ygpji9j84vkIJrl3LDt6TVYD0rURAWv4oMlXBEONCUf+M4CjZ1nZed++gIbjjO4lod2PcAKGvCHwk7f9OAzEuy9FoP6mUyOcSRRPrNN9m1m3d9qXWPMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vt+UTbSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A82C2BCB0;
-	Tue, 12 May 2026 17:56:47 +0000 (UTC)
+	 MIME-Version; b=P/fKEbXUwrav3AdD7Cmrr+IJlUWfOWb8Mc0mYjzjzjXjXE3desg9ft285qeta2fV3d9w8ss+Pc1OwVGmH9g0na2zISXLWq8PARl5ykpQu1cwKqGDc2ZCfRp+Bg8u8r0f3W4YA2reUR3Lr4cjMlQOEGEf3cOLUWzLLhRio/0ZQ10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnk54o95; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89CDC2BCB0;
+	Tue, 12 May 2026 18:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608608;
-	bh=wtA+Ah5VEE6IMgqsJoxXXOmwHFUqeIXhVGfgNc1o5tQ=;
+	s=korg; t=1778609326;
+	bh=PcfwWOMTxnRk3BnsjM3Do0j/tQvaRrh/lJbQ8vxPWos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vt+UTbSByuTKy/NX0eMSz8ig3l/WsObBNNntOGnCsJdioxAozcinjSMG+CzNPHAGq
-	 KbnGeGfnkIgWkm2M2brZ6yl8p2Mw+8IIeOj8e8Gq0N0BjrM8SvUbn8/Hk9FH3B8Upg
-	 hD+mdks2Y/KkQubrCkQx//ffUyXNJdjblhc0G8xA=
+	b=hnk54o95VFnNLmhgPtgBN1ZqEaGE6+DKyWtEBvUZ9uLCV5p2nk7JvEI7s8SJOVgDv
+	 v40e+g/8WlC+By0evNkgh37zx67sw7yVFbnWqKfH3xsdxM/Y0aJMSxv+ltij3/+AT3
+	 Cb9macaXtTcastj7eiZlGyQaVPoLniDiLHfYhacA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 145/270] ASoC: qcom: q6apm-dai: reset queue ptr on trigger stop
+Subject: [PATCH 7.0 151/307] spi: microchip-core-qspi: control built-in cs manually
 Date: Tue, 12 May 2026 19:39:06 +0200
-Message-ID: <20260512173941.502324551@linuxfoundation.org>
+Message-ID: <20260512173943.314161914@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 94C345266D0
+X-Rspamd-Queue-Id: 53FC95278C1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246197-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246477-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,58 +88,204 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-commit cab45ab95ce7600fc0ff84585c77fd45b7b0d67c upstream.
+commit 7672749e1496215e8683ce57cf323119033954cf upstream.
 
-Reset queue pointer on SNDRV_PCM_TRIGGER_STOP event to be inline
-with resetting appl_ptr. Without this we will end up with a queue_ptr
-out of sync and driver could try to send data that is not ready yet.
+The coreQSPI IP supports only a single chip select, which is
+automagically operated by the hardware - set low when the transmit
+buffer first gets written to and set high when the number of bytes
+written to the TOTALBYTES field of the FRAMES register have been sent on
+the bus. Additional devices must use GPIOs for their chip selects.
+It was reported to me that if there are two devices attached to this
+QSPI controller that the in-built chip select is set low while linux
+tries to access the device attached to the GPIO.
 
-Fix this by resetting the queue_ptr.
+This went undetected as the boards that connected multiple devices to
+the SPI controller all exclusively used GPIOs for chip selects, not
+relying on the built-in chip select at all. It turns out that this was
+because the built-in chip select, when controlled automagically, is set
+low when active and high when inactive, thereby ruling out its use for
+active-high devices or devices that need to transmit with the chip
+select disabled.
 
-Fixes: 3d4a4411aa8bb ("ASoC: q6apm-dai: schedule all available frames to avoid dsp under-runs")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260402081118.348071-6-srinivas.kandagatla@oss.qualcomm.com
+Modify the driver so that it controls chip select directly, retaining
+the behaviour for mem_ops of setting the chip select active for the
+entire duration of the transfer in the exec_op callback. For regular
+transfers, implement the set_cs callback for the core to use.
+
+As part of this, the existing setup callback, mchp_coreqspi_setup_op(),
+is removed. Modifying the CLKIDLE field is not safe to do during
+operation when there are multiple devices, so this code is removed
+entirely. Setting the MASTER and ENABLE fields is something that can be
+done once at probe, it doesn't need to be re-run for each device.
+Instead the new setup callback sets the built-in chip select to its
+inactive state for active-low devices, as the reset value of the chip
+select in software controlled mode is low.
+
+Fixes: 8f9cf02c88528 ("spi: microchip-core-qspi: Add regular transfers")
+Fixes: 8596124c4c1bc ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
+CC: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20260430-hamstring-busload-f941d0347b5e@spud
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-dai.c |    1 +
- sound/soc/qcom/qdsp6/q6apm.c     |    2 ++
- 2 files changed, 3 insertions(+)
+ drivers/spi/spi-microchip-core-qspi.c |   79 +++++++++++++++++++++++++++-------
+ 1 file changed, 64 insertions(+), 15 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -323,6 +323,7 @@ static int q6apm_dai_trigger(struct snd_
- 	case SNDRV_PCM_TRIGGER_STOP:
- 		/* TODO support be handled via SoftPause Module */
- 		prtd->state = Q6APM_STREAM_STOPPED;
-+		prtd->queue_ptr = 0;
- 		break;
- 	case SNDRV_PCM_TRIGGER_SUSPEND:
- 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
---- a/sound/soc/qcom/qdsp6/q6apm.c
-+++ b/sound/soc/qcom/qdsp6/q6apm.c
-@@ -225,6 +225,8 @@ int q6apm_map_memory_regions(struct q6ap
+--- a/drivers/spi/spi-microchip-core-qspi.c
++++ b/drivers/spi/spi-microchip-core-qspi.c
+@@ -74,6 +74,13 @@
+ #define STATUS_FLAGSX4		BIT(8)
+ #define STATUS_MASK		GENMASK(8, 0)
  
- 	mutex_lock(&graph->lock);
- 
-+	data->dsp_buf = 0;
++/*
++ * QSPI Direct Access register defines
++ */
++#define DIRECT_ACCESS_EN_SSEL		BIT(0)
++#define DIRECT_ACCESS_OP_SSEL		BIT(1)
++#define DIRECT_ACCESS_OP_SSEL_SHIFT	1
 +
- 	if (data->buf) {
- 		mutex_unlock(&graph->lock);
- 		return 0;
+ #define BYTESUPPER_MASK		GENMASK(31, 16)
+ #define BYTESLOWER_MASK		GENMASK(15, 0)
+ 
+@@ -158,6 +165,38 @@ static int mchp_coreqspi_set_mode(struct
+ 	return 0;
+ }
+ 
++static void mchp_coreqspi_set_cs(struct spi_device *spi, bool enable)
++{
++	struct mchp_coreqspi *qspi = spi_controller_get_devdata(spi->controller);
++	u32 val;
++
++	val = readl(qspi->regs + REG_DIRECT_ACCESS);
++
++	val &= ~DIRECT_ACCESS_OP_SSEL;
++	val |= !enable << DIRECT_ACCESS_OP_SSEL_SHIFT;
++
++	writel(val, qspi->regs + REG_DIRECT_ACCESS);
++}
++
++static int mchp_coreqspi_setup(struct spi_device *spi)
++{
++	struct mchp_coreqspi *qspi = spi_controller_get_devdata(spi->controller);
++	u32 val;
++
++	/*
++	 * Active low devices need to be specifically set to their inactive
++	 * states during probe.
++	 */
++	if (spi->mode & SPI_CS_HIGH)
++		return 0;
++
++	val = readl(qspi->regs + REG_DIRECT_ACCESS);
++	val |= DIRECT_ACCESS_OP_SSEL;
++	writel(val, qspi->regs + REG_DIRECT_ACCESS);
++
++	return 0;
++}
++
+ static inline void mchp_coreqspi_read_op(struct mchp_coreqspi *qspi)
+ {
+ 	u32 control, data;
+@@ -380,19 +419,6 @@ static int mchp_coreqspi_setup_clock(str
+ 	return 0;
+ }
+ 
+-static int mchp_coreqspi_setup_op(struct spi_device *spi_dev)
+-{
+-	struct spi_controller *ctlr = spi_dev->controller;
+-	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
+-	u32 control = readl_relaxed(qspi->regs + REG_CONTROL);
+-
+-	control |= (CONTROL_MASTER | CONTROL_ENABLE);
+-	control &= ~CONTROL_CLKIDLE;
+-	writel_relaxed(control, qspi->regs + REG_CONTROL);
+-
+-	return 0;
+-}
+-
+ static inline void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const struct spi_mem_op *op)
+ {
+ 	u32 idle_cycles = 0;
+@@ -483,6 +509,7 @@ static int mchp_coreqspi_exec_op(struct
+ 
+ 	reinit_completion(&qspi->data_completion);
+ 	mchp_coreqspi_config_op(qspi, op);
++	mchp_coreqspi_set_cs(mem->spi, true);
+ 	if (op->cmd.opcode) {
+ 		qspi->txbuf = &opcode;
+ 		qspi->rxbuf = NULL;
+@@ -523,6 +550,7 @@ static int mchp_coreqspi_exec_op(struct
+ 		err = -ETIMEDOUT;
+ 
+ error:
++	mchp_coreqspi_set_cs(mem->spi, false);
+ 	mutex_unlock(&qspi->op_lock);
+ 	mchp_coreqspi_disable_ints(qspi);
+ 
+@@ -696,6 +724,7 @@ static int mchp_coreqspi_probe(struct pl
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *np = dev->of_node;
+ 	int ret;
++	u32 num_cs, val;
+ 
+ 	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*qspi));
+ 	if (!ctlr)
+@@ -728,10 +757,18 @@ static int mchp_coreqspi_probe(struct pl
+ 		return ret;
+ 	}
+ 
++	/*
++	 * The IP core only has a single CS, any more have to be provided via
++	 * gpios
++	 */
++	if (of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs))
++		num_cs = 1;
++
++	ctlr->num_chipselect = num_cs;
++
+ 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	ctlr->mem_ops = &mchp_coreqspi_mem_ops;
+ 	ctlr->mem_caps = &mchp_coreqspi_mem_caps;
+-	ctlr->setup = mchp_coreqspi_setup_op;
+ 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
+ 			  SPI_TX_DUAL | SPI_TX_QUAD;
+ 	ctlr->dev.of_node = np;
+@@ -739,9 +776,21 @@ static int mchp_coreqspi_probe(struct pl
+ 	ctlr->prepare_message = mchp_coreqspi_prepare_message;
+ 	ctlr->unprepare_message = mchp_coreqspi_unprepare_message;
+ 	ctlr->transfer_one = mchp_coreqspi_transfer_one;
+-	ctlr->num_chipselect = 2;
++	ctlr->setup = mchp_coreqspi_setup;
++	ctlr->set_cs = mchp_coreqspi_set_cs;
+ 	ctlr->use_gpio_descriptors = true;
+ 
++	val = readl_relaxed(qspi->regs + REG_CONTROL);
++	val |= (CONTROL_MASTER | CONTROL_ENABLE);
++	writel_relaxed(val, qspi->regs + REG_CONTROL);
++
++	/*
++	 * Put cs into software controlled mode
++	 */
++	val = readl_relaxed(qspi->regs + REG_DIRECT_ACCESS);
++	val |= DIRECT_ACCESS_EN_SSEL;
++	writel(val, qspi->regs + REG_DIRECT_ACCESS);
++
+ 	ret = spi_register_controller(ctlr);
+ 	if (ret)
+ 		return dev_err_probe(&pdev->dev, ret,
 
 
 
