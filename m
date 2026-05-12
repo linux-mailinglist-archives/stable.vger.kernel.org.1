@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-246200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFNuCFJvA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:02 +0200
+	id CELdKOtsA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BFA527557
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648EA526EC0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E8463163F36
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D087D304D437
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787E63EDE7E;
-	Tue, 12 May 2026 17:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32299342509;
+	Tue, 12 May 2026 18:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2mAJWfw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwxFRZgN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2423EDE41;
-	Tue, 12 May 2026 17:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DB43EDE45;
+	Tue, 12 May 2026 18:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608616; cv=none; b=gWBmY9ho5cH5/36i+H4UGHnKvwp/rq7B6qmyIVxiZ67WOkRbq49C6qtojLewLrcYZxWq6FIDvZgF+0q13ePHXEmW/pPdlX5SzSeQvG/hpIUWtJCrRvYtxVa846z/1LKBCuM2rTXgt/SSNTDVqiu9TwKGNNUchyDWMDp4SZDqsBA=
+	t=1778609337; cv=none; b=ir3vkgw8FkPdKnCglRVN6jRdJ7yNCnLuHvNIF19L08m2hTb3i7NHSAnmQimdqjCwYVEBvE0U+AKqYAekeTK/8osjgI6Mbe9G8D8d924D7T4kbdi062ZQrgC6yqk+PuKmSbSMM01vqXs/eIXOmIeetZJ93NquoFI3lZApZZj47IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608616; c=relaxed/simple;
-	bh=GICuUzzmiOkHguPega9sPFgs3TL4Z6r6X5XHpTfKuuo=;
+	s=arc-20240116; t=1778609337; c=relaxed/simple;
+	bh=nVQFPcWVXoyYWwjUTJV+gTi9OqnYwho+Ik8zH1mXxqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKFMLP6KCHI0PLqeqHIfLO55WBW3OzaxaEUe4tvUUAbtezi3KiqvjVcxD7rwPvrMut+AOZG6CA7338Vc3ZGvwewYcMTsEOQRtIy1Yeq0SVImzaqKfPD0+WMz5pCKGYnG0puG23+UWD+wYYdRToxdjJqr1nTCG4t19+Nj+xWC+78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2mAJWfw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C86C7C2BCB0;
-	Tue, 12 May 2026 17:56:55 +0000 (UTC)
+	 MIME-Version; b=BZIyOxFrQmNlNaRiIqdVFhhyKyz4pPaJu0mSvTdGN03yky5VgncnYXTwZCVmEyY8/p6os4oVtIQXdCqkbjfy80qNZnfjesxoPSQObGla8ERATQqIBm3uMyH3bKIibYulW82aeGIhZEpALFelNNsOpI7j7pnla7CqWffVx/D7O5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwxFRZgN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DB2C2BCB0;
+	Tue, 12 May 2026 18:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608616;
-	bh=GICuUzzmiOkHguPega9sPFgs3TL4Z6r6X5XHpTfKuuo=;
+	s=korg; t=1778609336;
+	bh=nVQFPcWVXoyYWwjUTJV+gTi9OqnYwho+Ik8zH1mXxqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2mAJWfwYSl90k4k6vq8XhGDWy0iW7iGFmQibhlZYKTlT/n/VxOFc0h0hFaCuS5vB
-	 VaoA7kMqlsiy5/073GHPfCp41sv9UYYH2SCPjhuybdMgYLw0492SzOW1OugC5FIcOI
-	 0dA7lixMugBepUhlbWfZOYmTUPe8sOar7DmprOs4=
+	b=uwxFRZgNodOdasaty2vEtisj5k9rak4cwBLoFwhOuScvIcxfT48U6lWCHDptfGSq3
+	 8PP9ZEFpY3nV3oo9zH8QuNvwu506wfMGqxCJrkc7xoIPeRJUGNBGJPuBkIES2FFy+9
+	 bsO7dBBcVRZ69ZC9qUP3WghMt+sYLXgYH6wnHaVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.18 148/270] btrfs: fix double free in create_space_info() error path
+	David Gow <david@davidgow.net>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH 7.0 154/307] x86/boot/e820: Re-enable BIOS fallback if e820 table is empty
 Date: Tue, 12 May 2026 19:39:09 +0200
-Message-ID: <20260512173941.566727456@linuxfoundation.org>
+Message-ID: <20260512173943.376420109@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +66,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 99BFA527557
+X-Rspamd-Queue-Id: 648EA526EC0
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246200-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246481-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: David Gow <david@davidgow.net>
 
-commit 3f487be81292702a59ea9dbc4088b3360a50e837 upstream.
+commit 5772f6535227ebd104065d80afa8ed3478d34c5c upstream.
 
-When kobject_init_and_add() fails, the call chain is:
+In commit:
 
-create_space_info()
--> btrfs_sysfs_add_space_info_type()
--> kobject_init_and_add()
--> failure
--> kobject_put(&space_info->kobj)
--> space_info_release()
--> kfree(space_info)
+  157266edcc56 ("x86/boot/e820: Simplify append_e820_table() and remove restriction on single-entry tables")
 
-Then control returns to create_space_info():
+the check on the number of entries in the e820 table was removed. The intention
+was to support single-entry maps, but by removing the check entirely, we also
+skip the fallback (to, e.g., the BIOS 88h function).
 
-btrfs_sysfs_add_space_info_type() returns error
--> goto out_free
--> kfree(space_info)
+This means that if no E820 map is passed in from the bootloader (which is the
+case on some bootloaders, like linld), we end up with an empty memory map, and
+the kernel fails to boot (either by deadlocking on OOM, or by failing to
+allocate the real mode trampoline, or similar).
 
-This causes a double free.
+Re-instate the check in append_e820_table(), but only check that nr_entries is
+non-zero. This allows e820__memory_setup_default() to fall back to other memory
+size sources, and doesn't affect e820__memory_setup_extended(), as the latter
+ignores the return value from append_e820_table().
 
-Keep the direct kfree(space_info) for the earlier failure path, but
-after btrfs_sysfs_add_space_info_type() has called kobject_put(), let
-the kobject release callback handle the cleanup.
+In doing so, we also update the return values to be proper error codes, with
+-ENOENT for this case (there are no entries), and -EINVAL for the case where an
+entry appears invalid. Given none of the callers check the actual value -- just
+whether it's nonzero -- this is largely aesthetic in practice.
 
-Fixes: a11224a016d6d ("btrfs: fix memory leaks in create_space_info() error paths")
-CC: stable@vger.kernel.org # 6.19+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Tested against linld, and the kernel boots again fine.
+
+[ mingo: Readability edits to the comment and the changelog. ]
+
+Fixes: 157266edcc56 ("x86/boot/e820: Simplify append_e820_table() and remove restriction on single-entry tables")
+Signed-off-by: David Gow <david@davidgow.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: stable@vger.kernel.org
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://patch.msgid.link/20260416065746.1896647-1-david@davidgow.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/space-info.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/e820.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -311,7 +311,7 @@ static int create_space_info(struct btrf
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index 2a9992758933..eb72537bc0b1 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -450,6 +450,10 @@ __init static int append_e820_table(struct boot_e820_entry *entries, u32 nr_entr
+ {
+ 	struct boot_e820_entry *entry = entries;
  
- 	ret = btrfs_sysfs_add_space_info_type(info, space_info);
- 	if (ret)
--		goto out_free;
-+		return ret;
++	/* If there aren't any entries, we'll want to fall back to another source: */
++	if (!nr_entries)
++		return -ENOENT;
++
+ 	while (nr_entries) {
+ 		u64 start = entry->addr;
+ 		u64 size  = entry->size;
+@@ -458,7 +462,7 @@ __init static int append_e820_table(struct boot_e820_entry *entries, u32 nr_entr
  
- 	list_add(&space_info->list, &info->space_info);
- 	if (flags & BTRFS_BLOCK_GROUP_DATA)
+ 		/* Ignore the remaining entries on 64-bit overflow: */
+ 		if (start > end && likely(size))
+-			return -1;
++			return -EINVAL;
+ 
+ 		e820__range_add(start, size, type);
+ 
+-- 
+2.54.0
+
 
 
 
