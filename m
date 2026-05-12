@@ -1,89 +1,86 @@
-Return-Path: <stable+bounces-246654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDFUMG2GA2ot6wEAu9opvQ
-	(envelope-from <stable+bounces-246654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:58:37 +0200
+	id wAN5GAaIA2r46wEAu9opvQ
+	(envelope-from <stable+bounces-246655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:05:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19783528E3B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:58:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 001BB528F0E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E87E6303FFD0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4E99309147A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FFAD39526B;
-	Tue, 12 May 2026 19:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA06A3AB482;
+	Tue, 12 May 2026 20:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Fpt2izl+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QiVLlJll"
 X-Original-To: stable@vger.kernel.org
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012038.outbound.protection.outlook.com [52.101.43.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D093921E7
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 19:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.38
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778615912; cv=fail; b=tXyhfdYqYIjrdHRmETxJ3Zs5w7CvTFWaxRgC8WqVlEtWzdJtDc1fLB0qTmOb3/iKLRLoDH/bZafZT/MbYG4CqDYzbsbJ+zIFplhwchOQ+WKkve/TexdokBsKwJuL9r6Toih+lWkNQAtp6fHV75ZTObVixFKCSIDEpsLnm1oTmbk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778615912; c=relaxed/simple;
-	bh=aW0SbrlWxagNFVR/nEYGAH024pAxH6E4fDQahPP8SKA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Npl6ncCfB9bMyYh5VJUzrThXf4wKNxk8bfBxIqJ9xKFuRiU+Ai3SDOSqJNX80U9cI6Xo6OpyJSdkqKvmias2+ZAHSSSGQPlBC8MdpgXlejUKMyEmie/llknaOKLNXKutyBROMNQdYh2MBAAik2uzjmUrpcMLRrS95U6TAzz2PSA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Fpt2izl+; arc=fail smtp.client-ip=52.101.43.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vi35x4hjjoivKIMo3kzUNn0LLDZkqFYVo8pDbaV+S2chn7IyxnNuttHBugcYxkHkNhJTw7Bvl4Kst/qvC4jrsX+V/AsL8q6ghWniXqjvYVxQATl348wHlY+1/avk8NTZABgJ4MXmDT7RYsdb3dQ+GhbvjOJp7ZZPeC0aTBvgTiczT8Pfhiu/V337mo7LNz0NudJ9WPXCU+Zx/1Oq5P/EUq7EQ1BxgV4NA7fhYavS/0sFZdP78t05VSfOCKSLl4XjHDtMQwiRZLRgB+mKFuYHUnQ/sWDnHRfuI2MBEOuPYU3LeN7r1rrMUdOn4pfVHBSBFPXI7R2bKTOfGaFkru5uqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i8gKLHVCBTEgNOEa+4iKa/nx5zKJykNq0rWGM5jVzgI=;
- b=Ygk7M6s2TtzgH5jcsWiHviKKRDf8XT+i4Qkl58zA4oiPrYHvhNPnYPI0Yu4bCy5947y1bIAvCI/IHQlgNyNeeR9lutvw+SIajFi88l+2QbVdrWMDScnLaIGUYFhHYxHgqgF0DZFTrFOLqVORYeRzE+s2fHkwAUM7o9mquAN1f9pLVZ5iPPu0x7mp8udC/1qEyMpE3dZPHoQs0E5AWKND3y+7FN898s2FurFOHk/TCQcFPvz8Gdn8k/lFUG/oi6Z8A48tDzeYhBf/aSteMQxxnuKxVhFaYHxSwrJEm0FNWt1e/95VwiBXFcDbvbBN2NX3IWhA8rj11oBcwYkznFuywg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i8gKLHVCBTEgNOEa+4iKa/nx5zKJykNq0rWGM5jVzgI=;
- b=Fpt2izl+i9O8vMzeLqJShv8MqXvnQJIZGtqkQrkogKppsF1xjldLAi7iKGIo3i+LUFRKTBVD/O/nXeqREabhTF2ek4hCrFp+sgdFFsYzsYO9iFK0obFUGBCm1Tb6VY9TLbHrEOLPvTHg9bvM06e53Hq/zatVOzRCTWn+2qpTGJk=
-Received: from SJ2PR07CA0007.namprd07.prod.outlook.com (2603:10b6:a03:505::12)
- by DS0PR12MB8443.namprd12.prod.outlook.com (2603:10b6:8:126::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Tue, 12 May
- 2026 19:58:23 +0000
-Received: from SJ1PEPF0000231D.namprd03.prod.outlook.com
- (2603:10b6:a03:505:cafe::c6) by SJ2PR07CA0007.outlook.office365.com
- (2603:10b6:a03:505::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.16 via Frontend Transport; Tue, 12
- May 2026 19:58:22 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF0000231D.mail.protection.outlook.com (10.167.242.234) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.13 via Frontend Transport; Tue, 12 May 2026 19:58:22 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 12 May
- 2026 14:58:22 -0500
-Received: from xsjlizhih51.xilinx.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Tue, 12 May 2026 14:58:17 -0500
-From: Lizhi Hou <lizhi.hou@amd.com>
-To: <Christian.Koenig@amd.com>
-CC: Lizhi Hou <lizhi.hou@amd.com>, <max.zhen@amd.com>,
-	<mario.limonciello@amd.com>, <stable@vger.kernel.org>, Christian Koenig
-	<christian.koenig@amd.com>
-Subject: [PATCH V1] accel/amdxdna: Remove mmap and export support for ubuf
-Date: Tue, 12 May 2026 12:58:16 -0700
-Message-ID: <20260512195816.556882-1-lizhi.hou@amd.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F22D3A8737
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 20:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778616313; cv=none; b=KPKt4rkknezVa0Qca9YfOJ4/6aWVtS2DkpraHQsEbtZgMh2JdppIJ6K+Gg/0QUW2HoMoPpn52wn2vYNhKcZi5aSTKmlXiiLNBJD1IYn7uN/pGbraqbhwCuJg8m3tpA8Z8NgSRNiCTVm64WHgt4KdGu+rG5t6vL3dYdHmU+PoEI4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778616313; c=relaxed/simple;
+	bh=oauhwQ4bfgPwVDvS1oO+Iizts7tGkAlW1rmqN7jXvFE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fctVhbFiaRQ2fkaeha6Z8krFvqI+HpOp/jqPOdow7HATLg5kKOu4OUexI2+Hlx4pjHP52pnDygwTc7FXegRajkvvfaPIzSpZQRDtAuX1BqVZqA27TNv3coLJqzUk7aP7ydwPwnmSjEbrCeAj3uienVy/zj26yKhGGdQYkhL9Im0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QiVLlJll; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-90f850473f9so16015085a.3
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 13:05:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778616311; x=1779221111; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6dz5TXqHWQjetWKKAInNPkpUojoo8oCZ/Ayi/D/P0KA=;
+        b=QiVLlJllR3es502xph0zSQwyUCQzer2aVd471P9czjOeNFGFk6mue4cl1PTFWJlQPb
+         /GWziTqv83gF65epK0HhikoMLVbm+UgLLUfyQ6g0Ib/iTZnWKi/apZfe61paGnfdbwsL
+         PiHKU8/5LKb0UK8usctRCJ8MEPRaIc6EWr5h04yMevLlGhC5pRqvyduI6E6qeSClACWT
+         div0LBTYdzmSA9YCHWMm+dEOhdCS6s9QBvfSdl+MGkMNiXvTlwTpbP/bDmjpXyR69PUC
+         v13KjXgepcqvNzETmHy1lljeUE1d6vh3xcMZUPEwA1r3qaCh9RIPMlRKXVlBxLG/pNjz
+         6UgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778616311; x=1779221111;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6dz5TXqHWQjetWKKAInNPkpUojoo8oCZ/Ayi/D/P0KA=;
+        b=W5PpVXNV0KefIG1s2AsVzCcD0Bwa1PNLiEiuMMoWGnfchcANAMaAUWeIOPXmqTU1Tr
+         AohmgZqIpQiwGFlL0nWn+dZkvKb/Pbcu4l4vCmLFZyg9NuTHYsHiR0dPClVKHTA9cJpx
+         rftUflPxdZHtke6HLPUSFb1CMwpDamPI1XpGB91xYxprXYOboLCbe9aWIu08D6ZYpeFC
+         8CwLL3gc9/5vhRsNevIQRbLmCEzkX9m6RZCpDWMJJRJ7Ha0UO0u++o2X26CgOIwNuOC3
+         Bj/c06VE6WGYmYF1jSE2x7g/T7Ja59KGTLpss0RENfpb2+5ft8ypu/7GSC0syg+RwfMU
+         uTkg==
+X-Gm-Message-State: AOJu0YyXFFQVnCLI2DgbZT7Xmp0mULeZnoqPMzyGy6Q1p4BuDlptUmFs
+	hGxXNG9RHgB0ftKlZtDB4+COUQ36SIMTOqNy/VGXdOpnf0eZTftFmTeHfykc8A==
+X-Gm-Gg: Acq92OHSFGLXVyLUdFBrfOJW0vDRYDM8YHWvjIVHxDJQv0VgQQ2HzNYaUtIQBoVgNsG
+	YfhAvvgFP5l6RD4uZGwTQfOX59KPObMPQ299MIFpaHLA2AvJFYH5hfl/rHbxH3sYIudEiLCuA46
+	wilR30flXjn4P7lzc5ipghIO3BsEH6qTpfLKwF6C+kyBRDjfULakCJsX+pDqU96UCBomuVMIXuG
+	uJv/Lg6WQKexj9OQMVefAsU1wr8fttNsj+Ovc6E6zDbHq1UiC/rQ6aDZ/WvMvp9PIkJv9GdsyTd
+	GDsLjhOMHh2c8DPNTv4R5hAZEmqOoAQRGDvS/xR4cYQ/lBSWo59IeOd1/8NCIbtEtc3cxvMoi7n
+	/xJavxUu15Cp1UMcLniHJMeQ8X85AH8G++lTtOrpbPOfq8v3UDqhOkEAhcrFrZQdURdmQbA9huv
+	aPYQtjkGlaA3oXxhydjQ==
+X-Received: by 2002:a05:620a:1a10:b0:8e4:ebbb:b162 with SMTP id af79cd13be357-90f884e7aadmr73101385a.9.1778616311117;
+        Tue, 12 May 2026 13:05:11 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:71::])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2c91fb3bsm3438265485a.41.2026.05.12.13.05.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 13:05:10 -0700 (PDT)
+From: Joanne Koong <joannelkoong@gmail.com>
+To: miklos@szeredi.hu,
+	fuse-devel@lists.linux.dev
+Cc: stable@vger.kernel.org
+Subject: [PATCH v1] fuse: use copy_splice_read() for FOPEN_DIRECT_IO splice read
+Date: Tue, 12 May 2026 13:04:48 -0700
+Message-ID: <20260512200448.3818665-1-joannelkoong@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,171 +88,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231D:EE_|DS0PR12MB8443:EE_
-X-MS-Office365-Filtering-Correlation-Id: e304368d-ac36-469c-7c41-08deb060d298
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700016|56012099003|18002099003|11063799003;
-X-Microsoft-Antispam-Message-Info:
-	OnsOlZu7n5RhOcwChn+wPBg95Zf8i7BbCJ7O1IWy0EOTmimwbX8teA9n+s/UQfG7VM4cb1F/XQ2zkHQwZb42kkJnw/G4wRK76s0bdSkQ0DOTk09vd/tUkojii5U9+aJfoOdwOYmdbQ9o0Sjz1jT7Qkj96LduZj3qYMVvOf12cOG+375qCQJaCnsszjYMUemFrR5SAJB6/J51S9BdDa8Wj8VUptkGaexo+AU42stcuQLiO2zx8mWEFyMaFSHn3188qQdT5Q4BHJ+NBCRYV6PoOcE+zfAZTunSzwSteKECXZA2CKwSF8zjHrReVJaxjqvmLCuZ+KsORn0hH0RsonsjM8Mm1c2sly0KXV3xOJkyelFDGd9outA8A0/tAf3VUwceEf0nLzZeOfge1Pu/2LRBion8XODyUkKh8c7DyQmcYSI8orvenrWU4ZghDvj/ac0MRPmz406dq/qhx/zuilTN51WYGNyt6Kv/vtlckQNQT/DwLbRVmmy7ZhxOblTPN9JxYjHNdsa9WrcI52sV5kuej0/90Yi7a+mrPxKkNbvOqxlJAm/5LKxe6eIerG2xVaVQL2jJ8coc0OfrvpddYG1BEuoA60JlpXKUfckFjSM3My5cP79KmLCqdk90ssjIlFHfZQmteEqyrZ2Y2jSLvEuodPZKsH4wcef7blpmpJ1Dk0EMsqbc6cQef2KMLtOM58gMts9xC9HPCbKT/8z8UKqrzcALMAjY+PIF0VH4gCliWJs=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700016)(56012099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	NNf+5ZE8jsVOMFqjKTqpxhHlotUl8gb9UZYBCyRv/k95XW43ILVZv4r1uPYkQhmVMaF5YuLlS4fBv3e1x51YFc0W7+P7seyCpzPGrDecXfFe1lstHjoIPuWEiktFKJaXCYpQn9DY8WIls4U5UzRGtF7hLmRiUSrwg7U9csXpLSIHKmnTjaYQTl2GQMRV7azWguUNTXtH92ot/DWBSDlMoAzXP1l8fGd2+slbogFabYQF6XCdXtHZhiI+Bh73pvX+rluChN+OCpWpFOtH3g3fyuwvBL4WOKBqczWgTsYs9sgC5TyFTf1H7aweBXbRwbmMfsfA/yYgMk2QzECJ5NWR5aPVhu/s+vKc4gvjchTcBML2bVObTzjBooKnOw4AK+ZA6d6RCrgRfJoqZ80h4gms7Devi4LHYpsWm2xW8KbYz9cBEp8cnZvN48Fumutr6sIP
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 19:58:22.8287
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e304368d-ac36-469c-7c41-08deb060d298
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF0000231D.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8443
-X-Rspamd-Queue-Id: 19783528E3B
+X-Rspamd-Queue-Id: 001BB528F0E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246654-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246655-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lizhi.hou@amd.com,stable@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amd.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,amd.com:mid,amd.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[8]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Ubuf pages should not be mmaped or exported. Remove the ubuf mmap callback
-and return -EOPNOTSUPP when exporting ubuf objects.
+When FOPEN_DIRECT_IO is set, fuse_splice_read() calls
+filemap_splice_read(), which populates the pipe with pages from the fuse
+inode's page cache.
 
-Fixes: bd72d4acda10 ("accel/amdxdna: Support user space allocated buffer")
-Cc: stable@vger.kernel.org	# 6.18
-Cc: Christian Koenig <christian.koenig@amd.com>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+This contradicts FOPEN_DIRECT_IO, which is set by the server to indicate
+that the page cache should be bypassed entirely. Subsequent splice reads
+can then read stale data from the cache instead of fetching fresh data
+from the server.
+
+Use copy_splice_read() instead, which will invoke ->read_iter() on each
+splice read, sending a FUSE_READ to the server every time without
+populating the page cache.
+
+We do not need to add checking for O_DIRECT since this is already
+handled at the vfs layer in do_splice_read().
+
+Fixes: 2cb1e08985e3 ("splice: Use filemap_splice_read() instead of generic_file_splice_read()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 ---
- drivers/accel/amdxdna/amdxdna_gem.c  |  9 +++++++-
- drivers/accel/amdxdna/amdxdna_gem.h  |  2 ++
- drivers/accel/amdxdna/amdxdna_ubuf.c | 32 ----------------------------
- 3 files changed, 10 insertions(+), 33 deletions(-)
+ fs/fuse/file.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/accel/amdxdna/amdxdna_gem.c b/drivers/accel/amdxdna/amdxdna_gem.c
-index 319d2064fafa..6087264ba1b5 100644
---- a/drivers/accel/amdxdna/amdxdna_gem.c
-+++ b/drivers/accel/amdxdna/amdxdna_gem.c
-@@ -492,6 +492,9 @@ static struct dma_buf *amdxdna_gem_prime_export(struct drm_gem_object *gobj, int
- 	struct amdxdna_gem_obj *abo = to_xdna_obj(gobj);
- 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index 3bdab8d03373..3ebe18ed0264 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -1859,7 +1859,9 @@ static ssize_t fuse_splice_read(struct file *in, loff_t *ppos,
+ 	struct fuse_file *ff = in->private_data;
  
-+	if (abo->pri)
-+		return ERR_PTR(-EOPNOTSUPP);
-+
- 	if (abo->dma_buf) {
- 		get_dma_buf(abo->dma_buf);
- 		return abo->dma_buf;
-@@ -716,6 +719,7 @@ amdxdna_gem_create_ubuf_object(struct drm_device *dev, struct amdxdna_drm_create
- {
- 	struct amdxdna_dev *xdna = to_xdna_dev(dev);
- 	struct amdxdna_drm_va_tbl va_tbl;
-+	struct amdxdna_gem_obj *abo;
- 	struct drm_gem_object *gobj;
- 	struct dma_buf *dma_buf;
- 
-@@ -742,7 +746,10 @@ amdxdna_gem_create_ubuf_object(struct drm_device *dev, struct amdxdna_drm_create
- 
- 	dma_buf_put(dma_buf);
- 
--	return to_xdna_obj(gobj);
-+	abo = to_xdna_obj(gobj);
-+	abo->pri = true;
-+
-+	return abo;
- }
- 
- static struct amdxdna_gem_obj *
-diff --git a/drivers/accel/amdxdna/amdxdna_gem.h b/drivers/accel/amdxdna/amdxdna_gem.h
-index 4fc48a1189d2..162e5499f5e0 100644
---- a/drivers/accel/amdxdna/amdxdna_gem.h
-+++ b/drivers/accel/amdxdna/amdxdna_gem.h
-@@ -54,6 +54,8 @@ struct amdxdna_gem_obj {
- 
- 	/* True, if BO is managed by XRT, not application */
- 	bool				internal;
-+	/* True, if BO is not exportable */
-+	bool				pri;
- };
- 
- #define to_gobj(obj)    (&(obj)->base.base)
-diff --git a/drivers/accel/amdxdna/amdxdna_ubuf.c b/drivers/accel/amdxdna/amdxdna_ubuf.c
-index 3769210c55cc..df4ab225fbf9 100644
---- a/drivers/accel/amdxdna/amdxdna_ubuf.c
-+++ b/drivers/accel/amdxdna/amdxdna_ubuf.c
-@@ -87,42 +87,10 @@ static const struct vm_operations_struct amdxdna_ubuf_vm_ops = {
- 	.fault = amdxdna_ubuf_vm_fault,
- };
- 
--static int amdxdna_ubuf_mmap(struct dma_buf *dbuf, struct vm_area_struct *vma)
--{
--	struct amdxdna_ubuf_priv *ubuf = dbuf->priv;
--
--	vma->vm_ops = &amdxdna_ubuf_vm_ops;
--	vma->vm_private_data = ubuf;
--	vm_flags_set(vma, VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
--
--	return 0;
--}
--
--static int amdxdna_ubuf_vmap(struct dma_buf *dbuf, struct iosys_map *map)
--{
--	struct amdxdna_ubuf_priv *ubuf = dbuf->priv;
--	void *kva;
--
--	kva = vmap(ubuf->pages, ubuf->nr_pages, VM_MAP, PAGE_KERNEL);
--	if (!kva)
--		return -EINVAL;
--
--	iosys_map_set_vaddr(map, kva);
--	return 0;
--}
--
--static void amdxdna_ubuf_vunmap(struct dma_buf *dbuf, struct iosys_map *map)
--{
--	vunmap(map->vaddr);
--}
--
- static const struct dma_buf_ops amdxdna_ubuf_dmabuf_ops = {
- 	.map_dma_buf = amdxdna_ubuf_map,
- 	.unmap_dma_buf = amdxdna_ubuf_unmap,
- 	.release = amdxdna_ubuf_release,
--	.mmap = amdxdna_ubuf_mmap,
--	.vmap = amdxdna_ubuf_vmap,
--	.vunmap = amdxdna_ubuf_vunmap,
- };
- 
- static int readonly_va_entry(struct amdxdna_drm_va_entry *va_ent)
+ 	/* FOPEN_DIRECT_IO overrides FOPEN_PASSTHROUGH */
+-	if (fuse_file_passthrough(ff) && !(ff->open_flags & FOPEN_DIRECT_IO))
++	if (ff->open_flags & FOPEN_DIRECT_IO)
++		return copy_splice_read(in, ppos, pipe, len, flags);
++	else if (fuse_file_passthrough(ff))
+ 		return fuse_passthrough_splice_read(in, ppos, pipe, len, flags);
+ 	else
+ 		return filemap_splice_read(in, ppos, pipe, len, flags);
 -- 
-2.34.1
+2.52.0
 
 
