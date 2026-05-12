@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246005-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLx2MYJtA2pS5wEAu9opvQ
-	(envelope-from <stable+bounces-246542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:18 +0200
+	id 8LpFCjFqA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246005-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6C5527016
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2995265B4
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5624430402F4
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:11:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7AA23316A038
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E6423E356;
-	Tue, 12 May 2026 18:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119C23DD862;
+	Tue, 12 May 2026 17:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fr9vRWLW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMSTwvR0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C444336891;
-	Tue, 12 May 2026 18:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81EA3C0A18;
+	Tue, 12 May 2026 17:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609494; cv=none; b=lAmsWv+nB/Un141BFISOKqtTpHxoa7yyXlhGQo+R1zURik8+/3SljIR+dDN4DOITBaWXWFZWyhXAhYD89/Mn9pNfihfnFoRhoqHH08dzmKos/QIOHL1IJYLbIqWzzXbMRGFE8yB1prOwlVMLLI4Q/VIt9l1e/EEkr8R0nD01LMY=
+	t=1778608113; cv=none; b=QOrVv5aUzolPFQOu/ek5vPbaVW3CKQxYX+5k5roaCrJlKDwiK93+uCWgMTHAiN5DpWna3BEDVWkZp45+io8skOYIiGn2e18g/eAoGM17bJTC+pk5/DS9YQXIA7kxz5Yy9f5m0GolgqZNVHT6keSin8DFoYQTLcQ+dRLAIjmBlC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609494; c=relaxed/simple;
-	bh=veC6dauVX7paheoe4nnl2hjCPtdHrRp7gt9MbhWzPvc=;
+	s=arc-20240116; t=1778608113; c=relaxed/simple;
+	bh=Y2tOlAi1fhniCfbTAwndBGBVjU/Xj//rjX8MdKZxP3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZ2R+UZWk9uND/kOwPPsJ2rparHbC3HfQZuHE0R3JyjbBaYjeg7n27bW6wK52Asg8rQeO/ivsqXwsJ1zohxTABhi48nJCXWnv6gyTRee8rqO1p27NRcAtal3GGHeMDlgMjL8wH9CejLUdRgjp77kC5QXohhWtdTohDDa7wydGT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fr9vRWLW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2287FC2BCC7;
-	Tue, 12 May 2026 18:11:33 +0000 (UTC)
+	 MIME-Version; b=HWLNiFtz6dBkTzEHlOMZyY7zdiyWHHQckEq44pDyB/Q7tmM4AY1pttnB535UproxRtIrAlY+6YIt7n8LZchGMwzxMQpMnw1gaCTmHXEmMXy/MzceUjsPPxLbAu4eaDdvyFkd0doTiNU36QvxIkU5aR5BJhCJzS+wFqfYdrlS3PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMSTwvR0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B79FC2BCFA;
+	Tue, 12 May 2026 17:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609494;
-	bh=veC6dauVX7paheoe4nnl2hjCPtdHrRp7gt9MbhWzPvc=;
+	s=korg; t=1778608113;
+	bh=Y2tOlAi1fhniCfbTAwndBGBVjU/Xj//rjX8MdKZxP3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fr9vRWLWrUOclY/rftE9S/np8F/CUERSf/sCq1k8QWg129dN6Vy2EfWUr2RlFIHmu
-	 RlmveOOLjdk/OLGYbJS/JA7ewd/WXs0UUZfzDkwEXIlCaXSCrUga7pFPqiLgc/Px+E
-	 bKEdEPAvJrLxqaZHeNSiIwJMNABn3vqYxZeJDNxA=
+	b=bMSTwvR0TFt213I9S8oHLaDDvKvyJ1rYWaXmgsLzjOudBhNtWz9a3YNT5u3IsLar5
+	 /slkN3rOlzkAoV3aMIOcELadTL3JQd73W3UXO/LNvDFDcbXRlJsWMhsmaf4VLG0Mi+
+	 4/CUGtlC4DkjP/FHWD3oGRWJmilfk6Uz2KwFmeWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liew Rui Yan <aethernet65535@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 218/307] mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 161/206] mptcp: use MPTCP_RST_EMPTCP for ACK HMAC validation failure
 Date: Tue, 12 May 2026 19:40:13 +0200
-Message-ID: <20260512173944.717396238@linuxfoundation.org>
+Message-ID: <20260512173936.273335789@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,280 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8C6C5527016
+X-Rspamd-Queue-Id: 9E2995265B4
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246542-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246005-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpiricsoftware.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-commit 64a140afa5ed1c6f5ba6d451512cbdbbab1ba339 upstream.
+commit a6da02d4c00fdda2417e42ad2b762a9209e6cc49 upstream.
 
-Patch series "mm/damon/modules: detect and use fresh status", v3.
+When HMAC validation fails on a received ACK + MP_JOIN in
+subflow_syn_recv_sock(), the subflow is reset with reason
+MPTCP_RST_EPROHIBIT ("Administratively prohibited"). This is
+incorrect: HMAC validation failure is an MPTCP protocol-level
+error, not an administrative policy denial.
 
-DAMON modules including DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
-commonly expose the kdamond running status via their parameters.  Under
-certain scenarios including wrong user inputs and memory allocation
-failures, those parameter values can be stale.  It can confuse users.  For
-DAMON_RECLAIM and DAMON_LRU_SORT, it even makes the kdamond unable to be
-restarted before the system reboot.
+The mirror site on the client, in subflow_finish_connect(), already
+uses MPTCP_RST_EMPTCP ("MPTCP-specific error") for the same kind of
+HMAC failure on the SYN/ACK + MP_JOIN. Use the same reason on the
+server side for symmetry and accuracy.
 
-The problem comes from the fact that there are multiple events for the
-status changes and it is difficult to follow up all the scenarios.  Fix
-the issue by detecting and using the status on demand, instead of using a
-cached status that is difficult to be updated.
-
-Patches 1-3 fix the bugs in DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
-in the order.
-
-
-This patch (of 3):
-
-DAMON_RECLAIM updates 'enabled' and 'kdamond_pid' parameter values, which
-represents the running status of its kdamond, when the user explicitly
-requests start/stop of the kdamond.  The kdamond can, however, be stopped
-in events other than the explicit user request in the following three
-events.
-
-1. ctx->regions_score_histogram allocation failure at beginning of the
-   execution,
-2. damon_commit_ctx() failure due to invalid user input, and
-3. damon_commit_ctx() failure due to its internal allocation failures.
-
-Hence, if the kdamond is stopped by the above three events, the values of
-the status parameters can be stale.  Users could show the stale values and
-be confused.  This is already bad, but the real consequence is worse.
-DAMON_RECLAIM avoids unnecessary damon_start() and damon_stop() calls
-based on the 'enabled' parameter value.  And the update of 'enabled'
-parameter value depends on the damon_start() and damon_stop() call
-results.  Hence, once the kdamond has stopped by the unintentional events,
-the user cannot restart the kdamond before the system reboot.  For
-example, the issue can be reproduced via below steps.
-
-    # cd /sys/module/damon_reclaim/parameters
-    #
-    # # start DAMON_RECLAIM
-    # echo Y > enabled
-    # ps -ef | grep kdamond
-    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
-    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
-    #
-    # # commit wrong input to stop kdamond withou explicit stop request
-    # echo 3 > addr_unit
-    # echo Y > commit_inputs
-    bash: echo: write error: Invalid argument
-    #
-    # # confirm kdamond is stopped
-    # ps -ef | grep kdamond
-    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
-    #
-    # # users casn now show stable status
-    # cat enabled
-    Y
-    # cat kdamond_pid
-    806
-    #
-    # # even after fixing the wrong parameter,
-    # # kdamond cannot be restarted.
-    # echo 1 > addr_unit
-    # echo Y > enabled
-    # ps -ef | grep kdamond
-    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
-
-The problem will only rarely happen in real and common setups for the
-following reasons.  The allocation failures are unlikely in such setups
-since those allocations are arguably too small to fail.  Also sane users
-on real production environments may not commit wrong input parameters.
-But once it happens, the consequence is quite bad.  And the bug is a bug.
-
-The issue stems from the fact that there are multiple events that can
-change the status, and following all the events is challenging.
-Dynamically detect and use the fresh status for the parameters when those
-are requested.
-
-Link: https://lore.kernel.org/20260419161003.79176-1-sj@kernel.org
-Link: https://lore.kernel.org/20260419161003.79176-2-sj@kernel.org
-Fixes: e035c280f6df ("mm/damon/reclaim: support online inputs update")
-Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.19.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Suggested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 443041deb5ef ("mptcp: fix NULL pointer in can_accept_new_subflow")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260501-net-mptcp-misc-fixes-7-1-rc3-v1-2-b70118df778e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/reclaim.c |   85 ++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 55 insertions(+), 30 deletions(-)
+ net/mptcp/subflow.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -144,15 +144,6 @@ static unsigned long addr_unit __read_mo
- static bool skip_anon __read_mostly;
- module_param(skip_anon, bool, 0600);
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -910,7 +910,7 @@ create_child:
  
--/*
-- * PID of the DAMON thread
-- *
-- * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
-- * Else, -1.
-- */
--static int kdamond_pid __read_mostly = -1;
--module_param(kdamond_pid, int, 0400);
--
- static struct damos_stat damon_reclaim_stat;
- DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_reclaim_stat,
- 		reclaim_tried_regions, reclaimed_regions, quota_exceeds);
-@@ -293,12 +284,8 @@ static int damon_reclaim_turn(bool on)
- {
- 	int err;
+ 			if (!subflow_hmac_valid(req, &mp_opt)) {
+ 				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
+-				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
++				subflow_add_reset_reason(skb, MPTCP_RST_EMPTCP);
+ 				goto dispose_child;
+ 			}
  
--	if (!on) {
--		err = damon_stop(&ctx, 1);
--		if (!err)
--			kdamond_pid = -1;
--		return err;
--	}
-+	if (!on)
-+		return damon_stop(&ctx, 1);
- 
- 	err = damon_reclaim_apply_parameters();
- 	if (err)
-@@ -307,9 +294,6 @@ static int damon_reclaim_turn(bool on)
- 	err = damon_start(&ctx, 1, true);
- 	if (err)
- 		return err;
--	kdamond_pid = damon_kdamond_pid(ctx);
--	if (kdamond_pid < 0)
--		return kdamond_pid;
- 	return damon_call(ctx, &call_control);
- }
- 
-@@ -337,42 +321,83 @@ module_param_cb(addr_unit, &addr_unit_pa
- MODULE_PARM_DESC(addr_unit,
- 	"Scale factor for DAMON_RECLAIM to ops address conversion (default: 1)");
- 
-+static bool damon_reclaim_enabled(void)
-+{
-+	if (!ctx)
-+		return false;
-+	return damon_is_running(ctx);
-+}
-+
- static int damon_reclaim_enabled_store(const char *val,
- 		const struct kernel_param *kp)
- {
--	bool is_enabled = enabled;
--	bool enable;
- 	int err;
- 
--	err = kstrtobool(val, &enable);
-+	err = kstrtobool(val, &enabled);
- 	if (err)
- 		return err;
- 
--	if (is_enabled == enable)
-+	if (damon_reclaim_enabled() == enabled)
- 		return 0;
- 
- 	/* Called before init function.  The function will handle this. */
- 	if (!damon_initialized())
--		goto set_param_out;
-+		return 0;
- 
--	err = damon_reclaim_turn(enable);
--	if (err)
--		return err;
-+	return damon_reclaim_turn(enabled);
-+}
- 
--set_param_out:
--	enabled = enable;
--	return err;
-+static int damon_reclaim_enabled_load(char *buffer,
-+		const struct kernel_param *kp)
-+{
-+	return sprintf(buffer, "%c\n", damon_reclaim_enabled() ? 'Y' : 'N');
- }
- 
- static const struct kernel_param_ops enabled_param_ops = {
- 	.set = damon_reclaim_enabled_store,
--	.get = param_get_bool,
-+	.get = damon_reclaim_enabled_load,
- };
- 
- module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
- MODULE_PARM_DESC(enabled,
- 	"Enable or disable DAMON_RECLAIM (default: disabled)");
- 
-+static int damon_reclaim_kdamond_pid_store(const char *val,
-+		const struct kernel_param *kp)
-+{
-+	/*
-+	 * kdamond_pid is read-only, but kernel command line could write it.
-+	 * Do nothing here.
-+	 */
-+	return 0;
-+}
-+
-+static int damon_reclaim_kdamond_pid_load(char *buffer,
-+		const struct kernel_param *kp)
-+{
-+	int kdamond_pid = -1;
-+
-+	if (ctx) {
-+		kdamond_pid = damon_kdamond_pid(ctx);
-+		if (kdamond_pid < 0)
-+			kdamond_pid = -1;
-+	}
-+	return sprintf(buffer, "%d\n", kdamond_pid);
-+}
-+
-+static const struct kernel_param_ops kdamond_pid_param_ops = {
-+	.set = damon_reclaim_kdamond_pid_store,
-+	.get = damon_reclaim_kdamond_pid_load,
-+};
-+
-+/*
-+ * PID of the DAMON thread
-+ *
-+ * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
-+ * Else, -1.
-+ */
-+module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
-+
- static int __init damon_reclaim_init(void)
- {
- 	int err;
 
 
 
