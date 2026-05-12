@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-246207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COWzJ1pvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:10 +0200
+	id wNyrGxRtA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:10:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7BD752757D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27462526F29
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B58FA30E054A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 28E203035B32
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE233955CF;
-	Tue, 12 May 2026 17:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A43D364959;
+	Tue, 12 May 2026 18:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muUCicms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJOODkKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDA13955C2;
-	Tue, 12 May 2026 17:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F193C36C9E4;
+	Tue, 12 May 2026 18:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608634; cv=none; b=o31odGVH2G32SmMt/SnO0yhT1/5xRVwkvpk7rtWmtIlfmex1fO3yIPdY9bcaqTCgu0fKH9OvhtEO4SeYkta7+7eisXMQuIjlDqndgk9sTjXBJwYETz2wGdEETrXRiH9Xuk3iLhauzdO4TLPfA0pLzRKLSPFLBOGgHbr3hBAKgIU=
+	t=1778609417; cv=none; b=SWRV3UhiQGZBeba1A166xJL13aGgEbYgKZ7w+cmrXtiO0qh3qG2YWSu4IBEHPMpQD5bbQnwS9kGQvIpx/ewjGZNwh06T4ZFG8xdhd4RJaABt7pV7j5c5z4N7rk6VcfaI7To6ZNjnXumQUzrYGZzBzCG/G10UUNU6+cTHoaoxYuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608634; c=relaxed/simple;
-	bh=dcAuj50dMPMyi9qL/sG68eZq4zX5vV7J8pjhmrrXQ7Y=;
+	s=arc-20240116; t=1778609417; c=relaxed/simple;
+	bh=cqwMySQt5wpRpO7ACXsmWHQlDLh1E+dinOvaOaaUi44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qyYs2w5jDOfBpTUkzYAZvFOd/4BdNo+Epek8f1MxD+ZymtXGm1adyMiB6WSNeqgzdAQGHz2F7m0yEcD6PeZDt2AAgX/lVDSVHFlkLfAHzswMwgh8vdBqgewYF54ZXDuHD9BWLVCZetzyYzwOOew490MOC4tvnNsOJFgLQ5vKgeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muUCicms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B935AC2BCB0;
-	Tue, 12 May 2026 17:57:13 +0000 (UTC)
+	 MIME-Version; b=h3etdXvQ7WY3TF/TmWPLN0DWwsKyWUEzis8ZPewdcvtUawxqF47v7aJNQ2/d+1kVgdq4osgE+NdaKPig99aFVpI6Y59T+wE3Qu7vg4IjTSDHGOFkNrTrluaKo/IM+F+Gih/hP0R/2ICZfLsuzwi2++RclE3GHubZSS99gEy0DKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJOODkKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88032C2BCFB;
+	Tue, 12 May 2026 18:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608634;
-	bh=dcAuj50dMPMyi9qL/sG68eZq4zX5vV7J8pjhmrrXQ7Y=;
+	s=korg; t=1778609416;
+	bh=cqwMySQt5wpRpO7ACXsmWHQlDLh1E+dinOvaOaaUi44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=muUCicms3w4OdPxubjY5R7beGmmUp3Ne6vgQuh7rF/9+B5kBqoOKzsWb06rCDRbho
-	 V1WNnZRKR158OKNGgKZbk4FAuGogYV81s5jyRgQO9Ef99FXqmwV7iRHQHEtxNoQzi3
-	 pjY4lvJ3SHVHy4Sx0HRkHtuYzf/Dt9HfdwE79YP4=
+	b=CJOODkKQFF4Z3I92gD1nrvS/HeD4XyUu56Aqcz2FG/FYZaJAJ5CWv5eNCFoPGzA+n
+	 vc4v/SeQhkjxe1f9Y/JZlhteRlbSu0eKKZN87+539+C5MWIFjZRp9k+ikg7P41pyjg
+	 ciSGH7491j8Hqz0aVbwUY8Qzw0i42zJaDGtcEnBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.18 154/270] dm-verity-fec: correctly reject too-small FEC devices
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 7.0 160/307] tracing/fprobe: Avoid kcalloc() in rcu_read_lock section
 Date: Tue, 12 May 2026 19:39:15 +0200
-Message-ID: <20260512173941.691596936@linuxfoundation.org>
+Message-ID: <20260512173943.501246054@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,219 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E7BD752757D
+X-Rspamd-Queue-Id: 27462526F29
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246512-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246207-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 2b14e0bb63cc671120e7791658f5c494fc66d072 upstream.
+commit aa72812b49104bb5a38272fc9541feb62ca6fd32 upstream.
 
-Fix verity_fec_ctr() to reject too-small FEC devices by correctly
-computing the number of parity blocks as 'f->rounds * f->roots'.
-Previously it incorrectly used 'div64_u64(f->rounds * f->roots,
-v->fec->roots << SECTOR_SHIFT)' which is a much smaller value.
+fprobe_remove_node_in_module() is called under RCU read locked, but
+this invokes kcalloc() if there are more than 8 fprobes installed
+on the module. Sashiko warns it because kcalloc() can sleep [1].
 
-Note that the units of 'rounds' are blocks, not bytes.  This matches the
-units of the value returned by dm_bufio_get_device_size(), which are
-also blocks.  A later commit will give 'rounds' a clearer name.
+ [1] https://sashiko.dev/#/patchset/177552432201.853249.5125045538812833325.stgit%40mhiramat.tok.corp.google.com
 
-Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
+To fix this issue, expand the batch size to 128 and do not expand
+the fprobe_addr_list, but just cancel walking on fprobe_ip_table,
+update fgraph/ftrace_ops and retry the loop again.
+
+Link: https://lore.kernel.org/all/177669367206.132053.1493637946869032744.stgit@mhiramat.tok.corp.google.com/
+
+Fixes: 0de4c70d04a4 ("tracing: fprobe: use rhltable for fprobe_ip_table")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-verity-fec.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/trace/fprobe.c |   92 ++++++++++++++++++++++++--------------------------
+ 1 file changed, 45 insertions(+), 47 deletions(-)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -657,7 +657,7 @@ int verity_fec_ctr(struct dm_verity *v)
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -336,11 +336,10 @@ static bool fprobe_is_ftrace(struct fpro
+ }
+ 
+ #ifdef CONFIG_MODULES
+-static void fprobe_set_ips(unsigned long *ips, unsigned int cnt, int remove,
+-			   int reset)
++static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
  {
- 	struct dm_verity_fec *f = v->fec;
- 	struct dm_target *ti = v->ti;
--	u64 hash_blocks, fec_blocks;
-+	u64 hash_blocks;
- 	int ret;
+-	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, remove, reset);
+-	ftrace_set_filter_ips(&fprobe_ftrace_ops, ips, cnt, remove, reset);
++	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, 1, 0);
++	ftrace_set_filter_ips(&fprobe_ftrace_ops, ips, cnt, 1, 0);
+ }
+ #endif
+ #else
+@@ -359,10 +358,9 @@ static bool fprobe_is_ftrace(struct fpro
+ }
  
- 	if (!verity_fec_is_enabled(v)) {
-@@ -738,8 +738,7 @@ int verity_fec_ctr(struct dm_verity *v)
+ #ifdef CONFIG_MODULES
+-static void fprobe_set_ips(unsigned long *ips, unsigned int cnt, int remove,
+-			   int reset)
++static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
+ {
+-	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, remove, reset);
++	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, 1, 0);
+ }
+ #endif
+ #endif /* !CONFIG_DYNAMIC_FTRACE_WITH_ARGS && !CONFIG_DYNAMIC_FTRACE_WITH_REGS */
+@@ -536,7 +534,7 @@ static void fprobe_graph_remove_ips(unsi
  
- 	dm_bufio_set_sector_offset(f->bufio, f->start << (v->data_dev_block_bits - SECTOR_SHIFT));
+ #ifdef CONFIG_MODULES
  
--	fec_blocks = div64_u64(f->rounds * f->roots, v->fec->roots << SECTOR_SHIFT);
--	if (dm_bufio_get_device_size(f->bufio) < fec_blocks) {
-+	if (dm_bufio_get_device_size(f->bufio) < f->rounds * f->roots) {
- 		ti->error = "FEC device is too small";
- 		return -E2BIG;
- 	}
+-#define FPROBE_IPS_BATCH_INIT 8
++#define FPROBE_IPS_BATCH_INIT 128
+ /* instruction pointer address list */
+ struct fprobe_addr_list {
+ 	int index;
+@@ -544,45 +542,24 @@ struct fprobe_addr_list {
+ 	unsigned long *addrs;
+ };
+ 
+-static int fprobe_addr_list_add(struct fprobe_addr_list *alist, unsigned long addr)
++static int fprobe_remove_node_in_module(struct module *mod, struct fprobe_hlist_node *node,
++					 struct fprobe_addr_list *alist)
+ {
+-	unsigned long *addrs;
+-
+-	/* Previously we failed to expand the list. */
+-	if (alist->index == alist->size)
+-		return -ENOSPC;
+-
+-	alist->addrs[alist->index++] = addr;
+-	if (alist->index < alist->size)
++	if (!within_module(node->addr, mod))
+ 		return 0;
+ 
+-	/* Expand the address list */
+-	addrs = kcalloc(alist->size * 2, sizeof(*addrs), GFP_KERNEL);
+-	if (!addrs)
+-		return -ENOMEM;
+-
+-	memcpy(addrs, alist->addrs, alist->size * sizeof(*addrs));
+-	alist->size *= 2;
+-	kfree(alist->addrs);
+-	alist->addrs = addrs;
++	if (delete_fprobe_node(node))
++		return 0;
++	/* If no address list is available, we can't track this address. */
++	if (!alist->addrs)
++		return 0;
+ 
++	alist->addrs[alist->index++] = node->addr;
++	if (alist->index == alist->size)
++		return -ENOSPC;
+ 	return 0;
+ }
+ 
+-static void fprobe_remove_node_in_module(struct module *mod, struct fprobe_hlist_node *node,
+-					 struct fprobe_addr_list *alist)
+-{
+-	if (!within_module(node->addr, mod))
+-		return;
+-	if (delete_fprobe_node(node))
+-		return;
+-	/*
+-	 * If failed to update alist, just continue to update hlist.
+-	 * Therefore, at list user handler will not hit anymore.
+-	 */
+-	fprobe_addr_list_add(alist, node->addr);
+-}
+-
+ /* Handle module unloading to manage fprobe_ip_table. */
+ static int fprobe_module_callback(struct notifier_block *nb,
+ 				  unsigned long val, void *data)
+@@ -591,29 +568,50 @@ static int fprobe_module_callback(struct
+ 	struct fprobe_hlist_node *node;
+ 	struct rhashtable_iter iter;
+ 	struct module *mod = data;
++	bool retry;
+ 
+ 	if (val != MODULE_STATE_GOING)
+ 		return NOTIFY_DONE;
+ 
+ 	alist.addrs = kcalloc(alist.size, sizeof(*alist.addrs), GFP_KERNEL);
+-	/* If failed to alloc memory, we can not remove ips from hash. */
+-	if (!alist.addrs)
+-		return NOTIFY_DONE;
++	/*
++	 * If failed to alloc memory, ftrace_ops will not be able to remove ips from
++	 * hash, but we can still remove nodes from fprobe_ip_table, so we can avoid
++	 * the potential wrong callback. So just print a warning here and try to
++	 * continue without address list.
++	 */
++	WARN_ONCE(!alist.addrs,
++		"Failed to allocate memory for fprobe_addr_list, ftrace_ops will not be updated");
+ 
+ 	mutex_lock(&fprobe_mutex);
++again:
++	retry = false;
++	alist.index = 0;
+ 	rhltable_walk_enter(&fprobe_ip_table, &iter);
+ 	do {
+ 		rhashtable_walk_start(&iter);
+ 
+ 		while ((node = rhashtable_walk_next(&iter)) && !IS_ERR(node))
+-			fprobe_remove_node_in_module(mod, node, &alist);
++			if (fprobe_remove_node_in_module(mod, node, &alist) < 0) {
++				retry = true;
++				break;
++			}
+ 
+ 		rhashtable_walk_stop(&iter);
+-	} while (node == ERR_PTR(-EAGAIN));
++	} while (node == ERR_PTR(-EAGAIN) && !retry);
+ 	rhashtable_walk_exit(&iter);
++	/* Remove any ips from hash table(s) */
++	if (alist.index > 0) {
++		fprobe_remove_ips(alist.addrs, alist.index);
++		/*
++		 * If we break rhashtable walk loop except for -EAGAIN, we need
++		 * to restart looping from start for safety. Anyway, this is
++		 * not a hotpath.
++		 */
++		if (retry)
++			goto again;
++	}
+ 
+-	if (alist.index > 0)
+-		fprobe_set_ips(alist.addrs, alist.index, 1, 0);
+ 	mutex_unlock(&fprobe_mutex);
+ 
+ 	kfree(alist.addrs);
 
 
 
