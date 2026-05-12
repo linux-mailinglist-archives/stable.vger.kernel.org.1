@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJHcLqRsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:36 +0200
+	id mDtEBsloA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:52:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D38526DAE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 887D15263EF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86B183057063
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 722EE301A73C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE7623E356;
-	Tue, 12 May 2026 18:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC333DC871;
+	Tue, 12 May 2026 17:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQB0ojDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBpLS8lD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBA33EDE48;
-	Tue, 12 May 2026 18:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A383ADB9A;
+	Tue, 12 May 2026 17:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609246; cv=none; b=CdN+xZF7VLntAG0T15HXR4iK7ZiOLX91gPbMyeBSTO+ilMV499FVODfhQlEswgnhX5biO19ryIThLcyIzuwDk2XZob391VtC3X7/G04WMAse+8yISgIPay0fjqq5vXRTxZH24e69E+93ubn+U3RiTDy7IE9PCKqwFysKOdvYqjA=
+	t=1778607975; cv=none; b=mRqp87e35nNpg63ORdQM6YFMchwBImFnA9uj1/psM5Cot7+ASs2yU/CjiZao7VDXvhCLVOnxt3PmM2Ite34wrP1BlCaakz25+vzLwO2mOZa+R9WW1uCRIpu2CVrE6PAvvFbEREh9BeRr3XNwHRpUu0G/SbfrghTyfqVoAZizSKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609246; c=relaxed/simple;
-	bh=8qezVbq2BpomxaFFEZIkIzhI+8kHtWLrULeXIM44WOs=;
+	s=arc-20240116; t=1778607975; c=relaxed/simple;
+	bh=KqOf0mL9zQ6XIAGbD+pYuOkOXcTnLQAjjH2HHGjBHIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgeiKpXvJ7+HJUzK725V8chjl5+p9djt1VEMP2tr+GtE15PVHIRtFDtPuAOy9arvvWj6rMreJs1lZSEfooP3JnrX1PBilsXWKpv6eYn1/8LEenfBixyJFfWLTvJQiVdmSoNlBUvTabQMlta5tC1hpb1qjUUmPTKLO7vPSSOtI2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQB0ojDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B32C2BCB0;
-	Tue, 12 May 2026 18:07:25 +0000 (UTC)
+	 MIME-Version; b=TA+Yeai1zDE+br2P24QjVX7d6w89e1BQDLHU+9p8T/TK/zQiZyA+/mLV00/v4RqGljji8P4aAFndhxzuE7rL8qm7V0qtQJNMQTY9qyCSrRFoA9y7nfghHjx6LsmWktPFQZ37GyX+jsNltdafsDalyyqCFgMuoTHssL9r0YwsxbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBpLS8lD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0E3C2BCB0;
+	Tue, 12 May 2026 17:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609246;
-	bh=8qezVbq2BpomxaFFEZIkIzhI+8kHtWLrULeXIM44WOs=;
+	s=korg; t=1778607975;
+	bh=KqOf0mL9zQ6XIAGbD+pYuOkOXcTnLQAjjH2HHGjBHIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQB0ojDwpi8bmwMuls7qeZKNRQp++vWISqcQEy75QcPVAObptJ4QKzZtBWhnhqnfq
-	 Yx4KgkA8geWetQwJTa2JY7VZmsrL03K1Cd3TfxAZTtZvd2JMArsVtOX2Qv4/02lrIe
-	 24q7Uw9FD/s7EB7yB3tfWUj/5CHw98l3sz9oGIx0=
+	b=dBpLS8lDnvTCce6Cn+GJuU0qaB+su5gcvxNQ6UZPsbM1FeT7/8RmFfGSboyXw7xyD
+	 UZL2gd6K4fNO8iU3QnRjLVMDnP7niacFfOYQNj9vEiybv4BQInjWLWoz2FjObQzozw
+	 B+ia5M6dPN95VJ3LO3iH9hXHhpcyULorD++B83Ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavitra Jha <jhapavitra98@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 122/307] net: wwan: t7xx: validate port_count against message length in t7xx_port_enum_msg_handler
+	stable@kernel.org,
+	Siwei Zhang <oss@fourdim.xyz>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 065/206] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_new_connection_cb()
 Date: Tue, 12 May 2026 19:38:37 +0200
-Message-ID: <20260512173942.704420275@linuxfoundation.org>
+Message-ID: <20260512173934.221056386@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,177 +64,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A7D38526DAE
+X-Rspamd-Queue-Id: 887D15263EF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246445-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245951-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fourdim.xyz:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavitra Jha <jhapavitra98@gmail.com>
+From: Siwei Zhang <oss@fourdim.xyz>
 
-commit 0e7c074cfcd9bd93765505f9eb8b42f03ed2a744 upstream.
+commit 0a120d96166301d7a95be75b52f843837dbd1219 upstream.
 
-t7xx_port_enum_msg_handler() uses the modem-supplied port_count field as
-a loop bound over port_msg->data[] without checking that the message buffer
-contains sufficient data. A modem sending port_count=65535 in a 12-byte
-buffer triggers a slab-out-of-bounds read of up to 262140 bytes.
+Add the same NULL guard already present in
+l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
 
-Add a sizeof(*port_msg) check before accessing the port message header
-fields to guard against undersized messages.
-
-Add a struct_size() check after extracting port_count and before the loop.
-
-In t7xx_parse_host_rt_data(), guard the rt_feature header read with a
-remaining-buffer check before accessing data_len, validate feat_data_len
-against the actual remaining buffer to prevent OOB reads and signed
-integer overflow on offset.
-
-Pass msg_len from both call sites: skb->len at the DPMAIF path after
-skb_pull(), and the validated feat_data_len at the handshake path.
-
-Fixes: da45d2566a1d ("net: wwan: t7xx: Add control port")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
-Link: https://patch.msgid.link/20260501110713.145563-1-jhapavitra98@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 80808e431e1e ("Bluetooth: Add l2cap_chan_ops abstraction")
+Cc: stable@kernel.org
+Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/t7xx/t7xx_modem_ops.c     |   20 +++++++++++++++++---
- drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c |   18 ++++++++++++++++--
- drivers/net/wwan/t7xx/t7xx_port_proxy.h    |    2 +-
- 3 files changed, 34 insertions(+), 6 deletions(-)
+ net/bluetooth/l2cap_sock.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-+++ b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
-@@ -457,8 +457,20 @@ static int t7xx_parse_host_rt_data(struc
- 
- 	offset = sizeof(struct feature_query);
- 	for (i = 0; i < FEATURE_COUNT && offset < data_length; i++) {
-+		size_t remaining = data_length - offset;
-+		size_t feat_data_len, feat_total;
-+
-+		if (remaining < sizeof(*rt_feature))
-+			break;
-+
- 		rt_feature = data + offset;
--		offset += sizeof(*rt_feature) + le32_to_cpu(rt_feature->data_len);
-+		feat_data_len = le32_to_cpu(rt_feature->data_len);
-+
-+		if (feat_data_len > remaining - sizeof(*rt_feature))
-+			break;
-+
-+		feat_total = sizeof(*rt_feature) + feat_data_len;
-+		offset += feat_total;
- 
- 		ft_spt_cfg = FIELD_GET(FEATURE_MSK, core->feature_set[i]);
- 		if (ft_spt_cfg != MTK_FEATURE_MUST_BE_SUPPORTED)
-@@ -468,8 +480,10 @@ static int t7xx_parse_host_rt_data(struc
- 		if (ft_spt_st != MTK_FEATURE_MUST_BE_SUPPORTED)
- 			return -EINVAL;
- 
--		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM)
--			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data);
-+		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM) {
-+			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data,
-+						   feat_data_len);
-+		}
- 	}
- 
- 	return 0;
---- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-+++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-@@ -117,6 +117,7 @@ static int fsm_ee_message_handler(struct
-  * t7xx_port_enum_msg_handler() - Parse the port enumeration message to create/remove nodes.
-  * @md: Modem context.
-  * @msg: Message.
-+ * @msg_len:	Length of @msg in bytes.
-  *
-  * Used to control create/remove device node.
-  *
-@@ -124,12 +125,18 @@ static int fsm_ee_message_handler(struct
-  * * 0		- Success.
-  * * -EFAULT	- Message check failure.
-  */
--int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
-+int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len)
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1467,6 +1467,9 @@ static struct l2cap_chan *l2cap_sock_new
  {
- 	struct device *dev = &md->t7xx_dev->pdev->dev;
- 	unsigned int version, port_count, i;
- 	struct port_msg *port_msg = msg;
+ 	struct sock *sk, *parent = chan->data;
  
-+	if (msg_len < sizeof(*port_msg)) {
-+		dev_err(dev, "Port enum msg too short for header: need %zu, have %zu\n",
-+			sizeof(*port_msg), msg_len);
-+		return -EINVAL;
-+	}
++	if (!parent)
++		return NULL;
 +
- 	version = FIELD_GET(PORT_MSG_VERSION, le32_to_cpu(port_msg->info));
- 	if (version != PORT_ENUM_VER ||
- 	    le32_to_cpu(port_msg->head_pattern) != PORT_ENUM_HEAD_PATTERN ||
-@@ -141,6 +148,13 @@ int t7xx_port_enum_msg_handler(struct t7
- 	}
+ 	lock_sock(parent);
  
- 	port_count = FIELD_GET(PORT_MSG_PRT_CNT, le32_to_cpu(port_msg->info));
-+
-+	if (msg_len < struct_size(port_msg, data, port_count)) {
-+		dev_err(dev, "Port enum msg too short: need %zu, have %zu\n",
-+			struct_size(port_msg, data, port_count), msg_len);
-+		return -EINVAL;
-+	}
-+
- 	for (i = 0; i < port_count; i++) {
- 		u32 port_info = le32_to_cpu(port_msg->data[i]);
- 		unsigned int ch_id;
-@@ -191,7 +205,7 @@ static int control_msg_handler(struct t7
- 
- 	case CTL_ID_PORT_ENUM:
- 		skb_pull(skb, sizeof(*ctrl_msg_h));
--		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data);
-+		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data, skb->len);
- 		if (!ret)
- 			ret = port_ctl_send_msg_to_md(port, CTL_ID_PORT_ENUM, 0);
- 		else
---- a/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-+++ b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
-@@ -103,7 +103,7 @@ void t7xx_port_proxy_reset(struct port_p
- void t7xx_port_proxy_uninit(struct port_proxy *port_prox);
- int t7xx_port_proxy_init(struct t7xx_modem *md);
- void t7xx_port_proxy_md_status_notify(struct port_proxy *port_prox, unsigned int state);
--int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg);
-+int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len);
- int t7xx_port_proxy_chl_enable_disable(struct port_proxy *port_prox, unsigned int ch_id,
- 				       bool en_flag);
- void t7xx_port_proxy_set_cfg(struct t7xx_modem *md, enum port_cfg_id cfg_id);
+ 	/* Check for backlog size */
 
 
 
