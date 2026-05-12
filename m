@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMYVIEZvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:50 +0200
+	id QDVHOZZtA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A29527542
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 717E952703C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 21DA53182745
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9563830EBCAA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF963EDE57;
-	Tue, 12 May 2026 18:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E453D3E1721;
+	Tue, 12 May 2026 17:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S46EYfnI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c3C57L6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DDE34E744;
-	Tue, 12 May 2026 18:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F213E5A2A;
+	Tue, 12 May 2026 17:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609540; cv=none; b=YKFZqZusSJxjCYVKA0Hx1QqaAEmbwPtdV1zBRvcGwHxW6ycGn3wVwtozo+8nPnlqLlI8UJI/106VxYFwZvYoyhkiSelhw+4xyIkOllLegeu0AY4aW1ULqKP+UQdFYfx6abjX2D7jGu64IocwRNLHUpuXGQzzUAc4JNncVJJpqUI=
+	t=1778608157; cv=none; b=ZPBYAho7NgqfM4ayTAiklLlOBUljogj4wg8rtwPgBFCrj33f0V4HD9yKti1HEJvi6p5gNR+mYL0MBAXu1sbgP/PC697Py+A1X7shh2fjtezb5D4PIk/ryzODfQnPR4sHLK45RonsWO/Ai46vv1KGn/zY+JdLBfynGruXsWlzNDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609540; c=relaxed/simple;
-	bh=0F4g7JSXPj+biescB8wB9GE0OBs/9hzcSI+b/3dg4iE=;
+	s=arc-20240116; t=1778608157; c=relaxed/simple;
+	bh=nSUVsWgzdZohcXrzJJch+CQEBAyCc0APCP77GmMQdTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9MQAmLhabUhu/YOYSCTbsVtMk+9fD/4wInxjlGeTSJ13t0HQCAjB+7kIH82+iDb+Abc0CLObzfWsD4cE1411/3850gd9bPLTNPZ76MlOvm1oSbpA/+jh46zMib12YUr8jU9/x5XElxdDMJr08jz6xFFkYgAP2E4cVhuehcJviI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S46EYfnI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CF6C2BCB0;
-	Tue, 12 May 2026 18:12:20 +0000 (UTC)
+	 MIME-Version; b=qcsD97Nm0cvUC3PjR3HWoOFwtpX1mek2Ne69rYyGyZVXClG5NixMWz05cnGWXDdKAa1Y+IwSzY68Il3gP7XVhicgcfBlwdBytJeYoyiXwgncq5EQJ5la34vvyKpC9UEXsnuvByVOhE5BcY82QTkjJk3WLxg2b0nHCDuTjEjRwMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c3C57L6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3C8C2BCC7;
+	Tue, 12 May 2026 17:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609540;
-	bh=0F4g7JSXPj+biescB8wB9GE0OBs/9hzcSI+b/3dg4iE=;
+	s=korg; t=1778608157;
+	bh=nSUVsWgzdZohcXrzJJch+CQEBAyCc0APCP77GmMQdTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S46EYfnIu9G5LhPhth3mP6CB8RnxzuZCoJaBk5N8JFiWYmhwl53AgxJYefBhVTdPx
-	 faU5kPIJcZOnJVF+6rW7a8sm14W4UmPrkGFfzMMt5MVcU6zGBJNCm7sSlVmINjjrDS
-	 oDkO8W58hUmwoDAH1d7XyC2bxanKkNV9Hltr5gIA=
+	b=2c3C57L6OX4wpLV9LwmDW4TqOCiNNCkZ9bhp24hcTluV7nNEXRS5x2PtBpeKc2u6J
+	 CCWHeDI8HIbC46NG7Bk+C2CDPuiz2EhZiCyY1LoVe8H7MT2+X/i0ZbKcTHNFOg0voL
+	 niLU4UwL88xLL5g78gkxQUHW4rI0rhFpB155MqTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 7.0 234/307] RDMA/mana: Fix mana_destroy_wq_obj() cleanup in mana_ib_create_qp_rss()
+	Chao Li <lichao@loongson.cn>,
+	Dongyan Qian <qiandongyan@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 177/206] LoongArch: Use per-root-bridge PCIH flag to skip mem resource fixup
 Date: Tue, 12 May 2026 19:40:29 +0200
-Message-ID: <20260512173945.059848137@linuxfoundation.org>
+Message-ID: <20260512173936.609258085@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 37A29527542
+X-Rspamd-Queue-Id: 717E952703C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246560-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246022-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,67 +89,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 34ecf795692ee57c393109f4a24ccc313091e137 upstream.
+commit 49f33840dcc907d21313d369e34872880846b61c upstream.
 
-Sashiko points out there are two bugs here in the error unwind flow, both
-related to how the WQ table is unwound.
+When firmware enables 64-bit PCI host bridge support, some root bridges
+already provide valid 64-bit mem resource windows through ACPI.
 
-First there is a double i-- on the first failure path due to the while loop
-having a i--, remove it.
+In this case, the LoongArch-specific mem resource high-bits fixup in
+acpi_prepare_root_resources() should not be applied unconditionally.
+Otherwise, the kernel may override the native resource layout derived
+from firmware, and later BAR assignment can fail to place device BARs
+into the intended 64-bit address space correctly.
 
-Second if mana_ib_install_cq_cb() fails then mana_create_wq_obj() is not
-undone due to the above i--.
+Add a per-root-bridge ACPI flag, PCIH, and evaluate it from the current
+root bridge device scope. When PCIH is set, skip the mem resource high-
+bits fixup path and let the kernel use the firmware-provided resource
+description directly. When PCIH is absent or cleared, keep the existing
+behavior and continue filling the high address bits from the host bridge
+address.
+
+This makes the behavior per-root-bridge configurable and avoids breaking
+valid 64-bit BAR space allocation on bridges whose 64-bit windows have
+already been fully described by firmware.
 
 Cc: stable@vger.kernel.org
-Fixes: c15d7802a424 ("RDMA/mana_ib: Add CQ interrupt support for RAW QP")
-Link: https://sashiko.dev/#/patchset/0-v2-1c49eeb88c48%2B91-rdma_udata_rep_jgg%40nvidia.com?part=1
-Link: https://patch.msgid.link/r/6-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Suggested-by: Chao Li <lichao@loongson.cn>
+Tested-by: Dongyan Qian <qiandongyan@loongson.cn>
+Signed-off-by: Dongyan Qian <qiandongyan@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/qp.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/loongarch/pci/acpi.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/infiniband/hw/mana/qp.c
-+++ b/drivers/infiniband/hw/mana/qp.c
-@@ -193,11 +193,8 @@ static int mana_ib_create_qp_rss(struct
+--- a/arch/loongarch/pci/acpi.c
++++ b/arch/loongarch/pci/acpi.c
+@@ -61,11 +61,16 @@ static void acpi_release_root_info(struc
+ static int acpi_prepare_root_resources(struct acpi_pci_root_info *ci)
+ {
+ 	int status;
++	unsigned long long pci_h = 0;
+ 	struct resource_entry *entry, *tmp;
+ 	struct acpi_device *device = ci->bridge;
  
- 		ret = mana_create_wq_obj(mpc, mpc->port_handle, GDMA_RQ,
- 					 &wq_spec, &cq_spec, &wq->rx_object);
--		if (ret) {
--			/* Do cleanup starting with index i-1 */
--			i--;
-+		if (ret)
- 			goto fail;
--		}
- 
- 		/* The GDMA regions are now owned by the WQ object */
- 		wq->queue.gdma_region = GDMA_INVALID_DMA_REGION;
-@@ -217,8 +214,10 @@ static int mana_ib_create_qp_rss(struct
- 
- 		/* Create CQ table entry */
- 		ret = mana_ib_install_cq_cb(mdev, cq);
--		if (ret)
-+		if (ret) {
-+			mana_destroy_wq_obj(mpc, GDMA_RQ, wq->rx_object);
- 			goto fail;
-+		}
- 	}
- 	resp.num_entries = i;
- 
+ 	status = acpi_pci_probe_root_resources(ci);
+ 	if (status > 0) {
++		acpi_evaluate_integer(device->handle, "PCIH", NULL, &pci_h);
++		if (pci_h)
++			return status;
++
+ 		resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
+ 			if (entry->res->flags & IORESOURCE_MEM) {
+ 				entry->offset = ci->root->mcfg_addr & GENMASK_ULL(63, 40);
 
 
 
