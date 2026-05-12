@@ -1,102 +1,61 @@
-Return-Path: <stable+bounces-246666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0APWFKKPA2qM7QEAu9opvQ
-	(envelope-from <stable+bounces-246666-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:37:54 +0200
+	id 0CIWBg6PA2qM7QEAu9opvQ
+	(envelope-from <stable+bounces-246668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:35:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 251B452961E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:37:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AE15294F7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 22:35:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BE8883072D4B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:31:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7655F30588B2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA903C4B85;
-	Tue, 12 May 2026 20:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A058D36C9D0;
+	Tue, 12 May 2026 20:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YxvBYi6M"
+	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="fYu96lYB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601C5357D01
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 20:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FE93EDE68
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 20:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778617778; cv=none; b=jKLFIMO/K96CD/WZNGUNG3CdSjn+ZTYkGjoSmNwUE5DyBaNYI/nu+woC++IimGuPtBl7mmTBzvYS2msueq6Z7cXTI+A9FECac3EypRqJUsJ7A6SsClg7zCkwtIZz6kMCGVsoh9FWVwxbR7tAS/o2BXFnNGeXTDvH6Z5VvUlOjMs=
+	t=1778618123; cv=none; b=fQr0djnpNihCullj97Z7rsQauelPugcS9PiYeJ/r82XYpYwQq60SzTVG2sit6ioDRn5a4DNH6en7C/G7tgx1KAugK3I9F+msruhF/oFC8dWJjFgUbiPFw+13UcDNs2f4oiAfMArCUXKva+YVvomhyRITVaFbCFj8Zxruv2iaPQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778617778; c=relaxed/simple;
-	bh=9+d9DA+2u9lo4UNQ8lVccw1/tfPriiuFVSc+pacyDTY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EplgVE2mAGTLkg79wXjvQqNAWnxpQEpXEtK5vnBEpfaAzm655z7HuObFcMZHFiB6h1xm4AnOPzuRYYt6BZUYRJHI01u4Gj9vVCfvyewj/DxCdTikFFxJuyT8q6cQM3OIJD5D1dBYuwmlZ3Mt92zA5s1dFWhwzc/0xlNmXQJajP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YxvBYi6M; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48e6db3ff7eso22736745e9.0
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 13:29:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778617775; x=1779222575; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=718MVFj4b+rdA+Skqd/sKif3e/MndwJ2n/ALSewbJow=;
-        b=YxvBYi6M9XLBJBy7MD9fnb0zMZPGBysPGCUmTW03nEr2Y/tcmUFCxG0cHOA/ao1dGL
-         etuxtoCloTOmbZ0Bx7OgyuR2++aoZcUxvhvNHe96YyDql+fUKq2rv82mDkTeTNf/TJk1
-         Co2OWKdyXpLxZ7NB9BVmf1h8nhateaNHbp6ZxRYlm4BUVBWJxDMQfMFT387e+bPV6fPC
-         cLsC5gak6EauTh+CbNxhqw9EobkeVhW5lb2hrbfH0p24CSc9uWlN8+I/0SzrXBo8Re6G
-         dv5tT/h8cObHAHjlmMCHebrT5yaseXUQHVOlxrUWIjYP2djUkhYLnbtps/bJOle72ufG
-         C4CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778617775; x=1779222575;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=718MVFj4b+rdA+Skqd/sKif3e/MndwJ2n/ALSewbJow=;
-        b=MnjM5aUjYHNVQWd2Zlm8tij7z+2xI9XzG5oSTR4+W1jtP1OC8PILGvymWXIhLTZJT3
-         KikdC7ggzae/NAyJEv3mzad8r5nqSCNAmVxLA34bOJ3sffCkhDXLWjnHUbOce7271N9V
-         DCIE8x5hb8OUYfNWUa+fdJKvjaqJvpKYMGaDimmxT+Vr3g57A+CMC/7s3Os6bViQUeIW
-         rPgUgr6Fkm3PKYduaA1t8KOJuFM7o4r9E7FUCIa2pXD1VsKTIWeMt0hU4/c0zcuZRllF
-         +LrbQumTZ6FD3hprWTUK83104c9tFSckMi/WaL7VZJQvFCWQ/RRZrmb3285lIWettR8s
-         w8Hw==
-X-Forwarded-Encrypted: i=1; AFNElJ8q0sGRY4HycKdj/HUmXpudcLoHGpeRGZxTDcJdgL8K5kXig/wfcL9H+pqYlcpWvcTgr0Yv2Go=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxc4ZIE27ST3rnOQ0fI6ziPjKDEPA/97YojnVdg4fQgq4Ph9qxO
-	I+pU59bEzoCU/VXV0WsOrJeAxZcBxz65A4+Py5O1wz57IoxSsj+fWQC7
-X-Gm-Gg: Acq92OE+sSwxw7RJdn/6tbFrli7rwwSZnzw5iaeb2VPniReXHKwTYHYl5zsEv3E/72W
-	tMaMy5p/6veF47oSO1yywQU6XIDgry5UTAb3WnfNv760WUsfiECFNNLJ5KHP6dUUEYHDm0eOvLP
-	vzkkzMgBi7tJllWt6cS58Rrqoy1aTyxgmUFRwS8nOeONCtWhIuhBDgetSmFDtrrp6jHL9e4wSZV
-	HSQC8kRjazfvQrseN12mCgeMDBlzR/41/2nzG97xKG3C+xv1WYXldng9zR24b72UQzHlZi/n5KF
-	gmJ52fq+bAIkE3znFucb4qpk0s5ROPfScnxA1JleneKhIG0ZBf14PWRtn6PsFhItnVDCBCG7ITD
-	MHedwv742V7oD5LNLDk4SMfaprAFlwuC8m6kX5nC6cQN1SQFR9QjLBgHWvWZ2rKC6ZcUNPGt+OF
-	hbOB5RYUdYa4nJphthVtNLP3+E2Xv2mfQ3Mm6QA8b8FYJW174ryHTlU/m6SQ8A9By5EanLjGHFe
-	MOKpjk24s99f1dVIr+SnhamhaUTJY/c71s=
-X-Received: by 2002:a05:600c:4ecc:b0:488:ac01:72b6 with SMTP id 5b1f17b1804b1-48fc9a391fbmr6177355e9.21.1778617774632;
-        Tue, 12 May 2026 13:29:34 -0700 (PDT)
-Received: from iku.Home ([2a06:5906:61b:2d00:77f5:545a:798:321])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fc8d27d31sm36899415e9.8.2026.05.12.13.29.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 13:29:34 -0700 (PDT)
-From: Prabhakar <prabhakar.csengg@gmail.com>
-X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Hans Verkuil <hverkuil@kernel.org>
-Cc: linux-media@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Prabhakar <prabhakar.csengg@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] media: rcar-vin: Enable NV12 support for RZ/G2H
-Date: Tue, 12 May 2026 21:29:31 +0100
-Message-ID: <20260512202931.1051379-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1778618123; c=relaxed/simple;
+	bh=AznCOY2fnBNDiwjj1e/AiZWmbVZi1Y8doiQv0EQNSGY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OYDl4k19jPzsJb/WR4qGPSPKDJ/S/JApu2gCUJjZ6gUmadMpU5LKTsH5n240r5XGoIjS9fAlvNgrSPYHfpeg6vGxjFQhfLXp93Dunn0t60iI0qjOqk5ZjqopJOJLupk6zUsqWx0FhwDxEJ937cx8OBxYrmZnSRLFzk4KAlD5hVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=fYu96lYB; arc=none smtp.client-ip=157.90.84.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
+Received: from wsembach-tuxedo.fritz.box (business-24-134-105-141.pool2.vodafone-ip.de [24.134.105.141])
+	(Authenticated sender: wse@tuxedocomputers.com)
+	by mail.tuxedocomputers.com (Postfix) with ESMTPA id A45D82FC0215;
+	Tue, 12 May 2026 22:35:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
+	s=default; t=1778618112;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aZqZSRzuGbFy/nqiVBWd4n73jH2UWwbeLAJWanR6nVA=;
+	b=fYu96lYB0uas+Dzx91FmaVRw300XwTYng3Ys8F5mhW7imcWZ2vnYbvl2norPlUt+jropEU
+	yxUOxtMl4DItcS+zXvrzmOL+6mV2peHHpBUDrZlpwtNnR5IlCnCEtzi1L6yaRo/IWHXPx/
+	l5Nsjvp98X73Y9jWR7hxfvOweIDXZiE=
+Authentication-Results: mail.tuxedocomputers.com;
+	auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
+From: Werner Sembach <wse@tuxedocomputers.com>
+To: stable@vger.kernel.org
+Cc: aer@tuxedocomputers.com,
+	wse@tuxedocomputers.com
+Subject: [PATCH] ALSA: hda/hdmi: Add quirk for TUXEDO IBS14G6
+Date: Tue, 12 May 2026 22:35:05 +0200
+Message-ID: <20260512203508.160494-1-wse@tuxedocomputers.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,68 +63,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 251B452961E
+X-Rspamd-Queue-Id: 75AE15294F7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[tuxedocomputers.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[tuxedocomputers.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246666-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,bp.renesas.com,renesas.com];
-	FREEMAIL_TO(0.00)[ragnatech.se,ideasonboard.com,kernel.org,glider.be,gmail.com];
+	TAGGED_FROM(0.00)[bounces-246668-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[prabhakarcsengg@gmail.com,stable@vger.kernel.org];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wse@tuxedocomputers.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[tuxedocomputers.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bp.renesas.com:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Aaron Erhardt <aer@tuxedocomputers.com>
 
-The Renesas RZ/G2H (R8A774E1) SoC supports outputting NV12 format, but
-this capability is currently not advertised by the driver.
+[ Upstream commit d649c58bcad8fb9b749e3837136a201632fa109d ]
 
-Set the .nv12 flag to true in the rcar_info_r8a774e1 structure to enable
-support for this format.
+Depending on the timing during boot, the BIOS might report wrong pin
+capabilities, which can lead to HDMI audio being disabled. Therefore,
+force HDMI audio connection on TUXEDO InfinityBook S 14 Gen6.
 
-Fixes: fe98df32bd9e4 ("media: rcar-vin: Enable support for R8A774E1")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Backport for 6.6, 6.1, 5.15, and 5.10. Identical to the backport for 6.12,
+that already got included, but without this paragraph in the commit
+message.
+
+Signed-off-by: Aaron Erhardt <aer@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260218213234.429686-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 ---
- drivers/media/platform/renesas/rcar-vin/rcar-core.c | 1 +
+ sound/pci/hda/patch_hdmi.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-core.c b/drivers/media/platform/renesas/rcar-vin/rcar-core.c
-index c8d564aa1eba..e16b33096fd2 100644
---- a/drivers/media/platform/renesas/rcar-vin/rcar-core.c
-+++ b/drivers/media/platform/renesas/rcar-vin/rcar-core.c
-@@ -925,6 +925,7 @@ static const struct rvin_group_route rcar_info_r8a774e1_routes[] = {
- 
- static const struct rvin_info rcar_info_r8a774e1 = {
- 	.model = RCAR_GEN3,
-+	.nv12 = true,
- 	.max_width = 4096,
- 	.max_height = 4096,
- 	.routes = rcar_info_r8a774e1_routes,
+diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
+index 80c015af09efd..763c92a848d4b 100644
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1999,6 +1999,7 @@ static const struct snd_pci_quirk force_connect_list[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
+ 	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
+ 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
++	SND_PCI_QUIRK(0x1558, 0x14a1, "TUXEDO InfinityBook S 14 Gen6", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
+ 	{}
 -- 
-2.54.0
+2.43.0
 
 
