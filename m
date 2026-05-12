@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-245859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDwcFe9mA2qj5gEAu9opvQ
-	(envelope-from <stable+bounces-245859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:15 +0200
+	id QI4gArpyA2q55wEAu9opvQ
+	(envelope-from <stable+bounces-246392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:34:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A8C526017
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF20527CB6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C03AB3028B76
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74B4731B0705
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673AD3DC87F;
-	Tue, 12 May 2026 17:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4D53EDE68;
+	Tue, 12 May 2026 18:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3IUlIE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npz0AXLg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287E63DB96F;
-	Tue, 12 May 2026 17:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69E63EDE55;
+	Tue, 12 May 2026 18:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607738; cv=none; b=X6gL7GjNFKSmjtnsAIq2V+rPXcqyNpATCnuyU8G/lVNv1WtWYK1X+LslhHsTY5HFtGDm0RO7UMsX5LK0sc9VwKVrJfyBS3WvfWJGe7W668HOHluniJyeyzphhzIhNx+jMHqFSAdEhMWK2zKL5RCEozh5mM2qY1WuxC9ytgzEv1Q=
+	t=1778609107; cv=none; b=ZSdG5MZUA/vv1K+YRQjo2oQroo9WA3t2a4H69I14PXO2sDJMmDZG5lLOzNnq5EIlhpQcv5vFDw3Kek/XPBc+IsjcomAwA693hgzBqrKoaZcvuPDLrdpyoUAHveQ2WTuZmox1DwTwDS9R9fNQknm7dQFNZ24Z07MQcdxqMCoXRuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607738; c=relaxed/simple;
-	bh=herR3/mMZPvlE4wZa83Mz3/UWJEAdb4TisHgHIhrfIw=;
+	s=arc-20240116; t=1778609107; c=relaxed/simple;
+	bh=sIkspz4YWRVP8nMfA6kjGTz9VwRvGYsxGS4JZgbv2AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1dvPqpC4atrOH3aY+H62PCatV4X9EHab15LvWBIyehhS1scpRZX1W7eLWc8aXZuuZhpVLzUdOnube5SGH34cUJuSdC07//WlgYV+6Mf3pV9DTkZOkf2SENvo+RtpYmOiyybzyda0DZHaSaNOpw13c9RoJdcdcN3bZnsUvgl9G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3IUlIE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4AB7C2BCB0;
-	Tue, 12 May 2026 17:42:17 +0000 (UTC)
+	 MIME-Version; b=morJBwBOBoeVPW7Fry4R6VoS9WXSh7nzUZk2DlDf82Ms6OM3dOrh9nhETsS7E23ps838hJtC791ahCRp8a2/QNr6j6/uIIfyA3AzX1XhBQruHdCVvVv2AJpuzNWcH2k1zBhOR1VoiekGURScBuDUAu+BYepsu613CcsPOp9nYnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npz0AXLg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF69C2BCB0;
+	Tue, 12 May 2026 18:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607738;
-	bh=herR3/mMZPvlE4wZa83Mz3/UWJEAdb4TisHgHIhrfIw=;
+	s=korg; t=1778609107;
+	bh=sIkspz4YWRVP8nMfA6kjGTz9VwRvGYsxGS4JZgbv2AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3IUlIE+kQgzh+nsJoGAk7ZE3G+lK3zQk4cDzEsso0qs5rD/NR7TLh166r6MD/Rzb
-	 fHMJL1OrZc1Z9r/EeSvySCN/+drNcBkeKjW0JtI7kLuu4hiNdzmvGRMYceDrM+s0hR
-	 k9FtRTfvFUEjO/9EuyQBM5dM1UhHA2XAKMlR8jGM=
+	b=npz0AXLg8ZtE7u80zAQAF+r7W1Id0zzaSGCQHkTwMLFZC2Z/gMoyeGP1cx6vndsLM
+	 npICFRbyo5uJZcem0sqkRS0Y3cmgqhIbgLTmLtGItER6nSCKkp4qETDuyfFB9K4AXB
+	 5vl0YpV4BAYJT6HLZ922tfrTb3uAt2CmGEMF9lgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivam Kalra <shivamkalra98@zohomail.in>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 009/206] ACPI: video: force native backlight on HP OMEN 16 (8A44)
+	Martin Michaelis <code@mgjm.de>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 066/307] io_uring/kbuf: support min length left for incremental buffers
 Date: Tue, 12 May 2026 19:37:41 +0200
-Message-ID: <20260512173933.016578286@linuxfoundation.org>
+Message-ID: <20260512173941.514817409@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 98A8C526017
+X-Rspamd-Queue-Id: 5FF20527CB6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245859-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246392-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,60 +89,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,mgjm.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivam Kalra <shivamkalra98@zohomail.in>
+From: Martin Michaelis <code@mgjm.de>
 
-commit 4b506ea5351a1f5937ac632a4a5c35f6f796cc41 upstream.
+commit 7deba791ad495ce1d7921683f4f7d1190fa210d1 upstream.
 
-The HP OMEN 16 Gaming Laptop (board name 8A44) has a mux-less hybrid
-GPU configuration with AMD Rembrandt (Radeon 680M) and NVIDIA GA104
-(RTX 3070 Ti). The internal eDP panel is wired to the AMD iGPU.
+Incrementally consumed buffer rings are generally fully consumed, but
+it's quite possible that the application has a minimum size it needs to
+meet to avoid truncation. Currently that minimum limit is 1 byte, but
+this should be a setting that is the hands of the application. For
+recvmsg multishot, a prime use case for incrementally consumed buffers,
+the application may get spurious -EFAULT returned at the end of an
+incrementally consumed buffer, as less space is available than the
+headers need.
 
-When Nouveau loads without GSP firmware, the ACPI video backlight
-device (acpi_video0) gets registered alongside the native AMD
-backlight (amdgpu_bl2). In this state, writes to amdgpu_bl2 update
-the software brightness value but fail to change the physical panel
-brightness.
+Grab a u32 field in struct io_uring_buf_reg, which the application can
+use to inform the kernel of the minimum size that should be available
+in an incrementally consumed buffer. If less than that is available,
+the current buffer is fully processed and the next one will be picked.
 
-Force native backlight to prevent acpi_video0 from registering.
-Confirmed that booting with acpi_backlight=native resolves the
-issue.
-
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
-Link: https://patch.msgid.link/20260426-omen-16-backlight-fix-v1-1-62364f268ea6@zohomail.in
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+Link: https://github.com/axboe/liburing/issues/1433
+Signed-off-by: Martin Michaelis <code@mgjm.de>
+[axboe: write commit message, change io_buffer_list member name]
+Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/video_detect.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/uapi/linux/io_uring.h |    3 ++-
+ io_uring/kbuf.c               |    8 +++++++-
+ io_uring/kbuf.h               |    7 +++++++
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -907,6 +907,14 @@ static const struct dmi_system_id video_
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 15 3535"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* HP OMEN Gaming Laptop 16-n0xxx */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16-n0xxx"),
-+		},
-+	},
+--- a/include/uapi/linux/io_uring.h
++++ b/include/uapi/linux/io_uring.h
+@@ -898,7 +898,8 @@ struct io_uring_buf_reg {
+ 	__u32	ring_entries;
+ 	__u16	bgid;
+ 	__u16	flags;
+-	__u64	resv[3];
++	__u32	min_left;
++	__u32	resv[5];
+ };
  
- 	/*
- 	 * x86 android tablets which directly control the backlight through
+ /* argument for IORING_REGISTER_PBUF_STATUS */
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -47,7 +47,7 @@ static bool io_kbuf_inc_commit(struct io
+ 		this_len = min_t(u32, len, buf_len);
+ 		buf_len -= this_len;
+ 		/* Stop looping for invalid buffer length of 0 */
+-		if (buf_len || !this_len) {
++		if (buf_len > bl->min_left_sub_one || !this_len) {
+ 			WRITE_ONCE(buf->addr, READ_ONCE(buf->addr) + this_len);
+ 			WRITE_ONCE(buf->len, buf_len);
+ 			return false;
+@@ -637,6 +637,10 @@ int io_register_pbuf_ring(struct io_ring
+ 	if (reg.ring_entries >= 65536)
+ 		return -EINVAL;
+ 
++	/* minimum left byte count is a property of incremental buffers */
++	if (!(reg.flags & IOU_PBUF_RING_INC) && reg.min_left)
++		return -EINVAL;
++
+ 	bl = io_buffer_get_list(ctx, reg.bgid);
+ 	if (bl) {
+ 		/* if mapped buffer ring OR classic exists, don't allow */
+@@ -684,6 +688,8 @@ int io_register_pbuf_ring(struct io_ring
+ 	bl->mask = reg.ring_entries - 1;
+ 	bl->flags |= IOBL_BUF_RING;
+ 	bl->buf_ring = br;
++	if (reg.min_left)
++		bl->min_left_sub_one = reg.min_left - 1;
+ 	if (reg.flags & IOU_PBUF_RING_INC)
+ 		bl->flags |= IOBL_INC;
+ 	ret = io_buffer_add_list(ctx, bl, reg.bgid);
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -33,6 +33,13 @@ struct io_buffer_list {
+ 
+ 	__u16 flags;
+ 
++	/*
++	 * minimum required amount to be left to reuse an incrementally
++	 * consumed buffer. If less than this is left at consumption time,
++	 * buffer is done and head is incremented to the next buffer.
++	 */
++	__u32 min_left_sub_one;
++
+ 	struct io_mapped_region region;
+ };
+ 
 
 
 
