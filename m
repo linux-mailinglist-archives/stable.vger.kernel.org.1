@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOqeKxVrA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:57 +0200
+	id uIujBPJtA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149805268DF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7650752714C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 054653091467
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D434317E8FA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70E83955DF;
-	Tue, 12 May 2026 17:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC8734405B;
+	Tue, 12 May 2026 18:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9HFE4cd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fkBkQS7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E393955D5;
-	Tue, 12 May 2026 17:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA0E3EDE41;
+	Tue, 12 May 2026 18:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608306; cv=none; b=Yk2fuNziiMty+s5BgZUKaqjTfh6DQ6IhCEDgrBBIg1OALsWPCdQI53orccsSpOWbCsvr0O0AiXSoTfjptVkTvbZCsqr0BMvqKi4V63tlH3h9h3DBBYPnU95pgYJgwEyQuSDIt9/uE7w4Zo5cngBbx1YMhs6zhMUYSvbBr7jvbpA=
+	t=1778609020; cv=none; b=lMG2tqagUFecxOID8oJrE7IY9N/iyOaRG+1L7jYwCxWsX0dh5zN/yFmksyFEljnKh9T92vW0GdW/toe5kTrndmbTTnns0WiYzglQ3mSyhJMqdHaXdO4+75z6KISlRZQ7+LPmRBaTJzOcZ40pe70WvbRoQJy+W6dDy7uTxyuDerY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608306; c=relaxed/simple;
-	bh=wfGUJ1/N87diKd+oslWOwBAUENLMpieCuJDPXkqO1Lw=;
+	s=arc-20240116; t=1778609020; c=relaxed/simple;
+	bh=HV7hzpJJ2Rs54bcM2BYGqOa2bARNBAFkvflAlqNlXWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQLAbqqBHEQczrTAQr2u9rVNFKAh7KzhetNC9jzjK3oY0x853Hg6CrLG/UG+1JMzwkhyEdUin3Vl1DJsQTvkD1ySeDlFm+OB6N8QmieBGV+SCBvkGswqgqejOcacwsLqVL9Pz9c3Sjy50SCK/lHSXMi82Tp47GZXFYcIAFO88ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9HFE4cd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BBEC2BCC7;
-	Tue, 12 May 2026 17:51:46 +0000 (UTC)
+	 MIME-Version; b=Jsl/2b1wIoXHG/2FNqADnmvvBRqvwYUfY6oglymTSn+LAyiPZiiqzSqM8g+y/gQlcSsf+wq7h1wgxAxZNXe8kaPzJfuc54ZjlPbV+7+krI3f705XhE1qfYMHQLvn/lDE12HRr8hVxG+6YI5tSqTzbK1RX0C1zzoL+xmQNCX/kp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fkBkQS7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CED3C2BCB0;
+	Tue, 12 May 2026 18:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608306;
-	bh=wfGUJ1/N87diKd+oslWOwBAUENLMpieCuJDPXkqO1Lw=;
+	s=korg; t=1778609020;
+	bh=HV7hzpJJ2Rs54bcM2BYGqOa2bARNBAFkvflAlqNlXWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q9HFE4cdHCjWFRu8012CuP3H9rf19XahN6QWQn4Tx4wjJLVfkdBdchLit2A+DwOrb
-	 p8TY+C/mFFpDdHks4Lb6WNUH59CpYKbRWJ6LherFwRaCygmLFkcfAb0r0iBwzyY9ZZ
-	 23BJ1PeteNarb27NYiZZPm1psq1dch9HoJfxj7aM=
+	b=0fkBkQS7Td/3UzOZgn77VchztVcMfaep/yYSMMgHthPBT56rYIUqxBQjZpsuZTRPt
+	 MTRuDhKZ/r2fdcxo75CrIP6Dl8VUIzSAjt310EFP7XSHjf4geQBiIQEwG6OEFzjaQM
+	 B8bPSbtR5prJH5dqBZyMbbjHzbrjpb7COmKoBIO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Yen <leon.yen@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.18 028/270] wifi: mt76: mt7921: fix a potential clc buffer length underflow
-Date: Tue, 12 May 2026 19:37:09 +0200
-Message-ID: <20260512173939.050329152@linuxfoundation.org>
+	Pete Zaitcev <zaitcev@redhat.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 7.0 035/307] usb: usblp: fix uninitialized heap leak via LPGETSTATUS ioctl
+Date: Tue, 12 May 2026 19:37:10 +0200
+Message-ID: <20260512173940.867069887@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 149805268DF
+X-Rspamd-Queue-Id: 7650752714C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246080-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246358-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,50 +88,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,nbd.name:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Yen <leon.yen@mediatek.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 5373f8b19e568b5c217832b9bbef165bd2b2df14 upstream.
+commit b38e53cbfb9d84732e5984fbd73e128d592415c5 upstream.
 
-The buf_len is used to limit the iterations for retrieving the country
-power setting and may underflow under certain conditions due to changes
-in the power table in CLC.
+Just like in a previous problem in this driver, usblp_ctrl_msg() will
+collapse the usb_control_msg() return value to 0/-errno, discarding the
+actual number of bytes transferred.
 
-This underflow leads to an almost infinite loop or an invalid power
-setting resulting in driver initialization failure.
+Ideally that short command should be detected and error out, but many
+printers are known to send "incorrect" responses back so we can't just
+do that.
 
-Cc: stable@vger.kernel.org
-Fixes: fa6ad88e023d ("wifi: mt76: mt7921: fix country count limitation for CLC")
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20251009020158.1923429-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+statusbuf is kmalloc(8) at probe time and never filled before the first
+LPGETSTATUS ioctl.
+
+usblp_read_status() requests 1 byte. If a malicious printer responds
+with zero bytes, *statusbuf is one byte of stale kmalloc heap,
+sign-extended into the local int status, which the LPGETSTATUS path then
+copy_to_user()s directly to the ioctl caller.
+
+Fix this all by just zapping out the memory buffer when allocated at
+probe time.  If a later call does a short read, the data will be
+identical to what the device sent it the last time, so there is no
+"leak" of information happening.
+
+Cc: Pete Zaitcev <zaitcev@redhat.com>
+Assisted-by: gkh_clanker_t1000
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/2026042011-shredder-savage-48c6@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/class/usblp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1353,6 +1353,9 @@ int __mt7921_mcu_set_clc(struct mt792x_d
- 		u16 len = le16_to_cpu(rule->len);
- 		u16 offset = len + sizeof(*rule);
+--- a/drivers/usb/class/usblp.c
++++ b/drivers/usb/class/usblp.c
+@@ -1178,7 +1178,7 @@ static int usblp_probe(struct usb_interf
+ 	}
  
-+		if (buf_len < offset)
-+			break;
-+
- 		pos += offset;
- 		buf_len -= offset;
- 		if (rule->alpha2[0] != alpha2[0] ||
+ 	/* Allocate buffer for printer status */
+-	usblp->statusbuf = kmalloc(STATUS_BUF_SIZE, GFP_KERNEL);
++	usblp->statusbuf = kzalloc(STATUS_BUF_SIZE, GFP_KERNEL);
+ 	if (!usblp->statusbuf) {
+ 		retval = -ENOMEM;
+ 		goto abort;
 
 
 
