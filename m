@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-246589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246325-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJH1C6pxA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:30:02 +0200
+	id +IxqOMVtA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246325-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F20527A49
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:30:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9A95270CF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48B0532E902A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A387E310C08F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265FC36C5A1;
-	Tue, 12 May 2026 18:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA1F34405B;
+	Tue, 12 May 2026 18:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szpgkeJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pj509nE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D845F36AB5B;
-	Tue, 12 May 2026 18:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6033EDE5E;
+	Tue, 12 May 2026 18:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609612; cv=none; b=j/KruD+jItMDReaCvooJrU/47T900NxCVz/jMD/u7sc764XoypLTTyGrY1WmJekUI8lCuDJ/+DbykKjk8RF/mpMqcJcKJ83qeo6agnmiYIhlHgYN5s4T9z6f5SIuqt42wUlHlLn/c1OwzcYW4smlud0ZWuZPjBK/7E4jekqaz5s=
+	t=1778608935; cv=none; b=J8saE+68IE0/I7KAazu0jrXCudcxETKLO9oZj95cd1PEoHknxw0MLaRnBa1Vt7DOe77kALIxGboOYwgycIH99QEoi9mA0Y114fTMltovvFoPXsulRCxn32ENPPqavFiNpTgmsSAonvmJDBSwHZEG/vqftvKBY0hm5C0+uTXZCZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609612; c=relaxed/simple;
-	bh=wpO64XlLvXIsxhdajreedEXb67MX5mxkzKtdjp+5TWo=;
+	s=arc-20240116; t=1778608935; c=relaxed/simple;
+	bh=MhIy/U5jDMRaouqaSPbT3jRFIno/Nqbnbn/WDmxBcgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTI1rZRuQssaD/Kch8PePQTXLICqE1u+1lHVJY9ajYuF5nrqsQdoiqMKb0PFZ/jxnTpia45oTC+JnM49GpOMgRVZ/Lq8yPDHlQ9/YXD9jai7UmnrfOH8DxnG3RdSVTL1VBqCfm5Tvj24/IJX1AIPkapxCagbkA+YBsD/UtRvlFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szpgkeJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F068C2BCB0;
-	Tue, 12 May 2026 18:13:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VlDOAwKgv88tuLKdGLJwfkChnAekCddPPeL8vCHxlNDEzYqOi0XfL3vkO0K9HpynY+6jKLquLMJmroiQLytQAngRg6sfFDHE2j1rISOgOejwGD9MPM5Gi2ssYxfC1iMQ0HJkq6o5nHYGoKl6A0TwlbZzx+Rlkmii7ze2IgoNvN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pj509nE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46786C2BCB0;
+	Tue, 12 May 2026 18:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609612;
-	bh=wpO64XlLvXIsxhdajreedEXb67MX5mxkzKtdjp+5TWo=;
+	s=korg; t=1778608935;
+	bh=MhIy/U5jDMRaouqaSPbT3jRFIno/Nqbnbn/WDmxBcgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szpgkeJrhm5inCbg+KMptOXyF2p9FEfd1Rf1RmufXE+mJ76YNCC3E0IJEOD6TBWKz
-	 BX/DVv8G0Dgy0YKdlgy5R5Ebv6HjuFNq9CjO5d6ZXBVWC/fbPql2GsAg64ctXPIcNJ
-	 ufIoVuTNuMvfwfA6p3s/o+4JGYaayb2akANfR3WU=
+	b=Pj509nE2eZ7dO0IQG5ztY+TZZorojeR85zncQUhsTImXTMj6Gzofbgs2xI8Kv8pDr
+	 ZNWyhCaIukgtrR81WI99d3tUQ8hrkWW17GUX2vK425qLht3DkIUTX1WxLazd8wfOA2
+	 rbhTx/9JZMzjMay5KG8bTCWe+FXNg/lsTjWVpXZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 264/307] mptcp: pm: ADD_ADDR rtx: free sk if last
+	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 258/270] crypto: qat - fix firmware loading failure for GEN6 devices
 Date: Tue, 12 May 2026 19:40:59 +0200
-Message-ID: <20260512173945.701582490@linuxfoundation.org>
+Message-ID: <20260512173943.878744482@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,153 +65,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 94F20527A49
+X-Rspamd-Queue-Id: 7D9A95270CF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-246325-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246589-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email,intel.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
 
-commit b7b9a461569734d33d3259d58d2507adfac107ed upstream.
+[ Upstream commit e7dcb722bb75bb3f3992f580a8728a794732fd7a ]
 
-When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer(),
-and released at the end.
+QAT GEN6 hardware requires a minimum 3 us delay during the acceleration
+engine reset sequence to ensure the hardware fully settles.
+Without this delay, the firmware load may fail intermittently.
 
-If at that moment, it was the last reference being held, the sk would
-not be freed. sock_put() should then be called instead of __sock_put().
+Add a delay after placing the AE into reset and before clearing the reset,
+matching the hardware requirements and ensuring stable firmware loading.
+Earlier generations remain unaffected.
 
-But that's not enough: if it is the last reference, sock_put() will call
-sk_free(), which will end up calling sk_stop_timer_sync() on the same
-timer, and waiting indefinitely to finish. So it is needed to mark that
-the timer is done at the end of the timer handler when it has not been
-rescheduled, not to call sk_stop_timer_sync() on "itself".
-
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Fixes: 17fd7514ae68 ("crypto: qat - add qat_6xxx driver")
+Signed-off-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-5-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c |   28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ drivers/crypto/intel/qat/qat_common/adf_accel_engine.c         |    7 +++++++
+ drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h |    1 +
+ drivers/crypto/intel/qat/qat_common/qat_hal.c                  |    5 ++++-
+ 3 files changed, 12 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -16,6 +16,7 @@ struct mptcp_pm_add_entry {
- 	struct list_head	list;
- 	struct mptcp_addr_info	addr;
- 	u8			retrans_times;
-+	bool			timer_done;
- 	struct timer_list	add_timer;
- 	struct mptcp_sock	*sock;
- 	struct rcu_head		rcu;
-@@ -340,22 +341,22 @@ static void mptcp_pm_add_timer(struct ti
- 							      add_timer);
- 	struct mptcp_sock *msk = entry->sock;
- 	struct sock *sk = (struct sock *)msk;
--	unsigned int timeout;
-+	unsigned int timeout = 0;
+--- a/drivers/crypto/intel/qat/qat_common/adf_accel_engine.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_accel_engine.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: (BSD-3-Clause OR GPL-2.0-only)
+ /* Copyright(c) 2014 - 2020 Intel Corporation */
++#include <linux/delay.h>
+ #include <linux/firmware.h>
+ #include <linux/pci.h>
+ #include "adf_cfg.h"
+@@ -162,8 +163,14 @@ int adf_ae_stop(struct adf_accel_dev *ac
+ static int adf_ae_reset(struct adf_accel_dev *accel_dev, int ae)
+ {
+ 	struct adf_fw_loader_data *loader_data = accel_dev->fw_loader;
++	unsigned long reset_delay;
  
- 	pr_debug("msk=%p\n", msk);
+ 	qat_hal_reset(loader_data->fw_loader);
++
++	reset_delay = loader_data->fw_loader->chip_info->reset_delay_us;
++	if (reset_delay)
++		fsleep(reset_delay);
++
+ 	if (qat_hal_clr_reset(loader_data->fw_loader))
+ 		return -EFAULT;
  
-+	bh_lock_sock(sk);
- 	if (unlikely(inet_sk_state_load(sk) == TCP_CLOSE))
--		goto exit;
-+		goto out;
+--- a/drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h
++++ b/drivers/crypto/intel/qat/qat_common/icp_qat_fw_loader_handle.h
+@@ -27,6 +27,7 @@ struct icp_qat_fw_loader_chip_info {
+ 	int mmp_sram_size;
+ 	bool nn;
+ 	bool lm2lm3;
++	u16 reset_delay_us;
+ 	u32 lm_size;
+ 	u32 icp_rst_csr;
+ 	u32 icp_rst_mask;
+--- a/drivers/crypto/intel/qat/qat_common/qat_hal.c
++++ b/drivers/crypto/intel/qat/qat_common/qat_hal.c
+@@ -20,6 +20,7 @@
+ #define RST_CSR_QAT_LSB			20
+ #define RST_CSR_AE_LSB			0
+ #define MC_TIMESTAMP_ENABLE		(0x1 << 7)
++#define MIN_RESET_DELAY_US		3
  
--	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk)) {
- 		/* Try again later. */
--		sk_reset_timer(sk, timer, jiffies + HZ / 20);
-+		timeout = HZ / 20;
- 		goto out;
- 	}
- 
- 	if (mptcp_pm_should_add_signal_addr(msk)) {
--		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
-+		timeout = TCP_RTO_MAX / 8;
- 		goto out;
- 	}
- 
-@@ -373,8 +374,9 @@ static void mptcp_pm_add_timer(struct ti
- 	}
- 
- 	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX)
--		sk_reset_timer(sk, timer,
--			       jiffies + (timeout << entry->retrans_times));
-+		timeout <<= entry->retrans_times;
-+	else
-+		timeout = 0;
- 
- 	spin_unlock_bh(&msk->pm.lock);
- 
-@@ -382,9 +384,13 @@ static void mptcp_pm_add_timer(struct ti
- 		mptcp_pm_subflow_established(msk);
- 
- out:
-+	if (timeout)
-+		sk_reset_timer(sk, timer, jiffies + timeout);
-+	else
-+		/* if sock_put calls sk_free: avoid waiting for this timer */
-+		entry->timer_done = true;
- 	bh_unlock_sock(sk);
--exit:
--	__sock_put(sk);
-+	sock_put(sk);
- }
- 
- struct mptcp_pm_add_entry *
-@@ -447,6 +453,7 @@ bool mptcp_pm_alloc_anno_list(struct mpt
- 
- 	timer_setup(&add_entry->add_timer, mptcp_pm_add_timer, 0);
- reset_timer:
-+	add_entry->timer_done = false;
- 	timeout = mptcp_adjust_add_addr_timeout(msk);
- 	if (timeout)
- 		sk_reset_timer(sk, &add_entry->add_timer, jiffies + timeout);
-@@ -467,7 +474,8 @@ static void mptcp_pm_free_anno_list(stru
- 	spin_unlock_bh(&msk->pm.lock);
- 
- 	list_for_each_entry_safe(entry, tmp, &free_list, list) {
--		sk_stop_timer_sync(sk, &entry->add_timer);
-+		if (!entry->timer_done)
-+			sk_stop_timer_sync(sk, &entry->add_timer);
- 		kfree_rcu(entry, rcu);
- 	}
- }
+ #define IGNORE_W1C_MASK ((~(1 << CE_BREAKPOINT_BITPOS)) & \
+ 	(~(1 << CE_CNTL_STORE_PARITY_ERROR_BITPOS)) & \
+@@ -713,8 +714,10 @@ static int qat_hal_chip_init(struct icp_
+ 		handle->chip_info->wakeup_event_val = 0x80000000;
+ 		handle->chip_info->fw_auth = true;
+ 		handle->chip_info->css_3k = true;
+-		if (handle->pci_dev->device == PCI_DEVICE_ID_INTEL_QAT_6XXX)
++		if (handle->pci_dev->device == PCI_DEVICE_ID_INTEL_QAT_6XXX) {
+ 			handle->chip_info->dual_sign = true;
++			handle->chip_info->reset_delay_us = MIN_RESET_DELAY_US;
++		}
+ 		handle->chip_info->tgroup_share_ustore = true;
+ 		handle->chip_info->fcu_ctl_csr = FCU_CONTROL_4XXX;
+ 		handle->chip_info->fcu_sts_csr = FCU_STATUS_4XXX;
 
 
 
