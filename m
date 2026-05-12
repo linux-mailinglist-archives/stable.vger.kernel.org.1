@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-246508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLg0AHV0A2rf5wEAu9opvQ
-	(envelope-from <stable+bounces-246508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:41:57 +0200
+	id EJGaFDtpA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-245971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:54:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB59527FE2
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:41:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 985BA526451
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82C48307BCED
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09EE6311F937
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A77A352F86;
-	Tue, 12 May 2026 18:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566CB3955C2;
+	Tue, 12 May 2026 17:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ops6TzDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kREhkjz/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C115C33ADBA;
-	Tue, 12 May 2026 18:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173CF3E171D;
+	Tue, 12 May 2026 17:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609406; cv=none; b=GHoYJgJUSrNQJ1z4gmlqFeDVQjLg/Ol9ZN3YAfqXKQC4s2GwJVTG18cNrfSn+MB1bcjmnB3KozD3T3EqbqUd3v5e0yhOBslNYea5lSmEZNNLy2X69GIDMqDBRcw8ROXj+dqc2enZBYU+dOv10i5pZzU8V7AIuU1weeasIE3llDE=
+	t=1778608023; cv=none; b=A82aC398VmJh2s7ILWP7LLmJrDjp/yWGv0zLZDqWKIo0xe5NxiifHu1xeZqNc9DPk43PPGTq2LALAsiIXxCOa1ThsDt12UdQKP+qPFzETi3tvRV7GSir/w63zdv2IcuWR80f9/lhlfGybXM5P0PcPnWWhJYeqzVfB2ecpvb61rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609406; c=relaxed/simple;
-	bh=yz1dvGKS3l9HINf1cLDuovDmaU94iRFsxpeINeD5veE=;
+	s=arc-20240116; t=1778608023; c=relaxed/simple;
+	bh=gRFl3yF+zUYd5wBn6sFb4FAKMZjHonU8TFnkgCwxyZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rEemTSDwRN5MkTyLBwQ4Sqlnfp9Yo/z1qAhnRsshYrjK5ptB3oN7XFE5dtaqnI1SdpOFwRyvTeaChpltxHeYXQHMw5nM79r9tNhsMo6ZZ2ZvE0yJRHkStWu8ICyFIwucueUy037buu/iYRnkWJxFX3HeECRziAIjo1JkWodXR/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ops6TzDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574A9C2BCB0;
-	Tue, 12 May 2026 18:10:06 +0000 (UTC)
+	 MIME-Version; b=Lrh2K9LyDWVG+yrQbh3tBX3HvAklQFMWtWXtY5PuTkINI+7mVpuXhOYwHJhh7pB2em1m3TQygeQMrIQ595oa1J2TzAZVvHDm8Dtx8WbuvSsOlP6O9BEMQF2zjP6JoW6kl5A/p8YhRGTfFjg40ufjpcYKf0DxtsR972U8uL73OBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kREhkjz/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31042C2BCC7;
+	Tue, 12 May 2026 17:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609406;
-	bh=yz1dvGKS3l9HINf1cLDuovDmaU94iRFsxpeINeD5veE=;
+	s=korg; t=1778608022;
+	bh=gRFl3yF+zUYd5wBn6sFb4FAKMZjHonU8TFnkgCwxyZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ops6TzDwCzGrfpQiv8KPiYDC/drFjil6rXercjUWKrCrVPG8ocabt+WHP75RJT384
-	 SRdUyePyqhR2t77xVp7OWK+pjwGV/ZA94OwpfyHID7fLRc6744G5gYuuinrwm9islI
-	 Q9WO6OzWKGdLOM8KYCNffSSZZB0AXYwhuH7eNiKY=
+	b=kREhkjz/TPPlT1szmkfA31xybP1BU9v0CwZKlOhHNvAqGHtunYZI8BQw39X+MR9Vd
+	 5LyKnzF1e5fSH35ObCZ8Ku4eJCZ4vIowPom8MUVsdzeonNZ9a17x0hyAcGAkHvvRQO
+	 /FzH/iGyutf4p83AY4YUSlWEN7uwgp9yS5BKoQSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 7.0 183/307] eventfs: Hold eventfs_mutex and SRCU when remount walks events
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	David Howells <dhowells@redhat.com>,
+	David Gow <davidgow@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 126/206] lib/scatterlist: fix temp buffer in extract_user_to_sg()
 Date: Tue, 12 May 2026 19:39:38 +0200
-Message-ID: <20260512173943.978080515@linuxfoundation.org>
+Message-ID: <20260512173935.525979274@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,159 +67,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7CB59527FE2
+X-Rspamd-Queue-Id: 985BA526451
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246508-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,goodmis.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245971-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 07004a8c4b572171934390148ee48c4175c77eed upstream.
+commit 118cf3f55975352ac357fb194405031458186819 upstream.
 
-Commit 340f0c7067a9 ("eventfs: Update all the eventfs_inodes from the
-events descriptor") had eventfs_set_attrs() recurse through ei->children
-on remount.  The walk only holds the rcu_read_lock() taken by
-tracefs_apply_options() over tracefs_inodes, which is wrong:
+Instead of allocating a temporary buffer for extracted user pages
+extract_user_to_sg() uses the end of the to be filled scatterlist as a
+temporary buffer.
 
-  - list_for_each_entry over ei->children races with the list_del_rcu()
-    in eventfs_remove_rec() -- LIST_POISON1 deref, same shape as
-    d2603279c7d6.
-  - eventfs_inodes are freed via call_srcu(&eventfs_srcu, ...).
-    rcu_read_lock() does not extend an SRCU grace period, so ti->private
-    can be reclaimed under the walk.
-  - The writes to ei->attr race with eventfs_set_attr(), which holds
-    eventfs_mutex.
+Fix the calculation of the start address if the scatterlist already
+contains elements.  The unused space starts at sgtable->sgl +
+sgtable->nents not directly at sgtable->nents and the temporary buffer is
+placed at the end of this unused space.
 
-Reproducer:
+A subsequent commit will add kunit test cases that demonstrate that the
+patch is necessary.
 
-  while :; do mount -o remount,uid=$((RANDOM%1000)) /sys/kernel/tracing; done &
-  while :; do
-      echo "p:kp submit_bio" > /sys/kernel/tracing/kprobe_events
-      echo > /sys/kernel/tracing/kprobe_events
-  done
+Pointed out by sashiko.dev on a previous iteration of this series.
 
-Wrap the events portion of tracefs_apply_options() in
-eventfs_remount_lock()/_unlock() that take eventfs_mutex and
-srcu_read_lock(&eventfs_srcu).  eventfs_set_attrs() doesn't sleep so the
-nested rcu_read_lock() is fine; lockdep_assert_held() pins the contract.
-
-Comment in tracefs_drop_inode() said "RCU cycle" -- it is SRCU.
-
-Fixes: 340f0c7067a9 ("eventfs: Update all the eventfs_inodes from the events descriptor")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260418191737.10289-1-devnexen@gmail.com
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Link: https://lkml.kernel.org/r/20260326214905.818170-3-lk@c--e.de
+Fixes: 018584697533 ("netfs: Add a function to extract an iterator into a scatterlist")
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: David Howells <dhowells@redhat.com>
+Cc: David Gow <davidgow@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: <stable@vger.kernel.org>	[v6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   14 ++++++++++++++
- fs/tracefs/inode.c       |    5 ++++-
- fs/tracefs/internal.h    |    3 +++
- 3 files changed, 21 insertions(+), 1 deletion(-)
+ lib/scatterlist.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -250,6 +250,8 @@ static void eventfs_set_attrs(struct eve
- {
- 	struct eventfs_inode *ei_child;
+--- a/lib/scatterlist.c
++++ b/lib/scatterlist.c
+@@ -1118,8 +1118,7 @@ static ssize_t extract_user_to_sg(struct
+ 	size_t len, off;
  
-+	lockdep_assert_held(&eventfs_mutex);
-+
- 	/* Update events/<system>/<event> */
- 	if (WARN_ON_ONCE(level > 3))
- 		return;
-@@ -912,3 +914,15 @@ void eventfs_remove_events_dir(struct ev
- 	d_invalidate(dentry);
- 	d_make_discardable(dentry);
- }
-+
-+int eventfs_remount_lock(void)
-+{
-+	mutex_lock(&eventfs_mutex);
-+	return srcu_read_lock(&eventfs_srcu);
-+}
-+
-+void eventfs_remount_unlock(int srcu_idx)
-+{
-+	srcu_read_unlock(&eventfs_srcu, srcu_idx);
-+	mutex_unlock(&eventfs_mutex);
-+}
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -336,6 +336,7 @@ static int tracefs_apply_options(struct
- 	struct inode *inode = d_inode(sb->s_root);
- 	struct tracefs_inode *ti;
- 	bool update_uid, update_gid;
-+	int srcu_idx;
- 	umode_t tmp_mode;
+ 	/* We decant the page list into the tail of the scatterlist */
+-	pages = (void *)sgtable->sgl +
+-		array_size(sg_max, sizeof(struct scatterlist));
++	pages = (void *)sg + array_size(sg_max, sizeof(struct scatterlist));
+ 	pages -= sg_max;
  
- 	/*
-@@ -360,6 +361,7 @@ static int tracefs_apply_options(struct
- 		update_uid = fsi->opts & BIT(Opt_uid);
- 		update_gid = fsi->opts & BIT(Opt_gid);
- 
-+		srcu_idx = eventfs_remount_lock();
- 		rcu_read_lock();
- 		list_for_each_entry_rcu(ti, &tracefs_inodes, list) {
- 			if (update_uid) {
-@@ -381,6 +383,7 @@ static int tracefs_apply_options(struct
- 				eventfs_remount(ti, update_uid, update_gid);
- 		}
- 		rcu_read_unlock();
-+		eventfs_remount_unlock(srcu_idx);
- 	}
- 
- 	return 0;
-@@ -426,7 +429,7 @@ static int tracefs_drop_inode(struct ino
- 	 * This inode is being freed and cannot be used for
- 	 * eventfs. Clear the flag so that it doesn't call into
- 	 * eventfs during the remount flag updates. The eventfs_inode
--	 * gets freed after an RCU cycle, so the content will still
-+	 * gets freed after an SRCU cycle, so the content will still
- 	 * be safe if the iteration is going on now.
- 	 */
- 	ti->flags &= ~TRACEFS_EVENT_INODE;
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -76,4 +76,7 @@ struct inode *tracefs_get_inode(struct s
- void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid);
- void eventfs_d_release(struct dentry *dentry);
- 
-+int eventfs_remount_lock(void);
-+void eventfs_remount_unlock(int srcu_idx);
-+
- #endif /* _TRACEFS_INTERNAL_H */
+ 	do {
 
 
 
