@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-246443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246400-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LyWNLVuA2p45wEAu9opvQ
-	(envelope-from <stable+bounces-246443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:25 +0200
+	id eIceD1NzA2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246400-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48EBF5273B5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AA1527DB2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 098E730DA204
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 257E831434A1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96032DE6E3;
-	Tue, 12 May 2026 18:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68C6328B77;
+	Tue, 12 May 2026 18:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiWYb0Vs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYhdZtap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEEA3EDE68;
-	Tue, 12 May 2026 18:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6806950276;
+	Tue, 12 May 2026 18:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609241; cv=none; b=ts6ItKd/LksCJtMb8Y24LB6Sz7FlF3/DD3AJKMTtQe1PWN36JhwErdwgA5ESGnt0atFZl69p9R4nBJVsdrGr6QpZDDJm2E/5MSLbLI9jdJAAPi3wMn4jSnwKSk+70+MGwmopowpjqfcsf+wV/fWVqxvhklJQY8ZyVkxyYyuf9cs=
+	t=1778609128; cv=none; b=Waale4D7s9H91XnClvqxC7/XPaCXXjaiiItscy9BH2S6BGQEw7c9BkzVdiiqsfheMSO+AB34qXQeRaDidB3eubEK40RpYm7wF793UhY3N763eFKV2WASvpnjmp/MPWJMZAtAP4N40tKh0mQ+R4eyORFU55KbYH5QBnRoWVAMq1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609241; c=relaxed/simple;
-	bh=sAq9v59Z4wEwziV6WgV6xhSuuKRGo0rJvwcfo4NRwG8=;
+	s=arc-20240116; t=1778609128; c=relaxed/simple;
+	bh=4i0Hj5z+FrTX88gjTWIm0vhH0tT3bqK5ivtt4/EqJJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D5n2GPl1wfGiEWvRv2dpO7363vsuzUVt0EGiQc0bI8I1VK5/XGinfVCGYOnz8goGlOn8ak9QWAFA5X8gb3k3AXaB05uJPTdmxfMJxUgUg88727jG6sg1HkftRsvlAn/gHrqqstdx+IQ/rp2kwBrqhhMGJzY9UqY78qlc7xwwU94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiWYb0Vs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04BCC2BCB0;
-	Tue, 12 May 2026 18:07:20 +0000 (UTC)
+	 MIME-Version; b=BoDhL9C/XyZernD4WGr2npD771JfK57bPGbHAud8WIF8imjCAjY3mUtA/vka1o+auFZR32DPMULsgz4lXAdelqGFw2DwsROG6sz61LUgYLi0qr+urfAYg4SD5UXn9zohQezyrRqWLQk9RfI1HILBf6wvWF35oupomLcYogcDMWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYhdZtap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0109EC2BCB0;
+	Tue, 12 May 2026 18:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609241;
-	bh=sAq9v59Z4wEwziV6WgV6xhSuuKRGo0rJvwcfo4NRwG8=;
+	s=korg; t=1778609128;
+	bh=4i0Hj5z+FrTX88gjTWIm0vhH0tT3bqK5ivtt4/EqJJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RiWYb0VstW4foFG0howgMjPG1oJqlPcIgvdxheNBi5R7/WhcX8c60Mlav+B/++3S1
-	 f/O8K8sX2XMCv/EiyRDH/XwuZExyUSmQBdXuUgcihVBKayxxu1rBuqebbZQqTyokyQ
-	 bGmICJGiSkRoja4pvkFEtObHH6vzvUafHNtla1o8=
+	b=GYhdZtapGt14kC1IsmYJHhyBwlpogRQKPr2Ub06viVu5DS2rIbeARX3SDUzoc4/xW
+	 Xoklp5d63MdavOFsNlvayOgwB4JA1kz3n1rdVeI6RvYiPlzUBMqSJv2C82LyijYcPp
+	 jwMGKL7AWxQyHYHyfE/BYtJS+ufCMVejKj7q0C1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Tao Cui <cuitao@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 7.0 068/307] LoongArch: KVM: Fix missing EMULATE_FAIL in kvm_emu_mmio_read()
-Date: Tue, 12 May 2026 19:37:43 +0200
-Message-ID: <20260512173941.556462605@linuxfoundation.org>
+	Soenke Huster <soenke.huster@eknoes.de>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 7.0 069/307] Bluetooth: virtio_bt: clamp rx length before skb_put
+Date: Tue, 12 May 2026 19:37:44 +0200
+Message-ID: <20260512173941.577813301@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
 References: <20260512173940.117428952@linuxfoundation.org>
@@ -64,73 +64,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 48EBF5273B5
+X-Rspamd-Queue-Id: 50AA1527DB2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246443-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246400-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,eknoes.de,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,loongson.cn:email,kylinos.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Cui <cuitao@kylinos.cn>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit f26faae96c411a70641e4d21b759475caa6122d5 upstream.
+commit 21bd244b6de5d2fe1063c23acc93fbdd2b20d112 upstream.
 
-In the ldptr (0x24...0x27) opcode decoding path, the default case only
-breaks out but without setting "ret" value to EMULATE_FAIL. This leaves
-run->mmio.len uninitialized (stale from a previous MMIO operation) while
-"ret" value remains EMULATE_DO_MMIO, causing the code to proceed with an
-incorrect MMIO length.
+virtbt_rx_work() calls skb_put(skb, len) where len comes directly
+from virtqueue_get_buf() with no validation against the buffer we
+posted to the device. The RX skb is allocated in virtbt_add_inbuf()
+and exposed to virtio as exactly 1000 bytes via sg_init_one().
 
-Add "ret = EMULATE_FAIL" to match the other default branches in the same
-function (e.g. the 0x28...0x2e and 0x38 cases).
+Checking len against skb_tailroom(skb) is not sufficient because
+alloc_skb() can leave more tailroom than the 1000 bytes actually
+handed to the device. A malicious or buggy backend can therefore
+report used.len between 1001 and skb_tailroom(skb), causing skb_put()
+to include uninitialized kernel heap bytes that were never written by
+the device.
 
+The same path also accepts len == 0, in which case skb_put(skb, 0)
+leaves the skb empty but virtbt_rx_handle() still reads the pkt_type
+byte from skb->data, consuming uninitialized memory.
+
+Define VIRTBT_RX_BUF_SIZE once and reuse it in alloc_skb() and
+sg_init_one(), and gate virtbt_rx_work() on that same constant so
+the bound checked matches the buffer actually exposed to the device.
+Reject used.len == 0 in the same gate so an empty completion can
+no longer reach virtbt_rx_handle().
+
+Use bt_dev_err_ratelimited() because the length value comes from an
+untrusted backend that can otherwise flood the kernel log.
+
+Same class of bug as commit c04db81cd028 ("net/9p: Fix buffer
+overflow in USB transport layer"), which hardened the USB 9p
+transport against unchecked device-reported length.
+
+Fixes: 160fbcf3bfb9 ("Bluetooth: virtio_bt: Use skb_put to set length")
 Cc: stable@vger.kernel.org
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Soenke Huster <soenke.huster@eknoes.de>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/exit.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/virtio_bt.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/kvm/exit.c
-+++ b/arch/loongarch/kvm/exit.c
-@@ -390,6 +390,7 @@ int kvm_emu_mmio_read(struct kvm_vcpu *v
- 			run->mmio.len = 8;
- 			break;
- 		default:
-+			ret = EMULATE_FAIL;
- 			break;
- 		}
- 		break;
+--- a/drivers/bluetooth/virtio_bt.c
++++ b/drivers/bluetooth/virtio_bt.c
+@@ -12,6 +12,7 @@
+ #include <net/bluetooth/hci_core.h>
+ 
+ #define VERSION "0.1"
++#define VIRTBT_RX_BUF_SIZE 1000
+ 
+ enum {
+ 	VIRTBT_VQ_TX,
+@@ -33,11 +34,11 @@ static int virtbt_add_inbuf(struct virti
+ 	struct sk_buff *skb;
+ 	int err;
+ 
+-	skb = alloc_skb(1000, GFP_KERNEL);
++	skb = alloc_skb(VIRTBT_RX_BUF_SIZE, GFP_KERNEL);
+ 	if (!skb)
+ 		return -ENOMEM;
+ 
+-	sg_init_one(sg, skb->data, 1000);
++	sg_init_one(sg, skb->data, VIRTBT_RX_BUF_SIZE);
+ 
+ 	err = virtqueue_add_inbuf(vq, sg, 1, skb, GFP_KERNEL);
+ 	if (err < 0) {
+@@ -227,8 +228,15 @@ static void virtbt_rx_work(struct work_s
+ 	if (!skb)
+ 		return;
+ 
+-	skb_put(skb, len);
+-	virtbt_rx_handle(vbt, skb);
++	if (!len || len > VIRTBT_RX_BUF_SIZE) {
++		bt_dev_err_ratelimited(vbt->hdev,
++				       "rx reply len %u outside [1, %u]\n",
++				       len, VIRTBT_RX_BUF_SIZE);
++		kfree_skb(skb);
++	} else {
++		skb_put(skb, len);
++		virtbt_rx_handle(vbt, skb);
++	}
+ 
+ 	if (virtbt_add_inbuf(vbt) < 0)
+ 		return;
 
 
 
