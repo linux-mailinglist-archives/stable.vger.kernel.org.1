@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAQeHyJvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:14 +0200
+	id 8IekBoNnA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD205274BD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C8B526165
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BBD8830B0B26
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 655D8308B581
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B583342509;
-	Tue, 12 May 2026 18:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EF73ADB9A;
+	Tue, 12 May 2026 17:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3vWEL+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0OF70PT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E9334B410;
-	Tue, 12 May 2026 18:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D2E3DC871;
+	Tue, 12 May 2026 17:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609370; cv=none; b=ZrUseGyIXs/fV3GXoNth0PV995Yk0kdZCNiqHCLUmAH41Q2hBmQVjqRAlaoNSUjnS1VxFYQNfBDthWGfejQ7nuvKecview7i1vTqvtaw0Pj6AWo8yCIdWu6ABNO6D2NOcqLLupdz/p3ojuNTOhfYoA9Gw+bDfT6iwm9YrDdBaIM=
+	t=1778607988; cv=none; b=oexd43ttjnudiUG+4zl0VjZkSJ0Y80b8UJuUEcYlGLs9mnzVDN7qysELPj3b+3vghtMhOc4mHv9H9+lQvlE/dCOkHZ6iXyExHy/2kmJ2I6+7jK4ATsu6bAz5SDM+e2vGEAxcAFUxsGC+asdYmlPxb4D1J4Oarw0BUiHhFH7l4Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609370; c=relaxed/simple;
-	bh=OPeqWAzarcJ+0Ntkgqf4z6fEuqlNtaz1F0r8LSEj1xY=;
+	s=arc-20240116; t=1778607988; c=relaxed/simple;
+	bh=uWRxLGQ6JyVpLH8AGxrT8weoEkYgtIEMoetAYoSkcqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsND+ytZ2BD8yaCN3q5FWh1VRx/xGvV9zO5mSGd4XCeRifIEqrQOTGC6xJk66ORjwrbgAwoYDBkm2TXIquoC1VWoK97AcMGhfoUBVRY8KKWaxx/QG0lOORq0+19atYhp5sW5ceddKocYeeRpPl9PJj8qKm/U2dEXYu1fxtki0cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3vWEL+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A86AC2BCB0;
-	Tue, 12 May 2026 18:09:30 +0000 (UTC)
+	 MIME-Version; b=jkyikUtcjTeDfUvHBQuw0XEm+Hd7BumGfrpYi5MZGeZEwT74sTYhiitk5ocY+z7jPsOJmypgWpOSZM5e+JEeDUmBW7zejSp9MM3Tgb5RttrkgX+0+6K9GObyrhXiedJiTGt2CDhKaRqsnO1CKNXyTadmI/y9TKCC1hnMX+pY3r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0OF70PT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA74C2BCB0;
+	Tue, 12 May 2026 17:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609370;
-	bh=OPeqWAzarcJ+0Ntkgqf4z6fEuqlNtaz1F0r8LSEj1xY=;
+	s=korg; t=1778607988;
+	bh=uWRxLGQ6JyVpLH8AGxrT8weoEkYgtIEMoetAYoSkcqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3vWEL+2+z96i5gPkq5qhOar3lGHBSHW1tkGxvz9tql9qPUZ/6eVnOOiLxzxyXzC4
-	 afqHHcyWlanm4s38MnscBDjZAPXyXkhQ6ON0nk4h3WafOqpusNx7hyEQSfnlITxXrQ
-	 7zZJfwLdQKOab0hcsimbgLNmg5+wbw4M69H/o2Ig=
+	b=W0OF70PTxPZNXnPFx932z/k06owKCXbIMdU9Qj+QACSqFR6QcZkVUBaxyvSG7iR0i
+	 yCZEgMb4PG2yC4+WD5FFrDAqJs7V+GROzztYB9ektHut5oADN1X05cmmfja5LlUgsp
+	 UYtA+SVDIHUdtYvtnCXjhYVZXnhIVtKraJ1O13xQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Salisbury <joseph.salisbury@oracle.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 170/307] ASoC: fsl_easrc: fix comment typo
-Date: Tue, 12 May 2026 19:39:25 +0200
-Message-ID: <20260512173943.707031340@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 114/206] btrfs: fix double free in create_space_info() error path
+Date: Tue, 12 May 2026 19:39:26 +0200
+Message-ID: <20260512173935.269297701@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2DD205274BD
+X-Rspamd-Queue-Id: A9C8B526165
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-245957-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246494-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Salisbury <joseph.salisbury@oracle.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 804dce6c73fdfa44184ee4e8b09abad7f5da408f upstream.
+commit 3f487be81292702a59ea9dbc4088b3360a50e837 upstream.
 
-The file contains a spelling error in a source comment (funciton).
+When kobject_init_and_add() fails, the call chain is:
 
-Typos in comments reduce readability and make text searches less reliable
-for developers and maintainers.
+create_space_info()
+-> btrfs_sysfs_add_space_info_type()
+-> kobject_init_and_add()
+-> failure
+-> kobject_put(&space_info->kobj)
+-> space_info_release()
+-> kfree(space_info)
 
-Replace 'funciton' with 'function' in the affected comment. This is a
-comment-only cleanup and does not change behavior.
+Then control returns to create_space_info():
 
-Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joseph Salisbury <joseph.salisbury@oracle.com>
-Link: https://patch.msgid.link/20260316180545.144032-1-joseph.salisbury@oracle.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+btrfs_sysfs_add_space_info_type() returns error
+-> goto out_free
+-> kfree(space_info)
+
+This causes a double free.
+
+Keep the direct kfree(space_info) for the earlier failure path, but
+after btrfs_sysfs_add_space_info_type() has called kobject_put(), let
+the kobject release callback handle the cleanup.
+
+Fixes: a11224a016d6d ("btrfs: fix memory leaks in create_space_info() error paths")
+CC: stable@vger.kernel.org # 6.19+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_easrc.c |    2 +-
+ fs/btrfs/space-info.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -1286,7 +1286,7 @@ static int fsl_easrc_request_context(int
- /*
-  * Release the context
-  *
-- * This funciton is mainly doing the revert thing in request context
-+ * This function is mainly doing the revert thing in request context
-  */
- static void fsl_easrc_release_context(struct fsl_asrc_pair *ctx)
- {
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -296,7 +296,7 @@ static int create_space_info(struct btrf
+ 
+ 	ret = btrfs_sysfs_add_space_info_type(info, space_info);
+ 	if (ret)
+-		goto out_free;
++		return ret;
+ 
+ 	list_add(&space_info->list, &info->space_info);
+ 	if (flags & BTRFS_BLOCK_GROUP_DATA)
 
 
 
