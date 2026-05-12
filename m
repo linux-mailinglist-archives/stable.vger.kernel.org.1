@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-246353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDYUFB9vA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:11 +0200
+	id SFvMK5FrA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:04:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 986BF5274B6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76014526A68
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 774ED309370B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C9F333054532
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F125525FA29;
-	Tue, 12 May 2026 18:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943FC35F185;
+	Tue, 12 May 2026 18:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6yI1psV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W03qouOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52143EDE59;
-	Tue, 12 May 2026 18:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C513537D0;
+	Tue, 12 May 2026 18:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609007; cv=none; b=AnIpslEYuE13pLpN57sOgs9M9w/1PyzwG8sAWW+pJ+VwyvZlgDWLeNMIQVgEe7CwONkxmryJMBtLrP9raJZVAxOQRUTdU6TNUVliu4fnWdcEfeoegYhk00Ca6UapbTF6jIzONAciUpzn4ftfyvlhRYVIKIU3ftjWKDr9A+j1/5E=
+	t=1778608956; cv=none; b=VASRC4lGFLC1Y5kbWR8btjomWmUyt15W+r46h0zCj5S+j8mgXCvZ7drpPk4N1TkXDqj2hurGN32X0rBH0lpEIzRUG+HfUYXR41d8DzC1MT8RnCXoLcDSXILx+kj5SZIBBQQhRRWFFhETNrBsg1zAY+UcSOMl5hb5G1dXE3TyP8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609007; c=relaxed/simple;
-	bh=qdFCimMjFF3uwCyhbINAknxvPwRKRq2AeGMJO9EVSwU=;
+	s=arc-20240116; t=1778608956; c=relaxed/simple;
+	bh=p1ri4/PoHIH4x1CspWMuI6euNuyt7a7jNoiyLdcR8qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATcJWUJcTC0s442gUX7s/gBrldE1sU68oH70x6SaJXjl8BshnMyaayDgam1HDy2LBGvEN7NIu98BoL/Gvl60iud7scGLoM57pcm2huoY0VW9KdMl5nwciWxOV0CqVRSpGhUxSNhNP7xOBrTlNlEMmNlhg6YxsQ8aHmRSnE/oZEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6yI1psV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E73BC2BCB0;
-	Tue, 12 May 2026 18:03:27 +0000 (UTC)
+	 MIME-Version; b=CzVW8ksH69p1kSW0JS+Q4qXdNdJXxUyJLUys4WsFm+/OrNJuscY9UaoDQ9GmSD5E1ts4nSzaVLqRQ0PX/cSVxB6OPg3tuhVSVORKf9ONcH56ZWn3yc9XIXAPQCxjzdAL4UNzTYzjlRX4z30hHTLGQOWnFCdXRwmEm9mXd1Fw6RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W03qouOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B1CC2BCB0;
+	Tue, 12 May 2026 18:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609007;
-	bh=qdFCimMjFF3uwCyhbINAknxvPwRKRq2AeGMJO9EVSwU=;
+	s=korg; t=1778608956;
+	bh=p1ri4/PoHIH4x1CspWMuI6euNuyt7a7jNoiyLdcR8qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6yI1psVUFU1kuZJzAq5wZF7qACk50xsglP6e3/cVJSeEvEIHEYQXzMZpmP0au3Od
-	 +3afqjRKZOYMKOfPY4C3EZm36gDHFNGA82xjd/CoLyq+w7d9NtsoGvLngGu9TPUFBI
-	 J0gj828H9qm1hBz6/nuDJ2LhMZejuJs982bSK6Sg=
+	b=W03qouOa373Qj6OJJMeMmZtphLrdaQL+xC8iMKBrxhR8sGo+Vo93YFFjyXvhBrccy
+	 x/b7HMu++ilr00a98L5vdyD5tKvmu0e5xgcH0AEoUyyGlrue+7axeyBc4vb1nl//Yr
+	 73hS0WJCvemLBQy86MVzCxP/4trN8j9sN+Hqqx2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Kelley <skelley@nvidia.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Shivam Kalra <shivamkalra98@zohomail.in>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 7.0 009/307] ACPI: CPPC: Fix related_cpus inconsistency during CPU hotplug
-Date: Tue, 12 May 2026 19:36:44 +0200
-Message-ID: <20260512173940.321218853@linuxfoundation.org>
+Subject: [PATCH 7.0 010/307] ACPI: video: force native backlight on HP OMEN 16 (8A44)
+Date: Tue, 12 May 2026 19:36:45 +0200
+Message-ID: <20260512173940.342079554@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
 References: <20260512173940.117428952@linuxfoundation.org>
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 986BF5274B6
+X-Rspamd-Queue-Id: 76014526A68
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246353-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246333-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,151 +88,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email,test.sh:url,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,zohomail.in:email]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Shivam Kalra <shivamkalra98@zohomail.in>
 
-commit 75141a770f4f8225d316f6c7e146723a32e9720e upstream.
+commit 4b506ea5351a1f5937ac632a4a5c35f6f796cc41 upstream.
 
-When concurrently bringing up and down two SMT threads of a physical
-core, many warning call traces occur as below:
+The HP OMEN 16 Gaming Laptop (board name 8A44) has a mux-less hybrid
+GPU configuration with AMD Rembrandt (Radeon 680M) and NVIDIA GA104
+(RTX 3070 Ti). The internal eDP panel is wired to the AMD iGPU.
 
-The issue timeline is as follows:
+When Nouveau loads without GSP firmware, the ACPI video backlight
+device (acpi_video0) gets registered alongside the native AMD
+backlight (amdgpu_bl2). In this state, writes to amdgpu_bl2 update
+the software brightness value but fail to change the physical panel
+brightness.
 
- 1. When the system starts,
-    cpufreq: CPU: 220, policy->related_cpus: 220-221, policy->cpus: 220-221
-
- 2. Offline CPU 220 and CPU 221.
-
- 3. Online CPU 220
-    - CPU 221 is now offline, as acpi_get_psd_map() use
-      for_each_online_cpu(), so the cpu_data->shared_cpu_map,
-      policy->cpus, and related_cpus has only CPU 220.
-
-    cpufreq: CPU: 220, policy->related_cpus: 220, policy->cpus: 220
-
- 4. Offline CPU 220
-
- 5. Online CPU 221, the below call trace occurs:
-    - Since CPU 220 and CPU 221 share one policy, and
-      policy->related_cpus = 220 after step 3, so CPU 221
-      is not in policy->related_cpus but
-      per_cpu(cpufreq_cpu_data, cpu221) is not NULL.
-
-After reverting commit 56eb0c0ed345 ("ACPI: CPPC: Fix remaining
-for_each_possible_cpu() to use online CPUs"), the issue disappeared.
-
-The _PSD (P-State Dependency) defines the hardware-level dependency of
-frequency control across CPU cores. Since this relationship is a physical
-attribute of the hardware topology, it remains constant regardless of the
-online or offline status of the CPUs.
-
-Using for_each_online_cpu() in acpi_get_psd_map() is problematic. If a
-CPU is offline, it will be excluded from the shared_cpu_map.
-Consequently, if that CPU is brought online later, the kernel will fail
-to recognize it as part of any shared frequency domain.
-
-Switch back to for_each_possible_cpu() to ensure that all cores defined
-in the ACPI tables are correctly mapped into their respective performance
-domains from the start. This aligns with the logic of policy->related_cpus,
-which must encompass all potentially available cores in the domain to
-prevent logic gaps during CPU hotplug operations.
-
-To resolve the original issue regarding the "nosmt" or "nosmt=force"
-boot parameter, as send_pcc_cmd() function already does if (!desc)
-continue, so reverting that loop back to for_each_possible_cpu() is ok,
-only need to change the match_cpc_ptr NULL case in acpi_get_psd_map() to
-continue as Sean suggested.
-
-How to reproduce, on arm64 machine with SMT support which use acpi cppc
-cpufreq driver:
-
-	bash test.sh 220 & bash test.sh 221 &
-
-	The test.sh is as below:
-		while true
-			do
-			echo 0 > /sys/devices/system/cpu/cpu${1}/online
-			sleep 0.5
-			cat /sys/devices/system/cpu/cpu${1}/cpufreq/related_cpus
-			echo 1 >  /sys/devices/system/cpu/cpu${1}/online
-			cat /sys/devices/system/cpu/cpu${1}/cpufreq/related_cpus
-		done
-
-	CPU: 221 PID: 1119 Comm: cpuhp/221 Kdump: loaded Not tainted 6.6.0debug+ #5
-	Hardware name: To be filled by O.E.M. S920X20/BC83AMDA01-7270Z, BIOS 20.39 09/04/2024
-	pstate: a1400009 (NzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-	pc : cpufreq_online+0x8ac/0xa90
-	lr : cpuhp_cpufreq_online+0x18/0x30
-	sp : ffff80008739bce0
-	x29: ffff80008739bce0 x28: 0000000000000000 x27: ffff28400ca32200
-	x26: 0000000000000000 x25: 0000000000000003 x24: ffffd483503ff000
-	x23: ffffd483504051a0 x22: ffffd48350024a00 x21: 00000000000000dd
-	x20: 000000000000001d x19: ffff28400ca32000 x18: 0000000000000000
-	x17: 0000000000000020 x16: ffffd4834e6a3fc8 x15: 0000000000000020
-	x14: 0000000000000008 x13: 0000000000000001 x12: 00000000ffffffff
-	x11: 0000000000000040 x10: ffffd48350430728 x9 : ffffd4834f087c78
-	x8 : 0000000000000001 x7 : ffff2840092bdf00 x6 : ffffd483504264f0
-	x5 : ffffd48350405000 x4 : ffff283f7f95cc60 x3 : 0000000000000000
-	x2 : ffff53bc2f94b000 x1 : 00000000000000dd x0 : 0000000000000000
-	Call trace:
-	 cpufreq_online+0x8ac/0xa90
-	 cpuhp_cpufreq_online+0x18/0x30
-	 cpuhp_invoke_callback+0x128/0x580
-	 cpuhp_thread_fun+0x110/0x1b0
-	 smpboot_thread_fn+0x140/0x190
-	 kthread+0xec/0x100
-	 ret_from_fork+0x10/0x20
-	---[ end trace 0000000000000000 ]---
+Force native backlight to prevent acpi_video0 from registering.
+Confirmed that booting with acpi_backlight=native resolves the
+issue.
 
 Cc: All applicable <stable@vger.kernel.org>
-Fixes: 56eb0c0ed345 ("ACPI: CPPC: Fix remaining for_each_possible_cpu() to use online CPUs")
-Co-developed-by: Sean Kelley <skelley@nvidia.com>
-Signed-off-by: Sean Kelley <skelley@nvidia.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-[ rjw: Changelog edits ]
-Link: https://patch.msgid.link/20260417040112.3727756-1-ruanjinjie@huawei.com
+Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+Link: https://patch.msgid.link/20260426-omen-16-backlight-fix-v1-1-62364f268ea6@zohomail.in
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/video_detect.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -362,7 +362,7 @@ static int send_pcc_cmd(int pcc_ss_id, u
- end:
- 	if (cmd == CMD_WRITE) {
- 		if (unlikely(ret)) {
--			for_each_online_cpu(i) {
-+			for_each_possible_cpu(i) {
- 				struct cpc_desc *desc = per_cpu(cpc_desc_ptr, i);
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -907,6 +907,14 @@ static const struct dmi_system_id video_
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 15 3535"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* HP OMEN Gaming Laptop 16-n0xxx */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16-n0xxx"),
++		},
++	},
  
- 				if (!desc)
-@@ -524,13 +524,13 @@ int acpi_get_psd_map(unsigned int cpu, s
- 	else if (pdomain->coord_type == DOMAIN_COORD_TYPE_SW_ANY)
- 		cpu_data->shared_type = CPUFREQ_SHARED_TYPE_ANY;
- 
--	for_each_online_cpu(i) {
-+	for_each_possible_cpu(i) {
- 		if (i == cpu)
- 			continue;
- 
- 		match_cpc_ptr = per_cpu(cpc_desc_ptr, i);
- 		if (!match_cpc_ptr)
--			goto err_fault;
-+			continue;
- 
- 		match_pdomain = &(match_cpc_ptr->domain_info);
- 		if (match_pdomain->domain != pdomain->domain)
+ 	/*
+ 	 * x86 android tablets which directly control the backlight through
 
 
 
