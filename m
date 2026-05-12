@@ -1,213 +1,225 @@
-Return-Path: <stable+bounces-245565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245566-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPKvNBcoA2qw1AEAu9opvQ
-	(envelope-from <stable+bounces-245565-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:16:07 +0200
+	id yIG6BXYyA2oA1gEAu9opvQ
+	(envelope-from <stable+bounces-245566-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:00:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50EAA520EEC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:16:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72731521D8D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A376230B59EF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:03:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3195430DB6A9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046DA3E1737;
-	Tue, 12 May 2026 13:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED69F1D63E4;
+	Tue, 12 May 2026 13:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="SSl0E0sY"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="KF16H/fx"
 X-Original-To: stable@vger.kernel.org
-Received: from SY2PR01CU004.outbound.protection.outlook.com (mail-australiaeastazolkn19011060.outbound.protection.outlook.com [52.103.72.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6681C3E172C;
-	Tue, 12 May 2026 13:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778590997; cv=fail; b=VPJZ4XrKRdiSR9aUz/S+z6BTYFnnbE7Ep6WwcysaSkHzVGqrTNLVGbKLLVMjy9iuJH/s6gZvoR4lMyHAvxEH3qWhQMVz98GdTBXSj/ljavKveiVnKzklQ+SyrJCDBPi2g1zFYG5bg0IxFmeai0chHN96nWDtJBq/XyNdwcTT4gI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778590997; c=relaxed/simple;
-	bh=oaTsJSn1WWSf1WPS71n10dGiAarFkEW8/9w5MjfCXMU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XWovztX9mUWtsteoo34BLe1IE8A3SeyZ6Y7zWxdgQY9y9vRHFAgf6q2DfPTpiTJyqt0piwOXDs2cDn9OmjOh6LGdsEIhU1pPcTxoGHELX5jQVooagRVehNby+PHuydUtwgwkQmQElxhMKbEY8OSPgT0x4WGN+eQzIme05rjCdUc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=SSl0E0sY; arc=fail smtp.client-ip=52.103.72.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VEdPxqKmr+L4JfESPL41/a4ay5JNmR91kNVspec1Wo1hLMqXzad5rca5HrYAc7EKQtN7xWliMMSWWT306vyZ9R/A07LcrqgwmzmlRJI1HRD8QUeAENAKwYqiHkeAXlKk+WB1EVaEnJp0eVVv1cvQZVR7qN8IimWzPqqu4vvdMoPLPo09Lz1B8IRBl1oEWkigDQ9KdWlC0c76LZtfAVXIxDHI6QTyYfLcXmA+mMhYPSmHq9NCC0CaWCSNgvsZPWov29b0pZHIHRaMIvJ4W6JHrGueEfLcqeD8DbvTcA5psenf30KcEwv22hknoB17k1N6G5OrIaKVFImruFR6Azw8lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oaTsJSn1WWSf1WPS71n10dGiAarFkEW8/9w5MjfCXMU=;
- b=xNcoQuORmaWvxmel0hFM4Nie6BsGJnJij2Y5Iifxtl73xJSZG39IIzWbQs+qf6TRFImLXUWhKnOqiPCMOvhElHsU2XDTSvHIMJhEyRjhk6NEciIo345Z86X9WB3GVOOo1hwuAPkDEzdBJD9vTL2xm7vXOLCsczobkCZjOD1gClxC/Xgd8klHskc93H+Ylv98Wra4aGR3rPbl3K1LW44cpjBXe3IZB6L/+UC2ukTopAwEPSXXN0I48x4L8mx7MsHVNpCL5vFrNOAfHB9FC3Ol0hmHwUJqKQPgIDHi+xfOf1Z4xm6+sl8gVwDHw0PNxbrBpJBMiV4XrcD4lyiBv/fiQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oaTsJSn1WWSf1WPS71n10dGiAarFkEW8/9w5MjfCXMU=;
- b=SSl0E0sYIOGXZ6Odf4bdi1gkeCRqnidellvkk8HavjodYax1C/EmGZKvMYQK2K8w46WYMV6QQOBMXKSchZJP7LEhbSiwXIquYHBuqGdtdwB5Fb2bytuzcq+UaZnw0E2OTc9Kw0Jhaqxf0+TjDfTCWOgD64Vgp26kejUytv5AFZGcCWl788afK91YN1NLn2K4/ks7clcUnevPViWCP5boJSe2wanx3zbqjcJUIb5EvnL9SzdkVwvJfiA9I8NfGVyXh5oFZVID1029r/zvEty4v4a47H9fDteIaIWpjgFy30S9LUlQVH0JDhBnTas28tljRamkL4Laf30yDsmWI6Pf0Q==
-Received: from MEYPR01MB7886.ausprd01.prod.outlook.com (2603:10c6:220:17e::8)
- by SY9PR01MB9711.ausprd01.prod.outlook.com (2603:10c6:10:306::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
- 2026 13:03:11 +0000
-Received: from MEYPR01MB7886.ausprd01.prod.outlook.com
- ([fe80::19df:3891:d8aa:692d]) by MEYPR01MB7886.ausprd01.prod.outlook.com
- ([fe80::19df:3891:d8aa:692d%3]) with mapi id 15.20.9891.021; Tue, 12 May 2026
- 13:03:11 +0000
-From: Junrui Luo <moonafterrain@outlook.com>
-To: Zhang Yi <yi.zhang@huaweicloud.com>
-CC: Theodore Ts'o <tytso@mit.edu>, Jan Kara <jack@suse.com>, Harshad
- Shirwadkar <harshadshirwadkar@gmail.com>, "linux-ext4@vger.kernel.org"
-	<linux-ext4@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Yuhao Jiang <danisjiang@gmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] jbd2: fix integer underflow in
- jbd2_journal_initialize_fast_commit()
-Thread-Topic: [PATCH] jbd2: fix integer underflow in
- jbd2_journal_initialize_fast_commit()
-Thread-Index: AQHc4eQkm1wg5P55r0agA0nvRb4rUbYKTG4AgAAPGwA=
-Date: Tue, 12 May 2026 13:03:11 +0000
-Message-ID: <CCDC32DB-67E3-4AB5-AB71-9A90A318E57B@outlook.com>
-References:
- <SYBPR01MB78813DD23B28BD49B1AA1123AF392@SYBPR01MB7881.ausprd01.prod.outlook.com>
- <7cf5ea66-55e9-46ec-8f69-91e80d3c42b8@huaweicloud.com>
-In-Reply-To: <7cf5ea66-55e9-46ec-8f69-91e80d3c42b8@huaweicloud.com>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MEYPR01MB7886:EE_|SY9PR01MB9711:EE_
-x-ms-office365-filtering-correlation-id: f5a77815-9afe-4b25-b92e-08deb026d1fa
-x-microsoft-antispam:
- BCL:0;ARA:14566002|22091999003|24121999003|51005399006|24021099003|55001999006|12121999013|15080799012|41001999006|31061999003|8060799015|19110799012|8062599012|40105399003|440099028|3412199025|102099032;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?KWkUsdod8uQhU+DZbMhJtoDVeAJckZwvKPAfeDUC6cH6/S4ZRdAH6va0FChK?=
- =?us-ascii?Q?Ig+XEI1AV0U2jiPTFN21zsMZwwAwZRKagxmYHpTYBRwfu3LKrmG0W+dshT2F?=
- =?us-ascii?Q?x5rQlH8HunxOuMSIHhsrt5WqmgnX5lp4mGkzoq/dtwl4QXPLSVqqccTQqPqC?=
- =?us-ascii?Q?BGxwufeX2XEilO8+u0xm8WrEAX3s1SULHV4+gn49k1rkbXl0IYaQq+CK9fIa?=
- =?us-ascii?Q?mgHhZUiFy41xbDLvxY8TbyVwP3kq0i0hRTmAXxbtjAiKfoEv9BNjPzSo9ZKD?=
- =?us-ascii?Q?wU6+S7HrRF2yShQsAygy4JC4YjVgWaLUEGtn298U3MPzQWBVkIv9f0sx52P+?=
- =?us-ascii?Q?UfJm+sIsaSv1tYH++XZQ3r6w/uQTsiYlGL9rZ59HU3VoGVyWpErS3VHCYLc+?=
- =?us-ascii?Q?aX8JFz93kY+0A8D1g9gquLb1FFvm4LBQQRbXxupvcLjNW86xLm5UAIMExfSB?=
- =?us-ascii?Q?jODn8KNMLGdJI42mSWJPLxIFlF9PFfHH+7qQMPx3cxL60oUBs1yr2YKOmk9f?=
- =?us-ascii?Q?QY8FrUUcCUscTfJFOQP8Vu04htHXH2c1IBRmD5NLnoP/OnrYVEEz7qWX1pYI?=
- =?us-ascii?Q?FJOuWWjEkbk+Eu+LJwYhq3QpetcBnn1arqfXv35iplBk/mTTUByvC34v/sPu?=
- =?us-ascii?Q?cJoo8WqWeVwOLRdHGELXtHPZfQ4zyQ/4AV0wh1M5y3+Jjc194ve1+6s8vndl?=
- =?us-ascii?Q?GzO9xSeIjnChtZK5b8H9MJA852COHGNZQHgYnYaaXutuW85cBw18e4xkvxVe?=
- =?us-ascii?Q?2Wke9zJRHxg+yMuezwduRDKB7b5IIRcDbLpOo9NbvM/KvftCvBnxfUeuf4LP?=
- =?us-ascii?Q?f1nUwGSxYPFA737nDe5mE37a1MrKk5JscqZjWyWeSTOTsIlU9zwldW5QZ8O/?=
- =?us-ascii?Q?hwKbSBQcNykKkE8nUTTSkt+NAZSAFn1dxradXggyHMJ71XzrgARbqqe3PW0H?=
- =?us-ascii?Q?0YQQyI8tRwosMI6fJmQdcoX0kD5+pMsaVqC+wwa17sXrsXG9YNc43Rf+5Mh8?=
- =?us-ascii?Q?I5qy3jsJ+t3wavcCPvQ+6MXVITUknqjHW/PZFhBttWDYI/nALgGIEvV6gvcx?=
- =?us-ascii?Q?hgQablnlL4e3nnsZHE+/3dh5hLSaDUWroUhMnTiX7XMtT2WTJ88=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?XhF4AAehrLq77XaaM0VsnCZJQBrYnBJFULChpH+6+iKL9r1jcvOhtFj8yOGM?=
- =?us-ascii?Q?V6tz9tmQ4gCY5OsyMYbnF0ACrES4LnbreE75GHGN8zB9875YUmfyE0+SBa2j?=
- =?us-ascii?Q?ZyfcG7iGzXcC246CmpfsmR8DDTwNVI6KTTfwJmZVnB0DlFgd6rsSZcEVJSrd?=
- =?us-ascii?Q?Nu/kWwyC1VWlYNtlo5+Z7Lfxpm7yp5FdS2CAga7SSJc2tHqi+3MlY3tcviOl?=
- =?us-ascii?Q?0cW72gHv80w93aXQjqtl5B1sb310ZdqfA0YVyMBt4ENoDaj6ZEQXwz+gLRoV?=
- =?us-ascii?Q?fUeIaQBvbNaNKKjSPjkNEusPh+cI/Q3RlFzXC3VrVeYGFDt6FHv57XQ8sSDN?=
- =?us-ascii?Q?UjlGqA6vs4jzxLdXfxoXHw3r1Eo5Am7A7vUpiMEymUUgg/529MX/0ZzeXysm?=
- =?us-ascii?Q?PVYyvJXwP6+G7PR675dRj+jILKx8NsxhGAdKhhknY3FZ/fs81nhSQsQrinwK?=
- =?us-ascii?Q?Or3EThzJnFqXQakvYDQMGw/5P6kp+umK5g3D/YvmOzrZrl76JJksN6fiaJeT?=
- =?us-ascii?Q?7pT0ucxrnN9eed3TyWc50tVOb14SdCwr9yv30yXIKCoMrc//1eDU697DBVjZ?=
- =?us-ascii?Q?MvrJrUuMsTJzVbdp9PO50lx7VKxhlAN7FgNrmRP6cd04c46iYL1BnjMAkOkf?=
- =?us-ascii?Q?E9cR5sJD9G9Mv3SMBgDHL8IbGJi1r3FuwH2PrLzWBjivEUk7qcuwza1DDjVb?=
- =?us-ascii?Q?nwjkXhdaWnXg8KeRi0yuZom7AM6iUKGekmm5/ucneGuAoJc1+Pz6PE29tuYc?=
- =?us-ascii?Q?jSeEVhDwP/sss/pj/QS+rMFbQZyyba9aOtBdMVvaur/FZa5ywRyM79nqsini?=
- =?us-ascii?Q?CAPf4MXZDiJUFS+a2V685bikVfvYs7C6Pm00o7dvI17nhi8mS5a7tvNJtsM0?=
- =?us-ascii?Q?eJSKdcENeQT8/7aKSS+KJb7NsbCwxle5DDQuElCI8BcvRisbHZ+zc9mKWnk8?=
- =?us-ascii?Q?mVVwmqbBq/AYwfBG5Oz9cicowP1h4akGz8WtGPFb2AAD6XDSXyEsOJVCYAwQ?=
- =?us-ascii?Q?jC9mwj7KNzcHiUOrkCZGS6ymCmYwy786rfVez9J1a60DYbzr+93csavYv8K7?=
- =?us-ascii?Q?ayZWuQo/bOJQkQeIAdMZMyWkdiOOb8rVQspuli4v5FS9SH5nVek3+OoZ4fNw?=
- =?us-ascii?Q?0WBTrTU3dMFzbKMDEKbpmimvD+rmO4fke73VbDiJ7lCf3b7t5HM+MDoPRtpx?=
- =?us-ascii?Q?yGgaejhI5U8cCZvSsdYLHIQAPvgLTZwvbgTvYH3BpYBEoQ4UL9cgLRqForRo?=
- =?us-ascii?Q?dL6JblTyx42vWmzADeLbLQR/eBUlIESnWGm8thqlM2aHVuFLqUwAE2l+jZoM?=
- =?us-ascii?Q?0GgcvmHZOr+w+FKjDJ4sz1LHE7j4oQZLjXweM+Q7urelD67kBB7UDS/UQrg7?=
- =?us-ascii?Q?T76hBqJZl051xWWZDh+wvUnEiuOPz7cPMjYvr+HsS1Va2lI7uQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <79687C504167C44A85D477121197E766@ausprd01.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B223E1735
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778591094; cv=none; b=cr0QtaYXo5bhskQpjpr7I+sYq/ob1nJYXD+DZAofQgTEdAKAY9EmIWbnx+5OYy9IMOcqHuSo2fGdvsx22/yvaAIo2cO48/TLFBHkSgM1sBAESB/ph12qiwUduMIOsq4UBeARUh5j9T9iUOXE6GlhJbIBOK70BW61/VZKrqbqwLQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778591094; c=relaxed/simple;
+	bh=Bwj6SG50tx7zvCHLHz9Mv5NCilc8mOQIbDilUe5gM8o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=guo3CW4ucRbpAdFtifnTS7xOSH8CyhuUm7XkdGUXie/aZ3/K16vkNnB7jyrCvV3Z1+yj4vwLKg0xW8kVGkXcmwdKeLOiwrKOOpdUZF3pACs1YZRImC7u74Z3TFnXDn5JO5FzR6KApMsOlGWJRiYDqnpDEElJBax7qBrh3UZX4QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=KF16H/fx; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-bd24f466598so173956466b.3
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 06:04:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1778591091; x=1779195891; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=QciNpbOfQQYRXUiwuR9rhHSVvAPPydKWFQzyM2egsY8=;
+        b=KF16H/fxhHXAJWSrOAGDNi4Y+lSEbWskRr2oscI8tb3b55NY0W6A+tIPZK2DkOGkBR
+         b1gVEEvcowD/JNU0HW4rkGA9Fj4lw0VA6S68sE1XlLJxpKxg4uJEwWYaHeubwHk55A9Y
+         /PCR8iGRg9DAYALgoFLxRLXtq0Lk7Cut4tUpM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778591091; x=1779195891;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QciNpbOfQQYRXUiwuR9rhHSVvAPPydKWFQzyM2egsY8=;
+        b=OLZ7Zz3HAz9UtVq5tZWzWJTDPhxW5BFRFudJwBxNV9ve8zhBd3qV6hrtPbeUteu5vu
+         miecSEcYR9S2bIOW7Kqqy+DkBEdESRICas0sebNDrQm1oxw7fkCJwBMmOlEvZZ117Ilo
+         OlyuKko3qtYutmuQibe2Fk2MJnyXt81mQew0+RRxncmExGrW6OypUtphanyA/7tdSrpq
+         q8+ef+wWFm+vCVeoq+bAi3Fh8GF4+ISY6x56ZRuF4yVI58gxIyfyK4ALvKF/yng2sIB1
+         VSvyhBElJtkB80TQ/v48es0pCThUae5u96WmWNvxonKFsCkC24updI5LZY19Bsyuwolr
+         ekkw==
+X-Forwarded-Encrypted: i=1; AFNElJ+xQhLeYFgXrduh/1Cbnzigwi4yJezcSAQ1yrM86xk2ozu12i3yga2P1QsLmJ/FXBFhy3H6pPk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDQokbP5Dy60lh1HYx6q8NBKZR1Q76sTZkRSWUFN7cNUNQB5LE
+	5hTQZyMaMXTpuqiPuRP6G58fJkJL3cO3T0l8pvPrPsYFei/u/3kam/A8mnhOrksQtwO3Ag1eXgU
+	jbEpmKaQS
+X-Gm-Gg: Acq92OHlwbQj3Dovl4D/oQ7V6mlKFDbB0F0DFv1zq3t8vhLlsxokemGus5rMZVnV4FG
+	8jhTFg1Qw1fWER74mevdFWRwm/nnqHgJtkvK1G9MI//nhI1glAPcDzmrc8suSIlTq0Xr806jamZ
+	sPl3RTagTPnSp87ipxtlBYDW1KU9IKGn+HbIoMHAIUqQi6FXOQOFq6OLgGQlbLrkcYkgh8R+hF5
+	mMd30pqP02ol/+53pNGDX5/uRImzdwHmHl458k9Nx669TFZ1DzsroI8fPTKiQRpjCh7JPnI0Guh
+	90zbfbzwcYsOE7CW6HN4sdEKo8qX4/uw63VqqzUEBblFHwMNPhLb+X8E+1qCMIOKmzNXeYRlHxS
+	J0YH30/G3BilWFJJyoYs7atW0GqMOx2uPf+QU/YVbboDIk63A7NwTC63G/ZSR0K+WDK1nW+pnRi
+	CQ4fy80TwoI+gl7o1gXbFvwmUpc6+ECVsLNY0iXGG5GrgaOEwdp4FUZecnM9ZD
+X-Received: by 2002:a17:906:6a25:b0:bd1:ba57:ec8d with SMTP id a640c23a62f3a-bd1ba57f385mr450348666b.17.1778591087954;
+        Tue, 12 May 2026 06:04:47 -0700 (PDT)
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd2f4a7b7f3sm70961666b.52.2026.05.12.06.04.46
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2026 06:04:46 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ba545100a13so939121266b.2
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 06:04:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9qnzlTRNwx8zAzbb7lv06SHWa6FVNZlIqaTh6py9ZT6PmasHw5Wl6ucfmFCMXlyDPYfide5yk=@vger.kernel.org
+X-Received: by 2002:a17:906:4786:b0:bc1:6ec9:453b with SMTP id
+ a640c23a62f3a-bcc14d9dfeemr813452166b.42.1778591085452; Tue, 12 May 2026
+ 06:04:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MEYPR01MB7886.ausprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: f5a77815-9afe-4b25-b92e-08deb026d1fa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 May 2026 13:03:11.0936
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY9PR01MB9711
-X-Rspamd-Queue-Id: 50EAA520EEC
+References: <20260323-uvc-hwtimestamp-v1-0-aa42e3865204@chromium.org>
+ <20260323-uvc-hwtimestamp-v1-3-aa42e3865204@chromium.org> <20260511155125.GD3043805@killaraus.ideasonboard.com>
+ <CANiDSCs5jeEN7OL1PDc0XXtCP5Op2jpnWJyw7WR4Vn_Z7ECYOQ@mail.gmail.com> <20260512123827.GB4128@killaraus.ideasonboard.com>
+In-Reply-To: <20260512123827.GB4128@killaraus.ideasonboard.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Tue, 12 May 2026 15:04:32 +0200
+X-Gmail-Original-Message-ID: <CANiDSCvrrhweC66+mAp1MxrG+8yEeBBpeOOSguxR0xO1kFA00w@mail.gmail.com>
+X-Gm-Features: AVHnY4JzE1Xda9TZIe55UwfOZ72LTVW2oLWCakhoC3PmZeuGo55v4k9oMaLJ5Zk
+Message-ID: <CANiDSCvrrhweC66+mAp1MxrG+8yEeBBpeOOSguxR0xO1kFA00w@mail.gmail.com>
+Subject: Re: [PATCH 3/4] media: uvcvideo: Relax the constrains for
+ interpolating the hw clock
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Tomasz Figa <tfiga@chromium.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Yunke Cao <yunkec@google.com>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 72731521D8D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[mit.edu,suse.com,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-245565-lists,stable=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[outlook.com];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[outlook.com:+];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[chromium.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245566-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:mid,outlook.com:dkim]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,chromium.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,ideasonboard.com:email]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026 at 08:08:56PM +0800, Zhang Yi wrote:
-> On 5/12/2026 3:49 PM, Junrui Luo wrote:
-> > jbd2_journal_initialize_fast_commit() validates journal capacity by
-> > checking (journal->j_last - num_fc_blks < JBD2_MIN_JOURNAL_BLOCKS).
-> > Both j_last and num_fc_blks are unsigned, so when num_fc_blks exceeds
-> > j_last the subtraction wraps to a large value, bypassing the bounds
-> > check.
->=20
-> I'm wondering, how does the "num_fc_blks exceeds j_last" error occur?
-> Under normal circumstances, journal->j_last is initialized to
-> sb->s_maxlen, which is set to the total number of journal blocks (i.e.,
-> the sum of the normal journal area and the fast commit journal area)
-> during filesystem formatting by mkfs. Therefore, num_fc_blocks shoud
-> never exceed journal->j_last. Right?
+Hi Laurent
 
-Yes, this is triggered by mounting a crafted filesystem where the ext4
-superblock has fast_commit enabled but the journal superblock does not,
-while s_num_fc_blks is set larger than s_maxlen.
+On Tue, 12 May 2026 at 14:38, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>
+> On Mon, May 11, 2026 at 05:58:30PM +0200, Ricardo Ribalda wrote:
+> > On Mon, 11 May 2026 at 17:51, Laurent Pinchart wrote:
+> > > On Mon, Mar 23, 2026 at 01:10:30PM +0000, Ricardo Ribalda wrote:
+> > > > In the initial version we set the min value to 250msec. Looks like
+> > > > 100msec can also provide a good value.
+> > >
+> > > I'd like to know where the value comes from and how it has been tested.
+> >
+> > I used the Android CTS framework for testing. It checks in multiple
+> > places that the timestamps are stable.
+>
+> You deleted the information from the comment below, and didn't mention
+> anything in the commit message, so I was wondering if the situation has
+> changed. I'd like to retain the information somewhere.
 
-> Have you mounted a deliberately constructed corrupted file system? If
-> so, I'd prefer to return EFSCORRUPTED here.
-=20
-I will change it in v2.
+I believe it should be fixed in v2. Looks like I have to send a v3
+anyway :P so I will double check that it is still there.
 
-Thanks,
-Junrui Luo
+Thanks!
+
+
+>
+> > > > Now that we are at it, refactor a bit the code to make it cleaner.
+> > >
+> > > Do you mean using a macro ? You can mention that explicitly here.
+> > >
+> > > > Fixes: 6243c83be6ee8 ("media: uvcvideo: Allow hw clock updates with buffers not full")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > > ---
+> > > >  drivers/media/usb/uvc/uvc_video.c | 18 +++++++++++-------
+> > > >  1 file changed, 11 insertions(+), 7 deletions(-)
+> > > >
+> > > > diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> > > > index c7ebedb3450f..dcbc0941ffe6 100644
+> > > > --- a/drivers/media/usb/uvc/uvc_video.c
+> > > > +++ b/drivers/media/usb/uvc/uvc_video.c
+> > > > @@ -494,6 +494,13 @@ static int uvc_commit_video(struct uvc_streaming *stream,
+> > > >   * Clocks and timestamps
+> > > >   */
+> > > >
+> > > > +/*
+> > > > + * The accuracy of the hardware timestamping depends on having enough data to
+> > > > + * interpolate between the different clock domains. This value is sof cycles,
+> > > > + * this is, milliseconds.
+> > > > + */
+> > > > +#define MIN_HW_TIMESTAMP_DIFF 100
+> > >
+> > > UVC prefix.
+> > >
+> > > > +
+> > > >  static inline ktime_t uvc_video_get_time(void)
+> > > >  {
+> > > >       if (uvc_clock_param == CLOCK_MONOTONIC)
+> > > > @@ -834,15 +841,12 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
+> > > >               y2 += 2048 << 16;
+> > > >
+> > > >       /*
+> > > > -      * Have at least 1/4 of a second of timestamps before we
+> > > > -      * try to do any calculation. Otherwise we do not have enough
+> > > > -      * precision. This value was determined by running Android CTS
+> > > > -      * on different devices.
+> > > > +      * Check that we have enough data to do the interpolation.
+> > > >        *
+> > > > -      * dev_sof runs at 1KHz, and we have a fixed point precision of
+> > > > -      * 16 bits.
+> > > > +      * y1 and y2 are dev_sof with a fixed point precision of 16 bits.
+> > > >        */
+> > > > -     if (clock->size != clock->count && (y2 - y1) < ((1000 / 4) << 16))
+> > > > +     if (clock->size != clock->count &&
+> > > > +         (y2 - y1) < (MIN_HW_TIMESTAMP_DIFF << 16))
+> > > >               goto done;
+> > > >
+> > > >       y = (u64)(y2 - y1) * (1ULL << 31) + (u64)y1 * (u64)x2
+>
+> --
+> Regards,
+>
+> Laurent Pinchart
+
+
+
+-- 
+Ricardo Ribalda
 
