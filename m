@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-245858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246112-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHa6CetmA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:11 +0200
+	id oHsDO99rA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246112-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70823526010
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 762A8526B5D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76E8F302712B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 461563140A2E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF203DC87F;
-	Tue, 12 May 2026 17:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC093955E5;
+	Tue, 12 May 2026 17:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfOKwEMh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjjKiwO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C883DC86D;
-	Tue, 12 May 2026 17:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDED328B77;
+	Tue, 12 May 2026 17:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607735; cv=none; b=UsUmKfeRW6BCAhK7abunV+4UrY/prD+RMqLXut0knYhjKve7VZKPomqZUV81uYSdLzbe6lWPgV41seEzWQm1O3kLkUthIeOMLghIXN5hfICnWyC7B09Yftq9f6J23TxUZ6UAvcdSusdS2p3jnJTeXxxvR2n/IeFsuLUV+MihSPM=
+	t=1778608389; cv=none; b=oRNKGG77eNozZLpKIsOZSbuu73FhvYVM8G2ctW0nCOEwUavb1t1KZ7K0JQgwuYiyZfqeQEPVVS4QzthlqTDq5Q+ws9FOSJDQUx3fNIr2wuUKLVVB7/rvUsAOrTrqlUKuWYEI8aeFiY2AjPkUxCwpJyMWq3313M6f/lnc2Vy67Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607735; c=relaxed/simple;
-	bh=Qlad+NTbFROxZ+MlAq86/+fhw1LBsTGs0mQJNGsd9sA=;
+	s=arc-20240116; t=1778608389; c=relaxed/simple;
+	bh=jH5IBB4hB9QpUoEs4bFcCMGYq2ttLxtk8oCjJxoVOGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQKsOs4OQPJ5rHkt8hSj/QDMZVSFtgiRm/+6d+FANHjZY1dP8C6+h501seMB8wAm/nWVJINNdfcC84y6TvrJqMG9iDeijp+13COhsF2HzSCBnj5ZGXWkYhzK9WwBeDvPihBZ2qcJtZUg8FWW5nGUKmGY+iCWZ9wcSztGul2uKyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfOKwEMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BD3C2BCB0;
-	Tue, 12 May 2026 17:42:14 +0000 (UTC)
+	 MIME-Version; b=D9hr6v02780inwUN6tZThRF/If92yRWp/2kwn5O4MaBWQj0FGpiVNx0WbKj1Ud8pCnYewuFdV6I39fzRWnj0qvrZJpOIuyVPX7ob3VB/kmC3aYTfPpdf6qVKjzj1ZDafgrRE0qmY6QbAkX+ndMp2whJdCsdmddg3ERArl2aBBz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjjKiwO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1619C2BCB0;
+	Tue, 12 May 2026 17:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607735;
-	bh=Qlad+NTbFROxZ+MlAq86/+fhw1LBsTGs0mQJNGsd9sA=;
+	s=korg; t=1778608389;
+	bh=jH5IBB4hB9QpUoEs4bFcCMGYq2ttLxtk8oCjJxoVOGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfOKwEMhoWif5pB9KU0ZXt2TpRnJfXBrG3+MqDAY5UFhWxwfsv91S6Mnc11z8SvB9
-	 jENQLSTHrQba9OBEc4Iq5rw7eOo1jCbuHtguV21/Ag7WmDuXx1tFIjgMWQOrufZlJQ
-	 j2bA573J3P0Q9A1Oz3ZzY9FrwO6bcr6MzczLsHwU=
+	b=YjjKiwO7ybVZsjBbqUigV+NRyIwM2UIf8gkIcOiflSMqigSbfQzsLAjz4EpMKTwEK
+	 Kue3dNxCp4pVZt8C9B1BCOBhl5b9liS7l+crVQCz51iNLewJwcy+Kbk9xMaR0CkRl3
+	 5w3ShhrYCJ8wkdWUJ/IPQJxUUfwE5+aelxoR8lpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Kelley <skelley@nvidia.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 008/206] ACPI: CPPC: Fix related_cpus inconsistency during CPU hotplug
-Date: Tue, 12 May 2026 19:37:40 +0200
-Message-ID: <20260512173932.994893968@linuxfoundation.org>
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.18 060/270] selinux: fix avdcache auditing
+Date: Tue, 12 May 2026 19:37:41 +0200
+Message-ID: <20260512173939.715505071@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,176 +63,151 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 70823526010
+X-Rspamd-Queue-Id: 762A8526B5D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245858-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246112-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paul-moore.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,test.sh:url,msgid.link:url,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[paul-moore.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-commit 75141a770f4f8225d316f6c7e146723a32e9720e upstream.
+commit f92d542577db878acfd21cc18dab23d03023b217 upstream.
 
-When concurrently bringing up and down two SMT threads of a physical
-core, many warning call traces occur as below:
+The per-task avdcache was incorrectly saving and reusing the
+audited vector computed by avc_audit_required() rather than
+recomputing based on the currently requested permissions and
+distinguishing the denied versus allowed cases. As a result,
+some permission checks were not being audited, e.g.
+directory write checks after a previously cached directory
+search check.
 
-The issue timeline is as follows:
-
- 1. When the system starts,
-    cpufreq: CPU: 220, policy->related_cpus: 220-221, policy->cpus: 220-221
-
- 2. Offline CPU 220 and CPU 221.
-
- 3. Online CPU 220
-    - CPU 221 is now offline, as acpi_get_psd_map() use
-      for_each_online_cpu(), so the cpu_data->shared_cpu_map,
-      policy->cpus, and related_cpus has only CPU 220.
-
-    cpufreq: CPU: 220, policy->related_cpus: 220, policy->cpus: 220
-
- 4. Offline CPU 220
-
- 5. Online CPU 221, the below call trace occurs:
-    - Since CPU 220 and CPU 221 share one policy, and
-      policy->related_cpus = 220 after step 3, so CPU 221
-      is not in policy->related_cpus but
-      per_cpu(cpufreq_cpu_data, cpu221) is not NULL.
-
-After reverting commit 56eb0c0ed345 ("ACPI: CPPC: Fix remaining
-for_each_possible_cpu() to use online CPUs"), the issue disappeared.
-
-The _PSD (P-State Dependency) defines the hardware-level dependency of
-frequency control across CPU cores. Since this relationship is a physical
-attribute of the hardware topology, it remains constant regardless of the
-online or offline status of the CPUs.
-
-Using for_each_online_cpu() in acpi_get_psd_map() is problematic. If a
-CPU is offline, it will be excluded from the shared_cpu_map.
-Consequently, if that CPU is brought online later, the kernel will fail
-to recognize it as part of any shared frequency domain.
-
-Switch back to for_each_possible_cpu() to ensure that all cores defined
-in the ACPI tables are correctly mapped into their respective performance
-domains from the start. This aligns with the logic of policy->related_cpus,
-which must encompass all potentially available cores in the domain to
-prevent logic gaps during CPU hotplug operations.
-
-To resolve the original issue regarding the "nosmt" or "nosmt=force"
-boot parameter, as send_pcc_cmd() function already does if (!desc)
-continue, so reverting that loop back to for_each_possible_cpu() is ok,
-only need to change the match_cpc_ptr NULL case in acpi_get_psd_map() to
-continue as Sean suggested.
-
-How to reproduce, on arm64 machine with SMT support which use acpi cppc
-cpufreq driver:
-
-	bash test.sh 220 & bash test.sh 221 &
-
-	The test.sh is as below:
-		while true
-			do
-			echo 0 > /sys/devices/system/cpu/cpu${1}/online
-			sleep 0.5
-			cat /sys/devices/system/cpu/cpu${1}/cpufreq/related_cpus
-			echo 1 >  /sys/devices/system/cpu/cpu${1}/online
-			cat /sys/devices/system/cpu/cpu${1}/cpufreq/related_cpus
-		done
-
-	CPU: 221 PID: 1119 Comm: cpuhp/221 Kdump: loaded Not tainted 6.6.0debug+ #5
-	Hardware name: To be filled by O.E.M. S920X20/BC83AMDA01-7270Z, BIOS 20.39 09/04/2024
-	pstate: a1400009 (NzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-	pc : cpufreq_online+0x8ac/0xa90
-	lr : cpuhp_cpufreq_online+0x18/0x30
-	sp : ffff80008739bce0
-	x29: ffff80008739bce0 x28: 0000000000000000 x27: ffff28400ca32200
-	x26: 0000000000000000 x25: 0000000000000003 x24: ffffd483503ff000
-	x23: ffffd483504051a0 x22: ffffd48350024a00 x21: 00000000000000dd
-	x20: 000000000000001d x19: ffff28400ca32000 x18: 0000000000000000
-	x17: 0000000000000020 x16: ffffd4834e6a3fc8 x15: 0000000000000020
-	x14: 0000000000000008 x13: 0000000000000001 x12: 00000000ffffffff
-	x11: 0000000000000040 x10: ffffd48350430728 x9 : ffffd4834f087c78
-	x8 : 0000000000000001 x7 : ffff2840092bdf00 x6 : ffffd483504264f0
-	x5 : ffffd48350405000 x4 : ffff283f7f95cc60 x3 : 0000000000000000
-	x2 : ffff53bc2f94b000 x1 : 00000000000000dd x0 : 0000000000000000
-	Call trace:
-	 cpufreq_online+0x8ac/0xa90
-	 cpuhp_cpufreq_online+0x18/0x30
-	 cpuhp_invoke_callback+0x128/0x580
-	 cpuhp_thread_fun+0x110/0x1b0
-	 smpboot_thread_fn+0x140/0x190
-	 kthread+0xec/0x100
-	 ret_from_fork+0x10/0x20
-	---[ end trace 0000000000000000 ]---
-
-Cc: All applicable <stable@vger.kernel.org>
-Fixes: 56eb0c0ed345 ("ACPI: CPPC: Fix remaining for_each_possible_cpu() to use online CPUs")
-Co-developed-by: Sean Kelley <skelley@nvidia.com>
-Signed-off-by: Sean Kelley <skelley@nvidia.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-[ rjw: Changelog edits ]
-Link: https://patch.msgid.link/20260417040112.3727756-1-ruanjinjie@huawei.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: dde3a5d0f4dce ("selinux: move avdcache to per-task security struct")
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+[PM: line wrap tweaks]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ security/selinux/hooks.c          |   31 +++++++++++++------------------
+ security/selinux/include/objsec.h |    4 +---
+ 2 files changed, 14 insertions(+), 21 deletions(-)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -349,7 +349,7 @@ static int send_pcc_cmd(int pcc_ss_id, u
- end:
- 	if (cmd == CMD_WRITE) {
- 		if (unlikely(ret)) {
--			for_each_online_cpu(i) {
-+			for_each_possible_cpu(i) {
- 				struct cpc_desc *desc = per_cpu(cpc_desc_ptr, i);
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -3162,15 +3162,13 @@ static inline int task_avdcache_search(s
+  * @tsec: the task's security state
+  * @isec: the inode associated with the cache entry
+  * @avd: the AVD to cache
+- * @audited: the permission audit bitmask to cache
+  *
+- * Update the AVD cache in @tsec with the @avdc and @audited info associated
++ * Update the AVD cache in @tsec with the @avd info associated
+  * with @isec.
+  */
+ static inline void task_avdcache_update(struct task_security_struct *tsec,
+ 					struct inode_security_struct *isec,
+-					struct av_decision *avd,
+-					u32 audited)
++					struct av_decision *avd)
+ {
+ 	int spot;
  
- 				if (!desc)
-@@ -511,13 +511,13 @@ int acpi_get_psd_map(unsigned int cpu, s
- 	else if (pdomain->coord_type == DOMAIN_COORD_TYPE_SW_ANY)
- 		cpu_data->shared_type = CPUFREQ_SHARED_TYPE_ANY;
+@@ -3182,9 +3180,7 @@ static inline void task_avdcache_update(
+ 	spot = (tsec->avdcache.dir_spot + 1) & (TSEC_AVDC_DIR_SIZE - 1);
+ 	tsec->avdcache.dir_spot = spot;
+ 	tsec->avdcache.dir[spot].isid = isec->sid;
+-	tsec->avdcache.dir[spot].audited = audited;
+-	tsec->avdcache.dir[spot].allowed = avd->allowed;
+-	tsec->avdcache.dir[spot].permissive = avd->flags & AVD_FLAGS_PERMISSIVE;
++	tsec->avdcache.dir[spot].avd = *avd;
+ 	tsec->avdcache.permissive_neveraudit =
+ 		(avd->flags == (AVD_FLAGS_PERMISSIVE|AVD_FLAGS_NEVERAUDIT));
+ }
+@@ -3205,6 +3201,7 @@ static int selinux_inode_permission(stru
+ 	struct task_security_struct *tsec;
+ 	struct inode_security_struct *isec;
+ 	struct avdc_entry *avdc;
++	struct av_decision avd, *avdp = &avd;
+ 	int rc, rc2;
+ 	u32 audited, denied;
  
--	for_each_online_cpu(i) {
-+	for_each_possible_cpu(i) {
- 		if (i == cpu)
- 			continue;
+@@ -3226,23 +3223,21 @@ static int selinux_inode_permission(stru
+ 	rc = task_avdcache_search(tsec, isec, &avdc);
+ 	if (likely(!rc)) {
+ 		/* Cache hit. */
+-		audited = perms & avdc->audited;
+-		denied = perms & ~avdc->allowed;
+-		if (unlikely(denied && enforcing_enabled() &&
+-			     !avdc->permissive))
++		avdp = &avdc->avd;
++		denied = perms & ~avdp->allowed;
++		if (unlikely(denied) && enforcing_enabled() &&
++			!(avdp->flags & AVD_FLAGS_PERMISSIVE))
+ 			rc = -EACCES;
+ 	} else {
+-		struct av_decision avd;
+-
+ 		/* Cache miss. */
+ 		rc = avc_has_perm_noaudit(sid, isec->sid, isec->sclass,
+-					  perms, 0, &avd);
+-		audited = avc_audit_required(perms, &avd, rc,
+-			(requested & MAY_ACCESS) ? FILE__AUDIT_ACCESS : 0,
+-			&denied);
+-		task_avdcache_update(tsec, isec, &avd, audited);
++					  perms, 0, avdp);
++		task_avdcache_update(tsec, isec, avdp);
+ 	}
  
- 		match_cpc_ptr = per_cpu(cpc_desc_ptr, i);
- 		if (!match_cpc_ptr)
--			goto err_fault;
-+			continue;
++	audited = avc_audit_required(perms, avdp, rc,
++				     (requested & MAY_ACCESS) ?
++				     FILE__AUDIT_ACCESS : 0, &denied);
+ 	if (likely(!audited))
+ 		return rc;
  
- 		match_pdomain = &(match_cpc_ptr->domain_info);
- 		if (match_pdomain->domain != pdomain->domain)
+--- a/security/selinux/include/objsec.h
++++ b/security/selinux/include/objsec.h
+@@ -32,9 +32,7 @@
+ 
+ struct avdc_entry {
+ 	u32 isid; /* inode SID */
+-	u32 allowed; /* allowed permission bitmask */
+-	u32 audited; /* audited permission bitmask */
+-	bool permissive; /* AVC permissive flag */
++	struct av_decision avd; /* av decision */
+ };
+ 
+ struct cred_security_struct {
 
 
 
