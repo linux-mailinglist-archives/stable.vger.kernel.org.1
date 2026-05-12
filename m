@@ -1,196 +1,260 @@
-Return-Path: <stable+bounces-245400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFFyF93OAmq7xAEAu9opvQ
-	(envelope-from <stable+bounces-245400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:55:25 +0200
+	id 0PAEJtHPAmq7xAEAu9opvQ
+	(envelope-from <stable+bounces-245401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:59:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D319751B58C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EED5551B613
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:59:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5597F31020C8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 06:49:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47C23309E865
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 06:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07212379C2B;
-	Tue, 12 May 2026 06:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C975F34753A;
+	Tue, 12 May 2026 06:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXIV3apF"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="JwFmHzHD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010017.outbound.protection.outlook.com [52.103.72.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D14384CEC;
-	Tue, 12 May 2026 06:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778568533; cv=none; b=cDZxdnxwBQPWgQHzWcsiQpPardl8RHuQhBpIZJKvE5RspqGSoFLtzbn7yiZ68QK+UzyIwH+4QDrAWwPopjJwoNlaw014bDj/byxG0Zw+6VRl1SHepU7Tm0N1rKrbfcI7R1FX1/aA0yxlLnF+GMlVjOErr2B+LJ8OptbakGyUKkQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778568533; c=relaxed/simple;
-	bh=znGDfq/bJ1wkLHdJvnjCKiqpvwQQkaqjjb16iDxb1y0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AWD1z+NEpygVJw2ZuogNmzDMWFeAWdYZ7Mj9Tx+SyxGlfRFiC3ZwLaba5rE/tFJ4X9pesM3renKEK5iY5KlWXx67CGqft9Jvs1L30i2Mm5NHoOXSlSdlFQREPeIBhl7WcJ0GlOBS4P2tBq1q3fTsbuKIsP9LVbS3Fpf6OeOBuaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXIV3apF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61E5C2BCB8;
-	Tue, 12 May 2026 06:48:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778568530;
-	bh=znGDfq/bJ1wkLHdJvnjCKiqpvwQQkaqjjb16iDxb1y0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PXIV3apFaDjZyXED5iKly1omTUB+j7+uTG8N0AEXXmIG4szMxGvHOGJvhXKMfajMq
-	 wxD6uvJcSMQ1ylrb4bjecX0VUZLBZ0W2/oTL8lbeJiKkENf6XoAUEOyvJVw1IHituK
-	 OrdJGdhe/tUf8fNAnDd6VLaumzn45ZZ70B/aE+mI7Tunu4X2aJKL4whsroD6qa/0FL
-	 bIKBFjf6IroQSs2hPJyuEiSaqJIqXBE33PYQFuu2DDMHmrl3Yui4pjzlHSgJfzi7gx
-	 5kJzv8jAqSLXx2HFuMbGWF0/i6XdtqLk1VZVX439ViJAEpCUYUmUJWgj+tE/rsyBZ8
-	 HXmm1ZulcjYfQ==
-Message-ID: <7a223c95-fcec-4ae4-9c22-f31c75e3fa93@kernel.org>
-Date: Tue, 12 May 2026 08:48:47 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8FA357CE4
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 06:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778568714; cv=fail; b=uXugwGnPVu36k0PZnWVQbirIWxxvxLBXaqdl38gxmKATq17bkgqPIYlhDkfdwzLM2HK+IUKSrtfJHC8CjrCIxdHXU6iH5E5erH25cc0KCoeSU+tIc0KYwqVzE99aqUbv5DlskbtkI+KmmqgJfD+fmJ/HjiGUjCy9Wo4QXElYSgs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778568714; c=relaxed/simple;
+	bh=bYLifP1ZFIBBbrjZZQ4rG1QCt3cqQdkvNjF5IV3noR0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=fEnyiIuWcRwv12qV3D6ob2S/BYNobhKbZSFKcYOtxASeyd6tSBHN0bYGJjfMeGrsS9FHur3Cwvp8vZxvQYyjw29IpPeRvO0icjOp0LfMwpLkrjnx9prpZ1KIBdSfj/69QoqQYmpvI6boTdjBlT8I++uTuOV5x/AOcVHWBAyUq5A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=JwFmHzHD; arc=fail smtp.client-ip=52.103.72.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g+gPrckFOHF9tL7pwaEcl9O+5rY0Awri8fsg+Kqgg/mUPjnLJAyZw5Hbt/liqxjmsgYZ6VkK3bTNW+teFBGNTqL7zY2cCI7PlUKJCapnSKcLeOaANpr2SyLkD1SPWhzQ6NX0gAA7q7qy90u9e7hLdVf1r+jGbyfOeBI5VY6rZVCuyNBgn4wAZM68Dx3/zZ8FqiYC69RbGgpgJPsI+Z3K0oOZuxtPiqoXegO9Pq5JrwCYJBX5RS5ywirMoA6k/TCga3C5uXpLa71s8EV1QDP+yZdEgIfR/gwpmisSFDTPKywKbsHJRfMiVnDpJ604a5xgQMxu/sB7f/ajdME1sxznNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mJqC4TvW67tyCNiepssQ3k5gqggN1N81q/dX/+rLJg4=;
+ b=UnevJkWSormZe+ktAiVADmlU4kuhCPeDGOZimBo2bO31WqIG9ZB05wbERRQZ3nOWSBD2d5eOtB9Gs1tztWWiiznhU5Of3O6uTfO2CCCADIkYAZg91tg10/1HuwT7/0pOmTuhjHZmJeLF+f5Gfkd1muohlIomw8o0w0SVPUIxdJCqvA+k+tncYcWDYI6GM9AzyfeG8xMnpMgnr1cPZvvb9UzDCXf3MUZg9Fn3or84Aq+V7uUtaqmPVvoSfIspXHf1hDeqDXNh1GUnXalG82fR+EiEczdoTXdL1JYuuV4BRNeCAlmCNIjYRyIAauuHQg0N7KkgVzrFgObH5Eq2TAWbiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mJqC4TvW67tyCNiepssQ3k5gqggN1N81q/dX/+rLJg4=;
+ b=JwFmHzHDLa0dVox3w2+3jiZHELnevx0I4b7fyRxcI5bmqV/2Sjihv/KVOZ4f+JpO7NA+QZzoi2iyGb17+oCJMZbHEMUany+GqKYIZOp1QVyLN4+6ecD7oWZc3C3UmF5giG+3U0G6snGe/1r0aYUF597gp7cYvtqqIcdbUci8bILApxZ4UVvzJQSvI4J1ACu19tDtrhc3U5alkpGQmfD0aoyvJZ4DVh+Z1obuc0h5NpKzHBZtyU2I9AHca5F79ay/+Z9/fMpt4INbxOoiuIEVn9MBmS5dwf3SDuqLYQBD5p55o9oQqyInMi+XW7vaQ+U2yuJ5GidgSZ9CTOYSTtl5fg==
+Received: from SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM (2603:10c6:10:27f::18)
+ by SY2PPFB64671967.AUSP300.PROD.OUTLOOK.COM (2603:10c6:18::3ab) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Tue, 12 May
+ 2026 06:51:38 +0000
+Received: from SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::bdb1:7cdc:238d:2bda]) by SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM
+ ([fe80::bdb1:7cdc:238d:2bda%4]) with mapi id 15.20.9913.009; Tue, 12 May 2026
+ 06:51:38 +0000
+Message-ID:
+ <SY0P300MB0769CE8F2F1C39E4194DC677C6392@SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM>
+Date: Tue, 12 May 2026 14:51:31 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y 00/10] bpf: fix precision backtracking instruction
+ iteration
+To: Paul Chaignon <paul.chaignon@gmail.com>, stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Shung-Hsi Yu <shung-hsi.yu@suse.com>, Daniel Borkmann
+ <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+ Tao Lyu <tao.lyu@epfl.ch>
+References: <cover.1778516196.git.paul.chaignon@gmail.com>
+Content-Language: en-US
+From: Levi Zim <rsworktech@outlook.com>
+In-Reply-To: <cover.1778516196.git.paul.chaignon@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SL2P216CA0176.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:1b::23) To SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:27f::18)
+X-Microsoft-Original-Message-ID:
+ <db1d4fd8-c699-466c-88cc-a7b479668c90@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fs/dax: check for empty/zero entries before calling
- pfn_to_page()
-To: Souvik Banerjee <souvik@amlalabs.com>, djbw@kernel.org
-Cc: willy@infradead.org, jack@suse.cz, apopple@nvidia.com,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260511214020.208939-1-souvik@amlalabs.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260511214020.208939-1-souvik@amlalabs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D319751B58C
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY0P300MB0769:EE_|SY2PPFB64671967:EE_
+X-MS-Office365-Filtering-Correlation-Id: bfc07f32-c71e-4669-d720-08deaff2ea3d
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|6090799003|24021099003|5072599009|8060799015|41001999006|15080799012|19110799012|23021999003|1602099012|52005399003|40105399003|4302099013|3412199025|440099028|10035399007|23131999003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YkN2WVNjNnBRdjBLQVd5bU5rNlhpTU5UMnE0V1dRcldMT04vdGFYV08zNUNt?=
+ =?utf-8?B?elQzSzBjNzJrbjZqb0pzaGlweVptRDZDMndaVXhQcGVYajRBeGREamg2TmEy?=
+ =?utf-8?B?cXF3R1NsYVRMem0zcGlKalVYdDV0V09VSVpZc1dPUlkyYXM5M1JJWEhKZ0JK?=
+ =?utf-8?B?ZWlsalVxWmthTUtzRnJNcU9qZS9hMVRQRnllL2xScS9xb3VRSmFGb281bDR3?=
+ =?utf-8?B?VnM5KzFQRFpRZlRKTnQ5b3NnUGN4NzF6Zm9NL2RRd2xrZW9qb1hUZHZKdSs5?=
+ =?utf-8?B?eGYwdWlVd1huSUVMbGcrUCtKQkk3M21WZWtWUUxYdER6QWcveGE3SDF0cGRn?=
+ =?utf-8?B?d1RpckFoc25NVmx6eDAwbmFFSUhseS8wZnIyK3VFV3RZUmlRcDZYb3puMy9q?=
+ =?utf-8?B?bXFWY2RGUHEzcWlFMzNwRCszSFpEY3QrZktqdHhwS0tuQWVFSTRYSkwzcmVn?=
+ =?utf-8?B?SFl0MGpVbE1JMEljei94aWF0c2M5QzIyY1JRYVZRS0w1aUxyZEhKbFh2bkZD?=
+ =?utf-8?B?ZExvRm1lc2xLVHdTb0VmdEF6UDdtUWg3TEZXV2hzMnlEcWVEakRQNUQrS2xj?=
+ =?utf-8?B?am5MOEJKSmFjRkQ0T2loWTlJSUswY1o3Ukg3UjlRQmJHM0pOd04vSEE5S2Fi?=
+ =?utf-8?B?SkhrY3RmWW1VYzZxem5jL1phNVd3dGgyM2QzVGRXU01KRDk3T3pDRUdmdUFD?=
+ =?utf-8?B?NnlsQ2pIQ09FNUdERm5BNEFlUGUzaE92RVVSY3RucFNTdEJia2FtOWJRa20v?=
+ =?utf-8?B?ZUVvTm9vS25oSXA5ZUpRdkRFMnBxeVNZblB4RmNseWhwSlZTb2Q2cDhIVldr?=
+ =?utf-8?B?eTB2aGovdER0c3B5dVBjRlVoUEtqUzhkVnQxM0tqWGtVeWZmOEQ4RTh4NlFp?=
+ =?utf-8?B?WGg5U2NwSXBsSHZKZkcxMURJRmlZOEVBWFlub21PSVorOVZBbjZwdk9hYmZh?=
+ =?utf-8?B?STdZUDNWSVFTMW90ZHBKUURkcGpaKzA3SUtpWENkalA3TnkzUWh5cnVZb0dQ?=
+ =?utf-8?B?dHR4dzJBUEZvQnV6RGFhM20xMWVBdDE4bkZrSXVHb1lid1FmSW03VDFNZkZm?=
+ =?utf-8?B?NDhWK1pLTCtBSk51TkVtRldyTzA1YXdtaHpmeU1Sb2JTWVIzd0J6d2lIUm5m?=
+ =?utf-8?B?VkQ5T0w3R0o1YTMwSXR0TEE3bzRuZ2xuOVZiT3pUZ0tENnNGLyt5NThnN25q?=
+ =?utf-8?B?NGhoTElZRzhBUld4dWpURi9TK1kwU0lDNHZHV3liOVVvVWlqazBNc25hU2Fm?=
+ =?utf-8?B?aHdEZHNlajBxQXJubVltdDJVbWJwZzJaQ0hEZ2oyOGVMREpuRHpXOWxTQ0t0?=
+ =?utf-8?B?ZDlUU3NpMEhBcFZhSWtRUlVveHV6QVBLSGN1TmRmMVpldVRUelJlVi9WQWdG?=
+ =?utf-8?B?V28yQWVXVFdSN0JiKzRONXh4d2s2TWlEVTJZcElOQWRZTjJBNFNrMEdKYnBW?=
+ =?utf-8?B?THhhcHRxV3hCRkVEV2FWU21mNDZQWjRWMTd0TU5RPT0=?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ai94c2lKS211THZHZlBONEE3VWdmR0l1Q2RlSzVPZG5hWHhMczA2M2tRdGhu?=
+ =?utf-8?B?cEROMUVjbG82bVppYzlKMHJPT0JGZTRERVo2dTI3R2owS1lvYTBDZXA3Wm4r?=
+ =?utf-8?B?eTBBc1JKZ1JFRFkwMTI3Rng3Y2w5N24zeEw1QlZFTDcrMW1BbUd4eE5PaGxp?=
+ =?utf-8?B?NlArbEZjeVBFSVBqaGFKUWhxOUhnK2VpeWpoR2M4bzQ3T1RPSCtlbWd2ZUgr?=
+ =?utf-8?B?K1plaDlrUHN3QVFGNnp4YWtMeXkzckVrNnRvV1U0V1BlQlYyYks2cFlDOXlQ?=
+ =?utf-8?B?VVRPblZGek95cmdUaXZUS212V21rNGs5Q2kxM05PUGRWTlI0NGptU1RYRzB4?=
+ =?utf-8?B?eS9FOXBKd3JZcWxzV3l1MFJ0Q2lTOVo0WG93WVpsM0pOM3g3T2VuNnRCek5q?=
+ =?utf-8?B?SUVVK25rZVJrdWJnWU1keWEyMUNVSGhNdHVtYXQ4VlVJaDRjVHZYLzFCSUxw?=
+ =?utf-8?B?NVZXMmpqUE10dHRrc1VUekFKTEFHZlF0MkZXRHRsUVlwMWhuR2lYZm1mRjVx?=
+ =?utf-8?B?RmVLYkk4VUNHQUFpZVY1eFZEaTNFY1VtWGxGMUI5dVhyRTRQamFOUnhtb2ZH?=
+ =?utf-8?B?WTh0MHFXVGQ2Mmp0QURVcEZQSVRKNU1PUWRYS2RBVnZqMWhweDVTLzhtUC8x?=
+ =?utf-8?B?ZzU2SUp6WXZSbkpOVjI1eTIrZk9HRTNOZXpicVFuRWI2Um5jM0Y1QTR1eUd1?=
+ =?utf-8?B?bFdielNjcHF0NlNMTzRMRzU2aU12NkhWSVVBMVNhQjJpVDZKZ1BOa3lvMHEy?=
+ =?utf-8?B?VmM3L2VnNEJUcU9DOCtqUUgrdFo1NVJhR2cwc3JCZDIyTTNRUFRUWTIvVmpL?=
+ =?utf-8?B?YXFKSFFmNEFkVEpMS0o3bXhvUERPS3JBVG1hZEhqK3dTdEMxWXRjcTNGWGhH?=
+ =?utf-8?B?NFZSV2JqeFhSeHIxOXZGOHJJekNLaWF2NUtYSmFMRExPL0tVcFRSaVFKYkFG?=
+ =?utf-8?B?OFBrK2VCVm5sU2RTb1oyeElDZnFzbXVJeFJxK0dJbkI3R0p2UjRyMFozcGpO?=
+ =?utf-8?B?czRhYlVVY0swQ1h4cmQyNTFYU3ByS29QYXBaN1Q2cDk1cDZDTGZMS2Z2Ujk5?=
+ =?utf-8?B?cjRqdkdhY0VlNlRIejR2U2d6SHlkbFQxYWNVbmR4VStxWllyNlhIQ0duQlNQ?=
+ =?utf-8?B?UGZZbEJKNzd6dVpwZExMTDZEQzFSUG1wUnprR2VNdUp0aVJNUUlac1RmQSt4?=
+ =?utf-8?B?QnJDS1d5K1Y2MG1aUzFsS2FCeFAvS0F3MVBOUFc0NXowcUtpdUhUTkY2aFpy?=
+ =?utf-8?B?NHVxZW5oa3AxMTdQYU9PNW9DUCtsejJqa1JUd2gwY28rVkJaanRScDRneFJ2?=
+ =?utf-8?B?azVkWmQ2Y0x1WXZncGh3cWFZdWJVd3BnOVc4ck1SeGMrMVhmR01YaFZKTWdM?=
+ =?utf-8?B?bXFWWmd4SFpSZCtkTWdKcmV4MjhrTkpubGdtUlZiNnlwM0d2RzBjRTFsQndX?=
+ =?utf-8?B?WUJ2TGlNQS9GMmJ2MW0zd1pIeWlVbmJVNWVhb21CVXpGRHVLSXNOQUNxcW1t?=
+ =?utf-8?B?cGdqWFdSdGVuWHRYcVhNVjVZMWFtVXJqb0pIMjV4VkhYU0o4S1IwOFdzZjRI?=
+ =?utf-8?B?VUNtVmd2SzlZNzVKb2djMUprS3hEYmdQSFZhaSswSkVpL3hqbEF4VytGQVJI?=
+ =?utf-8?B?ZStGTzF1SVV1MWptUlNSTEUyQ0RYcW5aemNWVWQ3YU51OWtHRVY2SWhzNSt0?=
+ =?utf-8?B?b1BJVUlEdWgwbXkyWkE3UWFiUHRtTnNwUzBUaXlRd1NtaVBNWlR4am5INDJQ?=
+ =?utf-8?B?Z2l2RUoraUNneTdUZjg4ekJwN2NmbDBsaWZ6N1d6V3gwZXZ1UW1BWXB1WUNG?=
+ =?utf-8?B?Mnd1WkJmd1Jjb0t5UzRGQmp3VE43MDJsSkxYaXpqMFRld0dxVzdkcnlmL1lQ?=
+ =?utf-8?B?ZXBFSklpQjNINmtQZkNDZXJyeEFrVG0rKzAwZ2xxdDZQR0xzdmVMVTI2azhh?=
+ =?utf-8?Q?EKn1z703u8gROCur3J6PJ6yg6muNDoxB?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfc07f32-c71e-4669-d720-08deaff2ea3d
+X-MS-Exchange-CrossTenant-AuthSource: SY0P300MB0769.AUSP300.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 06:51:38.4201
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY2PPFB64671967
+X-Rspamd-Queue-Id: EED5551B613
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245400-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245401-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_MUA_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rsworktech@outlook.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,suse.com,iogearbox.net,kernel.org,gmail.com,epfl.ch];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amlalabs.com:email,nvidia.com:email]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,outlook.com:dkim]
 X-Rspamd-Action: no action
 
-On 5/11/26 23:40, Souvik Banerjee wrote:
-> Commit 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> added zero/empty-entry early returns to dax_associate_entry() and
-> dax_disassociate_entry(), but placed them *after* the
-> `struct folio *folio = dax_to_folio(entry);` line.  dax_to_folio()
-> expands to page_folio(pfn_to_page(dax_to_pfn(entry))), which calls
-> _compound_head() and performs READ_ONCE(page->compound_info) -- a real
-> dereference of the struct page pointer derived from a bogus PFN
-> extracted from the empty/zero XA value.
-> 
-> On systems where vmemmap covers all of RAM that dereference reads
-> garbage and is harmless: the early return then discards the result.
-> On virtio-pmem with altmap (vmemmap stored inside the device), only
-> the real device PFN range is mapped, so the dereference triggers a
-> kernel paging fault from the truncate / invalidate path and from the
-> PMD-downgrade branch of dax_iomap_pte_fault when an entry is being
-> freed:
-> 
->   Unable to handle kernel paging request at
->   virtual address ffff_fdff_bf00_0008 (vmemmap region)
->   Call trace:
->    dax_disassociate_entry.isra.0+0x20/0x50
->    dax_iomap_pte_fault
->    dax_iomap_fault
->    erofs_dax_fault
-> 
-> Close the residual gap by moving the dax_to_folio() call after the
-> zero/empty guard in both dax_associate_entry() and
-> dax_disassociate_entry().  Apply the same treatment to dax_busy_page(),
-> which has the identical pattern but was not touched by the prior fix.
-> dax_associate_entry() is reachable with a zero entry via
-> dax_insert_entry() -> dax_associate_entry(new_entry, ...), where
-> new_entry can carry DAX_ZERO_PAGE (built by dax_make_entry() in
-> dax_load_hole() / dax_pmd_load_hole()).  dax_disassociate_entry() and
-> dax_busy_page() additionally see DAX_EMPTY entries created by
-> grab_mapping_entry().
-> 
-> The remaining users of dax_to_folio() / dax_to_pfn() in fs/dax.c are
-> either guarded or only reachable on real-PFN entries, so this exhausts
-> the anti-pattern.
-> 
-> Fixes: 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> Fixes: 38607c62b34b ("fs/dax: properly refcount fs dax pages")
-> Cc: stable@vger.kernel.org # v6.15+
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Souvik Banerjee <souvik@amlalabs.com>
+On 2026-05-12 00:21, Paul Chaignon wrote:
+> The first patch in this patchset was already backported before, as
+> commit ecc2aeeaa08a, to address CVE-2023-52920 [1]. That backport was
+> however later reverted in commit 199f04528737 because it reduced the
+> efficiency of the BPF verifier, to the point that it rejected some
+> previously-accepted programs.
+>
+> This patchset backports commit 41f6f64e6999 ("bpf: support non-r10
+> register spill/fill to/from stack in precision tracking") again, but
+> this time with the subsequent commits that improved the efficiency of
+> the verifier. In addition, the last two commits fix and test a
+> regression that was later found in commit 41f6f64e6999.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Thanks a lot!
 
--- 
-Cheers,
+I can confirm that the reproducer that originally led to the revert 
+could load successfully
+with this patchset.
 
-David
+Tested-By: Levi Zim <rsworktech@outlook.com>
+
+Best regards,
+Levi
+
+>
+> It took us a while with Shung-Hsi to come back to this because we felt
+> we didn't have enough test coverage to backport this. That changed with
+> the stable BPF CI Shung-Hsi built for v6.6, which successfully
+> validated this patchset [2]. In addition, I tested the impact of this
+> patchset on the verifier's efficiency with Cilium's BPF programs [3]:
+> it significantly improves, reducing the number of instructions the
+> verifier has to analyze by up to 87% in some cases!
+>
+> 1: https://lore.kernel.org/linux-cve-announce/2024110518-CVE-2023-52920-17f6@gregkh/
+> 2: https://github.com/pchaigno/stable-bpf-ci/actions/runs/25671397661/job/75357317078
+> 3: https://pchaigno.github.io/test-verifier-complexity.html
+>
+> Andrii Nakryiko (10):
+>    bpf: support non-r10 register spill/fill to/from stack in precision
+>      tracking
+>    selftests/bpf: add stack access precision test
+>    bpf: preserve STACK_ZERO slots on partial reg spills
+>    selftests/bpf: validate STACK_ZERO is preserved on subreg spill
+>    bpf: preserve constant zero when doing partial register restore
+>    selftests/bpf: validate zero preservation for sub-slot loads
+>    bpf: track aligned STACK_ZERO cases as imprecise spilled registers
+>    selftests/bpf: validate precision logic in
+>      partial_stack_load_preserves_zeros
+>    bpf: handle fake register spill to stack with BPF_ST_MEM instruction
+>    selftests/bpf: validate fake register spill/fill precision
+>      backtracking logic
+>
+>   include/linux/bpf_verifier.h                  |  31 +-
+>   kernel/bpf/verifier.c                         | 233 +++++++++------
+>   .../selftests/bpf/progs/verifier_spill_fill.c | 281 ++++++++++++++++++
+>   .../bpf/progs/verifier_subprog_precision.c    |  87 +++++-
+>   .../testing/selftests/bpf/verifier/precise.c  |  38 ++-
+>   5 files changed, 557 insertions(+), 113 deletions(-)
+>
 
