@@ -1,163 +1,180 @@
-Return-Path: <stable+bounces-245423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QC74NL/gAmpEyQEAu9opvQ
-	(envelope-from <stable+bounces-245423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:11:43 +0200
+	id 2DbeF4zhAmpEyQEAu9opvQ
+	(envelope-from <stable+bounces-245424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:15:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C38251C7A5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:11:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DCDB51C8AA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E8DAD3000FCD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:11:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2C553301B059
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CB148C413;
-	Tue, 12 May 2026 08:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A8F48BD33;
+	Tue, 12 May 2026 08:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MoCe+lHa"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wE2Mu2vK";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JvEirj65";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="JIwDYP5u";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="iM+tMM3i"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912E748BD3F
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 08:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CC748B36E
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 08:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778573497; cv=none; b=rJbr2qCx8lR/6b6hRn2SPebDW7OSXZGZCRA111podDUJm47uizo3t0VZaFKNllakxlBkvNqnY8To56Mlu4LSL0BAmSqZSMH/vvi3qhDqmC2eSz2fXiwUoVkejcw8Tn4c7QGwntadbS0TFyvfRRixnDWqVKed+FriA9Vtu2z7PgQ=
+	t=1778573596; cv=none; b=LUaQpP1/yAboZSl2FG/NKAtc2JjiwZw+YqvmX5rbn8F4mLOK2vMvQ7UAETwJs3+v7c2IF0YzbR0Tjc3JrLniurxTHtFeVsod22bep9AlZr2APn1AXYai0vzKh6oPv6AknavXUdKFD8+kEaGo9gJC5fHTyWG9oOUAjqTXawf0u0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778573497; c=relaxed/simple;
-	bh=6BojsxZOLjEhtqKTz9EoHvQznoagFeTE9NbkgrQer+c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qn3dfOWaYEBOWArLBegl8YQKgBge1tiHe6rSzRtwSQFd5wKNj2FRG/RynggkeXpi95pxtAJoTpKUpz02iEAiQrlwuod1ShEQxqnG/7fX497hZQO6XOAx8ezYGx50zrICu607fOcOTPhyKpdAzNCY/48FFu1QLpu4TzIDcvdqHfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MoCe+lHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F65C2BCC7
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 08:11:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778573497;
-	bh=6BojsxZOLjEhtqKTz9EoHvQznoagFeTE9NbkgrQer+c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MoCe+lHay61HbM27yL6DeHJkNWyRrVr/biDl9iI9kjIXhEZyNNbw924m5YGTbNxHo
-	 /h5sLBprl2iDAItcVSjwjFQyyWrLyNYEkv53esGQChCeQEJHuGS1YwV2Dh3C0fCsfh
-	 n3/+NGQYmf/yvTItRH+czg9MNaREvHnFpKz2q3TXOrCw2Ks9qGOLKAZy2h7IxTcOwb
-	 3tztjEwqZzj+jRhjHXEaydn2OaFIbhXVKFLyaefuwTcPzSLzsBvGCVEDRF9ku/kX2u
-	 kg9szORz4TYJtxs8TK9l72zUq/hDUoajAWpRbnd/CTGNU9kPTDfGVwzatHbo9too2C
-	 S4IMvIWWhDwjA==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bcceb394417so319263866b.0
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 01:11:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8Sui/I/YHO+PTNgb057/jTSKD3PFMIWF70NRHLRgwz7UxuXes598xExmm792CgWoXJ4pNBWlI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWwLApdOIsplbHblrfu9eRI8Xzc7QpPU7Gu3TsL5Fq3F0FcHc3
-	khbFHbc5Qco+0YJZWEWW2l14uPoYoNI4TKMQW0AppuPUeAW4I1xvZG6x9unuJgPwARdbYUmAwvK
-	3bPxhgHLcyFg4sgPEOKdl3MZBNe6u2j4=
-X-Received: by 2002:a17:906:ee8d:b0:bd2:1995:3a91 with SMTP id
- a640c23a62f3a-bd28e318fd7mr108583966b.12.1778573495594; Tue, 12 May 2026
- 01:11:35 -0700 (PDT)
+	s=arc-20240116; t=1778573596; c=relaxed/simple;
+	bh=PK6aSXAilBcWWbHOL04QvQetI3k2arLzsbq9g/CJ8jU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i0z/TnqSx4ia60dEo0nhQadcXLxyfZQ0b8VBFP/br6wEO2Lazk6CR2bIGX8SCuNg9rkMuImeygDba8sSm6mkYZeOKbCc1Nc++iMqDOEsrKLlCOkxpirzFgTkO/HRwIND+O+bWM3BeihDFLhREORZTwu26Bno5t8kkg2QNmlQx8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wE2Mu2vK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JvEirj65; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=JIwDYP5u; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=iM+tMM3i; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D10C36BDA0;
+	Tue, 12 May 2026 08:13:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778573593; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VzXXNGw/AVHXhERA1dM5vnDVbfWSUQkRLOL87CEnXYs=;
+	b=wE2Mu2vK/2slsk95WAKaC/sbLqm5A4+uOCCooGP2MNwjBm5CDENBUprQyGk4BFYzXF3AFD
+	mRDXXS7/JaXcT0VRAa5EIx7/z4GiZE+uI6znL/5UQM6pTJhfXFDPuxejiM1Po6Yp8bOYOL
+	hSw3WCo2+qB0Dc+u8Y8IqKCsKnEbh9g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778573593;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VzXXNGw/AVHXhERA1dM5vnDVbfWSUQkRLOL87CEnXYs=;
+	b=JvEirj659ZW6N8eO916ikywIDPN5lwaNWRRIiuTBE06I0WZB28s+7wO5Y9UIgvutURh4UN
+	kbEq+/g+HMYHYUCg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778573591; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VzXXNGw/AVHXhERA1dM5vnDVbfWSUQkRLOL87CEnXYs=;
+	b=JIwDYP5u85aYyhViveF85W/3YncoOSFi43zJm2q6sBzRac8jVxJmXnyTMv7dQiqwWgJt2w
+	hu9HT1uWBg4tsXfLm+0Pu/2xYRfqzHoHh7FeD87tMswFaoipZeK0X7L+sSK4OkQ/hytUu0
+	ZtMmB94fMmlK8jOorDLglByPgtde2LA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778573591;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VzXXNGw/AVHXhERA1dM5vnDVbfWSUQkRLOL87CEnXYs=;
+	b=iM+tMM3iqe7ss6Eq3Sv+vt3nLibka9ukNa2bMvF7lz9XqRKBxcP6nSS0RanLzySY4Mk9Dk
+	TMmHptY2ihXCAfDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0DCB1593A9;
+	Tue, 12 May 2026 08:13:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id VsB+ABfhAmr5awAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Tue, 12 May 2026 08:13:11 +0000
+Message-ID: <dc486fd5-daac-4a9f-b477-52a8f02206c4@suse.de>
+Date: Tue, 12 May 2026 10:13:05 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260512063657.53100-1-mhun512@gmail.com>
-In-Reply-To: <20260512063657.53100-1-mhun512@gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 12 May 2026 16:11:54 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5Q5_xgi8WDgGGYLo4ivXv7tKeK2i97sZng2LzncsmgTw@mail.gmail.com>
-X-Gm-Features: AVHnY4KHOlgA72xsxa1aNNyu6NufzzZ9v5aH1Cxl-mXiJUGXiIjUAXap3V-wddY
-Message-ID: <CAAhV-H5Q5_xgi8WDgGGYLo4ivXv7tKeK2i97sZng2LzncsmgTw@mail.gmail.com>
-Subject: Re: [PATCH v2] drm/loongson: use managed KMS polling
-To: Myeonghun Pak <mhun512@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, Icenowy Zheng <zhengxingda@iscas.ac.cn>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Sui Jingfeng <suijingfeng@loongson.cn>, 
-	Jianmin Lv <lvjianmin@loongson.cn>, Qianhai Wu <wuqianhai@loongson.cn>, 
-	Mingcong Bai <jeffbai@aosc.io>, Xi Ruoyao <xry111@xry111.site>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7C38251C7A5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 nf] netfilter: nft_inner: Fix IPv6 inner_thoff desync
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+ netfilter-devel@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>, Xuewei Feng
+ <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>,
+ Ke Xu <xuke@tsinghua.edu.cn>, stable@vger.kernel.org
+References: <20260511173048.7256-1-zhaoyz24@mails.tsinghua.edu.cn>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260511173048.7256-1-zhaoyz24@mails.tsinghua.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 5DCDB51C8AA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,iscas.ac.cn,suse.de,loongson.cn,aosc.io,xry111.site,linux.intel.com,kernel.org,gmail.com,ffwll.ch,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-245423-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,mails.tsinghua.edu.cn,126.com,tsinghua.edu.cn,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245424-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.de:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fmancera@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,loongson.cn:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tsinghua.edu.cn:email,z.ai:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026 at 2:37=E2=80=AFPM Myeonghun Pak <mhun512@gmail.com> w=
-rote:
->
-> lsdc_pci_probe() initializes KMS polling before setting up vblank support=
-,
-> requesting the IRQ and registering the DRM device. If any of those later
-> steps fails, probe returns without finalizing polling. The driver also
-> never finalizes polling on regular removal.
->
-> Use drmm_kms_helper_poll_init() so polling is tied to the DRM device
-> lifetime and automatically finalized on probe failure and device removal.
->
-> This issue was identified during our ongoing static-analysis research whi=
-le
-> reviewing kernel code.
-In the subject line please s/use/Use/g, others LGTM.
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-
->
-> Fixes: f39db26c5428 ("drm: Add kms driver for loongson display controller=
-")
+On 5/11/26 7:30 PM, Yizhou Zhao wrote:
+> In nft_inner_parse_l2l3(), when processing inner IPv6 packets,
+> ipv6_find_hdr() correctly computes the transport header offset
+> traversing all extension headers, but the result is immediately
+> overwritten with nhoff + sizeof(_ip6h) (40 bytes), which only
+> accounts for the IPv6 base header. This creates a desync between
+> inner_thoff (wrong — points to extension header start) and l4proto
+> (correct — e.g., IPPROTO_TCP), enabling transport header forgery
+> and potential firewall bypass. This issue affects stable versions
+> from Linux 6.2.
+> 
+> For comparison, the normal (non-inner) IPv6 path correctly
+> preserves ipv6_find_hdr()'s result. Removing the incorrect overwrite
+> ensures that ipv6_find_hdr()'s calculated transport header offset is
+> preserved, thereby fixing the desynchronization.
+> 
+> Fixes: 3a07327d10a0 ("netfilter: nft_inner: support for inner tunnel header matching")
 > Cc: stable@vger.kernel.org
-> Co-developed-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-> ---
-> Changes in v2:
-> - Switch to drmm_kms_helper_poll_init() as suggested by Icenowy Zheng
->   and Thomas Zimmermann instead of adding manual cleanup paths.
->
->  drivers/gpu/drm/loongson/lsdc_drv.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/loongson/lsdc_drv.c b/drivers/gpu/drm/loongs=
-on/lsdc_drv.c
-> index abf5bf68ee..4b97750897 100644
-> --- a/drivers/gpu/drm/loongson/lsdc_drv.c
-> +++ b/drivers/gpu/drm/loongson/lsdc_drv.c
-> @@ -292,7 +292,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev, const=
- struct pci_device_id *ent)
->
->         vga_client_register(pdev, lsdc_vga_set_decode);
->
-> -       drm_kms_helper_poll_init(ddev);
-> +       drmm_kms_helper_poll_init(ddev);
->
->         if (loongson_vblank) {
->                 ret =3D drm_vblank_init(ddev, descp->num_of_crtc);
-> --
-> 2.47.1
->
+> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+> Reported-by: Xuewei Feng <fengxw06@126.com>
+> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+> Assisted-by: GLM:5.1 Z.ai
+> Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
