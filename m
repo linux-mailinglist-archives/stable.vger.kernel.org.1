@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-245879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHt+F0xnA2qj5gEAu9opvQ
-	(envelope-from <stable+bounces-245879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:48 +0200
+	id gH77BfVuA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2325260CE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FED527444
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE5AF304A6D7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA1363210068
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A7F3D966A;
-	Tue, 12 May 2026 17:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFC23C0A08;
+	Tue, 12 May 2026 17:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JivWQwrH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TA49ZP3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD6F385D85;
-	Tue, 12 May 2026 17:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEA73955CF;
+	Tue, 12 May 2026 17:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607789; cv=none; b=aUVWkmCoIH4OyUNDuM9sagA3M57dMgh43siwZlUMCVOpu++2Z2ftavLd1PaA7JwgfkMp6nUGhwJ8Xd7jWfZTqpHDwSdHlOBthIbDV0nkn5BYpDUmdlr8x1CEHci4H7GowFSPAUkbigNHphtATlcGtbwqzMwsw04w5guoldT2jBA=
+	t=1778608456; cv=none; b=NBU9vC0dttADBBsZR/QgCN37TuMS67qXJCzSijQoz+y0G2mXm5+Q50Mr2+VZbCl6mtBFMbVTFE3HXBqC5lV5dSb8CbIaS36FaVkzbVy0sydSnQoVp/EXskbML3IuoKLfndvKFHCpeuLa9Ird8oTOw8VMOcBXkDtRRjyeqhKCrgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607789; c=relaxed/simple;
-	bh=zLaYP+nJix1HWsCqG0XRmJluh2tARg+eR9bY/glK2Zo=;
+	s=arc-20240116; t=1778608456; c=relaxed/simple;
+	bh=uIVLo1n9l6/r0k9F16xuSqGz+ONy0ne/gRg9YCuOmLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjKlT/4fXOX4PSg7cR8zorqA2YP5sru1eyEZWo9SeI9VQEDxW0DQhL7BrKK3xrg19PIKhRsGTEFxvO6kAb+1KDq8aeHlE73xvSS5rSMGE04+p/Pe00r8H8TThgcrIfyPuH6CR/e7z3EpXxmm6HAoAkaVIcnK52/rkidXiUgh/bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JivWQwrH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6382AC2BCB0;
-	Tue, 12 May 2026 17:43:09 +0000 (UTC)
+	 MIME-Version; b=qhcU9nIKhpvVubo02vfcKD/ReA/WnTjY3UJBwvPce6OkrVm3Z5cBkv+nlIcWjArt7Rt7eNyE9BgbtsdaFFNrD8O0rwKU4rUgUYBAcFz7dbCH6BuufRRHjDJYsYRJFf2IlPrTZnXLrTFNg5HvYtYOQPTrnoV2iGfLSfvYrSRfdAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TA49ZP3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82C4C2BCB0;
+	Tue, 12 May 2026 17:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607789;
-	bh=zLaYP+nJix1HWsCqG0XRmJluh2tARg+eR9bY/glK2Zo=;
+	s=korg; t=1778608456;
+	bh=uIVLo1n9l6/r0k9F16xuSqGz+ONy0ne/gRg9YCuOmLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JivWQwrHFhURW1Mrf3VsIIOhL+uLkgbSYe1FNfqN4YOuxJZrZcpCA9oN/nzyBRwVv
-	 wchjOutdnQSDf+5Wqfcp/C+Vk9gsdgd0lSy3dq+ZBA+Lxyadith59ic/+rlzvcMQ1M
-	 +3Zz9omqfg/It1pjMFnioBg8eQjtGsvu+50k/w4I=
+	b=TA49ZP3GJtgrIrgZVZoHbKrvi7vgt01QWzQVu1ecajCJT65xqJFf+wHq72s+bqiMf
+	 +mzA9/4enRtpPvCPU00T/fsOzJoiV8kfNuAv0ga5eMdNrCLTKaINh8eqE3TC+XDaQ3
+	 L09ejbrt/OnX7hg7g6lMp+EJ3kRN5m8bbg84+dwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 036/206] wifi: mac80211: use safe list iteration in radar detect work
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.18 087/270] mtd: spi-nor: debugfs: fix out-of-bounds read in spi_nor_params_show()
 Date: Tue, 12 May 2026 19:38:08 +0200
-Message-ID: <20260512173933.596022947@linuxfoundation.org>
+Message-ID: <20260512173940.291719072@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +66,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0A2325260CE
+X-Rspamd-Queue-Id: 84FED527444
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246138-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245879-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sashiko.dev:url,infineon.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit ac8eb3e18f41e2cc8492cc1d358bcb786c850270 upstream.
+commit e47029b977e747cb3a9174308fd55762cce70147 upstream.
 
-The call to ieee80211_dfs_cac_cancel can cause the iterated chanctx to
-be freed and removed from the list. Guard against this to avoid a
-slab-use-after-free error.
+Sashiko noticed an out-of-bounds read [1].
+
+In spi_nor_params_show(), the snor_f_names array is passed to
+spi_nor_print_flags() using sizeof(snor_f_names).
+
+Since snor_f_names is an array of pointers, sizeof() returns the total
+number of bytes occupied by the pointers
+	(element_count * sizeof(void *))
+rather than the element count itself. On 64-bit systems, this makes the
+passed length 8x larger than intended.
+
+Inside spi_nor_print_flags(), the 'names_len' argument is used to
+bounds-check the 'names' array access. An out-of-bounds read occurs
+if a flag bit is set that exceeds the array's actual element count
+but is within the inflated byte-size count.
+
+Correct this by using ARRAY_SIZE() to pass the actual number of
+string pointers in the array.
 
 Cc: stable@vger.kernel.org
-Fixes: bca8bc0399ac ("wifi: mac80211: handle ieee80211_radar_detected() for MLO")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Link: https://patch.msgid.link/20260505151539.236d63a1b736.I35dbb9e96a2d4a480be208770fdd99ba3b817b79@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 0257be79fc4a ("mtd: spi-nor: expose internal parameters via debugfs")
+Closes: https://sashiko.dev/#/patchset/20260417-die-erase-fix-v2-1-73bb7004ebad%40infineon.com [1]
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Takahiro Kuwano <takahiro.kuwano@infineon.com>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/util.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/debugfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3504,11 +3504,11 @@ void ieee80211_dfs_radar_detected_work(s
- 	struct ieee80211_local *local =
- 		container_of(work, struct ieee80211_local, radar_detected_work);
- 	struct cfg80211_chan_def chandef;
--	struct ieee80211_chanctx *ctx;
-+	struct ieee80211_chanctx *ctx, *tmp;
+--- a/drivers/mtd/spi-nor/debugfs.c
++++ b/drivers/mtd/spi-nor/debugfs.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
  
- 	lockdep_assert_wiphy(local->hw.wiphy);
++#include <linux/array_size.h>
+ #include <linux/debugfs.h>
+ #include <linux/mtd/spi-nor.h>
+ #include <linux/spi/spi.h>
+@@ -92,7 +93,8 @@ static int spi_nor_params_show(struct se
+ 	seq_printf(s, "address nbytes\t%u\n", nor->addr_nbytes);
  
--	list_for_each_entry(ctx, &local->chanctx_list, list) {
-+	list_for_each_entry_safe(ctx, tmp, &local->chanctx_list, list) {
- 		if (ctx->replace_state == IEEE80211_CHANCTX_REPLACES_OTHER)
- 			continue;
+ 	seq_puts(s, "flags\t\t");
+-	spi_nor_print_flags(s, nor->flags, snor_f_names, sizeof(snor_f_names));
++	spi_nor_print_flags(s, nor->flags, snor_f_names,
++			    ARRAY_SIZE(snor_f_names));
+ 	seq_puts(s, "\n");
  
+ 	seq_puts(s, "\nopcodes\n");
 
 
 
