@@ -1,169 +1,278 @@
-Return-Path: <stable+bounces-245446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245448-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MF1NgsZA2p10QEAu9opvQ
-	(envelope-from <stable+bounces-245446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:11:55 +0200
+	id qN4cJY0ZA2p10QEAu9opvQ
+	(envelope-from <stable+bounces-245448-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:14:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D2AE51FD72
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F44E51FE1A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2F95D3047769
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:10:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4C6D1306FFFC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EF13655DB;
-	Tue, 12 May 2026 12:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jw9PVSh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7CDF4D90C7;
+	Tue, 12 May 2026 12:12:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889AA3655DF
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C9D4CA26E;
+	Tue, 12 May 2026 12:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778587824; cv=none; b=BimDhqaT8FdNy8B/kyE+3GJvrKvSgGYp1/hzUCONzMABgLgwjsHL7PtnCC2c1mMXhmhs31qKgQEJSV7FCYu55xG5lkdsKgOGi0vc1v97xGcAJPcE3svZDsBPgG2JPbMwssk9dujqpFK9cx+RBHowucD2sBKc9Q/4rqs2GA5QGTQ=
+	t=1778587951; cv=none; b=D4rPQ5PSrgYwU5G8bnC3qMHRfg/YPYtNu3Bd/CbnEycBRVRJlkDzXJoRtedah2KP31WMXTeGi0OiUsImZVR9IfyYG4lJvAsTe5qNA3I4i7bkFKluiCMayQ+weg3NtmDzFRaZsBwy2vMojOGqREOOv/PJWvv3J73UzYUA/YEKPCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778587824; c=relaxed/simple;
-	bh=aeGHVOKh5bQHkMZ+CAnxdGbSrZbuaItxYjjprkW8Ihk=;
-	h=Subject:To:Cc:From:Date:Message-ID; b=l8JpqJiOCiV1ngykIdh/oFvTF37anKK8p5Zgk54xTQRO8sYTk5kH3IMsr1eIuh3l9oS/M1TIN7NYTGIZTgyIqW6XVir/45VdtJVLqgYYEBnVcU24aL/lHamFWxjJ3gDbTjfUI7YYGhjX5Qv+5/zCt3f552FK2da6XVq9rXxy6HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jw9PVSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4715DC2BCF5;
-	Tue, 12 May 2026 12:10:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778587824;
-	bh=aeGHVOKh5bQHkMZ+CAnxdGbSrZbuaItxYjjprkW8Ihk=;
-	h=Subject:To:Cc:From:Date:From;
-	b=0jw9PVSheF8QEgHPgRgzqR6rui5Z2Nof+LPJu/hn5eBv4ozpEPaabb69J9+ZUmAZO
-	 SUICNWHRZmV2lnbhHNe1QHKXMwbekStpKOX9GG/ClD2Hqse4/ITXqJOthuVZDez8ca
-	 3Xzmq8TeUnTpDcAAGkLQ1wmODXy5wbJ5soElTaLo=
-Subject: FAILED: patch "[PATCH] wifi: mac80211: remove station if connection prep fails" failed to apply to 5.10-stable tree
-To: johannes.berg@intel.com,miriam.rachel.korenblit@intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 14:10:18 +0200
-Message-ID: <2026051218-overture-debunk-5344@gregkh>
+	s=arc-20240116; t=1778587951; c=relaxed/simple;
+	bh=AcuMBWGxKM+Z1SUVj3sxCy77yb/cSX8ht4tQTqkYlmY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=psTw+iIJCiawMLoB1po1cFGTKBxh7bNvPZZHV2Zfx2jWpQhrnbqqteBA14Pah9HtIyGsb356IdhmI+4MgxElACho4WY8zRrcBttRN0leOrHbzR2hteOsYjl+S+QnJ3BdthOkGGsX1mhFhuK4rLdAfTT516vHhMkGrBd5HD4rqU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19C2C2BCB0;
+	Tue, 12 May 2026 12:12:26 +0000 (UTC)
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+To: vkoul@kernel.org,
+	Frank.Li@kernel.org,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	biju.das.jz@bp.renesas.com,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	p.zabel@pengutronix.de,
+	geert+renesas@glider.be,
+	fabrizio.castro.jz@renesas.com,
+	kuninori.morimoto.gx@renesas.com,
+	long.luu.ur@renesas.com
+Cc: claudiu.beznea@kernel.org,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 01/17] dmaengine: sh: rz-dmac: Move interrupt request after everything is set up
+Date: Tue, 12 May 2026 15:12:02 +0300
+Message-ID: <20260512121219.216159-2-claudiu.beznea.uj@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260512121219.216159-1-claudiu.beznea.uj@bp.renesas.com>
+References: <20260512121219.216159-1-claudiu.beznea.uj@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 4D2AE51FD72
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4F44E51FE1A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [1.64 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[renesas.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245446-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245448-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NO_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,perex.cz,suse.com,bp.renesas.com,pengutronix.de,glider.be,renesas.com];
+	NEURAL_SPAM(0.00)[0.090];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea.uj@bp.renesas.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bp.renesas.com:mid]
 X-Rspamd-Action: no action
 
+Once the interrupt is requested, the interrupt handler may run immediately.
+Since the IRQ handler can access channel->ch_base, which is initialized
+only after requesting the IRQ, this may lead to invalid memory access.
+Likewise, the IRQ thread may access uninitialized data (the ld_free,
+ld_queue, and ld_active lists), which may also lead to issues.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Request the interrupts only after everything is set up. To keep the error
+path simpler, use dmam_alloc_coherent() instead of dma_alloc_coherent().
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 283fc9e44ff5b5ac967439b4951b80bd4299f4e4
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051218-overture-debunk-5344@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 283fc9e44ff5b5ac967439b4951b80bd4299f4e4 Mon Sep 17 00:00:00 2001
-From: Johannes Berg <johannes.berg@intel.com>
-Date: Tue, 5 May 2026 15:15:34 +0200
-Subject: [PATCH] wifi: mac80211: remove station if connection prep fails
-
-If connection preparation fails for MLO connections, then the
-interface is completely reset to non-MLD. In this case, we must
-not keep the station since it's related to the link of the vif
-being removed. Delete an existing station. Any "new_sta" is
-already being removed, so that doesn't need changes.
-
-This fixes a use-after-free/double-free in debugfs if that's
-enabled, because a vif going from MLD (and to MLD, but that's
-not relevant here) recreates its entire debugfs.
-
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
 Cc: stable@vger.kernel.org
-Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260505151533.c4e52deb06ad.Iafe56cec7de8512626169496b134bce3a6c17010@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+---
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 298ebff6bbf8..0a0f27836d57 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -9149,7 +9149,7 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_bss *bss = (void *)cbss->priv;
- 	struct sta_info *new_sta = NULL;
- 	struct ieee80211_link_data *link;
--	bool have_sta = false;
-+	struct sta_info *have_sta = NULL;
- 	bool mlo;
- 	int err;
- 	u16 new_links;
-@@ -9168,11 +9168,8 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
- 		mlo = false;
+Changes in v5:
+- none
+
+Changes in v4:
+- none, this patch is new
+
+ drivers/dma/sh/rz-dmac.c | 88 +++++++++++++++-------------------------
+ 1 file changed, 33 insertions(+), 55 deletions(-)
+
+diff --git a/drivers/dma/sh/rz-dmac.c b/drivers/dma/sh/rz-dmac.c
+index 625ff29024de..9f206a33dcc6 100644
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -981,25 +981,6 @@ static int rz_dmac_chan_probe(struct rz_dmac *dmac,
+ 	channel->index = index;
+ 	channel->mid_rid = -EINVAL;
+ 
+-	/* Request the channel interrupt. */
+-	scnprintf(pdev_irqname, sizeof(pdev_irqname), "ch%u", index);
+-	irq = platform_get_irq_byname(pdev, pdev_irqname);
+-	if (irq < 0)
+-		return irq;
+-
+-	irqname = devm_kasprintf(dmac->dev, GFP_KERNEL, "%s:%u",
+-				 dev_name(dmac->dev), index);
+-	if (!irqname)
+-		return -ENOMEM;
+-
+-	ret = devm_request_threaded_irq(dmac->dev, irq, rz_dmac_irq_handler,
+-					rz_dmac_irq_handler_thread, 0,
+-					irqname, channel);
+-	if (ret) {
+-		dev_err(dmac->dev, "failed to request IRQ %u (%d)\n", irq, ret);
+-		return ret;
+-	}
+-
+ 	/* Set io base address for each channel */
+ 	if (index < 8) {
+ 		channel->ch_base = dmac->base + CHANNEL_0_7_OFFSET +
+@@ -1012,9 +993,9 @@ static int rz_dmac_chan_probe(struct rz_dmac *dmac,
  	}
  
--	if (assoc) {
--		rcu_read_lock();
-+	if (assoc)
- 		have_sta = sta_info_get(sdata, ap_mld_addr);
--		rcu_read_unlock();
--	}
+ 	/* Allocate descriptors */
+-	lmdesc = dma_alloc_coherent(&pdev->dev,
+-				    sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
+-				    &channel->lmdesc.base_dma, GFP_KERNEL);
++	lmdesc = dmam_alloc_coherent(&pdev->dev,
++				     sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
++				     &channel->lmdesc.base_dma, GFP_KERNEL);
+ 	if (!lmdesc) {
+ 		dev_err(&pdev->dev, "Can't allocate memory (lmdesc)\n");
+ 		return -ENOMEM;
+@@ -1030,7 +1011,24 @@ static int rz_dmac_chan_probe(struct rz_dmac *dmac,
+ 	INIT_LIST_HEAD(&channel->ld_free);
+ 	INIT_LIST_HEAD(&channel->ld_active);
  
- 	if (mlo && !have_sta &&
- 	    WARN_ON(sdata->vif.valid_links || sdata->vif.active_links))
-@@ -9336,6 +9333,8 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
- out_release_chan:
- 	ieee80211_link_release_channel(link);
- out_err:
-+	if (mlo && have_sta)
-+		WARN_ON(__sta_info_destroy(have_sta));
- 	ieee80211_vif_set_links(sdata, 0, 0);
- 	return err;
+-	return 0;
++	/* Request the channel interrupt. */
++	scnprintf(pdev_irqname, sizeof(pdev_irqname), "ch%u", index);
++	irq = platform_get_irq_byname(pdev, pdev_irqname);
++	if (irq < 0)
++		return irq;
++
++	irqname = devm_kasprintf(dmac->dev, GFP_KERNEL, "%s:%u",
++				 dev_name(dmac->dev), index);
++	if (!irqname)
++		return -ENOMEM;
++
++	ret = devm_request_threaded_irq(dmac->dev, irq, rz_dmac_irq_handler,
++					rz_dmac_irq_handler_thread, 0,
++					irqname, channel);
++	if (ret)
++		dev_err(dmac->dev, "failed to request IRQ %u (%d)\n", irq, ret);
++
++	return ret;
  }
+ 
+ static void rz_dmac_put_device(void *_dev)
+@@ -1099,7 +1097,6 @@ static int rz_dmac_probe(struct platform_device *pdev)
+ 	const char *irqname = "error";
+ 	struct dma_device *engine;
+ 	struct rz_dmac *dmac;
+-	int channel_num;
+ 	int ret;
+ 	int irq;
+ 	u8 i;
+@@ -1132,18 +1129,6 @@ static int rz_dmac_probe(struct platform_device *pdev)
+ 			return PTR_ERR(dmac->ext_base);
+ 	}
+ 
+-	/* Register interrupt handler for error */
+-	irq = platform_get_irq_byname_optional(pdev, irqname);
+-	if (irq > 0) {
+-		ret = devm_request_irq(&pdev->dev, irq, rz_dmac_irq_handler, 0,
+-				       irqname, NULL);
+-		if (ret) {
+-			dev_err(&pdev->dev, "failed to request IRQ %u (%d)\n",
+-				irq, ret);
+-			return ret;
+-		}
+-	}
+-
+ 	/* Initialize the channels. */
+ 	INIT_LIST_HEAD(&dmac->engine.channels);
+ 
+@@ -1169,6 +1154,18 @@ static int rz_dmac_probe(struct platform_device *pdev)
+ 			goto err;
+ 	}
+ 
++	/* Register interrupt handler for error */
++	irq = platform_get_irq_byname_optional(pdev, irqname);
++	if (irq > 0) {
++		ret = devm_request_irq(&pdev->dev, irq, rz_dmac_irq_handler, 0,
++				       irqname, NULL);
++		if (ret) {
++			dev_err(&pdev->dev, "failed to request IRQ %u (%d)\n",
++				irq, ret);
++			goto err;
++		}
++	}
++
+ 	/* Register the DMAC as a DMA provider for DT. */
+ 	ret = of_dma_controller_register(pdev->dev.of_node, rz_dmac_of_xlate,
+ 					 NULL);
+@@ -1210,16 +1207,6 @@ static int rz_dmac_probe(struct platform_device *pdev)
+ dma_register_err:
+ 	of_dma_controller_free(pdev->dev.of_node);
+ err:
+-	channel_num = i ? i - 1 : 0;
+-	for (i = 0; i < channel_num; i++) {
+-		struct rz_dmac_chan *channel = &dmac->channels[i];
+-
+-		dma_free_coherent(&pdev->dev,
+-				  sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
+-				  channel->lmdesc.base,
+-				  channel->lmdesc.base_dma);
+-	}
+-
+ 	reset_control_assert(dmac->rstc);
+ err_pm_runtime_put:
+ 	pm_runtime_put(&pdev->dev);
+@@ -1232,18 +1219,9 @@ static int rz_dmac_probe(struct platform_device *pdev)
+ static void rz_dmac_remove(struct platform_device *pdev)
+ {
+ 	struct rz_dmac *dmac = platform_get_drvdata(pdev);
+-	unsigned int i;
+ 
+ 	dma_async_device_unregister(&dmac->engine);
+ 	of_dma_controller_free(pdev->dev.of_node);
+-	for (i = 0; i < dmac->n_channels; i++) {
+-		struct rz_dmac_chan *channel = &dmac->channels[i];
+-
+-		dma_free_coherent(&pdev->dev,
+-				  sizeof(struct rz_lmdesc) * DMAC_NR_LMDESC,
+-				  channel->lmdesc.base,
+-				  channel->lmdesc.base_dma);
+-	}
+ 	reset_control_assert(dmac->rstc);
+ 	pm_runtime_put(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+-- 
+2.43.0
 
 
