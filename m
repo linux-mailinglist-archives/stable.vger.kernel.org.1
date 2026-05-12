@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBH9Jd9vA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:23 +0200
+	id qOKOBEpnA2qj5gEAu9opvQ
+	(envelope-from <stable+bounces-245878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0A45276E9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE2E5260C5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 588E831F1000
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91E743045229
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415382D060B;
-	Tue, 12 May 2026 18:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8269E385D85;
+	Tue, 12 May 2026 17:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfxEcncc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiYLvbjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042CC3EDE61;
-	Tue, 12 May 2026 18:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452B23B1EE2;
+	Tue, 12 May 2026 17:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609170; cv=none; b=V/H+n3yGA3ABrPb3tkggnvMCfJuDsha/6WgHz5+/6YwVlH6O3kPYxmJkaFImum59fTNjVN31kdfw5+HBk43mIVy2nQ6upcTRIq7vez4Xnt+UDziegGG064YANMH3PvM77D9VvZ7zImAkxIwR7A8pf4+yLoKulgFT91EfT3SZw8g=
+	t=1778607787; cv=none; b=cvad7GtdD0m0h6+NvlyUofLwxCavbhJ9gG4LVKBuiEl7uXF6jxOces2cgVaxQ8nHCFW4BsQT50SKGjkZMeXehv8IOMjOhqeROh8Tt96Z4PxgqcTAvfes5o1wWJN+rd3MWTS/1jXu/ZA0q6CNUq7YwEqbofZepZtPQB54Ccnm4Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609170; c=relaxed/simple;
-	bh=5wOuXH3400GUIgZIMN5z/QmriLZwugMO94nURtVNOSw=;
+	s=arc-20240116; t=1778607787; c=relaxed/simple;
+	bh=dMnJsfpnslbwzM1I50I8oa3YYPQQpYl95tc74VXLodM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieb5nJIhX2jjYVElWLgDgx0ERkpCIDqACVfz0tnCzUJ8pgy9B8fFV5y9chD09+oBaTMYhnLwCTfFHXDJJrEXEl48zmfyBApvcJbPJLne0CSOrINeffASTLpK6ZWX1hfylNDieQxKhaMwsOp134TpRJejrPhkVpke/Y2oWQfqlJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfxEcncc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A06C2BCB0;
-	Tue, 12 May 2026 18:06:09 +0000 (UTC)
+	 MIME-Version; b=YytGFLiBcYUkXNCGl9+PmAbCODkhIMvDICWBN78MCkkA2jcc59PcuRhG9JyZkZ1oA+HABedgTF1bjwKp98HLsP7/EXSav4608IJUnr30x5/QCbtHsgojT23SGKAK4cfKWYDvvwDzqigEghVAS8Bmss2By3PllsmYp5jP0WovduU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiYLvbjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1854C2BCB0;
+	Tue, 12 May 2026 17:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609169;
-	bh=5wOuXH3400GUIgZIMN5z/QmriLZwugMO94nURtVNOSw=;
+	s=korg; t=1778607787;
+	bh=dMnJsfpnslbwzM1I50I8oa3YYPQQpYl95tc74VXLodM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WfxEcncct7aTWax+BHMIy1G/Sji/9hLcWmIe+zDBT1+T1gVugCAF1gjuaVgPqiT8B
-	 nMMJmus93juuPmEx3tna0BTfcdUQH5Ri1Qzg4ntVwDSqxm7dAUqH+wtaUz+uFu6Rxd
-	 nrWLzhOQjK2U2POQYIavhyBT76TIYkq7uqnYxyrw=
+	b=wiYLvbjW7sLywcesTsPy7dGUnfd7SXYUZRBCEv2PhePp16+R/J9tiKLjg39Kv3LDW
+	 J7XyJasTIBvEoITh/qVdy18MKjhEqidgudrX6nt9wUSwultIkiYgzMUFgcKgshQWNu
+	 qO1QVUxm9qN7TbWiXZqgzMce7GXniH8OEnhnOBfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 7.0 092/307] fanotify: fix false positive on permission events
+	syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 035/206] wifi: rsi: fix kthread lifetime race between self-exit and external-stop
 Date: Tue, 12 May 2026 19:38:07 +0200
-Message-ID: <20260512173942.069660653@linuxfoundation.org>
+Message-ID: <20260512173933.574439962@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +64,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ED0A45276E9
+X-Rspamd-Queue-Id: 6CE2E5260C5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246416-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245878-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,5de83f57cd8531f55596];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.cz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 7746e3bd4cc19b5092e00d32d676e329bfcb6900 upstream.
+commit db57a1aa54ff68669781976e4edb045e09e2b65b upstream.
 
-fsnotify_get_mark_safe() may return false for a mark on an unrelated group,
-which results in bypassing the permission check.
+RSI driver use both self-exit(kthread_complete_and_exit) and external-stop
+(kthread_stop) when killing a kthread. Generally, kthread_stop() is called
+first, and in this case, no particular issues occur.
 
-Fix by skipping over detached marks that are not in the current group.
+However, in rare instances where kthread_complete_and_exit() is called
+first and then kthread_stop() is called, a UAF occurs because the kthread
+object, which has already exited and been freed, is accessed again.
 
-CC: stable@vger.kernel.org
-Fixes: abc77577a669 ("fsnotify: Provide framework for dropping SRCU lock in ->handle_event")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://patch.msgid.link/20260410144950.156160-1-mszeredi@redhat.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Therefore, to prevent this with minimal modification, you must remove
+kthread_stop() and change the code to wait until the self-exit operation
+is completed.
+
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e5d03b.a00a0220.1bd0ca.0064.GAE@google.com/
+Fixes: 4c62764d0fc2 ("rsi: improve kernel thread handling to fix kernel panic")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Link: https://patch.msgid.link/20260422173846.37640-1-aha310510@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/notify/fsnotify.c             |    2 +-
- fs/notify/mark.c                 |   18 +++++++++++-------
- include/linux/fsnotify_backend.h |    1 +
- 3 files changed, 13 insertions(+), 8 deletions(-)
+ drivers/net/wireless/rsi/rsi_common.h |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -388,7 +388,7 @@ static struct fsnotify_mark *fsnotify_fi
- 	return hlist_entry_safe(node, struct fsnotify_mark, obj_list);
+--- a/drivers/net/wireless/rsi/rsi_common.h
++++ b/drivers/net/wireless/rsi/rsi_common.h
+@@ -70,12 +70,11 @@ static inline int rsi_create_kthread(str
+ 	return 0;
  }
  
--static struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark)
-+struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark)
+-static inline int rsi_kill_thread(struct rsi_thread *handle)
++static inline void rsi_kill_thread(struct rsi_thread *handle)
  {
- 	struct hlist_node *node = NULL;
- 
---- a/fs/notify/mark.c
-+++ b/fs/notify/mark.c
-@@ -457,9 +457,6 @@ EXPORT_SYMBOL_GPL(fsnotify_put_mark);
-  */
- static bool fsnotify_get_mark_safe(struct fsnotify_mark *mark)
- {
--	if (!mark)
--		return true;
+ 	atomic_inc(&handle->thread_done);
+ 	rsi_set_event(&handle->event);
 -
- 	if (refcount_inc_not_zero(&mark->refcnt)) {
- 		spin_lock(&mark->lock);
- 		if (mark->flags & FSNOTIFY_MARK_FLAG_ATTACHED) {
-@@ -500,15 +497,22 @@ bool fsnotify_prepare_user_wait(struct f
- 	int type;
+-	return kthread_stop(handle->task);
++	wait_for_completion(&handle->completion);
+ }
  
- 	fsnotify_foreach_iter_type(type) {
-+		struct fsnotify_mark *mark = iter_info->marks[type];
-+
- 		/* This can fail if mark is being removed */
--		if (!fsnotify_get_mark_safe(iter_info->marks[type])) {
--			__release(&fsnotify_mark_srcu);
--			goto fail;
-+		while (mark && !fsnotify_get_mark_safe(mark)) {
-+			if (mark->group == iter_info->current_group) {
-+				__release(&fsnotify_mark_srcu);
-+				goto fail;
-+			}
-+			/* This is a mark in an unrelated group, skip */
-+			mark = fsnotify_next_mark(mark);
-+			iter_info->marks[type] = mark;
- 		}
- 	}
- 
- 	/*
--	 * Now that both marks are pinned by refcount in the inode / vfsmount
-+	 * Now that all marks are pinned by refcount in the inode / vfsmount / etc
- 	 * lists, we can drop SRCU lock, and safely resume the list iteration
- 	 * once userspace returns.
- 	 */
---- a/include/linux/fsnotify_backend.h
-+++ b/include/linux/fsnotify_backend.h
-@@ -915,6 +915,7 @@ extern void fsnotify_clear_marks_by_grou
- 					  unsigned int obj_type);
- extern void fsnotify_get_mark(struct fsnotify_mark *mark);
- extern void fsnotify_put_mark(struct fsnotify_mark *mark);
-+struct fsnotify_mark *fsnotify_next_mark(struct fsnotify_mark *mark);
- extern void fsnotify_finish_user_wait(struct fsnotify_iter_info *iter_info);
- extern bool fsnotify_prepare_user_wait(struct fsnotify_iter_info *iter_info);
- 
+ void rsi_mac80211_detach(struct rsi_hw *hw);
 
 
 
