@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMo/LP5qA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:34 +0200
+	id WMwDBeNrA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4258152689E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97324526B70
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 19916310BAE4
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D16B3072D51
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4ED93EDE59;
-	Tue, 12 May 2026 17:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5A5328B77;
+	Tue, 12 May 2026 18:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwqkZcSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTVy5B27"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682973EDE44;
-	Tue, 12 May 2026 17:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AF63EDE59;
+	Tue, 12 May 2026 18:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608278; cv=none; b=IYseQ5UqL3tIMiWbyQr3IQSp0PKADlX8HykWhR6Ob9r/CXHH5189+9e8hpPK3vFeLxgf/STL7+9k4FBA5/fZh6DMFbIHhUMav9VOlUD/8eoMFcuMoo6kHbZ2FMzMK9ANd5Lcfv7b8EhHieTaH+4GLqzFuybnWJ2KAH/2YCcxI2g=
+	t=1778609013; cv=none; b=YP/G/V45Tc5Or39ECkza1EwEoZ3PA3qr0EZdHw6na5eFTl+fL6MavwzMlhRdAPbGNBBvW9cujpKYvhMhcpucjSPYYl7Yo9ol5anoLAehgujQn6j8CGDjmcAKCiZTrAswjCsA61CyOfElnu3yEijQy45rc4MAByB/L1qsfVaKbYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608278; c=relaxed/simple;
-	bh=sguU4cfkB6mg7ZVlrrFA5Givh9eP1quAPa+US3yk7N4=;
+	s=arc-20240116; t=1778609013; c=relaxed/simple;
+	bh=U77YnOn2ZtVAdVIkIJrRuhCoBNSMBr6G3OZO8Ld6DZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qaqarzgoQinQtl5v9IfgcpYpVFXypZy4BMgeOxd86RdGLr1hOTV8YVzPCoi3s9mh9jP6y39QEwQtQ4IXmre/yhXp7+xD+BJ0WvPRRsH/SCSu1raLLL9tyki2xvqkAi1yqSnMBGCHW/+cavgKZfHj6cxYWP2dDbI9N0Wyfc8X1bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwqkZcSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2261C2BCB0;
-	Tue, 12 May 2026 17:51:17 +0000 (UTC)
+	 MIME-Version; b=CPtnrd1uzIdf2xQekmKqOfr2Fgb7LRV1Bx2HQIv75Cig4JZ2AHEalUmac+1BDtAqxxae2W81FFVB9i+rJ6P0GLRCl8wyZ8cI6DNbWNalNFLXwRQ98qVfqQ45ZcoExRxV6EZflC94QWlkGmZe6Rz5cb3ikRFQfcOl7OqX6BZtj9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTVy5B27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D62C2BCB0;
+	Tue, 12 May 2026 18:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608278;
-	bh=sguU4cfkB6mg7ZVlrrFA5Givh9eP1quAPa+US3yk7N4=;
+	s=korg; t=1778609012;
+	bh=U77YnOn2ZtVAdVIkIJrRuhCoBNSMBr6G3OZO8Ld6DZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwqkZcShDYmgz2cRYNfazPksM3QjX3Cb0AtmzhE7gv2GgCEdvLcXncRzdF5vwQD16
-	 3JQ49+yIl6oTL22/mZgNp/ECoGdqbbOzUpx6V380nwFVRaDrt/wKpBSq+H3oj8Iegj
-	 KhhtmGrSAH/vBCZBdcfEMTGzrCRB6g+5soSQjOsA=
+	b=PTVy5B27G/BxGFUlBPfSVHwBAbfsz8S/AcrKMb2t1TSYB81hDkkeQwyXhepG5aYEv
+	 n0gYVxdzpJOoe902xYTHzYe7qPjEcSsL9G4Isf34FobubSQX2C5KOebsu3mImBj5CS
+	 GjsY0KDbA+jVWyvFt8RlbvRMu/XRLSrgC6MyIVq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 018/270] flow_dissector: do not dissect PPPoE PFC frames
+	Leon Yen <leon.yen@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 7.0 024/307] wifi: mt76: mt7921: fix a potential clc buffer length underflow
 Date: Tue, 12 May 2026 19:36:59 +0200
-Message-ID: <20260512173938.840598782@linuxfoundation.org>
+Message-ID: <20260512173940.636777144@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4258152689E
+X-Rspamd-Queue-Id: 97324526B70
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246069-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246355-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,106 +91,48 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,nbd.name:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@linux.dev>
+From: Leon Yen <leon.yen@mediatek.com>
 
-[ Upstream commit d6c19b31a3c1d519fabdcf0aa239e6b6109b9473 ]
+commit 5373f8b19e568b5c217832b9bbef165bd2b2df14 upstream.
 
-RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
-RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
-PFC for PPPoE sessions, and the flow dissector driver has assumed an
-uncompressed frame until the blamed commit.
+The buf_len is used to limit the iterations for retrieving the country
+power setting and may underflow under certain conditions due to changes
+in the power table in CLC.
 
-During the review process of that commit [1], support for PFC is
-suggested. However, having a compressed (1-byte) protocol field means
-the subsequent PPP payload is shifted by one byte, causing 4-byte
-misalignment for the network header and an unaligned access exception
-on some architectures.
+This underflow leads to an almost infinite loop or an invalid power
+setting resulting in driver initialization failure.
 
-The exception can be reproduced by sending a PPPoE PFC frame to an
-ethernet interface of a MIPS board, with RPS enabled, even if no PPPoE
-session is active on that interface:
-
-$ 0   : 00000000 80c40000 00000000 85144817
-$ 4   : 00000008 00000100 80a75758 81dc9bb8
-$ 8   : 00000010 8087ae2c 0000003d 00000000
-$12   : 000000e0 00000039 00000000 00000000
-$16   : 85043240 80a75758 81dc9bb8 00006488
-$20   : 0000002f 00000007 85144810 80a70000
-$24   : 81d1bda0 00000000
-$28   : 81dc8000 81dc9aa8 00000000 805ead08
-Hi    : 00009d51
-Lo    : 2163358a
-epc   : 805e91f0 __skb_flow_dissect+0x1b0/0x1b50
-ra    : 805ead08 __skb_get_hash_net+0x74/0x12c
-Status: 11000403        KERNEL EXL IE
-Cause : 40800010 (ExcCode 04)
-BadVA : 85144817
-PrId  : 0001992f (MIPS 1004Kc)
-Call Trace:
-[<805e91f0>] __skb_flow_dissect+0x1b0/0x1b50
-[<805ead08>] __skb_get_hash_net+0x74/0x12c
-[<805ef330>] get_rps_cpu+0x1b8/0x3fc
-[<805fca70>] netif_receive_skb_list_internal+0x324/0x364
-[<805fd120>] napi_complete_done+0x68/0x2a4
-[<8058de5c>] mtk_napi_rx+0x228/0xfec
-[<805fd398>] __napi_poll+0x3c/0x1c4
-[<805fd754>] napi_threaded_poll_loop+0x234/0x29c
-[<805fd848>] napi_threaded_poll+0x8c/0xb0
-[<80053544>] kthread+0x104/0x12c
-[<80002bd8>] ret_from_kernel_thread+0x14/0x1c
-
-Code: 02d51821  1060045b  00000000 <8c640000> 3084000f  2c820005  144001a2  00042080  8e220000
-
-To reduce the attack surface and maintain performance, do not process
-PPPoE PFC frames.
-
-[1] https://lore.kernel.org/r/20220630231016.GA392@debian.home
-Fixes: 46126db9c861 ("flow_dissector: Add PPPoE dissectors")
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-Link: https://patch.msgid.link/20260415022456.141758-1-qingfang.deng@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: fa6ad88e023d ("wifi: mt76: mt7921: fix country count limitation for CLC")
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20251009020158.1923429-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/flow_dissector.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 1b61bb25ba0e5..2a98f5fa74eb0 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1374,16 +1374,13 @@ bool __skb_flow_dissect(const struct net *net,
- 			break;
- 		}
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1353,6 +1353,9 @@ int __mt7921_mcu_set_clc(struct mt792x_d
+ 		u16 len = le16_to_cpu(rule->len);
+ 		u16 offset = len + sizeof(*rule);
  
--		/* least significant bit of the most significant octet
--		 * indicates if protocol field was compressed
-+		/* PFC (compressed 1-byte protocol) frames are not processed.
-+		 * A compressed protocol field has the least significant bit of
-+		 * the most significant octet set, which will fail the following
-+		 * ppp_proto_is_valid(), returning FLOW_DISSECT_RET_OUT_BAD.
- 		 */
- 		ppp_proto = ntohs(hdr->proto);
--		if (ppp_proto & 0x0100) {
--			ppp_proto = ppp_proto >> 8;
--			nhoff += PPPOE_SES_HLEN - 1;
--		} else {
--			nhoff += PPPOE_SES_HLEN;
--		}
-+		nhoff += PPPOE_SES_HLEN;
- 
- 		if (ppp_proto == PPP_IP) {
- 			proto = htons(ETH_P_IP);
--- 
-2.53.0
-
++		if (buf_len < offset)
++			break;
++
+ 		pos += offset;
+ 		buf_len -= offset;
+ 		if (rule->alpha2[0] != alpha2[0] ||
 
 
 
