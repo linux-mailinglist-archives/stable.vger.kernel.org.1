@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-246524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QF/vBzdtA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:03 +0200
+	id WBs/NP1pA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-245987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66B8526F7C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5E552653D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7E89A3042E1F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F3C823078018
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A77B36A378;
-	Tue, 12 May 2026 18:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA093955CD;
+	Tue, 12 May 2026 17:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjOu436V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F01FfwXt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EC1352F86;
-	Tue, 12 May 2026 18:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3E93EDE4F;
+	Tue, 12 May 2026 17:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609447; cv=none; b=MsLVIZGj1G3sR2F0fQ2ji8omwR/TM7pisKqlri6ef2yRVwlcXsp+pHYJZvUPkJGbW2B61tEdWUwaFutqLnrYEDupbdD2L37yjzdBMCH6QtllqqRM3yxZ4vD6Myerz3mMJpqQKyNCq8QO8/jHcD1E/MBKvXC2pwp1GojEE2qDNy8=
+	t=1778608067; cv=none; b=Y0rKyrw7L062Mppbn8fPIahRpyTPdE2q2hBFp7mFBx2h8o7mE7Lnbtlrx32/E1nbLUQOjDAjmQU5D7fBJtQHe8yHJMJY4EJxcdzpcGb+JuW9pztXhfEW0yEX2wg9f9Hn1sjMf9Pnt/aQ60EEFJoB5lBAFokAXokmRHNzOT837G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609447; c=relaxed/simple;
-	bh=hjuI7dW9M07DUSQuJuSbc6XovRgEWBy/gGPBTWxI4G8=;
+	s=arc-20240116; t=1778608067; c=relaxed/simple;
+	bh=GLgvA5C8PXmJmqsN5424rjtZK8s2O0tEHWSzt0R4OSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngGAk3Zy8dEBhSnWbmCgOyqYxpJCoKwJrwDfcmbJ9Y6l4xth+RJJ07IqsRpcwrjI5Ch3ERIf1jz9cJU1K+81sBVFKmVG729jdRQlO0e3dYcVaIj1gaWY8BCi4YTR0uEHjsCuSqgIfYFtGlr2F+cgu/HxgmZIvpW3D/nfHfoXaFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjOu436V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68FF0C2BCB0;
-	Tue, 12 May 2026 18:10:47 +0000 (UTC)
+	 MIME-Version; b=Tw4QvB39FLti2EXr6GxJRp8e/usqPepHltmn+krWId2B5cp7AFRKQBNbx2gz5N3giUZ8RxBEKiWUCZCBMUjrE5HIL/7iCkL2iaxpQP+cb/vjJa4uq01V0r8EnCUQf2nbr1iPDQ0onyWovekkRzlEPNhg9HIVhuN5IM4rVNEYVLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F01FfwXt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CEAC2BCB0;
+	Tue, 12 May 2026 17:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609447;
-	bh=hjuI7dW9M07DUSQuJuSbc6XovRgEWBy/gGPBTWxI4G8=;
+	s=korg; t=1778608066;
+	bh=GLgvA5C8PXmJmqsN5424rjtZK8s2O0tEHWSzt0R4OSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wjOu436VL/8ELCSEqfe+i0/iqM3x87Uu+0Z5J0SNZmsH/S8DKL3R+KtOUdE7Mayjd
-	 swmn68q8IMeIoJJRuE1zynzHN1UfhdQEya/F85vCNJZvjY8DyXX+lLrQB8dg5lseAp
-	 iXH1/zvZCNaYPIPqdJlYa1c68IeQn7mKWpdH+5aU=
+	b=F01FfwXtJdrr9+qTMEXjZ3++OzVuv/l+vlmCPEQdIlMa+KvGrPK1JvpB4hibDmu3z
+	 rH8CNUFGdzoVI0+iRWT3YtYEoESWYQ8WmX7LWd+0wGiAYQtW+aBsZ/Tu+dhtkaXTEq
+	 te7Fsx4nmTqvSeoKrR3N6hs1ABysvI4WdFBwDPCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	David Howells <dhowells@redhat.com>,
-	David Gow <davidgow@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 197/307] lib/scatterlist: fix temp buffer in extract_user_to_sg()
-Date: Tue, 12 May 2026 19:39:52 +0200
-Message-ID: <20260512173944.277441958@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 141/206] KVM: x86: check for nEPT/nNPT in slow flush hypercalls
+Date: Tue, 12 May 2026 19:39:53 +0200
+Message-ID: <20260512173935.847148099@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +63,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A66B8526F7C
+X-Rspamd-Queue-Id: DE5E552653D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246524-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245987-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,c--e.de:email,linux-foundation.org:email,suse.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit 118cf3f55975352ac357fb194405031458186819 upstream.
+commit 464af6fc2b1dcc74005b7f58ee3812b17777efee upstream.
 
-Instead of allocating a temporary buffer for extracted user pages
-extract_user_to_sg() uses the end of the to be filled scatterlist as a
-temporary buffer.
+Checking is_guest_mode(vcpu) is incorrect, because translate_nested_gpa()
+is only valid if an L2 guest is running *with nested EPT/NPT enabled*.
+Instead use the same condition as translate_nested_gpa() itself.
 
-Fix the calculation of the start address if the scatterlist already
-contains elements.  The unused space starts at sgtable->sgl +
-sgtable->nents not directly at sgtable->nents and the temporary buffer is
-placed at the end of this unused space.
-
-A subsequent commit will add kunit test cases that demonstrate that the
-patch is necessary.
-
-Pointed out by sashiko.dev on a previous iteration of this series.
-
-Link: https://lkml.kernel.org/r/20260326214905.818170-3-lk@c--e.de
-Fixes: 018584697533 ("netfs: Add a function to extract an iterator into a scatterlist")
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Cc: David Howells <dhowells@redhat.com>
-Cc: David Gow <davidgow@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: <stable@vger.kernel.org>	[v6.5+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Fixes: aee738236dca ("KVM: x86: Prepare kvm_hv_flush_tlb() to handle L2's GPAs", 2022-11-18)
+Link: https://patch.msgid.link/20260503200905.106077-1-pbonzini@redhat.com/
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/scatterlist.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kvm/hyperv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/scatterlist.c
-+++ b/lib/scatterlist.c
-@@ -1123,8 +1123,7 @@ static ssize_t extract_user_to_sg(struct
- 	size_t len, off;
- 
- 	/* We decant the page list into the tail of the scatterlist */
--	pages = (void *)sgtable->sgl +
--		array_size(sg_max, sizeof(struct scatterlist));
-+	pages = (void *)sg + array_size(sg_max, sizeof(struct scatterlist));
- 	pages -= sg_max;
- 
- 	do {
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -2038,7 +2038,7 @@ static u64 kvm_hv_flush_tlb(struct kvm_v
+ 	 * flush).  Translate the address here so the memory can be uniformly
+ 	 * read with kvm_read_guest().
+ 	 */
+-	if (!hc->fast && is_guest_mode(vcpu)) {
++	if (!hc->fast && mmu_is_nested(vcpu)) {
+ 		hc->ingpa = translate_nested_gpa(vcpu, hc->ingpa, 0, NULL);
+ 		if (unlikely(hc->ingpa == INVALID_GPA))
+ 			return HV_STATUS_INVALID_HYPERCALL_INPUT;
 
 
 
