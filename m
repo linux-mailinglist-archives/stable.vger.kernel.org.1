@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AvQHltzA2rf5wEAu9opvQ
-	(envelope-from <stable+bounces-246405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:15 +0200
+	id YI36DV9sA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2610A527DC1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E67F526CD7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FD0131449A3
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7953B3232F24
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899621DED4C;
-	Tue, 12 May 2026 18:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828833955FD;
+	Tue, 12 May 2026 17:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPn37flI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2GmXwNF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494803EDE55;
-	Tue, 12 May 2026 18:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464863955F9;
+	Tue, 12 May 2026 17:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609141; cv=none; b=KWmhNWBBDeMHXh7LhWk4fBCFYbUYKcwcYGcRVfuJqDNtqcTUs2lWlr3T3FVZdyt2Dr85gFmVR3x5yFgLUV080FkupK9q19qVs1VWG9cUMkh2J7ZXpPgnhqBeWX6oTkjxuwu2ZidcKMkbcdpFB6zr+hG7MhHBTSXMtWEotaMQUXI=
+	t=1778608564; cv=none; b=rX3UTQSAWQhUv7e2ucxKSOn6V69Chp+382TAgrOkSNORqG+otPcz17WDdqCRysG9fo7mpcjpp33IjwSO/Jzk4v+3e5QVdZEuld5Zt481YMZM2ufBwc/FopZ7iS2uGg2bmEHEHf7vR8mn4ITE/E5ugn3tuOZZEYTGyJUO7dtrC/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609141; c=relaxed/simple;
-	bh=Q9kWanIz12eGF0OJaTk6Vf2KbIQuIEeEnb0CbiWPjCo=;
+	s=arc-20240116; t=1778608564; c=relaxed/simple;
+	bh=hW9PU1ujQt7fMMgCZ9uFPWB4iVE3Pz/zuYCg60T5cgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rzmko1udEcK+HC7H1C9tMOvkD20jfGG6R9+UYAWNL22xlJJuj+25lJ0Oc3/5FbWbBk9J0a7DXONOBi8mhT22uczeMlle9I0OwNMUZ5ONuQhvJ2dpdhqUEzDM8RXk+mLblZiTkIU9E5RO3lLly6bIRm8RH6/KoQ8Ty3Pyoo2SKZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPn37flI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EB4C2BCB0;
-	Tue, 12 May 2026 18:05:40 +0000 (UTC)
+	 MIME-Version; b=QBEgZzjx2I5qOa+JuKcJwEXwFt3laWJLr07z0WowgPUAaRcqgR+2Y406gzltJ7CYqfdbRRaKj2pdNw0vjsrg8t7/FaHNzOGiheVYX35Ay0+6kDAMTRLAGzYcUm8gnwGVg7RUQLzTOMqWsz9P4owbrj8U5C0GkdC+8OkDcHuMqfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2GmXwNF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F16C2BCB0;
+	Tue, 12 May 2026 17:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609141;
-	bh=Q9kWanIz12eGF0OJaTk6Vf2KbIQuIEeEnb0CbiWPjCo=;
+	s=korg; t=1778608564;
+	bh=hW9PU1ujQt7fMMgCZ9uFPWB4iVE3Pz/zuYCg60T5cgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPn37flIZ2FUIxh6SSF6EcCwMCyrSsWVPDiNGhn3hjCGm3gpZfjldSIntTbOkFIUW
-	 9UaLG4C6/1H614uADqKYxWGcldZs7jMVZ/f4esBrsC/7Oxcv2ItArvDBNiKms6AUt4
-	 OfV1Oj9myd3cHL4n0r7Be/6Xvl1PfNC9XyJAT6O0=
+	b=A2GmXwNFhu9enu2eRkxndi260PI9gayzesaobdzSRjcusT5QpZuI15Opq9I1IsNRH
+	 +ReUQ5jFSoJMfrgiR+qWij4RsJnGnNlHJ0C9iJ2SqHqRMBnaBaX4cbjalzdJpjbXxp
+	 DqByVC81UJY94SwwCnMBHc/VjyfXb5g0DluqdFcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 082/307] spi: sun4i: fix controller deregistration
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 076/270] rust: allow `clippy::collapsible_match` globally
 Date: Tue, 12 May 2026 19:37:57 +0200
-Message-ID: <20260512173941.850958763@linuxfoundation.org>
+Message-ID: <20260512173940.052376832@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2610A527DC1
+X-Rspamd-Queue-Id: 8E67F526CD7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246405-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246180-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,61 +88,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 42108a2f03e0fdeabe9d02d085bdb058baa1189f upstream.
+commit 838d852da8503372f3a1779bfbd1ccb93153ab4e upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+The `clippy::collapsible_match` lint [1] can make code harder to read
+in certain cases [2], e.g.
 
-Fixes: b5f6517948cc ("spi: sunxi: Add Allwinner A10 SPI controller driver")
-Cc: stable@vger.kernel.org	# 3.15
-Cc: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-19-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+      CLIPPY P rust/libmacros.so - due to command line change
+    warning: this `if` can be collapsed into the outer `match`
+      --> rust/pin-init/internal/src/helpers.rs:91:17
+       |
+    91 | /                 if nesting == 1 {
+    92 | |                     impl_generics.push(tt.clone());
+    93 | |                     impl_generics.push(tt);
+    94 | |                     skip_until_comma = false;
+    95 | |                 }
+       | |_________________^
+       |
+       = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_match
+       = note: `-W clippy::collapsible-match` implied by `-W clippy::all`
+       = help: to override `-W clippy::all` add `#[allow(clippy::collapsible_match)]`
+    help: collapse nested if block
+       |
+    90 ~             TokenTree::Punct(p) if skip_until_comma && p.as_char() == ','
+    91 ~                 && nesting == 1 => {
+    92 |                     impl_generics.push(tt.clone());
+    93 |                     impl_generics.push(tt);
+    94 |                     skip_until_comma = false;
+    95 ~                 }
+       |
+
+The lint does not have much upside -- when the suggestion may be a good
+one, it would still read fine when nested anyway. And it is the kind of
+lint that may easily bias people to just apply the suggestion instead
+of allowing it.
+
+[ In addition, as Gary points out [3], the suggestion is also wrong [4] and
+  in the process of being fixed [5], possibly for Rust 1.97.0:
+
+  Link: https://lore.kernel.org/rust-for-linux/DI3YV94TH9I3.1SOHW51552497@garyguo.net/ [3]
+  Link: https://github.com/rust-lang/rust-clippy/issues/16875 [4]
+  Link: https://github.com/rust-lang/rust-clippy/pull/16878 [5]
+
+    - Miguel ]
+
+Thus just let developers decide on their own.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_match [1]
+Link: https://lore.kernel.org/rust-for-linux/CANiq72nWYJna_hdFxjQCQZK6yJBrr1Mb86iKavivV0U0BgufeA@mail.gmail.com/ [2]
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260426144201.227108-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sun4i.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -504,7 +504,7 @@ static int sun4i_spi_probe(struct platfo
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_idle(&pdev->dev);
- 
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "cannot register SPI host\n");
- 		goto err_pm_disable;
-@@ -522,7 +522,15 @@ err_free_host:
- 
- static void sun4i_spi_remove(struct platform_device *pdev)
- {
-+	struct spi_controller *host = platform_get_drvdata(pdev);
-+
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	pm_runtime_force_suspend(&pdev->dev);
-+
-+	spi_controller_put(host);
- }
- 
- static const struct of_device_id sun4i_spi_match[] = {
+--- a/Makefile
++++ b/Makefile
+@@ -483,6 +483,7 @@ export rust_common_flags := --edition=20
+ 			    -Wclippy::as_ptr_cast_mut \
+ 			    -Wclippy::as_underscore \
+ 			    -Wclippy::cast_lossless \
++			    -Aclippy::collapsible_match \
+ 			    -Wclippy::ignored_unit_patterns \
+ 			    -Wclippy::mut_mut \
+ 			    -Wclippy::needless_bitwise_bool \
 
 
 
