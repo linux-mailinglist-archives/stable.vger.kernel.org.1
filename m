@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-246223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMd1CrRqA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:20 +0200
+	id uEguCNpuA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D065267A8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B75952740A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 13C1D307B66D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E7EAD3134E3E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE7F3EDE45;
-	Tue, 12 May 2026 17:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA00356741;
+	Tue, 12 May 2026 18:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="to4szFNs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyQPaU/z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674E13EDE41;
-	Tue, 12 May 2026 17:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AA123E356;
+	Tue, 12 May 2026 18:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608675; cv=none; b=SIblsJAJhaxsp0w8zv1RFfFa0fMLaSWOnX5zHpyGb/rembAEPyiXVw3MQq396YHOhaM8Q6o915SuutQd+LMEwWKCk/+QaRuJN1s9qZR3LHwg9aB1QZpHt9b9HKpyAWZJVyk+Dst5QHWrO0VAC7/DJbziN+uezSCSr86DQB72fUc=
+	t=1778609285; cv=none; b=IEPDpw4yFu4o4+ehwRLpYh69agvCW4/fP7FOlQ9Zppd8z+uVex+2D8hTNYVv+R/Dvw8BQoE0IDXEmLqZ6J49Sl6ci2/Ito6PZcYyLUoQh2lbULc2cFPMJUbc+TZ3SBFn4IKY5ty/ldsFICWCwF3ciM0Yl5vGjKjGKcyNd3+v+8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608675; c=relaxed/simple;
-	bh=bpHqkUF7WJsX2YHWfwZj6FsOsPcZusL+ua2kRDa6v/o=;
+	s=arc-20240116; t=1778609285; c=relaxed/simple;
+	bh=kdlkF1CGOcIl3dH5IRZReaw6oW5BPWe5H2KSF1FbF08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHLGyLE7vRHc2DBtFQxVwX79Zs1PurqDQSsrDj/7VkMYumOfvZyn7ni0RB/vOICXkyggByJlnmhbUCIvwt4hpxWcLcRHuGdmyolzHSo+1dGWIFA52fgBaEgPTG6+v5p3hQSsB4P1M/yvVhGHRd4Ce2HD6SUguTqg8uqhKE5aZAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=to4szFNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B49C2BCB0;
-	Tue, 12 May 2026 17:57:54 +0000 (UTC)
+	 MIME-Version; b=PpEEejvMaNkwJGq2BLjksR18KUNehNyXvNbFK8vVBKh4WLUBSM/aq++ra6LfDpUPyCf7s4nZ0F4LbZaLFF3TpbsJTxDm1qEivsO+uulzR0GpRUDvwi5GQL1yL/OMcvgSDJLyTq2Dz1XYXGt8BZgM2AOy5gFCv/a6N4bFc4OaGAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyQPaU/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EC5C2BCB0;
+	Tue, 12 May 2026 18:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608675;
-	bh=bpHqkUF7WJsX2YHWfwZj6FsOsPcZusL+ua2kRDa6v/o=;
+	s=korg; t=1778609285;
+	bh=kdlkF1CGOcIl3dH5IRZReaw6oW5BPWe5H2KSF1FbF08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=to4szFNsb3cpOtdWIB0/T4whpM1skmlW3W5syz0SWsBywZsUBbjurw7ZxoY8iQ4+q
-	 5Be6LuEEcYIBlJJv6zVyVsL8mE0YP/L12E8rdGY+uPlGhMNURUtpu8Vx+lzbcFIs3H
-	 0T4jeAWe+M1tYhrZgRSX8v13e4Dp2bK7b9HDP54s=
+	b=wyQPaU/zd9sF715bxpJM8A3+f/rl+XhPJoocdSCKCpO7eK519G91skHpDIA5e37/m
+	 RfW1EmCfYXVo5eGfayqcXKolq2rPsQUJpM+UgFOYCFNRtmz8wkfPr3UmkCloirA7qK
+	 MIVVTDpzAhq34gM7Qmny/PgJHVGeSgvL7BJuAJ5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.18 130/270] tracefs: Fix default permissions not being applied on initial mount
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 136/307] block: only read from sqe on initial invocation of blkdev_uring_cmd()
 Date: Tue, 12 May 2026 19:38:51 +0200
-Message-ID: <20260512173941.190830663@linuxfoundation.org>
+Message-ID: <20260512173942.999038556@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E3D065267A8
+X-Rspamd-Queue-Id: 7B75952740A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246223-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,goodmis.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246461-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit e8368d1f4bedbb0cce4cfe33a1d2664bb0fd4f27 upstream.
+commit 212ec34e4e726e8cd4af7bea4740db24de8a9dab upstream.
 
-Commit e4d32142d1de ("tracing: Fix tracefs mount options") moved the
-option application from tracefs_fill_super() to tracefs_reconfigure()
-called from tracefs_get_tree(). This fixed mount options being ignored
-on user-space mounts when the superblock already exists, but introduced
-a regression for the initial kernel-internal mount.
+This passthrough helper currently only supports discards. Part of that
+command is the start and length, which is read from the SQE. It does
+so on every invocation, where it really should just make it stable
+on the first invocation. This avoids needing to copy the SQE upfront,
+as we only really need those two 8b values stored in our per-req
+payload.
 
-On the first mount (via simple_pin_fs during init), sget_fc() transfers
-fc->s_fs_info to sb->s_fs_info and sets fc->s_fs_info to NULL. When
-tracefs_get_tree() then calls tracefs_reconfigure(), it sees a NULL
-fc->s_fs_info and returns early without applying any options. The root
-inode keeps mode 0755 from simple_fill_super() instead of the intended
-TRACEFS_DEFAULT_MODE (0700).
-
-Furthermore, even on subsequent user-space mounts without an explicit
-mode= option, tracefs_apply_options(sb, true) gates the mode behind
-fsi->opts & BIT(Opt_mode), which is unset for the defaults. So the
-mode is never corrected unless the user explicitly passes mode=0700.
-
-Restore the tracefs_apply_options(sb, false) call in tracefs_fill_super()
-to apply default permissions on initial superblock creation, matching
-what debugfs does in debugfs_fill_super().
-
-Cc: stable@vger.kernel.org
-Fixes: e4d32142d1de ("tracing: Fix tracefs mount options")
-Link: https://patch.msgid.link/20260404134747.98867-1-devnexen@gmail.com
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: stable@vger.kernel.org # 6.17+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/inode.c |    1 +
- 1 file changed, 1 insertion(+)
+ block/ioctl.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -491,6 +491,7 @@ static int tracefs_fill_super(struct sup
- 		return err;
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -864,6 +864,8 @@ long compat_blkdev_ioctl(struct file *fi
+ #endif
  
- 	sb->s_op = &tracefs_super_operations;
-+	tracefs_apply_options(sb, false);
- 	set_default_d_op(sb, &tracefs_dentry_operations);
+ struct blk_iou_cmd {
++	u64 start;
++	u64 len;
+ 	int res;
+ 	bool nowait;
+ };
+@@ -953,23 +955,27 @@ int blkdev_uring_cmd(struct io_uring_cmd
+ {
+ 	struct block_device *bdev = I_BDEV(cmd->file->f_mapping->host);
+ 	struct blk_iou_cmd *bic = io_uring_cmd_to_pdu(cmd, struct blk_iou_cmd);
+-	const struct io_uring_sqe *sqe = cmd->sqe;
+ 	u32 cmd_op = cmd->cmd_op;
+-	uint64_t start, len;
  
- 	return 0;
+-	if (unlikely(sqe->ioprio || sqe->__pad1 || sqe->len ||
+-		     sqe->rw_flags || sqe->file_index))
+-		return -EINVAL;
++	/* Read what we need from the SQE on the first issue */
++	if (!(issue_flags & IORING_URING_CMD_REISSUE)) {
++		const struct io_uring_sqe *sqe = cmd->sqe;
++
++		if (unlikely(sqe->ioprio || sqe->__pad1 || sqe->len ||
++			     sqe->rw_flags || sqe->file_index))
++			return -EINVAL;
++
++		bic->start = READ_ONCE(sqe->addr);
++		bic->len = READ_ONCE(sqe->addr3);
++	}
+ 
+ 	bic->res = 0;
+ 	bic->nowait = issue_flags & IO_URING_F_NONBLOCK;
+ 
+-	start = READ_ONCE(sqe->addr);
+-	len = READ_ONCE(sqe->addr3);
+-
+ 	switch (cmd_op) {
+ 	case BLOCK_URING_CMD_DISCARD:
+-		return blkdev_cmd_discard(cmd, bdev, start, len, bic->nowait);
++		return blkdev_cmd_discard(cmd, bdev, bic->start, bic->len,
++					  bic->nowait);
+ 	}
+ 	return -EINVAL;
+ }
 
 
 
