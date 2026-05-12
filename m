@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246015-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGGDG0ltA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:21 +0200
+	id qFKkLgVrA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246015-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8597526FA7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:11:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BADBA5268A5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4393B30B64E4
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 11C1A3094ED9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891C53EDE72;
-	Tue, 12 May 2026 18:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7413E0750;
+	Tue, 12 May 2026 17:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qoiDeep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXd8Cnj7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0E42D7BF;
-	Tue, 12 May 2026 18:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD853E5A14;
+	Tue, 12 May 2026 17:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608802; cv=none; b=qRsLBzv+gOnQ+2XYmjYtv0GjwML8VzdB+p/jW7tR0pCHxP8QoONwlaeJx5bbrzZd8qs263lriI8hPWtMxCj3av6uCjZgt5Ti735Kjpgva7bTuaGYGxV5AvCc/xxPbwZnlb0mi+8sA3eThC2EfE9xhk4nX18ViOCDcYxFPfRjtwU=
+	t=1778608139; cv=none; b=JU9MnmV1aUpPXponxjCouoGdF9XhOqeYke0QWyi0KhZU6cbj0ztCcvrVeD8Lg0XVRc/HzMfn9cdM5qcUnSvHhSLeGiVK+O9C/v1SEVPuQbgbGCbAtCiya44XzPhl+j95LUCgLe1zoJZpjQriK59Doq2LVbq4kyjGwpf2k/dHwrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608802; c=relaxed/simple;
-	bh=mBnW4M5NQIbu5+7dzk0qu2NRpexca1RRQbqNLhbVudw=;
+	s=arc-20240116; t=1778608139; c=relaxed/simple;
+	bh=k7BTFkX5E4RfjR45KekECVdjI1te+PG1znJ7u8VJ9tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HcI5jdQGpgPFmYse4KqaiLVrsuW+zZUc/1fE+2YPm6t2F/lWwcPJWt7UjzE63N+I0l4SbGiILtUBoZ6fVAAWbA7wcTBqOKmhy9rbWX3rPahV59iHD4ZN0irUcbsRkmy6WEU98IBQQZEMUS4wlbZ7Fma2HUrsjQRgtAN0nIawbsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qoiDeep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3D5C2BCB0;
-	Tue, 12 May 2026 18:00:01 +0000 (UTC)
+	 MIME-Version; b=QOCiJCgHByMf3wCUBfJLP9ahPgxW1tsGPbXlqvXjE+/7LzFE2R/0BtYlJrlDiBRE7VRz1NhymP7OXgNn0C0pobTBvJmvBYPyFpBRuoa7KPON0QKkTZerXp3D3dHNylLqHvknUEAWLH3DeyZzJ7+w8+exQFbuUP4t7tRbH5c782E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXd8Cnj7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B865C2BCB0;
+	Tue, 12 May 2026 17:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608801;
-	bh=mBnW4M5NQIbu5+7dzk0qu2NRpexca1RRQbqNLhbVudw=;
+	s=korg; t=1778608139;
+	bh=k7BTFkX5E4RfjR45KekECVdjI1te+PG1znJ7u8VJ9tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2qoiDeepDhoGOUoMMc8OUuaW93zx9cst4jP8l+dw++XqM8KS22iI8NqrZgjbXBa3i
-	 jPs1+kRleY2s4HyzkzXIoui5X7AynOnJwA8v+FCPl0gBxmCxrW3OVbSAYHwPuPuiVW
-	 WhplrYFgViGIAvceTJ3+7TfhNWlt46GNLxh9UsLw=
+	b=yXd8Cnj7TL2auZXEr+faZiTkdx9pwN4zN4VZ8wqD7D3tNHcfXJtgh5MHDppEyGs0W
+	 A8yobkCkC5djtt6HJgC0u5zqTH9P38u3OkFqGsbenQdPGB/WST/Y0v9bVQoGiCr7tE
+	 /J9oUsePG+CQiyfQtUyjGmIDOetNoipXsyaHsnVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 221/270] mptcp: pm: ADD_ADDR rtx: resched blocked ADD_ADDR quicker
+	Quentin Perret <qperret@google.com>,
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.12 170/206] KVM: arm64: Fix initialisation order in __pkvm_init_finalise()
 Date: Tue, 12 May 2026 19:40:22 +0200
-Message-ID: <20260512173943.098222361@linuxfoundation.org>
+Message-ID: <20260512173936.461653661@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D8597526FA7
+X-Rspamd-Queue-Id: BADBA5268A5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246273-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246015-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,63 +91,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Quentin Perret <qperret@google.com>
 
-commit 3cf12492891c4b5ff54dda404a2de4ec54c9e1b5 upstream.
+commit 5bb0aed57ba944f8c201e4e82ec066e0187e0f85 upstream.
 
-When an ADD_ADDR needs to be retransmitted and another one has already
-been prepared -- e.g. multiple ADD_ADDRs have been sent in a row and
-need to be retransmitted later -- this additional retransmission will
-need to wait.
+fix_host_ownership() walks the hypervisor's stage-1 page-table to
+adjust the host's stage-2 accordingly. Any such adjustment that
+requires cache maintenance operations depends on the per-CPU hyp
+fixmap being present. However, fix_host_ownership() is currently
+called before fix_hyp_pgtable_refcnt() and hyp_create_fixmap(), so
+the fixmap does not yet exist when it runs.
 
-In this case, the timer was reset to TCP_RTO_MAX / 8, which is ~15
-seconds. This delay is unnecessary long: it should just be rescheduled
-at the next opportunity, e.g. after the retransmission timeout.
+This is benign today because the host stage-2 starts empty and no
+CMOs are needed, but it becomes a latent crash as soon as
+fix_host_ownership() is extended to operate on a non-empty
+page-table.
 
-Without this modification, some issues can be seen from time to time in
-the selftests when multiple ADD_ADDRs are sent, and the host takes time
-to process them, e.g. the "signal addresses, ADD_ADDR timeout" MPTCP
-Join selftest, especially with a debug kernel config.
+Reorder the calls so that fix_hyp_pgtable_refcnt() and
+hyp_create_fixmap() complete before fix_host_ownership() is invoked.
 
-Note that on older kernels, 'timeout' is not available. It should be
-enough to replace it by one second (HZ).
-
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Fixes: 0d16d12eb26e ("KVM: arm64: Fix-up hyp stage-1 refcounts for all pages mapped at EL2")
+Signed-off-by: Quentin Perret <qperret@google.com>
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Link: https://patch.msgid.link/20260424084908.370776-7-tabba@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-6-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/arm64/kvm/hyp/nvhe/setup.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -355,13 +355,8 @@ static void mptcp_pm_add_timer(struct ti
- 		goto out;
- 	}
+--- a/arch/arm64/kvm/hyp/nvhe/setup.c
++++ b/arch/arm64/kvm/hyp/nvhe/setup.c
+@@ -307,15 +307,15 @@ void __noreturn __pkvm_init_finalise(voi
+ 	};
+ 	pkvm_pgtable.mm_ops = &pkvm_pgtable_mm_ops;
  
--	if (mptcp_pm_should_add_signal_addr(msk)) {
--		timeout = TCP_RTO_MAX / 8;
--		goto out;
--	}
--
- 	timeout = mptcp_adjust_add_addr_timeout(msk);
--	if (!timeout)
-+	if (!timeout || mptcp_pm_should_add_signal_addr(msk))
+-	ret = fix_host_ownership();
++	ret = fix_hyp_pgtable_refcnt();
+ 	if (ret)
  		goto out;
  
- 	spin_lock_bh(&msk->pm.lock);
+-	ret = fix_hyp_pgtable_refcnt();
++	ret = hyp_create_pcpu_fixmap();
+ 	if (ret)
+ 		goto out;
+ 
+-	ret = hyp_create_pcpu_fixmap();
++	ret = fix_host_ownership();
+ 	if (ret)
+ 		goto out;
+ 
 
 
 
