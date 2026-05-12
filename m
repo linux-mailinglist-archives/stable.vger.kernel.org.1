@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AH/mJj5vA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:42 +0200
+	id 0Ei1Ig5nA2qj5gEAu9opvQ
+	(envelope-from <stable+bounces-245913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375C852751C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E33526054
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80620315DF50
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75663300104F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208783955F8;
-	Tue, 12 May 2026 17:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B143E0749;
+	Tue, 12 May 2026 17:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXK0sPOu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCqq2nW3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A3F3ADB9A;
-	Tue, 12 May 2026 17:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724A93E0721;
+	Tue, 12 May 2026 17:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608566; cv=none; b=gjVC+KfiVsnqa7VVX7L3o3Bgi1FnhogHS2QO8CHirk7RfYulkpB63y0HxZWaSEHYTWkInzvloBs2SrYSqNX6Tc1zuOFq2S8Uldx6VqkTvek404nChCOrbPH9vBJFtF0zaCFzK5zmVHJVvpLOz1MomtWFgpBSxLfhyYoSdknUHAg=
+	t=1778607877; cv=none; b=SmZ1HtXuNEug4NfsxELEY67evtdXS9Qt5Fj0+wKKGEL+sSZcOp7aqFrXjFagtt7lQSCxPm7ABIo2uUvKBPE/Ba6v/Aw7Wgn7+RxbADM1ElBf2BSu9kuCzbPYfxnmhT5mAw4yr8JObC+vVtaHYl+bGA1dddyDOSCc8XBQs6leUPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608566; c=relaxed/simple;
-	bh=b6FQaytxvETOQKhGJEM1U1BWrSjzwEyixYgKaw9wv/M=;
+	s=arc-20240116; t=1778607877; c=relaxed/simple;
+	bh=ro/AaViGdXTQ5SpLc6v9ewFSb065Z+3XTCnaNpWskMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AoUOx7FMuKZ6MuDY32UHpEtq3whiHSoD2LUeu17S6gZyRwafmrCf12QgizVJJfvIEAJV3N00cIHP2wMeWf0doM9atrGoJ4CC2a1OddYhBj3z3BicRP5EYxw35FTuhlJI20eussqMegiP1AvUBGMY6hzBVRiqJ5aJgVgEdphYx/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXK0sPOu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFC1C2BCB0;
-	Tue, 12 May 2026 17:56:06 +0000 (UTC)
+	 MIME-Version; b=n2g05ClWkkjVZ/SQg+SCK0G99ClnYe0qL/tVeg2NbPYW+M0X30e/JQ/Tht1p5aRneBBC4j4gZboe62qhiA0+zW03kQDIPwWmyc8MgGIZex8eDUKH6uTkZifDYgmMT1fLqpmzHrQIN4u/Yot8vEWJh3GGZATAYfrXV+PEpBMTTSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCqq2nW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0DDC2BCB0;
+	Tue, 12 May 2026 17:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608566;
-	bh=b6FQaytxvETOQKhGJEM1U1BWrSjzwEyixYgKaw9wv/M=;
+	s=korg; t=1778607877;
+	bh=ro/AaViGdXTQ5SpLc6v9ewFSb065Z+3XTCnaNpWskMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vXK0sPOu1G9cS+JSxpL0rtkzjZLkwsqilpwSBOGz7RLfliDCtvXljOQSvyqQjnbaQ
-	 cooTYXTFNHNg4fGvtFJGJQAK40LqRnes4MAc7Je9Jyv5vwKS66eNPHWwslzAhz+gjW
-	 MXuxSmF0yzu7fmxyyC5L4ctwWdNqmY5xDcz7LawM=
+	b=uCqq2nW3PAqz535NHBik3lUoaNFj0xncDIaKYy1xE+4WwqHapccf0xfyGGXD/Xl7S
+	 yWvejh/RrSKJ0lk2+NxGt6A6rdxmo/xOlDz39ofYRmLCv0sgC6qqrWhN9o17Ijj4XP
+	 n+K6/Iq3deLCLKnnLOu8MIQAXgw2ALl07/JqsigI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 122/270] hv_sock: fix ARM64 support
+	Ranjit Waghmode <ranjit.waghmode@xilinx.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 071/206] spi: zynqmp-gqspi: fix controller deregistration
 Date: Tue, 12 May 2026 19:38:43 +0200
-Message-ID: <20260512173941.024890319@linuxfoundation.org>
+Message-ID: <20260512173934.351934036@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 375C852751C
+X-Rspamd-Queue-Id: B5E33526054
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246181-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245913-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit b31681206e3f527970a7c7ed807fbf6a028fc25b upstream.
+commit 6895fc4faafc9082e15e4e624b23dd5f0c98feb5 upstream.
 
-VMBUS ring buffers must be page aligned. Therefore, the current value of
-24K presents a challenge on ARM64 kernels (with 64K pages). So, use
-VMBUS_RING_SIZE() to ensure they are always aligned and large enough to
-hold all of the relevant data.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Cc: stable@vger.kernel.org
-Fixes: 77ffe33363c0 ("hv_sock: use HV_HYP_PAGE_SIZE for Hyper-V communication")
-Tested-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260428125339.13963-1-hamzamahfooz@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: dfe11a11d523 ("spi: Add support for Zynq Ultrascale+ MPSoC GQSPI controller")
+Cc: stable@vger.kernel.org	# 4.2: 64640f6c972e
+Cc: stable@vger.kernel.org	# 4.2
+Cc: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-26-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/hyperv_transport.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-zynqmp-gqspi.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/vmw_vsock/hyperv_transport.c
-+++ b/net/vmw_vsock/hyperv_transport.c
-@@ -375,10 +375,10 @@ static void hvs_open_connection(struct v
- 	} else {
- 		sndbuf = max_t(int, sk->sk_sndbuf, RINGBUFFER_HVS_SND_SIZE);
- 		sndbuf = min_t(int, sndbuf, RINGBUFFER_HVS_MAX_SIZE);
--		sndbuf = ALIGN(sndbuf, HV_HYP_PAGE_SIZE);
-+		sndbuf = VMBUS_RING_SIZE(sndbuf);
- 		rcvbuf = max_t(int, sk->sk_rcvbuf, RINGBUFFER_HVS_RCV_SIZE);
- 		rcvbuf = min_t(int, rcvbuf, RINGBUFFER_HVS_MAX_SIZE);
--		rcvbuf = ALIGN(rcvbuf, HV_HYP_PAGE_SIZE);
-+		rcvbuf = VMBUS_RING_SIZE(rcvbuf);
- 	}
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -1334,7 +1334,7 @@ static int zynqmp_qspi_probe(struct plat
+ 	ctlr->dev.of_node = np;
+ 	ctlr->auto_runtime_pm = true;
  
- 	chan->max_pkt_size = HVS_MAX_PKT_SIZE;
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi_register_controller failed\n");
+ 		goto clk_dis_all;
+@@ -1373,6 +1373,8 @@ static void zynqmp_qspi_remove(struct pl
+ 
+ 	pm_runtime_get_sync(&pdev->dev);
+ 
++	spi_unregister_controller(xqspi->ctlr);
++
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
+ 
+ 	pm_runtime_disable(&pdev->dev);
 
 
 
