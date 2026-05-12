@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABS/LGRsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:32 +0200
+	id EMQMC/9zA2rl5wEAu9opvQ
+	(envelope-from <stable+bounces-246466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:39:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DED526CED
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAECD527F01
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD6F6303B7F9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34D7B316E6D8
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D4B3BB105;
-	Tue, 12 May 2026 17:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F849368D63;
+	Tue, 12 May 2026 18:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcjyHcp4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKH+g21u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6AE3EDE4E;
-	Tue, 12 May 2026 17:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FD9366548;
+	Tue, 12 May 2026 18:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608579; cv=none; b=Lx1hUgXETvuGwZp0N/hhYcUog2BJR5x10Sck/nkA/DIublnwBKSVjajqZl6It97Szx/fEC0E7WETmJ8dmNT0YGhu7OXi3Ak4+hV/0hlj/hWrTXz5slSKKDB6ALN3wpqBrO3BBK1Cb/4zW9I9wSvtVRuWBiXp6iaF6qdmJtxkTM4=
+	t=1778609298; cv=none; b=Q9+Pfbjk9Ew6k8t+D0yrcwOsY23v7cXOHqT98l79wJtBpWr+BjUrA95mnebzdATF7GIxxhhZvkaAW4LZk3ukvtc6hYCx/xfE+0AIloHyNzCHp34Rc4yAOENFvp/5OAE8HwPEPGIISHeGwVJlPZW+fqI0iwXl1i+QuQbWiM7O9yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608579; c=relaxed/simple;
-	bh=P9TWLgKuAs65NEQ1FmRde6tZkwRSaVTzJqMzhMVdi00=;
+	s=arc-20240116; t=1778609298; c=relaxed/simple;
+	bh=p2SLF3r7DNx3cwcKeuFwnj/5H3LkEiCwvCEtH/jlKbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t48rdm5lw1CE3ZFj/Pf0oNOhS4QeEXtIgB1eMdHKI0N64n/tnnUlod9Nn2+EOhVloa3y/n0N+GM857kOiyL8HZ7n1QgTGSo9Hg1q4wuOVZPb0wV8UKcn6uZQs4GdRgtj+bFozC5xt6ZazWGM3QgcUY2L8X0NF6GYx1mGKxP1V9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcjyHcp4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C48EC2BCB0;
-	Tue, 12 May 2026 17:56:19 +0000 (UTC)
+	 MIME-Version; b=GI8YjcsWSDEueUwATteYUuS1Ewxe6KckAsZHvKWLAN1Zv4+YTI+IVhJjW0ja0sirEkcTypsATKm8CuAAaOwrljxSUd+5lks/Xj6qq2pgths2qtQ2we4nwGj+7/S4XAznoBezSerHFc/JL9Y28x0ZHULlInY5CKzvHTtiKWu7dF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKH+g21u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D89CC2BCB0;
+	Tue, 12 May 2026 18:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608579;
-	bh=P9TWLgKuAs65NEQ1FmRde6tZkwRSaVTzJqMzhMVdi00=;
+	s=korg; t=1778609297;
+	bh=p2SLF3r7DNx3cwcKeuFwnj/5H3LkEiCwvCEtH/jlKbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HcjyHcp4mdnhbvvx3wIXFaUibfmjZN6qjLAPNTUr3AQO8Ll2OJFm8r6D6F+5M6IhZ
-	 XAOxhEgiiA/ZgxI3ExUdti+FhVYAsFyuA1a83oAuA1Xpwkdw+MR59XkiUenAGnPkwL
-	 zdDk8+dIQo2KuzW8d9hekr03f82DlxHpfJp+Ucs0=
+	b=cKH+g21uWEMz04FvdBrAUPzYmpbICQ7SPGfhcF+ql5EB2JvHEGgkIwnGhXQjS1UuX
+	 gspekUMuRZg758tzORgRm3xb8aFT85OiaFkb6XBp2OZkv37V1eXr5CMJq7lhH5+uqr
+	 UC+2Mvi1Jeh/47vNSt6eqSMFZDLD5Qgv9YpXzFPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masayuki Ohtake <masa-korg@dsn.okisemi.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 135/270] spi: topcliff-pch: fix controller deregistration
+	Linus Walleij <linusw@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 7.0 141/307] gpio: of: clear OF_POPULATED on hog nodes in remove path
 Date: Tue, 12 May 2026 19:38:56 +0200
-Message-ID: <20260512173941.294050688@linuxfoundation.org>
+Message-ID: <20260512173943.102715217@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 22DED526CED
+X-Rspamd-Queue-Id: AAECD527F01
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246186-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246466-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,54 +92,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,okisemi.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-commit 5d6f477d6fc0767c57c5e1e6f55a1662820eef87 upstream.
+commit bbee90e750262bfb406d66dc65c46d616d2b6673 upstream.
 
-Make sure to deregister the controller before disabling and releasing
-underlying resources like interrupts and DMA during driver unbind.
+The previously set OF_POPULATED flag should be cleared on the hog nodes
+when removing the chip.
 
-Fixes: e8b17b5b3f30 ("spi/topcliff: Add topcliff platform controller hub (PCH) spi bus driver")
-Cc: stable@vger.kernel.org	# 2.6.37
-Cc: Masayuki Ohtake <masa-korg@dsn.okisemi.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-8-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 63636d956c455 ("gpio: of: Add DT overlay support for GPIO hogs")
+Acked-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20260309-gpio-hog-fwnode-v2-1-4e61f3dbf06a@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-topcliff-pch.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpio/gpiolib-of.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1406,6 +1406,10 @@ static void pch_spi_pd_remove(struct pla
- 	dev_dbg(&plat_dev->dev, "%s:[ch%d] irq=%d\n",
- 		__func__, plat_dev->id, board_dat->pdev->irq);
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -1210,7 +1210,14 @@ int of_gpiochip_add(struct gpio_chip *ch
  
-+	spi_controller_get(data->host);
+ void of_gpiochip_remove(struct gpio_chip *chip)
+ {
+-	of_node_put(dev_of_node(&chip->gpiodev->dev));
++	struct device_node *np = dev_of_node(&chip->gpiodev->dev);
 +
-+	spi_unregister_controller(data->host);
++	for_each_child_of_node_scoped(np, child) {
++		if (of_property_present(child, "gpio-hog"))
++			of_node_clear_flag(child, OF_POPULATED);
++	}
 +
- 	if (use_dma)
- 		pch_free_dma_buf(board_dat, data);
- 
-@@ -1433,7 +1437,8 @@ static void pch_spi_pd_remove(struct pla
- 	}
- 
- 	pci_iounmap(board_dat->pdev, data->io_remap_addr);
--	spi_unregister_controller(data->host);
-+
-+	spi_controller_put(data->host);
++	of_node_put(np);
  }
- #ifdef CONFIG_PM
- static int pch_spi_pd_suspend(struct platform_device *pd_dev,
+ 
+ bool of_gpiochip_instance_match(struct gpio_chip *gc, unsigned int index)
 
 
 
