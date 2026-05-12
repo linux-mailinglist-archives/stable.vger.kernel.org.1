@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-246104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECP5I31rA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:41 +0200
+	id +FgEBZlmA2qZ5gEAu9opvQ
+	(envelope-from <stable+bounces-245851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:42:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34162526A0F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8267B525F8C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4FCEF31D40A8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:54:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27253303DABB
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10C63EDE4C;
-	Tue, 12 May 2026 17:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7F447DD50;
+	Tue, 12 May 2026 17:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l91U73S0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVYHkEIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A481C3EDE45;
-	Tue, 12 May 2026 17:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED0E42885A;
+	Tue, 12 May 2026 17:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608368; cv=none; b=ro6dsoFF4LHgMBIJYIZjnRvpgA3p7+WW/3I7hmcjydzS+PPXqxCbIoHgYKjGbgVH571AY/+/B2BSAiMhg+uN8+pAu7ElRIFjpEuY7amNIt9ZFxqzcDATwfVL9art9PkQnhygh/WWGVPNS8EdH1qxk/UyUPykQiyUlsBlQMAhbtE=
+	t=1778607718; cv=none; b=LtkXCZ/T1VjW8z2hAYNTOt++GVdrIvHxE+QZPxa27G8oYHTZwwpxkSTEG4PgpQgvQ/SLWRPPUkHwFW/YRwX6Kak3E5/MIx7Z1u48VYcrGPixhtpVRnt6FUVw7vMmALSbIUMSfmANs92gpliHlqyAFUc0tKyVd24V50Lrypoeg5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608368; c=relaxed/simple;
-	bh=7Kdueo1Eef/cuYSjNVI/EAMvbxHddbKUWG0Ouk0B9z8=;
+	s=arc-20240116; t=1778607718; c=relaxed/simple;
+	bh=EvrsSp2cQD58ROxKdyoG8evvuvKeupBplIiHsHmZc2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BPCRLA66JCinHaETYF/1LwEtTddcntQ9ObO9KGX6N6nkRCp1RiBqH6kwMTIdAgfriio2QEXCEvsAY0xXLOMhffFXh4eUotLHa/FtYsk4wgnuzyRNuvUKGamyF/llMm3l5r3/TCgXZkq/ZG0hADYkvIyFoMLiEAWHRYP1XzekHR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l91U73S0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 154AFC2BCC7;
-	Tue, 12 May 2026 17:52:47 +0000 (UTC)
+	 MIME-Version; b=a9GmxVpzz4CKVnAbtkuhPzAZU4uZZ9+gBLoXkQ9g4zBKDMINOEqgcZeAZPQIsZ45i1nWQ8CJ5KJKxBofSGEqEonlQmlxtOY5SVlhXULPv95tW2xmDUv0pMWx6maVFhTQ8Rq+7GhcF30jeJsDuAUWqj4veI+4Kuz5kFmjTFWKeLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVYHkEIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D908C2BCF6;
+	Tue, 12 May 2026 17:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608368;
-	bh=7Kdueo1Eef/cuYSjNVI/EAMvbxHddbKUWG0Ouk0B9z8=;
+	s=korg; t=1778607717;
+	bh=EvrsSp2cQD58ROxKdyoG8evvuvKeupBplIiHsHmZc2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l91U73S0XUyfIyp1jsXDGrQO4odFaRDz6M0XWk2dYTAlgM4ZT6lDioNGeTr/B7Zdb
-	 bzN05+HXzRJxwkMeQbZdX8FasV80U3h9yYWjCCpNw+t5gR12YLSZVWRZ8YhmumX4lG
-	 ySzQhjiDLTdT47c2PRi85/a1BckC9fDVG7JpdtNc=
+	b=tVYHkEIiqwHwRf3fpe/7mOCfgiwc2FM445ryW5P7jpI1k6ho1DO5zyhoMPzrLMuQ8
+	 OpXEuSTlJnGm+/TPoiHuuv56IjC5WC0G84vztHRG/XL8QRpoGqOYW+BbRgs2KWwYS6
+	 8zX78LIoAT7v6ku2qdhrlkiCzg8PHwJPtcBm+OHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 052/270] ALSA: core: Serialize deferred fasync state checks
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 001/206] scsi: target: configfs: Bound snprintf() return in tg_pt_gp_members_show()
 Date: Tue, 12 May 2026 19:37:33 +0200
-Message-ID: <20260512173939.547285385@linuxfoundation.org>
+Message-ID: <20260512173932.845061309@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +61,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 34162526A0F
+X-Rspamd-Queue-Id: 8267B525F8C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246104-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245851-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 5337213381df578058e2e41da93cbd0e4639935f upstream.
+commit 772a896a56e0e3ef9424a025cec9176f9d8f4552 upstream.
 
-snd_fasync_helper() updates fasync->on under snd_fasync_lock, and
-snd_fasync_work_fn() now also evaluates fasync->on under the same
-lock. snd_kill_fasync() still tests the flag before taking the lock,
-leaving an unsynchronized read against FASYNC enable/disable updates.
+target_tg_pt_gp_members_show() formats LUN paths with snprintf() into a
+256-byte stack buffer, then will memcpy() cur_len bytes from that
+buffer.  snprintf() returns the length the output would have had, which
+can exceed the buffer size when the fabric WWN is long because iSCSI IQN
+names can be up to 223 bytes.  The check at the memcpy() site only
+guards the destination page write, not the source read, so memcpy() will
+read past the stack buffer and copy adjacent stack contents to the sysfs
+reader, which when CONFIG_FORTIFY_SOURCE is enabled, fortify_panic()
+will be triggered.
 
-Move the enabled-state check into the locked section.
+Commit 27e06650a5ea ("scsi: target: target_core_configfs: Add length
+check to avoid buffer overflow") added the same bound to the
+target_lu_gp_members_show() but the tg_pt_gp variant was missed so
+resolve that here.
 
-Also clear fasync->on under snd_fasync_lock in snd_fasync_free()
-before unlinking the pending entry. Together with the locked sender-side
-check, this publishes teardown before flushing the deferred work and
-prevents a racing sender from requeueing the entry after free has
-started.
-
-Fixes: ef34a0ae7a26 ("ALSA: core: Add async signal helpers")
-Fixes: 8146cd333d23 ("ALSA: core: Fix potential data race at fasync handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260506-alsa-core-fasync-on-lock-v1-1-ea48c77d6ca4@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026041159-garter-theft-3be0@gregkh
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/misc.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/target/target_core_configfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/core/misc.c
-+++ b/sound/core/misc.c
-@@ -148,9 +148,11 @@ EXPORT_SYMBOL_GPL(snd_fasync_helper);
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -3172,7 +3172,7 @@ static ssize_t target_tg_pt_gp_members_s
+ 			config_item_name(&lun->lun_group.cg_item));
+ 		cur_len++; /* Extra byte for NULL terminator */
  
- void snd_kill_fasync(struct snd_fasync *fasync, int signal, int poll)
- {
--	if (!fasync || !fasync->on)
-+	if (!fasync)
- 		return;
- 	guard(spinlock_irqsave)(&snd_fasync_lock);
-+	if (!fasync->on)
-+		return;
- 	fasync->signal = signal;
- 	fasync->poll = poll;
- 	list_move(&fasync->list, &snd_fasync_list);
-@@ -163,8 +165,10 @@ void snd_fasync_free(struct snd_fasync *
- 	if (!fasync)
- 		return;
- 
--	scoped_guard(spinlock_irq, &snd_fasync_lock)
-+	scoped_guard(spinlock_irq, &snd_fasync_lock) {
-+		fasync->on = 0;
- 		list_del_init(&fasync->list);
-+	}
- 
- 	flush_work(&snd_fasync_work);
- 	kfree(fasync);
+-		if ((cur_len + len) > PAGE_SIZE) {
++		if (cur_len > TG_PT_GROUP_NAME_BUF || (cur_len + len) > PAGE_SIZE) {
+ 			pr_warn("Ran out of lu_gp_show_attr"
+ 				"_members buffer\n");
+ 			break;
 
 
 
