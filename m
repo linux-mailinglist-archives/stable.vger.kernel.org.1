@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBKdNK5zA2rf5wEAu9opvQ
-	(envelope-from <stable+bounces-246436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:38 +0200
+	id sAolAkFsA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:06:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71281527E5C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83829526C7E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 236273219469
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0F4031558EE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41CE33ADBA;
-	Tue, 12 May 2026 18:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B599E3DD86A;
+	Tue, 12 May 2026 17:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBFrXBa2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekZ+6Spa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74113EDE68;
-	Tue, 12 May 2026 18:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7826B3DD867;
+	Tue, 12 May 2026 17:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609223; cv=none; b=bft5LodO0Q/tKDaarMceCXzcRN8TfRnBYag02oUEUZ8Rdp0O+MMgPNgQHAiR1AHhgdIox3JJQonR8Fd3JDRATH4jks5Wc+ivZchOaiz09otgzeZ7xYOpHhcNNWlv1aUhvPpHOqSznAR0T509EOLwS5PU1ZYWy19em4wwHxaCojE=
+	t=1778608502; cv=none; b=YsVM5fQEHMGlDywbQCMTv5EHFgxqKfOIB/to/4lC6hRreDLZZBxH30vFxSa/wavQb6YxJLpS0QSp0YTjy8Ut3a/WZHQ5GMB/rYv9i15bp6QpciDJwy4adCGOmKROlU3BYAa7S+WQ7ycYVAEfMjBnGMGMcqDB2wWxBdfkaXz7+XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609223; c=relaxed/simple;
-	bh=OF6aZdluqDOBB9hXJzpXJ44pldrtpIr8zL09yusxy6U=;
+	s=arc-20240116; t=1778608502; c=relaxed/simple;
+	bh=9MSC6aveblasi1zRhkZrDuAJTimSZpjZ+fDAPfW1WBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6KcXyOXHNfTclgL5Wt84t0b3caNgakSs1cTrJCuIkJTncBnlHULWUXWmuVMkAPjWJMxZdSY+VGR2G0NYrxFhZmrx/ufNLbRgoVjnPDcxLxch5T37s5WYNSb19GnhYFGAboNEdFOeXZlBJoUMfM9uiQ6C4M2ifIEYy/sI7IAjg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBFrXBa2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E10DC2BCB0;
-	Tue, 12 May 2026 18:07:02 +0000 (UTC)
+	 MIME-Version; b=Lggq/8xO/iQWPDrm9O9HM2mUuYGyxnr0YaR5bQvJkzQIGY0Veft+q/Z5nSSBEsDD5NH6luUy6nQKuDzI0raRNiCAzPtxEJMnqj8zv+JHYv6V7aaEe1Xbf/VThSdY7UUMgbt/GV9kGc4A8pHC6BrMEgbXMCzMNBfSNqkJpDPU39c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekZ+6Spa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E87EC2BCB0;
+	Tue, 12 May 2026 17:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609223;
-	bh=OF6aZdluqDOBB9hXJzpXJ44pldrtpIr8zL09yusxy6U=;
+	s=korg; t=1778608502;
+	bh=9MSC6aveblasi1zRhkZrDuAJTimSZpjZ+fDAPfW1WBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kBFrXBa2vSFi887S/k3r9ILWmGJdAEBGOnnh6IkzAv2cgDB9tPMtysMBdWlJvxBEv
-	 u7KuDeugEkJkEF4SB65DAAMeqmNpLYHKqMF8HrzJlKdPCLTyhrPqP5WFUkp/CJKd+3
-	 bjhRd3ZbwCyZwGbFPlTuCfWioSErrGpWBH8iAPJk=
+	b=ekZ+6SpaWxkdHEm21jpg0qaWtyT+s82ny2MI38OtAUoRe0sa8oBgqiuL9e73Ylmz0
+	 9dEar+ihciaz/d6g5W71eS0gtup2KYDdZBjoj+wtkDqrQMLhm9r96HZMGiGqeTWKrF
+	 oCSkbGU9mKVmIJNxFWnuGnTVqLt+8Fi9LhbGjIjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yametsu <yam3tsu@gmail.com>,
-	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>
-Subject: [PATCH 7.0 110/307] accel/ivpu: Disallow re-exporting imported GEM objects
+	Pavitra Jha <jhapavitra98@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 104/270] net: wwan: t7xx: validate port_count against message length in t7xx_port_enum_msg_handler
 Date: Tue, 12 May 2026 19:38:25 +0200
-Message-ID: <20260512173942.445935254@linuxfoundation.org>
+Message-ID: <20260512173940.648829740@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,27 +63,27 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 71281527E5C
+X-Rspamd-Queue-Id: 83829526C7E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246436-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-246156-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -93,71 +92,148 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@linux.intel.com>
+From: Pavitra Jha <jhapavitra98@gmail.com>
 
-commit 7dd57d7a6350770dfc283287125c409e995200e0 upstream.
+commit 0e7c074cfcd9bd93765505f9eb8b42f03ed2a744 upstream.
 
-Prevent re-exporting of imported GEM buffers by adding a custom
-prime_handle_to_fd callback that checks if the object is imported
-and returns -EOPNOTSUPP if so.
+t7xx_port_enum_msg_handler() uses the modem-supplied port_count field as
+a loop bound over port_msg->data[] without checking that the message buffer
+contains sufficient data. A modem sending port_count=65535 in a 12-byte
+buffer triggers a slab-out-of-bounds read of up to 262140 bytes.
 
-Re-exporting imported GEM buffers causes loss of buffer flags settings,
-leading to incorrect device access and data corruption.
+Add a sizeof(*port_msg) check before accessing the port message header
+fields to guard against undersized messages.
 
-Reported-by: Yametsu <yam3tsu@gmail.com>
-Fixes: 57557964b582 ("accel/ivpu: Add support for userptr buffer objects")
-Reviewed-by: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.19+
+Add a struct_size() check after extracting port_count and before the loop.
+
+In t7xx_parse_host_rt_data(), guard the rt_feature header read with a
+remaining-buffer check before accessing data_len, validate feat_data_len
+against the actual remaining buffer to prevent OOB reads and signed
+integer overflow on offset.
+
+Pass msg_len from both call sites: skb->len at the DPMAIF path after
+skb_pull(), and the validated feat_data_len at the handshake path.
+
+Fixes: da45d2566a1d ("net: wwan: t7xx: Add control port")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+Link: https://patch.msgid.link/20260501110713.145563-1-jhapavitra98@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_drv.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/net/wwan/t7xx/t7xx_modem_ops.c     |   20 +++++++++++++++++---
+ drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c |   18 ++++++++++++++++--
+ drivers/net/wwan/t7xx/t7xx_port_proxy.h    |    2 +-
+ 3 files changed, 34 insertions(+), 6 deletions(-)
 
---- a/drivers/accel/ivpu/ivpu_drv.c
-+++ b/drivers/accel/ivpu/ivpu_drv.c
-@@ -460,6 +460,26 @@ static const struct file_operations ivpu
- #endif
- };
+--- a/drivers/net/wwan/t7xx/t7xx_modem_ops.c
++++ b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
+@@ -457,8 +457,20 @@ static int t7xx_parse_host_rt_data(struc
  
-+static int ivpu_gem_prime_handle_to_fd(struct drm_device *dev, struct drm_file *file_priv,
-+				       u32 handle, u32 flags, int *prime_fd)
-+{
-+	struct drm_gem_object *obj;
+ 	offset = sizeof(struct feature_query);
+ 	for (i = 0; i < FEATURE_COUNT && offset < data_length; i++) {
++		size_t remaining = data_length - offset;
++		size_t feat_data_len, feat_total;
 +
-+	obj = drm_gem_object_lookup(file_priv, handle);
-+	if (!obj)
-+		return -ENOENT;
++		if (remaining < sizeof(*rt_feature))
++			break;
 +
-+	if (drm_gem_is_imported(obj)) {
-+		/* Do not allow re-exporting */
-+		drm_gem_object_put(obj);
-+		return -EOPNOTSUPP;
+ 		rt_feature = data + offset;
+-		offset += sizeof(*rt_feature) + le32_to_cpu(rt_feature->data_len);
++		feat_data_len = le32_to_cpu(rt_feature->data_len);
++
++		if (feat_data_len > remaining - sizeof(*rt_feature))
++			break;
++
++		feat_total = sizeof(*rt_feature) + feat_data_len;
++		offset += feat_total;
+ 
+ 		ft_spt_cfg = FIELD_GET(FEATURE_MSK, core->feature_set[i]);
+ 		if (ft_spt_cfg != MTK_FEATURE_MUST_BE_SUPPORTED)
+@@ -468,8 +480,10 @@ static int t7xx_parse_host_rt_data(struc
+ 		if (ft_spt_st != MTK_FEATURE_MUST_BE_SUPPORTED)
+ 			return -EINVAL;
+ 
+-		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM)
+-			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data);
++		if (i == RT_ID_MD_PORT_ENUM || i == RT_ID_AP_PORT_ENUM) {
++			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data,
++						   feat_data_len);
++		}
+ 	}
+ 
+ 	return 0;
+--- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
++++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
+@@ -117,6 +117,7 @@ static int fsm_ee_message_handler(struct
+  * t7xx_port_enum_msg_handler() - Parse the port enumeration message to create/remove nodes.
+  * @md: Modem context.
+  * @msg: Message.
++ * @msg_len:	Length of @msg in bytes.
+  *
+  * Used to control create/remove device node.
+  *
+@@ -124,12 +125,18 @@ static int fsm_ee_message_handler(struct
+  * * 0		- Success.
+  * * -EFAULT	- Message check failure.
+  */
+-int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
++int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len)
+ {
+ 	struct device *dev = &md->t7xx_dev->pdev->dev;
+ 	unsigned int version, port_count, i;
+ 	struct port_msg *port_msg = msg;
+ 
++	if (msg_len < sizeof(*port_msg)) {
++		dev_err(dev, "Port enum msg too short for header: need %zu, have %zu\n",
++			sizeof(*port_msg), msg_len);
++		return -EINVAL;
 +	}
 +
-+	drm_gem_object_put(obj);
+ 	version = FIELD_GET(PORT_MSG_VERSION, le32_to_cpu(port_msg->info));
+ 	if (version != PORT_ENUM_VER ||
+ 	    le32_to_cpu(port_msg->head_pattern) != PORT_ENUM_HEAD_PATTERN ||
+@@ -141,6 +148,13 @@ int t7xx_port_enum_msg_handler(struct t7
+ 	}
+ 
+ 	port_count = FIELD_GET(PORT_MSG_PRT_CNT, le32_to_cpu(port_msg->info));
 +
-+	return drm_gem_prime_handle_to_fd(dev, file_priv, handle, flags, prime_fd);
-+}
++	if (msg_len < struct_size(port_msg, data, port_count)) {
++		dev_err(dev, "Port enum msg too short: need %zu, have %zu\n",
++			struct_size(port_msg, data, port_count), msg_len);
++		return -EINVAL;
++	}
 +
- static const struct drm_driver driver = {
- 	.driver_features = DRIVER_GEM | DRIVER_COMPUTE_ACCEL,
+ 	for (i = 0; i < port_count; i++) {
+ 		u32 port_info = le32_to_cpu(port_msg->data[i]);
+ 		unsigned int ch_id;
+@@ -191,7 +205,7 @@ static int control_msg_handler(struct t7
  
-@@ -468,6 +488,7 @@ static const struct drm_driver driver =
- 
- 	.gem_create_object = ivpu_gem_create_object,
- 	.gem_prime_import = ivpu_gem_prime_import,
-+	.prime_handle_to_fd = ivpu_gem_prime_handle_to_fd,
- 
- 	.ioctls = ivpu_drm_ioctls,
- 	.num_ioctls = ARRAY_SIZE(ivpu_drm_ioctls),
+ 	case CTL_ID_PORT_ENUM:
+ 		skb_pull(skb, sizeof(*ctrl_msg_h));
+-		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data);
++		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data, skb->len);
+ 		if (!ret)
+ 			ret = port_ctl_send_msg_to_md(port, CTL_ID_PORT_ENUM, 0);
+ 		else
+--- a/drivers/net/wwan/t7xx/t7xx_port_proxy.h
++++ b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
+@@ -103,7 +103,7 @@ void t7xx_port_proxy_reset(struct port_p
+ void t7xx_port_proxy_uninit(struct port_proxy *port_prox);
+ int t7xx_port_proxy_init(struct t7xx_modem *md);
+ void t7xx_port_proxy_md_status_notify(struct port_proxy *port_prox, unsigned int state);
+-int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg);
++int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len);
+ int t7xx_port_proxy_chl_enable_disable(struct port_proxy *port_prox, unsigned int ch_id,
+ 				       bool en_flag);
+ void t7xx_port_proxy_set_cfg(struct t7xx_modem *md, enum port_cfg_id cfg_id);
 
 
 
