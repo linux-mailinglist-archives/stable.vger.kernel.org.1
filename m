@@ -1,520 +1,232 @@
-Return-Path: <stable+bounces-246652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLKyBGaBA2pX6gEAu9opvQ
-	(envelope-from <stable+bounces-246652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:37:10 +0200
+	id YBsrCV2FA2ot6wEAu9opvQ
+	(envelope-from <stable+bounces-246653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:54:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077FA528B80
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:37:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F40528DAA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:54:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F1CB33024862
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:36:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8C0E303FFDC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD0836729F;
-	Tue, 12 May 2026 19:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D493D355F54;
+	Tue, 12 May 2026 19:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="IFEBlnhd"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="KZH1DUfD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4A1357CE8;
-	Tue, 12 May 2026 19:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96F425B08C;
+	Tue, 12 May 2026 19:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778614604; cv=none; b=EG4eGnMT5HaqEhlG7BelpQoQ4u7cpnynfqajwJcatv8vmQ+4qPs5G0CSVLuISSRW7xb0oARxuuAI4TjkDgteUnZlrYp3lpyyzcVSk9iwhk6tkQXqWkbPQOFnhmtOv60Eixa/aPga/uQ+kj3LY+yxsDMlfWs6UxoqPQd/b/K1Y1w=
+	t=1778615598; cv=none; b=m5QDtupiRRoaKRgwjIoJ9df3S9nUxFyNfApAzirlvyZXzMClkRbJsKQWm3D7DXqu9Us4bz6BW+KStK9U9x1K9W4/mNIlYWCvsGybzqMstOKNfvpI2TmWPRt3ODaZowLgPV3dxQpd6sY7QsfWGQnrq2p4POwshFURdbTk9lChGVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778614604; c=relaxed/simple;
-	bh=IPx+sOOGaWlk45zXKoNtEzn3GSndhUo86JVR9ERtPzA=;
-	h=Date:To:From:Subject:Message-Id; b=DnaFNoXMBuBVW5835cndKod0Rkw/zjFicVbdEvwa/lWw42wfG7LpTUBd47jS+wFIYUgkumRVIKLAYYKtox7hCKKhMJ6kjVt3WMSh/57X0NKxJX5r8E+Weqo4O+Z9gU4XBLx4I/XkN9Xa1DziKoqZIg8NxbUmno+R3SX4VWdChlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=IFEBlnhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE149C2BCC7;
-	Tue, 12 May 2026 19:36:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778614603;
-	bh=IPx+sOOGaWlk45zXKoNtEzn3GSndhUo86JVR9ERtPzA=;
-	h=Date:To:From:Subject:From;
-	b=IFEBlnhd66CxMdZMpnLkcOG5Gf+fQZ/v9RTGzv7LooprQQtIb0lZ/W2QRgXUT10Xq
-	 EXUlDx3tJHiRYSCg4tm9gxZ4WDQr0BnzgMb/lU6egrwTmNVsjDZGQr6lEuE3F9yPtb
-	 RGSAyrG1oRWMA1wTrCD4bxT7ex1AwtrNa275Fl4k=
-Date: Tue, 12 May 2026 12:36:43 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,pfalcato@suse.de,osalvador@suse.de,muchun.song@linux.dev,liam@infradead.org,david@kernel.org,25181214217@stu.xidian.edu.cn,ljs@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260512193643.BE149C2BCC7@smtp.kernel.org>
+	s=arc-20240116; t=1778615598; c=relaxed/simple;
+	bh=wnxqki7Lt6sblGVNFGncwg9M+lU6iNwwpGsXriCj8ks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CGFM2dvjpr0BdJ2k5SQLrJ5B8TrDa6gzgUHzdmoOJIB8/ruLuuwLqki/MzFtWhdbCkCrwukQSlsRJagVBAt7Bbk8qsRfI4Rqy2nvmnVGan2K3YnP/z8CrQJD6rtfnEdp49SsZKsgQl1J4sz2xsvSN34sASqRu8FX2jywUWIa2Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=KZH1DUfD; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1778615595; x=1779220395; i=rwarsow@gmx.de;
+	bh=OgVfsQ2cLYvVhlt2ixFcHhojQgamUmeFhWpNvrgueZM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=KZH1DUfDa/BpznNqzZbT0fEy/EfUDh/WnLH5X4B+bZRIHBLRP+Tt/Xm7GV4wBAWj
+	 AE8wR30fStXAZxaU8+kUfcOPvcRZU6HRceFzh/0C3QJsFZ0Xs+mUFq3MRxsuPslIF
+	 y4jDdsbFzCA0Km4Xx/b8I5edqi0lOz9pfTQoWRwtRtDR1NFWrOGBIN3XSvfBLl/py
+	 TYUFFb6K/h3ofTBfuUKBc6NJhIhIbvTWAg/UcBSgdz4O5iD/uB6l/OPtUvniRlvuU
+	 7NBCrLDPpLdBL8a/+Y4Zxk0TUXAe0LP4d4TwAKMure3oYWumFsnuwQbaRdjJAyCDO
+	 lNmU5+hLt6yfjvNpFA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MjS9I-1x6RZw3HEQ-00dN33; Tue, 12
+ May 2026 21:53:14 +0200
+Message-ID: <bc95e796-6523-4587-9c1b-5103d69e68d0@gmx.de>
+Date: Tue, 12 May 2026 21:53:13 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 077FA528B80
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.0 000/307] 7.0.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260512173940.117428952@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:4vf5m9lG5yjrnadiGsJ2/Y+FWNl/1hAPCrgF4SoDBkO7VnuGq6t
+ raKLfyXVDfP9dZg6cRctzSlnbZdwCoNAJfYJ1L2qcBU7k/ob3L0O1DuA3QS7dREy4w5JNLf
+ JVVweR4v0r3W+QvEtTA4FJJjbSk6fM9ii4qeKtBMCMFsY7lRTJLx4qxiE9Z3ONxdlRpMwjy
+ ST3tFdRN4JQXMVA9RdkOQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Hp50n/cmhYI=;/LqsIuCwPS2FH8e69RLY5Ya64SE
+ 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
+X-Rspamd-Queue-Id: 85F40528DAA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[xidian.edu.cn:email];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-246652-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	NEURAL_SPAM(0.00)[0.699];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	R_DKIM_ALLOW(0.00)[linux-foundation.org:s=korg];
-	DMARC_NA(0.00)[linux-foundation.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	TO_DN_NONE(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-246653-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c15:e001:75::/64:c];
-	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmx.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmx.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,infradead.org:email,xidian.edu.cn:email,suse.de:email]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email,gmx.de:mid,gmx.de:dkim]
 X-Rspamd-Action: no action
 
+Hi
 
-The patch titled
-     Subject: Revert "mm/hugetlbfs: update hugetlbfs to use mmap_prepare"
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch
+7.0.7-rc1 does not compile !
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch
+=3D=3D=3D=3D=3D=3D=3D
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+error:
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+In file included from kernel/sched/build_policy.c:62:
+kernel/sched/ext.c: In function =E2=80=98bypass_lb_cpu=E2=80=99:
+kernel/sched/ext.c:4019:35: error: =E2=80=98donor_rq=E2=80=99 undeclared (=
+first use in=20
+this function); did you mean =E2=80=98donee_rq=E2=80=99?
+  4019 |                 if (task_rq(p) !=3D donor_rq)
+       |                                   ^~~~~~~~
+       |                                   donee_rq
+kernel/sched/ext.c:4019:35: note: each undeclared identifier is reported=
+=20
+only once for each function it appears in
+make[4]: *** [scripts/Makefile.build:289: kernel/sched/build_policy.o]=20
+Error 1
+make[3]: *** [scripts/Makefile.build:548: kernel/sched] Error 2
+make[2]: *** [scripts/Makefile.build:548: kernel] Error 2
+make[2]: *** Waiting for unfinished jobs....
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+=3D=3D=3D=3D=3D=3D=3D=3D
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+if I do
 
-------------------------------------------------------
-From: Lorenzo Stoakes <ljs@kernel.org>
-Subject: Revert "mm/hugetlbfs: update hugetlbfs to use mmap_prepare"
-Date: Tue, 12 May 2026 17:06:43 +0100
+git revert eb5b997dadc51746b5db031be1e9e7c19646c317 --no-edit
 
-This reverts commit ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use
-mmap_prepare") with conflict resolution to account for changes in commit
-ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use mmap_prepare").
+(NOT bisected just reading through the patches !)
 
-The patch incorrectly handled hugetlb VMA lock allocation at the
-mmap_prepare stage, where a failed allocation occurring after mmap_prepare
-is called might result in the lock leaking.
+I find no regressions here on x86_64 (Intel 11th Gen. CPU)
 
-There is no risk of a merge causing a similar issues, as
-VMA_DONTEXPAND_BIT is set for hugetlb mappings.
+Thanks
 
-As a first step in addressing this issue, simply revert the change so we
-can rework how we do this having corrected the underlying issues.
-
-We maintain the VMA flags changes as best we can, accounting for the fact
-that we were working with a VMA descriptor previously and propagating
-like-for-like changes for this.
-
-Note that we invoke vma_set_flags() and do not call vma_start_write() as
-vm_flags_set() does.  This is OK as it's being done in an .mmap hook where
-the VMA is not yet linked into the tree so nobody else can be accessing
-it.
-
-Link: https://lore.kernel.org/20260512160643.266960-1-ljs@kernel.org
-Fixes: ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use mmap_prepare")
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-Reported-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Closes: https://lore.kernel.org/linux-mm/20260425070700.562229-1-25181214217@stu.xidian.edu.cn/
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/hugetlbfs/inode.c           |   46 +++++---------------
- include/linux/hugetlb.h        |    8 ---
- include/linux/hugetlb_inline.h |   14 ------
- mm/hugetlb.c                   |   71 ++++++++++++-------------------
- 4 files changed, 45 insertions(+), 94 deletions(-)
-
---- a/fs/hugetlbfs/inode.c~revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare
-+++ a/fs/hugetlbfs/inode.c
-@@ -96,15 +96,8 @@ static const struct fs_parameter_spec hu
- #define PGOFF_LOFFT_MAX \
- 	(((1UL << (PAGE_SHIFT + 1)) - 1) <<  (BITS_PER_LONG - (PAGE_SHIFT + 1)))
- 
--static int hugetlb_file_mmap_prepare_success(const struct vm_area_struct *vma)
-+static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
- {
--	/* Unfortunate we have to reassign vma->vm_private_data. */
--	return hugetlb_vma_lock_alloc((struct vm_area_struct *)vma);
--}
--
--static int hugetlbfs_file_mmap_prepare(struct vm_area_desc *desc)
--{
--	struct file *file = desc->file;
- 	struct inode *inode = file_inode(file);
- 	loff_t len, vma_len;
- 	int ret;
-@@ -119,8 +112,8 @@ static int hugetlbfs_file_mmap_prepare(s
- 	 * way when do_mmap unwinds (may be important on powerpc
- 	 * and ia64).
- 	 */
--	vma_desc_set_flags(desc, VMA_HUGETLB_BIT, VMA_DONTEXPAND_BIT);
--	desc->vm_ops = &hugetlb_vm_ops;
-+	vma_set_flags(vma, VMA_HUGETLB_BIT, VMA_DONTEXPAND_BIT);
-+	vma->vm_ops = &hugetlb_vm_ops;
- 
- 	/*
- 	 * page based offset in vm_pgoff could be sufficiently large to
-@@ -129,16 +122,16 @@ static int hugetlbfs_file_mmap_prepare(s
- 	 * sizeof(unsigned long).  So, only check in those instances.
- 	 */
- 	if (sizeof(unsigned long) == sizeof(loff_t)) {
--		if (desc->pgoff & PGOFF_LOFFT_MAX)
-+		if (vma->vm_pgoff & PGOFF_LOFFT_MAX)
- 			return -EINVAL;
- 	}
- 
- 	/* must be huge page aligned */
--	if (desc->pgoff & (~huge_page_mask(h) >> PAGE_SHIFT))
-+	if (vma->vm_pgoff & (~huge_page_mask(h) >> PAGE_SHIFT))
- 		return -EINVAL;
- 
--	vma_len = (loff_t)vma_desc_size(desc);
--	len = vma_len + ((loff_t)desc->pgoff << PAGE_SHIFT);
-+	vma_len = (loff_t)(vma->vm_end - vma->vm_start);
-+	len = vma_len + ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
- 	/* check for overflow */
- 	if (len < vma_len)
- 		return -EINVAL;
-@@ -148,7 +141,7 @@ static int hugetlbfs_file_mmap_prepare(s
- 
- 	ret = -ENOMEM;
- 
--	vma_flags = desc->vma_flags;
-+	vma_flags = vma->flags;
- 	/*
- 	 * for SHM_HUGETLB, the pages are reserved in the shmget() call so skip
- 	 * reserving here. Note: only for SHM hugetlbfs file, the inode
-@@ -158,30 +151,17 @@ static int hugetlbfs_file_mmap_prepare(s
- 		vma_flags_set(&vma_flags, VMA_NORESERVE_BIT);
- 
- 	if (hugetlb_reserve_pages(inode,
--			desc->pgoff >> huge_page_order(h),
--			len >> huge_page_shift(h), desc,
--			vma_flags) < 0)
-+				vma->vm_pgoff >> huge_page_order(h),
-+				len >> huge_page_shift(h), vma,
-+				vma_flags) < 0)
- 		goto out;
- 
- 	ret = 0;
--	if (vma_desc_test(desc, VMA_WRITE_BIT) && inode->i_size < len)
-+	if (vma_test(vma, VMA_WRITE_BIT) && inode->i_size < len)
- 		i_size_write(inode, len);
- out:
- 	inode_unlock(inode);
- 
--	if (!ret) {
--		/* Allocate the VMA lock after we set it up. */
--		desc->action.success_hook = hugetlb_file_mmap_prepare_success;
--		/*
--		 * We cannot permit the rmap finding this VMA in the time
--		 * between the VMA being inserted into the VMA tree and the
--		 * completion/success hook being invoked.
--		 *
--		 * This is because we establish a per-VMA hugetlb lock which can
--		 * be raced by rmap.
--		 */
--		desc->action.hide_from_rmap_until_complete = true;
--	}
- 	return ret;
- }
- 
-@@ -1227,7 +1207,7 @@ static void init_once(void *foo)
- 
- static const struct file_operations hugetlbfs_file_operations = {
- 	.read_iter		= hugetlbfs_read_iter,
--	.mmap_prepare		= hugetlbfs_file_mmap_prepare,
-+	.mmap			= hugetlbfs_file_mmap,
- 	.fsync			= noop_fsync,
- 	.get_unmapped_area	= hugetlb_get_unmapped_area,
- 	.llseek			= default_llseek,
---- a/include/linux/hugetlb.h~revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare
-+++ a/include/linux/hugetlb.h
-@@ -148,7 +148,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
- 			     struct folio **foliop);
- #endif /* CONFIG_USERFAULTFD */
- long hugetlb_reserve_pages(struct inode *inode, long from, long to,
--			   struct vm_area_desc *desc, vma_flags_t vma_flags);
-+			   struct vm_area_struct *vma, vma_flags_t vma_flags);
- long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
- 						long freed);
- bool folio_isolate_hugetlb(struct folio *folio, struct list_head *list);
-@@ -276,7 +276,6 @@ long hugetlb_change_protection(struct vm
- void hugetlb_unshare_all_pmds(struct vm_area_struct *vma);
- void fixup_hugetlb_reservations(struct vm_area_struct *vma);
- void hugetlb_split(struct vm_area_struct *vma, unsigned long addr);
--int hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
- 
- unsigned int arch_hugetlb_cma_order(void);
- 
-@@ -469,11 +468,6 @@ static inline void fixup_hugetlb_reserva
- 
- static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr) {}
- 
--static inline int hugetlb_vma_lock_alloc(struct vm_area_struct *vma)
--{
--	return 0;
--}
--
- #endif /* !CONFIG_HUGETLB_PAGE */
- 
- #ifndef pgd_write
---- a/include/linux/hugetlb_inline.h~revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare
-+++ a/include/linux/hugetlb_inline.h
-@@ -6,23 +6,13 @@
- 
- #ifdef CONFIG_HUGETLB_PAGE
- 
--static inline bool is_vm_hugetlb_flags(vm_flags_t vm_flags)
--{
--	return !!(vm_flags & VM_HUGETLB);
--}
--
- static inline bool is_vma_hugetlb_flags(const vma_flags_t *flags)
- {
--	return vma_flags_test_any(flags, VMA_HUGETLB_BIT);
-+	return vma_flags_test(flags, VMA_HUGETLB_BIT);
- }
- 
- #else
- 
--static inline bool is_vm_hugetlb_flags(vm_flags_t vm_flags)
--{
--	return false;
--}
--
- static inline bool is_vma_hugetlb_flags(const vma_flags_t *flags)
- {
- 	return false;
-@@ -32,7 +22,7 @@ static inline bool is_vma_hugetlb_flags(
- 
- static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
- {
--	return is_vm_hugetlb_flags(vma->vm_flags);
-+	return is_vma_hugetlb_flags(&vma->flags);
- }
- 
- #endif
---- a/mm/hugetlb.c~revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare
-+++ a/mm/hugetlb.c
-@@ -116,6 +116,7 @@ struct mutex *hugetlb_fault_mutex_table
- /* Forward declaration */
- static int hugetlb_acct_memory(struct hstate *h, long delta);
- static void hugetlb_vma_lock_free(struct vm_area_struct *vma);
-+static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
- static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
- static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		unsigned long start, unsigned long end, bool take_locks);
-@@ -413,21 +414,17 @@ static void hugetlb_vma_lock_free(struct
- 	}
- }
- 
--/*
-- * vma specific semaphore used for pmd sharing and fault/truncation
-- * synchronization
-- */
--int hugetlb_vma_lock_alloc(struct vm_area_struct *vma)
-+static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma)
- {
- 	struct hugetlb_vma_lock *vma_lock;
- 
- 	/* Only establish in (flags) sharable vmas */
- 	if (!vma || !(vma->vm_flags & VM_MAYSHARE))
--		return 0;
-+		return;
- 
- 	/* Should never get here with non-NULL vm_private_data */
- 	if (vma->vm_private_data)
--		return -EINVAL;
-+		return;
- 
- 	vma_lock = kmalloc_obj(*vma_lock);
- 	if (!vma_lock) {
-@@ -442,15 +439,13 @@ int hugetlb_vma_lock_alloc(struct vm_are
- 		 * allocation failure.
- 		 */
- 		pr_warn_once("HugeTLB: unable to allocate vma specific lock\n");
--		return -EINVAL;
-+		return;
- 	}
- 
- 	kref_init(&vma_lock->refs);
- 	init_rwsem(&vma_lock->rw_sema);
- 	vma_lock->vma = vma;
- 	vma->vm_private_data = vma_lock;
--
--	return 0;
- }
- 
- /* Helper that removes a struct file_region from the resv_map cache and returns
-@@ -1147,28 +1142,20 @@ static struct resv_map *vma_resv_map(str
- 	}
- }
- 
--static void set_vma_resv_flags(struct vm_area_struct *vma, unsigned long flags)
-+static void set_vma_resv_map(struct vm_area_struct *vma, struct resv_map *map)
- {
- 	VM_WARN_ON_ONCE_VMA(!is_vm_hugetlb_page(vma), vma);
--	VM_WARN_ON_ONCE_VMA(vma->vm_flags & VM_MAYSHARE, vma);
-+	VM_WARN_ON_ONCE_VMA(vma_test(vma, VMA_MAYSHARE_BIT), vma);
- 
--	set_vma_private_data(vma, get_vma_private_data(vma) | flags);
-+	set_vma_private_data(vma, (unsigned long)map);
- }
- 
--static void set_vma_desc_resv_map(struct vm_area_desc *desc, struct resv_map *map)
--{
--	VM_WARN_ON_ONCE(!is_vma_hugetlb_flags(&desc->vma_flags));
--	VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_MAYSHARE_BIT));
--
--	desc->private_data = map;
--}
--
--static void set_vma_desc_resv_flags(struct vm_area_desc *desc, unsigned long flags)
-+static void set_vma_resv_flags(struct vm_area_struct *vma, unsigned long flags)
- {
--	VM_WARN_ON_ONCE(!is_vma_hugetlb_flags(&desc->vma_flags));
--	VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_MAYSHARE_BIT));
-+	VM_WARN_ON_ONCE_VMA(!is_vm_hugetlb_page(vma), vma);
-+	VM_WARN_ON_ONCE_VMA(vma_test(vma, VMA_MAYSHARE_BIT), vma);
- 
--	desc->private_data = (void *)((unsigned long)desc->private_data | flags);
-+	set_vma_private_data(vma, get_vma_private_data(vma) | flags);
- }
- 
- static int is_vma_resv_set(struct vm_area_struct *vma, unsigned long flag)
-@@ -1178,13 +1165,6 @@ static int is_vma_resv_set(struct vm_are
- 	return (get_vma_private_data(vma) & flag) != 0;
- }
- 
--static bool is_vma_desc_resv_set(struct vm_area_desc *desc, unsigned long flag)
--{
--	VM_WARN_ON_ONCE(!is_vma_hugetlb_flags(&desc->vma_flags));
--
--	return ((unsigned long)desc->private_data) & flag;
--}
--
- bool __vma_private_lock(struct vm_area_struct *vma)
- {
- 	return !(vma->vm_flags & VM_MAYSHARE) &&
-@@ -6554,7 +6534,7 @@ next:
- 
- long hugetlb_reserve_pages(struct inode *inode,
- 		long from, long to,
--		struct vm_area_desc *desc,
-+		struct vm_area_struct *vma,
- 		vma_flags_t vma_flags)
- {
- 	long chg = -1, add = -1, spool_resv, gbl_resv;
-@@ -6572,6 +6552,12 @@ long hugetlb_reserve_pages(struct inode
- 	}
- 
- 	/*
-+	 * vma specific semaphore used for pmd sharing and fault/truncation
-+	 * synchronization
-+	 */
-+	hugetlb_vma_lock_alloc(vma);
-+
-+	/*
- 	 * Only apply hugepage reservation if asked. At fault time, an
- 	 * attempt will be made for VM_NORESERVE to allocate a page
- 	 * without using reserves
-@@ -6583,9 +6569,9 @@ long hugetlb_reserve_pages(struct inode
- 	 * Shared mappings base their reservation on the number of pages that
- 	 * are already allocated on behalf of the file. Private mappings need
- 	 * to reserve the full area even if read-only as mprotect() may be
--	 * called to make the mapping read-write. Assume !desc is a shm mapping
-+	 * called to make the mapping read-write. Assume !vma is a shm mapping
- 	 */
--	if (!desc || vma_desc_test(desc, VMA_MAYSHARE_BIT)) {
-+	if (!vma || vma_test(vma, VMA_MAYSHARE_BIT)) {
- 		/*
- 		 * resv_map can not be NULL as hugetlb_reserve_pages is only
- 		 * called for inodes for which resv_maps were created (see
-@@ -6604,8 +6590,8 @@ long hugetlb_reserve_pages(struct inode
- 
- 		chg = to - from;
- 
--		set_vma_desc_resv_map(desc, resv_map);
--		set_vma_desc_resv_flags(desc, HPAGE_RESV_OWNER);
-+		set_vma_resv_map(vma, resv_map);
-+		set_vma_resv_flags(vma, HPAGE_RESV_OWNER);
- 	}
- 
- 	if (chg < 0) {
-@@ -6619,7 +6605,7 @@ long hugetlb_reserve_pages(struct inode
- 	if (err < 0)
- 		goto out_err;
- 
--	if (desc && !vma_desc_test(desc, VMA_MAYSHARE_BIT) && h_cg) {
-+	if (vma && !vma_test(vma, VMA_MAYSHARE_BIT) && h_cg) {
- 		/* For private mappings, the hugetlb_cgroup uncharge info hangs
- 		 * of the resv_map.
- 		 */
-@@ -6656,7 +6642,7 @@ long hugetlb_reserve_pages(struct inode
- 	 * consumed reservations are stored in the map. Hence, nothing
- 	 * else has to be done for private mappings here
- 	 */
--	if (!desc || vma_desc_test(desc, VMA_MAYSHARE_BIT)) {
-+	if (!vma || vma_test(vma, VMA_MAYSHARE_BIT)) {
- 		add = region_add(resv_map, from, to, regions_needed, h, h_cg);
- 
- 		if (unlikely(add < 0)) {
-@@ -6720,15 +6706,16 @@ out_uncharge_cgroup:
- 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
- 					    chg * pages_per_huge_page(h), h_cg);
- out_err:
--	if (!desc || vma_desc_test(desc, VMA_MAYSHARE_BIT))
-+	hugetlb_vma_lock_free(vma);
-+	if (!vma || vma_test(vma, VMA_MAYSHARE_BIT))
- 		/* Only call region_abort if the region_chg succeeded but the
- 		 * region_add failed or didn't run.
- 		 */
- 		if (chg >= 0 && add < 0)
- 			region_abort(resv_map, from, to, regions_needed);
--	if (desc && is_vma_desc_resv_set(desc, HPAGE_RESV_OWNER)) {
-+	if (vma && is_vma_resv_set(vma, HPAGE_RESV_OWNER)) {
- 		kref_put(&resv_map->refs, resv_map_release);
--		set_vma_desc_resv_map(desc, NULL);
-+		set_vma_resv_map(vma, NULL);
- 	}
- 	return err;
- }
-_
-
-Patches currently in -mm which might be from ljs@kernel.org are
-
-revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch
-
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
