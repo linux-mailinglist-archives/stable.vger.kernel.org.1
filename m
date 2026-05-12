@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-245943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPNKE6hoA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245943-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:36 +0200
+	id kOQLDCp0A2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:40:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7572752638E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AADDA527F5B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1031B30547D6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:45:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 277AC326D79B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0A73B83E3;
-	Tue, 12 May 2026 17:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37012D060B;
+	Tue, 12 May 2026 18:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQU/XskQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fO/pnOSx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD452355803;
-	Tue, 12 May 2026 17:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872A33EDE45;
+	Tue, 12 May 2026 18:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607954; cv=none; b=B1ATGzJTLnWJzpovbBOIKIDuxgxBY6adfewXh/vTxrThFWk+xgHoqkJObcPHAZNzd5MR5XpwQxBFOFg3xcTDbYAAepV1Lgcz2IJz9U8zWdzOPhG/177b12NOQ8PaJcuaNdlQTSRMVExf7QUnGNNTgps1Drru2/JK56g6e7vsXAo=
+	t=1778609339; cv=none; b=rJkr7gsS7QE3lPwwPO98MIIde9Zmm+anaVcuwadc4y4tBCIvxQxBovRqtiXVpAQXDsY5jT4RmSgZ6DMm3HN7Rs0fKU592L3qQoiSxnUp9Crz03TLVxrpmnsGJx2FM81axvuR+OmfJwlBSNqXwCf/DzzV0QUw/eF3zYVzNcBvkpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607954; c=relaxed/simple;
-	bh=18dGtxKcyTgX5F886synthx2USz3lsxkcXqj5maJIXY=;
+	s=arc-20240116; t=1778609339; c=relaxed/simple;
+	bh=6fiuW5bs31bQ6h6lRgOqFzyf3M2XT6ioGnbMtMy/w0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+CxmWIqqpjPJwf/CoMuB66+3zUnSqKFuO+SloVJnbiEOuy/v3khvS4ko/J+Qit1P+jld9kHsjrHuLaQt6fXEKpk/ZjhyuC07G65iti76bHZ6JMWNw0LBsIzoEv49kcQAZTx4+Fvv3irfpp9iWie50kucNSqjv/cb7ZLHpiQHmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQU/XskQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440DDC2BCB0;
-	Tue, 12 May 2026 17:45:54 +0000 (UTC)
+	 MIME-Version; b=N8nwtYhf/yA9PfuiG9boMh0Jz4ql6V88MoPgVYKvGTI0fsjhuq/FCpyh+svUrq045/IGcOwdpR3XKVqskoi1Bka4Ftqi4SMoCpgJBbszDzXQJ7oSVJQ3osasYzlBGwedEyINco9Gega8Tn+Qqh6tse6UuJsXtw32Pw4GPq6nZZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fO/pnOSx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB18C2BCB0;
+	Tue, 12 May 2026 18:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607954;
-	bh=18dGtxKcyTgX5F886synthx2USz3lsxkcXqj5maJIXY=;
+	s=korg; t=1778609339;
+	bh=6fiuW5bs31bQ6h6lRgOqFzyf3M2XT6ioGnbMtMy/w0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQU/XskQJWviEsxbvhXdvf3l6fgubI8jnRyFMWbL4U92VY92YwdDgusMJQZY0ir7/
-	 7bNj6Mpap/+E/+iFAEMLUAOzmBTQ58Yy4Zea5jUk6fW/XjU2jFGOQewq+j4ki5I4J3
-	 atErURrdgZEyifJDT37FcTJ+OrgqEPHendMo+9OA=
+	b=fO/pnOSxdOEUaLQWJX+kmRD17063FZzM1kLwCduuNxy8Y0BvUE+bn/GevlaG/1Nu6
+	 318Mv10vipwAMUM1a0Ul8f8fEb3YT82ghwT2Ys30tCDUqS20vjU8CmkR/ZmXv/Ufw1
+	 M2W7KYR+Ei3R/GhY5RGghRkPQAQoPO/SKzqRpdqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>,
-	Johan Hovold <johan@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 098/206] spi: microchip-core-qspi: fix controller deregistration
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 7.0 155/307] thermal: core: Free thermal zone ID later during removal
 Date: Tue, 12 May 2026 19:39:10 +0200
-Message-ID: <20260512173934.934236869@linuxfoundation.org>
+Message-ID: <20260512173943.396905125@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +62,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7572752638E
+X-Rspamd-Queue-Id: AADDA527F5B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245943-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246482-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,microchip.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit e6464140d439f2d42f072eb422a5b1fec470c5a6 upstream.
+commit daae9c18feec74566e023fc88cfb0ce26e39d868 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like interrupts during driver unbind.
+The thermal zone removal ordering is different from the thermal zone
+registration rollback path ordering and the former is arguably
+problematic because freeing a thermal zone ID prematurely may cause
+it to be used during the registration of another thermal zone which
+may fail as a result.
 
-Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
-Cc: stable@vger.kernel.org	# 6.1
-Cc: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20260409120419.388546-19-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Prevent that from occurring by changing the thermal zone removal
+ordering to reflect the thermal zone registration rollback path
+ordering.
+
+Also more the ida_destroy() call from thermal_zone_device_unregister()
+to thermal_release() for consistency.
+
+Fixes: b31ef8285b19 ("thermal core: convert ID allocation to IDA")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/5063934.GXAFRqVoOG@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-microchip-core-qspi.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/thermal/thermal_core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -512,7 +512,7 @@ static int mchp_coreqspi_probe(struct pl
- 				     "unable to allocate host for QSPI controller\n");
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -965,6 +965,7 @@ static void thermal_release(struct devic
+ 		tz = to_thermal_zone(dev);
+ 		thermal_zone_destroy_device_groups(tz);
+ 		thermal_set_governor(tz, NULL);
++		ida_destroy(&tz->ida);
+ 		mutex_destroy(&tz->lock);
+ 		complete(&tz->removal);
+ 	} else if (!strncmp(dev_name(dev), "cooling_device",
+@@ -1730,8 +1731,6 @@ void thermal_zone_device_unregister(stru
  
- 	qspi = spi_controller_get_devdata(ctlr);
--	platform_set_drvdata(pdev, qspi);
-+	platform_set_drvdata(pdev, ctlr);
+ 	thermal_thresholds_exit(tz);
+ 	thermal_remove_hwmon_sysfs(tz);
+-	ida_free(&thermal_tz_ida, tz->id);
+-	ida_destroy(&tz->ida);
  
- 	qspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(qspi->regs))
-@@ -545,7 +545,7 @@ static int mchp_coreqspi_probe(struct pl
- 			  SPI_TX_DUAL | SPI_TX_QUAD;
- 	ctlr->dev.of_node = np;
+ 	device_del(&tz->device);
+ 	put_device(&tz->device);
+@@ -1739,6 +1738,9 @@ void thermal_zone_device_unregister(stru
+ 	thermal_notify_tz_delete(tz);
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "spi_register_controller failed\n");
-@@ -555,9 +555,13 @@ static int mchp_coreqspi_probe(struct pl
- 
- static void mchp_coreqspi_remove(struct platform_device *pdev)
- {
--	struct mchp_coreqspi *qspi = platform_get_drvdata(pdev);
--	u32 control = readl_relaxed(qspi->regs + REG_CONTROL);
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-+	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
-+	u32 control;
- 
-+	spi_unregister_controller(ctlr);
+ 	wait_for_completion(&tz->removal);
 +
-+	control = readl_relaxed(qspi->regs + REG_CONTROL);
- 	mchp_coreqspi_disable_ints(qspi);
- 	control &= ~CONTROL_ENABLE;
- 	writel_relaxed(control, qspi->regs + REG_CONTROL);
++	ida_free(&thermal_tz_ida, tz->id);
++
+ 	kfree(tz->tzp);
+ 	kfree(tz);
+ }
 
 
 
