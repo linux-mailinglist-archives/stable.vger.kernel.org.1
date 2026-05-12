@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-246468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245928-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKzPF+NsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:39 +0200
+	id SEjCB1VoA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245928-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:50:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001D0526E9E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:09:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC965262F8
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 361653071506
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B21BB30DE84C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5996B366831;
-	Tue, 12 May 2026 18:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540B53E0739;
+	Tue, 12 May 2026 17:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOhaaKYo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfMXasTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19618349AF5;
-	Tue, 12 May 2026 18:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAA833B6E8;
+	Tue, 12 May 2026 17:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609303; cv=none; b=i1XVWmBNH+G5SYSw2Jb+LgXTwWf3BkqjS5e2JvJuxwIfTrPncfKRIRXpxvH9nLMRlSOR0m0pW8deWR+b2BE0OFqnCU75ZtoxWVP8ds7rm7LUQxVsSXjgC03r+XxXbKhfvvcjHzrWxCLAMYC0acvJtxeE6k702jq2zJpxsDtTQfY=
+	t=1778607916; cv=none; b=a3Qq/iQDKDGu1qosPt0KYvbUsdvKSaWv1UasTIfD1pdrmHRX73UZCkhA5xNwuLmXhSvUrYdtYSTSkkWETlNwlTR9G6V5Psjc1BSTk2ZnkBJuqfaKVS37qJNHhnSZTk5WF+JbqokCuyyTCGcvIvlNCufGmoRZOg+/vW8rV3vOQaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609303; c=relaxed/simple;
-	bh=GDCs8izwjVjaIQgsAzOQC1PLBBb47MPU6AsrUhc0Fq4=;
+	s=arc-20240116; t=1778607916; c=relaxed/simple;
+	bh=65Go8eplAufQ8iHblHS02Gdz+MbpzpgPz6MB0w4oLOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nl6iA/n1uTsNX4K0SlV+AzSTcDEydbl1RqJzP09VidtSe/4+/E4NGqnPVmTZMxrHMvzZOZdi3QPfts3n+tgm1+CbG3sU+hHTCqQ8C2h+7TtngPvK2dLh1+hti9LJjy+3CLP63MFij0N7auguXBDUj8kh/ocu6b8WI4p9cNOqO/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOhaaKYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3098C2BCB0;
-	Tue, 12 May 2026 18:08:22 +0000 (UTC)
+	 MIME-Version; b=mftsV0TOePWe2vaAOzPzTxKp9iEV3pm/6JtqEoIatj5qYkdkNHBlSJeZgYRTI9vct9Aq1bQ6BLsan7OdScKUH0wR3q/OrYKiXAhKV353InOhS/2ltuC7KPbmk0Hy65uCilr7H4MQ3vmw+xOEgG5w1B3nV9i/1M+Hxck52xYZOog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfMXasTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941C8C2BCB0;
+	Tue, 12 May 2026 17:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609303;
-	bh=GDCs8izwjVjaIQgsAzOQC1PLBBb47MPU6AsrUhc0Fq4=;
+	s=korg; t=1778607915;
+	bh=65Go8eplAufQ8iHblHS02Gdz+MbpzpgPz6MB0w4oLOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOhaaKYo+A3y81RaX8ng4lYE/uGc2cZmsYtEhzrwKsSDTZKWKvPMTlLjFiCe6CBT1
-	 LDrR3l4Sp0kUmr+o+Buv3OO6nnmKw+pYx5A/98P1CWoEixQVbsRQ1TQvc2lp0cKSg8
-	 F0roxIZtifj/Zep7P4pVziV9NDVSeNh5J3yT4Lbw=
+	b=IfMXasTWqWRz5NW5ZaEyn+L7kDTd+vQMswfDhw/FbTuyFGSO7EvDV358TZNjVUouo
+	 mz+2TKGzVOhxhrX5/I1GDDvnnYw8yx7cplgVEN+TJ/DSd1lfSLtQmkKQnPiyHw4vkh
+	 i2rtV2LU/LXmojJDKegoZRpPGCHlVKdp1FQY0ZFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	linux-hyperv@vger.kernel.org
-Subject: [PATCH 7.0 142/307] hv: Select CONFIG_SYSFB only for CONFIG_HYPERV_VMBUS
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 085/206] hwmon: (ltc2992) Clamp threshold writes to hardware range
 Date: Tue, 12 May 2026 19:38:57 +0200
-Message-ID: <20260512173943.124738342@linuxfoundation.org>
+Message-ID: <20260512173934.651676341@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +63,151 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 001D0526E9E
+X-Rspamd-Queue-Id: 9AC965262F8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246468-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,outlook.com,linux.microsoft.com,kernel.org,microsoft.com,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245928-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,outlook.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit d33db956c9618e7cb08c2520ce708437914214ec upstream.
+commit d6cc7c99bf1f73eda7d565d224d791d16239bb41 upstream.
 
-Hyperv's sysfb access only exists in the VMBUS support. Therefore
-only select CONFIG_SYSFB for CONFIG_HYPERV_VMBUS. Avoids sysfb code
-on systems that don't need it.
+ltc2992_set_voltage(), ltc2992_set_current(), and ltc2992_set_power()
+do not validate the user-supplied value before converting it to a
+register value. This can result in:
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 96959283a58d ("Drivers: hv: Always select CONFIG_SYSFB for Hyper-V guests")
-Cc: Michael Kelley <mhklinux@outlook.com>
-Cc: Saurabh Sengar <ssengar@linux.microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Dexuan Cui <decui@microsoft.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-hyperv@vger.kernel.org
-Cc: <stable@vger.kernel.org> # v6.16+
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://patch.msgid.link/20260402092305.208728-2-tzimmermann@suse.de
+1. Negative input values wrapping to large positive register values.
+   For power, the negative long is implicitly cast to u64 in
+   mul_u64_u32_div(), producing an incorrect value. For voltage and
+   current, the negative converted value wraps when passed to
+   ltc2992_write_reg() as a u32.
+
+2. Intermediate arithmetic exceeding the range representable in u64 on
+   64-bit platforms. In ltc2992_set_voltage(), (u64)val * 1000 can
+   exceed U64_MAX when val is a large positive long. In
+   ltc2992_set_current(), (u64)val * r_sense_uohm can overflow
+   similarly. In ltc2992_set_power(), the computed value may not fit
+   in u64.
+
+3. Register values exceeding the hardware field width. Voltage and
+   current threshold registers are 12-bit (stored left-justified in
+   16 bits), and power threshold registers are 24-bit. Without
+   clamping, bits above the field width are truncated in
+   ltc2992_write_reg().
+
+Fix by clamping negative values to zero, clamping positive values to
+the rounded hardware-representable maximum (the value returned by the
+read path for a full-scale register) to prevent intermediate overflow,
+and clamping the converted register value to the hardware field width
+before writing. The existing conversion formula and rounding behavior
+are preserved.
+
+In the power write path, cancel the factor of 1000 from both the
+numerator (r_sense_uohm * 1000) and the denominator
+(VADC_UV_LSB * IADC_NANOV_LSB) to also eliminate a u32 overflow of
+r_sense_uohm * 1000 when r_sense_uohm exceeds about 4.29 ohms.
+
+Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260416215904.101969-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/ltc2992.c |   35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
---- a/drivers/hv/Kconfig
-+++ b/drivers/hv/Kconfig
-@@ -9,7 +9,6 @@ config HYPERV
- 	select PARAVIRT
- 	select X86_HV_CALLBACK_VECTOR if X86
- 	select OF_EARLY_FLATTREE if OF
--	select SYSFB if EFI && !HYPERV_VTL_MODE
- 	select IRQ_MSI_LIB if X86
- 	help
- 	  Select this option to run Linux as a Hyper-V client operating
-@@ -62,6 +61,7 @@ config HYPERV_VMBUS
- 	tristate "Microsoft Hyper-V VMBus driver"
- 	depends on HYPERV
- 	default HYPERV
-+	select SYSFB if EFI && !HYPERV_VTL_MODE
- 	help
- 	  Select this option to enable Hyper-V Vmbus driver.
+--- a/drivers/hwmon/ltc2992.c
++++ b/drivers/hwmon/ltc2992.c
+@@ -421,10 +421,16 @@ static int ltc2992_get_voltage(struct lt
  
+ static int ltc2992_set_voltage(struct ltc2992_state *st, u32 reg, u32 scale, long val)
+ {
+-	val = DIV_ROUND_CLOSEST(val * 1000, scale);
+-	val = val << 4;
++	u32 reg_val;
++	long vmax;
++
++	vmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * scale, 1000);
++	val = max(val, 0L);
++	val = min(val, vmax);
++	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * 1000, scale),
++		      0xFFFULL) << 4;
+ 
+-	return ltc2992_write_reg(st, reg, 2, val);
++	return ltc2992_write_reg(st, reg, 2, reg_val);
+ }
+ 
+ static int ltc2992_read_gpio_alarm(struct ltc2992_state *st, int nr_gpio, u32 attr, long *val)
+@@ -549,9 +555,15 @@ static int ltc2992_get_current(struct lt
+ static int ltc2992_set_current(struct ltc2992_state *st, u32 reg, u32 channel, long val)
+ {
+ 	u32 reg_val;
++	long cmax;
+ 
+-	reg_val = DIV_ROUND_CLOSEST(val * st->r_sense_uohm[channel], LTC2992_IADC_NANOV_LSB);
+-	reg_val = reg_val << 4;
++	cmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * LTC2992_IADC_NANOV_LSB,
++				     st->r_sense_uohm[channel]);
++	val = max(val, 0L);
++	val = min(val, cmax);
++	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * st->r_sense_uohm[channel],
++					    LTC2992_IADC_NANOV_LSB),
++		      0xFFFULL) << 4;
+ 
+ 	return ltc2992_write_reg(st, reg, 2, reg_val);
+ }
+@@ -624,9 +636,18 @@ static int ltc2992_get_power(struct ltc2
+ static int ltc2992_set_power(struct ltc2992_state *st, u32 reg, u32 channel, long val)
+ {
+ 	u32 reg_val;
++	u64 pmax, uval;
+ 
+-	reg_val = mul_u64_u32_div(val, st->r_sense_uohm[channel] * 1000,
+-				  LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB);
++	uval = max(val, 0L);
++	pmax = mul_u64_u32_div(0xFFFFFFULL,
++			       LTC2992_VADC_UV_LSB / 1000 *
++			       LTC2992_IADC_NANOV_LSB,
++			       st->r_sense_uohm[channel]);
++	uval = min(uval, pmax);
++	reg_val = min(mul_u64_u32_div(uval, st->r_sense_uohm[channel],
++				      LTC2992_VADC_UV_LSB / 1000 *
++				      LTC2992_IADC_NANOV_LSB),
++		      0xFFFFFFULL);
+ 
+ 	return ltc2992_write_reg(st, reg, 3, reg_val);
+ }
 
 
 
