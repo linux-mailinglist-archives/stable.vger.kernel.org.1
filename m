@@ -1,126 +1,169 @@
-Return-Path: <stable+bounces-245587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAQ+EYsvA2qN1QEAu9opvQ
-	(envelope-from <stable+bounces-245587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:47:55 +0200
+	id IEoLIVguA2qN1QEAu9opvQ
+	(envelope-from <stable+bounces-245588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:42:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FE7521998
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:47:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0067521796
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9D70E30C77EC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:30:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65D7331A8608
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C317B394EA8;
-	Tue, 12 May 2026 13:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AE6394E8A;
+	Tue, 12 May 2026 13:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HV0HDhN+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QAxfaugY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A373E1731;
-	Tue, 12 May 2026 13:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6E0394EA2
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778592546; cv=none; b=tu3cHrWfy/PsVpaB5R8ZnZPSMvux0RPPhuYvQah4KFRQrtbtNxHZMmLOEYE/BA9KRL3uNp2SsOeoSCIu7ylqhR1DIyNayE5GkX0yzz882moQJ3oGsWufl/+g7xaKLXTLREK7VgBqdl1xP0KiqrjpSLhtqAcSTbe3CvpIAmTZo0U=
+	t=1778592630; cv=none; b=haaLBcJQJCFcaYDC7W21CQ5IOccK5nQIFM007mVmxsb5FiKgu/vx7JNFZ9LfM1fOC1JimuTRbON0CexRPTMvL+6uXzf5Aw7az9P4N/Aqrgf7XmPopqQmfeieZwhFPZAOV8qeLQrzA4fvOQ70myUGXTdNUC1vvRS7sTWrKEgI6Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778592546; c=relaxed/simple;
-	bh=/KFyDVeF8btGlxsC55m72RhQvj30DyASU4WnIuUh2Vc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rAg4jiq5tU7AqTEXPc/SPYz/G0DfXfUS1ZjoFXBfgHXmWQAzUwq3C37BKgllkm8STEsbdMgW6L36lkb/A6wcA4nWQZgNPoVGe+hhQyzboKYr7aeQbddzi2oMDncXtLl6JQvkGQrABn4QJhW4F3xRW8y1dODm4MZ+VDG+8ySa3Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HV0HDhN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C38C2BCB0;
-	Tue, 12 May 2026 13:29:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778592546;
-	bh=/KFyDVeF8btGlxsC55m72RhQvj30DyASU4WnIuUh2Vc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HV0HDhN+xFaDAKr/bHb8y1ee2uG+xCyEfpl5ThQDlTn7MuYYS1vBq9rWAOMLO2fOW
-	 9SyHqlwCT3JzMydKAO1ushyiUWKU0jGgqCud3PJ89mhWgXolho626atu3SgdVzBC+U
-	 UPSDk8R0rwqK8SZguSv78bNEjkmI3iMPEnBThPjo=
-Date: Tue, 12 May 2026 15:29:03 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Sebastian EM <mendozayt13@gmail.com>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: gadget: composite: fix integer underflow in WebUSB
- GET_URL handling
-Message-ID: <2026051245-kangaroo-matriarch-8eed@gregkh>
-References: <20260512014343.3770664-1-mendozayt13@gmail.com>
- <2026051221-glory-macaroni-dce6@gregkh>
- <CAD89HyBhwxDsat_JCFFfA-tUYVatxByDj=ikpc9Rxj=kAqn=Sw@mail.gmail.com>
+	s=arc-20240116; t=1778592630; c=relaxed/simple;
+	bh=wtJqHHaIl13PAglqRFyFPd5gLhqQXFoxrvpBhQYYIEI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eMoWeRpUk67Ib8bpnoXvrhCsD3USA7tO4O9pJOdzz9M9guod7AFY5wjxP202sYhv7p5lynr/fD9pXC7HCH3e/7tmVFv3EETr7jtLaW+6tclEp8Nx0GQOXfh0m/LqI6kTHMmSbCvyJtrvV6Talg0iETLsm3HdJlLAlWv+tLgIR7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QAxfaugY; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778592629; x=1810128629;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wtJqHHaIl13PAglqRFyFPd5gLhqQXFoxrvpBhQYYIEI=;
+  b=QAxfaugYWVocuVDjzN2XmtgOnAo5QpVVNuhOB14XGBOkSb4Evd4MOYKV
+   7NMSi4THhS+MLxF8wuwobcU2BBSF3qE3eKEJhgJana9CB/9GbE3Lm7MBj
+   zQijcde3jxSpSmqn5sSxH1zY9yDAaa02fsOveCtA3J71mJ4YzN/3u/1BO
+   w/DUHinNERI2jDnUkUw6MGIKInTosQEnUhFoq8q9mA3AN7kpavFskJcLE
+   z/R8Qk0LQD011ecQh9cB/Ce1ovqZ4OX2dQ2fc7cz2pW60K0LkwXq7lpKe
+   LzDn5LNGndMpWMZz3AVaDTsZvZNBRnIi5lNSw9ewTapGDhfR2YPEX1J0H
+   A==;
+X-CSE-ConnectionGUID: vPvGfr1JRS61oj7k5HU+Jw==
+X-CSE-MsgGUID: 8pkP5U2fT9eSJHQRCgba7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79448916"
+X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
+   d="scan'208";a="79448916"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 06:30:27 -0700
+X-CSE-ConnectionGUID: 6zNkqupeSrOr3resEA9THA==
+X-CSE-MsgGUID: ha2l5MCwQri+SNdEqz8fwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
+   d="scan'208";a="241766446"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO [10.245.245.184]) ([10.245.245.184])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 06:30:25 -0700
+Message-ID: <353e4a2f-102e-4d77-98b1-19f37d691e8c@intel.com>
+Date: Tue, 12 May 2026 14:30:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAD89HyBhwxDsat_JCFFfA-tUYVatxByDj=ikpc9Rxj=kAqn=Sw@mail.gmail.com>
-X-Rspamd-Queue-Id: 42FE7521998
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/ttm: Fix ttm_bo_shrink() infinite LRU walk on backup
+ failure
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Huang Rui <ray.huang@amd.com>, Matthew Brost <matthew.brost@intel.com>,
+ Dave Airlie <airlied@redhat.com>, dri-devel@lists.freedesktop.org,
+ stable@vger.kernel.org
+References: <20260511162443.24352-1-thomas.hellstrom@linux.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20260511162443.24352-1-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F0067521796
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245587-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245588-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim,lists.freedesktop.org:email]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026 at 06:18:54AM -0500, Sebastian EM wrote:
-> Hi Greg,
+On 11/05/2026 17:24, Thomas Hellström wrote:
+> Apply the same fix as b2ed01e7ad ("drm/ttm: Fix ttm_bo_swapout()
+> infinite LRU walk on swapout failure") to the ttm_bo_shrink() path.
 > 
-> Thanks for the review.
+> Move del_bulk_move from before the backup to after success only,
+> using ttm_resource_del_bulk_move_unevictable() since the resource
+> is now unevictable once fully backed up.
 > 
-> You are right; the self Reported-by tag does not belong there, so I dropped
-> it in v2.
-> 
-> The introducing commit is:
-> 
-> 93c473948c58 ("usb: gadget: add WebUSB landing page support")
-> 
-> I also added:
-> 
-> Cc: stable@vger.kernel.org
-> 
-> since the issue was introduced with the WebUSB GET_URL handling path and
-> the fix is a small bounds/underflow fix suitable for stable kernels.
-> 
-> v2 is attached as a plain patch:
-> 
-> 0001-v2-usb-gadget-composite-fix-integer-underflow-in-WebUSB-GET_URL-handling.patch
+> Fixes: 70d645deac98 ("drm/ttm: Add helpers for shrinking")
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Huang Rui <ray.huang@amd.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Dave Airlie <airlied@redhat.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.15+
+> Assisted-by: GitHub_Copilot:claude-opus-4.6
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-We can't take patches as attachments, just send this as a normal v2
-patch.
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-thanks,
+> ---
+>   drivers/gpu/drm/ttm/ttm_bo_util.c | 11 +++--------
+>   1 file changed, 3 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c b/drivers/gpu/drm/ttm/ttm_bo_util.c
+> index f83b7d5ec6c6..3e3c201a0222 100644
+> --- a/drivers/gpu/drm/ttm/ttm_bo_util.c
+> +++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
+> @@ -1112,19 +1112,14 @@ long ttm_bo_shrink(struct ttm_operation_ctx *ctx, struct ttm_buffer_object *bo,
+>   	if (lret < 0)
+>   		return lret;
+>   
+> -	if (bo->bulk_move) {
+> -		spin_lock(&bdev->lru_lock);
+> -		ttm_resource_del_bulk_move(bo->resource, bo);
+> -		spin_unlock(&bdev->lru_lock);
+> -	}
+> -
+>   	lret = ttm_tt_backup(bdev, bo->ttm, (struct ttm_backup_flags)
+>   			     {.purge = flags.purge,
+>   			      .writeback = flags.writeback});
+>   
+> -	if (lret <= 0 && bo->bulk_move) {
+> +	if (lret > 0) {
+>   		spin_lock(&bdev->lru_lock);
+> -		ttm_resource_add_bulk_move(bo->resource, bo);
+> +		ttm_resource_del_bulk_move_unevictable(bo->resource, bo);
+> +		ttm_resource_move_to_lru_tail(bo->resource);
+>   		spin_unlock(&bdev->lru_lock);
+>   	}
+>   
 
-greg k-h
 
