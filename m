@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-245866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMFJKyBnA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:04 +0200
+	id sOKrOVlzA2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BDE526077
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF80527DBA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8E01303741F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D83D31C8C76
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DAD3C8C7D;
-	Tue, 12 May 2026 17:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0417833A6E2;
+	Tue, 12 May 2026 18:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ku9NXfd2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JeQbOPN+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A80B3B1EE2;
-	Tue, 12 May 2026 17:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF2E3EDE55;
+	Tue, 12 May 2026 18:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607756; cv=none; b=JJC1hux+CSPxIpm+CkYEqFdM4oacDqnJU4OkLRuSY9W/13AFD/b3dUqWoaunEV1IFHIBBco6IsyMkv1WUpbpokVOl5AQWboaBmIk+Ol39i6r2kcasXfsxEWhmSBEwNWsdCX34LDrwBj4AD8WNeW7XD3GERqX/v1MyZNMeqzsnVg=
+	t=1778609138; cv=none; b=hFoTlf/sZ//pMvw2EXDw1NJaGvUgKlTvE4e3qvuRDU4W4WnZhchzv2ziAWa4OdjyzlTbuwH3RPDX3g963kzAWA0kzFOcLa4j29wTjaQkGHwOPiD9M3d5MpaFZNca2nIUM6kj5XNLwVXDcHMjuD+yl+NpAYWHPM1Auf8q/CV+e24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607756; c=relaxed/simple;
-	bh=hpWGnowBmTJiAEub2sXY6wJYWvyPmlkSubxKI/lxhwg=;
+	s=arc-20240116; t=1778609138; c=relaxed/simple;
+	bh=lc0lQVdLNpp5DbhSqSS3L69E2SUOW+VSW8vMJHBxijo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmM9VjlwaIcIY5nTEiaRlURh+09e2n/TCQ6rmXBS0mUHFG/uUWmctORZOUxVtWklhfkiiVKSVzHNnnO5DCuMlVS81Ixie1MiMhCZQ6xW3pjderLYHkA8ay1p5pWgaKP/ZC+csy9emsMBFcYLbiUWOH8NoB4Wukk8tIiu6bAEr5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ku9NXfd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D41C2BCB0;
-	Tue, 12 May 2026 17:42:35 +0000 (UTC)
+	 MIME-Version; b=nMIwtboZ2lu0GfSSbwx9/IUI2cknkHDK8TVpjJYo0JsY0VXEKUSxtjtoG+yQk9Jd4ZZMfB3RAdgLHdlx1YouxTrQjr35EqlNQgZCSkDL8MACOsc91+YUujGUbb/VfebxgNcKC5VNLmw1af+9MS+/0FqPSobMgRWru2FbTEtiPWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JeQbOPN+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CB7C2BCB0;
+	Tue, 12 May 2026 18:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607756;
-	bh=hpWGnowBmTJiAEub2sXY6wJYWvyPmlkSubxKI/lxhwg=;
+	s=korg; t=1778609138;
+	bh=lc0lQVdLNpp5DbhSqSS3L69E2SUOW+VSW8vMJHBxijo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ku9NXfd28VnfwgfdZtBoxUcAoKGfJuOKKagFZa8u4qBWV9hUDpfnoAWmguyp6WX47
-	 9D6Hr+h+ejn8OYpaL1mwcXx0KImd95s+BgoL/8t4KmojZlIV2S4H6KWTH1pqsTKhTz
-	 XUNzLUo7z5LqVucji/Hn19TjQUEhnnbLMAnuX8q8=
+	b=JeQbOPN+otmQ9s/zSGxpKZgTfUPhwHxUNiD/LX06vfuRCIUzAc/KT42BPhq/POJLs
+	 tCr+GroS4cFtaRs5E7D4R3hSookIHT4B0qs3lOCa8wsdK34P7EQ6iBfKKnFtIsunlA
+	 QD83vfUUvpUjTYyWAcF7CjhYzdb/++xkX4/nynrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manas <ghandatmanas@gmail.com>,
-	Rakshit Awasthi <rakshitawasthi17@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 024/206] net/sched: sch_red: Replace direct dequeue call with peek and qdisc_dequeue_peeked
+	Masahisa Kojima <masahisa.kojima@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 081/307] spi: syncuacer: fix controller deregistration
 Date: Tue, 12 May 2026 19:37:56 +0200
-Message-ID: <20260512173933.338706721@linuxfoundation.org>
+Message-ID: <20260512173941.829062808@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,113 +64,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 58BDE526077
+X-Rspamd-Queue-Id: 6AF80527DBA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-245866-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-246404-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mojatatu.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 458d5615272d3de535748342eb68ca492343048c upstream.
+commit 75d849c3452e9611de031db45b3149ba9a99035f upstream.
 
-When red qdisc has children (eg qfq qdisc) whose peek() callback is
-qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
-qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
-its child (red in this case), it will do the following:
- 1a. do a peek() - and when sensing there's an skb the child can offer, then
-     - the child in this case(red) calls its child's (qfq) peek.
-        qfq does the right thing and will return the gso_skb queue packet.
-        Note: if there wasnt a gso_skb entry then qfq will store it there.
- 1b. invoke a dequeue() on the child (red). And herein lies the problem.
-     - red will call the child's dequeue() which will essentially just
-       try to grab something of qfq's queue.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-[   78.667668][  T363] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
-[   78.667927][  T363] CPU: 1 UID: 0 PID: 363 Comm: ping Not tainted 7.1.0-rc1-00033-g46f74a3f7d57-dirty #790 PREEMPT(full)
-[   78.668263][  T363] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[   78.668486][  T363] RIP: 0010:qfq_dequeue+0x446/0xc90 [sch_qfq]
-[   78.668718][  T363] Code: 54 c0 e8 dd 90 00 f1 48 c7 c7 e0 03 54 c0 48 89 de e8 ce 90 00 f1 48 8d 7b 48 b8 ff ff 37 00 48 89 fa 48 c1 e0 2a 48 c1 ea 03 <80> 3c 02 00 74 05 e8 ef a1 e1 f1 48 8b 7b 48 48 8d 54 24 58 48 8d
-[   78.669312][  T363] RSP: 0018:ffff88810de573e0 EFLAGS: 00010216
-[   78.669533][  T363] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[   78.669790][  T363] RDX: 0000000000000009 RSI: 0000000000000004 RDI: 0000000000000048
-[   78.670044][  T363] RBP: ffff888110dc4000 R08: ffffffffb1b0885a R09: fffffbfff6ba9078
-[   78.670297][  T363] R10: 0000000000000003 R11: ffff888110e31c80 R12: 0000001880000000
-[   78.670560][  T363] R13: ffff888110dc4150 R14: ffff888110dc42b8 R15: 0000000000000200
-[   78.670814][  T363] FS:  00007f66a8f09c40(0000) GS:ffff888163428000(0000) knlGS:0000000000000000
-[   78.671110][  T363] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   78.671324][  T363] CR2: 000055db4c6a30a8 CR3: 000000010da67000 CR4: 0000000000750ef0
-[   78.671585][  T363] PKRU: 55555554
-[   78.671713][  T363] Call Trace:
-[   78.671843][  T363]  <TASK>
-[   78.671936][  T363]  ? __pfx_qfq_dequeue+0x10/0x10 [sch_qfq]
-[   78.672148][  T363]  ? __pfx__printk+0x10/0x10
-[   78.672322][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.672496][  T363]  ? lockdep_hardirqs_on_prepare+0xa8/0x1a0
-[   78.672706][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.672875][  T363]  ? trace_hardirqs_on+0x19/0x1a0
-[   78.673047][  T363]  red_dequeue+0x65/0x270 [sch_red]
-[   78.673217][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.673385][  T363]  tbf_dequeue.cold+0xb0/0x70c [sch_tbf]
-[   78.673566][  T363]  __qdisc_run+0x169/0x1900
-
-The right thing to do in #1b is to grab the skb off gso_skb queue.
-This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
-method instead.
-
-Fixes: 77be155cba4e ("pkt_sched: Add peek emulation for non-work-conserving qdiscs.")
-Reported-by: Manas <ghandatmanas@gmail.com>
-Reported-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260430152957.194015-2-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b0823ee35cf9 ("spi: Add spi driver for Socionext SynQuacer platform")
+Cc: stable@vger.kernel.org	# 5.3
+Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-21-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_red.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-synquacer.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -153,7 +153,7 @@ static struct sk_buff *red_dequeue(struc
- 	struct red_sched_data *q = qdisc_priv(sch);
- 	struct Qdisc *child = q->qdisc;
+--- a/drivers/spi/spi-synquacer.c
++++ b/drivers/spi/spi-synquacer.c
+@@ -716,7 +716,7 @@ static int synquacer_spi_probe(struct pl
+ 	pm_runtime_set_active(sspi->dev);
+ 	pm_runtime_enable(sspi->dev);
  
--	skb = child->dequeue(child);
-+	skb = qdisc_dequeue_peeked(child);
- 	if (skb) {
- 		qdisc_bstats_update(sch, skb);
- 		qdisc_qstats_backlog_dec(sch, skb);
+-	ret = devm_spi_register_controller(sspi->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto disable_pm;
+ 
+@@ -737,9 +737,15 @@ static void synquacer_spi_remove(struct
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	pm_runtime_disable(sspi->dev);
+ 
+ 	clk_disable_unprepare(sspi->clk);
++
++	spi_controller_put(host);
+ }
+ 
+ static int __maybe_unused synquacer_spi_suspend(struct device *dev)
 
 
 
