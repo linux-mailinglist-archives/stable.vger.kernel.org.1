@@ -1,168 +1,169 @@
-Return-Path: <stable+bounces-245444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EM0vOewYA2p10QEAu9opvQ
-	(envelope-from <stable+bounces-245444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:11:24 +0200
+	id iASOCLoZA2p10QEAu9opvQ
+	(envelope-from <stable+bounces-245445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:14:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9CA51FD5C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:11:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE8751FE48
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EBB73019BA5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:09:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 379EB30BF0CF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EE44BC00C;
-	Tue, 12 May 2026 12:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601BC3655E4;
+	Tue, 12 May 2026 12:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LaI4vFhT"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A9D39B978;
-	Tue, 12 May 2026 12:09:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7683655DE
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778587751; cv=none; b=bzxONL1tBsHDxNpABs2VsA5yfD1JVlcNp4vbrgAYNjKZ8lI5gSjm1cbRfU4nQPQo0fWBWR0knypEPXaoUHRQbs5ahyMSBl1nVqC/zC/MP0HBRb12MPxVHzMT9Vmp/2cTUlU51zEC0+AF2W4R1qB+nhMU6fUR8jfbaj/HRxdZxIw=
+	t=1778587815; cv=none; b=EKpAcwDQMWSxw5Asf9+T911xZQeyHyq1AjtYcVl9cxCFY+R8HpftAZfO7IlMjUijfHP+AvMUWlA1jCwRkgumxsGqC9Q92GrXHgYtB+V/H/aByHx9i4y9BD3sy3Q2GVexdbf31ECAPHBrRz42TLVZrIA05YlVv7JnYCEgoE4338k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778587751; c=relaxed/simple;
-	bh=AXy2JS998/EMAZWvPM/ed4kfaEK5FvSs+9S3znbUw2I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lxbdb8mSVJqrrFc0Ex7hBZf9ve54BjHlkIahmzv93cPKTOR1qDgFexkV63uvtVdVmrNJ2iWuzYLpfqDbJEQoelxjjX75wWkQRs1hoLNgDlhWvPcO7JKU10jK1lW2L0CGSNOiqgYXdcbZnSySmUm6uPO0KSyGIqrYQDhgybRd+Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gFFjm20yJzYQtFH;
-	Tue, 12 May 2026 20:08:28 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 000564058C;
-	Tue, 12 May 2026 20:08:58 +0800 (CST)
-Received: from [10.174.178.253] (unknown [10.174.178.253])
-	by APP4 (Coremail) with SMTP id gCh0CgCXX1tZGANqE9weCA--.59719S3;
-	Tue, 12 May 2026 20:08:58 +0800 (CST)
-Message-ID: <7cf5ea66-55e9-46ec-8f69-91e80d3c42b8@huaweicloud.com>
-Date: Tue, 12 May 2026 20:08:56 +0800
+	s=arc-20240116; t=1778587815; c=relaxed/simple;
+	bh=JqoNNKb3IGj082gXvIZa1KzEZk+tY+k4tNKeO9hSb/0=;
+	h=Subject:To:Cc:From:Date:Message-ID; b=u6lXCpxRBSwy9eNmv3+et9Ew6Hshcc4iZqAb3Ie+uwVd4iwtacoDQX8Hhgrtv0SYde2OUrj3IbzZ/+jXnxbMgPqWLE2wguzE+JobiwEpdEIBlo8fLzGPxagvV9JKaezTbzvfRdMYCCrOUjS7yhYN7jiL5Ri95adhk3oJDob6Op0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LaI4vFhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F59C2BCB0;
+	Tue, 12 May 2026 12:10:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778587814;
+	bh=JqoNNKb3IGj082gXvIZa1KzEZk+tY+k4tNKeO9hSb/0=;
+	h=Subject:To:Cc:From:Date:From;
+	b=LaI4vFhT3HLIAuJpDVcvx0J3goMgXAzY8M6X5JvhKbwhnLL9GysFGzktJmbFTtV0w
+	 /uENBLiSAUcMbj3uRds0WZzKWQUiwnpJNLRBbctA1eRD4n/QkgcSoz/6X+c5K8esgz
+	 MudPxxPMlmzCKcWIKGZ9A1zLtByCmCTrO7IOW0Mk=
+Subject: FAILED: patch "[PATCH] wifi: mac80211: remove station if connection prep fails" failed to apply to 6.1-stable tree
+To: johannes.berg@intel.com,miriam.rachel.korenblit@intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 12 May 2026 14:10:17 +0200
+Message-ID: <2026051217-dodge-brutishly-7223@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] jbd2: fix integer underflow in
- jbd2_journal_initialize_fast_commit()
-To: Junrui Luo <moonafterrain@outlook.com>, Theodore Ts'o <tytso@mit.edu>,
- Jan Kara <jack@suse.com>, Harshad Shirwadkar <harshadshirwadkar@gmail.com>
-Cc: linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
- Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org
-References: <SYBPR01MB78813DD23B28BD49B1AA1123AF392@SYBPR01MB7881.ausprd01.prod.outlook.com>
-Content-Language: en-US
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-In-Reply-To: <SYBPR01MB78813DD23B28BD49B1AA1123AF392@SYBPR01MB7881.ausprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgCXX1tZGANqE9weCA--.59719S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7CF1DtFW5Cr1kAryfuFWUtwb_yoW8uryUpr
-	Z7G34qkFWkZrW0yw17GrW8tFW0vFsak3yFgwnIkwn5K3yYgrnxK3ZFgrnxJ3WDAr4Fk34r
-	tF1qya4kCw1UKaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyGb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAK
-	I48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
-	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
-	jxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw2
-	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
-	67AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1veHDUUUUU==
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
-X-Rspamd-Queue-Id: 4F9CA51FD5C
+X-Rspamd-Queue-Id: 6BE8751FE48
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [2.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-245444-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[huaweicloud.com];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[outlook.com,mit.edu,suse.com,gmail.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245445-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yi.zhang@huaweicloud.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.983];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,huaweicloud.com:mid]
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,gregkh:email]
 X-Rspamd-Action: no action
 
-On 5/12/2026 3:49 PM, Junrui Luo wrote:
-> jbd2_journal_initialize_fast_commit() validates journal capacity by
-> checking (journal->j_last - num_fc_blks < JBD2_MIN_JOURNAL_BLOCKS).
-> Both j_last and num_fc_blks are unsigned, so when num_fc_blks exceeds
-> j_last the subtraction wraps to a large value, bypassing the bounds
-> check.
 
-I'm wondering, how does the "num_fc_blks exceeds j_last" error occur?
-Under normal circumstances, journal->j_last is initialized to
-sb->s_maxlen, which is set to the total number of journal blocks (i.e.,
-the sum of the normal journal area and the fast commit journal area)
-during filesystem formatting by mkfs. Therefore, num_fc_blocks shoud
-never exceed journal->j_last. Right?
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Have you mounted a deliberately constructed corrupted file system? If
-so, I'd prefer to return EFSCORRUPTED here.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Thanks,
-Yi.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 283fc9e44ff5b5ac967439b4951b80bd4299f4e4
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051217-dodge-brutishly-7223@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-> 
-> The resulting underflow corrupts j_last, j_fc_first, and j_free,
-> leading to journal abort.
-> 
-> Fix by adding an overflow guard that checks num_fc_blks against j_last
-> before performing the subtraction.
-> 
-> Fixes: 6866d7b3f2bb ("ext4 / jbd2: add fast commit initialization")
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-> ---
->  fs/jbd2/journal.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-> index cb2c529a8f1b..a54146576c3f 100644
-> --- a/fs/jbd2/journal.c
-> +++ b/fs/jbd2/journal.c
-> @@ -2263,7 +2263,8 @@ jbd2_journal_initialize_fast_commit(journal_t *journal)
->  	unsigned long long num_fc_blks;
->  
->  	num_fc_blks = jbd2_journal_get_num_fc_blks(sb);
-> -	if (journal->j_last - num_fc_blks < JBD2_MIN_JOURNAL_BLOCKS)
-> +	if (num_fc_blks > journal->j_last ||
-> +	    journal->j_last - num_fc_blks < JBD2_MIN_JOURNAL_BLOCKS)
->  		return -ENOSPC;
->  
->  	/* Are we called twice? */
-> 
-> ---
-> base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
-> change-id: 20260512-fixes-2ff4f9f7d064
-> 
-> Best regards,
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 283fc9e44ff5b5ac967439b4951b80bd4299f4e4 Mon Sep 17 00:00:00 2001
+From: Johannes Berg <johannes.berg@intel.com>
+Date: Tue, 5 May 2026 15:15:34 +0200
+Subject: [PATCH] wifi: mac80211: remove station if connection prep fails
+
+If connection preparation fails for MLO connections, then the
+interface is completely reset to non-MLD. In this case, we must
+not keep the station since it's related to the link of the vif
+being removed. Delete an existing station. Any "new_sta" is
+already being removed, so that doesn't need changes.
+
+This fixes a use-after-free/double-free in debugfs if that's
+enabled, because a vif going from MLD (and to MLD, but that's
+not relevant here) recreates its entire debugfs.
+
+Cc: stable@vger.kernel.org
+Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260505151533.c4e52deb06ad.Iafe56cec7de8512626169496b134bce3a6c17010@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 298ebff6bbf8..0a0f27836d57 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -9149,7 +9149,7 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_bss *bss = (void *)cbss->priv;
+ 	struct sta_info *new_sta = NULL;
+ 	struct ieee80211_link_data *link;
+-	bool have_sta = false;
++	struct sta_info *have_sta = NULL;
+ 	bool mlo;
+ 	int err;
+ 	u16 new_links;
+@@ -9168,11 +9168,8 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 		mlo = false;
+ 	}
+ 
+-	if (assoc) {
+-		rcu_read_lock();
++	if (assoc)
+ 		have_sta = sta_info_get(sdata, ap_mld_addr);
+-		rcu_read_unlock();
+-	}
+ 
+ 	if (mlo && !have_sta &&
+ 	    WARN_ON(sdata->vif.valid_links || sdata->vif.active_links))
+@@ -9336,6 +9333,8 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ out_release_chan:
+ 	ieee80211_link_release_channel(link);
+ out_err:
++	if (mlo && have_sta)
++		WARN_ON(__sta_info_destroy(have_sta));
+ 	ieee80211_vif_set_links(sdata, 0, 0);
+ 	return err;
+ }
 
 
