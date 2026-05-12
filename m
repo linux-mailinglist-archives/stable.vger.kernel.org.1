@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FeuDy5qA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:06 +0200
+	id sAf3KK5tA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC425265AD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACAD527096
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 041A7314A37B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9F7D63058D77
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58DB3EDE61;
-	Tue, 12 May 2026 17:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007FA284883;
+	Tue, 12 May 2026 18:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrDeAck7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ikeVBsO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DC93EDE49;
-	Tue, 12 May 2026 17:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81B233B6CC;
+	Tue, 12 May 2026 18:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608170; cv=none; b=SRtwZpqejcPhnPSYu3ruWADyZ5JbXtlVy0M9dFkA4Y46zKR8Jd0t9JtfKkc6q8XI1ndRQ8jUNQ9G/44BRB6D67G8QjWxRB75FmxbGGN9ENVYVSVkQRL0VM60KruC6IrUNgMVNjLlY+Ucr64UFvgPnETe8SGSUftfVQttmQzR1fM=
+	t=1778609553; cv=none; b=GfLPJqSYYNjkGhvwf9wlMX0q5ezbRwKwOVKlPcx0+r97rnkM7gueVOax5lDKpSDkXzrzo2jCbQemS1H6PUYq3CYHZFcvPxxSnrZ7AJ+V2UXXpHB0JiqkRYy4r9HmH5uXRIbf1Y48zsqD5EzlGTpJELsJfrkKgpcd3HMQqBs5zW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608170; c=relaxed/simple;
-	bh=VrT9Aj9I+rq4TBk30mzH21keLP7D1swrLroH4Jei730=;
+	s=arc-20240116; t=1778609553; c=relaxed/simple;
+	bh=P5gWFfIiy8If0BFRXWET1cEMRJrk5yJBChySYJsNobQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BtPPQiDQanpsk6e8cS0QusOL9XJEfRz5M85QS3+p2fz2hfVokz08X745pduBDfel7TEnoZw/aQ8gYqAtFHa/4SHRi1LwFQIGPZEMcCz7f4tthkerJPMfz70Z1vpb03GdjFkTWyTKKk56UvgqD2oCItI+52UAiCG+AZjrZPDpty4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrDeAck7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0DAC2BCC7;
-	Tue, 12 May 2026 17:49:29 +0000 (UTC)
+	 MIME-Version; b=uR34coA8RLsE4M4qIe7oYiqU74BQJcHKwjH5WW1VT1wE2Zms8/8OsUiXd5OOzctwo1nYPZdpOk4sKHjiDtpi9N8O/998rA2zdRQC/j5vvbLqyxVTnK37hgLQ/bwDoGyNgafJjDubNBgzhLTy9xxV87xrhXTzZBbZ+jHyeY80+pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ikeVBsO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2320AC2BCB0;
+	Tue, 12 May 2026 18:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608170;
-	bh=VrT9Aj9I+rq4TBk30mzH21keLP7D1swrLroH4Jei730=;
+	s=korg; t=1778609553;
+	bh=P5gWFfIiy8If0BFRXWET1cEMRJrk5yJBChySYJsNobQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PrDeAck7I8uNJdzGB6Jsrz74kgFQYC5FBraA2Vh6THRY3G8yWQt28fDSwl8xh5i/g
-	 kG8TpTJZL5Ht45aIprFtI4yyhGhz7iCN3QSCwBAH+nxSagqyIxhx2B1dLf0W+4GqAY
-	 ED6I90AHssYnngnap2rXqKIMl6tD/v0jLyK1bOVs=
+	b=2ikeVBsOKR0mXzkGC1b+AiUvmBPZs/S4grZL0dXrgC16zQrU0tJINQx3DiEpCAZ+i
+	 Rk9sXtDdqvQh1dn//Y0Z2FzmbUm3RvU+T+z5l24TJT8kXPiT1Uib7HeoApGKC1+Tua
+	 NjZG55wRw/v9zssLTmtZrbSCYRLWQWfyLI27zIP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 181/206] dma-mapping: drop unneeded includes from dma-mapping.h
-Date: Tue, 12 May 2026 19:40:33 +0200
-Message-ID: <20260512173936.694186737@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 7.0 239/307] RDMA/mlx5: Fix error path fall-through in mlx5_ib_dev_res_srq_init()
+Date: Tue, 12 May 2026 19:40:34 +0200
+Message-ID: <20260512173945.165741907@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9BC425265AD
+X-Rspamd-Queue-Id: 6ACAD527096
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246565-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,nvidia.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246027-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit be164349e173a8e71cd76f17c7ed720813b8d69b ]
+commit c488df06bd552bb8b6e14fa0cfd5ad986c6e9525 upstream.
 
-Back in the day a lot of logic was implemented inline in dma-mapping.h and
-needed various includes.  Move of this has long been moved out of line,
-so we can drop various includes to improve kernel rebuild times.
+mlx5_ib_dev_res_srq_init() allocates two SRQs, s0 and s1. When
+ib_create_srq() fails for s1, the error branch destroys s0 but falls
+through and unconditionally assigns the freed s0 and the ERR_PTR s1 to
+devr->s0 and devr->s1.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Stable-dep-of: 3023c050af36 ("hwmon: (powerz) Avoid cacheline sharing for DMA buffer")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leads to several problems: the lock-free fast path checks
+"if (devr->s1) return 0;" and treats the ERR_PTR as already initialised;
+users in mlx5_ib_create_qp() dereference the freed SRQ or ERR_PTR via
+to_msrq(devr->s0)->msrq.srqn; and mlx5_ib_dev_res_cleanup() dereferences
+the ERR_PTR and double-frees s0 on teardown.
+
+Fix by adding the same `goto unlock` in the s1 failure path.
+
+Cc: stable@vger.kernel.org
+Fixes: 5895e70f2e6e ("IB/mlx5: Allocate resources just before first QP/SRQ is created")
+Link: https://patch.msgid.link/r/SYBPR01MB7881E1E0970268BD69C0BA75AF2B2@SYBPR01MB7881.ausprd01.prod.outlook.com
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/svm.c |    1 +
- include/linux/dma-mapping.h          |    4 ----
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ drivers/infiniband/hw/mlx5/main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/powerpc/platforms/pseries/svm.c
-+++ b/arch/powerpc/platforms/pseries/svm.c
-@@ -8,6 +8,7 @@
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -3380,6 +3380,7 @@ int mlx5_ib_dev_res_srq_init(struct mlx5
+ 			    "Couldn't create SRQ 1 for res init, err=%pe\n",
+ 			    s1);
+ 		ib_destroy_srq(s0);
++		goto unlock;
+ 	}
  
- #include <linux/mm.h>
- #include <linux/memblock.h>
-+#include <linux/mem_encrypt.h>
- #include <linux/cc_platform.h>
- #include <asm/machdep.h>
- #include <asm/svm.h>
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -2,15 +2,11 @@
- #ifndef _LINUX_DMA_MAPPING_H
- #define _LINUX_DMA_MAPPING_H
- 
--#include <linux/cache.h>
--#include <linux/sizes.h>
--#include <linux/string.h>
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/dma-direction.h>
- #include <linux/scatterlist.h>
- #include <linux/bug.h>
--#include <linux/mem_encrypt.h>
- 
- /**
-  * List of possible attributes associated with a DMA mapping. The semantics
+ 	devr->s0 = s0;
 
 
 
