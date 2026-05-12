@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-246259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPMqJhtrA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:03 +0200
+	id GF0DI1FuA2pS5wEAu9opvQ
+	(envelope-from <stable+bounces-246265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:15:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40ED65268FB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC3F5272A0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 64CFE3084230
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0E4B2307E554
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950B23EDE76;
-	Tue, 12 May 2026 17:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163493EDE67;
+	Tue, 12 May 2026 17:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSewTweP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USfnG+1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B713EDE71;
-	Tue, 12 May 2026 17:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C974F3EDE5F;
+	Tue, 12 May 2026 17:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608765; cv=none; b=hu++N1arHA6oYNr32RmDjrpE9kAkBXsSI9nuszKXXxs9QHAn7/P881puXa//0cqo6zkFMitHwGlFtgNNOKtopgiJ5dEaExvZ2TA7Ga9i0UBRXrZM9ti1hvlj0JIZMFB4HzU+uCWETq6LgHkg4/zgoPeccoS3hoYm/V13uJy9hyw=
+	t=1778608780; cv=none; b=D1jZODfoUE1pZCn5iCvJaEQX6YnGOlK2zcAyP0whrazEdnBRWVhBEPvcV8LV6QW+RD1BjOQ1NJYPEB/NRqcijWlzCZ252SvIYb4dq1d+rAKgCc4tthaz5HREMYCAP7XIIXGN65XbMI6Hq5h9xWLb/ch+IN/xzDSIPtILoqcpIfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608765; c=relaxed/simple;
-	bh=7mFRZ9CeyOIOI6S9oNO3nzkH7CcbXDkCGFPbE9VBPzM=;
+	s=arc-20240116; t=1778608780; c=relaxed/simple;
+	bh=RxQNBOsfaLniRISl/UW2DQMvNXqQfI31BXoB3eTqlt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUfyJIfvOjwuFqMKXx3LcSuDqQRtqJLgq3e0JPkLCvGgjEbUdvzGVOS2pM9JrdY99XokGX7QoPgc4R/IoT4i3w+k9i3xQGFpr39Rc0PaIFmJw2uJH1WHMrMwboBXxlZzzygI7an9uLO9svqb2wbSWMpKtQnSVspDjwJzSS92tKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSewTweP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25F5C2BCB0;
-	Tue, 12 May 2026 17:59:24 +0000 (UTC)
+	 MIME-Version; b=p//3/y8RIHK+49qnKwB+GkkfjJMlC6jRE/ToR+SbUVfflMa2M3KhHpK3LZVwQDGCyq8i/X5Z4L6yyaOuo3vTU2glxBl3djSePLzdsnwo26EcFYDfTuMeyMrQeuH5qT4Fg++OjtUrwhGecJxAP35zwn2LUFsGHI32EnXV+n0sTkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USfnG+1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F170C2BCB0;
+	Tue, 12 May 2026 17:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608765;
-	bh=7mFRZ9CeyOIOI6S9oNO3nzkH7CcbXDkCGFPbE9VBPzM=;
+	s=korg; t=1778608780;
+	bh=RxQNBOsfaLniRISl/UW2DQMvNXqQfI31BXoB3eTqlt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSewTwePEiF8I8f6lbY5MiNCD3aRhymHQ2joidUCTTgyo/Qj9aPHLHlMZumqsiCCc
-	 pkqqYNLLnva9Fxu4C/q5njf3mrfeAm5pZMVos1KPsnj7O4P9wzcK8VUeX5o7Lwxwd6
-	 QQLNMkX8wPOvxoU65qW1Objifmsa3eJ+wq3ugOgk=
+	b=USfnG+1XiElKBuDcvPHg7y+t+obtMhpCW50xAalOFBznvECOVaK25kzxyWO0vc2Yx
+	 tuMA1C4077uI2cIYqKnkd71MQ/A8XHlftALyy0oC4SDN1WnF/ydf9CNsJ4Y/qarYBc
+	 Hzh+2NsQtJXdd6khWZYB4sVCL1Aoj8g6sYYIFekg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 169/270] openvswitch: vport: fix self-deadlock on release of tunnel ports
-Date: Tue, 12 May 2026 19:39:30 +0200
-Message-ID: <20260512173942.007002428@linuxfoundation.org>
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.18 170/270] pmdomain: core: Fix detach procedure for virtual devices in genpd
+Date: Tue, 12 May 2026 19:39:31 +0200
+Message-ID: <20260512173942.028143609@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
 References: <20260512173938.452574370@linuxfoundation.org>
@@ -65,93 +64,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 40ED65268FB
+X-Rspamd-Queue-Id: 8DC3F5272A0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246265-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246259-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,linux-m68k.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,glider.be:email]
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit aa69918bd418e700309fdd08509dba324fb24296 upstream.
+commit 26735dfdd8930d9ef1fa92e590a9bf77726efdf6 upstream.
 
-vports are used concurrently and protected by RCU, so netdev_put()
-must happen after the RCU grace period.  So, either in an RCU call or
-after the synchronize_net().  The rtnl_delete_link() must happen under
-RTNL and so can't be executed in RCU context.  Calling synchronize_net()
-while holding RTNL is not a good idea for performance and system
-stability under load in general, so calling netdev_put() in RCU call
-is the right solution here.
+If a device is attached to a PM domain through genpd_dev_pm_attach_by_id(),
+genpd calls pm_runtime_enable() for the corresponding virtual device that
+it registers. While this avoids boilerplate code in drivers, there is no
+corresponding call to pm_runtime_disable() in genpd_dev_pm_detach().
 
-However,
-when the device is deleted, rtnl_unlock() will call netdev_run_todo()
-and block until all the references are gone.  In the current code this
-means that we never reach the call_rcu() and the vport is never freed
-and the reference is never released, causing a self-deadlock on device
-removal.
+This means these virtual devices are typically detached from its genpd,
+while runtime PM remains enabled for them, which is not how things are
+designed to work. In worst cases it may lead to critical errors, like a
+NULL pointer dereference bug in genpd_runtime_suspend(), which was recently
+reported. For another case, we may end up keeping an unnecessary vote for a
+performance state for the device.
 
-Fix that by moving the rcu_call() before the rtnl_unlock(), so the
-scheduled RCU callback will be executed when synchronize_net() is
-called from the rtnl_unlock()->netdev_run_todo() while the RTNL itself
-is already released.
+To fix these problems, let's add this missing call to pm_runtime_disable()
+in genpd_dev_pm_detach().
 
-Fixes: 6931d21f87bc ("openvswitch: defer tunnel netdev_put to RCU release")
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/all/CAMuHMdWapT40hV3c+CSBqFOW05aWcV1a6v_NiJYgoYi0i9_PDQ@mail.gmail.com/
+Fixes: 3c095f32a92b ("PM / Domains: Add support for multi PM domains per device to genpd")
 Cc: stable@vger.kernel.org
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20260430233848.440994-2-i.maximets@ovn.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/vport-netdev.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pmdomain/core.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/net/openvswitch/vport-netdev.c
-+++ b/net/openvswitch/vport-netdev.c
-@@ -196,9 +196,13 @@ void ovs_netdev_tunnel_destroy(struct vp
- 	 */
- 	if (vport->dev->reg_state == NETREG_REGISTERED)
- 		rtnl_delete_link(vport->dev, 0, NULL);
--	rtnl_unlock();
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -3074,6 +3074,7 @@ static const struct bus_type genpd_bus_t
+ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
+ {
+ 	struct generic_pm_domain *pd;
++	bool is_virt_dev;
+ 	unsigned int i;
+ 	int ret = 0;
  
-+	/* We can't put the device reference yet, since it can still be in
-+	 * use, but rtnl_unlock()->netdev_run_todo() will block until all
-+	 * the references are released, so the RCU call must be before it.
-+	 */
- 	call_rcu(&vport->rcu, vport_netdev_free);
-+	rtnl_unlock();
+@@ -3083,6 +3084,13 @@ static void genpd_dev_pm_detach(struct d
+ 
+ 	dev_dbg(dev, "removing from PM domain %s\n", pd->name);
+ 
++	/* Check if the device was created by genpd at attach. */
++	is_virt_dev = dev->bus == &genpd_bus_type;
++
++	/* Disable runtime PM if we enabled it at attach. */
++	if (is_virt_dev)
++		pm_runtime_disable(dev);
++
+ 	/* Drop the default performance state */
+ 	if (dev_gpd_data(dev)->default_pstate) {
+ 		dev_pm_genpd_set_performance_state(dev, 0);
+@@ -3108,7 +3116,7 @@ static void genpd_dev_pm_detach(struct d
+ 	genpd_queue_power_off_work(pd);
+ 
+ 	/* Unregister the device if it was created by genpd. */
+-	if (dev->bus == &genpd_bus_type)
++	if (is_virt_dev)
+ 		device_unregister(dev);
  }
- EXPORT_SYMBOL_GPL(ovs_netdev_tunnel_destroy);
  
 
 
