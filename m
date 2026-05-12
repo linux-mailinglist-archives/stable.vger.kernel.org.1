@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LUiNK5vA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:34 +0200
+	id 2GMcAvBuA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD5F527644
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 590F2527435
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E922A31CCB35
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84EC8320F617
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D56423E356;
-	Tue, 12 May 2026 18:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9024E3C0A09;
+	Tue, 12 May 2026 17:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq5vFfsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MS1lNu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D520C50276;
-	Tue, 12 May 2026 18:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF8B3C0A01;
+	Tue, 12 May 2026 17:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609143; cv=none; b=saFIlkhetTxQhurPrI8oPnhzeO4zgTapChzPaH4PsdEOO0f7TwrXtvjlyrwqnT46PoJOcz5WWmfKBHa6eCoj54QC9yuM07O7axNZTtPWr7AOc/uSVCXr4AXMn9LtC8MCVBKx7UqiIBasE2zJJGJ46puGZMbJqEjyw4+6YJN19vA=
+	t=1778608451; cv=none; b=qB4TT1yR4KjIFfszu+1aqktLC341OvF9YZAtMlI+F1E8URvyJ7M9QBqBmYRBVsqgUlVHN8VvvDerDaySDkzF1Q3w4BQzEQRBrCvrWrOFoqAoQB4zA4AVOllOO8WJ0wA7AcAFdv1ViCC8wHCsqLDbLSWt6OrHoMgVNB0JnV+EVkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609143; c=relaxed/simple;
-	bh=39AXJJxOdxC2gO8CyFY0RPg6XiFwavbp2FtDk1uw3II=;
+	s=arc-20240116; t=1778608451; c=relaxed/simple;
+	bh=mGD2Be09doT/z8aVVpSvX+2me8pKEV6+Ko4RC69Kqyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EYwPm3zjIqceFRItNRMiciUGMprOuQikp9LSLSoQuAOmDzDWc7gtuz8jxV/8mxCDVGXzyGhqm5WUnyOmivMnyUwLpIYR0t6kt0a9dcDTJ07GN9tIqNb+BMkVgSqrcz1UAJB/eQI4IhTLjJUDA0KysAeluQsy/UQvJWF1XPhm7Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq5vFfsJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5F3C2BCB0;
-	Tue, 12 May 2026 18:05:43 +0000 (UTC)
+	 MIME-Version; b=ZjJBXOtYFWQmj5ha/lwGxwtWoJhz82DQFbHPGDWFnsAH2sFrQ5Joz8hs4/fwA292qYeleNp70AddSLV7phU+McOlxiEXlre6gAffau/dwabEqgFuhQcq9mhQiPdJEhoOtbIGFUWnSJWGfs0wV4QCBY4cq/N4wFJGsxhpUHHHLPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MS1lNu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72636C2BCFB;
+	Tue, 12 May 2026 17:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609143;
-	bh=39AXJJxOdxC2gO8CyFY0RPg6XiFwavbp2FtDk1uw3II=;
+	s=korg; t=1778608450;
+	bh=mGD2Be09doT/z8aVVpSvX+2me8pKEV6+Ko4RC69Kqyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tq5vFfsJInRoj8giQoAkRnvMtLkBQCovE/lnnQq2np3e7Pf38+0UXeQ6Dth3Taulc
-	 U9qYHg7EE+qSNyrVx+h9t1TTK1PbI6gyL6i8G2sgX3yUUK/jXB9kO51EEQ8T+W1nMz
-	 CI1/+PfU6mR2YmhLcR4E1HtXts0wChlnzhfc6etM=
+	b=1MS1lNu+hCAP3d/lS/YcBpJgRuWQjdi4S8vucKebS2bv6sg2eKSx+J7p7yNAzlzcE
+	 RmGS3smBe1CJeblBg/shIglGWmEbbHGdET17Ph4KJmwZ+LZjNsAQYgwFMGvh/XiiJD
+	 tu4lbtdB+pcZrJhx571T34EO8jfc/fGnycKKD5+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 083/307] spi: zynq-qspi: fix controller deregistration
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 077/270] rust: allow `clippy::collapsible_if` globally
 Date: Tue, 12 May 2026 19:37:58 +0200
-Message-ID: <20260512173941.872305463@linuxfoundation.org>
+Message-ID: <20260512173940.074669683@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4DD5F527644
+X-Rspamd-Queue-Id: 590F2527435
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246406-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246136-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,80 +88,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xilinx.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,garyguo.net:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit c9c012706c9fa8ca6d129a9161caf92ab625a3fd upstream.
+commit 2adc8664018c1cc595c7c0c98474a33c7fe32a85 upstream.
 
-Make sure to deregister the controller before disabling it during driver
-unbind.
+Similar to `clippy::collapsible_match` (globally allowed in the previous
+commit), the `clippy::collapsible_if` lint [1] can make code harder to
+read in certain cases.
 
-Note that clocks were also disabled before the recent commit
-1f8fd9490e31 ("spi: zynq-qspi: Simplify clock handling with
-devm_clk_get_enabled()").
+Thus just let developers decide on their own.
 
-Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-Cc: stable@vger.kernel.org	# 5.2: 8eb2fd00f65a
-Cc: stable@vger.kernel.org	# 5.2
-Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-27-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+In addition, remove the existing `expect` we had.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Suggested-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/rust-for-linux/DGROP5CHU1QZ.1OKJRAUZXE9WC@garyguo.net/
+Link: https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if [1]
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260426144201.227108-2-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-zynq-qspi.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ Makefile                                    |    1 +
+ drivers/android/binder/range_alloc/array.rs |    1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -643,7 +643,7 @@ static int zynq_qspi_probe(struct platfo
- 
- 	xqspi = spi_controller_get_devdata(ctlr);
- 	xqspi->dev = dev;
--	platform_set_drvdata(pdev, xqspi);
-+	platform_set_drvdata(pdev, ctlr);
- 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xqspi->regs)) {
- 		ret = PTR_ERR(xqspi->regs);
-@@ -702,9 +702,9 @@ static int zynq_qspi_probe(struct platfo
- 	/* QSPI controller initializations */
- 	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
- 
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret) {
--		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
-+		dev_err(&pdev->dev, "failed to register controller\n");
- 		goto remove_ctlr;
- 	}
- 
-@@ -728,9 +728,16 @@ remove_ctlr:
-  */
- static void zynq_qspi_remove(struct platform_device *pdev)
- {
--	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-+	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
-+
-+	spi_controller_get(ctlr);
-+
-+	spi_unregister_controller(ctlr);
- 
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
-+
-+	spi_controller_put(ctlr);
- }
- 
- static const struct of_device_id zynq_qspi_of_match[] = {
+--- a/Makefile
++++ b/Makefile
+@@ -483,6 +483,7 @@ export rust_common_flags := --edition=20
+ 			    -Wclippy::as_ptr_cast_mut \
+ 			    -Wclippy::as_underscore \
+ 			    -Wclippy::cast_lossless \
++			    -Aclippy::collapsible_if \
+ 			    -Aclippy::collapsible_match \
+ 			    -Wclippy::ignored_unit_patterns \
+ 			    -Wclippy::mut_mut \
+--- a/drivers/android/binder/range_alloc/array.rs
++++ b/drivers/android/binder/range_alloc/array.rs
+@@ -204,7 +204,6 @@ impl<T> ArrayRangeAllocator<T> {
+         // caller will mark them as unused, which means that they can be freed if the system comes
+         // under memory pressure.
+         let mut freed_range = FreedRange::interior_pages(offset, size);
+-        #[expect(clippy::collapsible_if)] // reads better like this
+         if offset % PAGE_SIZE != 0 {
+             if i == 0 || self.ranges[i - 1].endpoint() <= (offset & PAGE_MASK) {
+                 freed_range.start_page_idx -= 1;
 
 
 
