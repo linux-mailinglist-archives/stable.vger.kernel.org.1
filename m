@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-245899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sI4rJ65nA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245899-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:26 +0200
+	id cMO+IbFzA2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CFF5261B8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17081527E63
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BAA2E30226A6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57BEA321B188
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56423D9693;
-	Tue, 12 May 2026 17:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70516349CD7;
+	Tue, 12 May 2026 18:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I59nx8hN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GktIjiP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771DE385D85;
-	Tue, 12 May 2026 17:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B2934405B;
+	Tue, 12 May 2026 18:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607841; cv=none; b=isPYX4APwhKcJWrssW2ro1O1Snkh5MsrIY2uZ4tkV7nrUtt+o3C7mw0CNve2l0uTl/NAO3yU4HG0UTX7VnveaBb6DXgsvqnKmKMqa+cY8RlhPmGLzoa2yvvtJCKiGOalg7DhEuTsQTlOnN9IOozbMItd+ygX2SjQMDnhkrwaPLc=
+	t=1778609226; cv=none; b=mAn8LN0HheQ5UCxE5DMpc2ljZ87vZGoYFxE2l9kjaaR4ZtCp9Xa/CDeFOzUowK5XNUgx7QiAE+1oqo1P/mJBvqERMqSfLvhP/wycxlVGApeVkS/Cq0ZBAfDLj/1W/DWL6ibkXyyWkO1rjDhlS/rLIYUwgXV7u4g+C6UfeoKmx8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607841; c=relaxed/simple;
-	bh=IrAw5oytb+uPDF18/4rDzEP+B8ORrwIrI3naKmsFkLQ=;
+	s=arc-20240116; t=1778609226; c=relaxed/simple;
+	bh=LnfivkAJPvp6138QAu1ivyD2eXi4j4wfvO8R0d90S2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKE1DOWOWV/hVpCgzZBfuvDkmf4Z04QA50oROG1Tv5YKv11oOpPuq1Qjyc9I4svzjinDBOeHXQYZDcxsrTCXC9jHlGmqnPBEEL6doUQZBYgAFagQ+QetDjTwhhZs60jxTSphJr3C4KEO9uHbGwJn7WsZ/R6EhDIEU/NSFB3M6p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I59nx8hN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E399C2BCB0;
-	Tue, 12 May 2026 17:44:00 +0000 (UTC)
+	 MIME-Version; b=LfIoSMReG0QOk4NvoZIEcCCPOr4olQgzPXwYEl5dHZt0EgFi/ue9RKICUOw9WPXHY9uXylmwsX4KTpXL4yuyptuGtGoFrL13Owbm7TT/wMSMlLT7KtFH18lfCSn64JB1r77/0uTBrp/yJfjL5cLd+3qOz8WaL5prDjVr2vQEBKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GktIjiP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A194BC2BCB0;
+	Tue, 12 May 2026 18:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607841;
-	bh=IrAw5oytb+uPDF18/4rDzEP+B8ORrwIrI3naKmsFkLQ=;
+	s=korg; t=1778609226;
+	bh=LnfivkAJPvp6138QAu1ivyD2eXi4j4wfvO8R0d90S2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I59nx8hNXhKdjUo14vRHQ2oVwGAZLQ4POuth3YcHrfp9zSkoSgaxY+9+snaWcQeXz
-	 Nx+SGznObiAzv1hHdvP/ZuDMfqME21sFu2jkESfLmjOaSiXDlBtohv0iBqj1tqOvAm
-	 YfUH0hHiplyai/xq5d846F802JdfiMIrUQ9JTcts=
+	b=GktIjiP+9G70y8VBl89F7KpA32MMMXUCWIxV8FoYgrOMSMLM1fmmDd7yf8UHnGX5s
+	 BM4aj+dipBScAMwiizOmuBBtCqTNtwqgUagwc1ilEC/RiHrvNKZa51wjk+pTPCBgxr
+	 NysZo+m+6K/xzBGjoZq1TPFCMNgYPI2dG9aXUJls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Kosiorek <mkosiorek121@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.12 054/206] xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete
+	SeungJu Cheon <suunj1331@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 111/307] sound: ua101: fix division by zero at probe
 Date: Tue, 12 May 2026 19:38:26 +0200
-Message-ID: <20260512173933.983331113@linuxfoundation.org>
+Message-ID: <20260512173942.466702103@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 47CFF5261B8
+X-Rspamd-Queue-Id: 17081527E63
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -74,8 +74,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245899-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
+	TAGGED_FROM(0.00)[bounces-246437-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -92,127 +92,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kosiorek <mkosiorek121@gmail.com>
+From: SeungJu Cheon <suunj1331@gmail.com>
 
-commit 14acf9652e5690de3c7486c6db5fb8dafd0a32a3 upstream.
+commit d1f73f169c1014463b5060e3f60813e13ddc7b87 upstream.
 
-KASAN reproduces a slab-use-after-free in __xfrm_state_delete()'s
-hlist_del_rcu calls under syzkaller load on linux-6.12.y stable
-(reproduced on 6.12.47, also reachable via the same code path on
-torvalds/master and on the ipsec tree). Nine unique signatures cluster
-in the xfrm_state lifecycle, the load-bearing one being:
+Add a missing sanity check for bNrChannels in detect_usb_format()
+to prevent a division by zero in playback_urb_complete() and
+capture_urb_complete().
 
-  BUG: KASAN: slab-use-after-free in __hlist_del include/linux/list.h:990 [inline]
-  BUG: KASAN: slab-use-after-free in hlist_del_rcu include/linux/rculist.h:516 [inline]
-  BUG: KASAN: slab-use-after-free in __xfrm_state_delete net/xfrm/xfrm_state.c
-  Write of size 8 at addr ffff8881198bcb70 by task kworker/u8:9/435
+USB core does not validate class-specific descriptor fields such
+as bNrChannels, so drivers must verify them before use. If a
+device provides bNrChannels = 0, frame_bytes becomes zero and is
+later used as a divisor in the URB completion handlers, leading
+to a kernel crash.
 
-  Workqueue: netns cleanup_net
-  Call Trace:
-   __hlist_del / hlist_del_rcu
-   __xfrm_state_delete
-   xfrm_state_delete
-   xfrm_state_flush
-   xfrm_state_fini
-   ops_exit_list
-   cleanup_net
-
-The other observed signatures hit the same slab object from
-__xfrm_state_lookup, xfrm_alloc_spi, __xfrm_state_insert and an OOB
-write variant of __xfrm_state_delete, all on the byseq/byspi
-hash chains.
-
-__xfrm_state_delete() guards its byseq and byspi unhashes with
-value-based predicates:
-
-	if (x->km.seq)
-		hlist_del_rcu(&x->byseq);
-	if (x->id.spi)
-		hlist_del_rcu(&x->byspi);
-
-while everywhere else in the file (e.g. state_cache, state_cache_input)
-the safer hlist_unhashed() check is used. xfrm_alloc_spi() sets
-x->id.spi = newspi inside xfrm_state_lock and then immediately inserts
-into byspi, but a path that observes x->id.spi != 0 outside of
-xfrm_state_lock can still skip-or-hit the byspi unhash inconsistently
-with whether x is actually on the list. The same holds for x->km.seq
-versus byseq, and the bydst/bysrc unhashes have no predicate at all,
-so a second __xfrm_state_delete() on the same object writes through
-LIST_POISON pprev.
-
-The defensive change here:
-
-  - Use hlist_del_init_rcu() instead of hlist_del_rcu() on bydst,
-    bysrc, byseq and byspi so a second deletion is a no-op rather
-    than a write through LIST_POISON pprev. The byseq/byspi nodes
-    are already initialised in xfrm_state_alloc().
-  - Test hlist_unhashed() rather than the value predicate for
-    byseq/byspi, so the unhash decision tracks list state rather than
-    mutable scalar fields.
-
-Empirical verification: applied this patch on top of v6.12.47, rebuilt,
-and re-ran the same syzkaller harness for 1h16m on a previously-crashy
-configuration that produced ~100 hits each of slab-use-after-free
-Read in xfrm_alloc_spi / Read in __xfrm_state_lookup / Write in
-__xfrm_state_delete. After the patch, 7.1M execs across 32 VMs at
-~1550 exec/sec produced zero xfrm_state UAF/OOB hits. /proc/slabinfo
-confirms the xfrm_state slab is actively allocated and freed during
-the run (~143 KiB resident), so the fuzzer is still exercising those
-code paths -- they just no longer crash.
-
-Reproduction:
-
-  - Linux 6.12.47 x86_64 + KASAN_GENERIC + KASAN_INLINE + KCOV
-  - syzkaller @ 746545b8b1e4c3a128db8652b340d3df90ce61db
-  - 32 QEMU/KVM VMs x 2 vCPU on AWS c5.metal bare metal
-  - 9 unique signatures collected in ~9h, all within xfrm_state
-    lifecycle
-
-Fixes: fe9f1d8779cb ("xfrm: add state hashtable keyed by seq")
-Fixes: 7b4dc3600e48 ("[XFRM]: Do not add a state whose SPI is zero to the SPI hash.")
-Reported-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Tested-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Fixes: 63978ab3e3e9 ("sound: add Edirol UA-101 support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
+Link: https://patch.msgid.link/20260426111239.103296-1-suunj1331@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_state.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ sound/usb/misc/ua101.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -755,17 +755,17 @@ int __xfrm_state_delete(struct xfrm_stat
+--- a/sound/usb/misc/ua101.c
++++ b/sound/usb/misc/ua101.c
+@@ -974,6 +974,13 @@ static int detect_usb_format(struct ua10
  
- 		spin_lock(&net->xfrm.xfrm_state_lock);
- 		list_del(&x->km.all);
--		hlist_del_rcu(&x->bydst);
--		hlist_del_rcu(&x->bysrc);
--		if (x->km.seq)
--			hlist_del_rcu(&x->byseq);
-+		hlist_del_init_rcu(&x->bydst);
-+		hlist_del_init_rcu(&x->bysrc);
-+		if (!hlist_unhashed(&x->byseq))
-+			hlist_del_init_rcu(&x->byseq);
- 		if (!hlist_unhashed(&x->state_cache))
- 			hlist_del_rcu(&x->state_cache);
- 		if (!hlist_unhashed(&x->state_cache_input))
- 			hlist_del_rcu(&x->state_cache_input);
- 
--		if (x->id.spi)
--			hlist_del_rcu(&x->byspi);
-+		if (!hlist_unhashed(&x->byspi))
-+			hlist_del_init_rcu(&x->byspi);
- 		net->xfrm.state_num--;
- 		xfrm_nat_keepalive_state_updated(x);
- 		spin_unlock(&net->xfrm.xfrm_state_lock);
+ 	ua->capture.channels = fmt_capture->bNrChannels;
+ 	ua->playback.channels = fmt_playback->bNrChannels;
++	if (!ua->capture.channels || !ua->playback.channels) {
++		dev_err(&ua->dev->dev,
++			"invalid channel count: capture %u, playback %u\n",
++			ua->capture.channels, ua->playback.channels);
++		return -EINVAL;
++	}
++
+ 	ua->capture.frame_bytes =
+ 		fmt_capture->bSubframeSize * ua->capture.channels;
+ 	ua->playback.frame_bytes =
 
 
 
