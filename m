@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNp+DN1rA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:17 +0200
+	id 4LVbNuhuA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50956526B41
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970A5527420
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 95A9B30A9CB5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9D1E9308FC23
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B35E3C09F4;
-	Tue, 12 May 2026 17:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E50366831;
+	Tue, 12 May 2026 18:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CWGarvY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iv4id30C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38003C09EC;
-	Tue, 12 May 2026 17:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A943130BB80;
+	Tue, 12 May 2026 18:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608257; cv=none; b=e0aec0gVgLENSUbNijW8fmtojZHxwEUDVroubRPjQm42k1pDI3LXUb0hkNC/nAUI13/5iXxGEq31k61Llpvg9YyvtvU0pP1jymk7BJsEANwZE29t7d3FJMaqC7J7oQFtJNvgcADW3DdispTZidXqlmmRYp3OZLALGS3f1S+kLrQ=
+	t=1778608971; cv=none; b=mlPBYVhEQ7HsDr2w/r7Zu0FnCUDHWqSsYwD+eILfF1t+KxbZ5/ay3k+P2QiaqWqCT/A0ZI5+n/TOVfSN3bBdvynyEqL/7PWvLL41a6apDlwxFWZQgMcZCEi/Z8VIOyWN2MKzg0O4zqLbGCg2eMh/1RdZWHhPDAkAvrcQGQTRgYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608257; c=relaxed/simple;
-	bh=Nbsydq6ftNO7wg4wHItPeFtY95gwj6/K5YY+lLGHvBM=;
+	s=arc-20240116; t=1778608971; c=relaxed/simple;
+	bh=n/4Xynw4gxekBbtktiaj8W3nZ9XndpzvZsRSupTlY/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjwrM0JnpKMa1d9YNzuTfuSTk9fCpu42TBz3VBTBj6EHBsBG7F0j4ePk/zqYbreIcErQvTsJ7DgBKrxEzAnfJAu8Mni8r9/fO/im93X7pkh7HCVsxQ9gfEkjdAff6BKxv2JpiebuO4WRWPYrbCgw0EFoYUQIPbUY2y0RNpWEOtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CWGarvY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D310C2BCB0;
-	Tue, 12 May 2026 17:50:57 +0000 (UTC)
+	 MIME-Version; b=BIhLwjybnIgRoSwS955ve3n8mGBqvnUNCrFWSy72LPRMvUcp78gQPgSxRENkWMkBUj55ovMZubiTEKiHjehv83v+beJ7+1Ql1+VCOcoeLcnp2GGFz9UL5LVqlbsdiCPlLGKElvTJjllXeTzYlCO5lx8OSjMFImdRzNu+nYF1vX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iv4id30C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38EF8C2BCB0;
+	Tue, 12 May 2026 18:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608257;
-	bh=Nbsydq6ftNO7wg4wHItPeFtY95gwj6/K5YY+lLGHvBM=;
+	s=korg; t=1778608971;
+	bh=n/4Xynw4gxekBbtktiaj8W3nZ9XndpzvZsRSupTlY/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0CWGarvY1h+RL9RYl/BidBLoYyNzHBlA3pGVoPYBWlUIF3RG4d+Zsph4fId10JYql
-	 CNerZxLb7gA8qEakYQySv8kMi6fhTv6EJQRHTEPosOZkmh4QUeKM2A7LVVQzME6I7F
-	 JkE0Tm/AEQZg/F57pAKWeTx2qdmSyqJGeWJ2dPEU=
+	b=Iv4id30CYlJjDWVeqVGipMbyzkeF+xT+yIM15AzPusBoTyT3BJrtTK/xLNbg/FvzU
+	 kMWIvbEmuNl2qZaAY9rRXugkeOoFOj2P7HF7IFusgxAO64/iYMCIv+p+PlMKg7QdZa
+	 MXHkVcd7S/sjnTyDMXsceFcpNt+nzpPYL0Glm8xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	David Carlier <devnexen@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.18 010/270] tracepoint: balance regfunc() on func_add() failure in tracepoint_add_func()
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 7.0 016/307] ksmbd: rewrite stop_sessions() with restartable iteration
 Date: Tue, 12 May 2026 19:36:51 +0200
-Message-ID: <20260512173938.671648529@linuxfoundation.org>
+Message-ID: <20260512173940.468442335@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +64,227 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 50956526B41
+X-Rspamd-Queue-Id: 970A5527420
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,efficios.com,gmail.com,goodmis.org];
-	TAGGED_FROM(0.00)[bounces-246061-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246339-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,msgid.link:url,efficios.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-commit fad217e16fded7f3c09f8637b0f6a224d58b5f2e upstream.
+commit c444139cb747bf6de1922b39900fdf02281490f4 upstream.
 
-When a tracepoint goes through the 0 -> 1 transition, tracepoint_add_func()
-invokes the subsystem's ext->regfunc() before attempting to install the
-new probe via func_add(). If func_add() then fails (for example, when
-allocate_probes() cannot allocate a new probe array under memory pressure
-and returns -ENOMEM), the function returns the error without calling the
-matching ext->unregfunc(), leaving the side effects of regfunc() behind
-with no installed probe to justify them.
+stop_sessions() walks conn_list with hash_for_each() and, for every
+entry, drops conn_list_lock across the transport ->shutdown() call
+before re-acquiring the read lock to continue the loop.  The hash
+walk relies on cross-iteration state (the current bucket and the
+hlist position), which is not preserved across unlock/relock: if
+another thread performs a list mutation during the unlocked window,
+the ongoing iteration becomes unreliable and can re-visit
+connections that have already been handled or skip connections that
+have not.  The outer `if (!hash_empty(conn_list)) goto again;` retry
+masks the symptom in the common case but does not address the
+unsafe iteration itself.
 
-For syscall tracepoints this is particularly unpleasant: syscall_regfunc()
-bumps sys_tracepoint_refcount and sets SYSCALL_TRACEPOINT on every task.
-After a leaked failure, the refcount is stuck at a non-zero value with no
-consumer, and every task continues paying the syscall trace entry/exit
-overhead until reboot. Other subsystems providing regfunc()/unregfunc()
-pairs exhibit similarly scoped persistent state.
+Reframe the loop so it never relies on iterator state across
+unlock/relock.  Under conn_list_lock held for read, pick the first
+connection whose ->shutdown() has not yet been issued by this path,
+pin it by taking an extra reference, record that fact on the
+connection and mark it EXITING while still inside the locked walk,
+then drop the lock.  Then call ->shutdown() outside the lock, drop
+the pin (freeing the connection if the handler already released its
+reference), and restart from the top.
 
-Mirror the existing 1 -> 0 cleanup and call ext->unregfunc() in the
-func_add() error path, gated on the same condition used there so the
-unwind is symmetric with the registration.
+Use a new per-connection flag, conn->stop_called, as the "shutdown
+issued from stop_sessions()" marker rather than reusing the status
+state.  ksmbd_conn_set_exiting() is also invoked by
+ksmbd_sessions_deregister() on sibling channels of a multichannel
+session without issuing a transport shutdown, so treating
+KSMBD_SESS_EXITING as "already handled here" would skip connections
+that still need shutdown() to wake their handler out of recv(),
+leaving the outer retry waiting indefinitely for the hash to drain.
+stop_sessions() is serialised by init_lock in
+ksmbd_conn_transport_destroy(), so writing stop_called under the
+read lock has no other writer.
 
-Fixes: 8cf868affdc4 ("tracing: Have the reg function allow to fail")
+Set EXITING inside the locked walk so the selection, the stop_called
+marker, and the status transition all happen together, and guard
+against regressing a connection that has already advanced to
+KSMBD_SESS_RELEASING on its own (for example, if the handler exited
+its receive loop for an unrelated reason between teardown steps).
+
+When the pin drop is the last put, release the transport and pair
+ida_destroy(&target->async_ida) with the ida_init() done in
+ksmbd_conn_alloc(), so stop_sessions() retiring a connection on its
+own does not leak the xarray backing of the embedded async_ida.
+
+The outer retry with msleep() is kept to wait for handler threads to
+reach ksmbd_conn_free() and drain the hash.
+
+Observed with an instrumented build that logs one line per visit and
+widens the unlocked window before ->shutdown() by 200 ms, under
+five concurrent cifs mounts (nosharesock, one connection each):
+
+  * Current code: the same connection address is revisited many
+    times during a single stop_sessions() call and ->shutdown() is
+    invoked well beyond the number of live connections before the
+    hash finally drains.
+
+  * Rewritten code: each live connection produces exactly one
+    ->shutdown() call; the function returns as soon as the hash is
+    empty.
+
+Functional teardown via `ksmbd.control --shutdown` with the same
+five mounts completes cleanly on the rewritten path.
+
+Performance is observably unchanged.  Tearing down N concurrent
+nosharesock cifs connections with `ksmbd.control --shutdown` +
+`rmmod ksmbd` takes essentially the same wall time before and after
+the rewrite:
+
+    N        before        after
+    10       4.93s         5.34s
+    30       7.34s         7.03s
+    50       7.31s         7.01s     (3-run avg: 7.04s vs 7.25s)
+   100       6.98s         6.78s
+   200       6.77s         6.89s
+
+and the number of ->shutdown() calls equals the number of live
+connections on both paths when the race is not widened.  The
+teardown is dominated by the msleep(100)-based outer retry waiting
+for handler threads to run ksmbd_conn_free(), not by the iteration
+itself; the restartable loop's worst-case O(N^2) visit cost is in
+the microseconds even at N=200 and sits far below the msleep(100)
+granularity.
+
+Applied alone on top of ksmbd-for-next-next, this patch does not
+introduce a new leak site.  Under the same reproducer (10x
+concurrent-holders + ss -K + ksmbd.control --shutdown + rmmod), the
+tree still shows the pre-existing per-connection transport leak
+count that arises when the last refcount drop lands in one of
+ksmbd_conn_r_count_dec(), __free_opinfo() or session_fd_check() -
+all of which end with a bare kfree() today.  kmemleak backtraces
+for the unreferenced objects point into the TCP accept path
+(sk_clone -> inet_csk_clone_lock, sock_alloc_inode) and none
+involve stop_sessions().  Plugging those bare-kfree sites is the
+responsibility of the follow-up patch.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260413190601.21993-1-devnexen@gmail.com
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/tracepoint.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/connection.c |   46 +++++++++++++++++++++++++++++++++++++--------
+ fs/smb/server/connection.h |    1 
+ 2 files changed, 39 insertions(+), 8 deletions(-)
 
---- a/kernel/tracepoint.c
-+++ b/kernel/tracepoint.c
-@@ -291,6 +291,8 @@ static int tracepoint_add_func(struct tr
- 			lockdep_is_held(&tracepoints_mutex));
- 	old = func_add(&tp_funcs, func, prio);
- 	if (IS_ERR(old)) {
-+		if (tp->ext && tp->ext->unregfunc && !static_key_enabled(&tp->key))
-+			tp->ext->unregfunc();
- 		WARN_ON_ONCE(warn && PTR_ERR(old) != -ENOMEM);
- 		return PTR_ERR(old);
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -535,24 +535,54 @@ out:
+ 
+ static void stop_sessions(void)
+ {
+-	struct ksmbd_conn *conn;
++	struct ksmbd_conn *conn, *target;
+ 	struct ksmbd_transport *t;
++	bool any;
+ 	int bkt;
+ 
++	/*
++	 * Serialised via init_lock; no concurrent stop_sessions() can
++	 * touch conn->stop_called, so writing it under the read lock is
++	 * safe.
++	 */
+ again:
++	target = NULL;
++	any = false;
+ 	down_read(&conn_list_lock);
+ 	hash_for_each(conn_list, bkt, conn, hlist) {
+-		t = conn->transport;
+-		ksmbd_conn_set_exiting(conn);
+-		if (t->ops->shutdown) {
+-			up_read(&conn_list_lock);
++		any = true;
++		if (conn->stop_called)
++			continue;
++		atomic_inc(&conn->refcnt);
++		conn->stop_called = true;
++		/*
++		 * Mark the connection EXITING while still holding the
++		 * read lock so the selection and the status transition
++		 * happen together.  Do not regress a connection that has
++		 * already advanced to RELEASING on its own (e.g. the
++		 * handler exited its receive loop for an unrelated
++		 * reason).
++		 */
++		if (READ_ONCE(conn->status) != KSMBD_SESS_RELEASING)
++			ksmbd_conn_set_exiting(conn);
++		target = conn;
++		break;
++	}
++	up_read(&conn_list_lock);
++
++	if (target) {
++		t = target->transport;
++		if (t->ops->shutdown)
+ 			t->ops->shutdown(t);
+-			down_read(&conn_list_lock);
++		if (atomic_dec_and_test(&target->refcnt)) {
++			ida_destroy(&target->async_ida);
++			t->ops->free_transport(t);
++			kfree(target);
+ 		}
++		goto again;
  	}
+-	up_read(&conn_list_lock);
+ 
+-	if (!hash_empty(conn_list)) {
++	if (any) {
+ 		msleep(100);
+ 		goto again;
+ 	}
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -49,6 +49,7 @@ struct ksmbd_conn {
+ 	struct mutex			srv_mutex;
+ 	int				status;
+ 	unsigned int			cli_cap;
++	bool				stop_called;
+ 	union {
+ 		__be32			inet_addr;
+ #if IS_ENABLED(CONFIG_IPV6)
 
 
 
