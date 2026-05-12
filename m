@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246095-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCDZOf9yA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:35:43 +0200
+	id sH9bFd9rA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246095-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70902527D1E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:35:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6614526B55
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 588843131EE2
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:04:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EAD0E3169D91
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC47C356741;
-	Tue, 12 May 2026 18:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FEE3D45FC;
+	Tue, 12 May 2026 17:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcxbQMF5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmS7u3QT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F86436604C;
-	Tue, 12 May 2026 18:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0822D7BF;
+	Tue, 12 May 2026 17:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609061; cv=none; b=R3LexJnB7wsRM8cJRkDrIj/m3NornG7UxZpmgyitqE1uesN1j9YMxt5eTH/9EY6+/YnhpKMMRmYSbPNGQE4tuyGaWGOd7nEiwsR/Fv/xwELetRWzpdPal1C4udYXKBIqC7Py10MbLyHjrgchMbHnjwB4fveRxZEzW4BuE8ndCjU=
+	t=1778608345; cv=none; b=br8Zo9eXZ7/vtoBvEXEiR7u6WmhQOevAWsXCkPl4obYDoevwvqNF/NsCj6UN/brVMzcY8BQYIYqBEgfPv2AMzfBjq78/P5QA98H/jYVbJd6S0jF0LqkdeMEpfY96V0kDRETwETbNzA/VsrIKm598lvhTt9zVWNJWTdxMQsOUu+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609061; c=relaxed/simple;
-	bh=mN7O6YslnUKKuiPO6sKnZZevCIFNsxJnKz35wPUgPeM=;
+	s=arc-20240116; t=1778608345; c=relaxed/simple;
+	bh=OvIUHcW2tXFlVJTiVeA7cJp1J6i8XX6qNbtK+PZ+d2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lJNjZxVqFe5dGyKpuHGGvILKjgvKnlK7m9uDDUccaQootq1WVCD+Z3mfUJBa3en7f5HUZjGLNklJO7MXakMTBjVyj0l2bJpgpROaPFd/uZk0ho2Oi9Hmvqd8G9uJVyeDvQdnkSBvcvx2XpxkSPjrcY8ec7KkdF+M5lmkl9E013s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcxbQMF5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D421C2BCC7;
-	Tue, 12 May 2026 18:04:21 +0000 (UTC)
+	 MIME-Version; b=lJlFfgPSWz9KhW0dxt47/s76tFuEZLvaDXW/swu9VbzgN2A8RRzHmEbmqhymM10Hf++QOpkCwRvyyyo7EfNSuiWYWw+1L0oHcjzhctoXWNyPF6nesoNxaCzDDYLkdP0yr/cuKC5wGpvh8WFolctLxMV9bITbLOAnFinVAJyC3Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmS7u3QT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A35C2BCB0;
+	Tue, 12 May 2026 17:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609061;
-	bh=mN7O6YslnUKKuiPO6sKnZZevCIFNsxJnKz35wPUgPeM=;
+	s=korg; t=1778608345;
+	bh=OvIUHcW2tXFlVJTiVeA7cJp1J6i8XX6qNbtK+PZ+d2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PcxbQMF5qtoTjj3vbm2PUdP+Aoz5c7RdYMd91f1IwUDeSPDCOdMA8jFHDH0DO8bIH
-	 7bSD6aqqT0hleyu/anearx2pNxZ7Kt6MRL1DauCQ6Gde/nn17hS1/mFxEkMdo1Ao9T
-	 zddfhK3K1WH3Mj2o0cY7dsSZu11kAkDBYtdZyVqc=
+	b=wmS7u3QTWjIFf/zwG25JM0UDGxzwrL4IcAT5DEZ/oPO5eFf7cToUidGCHg8qrekSM
+	 Ow0K9niYk870xRa5EFgonXM0a8TPWEiRzDv5j5EnESpc/uDiX3W97eUPmtnLTY6g0k
+	 LpS6quaUPW5pSw1dVwfhTX5Rvcu854z5+8gWb2DY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 050/307] ALSA: seq: Fix UMP group 16 filtering
+	stable <stable@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH 6.18 044/270] USB: omap_udc: DMA: Dont enable burst 4 mode
 Date: Tue, 12 May 2026 19:37:25 +0200
-Message-ID: <20260512173941.179123927@linuxfoundation.org>
+Message-ID: <20260512173939.381275918@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 70902527D1E
+X-Rspamd-Queue-Id: B6614526B55
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246374-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246095-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iki.fi:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-commit 92429ca999db99febced82f23362a71b2ba4c1d8 upstream.
+commit 3f91484f6c13c434bd573ca6b6779c26adb0ddab upstream.
 
-The sequencer UAPI defines group_filter as an unsigned int bitmap.
-Bit 0 filters groupless messages and bits 1-16 filter UMP groups 1-16.
+Commit 65111084c63d7 ("USB: more omap_udc updates (dma and omap1710)")
+added setting for DMA burst 4 mode. But I think this should be undone for
+two reasons:
 
-The internal snd_seq_client storage is only unsigned short, so bit 16
-is truncated when userspace sets the filter. The same truncation affects
-the automatic UMP client filter used to avoid delivery to inactive
-groups, so events for group 16 cannot be filtered.
+- It breaks DMA on 15xx boards - transfers just silently stall.
 
-Store the internal bitmap as unsigned int and keep both userspace-provided
-and automatically generated values limited to the defined UAPI bits.
+- On newer OMAP1 boards, like Nokia 770 (omap1710), there is no measurable
+performance impact when testing TCP throughput with g_ether with large
+15000 byte MTU size.
 
-Fixes: d2b706077792 ("ALSA: seq: Add UMP group filter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260506-alsa-seq-ump-group16-filter-v1-1-b75160bf6993@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+It's also worth noting that when the original change was made, the
+OMAP_DMA_DATA_BURST_4 handling in arch/arm/plat-omap/dma.c was broken, and
+actually resulted in the same as the OMAP_DMA_DATA_BURST_DIS i.e. burst
+disabled. This was fixed not until a couple kernel releases later in an
+unrelated commit 1a8bfa1eb998a ("[ARM] 3142/1: OMAP 2/5: Update files
+common to omap1 and omap2").
+
+So based on this it seems there was never really a very good reason to
+enable this burst mode in omap_udc, so remove it now to allow 15xx DMA
+to work again (it provides 2x throughput compared to PIO mode).
+
+Fixes: 65111084c63d ("[PATCH] USB: more omap_udc updates (dma and omap1710)")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Link: https://patch.msgid.link/ad06qHLclWHeSGnV@darkstar.musicnaut.iki.fi
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/seq/seq_clientmgr.c  |    2 +-
- sound/core/seq/seq_clientmgr.h  |    5 ++++-
- sound/core/seq/seq_ump_client.c |    2 +-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/udc/omap_udc.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/sound/core/seq/seq_clientmgr.c
-+++ b/sound/core/seq/seq_clientmgr.c
-@@ -1253,7 +1253,7 @@ static int snd_seq_ioctl_set_client_info
- 	if (client->user_pversion >= SNDRV_PROTOCOL_VERSION(1, 0, 3))
- 		client->midi_version = client_info->midi_version;
- 	memcpy(client->event_filter, client_info->event_filter, 32);
--	client->group_filter = client_info->group_filter;
-+	client->group_filter = client_info->group_filter & SND_SEQ_GROUP_FILTER_MASK;
- 
- 	/* notify the change */
- 	snd_seq_system_client_ev_client_change(client->number);
---- a/sound/core/seq/seq_clientmgr.h
-+++ b/sound/core/seq/seq_clientmgr.h
-@@ -14,6 +14,9 @@
- 
- /* client manager */
- 
-+#define SND_SEQ_GROUP_FILTER_MASK	GENMASK(SNDRV_UMP_MAX_GROUPS, 0)
-+#define SND_SEQ_GROUP_FILTER_GROUPS	GENMASK(SNDRV_UMP_MAX_GROUPS, 1)
-+
- struct snd_seq_user_client {
- 	struct file *file;	/* file struct of client */
- 	/* ... */
-@@ -40,7 +43,7 @@ struct snd_seq_client {
- 	int number;		/* client number */
- 	unsigned int filter;	/* filter flags */
- 	DECLARE_BITMAP(event_filter, 256);
--	unsigned short group_filter;
-+	unsigned int group_filter;
- 	snd_use_lock_t use_lock;
- 	int event_lost;
- 	/* ports */
---- a/sound/core/seq/seq_ump_client.c
-+++ b/sound/core/seq/seq_ump_client.c
-@@ -369,7 +369,7 @@ static void setup_client_group_filter(st
- 	cptr = snd_seq_kernel_client_get(client->seq_client);
- 	if (!cptr)
- 		return;
--	filter = ~(1U << 0); /* always allow groupless messages */
-+	filter = SND_SEQ_GROUP_FILTER_GROUPS; /* always allow groupless messages */
- 	for (p = 0; p < SNDRV_UMP_MAX_GROUPS; p++) {
- 		if (client->ump->groups[p].active)
- 			filter &= ~(1U << (p + 1));
+--- a/drivers/usb/gadget/udc/omap_udc.c
++++ b/drivers/usb/gadget/udc/omap_udc.c
+@@ -733,8 +733,6 @@ static void dma_channel_claim(struct oma
+ 		if (status == 0) {
+ 			omap_writew(reg, UDC_TXDMA_CFG);
+ 			/* EMIFF or SDRC */
+-			omap_set_dma_src_burst_mode(ep->lch,
+-						OMAP_DMA_DATA_BURST_4);
+ 			omap_set_dma_src_data_pack(ep->lch, 1);
+ 			/* TIPB */
+ 			omap_set_dma_dest_params(ep->lch,
+@@ -756,8 +754,6 @@ static void dma_channel_claim(struct oma
+ 				UDC_DATA_DMA,
+ 				0, 0);
+ 			/* EMIFF or SDRC */
+-			omap_set_dma_dest_burst_mode(ep->lch,
+-						OMAP_DMA_DATA_BURST_4);
+ 			omap_set_dma_dest_data_pack(ep->lch, 1);
+ 		}
+ 	}
 
 
 
