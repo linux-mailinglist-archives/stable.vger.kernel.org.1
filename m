@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-246041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NF1I8ZtA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:26 +0200
+	id 0DQlAzBwA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DF65270D5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 711515277D9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:23:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86631305662D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B053318575E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000EA3955D8;
-	Tue, 12 May 2026 17:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8612F36B043;
+	Tue, 12 May 2026 18:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MC/hdCwR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dnvg1YJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E263955DC;
-	Tue, 12 May 2026 17:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4894017557E;
+	Tue, 12 May 2026 18:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608206; cv=none; b=oBFmn1Jtv8PEqM0l+hFt41RLiSN/Gwi5EaTUkYkrEeg8pAagMcPm1o/dfUeGHAeVZw1RpBgt2cHNn1j+v7x4Feq2z9Y+4SJk9AbRNDZS/afqAJTkPhM2o+Dz3jM24N1+IdH27Qv5cHZXD/lqOCW7a+Psl5VofN4FuEzKCnHmi20=
+	t=1778609687; cv=none; b=PnLITsVpLyOxdTpeyQ9PdKm0R9MFfYC85fY+9XrzASzuOMPPxQhK8dLPdk/BkL9ra5GbgeKqSQjf6iZYSujKaI57UUN0DtTRDUuShcq32auT2/16E3eyANQ6yj0OuNO9uChwKX4TCaRcL5Wnf6nuZP7ki7jbu2iH/p765wVEPq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608206; c=relaxed/simple;
-	bh=idLBVUBklCttT20jFIysP4AKCGmlIgsdhme2w32T0VM=;
+	s=arc-20240116; t=1778609687; c=relaxed/simple;
+	bh=50+WLM3PfRmDz0m7sn/9zKWRJpSotEeu6TfTPOf9pfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aT/XwXBDY1feRnbIFfuEwrUiHVcvD196g7CO7/UyDOsnA4aJ2po3JU/rg70AmuJYV1+6A3jXh0DUf0CqCOFbERITVy+kotIq4Aimd4jKbdIAQniFBVuydW3RivkXf77QRtjOznQcAwXnH/qXe+GI3EbFZJwQCXADQbM+Q3QaLyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MC/hdCwR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187A6C2BCB0;
-	Tue, 12 May 2026 17:50:05 +0000 (UTC)
+	 MIME-Version; b=mHVNQ0auc5KoryK/tEKJFixfavrogH/1IjUeljiRZQISbXak0rhmQr63NpwXKIEgQJ7cyxQc4EgSc7j7EXWfeQKJ8OnjJv/xmea1oiDIG4qy5UMlEYOqnQSiSg/Nyu77wFBcUj9YM+5+QiFD48ym8B92fRSNMtwGYLy7L+XXUVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dnvg1YJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBAB3C2BCB0;
+	Tue, 12 May 2026 18:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608206;
-	bh=idLBVUBklCttT20jFIysP4AKCGmlIgsdhme2w32T0VM=;
+	s=korg; t=1778609687;
+	bh=50+WLM3PfRmDz0m7sn/9zKWRJpSotEeu6TfTPOf9pfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MC/hdCwRZ0FtNP4bG8m4e2vFzAKzMTJEEcvYUkEw6UcbsVDwkY4MhYD6k/Ha0ga/g
-	 D1ZEIarGfrDmcw8s1jfsXcKOO+FAyB+6EcfTDvteswaeStmUzhLfO73EVI/fSOU6jL
-	 bJjEhOUZyEf+/4udaDM6uQ7BCw1Q/EK56G4fhAaI=
+	b=Dnvg1YJlREhRHjEJxodseZY5gODPoMZ+GH0HgXqCUO8fQnRjGTPVtvbaTWK8BrSqd
+	 Vibgc7MzXZwKtCjtNdVAKHB1r0PGmROdbSZaoeYIKgDLrxMgXX5T7K0pNDECmJPzrE
+	 a5tIPW+3z7F1J6shwLbKvWEOoNbwqgasuaGUX4xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 194/206] erofs: fix unsigned underflow in z_erofs_lz4_handle_overlap()
+	Lance Tuller <lance@lance0.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 251/307] mptcp: fastclose msk when linger time is 0
 Date: Tue, 12 May 2026 19:40:46 +0200
-Message-ID: <20260512173936.979307148@linuxfoundation.org>
+Message-ID: <20260512173945.423873216@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,91 +65,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 07DF65270D5
+X-Rspamd-Queue-Id: 711515277D9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.alibaba.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-246041-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246619-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lance0.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 21e161de2dc660b1bb70ef5b156ab8e6e1cca3ab ]
+commit f14d6e9c3678a067f304abba561e0c5446c7e845 upstream.
 
-Some crafted images can have illegal (!partial_decoding &&
-m_llen < m_plen) extents, and the LZ4 inplace decompression path
-can be wrongly hit, but it cannot handle (outpages < inpages)
-properly: "outpages - inpages" wraps to a large value and
-the subsequent rq->out[] access reads past the decompressed_pages
-array.
+The SO_LINGER socket option has been supported for a while with MPTCP
+sockets [1], but it didn't cause the equivalent of a TCP reset as
+expected when enabled and its time was set to 0. This was causing some
+behavioural differences with TCP where some connections were not
+promptly stopped as expected.
 
-However, such crafted cases can correctly result in a corruption
-report in the normal LZ4 non-inplace path.
+To fix that, an extra condition is checked at close() time before
+sending an MP_FASTCLOSE, the MPTCP equivalent of a TCP reset.
 
-Let's add an additional check to fix this for backporting.
+Note that backporting up to [1] will be difficult as more changes are
+needed to be able to send MP_FASTCLOSE. It seems better to stop at [2],
+which was supposed to already imitate TCP.
 
-Reproducible image (base64-encoded gzipped blob):
+Validated with MPTCP packetdrill tests [3].
 
-H4sIAJGR12kCA+3SPUoDQRgG4MkmkkZk8QRbRFIIi9hbpEjrHQI5ghfwCN5BLCzTGtLbBI+g
-dilSJo1CnIm7GEXFxhT6PDDwfrs73/ywIQD/1ePD4r7Ou6ETsrq4mu7XcWfj++Pb58nJU/9i
-PNtbjhan04/9GtX4qVYc814WDqt6FaX5s+ZwXXeq52lndT6IuVvlblytLMvh4Gzwaf90nsvz
-2DF/21+20T/ldgp5s1jXRaN4t/8izsy/OUB6e/Qa79r+JwAAAAAAAL52vQVuGQAAAP6+my1w
-ywAAAAAAAADwu14ATsEYtgBQAAA=
-
-$ mount -t erofs -o cache_strategy=disabled foo.erofs /mnt
-$ dd if=/mnt/data of=/dev/null bs=4096 count=1
-
-Fixes: 598162d05080 ("erofs: support decompress big pcluster for lz4 backend")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Fixes: 268b12387460 ("mptcp: setsockopt: support SO_LINGER") [1]
+Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios") [2]
 Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Lance Tuller <lance@lance0.com>
+Closes: https://github.com/lance0/xfr/pull/67
+Link: https://github.com/multipath-tcp/packetdrill/pull/196 [3]
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-3-7432b7f279fa@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/decompressor.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/protocol.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -149,6 +149,7 @@ static void *z_erofs_lz4_handle_overlap(
- 	oend = rq->pageofs_out + rq->outputsize;
- 	omargin = PAGE_ALIGN(oend) - oend;
- 	if (!rq->partial_decoding && may_inplace &&
-+	    rq->outpages >= rq->inpages &&
- 	    omargin >= LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize)) {
- 		for (i = 0; i < rq->inpages; ++i)
- 			if (rq->out[rq->outpages - rq->inpages + i] !=
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3279,7 +3279,8 @@ bool __mptcp_close(struct sock *sk, long
+ 		goto cleanup;
+ 	}
+ 
+-	if (mptcp_data_avail(msk) || timeout < 0) {
++	if (mptcp_data_avail(msk) || timeout < 0 ||
++	    (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime)) {
+ 		/* If the msk has read data, or the caller explicitly ask it,
+ 		 * do the MPTCP equivalent of TCP reset, aka MPTCP fastclose
+ 		 */
 
 
 
