@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-246346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mI8QNsxrA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:00 +0200
+	id SGRuMPVqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75EC9526B14
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6795F526872
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 114A2306C298
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB28F31B28D6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105E4368D63;
-	Tue, 12 May 2026 18:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D7A3EDE55;
+	Tue, 12 May 2026 17:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvPAMzu2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DADMK2SG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F6850276;
-	Tue, 12 May 2026 18:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D0B3EDE4C;
+	Tue, 12 May 2026 17:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608989; cv=none; b=BO5i3EZ+pJiKzeWa8R660mRgqXYf2QvAjh8WTVPZUnQOuM6FqA+Uluhs2INzb362LSWGEvdfHthSi282j/KARn85zpnlttZe1MWHAjWO7DFZ7zHCDhQGDGysujljatM0+4XCJstbhJyc7U/OVMqborAf6E/uC+tLN3oebEu3HOg=
+	t=1778608276; cv=none; b=SPGcmIWOWm7cv6M+LETZSV5aotB0jqWfACzzU/AkWTgjykBX4mFyhQp5+x8PAPGKtIT9bidUF5A3Tw2ml8gECwRChnDbgVh8Gxrg9UtXCO9jAQKnAuBxev1hZhE3GThcZ4Pmzi3u1LvmTxg5j7FIU6ItEEg3M3je3rHQz1htV10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608989; c=relaxed/simple;
-	bh=Kvp+rxm86rkLoYphZHI6dojFqZ+hniCh4Y3N6NNlr4c=;
+	s=arc-20240116; t=1778608276; c=relaxed/simple;
+	bh=HAck93cKflH2lUC/fkyrjpxsmlH3cmLIZWWT/8pMzI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ky8/UOUN1KF6phLClQfPWwt9qqBbIn91TZlp47YM82u0tleIFPknXX3f0YyUcGm1AVwA6N8V4d9D6SHKgira4I6P0MQLhV1G5xDxhCTgFqIg/vi4HG0KESLR4AJj++SuRoCz4SenI6vwvC9neNQYJe7Rz5AN1m3tULrcBfYDS6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvPAMzu2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57708C2BCB0;
-	Tue, 12 May 2026 18:03:09 +0000 (UTC)
+	 MIME-Version; b=TFqTn+akvKcUehetXynB8GrHVhEjmB0NaBwdHdsoyjVfxyGaZioWIXQV3qt0UBhlSejnGZnULfwwx01FvVq+MpRq7DDl4vdOfyhGzuKnq9V79WUwez7yYqTwr6JZYe/d03GwxeXtzpOUy4XJ5omXqb5uQ1imek8Z0QHYCtUYMUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DADMK2SG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64173C2BCB0;
+	Tue, 12 May 2026 17:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608989;
-	bh=Kvp+rxm86rkLoYphZHI6dojFqZ+hniCh4Y3N6NNlr4c=;
+	s=korg; t=1778608275;
+	bh=HAck93cKflH2lUC/fkyrjpxsmlH3cmLIZWWT/8pMzI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvPAMzu2zGefJ8sQmhQzP8Gp52Vi4oQkQw2d8VvfIkhxSPWMTtjHWb5x8uRl0NFiT
-	 RAJ3GfCnaCLZQaWvGRCT0iQgSj9j6Nyz9w4imkfSYldOOAie9CfQ/NA2+gNhNK2Yvr
-	 J6S89blAKPummW2YLSEYkDm080m0jVPLKFOe2QfM=
+	b=DADMK2SG48JvPMHhBUPVlWy1A/uK32ZT7g2Rl/i73vUkmkJqCDwBDJP8/zo6dUwTJ
+	 UO+9Ysx6CuLK1kQo8//pyUfEOm8B3N2MPXZ+AfwxmJADQeV6mv5rIl81Idt9zyyJ/a
+	 hfjNaDzHuRdrttI8EXSv6/Cu32+rlyoHYuhznKFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quan Zhou <quan.zhou@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 7.0 022/307] wifi: mt76: mt7925: fix AMPDU state handling in mt7925_tx_check_aggr
-Date: Tue, 12 May 2026 19:36:57 +0200
-Message-ID: <20260512173940.595941163@linuxfoundation.org>
+	Sam Edwards <CFSworks@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 017/270] ceph: fix num_ops off-by-one when crypto allocation fails
+Date: Tue, 12 May 2026 19:36:58 +0200
+Message-ID: <20260512173938.819990601@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +65,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 75EC9526B14
+X-Rspamd-Queue-Id: 6795F526872
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ibm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-246068-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246346-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,mediatek.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Sam Edwards <cfsworks@gmail.com>
 
-commit bb8e38fcdbf7290d7f0cd572d2d8fdb2b641b492 upstream.
+commit a0d9555bf9eaeba34fe6b6bb86f442fe08ba3842 upstream.
 
-Previously, the AMPDU state bit for a given TID was set before attempting
-to start a BA session, which could result in the AMPDU state being marked
-active even if ieee80211_start_tx_ba_session() failed. This patch changes
-the logic to only set the AMPDU state bit after successfully starting a BA
-session, ensuring proper synchronization between AMPDU state and BA session
-status.
+move_dirty_folio_in_page_array() may fail if the file is encrypted, the
+dirty folio is not the first in the batch, and it fails to allocate a
+bounce buffer to hold the ciphertext. When that happens,
+ceph_process_folio_batch() simply redirties the folio and flushes the
+current batch -- it can retry that folio in a future batch.
 
-This fixes potential issues with aggregation state tracking and improves
-compatibility with mac80211 BA session management.
+However, if this failed folio is not contiguous with the last folio that
+did make it into the batch, then ceph_process_folio_batch() has already
+incremented `ceph_wbc->num_ops`; because it doesn't follow through and
+add the discontiguous folio to the array, ceph_submit_write() -- which
+expects that `ceph_wbc->num_ops` accurately reflects the number of
+contiguous ranges (and therefore the required number of "write extent"
+ops) in the writeback -- will panic the kernel:
 
-Fixes: 44eb173bdd4f ("wifi: mt76: mt7925: add link handling in mt7925_txwi_free")
+    BUG_ON(ceph_wbc->op_idx + 1 != req->r_num_ops);
+
+This issue can be reproduced on affected kernels by writing to
+fscrypt-enabled CephFS file(s) with a 4KiB-written/4KiB-skipped/repeat
+pattern (total filesize should not matter) and gradually increasing the
+system's memory pressure until a bounce buffer allocation fails.
+
+Fix this crash by decrementing `ceph_wbc->num_ops` back to the correct
+value when move_dirty_folio_in_page_array() fails, but the folio already
+started counting a new (i.e. still-empty) extent.
+
+The defect corrected by this patch has existed since 2022 (see first
+`Fixes:`), but another bug blocked multi-folio encrypted writeback until
+recently (see second `Fixes:`). The second commit made it into 6.18.16,
+6.19.6, and 7.0-rc1, unmasking the panic in those versions. This patch
+therefore fixes a regression (panic) introduced by cac190c7674f.
+
 Cc: stable@vger.kernel.org
-
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Reviewed-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/d5960fbced0beaf33c30203f7f8fb91d0899c87b.1764228973.git.quan.zhou@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d55207717ded ("ceph: add encryption support to writepage and writepages")
+Fixes: cac190c7674f ("ceph: fix write storm on fscrypted files")
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mac.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/ceph/addr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-@@ -882,8 +882,10 @@ static void mt7925_tx_check_aggr(struct
- 	else
- 		mlink = &msta->deflink;
- 
--	if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state))
--		ieee80211_start_tx_ba_session(sta, tid, 0);
-+	if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state)) {
-+		if (ieee80211_start_tx_ba_session(sta, tid, 0))
-+			clear_bit(tid, &mlink->wcid.ampdu_state);
-+	}
- }
- 
- static bool
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 390f122feeaaf..3af6795cb3c15 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -1373,6 +1373,10 @@ int ceph_process_folio_batch(struct address_space *mapping,
+ 		rc = move_dirty_folio_in_page_array(mapping, wbc, ceph_wbc,
+ 				folio);
+ 		if (rc) {
++			/* Did we just begin a new contiguous op? Nevermind! */
++			if (ceph_wbc->len == 0)
++				ceph_wbc->num_ops--;
++
+ 			rc = 0;
+ 			folio_redirty_for_writepage(wbc, folio);
+ 			folio_unlock(folio);
+-- 
+2.53.0
+
 
 
 
