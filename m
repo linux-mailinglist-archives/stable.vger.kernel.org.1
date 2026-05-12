@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-245950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJIvC8NoA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:52:03 +0200
+	id WOfXFTp0A2rl5wEAu9opvQ
+	(envelope-from <stable+bounces-246488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:40:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7C15263E0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F7D527F78
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:40:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 333ED30FED4B
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D8173117D04
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0752F3E0749;
-	Tue, 12 May 2026 17:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD35133ADBA;
+	Tue, 12 May 2026 18:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QD8wox3w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xY7COuVP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B709A21FF21;
-	Tue, 12 May 2026 17:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCB5349AF5;
+	Tue, 12 May 2026 18:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607972; cv=none; b=dhHqlVqJ5+Jbul9L1T+OZv8GNyQRzbCkxCqUy2BHwpZ+MzUmTVxHhkxU6FiBRwBb+MpspmoN1iUUoWaliEPjiZ5uWD6N9Sa0FUXJAvjCf0RyQaM9dyS1+ua8EJgxOSFuRbu0BvXxpjSc1h95Ht3ndb5Guhb+gZbMkMaFzI6bZEw=
+	t=1778609355; cv=none; b=c02gmfhs0dmCY3rHRDrGt5HyhdTvq+4efxvwu70MNlOlxLdCv/nTNK4UPm1NGMyOtuflsD7fmbFaF9+urHmEn+t8x8gnJtPNJv99g/N0DSUJtxhBqbOedHsDm2iWlTvRKC6Uxb/6eQl/7jyczBXVtTmo1P16J2Dy2xl6o1BT0nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607972; c=relaxed/simple;
-	bh=QdbAjqvlJ87OURJN9XtnHPfoy2j9XUE3HKu3Pqhxg50=;
+	s=arc-20240116; t=1778609355; c=relaxed/simple;
+	bh=zloZMLQ4rDYglQ+u5T/h/2bRV/YrvtDbrlLKS0AzjzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ea9lS+z2VrNJqziOKoGADLUB3LKNxS23zYr7qxRUQkc50mOuhOxHZ8KuCq2cUy/ytxcAx3l/iH5YbDsK4frkjih17kLS9w+LnfV6hcIbJy1UvUiTqdAQIY94JVd84IrMlv9kPTsjxKtjcdNEVmuGgWhuDEy86HGYcFnWKwmk3k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QD8wox3w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D54CC2BCB0;
-	Tue, 12 May 2026 17:46:12 +0000 (UTC)
+	 MIME-Version; b=hJ+kxUkfhaKPmUjSmt59mmjJVMf0r0w7ygIAwmMGG9HybJmf5riRj0Hcz1WxPMyJmXHaIvHurNOxJPKF2YtFflbEGsAfhFmruy/1H7Upb9gBfawbooO/D3PyD+OtWLJVwNyUI4X2ZVS1RTJ9xSPHZ0O/i1Mbjq/jhCPe15jC9hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xY7COuVP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3EBC2BCB0;
+	Tue, 12 May 2026 18:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607972;
-	bh=QdbAjqvlJ87OURJN9XtnHPfoy2j9XUE3HKu3Pqhxg50=;
+	s=korg; t=1778609355;
+	bh=zloZMLQ4rDYglQ+u5T/h/2bRV/YrvtDbrlLKS0AzjzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QD8wox3wg0m+BJPZKxMwsZWg12IPwGwHs9w5FyX7h95wKi5ybMxYYQZshw9GK3jm7
-	 SfJ00p0d8A60ABlMEQXnuTKujLFIRjkuij0lM3BBsCKu91BKAHKlV/BldW9oX901Qm
-	 cx70AFlGmSyCA6MCssMt/kwB0ml9OhYtkvbYelYs=
+	b=xY7COuVP3MsdHtLchuXMJxhz7ktqWr+XTr9aWHBp4StUGPbv/G/BkMOZOhcOtyQQw
+	 c9IDydZpWxZnZXXsSf7UXScOjq5WF4AG1oxy9H1l/jhfum1kC3aYWVbis2ceqIDgfc
+	 s8+CdAVlPKfUT8jc0GJvA7vHOznSSy42ir6CQIl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhiTao Ou <hkbinbinbin@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 064/206] Bluetooth: hci_event: Fix OOB read and infinite loop in hci_le_create_big_complete_evt
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Xiao Liu <lx24@stu.ynu.edu.cn>,
+	Nan Li <tonanli66@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Allison Henderson <achender@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 7.0 121/307] net/rds: handle zerocopy send cleanup before the message is queued
 Date: Tue, 12 May 2026 19:38:36 +0200
-Message-ID: <20260512173934.199638879@linuxfoundation.org>
+Message-ID: <20260512173942.680105598@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +71,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BC7C15263E0
+X-Rspamd-Queue-Id: B7F7D527F78
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[ynu.edu.cn:email];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245950-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,stu.ynu.edu.cn,redhat.com];
+	TAGGED_FROM(0.00)[bounces-246488-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_SPAM(0.00)[0.728];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ynu.edu.cn:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Nan Li <tonanli66@gmail.com>
 
-commit 5ddb8014261137cadaf83ab5617a588d80a22586 upstream.
+commit 44b550d88b267320459d518c0743a241ab2108fa upstream.
 
-hci_le_create_big_complete_evt() iterates over BT_BOUND connections for
-a BIG handle using a while loop, accessing ev->bis_handle[i++] on each
-iteration.  However, there is no check that i stays within ev->num_bis
-before the array access.
+A zerocopy send can fail after user pages have been pinned but before
+the message is attached to the sending socket.
 
-When a controller sends a LE_Create_BIG_Complete event with fewer
-bis_handle entries than there are BT_BOUND connections for that BIG,
-or with num_bis=0, the loop reads beyond the valid bis_handle[] flex
-array into adjacent heap memory.  Since the out-of-bounds values
-typically exceed HCI_CONN_HANDLE_MAX (0x0EFF), hci_conn_set_handle()
-rejects them and the connection remains in BT_BOUND state.  The same
-connection is then found again by hci_conn_hash_lookup_big_state(),
-creating an infinite loop with hci_dev_lock held.
+The purge path currently infers zerocopy state from rm->m_rs, so an
+unqueued message can be cleaned up as if it owned normal payload pages.
+However, zerocopy ownership is really determined by the presence of
+op_mmp_znotifier, regardless of whether the message has reached the
+socket queue.
 
-Fix this by terminating the BIG if in case not all BIS could be setup
-properly.
+Capture op_mmp_znotifier up front in rds_message_purge() and use it as
+the cleanup discriminator. If the message is already associated with a
+socket, keep the existing completion path. Otherwise, drop the pinned
+page accounting directly and release the notifier before putting the
+payload pages.
 
-Fixes: a0bfde167b50 ("Bluetooth: ISO: Add support for connecting multiple BISes")
-Cc: stable@vger.kernel.org
-Signed-off-by: ZhiTao Ou <hkbinbinbin@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This keeps early send failure cleanup consistent with the zerocopy
+lifetime rules without changing the normal queued completion path.
+
+Fixes: 0cebaccef3ac ("rds: zerocopy Tx support.")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Xiao Liu <lx24@stu.ynu.edu.cn>
+Signed-off-by: Xiao Liu <lx24@stu.ynu.edu.cn>
+Signed-off-by: Nan Li <tonanli66@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/d2ea98a6313d5467bac00f7c9fef8c7acddb9258.1777550074.git.tonanli66@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |   27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ net/rds/message.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6935,9 +6935,29 @@ static void hci_le_create_big_complete_e
- 			continue;
- 		}
+--- a/net/rds/message.c
++++ b/net/rds/message.c
+@@ -131,24 +131,34 @@ static void rds_rm_zerocopy_callback(str
+  */
+ static void rds_message_purge(struct rds_message *rm)
+ {
++	struct rds_znotifier *znotifier;
+ 	unsigned long i, flags;
+-	bool zcopy = false;
++	bool zcopy;
  
-+		if (ev->num_bis <= i) {
-+			bt_dev_err(hdev,
-+				   "Not enough BIS handles for BIG 0x%2.2x",
-+				   ev->handle);
-+			ev->status = HCI_ERROR_UNSPECIFIED;
-+			hci_connect_cfm(conn, ev->status);
-+			hci_conn_del(conn);
-+			continue;
-+		}
+ 	if (unlikely(test_bit(RDS_MSG_PAGEVEC, &rm->m_flags)))
+ 		return;
+ 
+ 	spin_lock_irqsave(&rm->m_rs_lock, flags);
++	znotifier = rm->data.op_mmp_znotifier;
++	rm->data.op_mmp_znotifier = NULL;
++	zcopy = !!znotifier;
 +
- 		if (hci_conn_set_handle(conn,
--					__le16_to_cpu(ev->bis_handle[i++])))
-+					__le16_to_cpu(ev->bis_handle[i++]))) {
-+			bt_dev_err(hdev,
-+				   "Failed to set BIS handle for BIG 0x%2.2x",
-+				   ev->handle);
-+			/* Force error so BIG gets terminated as not all BIS
-+			 * could be connected.
-+			 */
-+			ev->status = HCI_ERROR_UNSPECIFIED;
-+			hci_connect_cfm(conn, ev->status);
-+			hci_conn_del(conn);
- 			continue;
-+		}
+ 	if (rm->m_rs) {
+ 		struct rds_sock *rs = rm->m_rs;
  
- 		conn->state = BT_CONNECTED;
- 		set_bit(HCI_CONN_BIG_CREATED, &conn->flags);
-@@ -6946,7 +6966,10 @@ static void hci_le_create_big_complete_e
- 		hci_iso_setup_path(conn);
+-		if (rm->data.op_mmp_znotifier) {
+-			zcopy = true;
+-			rds_rm_zerocopy_callback(rs, rm->data.op_mmp_znotifier);
++		if (znotifier) {
++			rds_rm_zerocopy_callback(rs, znotifier);
+ 			rds_wake_sk_sleep(rs);
+-			rm->data.op_mmp_znotifier = NULL;
+ 		}
+ 		sock_put(rds_rs_to_sk(rs));
+ 		rm->m_rs = NULL;
++	} else if (znotifier) {
++		/*
++		 * Zerocopy can fail before the message is queued on the
++		 * socket, so there is no rs to carry the notification.
++		 */
++		mm_unaccount_pinned_pages(&znotifier->z_mmp);
++		kfree(rds_info_from_znotifier(znotifier));
  	}
+ 	spin_unlock_irqrestore(&rm->m_rs_lock, flags);
  
--	if (!ev->status && !i)
-+	/* If there is an unexpected error or if no BISes have been connected
-+	 * for the BIG, terminate it.
-+	 */
-+	if (ev->status == HCI_ERROR_UNSPECIFIED || (!ev->status && !i))
- 		/* If no BISes have been connected for the BIG,
- 		 * terminate. This is in case all bound connections
- 		 * have been closed before the BIG creation
 
 
 
