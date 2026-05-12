@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-245923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GIvLBpoA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245923-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:49:14 +0200
+	id WIanOO5uA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 325CE5262A0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:49:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB1152742E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:18:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB41830C8A0E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:45:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 898E831351B2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79336385D94;
-	Tue, 12 May 2026 17:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA8B34DB52;
+	Tue, 12 May 2026 18:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5H0Mfxr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2uvUHNL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9543C8C7D;
-	Tue, 12 May 2026 17:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422362D060B;
+	Tue, 12 May 2026 18:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607903; cv=none; b=a1WqR7+fHDaw1sFTl2FOKoxDqCuXmyO/szeva3KV1CfbWlD5JdguOB6MmH7sKk09yACDl89pdC6+FtP2jagJlHDdN8lxdS5Z1hj546uXdWxwDRY16hNj6oBWoh3wDPp8IRy4Ij8vuMNGZTkrGpNVGr6UUI2LSxyOsJXkrUxrP5o=
+	t=1778609290; cv=none; b=a8ruR3qW9dlurqNJQn3M3/xYm6Rei0npIR/24d54/4rI2imwzMmhMwz7vjMdqlRnuB7P+26BPvgf5vvQhzT1w1W8a9uEaxglztf9GPg13AUsTie91lZJPmvEeqQbstYYwNo9GcE5idsubW3UvmzFISIUtfVmjQ+87+IL9M7JF+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607903; c=relaxed/simple;
-	bh=orfxdR1X8iC+yrgTxa5yyqqe0hOLe7CgbvVW2dil9ys=;
+	s=arc-20240116; t=1778609290; c=relaxed/simple;
+	bh=Fx9OCxhZHkLYgp57x3LfXfXsU9qdHq3CAw1m3rtSK2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XH25oL9GpdMQ9ypkcQ2NfIktJ4I/TyWi8NqC+GB/wA359L76GhgS26QtmDh1uf7hku2tyu2se7ALYkCzwiIOVoSvd7MmneL/MjeV9EY0hW8qE6kexgd0NnDkM/eCmncSl/FSPAwCV1AyxIzj/NdnV0doIncIWBV3uUQwwR1LSog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5H0Mfxr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EA2C2BCB0;
-	Tue, 12 May 2026 17:45:02 +0000 (UTC)
+	 MIME-Version; b=SETeAbdM33RDIhq8Pj14nEavdN5+kenyv+0dTnEqc/qvrQgAgu31I12P16z1pZbinLTaAqPvLh21MsGbSzOYTxOXvmNB46wbPPsoO9NL7a5xWqpN0kYL55BNbp46Y1NE+NWPQbctPwtViopjqYaKtHZnROf4E6V4BSotpbNri2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2uvUHNL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC147C2BCC7;
+	Tue, 12 May 2026 18:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607903;
-	bh=orfxdR1X8iC+yrgTxa5yyqqe0hOLe7CgbvVW2dil9ys=;
+	s=korg; t=1778609290;
+	bh=Fx9OCxhZHkLYgp57x3LfXfXsU9qdHq3CAw1m3rtSK2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5H0MfxrjZzYUMCXOUecDSqxg7Kpzgi9Hb7I4Mqws9PjtG0sIOMY7d0n/8Q6CkLoE
-	 zzReA8976RRLjW2jbV0t/3WVxDi60U2GK29+aGVhSRuwY4c5ewMPQIz5Qiw2NpnEKB
-	 L8kSh26RcO8TlfuaZRbgQg/lZq2oQOtAK3tKMf54=
+	b=f2uvUHNLlaBi02G5zXolOEQrt3lY74JId79qaVvLk7FnXVCkI9ZHhriM2/Zy4X0z/
+	 Yjqg+s90MrAYt6KbLRlnIEB3l7Hfc/ei5WOLCKgxPm+sFuCaiNBkUZXFJjXrWQFS1b
+	 zGZlB2jCidIVBh1LfBc9UwJhZ5NTQMGPggt2I3vY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 080/206] net: libwx: fix VF illegal register access
-Date: Tue, 12 May 2026 19:38:52 +0200
-Message-ID: <20260512173934.545830093@linuxfoundation.org>
+	Bharath SM <bharathsm@microsoft.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 7.0 138/307] cifs: change_conf needs to be called for session setup
+Date: Tue, 12 May 2026 19:38:53 +0200
+Message-ID: <20260512173943.041055681@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 325CE5262A0
+X-Rspamd-Queue-Id: 4EB1152742E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245923-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246463-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,53 +89,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,trustnetic.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 694de316f607fe2473d52ca0707e3918e72c1562 upstream.
+commit c208a2b95811d6e1ebae65d0d2fc13f73707f8e7 upstream.
 
-Register WX_CFG_PORT_ST is a PF restricted register. When a VF is
-initialized, attempting to read this register triggers an illegal
-register access, which lead to a system hang.
+Today we skip calling change_conf for negotiates and session setup
+requests. This can be a problem for mchan as the immediate next call
+after session setup could be due to an I/O that is made on the
+mount point. For single channel, this is not a problem as
+there will be several calls after setting up session.
 
-When the device is VF, the bus function ID can be obtained directly from
-the PCI_FUNC(pdev->devfn).
+This change enforces calling change_conf when the total credits contain
+enough for reservations for echoes and oplocks. We expect this to happen
+during the last session setup response. This way, echoes and oplocks are
+not disabled before the first request to the server. So if that first
+request is an open, it does not need to disable requesting leases.
 
-Fixes: a04ea57aae37 ("net: libwx: fix device bus LAN ID")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/4D1F4452D21DE107+20260429083743.88961-1-jiawenwu@trustnetic.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/smb/client/smb2ops.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1943,8 +1943,11 @@ int wx_sw_init(struct wx *wx)
- 	wx->oem_svid = pdev->subsystem_vendor;
- 	wx->oem_ssid = pdev->subsystem_device;
- 	wx->bus.device = PCI_SLOT(pdev->devfn);
--	wx->bus.func = FIELD_GET(WX_CFG_PORT_ST_LANID,
--				 rd32(wx, WX_CFG_PORT_ST));
-+	if (pdev->is_virtfn)
-+		wx->bus.func = PCI_FUNC(pdev->devfn);
-+	else
-+		wx->bus.func = FIELD_GET(WX_CFG_PORT_ST_LANID,
-+					 rd32(wx, WX_CFG_PORT_ST));
- 
- 	if (wx->oem_svid == PCI_VENDOR_ID_WANGXUN) {
- 		wx->subsystem_vendor_id = pdev->subsystem_vendor;
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -111,10 +111,21 @@ smb2_add_credits(struct TCP_Server_Info
+ 				      cifs_trace_rw_credits_zero_in_flight);
+ 	}
+ 	server->in_flight--;
++
++	/*
++	 * Rebalance credits when an op drains in_flight. For session setup,
++	 * do this only when the total accumulated credits are high enough (>2)
++	 * so that a newly established secondary channel can reserve credits for
++	 * echoes and oplocks. We expect this to happen at the end of the final
++	 * session setup response.
++	 */
+ 	if (server->in_flight == 0 &&
+ 	   ((optype & CIFS_OP_MASK) != CIFS_NEG_OP) &&
+ 	   ((optype & CIFS_OP_MASK) != CIFS_SESS_OP))
+ 		rc = change_conf(server);
++	else if (server->in_flight == 0 &&
++		 ((optype & CIFS_OP_MASK) == CIFS_SESS_OP) && *val > 2)
++		rc = change_conf(server);
+ 	/*
+ 	 * Sometimes server returns 0 credits on oplock break ack - we need to
+ 	 * rebalance credits in this case.
 
 
 
