@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-246585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aB/rAKFxA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246585-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:29:53 +0200
+	id wN/oMNxtA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56499527A24
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F7C527107
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBBC532E5DAE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F29E63198810
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFAE836C5A1;
-	Tue, 12 May 2026 18:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8F03C09E4;
+	Tue, 12 May 2026 17:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3Musv9r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/RlVVCC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93098365A19;
-	Tue, 12 May 2026 18:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F95B36A378;
+	Tue, 12 May 2026 17:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609602; cv=none; b=D5okLpO/U/cLqjaJx3sk1Q6t54JCL1ePh0/QOBqY68cgsw8x+9NJGtVCu4FhR2c3Q+4myjaNAADHEgoFIF4hmh+eO0qK2I060rpK1o07j+JcFsEvZLk823CoCKx2bbprkxlwG3E6/gUDIJXh3Po7fBjc8N+w0IOF9m37PxEKSlI=
+	t=1778608248; cv=none; b=hckwJP+ay90u564xL6nPzRp6/bI8sEtL5qL/zQV0H9CXHy99iOt1OQVrDdqYZbHqHb4om77Nw3vmZBSTw+cXDIRT+oqL6AK0p8Dd5cr+L9Gav7UthK0YDGVZOgIUoK8e1/OwIVcssHmvafF+pM/wV47l6TxtIl+jsheXgBEfQ3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609602; c=relaxed/simple;
-	bh=i0x38GL+LCzzp5la5g+Hdo5KnSsojajxqVWlv/GyhPQ=;
+	s=arc-20240116; t=1778608248; c=relaxed/simple;
+	bh=2z4qQX5f/sEuwZeMk1ptIy+X9kAyUmuHkMdZJ5c2WxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKsT7tCASREFsXj6/4mOm4yxG7c1jfdkW+icbA01boy8tiBBD0HGbVQKGzqlnxSTvAxEIMCjXEwgj77qGOqtniYRwY6aHhUNBa1vUdRRlWm8vw/zZ9OiUSm2as6Ij4UuaGUIkblwT00VbRU/YILFrSlgBsvftqdMaPiDofCqzvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3Musv9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D8CC2BCB0;
-	Tue, 12 May 2026 18:13:22 +0000 (UTC)
+	 MIME-Version; b=qFWKCVjrxHyEJvvY1aGXjtX0lP3F/M2Nuo2ObatVMSoq0DOX+E7hEFenmEnK1+AF1ZEi/Q57OZP8TLO80q1IYMtcZh8X5jlCqdA0UvwZmHaFETqQlUfQB05BDkM/EdJ9bsHeYeqjNrWoDukpfoJ69IjKXrasjhzZ6G8KWEtMcyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/RlVVCC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3776DC2BCB0;
+	Tue, 12 May 2026 17:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609602;
-	bh=i0x38GL+LCzzp5la5g+Hdo5KnSsojajxqVWlv/GyhPQ=;
+	s=korg; t=1778608247;
+	bh=2z4qQX5f/sEuwZeMk1ptIy+X9kAyUmuHkMdZJ5c2WxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z3Musv9rYnx5ymjEUiUC0L6q7tSfoFMM6A3ACjn+6fJZnnmzqN29YPTtzhJAXL+pX
-	 +ta6y95Zl71OLSkpd72uIk2SagnDUoRVaWGogAYuoX5Qkf1e/DppDZq4cRhxJCHV5U
-	 Lz/NBghfweSSWeKGdxE0rKfhyGKqg5yk+z7fJDFs=
+	b=L/RlVVCC0EnSPr9WjTvHSBGRB9FSUGCC7vfGtSDXv3/qImQQwU03EQTt4UiOv1Cbf
+	 k5728mpC6tPLBZeBiHn6pmA5UcG69/nvQz6VvaT0twPxMRF6vcAeRel9Q54UdABYWf
+	 Wct6pwRYZYicnKvUntVe1kWATOByotsFde46u05A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 260/307] mptcp: pm: kernel: correctly retransmit ADD_ADDR ID 0
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	David Carlier <devnexen@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 203/206] tracepoint: balance regfunc() on func_add() failure in tracepoint_add_func()
 Date: Tue, 12 May 2026 19:40:55 +0200
-Message-ID: <20260512173945.614525452@linuxfoundation.org>
+Message-ID: <20260512173937.175438691@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +66,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 56499527A24
+X-Rspamd-Queue-Id: B6F7C527107
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -75,91 +77,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,efficios.com,gmail.com,goodmis.org];
+	TAGGED_FROM(0.00)[bounces-246057-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246585-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,addr.id:url]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,efficios.com:email,goodmis.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: David Carlier <devnexen@gmail.com>
 
-commit b12014d2d36eaed4e4bec5f1ac7e91110eeb100d upstream.
+[ Upstream commit fad217e16fded7f3c09f8637b0f6a224d58b5f2e ]
 
-When adding the ADD_ADDR to the list, the address including the IP, port
-and ID are copied. On the other hand, when the endpoint corresponds to
-the one from the initial subflow, the ID is set to 0, as specified by
-the MPTCP protocol.
+When a tracepoint goes through the 0 -> 1 transition, tracepoint_add_func()
+invokes the subsystem's ext->regfunc() before attempting to install the
+new probe via func_add(). If func_add() then fails (for example, when
+allocate_probes() cannot allocate a new probe array under memory pressure
+and returns -ENOMEM), the function returns the error without calling the
+matching ext->unregfunc(), leaving the side effects of regfunc() behind
+with no installed probe to justify them.
 
-The issue is that the ID was reset after having copied the ID in the
-ADD_ADDR entry. So the retransmission was done, but using a different ID
-than the initial one.
+For syscall tracepoints this is particularly unpleasant: syscall_regfunc()
+bumps sys_tracepoint_refcount and sets SYSCALL_TRACEPOINT on every task.
+After a leaked failure, the refcount is stuck at a non-zero value with no
+consumer, and every task continues paying the syscall trace entry/exit
+overhead until reboot. Other subsystems providing regfunc()/unregfunc()
+pairs exhibit similarly scoped persistent state.
 
-Fixes: 8b8ed1b429f8 ("mptcp: pm: reuse ID 0 after delete and re-add")
+Mirror the existing 1 -> 0 cleanup and call ext->unregfunc() in the
+func_add() error path, gated on the same condition used there so the
+unwind is symmetric with the registration.
+
+Fixes: 8cf868affdc4 ("tracing: Have the reg function allow to fail")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-1-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260413190601.21993-1-devnexen@gmail.com
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[ changed `tp->ext->unregfunc` to `tp->unregfunc` to match older struct layout ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_kernel.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ kernel/tracepoint.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mptcp/pm_kernel.c
-+++ b/net/mptcp/pm_kernel.c
-@@ -347,6 +347,8 @@ static void mptcp_pm_create_subflow_or_s
- 
- 	/* check first for announce */
- 	if (msk->pm.add_addr_signaled < endp_signal_max) {
-+		u8 endp_id;
-+
- 		/* due to racing events on both ends we can reach here while
- 		 * previous add address is still running: if we invoke now
- 		 * mptcp_pm_announce_addr(), that will fail and the
-@@ -360,19 +362,20 @@ static void mptcp_pm_create_subflow_or_s
- 		if (!select_signal_address(pernet, msk, &local))
- 			goto subflow;
- 
-+		/* Special case for ID0: set the correct ID */
-+		endp_id = local.addr.id;
-+		if (endp_id == msk->mpc_endpoint_id)
-+			local.addr.id = 0;
-+
- 		/* If the alloc fails, we are on memory pressure, not worth
- 		 * continuing, and trying to create subflows.
- 		 */
- 		if (!mptcp_pm_alloc_anno_list(msk, &local.addr))
- 			return;
- 
--		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
-+		__clear_bit(endp_id, msk->pm.id_avail_bitmap);
- 		msk->pm.add_addr_signaled++;
- 
--		/* Special case for ID0: set the correct ID */
--		if (local.addr.id == msk->mpc_endpoint_id)
--			local.addr.id = 0;
--
- 		mptcp_pm_announce_addr(msk, &local.addr, false);
- 		mptcp_pm_addr_send_ack(msk);
- 
+--- a/kernel/tracepoint.c
++++ b/kernel/tracepoint.c
+@@ -337,6 +337,8 @@ static int tracepoint_add_func(struct tr
+ 			lockdep_is_held(&tracepoints_mutex));
+ 	old = func_add(&tp_funcs, func, prio);
+ 	if (IS_ERR(old)) {
++		if (tp->unregfunc && !static_key_enabled(&tp->key))
++			tp->unregfunc();
+ 		WARN_ON_ONCE(warn && PTR_ERR(old) != -ENOMEM);
+ 		return PTR_ERR(old);
+ 	}
 
 
 
