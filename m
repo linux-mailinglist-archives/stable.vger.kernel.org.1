@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-246540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246003-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LAFDhVxA2q+5wEAu9opvQ
-	(envelope-from <stable+bounces-246540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:27:33 +0200
+	id +NaUKKNqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246003-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B33527976
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:27:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A4B52676D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6FCE832B039E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:11:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 567FC3089D15
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBA6349AF5;
-	Tue, 12 May 2026 18:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D321C3C0A16;
+	Tue, 12 May 2026 17:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDeNJZ8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGdHiYNg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2439336891;
-	Tue, 12 May 2026 18:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968753C09E0;
+	Tue, 12 May 2026 17:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609489; cv=none; b=MOd8RPb3uMH2gk33YxuZ3VauSH51LCjDVWla7EaV339+2wVwr8bAtLA15Spfqsf+0UAimkcxk6u05HqEOaho+uRTOY6dN/HoOQs6wSD0aXL6hM3Zx6MWQlQYDVxEu2uq+221rxQlETPKzGXVRQPhCmAXinBuP5sa+4zDelAUn3s=
+	t=1778608108; cv=none; b=nsc5vfnNxhamxYl1O0hemTsZ7ieR1NwV4xORCcoOSD4Db2MXkjz0JNA/RE1bVTYtfKSC15fMxFtMHZuAzG4TtNsWZYlS3AXLFTUwPxREn7Mb2JEpf2hcD0PRl4ygbjfxthxf29CpqiHcW/o7tM7feBuWxVcg5atO7Mk4VJmCjJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609489; c=relaxed/simple;
-	bh=s+FFLoxTZyV4KfClqb7sSGrduV7aMfsyttxhQ3UKPT8=;
+	s=arc-20240116; t=1778608108; c=relaxed/simple;
+	bh=wez/caaltFpaZolBDJ2yPxZdtFADzcqSpqW8ErzW33c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4RokHhUNwElpmsGhN7V8g9bmPVxqDzU1rY92PSdW5Eeo8T5Uue4tl7DeH3Y7eIcCpw4KEIanj+SMZbOOQL27mTl0WHpTWueZqBzzVmNb55vGBcxF9cMpBah67CRPDXsUQ9wRBrhS0S0nzI0Hex7Je33V2DCduofkc1w2LgUObo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDeNJZ8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F60C2BCB0;
-	Tue, 12 May 2026 18:11:28 +0000 (UTC)
+	 MIME-Version; b=Gy58YMJ5e7w5XVRxu3dNp4yDO0tC4xKETqBhnE5JHzfkQbgQ/vXT7ilKLUHe5AYLyFPD12o2VL6EO3lhHtZjfQNOVscT7BqZDOTF0oY9mU8Vae6WW9af9X5urnawOKt4gw2SB1qSAY7B5p92kazc9opEJXMgM6IK9xsFCcbMIQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGdHiYNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D55DC2BCB0;
+	Tue, 12 May 2026 17:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609489;
-	bh=s+FFLoxTZyV4KfClqb7sSGrduV7aMfsyttxhQ3UKPT8=;
+	s=korg; t=1778608108;
+	bh=wez/caaltFpaZolBDJ2yPxZdtFADzcqSpqW8ErzW33c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDeNJZ8tKUANYMEaet8yJYLXtnOSZk9JMt+nq/rQ9dNSbI1hNAQVwNTy0yWXao3yY
-	 HLLw569UZ/nsStIYzn/KvQFS3LkcuiWPVAMzzqXBtNe1H3+fD4iYg1+dMrKndE4iEQ
-	 E9G3zHSLBme3lFbOMTbPRo3mNreoBYqS01OWh1oY=
+	b=JGdHiYNgtt4J6wK4LOaeu/4RMf5FImp4O6ygrPENRBslXa+bUt5AWfHaAF74pxMqM
+	 LwfwVJckaM33/4F5HE4mjsdt7K/Ke8wFUjg3lLLLtgfzns0m1TaRRA5oStlHPsGg42
+	 5fNAOyA3ZFvAhDumgb/wrEtnYnSTs8TpGe4sQoaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Farrah Chen <farrah.chen@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH 7.0 216/307] KVM: x86: Do IRR scan in __kvm_apic_update_irr even if PIR is empty
+	Lance Tuller <lance@lance0.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 159/206] mptcp: fastclose msk when linger time is 0
 Date: Tue, 12 May 2026 19:40:11 +0200
-Message-ID: <20260512173944.674439833@linuxfoundation.org>
+Message-ID: <20260512173936.230616460@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,13 +65,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C9B33527976
+X-Rspamd-Queue-Id: A1A4B52676D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246540-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246003-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,104 +88,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lance0.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 33fd0ccd2590b470b65adcca288615ad3b5e3e06 upstream.
+commit f14d6e9c3678a067f304abba561e0c5446c7e845 upstream.
 
-Fall back to apic_find_highest_vector() when PID.ON is set but PIR
-turns out to be empty, to correctly report the highest pending interrupt
-from the existing IRR.
+The SO_LINGER socket option has been supported for a while with MPTCP
+sockets [1], but it didn't cause the equivalent of a TCP reset as
+expected when enabled and its time was set to 0. This was causing some
+behavioural differences with TCP where some connections were not
+promptly stopped as expected.
 
-In a nested VM stress test, the following WARNING fires in
-vmx_check_nested_events() when kvm_cpu_has_interrupt() reports a pending
-interrupt but the subsequent kvm_apic_has_interrupt() (which invokes
-vmx_sync_pir_to_irr() again) returns -1:
+To fix that, an extra condition is checked at close() time before
+sending an MP_FASTCLOSE, the MPTCP equivalent of a TCP reset.
 
-  WARNING: CPU: 99 PID: 57767 at arch/x86/kvm/vmx/nested.c:4449 vmx_check_nested_events+0x6bf/0x6e0 [kvm_intel]
-  Call Trace:
-   kvm_check_and_inject_events
-   vcpu_enter_guest.constprop.0
-   vcpu_run
-   kvm_arch_vcpu_ioctl_run
-   kvm_vcpu_ioctl
-   __x64_sys_ioctl
-   do_syscall_64
-   entry_SYSCALL_64_after_hwframe
+Note that backporting up to [1] will be difficult as more changes are
+needed to be able to send MP_FASTCLOSE. It seems better to stop at [2],
+which was supposed to already imitate TCP.
 
-The root cause is a race between vmx_sync_pir_to_irr() on the target vCPU
-and __vmx_deliver_posted_interrupt() on a sender vCPU.  The sender
-performs two individually-atomic operations that are not a single
-transaction:
+Validated with MPTCP packetdrill tests [3].
 
-  1. pi_test_and_set_pir(vector)  -- sets the PIR bit
-  2. pi_test_and_set_on()         -- sets PID.ON
-
-The following interleaving triggers the bug:
-
-  Sender vCPU (IPI):              Target vCPU (1st sync_pir_to_irr):
-  B1: set PIR[vector]
-                                  A1: pi_clear_on()
-                                  A2: pi_harvest_pir() -> sees B1 bit
-                                  A3: xchg() -> consumes bit, PIR=0
-                                      (1st sync returns correct max_irr)
-  B2: set PID.ON = 1
-
-                                  Target vCPU (2nd sync_pir_to_irr):
-                                  C1: pi_test_on() -> TRUE (from B2)
-                                  C2: pi_clear_on() -> ON=0
-                                  C3: pi_harvest_pir() -> PIR empty
-                                  C4: *max_irr = -1, early return
-                                      IRR NOT SCANNED
-
-The interrupt is not lost (it resides in the IRR from the first sync and
-is recovered on the next vcpu_enter_guest() iteration), but the incorrect
-max_irr causes a spurious WARNING and a wasted L2 VM-Enter/VM-Exit cycle.
-
-Fixes: b41f8638b9d3 ("KVM: VMX: Isolate pure loads from atomic XCHG when processing PIR")
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Analyzed-by: Chenyi Qiang <chenyi.qiang@intel.com>
+Fixes: 268b12387460 ("mptcp: setsockopt: support SO_LINGER") [1]
+Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios") [2]
 Cc: stable@vger.kernel.org
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/kvm/20260428070349.1633238-1-chenyi.qiang@intel.com/T/
-Link: https://patch.msgid.link/20260503201703.108231-2-pbonzini@redhat.com/
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reported-by: Lance Tuller <lance@lance0.com>
+Closes: https://github.com/lance0/xfr/pull/67
+Link: https://github.com/multipath-tcp/packetdrill/pull/196 [3]
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-3-7432b7f279fa@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -669,12 +669,14 @@ bool __kvm_apic_update_irr(unsigned long
- 	u32 irr_val, prev_irr_val;
- 	int max_updated_irr;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3219,7 +3219,8 @@ bool __mptcp_close(struct sock *sk, long
+ 		goto cleanup;
+ 	}
  
-+	if (!pi_harvest_pir(pir, pir_vals)) {
-+		*max_irr = apic_find_highest_vector(regs + APIC_IRR);
-+		return false;
-+	}
-+
- 	max_updated_irr = -1;
- 	*max_irr = -1;
- 
--	if (!pi_harvest_pir(pir, pir_vals))
--		return false;
--
- 	for (i = vec = 0; i <= 7; i++, vec += 32) {
- 		u32 *p_irr = (u32 *)(regs + APIC_IRR + i * 0x10);
- 
+-	if (mptcp_data_avail(msk) || timeout < 0) {
++	if (mptcp_data_avail(msk) || timeout < 0 ||
++	    (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime)) {
+ 		/* If the msk has read data, or the caller explicitly ask it,
+ 		 * do the MPTCP equivalent of TCP reset, aka MPTCP fastclose
+ 		 */
 
 
 
