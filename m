@@ -1,139 +1,217 @@
-Return-Path: <stable+bounces-245414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245415-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGtEL33bAmrJyAEAu9opvQ
-	(envelope-from <stable+bounces-245414-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 09:49:17 +0200
+	id +MhnIjfcAmrJyAEAu9opvQ
+	(envelope-from <stable+bounces-245415-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 09:52:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA6651C29C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 09:49:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F031451C388
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 09:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8C090300FC38
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 07:49:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 84AE63042918
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 07:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBF847DF82;
-	Tue, 12 May 2026 07:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE9847CC97;
+	Tue, 12 May 2026 07:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ceQ1t0th"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SgNI8xyH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0CD410D08;
-	Tue, 12 May 2026 07:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91B41D7E5C
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 07:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778572141; cv=none; b=Ef1l/+oVDxOHDVJPF0Eot3HnmpjjMRXXKARFMYbBpR4qIjkqpeL8SaO70evo+pKNYwzylBgLKKWuInkOvWM9VFcBXR2/dmS30iNbVjitW7DN/0JueyIBqArgVTWtEgo5m4+ryjlgwtSWqD7E2S89d0NGG9/TA6u61Lmkysw8MSI=
+	t=1778572177; cv=none; b=rKs3KjeI381NuYyrosqsPZ65dDyqar2Inif1cSVYsEUl8sGLs1qEbKCIheyKE6OpiUKLZmKlSYjFofEcOYk/2vQPQZ4SxTkUDmG/yNQ36qT60C453fjhKmsVoE+ObrQv+5LQApI/wZgunU48DFYBa5Z5dbnhhAfqVRQ3KmGPvC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778572141; c=relaxed/simple;
-	bh=C7+2tlfJt+/60Cg5T2oLZMZSQjrjNWEbEFuBQH9/ZBI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qo1boKC7CM77zqg5SkIU/YMp2qhMTfZ76QzWy/DnKduzC10pktEkkwuw8SAsfMR9EaRhVcSXjADhkJUh95qkA6/Hbt5L7EciM/T3liww4JOsz9lQvdX3xG7pvbGpsh/avgnQw9+J8gBfEKxp9a66qFMHj8wxVQDqExRegmoFm1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ceQ1t0th; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEFDC2BCB8;
-	Tue, 12 May 2026 07:49:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778572141;
-	bh=C7+2tlfJt+/60Cg5T2oLZMZSQjrjNWEbEFuBQH9/ZBI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ceQ1t0tha2wzT/2FtJ+na72a9e0WSaA5g0kh81LEe3Kr+OJ1AMfSexegLUyUPpvlk
-	 xxyULB7rUfTPrBvnELy2q5TfIloV0r4uHB7H0pUn6XyDweyO7QFruUgTQTpvpTnz/F
-	 S3vSQUbpgzsuJHAjC01JGWBJBKVGEtzy1pG1LYjP5ZFdQSeroLHwIvGIfLBYwBLzaM
-	 XpNJrSz84oeZQo54M13Gnhq7s0iutyLlGQwhI/rrY/70UPOHk+5eJCkKOvKgsp3oLX
-	 dbstAmTQsA+WoiHCs2cS9IR7YqbOAFH47DEt7DjbBafo4ibpGo90nRNqM+yau8eStP
-	 poQzGy5s758Ng==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1wMhrO-00000003q4e-33xq;
-	Tue, 12 May 2026 09:48:58 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Nikita Shubin <nikita.shubin@maquefel.me>
-Subject: [PATCH] spi: ep93xx: fix error pointer deref after DMA setup failure
-Date: Tue, 12 May 2026 09:48:49 +0200
-Message-ID: <20260512074849.915143-1-johan@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1778572177; c=relaxed/simple;
+	bh=ygaH+2wsFcmG/zLT9vuTLDnDQTwm/pe2WCSsYbTR67A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=b23fFN5z34jX6Q/RqmKF3sMt/FBQJBeCEManThGvzlnvArAv0NQ4XO6VGpvNahog1+LMKxjf65Pee07TQG3Kvh3WiFV/P8u/RzSONRvd1/wGs6a4b0om8qX2jXSP9KcpWo/no4Z7+K/3wy6MgzcyjYQZMa/+aiB6al02p5MRv80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--richardycc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SgNI8xyH; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--richardycc.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ba6ca20ceeso57995765ad.2
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 00:49:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778572174; x=1779176974; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UR6rLERhiUgj6UCn2Pmol6DViHNRfs8NhBRMn+AmWuM=;
+        b=SgNI8xyH16c23MyQQW1H7nDX+hDs4VMwAowv2GUbFd5BBZXBoLvAtvr1fQt/pE+Gzz
+         eSDvkwia+5MXVyua5x16SjXkOybBL2pIGhe91+/t3SuXJkFmJettpYHdZiP1F5f/bYKB
+         tcUXmeZrnly36zCy9HZHDnpaOsb5gN/ZDUVFSNYhg4i11Zblnc3ukB2RELpekvasti0b
+         vbAvo3ppkVsMcKpRxs2pQTSN3+5u92cPH2xByN90kFW6Tc1JIEsGLI4pAiSrjm1M1S4E
+         3k+0I8D9OfXZwcsPhUfxooyBwW4C6Xqt/NP67mGpq+fXkiYqWzqDefQWTK+6YqzKCKVO
+         4bmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778572174; x=1779176974;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UR6rLERhiUgj6UCn2Pmol6DViHNRfs8NhBRMn+AmWuM=;
+        b=DWpWybTLWk6Rm/lJLCxhnlwzFQ7Nl2wVpmqswj6b/u2/6+Um18dTrJhmQCW3+XqLug
+         THarPKErvX3TQAH+GlY4cc6M53pY7Wf5/BSYM/8cYeDIT1BPDa30/vniulxCiGhVTdpx
+         z1b1O+WdU3k1iO6INiyIIKOGA9qZ9SK6IRHaRiN00WoMsR2X91lVnoh/uECGh2qVEkLm
+         1nfh/hx6GfagV0/81WxCpgqOf6HVt4Hymo93JXXt9L9V6YI2xQQ9UGHLpjtQcvsVAp45
+         eaUeFjlL7ELHRKBD7AAdQHbY8YixUZ1mBXiTpW99m5Q9oSJbR2RFEA9BVzmbSmraNJy3
+         VD3w==
+X-Forwarded-Encrypted: i=1; AFNElJ9LDMZipqJHQkq/CCLXWDTJU6/MIEgIpf/5s+vQH5KfFNpp6xKGcGfNIebGaOC7UZfoL1GLtHo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx72qcHL6F/DXkOB+opsIjBiN/6byieM3usLXZbTFIO6PgeekAF
+	sxCqVWWT3BwT9uLFiVj5S+lt8NBsuM+q2ThkqrG6o9qGh9jEBdQBEFNPb/8bKtGYrVp8Q8DD/Fd
+	PuQ/aUE3+2YWkVQ8okOwY
+X-Received: from plhu11.prod.google.com ([2002:a17:903:124b:b0:2ba:792a:18a7])
+ (user=richardycc job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:287:b0:2ae:803e:6c12 with SMTP id d9443c01a7336-2bd010f4ccfmr21818475ad.6.1778572174022;
+ Tue, 12 May 2026 00:49:34 -0700 (PDT)
+Date: Tue, 12 May 2026 07:49:18 +0000
+In-Reply-To: <af6ZT9oR7GGmMFSC@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BBA6651C29C
+Mime-Version: 1.0
+References: <af6ZT9oR7GGmMFSC@google.com>
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260512074918.2606208-1-richardycc@google.com>
+Subject: [PATCH v3] zram: fix use-after-free in zram_writeback_endio
+From: Richard Chang <richardycc@google.com>
+To: Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>
+Cc: bgeffon@google.com, liumartin@google.com, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org, 
+	Richard Chang <richardycc@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: F031451C388
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-245415-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245414-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[richardycc@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,maquefel.me:email,sashiko.dev:url]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+A crash was observed in zram_writeback_endio due to a NULL pointer
+dereference in wake_up. The root cause is a race condition between the
+bio completion handler (zram_writeback_endio) and the writeback task.
 
-Make sure to the clear the DMA channel pointers on setup failure to
-avoid dereferencing an error pointer on later probe errors or driver
-unbind.
+In zram_writeback_endio, wake_up() is called on &wb_ctl->done_wait after
+releasing wb_ctl->done_lock. This creates a race window where the
+writeback task can see num_inflight become 0, return, and free wb_ctl
+before zram_writeback_endio calls wake_up().
 
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
+CPU 0 (zram_writeback_endio)     CPU 1 (writeback_store)
+============================     ============================
+                                 zram_writeback_slots
+                                   zram_submit_wb_request
+                                   zram_submit_wb_request
+                                   wait_event(wb_ctl->done_wait)
+spin_lock(&wb_ctl->done_lock);
+list_add(&req->entry, &wb_ctl->done_reqs);
+spin_unlock(&wb_ctl->done_lock);
+wake_up(&wb_ctl->done_wait);
+                                   zram_complete_done_reqs
+spin_lock(&wb_ctl->done_lock);
+list_add(&req->entry, &wb_ctl->done_reqs);
+spin_unlock(&wb_ctl->done_lock);
+                                   while (num_inflight) > 0)
+                                     spin_lock(&wb_ctl->done_lock);
+                                     list_del(&req->entry);
+                                     spin_unlock(&wb_ctl->done_lock);
+                                     // num_inflight becomes 0
+                                     atomic_dec(num_inflight);
 
-Fixes: e79e7c2df627 ("spi: ep93xx: add DT support for Cirrus EP93xx")
-Link: https://sashiko.dev/#/patchset/20260429091333.165363-1-johan%40kernel.org?part=10
-Cc: stable@vger.kernel.org	# 6.12
-Cc: Nikita Shubin <nikita.shubin@maquefel.me>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+                                 // Leave zram_writeback_slots
+                                 // Free wb_ctl
+                                 release_wb_ctl(wb_ctl);
+// UAF crash!
+wake_up(&wb_ctl->done_wait);
+
+This patch fixes this race by using RCU. By protecting wb_ctl with
+rcu_read_lock() in zram_writeback_endio and using kfree_rcu() to free
+it, we ensure that wb_ctl remains valid during the execution of
+zram_writeback_endio.
+
+Fixes: f405066a1f0d ("zram: introduce writeback bio batching")
+Cc: stable@vger.kernel.org
+Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Suggested-by: Minchan Kim <minchan@kernel.org>
+Signed-off-by: Richard Chang <richardycc@google.com>
 ---
- drivers/spi/spi-ep93xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+V2: use RCU to manage the wb_ctl lifetime
+V3: add stable tag
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index db50018050e5..f716c9607be4 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -582,12 +582,14 @@ static int ep93xx_spi_setup_dma(struct device *dev, struct ep93xx_spi *espi)
- 	espi->dma_rx = dma_request_chan(dev, "rx");
- 	if (IS_ERR(espi->dma_rx)) {
- 		ret = dev_err_probe(dev, PTR_ERR(espi->dma_rx), "rx DMA setup failed");
-+		espi->dma_rx = NULL;
- 		goto fail_free_page;
+ drivers/block/zram/zram_drv.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index aebc710f0d6a..07111455eecf 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -33,6 +33,7 @@
+ #include <linux/cpuhotplug.h>
+ #include <linux/part_stat.h>
+ #include <linux/kernel_read_file.h>
++#include <linux/rcupdate.h>
+ 
+ #include "zram_drv.h"
+ 
+@@ -504,6 +505,7 @@ struct zram_wb_ctl {
+ 	wait_queue_head_t done_wait;
+ 	spinlock_t done_lock;
+ 	atomic_t num_inflight;
++	struct rcu_head rcu;
+ };
+ 
+ struct zram_wb_req {
+@@ -847,7 +849,7 @@ static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
+ 		release_wb_req(req);
  	}
  
- 	espi->dma_tx = dma_request_chan(dev, "tx");
- 	if (IS_ERR(espi->dma_tx)) {
- 		ret = dev_err_probe(dev, PTR_ERR(espi->dma_tx), "tx DMA setup failed");
-+		espi->dma_tx = NULL;
- 		goto fail_release_rx;
- 	}
+-	kfree(wb_ctl);
++	kfree_rcu(wb_ctl, rcu);
+ }
  
+ static struct zram_wb_ctl *init_wb_ctl(struct zram *zram)
+@@ -964,11 +966,13 @@ static void zram_writeback_endio(struct bio *bio)
+ 	struct zram_wb_ctl *wb_ctl = bio->bi_private;
+ 	unsigned long flags;
+ 
++	rcu_read_lock();
+ 	spin_lock_irqsave(&wb_ctl->done_lock, flags);
+ 	list_add(&req->entry, &wb_ctl->done_reqs);
+ 	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+ 
+ 	wake_up(&wb_ctl->done_wait);
++	rcu_read_unlock();
+ }
+ 
+ static void zram_submit_wb_request(struct zram *zram,
 -- 
-2.53.0
+2.54.0.563.g4f69b47b94-goog
 
 
