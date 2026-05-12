@@ -1,190 +1,162 @@
-Return-Path: <stable+bounces-245464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245465-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ETdEt8gA2r10gEAu9opvQ
-	(envelope-from <stable+bounces-245464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:45:19 +0200
+	id uJmOFcQeA2r10gEAu9opvQ
+	(envelope-from <stable+bounces-245465-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:36:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F23520602
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:45:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B363352043F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 96263308B597
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:28:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F09AA302C911
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09ED4A3412;
-	Tue, 12 May 2026 12:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE074C77AA;
+	Tue, 12 May 2026 12:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajiptSpu"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dW7PLLon"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72604C6F0D
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A5D3ACA6A
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778588891; cv=none; b=niG1OEHH2NHKjxXJUsvsldlkl/gZUfvvtuffnbVNVSrcE6YlZPdEI9E85jlsFpzdsaH6H36pSMh7vGYRvDjIrdZ+InpOK86xydMuAgtDNXt5u+rneN7ftlMQTsMFRdliD3d53qtAGuAXqF1H/+TAIQNiaVzMVLsdIbWRoXyl1Wg=
+	t=1778589072; cv=none; b=gbL++H56Z7iXgWtHRnkT/6lL94tcSn30+1jP2tdLCmD39yAu8Bym2scjmL10ILQru4LaamFh2B94m6CdCh70eA+lLB9kHJH19Ldghz0TOxuLMalShUljAs93qq6eiWRUkZJ5LYaNcWn+EnVxFVe/qlRCebMKzGwH0LqBPMS5I1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778588891; c=relaxed/simple;
-	bh=UNlOp2OiqZS1sECrXIYhoSkC/pYlky6LZXFQFYyPJ1c=;
-	h=Subject:To:Cc:From:Date:Message-ID; b=CS18aZG0n32UsBczWJXlkUQz2ATkitf9I9BTefzvqohbr9oe3h8122lWy8sZlvJTa7utAIlhgunGm9uRte90mfE0nbP8vKgU242tbZekG3rsnmRadqvy3VlyFDTbVHi0U5HeP7j7uSmj7YnIik0Rtp0JXmyJQ0YUSiUuKRBcamY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajiptSpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EC5C2BCB0;
-	Tue, 12 May 2026 12:28:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778588890;
-	bh=UNlOp2OiqZS1sECrXIYhoSkC/pYlky6LZXFQFYyPJ1c=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ajiptSpus9se7xgnxCJvhc+t6w8N2cEfnoonPEuYyCgaaO8yQ9UxtIgdqhvXwepNR
-	 CmdBINNrrlpnU0AMTH2KiXUEVDzE5V3k4XFLohetRGkx8BlSw4Wi5C2t/WQfFuPo2W
-	 hVo8fFM855B8tndLmfXmptlh1eVShIJJO4BTHO2k=
-Subject: FAILED: patch "[PATCH] ALSA: hda: cs35l56: Propagate ASP TX source control errors" failed to apply to 6.6-stable tree
-To: cassiogabrielcontato@gmail.com,rf@opensource.cirrus.com,tiwai@suse.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 14:28:02 +0200
-Message-ID: <2026051202-kiln-obstinate-3d53@gregkh>
+	s=arc-20240116; t=1778589072; c=relaxed/simple;
+	bh=IFsFHog5bWcK2c+UvvtP8pVeEWEu244YwzvaoyzplVs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BXgeU2UIz28WpRVDGnUVp1fCBFAvLy26UlFF4EcWoeCTOBWk65Usp/nRQdMopIjVm+3mLnuDyag2k/r5hUIZ55nRuPeGo3R1aT1USZZloOIBsuGzXsGnJjHO5p/ao92uJAE4QZze6NxMPMhrwrfbtUX70mX5cdnpGWH0YeCu0R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dW7PLLon; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5a8891f0c51so5190355e87.1
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 05:31:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1778589062; x=1779193862; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/IuY8V+yTw5VQSBZmRP6A8go4t9q9EJMmfoMaCV58p0=;
+        b=dW7PLLong5LBWf6S/KKh0DDIgM0tlIPAA6ShEhhtQEY74m6XOpOVIWKxrwMYypvEV+
+         4LjjTh8ToDAg1TqFzBLs0BRZvJUVO3QKQOvWOLJiipO43YdF9ESGNki5UJvllnulCyqH
+         g4qS/7L7r0D9TRRlMtNnqZsGGGrgv1HbkJp6I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778589062; x=1779193862;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/IuY8V+yTw5VQSBZmRP6A8go4t9q9EJMmfoMaCV58p0=;
+        b=PoVlK0bu+HaLEHY4xmfcKTd6NYTGJcpfycBZ22V8+n2hTRTLE9DO2xsNSRJen5bbOb
+         onjGlj3MlDyKpdCxtwjUyYDN6ozHng75c5Ftfuq4H9bIA5dEgwC0zYvH0VbxuAkve+/c
+         QQjmBK28mZqHgkOAVV4/KZDW1dPRhDlrUKqxtaEL9pvjLeYFm5htMaj2oky9e9CCniFP
+         6wCZUKvKtNXCvIYJqrLOc35JoSVsT/nMYu2NFavuaFEQXnhZqY2YJU14aBwe0GZEHw5q
+         Zi+BHCodSlBayV3BbmI8o/l/Gg47lbpDhROXWqHQOpykIRVCKqjvC4lTaTjKzo/Ea/aD
+         mqvw==
+X-Forwarded-Encrypted: i=1; AFNElJ/hMVkqiuz7+uSHe7w5lKxo9+aXc0CwL0XdAhQ3A4+Gns7Duc8HE2rqMgJrHySk/mNw9y6cc4M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyn4Qw3DDmMrX79m956IzDKtrFxWDhA2Y+uyL4LCb2S79Braatd
+	aJU85myYw1PVfiyUJPybksOoHLwE5KtspuATIYBa1R2Fc2fb3b/dUwnGfJL0uj8U3IO/hKlZcIa
+	Tk4BT1M7mlaU=
+X-Gm-Gg: Acq92OGDyk1l5zbjuNDoF+xV4BADvDqGjs73xUaJfSVUWQ+uE5AL6n+aUnWcjZEOGXD
+	luKwmL7VQ20gi/pBG167fMmW2n1kvOniw0YFmHWo2YvYz2+XBLbOYMjh2Ebq/MDDvVQGNi6+mLU
+	D0h1iyJuPSdcO0iIopUwNKJ2KBV1pZcDUUqBgeWaGdH0z+rjv3uBEYJZWAlBqO7qOckVVPmEMCV
+	c52ehb8YoSfcjIseWB13/ubW/kGjEdoAoReZxqHopx8G42s+9Fsf79xnfx6uulHIOiAIDI0CFJe
+	NRSdtyM77Y+liFJu2oXdGtebNM4YnMlWLye++Yg27jv84E6yJU1zBPjm4OOTdO97Sb0ejYWJdT/
+	JpLeCQmpJu0i9XO+zpdvAB4lcbPMl/px9dEOQZiC6J6ASwwAy0X6zofCA3/6Y0w+aro1R/sxZ0h
+	ncLaaKZ3Ad1yUUb8z3FSN9PGODWGe7UsoUU3GJpfEPPUDOQKQKdT0GhvPfQo7gzkfyvS2aUePFH
+	6T6kigR7o06
+X-Received: by 2002:a05:6512:3046:b0:5a4:1914:bae3 with SMTP id 2adb3069b0e04-5a887ce5f32mr10157386e87.27.1778589061708;
+        Tue, 12 May 2026 05:31:01 -0700 (PDT)
+Received: from ribalda.c.googlers.com (11.36.88.34.bc.googleusercontent.com. [34.88.36.11])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a8c66facc2sm1861344e87.22.2026.05.12.05.30.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 05:30:59 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v2 0/5] media: uvcvideo: Fixes for hw timestamping
+Date: Tue, 12 May 2026 12:30:54 +0000
+Message-Id: <20260512-uvc-hwtimestamp-v2-0-3c2905c733bb@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: B0F23520602
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAH4dA2oC/2WNyw6CMBBFf4XM2pp2eKkr/8OwaMpAZ1FKWqgaw
+ r9biTuX5yT33A0iBaYIt2KDQIkj+ykDngowVk8jCe4zA0psZCmvYk1G2OfCjuKi3SwGrHuD7VC
+ 3SkFezYEGfh3FR5fZclx8eB8HSX3tr4XlXyspIYXWFVJ5aWqU1d3Y4B2v7uzDCN2+7x9oettEs
+ QAAAA==
+X-Change-ID: 20260309-uvc-hwtimestamp-f25dc27f5711
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Hans de Goede <hansg@kernel.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Tomasz Figa <tfiga@chromium.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Yunke Cao <yunkec@google.com>, linux-media@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Ricardo Ribalda <ribalda@chromium.org>, 
+ stable@vger.kernel.org, Hans de Goede <johannes.goede@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Rspamd-Queue-Id: B363352043F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [7.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	R_BAD_CTE_7BIT(3.50)[unknown];
-	BROKEN_CONTENT_TYPE(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245464-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	GREYLIST(0.00)[pass,body];
-	FREEMAIL_TO(0.00)[gmail.com,opensource.cirrus.com,suse.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_NONE(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245465-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,cirrus.com:email,linuxfoundation.org:dkim]
-X-Rspamd-Action: add header
-X-Spam: Yes
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,chromium.org:mid,chromium.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Action: no action
 
+This series introduces fixes for the hardware timestamp calculations.
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+Changes in v2:
+- Fix comments
+- Add UCV_ prefix
+- Improve commit messages
+- Add "Do not run expensive code if not needed" patchset
+- Link to v1: https://lore.kernel.org/r/20260323-uvc-hwtimestamp-v1-0-aa42e3865204@chromium.org
 
-To reproduce the conflict and resubmit, you may use the following commands:
+---
+Ricardo Ribalda (5):
+      media: uvcvideo: Fix dev_sof filtering in hw timestamp
+      media: uvcvideo: Use hw timestaming if the clock buffer is full
+      media: uvcvideo: Relax the constrains for interpolating the hw clock
+      media: uvcvideo: Do not add clock samples with small sof delta
+      media: uvcvideo: clock: Do not run expensive code if not needed
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 0faacc0841d66f3cf51989c10a83f3a82d52ff2c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051202-kiln-obstinate-3d53@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+ drivers/media/usb/uvc/uvc_video.c | 77 +++++++++++++++++++++++++++++----------
+ drivers/media/usb/uvc/uvcvideo.h  |  3 +-
+ 2 files changed, 59 insertions(+), 21 deletions(-)
+---
+base-commit: bc1ba628e37c93cf2abeb2c79716f49087f8a024
+change-id: 20260309-uvc-hwtimestamp-f25dc27f5711
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 0faacc0841d66f3cf51989c10a83f3a82d52ff2c Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Thu, 23 Apr 2026 10:11:31 -0300
-Subject: [PATCH] ALSA: hda: cs35l56: Propagate ASP TX source control errors
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-cs35l56_hda_mixer_get() ignores regmap_read() and
-cs35l56_hda_mixer_put() ignores regmap_update_bits_check().
-
-This makes the ASP TX source controls report success when a regmap
-access fails. The write path returns no change instead of an error,
-and the read path continues after a failed read instead of aborting
-the control callback.
-
-Propagate the regmap errors, matching the posture and volume controls
-in this driver.
-
-Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260423-alsa-cs35l56-asp-tx-source-errors-v1-1-17ea7c62ec31@gmail.com
-
-diff --git a/sound/hda/codecs/side-codecs/cs35l56_hda.c b/sound/hda/codecs/side-codecs/cs35l56_hda.c
-index 1ace4beef508..dc25960a4f23 100644
---- a/sound/hda/codecs/side-codecs/cs35l56_hda.c
-+++ b/sound/hda/codecs/side-codecs/cs35l56_hda.c
-@@ -180,11 +180,15 @@ static int cs35l56_hda_mixer_get(struct snd_kcontrol *kcontrol,
- {
- 	struct cs35l56_hda *cs35l56 = snd_kcontrol_chip(kcontrol);
- 	unsigned int reg_val;
--	int i;
-+	int i, ret;
- 
- 	cs35l56_hda_wait_dsp_ready(cs35l56);
- 
--	regmap_read(cs35l56->base.regmap, kcontrol->private_value, &reg_val);
-+	ret = regmap_read(cs35l56->base.regmap, kcontrol->private_value,
-+			  &reg_val);
-+	if (ret)
-+		return ret;
-+
- 	reg_val &= CS35L56_ASP_TXn_SRC_MASK;
- 
- 	for (i = 0; i < CS35L56_NUM_INPUT_SRC; ++i) {
-@@ -203,15 +207,20 @@ static int cs35l56_hda_mixer_put(struct snd_kcontrol *kcontrol,
- 	struct cs35l56_hda *cs35l56 = snd_kcontrol_chip(kcontrol);
- 	unsigned int item = ucontrol->value.enumerated.item[0];
- 	bool changed;
-+	int ret;
- 
- 	if (item >= CS35L56_NUM_INPUT_SRC)
- 		return -EINVAL;
- 
- 	cs35l56_hda_wait_dsp_ready(cs35l56);
- 
--	regmap_update_bits_check(cs35l56->base.regmap, kcontrol->private_value,
--				 CS35L56_INPUT_MASK, cs35l56_tx_input_values[item],
--				 &changed);
-+	ret = regmap_update_bits_check(cs35l56->base.regmap,
-+				       kcontrol->private_value,
-+				       CS35L56_INPUT_MASK,
-+				       cs35l56_tx_input_values[item],
-+				       &changed);
-+	if (ret)
-+		return ret;
- 
- 	return changed;
- }
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
 
 
