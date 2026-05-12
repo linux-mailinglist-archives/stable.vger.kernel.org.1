@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIO/EnlvA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:41 +0200
+	id uO0EAMFoA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:52:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C541E5275DF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1437D5263D7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BBD83249218
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 56BC83059132
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBDF3EDE65;
-	Tue, 12 May 2026 17:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806543C09E2;
+	Tue, 12 May 2026 17:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWqaXUx/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wH7C2kdn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C023EDE4E;
-	Tue, 12 May 2026 17:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4062F3E1725;
+	Tue, 12 May 2026 17:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608693; cv=none; b=RDOO7HRR0loN/NpeQjY3wY1Lk5NIfVnS3cL5Kzvh7EdbTw9RcV3v6N6GQKzWtyCF9MHa9fbn1zCgI9T0Nm6gtSXlSSADcy4uy4xAl42botSrrp1ZteJTohWuRq93wdNqS2kMlteYAV/F3vnHdKV9wK0lYPhCspTSQoGmylJ5J6g=
+	t=1778608031; cv=none; b=R2gNLQO+g2UYbWQ0FqeVx4Ch7lGZVxoQVI1lJZXTF/52YisIzBuo4VGamvzSws4OK7vZbCVpgiKUPh7MGqRnpndQd4nZ+NXCK+VLlSRwgYs1Q9V2Xj+ctIClUHWIVwIOZIj2m1Ou9yCpKXlpDUfC726mBjblb/XtnVpOX+Q+XoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608693; c=relaxed/simple;
-	bh=IjKyAXcZ0SG/qh0kglMsJTGfAqqKYD/KkEs03AiVEQg=;
+	s=arc-20240116; t=1778608031; c=relaxed/simple;
+	bh=GksQ2CY2P060zMEdmIOrw8Jr5kFvoBjwRj8W965KMhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BEajuNZ1n5zTpzZHW4/GSeJ3aM3MhyPBYi47QoJnwveFaHi6wKHS39cj6xT4MIhZFBEAUfcB9VDIuSLd28QGmuYC4zmm+PWdpxR/zkouCUFuOEQfqNVw2qEwPWg+CA2K5m9ywn9tJxRcvXSaK1D65lOHewlF/7YyAlfkeX/HDiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWqaXUx/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25965C2BCC7;
-	Tue, 12 May 2026 17:58:12 +0000 (UTC)
+	 MIME-Version; b=lUhOxeZEBUNRo/TnZ8a8klJF5iQD6QVR+veBfnNsYHqSJyz3bJZ0E20XVlKi3lk6rywlyp2xNr8hVSULC6U8TsYISHpb+irCY4tfpXT+uxNjXqSN7KW8/apJR3T3dYRotqEpxp64pn/knPJyWw1LMxknm/iREX90XrLEbAr5aks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wH7C2kdn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D24AC32782;
+	Tue, 12 May 2026 17:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608693;
-	bh=IjKyAXcZ0SG/qh0kglMsJTGfAqqKYD/KkEs03AiVEQg=;
+	s=korg; t=1778608031;
+	bh=GksQ2CY2P060zMEdmIOrw8Jr5kFvoBjwRj8W965KMhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dWqaXUx/AnyitLmk4xYC7TxfBDj8CziDu5cXWyNqzPRGcTlwtvaIERanQCaehpRsd
-	 pXRFwyoP3yagE51popEZJNGmkr+bbDGKf2ffYdQP372WNHjp958oSBOoLyzi6DlAdu
-	 GTXttiVcxMznewMS6aLpRf0/i53NZhG4kfrgcSAI=
+	b=wH7C2kdn2qoToez2Y3etElAMYvJrAzQWAmUs0UaAKCJvGo2KOGlAmGcRoDozZ7/WE
+	 FmXFk1AtuY6c1KPlZSPVKwusWvuKe4OLccPLXxmPVuJrEH1v1mZKJrXC5TaMiFSw4q
+	 5OeaCx7r9AkPBwj3PJ2kIdLPSubyQpjXtxJogtJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjoern Doebel <doebel@amazon.de>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 179/270] smb: client: use kzalloc to zero-initialize security descriptor buffer
-Date: Tue, 12 May 2026 19:39:40 +0200
-Message-ID: <20260512173942.217359689@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.12 129/206] nvme-apple: drop invalid put of admin queue reference count
+Date: Tue, 12 May 2026 19:39:41 +0200
+Message-ID: <20260512173935.590599225@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C541E5275DF
+X-Rspamd-Queue-Id: 1437D5263D7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246230-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245974-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,60 +89,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amazon.de:email]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxtesting.org:url,ispras.ru:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjoern Doebel <doebel@amazon.de>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 5e489c6c47a2ac15edbaca153b9348e42c1eacab upstream.
+commit ba9d308ccd6732dd97ed8080d834a4a89e758e14 upstream.
 
-Commit 62e7dd0a39c2d ("smb: common: change the data type of num_aces
-to le16") split struct smb_acl's __le32 num_aces field into __le16
-num_aces and __le16 reserved. The reserved field corresponds to Sbz2
-in the MS-DTYP ACL wire format, which must be zero [1].
+Commit 03b3bcd319b3 ("nvme: fix admin request_queue lifetime") moved the
+admin queue reference ->put call into nvme_free_ctrl() - a controller
+device release callback performed for every nvme driver doing
+nvme_init_ctrl().
 
-When building an ACL descriptor in build_sec_desc(), we are using a
-kmalloc()'ed descriptor buffer and writing the fields explicitly using
-le16() writes now. This never writes to the 2 byte reserved field,
-leaving it as uninitialized heap data.
+nvme-apple sets refcount of the admin queue to 1 at allocation during the
+probe function and then puts it twice now:
 
-When the reserved field happens to contain non-zero slab garbage,
-Samba rejects the security descriptor with "ndr_pull_security_descriptor
-failed: Range Error", causing chmod to fail with EINVAL.
+nvme_free_ctrl()
+  blk_put_queue(ctrl->admin_q) // #1
+  ->free_ctrl()
+    apple_nvme_free_ctrl()
+      blk_put_queue(anv->ctrl.admin_q) // #2
 
-Change kmalloc() to kzalloc() to ensure the entire buffer is
-zero-initialized.
+Note that there is a commit 941f7298c70c ("nvme-apple: remove an extra
+queue reference") which intended to drop taking an extra admin queue
+reference.  Looks like at that moment it accidentally fixed a refcount
+leak, which existed since the driver's introduction.  There were two ->get
+calls at driver's probe function and a single ->put inside
+apple_nvme_free_ctrl().
 
-Fixes: 62e7dd0a39c2d ("smb: common: change the data type of num_aces to le16")
+However now after commit 03b3bcd319b3 ("nvme: fix admin request_queue
+lifetime") the refcount is imbalanced again.  Fix it by removing extra
+->put call from apple_nvme_free_ctrl().  anv->dev and ctrl->dev point to
+the same device, so use ctrl->dev directly for simplification.  Compile
+tested only.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 03b3bcd319b3 ("nvme: fix admin request_queue lifetime")
 Cc: stable@vger.kernel.org
-
-Signed-off-by: Bjoern Doebel <doebel@amazon.de>
-Assisted-by: Kiro:claude-opus-4.6
-[1] https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/20233ed8-a6c6-4097-aafa-dd545ed24428
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsacl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/apple.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -1685,7 +1685,7 @@ id_mode_to_cifs_acl(struct inode *inode,
- 	 * descriptor parameters, and security descriptor itself
- 	 */
- 	nsecdesclen = max_t(u32, nsecdesclen, DEFAULT_SEC_DESC_LEN);
--	pnntsd = kmalloc(nsecdesclen, GFP_KERNEL);
-+	pnntsd = kzalloc(nsecdesclen, GFP_KERNEL);
- 	if (!pnntsd) {
- 		kfree(pntsd);
- 		cifs_put_tlink(tlink);
+--- a/drivers/nvme/host/apple.c
++++ b/drivers/nvme/host/apple.c
+@@ -1210,11 +1210,7 @@ static int apple_nvme_get_address(struct
+ 
+ static void apple_nvme_free_ctrl(struct nvme_ctrl *ctrl)
+ {
+-	struct apple_nvme *anv = ctrl_to_apple_nvme(ctrl);
+-
+-	if (anv->ctrl.admin_q)
+-		blk_put_queue(anv->ctrl.admin_q);
+-	put_device(anv->dev);
++	put_device(ctrl->dev);
+ }
+ 
+ static const struct nvme_ctrl_ops nvme_ctrl_ops = {
 
 
 
