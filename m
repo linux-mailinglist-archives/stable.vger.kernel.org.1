@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IsNAdg1A2oA1gEAu9opvQ
-	(envelope-from <stable+bounces-245694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:14:48 +0200
+	id sFfjN4xBA2oy2QEAu9opvQ
+	(envelope-from <stable+bounces-245696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:04:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08275221B1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 16:14:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613315233B5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:04:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 159B730775A8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:07:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 987D83530611
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 14:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A993A83B7;
-	Tue, 12 May 2026 14:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4423A71BE;
+	Tue, 12 May 2026 14:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCAQeUta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QoT80CM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9948639D3C3
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3913A59B7
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 14:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778594761; cv=none; b=HW067GMy+PwfP48wKywoGJDOYIEV2usHljiF8HWAz7bytF8kPFrVbZwcTN+D6eYGXGVGBQ10YlR0U8z/PFSYAEmerwjjmv9QTbz29ttKqaHiA/2vb+wjjEXuBn4wJkOPeG1HNxN6za9wE95YfVryNXpxMXedRwh4c9hXF/Ntp1g=
+	t=1778594974; cv=none; b=tNxA6k+EwXzr9w06n9NZNakykGzmUtcoUXQvVhiKKP0vODO9R69XlinQS7Am9f9LZKhWu0KrxqDwELiN7OYjTsnfGYDn7jDckzSQt2yqU2JtPvpccgA+h8M2p8r9x43+QVgiYvgXMclrI2FSvp6IFmFolbapZ3K5ALrWObHePVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778594761; c=relaxed/simple;
-	bh=EdhosYaijreoWN1toHMP+5E84Kaut2zyqvuVmvUBxwo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Lu9X48ySmtnVf3sVu4aonQLYt3OC+b9Wal/8uZWHl4odxi3Ep1ZbyFouvZ4zByM7B3dk3kO+zN6MzyujdacDF+DKmbrzuLdugzNQveLsoAt213q1LtIShpWkdj48ymgIDHzmlOAtZvjHIjy/+kX4GilvPwprSyHBQ1BrLNje1bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCAQeUta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAAAC2BCB0;
-	Tue, 12 May 2026 14:06:01 +0000 (UTC)
+	s=arc-20240116; t=1778594974; c=relaxed/simple;
+	bh=h/MJF5dLqaE9cVPimLjac4tCmTgX9QZXQWKq1RFrJZU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F6SdNHa++ji+tL6DdYns+XydOXs/fOREyTBKYIokvtLAN9vCOKLOONiLElUe0ObQNv/ugsP1nINaCLudSc4DU2MjrndHobTzSE/lvhK3C7XY39/2Kq5SkYso/pK0uxBmQyBiFZBXuvWfl78SqK+IqPpJkJXi2b7zKkeLaCg6LFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QoT80CM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1120FC2BCB0;
+	Tue, 12 May 2026 14:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778594761;
-	bh=EdhosYaijreoWN1toHMP+5E84Kaut2zyqvuVmvUBxwo=;
+	s=korg; t=1778594974;
+	bh=h/MJF5dLqaE9cVPimLjac4tCmTgX9QZXQWKq1RFrJZU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cCAQeUtaoYqiTZny87ZJDdjCXJlMBgwmKL+d66MiUUyB/y30ZTsm/RJJ0tPDyQO3c
-	 s36uGGrgdZsQDQYvxjvlA3ZF9c7jUCz6EWX3gjxDH+HaYFXVATXkrPVA6XUheIgVvL
-	 +FUj9Rm648HXkYo3SKbra0dSnJC2oy33pRm0iBqk=
-Subject: FAILED: patch "[PATCH] mm/damon/reclaim: detect and use fresh enabled and" failed to apply to 6.1-stable tree
-To: sj@kernel.org,aethernet65535@gmail.com,akpm@linux-foundation.org,stable@vger.kernel.org
+	b=2QoT80CMYVeXv7da8lt9jNlBGwuGnxe8W4szm9FAJuR1tY8qBIR3SGVJc2wEP2wC0
+	 Yqvwrb/6MbBtMrl4rkB5ICz+AFcLZPM+xP2fHvsRfCq9L02bP8W32XpkfY4Eh3ODqa
+	 ZU3apBURCXFu3+Y+3G0Cd6HD9s35Jc7rgx/qylIk=
+Subject: FAILED: patch "[PATCH] btrfs: do not mark inode incompressible after inline attempt" failed to apply to 6.18-stable tree
+To: wqu@suse.com,dsterba@suse.com,fdmanana@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 16:05:57 +0200
-Message-ID: <2026051257-daytime-precise-afd3@gregkh>
+Date: Tue, 12 May 2026 16:08:10 +0200
+Message-ID: <2026051210-encourage-bagel-d5d1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,53 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C08275221B1
+X-Rspamd-Queue-Id: 613315233B5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245694-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245696-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,linux-foundation.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linux-foundation.org:email,linuxfoundation.org:dkim]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 64a140afa5ed1c6f5ba6d451512cbdbbab1ba339
+git cherry-pick -x 2e0e3716c7b6f8d71df2fbe709b922e54700f71b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051257-daytime-precise-afd3@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051210-encourage-bagel-d5d1@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,243 +111,77 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 64a140afa5ed1c6f5ba6d451512cbdbbab1ba339 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Sun, 19 Apr 2026 09:10:00 -0700
-Subject: [PATCH] mm/damon/reclaim: detect and use fresh enabled and
- kdamond_pid values
+From 2e0e3716c7b6f8d71df2fbe709b922e54700f71b Mon Sep 17 00:00:00 2001
+From: Qu Wenruo <wqu@suse.com>
+Date: Mon, 16 Feb 2026 13:19:38 +1030
+Subject: [PATCH] btrfs: do not mark inode incompressible after inline attempt
+ fails
 
-Patch series "mm/damon/modules: detect and use fresh status", v3.
+[BUG]
+The following sequence will set the file with nocompress flag:
 
-DAMON modules including DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
-commonly expose the kdamond running status via their parameters.  Under
-certain scenarios including wrong user inputs and memory allocation
-failures, those parameter values can be stale.  It can confuse users.  For
-DAMON_RECLAIM and DAMON_LRU_SORT, it even makes the kdamond unable to be
-restarted before the system reboot.
+  # mkfs.btrfs -f $dev
+  # mount $dev $mnt -o max_inline=4,compress
+  # xfs_io -f -c "pwrite 0 2k" -c sync $mnt/foobar
 
-The problem comes from the fact that there are multiple events for the
-status changes and it is difficult to follow up all the scenarios.  Fix
-the issue by detecting and using the status on demand, instead of using a
-cached status that is difficult to be updated.
+The inode will have NOCOMPRESS flag, even if the content itself (all 0xcd)
+can still be compressed very well:
 
-Patches 1-3 fix the bugs in DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
-in the order.
+	item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
+		generation 9 transid 10 size 2097152 nbytes 1052672
+		block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
+		sequence 257 flags 0x8(NOCOMPRESS)
 
+Please note that, this behavior is there even before commit 59615e2c1f63
+("btrfs: reject single block sized compression early").
 
-This patch (of 3):
+[CAUSE]
+At compress_file_range(), after btrfs_compress_folios() call, we try
+making an inlined extent by calling cow_file_range_inline().
 
-DAMON_RECLAIM updates 'enabled' and 'kdamond_pid' parameter values, which
-represents the running status of its kdamond, when the user explicitly
-requests start/stop of the kdamond.  The kdamond can, however, be stopped
-in events other than the explicit user request in the following three
-events.
+But cow_file_range_inline() calls can_cow_file_range_inline() which has
+more accurate checks on if the range can be inlined.
 
-1. ctx->regions_score_histogram allocation failure at beginning of the
-   execution,
-2. damon_commit_ctx() failure due to invalid user input, and
-3. damon_commit_ctx() failure due to its internal allocation failures.
+One of the user configurable conditions is the "max_inline=" mount
+option. If that value is set low (like the example, 4 bytes, which
+cannot store any header), or the compressed content is just slightly
+larger than 2K (the default value, meaning a 50% compression ratio),
+cow_file_range_inline() will return 1 immediately.
 
-Hence, if the kdamond is stopped by the above three events, the values of
-the status parameters can be stale.  Users could show the stale values and
-be confused.  This is already bad, but the real consequence is worse.
-DAMON_RECLAIM avoids unnecessary damon_start() and damon_stop() calls
-based on the 'enabled' parameter value.  And the update of 'enabled'
-parameter value depends on the damon_start() and damon_stop() call
-results.  Hence, once the kdamond has stopped by the unintentional events,
-the user cannot restart the kdamond before the system reboot.  For
-example, the issue can be reproduced via below steps.
+And since we're here only to try inline the compressed data, the range
+is no larger than a single fs block.
 
-    # cd /sys/module/damon_reclaim/parameters
-    #
-    # # start DAMON_RECLAIM
-    # echo Y > enabled
-    # ps -ef | grep kdamond
-    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
-    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
-    #
-    # # commit wrong input to stop kdamond withou explicit stop request
-    # echo 3 > addr_unit
-    # echo Y > commit_inputs
-    bash: echo: write error: Invalid argument
-    #
-    # # confirm kdamond is stopped
-    # ps -ef | grep kdamond
-    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
-    #
-    # # users casn now show stable status
-    # cat enabled
-    Y
-    # cat kdamond_pid
-    806
-    #
-    # # even after fixing the wrong parameter,
-    # # kdamond cannot be restarted.
-    # echo 1 > addr_unit
-    # echo Y > enabled
-    # ps -ef | grep kdamond
-    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
+Thus compression is never going to make it a win, we fall back to
+marking the inode incompressible unavoidably.
 
-The problem will only rarely happen in real and common setups for the
-following reasons.  The allocation failures are unlikely in such setups
-since those allocations are arguably too small to fail.  Also sane users
-on real production environments may not commit wrong input parameters.
-But once it happens, the consequence is quite bad.  And the bug is a bug.
+[FIX]
+Just add an extra check after inline attempt, so that if the inline
+attempt failed, do not set the nocompress flag.
 
-The issue stems from the fact that there are multiple events that can
-change the status, and following all the events is challenging.
-Dynamically detect and use the fresh status for the parameters when those
-are requested.
+As there is no way to remove that flag, and the default 50% compression
+ratio is way too strict for the whole inode.
 
-Link: https://lore.kernel.org/20260419161003.79176-1-sj@kernel.org
-Link: https://lore.kernel.org/20260419161003.79176-2-sj@kernel.org
-Fixes: e035c280f6df ("mm/damon/reclaim: support online inputs update")
-Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.19.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 86da14778658..fe7fce26cf6c 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -144,15 +144,6 @@ static unsigned long addr_unit __read_mostly = 1;
- static bool skip_anon __read_mostly;
- module_param(skip_anon, bool, 0600);
- 
--/*
-- * PID of the DAMON thread
-- *
-- * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
-- * Else, -1.
-- */
--static int kdamond_pid __read_mostly = -1;
--module_param(kdamond_pid, int, 0400);
--
- static struct damos_stat damon_reclaim_stat;
- DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_reclaim_stat,
- 		reclaim_tried_regions, reclaimed_regions, quota_exceeds);
-@@ -288,12 +279,8 @@ static int damon_reclaim_turn(bool on)
- {
- 	int err;
- 
--	if (!on) {
--		err = damon_stop(&ctx, 1);
--		if (!err)
--			kdamond_pid = -1;
--		return err;
--	}
-+	if (!on)
-+		return damon_stop(&ctx, 1);
- 
- 	err = damon_reclaim_apply_parameters();
- 	if (err)
-@@ -302,9 +289,6 @@ static int damon_reclaim_turn(bool on)
- 	err = damon_start(&ctx, 1, true);
- 	if (err)
- 		return err;
--	kdamond_pid = damon_kdamond_pid(ctx);
--	if (kdamond_pid < 0)
--		return kdamond_pid;
- 	return damon_call(ctx, &call_control);
- }
- 
-@@ -332,42 +316,83 @@ module_param_cb(addr_unit, &addr_unit_param_ops, &addr_unit, 0600);
- MODULE_PARM_DESC(addr_unit,
- 	"Scale factor for DAMON_RECLAIM to ops address conversion (default: 1)");
- 
-+static bool damon_reclaim_enabled(void)
-+{
-+	if (!ctx)
-+		return false;
-+	return damon_is_running(ctx);
-+}
-+
- static int damon_reclaim_enabled_store(const char *val,
- 		const struct kernel_param *kp)
- {
--	bool is_enabled = enabled;
--	bool enable;
- 	int err;
- 
--	err = kstrtobool(val, &enable);
-+	err = kstrtobool(val, &enabled);
- 	if (err)
- 		return err;
- 
--	if (is_enabled == enable)
-+	if (damon_reclaim_enabled() == enabled)
- 		return 0;
- 
- 	/* Called before init function.  The function will handle this. */
- 	if (!damon_initialized())
--		goto set_param_out;
-+		return 0;
- 
--	err = damon_reclaim_turn(enable);
--	if (err)
--		return err;
-+	return damon_reclaim_turn(enabled);
-+}
- 
--set_param_out:
--	enabled = enable;
--	return err;
-+static int damon_reclaim_enabled_load(char *buffer,
-+		const struct kernel_param *kp)
-+{
-+	return sprintf(buffer, "%c\n", damon_reclaim_enabled() ? 'Y' : 'N');
- }
- 
- static const struct kernel_param_ops enabled_param_ops = {
- 	.set = damon_reclaim_enabled_store,
--	.get = param_get_bool,
-+	.get = damon_reclaim_enabled_load,
- };
- 
- module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
- MODULE_PARM_DESC(enabled,
- 	"Enable or disable DAMON_RECLAIM (default: disabled)");
- 
-+static int damon_reclaim_kdamond_pid_store(const char *val,
-+		const struct kernel_param *kp)
-+{
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 6daa7bb027fc..2ae5a9b2f951 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1061,6 +1061,12 @@ static void compress_file_range(struct btrfs_work *work)
+ 			mapping_set_error(mapping, -EIO);
+ 		return;
+ 	}
 +	/*
-+	 * kdamond_pid is read-only, but kernel command line could write it.
-+	 * Do nothing here.
++	 * If a single block at file offset 0 cannot be inlined, fall back to
++	 * regular writes without marking the file incompressible.
 +	 */
-+	return 0;
-+}
-+
-+static int damon_reclaim_kdamond_pid_load(char *buffer,
-+		const struct kernel_param *kp)
-+{
-+	int kdamond_pid = -1;
-+
-+	if (ctx) {
-+		kdamond_pid = damon_kdamond_pid(ctx);
-+		if (kdamond_pid < 0)
-+			kdamond_pid = -1;
-+	}
-+	return sprintf(buffer, "%d\n", kdamond_pid);
-+}
-+
-+static const struct kernel_param_ops kdamond_pid_param_ops = {
-+	.set = damon_reclaim_kdamond_pid_store,
-+	.get = damon_reclaim_kdamond_pid_load,
-+};
-+
-+/*
-+ * PID of the DAMON thread
-+ *
-+ * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
-+ * Else, -1.
-+ */
-+module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
-+
- static int __init damon_reclaim_init(void)
- {
- 	int err;
++	if (start == 0 && end <= blocksize)
++		goto cleanup_and_bail_uncompressed;
+ 
+ 	/*
+ 	 * We aren't doing an inline extent. Round the compressed size up to a
 
 
