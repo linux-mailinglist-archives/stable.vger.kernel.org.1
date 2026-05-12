@@ -1,287 +1,520 @@
-Return-Path: <stable+bounces-246651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEeFNZJ5A2oR6QEAu9opvQ
-	(envelope-from <stable+bounces-246651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:03:46 +0200
+	id oLKyBGaBA2pX6gEAu9opvQ
+	(envelope-from <stable+bounces-246652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:37:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F37F528666
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:03:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 077FA528B80
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 21:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D75230970CB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:55:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F1CB33024862
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE55357A3E;
-	Tue, 12 May 2026 18:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD0836729F;
+	Tue, 12 May 2026 19:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6wQtfYO"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="IFEBlnhd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DCC2D7D2E
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 18:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4A1357CE8;
+	Tue, 12 May 2026 19:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778612155; cv=none; b=Oad110cVewF3U9MzYt/o6k5ZM4d6Wkxv/4VdINQluL/Jhriz9JFNnZZ2bMMHPvg5pVtiOotgWcOE7eysUJB2rlYBDgFkOx9+OtaDCQFYtAd65l0Uu9vytiMgDZADD8yVt9ZxIP7GVRAUL3ogOH8hit9A4Ei3scp2JXUPloTjTx4=
+	t=1778614604; cv=none; b=EG4eGnMT5HaqEhlG7BelpQoQ4u7cpnynfqajwJcatv8vmQ+4qPs5G0CSVLuISSRW7xb0oARxuuAI4TjkDgteUnZlrYp3lpyyzcVSk9iwhk6tkQXqWkbPQOFnhmtOv60Eixa/aPga/uQ+kj3LY+yxsDMlfWs6UxoqPQd/b/K1Y1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778612155; c=relaxed/simple;
-	bh=YpNkICHwO3jCdKAl0LL5HmWKMFmNgj4OCEDikfq3svo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aOYPay8lk+VnAcQJZvKTYpdhvcqQgkauM91Kt1YrpaTCbdUQrN7yCNqb6kmxstRb+6UDTyhIV40PkC2cc4TmKLHOo9PlO+7vJntMc4PAuQNwLwptvOqSJ/TamTP2nUlmOsel0hXtUgdaC8zIaBF/vS8ona8UflhwTEl7R7bQZWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6wQtfYO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A10C2BCB0;
-	Tue, 12 May 2026 18:55:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778612154;
-	bh=YpNkICHwO3jCdKAl0LL5HmWKMFmNgj4OCEDikfq3svo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q6wQtfYON2Lo65wpxSC2KY3N3ETpsdAh0mAs3IpVAIoLlyWrSEoAGOwtAXQy/kQV2
-	 b5kcexlK+Zc/LTP6q608vEkFO9tLtb+LmsFA7M0fqFtsfgghYyLvU0f3yK1GESb67N
-	 bs5iwV/1KijpkOlb9Sk7dgOZML1JcNDPTaxdjmph6JRGeB67If/iWuYKST0m1XGc7/
-	 3i8f88qIW1XWfXworlXF9yKKH1oXVujLBEM8ylGEkUw0jO1SeGhFycTkiTxqqL89ow
-	 j6Dwlx3xX6ISfWUQ+1dztTeKihqzLo0/CVuK3QpFdpHlf9F5cKFSn5lLiuuoJ0DFGU
-	 rhk+2ZqAMbljA==
-Message-ID: <113dddc5-27e3-4e9e-a90c-f076a4629f51@kernel.org>
-Date: Tue, 12 May 2026 20:55:47 +0200
+	s=arc-20240116; t=1778614604; c=relaxed/simple;
+	bh=IPx+sOOGaWlk45zXKoNtEzn3GSndhUo86JVR9ERtPzA=;
+	h=Date:To:From:Subject:Message-Id; b=DnaFNoXMBuBVW5835cndKod0Rkw/zjFicVbdEvwa/lWw42wfG7LpTUBd47jS+wFIYUgkumRVIKLAYYKtox7hCKKhMJ6kjVt3WMSh/57X0NKxJX5r8E+Weqo4O+Z9gU4XBLx4I/XkN9Xa1DziKoqZIg8NxbUmno+R3SX4VWdChlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=IFEBlnhd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE149C2BCC7;
+	Tue, 12 May 2026 19:36:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778614603;
+	bh=IPx+sOOGaWlk45zXKoNtEzn3GSndhUo86JVR9ERtPzA=;
+	h=Date:To:From:Subject:From;
+	b=IFEBlnhd66CxMdZMpnLkcOG5Gf+fQZ/v9RTGzv7LooprQQtIb0lZ/W2QRgXUT10Xq
+	 EXUlDx3tJHiRYSCg4tm9gxZ4WDQr0BnzgMb/lU6egrwTmNVsjDZGQr6lEuE3F9yPtb
+	 RGSAyrG1oRWMA1wTrCD4bxT7ex1AwtrNa275Fl4k=
+Date: Tue, 12 May 2026 12:36:43 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,pfalcato@suse.de,osalvador@suse.de,muchun.song@linux.dev,liam@infradead.org,david@kernel.org,25181214217@stu.xidian.edu.cn,ljs@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260512193643.BE149C2BCC7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check before
- return device-private pmd
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Balbir Singh <balbirs@nvidia.com>, akpm@linux-foundation.org,
- ljs@kernel.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, sj@kernel.org, ziy@nvidia.com,
- linux-mm@kvack.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- stable@vger.kernel.org
-References: <20260508013728.21285-1-richard.weiyang@gmail.com>
- <5e9ee072-b927-41e0-ba98-c9fdf11eccbc@nvidia.com>
- <0aab59b8-71c5-4059-8281-5dd876946528@kernel.org>
- <20260512143542.izpp3gu4iqxttw3f@master>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260512143542.izpp3gu4iqxttw3f@master>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3F37F528666
+X-Rspamd-Queue-Id: 077FA528B80
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[xidian.edu.cn:email];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-246652-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246651-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
+	NEURAL_SPAM(0.00)[0.699];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	R_DKIM_ALLOW(0.00)[linux-foundation.org:s=korg];
+	DMARC_NA(0.00)[linux-foundation.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c15:e001:75::/64:c];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,infradead.org:email,xidian.edu.cn:email,suse.de:email]
 X-Rspamd-Action: no action
 
-On 5/12/26 16:35, Wei Yang wrote:
-> On Tue, May 12, 2026 at 02:43:54PM +0200, David Hildenbrand (Arm) wrote:
->> On 5/9/26 00:48, Balbir Singh wrote:
->>>
->>> Could you elaborate a more on the improper situation?
->>>
->>>
->>> Do we need to check softleaf_is_device_private() twice, can't we hold the pmd
->>> lock and check once?
->>
->> I think what we try to do here is, is to only grab the lock if we verified that there is something of interest in there.
->>
->> I wonder if we should rewrite that whole thing to just do a pmd_same() check after grabbing the lock.
->>
->> Something a lot cleaner like:
->>
->> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->> index a4d52fdb3056..de6a255cc847 100644
->> --- a/mm/page_vma_mapped.c
->> +++ b/mm/page_vma_mapped.c
->> @@ -242,40 +242,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>                 */
->>                pmde = pmdp_get_lockless(pvmw->pmd);
->>
->> -               if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->> -                       pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> -                       pmde = *pvmw->pmd;
->> -                       if (!pmd_present(pmde)) {
->> -                               softleaf_t entry;
->> -
->> -                               if (!thp_migration_supported() ||
->> -                                   !(pvmw->flags & PVMW_MIGRATION))
->> -                                       return not_found(pvmw);
->> -                               entry = softleaf_from_pmd(pmde);
->> -
->> -                               if (!softleaf_is_migration(entry) ||
->> -                                   !check_pmd(softleaf_to_pfn(entry), pvmw))
->> -                                       return not_found(pvmw);
->> -                               return true;
->> -                       }
->> -                       if (likely(pmd_trans_huge(pmde))) {
->> -                               if (pvmw->flags & PVMW_MIGRATION)
->> -                                       return not_found(pvmw);
->> -                               if (!check_pmd(pmd_pfn(pmde), pvmw))
->> -                                       return not_found(pvmw);
->> -                               return true;
->> -                       }
->> -                       /* THP pmd was split under us: handle on pte level */
->> -                       spin_unlock(pvmw->ptl);
->> -                       pvmw->ptl = NULL;
->> -               } else if (!pmd_present(pmde)) {
->> -                       const softleaf_t entry = softleaf_from_pmd(pmde);
->> -
->> -                       if (softleaf_is_device_private(entry)) {
->> -                               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> -                               return true;
->> -                       }
->> +               if (pmd_present(pmde)) {
->> +                       if (!pmd_leaf(pmde))
->> +                               goto pte_table;
->> +                       if (pvmw->flags & PVMW_MIGRATION)
->> +                               return not_found(pvmw);
->> +                       if (!check_pmd(pmd_pfn(pmde), pvmw))
->> +                               return not_found(pvmw);
->> +               } else if (pmd_is_migration_entry(pmde)) {
->> +                       softleaf_t entry = softleaf_from_pmd(pmde);
->> +
->> +                       if (!(pvmw->flags & PVMW_MIGRATION))
->> +                               return not_found(pvmw);
->> +                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->> +                               return not_found(pvmw);
->> +               } else if (pmd_is_device_private_entry(pmde)) {
->> +                       softleaf_t entry = softleaf_from_pmd(pmde);
->>
->> +                       if (pvmw->flags & PVMW_MIGRATION)
->> +                               return not_found(pvmw);
->> +                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->> +                               return not_found(pvmw);
->> +               } else {
->>                        if ((pvmw->flags & PVMW_SYNC) &&
->>                            thp_vma_suitable_order(vma, pvmw->address,
->>                                                   PMD_ORDER) &&
->> @@ -285,6 +273,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>                        step_forward(pvmw, PMD_SIZE);
->>                        continue;
->>                }
->> +
->> +               /* Double-check under PTL that the PMD didn't change. */
->> +               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> +               if (pmd_same(pmde, pmdp_get(pvmw->pmd)))
->> +                       return true;
->> +               spin_unlock(pvmw->ptl);
->> +               pvmw->ptl = NULL;
->> +               goto restart;
->> +pte_table:
->>                if (!map_pte(pvmw, &pmde, &ptl)) {
->>                        if (!pvmw->pte)
->>
->>
->>
->>
->> There is likely room to clean this up / compress it further.
-> 
-> I tried to compress above logic like this, hope it could look cleaner.
-> 
-> 	if (pmd_trans_huge(pmde) || pmd_is_valid_softleaf(pmde)) {
-> 		unsigned long pfn;
-> 		bool is_migration = pmd_is_migration_entry(pmde);
-> 		bool for_migration = !!(pvmw->flags & PVMW_MIGRATION);
-> 
-> 		if (is_migration != for_migration)
-> 			return not_found(pvmw);
-> 
-> 		if (pmd_trans_huge(pmde))
-> 			pfn = pmd_pfn(pmde);
-> 		else
-> 			pfn = softleaf_to_pfn(softleaf_from_pmd(pmde));
-> 
-> 		if (!check_pmd(pfn, pvmw))
-> 			return not_found(pvmw);
-> 	} else if (!pmd_present(pmde)) {
 
-It's more compact, but not necessarily cleaner. In particular, I detest
-pmd_trans_huge(), we should phase it out.
+The patch titled
+     Subject: Revert "mm/hugetlbfs: update hugetlbfs to use mmap_prepare"
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch
 
-if (pmd_present(pmde) && !pmd_leaf(pmde)) {
-	goto pte_table;
-} else if (pmd_present(pmde) || pmd_is_valid_softleaf(pmde))
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch
 
-...
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Might work as well. But once we add support for other softleaf types, we'll have
-to touch it again. So I'd rather just list what we actually expect.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
--- 
-Cheers,
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-David
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Lorenzo Stoakes <ljs@kernel.org>
+Subject: Revert "mm/hugetlbfs: update hugetlbfs to use mmap_prepare"
+Date: Tue, 12 May 2026 17:06:43 +0100
+
+This reverts commit ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use
+mmap_prepare") with conflict resolution to account for changes in commit
+ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use mmap_prepare").
+
+The patch incorrectly handled hugetlb VMA lock allocation at the
+mmap_prepare stage, where a failed allocation occurring after mmap_prepare
+is called might result in the lock leaking.
+
+There is no risk of a merge causing a similar issues, as
+VMA_DONTEXPAND_BIT is set for hugetlb mappings.
+
+As a first step in addressing this issue, simply revert the change so we
+can rework how we do this having corrected the underlying issues.
+
+We maintain the VMA flags changes as best we can, accounting for the fact
+that we were working with a VMA descriptor previously and propagating
+like-for-like changes for this.
+
+Note that we invoke vma_set_flags() and do not call vma_start_write() as
+vm_flags_set() does.  This is OK as it's being done in an .mmap hook where
+the VMA is not yet linked into the tree so nobody else can be accessing
+it.
+
+Link: https://lore.kernel.org/20260512160643.266960-1-ljs@kernel.org
+Fixes: ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use mmap_prepare")
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Reported-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Closes: https://lore.kernel.org/linux-mm/20260425070700.562229-1-25181214217@stu.xidian.edu.cn/
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/hugetlbfs/inode.c           |   46 +++++---------------
+ include/linux/hugetlb.h        |    8 ---
+ include/linux/hugetlb_inline.h |   14 ------
+ mm/hugetlb.c                   |   71 ++++++++++++-------------------
+ 4 files changed, 45 insertions(+), 94 deletions(-)
+
+--- a/fs/hugetlbfs/inode.c~revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare
++++ a/fs/hugetlbfs/inode.c
+@@ -96,15 +96,8 @@ static const struct fs_parameter_spec hu
+ #define PGOFF_LOFFT_MAX \
+ 	(((1UL << (PAGE_SHIFT + 1)) - 1) <<  (BITS_PER_LONG - (PAGE_SHIFT + 1)))
+ 
+-static int hugetlb_file_mmap_prepare_success(const struct vm_area_struct *vma)
++static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+-	/* Unfortunate we have to reassign vma->vm_private_data. */
+-	return hugetlb_vma_lock_alloc((struct vm_area_struct *)vma);
+-}
+-
+-static int hugetlbfs_file_mmap_prepare(struct vm_area_desc *desc)
+-{
+-	struct file *file = desc->file;
+ 	struct inode *inode = file_inode(file);
+ 	loff_t len, vma_len;
+ 	int ret;
+@@ -119,8 +112,8 @@ static int hugetlbfs_file_mmap_prepare(s
+ 	 * way when do_mmap unwinds (may be important on powerpc
+ 	 * and ia64).
+ 	 */
+-	vma_desc_set_flags(desc, VMA_HUGETLB_BIT, VMA_DONTEXPAND_BIT);
+-	desc->vm_ops = &hugetlb_vm_ops;
++	vma_set_flags(vma, VMA_HUGETLB_BIT, VMA_DONTEXPAND_BIT);
++	vma->vm_ops = &hugetlb_vm_ops;
+ 
+ 	/*
+ 	 * page based offset in vm_pgoff could be sufficiently large to
+@@ -129,16 +122,16 @@ static int hugetlbfs_file_mmap_prepare(s
+ 	 * sizeof(unsigned long).  So, only check in those instances.
+ 	 */
+ 	if (sizeof(unsigned long) == sizeof(loff_t)) {
+-		if (desc->pgoff & PGOFF_LOFFT_MAX)
++		if (vma->vm_pgoff & PGOFF_LOFFT_MAX)
+ 			return -EINVAL;
+ 	}
+ 
+ 	/* must be huge page aligned */
+-	if (desc->pgoff & (~huge_page_mask(h) >> PAGE_SHIFT))
++	if (vma->vm_pgoff & (~huge_page_mask(h) >> PAGE_SHIFT))
+ 		return -EINVAL;
+ 
+-	vma_len = (loff_t)vma_desc_size(desc);
+-	len = vma_len + ((loff_t)desc->pgoff << PAGE_SHIFT);
++	vma_len = (loff_t)(vma->vm_end - vma->vm_start);
++	len = vma_len + ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
+ 	/* check for overflow */
+ 	if (len < vma_len)
+ 		return -EINVAL;
+@@ -148,7 +141,7 @@ static int hugetlbfs_file_mmap_prepare(s
+ 
+ 	ret = -ENOMEM;
+ 
+-	vma_flags = desc->vma_flags;
++	vma_flags = vma->flags;
+ 	/*
+ 	 * for SHM_HUGETLB, the pages are reserved in the shmget() call so skip
+ 	 * reserving here. Note: only for SHM hugetlbfs file, the inode
+@@ -158,30 +151,17 @@ static int hugetlbfs_file_mmap_prepare(s
+ 		vma_flags_set(&vma_flags, VMA_NORESERVE_BIT);
+ 
+ 	if (hugetlb_reserve_pages(inode,
+-			desc->pgoff >> huge_page_order(h),
+-			len >> huge_page_shift(h), desc,
+-			vma_flags) < 0)
++				vma->vm_pgoff >> huge_page_order(h),
++				len >> huge_page_shift(h), vma,
++				vma_flags) < 0)
+ 		goto out;
+ 
+ 	ret = 0;
+-	if (vma_desc_test(desc, VMA_WRITE_BIT) && inode->i_size < len)
++	if (vma_test(vma, VMA_WRITE_BIT) && inode->i_size < len)
+ 		i_size_write(inode, len);
+ out:
+ 	inode_unlock(inode);
+ 
+-	if (!ret) {
+-		/* Allocate the VMA lock after we set it up. */
+-		desc->action.success_hook = hugetlb_file_mmap_prepare_success;
+-		/*
+-		 * We cannot permit the rmap finding this VMA in the time
+-		 * between the VMA being inserted into the VMA tree and the
+-		 * completion/success hook being invoked.
+-		 *
+-		 * This is because we establish a per-VMA hugetlb lock which can
+-		 * be raced by rmap.
+-		 */
+-		desc->action.hide_from_rmap_until_complete = true;
+-	}
+ 	return ret;
+ }
+ 
+@@ -1227,7 +1207,7 @@ static void init_once(void *foo)
+ 
+ static const struct file_operations hugetlbfs_file_operations = {
+ 	.read_iter		= hugetlbfs_read_iter,
+-	.mmap_prepare		= hugetlbfs_file_mmap_prepare,
++	.mmap			= hugetlbfs_file_mmap,
+ 	.fsync			= noop_fsync,
+ 	.get_unmapped_area	= hugetlb_get_unmapped_area,
+ 	.llseek			= default_llseek,
+--- a/include/linux/hugetlb.h~revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare
++++ a/include/linux/hugetlb.h
+@@ -148,7 +148,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
+ 			     struct folio **foliop);
+ #endif /* CONFIG_USERFAULTFD */
+ long hugetlb_reserve_pages(struct inode *inode, long from, long to,
+-			   struct vm_area_desc *desc, vma_flags_t vma_flags);
++			   struct vm_area_struct *vma, vma_flags_t vma_flags);
+ long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
+ 						long freed);
+ bool folio_isolate_hugetlb(struct folio *folio, struct list_head *list);
+@@ -276,7 +276,6 @@ long hugetlb_change_protection(struct vm
+ void hugetlb_unshare_all_pmds(struct vm_area_struct *vma);
+ void fixup_hugetlb_reservations(struct vm_area_struct *vma);
+ void hugetlb_split(struct vm_area_struct *vma, unsigned long addr);
+-int hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
+ 
+ unsigned int arch_hugetlb_cma_order(void);
+ 
+@@ -469,11 +468,6 @@ static inline void fixup_hugetlb_reserva
+ 
+ static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr) {}
+ 
+-static inline int hugetlb_vma_lock_alloc(struct vm_area_struct *vma)
+-{
+-	return 0;
+-}
+-
+ #endif /* !CONFIG_HUGETLB_PAGE */
+ 
+ #ifndef pgd_write
+--- a/include/linux/hugetlb_inline.h~revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare
++++ a/include/linux/hugetlb_inline.h
+@@ -6,23 +6,13 @@
+ 
+ #ifdef CONFIG_HUGETLB_PAGE
+ 
+-static inline bool is_vm_hugetlb_flags(vm_flags_t vm_flags)
+-{
+-	return !!(vm_flags & VM_HUGETLB);
+-}
+-
+ static inline bool is_vma_hugetlb_flags(const vma_flags_t *flags)
+ {
+-	return vma_flags_test_any(flags, VMA_HUGETLB_BIT);
++	return vma_flags_test(flags, VMA_HUGETLB_BIT);
+ }
+ 
+ #else
+ 
+-static inline bool is_vm_hugetlb_flags(vm_flags_t vm_flags)
+-{
+-	return false;
+-}
+-
+ static inline bool is_vma_hugetlb_flags(const vma_flags_t *flags)
+ {
+ 	return false;
+@@ -32,7 +22,7 @@ static inline bool is_vma_hugetlb_flags(
+ 
+ static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
+ {
+-	return is_vm_hugetlb_flags(vma->vm_flags);
++	return is_vma_hugetlb_flags(&vma->flags);
+ }
+ 
+ #endif
+--- a/mm/hugetlb.c~revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare
++++ a/mm/hugetlb.c
+@@ -116,6 +116,7 @@ struct mutex *hugetlb_fault_mutex_table
+ /* Forward declaration */
+ static int hugetlb_acct_memory(struct hstate *h, long delta);
+ static void hugetlb_vma_lock_free(struct vm_area_struct *vma);
++static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
+ static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
+ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 		unsigned long start, unsigned long end, bool take_locks);
+@@ -413,21 +414,17 @@ static void hugetlb_vma_lock_free(struct
+ 	}
+ }
+ 
+-/*
+- * vma specific semaphore used for pmd sharing and fault/truncation
+- * synchronization
+- */
+-int hugetlb_vma_lock_alloc(struct vm_area_struct *vma)
++static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma)
+ {
+ 	struct hugetlb_vma_lock *vma_lock;
+ 
+ 	/* Only establish in (flags) sharable vmas */
+ 	if (!vma || !(vma->vm_flags & VM_MAYSHARE))
+-		return 0;
++		return;
+ 
+ 	/* Should never get here with non-NULL vm_private_data */
+ 	if (vma->vm_private_data)
+-		return -EINVAL;
++		return;
+ 
+ 	vma_lock = kmalloc_obj(*vma_lock);
+ 	if (!vma_lock) {
+@@ -442,15 +439,13 @@ int hugetlb_vma_lock_alloc(struct vm_are
+ 		 * allocation failure.
+ 		 */
+ 		pr_warn_once("HugeTLB: unable to allocate vma specific lock\n");
+-		return -EINVAL;
++		return;
+ 	}
+ 
+ 	kref_init(&vma_lock->refs);
+ 	init_rwsem(&vma_lock->rw_sema);
+ 	vma_lock->vma = vma;
+ 	vma->vm_private_data = vma_lock;
+-
+-	return 0;
+ }
+ 
+ /* Helper that removes a struct file_region from the resv_map cache and returns
+@@ -1147,28 +1142,20 @@ static struct resv_map *vma_resv_map(str
+ 	}
+ }
+ 
+-static void set_vma_resv_flags(struct vm_area_struct *vma, unsigned long flags)
++static void set_vma_resv_map(struct vm_area_struct *vma, struct resv_map *map)
+ {
+ 	VM_WARN_ON_ONCE_VMA(!is_vm_hugetlb_page(vma), vma);
+-	VM_WARN_ON_ONCE_VMA(vma->vm_flags & VM_MAYSHARE, vma);
++	VM_WARN_ON_ONCE_VMA(vma_test(vma, VMA_MAYSHARE_BIT), vma);
+ 
+-	set_vma_private_data(vma, get_vma_private_data(vma) | flags);
++	set_vma_private_data(vma, (unsigned long)map);
+ }
+ 
+-static void set_vma_desc_resv_map(struct vm_area_desc *desc, struct resv_map *map)
+-{
+-	VM_WARN_ON_ONCE(!is_vma_hugetlb_flags(&desc->vma_flags));
+-	VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_MAYSHARE_BIT));
+-
+-	desc->private_data = map;
+-}
+-
+-static void set_vma_desc_resv_flags(struct vm_area_desc *desc, unsigned long flags)
++static void set_vma_resv_flags(struct vm_area_struct *vma, unsigned long flags)
+ {
+-	VM_WARN_ON_ONCE(!is_vma_hugetlb_flags(&desc->vma_flags));
+-	VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_MAYSHARE_BIT));
++	VM_WARN_ON_ONCE_VMA(!is_vm_hugetlb_page(vma), vma);
++	VM_WARN_ON_ONCE_VMA(vma_test(vma, VMA_MAYSHARE_BIT), vma);
+ 
+-	desc->private_data = (void *)((unsigned long)desc->private_data | flags);
++	set_vma_private_data(vma, get_vma_private_data(vma) | flags);
+ }
+ 
+ static int is_vma_resv_set(struct vm_area_struct *vma, unsigned long flag)
+@@ -1178,13 +1165,6 @@ static int is_vma_resv_set(struct vm_are
+ 	return (get_vma_private_data(vma) & flag) != 0;
+ }
+ 
+-static bool is_vma_desc_resv_set(struct vm_area_desc *desc, unsigned long flag)
+-{
+-	VM_WARN_ON_ONCE(!is_vma_hugetlb_flags(&desc->vma_flags));
+-
+-	return ((unsigned long)desc->private_data) & flag;
+-}
+-
+ bool __vma_private_lock(struct vm_area_struct *vma)
+ {
+ 	return !(vma->vm_flags & VM_MAYSHARE) &&
+@@ -6554,7 +6534,7 @@ next:
+ 
+ long hugetlb_reserve_pages(struct inode *inode,
+ 		long from, long to,
+-		struct vm_area_desc *desc,
++		struct vm_area_struct *vma,
+ 		vma_flags_t vma_flags)
+ {
+ 	long chg = -1, add = -1, spool_resv, gbl_resv;
+@@ -6572,6 +6552,12 @@ long hugetlb_reserve_pages(struct inode
+ 	}
+ 
+ 	/*
++	 * vma specific semaphore used for pmd sharing and fault/truncation
++	 * synchronization
++	 */
++	hugetlb_vma_lock_alloc(vma);
++
++	/*
+ 	 * Only apply hugepage reservation if asked. At fault time, an
+ 	 * attempt will be made for VM_NORESERVE to allocate a page
+ 	 * without using reserves
+@@ -6583,9 +6569,9 @@ long hugetlb_reserve_pages(struct inode
+ 	 * Shared mappings base their reservation on the number of pages that
+ 	 * are already allocated on behalf of the file. Private mappings need
+ 	 * to reserve the full area even if read-only as mprotect() may be
+-	 * called to make the mapping read-write. Assume !desc is a shm mapping
++	 * called to make the mapping read-write. Assume !vma is a shm mapping
+ 	 */
+-	if (!desc || vma_desc_test(desc, VMA_MAYSHARE_BIT)) {
++	if (!vma || vma_test(vma, VMA_MAYSHARE_BIT)) {
+ 		/*
+ 		 * resv_map can not be NULL as hugetlb_reserve_pages is only
+ 		 * called for inodes for which resv_maps were created (see
+@@ -6604,8 +6590,8 @@ long hugetlb_reserve_pages(struct inode
+ 
+ 		chg = to - from;
+ 
+-		set_vma_desc_resv_map(desc, resv_map);
+-		set_vma_desc_resv_flags(desc, HPAGE_RESV_OWNER);
++		set_vma_resv_map(vma, resv_map);
++		set_vma_resv_flags(vma, HPAGE_RESV_OWNER);
+ 	}
+ 
+ 	if (chg < 0) {
+@@ -6619,7 +6605,7 @@ long hugetlb_reserve_pages(struct inode
+ 	if (err < 0)
+ 		goto out_err;
+ 
+-	if (desc && !vma_desc_test(desc, VMA_MAYSHARE_BIT) && h_cg) {
++	if (vma && !vma_test(vma, VMA_MAYSHARE_BIT) && h_cg) {
+ 		/* For private mappings, the hugetlb_cgroup uncharge info hangs
+ 		 * of the resv_map.
+ 		 */
+@@ -6656,7 +6642,7 @@ long hugetlb_reserve_pages(struct inode
+ 	 * consumed reservations are stored in the map. Hence, nothing
+ 	 * else has to be done for private mappings here
+ 	 */
+-	if (!desc || vma_desc_test(desc, VMA_MAYSHARE_BIT)) {
++	if (!vma || vma_test(vma, VMA_MAYSHARE_BIT)) {
+ 		add = region_add(resv_map, from, to, regions_needed, h, h_cg);
+ 
+ 		if (unlikely(add < 0)) {
+@@ -6720,15 +6706,16 @@ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
+ out_err:
+-	if (!desc || vma_desc_test(desc, VMA_MAYSHARE_BIT))
++	hugetlb_vma_lock_free(vma);
++	if (!vma || vma_test(vma, VMA_MAYSHARE_BIT))
+ 		/* Only call region_abort if the region_chg succeeded but the
+ 		 * region_add failed or didn't run.
+ 		 */
+ 		if (chg >= 0 && add < 0)
+ 			region_abort(resv_map, from, to, regions_needed);
+-	if (desc && is_vma_desc_resv_set(desc, HPAGE_RESV_OWNER)) {
++	if (vma && is_vma_resv_set(vma, HPAGE_RESV_OWNER)) {
+ 		kref_put(&resv_map->refs, resv_map_release);
+-		set_vma_desc_resv_map(desc, NULL);
++		set_vma_resv_map(vma, NULL);
+ 	}
+ 	return err;
+ }
+_
+
+Patches currently in -mm which might be from ljs@kernel.org are
+
+revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch
+
 
