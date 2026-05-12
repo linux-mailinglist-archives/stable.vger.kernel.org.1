@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-245521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKp/Iv4vA2qN1QEAu9opvQ
-	(envelope-from <stable+bounces-245521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:49:50 +0200
+	id yBBLLEInA2qj1AEAu9opvQ
+	(envelope-from <stable+bounces-245525-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:12:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DFAE521A2D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:49:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11116520DBD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:12:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79C7133CA1D1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:52:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FD6F33D7E2D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 12:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD0B399D13;
-	Tue, 12 May 2026 12:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151A339E9CA;
+	Tue, 12 May 2026 12:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZjN1GVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYRW2Cqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE4937DAB9
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C01B39E9C5
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 12:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778590054; cv=none; b=UBjom/GxzSeKMfWZgtvPeyAHkE4xUSVbIoeOYF9GBDz5IMjAOaMoMAPiRCxVFm4DncWDUokcBl7j8U6ADuHe2FKbLAOynN8a6sKnHkxlMkQABYhUtA5S1MDvvnYwsviej7Z5DDeovo6BykyGPXcBMnKre2qeWORkvhZypglOwzc=
+	t=1778590071; cv=none; b=S6GDCaruWmR4wALdIZlLoCZ/aKe3kYRUSgWmmSGjYaUGsLep7QNZw0ZHQkItpQsgGBqdl2WcrychMFbzBiZSiLc0cDdiz453DiK1Ol1oFNiJNJ0woPFTBKvslM/0aA+PK7s4nQBs4gDBzrnJEtwIdxOOASAC3C9rX7oiEoPE7To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778590054; c=relaxed/simple;
-	bh=Qm1pkZ1LPf1FeIHPqjqeWBL3OEbtPFgoO1eOFoYHyCg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pU2E8aP+LsOF4TqV6qXmKWb3ll+9KHR7NlFHabKr4BZFBOhXW6D72+pWWslWRy4i8tr9MPPref4psA6ovAMSKbSg7NqAN6HOTXeIVxME87tj4C5Wt/fPqy8MOFLxQkSvqLaJHvKqihmGTjTzQECltvXngOalC2UdwDrAY0kXPec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZjN1GVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED83CC2BCB0;
-	Tue, 12 May 2026 12:47:32 +0000 (UTC)
+	s=arc-20240116; t=1778590071; c=relaxed/simple;
+	bh=XCDuYCQmppeVDBxHl5/Ke9VaqP3lSiW7TcpxiXb8Olw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=t+dsUnrYW1pHWf/9WGTANVOOIkZ+JI2kmhNT0CuuJWVhC/Qa/7/k4qhz8BNtigMOXdJciYVP8+i/iOYRl2kAYtTs6Op5CzFro1PWsrxJ2/dUhJhXjDeshNGLPP9coloTCSJJl7wBI/s+JUR7DxCgiYZBXXPYWg8fKS0HsP8Y6Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYRW2Cqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8100C2BCB0;
+	Tue, 12 May 2026 12:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778590053;
-	bh=Qm1pkZ1LPf1FeIHPqjqeWBL3OEbtPFgoO1eOFoYHyCg=;
+	s=korg; t=1778590071;
+	bh=XCDuYCQmppeVDBxHl5/Ke9VaqP3lSiW7TcpxiXb8Olw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NZjN1GVQ5qbFrIu6/o7fmvtbOR81HCpEVxwh+Gev07ug7tSPqfcm+BXjK7X/Eta30
-	 mU9OAdOXF2B6IwctpOFjSdLNymKMpzWK564ElVLVlpxpRQTNAKjoJtXwkmNxi3/dsG
-	 FSKlS6JiMy46ir2T7o400FtMJEQpMG3rdsJ7wQ0Y=
-Subject: FAILED: patch "[PATCH] spi: zynq-qspi: fix controller deregistration" failed to apply to 5.10-stable tree
-To: johan@kernel.org,broonie@kernel.org,naga.sureshkumar.relli@xilinx.com
+	b=JYRW2CqpGBRGUn3N/h0hTZzkBsurhftL/keV3ql6RUIt7vsKn+TR6YJ9jspZ3lhda
+	 VYbxW7esWIjCJzu1mzAwsDQYRl6Ws5VAT7va9TRZ1wuAe0+iiSrdu3SlnpEmu4GavA
+	 xxWyJOwy01f7dX0ApVGFXcM4JjPQa5j8m6VCGllE=
+Subject: FAILED: patch "[PATCH] spi: ti-qspi: fix controller deregistration" failed to apply to 6.6-stable tree
+To: johan@kernel.org,bigeasy@linutronix.de,broonie@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 May 2026 14:46:04 +0200
-Message-ID: <2026051204-hacksaw-unopposed-238a@gregkh>
+Date: Tue, 12 May 2026 14:46:15 +0200
+Message-ID: <2026051215-earache-outdated-a817@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,19 +54,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2DFAE521A2D
+X-Rspamd-Queue-Id: 11116520DBD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245521-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-245525-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -80,26 +80,26 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,gregkh:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,gregkh:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x c9c012706c9fa8ca6d129a9161caf92ab625a3fd
+git cherry-pick -x 0c18a1bacbb1d8b8aa34d3d004a2cb8226c8b1ea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051204-hacksaw-unopposed-238a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051215-earache-outdated-a817@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,68 +111,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c9c012706c9fa8ca6d129a9161caf92ab625a3fd Mon Sep 17 00:00:00 2001
+From 0c18a1bacbb1d8b8aa34d3d004a2cb8226c8b1ea Mon Sep 17 00:00:00 2001
 From: Johan Hovold <johan@kernel.org>
-Date: Fri, 10 Apr 2026 10:17:56 +0200
-Subject: [PATCH] spi: zynq-qspi: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:53 +0200
+Subject: [PATCH] spi: ti-qspi: fix controller deregistration
 
-Make sure to deregister the controller before disabling it during driver
-unbind.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Note that clocks were also disabled before the recent commit
-1f8fd9490e31 ("spi: zynq-qspi: Simplify clock handling with
-devm_clk_get_enabled()").
+Note that the controller is suspended before disabling and releasing
+resources since commit 3ac066e2227c ("spi: spi-ti-qspi: Suspend the
+queue before removing the device") which avoids issues like unclocked
+accesses but prevents SPI device drivers from doing I/O during
+deregistration.
 
-Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-Cc: stable@vger.kernel.org	# 5.2: 8eb2fd00f65a
-Cc: stable@vger.kernel.org	# 5.2
-Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Fixes: 3b3a80019ff1 ("spi: ti-qspi: one only one interrupt handler")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-27-johan@kernel.org
+Link: https://patch.msgid.link/20260410081757.503099-24-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index af252500195c..406fd9d5337e 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -643,7 +643,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index d1d880a8ed7d..1fbd710d616f 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -888,7 +888,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 	qspi->mmap_enabled = false;
+ 	qspi->current_cs = -1;
  
- 	xqspi = spi_controller_get_devdata(ctlr);
- 	xqspi->dev = dev;
--	platform_set_drvdata(pdev, xqspi);
-+	platform_set_drvdata(pdev, ctlr);
- 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xqspi->regs)) {
- 		ret = PTR_ERR(xqspi->regs);
-@@ -702,9 +702,9 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	/* QSPI controller initializations */
- 	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (!ret)
+ 		return 0;
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret) {
--		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
-+		dev_err(&pdev->dev, "failed to register controller\n");
- 		goto remove_ctlr;
- 	}
- 
-@@ -728,9 +728,16 @@ static int zynq_qspi_probe(struct platform_device *pdev)
-  */
- static void zynq_qspi_remove(struct platform_device *pdev)
+@@ -903,19 +903,17 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ static void ti_qspi_remove(struct platform_device *pdev)
  {
--	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-+	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
-+
-+	spi_controller_get(ctlr);
-+
-+	spi_unregister_controller(ctlr);
+ 	struct ti_qspi *qspi = platform_get_drvdata(pdev);
+-	int rc;
  
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
+-	rc = spi_controller_suspend(qspi->host);
+-	if (rc) {
+-		dev_alert(&pdev->dev, "spi_controller_suspend() failed (%pe)\n",
+-			  ERR_PTR(rc));
+-		return;
+-	}
++	spi_controller_get(qspi->host);
 +
-+	spi_controller_put(ctlr);
++	spi_unregister_controller(qspi->host);
+ 
+ 	pm_runtime_put_sync(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	ti_qspi_dma_cleanup(qspi);
++
++	spi_controller_put(qspi->host);
  }
  
- static const struct of_device_id zynq_qspi_of_match[] = {
+ static const struct dev_pm_ops ti_qspi_pm_ops = {
 
 
