@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-245952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLGNAHBnA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245952-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:24 +0200
+	id QFM+EDVqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F4E52612C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C39825265E1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 394483009381
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2141C3043A47
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C9F3DC871;
-	Tue, 12 May 2026 17:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7B53E5A1A;
+	Tue, 12 May 2026 17:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEAWBGkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElG25ji7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7152EBB84;
-	Tue, 12 May 2026 17:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A8C3EDE70;
+	Tue, 12 May 2026 17:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607977; cv=none; b=IB6nZfjmcFPiNRTjarB0AFiONfBLUyI1XzL0B/J12OFq23MrMsLDTT6nujZQuOYSHkc72GC+K7y/Ju9lMgiJP9iYu0XmEe2XWmBaisL5xisz+vTgY+GJ3yVUq8UjGfJD+nvnq3WKgq/KDRLq3nn8FCEYx+sCo8Y9bzU7n8t1baw=
+	t=1778608541; cv=none; b=KSkMDcigjNYXTi4U+zxcSqGC0Gw64i01ijwxQSys7YsZdkYC+SuC0z1ZW33HewfXGG92+20rfpEq6Rj1goj23jxgALIl7ESiyC6Cp0mZR2mrkd7LbXJxI4u7pOT724uEJuOB5f1t4N4yBpn4WOYlAgUoszy+heD8qkuIctbBTHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607977; c=relaxed/simple;
-	bh=GJcP4HyWDJ50vXRfHY0t5OIVPYbDtpcRrSo6TvUORRo=;
+	s=arc-20240116; t=1778608541; c=relaxed/simple;
+	bh=T70OtSjLYze/rtizp7YN/4Pa8NV77BvGkfFsY/2UoOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDJh+9RHLyuiCH1o1FcP7az0+/jhdWQ0jTAze9AR5YR6zEfUDk1nP+0AXpCgVABQpq/La046fuQTr1wom/Y84I+UrVE0524lcsoVFU3w/2l/IoCICqPLSgHT0zjLfJmllyJ75gnBBaSJP85se65ETH9prM+JN8fTg8K9XG5Vu6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEAWBGkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701DBC2BCB0;
-	Tue, 12 May 2026 17:46:17 +0000 (UTC)
+	 MIME-Version; b=RIhQ1U7QGs6BcPB38LaSOzh0DytdV+wu6ZM+Bs1bBwXqqjaVuTomcLBNu5MhwwW8FN84ktUjneQ7Rqfw4+fRMbM17wdcsyTj5Xd/Ony6ajRjvdzFUWE/aDyW0spFU6yFmZ65wDIg0H1l1pB6Y2YAD5YQr9fvyeppuWi+RU11oV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElG25ji7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACAAC2BCF5;
+	Tue, 12 May 2026 17:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607977;
-	bh=GJcP4HyWDJ50vXRfHY0t5OIVPYbDtpcRrSo6TvUORRo=;
+	s=korg; t=1778608540;
+	bh=T70OtSjLYze/rtizp7YN/4Pa8NV77BvGkfFsY/2UoOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QEAWBGkh6NaR2Pu1G20uWXN0a8GKGJXOnofRQGQdV2NZLBitQD0WO0JsocIkEUmTo
-	 g2PW6pxMm6GZkGxzM11DGG3GfEbtojZWpbG4GgT+peKxiQk7ts41nywNzPlM40lpk4
-	 zJM9plBPeHMoQoBQbzn8jOTe1EiaHIwu0Mq/9YHI=
+	b=ElG25ji727VY/9FAqOFzSZw3319xhqf9PlZhEdmN8Xfjk8/WbTEgiWqweQrVBnjL5
+	 7TJWd969fIrWykZ3lNKRRpth/KKLBTu6OgkaWpWIwXmgXWfMdFMcTbueJv/pck5Oyc
+	 aodKH3cvCsy5cVNsCkQr2+GEdGsHLqKwP79IfFIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Siwei Zhang <oss@fourdim.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 066/206] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_state_change_cb()
+	Bharath SM <bharathsm@microsoft.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 117/270] cifs: abort open_cached_dir if we dont request leases
 Date: Tue, 12 May 2026 19:38:38 +0200
-Message-ID: <20260512173934.241452348@linuxfoundation.org>
+Message-ID: <20260512173940.921580119@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F1F4E52612C
+X-Rspamd-Queue-Id: C39825265E1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245952-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246171-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,42 +91,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fourdim.xyz:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siwei Zhang <oss@fourdim.xyz>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 2ff1a41a912de8517b4482e946dd951b7d80edbf upstream.
+commit d68ce834f8cf6cb2e77f3331df65166b35466b53 upstream.
 
-Add the same NULL guard already present in
-l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
+It is possible that SMB2_open_init may not set lease context based
+on the requested oplock level. This can happen when leases have been
+temporarily or permanently disabled. When this happens, we will have
+open_cached_dir making an open without lease context and the response
+will anyway be rejected by open_cached_dir (thereby forcing a close to
+discard this open). That's unnecessary two round-trips to the server.
 
-Fixes: 89bc500e41fc ("Bluetooth: Add state tracking to struct l2cap_chan")
-Cc: stable@kernel.org
-Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This change adds a check before making the open request to the server
+to make sure that SMB2_open_init did add the expected lease context
+to the open in open_cached_dir.
+
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_sock.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/client/cached_dir.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1630,6 +1630,9 @@ static void l2cap_sock_state_change_cb(s
- {
- 	struct sock *sk = chan->data;
- 
-+	if (!sk)
-+		return;
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -286,6 +286,14 @@ replay_again:
+ 			    &rqst[0], &oplock, &oparms, utf16_path);
+ 	if (rc)
+ 		goto oshr_free;
 +
- 	sk->sk_state = state;
++	if (oplock != SMB2_OPLOCK_LEVEL_II) {
++		rc = -EINVAL;
++		cifs_dbg(FYI, "%s: Oplock level %d not suitable for cached directory\n",
++			 __func__, oplock);
++		goto oshr_free;
++	}
++
+ 	smb2_set_next_command(tcon, &rqst[0]);
  
- 	if (err)
+ 	memset(&qi_iov, 0, sizeof(qi_iov));
 
 
 
