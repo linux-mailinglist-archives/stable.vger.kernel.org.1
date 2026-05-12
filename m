@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245893-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEo4M2JsA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:30 +0200
+	id OAkdOH5nA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245893-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C4B526CDE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BCA2526157
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 59CA230A7B6C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9889630686CC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0393D9696;
-	Tue, 12 May 2026 17:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF663E0721;
+	Tue, 12 May 2026 17:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+iVMa/l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnTMCM4/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBD43C09ED;
-	Tue, 12 May 2026 17:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8493D966A;
+	Tue, 12 May 2026 17:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608492; cv=none; b=Kz15uic1aT2JgwmlrQPWbHmG1rZv06cacR7FPJK6Udt7iHq0V5glpEwcCPGB9n1fagvehJMCvzx2QHoygxXSzrsDsa3IGS4kzfEoifl8owRU6QznzHZvaZck5qPuE6VTjhQ0gyfOLeVsEa/I9bUpBxsFFPbeZGdCnrAhzU/OV5c=
+	t=1778607826; cv=none; b=fYCZdCUuuw62KuLcJz08DloaCQSnGy1zJwwPQA9SmeuGVmXooCKDqpRMTCKj8s2CRT0nS3tpfwwg2R2WiyjSw4oLgrhVU/ORf4CIn0j9QvP6KT/zKrBPqXwNJZSA/HUlQELTrcdDLzEBwKImgRVh+ZgobjjIRxSiK9/nggn0vTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608492; c=relaxed/simple;
-	bh=cWaNFMIg5yS0lW7ovG4+YwfTlnCoMxRuStJUbGPsAbw=;
+	s=arc-20240116; t=1778607826; c=relaxed/simple;
+	bh=4WcwqHkNqtrcOoyzBE2cOcATZijTMqnodxWA2Skln3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bE4oiULHUtqunKkr3xRORbQ6wNssKPPIO7GJLuVQqWHQgFhgvMmEPXhlb8z6wnDBgk5DYPAufjcnWoF2phZ8xHGyPgiViiFXxgh6pM+9MwdBaz+TIobQ0VU7uQ98DWhABySuHhMfIxO5h+SzGdRF5nr21Z1Ww0xKefTalkHeVOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+iVMa/l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7004C2BCB0;
-	Tue, 12 May 2026 17:54:51 +0000 (UTC)
+	 MIME-Version; b=CSKSPPK7P0QpZ3E96NLrgLv+mqTSJcZzQwWrsIfsinFpdo8umqVyFx9LKFgxIjAC91iC7S27NcZQRiCBlDPUiBqs9zjJHt5bzv1/m0J+J8RPfIoDV9syHEIoT+SAt76vaTgZa+TYGzFgSfsWOrreOWH2jBP1toaZhWu/gx5jr4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnTMCM4/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97BBC2BCB0;
+	Tue, 12 May 2026 17:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608492;
-	bh=cWaNFMIg5yS0lW7ovG4+YwfTlnCoMxRuStJUbGPsAbw=;
+	s=korg; t=1778607826;
+	bh=4WcwqHkNqtrcOoyzBE2cOcATZijTMqnodxWA2Skln3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+iVMa/lDCPAYIQSUftGSYel3dlhy8vTTs0EVAJI5SJ3yZ/JfBCa7+fUmdhdp1ER7
-	 BTRn+b38NE2CH/xJ2n7F2zzvb1n3rSU2jqL18sXYie+pimHwtsodXXVPWbaWh7N+97
-	 eB2plw7ITKfWx07YGsD3XIim7FczOlM/bXLWjcbw=
+	b=SnTMCM4/YirDVTsRq1/x9BaiMObJHfK6QUsXbqNtrb5Bf8l/Mvgvd7uvr4J7qPcsc
+	 lIXyXv03ZAtAh/vQbtodGi6TdXxkY4uBzU6A/qCMdmhznf5auzdRl7bbzgsd/yvvFm
+	 +r1a7hjytaHcLuYtulVI4UavAuD4YCZbNR5/+8Ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 100/270] ip6_gre: Use cached t->net in ip6erspan_changelink().
+	stable <stable@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.12 049/206] usb: ulpi: fix memory leak on ulpi_register() error paths
 Date: Tue, 12 May 2026 19:38:21 +0200
-Message-ID: <20260512173940.564546266@linuxfoundation.org>
+Message-ID: <20260512173933.875738624@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,91 +64,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 45C4B526CDE
+X-Rspamd-Queue-Id: 4BCA2526157
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246152-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245893-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,ntu.edu.sg:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maoyi Xie <maoyixie.tju@gmail.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit 1d324c2f43f70c965f25c58cc3611c779adbe47e upstream.
+commit 0b9fcab1b8608d429e5f239afb197de928d4de7d upstream.
 
-After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
-rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
-ip6gre hash via link_net. ip6erspan_changelink() was not converted in
-that series and still uses dev_net(dev), which diverges from the
-device's creation netns after IFLA_NET_NS_FD migration.
+Commit 01af542392b5 ("usb: ulpi: fix double free in
+ulpi_register_interface() error path") removed kfree(ulpi) from
+ulpi_register_interface() to fix a double-free when device_register()
+fails.
 
-This re-inserts the tunnel into the wrong per-netns hash. The
-original netns keeps a stale entry. When that netns is later
-destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
-slab-use-after-free reported by KASAN, followed by a kernel BUG at
-net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
+But when ulpi_of_register() or ulpi_read_id() fail before
+device_register() is called, the ulpi allocation is leaked.
 
-Reachable from an unprivileged user namespace (unshare --user
---map-root-user --net).
+Add kfree(ulpi) on both error paths to properly clean up the allocation.
 
-ip6gre_changelink() earlier in the same file already uses the cached
-t->net; only ip6erspan_changelink() has the wrong shape.
-
-Fixes: 2d665034f239 ("net: ip6_gre: Fix ip6erspan hlen calculation")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260430103318.3206018-1-maoyi.xie@ntu.edu.sg
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 01af542392b5 ("usb: ulpi: fix double free in ulpi_register_interface() error path")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260407-ulpi-v1-1-f3fafe53f7b2@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_gre.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/common/ulpi.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -2261,10 +2261,11 @@ static int ip6erspan_changelink(struct n
- 				struct nlattr *data[],
- 				struct netlink_ext_ack *extack)
- {
--	struct ip6gre_net *ign = net_generic(dev_net(dev), ip6gre_net_id);
-+	struct ip6_tnl *t = netdev_priv(dev);
- 	struct __ip6_tnl_parm p;
--	struct ip6_tnl *t;
-+	struct ip6gre_net *ign;
+--- a/drivers/usb/common/ulpi.c
++++ b/drivers/usb/common/ulpi.c
+@@ -286,12 +286,15 @@ static int ulpi_register(struct device *
+ 	ACPI_COMPANION_SET(&ulpi->dev, ACPI_COMPANION(dev));
  
-+	ign = net_generic(t->net, ip6gre_net_id);
- 	t = ip6gre_changelink_common(dev, tb, data, &p, extack);
- 	if (IS_ERR(t))
- 		return PTR_ERR(t);
+ 	ret = ulpi_of_register(ulpi);
+-	if (ret)
++	if (ret) {
++		kfree(ulpi);
+ 		return ret;
++	}
+ 
+ 	ret = ulpi_read_id(ulpi);
+ 	if (ret) {
+ 		of_node_put(ulpi->dev.of_node);
++		kfree(ulpi);
+ 		return ret;
+ 	}
+ 
 
 
 
