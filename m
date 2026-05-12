@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDKGNDBvA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:28 +0200
+	id AI5pMNxrA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAFC5274EC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:19:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA83526B40
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DDF353097D92
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B70D31FDA37
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51FC23E356;
-	Tue, 12 May 2026 18:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DDE3955E8;
+	Tue, 12 May 2026 17:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TddEoBCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leF5i3Mk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980B63EDE59;
-	Tue, 12 May 2026 18:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6052EB5A6;
+	Tue, 12 May 2026 17:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609033; cv=none; b=cxLkBcok4QwzdqMymArw4JMaB7FOvcQC6ExNaAdUXF/jqCNm+3BgQ7igLFiofzArlSiQPeMeUHsuY5902WADAj+q6oyPYebbAtJsCaIw4MOp2BR4tiHK6hRmlI4k1OPtI2/DhhI+WWBPTj2LPk93L3IgY93ZFQoO+m9cD69iXuM=
+	t=1778608391; cv=none; b=lLkNt/M9sJMrXrNgrONqgWK4Kwcqz+iTBNz3EePU7CaeObFnIB/RM3FBs0mVBhufXX/sMA7Ci8unk7LoErSoSL4nup1m6VUX+PVRh1ksWXQzjEI9xoxbAu+6CEKtrKwXgvB+s65qwJQc0WMgPZu46LDtsJM9yv4kqUa5KcvQQYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609033; c=relaxed/simple;
-	bh=gp24CY9H/34ObKvMJmJXvW75ognUz+8bDmRFXIQHVrU=;
+	s=arc-20240116; t=1778608391; c=relaxed/simple;
+	bh=Nw4dpsvHqbwUjVKYT5UtrCa5lqMxkMZCXIXCfkVjcvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZjQynQ1dsDrjOr11ziKH5KlOIwO6LtS14sdOHwkbPdtkUcNdqnwfMIwZJvHpqYIfqUBKvc+P7JWkU6Oib4kjaHNjLKsSuA3FOwSxRkRLl5qIsVCwJAdr0LQUTIOrwAhuWE0lIziKMlVJugyrsvv/Is4FrOKlHbsp+vYHIkM/rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TddEoBCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BA5C2BCB0;
-	Tue, 12 May 2026 18:03:53 +0000 (UTC)
+	 MIME-Version; b=oemeFK8SGk+JhRXafDbTj8W+gjMOiMzrkUUt0gnCBbci36MgH9I2Be4AoHf3w1FhSXjhpVEGrua1UFprTN7EQIJCLkkGegfhSJDrXbdlDhn5jQUjGeewGciXA6Th2ZOs2fv1vy6QW0wpLiiEK+tE7JY9zyC0Z13VJekMk1Nq8Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leF5i3Mk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51980C2BCB0;
+	Tue, 12 May 2026 17:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609033;
-	bh=gp24CY9H/34ObKvMJmJXvW75ognUz+8bDmRFXIQHVrU=;
+	s=korg; t=1778608391;
+	bh=Nw4dpsvHqbwUjVKYT5UtrCa5lqMxkMZCXIXCfkVjcvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TddEoBCkpH236D0OQJHMkhA6ASxjWjGdyEyrjtdi/y/LMIekVzRqbHLi6YaOvBQNy
-	 IPiIS+A/jtrSEngA03euhoLJfYU6km1rVDRP5dDd16qsvk5je4BK1fnnUPgz0X24v4
-	 U+wNLjXb4FHruZp/ktkGMDpsVMpI2osKQBmBgi7Q=
+	b=leF5i3MkWGyff1I3hoBwDTbp8E7u63BDmwQbKQM4rUM8WS9bQjQomYqedUed6Z4v0
+	 USBdgWXDLwU23Wrv0tUPg1XKtOGGuYLIEIlPSPdIDZlo5p2scCHkt7MwiwEQvzZFjT
+	 iA0y3KY9Hh1wd6fAGxkId5sdKS7v5yqFcnGVJ0bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	stable <stable@kernel.org>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 7.0 040/307] usb: typec: tcpm: reset internal port states on soft reset AMS
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Vincent Danjean <vdanjean@debian.org>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.18 034/270] wifi: ath5k: do not access array OOB
 Date: Tue, 12 May 2026 19:37:15 +0200
-Message-ID: <20260512173940.970675491@linuxfoundation.org>
+Message-ID: <20260512173939.173655175@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +64,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EDAFC5274EC
+X-Rspamd-Queue-Id: 1BA83526B40
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246363-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246113-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-commit 2909f0d4994fb4306bf116df5ccee797791fce2c upstream.
+commit d748603f12baff112caa3ab7d39f50100f010dbd upstream.
 
-Reset internal port states (such as vdm_sm_running and
-explicit_contract) on soft reset AMS as the port needs to negotiate a
-new contract. The consequence of leaving the states in as-is cond are as
-follows:
-  * port is in SRC power role and an explicit contract is negotiated
-    with the port partner (in sink role)
-  * port partner sends a Soft Reset AMS while VDM State Machine is
-    running
-  * port accepts the Soft Reset request and the port advertises src caps
-  * port partner sends a Request message but since the explicit_contract
-    and vdm_sm_running are true from previous negotiation, the port ends
-    up sending Soft Reset instead of Accept msg.
+Vincent reports:
+> The ath5k driver seems to do an array-index-out-of-bounds access as
+> shown by the UBSAN kernel message:
+> UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath5k/base.c:1741:20
+> index 4 is out of range for type 'ieee80211_tx_rate [4]'
+> ...
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x5d/0x80
+>  ubsan_epilogue+0x5/0x2b
+>  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
+>  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
+>  tasklet_action_common+0xb5/0x1c0
 
-Stub Log:
-[  203.653942] AMS DISCOVER_IDENTITY start
-[  203.653947] PD TX, header: 0x176f
-[  203.655901] PD TX complete, status: 0
-[  203.657470] PD RX, header: 0x124f [1]
-[  203.657477] Rx VDM cmd 0xff008081 type 2 cmd 1 len 1
-[  203.657482] AMS DISCOVER_IDENTITY finished
-[  203.657484] cc:=4
-[  204.155698] PD RX, header: 0x144f [1]
-[  204.155718] Rx VDM cmd 0xeeee8001 type 0 cmd 1 len 1
-[  204.155741] PD TX, header: 0x196f
-[  204.157622] PD TX complete, status: 0
-[  204.160060] PD RX, header: 0x4d [1]
-[  204.160066] state change SRC_READY -> SOFT_RESET [rev2 SOFT_RESET_AMS]
-[  204.160076] PD TX, header: 0x163
-[  204.162486] PD TX complete, status: 0
-[  204.162832] AMS SOFT_RESET_AMS finished
-[  204.162840] cc:=4
-[  204.162891] AMS POWER_NEGOTIATION start
-[  204.162896] state change SOFT_RESET -> AMS_START [rev2 POWER_NEGOTIATION]
-[  204.162908] state change AMS_START -> SRC_SEND_CAPABILITIES [rev2 POWER_NEGOTIATION]
-[  204.162913] PD TX, header: 0x1361
-[  204.165529] PD TX complete, status: 0
-[  204.165571] pending state change SRC_SEND_CAPABILITIES -> SRC_SEND_CAPABILITIES_TIMEOUT @ 60 ms [rev2 POWER_NEGOTIATION]
-[  204.166996] PD RX, header: 0x1242 [1]
-[  204.167009] state change SRC_SEND_CAPABILITIES -> SRC_SOFT_RESET_WAIT_SNK_TX [rev2 POWER_NEGOTIATION]
-[  204.167019] AMS POWER_NEGOTIATION finished
-[  204.167020] cc:=4
-[  204.167083] AMS SOFT_RESET_AMS start
-[  204.167086] state change SRC_SOFT_RESET_WAIT_SNK_TX -> SOFT_RESET_SEND [rev2 SOFT_RESET_AMS]
-[  204.167092] PD TX, header: 0x16d
-[  204.168824] PD TX complete, status: 0
-[  204.168854] pending state change SOFT_RESET_SEND -> HARD_RESET_SEND @ 60 ms [rev2 SOFT_RESET_AMS]
-[  204.171876] PD RX, header: 0x43 [1]
-[  204.171879] AMS SOFT_RESET_AMS finished
+It is real. 'ts->ts_final_idx' can be 3 on 5212, so:
+   info->status.rates[ts->ts_final_idx + 1].idx = -1;
+with the array defined as:
+   struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
+while the size is:
+   #define IEEE80211_TX_MAX_RATES  4
+is indeed bogus.
 
-This causes COMMON.PROC.PD.11.2 check failure for
-TEST.PD.VDM.SRC.2_Rev2Src test on the PD compliance tester.
+Set this 'idx = -1' sentinel only if the array index is less than the
+array size. As mac80211 will not look at rates beyond the size
+(IEEE80211_TX_MAX_RATES).
 
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Fixes: 8d3a0578ad1a ("usb: typec: tcpm: Respond Wait if VDM state machine is running")
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260414-fix-soft-reset-v1-1-01d7cb9764e2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note: The effect of the OOB write is negligible. It just overwrites the
+next member of info->status, i.e. ack_signal.
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Reported-by: Vincent Danjean <vdanjean@debian.org>
+Link: https://lore.kernel.org/all/aQYUkIaT87ccDCin@eldamar.lan
+Closes: https://bugs.debian.org/1119093
+Fixes: 6d7b97b23e11 ("ath5k: fix tx status reporting issues")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251209100459.2253198-1-jirislaby@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath5k/base.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -5741,6 +5741,8 @@ static void run_state_machine(struct tcp
+--- a/drivers/net/wireless/ath/ath5k/base.c
++++ b/drivers/net/wireless/ath/ath5k/base.c
+@@ -1738,7 +1738,8 @@ ath5k_tx_frame_completed(struct ath5k_hw
+ 	}
  
- 	case VCONN_SWAP_ACCEPT:
- 		tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
-+		port->vdm_sm_running = false;
-+		port->explicit_contract = false;
- 		tcpm_ams_finish(port);
- 		tcpm_set_state(port, VCONN_SWAP_START, 0);
- 		break;
+ 	info->status.rates[ts->ts_final_idx].count = ts->ts_final_retry;
+-	info->status.rates[ts->ts_final_idx + 1].idx = -1;
++	if (ts->ts_final_idx + 1 < IEEE80211_TX_MAX_RATES)
++		info->status.rates[ts->ts_final_idx + 1].idx = -1;
+ 
+ 	if (unlikely(ts->ts_status)) {
+ 		ah->stats.ack_fail++;
 
 
 
