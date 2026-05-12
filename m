@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-246545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDZtEdd0A2rf5wEAu9opvQ
-	(envelope-from <stable+bounces-246545-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:43:35 +0200
+	id wBqzJvhqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C048A52804E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:43:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6143C526880
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E7B330DDDFB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:11:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C2DCA30471F6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7494C1DED4C;
-	Tue, 12 May 2026 18:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5C83EDE64;
+	Tue, 12 May 2026 17:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgQ/PWfR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zilHqfh1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381AA343D9D;
-	Tue, 12 May 2026 18:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78E53EDE59;
+	Tue, 12 May 2026 17:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609502; cv=none; b=SCLaV7bqhIJ39RiN1kJLD/4Y8lE2LEYkOiJuYNp7Fs+bjgcUUU4TZ7Sw9AIezFWZwYROeOvEPaL9v2gtZCCQ6WgD4u9NDUWYgSOO7yoj+Eenj16U1AaFSdExadxPpcKWImc2GhXOUHW8a0ygyRgZXwDfPUb9Ms48HB1HBtUTFWs=
+	t=1778608744; cv=none; b=Ms0v8u+WuhwhA+OSmCbqQI0phL8EO6lLU2oL463hzj/SDMQY3Ms7QeIIP6/xcIboFML5TW+zQpbuC4gDS7fSz6rIXOsc+PMi5A3fZ3USdsiKH5RffC5UqNrV3Ucltgh4eEPtwN6J86mwmv4u+FZFWD8J+9f7agB8SeVvWGcGuAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609502; c=relaxed/simple;
-	bh=56RgmFL5CGp70BTqAHc64r9VuL9mKRWeeS4wTfdqTYU=;
+	s=arc-20240116; t=1778608744; c=relaxed/simple;
+	bh=OIh/K190n4GVmguy9DtWKelBtYPZ7pC5XOUcLFMZ3oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFE1vKcZLquqFnWq7458De6zsAQ6kAc5BUfxASdpw8mhcz3kGeVEpALyhVyNaXXgKM2oPj4UyJ7duI6uoy8YSOf9rKwEBh2rZQfbbod+zcFO4gBVZieh7Vy/P6YhnfFNhwMz6k3ADS6kwtjh0/AbjEjYFk8IWJqNO1/86fy5qKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgQ/PWfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2090C2BCB0;
-	Tue, 12 May 2026 18:11:41 +0000 (UTC)
+	 MIME-Version; b=YkBJQv+lEHtaoeXClSuCNhl5uzigWGu+FWX8YsiGJKNGP5NyZxyVoVGBOmccJ7E5kT3W1K1eDx5RvQNVSjN0e5F7q2Pbo/AKhfn2ZTYtujdYinvacbRqLyAo2ytbIJMPPJ3HADK16eOqhKn3hN9DmhbKez7lYt/MEqynLpkVUPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zilHqfh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E99AC2BCB0;
+	Tue, 12 May 2026 17:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609502;
-	bh=56RgmFL5CGp70BTqAHc64r9VuL9mKRWeeS4wTfdqTYU=;
+	s=korg; t=1778608744;
+	bh=OIh/K190n4GVmguy9DtWKelBtYPZ7pC5XOUcLFMZ3oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GgQ/PWfRpjV2pQ7aCXkwwn/AQZkovrVPWPANXwSZv89ElW+EhgtqArcTuPwzrtcwl
-	 R0FnH2dfhj6Rdc4JPnHveZIhSbY9Rbp2M6r8+WHoMkvVwD9sYA5Z4STaqC7ut82EOK
-	 EqELGewFXoDeeVUZ1beZphNV0FDHBJ1TDLp8lZig=
+	b=zilHqfh1JdQy1ywEn40/f7f4yKk3rcbL/JWWAGL30pDKedoF3icLjWBdEqFMTVX3z
+	 2ai9NrWjDcUbfK9mBfFoB9+fXAi3vRbibFhE1Tj3ZZRCfstoEYgRElQvHtmpRbI0q9
+	 S+FHRiJ7Cg7YHx21g3xVPIlcdYqIpMPLC1VFbJVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 7.0 203/307] openvswitch: vport: fix self-deadlock on release of tunnel ports
+	Long Li <longli@microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.18 197/270] RDMA/mana: Validate rx_hash_key_len
 Date: Tue, 12 May 2026 19:39:58 +0200
-Message-ID: <20260512173944.403530087@linuxfoundation.org>
+Message-ID: <20260512173942.596761055@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +63,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C048A52804E
+X-Rspamd-Queue-Id: 6143C526880
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246545-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246251-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ovn.org:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sashiko.dev:url,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit aa69918bd418e700309fdd08509dba324fb24296 upstream.
+commit 6dd2d4ad9c8429523b1c220c5132bd551c006425 upstream.
 
-vports are used concurrently and protected by RCU, so netdev_put()
-must happen after the RCU grace period.  So, either in an RCU call or
-after the synchronize_net().  The rtnl_delete_link() must happen under
-RTNL and so can't be executed in RCU context.  Calling synchronize_net()
-while holding RTNL is not a good idea for performance and system
-stability under load in general, so calling netdev_put() in RCU call
-is the right solution here.
+Sashiko points out that rx_hash_key_len comes from a uAPI structure and is
+blindly passed to memcpy, allowing the userspace to trash kernel
+memory. Bounds check it so the memcpy cannot overflow.
 
-However,
-when the device is deleted, rtnl_unlock() will call netdev_run_todo()
-and block until all the references are gone.  In the current code this
-means that we never reach the call_rcu() and the vport is never freed
-and the reference is never released, causing a self-deadlock on device
-removal.
-
-Fix that by moving the rcu_call() before the rtnl_unlock(), so the
-scheduled RCU callback will be executed when synchronize_net() is
-called from the rtnl_unlock()->netdev_run_todo() while the RTNL itself
-is already released.
-
-Fixes: 6931d21f87bc ("openvswitch: defer tunnel netdev_put to RCU release")
 Cc: stable@vger.kernel.org
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20260430233848.440994-2-i.maximets@ovn.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
+Link: https://sashiko.dev/#/patchset/0-v2-1c49eeb88c48%2B91-rdma_udata_rep_jgg%40nvidia.com?part=1
+Link: https://patch.msgid.link/r/4-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/vport-netdev.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mana/qp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/openvswitch/vport-netdev.c
-+++ b/net/openvswitch/vport-netdev.c
-@@ -196,9 +196,13 @@ void ovs_netdev_tunnel_destroy(struct vp
- 	 */
- 	if (vport->dev->reg_state == NETREG_REGISTERED)
- 		rtnl_delete_link(vport->dev, 0, NULL);
--	rtnl_unlock();
+--- a/drivers/infiniband/hw/mana/qp.c
++++ b/drivers/infiniband/hw/mana/qp.c
+@@ -21,6 +21,9 @@ static int mana_ib_cfg_vport_steering(st
  
-+	/* We can't put the device reference yet, since it can still be in
-+	 * use, but rtnl_unlock()->netdev_run_todo() will block until all
-+	 * the references are released, so the RCU call must be before it.
-+	 */
- 	call_rcu(&vport->rcu, vport_netdev_free);
-+	rtnl_unlock();
- }
- EXPORT_SYMBOL_GPL(ovs_netdev_tunnel_destroy);
+ 	gc = mdev_to_gc(dev);
  
++	if (rx_hash_key_len > sizeof(req->hashkey))
++		return -EINVAL;
++
+ 	req_buf_size = struct_size(req, indir_tab, MANA_INDIRECT_TABLE_DEF_SIZE);
+ 	req = kzalloc(req_buf_size, GFP_KERNEL);
+ 	if (!req)
 
 
 
