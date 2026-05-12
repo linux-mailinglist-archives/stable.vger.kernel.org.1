@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MG2bF5JxA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246580-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:29:38 +0200
+	id eLvZH55uA2p45wEAu9opvQ
+	(envelope-from <stable+bounces-246295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5DD527A04
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:29:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69922527387
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54ABE32DFAC0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:13:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B27443086D1F
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00ABA36EAB2;
-	Tue, 12 May 2026 18:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E7F34405B;
+	Tue, 12 May 2026 18:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMX/9JeX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17O3zTju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85A1365A19;
-	Tue, 12 May 2026 18:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF98523E356;
+	Tue, 12 May 2026 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609589; cv=none; b=UOKA/6+ThfINEw5UPfVgb5u8KgAiOkgO9rM4tMlqsXqiqMWZvsMrZMb6viLjEBcuiN37l/qMHWe7wDsFnDgerfsn0AnklpHY5iterI9eONZJxeDkL3Zv5/nNzkuHm1T/8zn2MmmoF5bivbpWFiXihVXtQkmPweI1q/gFvCPQcwY=
+	t=1778608858; cv=none; b=uR2NLSgPO2TTH2TX6JrvW1SmF43v9kJl7q0KOGa0dBE6lQClOjP0tY4HK+czdlQmfchAf/Jj3Jdx7dDr60SfA4DtUsno6Pl/WZGfBXp4vS19nlkzTFAEu6zqGKXq3900txUXkiOJuApXl3G5Stv2yiFXGuEFaYbs1QYbZ4G8nHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609589; c=relaxed/simple;
-	bh=aYjlpVb5eSbxqcs/EQAe0GCAHqdAJzY29siXeq5s4Qw=;
+	s=arc-20240116; t=1778608858; c=relaxed/simple;
+	bh=EMqy3pRgW9LihjMV+D9LxUTYCUrtciJ5VQ+j7miLij4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jLGt9zo0XRmekNuW5EtONdveIRyEzfptr+vBZZGdfqY7mmvAgJxkNv00n4BWB0lREG9Q0Uk5jhpsY08QpdTc+6T1GNGYWa+ocBk7n2kVVOl9W66tSNxDey0/KVrDj2Y7xxmIk7PRMerAaHTeIG9Zdej7KzJDTv024v0W5yA08kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMX/9JeX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500D4C2BCB0;
-	Tue, 12 May 2026 18:13:09 +0000 (UTC)
+	 MIME-Version; b=k3SfAXBl373eia2vY+/pwgn+3+IS5cLDSa01T/ZFKItKIiwWRA9c91MRjD26UtqcbDx86GOmfoIjLQnOq5lm6RKKL3oIgDsUW5Pkhf08PYbUJJXEwotxXFueauFVLM7RWNx8OKjYfDMcyKe8ERkiIVlLp1Bg/7jvtrBkWjYuEQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17O3zTju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2420AC2BCB0;
+	Tue, 12 May 2026 18:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609589;
-	bh=aYjlpVb5eSbxqcs/EQAe0GCAHqdAJzY29siXeq5s4Qw=;
+	s=korg; t=1778608858;
+	bh=EMqy3pRgW9LihjMV+D9LxUTYCUrtciJ5VQ+j7miLij4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMX/9JeXwLxduUjU0ERossReTEH/qIsGpomFt4XPqvNoidc+YqsD+i/xqdmwBCNfg
-	 Qx6l7jEkLgOApNBu3RvW1h4qUsDnZLqrn40n5rc9xSn3CpVVJSL8KJwy6D7vkQyYAj
-	 ckRJAGR/32DvqgiNNdOYV+OK8rxF6fNg0Ao522rU=
+	b=17O3zTju6/iY0bOFgntEmmmof0drJr2K24s8PolpM+jc3z0ZXmTRsemkDbzGFAZ33
+	 oqy6Wn+j0bk97i4a0J7pywkdYHqu9vDZQSPFL1cbGb/RMVVkOTSsm//TxSWdT0UtPV
+	 ppP6Xv3Hh0spzD0sjYt98x50SCgz/fTABpbrfveo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrea Righi <arighi@nvidia.com>
-Subject: [PATCH 7.0 247/307] sched_ext: Skip tasks with stale task_rq in bypass_lb_cpu()
+	Xianglai Li <lixianglai@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.18 241/270] LoongArch: KVM: Fix "unreliable stack" for kvm_exc_entry
 Date: Tue, 12 May 2026 19:40:42 +0200
-Message-ID: <20260512173945.338221208@linuxfoundation.org>
+Message-ID: <20260512173943.513920293@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CF5DD527A04
+X-Rspamd-Queue-Id: 69922527387
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246580-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246295-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,56 +88,45 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,meta.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Xianglai Li <lixianglai@loongson.cn>
 
-commit da2d81b4118a74e65d2335e221a38d665902a98c upstream.
+commit b323a441da602dfdfc24f30d3190cac786ffebf2 upstream.
 
-bypass_lb_cpu() transfers tasks between per-CPU bypass DSQs without
-migrating them - task_cpu() only updates when the donee later consumes the
-task via move_remote_task_to_local_dsq(). If the LB timer fires again before
-consumption and the new DSQ becomes a donor, @p is still on the previous CPU
-and task_rq(@p) != donor_rq. @p can't be moved without its own rq locked.
+Insert the appropriate UNWIND hint into the kvm_exc_entry assembly
+function to guide the generation of correct ORC table entries, thereby
+solving the timeout problem ("unreliable stack") while loading the
+livepatch-sample module on a physical machine running virtual machines
+with multiple vcpus.
 
-Skip such tasks.
-
-Fixes: 95d1df610cdc ("sched_ext: Implement load balancer for bypass mode")
-Cc: stable@vger.kernel.org # v6.19+
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/loongarch/kvm/switch.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4008,6 +4008,15 @@ resume:
- 		if (cpumask_empty(donee_mask))
- 			break;
- 
-+		/*
-+		 * If an earlier pass placed @p on @donor_dsq from a different
-+		 * CPU and the donee hasn't consumed it yet, @p is still on the
-+		 * previous CPU and task_rq(@p) != @donor_rq. @p can't be moved
-+		 * without its rq locked. Skip.
-+		 */
-+		if (task_rq(p) != donor_rq)
-+			continue;
-+
- 		donee = cpumask_any_and_distribute(donee_mask, p->cpus_ptr);
- 		if (donee >= nr_cpu_ids)
- 			continue;
+--- a/arch/loongarch/kvm/switch.S
++++ b/arch/loongarch/kvm/switch.S
+@@ -111,7 +111,7 @@
+ 	.p2align PAGE_SHIFT
+ 	.cfi_sections	.debug_frame
+ SYM_CODE_START(kvm_exc_entry)
+-	UNWIND_HINT_UNDEFINED
++	UNWIND_HINT_END_OF_STACK
+ 	csrwr	a2,   KVM_TEMP_KS
+ 	csrrd	a2,   KVM_VCPU_KS
+ 	addi.d	a2,   a2, KVM_VCPU_ARCH
 
 
 
