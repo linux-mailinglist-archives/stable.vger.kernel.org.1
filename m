@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-246034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFAfJLltA2pS5wEAu9opvQ
-	(envelope-from <stable+bounces-246034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:13 +0200
+	id AFk7DHVtA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67ECD5270C1
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B6A527006
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5E833185552
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 76A1730C51D1
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5203EDE66;
-	Tue, 12 May 2026 17:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2240C3EDE63;
+	Tue, 12 May 2026 18:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsbUsN6O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wicRD3EG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8913EDE72;
-	Tue, 12 May 2026 17:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88EF349AF5;
+	Tue, 12 May 2026 18:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608188; cv=none; b=BawFQRx5db7LXLq9HHakxSDfnCdTcKmdIZdhLrx4OYlLaGyz7QQQH7f+jxNQyG/gdbOWM9T3mcVfgQcQPC/CqfUE8SbdQ1RohsJ8Cx06tOeHQK0493iqiYpHUp7nOsMzAPLMwy9/osjRGKhKBSHWQP1ee2mwD1bucapHjznn42Y=
+	t=1778608850; cv=none; b=W3CsVO7BK2uRZftdq6WqCccVU1K5+tVS8GXkBHMBcour2Mv69zWVIw63JFYe3SA8SR8kApNikTj6UU4H7RLTtEdpVPFW5mfTqVST6m8OhoUGikOsUc7TFoAiCwGNK7zSOxL0ukCDyoSaHDl8OzhXCW4CXQmMhSG2zLs8epRlQOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608188; c=relaxed/simple;
-	bh=099sUyXW1RZ3fcg6tJxqvnZ8ol4Zo56CxmAKuhByxKY=;
+	s=arc-20240116; t=1778608850; c=relaxed/simple;
+	bh=gkM7TBVwzdpYvz4N5cU8xH8RzZRDAFmlqi5SsyxVozs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5kces/uH75Md/vNqldIyBYOLMB7RY2Lmxi4AEvqqCrROVpru+bjpkRDCWhat4k1wZD1gnK0KApKFHVnC0uU4TQ5fCgFthSC1F5gJYZlLYqc5rBJRHA2zS3Yi/KKWQ7JMREUJklspldnO+X4pyEE7TzaV/lpyY3w6RDFMt9rk04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsbUsN6O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25386C2BCB0;
-	Tue, 12 May 2026 17:49:47 +0000 (UTC)
+	 MIME-Version; b=de+P2NUXC5n1n0UDWUotUB5Ehzy0FjXGSOk69uAxD/g7C+ZvTzW+4JO/qnBDfwJylVqtImr2WnG1HOuV+r6kvkL+L8GNv5PSCpTr0HpXPfjzHAFzND8T7PeDKaJMwqpvsnHzILkgWVHkV/RjZujMXG5XiyNXltSRugOtJMRYHGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wicRD3EG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66112C2BCB0;
+	Tue, 12 May 2026 18:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608188;
-	bh=099sUyXW1RZ3fcg6tJxqvnZ8ol4Zo56CxmAKuhByxKY=;
+	s=korg; t=1778608850;
+	bh=gkM7TBVwzdpYvz4N5cU8xH8RzZRDAFmlqi5SsyxVozs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NsbUsN6Ooy52H6of3mHj1czvEt0wwoR/uy89Qw9kd7mn5SXEPagb/6wXl8UQ84K5v
-	 Rz0Kef+E657jz7DRgbCRrkBH7CC7LtqXaq5lb2TYUNR7CGZ3KrSXmrlORvP5QOOPkP
-	 BRSuNfc/EH5Ls83NlkaA3+caYyWmHGvHM62cGKt4=
+	b=wicRD3EGskYwhzkLs1XW+NtiyhS3FYux/8Obh/5wssKoHKS6MrEfCtV8xVocI3lLv
+	 moAEOjstbhobY44x+uV3rYSjF/7Ktsm7GqGGstMvqd1BToeK7mkDOWGwnVuE0262XM
+	 2+ykerwbJAdAwPEbs4CTYkTApuQKlytcs6X5KauU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 188/206] hfsplus: fix uninit-value by validating catalog record size
+	Wentao Guan <guanwentao@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.18 239/270] LoongArch: Fix potential ADE in loongson_gpu_fixup_dma_hang()
 Date: Tue, 12 May 2026 19:40:40 +0200
-Message-ID: <20260512173936.847522085@linuxfoundation.org>
+Message-ID: <20260512173943.472893995@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,224 +63,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 67ECD5270C1
+X-Rspamd-Queue-Id: B6B6A527006
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-246034-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,dubeyko.com,posteo.net,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246292-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,d80abb5b890d39261e72];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,posteo.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,dubeyko.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,loongson.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,uniontech.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Wentao Guan <guanwentao@uniontech.com>
 
-[ Upstream commit b6b592275aeff184aa82fcf6abccd833fb71b393 ]
+commit 8dfa2f8780e486d05b9a0ffce70b8f5fbd62053e upstream.
 
-Syzbot reported a KMSAN uninit-value issue in hfsplus_strcasecmp(). The
-root cause is that hfs_brec_read() doesn't validate that the on-disk
-record size matches the expected size for the record type being read.
+The switch case in loongson_gpu_fixup_dma_hang() may not DC2 or DC3, and
+readl(crtc_reg) will access with random address, because the "device" is
+from "base+PCI_DEVICE_ID", "base" is from "pdev->devfn+1". This is wrong
+when my platform inserts a discrete GPU:
 
-When mounting a corrupted filesystem, hfs_brec_read() may read less data
-than expected. For example, when reading a catalog thread record, the
-debug output showed:
+lspci -tv
+-[0000:00]-+-00.0  Loongson Technology LLC Hyper Transport Bridge Controller
+...
+           +-06.0  Loongson Technology LLC LG100 GPU
+           +-06.2  Loongson Technology LLC Device 7a37
+...
 
-  HFSPLUS_BREC_READ: rec_len=520, fd->entrylength=26
-  HFSPLUS_BREC_READ: WARNING - entrylength (26) < rec_len (520) - PARTIAL READ!
+Add a default switch case to fix the panic as below:
 
-hfs_brec_read() only validates that entrylength is not greater than the
-buffer size, but doesn't check if it's less than expected. It successfully
-reads 26 bytes into a 520-byte structure and returns success, leaving 494
-bytes uninitialized.
+ Kernel ade access[#1]:
+ CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.136-loong64-desktop-hwe+ #4
+ pc 90000000017e5534 ra 90000000017e54c0 tp 90000001002f8000 sp 90000001002fb6c0
+ a0 80000efe00003100 a1 0000000000003100 a2 0000000000000000 a3 0000000000000002
+ a4 90000001002fb6b4 a5 900000087cdb58fd a6 90000000027af000 a7 0000000000000001
+ t0 00000000000085b9 t1 000000000000ffff t2 0000000000000000 t3 0000000000000000
+ t4 fffffffffffffffd t5 00000000fffb6d9c t6 0000000000083b00 t7 00000000000070c0
+ t8 900000087cdb4d94 u0 900000087cdb58fd s9 90000001002fb826 s0 90000000031c12c8
+ s1 7fffffffffffff00 s2 90000000031c12d0 s3 0000000000002710 s4 0000000000000000
+ s5 0000000000000000 s6 9000000100053000 s7 7fffffffffffff00 s8 90000000030d4000
+    ra: 90000000017e54c0 loongson_gpu_fixup_dma_hang+0x40/0x210
+   ERA: 90000000017e5534 loongson_gpu_fixup_dma_hang+0xb4/0x210
+  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+  PRMD: 00000004 (PPLV0 +PIE -PWE)
+  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
+ ESTAT: 00480000 [ADEM] (IS= ECode=8 EsubCode=1)
+  BADV: 7fffffffffffff00
+  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
+ Modules linked in:
+ Process swapper/0 (pid: 1, threadinfo=(____ptrval____), task=(____ptrval____))
+ Stack : 0000000000000006 90000001002fb778 90000001002fb704 0000000000000007
+         0000000016a65700 90000000017e5690 000000000000ffff ffffffffffffffff
+         900000000209f7c0 9000000100053000 900000000209f7a8 9000000000eebc08
+         0000000000000000 0000000000000000 0000000000000006 90000001002fb778
+         90000001000530b8 90000000027af000 0000000000000000 9000000100054000
+         9000000100053000 9000000000ebb70c 9000000100004c00 9000000004000001
+         90000001002fb7e4 bae765461f31cb12 0000000000000000 0000000000000000
+         0000000000000006 90000000027af000 0000000000000030 90000000027af000
+         900000087cd6f800 9000000100053000 0000000000000000 9000000000ebc560
+         7a2500147cdaf720 bae765461f31cb12 0000000000000001 0000000000000030
+         ...
+ Call Trace:
+ [<90000000017e5534>] loongson_gpu_fixup_dma_hang+0xb4/0x210
+ [<9000000000eebc08>] pci_fixup_device+0x108/0x280
+ [<9000000000ebb70c>] pci_setup_device+0x24c/0x690
+ [<9000000000ebc560>] pci_scan_single_device+0xe0/0x140
+ [<9000000000ebc684>] pci_scan_slot+0xc4/0x280
+ [<9000000000ebdd00>] pci_scan_child_bus_extend+0x60/0x3f0
+ [<9000000000f5bc94>] acpi_pci_root_create+0x2b4/0x420
+ [<90000000017e5e74>] pci_acpi_scan_root+0x2d4/0x440
+ [<9000000000f5b02c>] acpi_pci_root_add+0x21c/0x3a0
+ [<9000000000f4ee54>] acpi_bus_attach+0x1a4/0x3c0
+ [<90000000010e200c>] device_for_each_child+0x6c/0xe0
+ [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
+ [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
+ [<90000000010e200c>] device_for_each_child+0x6c/0xe0
+ [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
+ [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
+ [<9000000000f5211c>] acpi_bus_scan+0x6c/0x280
+ [<900000000189c028>] acpi_scan_init+0x194/0x310
+ [<900000000189bc6c>] acpi_init+0xcc/0x140
+ [<9000000000220cdc>] do_one_initcall+0x4c/0x310
+ [<90000000018618fc>] kernel_init_freeable+0x258/0x2d4
+ [<900000000184326c>] kernel_init+0x28/0x13c
+ [<9000000000222008>] ret_from_kernel_thread+0xc/0xa4
 
-This uninitialized data in tmp.thread.nodeName then gets copied by
-hfsplus_cat_build_key_uni() and used by hfsplus_strcasecmp(), triggering
-the KMSAN warning when the uninitialized bytes are used as array indices
-in case_fold().
-
-Fix by introducing hfsplus_brec_read_cat() wrapper that:
-1. Calls hfs_brec_read() to read the data
-2. Validates the record size based on the type field:
-   - Fixed size for folder and file records
-   - Variable size for thread records (depends on string length)
-3. Returns -EIO if size doesn't match expected
-
-For thread records, check against HFSPLUS_MIN_THREAD_SZ before reading
-nodeName.length to avoid reading uninitialized data at call sites that
-don't zero-initialize the entry structure.
-
-Also initialize the tmp variable in hfsplus_find_cat() as defensive
-programming to ensure no uninitialized data even if validation is
-bypassed.
-
-Reported-by: syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d80abb5b890d39261e72
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Tested-by: syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Suggested-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Link: https://lore.kernel.org/all/20260120051114.1281285-1-kartikey406@gmail.com/ [v1]
-Link: https://lore.kernel.org/all/20260121063109.1830263-1-kartikey406@gmail.com/ [v2]
-Link: https://lore.kernel.org/all/20260212014233.2422046-1-kartikey406@gmail.com/ [v3]
-Link: https://lore.kernel.org/all/20260214002100.436125-1-kartikey406@gmail.com/T/ [v4]
-Link: https://lore.kernel.org/all/20260221061626.15853-1-kartikey406@gmail.com/T/ [v5]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20260307010302.41547-1-kartikey406@gmail.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Stable-dep-of: 90c500e4fd83 ("hfsplus: fix held lock freed on hfsplus_fill_super()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 95db0c9f526d ("LoongArch: Workaround LS2K/LS7A GPU DMA hang bug")
+Link: https://gist.github.com/opsiff/ebf2dac51b4013d22462f2124c55f807
+Link: https://gist.github.com/opsiff/a62f2a73db0492b3c49bf223a339b133
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/bfind.c      |   51 ++++++++++++++++++++++++++++++++++++++++++++++++
- fs/hfsplus/catalog.c    |    4 +--
- fs/hfsplus/dir.c        |    2 -
- fs/hfsplus/hfsplus_fs.h |    9 ++++++++
- fs/hfsplus/super.c      |    2 -
- 5 files changed, 64 insertions(+), 4 deletions(-)
+ arch/loongarch/pci/pci.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/hfsplus/bfind.c
-+++ b/fs/hfsplus/bfind.c
-@@ -287,3 +287,54 @@ out:
- 	fd->bnode = bnode;
- 	return res;
- }
-+
-+/**
-+ * hfsplus_brec_read_cat - read and validate a catalog record
-+ * @fd: find data structure
-+ * @entry: pointer to catalog entry to read into
-+ *
-+ * Reads a catalog record and validates its size matches the expected
-+ * size based on the record type.
-+ *
-+ * Returns 0 on success, or negative error code on failure.
-+ */
-+int hfsplus_brec_read_cat(struct hfs_find_data *fd, hfsplus_cat_entry *entry)
-+{
-+	int res;
-+	u32 expected_size;
-+
-+	res = hfs_brec_read(fd, entry, sizeof(hfsplus_cat_entry));
-+	if (res)
-+		return res;
-+
-+	/* Validate catalog record size based on type */
-+	switch (be16_to_cpu(entry->type)) {
-+	case HFSPLUS_FOLDER:
-+		expected_size = sizeof(struct hfsplus_cat_folder);
-+		break;
-+	case HFSPLUS_FILE:
-+		expected_size = sizeof(struct hfsplus_cat_file);
-+		break;
-+	case HFSPLUS_FOLDER_THREAD:
-+	case HFSPLUS_FILE_THREAD:
-+		/* Ensure we have at least the fixed fields before reading nodeName.length */
-+		if (fd->entrylength < HFSPLUS_MIN_THREAD_SZ) {
-+			pr_err("thread record too short (got %u)\n", fd->entrylength);
-+			return -EIO;
-+		}
-+		expected_size = hfsplus_cat_thread_size(&entry->thread);
-+		break;
+--- a/arch/loongarch/pci/pci.c
++++ b/arch/loongarch/pci/pci.c
+@@ -132,6 +132,9 @@ static void loongson_gpu_fixup_dma_hang(
+ 		crtc_reg = regbase;
+ 		crtc_offset = 0x400;
+ 		break;
 +	default:
-+		pr_err("unknown catalog record type %d\n",
-+		       be16_to_cpu(entry->type));
-+		return -EIO;
-+	}
-+
-+	if (fd->entrylength != expected_size) {
-+		pr_err("catalog record size mismatch (type %d, got %u, expected %u)\n",
-+		       be16_to_cpu(entry->type), fd->entrylength, expected_size);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
---- a/fs/hfsplus/catalog.c
-+++ b/fs/hfsplus/catalog.c
-@@ -194,12 +194,12 @@ static int hfsplus_fill_cat_thread(struc
- int hfsplus_find_cat(struct super_block *sb, u32 cnid,
- 		     struct hfs_find_data *fd)
- {
--	hfsplus_cat_entry tmp;
-+	hfsplus_cat_entry tmp = {0};
- 	int err;
- 	u16 type;
++		iounmap(regbase);
++		return;
+ 	}
  
- 	hfsplus_cat_build_key_with_cnid(sb, fd->search_key, cnid);
--	err = hfs_brec_read(fd, &tmp, sizeof(hfsplus_cat_entry));
-+	err = hfsplus_brec_read_cat(fd, &tmp);
- 	if (err)
- 		return err;
- 
---- a/fs/hfsplus/dir.c
-+++ b/fs/hfsplus/dir.c
-@@ -49,7 +49,7 @@ static struct dentry *hfsplus_lookup(str
- 	if (unlikely(err < 0))
- 		goto fail;
- again:
--	err = hfs_brec_read(&fd, &entry, sizeof(entry));
-+	err = hfsplus_brec_read_cat(&fd, &entry);
- 	if (err) {
- 		if (err == -ENOENT) {
- 			hfs_find_exit(&fd);
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -536,6 +536,15 @@ int hfsplus_submit_bio(struct super_bloc
- 		       void **data, blk_opf_t opf);
- int hfsplus_read_wrapper(struct super_block *sb);
- 
-+static inline u32 hfsplus_cat_thread_size(const struct hfsplus_cat_thread *thread)
-+{
-+	return offsetof(struct hfsplus_cat_thread, nodeName) +
-+	       offsetof(struct hfsplus_unistr, unicode) +
-+	       be16_to_cpu(thread->nodeName.length) * sizeof(hfsplus_unichr);
-+}
-+
-+int hfsplus_brec_read_cat(struct hfs_find_data *fd, hfsplus_cat_entry *entry);
-+
- /*
-  * time helpers: convert between 1904-base and 1970-base timestamps
-  *
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -547,7 +547,7 @@ static int hfsplus_fill_super(struct sup
- 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
- 	if (unlikely(err < 0))
- 		goto out_put_root;
--	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
-+	if (!hfsplus_brec_read_cat(&fd, &entry)) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
- 			err = -EIO;
+ 	for (i = 0; i < CRTC_NUM_MAX; i++, crtc_reg += crtc_offset) {
 
 
 
