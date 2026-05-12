@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-246170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246446-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCiZGoJsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:02 +0200
+	id AKBJIMdzA2rf5wEAu9opvQ
+	(envelope-from <stable+bounces-246446-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:39:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1464526D4C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB388527EA6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:39:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D13BE319902E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E117322B7EF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC853E5A1E;
-	Tue, 12 May 2026 17:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00982DE6E3;
+	Tue, 12 May 2026 18:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWs2qBD+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oY2IUD0c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2393E5A1A;
-	Tue, 12 May 2026 17:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633893EDE48;
+	Tue, 12 May 2026 18:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608538; cv=none; b=qdwFfz0UPWleYzM/1J8r0jnCeIBuqsSLInrzT0urlZR+hs3oPW56Mi8tkllt92kjd4HNcop9iKS9z86TylCd6rjlKHrm1SzvDuiZODMDwwO8Z2ENklPB7tqTqN4NIc6MjkH4hVHTERo0WCuwba0ZhsbBnDnAi6avA+HjNoTqTQU=
+	t=1778609249; cv=none; b=Jst+6KJZ5+nndzs9xdiBvXqEA/FX41I9sHWWRfhY8k5dkDaMpMuCM6TwZTVE7yomMLA2PVYlY3QYDr1YtfT9ZVuMc1eXTS3NobXByyFH9N65ZvVGrtJAgP5Oa6o71YjRPNmaDhKgo4KR0acpL+y2uKaK0dtiJpPrdng/rKPig7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608538; c=relaxed/simple;
-	bh=QpLagqGTOm2jsiI8ktN/GTkvYhpYqDT96vT3HIhdtyk=;
+	s=arc-20240116; t=1778609249; c=relaxed/simple;
+	bh=GHsqL6JUxJasZGsFFhcjEIsVpfeIngIKscQOh/y30B8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSX9ROqwsAoM8m+Cc87K7R/ZhrTtDDNQpyGX2miEjhCt97qdPZ5WsmqYfI63JdmI3/sxZR/BWHCGOXmUqwZLM8CbvwGEx6T4j64waw2NzEKGNzi0//WLXNGCDx9XSjcRwvdGHgCxL1jfK4Dj1ON/DInPge4iCL4Czgmt7q+aBJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWs2qBD+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044D9C2BCC7;
-	Tue, 12 May 2026 17:55:37 +0000 (UTC)
+	 MIME-Version; b=m1nB6qkWgM7APSddJB6E1EdG1qSdmldnQyOl5UbrjC4toRaG8+4bIQZ1puO6SL8vDiiNPhQ1WupEhubiN6wvDabGlMHTcPWbWj9rwxMlwPaXTZCtJrhj2Vh3t1FLRnwk1dEOnHv2Xwa6Ifnuot9h+7Qk3ziwBaFiizLOlviRijE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oY2IUD0c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C25C2BCB0;
+	Tue, 12 May 2026 18:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608538;
-	bh=QpLagqGTOm2jsiI8ktN/GTkvYhpYqDT96vT3HIhdtyk=;
+	s=korg; t=1778609249;
+	bh=GHsqL6JUxJasZGsFFhcjEIsVpfeIngIKscQOh/y30B8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWs2qBD+AUjPo04q2j2zacdEZJahEkn5BTAeDSAd+HLXUQRR1sWtNbsAAiR/wZpOh
-	 4G6vJebgMtR7kAnX/ieO/rWQ6SEduxZbIG7spKJuoQJDOeDDQMUTI9Mv0bqk1uEhhO
-	 FPNr6shXaWYIOnaz4ne7n2fM4XYcbexDzInxKEYM=
+	b=oY2IUD0c6TBnTD87ibx26CnpW0C1wSl1vnLOLj7ZUya93PUIBX1VC1R/J/lcleYwk
+	 Z2p93SFVGQ2LAZevUk7T127w/zJxUz3CGUOZ1Br9HjOLslMLwBNWE6hmPOwWXqnAGL
+	 XcWXfQX0npQUfPo76WK0oZgNkwiWJ5vNSZjXS9MA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.18 116/270] block: only read from sqe on initial invocation of blkdev_uring_cmd()
-Date: Tue, 12 May 2026 19:38:37 +0200
-Message-ID: <20260512173940.900207500@linuxfoundation.org>
+	Colin Walters <walters@verbum.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 7.0 123/307] ovl: fix verity lazy-load guard broken by fsverity_active() semantic change
+Date: Tue, 12 May 2026 19:38:38 +0200
+Message-ID: <20260512173942.725345572@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +64,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F1464526D4C
+X-Rspamd-Queue-Id: BB388527EA6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246170-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246446-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,verbum.org,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Colin Walters <walters@verbum.org>
 
-commit 212ec34e4e726e8cd4af7bea4740db24de8a9dab upstream.
+commit 0c8c88b8eb82a2a41bec5f17c076d6312dc40316 upstream.
 
-This passthrough helper currently only supports discards. Part of that
-command is the start and length, which is read from the SQE. It does
-so on every invocation, where it really should just make it stable
-on the first invocation. This avoids needing to copy the SQE upfront,
-as we only really need those two 8b values stored in our per-req
-payload.
+Commit f77f281b6118 ("fsverity: use a hashtable to find the
+fsverity_info") made fsverity_active() check whether the inode has the
+verity flag, rather than whether the inode's fsverity_info is loaded.
+This broke ovl_ensure_verity_loaded(), which wants to load the
+fsverity_info for any verity inodes that haven't had it loaded yet.
 
-Cc: stable@vger.kernel.org # 6.17+
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Therefore, to check that the fsverity_info hasn't yet been loaded, use
+fsverity_get_info(inode) == NULL instead of !fsverity_active(inode).
+
+Also, since fsverity_get_info() now involves a hash table lookup, put
+the more lightweight IS_VERITY() flag check first.
+
+Fixes: f77f281b6118 ("fsverity: use a hashtable to find the fsverity_info")
+Cc: stable@vger.kernel.org
+Link: https://github.com/bootc-dev/bootc/issues/2174
+Signed-off-by: Colin Walters <walters@verbum.org>
+Acked-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://patch.msgid.link/20260505224257.23213-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/ioctl.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ fs/overlayfs/util.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -765,6 +765,8 @@ long compat_blkdev_ioctl(struct file *fi
- #endif
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -1379,7 +1379,7 @@ int ovl_ensure_verity_loaded(const struc
+ 	struct inode *inode = d_inode(datapath->dentry);
+ 	struct file *filp;
  
- struct blk_iou_cmd {
-+	u64 start;
-+	u64 len;
- 	int res;
- 	bool nowait;
- };
-@@ -852,23 +854,27 @@ int blkdev_uring_cmd(struct io_uring_cmd
- {
- 	struct block_device *bdev = I_BDEV(cmd->file->f_mapping->host);
- 	struct blk_iou_cmd *bic = io_uring_cmd_to_pdu(cmd, struct blk_iou_cmd);
--	const struct io_uring_sqe *sqe = cmd->sqe;
- 	u32 cmd_op = cmd->cmd_op;
--	uint64_t start, len;
- 
--	if (unlikely(sqe->ioprio || sqe->__pad1 || sqe->len ||
--		     sqe->rw_flags || sqe->file_index))
--		return -EINVAL;
-+	/* Read what we need from the SQE on the first issue */
-+	if (!(issue_flags & IORING_URING_CMD_REISSUE)) {
-+		const struct io_uring_sqe *sqe = cmd->sqe;
-+
-+		if (unlikely(sqe->ioprio || sqe->__pad1 || sqe->len ||
-+			     sqe->rw_flags || sqe->file_index))
-+			return -EINVAL;
-+
-+		bic->start = READ_ONCE(sqe->addr);
-+		bic->len = READ_ONCE(sqe->addr3);
-+	}
- 
- 	bic->res = 0;
- 	bic->nowait = issue_flags & IO_URING_F_NONBLOCK;
- 
--	start = READ_ONCE(sqe->addr);
--	len = READ_ONCE(sqe->addr3);
--
- 	switch (cmd_op) {
- 	case BLOCK_URING_CMD_DISCARD:
--		return blkdev_cmd_discard(cmd, bdev, start, len, bic->nowait);
-+		return blkdev_cmd_discard(cmd, bdev, bic->start, bic->len,
-+					  bic->nowait);
- 	}
- 	return -EINVAL;
- }
+-	if (!fsverity_active(inode) && IS_VERITY(inode)) {
++	if (IS_VERITY(inode) && fsverity_get_info(inode) == NULL) {
+ 		/*
+ 		 * If this inode was not yet opened, the verity info hasn't been
+ 		 * loaded yet, so we need to do that here to force it into memory.
 
 
 
