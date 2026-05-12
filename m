@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-245862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246125-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOnMLgpnA2qj5gEAu9opvQ
-	(envelope-from <stable+bounces-245862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:42 +0200
+	id sDIoMfBrA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246125-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B1A52604C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B105526B9D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75C5B3082A24
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 732103205606
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A583E0738;
-	Tue, 12 May 2026 17:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDED3BB101;
+	Tue, 12 May 2026 17:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPWFPWLh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvtbPKaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7BB3DC87F;
-	Tue, 12 May 2026 17:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6A03002A9;
+	Tue, 12 May 2026 17:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607746; cv=none; b=PpJoDfNDb9AudWP8/u7IK50qqCcSPjDXcNuRMA8eEIgh69PCQ4cXTjv3iyLQcfyBTYtamF9KRuL4zRnM7hcgYNpK5YG2InnOQeXBE/qbskThU0ZZaSdRMi4T1TsZSg0WBRTp5STH+skYQf89f4iQPGaCg1Vkho3iaK80YRvJPnM=
+	t=1778608422; cv=none; b=FH/cROPq9st0DJpwp0FvVjl2hRjxOWybD9mw2QVCuw87Y2elYOcwNhFLVoMRKzDFpn1ER+jGuafERbTct+s6qT5+VfGrwfKefQHggOB181gxvb0cOPVv1lomAS5EP49Kai8Zg/7TRzcSvG3hjd3T5atYuC5O8i8Uf/l3NhTU4Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607746; c=relaxed/simple;
-	bh=TcxL94Gqy4KnLdm7LsPCf0FeJm/ZG7F+YCeCUoYYUso=;
+	s=arc-20240116; t=1778608422; c=relaxed/simple;
+	bh=THtRRrOR9mTj0amylZjcyNTP4AxjnfVcNOBKhKIm0s4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RFhCkD10DHPLXtIPx+KnZEjMMRbYDO0H65evJTG0hMtXMGpemUzlQCKBF1d3ZaR69v7yezp+jk7D1QSPJmFqyMEENZOMzrxTWq1Iiwm9tiREPbsbutX4oaJ+UvdFwKKhmRnXPMD+b0IRd3YteGUhYhbEYM/rwKOz0Lz2xmRr7xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPWFPWLh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1B6C2BCB0;
-	Tue, 12 May 2026 17:42:25 +0000 (UTC)
+	 MIME-Version; b=VR5QRlmTx+TWKm8BxQFrj/qdN1Wd/H4tJa452zIX8W5o4XyqthlUwbKKrIthQORmD+NO9a+oKXuqfHM1OSV12EP6b7Fe/xxns6h6qlNlN0uNZUrNUmr3GqHwNXJW3bMPaxcN0/jh8VWnZ3TLgZc8nRU8PMJj5Mqq3tOHkEaBHF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvtbPKaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1175EC2BCB0;
+	Tue, 12 May 2026 17:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607745;
-	bh=TcxL94Gqy4KnLdm7LsPCf0FeJm/ZG7F+YCeCUoYYUso=;
+	s=korg; t=1778608422;
+	bh=THtRRrOR9mTj0amylZjcyNTP4AxjnfVcNOBKhKIm0s4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPWFPWLh2R2Akly5nnrNpqN6yPFgY/a82mb5WXRJcHpiB6M79TRo0ymTflczvz/k5
-	 ttOsqPb8lxl03wZbcjH3k+kF/DCfChT1GhpAW3O3Oss+ovqkE5Dw6xx1M80UpAsb2N
-	 ReyatVlxNyICwpoMClknOPCT6lCLNCPNH3MiHfz8=
+	b=CvtbPKaC2/mYBbgM9FXa8q26/NR55SNwOgJaDZzvcxNg6N1xHMmVtVnApLN/5wlbo
+	 Ey+R4Zak+k5MOX0ZvJwgwIWc3nuRjTaJGDMT48ySf1+Y4UGiZrYtz5ka9xpDAJncCl
+	 QxagcmJatCp7m3ck6fak+sTKQLyAk14vCkmSlSrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/206] flow_dissector: do not dissect PPPoE PFC frames
+	ZhiTao Ou <hkbinbinbin@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.18 071/270] Bluetooth: hci_event: Fix OOB read and infinite loop in hci_le_create_big_complete_evt
 Date: Tue, 12 May 2026 19:37:52 +0200
-Message-ID: <20260512173933.250998656@linuxfoundation.org>
+Message-ID: <20260512173939.945991755@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,133 +63,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 34B1A52604C
+X-Rspamd-Queue-Id: 6B105526B9D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246125-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245862-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@linux.dev>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d6c19b31a3c1d519fabdcf0aa239e6b6109b9473 ]
+commit 5ddb8014261137cadaf83ab5617a588d80a22586 upstream.
 
-RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
-RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
-PFC for PPPoE sessions, and the flow dissector driver has assumed an
-uncompressed frame until the blamed commit.
+hci_le_create_big_complete_evt() iterates over BT_BOUND connections for
+a BIG handle using a while loop, accessing ev->bis_handle[i++] on each
+iteration.  However, there is no check that i stays within ev->num_bis
+before the array access.
 
-During the review process of that commit [1], support for PFC is
-suggested. However, having a compressed (1-byte) protocol field means
-the subsequent PPP payload is shifted by one byte, causing 4-byte
-misalignment for the network header and an unaligned access exception
-on some architectures.
+When a controller sends a LE_Create_BIG_Complete event with fewer
+bis_handle entries than there are BT_BOUND connections for that BIG,
+or with num_bis=0, the loop reads beyond the valid bis_handle[] flex
+array into adjacent heap memory.  Since the out-of-bounds values
+typically exceed HCI_CONN_HANDLE_MAX (0x0EFF), hci_conn_set_handle()
+rejects them and the connection remains in BT_BOUND state.  The same
+connection is then found again by hci_conn_hash_lookup_big_state(),
+creating an infinite loop with hci_dev_lock held.
 
-The exception can be reproduced by sending a PPPoE PFC frame to an
-ethernet interface of a MIPS board, with RPS enabled, even if no PPPoE
-session is active on that interface:
+Fix this by terminating the BIG if in case not all BIS could be setup
+properly.
 
-$ 0   : 00000000 80c40000 00000000 85144817
-$ 4   : 00000008 00000100 80a75758 81dc9bb8
-$ 8   : 00000010 8087ae2c 0000003d 00000000
-$12   : 000000e0 00000039 00000000 00000000
-$16   : 85043240 80a75758 81dc9bb8 00006488
-$20   : 0000002f 00000007 85144810 80a70000
-$24   : 81d1bda0 00000000
-$28   : 81dc8000 81dc9aa8 00000000 805ead08
-Hi    : 00009d51
-Lo    : 2163358a
-epc   : 805e91f0 __skb_flow_dissect+0x1b0/0x1b50
-ra    : 805ead08 __skb_get_hash_net+0x74/0x12c
-Status: 11000403        KERNEL EXL IE
-Cause : 40800010 (ExcCode 04)
-BadVA : 85144817
-PrId  : 0001992f (MIPS 1004Kc)
-Call Trace:
-[<805e91f0>] __skb_flow_dissect+0x1b0/0x1b50
-[<805ead08>] __skb_get_hash_net+0x74/0x12c
-[<805ef330>] get_rps_cpu+0x1b8/0x3fc
-[<805fca70>] netif_receive_skb_list_internal+0x324/0x364
-[<805fd120>] napi_complete_done+0x68/0x2a4
-[<8058de5c>] mtk_napi_rx+0x228/0xfec
-[<805fd398>] __napi_poll+0x3c/0x1c4
-[<805fd754>] napi_threaded_poll_loop+0x234/0x29c
-[<805fd848>] napi_threaded_poll+0x8c/0xb0
-[<80053544>] kthread+0x104/0x12c
-[<80002bd8>] ret_from_kernel_thread+0x14/0x1c
-
-Code: 02d51821  1060045b  00000000 <8c640000> 3084000f  2c820005  144001a2  00042080  8e220000
-
-To reduce the attack surface and maintain performance, do not process
-PPPoE PFC frames.
-
-[1] https://lore.kernel.org/r/20220630231016.GA392@debian.home
-Fixes: 46126db9c861 ("flow_dissector: Add PPPoE dissectors")
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-Link: https://patch.msgid.link/20260415022456.141758-1-qingfang.deng@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a0bfde167b50 ("Bluetooth: ISO: Add support for connecting multiple BISes")
+Cc: stable@vger.kernel.org
+Signed-off-by: ZhiTao Ou <hkbinbinbin@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/flow_dissector.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ net/bluetooth/hci_event.c |   27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 9cd8de6bebb54..8be2ef8088be2 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1374,16 +1374,13 @@ bool __skb_flow_dissect(const struct net *net,
- 			break;
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6973,9 +6973,29 @@ static void hci_le_create_big_complete_e
+ 			continue;
  		}
  
--		/* least significant bit of the most significant octet
--		 * indicates if protocol field was compressed
-+		/* PFC (compressed 1-byte protocol) frames are not processed.
-+		 * A compressed protocol field has the least significant bit of
-+		 * the most significant octet set, which will fail the following
-+		 * ppp_proto_is_valid(), returning FLOW_DISSECT_RET_OUT_BAD.
- 		 */
- 		ppp_proto = ntohs(hdr->proto);
--		if (ppp_proto & 0x0100) {
--			ppp_proto = ppp_proto >> 8;
--			nhoff += PPPOE_SES_HLEN - 1;
--		} else {
--			nhoff += PPPOE_SES_HLEN;
--		}
-+		nhoff += PPPOE_SES_HLEN;
++		if (ev->num_bis <= i) {
++			bt_dev_err(hdev,
++				   "Not enough BIS handles for BIG 0x%2.2x",
++				   ev->handle);
++			ev->status = HCI_ERROR_UNSPECIFIED;
++			hci_connect_cfm(conn, ev->status);
++			hci_conn_del(conn);
++			continue;
++		}
++
+ 		if (hci_conn_set_handle(conn,
+-					__le16_to_cpu(ev->bis_handle[i++])))
++					__le16_to_cpu(ev->bis_handle[i++]))) {
++			bt_dev_err(hdev,
++				   "Failed to set BIS handle for BIG 0x%2.2x",
++				   ev->handle);
++			/* Force error so BIG gets terminated as not all BIS
++			 * could be connected.
++			 */
++			ev->status = HCI_ERROR_UNSPECIFIED;
++			hci_connect_cfm(conn, ev->status);
++			hci_conn_del(conn);
+ 			continue;
++		}
  
- 		if (ppp_proto == PPP_IP) {
- 			proto = htons(ETH_P_IP);
--- 
-2.53.0
-
+ 		conn->state = BT_CONNECTED;
+ 		set_bit(HCI_CONN_BIG_CREATED, &conn->flags);
+@@ -6984,7 +7004,10 @@ static void hci_le_create_big_complete_e
+ 		hci_iso_setup_path(conn);
+ 	}
+ 
+-	if (!ev->status && !i)
++	/* If there is an unexpected error or if no BISes have been connected
++	 * for the BIG, terminate it.
++	 */
++	if (ev->status == HCI_ERROR_UNSPECIFIED || (!ev->status && !i))
+ 		/* If no BISes have been connected for the BIG,
+ 		 * terminate. This is in case all bound connections
+ 		 * have been closed before the BIG creation
 
 
 
