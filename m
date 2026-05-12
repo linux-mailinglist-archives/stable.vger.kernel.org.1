@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-245895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MATGMtpmA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:54 +0200
+	id SEf5K6BrA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:04:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FAE9525FF8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:43:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67844526AA3
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4FB8D3034D8A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D7FA31906BF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEDD3CDBDD;
-	Tue, 12 May 2026 17:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B103DD85C;
+	Tue, 12 May 2026 17:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZ1fgxeG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSJ45QH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40514385D85;
-	Tue, 12 May 2026 17:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F833DD858;
+	Tue, 12 May 2026 17:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607831; cv=none; b=mr8jbWSSfo7PkLAtQvxHp0YXqgw+aeyZeV9DV0bwMGCCXlERD4VOg5TD3OpY3h2R72Q9UT7mwQG4Vl2ERcFTVASoDf2xO/yzXF0RMBZ36ciVEMhmDK2cV9gh6IPwARv+9KpmKEV8QQXWVFDYyJiA/KSQJphMorK+2TlNAYfBMcY=
+	t=1778608497; cv=none; b=U5E0nmjPiYcMWXZb9evuObIymnGzdzzSIiXc4ssMC8qdWR8XG/TseD8Dqvm4RWeYedh5dNAVDdsvq85mj+7UKnMCqTwwxHAStKlDephD9L/eSQmfLOMmgoLF/dAnsBy7EkMIOiT2noxXIMXBYqs6qoAGKXJ8ktxYxZmYCsk1Liw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607831; c=relaxed/simple;
-	bh=8KypxVgL7vEVaHNdawDxnzxB4KrVOx2IgBt0iCzlM7w=;
+	s=arc-20240116; t=1778608497; c=relaxed/simple;
+	bh=PyYm+Y3e0cwcZ8dUCvFfAqWvZZaKpJXRdHaxiWyjJIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQ5KKgEHbiBC9mYe4X/tbHaPwilz+k6YAysAx1F0Q4iHd7SvmIG43X9ZCi2CNlfi5CMSCIzjq8Gi4Wa4p4L01E5o0OlfVcMxxcFcNMFpZdjV3/wYdeo7bAuLg/DLheFoYJ3JLRdokIi3vbA3QnbzT+C7FRIsYKbYWEFAZp75arI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZ1fgxeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2849C2BCC7;
-	Tue, 12 May 2026 17:43:50 +0000 (UTC)
+	 MIME-Version; b=T6nPSrVW7I6WSGXe4xwFs16u3EC3FaCcbFa/lyFUCLW5ho0aY5G2OL9m5GWydEURuxPNqD23VIsoaL6r643lUGwAt/g28F9ZBDcJwCoeP919ZUuL/D6ZDgTm9IBmDdQ5RARV94l+KxIYDDsXzGJSgiOxLIoPTwzTNwOPalMZ0Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSJ45QH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E003AC2BCF5;
+	Tue, 12 May 2026 17:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607831;
-	bh=8KypxVgL7vEVaHNdawDxnzxB4KrVOx2IgBt0iCzlM7w=;
+	s=korg; t=1778608497;
+	bh=PyYm+Y3e0cwcZ8dUCvFfAqWvZZaKpJXRdHaxiWyjJIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZ1fgxeGWSeklchOLTcVYpp0D7XEPoS33TIl8UrA8D1DTU/UctBhUIXqprwtZ8WjJ
-	 Z79KNMG9l9W7lYO5esiNa/i8n9HzZlBYJO5YelHPjj20dqw/3JDMDLwDE84Jn4HpCy
-	 2pht4tYiFn8LErgq7q6N1UWktSSDfJ3nN9d1WSpw=
+	b=nSJ45QH3N1ViDfhP/3fWcb7WQln8itEWZjCyQnTJCtOOdz1eYVen148qGDWx4h7ku
+	 EqyaWZ+t+tzYfFRSEQ18azRQDfHqCrIKdpvQE8rLiVM3adepwaKSiHWQ4eslHeLldz
+	 m/oTqbgsP9u4w1QJZdL34EyqunL3PCnW1Hki8NxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Jaeyoung Chung <jjy600901@snu.ac.kr>
-Subject: [PATCH 6.12 050/206] ALSA: pcm: oss: Fix data race at accessing runtime.oss.trigger
-Date: Tue, 12 May 2026 19:38:22 +0200
-Message-ID: <20260512173933.896661367@linuxfoundation.org>
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 102/270] netpoll: pass buffer size to egress_dev() to avoid MAC truncation
+Date: Tue, 12 May 2026 19:38:23 +0200
+Message-ID: <20260512173940.606021397@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5FAE9525FF8
+X-Rspamd-Queue-Id: 67844526AA3
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245895-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246154-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,93 +90,138 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Breno Leitao <leitao@debian.org>
 
-commit 901ac0ff15edf9503162e2cf6579bd11a30f1ed4 upstream.
+commit 76b93a8107574006b25495664304ea9237494d70 upstream.
 
-Currently the runtime.oss.trigger field may be accessed concurrently
-without protection, which may lead to the data race.  And, in this
-case, it may lead to more severe problem because it's a bit field; as
-writing the data, it may overwrite other bit fields as well, which
-confuses the operation completely, as spotted by fuzzing.
+egress_dev() formats np->dev_mac via snprintf() but receives buf as
+a bare char *, so it cannot derive the buffer size from the pointer. The
+size argument was hardcoded to MAC_ADDR_STR_LEN (3 * ETH_ALEN - 1 = 17),
+which is silly wrong in two ways:
 
-Fix it by covering runtime.oss.trigger bit fled also with the existing
-params_lock mutex in both snd_pcm_oss_get_trigger() and
-snd_pcm_oss_poll().
+ 1) misleading kernel log output on the MAC-selected target path
+    (np->dev_name[0] == '\0'); for example "aa:bb:cc:dd:ee:ff doesn't
+    exist, aborting" was logged as "aa:bb:cc:dd:ee:f doesn't exist,
+    aborting".
 
-Reported-and-tested-by: Jaeyoung Chung <jjy600901@snu.ac.kr>
-Closes: https://lore.kernel.org/20260423145330.210035-1-jjy600901@snu.ac.kr
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260424112205.123703-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+ 2) the second argument of snprintf is the size of the buffer, not the
+    size of what you want to write.
+
+Add a bufsz parameter to egress_dev() and pass sizeof(buf) from each
+caller, matching the standard snprintf() idiom and removing the
+hardcoded size from the helper.
+
+Every caller already declares "char buf[MAC_ADDR_STR_LEN + 1]" so the
+formatted MAC continues to fit.
+
+Tested by booting with
+  netconsole=6665@/aa:bb:cc:dd:ee:ff,6666@10.0.0.1/00:11:22:33:44:55
+on a kernel without a matching device. Pre-fix dmesg shows
+"aa:bb:cc:dd:ee:f doesn't exist, aborting"; post-fix shows the full
+"aa:bb:cc:dd:ee:ff doesn't exist, aborting".
+
+Fixes: f8a10bed32f5 ("netconsole: allow selection of egress interface via MAC address")
+Cc: stable@vger.kernel.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260501-netpoll_snprintf_fix-v1-1-84b0566e6597@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/oss/pcm_oss.c |   29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+ net/core/netpoll.c |   23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
---- a/sound/core/oss/pcm_oss.c
-+++ b/sound/core/oss/pcm_oss.c
-@@ -2147,10 +2147,16 @@ static int snd_pcm_oss_get_trigger(struc
- 
- 	psubstream = pcm_oss_file->streams[SNDRV_PCM_STREAM_PLAYBACK];
- 	csubstream = pcm_oss_file->streams[SNDRV_PCM_STREAM_CAPTURE];
--	if (psubstream && psubstream->runtime && psubstream->runtime->oss.trigger)
--		result |= PCM_ENABLE_OUTPUT;
--	if (csubstream && csubstream->runtime && csubstream->runtime->oss.trigger)
--		result |= PCM_ENABLE_INPUT;
-+	if (psubstream && psubstream->runtime) {
-+		guard(mutex)(&psubstream->runtime->oss.params_lock);
-+		if (psubstream->runtime->oss.trigger)
-+			result |= PCM_ENABLE_OUTPUT;
-+	}
-+	if (csubstream && csubstream->runtime) {
-+		guard(mutex)(&csubstream->runtime->oss.params_lock);
-+		if (csubstream->runtime->oss.trigger)
-+			result |= PCM_ENABLE_INPUT;
-+	}
- 	return result;
- }
- 
-@@ -2824,6 +2830,17 @@ static int snd_pcm_oss_capture_ready(str
- 						runtime->oss.period_frames;
- }
- 
-+static bool need_input_retrigger(struct snd_pcm_runtime *runtime)
-+{
-+	bool ret;
-+
-+	guard(mutex)(&runtime->oss.params_lock);
-+	ret = runtime->oss.trigger;
-+	if (ret)
-+		runtime->oss.trigger = 0;
-+	return ret;
-+}
-+
- static __poll_t snd_pcm_oss_poll(struct file *file, poll_table * wait)
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -608,14 +608,16 @@ EXPORT_SYMBOL_GPL(__netpoll_setup);
+ /*
+  * Returns a pointer to a string representation of the identifier used
+  * to select the egress interface for the given netpoll instance. buf
+- * must be a buffer of length at least MAC_ADDR_STR_LEN + 1.
++ * is used to format np->dev_mac when np->dev_name is empty; bufsz must
++ * be at least MAC_ADDR_STR_LEN + 1 to fit the formatted MAC address
++ * and its NUL terminator.
+  */
+-static char *egress_dev(struct netpoll *np, char *buf)
++static char *egress_dev(struct netpoll *np, char *buf, size_t bufsz)
  {
- 	struct snd_pcm_oss_file *pcm_oss_file;
-@@ -2856,11 +2873,11 @@ static __poll_t snd_pcm_oss_poll(struct
- 			    snd_pcm_oss_capture_ready(csubstream))
- 				mask |= EPOLLIN | EPOLLRDNORM;
- 		}
--		if (ostate != SNDRV_PCM_STATE_RUNNING && runtime->oss.trigger) {
-+		if (ostate != SNDRV_PCM_STATE_RUNNING &&
-+		    need_input_retrigger(runtime)) {
- 			struct snd_pcm_oss_file ofile;
- 			memset(&ofile, 0, sizeof(ofile));
- 			ofile.streams[SNDRV_PCM_STREAM_CAPTURE] = pcm_oss_file->streams[SNDRV_PCM_STREAM_CAPTURE];
--			runtime->oss.trigger = 0;
- 			snd_pcm_oss_set_trigger(&ofile, PCM_ENABLE_INPUT);
- 		}
+ 	if (np->dev_name[0])
+ 		return np->dev_name;
+ 
+-	snprintf(buf, MAC_ADDR_STR_LEN, "%pM", np->dev_mac);
++	snprintf(buf, bufsz, "%pM", np->dev_mac);
+ 	return buf;
+ }
+ 
+@@ -645,7 +647,7 @@ static int netpoll_take_ipv6(struct netp
+ 
+ 	if (!IS_ENABLED(CONFIG_IPV6)) {
+ 		np_err(np, "IPv6 is not supported %s, aborting\n",
+-		       egress_dev(np, buf));
++		       egress_dev(np, buf, sizeof(buf)));
+ 		return -EINVAL;
  	}
+ 
+@@ -667,7 +669,7 @@ static int netpoll_take_ipv6(struct netp
+ 	}
+ 	if (err) {
+ 		np_err(np, "no IPv6 address for %s, aborting\n",
+-		       egress_dev(np, buf));
++		       egress_dev(np, buf, sizeof(buf)));
+ 		return err;
+ 	}
+ 
+@@ -687,14 +689,14 @@ static int netpoll_take_ipv4(struct netp
+ 	in_dev = __in_dev_get_rtnl(ndev);
+ 	if (!in_dev) {
+ 		np_err(np, "no IP address for %s, aborting\n",
+-		       egress_dev(np, buf));
++		       egress_dev(np, buf, sizeof(buf)));
+ 		return -EDESTADDRREQ;
+ 	}
+ 
+ 	ifa = rtnl_dereference(in_dev->ifa_list);
+ 	if (!ifa) {
+ 		np_err(np, "no IP address for %s, aborting\n",
+-		       egress_dev(np, buf));
++		       egress_dev(np, buf, sizeof(buf)));
+ 		return -EDESTADDRREQ;
+ 	}
+ 
+@@ -719,7 +721,8 @@ int netpoll_setup(struct netpoll *np)
+ 		ndev = dev_getbyhwaddr(net, ARPHRD_ETHER, np->dev_mac);
+ 
+ 	if (!ndev) {
+-		np_err(np, "%s doesn't exist, aborting\n", egress_dev(np, buf));
++		np_err(np, "%s doesn't exist, aborting\n",
++		       egress_dev(np, buf, sizeof(buf)));
+ 		err = -ENODEV;
+ 		goto unlock;
+ 	}
+@@ -727,14 +730,14 @@ int netpoll_setup(struct netpoll *np)
+ 
+ 	if (netdev_master_upper_dev_get(ndev)) {
+ 		np_err(np, "%s is a slave device, aborting\n",
+-		       egress_dev(np, buf));
++		       egress_dev(np, buf, sizeof(buf)));
+ 		err = -EBUSY;
+ 		goto put;
+ 	}
+ 
+ 	if (!netif_running(ndev)) {
+ 		np_info(np, "device %s not up yet, forcing it\n",
+-			egress_dev(np, buf));
++			egress_dev(np, buf, sizeof(buf)));
+ 
+ 		err = dev_open(ndev, NULL);
+ 		if (err) {
 
 
 
