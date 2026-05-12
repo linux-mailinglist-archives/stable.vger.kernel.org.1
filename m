@@ -1,201 +1,254 @@
-Return-Path: <stable+bounces-245425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGRAIOHjAmqqyQEAu9opvQ
-	(envelope-from <stable+bounces-245425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:25:05 +0200
+	id OLyTDvvkAmpEyQEAu9opvQ
+	(envelope-from <stable+bounces-245426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:29:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2077B51CA61
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:25:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C3F51CB7A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 10:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7AABE3021BFD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:24:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 21E12302564E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 08:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903DE4921AD;
-	Tue, 12 May 2026 08:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7251B4921B8;
+	Tue, 12 May 2026 08:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i5sB0YZR"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="cdvGjxcM"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB5F492537;
-	Tue, 12 May 2026 08:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86833492199;
+	Tue, 12 May 2026 08:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778574280; cv=none; b=K0JhtjBT0cmu8tHMc6+x1LPklkRQzJfORaEv1YUtRgsYQwtLiuJ84A4o/5xJh8QHMq3Ee5Ez3vwt8EDIp/BkBMtfChQC+1F12hhRqxohebtfKpb1jF2SiU7CWMK/KPmZrSeIj+VNVwS/sNixeMb+9iznFZnpGJHvpoRCxLAFz8U=
+	t=1778574493; cv=none; b=rn2kbp8XzChdXvloIEjKJF40bRYdagougEnyQOksw5ii9B7kzCFyPq+SfDORoEHwsL3EEw3VQdXur5iRd6EcVRhEh7vwMJVbGP3BmMbRgVxBP9KMMRA7uqe/3ogPETru0f/ctD9p5SsonsK7IsaEEZxf4oUUdCgjbxEwm5zKiWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778574280; c=relaxed/simple;
-	bh=Z5tnKsqQw7EiBeSDr2ywtUGax4C0M+Mxkthf6nfbtWw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZtaVf48dbcrOx0FXYiiO1u3plJamytQraID71tK8wkb+/j7u016xkR32HVsxgqAvm0LN0lp0BFWK1UrgM6992SCZVpElfIQEiQwZpUc4COJQQAe8AZbfQy38iPbAT8AbHh7r0WONi1Nji3VbHufc78sjSjRd4u7EGtuDY6GDd2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i5sB0YZR; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778574276; x=1810110276;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Z5tnKsqQw7EiBeSDr2ywtUGax4C0M+Mxkthf6nfbtWw=;
-  b=i5sB0YZRRmKCT5E/7Ap1gtw9ELILvqMUKtzyNqY2gEdRKeA4WRqEu121
-   MVm4zGcmD0m+ByO5bXEuZYKStpskq0StdDBb6jE4zUF/PwlfRoA6NZ1cB
-   Noq+lqLRVlCTR24dBXfPCDd95dtGpzr/JuZulSLPDDkCTc+n0YjOCBnCZ
-   3ChJztPWnYkmu9Y/nttlE0UMgMVNqOTVDNzFUWpGFopOuvwWz6tFQH5PQ
-   XTPKmOmInfYyJx2dONPBAnVv84yCvg2gB/3hlsALKSdoYCX1VhBFl1EzS
-   oS56EytKJwRGgPHypjyzjgjlKWhoHr0dbQa6rcAL8RmQs2YBp81GBTG5N
-   g==;
-X-CSE-ConnectionGUID: F5d6FOXCRRW/FfXVU83T6A==
-X-CSE-MsgGUID: 15VSTndDTn+B6FGoBN9NRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79194968"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="79194968"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 01:24:36 -0700
-X-CSE-ConnectionGUID: NUSoQk53Q4yTK2hir+DQQA==
-X-CSE-MsgGUID: XR9Vjtu1Q86+2PsBGE08SA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="237945505"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO fedora) ([10.245.245.172])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 01:24:29 -0700
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sashiko-bot <sashiko-bot@kernel.org>,
-	Friedrich Vock <friedrich.vock@gmx.de>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	Tejun Heo <tj@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org,
-	Natalie Vock <natalie.vock@gmx.de>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	cgroups@vger.kernel.org,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Simona Vetter <simona@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 1/5] drm/amdgpu: Fix init ordering in amdgpu_vram_mgr_init()
-Date: Tue, 12 May 2026 10:24:02 +0200
-Message-ID: <20260512082406.44470-2-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512082406.44470-1-thomas.hellstrom@linux.intel.com>
-References: <20260512082406.44470-1-thomas.hellstrom@linux.intel.com>
+	s=arc-20240116; t=1778574493; c=relaxed/simple;
+	bh=0SeabCT0QD/uqzfnEjakQqADYcF1EGZ2R7oJ6Raxv5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cdaxr1rFz/MhHgEuTd2c6nOBbZBVgj+klYbiKgbWdpTDvqCkCXWhNTK2i7tuAhtXqOLsEezUs6MeFok9ZJf0w0GbPyUSvXgLAMFrUFj4oOk3LDPSip4CSbXeKmD4U3uUbiuywq52+Lz6Bafohp+PyaLylehuzDCYhJ1OWBQ5FHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=cdvGjxcM; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from killaraus.ideasonboard.com (2001-14ba-70f3-e800--a06.rev.dnainternet.fi [IPv6:2001:14ba:70f3:e800::a06])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0224F18C7;
+	Tue, 12 May 2026 10:28:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1778574482;
+	bh=0SeabCT0QD/uqzfnEjakQqADYcF1EGZ2R7oJ6Raxv5U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cdvGjxcMkxsb7CE/qQVLbhT9CU+OpZDMxomZyWWnpuMiov63NmmXfodwqLK9rZnUH
+	 2bxJfGExRtkj7U1HpmyNWq2MM0EYmYfOmC830i+LERcZgJclJx86aPGrqDLvHt/JBa
+	 LWjk94K02oEUca2xcfVtIptl6btfAZurbtjnpzKY=
+Date: Tue, 12 May 2026 11:28:08 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] media: renesas: vsp1: Fix race condition when stopping
+ display pipeline
+Message-ID: <20260512082808.GA4107@killaraus.ideasonboard.com>
+References: <20260511223832.3385049-1-laurent.pinchart+renesas@ideasonboard.com>
+ <agLW9KmGu_BaNyQd@zed>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2077B51CA61
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <agLW9KmGu_BaNyQd@zed>
+X-Rspamd-Queue-Id: 43C3F51CB7A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245425-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,gmx.de,lankhorst.se,amd.com,lists.freedesktop.org,vger.kernel.org,cmpxchg.org,suse.com,intel.com,suse.de,ffwll.ch,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[25];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245426-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,lists.freedesktop.org:email,sashiko.dev:url,amd.com:email,gmx.de:email,linux.intel.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lankhorst.se:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ideasonboard.com:email,ideasonboard.com:dkim]
 X-Rspamd-Action: no action
 
-drmm_cgroup_register_region() is called before INIT_LIST_HEAD() and
-gpu_buddy_init() in amdgpu_vram_mgr_init(). If it fails, the function
-returns early and bypasses those initializations.
+On Tue, May 12, 2026 at 09:42:13AM +0200, Jacopo Mondi wrote:
+> On Tue, May 12, 2026 at 01:38:32AM +0300, Laurent Pinchart wrote:
+> > When stopping a display pipeline, the vsp1_du_setup_lif() function first
+> > stops the hardware by calling vsp1_pipeline_stop(), and then resets
+> > drm_pipe->du_complete to NULL. Stopping the hardware ensures no new
+> > interrupt is generated, but does not wait for completion of any running
+> > interrupt handler. This creates a race with vsp1_du_pipeline_frame_end()
+> > which tests drm_pipe->du_complete before calling the function pointer.
+> > If the drm_pipe->du_complete pointer is reset to NULL between those two
+> > operations, a NULL pointer derefence will occur.
+> 
+> Uh that was a tiny window!
 
-Since adev->mman.initialized is set to true before amdgpu_vram_mgr_init()
-is called, a failure triggers amdgpu_ttm_fini(), which calls
-amdgpu_vram_mgr_fini(), which then:
+It got larger when I added printk statements in the CRC read function,
+that's how I noticed. I'm still surprised nobody ever reported the
+crash.
 
- - Calls list_for_each_entry_safe() on reservations_pending and
-   reserved_pages, whose list_head::next pointers are zero-initialized
-   (NULL). The loop does not recognize them as empty and dereferences NULL.
+> > Fix this by setting pipe->state to STOPPING before stopping the
+> > hardware, and avoid calling the frame end handler if the state is not
+> > RUNNING. Condition the latter to the display pipeline, as the other
+> > pipeline use a different stop procedure that waits for the frame end
+> > handler to set the state to STOPPED.
+> >
+> > The state check needs to be protected by the pipe->irqlock. The lock is
+> > used by the video and vspx completion handlers already, so move it one
+> > level up to vsp1_pipeline_frame_end().
+> >
+> > Fixes: d7ade201ae7f ("v4l: vsp1: Extend VSP1 module API to allow DRM callbacks")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> > ---
+> >
+> > I have noticed this race condition while debugging a separate issue and
+> > adding printk() statements in the display pipeline frame end. I have
+> > tested the fix with the DU test suite and VSP test suite, exercising
+> > both the display and video pipelines. I'm fairly confident that the VSPX
+> > pipeline won't be negatively affected, but it would be good to
+> > double-check that. Jacopo, Niklas, would you be able to give test it ?
+> 
+> I had several runs with this patch and noticed no issues
+> I'm also running with LOCKDEP enabled and got no complaints
 
- - Calls gpu_buddy_fini(), which iterates free_trees[] unconditionally
-   via for_each_free_tree(). Since mm->free_trees is NULL
-   (never allocated), this dereferences NULL.
+Thank you.
 
-Both result in a kernel panic on the module load error path.
+> Reviewed-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+> 
+> > ---
+> >  drivers/media/platform/renesas/vsp1/vsp1_pipe.c  | 12 ++++++++++--
+> >  drivers/media/platform/renesas/vsp1/vsp1_video.c |  5 -----
+> >  drivers/media/platform/renesas/vsp1/vsp1_vspx.c  | 13 +++++--------
+> >  3 files changed, 15 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/drivers/media/platform/renesas/vsp1/vsp1_pipe.c b/drivers/media/platform/renesas/vsp1/vsp1_pipe.c
+> > index 5d769cc42fe1..aaec1aa15091 100644
+> > --- a/drivers/media/platform/renesas/vsp1/vsp1_pipe.c
+> > +++ b/drivers/media/platform/renesas/vsp1/vsp1_pipe.c
+> > @@ -509,6 +509,10 @@ int vsp1_pipeline_stop(struct vsp1_pipeline *pipe)
+> >  		 * When using display lists in continuous frame mode the only
+> >  		 * way to stop the pipeline is to reset the hardware.
+> >  		 */
+> > +		scoped_guard(spinlock_irqsave, &pipe->irqlock) {
+> > +			pipe->state = VSP1_PIPELINE_STOPPING;
+> > +		}
+> > +
+> >  		ret = vsp1_reset_wpf(vsp1, pipe->output->entity.index);
+> >  		if (ret == 0) {
+> >  			spin_lock_irqsave(&pipe->irqlock, flags);
+> > @@ -583,8 +587,12 @@ void vsp1_pipeline_frame_end(struct vsp1_pipeline *pipe)
+> >  	 * Regardless of frame completion we still need to notify the pipe
+> >  	 * frame_end to account for vblank events.
+> >  	 */
+> > -	if (pipe->frame_end)
+> > -		pipe->frame_end(pipe, flags);
+> > +	scoped_guard(spinlock_irqsave, &pipe->irqlock) {
+> > +		if (pipe->state == VSP1_PIPELINE_RUNNING || !pipe->lif) {
+> > +			if (pipe->frame_end)
+> > +				pipe->frame_end(pipe, flags);
+> > +		}
+> > +	}
+> >
+> >  	pipe->sequence++;
+> >  }
+> > diff --git a/drivers/media/platform/renesas/vsp1/vsp1_video.c b/drivers/media/platform/renesas/vsp1/vsp1_video.c
+> > index fe1dac11d4ae..a8db94bdb670 100644
+> > --- a/drivers/media/platform/renesas/vsp1/vsp1_video.c
+> > +++ b/drivers/media/platform/renesas/vsp1/vsp1_video.c
+> > @@ -325,14 +325,11 @@ static void vsp1_video_pipeline_frame_end(struct vsp1_pipeline *pipe,
+> >  {
+> >  	struct vsp1_device *vsp1 = pipe->output->entity.vsp1;
+> >  	enum vsp1_pipeline_state state;
+> > -	unsigned long flags;
+> >  	unsigned int i;
+> >
+> >  	/* M2M Pipelines should never call here with an incomplete frame. */
+> >  	WARN_ON_ONCE(!(completion & VSP1_DL_FRAME_END_COMPLETED));
+> >
+> > -	spin_lock_irqsave(&pipe->irqlock, flags);
+> > -
+> >  	/* Complete buffers on all video nodes. */
+> >  	for (i = 0; i < vsp1->info->rpf_count; ++i) {
+> >  		if (!pipe->inputs[i])
+> > @@ -354,8 +351,6 @@ static void vsp1_video_pipeline_frame_end(struct vsp1_pipeline *pipe,
+> >  		wake_up(&pipe->wq);
+> >  	else if (vsp1_pipeline_ready(pipe))
+> >  		vsp1_video_pipeline_run(pipe);
+> > -
+> > -	spin_unlock_irqrestore(&pipe->irqlock, flags);
+> >  }
+> >
+> >  static int vsp1_video_pipeline_build_branch(struct vsp1_pipeline *pipe,
+> > diff --git a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
+> > index 1673479be0ff..26c477708858 100644
+> > --- a/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
+> > +++ b/drivers/media/platform/renesas/vsp1/vsp1_vspx.c
+> > @@ -176,14 +176,11 @@ static void vsp1_vspx_pipeline_frame_end(struct vsp1_pipeline *pipe,
+> >  {
+> >  	struct vsp1_vspx_pipeline *vspx_pipe = to_vsp1_vspx_pipeline(pipe);
+> >
+> > -	scoped_guard(spinlock_irqsave, &pipe->irqlock) {
+> > -		/*
+> > -		 * Operating the vsp1_pipe in singleshot mode requires to
+> > -		 * manually set the pipeline state to stopped when a transfer
+> > -		 * is completed.
+> > -		 */
+> > -		pipe->state = VSP1_PIPELINE_STOPPED;
+> > -	}
+> 
+> This might be worth a
+> 
+> 	lockdep_assert_held(&pipe->irqlock);
+> 
+> before accessing pipe->state
 
-Fix by moving drmm_cgroup_register_region() to after the list and buddy
-allocator are fully initialized, so the teardown path is safe to run.
+We should then add it to vsp1_du_pipeline_frame_end() and
+vsp1_video_pipeline_frame_end() as well. I think that can go to a
+separate patch.
 
-Reported-by: Sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260428073116.15687-1-thomas.hellstrom@linux.intel.com?part=4
-Fixes: 2b624a2c1865 ("drm/ttm: Handle cgroup based eviction in TTM")
-Cc: Friedrich Vock <friedrich.vock@gmx.de>
-Cc: Maarten Lankhorst <dev@lankhorst.se>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: amd-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.14+
-Assisted-by: GitHub_Copilot:claude-sonnet-4.6
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+> > +	/*
+> > +	 * Operating the vsp1_pipe in singleshot mode requires to manually set
+> > +	 * the pipeline state to stopped when a transfer is completed.
+> > +	 */
+> > +	pipe->state = VSP1_PIPELINE_STOPPED;
+> 
+> Reviewed-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+> 
+> >
+> >  	if (vspx_pipe->vspx_frame_end)
+> >  		vspx_pipe->vspx_frame_end(vspx_pipe->frame_end_data);
+> >
+> > base-commit: bc1ba628e37c93cf2abeb2c79716f49087f8a024
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-index 2a241a5b12c4..ac3f71d77140 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-@@ -918,9 +918,6 @@ int amdgpu_vram_mgr_init(struct amdgpu_device *adev)
- 	struct ttm_resource_manager *man = &mgr->manager;
- 	int err;
- 
--	man->cg = drmm_cgroup_register_region(adev_to_drm(adev), "vram", adev->gmc.real_vram_size);
--	if (IS_ERR(man->cg))
--		return PTR_ERR(man->cg);
- 	ttm_resource_manager_init(man, &adev->mman.bdev,
- 				  adev->gmc.real_vram_size);
- 
-@@ -935,6 +932,10 @@ int amdgpu_vram_mgr_init(struct amdgpu_device *adev)
- 	if (err)
- 		return err;
- 
-+	man->cg = drmm_cgroup_register_region(adev_to_drm(adev), "vram", adev->gmc.real_vram_size);
-+	if (IS_ERR(man->cg))
-+		return PTR_ERR(man->cg);
-+
- 	ttm_set_driver_manager(&adev->mman.bdev, TTM_PL_VRAM, &mgr->manager);
- 	ttm_resource_manager_set_used(man, true);
- 	return 0;
 -- 
-2.54.0
+Regards,
 
+Laurent Pinchart
 
