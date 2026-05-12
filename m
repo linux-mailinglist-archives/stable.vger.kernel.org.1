@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-246089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WH/1BTRuA2pS5wEAu9opvQ
-	(envelope-from <stable+bounces-246089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:15:16 +0200
+	id QNp+DN1rA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69667527227
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:15:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50956526B41
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7AA9331C43C8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 95A9B30A9CB5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8683BB119;
-	Tue, 12 May 2026 17:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B35E3C09F4;
+	Tue, 12 May 2026 17:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwZt07sb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CWGarvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C665939060B;
-	Tue, 12 May 2026 17:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38003C09EC;
+	Tue, 12 May 2026 17:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608329; cv=none; b=KlPvGmgPg0VrFn+DAGHEqcqAgyzydS4KAZWVdL/vhR45o5rAUHCt4YTKHAj23qiRDP27KWHBaYVSaN7M8RHyhjROrXcIsDWYPMpFcuB7zFYp5TCPmUkWvP4+MHadWOAIiWCPhoLph7pHgIVX0ksiRy1painci1ABCXYqkyfTOOY=
+	t=1778608257; cv=none; b=e0aec0gVgLENSUbNijW8fmtojZHxwEUDVroubRPjQm42k1pDI3LXUb0hkNC/nAUI13/5iXxGEq31k61Llpvg9YyvtvU0pP1jymk7BJsEANwZE29t7d3FJMaqC7J7oQFtJNvgcADW3DdispTZidXqlmmRYp3OZLALGS3f1S+kLrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608329; c=relaxed/simple;
-	bh=E03tkfwWmiBX3xcgDfAkvfZDkHSNsvbpn4qG6NoR3xo=;
+	s=arc-20240116; t=1778608257; c=relaxed/simple;
+	bh=Nbsydq6ftNO7wg4wHItPeFtY95gwj6/K5YY+lLGHvBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nyFdf0enmuYOprA3z5A33QSYH2hMGd0UgkdDLuggSQ2FxmzntTZMfdEzAvEJoAvkyAxxsjJAFMG2YvCz/s0fFD7EC+Jtl+EWtavFF89xnddm2FfGqgKTrtkGouDi6Osf7eA6FGT4jskbuN02qFpD26/QqevHG54KDGS0M9iAM7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwZt07sb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D752C2BCB0;
-	Tue, 12 May 2026 17:52:09 +0000 (UTC)
+	 MIME-Version; b=GjwrM0JnpKMa1d9YNzuTfuSTk9fCpu42TBz3VBTBj6EHBsBG7F0j4ePk/zqYbreIcErQvTsJ7DgBKrxEzAnfJAu8Mni8r9/fO/im93X7pkh7HCVsxQ9gfEkjdAff6BKxv2JpiebuO4WRWPYrbCgw0EFoYUQIPbUY2y0RNpWEOtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CWGarvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D310C2BCB0;
+	Tue, 12 May 2026 17:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608329;
-	bh=E03tkfwWmiBX3xcgDfAkvfZDkHSNsvbpn4qG6NoR3xo=;
+	s=korg; t=1778608257;
+	bh=Nbsydq6ftNO7wg4wHItPeFtY95gwj6/K5YY+lLGHvBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EwZt07sbGmqBm/9PRsvWJCGohFQcXZeZVTWLmbE+SBYtTWpechkmpTG+a7sarJ5zj
-	 6WweiMxo3UVRa314es021FM/k5QNjto/w/51Sj3fbQyPt4FeN/t6Vfmhud3i0NE3Rt
-	 xaytCOKBGVSI1YZZCA+/hRKFrjR7E9GxjVm5SCNU=
+	b=0CWGarvY1h+RL9RYl/BidBLoYyNzHBlA3pGVoPYBWlUIF3RG4d+Zsph4fId10JYql
+	 CNerZxLb7gA8qEakYQySv8kMi6fhTv6EJQRHTEPosOZkmh4QUeKM2A7LVVQzME6I7F
+	 JkE0Tm/AEQZg/F57pAKWeTx2qdmSyqJGeWJ2dPEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivam Kalra <shivamkalra98@zohomail.in>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.18 009/270] ACPI: video: force native backlight on HP OMEN 16 (8A44)
-Date: Tue, 12 May 2026 19:36:50 +0200
-Message-ID: <20260512173938.651255241@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	David Carlier <devnexen@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.18 010/270] tracepoint: balance regfunc() on func_add() failure in tracepoint_add_func()
+Date: Tue, 12 May 2026 19:36:51 +0200
+Message-ID: <20260512173938.671648529@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
 References: <20260512173938.452574370@linuxfoundation.org>
@@ -63,85 +65,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 69667527227
+X-Rspamd-Queue-Id: 50956526B41
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,efficios.com,gmail.com,goodmis.org];
+	TAGGED_FROM(0.00)[bounces-246061-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246089-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zohomail.in:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,msgid.link:url,efficios.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivam Kalra <shivamkalra98@zohomail.in>
+From: David Carlier <devnexen@gmail.com>
 
-commit 4b506ea5351a1f5937ac632a4a5c35f6f796cc41 upstream.
+commit fad217e16fded7f3c09f8637b0f6a224d58b5f2e upstream.
 
-The HP OMEN 16 Gaming Laptop (board name 8A44) has a mux-less hybrid
-GPU configuration with AMD Rembrandt (Radeon 680M) and NVIDIA GA104
-(RTX 3070 Ti). The internal eDP panel is wired to the AMD iGPU.
+When a tracepoint goes through the 0 -> 1 transition, tracepoint_add_func()
+invokes the subsystem's ext->regfunc() before attempting to install the
+new probe via func_add(). If func_add() then fails (for example, when
+allocate_probes() cannot allocate a new probe array under memory pressure
+and returns -ENOMEM), the function returns the error without calling the
+matching ext->unregfunc(), leaving the side effects of regfunc() behind
+with no installed probe to justify them.
 
-When Nouveau loads without GSP firmware, the ACPI video backlight
-device (acpi_video0) gets registered alongside the native AMD
-backlight (amdgpu_bl2). In this state, writes to amdgpu_bl2 update
-the software brightness value but fail to change the physical panel
-brightness.
+For syscall tracepoints this is particularly unpleasant: syscall_regfunc()
+bumps sys_tracepoint_refcount and sets SYSCALL_TRACEPOINT on every task.
+After a leaked failure, the refcount is stuck at a non-zero value with no
+consumer, and every task continues paying the syscall trace entry/exit
+overhead until reboot. Other subsystems providing regfunc()/unregfunc()
+pairs exhibit similarly scoped persistent state.
 
-Force native backlight to prevent acpi_video0 from registering.
-Confirmed that booting with acpi_backlight=native resolves the
-issue.
+Mirror the existing 1 -> 0 cleanup and call ext->unregfunc() in the
+func_add() error path, gated on the same condition used there so the
+unwind is symmetric with the registration.
 
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
-Link: https://patch.msgid.link/20260426-omen-16-backlight-fix-v1-1-62364f268ea6@zohomail.in
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 8cf868affdc4 ("tracing: Have the reg function allow to fail")
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260413190601.21993-1-devnexen@gmail.com
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/video_detect.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/tracepoint.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -907,6 +907,14 @@ static const struct dmi_system_id video_
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 15 3535"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* HP OMEN Gaming Laptop 16-n0xxx */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16-n0xxx"),
-+		},
-+	},
- 
- 	/*
- 	 * x86 android tablets which directly control the backlight through
+--- a/kernel/tracepoint.c
++++ b/kernel/tracepoint.c
+@@ -291,6 +291,8 @@ static int tracepoint_add_func(struct tr
+ 			lockdep_is_held(&tracepoints_mutex));
+ 	old = func_add(&tp_funcs, func, prio);
+ 	if (IS_ERR(old)) {
++		if (tp->ext && tp->ext->unregfunc && !static_key_enabled(&tp->key))
++			tp->ext->unregfunc();
+ 		WARN_ON_ONCE(warn && PTR_ERR(old) != -ENOMEM);
+ 		return PTR_ERR(old);
+ 	}
 
 
 
