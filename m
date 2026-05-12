@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-246083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HLxAixrA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246083-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:20 +0200
+	id wDpCMQ9sA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:06:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D538526930
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:02:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 672D3526C0C
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B1469309C368
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 100D0320D29B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D9F3955F2;
-	Tue, 12 May 2026 17:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92478385D69;
+	Tue, 12 May 2026 17:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trUcdD6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plFSMqsS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C02A3C09E7;
-	Tue, 12 May 2026 17:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FAC3955C0;
+	Tue, 12 May 2026 17:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608314; cv=none; b=Fuw2eouQhDBIqUGG4nufegxdpCMmrKBExSzXB5Qlba96YFssyWhD/k4jIt/vvODKnNIZ9SJa+MP0SjyBotp5Q2v9iMDqcV78PZyk4Do/CA0dlSoii158aWlwuJ8U5It8Osw8kWh1f3UMmuLQbjuWqO+iqU2/F0Q+VImtLuwDgEk=
+	t=1778608448; cv=none; b=AaI7xyZ4pdg6ej+JoHScylwvXOynx4iUi1GLZb97om4SjVnFKmWlhITMOHNDwSB/W+C0QHcmp2sbsWvp/4R/Tv+uX7QySBN5M9zcawx+6Yhe+XtdQizJFFXdNTCHsas90sqtEqRVPgIxjHCJa+Rjh9a0iJ2uyf9Mr/44VHmxhvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608314; c=relaxed/simple;
-	bh=LkAGbcf20sI8+2Ejy2GBJCVQA6oiFT3w8prsb2Qoz4A=;
+	s=arc-20240116; t=1778608448; c=relaxed/simple;
+	bh=Hj/U133CqyozzSxc311KZiAescIJr1sBTbMm5+HEwDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CUHc/myNWnVeGgMQE7rOXJept7uksn4IZn27Vr4RBOoW3tU/sVmuMoMkjIHOeC/5zxSK1usrrSzzQ3aQBELHNgGRhgmbcBKH3dWLevFbFl4oo5hOubFMMtGUH9Vb0NJeDwejPrWxl4Db5mkNs1ol/LFmatXUCsSkbam02GCuoGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trUcdD6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6899C2BCB0;
-	Tue, 12 May 2026 17:51:53 +0000 (UTC)
+	 MIME-Version; b=D3E2T32dq3qxdl7OI76O/7wRGV13+T/+RWx7u11zq/RlLre/HjE29MIV7XuccHRXcoLnqAJnSZHvxSUQdW5kGfdXiIw/xQbGZoi3oOVmKIZNKXkIQRPzYRfXvffdOzF/gIjRbI/V3o6MtR2EVT1el85IsxUBYiovaURA0QgCaco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plFSMqsS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF51BC2BCB0;
+	Tue, 12 May 2026 17:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608314;
-	bh=LkAGbcf20sI8+2Ejy2GBJCVQA6oiFT3w8prsb2Qoz4A=;
+	s=korg; t=1778608448;
+	bh=Hj/U133CqyozzSxc311KZiAescIJr1sBTbMm5+HEwDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trUcdD6N9BZqU8DbF+vBw6/bbP2H+q0j6OYxo4hcXBznKpiMUkt+Vjdmt2J0hk8O9
-	 7ooqlYIhtj/lisjaxfbujbbX05hD+sEBCLGph7VqXatZ2Jc1IOTyffw6o65FIK+EJB
-	 gaUK0IreXXm0nVqOoplo4SpxxsEX2H374eVN1CCU=
+	b=plFSMqsS26H+AJzpGD5XOBIPYAfx4ggujiF/0qWZmmuXtD/5pVY8E/ZDqHgk/Zebi
+	 TcJZ7aFXUXyUN7JqBYa+9ftvL+t1DrDv/ld+ox7AHmPfTTEDKnXJ6QJyg4d04YTC+I
+	 OGAqa0WjS14how7FN6zNHbucDV8JPchpqc+NOycM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
+	Catherine <enderaoelyther@gmail.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.18 030/270] wifi: b43legacy: enforce bounds check on firmware key index in RX path
-Date: Tue, 12 May 2026 19:37:11 +0200
-Message-ID: <20260512173939.091307307@linuxfoundation.org>
+Subject: [PATCH 6.18 031/270] wifi: mac80211: drop stray static from fast-RX rx_result
+Date: Tue, 12 May 2026 19:37:12 +0200
+Message-ID: <20260512173939.112163851@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
 References: <20260512173938.452574370@linuxfoundation.org>
@@ -63,74 +63,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4D538526930
+X-Rspamd-Queue-Id: 672D3526C0C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246135-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246083-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,talencesecurity.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Catherine <enderaoelyther@gmail.com>
 
-commit a035766f970bde2d4298346a31a80685be5c0205 upstream.
+commit 7a5b81e0c87a075afd572f659d8eb68c9c4cd2ba upstream.
 
-Same fix as b43: the firmware-controlled key index in b43legacy_rx()
-can exceed dev->max_nr_keys. The existing B43legacy_WARN_ON is
-non-enforcing in production builds, allowing an out-of-bounds read of
-dev->key[].
+ieee80211_invoke_fast_rx() is documented as safe for parallel RX, but
+its per-invocation rx_result is declared static. Concurrent callers then
+share one instance and can overwrite each other's result between
+ieee80211_rx_mesh_data() and the switch on res.
 
-Make the check enforcing by dropping the frame for invalid indices.
+That can make a packet that was queued or consumed by
+ieee80211_rx_mesh_data() fall through into ieee80211_rx_8023(), or make
+a packet that should continue return as queued.
 
-Fixes: 75388acd0cd8 ("[B43LEGACY]: add mac80211-based driver for legacy BCM43xx devices")
+Make res an automatic variable so each invocation keeps its own result.
+
+Fixes: 3468e1e0c639 ("wifi: mac80211: add mesh fast-rx support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Link: https://patch.msgid.link/20260417111145.2694196-2-tristmd@gmail.com
+Signed-off-by: Catherine <enderaoelyther@gmail.com>
+Link: https://patch.msgid.link/20260424131435.83212-2-enderaoelyther@gmail.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/b43legacy/xmit.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/rx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/broadcom/b43legacy/xmit.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/xmit.c
-@@ -476,7 +476,8 @@ void b43legacy_rx(struct b43legacy_wldev
- 		 * key index, but the ucode passed it slightly different.
- 		 */
- 		keyidx = b43legacy_kidx_to_raw(dev, keyidx);
--		B43legacy_WARN_ON(keyidx >= dev->max_nr_keys);
-+		if (B43legacy_WARN_ON(keyidx >= dev->max_nr_keys))
-+			goto drop;
- 
- 		if (dev->key[keyidx].algorithm != B43legacy_SEC_ALGO_NONE) {
- 			/* Remove PROTECTED flag to mark it as decrypted. */
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4824,7 +4824,7 @@ static bool ieee80211_invoke_fast_rx(str
+ 	struct sk_buff *skb = rx->skb;
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+-	static ieee80211_rx_result res;
++	ieee80211_rx_result res;
+ 	int orig_len = skb->len;
+ 	int hdrlen = ieee80211_hdrlen(hdr->frame_control);
+ 	int snap_offs = hdrlen;
 
 
 
