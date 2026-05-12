@@ -1,195 +1,184 @@
-Return-Path: <stable+bounces-245574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KL4dJDcrA2oR1QEAu9opvQ
-	(envelope-from <stable+bounces-245574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:29:27 +0200
+	id cEQvK1UtA2qM1QEAu9opvQ
+	(envelope-from <stable+bounces-245576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:38:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5073A5212BA
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:29:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAC75215F4
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDC0430471CE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:21:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3617E31FA6DB
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6503911D0;
-	Tue, 12 May 2026 13:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F70E39734A;
+	Tue, 12 May 2026 13:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KqGiBWlv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASnKgMfS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F23A3905EE
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDC4397339
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 13:17:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778591837; cv=none; b=Xr92oyJmCtWJw7mmkbje/Tx3fVQ8E2RqmjwXY+Yg2W61Bd1KAS0+3GMI3j0xf9RBNN2K9GwXkTgL0mHWHJgUfi+M+u1Dy8vcQcw1FyghKMH/ZUPi+HrJ93fYtv3xoDnELpdjpy/4R+4M87ntcOE5HHx1gkD3gNOuvLBsmryQCtk=
+	t=1778591865; cv=none; b=aC8BtgaNEYf8DAjoffiE6cbQTXLWvzn1tkfEwTosCKn5OBjLtGn6JtZQkynOW5q1ddL9q4/4TZk5SLZghb5NK6h1zoZelOWKvscb5VokaecUgvLlwiJspIDPocgYIiEtFCcCntcn8K3yvuQT1GdulLqWxmgLyJwpSYMh/fzkutI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778591837; c=relaxed/simple;
-	bh=wwNRLIF1JFp5xt9HeapzPaIKxk407Y01fVL/BIECwnY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V0zUuXNGNlcwdGHvojP+ssoI2DKKmd2i+CDkzsCPmTAcw7gaVJfTkbmnUMrCz6IAv8h5qKz8tjIMUVvhx9VDpfDO5+54G3rVLVw5YrErIbTn1pc8ioc47zIOkgWAesHqJQ/xz5EZLtLSJARELjvceeythSqxJ6sbTSElaGYmevU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KqGiBWlv; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488b150559bso43073155e9.1
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 06:17:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778591833; x=1779196633; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qSTTjErtCCV7PDluuTX4InQQCaNvPmqczetdbYZrylo=;
-        b=KqGiBWlvJ97L0+fCiJN2zFlQUEtHbxwmSSaIiI9BZw0QSZZdWxwf6xfhEoGYFtFqvJ
-         MluAmPRVS4y1+rbAk9nlVmf5byTvQHLYsr1+cTlywgRFgfyUQV5Ak4z4ylIQElAkAfbA
-         iZkJHoMVX5RgJXfXDI990SZo1g1Lzz5zjCIbV+CDrisEegNQCHuqveQq58KwzrJLWAig
-         1ouhNbypuJKjFscYnw0iMAWbAWZ4KIdYBYaBIdJvwDd1L+1bIrF3e+Bt++4QZ5mr6B95
-         iBlU0oSzui1Xc2rFJ0J4fCIuYE4mu9+lVbgpbtiJHKCHC2hZv/v54uuiMff9t2lnc27n
-         1nww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778591833; x=1779196633;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qSTTjErtCCV7PDluuTX4InQQCaNvPmqczetdbYZrylo=;
-        b=PonuYP1L9+/uSk+NVHKTtXDsRVhTAxqexip7smhnpRRc7rjjGKDPLpJZ8cCkBZqbwQ
-         j7BD9k21xJrvT2Sj5QVhJTjnK8BeMJ405JN1M8hkZ9hDWAKzfHKADJBDovbVJ/3qVRQU
-         8yNjOWfeQWmddLQ1TwnRlgy+dqXHyVAXIyuTP3YFdrs+pB+SnecRZqBIlfSS8mLEFzGI
-         nwAZRD82rCNFR6woyzomqJkl3XPMG3iGkY4d0VZoAqVGwUclgcVQf9G6muUuyJ6wM45P
-         tR+w3KARMk8pfAAKx4DR65MY1ex5snlQkWa8O7F4trOa7qgchzTuyLlFX9cX60p2BSNI
-         iLjw==
-X-Forwarded-Encrypted: i=1; AFNElJ+YlP5mau0+mKklu0n0JbpVPDZEO/DYh85MCbEsiWacWXX1uhfkZzTddAnyA6sUMRfDD+s5gsQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6QOeF156O/NLYJQ6ZLWQ8XL0G+HIAU5FDBMY60hnCkiPEaN8n
-	lCD9bXL7gQ7FiSZjNDtTxhiw5Xhng4tpattPbj0aYEebMftRB/NJ8wbf
-X-Gm-Gg: Acq92OEvGclQNIjLndAVu6n4oKOD4K/7U6GACs2Wy/npUGemAg4+Y7tN/R5k0sj1TGd
-	j9Tx4CwNw+LPNdsryxDZsgju0ax7eBjEC9m/PPtwZkc7WOP9V6Mr/3VGZjK26wybzSfb6xoMa/V
-	N5S6n3Fna0TnP3+BibUrPnHCpI5+6eNISOKmsuIpsVvrwk/yWSAAjW0QepMM9VXUcm2YUdFcBe1
-	nWko/5HPs0OngK8mPhZgsg+HhaCm1EfBbAxHS5vnPq5L9fImmJNuLte7YFMvcvXNsCuNAAvgeJK
-	bbhiyHumDoJvhCNIxVYLMLuuxyXVh5qJSkKBMXdSrhgh1/O6QKhqFtPYJctzXpLDQ/WUsUDXYZg
-	N/IKsYHcfmnVcsHEItchmVB+Q8cuRfpLQe2BFEa5mEI/BGZHH2XTi4hlU8Pq/8UVSeZxIUXpvAP
-	T2hcbMAWetA/rGdClKuvKbuPx9SdqJyFLbnrsURKydeRCeLXiwGpE8GvBxKvRV
-X-Received: by 2002:a05:600c:6299:b0:486:d76c:fa57 with SMTP id 5b1f17b1804b1-48e706f11d0mr232288505e9.17.1778591832718;
-        Tue, 12 May 2026 06:17:12 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f42a845sm17282245e9.20.2026.05.12.06.17.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 06:17:12 -0700 (PDT)
-Date: Tue, 12 May 2026 14:17:11 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Alex Williamson <alex.williamson@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm <kvm@vger.kernel.org>, Jason
- Gunthorpe <jgg@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, linux-kernel
- <linux-kernel@vger.kernel.org>, Yishai Hadas <yishaih@nvidia.com>,
- rananta@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] vfio/pci: Fix racy bitfields and tighten struct
- layout
-Message-ID: <20260512141711.70c49471@pumpkin>
-In-Reply-To: <20260511221609.3837652-2-alex.williamson@nvidia.com>
-References: <20260511221609.3837652-1-alex.williamson@nvidia.com>
-	<20260511221609.3837652-2-alex.williamson@nvidia.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1778591865; c=relaxed/simple;
+	bh=H2b4mRDVnk8OYzLUI1g29z6acV4is3XjJAIYUjrPJQ0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cHW6WmuTdPZa0gwwmocMZoyD/w3zkV0upQlg79ku5LqYwekrw4luyNCos1fnssaXbSbNjg4k2MVGoZGU3tdh70DetBySranSASn/eV+ip7ybGdFlLdB0UvqlPUVMfWLQcauKBHnjf/qiClw17FtV3A/XMwt196Tpqawe8cHpXMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASnKgMfS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9723AC2BCF6;
+	Tue, 12 May 2026 13:17:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778591864;
+	bh=H2b4mRDVnk8OYzLUI1g29z6acV4is3XjJAIYUjrPJQ0=;
+	h=Subject:To:Cc:From:Date:From;
+	b=ASnKgMfSzoQdtFpqa9BP+YGz0aa9cY092ttkJruyb2PCIDxmjhPvA8sORpdh/W0RO
+	 9G8zhYwYqWmYnRAYcOdL+8MRTy7iTJ52ddFipcrIcP4y+VD5VCCDoJ0gXH7V+2W7mk
+	 aDAvTP6x5r2C0arXhNjt/8wUy5mm4AfKPkXCorKY=
+Subject: FAILED: patch "[PATCH] mm/hugetlb_cma: round up per_node before logging it" failed to apply to 6.6-stable tree
+To: ekffu200098@gmail.com,akpm@linux-foundation.org,david@kernel.org,muchun.song@linux.dev,osalvador@suse.de,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 12 May 2026 15:17:41 +0200
+Message-ID: <2026051241-flakily-uniquely-50ca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5073A5212BA
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2EAC75215F4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245574-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245576-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,linux-foundation.org,kernel.org,linux.dev,suse.de,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NO_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,suse.de:email,linux-foundation.org:email,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-On Mon, 11 May 2026 16:16:02 -0600
-Alex Williamson <alex.williamson@nvidia.com> wrote:
 
-> Bitfield operations are not atomic, they use a read-modify-write
-> pattern, therefore we should be careful not to pack bitfields that
-> can be concurrently updated into the same storage unit.
-> 
-> The split fields (virq_disabled, bardirty, pm_intx_masked,
-> pm_runtime_engaged, sriov_pwr_active) are mutated post-init from
-> contexts that don't serialize against the other writers in the same
-> storage unit, so a bitfield RMW could drop an adjacent field's
-> update.  The remaining bitfields are touched only during probe or
-> close where no concurrent writer exists, so they stay packed.
-> 
-> While reordering, place virq_disabled and bardirty earlier to fill
-> an existing alignment hole.
-> 
-> Fixes: 9cd0f6d5cbb6 ("vfio/pci: Use bitfield for struct vfio_pci_core_device flags")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-7
-> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
-> ---
->  include/linux/vfio_pci_core.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-> index 2ebba746c18f..24e8db5b1c0d 100644
-> --- a/include/linux/vfio_pci_core.h
-> +++ b/include/linux/vfio_pci_core.h
-> @@ -101,6 +101,8 @@ struct vfio_pci_core_device {
->  	const struct vfio_pci_device_ops *pci_ops;
->  	void __iomem		*barmap[PCI_STD_NUM_BARS];
->  	bool			bar_mmap_supported[PCI_STD_NUM_BARS];
-> +	bool			virq_disabled;
-> +	bool			bardirty;
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-I'd put those two after the :1 fields to avoid an extra hole.
+To reproduce the conflict and resubmit, you may use the following commands:
 
--- David
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8f5ce56b76303c55b78a87af996e2e0f8535f979
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051241-flakily-uniquely-50ca@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
->  	u8			*pci_config_map;
->  	u8			*vconfig;
->  	struct perm_bits	*msi_perm;
-> @@ -117,16 +119,14 @@ struct vfio_pci_core_device {
->  	u32			rbar[7];
->  	bool			has_dyn_msix:1;
->  	bool			pci_2_3:1;
-> -	bool			virq_disabled:1;
->  	bool			reset_works:1;
->  	bool			extended_caps:1;
-> -	bool			bardirty:1;
->  	bool			has_vga:1;
->  	bool			needs_reset:1;
->  	bool			nointx:1;
->  	bool			needs_pm_restore:1;
-> -	bool			pm_intx_masked:1;
-> -	bool			pm_runtime_engaged:1;
-> +	bool			pm_intx_masked;
-> +	bool			pm_runtime_engaged;
->  	struct pci_saved_state	*pci_saved_state;
->  	struct pci_saved_state	*pm_save;
->  	int			ioeventfds_nr;
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8f5ce56b76303c55b78a87af996e2e0f8535f979 Mon Sep 17 00:00:00 2001
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Wed, 22 Apr 2026 23:33:53 +0900
+Subject: [PATCH] mm/hugetlb_cma: round up per_node before logging it
+
+When the user requests a total hugetlb CMA size without per-node
+specification, hugetlb_cma_reserve() computes per_node from
+hugetlb_cma_size and the number of nodes that have memory
+
+        per_node = DIV_ROUND_UP(hugetlb_cma_size,
+                                nodes_weight(hugetlb_bootmem_nodes));
+
+The reservation loop later computes
+
+        size = round_up(min(per_node, hugetlb_cma_size - reserved),
+                          PAGE_SIZE << order);
+
+So the actually reserved per_node size is multiple of (PAGE_SIZE <<
+order), but the logged per_node is not rounded up, so it may be smaller
+than the actual reserved size.
+
+For example, as the existing comment describes, if a 3 GB area is
+requested on a machine with 4 NUMA nodes that have memory, 1 GB is
+allocated on the first three nodes, but the printed log is
+
+        hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
+
+Round per_node up to (PAGE_SIZE << order) before logging so that the
+printed log always matches the actual reserved size.  No functional change
+to the actual reservation size, as the following case analysis shows
+
+1. remaining (hugetlb_cma_size - reserved) >= rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks rounded per_node;
+    round_up() returns rounded per_node (no-op)
+2. remaining < unrounded per_node
+ - AS-IS: min() picks remaining;
+    round_up() returns round_up(remaining)
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining)
+3. unrounded per_node <= remaining < rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining) equals rounded per_node
+
+Link: https://lore.kernel.org/20260422143353.852257-1-ekffu200098@gmail.com
+Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma") # 5.7
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index f83ae4998990..7693ccefd0c6 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -204,6 +204,7 @@ void __init hugetlb_cma_reserve(void)
+ 		 */
+ 		per_node = DIV_ROUND_UP(hugetlb_cma_size,
+ 					nodes_weight(hugetlb_bootmem_nodes));
++		per_node = round_up(per_node, PAGE_SIZE << order);
+ 		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
+ 			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
+ 	}
 
 
