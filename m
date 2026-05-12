@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-245976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246233-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CL3BCsZoA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:52:06 +0200
+	id 0M57IbRsA2of5wEAu9opvQ
+	(envelope-from <stable+bounces-246233-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B954D5263E7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE0C526DFC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BFD9F30B435A
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:48:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C591A31ADADD
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191493DD873;
-	Tue, 12 May 2026 17:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3443EDE4A;
+	Tue, 12 May 2026 17:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l67BWit+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zERf4h1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B233DD869;
-	Tue, 12 May 2026 17:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D32B3EDE42;
+	Tue, 12 May 2026 17:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608036; cv=none; b=LNZo76g/5dfCK51Z4TwcZs6D8YSPa4kZSzt5hFPsUPdMTjTWRecttrbxtef93lUEaA+mS5JO0REKYf/rC3h6hEJXwhrkLyFCvLTs0lpokhsa7ehWX2PkXBqOjK18gcakDnD/+SCVddw6PpjZxPXvu7LrGu02cYoIKEgODQeLktA=
+	t=1778608701; cv=none; b=J1WFBLsABZVLtMSyQznWlz+LP6jknEUMA/I9j+eDrelJ87gk8pUUbatgbKxN7AsYIpI1mYwZDrm8psBf12ePlnnKc3onJ9eTRSge0U8ogl2b+E0reLUEpg6wNhGpZqCr/mJQQmB7Q9BL6QGOFy8f7FNR6dF9cbXAJTQJAfJ3EaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608036; c=relaxed/simple;
-	bh=zfiOkxM4JrazmgbB3f51GPdmuLBQByDpHHj4n+voan0=;
+	s=arc-20240116; t=1778608701; c=relaxed/simple;
+	bh=2m0Rg4yJuxja4OyQ9o3oTOSEKns9IHRD1wl+Ynwil5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=El6Ln0j9Os4gtBiI0gaoVEfSyV7ZXSzjtrjEF9YM+8nNaL9qARXOIBs3HGCcpaA1Oi6NHjjB15Cm+bZDKoZrGBoUgmJhhdU1mnTAdzkb3Euar2qpKF5cIglMsvA1YOPNPa89txpLa374k1YIAzEzj8xpjtYf5ydt+cifE+h9C2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l67BWit+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BF8C4AF52;
-	Tue, 12 May 2026 17:47:16 +0000 (UTC)
+	 MIME-Version; b=qyBXIW/r8HUzG7clmilNNB91X+KeznRirZJ7YONdETnU7wLCv55TmpTbgSlqBvQ4c+vuKfXFuLT2FGd+V+n5T2fFKXJNBw5JQQNeoKNFi9Cch+VYe48RD8CZxEQFzFlftUfJC18Vmmapw8e40cYCohgPXgF4ZkARHvpELLP0EgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zERf4h1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7909C2BCB0;
+	Tue, 12 May 2026 17:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608036;
-	bh=zfiOkxM4JrazmgbB3f51GPdmuLBQByDpHHj4n+voan0=;
+	s=korg; t=1778608701;
+	bh=2m0Rg4yJuxja4OyQ9o3oTOSEKns9IHRD1wl+Ynwil5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l67BWit+ldwC7LTKEbfJz++xKWLRArvN2okZMa/FODAJpQQ9rCGQdyPV7byTFde6G
-	 VcM61+R3JL5kwoRkF0ToQcoKSkV2q5L8rLVBY+GDUu+H3hvhRqAYKBB+0CkB8kLkMb
-	 tcCH315NI4nDCu3fszPtWRJqJIwC8lDVfkTNDnuk=
+	b=zERf4h1PGBT+Vaeg8NV9Sde4TZ+sWlzDtTpNNT1kgBQWrsvc2dx1KcfM0TXAQWd0k
+	 gFWy+N26aldZpbelM0+BLOqOdopTfxrlPwxG9FDeWBeFojYmkeV8DTqYYZgDwZgc2B
+	 xDEasc+BIyZ5/R/YvPVuR3vdcpKown86uCqiDLyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 131/206] nvmet: avoid recursive nvmet-wq flush in nvmet_ctrl_free
+	Farrah Chen <farrah.chen@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Chenyi Qiang <chenyi.qiang@intel.com>
+Subject: [PATCH 6.18 182/270] KVM: x86: Do IRR scan in __kvm_apic_update_irr even if PIR is empty
 Date: Tue, 12 May 2026 19:39:43 +0200
-Message-ID: <20260512173935.632350521@linuxfoundation.org>
+Message-ID: <20260512173942.279964534@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B954D5263E7
+X-Rspamd-Queue-Id: 1CE0C526DFC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -75,162 +76,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246233-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245976-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit aade8abd8b868b6ffa9697aadaea28ec7f65bee6 upstream.
+commit 33fd0ccd2590b470b65adcca288615ad3b5e3e06 upstream.
 
-nvmet_tcp_release_queue_work() runs on nvmet-wq and can drop the
-final controller reference through nvmet_cq_put(). If that triggers
-nvmet_ctrl_free(), the teardown path flushes ctrl->async_event_work on
-the same nvmet-wq.
+Fall back to apic_find_highest_vector() when PID.ON is set but PIR
+turns out to be empty, to correctly report the highest pending interrupt
+from the existing IRR.
 
-Call chain:
+In a nested VM stress test, the following WARNING fires in
+vmx_check_nested_events() when kvm_cpu_has_interrupt() reports a pending
+interrupt but the subsequent kvm_apic_has_interrupt() (which invokes
+vmx_sync_pir_to_irr() again) returns -1:
 
- nvmet_tcp_schedule_release_queue()
-   kref_put(&queue->kref, nvmet_tcp_release_queue)
-     nvmet_tcp_release_queue()
-       queue_work(nvmet_wq, &queue->release_work) <--- nvmet_wq
-         process_one_work()
-           nvmet_tcp_release_queue_work()
-             nvmet_cq_put(&queue->nvme_cq)
-               nvmet_cq_destroy()
-                 nvmet_ctrl_put(cq->ctrl)
-                   nvmet_ctrl_free()
-                     flush_work(&ctrl->async_event_work) <--- nvmet_wq
+  WARNING: CPU: 99 PID: 57767 at arch/x86/kvm/vmx/nested.c:4449 vmx_check_nested_events+0x6bf/0x6e0 [kvm_intel]
+  Call Trace:
+   kvm_check_and_inject_events
+   vcpu_enter_guest.constprop.0
+   vcpu_run
+   kvm_arch_vcpu_ioctl_run
+   kvm_vcpu_ioctl
+   __x64_sys_ioctl
+   do_syscall_64
+   entry_SYSCALL_64_after_hwframe
 
-                      Previously Scheduled by :-
-		        nvmet_add_async_event
-		          queue_work(nvmet_wq, &ctrl->async_event_work);
+The root cause is a race between vmx_sync_pir_to_irr() on the target vCPU
+and __vmx_deliver_posted_interrupt() on a sender vCPU.  The sender
+performs two individually-atomic operations that are not a single
+transaction:
 
-This trips lockdep with a possible recursive locking warning.
+  1. pi_test_and_set_pir(vector)  -- sets the PIR bit
+  2. pi_test_and_set_on()         -- sets PID.ON
 
-[ 5223.015876] run blktests nvme/003 at 2026-04-07 20:53:55
-[ 5223.061801] loop0: detected capacity change from 0 to 2097152
-[ 5223.072206] nvmet: adding nsid 1 to subsystem blktests-subsystem-1
-[ 5223.088368] nvmet_tcp: enabling port 0 (127.0.0.1:4420)
-[ 5223.126086] nvmet: Created discovery controller 1 for subsystem nqn.2014-08.org.nvmexpress.discovery for NQN nqn.2014-08.org.nvmexpress:uuid:0f01fb42-9f7f-4856-b0b3-51e60b8de349.
-[ 5223.128453] nvme nvme1: new ctrl: NQN "nqn.2014-08.org.nvmexpress.discovery", addr 127.0.0.1:4420, hostnqn: nqn.2014-08.org.nvmexpress:uuid:0f01fb42-9f7f-4856-b0b3-51e60b8de349
-[ 5233.199447] nvme nvme1: Removing ctrl: NQN "nqn.2014-08.org.nvmexpress.discovery"
+The following interleaving triggers the bug:
 
-[ 5233.227718] ============================================
-[ 5233.231283] WARNING: possible recursive locking detected
-[ 5233.234696] 7.0.0-rc3nvme+ #20 Tainted: G           O     N
-[ 5233.238434] --------------------------------------------
-[ 5233.241852] kworker/u192:6/2413 is trying to acquire lock:
-[ 5233.245429] ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: touch_wq_lockdep_map+0x26/0x90
-[ 5233.251438]
-               but task is already holding lock:
-[ 5233.255254] ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x5cc/0x6e0
-[ 5233.261125]
-               other info that might help us debug this:
-[ 5233.265333]  Possible unsafe locking scenario:
+  Sender vCPU (IPI):              Target vCPU (1st sync_pir_to_irr):
+  B1: set PIR[vector]
+                                  A1: pi_clear_on()
+                                  A2: pi_harvest_pir() -> sees B1 bit
+                                  A3: xchg() -> consumes bit, PIR=0
+                                      (1st sync returns correct max_irr)
+  B2: set PID.ON = 1
 
-[ 5233.269217]        CPU0
-[ 5233.270795]        ----
-[ 5233.272436]   lock((wq_completion)nvmet-wq);
-[ 5233.275241]   lock((wq_completion)nvmet-wq);
-[ 5233.278020]
-                *** DEADLOCK ***
+                                  Target vCPU (2nd sync_pir_to_irr):
+                                  C1: pi_test_on() -> TRUE (from B2)
+                                  C2: pi_clear_on() -> ON=0
+                                  C3: pi_harvest_pir() -> PIR empty
+                                  C4: *max_irr = -1, early return
+                                      IRR NOT SCANNED
 
-[ 5233.281793]  May be due to missing lock nesting notation
+The interrupt is not lost (it resides in the IRR from the first sync and
+is recovered on the next vcpu_enter_guest() iteration), but the incorrect
+max_irr causes a spurious WARNING and a wasted L2 VM-Enter/VM-Exit cycle.
 
-[ 5233.286195] 3 locks held by kworker/u192:6/2413:
-[ 5233.289192]  #0: ffff888111632548 ((wq_completion)nvmet-wq){+.+.}-{0:0}, at: process_one_work+0x5cc/0x6e0
-[ 5233.294569]  #1: ffffc9000e2a7e40 ((work_completion)(&queue->release_work)){+.+.}-{0:0}, at: process_one_work+0x1c5/0x6e0
-[ 5233.300128]  #2: ffffffff82d7dc40 (rcu_read_lock){....}-{1:3}, at: __flush_work+0x62/0x530
-[ 5233.304290]
-               stack backtrace:
-[ 5233.306520] CPU: 4 UID: 0 PID: 2413 Comm: kworker/u192:6 Tainted: G           O     N  7.0.0-rc3nvme+ #20 PREEMPT(full)
-[ 5233.306524] Tainted: [O]=OOT_MODULE, [N]=TEST
-[ 5233.306525] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-[ 5233.306527] Workqueue: nvmet-wq nvmet_tcp_release_queue_work [nvmet_tcp]
-[ 5233.306532] Call Trace:
-[ 5233.306534]  <TASK>
-[ 5233.306536]  dump_stack_lvl+0x73/0xb0
-[ 5233.306552]  print_deadlock_bug+0x225/0x2f0
-[ 5233.306556]  __lock_acquire+0x13f0/0x2290
-[ 5233.306563]  lock_acquire+0xd0/0x300
-[ 5233.306565]  ? touch_wq_lockdep_map+0x26/0x90
-[ 5233.306571]  ? __flush_work+0x20b/0x530
-[ 5233.306573]  ? touch_wq_lockdep_map+0x26/0x90
-[ 5233.306577]  touch_wq_lockdep_map+0x3b/0x90
-[ 5233.306580]  ? touch_wq_lockdep_map+0x26/0x90
-[ 5233.306583]  ? __flush_work+0x20b/0x530
-[ 5233.306585]  __flush_work+0x268/0x530
-[ 5233.306588]  ? __pfx_wq_barrier_func+0x10/0x10
-[ 5233.306594]  ? xen_error_entry+0x30/0x60
-[ 5233.306600]  nvmet_ctrl_free+0x140/0x310 [nvmet]
-[ 5233.306617]  nvmet_cq_put+0x74/0x90 [nvmet]
-[ 5233.306629]  nvmet_tcp_release_queue_work+0x19f/0x360 [nvmet_tcp]
-[ 5233.306634]  process_one_work+0x206/0x6e0
-[ 5233.306640]  worker_thread+0x184/0x320
-[ 5233.306643]  ? __pfx_worker_thread+0x10/0x10
-[ 5233.306646]  kthread+0xf1/0x130
-[ 5233.306648]  ? __pfx_kthread+0x10/0x10
-[ 5233.306651]  ret_from_fork+0x355/0x450
-[ 5233.306653]  ? __pfx_kthread+0x10/0x10
-[ 5233.306656]  ret_from_fork_asm+0x1a/0x30
-[ 5233.306664]  </TASK>
-
-There is also no need to flush async_event_work from controller
-teardown. The admin queue teardown already fails outstanding AER
-requests before the final controller put :-
-
- nvmet_sq_destroy(admin sq)
-    nvmet_async_events_failall(ctrl)
-
-The controller has already been removed from the subsystem list before
-nvmet_ctrl_free() quiesces outstanding work.
-
-Replace flush_work() with cancel_work_sync() so a pending
-async_event_work item is canceled and a running instance is waited on
-without recursing into the same workqueue.
-
-Fixes: 06406d81a2d7 ("nvmet: cancel fatal error and flush async work before free controller")
+Fixes: b41f8638b9d3 ("KVM: VMX: Isolate pure loads from atomic XCHG when processing PIR")
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Analyzed-by: Chenyi Qiang <chenyi.qiang@intel.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/kvm/20260428070349.1633238-1-chenyi.qiang@intel.com/T/
+Link: https://patch.msgid.link/20260503201703.108231-2-pbonzini@redhat.com/
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/lapic.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -1505,7 +1505,7 @@ static void nvmet_ctrl_free(struct kref
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -669,12 +669,14 @@ bool __kvm_apic_update_irr(unsigned long
+ 	u32 irr_val, prev_irr_val;
+ 	int max_updated_irr;
  
- 	nvmet_stop_keep_alive_timer(ctrl);
++	if (!pi_harvest_pir(pir, pir_vals)) {
++		*max_irr = apic_find_highest_vector(regs + APIC_IRR);
++		return false;
++	}
++
+ 	max_updated_irr = -1;
+ 	*max_irr = -1;
  
--	flush_work(&ctrl->async_event_work);
-+	cancel_work_sync(&ctrl->async_event_work);
- 	cancel_work_sync(&ctrl->fatal_err_work);
+-	if (!pi_harvest_pir(pir, pir_vals))
+-		return false;
+-
+ 	for (i = vec = 0; i <= 7; i++, vec += 32) {
+ 		u32 *p_irr = (u32 *)(regs + APIC_IRR + i * 0x10);
  
- 	nvmet_destroy_auth(ctrl);
 
 
 
