@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-245906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246123-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCTkGfhmA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:24 +0200
+	id UCdhCYNrA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246123-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AA952602E
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:44:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C9B526A39
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1893430091D9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9948B30A345E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03BF3CDBDD;
-	Tue, 12 May 2026 17:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF90B3955F9;
+	Tue, 12 May 2026 17:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TvIxrSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yh3st5O0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D04385D85;
-	Tue, 12 May 2026 17:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A1A3955C1;
+	Tue, 12 May 2026 17:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607859; cv=none; b=hwH5/XSqBD+dp8yBDwEHjaQcNP3PxwiD7ywqyX68l5WEPEfIOgXFtEC+cDqx0yzmZsEw/NCeYff+8Lbvxe16FDJGT1pNKWKqbeGF1E5Dfr4ssq2tJ8YA0ylgSAk8GJGkGFrs5XNr16ThkaYBay9ploG/V946O+wyU8OuP17OiHg=
+	t=1778608417; cv=none; b=K0fLw8nwRxmiJd0JRGKRptA3tonw3oDUOtvojUOibnH1PHV5Y+boRIbilupE7/O3kiC8UGxzuHxz4CKkuRxlneM9fyOu6nhE63lQzC5Y/IgDDOd1w6aJPtmrFU6L/OS0KbIg9YBhESwsPiQ+p9R5p1baLxu0CmXgGPOrM/Ftg/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607859; c=relaxed/simple;
-	bh=58ML7axCbbrg36w9k1r+PCJ5XqPGH/gynbHcQL0niSw=;
+	s=arc-20240116; t=1778608417; c=relaxed/simple;
+	bh=l/pEhASZIDWXBGq3RxlcCfonim6X1lFFn44p8UaSaTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5ePB22ezVrLgQNo0IkleYeXWKJS83n/AwiqW0rXCsZBlQgTHOzS1tihA7h0eCsfYYOC0VA2TPpvqMThz55sVBRzdaa/UrdYaM4w5QS4KJn8rwzxqMjs3WItkYJfcEWJJQrF3KTOw0pFl+/mAi0Bw6WUbL9ju3c3R3xeKFAvwdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TvIxrSw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F12C2BCB0;
-	Tue, 12 May 2026 17:44:18 +0000 (UTC)
+	 MIME-Version; b=gpiW8WBwnSyb6YcHviTmcJfnSaNpFtkPqVsJa5EmmdR4fQrs7HbxUIMXbUORLK4C/EJksKcGUNDiRvAYHC2UFg+odXItjM2gxtiomZONx0pq6hVfFIA+axnGu+YUn1wPI8bz+/U8NHxJ1D1hR9qYVDI5py8oQgD5Lok0js0LwWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yh3st5O0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8445C2BCB0;
+	Tue, 12 May 2026 17:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607859;
-	bh=58ML7axCbbrg36w9k1r+PCJ5XqPGH/gynbHcQL0niSw=;
+	s=korg; t=1778608417;
+	bh=l/pEhASZIDWXBGq3RxlcCfonim6X1lFFn44p8UaSaTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1TvIxrSwacv1mQFYpMcBrYf9VdYFgJw61buyvbousSCjikntNJ0lIwwpnOhf+DrFE
-	 dE3CO1jVsbw5C3Mee134StcG3Ey9KDZSVWK04rZxCYukRmMiwJPNZQmrvoVUoYpsLo
-	 t2S7N/PNLXVL1zxiQ58Y93+Zk1w4Ft2htAgF6z/E=
+	b=yh3st5O0Q3Juf9CC1O2BMP1QRIQjbfRreC5OaQxXEaFvzWJomXJNHa70MOUiywp6e
+	 AC4MLYqJsbwnadFh7rfnN1Agk5JkCzjgbWWty0656XS9LbGUfFTWP4FMCF6la81foi
+	 KpwQmDQwJ0VY/ev+V3V2Vjg8M2zt4xke77u5eOc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srikanth Aithal <sraithal@amd.com>,
-	Ankit Soni <Ankit.Soni@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/206] iommu/amd: serialize sequence allocation under concurrent TLB invalidations
+	Tristan Madani <tristan@talencesecurity.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.18 070/270] Bluetooth: btmtk: validate WMT event SKB length before struct access
 Date: Tue, 12 May 2026 19:37:51 +0200
-Message-ID: <20260512173933.229702912@linuxfoundation.org>
+Message-ID: <20260512173939.925203563@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,154 +63,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 83AA952602E
+X-Rspamd-Queue-Id: B0C9B526A39
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245906-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246123-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,talencesecurity.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Soni <Ankit.Soni@amd.com>
+From: Tristan Madani <tristan@talencesecurity.com>
 
-commit 9e249c48412828e807afddc21527eb734dc9bd3d upstream.
+commit 634a4408c0615c523cf7531790f4f14a422b9206 upstream.
 
-With concurrent TLB invalidations, completion wait randomly gets timed out
-because cmd_sem_val was incremented outside the IOMMU spinlock, allowing
-CMD_COMPL_WAIT commands to be queued out of sequence and breaking the
-ordering assumption in wait_on_sem().
-Move the cmd_sem_val increment under iommu->lock so completion sequence
-allocation is serialized with command queuing.
-And remove the unnecessary return.
+btmtk_usb_hci_wmt_sync() casts the WMT event response SKB data to
+struct btmtk_hci_wmt_evt (7 bytes) and struct btmtk_hci_wmt_evt_funcc
+(9 bytes) without first checking that the SKB contains enough data.
+A short firmware response causes out-of-bounds reads from SKB tailroom.
 
-Fixes: d2a0cac10597 ("iommu/amd: move wait_on_sem() out of spinlock")
+Use skb_pull_data() to validate and advance past the base WMT event
+header. For the FUNC_CTRL case, pull the additional status field bytes
+before accessing them.
 
-Tested-by: Srikanth Aithal <sraithal@amd.com>
-Reported-by: Srikanth Aithal <sraithal@amd.com>
-Signed-off-by: Ankit Soni <Ankit.Soni@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-[Salvatore Bonaccorso: Backport to v6.12.y where f32fe7cb0198
-("iommu/amd: Add support to remap/unmap IOMMU buffers for kdump") is not
-present]
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/amd_iommu_types.h |  2 +-
- drivers/iommu/amd/init.c            |  2 +-
- drivers/iommu/amd/iommu.c           | 18 ++++++++++++------
- 3 files changed, 14 insertions(+), 8 deletions(-)
+ drivers/bluetooth/btmtk.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index a14ee649d3da3..df2aa1c4fafcf 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -781,7 +781,7 @@ struct amd_iommu {
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -654,8 +654,13 @@ static int btmtk_usb_hci_wmt_sync(struct
+ 	if (data->evt_skb == NULL)
+ 		goto err_free_wc;
  
- 	u32 flags;
- 	volatile u64 *cmd_sem;
--	atomic64_t cmd_sem_val;
-+	u64 cmd_sem_val;
- 
- #ifdef CONFIG_AMD_IOMMU_DEBUGFS
- 	/* DebugFS Info */
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index e1816ae8699dd..78e9ceda2338f 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -1742,7 +1742,7 @@ static int __init init_iommu_one(struct amd_iommu *iommu, struct ivhd_header *h,
- 	iommu->pci_seg = pci_seg;
- 
- 	raw_spin_lock_init(&iommu->lock);
--	atomic64_set(&iommu->cmd_sem_val, 0);
-+	iommu->cmd_sem_val = 0;
- 
- 	/* Add IOMMU to internal data structures */
- 	list_add_tail(&iommu->list, &amd_iommu_list);
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 24e2de90ac2e4..d0e53a03eff02 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -1252,6 +1252,12 @@ static int iommu_queue_command(struct amd_iommu *iommu, struct iommu_cmd *cmd)
- 	return iommu_queue_command_sync(iommu, cmd, true);
- }
- 
-+static u64 get_cmdsem_val(struct amd_iommu *iommu)
-+{
-+	lockdep_assert_held(&iommu->lock);
-+	return ++iommu->cmd_sem_val;
-+}
+-	/* Parse and handle the return WMT event */
+-	wmt_evt = (struct btmtk_hci_wmt_evt *)data->evt_skb->data;
++	wmt_evt = skb_pull_data(data->evt_skb, sizeof(*wmt_evt));
++	if (!wmt_evt) {
++		bt_dev_err(hdev, "WMT event too short (%u bytes)",
++			   data->evt_skb->len);
++		err = -EINVAL;
++		goto err_free_skb;
++	}
+ 	if (wmt_evt->whdr.op != hdr->op) {
+ 		bt_dev_err(hdev, "Wrong op received %d expected %d",
+ 			   wmt_evt->whdr.op, hdr->op);
+@@ -671,6 +676,12 @@ static int btmtk_usb_hci_wmt_sync(struct
+ 			status = BTMTK_WMT_PATCH_DONE;
+ 		break;
+ 	case BTMTK_WMT_FUNC_CTRL:
++		if (!skb_pull_data(data->evt_skb,
++				   sizeof(wmt_evt_funcc->status))) {
++			err = -EINVAL;
++			goto err_free_skb;
++		}
 +
- /*
-  * This function queues a completion wait command into the command
-  * buffer of an IOMMU
-@@ -1266,11 +1272,11 @@ static int iommu_completion_wait(struct amd_iommu *iommu)
- 	if (!iommu->need_sync)
- 		return 0;
- 
--	data = atomic64_inc_return(&iommu->cmd_sem_val);
--	build_completion_wait(&cmd, iommu, data);
--
- 	raw_spin_lock_irqsave(&iommu->lock, flags);
- 
-+	data = get_cmdsem_val(iommu);
-+	build_completion_wait(&cmd, iommu, data);
-+
- 	ret = __iommu_queue_command_sync(iommu, &cmd, false);
- 	raw_spin_unlock_irqrestore(&iommu->lock, flags);
- 
-@@ -2929,10 +2935,11 @@ static void iommu_flush_irt_and_complete(struct amd_iommu *iommu, u16 devid)
- 		return;
- 
- 	build_inv_irt(&cmd, devid);
--	data = atomic64_inc_return(&iommu->cmd_sem_val);
--	build_completion_wait(&cmd2, iommu, data);
- 
- 	raw_spin_lock_irqsave(&iommu->lock, flags);
-+	data = get_cmdsem_val(iommu);
-+	build_completion_wait(&cmd2, iommu, data);
-+
- 	ret = __iommu_queue_command_sync(iommu, &cmd, true);
- 	if (ret)
- 		goto out_err;
-@@ -2946,7 +2953,6 @@ static void iommu_flush_irt_and_complete(struct amd_iommu *iommu, u16 devid)
- 
- out_err:
- 	raw_spin_unlock_irqrestore(&iommu->lock, flags);
--	return;
- }
- 
- static void set_dte_irq_entry(struct amd_iommu *iommu, u16 devid,
--- 
-2.53.0
-
+ 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
+ 		if (be16_to_cpu(wmt_evt_funcc->status) == 0x404)
+ 			status = BTMTK_WMT_ON_DONE;
 
 
 
