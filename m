@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-245947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBXOBbloA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:53 +0200
+	id aGrTNn9qA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9EA5263BB
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD38526714
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E218930578E7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:46:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 777CA3072D47
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DF03D25D2;
-	Tue, 12 May 2026 17:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D3E3955EF;
+	Tue, 12 May 2026 17:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ouee5pnb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIGifl+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169FD21FF21;
-	Tue, 12 May 2026 17:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83573955C2;
+	Tue, 12 May 2026 17:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607965; cv=none; b=bhpuz/nm38w7Dj3QZcXhRNIqO2OqhWju1LNr9WD4xgyIITaOBNAIB/yFAS+ZyANrW/Sms3+unBdg0yaDi8+9vcGv2tOC/qHDAN2KbV8eEvxSpqvwKwew3SF+qqylaI6xL0looHYeFQ51oP8PwfwI4ciwFQeczT9poin9EU7AGw0=
+	t=1778608631; cv=none; b=uZvod/Mg23Fr+GAcF737Mj+rqgU60Ig52jVX1H83L32nuB0Ibi7S/jVIgYMhOvS7n+mX7XYaeLVkbSRhvpVOfbyBMZ2EdS70Xlbt+79eabl++1C/J169OqqVFrR3GGHGOY07ogfMgF1VDZqcNzuXBx+koTApEpTTdqCrL3RAYrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607965; c=relaxed/simple;
-	bh=QUUJhPu8rUVQz7TVRHVnFW2VlrrwUbCpOLLmM1ZNQjc=;
+	s=arc-20240116; t=1778608631; c=relaxed/simple;
+	bh=sGhdikC90yAauXZVLWT6Xdzfe3Yf75gElLAt05qZXl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWmqb5G37Gx6V/Z1fKg9YjJ5MPGUBmmV3eKX1l5EKC0U6sDvho94Vv2PKIY4r4vUWieXgoaI9v2FWdOqCf1kc/iRnpiUEDYhPrlTpe+V1AakUH0IAasZq5OQt2hStjdRA66OzrrcNEDcxT3nVHexgaEflILcLph8ujlVYaCJhvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ouee5pnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96755C2BCB0;
-	Tue, 12 May 2026 17:46:04 +0000 (UTC)
+	 MIME-Version; b=AcgHUhjEr++rlzFkUnyx771PKaytmSsYz9B7SecCY7T9NU//nrcfZ66A3MpL539DIZdR18GVY+B0sAzcoCcpjHVaP5GwofHO0QsKXuby0HQ591Fxw1WAIKXquIND4QIsgiRwWbkT83sMANkTWNbBsqqEn4z+W9mpmEWuOwJjqIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIGifl+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC5CC2BCB0;
+	Tue, 12 May 2026 17:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607964;
-	bh=QUUJhPu8rUVQz7TVRHVnFW2VlrrwUbCpOLLmM1ZNQjc=;
+	s=korg; t=1778608631;
+	bh=sGhdikC90yAauXZVLWT6Xdzfe3Yf75gElLAt05qZXl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ouee5pnbtG9iOveye9LInKJtvFU8bihhnHigjN/M6hlfaBp2SaIyxQnQ1cSLcMJak
-	 9CnnPcfPgfhBNNWiKqfMwe5oeMcv+yOX0a2cgalw2vH4KFdUmUXzWm5m48ZuZD/ff4
-	 HXKKgTSJAV+DffXayRzsl9nCh/NwyzneY/ffGmRA=
+	b=xIGifl+P2yUXBLo3ASmXX9LZFN7hv3oLcY+4QIbVG+MI8UhKLfgYSt9x6exutnv+v
+	 UXFqz+VMMJe6UsMy9lS/FPuFVCLNpi4xeE4XXeSAMmjOu4HFZFhUZGR7KK6nPl42fK
+	 U65AisugAv21AinjTNA4GsAqu2z/P9IXFivCGoSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: [PATCH 6.12 102/206] thermal/drivers/sprd: Fix raw temperature clamping in sprd_thm_rawdata_to_temp
+	David Carlier <devnexen@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.18 153/270] eventfs: Hold eventfs_mutex and SRCU when remount walks events
 Date: Tue, 12 May 2026 19:39:14 +0200
-Message-ID: <20260512173935.017417376@linuxfoundation.org>
+Message-ID: <20260512173941.670563056@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +63,159 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AB9EA5263BB
+X-Rspamd-Queue-Id: BCD38526714
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246206-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,goodmis.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245947-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,goodmis.org:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: David Carlier <devnexen@gmail.com>
 
-commit b3414148bbc1f9cd56217e58a558c6ac4fd1b4a6 upstream.
+commit 07004a8c4b572171934390148ee48c4175c77eed upstream.
 
-The raw temperature data was never clamped to SPRD_THM_RAW_DATA_LOW or
-SPRD_THM_RAW_DATA_HIGH because the return value of clamp() was not used.
-Fix this by assigning the clamped value to 'rawdata'.
+Commit 340f0c7067a9 ("eventfs: Update all the eventfs_inodes from the
+events descriptor") had eventfs_set_attrs() recurse through ei->children
+on remount.  The walk only holds the rcu_read_lock() taken by
+tracefs_apply_options() over tracefs_inodes, which is wrong:
 
-Casting SPRD_THM_RAW_DATA_LOW and SPRD_THM_RAW_DATA_HIGH to u32 is also
-redundant and can be removed.
+  - list_for_each_entry over ei->children races with the list_del_rcu()
+    in eventfs_remove_rec() -- LIST_POISON1 deref, same shape as
+    d2603279c7d6.
+  - eventfs_inodes are freed via call_srcu(&eventfs_srcu, ...).
+    rcu_read_lock() does not extend an SRCU grace period, so ti->private
+    can be reclaimed under the walk.
+  - The writes to ei->attr race with eventfs_set_attr(), which holds
+    eventfs_mutex.
 
-Fixes: 554fdbaf19b1 ("thermal: sprd: Add Spreadtrum thermal driver support")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reproducer:
+
+  while :; do mount -o remount,uid=$((RANDOM%1000)) /sys/kernel/tracing; done &
+  while :; do
+      echo "p:kp submit_bio" > /sys/kernel/tracing/kprobe_events
+      echo > /sys/kernel/tracing/kprobe_events
+  done
+
+Wrap the events portion of tracefs_apply_options() in
+eventfs_remount_lock()/_unlock() that take eventfs_mutex and
+srcu_read_lock(&eventfs_srcu).  eventfs_set_attrs() doesn't sleep so the
+nested rcu_read_lock() is fine; lockdep_assert_held() pins the contract.
+
+Comment in tracefs_drop_inode() said "RCU cycle" -- it is SRCU.
+
+Fixes: 340f0c7067a9 ("eventfs: Update all the eventfs_inodes from the events descriptor")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260307102422.306055-2-thorsten.blum@linux.dev
+Link: https://patch.msgid.link/20260418191737.10289-1-devnexen@gmail.com
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/sprd_thermal.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/tracefs/event_inode.c |   14 ++++++++++++++
+ fs/tracefs/inode.c       |    5 ++++-
+ fs/tracefs/internal.h    |    3 +++
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/drivers/thermal/sprd_thermal.c
-+++ b/drivers/thermal/sprd_thermal.c
-@@ -178,7 +178,7 @@ static int sprd_thm_sensor_calibration(s
- static int sprd_thm_rawdata_to_temp(struct sprd_thermal_sensor *sen,
- 				    u32 rawdata)
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -250,6 +250,8 @@ static void eventfs_set_attrs(struct eve
  {
--	clamp(rawdata, (u32)SPRD_THM_RAW_DATA_LOW, (u32)SPRD_THM_RAW_DATA_HIGH);
-+	rawdata = clamp(rawdata, SPRD_THM_RAW_DATA_LOW, SPRD_THM_RAW_DATA_HIGH);
+ 	struct eventfs_inode *ei_child;
+ 
++	lockdep_assert_held(&eventfs_mutex);
++
+ 	/* Update events/<system>/<event> */
+ 	if (WARN_ON_ONCE(level > 3))
+ 		return;
+@@ -912,3 +914,15 @@ void eventfs_remove_events_dir(struct ev
+ 	d_invalidate(dentry);
+ 	dput(dentry);
+ }
++
++int eventfs_remount_lock(void)
++{
++	mutex_lock(&eventfs_mutex);
++	return srcu_read_lock(&eventfs_srcu);
++}
++
++void eventfs_remount_unlock(int srcu_idx)
++{
++	srcu_read_unlock(&eventfs_srcu, srcu_idx);
++	mutex_unlock(&eventfs_mutex);
++}
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -336,6 +336,7 @@ static int tracefs_apply_options(struct
+ 	struct inode *inode = d_inode(sb->s_root);
+ 	struct tracefs_inode *ti;
+ 	bool update_uid, update_gid;
++	int srcu_idx;
+ 	umode_t tmp_mode;
  
  	/*
- 	 * According to the thermal datasheet, the formula of converting
+@@ -360,6 +361,7 @@ static int tracefs_apply_options(struct
+ 		update_uid = fsi->opts & BIT(Opt_uid);
+ 		update_gid = fsi->opts & BIT(Opt_gid);
+ 
++		srcu_idx = eventfs_remount_lock();
+ 		rcu_read_lock();
+ 		list_for_each_entry_rcu(ti, &tracefs_inodes, list) {
+ 			if (update_uid) {
+@@ -381,6 +383,7 @@ static int tracefs_apply_options(struct
+ 				eventfs_remount(ti, update_uid, update_gid);
+ 		}
+ 		rcu_read_unlock();
++		eventfs_remount_unlock(srcu_idx);
+ 	}
+ 
+ 	return 0;
+@@ -426,7 +429,7 @@ static int tracefs_drop_inode(struct ino
+ 	 * This inode is being freed and cannot be used for
+ 	 * eventfs. Clear the flag so that it doesn't call into
+ 	 * eventfs during the remount flag updates. The eventfs_inode
+-	 * gets freed after an RCU cycle, so the content will still
++	 * gets freed after an SRCU cycle, so the content will still
+ 	 * be safe if the iteration is going on now.
+ 	 */
+ 	ti->flags &= ~TRACEFS_EVENT_INODE;
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -76,4 +76,7 @@ struct inode *tracefs_get_inode(struct s
+ void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid);
+ void eventfs_d_release(struct dentry *dentry);
+ 
++int eventfs_remount_lock(void);
++void eventfs_remount_unlock(int srcu_idx);
++
+ #endif /* _TRACEFS_INTERNAL_H */
 
 
 
