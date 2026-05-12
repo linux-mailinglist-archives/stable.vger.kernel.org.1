@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-245882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wF4kNVZnA2qv5gEAu9opvQ
-	(envelope-from <stable+bounces-245882-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:58 +0200
+	id cP9uA+RvA2qI5wEAu9opvQ
+	(envelope-from <stable+bounces-246420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D485260EC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DD85276FE
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD49E3056518
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A92AA31F5C5D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AE23E0721;
-	Tue, 12 May 2026 17:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B564352F86;
+	Tue, 12 May 2026 18:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/aVNv8u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ds18DQXi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD2A3D966A;
-	Tue, 12 May 2026 17:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBEA356741;
+	Tue, 12 May 2026 18:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607797; cv=none; b=D0IjqkDKjQSO2V3umlvQhPx2UYMPsgnuldPIVb38CViLodlZk3+kd6npzaiYt1FKa4UOhhtz80U9ubQgiBe6iQNn/VG/VM9G9FlNrttk6ZOe1W/nxwmbnBErvWB3/kUTy5vyl4lIYzll5luHYgRwsF3jHZ9vxu3g1uO1IcfvDmc=
+	t=1778609180; cv=none; b=B6BfCbFGRT1egE2siA+EWdrAVSYlfsy0/JVeEwvgF4WJAAUnNQJvEITowMeAIQuuUS1CjCUNnWImWOq/qqStGEfnJmttVYI8U6JAJfDVjS1pKbhwclDDOelX2d7c0JU8UpAtPUQqZiQ5+Xm1jKpWp3957z6KP0lQx+nHGN15Bi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607797; c=relaxed/simple;
-	bh=C1SpqpTFvkf0YSn8jhvAIjE4hHNJDwzBB8pJzPe33NU=;
+	s=arc-20240116; t=1778609180; c=relaxed/simple;
+	bh=N/3zAZHbP5YWs2iTiIREtOHJkaplygMQASgzWMFKLsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qVZ48d3JaWi5EJZVpH6tEwDFtJJkZjnbDp4X1iqTgYXTkXKl6JMy4ktRJhUjbYmt+iav3Rlm0iUFZe4A3Y33vGCtZhH8o7b5ICts0XkgQJd0a5Mtx0DRfnvl9OpKu8dETte2n8/fpyu4pDvDjZAj9AcT3FQX+WV9th7irno2CcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/aVNv8u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42185C2BCB0;
-	Tue, 12 May 2026 17:43:17 +0000 (UTC)
+	 MIME-Version; b=lGKBg86+UspkcpGwRix+WRhiwDxyB9BdwAvrG++CPX5l5fewRXweU+SDWFB+HvtUaeMqiMbhoJmT4+koUTVfcAKy3LePVGjo2P2AuiOdwYLLGJPkB8ICEjmSvi+ppXcZ0LHT0ft2ZJV82v7SZaobzSO/iE33IcaEONw7nY9Uymo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ds18DQXi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BC0C2BCB0;
+	Tue, 12 May 2026 18:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607797;
-	bh=C1SpqpTFvkf0YSn8jhvAIjE4hHNJDwzBB8pJzPe33NU=;
+	s=korg; t=1778609179;
+	bh=N/3zAZHbP5YWs2iTiIREtOHJkaplygMQASgzWMFKLsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/aVNv8uWh8krn5lH9ZQrcrsuhwxO0eWNTZqk5iIkZexETp728/o9MAB87c0DNSIY
-	 SUcHEbfnp+3N637glRHC1g2tpkmVcKh9D6xx9Kx5kowLxqxSDZoytgZGKiBT0zVJ3q
-	 tQNiQzV3mWebUvA7bxzlCFpNmCh8aJo7mVen0CEo=
+	b=ds18DQXirJiy/s2KJ8fdhbk7eQClUqn2Bll8poRu1z/qu5AzRU49e5fSqFZM/GJNX
+	 tTWwuskWgRCh5sI5QUjVoqmHuCrx9T3t4JhdidqYESOtx5nBrM9HCopNy44cQNelta
+	 XFBcl8Y7BxCWGOJOcJmXxGlhnZS+amZrn3JGPdZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	=?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 039/206] wifi: b43: enforce bounds check on firmware key index in b43_rx()
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 096/307] mm/hugetlb_cma: round up per_node before logging it
 Date: Tue, 12 May 2026 19:38:11 +0200
-Message-ID: <20260512173933.660669988@linuxfoundation.org>
+Message-ID: <20260512173942.153563175@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +65,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 50D485260EC
+X-Rspamd-Queue-Id: 68DD85276FE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bues.ch,talencesecurity.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-245882-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org,suse.de,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-246420-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,bues.ch:email,talencesecurity.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,suse.de:email,linux.dev:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-commit 1f4f78bf8549e6ac4f04fba4176854f3a6e0c332 upstream.
+commit 8f5ce56b76303c55b78a87af996e2e0f8535f979 upstream.
 
-The firmware-controlled key index in b43_rx() can exceed the dev->key[]
-array size (58 entries). The existing B43_WARN_ON is non-enforcing in
-production builds, allowing an out-of-bounds read.
+When the user requests a total hugetlb CMA size without per-node
+specification, hugetlb_cma_reserve() computes per_node from
+hugetlb_cma_size and the number of nodes that have memory
 
-Make the B43_WARN_ON check enforcing by dropping the frame when the
-firmware returns an invalid key index.
+        per_node = DIV_ROUND_UP(hugetlb_cma_size,
+                                nodes_weight(hugetlb_bootmem_nodes));
 
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Acked-by: Michael Büsch <m@bues.ch>
-Fixes: e4d6b7951812 ("[B43]: add mac80211-based driver for modern BCM43xx devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Link: https://patch.msgid.link/20260417111145.2694196-1-tristmd@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The reservation loop later computes
+
+        size = round_up(min(per_node, hugetlb_cma_size - reserved),
+                          PAGE_SIZE << order);
+
+So the actually reserved per_node size is multiple of (PAGE_SIZE <<
+order), but the logged per_node is not rounded up, so it may be smaller
+than the actual reserved size.
+
+For example, as the existing comment describes, if a 3 GB area is
+requested on a machine with 4 NUMA nodes that have memory, 1 GB is
+allocated on the first three nodes, but the printed log is
+
+        hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
+
+Round per_node up to (PAGE_SIZE << order) before logging so that the
+printed log always matches the actual reserved size.  No functional change
+to the actual reservation size, as the following case analysis shows
+
+1. remaining (hugetlb_cma_size - reserved) >= rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks rounded per_node;
+    round_up() returns rounded per_node (no-op)
+2. remaining < unrounded per_node
+ - AS-IS: min() picks remaining;
+    round_up() returns round_up(remaining)
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining)
+3. unrounded per_node <= remaining < rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining) equals rounded per_node
+
+Link: https://lore.kernel.org/20260422143353.852257-1-ekffu200098@gmail.com
+Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma") # 5.7
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/b43/xmit.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/hugetlb_cma.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/broadcom/b43/xmit.c
-+++ b/drivers/net/wireless/broadcom/b43/xmit.c
-@@ -702,7 +702,8 @@ void b43_rx(struct b43_wldev *dev, struc
- 		 * key index, but the ucode passed it slightly different.
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -204,6 +204,7 @@ void __init hugetlb_cma_reserve(void)
  		 */
- 		keyidx = b43_kidx_to_raw(dev, keyidx);
--		B43_WARN_ON(keyidx >= ARRAY_SIZE(dev->key));
-+		if (B43_WARN_ON(keyidx >= ARRAY_SIZE(dev->key)))
-+			goto drop;
- 
- 		if (dev->key[keyidx].algorithm != B43_SEC_ALGO_NONE) {
- 			wlhdr_len = ieee80211_hdrlen(fctl);
+ 		per_node = DIV_ROUND_UP(hugetlb_cma_size,
+ 					nodes_weight(hugetlb_bootmem_nodes));
++		per_node = round_up(per_node, PAGE_SIZE << order);
+ 		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
+ 			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
+ 	}
 
 
 
