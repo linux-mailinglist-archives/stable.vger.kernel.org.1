@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIbsAJRwA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:25:24 +0200
+	id OOPiH09nA2qj5gEAu9opvQ
+	(envelope-from <stable+bounces-245941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075615278D7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:25:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC835260D5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3F5F31131DA
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:09:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7A8E130356A9
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57C8349AF5;
-	Tue, 12 May 2026 18:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A303D9693;
+	Tue, 12 May 2026 17:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOagZvh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16Jh5Md8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6934B3EDE5C;
-	Tue, 12 May 2026 18:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E3121FF21;
+	Tue, 12 May 2026 17:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609347; cv=none; b=Z/HWiD0bcmep8vwBQ4DuQyY/UodWYzMh2CqZy+mJta3a1Po+7VOG3wrER4ONfPpcyP9Ic8y/7Zfatx2yxwuAUjgqhRADO7rF4EKjbhmXicbalHQuqROph+3yIh7+1i+WKjAdjnERNWciSAXmjLw86g3M6qu3RsFIbA8BvS3kMdQ=
+	t=1778607949; cv=none; b=lEMZhFpULDvD3Sy5w+064vbRNEuYNOwHs/tjiIjoR1HLQCi7l0KHwFyE9TXuMKu2MAu1x0mA3/Jx1yHhT0jVi9JVXRb8XIYrXHM/TVQHSgYoOrFOIq1A51LI16VGYyVPjNZ7Oqs9R2f8hrsRMO2q4IE0N2vouob5ld5wxIu3eT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609347; c=relaxed/simple;
-	bh=daL2f75cbCmtmHY4I+MtPTUVrbnsx1WCLEhrtBXXvyA=;
+	s=arc-20240116; t=1778607949; c=relaxed/simple;
+	bh=jt9WE8hqJcQ2JaUCYjrWAd+vYyjevRuZW98ubAEuCfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOXAO7KwF6ACK4sAqfmeIAojBBuiPrCUbl72Zi2G4rz110hSpp5ylr3YEx5lwVJThHlIrTO7fSlHEMJfluBmmOtnU290USmRA0DrfWJMYnPsQhucsbePfdO1soO8hRpeIH4qgduELKsqGEWNAU8UqzdbjN3t1WjPq1PF1gDjkGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOagZvh2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FE2C2BCB0;
-	Tue, 12 May 2026 18:09:06 +0000 (UTC)
+	 MIME-Version; b=KHRLSDcLNMC/BuJzqbIuXtL/1Uu/VAA7iCuZa+mq3BwzzqvnlZVPS2fGtimI0INhUFK52hloM6yxy9LoB1vZgwG6zlblq8tXPM412BSCy1P4C4ZWATvWAdEUN4wnJ0HtYUAMZcvf9TKzKyeCsvn6rMS6HIdrRF05v//c+pX7Wa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16Jh5Md8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBD3C2BCC7;
+	Tue, 12 May 2026 17:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609347;
-	bh=daL2f75cbCmtmHY4I+MtPTUVrbnsx1WCLEhrtBXXvyA=;
+	s=korg; t=1778607949;
+	bh=jt9WE8hqJcQ2JaUCYjrWAd+vYyjevRuZW98ubAEuCfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOagZvh2Ki7V6qp3GARWTmV/vAzUmzdfHN2pJ51jTNeW78y0XWiYGynxj1U9ESyui
-	 XTxFgaEOBfHiRdY9l3TBkZMyw0ThQWS0zpKiKDvghE2qItGfxDhBpLNE+cwX383N2e
-	 QJ2MGipQ/AyS1lig4D5xyIZkmO8ObcccfEh/L+m0=
+	b=16Jh5Md8Jd3+tTULV8AhbBQrFPMSj6BmGY+UPWhF+0SnJxoch/ZUYB7ZLmC7+JNM3
+	 9EUnluTK5nDGNOVHAgTZqMlXtwh+3ryPAN3gePB7kp6Q7QYzhq6cmp/VzFPA4aio+j
+	 5TTdQstKdi6C8jaYWuflBG+ZVpCowpfMXFzGm3mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 118/307] ip6_gre: Use cached t->net in ip6erspan_changelink().
+	Soenke Huster <soenke.huster@eknoes.de>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 061/206] Bluetooth: virtio_bt: clamp rx length before skb_put
 Date: Tue, 12 May 2026 19:38:33 +0200
-Message-ID: <20260512173942.616760251@linuxfoundation.org>
+Message-ID: <20260512173934.134128842@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,91 +64,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 075615278D7
+X-Rspamd-Queue-Id: 2AC835260D5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246485-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245941-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,eknoes.de,gmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ntu.edu.sg:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maoyi Xie <maoyixie.tju@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 1d324c2f43f70c965f25c58cc3611c779adbe47e upstream.
+commit 21bd244b6de5d2fe1063c23acc93fbdd2b20d112 upstream.
 
-After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
-rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
-ip6gre hash via link_net. ip6erspan_changelink() was not converted in
-that series and still uses dev_net(dev), which diverges from the
-device's creation netns after IFLA_NET_NS_FD migration.
+virtbt_rx_work() calls skb_put(skb, len) where len comes directly
+from virtqueue_get_buf() with no validation against the buffer we
+posted to the device. The RX skb is allocated in virtbt_add_inbuf()
+and exposed to virtio as exactly 1000 bytes via sg_init_one().
 
-This re-inserts the tunnel into the wrong per-netns hash. The
-original netns keeps a stale entry. When that netns is later
-destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
-slab-use-after-free reported by KASAN, followed by a kernel BUG at
-net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
+Checking len against skb_tailroom(skb) is not sufficient because
+alloc_skb() can leave more tailroom than the 1000 bytes actually
+handed to the device. A malicious or buggy backend can therefore
+report used.len between 1001 and skb_tailroom(skb), causing skb_put()
+to include uninitialized kernel heap bytes that were never written by
+the device.
 
-Reachable from an unprivileged user namespace (unshare --user
---map-root-user --net).
+The same path also accepts len == 0, in which case skb_put(skb, 0)
+leaves the skb empty but virtbt_rx_handle() still reads the pkt_type
+byte from skb->data, consuming uninitialized memory.
 
-ip6gre_changelink() earlier in the same file already uses the cached
-t->net; only ip6erspan_changelink() has the wrong shape.
+Define VIRTBT_RX_BUF_SIZE once and reuse it in alloc_skb() and
+sg_init_one(), and gate virtbt_rx_work() on that same constant so
+the bound checked matches the buffer actually exposed to the device.
+Reject used.len == 0 in the same gate so an empty completion can
+no longer reach virtbt_rx_handle().
 
-Fixes: 2d665034f239 ("net: ip6_gre: Fix ip6erspan hlen calculation")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260430103318.3206018-1-maoyi.xie@ntu.edu.sg
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use bt_dev_err_ratelimited() because the length value comes from an
+untrusted backend that can otherwise flood the kernel log.
+
+Same class of bug as commit c04db81cd028 ("net/9p: Fix buffer
+overflow in USB transport layer"), which hardened the USB 9p
+transport against unchecked device-reported length.
+
+Fixes: 160fbcf3bfb9 ("Bluetooth: virtio_bt: Use skb_put to set length")
+Cc: stable@vger.kernel.org
+Cc: Soenke Huster <soenke.huster@eknoes.de>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_gre.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/bluetooth/virtio_bt.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -2261,10 +2261,11 @@ static int ip6erspan_changelink(struct n
- 				struct nlattr *data[],
- 				struct netlink_ext_ack *extack)
- {
--	struct ip6gre_net *ign = net_generic(dev_net(dev), ip6gre_net_id);
-+	struct ip6_tnl *t = netdev_priv(dev);
- 	struct __ip6_tnl_parm p;
--	struct ip6_tnl *t;
-+	struct ip6gre_net *ign;
+--- a/drivers/bluetooth/virtio_bt.c
++++ b/drivers/bluetooth/virtio_bt.c
+@@ -12,6 +12,7 @@
+ #include <net/bluetooth/hci_core.h>
  
-+	ign = net_generic(t->net, ip6gre_net_id);
- 	t = ip6gre_changelink_common(dev, tb, data, &p, extack);
- 	if (IS_ERR(t))
- 		return PTR_ERR(t);
+ #define VERSION "0.1"
++#define VIRTBT_RX_BUF_SIZE 1000
+ 
+ enum {
+ 	VIRTBT_VQ_TX,
+@@ -33,11 +34,11 @@ static int virtbt_add_inbuf(struct virti
+ 	struct sk_buff *skb;
+ 	int err;
+ 
+-	skb = alloc_skb(1000, GFP_KERNEL);
++	skb = alloc_skb(VIRTBT_RX_BUF_SIZE, GFP_KERNEL);
+ 	if (!skb)
+ 		return -ENOMEM;
+ 
+-	sg_init_one(sg, skb->data, 1000);
++	sg_init_one(sg, skb->data, VIRTBT_RX_BUF_SIZE);
+ 
+ 	err = virtqueue_add_inbuf(vq, sg, 1, skb, GFP_KERNEL);
+ 	if (err < 0) {
+@@ -227,8 +228,15 @@ static void virtbt_rx_work(struct work_s
+ 	if (!skb)
+ 		return;
+ 
+-	skb_put(skb, len);
+-	virtbt_rx_handle(vbt, skb);
++	if (!len || len > VIRTBT_RX_BUF_SIZE) {
++		bt_dev_err_ratelimited(vbt->hdev,
++				       "rx reply len %u outside [1, %u]\n",
++				       len, VIRTBT_RX_BUF_SIZE);
++		kfree_skb(skb);
++	} else {
++		skb_put(skb, len);
++		virtbt_rx_handle(vbt, skb);
++	}
+ 
+ 	if (virtbt_add_inbuf(vbt) < 0)
+ 		return;
 
 
 
