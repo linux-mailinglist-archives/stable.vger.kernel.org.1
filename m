@@ -1,185 +1,213 @@
-Return-Path: <stable+bounces-245564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDpXC0MnA2qw1AEAu9opvQ
-	(envelope-from <stable+bounces-245564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:12:35 +0200
+	id EPKvNBcoA2qw1AEAu9opvQ
+	(envelope-from <stable+bounces-245565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:16:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9842D520DBE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EAA520EEC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 15:16:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1778530F5685
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:03:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A376230B59EF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FE93812E5;
-	Tue, 12 May 2026 13:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046DA3E1737;
+	Tue, 12 May 2026 13:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsxOwoWF"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="SSl0E0sY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SY2PR01CU004.outbound.protection.outlook.com (mail-australiaeastazolkn19011060.outbound.protection.outlook.com [52.103.72.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847D937DAC1;
-	Tue, 12 May 2026 13:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778590948; cv=none; b=Lm3Ce/A6TTRirKxmyJ+bD/43XJrah5CCkg9M1LNOKkS+Q4LwLqGhLBtrBUjeur89uc4ECoZD0X6J/jh+PSzu1OoQVOUFcPSf11z5tJDNsC4wEf+8aCgfP3VAqMgzNl5DJX6KwApccu7qxRP38ZshuLe2g4wCEMNhakh+p251yhc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778590948; c=relaxed/simple;
-	bh=f1Cmp6x7er93//nyD3TawZv0vsj07LKElhYzhE9mgUA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TOMLeTq3kIExr8y5v+Xt9WbVWJRoRxWj1RKXabmHH8WYxcjvkcTtOG5yKa217bD6YUtBYsEgWl+eAct4bw7iIpIlrVkUa7ts4HnywBCPbtwEaFdEYhOSZQLydPjpl2JwXzE5CzsNk91fnZGmpLr3ygww/Lv43yDYEbxrOOi0zds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsxOwoWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47591C2BCB0;
-	Tue, 12 May 2026 13:02:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778590948;
-	bh=f1Cmp6x7er93//nyD3TawZv0vsj07LKElhYzhE9mgUA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XsxOwoWF67H2XEf/xVTeAJlQVGVO5Cx0h5UifrJMBevWdPjUn7bKn5L+OouFDf4/M
-	 QtEt4YjpdDdBKFuzS6/cUvJ2XZUthYfLJJRylJu/q1Lr9FsbpAllICbkkyIS7qedF7
-	 IOntVcQbTvr2bUwEf8ANcKzrGJRt1PPPJ8lLWKCk/h4dGOTBFd6bTLToHJVT89r2bD
-	 N42V8CcbTkYvarUR2Fe6VZkwO4aoYgg30CkwRRkQZDbofLYTVYLvLHjHccLsswiD2l
-	 eJ0AdwHmzU/gf7pdBLKFYrUwzZs3Jgk2+KD5RxFfmanV96rFm1rJtzdDlG/w6GMsnM
-	 ZNTqinlGhvguQ==
-Message-ID: <03ad4927-6bde-45c4-a90c-92ecfa0a680f@kernel.org>
-Date: Tue, 12 May 2026 15:02:20 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6681C3E172C;
+	Tue, 12 May 2026 13:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778590997; cv=fail; b=VPJZ4XrKRdiSR9aUz/S+z6BTYFnnbE7Ep6WwcysaSkHzVGqrTNLVGbKLLVMjy9iuJH/s6gZvoR4lMyHAvxEH3qWhQMVz98GdTBXSj/ljavKveiVnKzklQ+SyrJCDBPi2g1zFYG5bg0IxFmeai0chHN96nWDtJBq/XyNdwcTT4gI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778590997; c=relaxed/simple;
+	bh=oaTsJSn1WWSf1WPS71n10dGiAarFkEW8/9w5MjfCXMU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XWovztX9mUWtsteoo34BLe1IE8A3SeyZ6Y7zWxdgQY9y9vRHFAgf6q2DfPTpiTJyqt0piwOXDs2cDn9OmjOh6LGdsEIhU1pPcTxoGHELX5jQVooagRVehNby+PHuydUtwgwkQmQElxhMKbEY8OSPgT0x4WGN+eQzIme05rjCdUc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=SSl0E0sY; arc=fail smtp.client-ip=52.103.72.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VEdPxqKmr+L4JfESPL41/a4ay5JNmR91kNVspec1Wo1hLMqXzad5rca5HrYAc7EKQtN7xWliMMSWWT306vyZ9R/A07LcrqgwmzmlRJI1HRD8QUeAENAKwYqiHkeAXlKk+WB1EVaEnJp0eVVv1cvQZVR7qN8IimWzPqqu4vvdMoPLPo09Lz1B8IRBl1oEWkigDQ9KdWlC0c76LZtfAVXIxDHI6QTyYfLcXmA+mMhYPSmHq9NCC0CaWCSNgvsZPWov29b0pZHIHRaMIvJ4W6JHrGueEfLcqeD8DbvTcA5psenf30KcEwv22hknoB17k1N6G5OrIaKVFImruFR6Azw8lw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oaTsJSn1WWSf1WPS71n10dGiAarFkEW8/9w5MjfCXMU=;
+ b=xNcoQuORmaWvxmel0hFM4Nie6BsGJnJij2Y5Iifxtl73xJSZG39IIzWbQs+qf6TRFImLXUWhKnOqiPCMOvhElHsU2XDTSvHIMJhEyRjhk6NEciIo345Z86X9WB3GVOOo1hwuAPkDEzdBJD9vTL2xm7vXOLCsczobkCZjOD1gClxC/Xgd8klHskc93H+Ylv98Wra4aGR3rPbl3K1LW44cpjBXe3IZB6L/+UC2ukTopAwEPSXXN0I48x4L8mx7MsHVNpCL5vFrNOAfHB9FC3Ol0hmHwUJqKQPgIDHi+xfOf1Z4xm6+sl8gVwDHw0PNxbrBpJBMiV4XrcD4lyiBv/fiQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oaTsJSn1WWSf1WPS71n10dGiAarFkEW8/9w5MjfCXMU=;
+ b=SSl0E0sYIOGXZ6Odf4bdi1gkeCRqnidellvkk8HavjodYax1C/EmGZKvMYQK2K8w46WYMV6QQOBMXKSchZJP7LEhbSiwXIquYHBuqGdtdwB5Fb2bytuzcq+UaZnw0E2OTc9Kw0Jhaqxf0+TjDfTCWOgD64Vgp26kejUytv5AFZGcCWl788afK91YN1NLn2K4/ks7clcUnevPViWCP5boJSe2wanx3zbqjcJUIb5EvnL9SzdkVwvJfiA9I8NfGVyXh5oFZVID1029r/zvEty4v4a47H9fDteIaIWpjgFy30S9LUlQVH0JDhBnTas28tljRamkL4Laf30yDsmWI6Pf0Q==
+Received: from MEYPR01MB7886.ausprd01.prod.outlook.com (2603:10c6:220:17e::8)
+ by SY9PR01MB9711.ausprd01.prod.outlook.com (2603:10c6:10:306::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
+ 2026 13:03:11 +0000
+Received: from MEYPR01MB7886.ausprd01.prod.outlook.com
+ ([fe80::19df:3891:d8aa:692d]) by MEYPR01MB7886.ausprd01.prod.outlook.com
+ ([fe80::19df:3891:d8aa:692d%3]) with mapi id 15.20.9891.021; Tue, 12 May 2026
+ 13:03:11 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+To: Zhang Yi <yi.zhang@huaweicloud.com>
+CC: Theodore Ts'o <tytso@mit.edu>, Jan Kara <jack@suse.com>, Harshad
+ Shirwadkar <harshadshirwadkar@gmail.com>, "linux-ext4@vger.kernel.org"
+	<linux-ext4@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Yuhao Jiang <danisjiang@gmail.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] jbd2: fix integer underflow in
+ jbd2_journal_initialize_fast_commit()
+Thread-Topic: [PATCH] jbd2: fix integer underflow in
+ jbd2_journal_initialize_fast_commit()
+Thread-Index: AQHc4eQkm1wg5P55r0agA0nvRb4rUbYKTG4AgAAPGwA=
+Date: Tue, 12 May 2026 13:03:11 +0000
+Message-ID: <CCDC32DB-67E3-4AB5-AB71-9A90A318E57B@outlook.com>
+References:
+ <SYBPR01MB78813DD23B28BD49B1AA1123AF392@SYBPR01MB7881.ausprd01.prod.outlook.com>
+ <7cf5ea66-55e9-46ec-8f69-91e80d3c42b8@huaweicloud.com>
+In-Reply-To: <7cf5ea66-55e9-46ec-8f69-91e80d3c42b8@huaweicloud.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MEYPR01MB7886:EE_|SY9PR01MB9711:EE_
+x-ms-office365-filtering-correlation-id: f5a77815-9afe-4b25-b92e-08deb026d1fa
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|22091999003|24121999003|51005399006|24021099003|55001999006|12121999013|15080799012|41001999006|31061999003|8060799015|19110799012|8062599012|40105399003|440099028|3412199025|102099032;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?KWkUsdod8uQhU+DZbMhJtoDVeAJckZwvKPAfeDUC6cH6/S4ZRdAH6va0FChK?=
+ =?us-ascii?Q?Ig+XEI1AV0U2jiPTFN21zsMZwwAwZRKagxmYHpTYBRwfu3LKrmG0W+dshT2F?=
+ =?us-ascii?Q?x5rQlH8HunxOuMSIHhsrt5WqmgnX5lp4mGkzoq/dtwl4QXPLSVqqccTQqPqC?=
+ =?us-ascii?Q?BGxwufeX2XEilO8+u0xm8WrEAX3s1SULHV4+gn49k1rkbXl0IYaQq+CK9fIa?=
+ =?us-ascii?Q?mgHhZUiFy41xbDLvxY8TbyVwP3kq0i0hRTmAXxbtjAiKfoEv9BNjPzSo9ZKD?=
+ =?us-ascii?Q?wU6+S7HrRF2yShQsAygy4JC4YjVgWaLUEGtn298U3MPzQWBVkIv9f0sx52P+?=
+ =?us-ascii?Q?UfJm+sIsaSv1tYH++XZQ3r6w/uQTsiYlGL9rZ59HU3VoGVyWpErS3VHCYLc+?=
+ =?us-ascii?Q?aX8JFz93kY+0A8D1g9gquLb1FFvm4LBQQRbXxupvcLjNW86xLm5UAIMExfSB?=
+ =?us-ascii?Q?jODn8KNMLGdJI42mSWJPLxIFlF9PFfHH+7qQMPx3cxL60oUBs1yr2YKOmk9f?=
+ =?us-ascii?Q?QY8FrUUcCUscTfJFOQP8Vu04htHXH2c1IBRmD5NLnoP/OnrYVEEz7qWX1pYI?=
+ =?us-ascii?Q?FJOuWWjEkbk+Eu+LJwYhq3QpetcBnn1arqfXv35iplBk/mTTUByvC34v/sPu?=
+ =?us-ascii?Q?cJoo8WqWeVwOLRdHGELXtHPZfQ4zyQ/4AV0wh1M5y3+Jjc194ve1+6s8vndl?=
+ =?us-ascii?Q?GzO9xSeIjnChtZK5b8H9MJA852COHGNZQHgYnYaaXutuW85cBw18e4xkvxVe?=
+ =?us-ascii?Q?2Wke9zJRHxg+yMuezwduRDKB7b5IIRcDbLpOo9NbvM/KvftCvBnxfUeuf4LP?=
+ =?us-ascii?Q?f1nUwGSxYPFA737nDe5mE37a1MrKk5JscqZjWyWeSTOTsIlU9zwldW5QZ8O/?=
+ =?us-ascii?Q?hwKbSBQcNykKkE8nUTTSkt+NAZSAFn1dxradXggyHMJ71XzrgARbqqe3PW0H?=
+ =?us-ascii?Q?0YQQyI8tRwosMI6fJmQdcoX0kD5+pMsaVqC+wwa17sXrsXG9YNc43Rf+5Mh8?=
+ =?us-ascii?Q?I5qy3jsJ+t3wavcCPvQ+6MXVITUknqjHW/PZFhBttWDYI/nALgGIEvV6gvcx?=
+ =?us-ascii?Q?hgQablnlL4e3nnsZHE+/3dh5hLSaDUWroUhMnTiX7XMtT2WTJ88=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?XhF4AAehrLq77XaaM0VsnCZJQBrYnBJFULChpH+6+iKL9r1jcvOhtFj8yOGM?=
+ =?us-ascii?Q?V6tz9tmQ4gCY5OsyMYbnF0ACrES4LnbreE75GHGN8zB9875YUmfyE0+SBa2j?=
+ =?us-ascii?Q?ZyfcG7iGzXcC246CmpfsmR8DDTwNVI6KTTfwJmZVnB0DlFgd6rsSZcEVJSrd?=
+ =?us-ascii?Q?Nu/kWwyC1VWlYNtlo5+Z7Lfxpm7yp5FdS2CAga7SSJc2tHqi+3MlY3tcviOl?=
+ =?us-ascii?Q?0cW72gHv80w93aXQjqtl5B1sb310ZdqfA0YVyMBt4ENoDaj6ZEQXwz+gLRoV?=
+ =?us-ascii?Q?fUeIaQBvbNaNKKjSPjkNEusPh+cI/Q3RlFzXC3VrVeYGFDt6FHv57XQ8sSDN?=
+ =?us-ascii?Q?UjlGqA6vs4jzxLdXfxoXHw3r1Eo5Am7A7vUpiMEymUUgg/529MX/0ZzeXysm?=
+ =?us-ascii?Q?PVYyvJXwP6+G7PR675dRj+jILKx8NsxhGAdKhhknY3FZ/fs81nhSQsQrinwK?=
+ =?us-ascii?Q?Or3EThzJnFqXQakvYDQMGw/5P6kp+umK5g3D/YvmOzrZrl76JJksN6fiaJeT?=
+ =?us-ascii?Q?7pT0ucxrnN9eed3TyWc50tVOb14SdCwr9yv30yXIKCoMrc//1eDU697DBVjZ?=
+ =?us-ascii?Q?MvrJrUuMsTJzVbdp9PO50lx7VKxhlAN7FgNrmRP6cd04c46iYL1BnjMAkOkf?=
+ =?us-ascii?Q?E9cR5sJD9G9Mv3SMBgDHL8IbGJi1r3FuwH2PrLzWBjivEUk7qcuwza1DDjVb?=
+ =?us-ascii?Q?nwjkXhdaWnXg8KeRi0yuZom7AM6iUKGekmm5/ucneGuAoJc1+Pz6PE29tuYc?=
+ =?us-ascii?Q?jSeEVhDwP/sss/pj/QS+rMFbQZyyba9aOtBdMVvaur/FZa5ywRyM79nqsini?=
+ =?us-ascii?Q?CAPf4MXZDiJUFS+a2V685bikVfvYs7C6Pm00o7dvI17nhi8mS5a7tvNJtsM0?=
+ =?us-ascii?Q?eJSKdcENeQT8/7aKSS+KJb7NsbCwxle5DDQuElCI8BcvRisbHZ+zc9mKWnk8?=
+ =?us-ascii?Q?mVVwmqbBq/AYwfBG5Oz9cicowP1h4akGz8WtGPFb2AAD6XDSXyEsOJVCYAwQ?=
+ =?us-ascii?Q?jC9mwj7KNzcHiUOrkCZGS6ymCmYwy786rfVez9J1a60DYbzr+93csavYv8K7?=
+ =?us-ascii?Q?ayZWuQo/bOJQkQeIAdMZMyWkdiOOb8rVQspuli4v5FS9SH5nVek3+OoZ4fNw?=
+ =?us-ascii?Q?0WBTrTU3dMFzbKMDEKbpmimvD+rmO4fke73VbDiJ7lCf3b7t5HM+MDoPRtpx?=
+ =?us-ascii?Q?yGgaejhI5U8cCZvSsdYLHIQAPvgLTZwvbgTvYH3BpYBEoQ4UL9cgLRqForRo?=
+ =?us-ascii?Q?dL6JblTyx42vWmzADeLbLQR/eBUlIESnWGm8thqlM2aHVuFLqUwAE2l+jZoM?=
+ =?us-ascii?Q?0GgcvmHZOr+w+FKjDJ4sz1LHE7j4oQZLjXweM+Q7urelD67kBB7UDS/UQrg7?=
+ =?us-ascii?Q?T76hBqJZl051xWWZDh+wvUnEiuOPz7cPMjYvr+HsS1Va2lI7uQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <79687C504167C44A85D477121197E766@ausprd01.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 5/5] mptcp: update window_clamp on subflows when
- SO_RCVBUF is set
-Content-Language: fr
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- linux-kernel@vger.kernel.org, Gang Yan <yangang@kylinos.cn>,
- stable@vger.kernel.org
-References: <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-0-5ee57cb2b7eb@kernel.org>
- <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-5-5ee57cb2b7eb@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260511-net-mptcp-misc-fixes-7-1-rc4-v1-5-5ee57cb2b7eb@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9842D520DBE
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MEYPR01MB7886.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5a77815-9afe-4b25-b92e-08deb026d1fa
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 May 2026 13:03:11.0936
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY9PR01MB9711
+X-Rspamd-Queue-Id: 50EAA520EEC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-245564-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_CC(0.00)[mit.edu,suse.com,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-245565-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:mid,outlook.com:dkim]
 X-Rspamd-Action: no action
 
-Hello,
+On Tue, May 12, 2026 at 08:08:56PM +0800, Zhang Yi wrote:
+> On 5/12/2026 3:49 PM, Junrui Luo wrote:
+> > jbd2_journal_initialize_fast_commit() validates journal capacity by
+> > checking (journal->j_last - num_fc_blks < JBD2_MIN_JOURNAL_BLOCKS).
+> > Both j_last and num_fc_blks are unsigned, so when num_fc_blks exceeds
+> > j_last the subtraction wraps to a large value, bypassing the bounds
+> > check.
+>=20
+> I'm wondering, how does the "num_fc_blks exceeds j_last" error occur?
+> Under normal circumstances, journal->j_last is initialized to
+> sb->s_maxlen, which is set to the total number of journal blocks (i.e.,
+> the sum of the normal journal area and the fast commit journal area)
+> during filesystem formatting by mkfs. Therefore, num_fc_blocks shoud
+> never exceed journal->j_last. Right?
 
-On 11/05/2026 17:46, Matthieu Baerts (NGI0) wrote:
-> From: Gang Yan <yangang@kylinos.cn>
-> 
-> Add __mptcp_subflow_set_rcvbuf() helper to write the subflow sk_rcvbuf,
-> but also to call the recently added tcp_set_rcvbuf() helper to update
-> window_clamp. This is needed because the window clap is updated when
-> scaling_ratio changes, in tcp_measure_rcv_mss(). Until scaling_ratio
-> changes, the subflow is stuck with the old window clamp which may be
-> based on a small initial buffer.
-> 
-> Use this new helper in both mptcp_sol_socket_sync_intval() (setsockopt
-> path) and sync_socket_options() (new subflow creation path).
+Yes, this is triggered by mounting a crafted filesystem where the ext4
+superblock has fast_commit enabled but the journal superblock does not,
+while s_num_fc_blks is set larger than s_maxlen.
 
-(...)
+> Have you mounted a deliberately constructed corrupted file system? If
+> so, I'd prefer to return EFSCORRUPTED here.
+=20
+I will change it in v2.
 
-> diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
-> index 1cf608e7357b..1544e3563852 100644
-> --- a/net/mptcp/sockopt.c
-> +++ b/net/mptcp/sockopt.c
-> @@ -67,6 +67,12 @@ static int mptcp_get_int_option(struct mptcp_sock *msk, sockptr_t optval,
->  	return 0;
->  }
->  
-> +static inline void __mptcp_subflow_set_rcvbuf(struct sock *ssk, int val)
-
-Arf, I missed that when reviewing this patch: the 'inline' keyword
-should be dropped here.
-
-This patch can be dropped from the series as it is not related with the
-rest, or I can send a v2 for the whole series later on.
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+Thanks,
+Junrui Luo
 
