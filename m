@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIujBPJtA2pS5wEAu9opvQ
-	(envelope-from <stable+bounces-246358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:10 +0200
+	id aMyzCBduA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7650752714C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15DD5271C6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D434317E8FA
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:03:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4641631BC142
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC8734405B;
-	Tue, 12 May 2026 18:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CCB3955E8;
+	Tue, 12 May 2026 17:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fkBkQS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlXAbIPF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA0E3EDE41;
-	Tue, 12 May 2026 18:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F7A3955DD;
+	Tue, 12 May 2026 17:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609020; cv=none; b=lMG2tqagUFecxOID8oJrE7IY9N/iyOaRG+1L7jYwCxWsX0dh5zN/yFmksyFEljnKh9T92vW0GdW/toe5kTrndmbTTnns0WiYzglQ3mSyhJMqdHaXdO4+75z6KISlRZQ7+LPmRBaTJzOcZ40pe70WvbRoQJy+W6dDy7uTxyuDerY=
+	t=1778608309; cv=none; b=Ks4AFJTKmsDJtFHxG0q1jF3iNLdI0D8m8lFBmPrKX3lGvUDwgyS7OHakBeisDg6oCn6A2CZmR+xQM2CbuUObZCxOHnH284RZLcG4lZ9f8RSCE36b94CwwlWS6RaTF8guJ7URwlGk1nWGhV3MdRzAr3xqTlBuwDa1RKr+YYOEP4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609020; c=relaxed/simple;
-	bh=HV7hzpJJ2Rs54bcM2BYGqOa2bARNBAFkvflAlqNlXWI=;
+	s=arc-20240116; t=1778608309; c=relaxed/simple;
+	bh=o5b5frwb3u0MwSPRkhW5WlwCubQzXLmMXaTXRap+JPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jsl/2b1wIoXHG/2FNqADnmvvBRqvwYUfY6oglymTSn+LAyiPZiiqzSqM8g+y/gQlcSsf+wq7h1wgxAxZNXe8kaPzJfuc54ZjlPbV+7+krI3f705XhE1qfYMHQLvn/lDE12HRr8hVxG+6YI5tSqTzbK1RX0C1zzoL+xmQNCX/kp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fkBkQS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CED3C2BCB0;
-	Tue, 12 May 2026 18:03:40 +0000 (UTC)
+	 MIME-Version; b=LrGZwqIOZ1y5RfQoyZCjDaP7Q1/cezFqoGJl2uWjeqRp2ftyOM489MiZJ609Z2kYLTtYN6Nn8lJ0E7MloxeNsYYXZBCaHdLBmUb3iODIkCVBON7WE5e1GNOebwoAGwAS+Wg+ya9Lu5rSMsP6cDOI9D2TXVtpVp7ZLUOOy7YQzHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlXAbIPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C072EC2BCF6;
+	Tue, 12 May 2026 17:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609020;
-	bh=HV7hzpJJ2Rs54bcM2BYGqOa2bARNBAFkvflAlqNlXWI=;
+	s=korg; t=1778608309;
+	bh=o5b5frwb3u0MwSPRkhW5WlwCubQzXLmMXaTXRap+JPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0fkBkQS7Td/3UzOZgn77VchztVcMfaep/yYSMMgHthPBT56rYIUqxBQjZpsuZTRPt
-	 MTRuDhKZ/r2fdcxo75CrIP6Dl8VUIzSAjt310EFP7XSHjf4geQBiIQEwG6OEFzjaQM
-	 B8bPSbtR5prJH5dqBZyMbbjHzbrjpb7COmKoBIO8=
+	b=FlXAbIPFYhyOKXWoyFG98y4dn5Ev6h8CAbHxt6NKGdnkr1YQHpOLWbDXm6tBEF2G2
+	 q2mGp1uHBZXT568hUig3PmSIln0do3Eg3ciQAb5X8P2BT+1Tg3q5+HsZauddmPXIye
+	 SpkUMMM9SO1R6LMwB/HxNF6Rnx52+YaEmsOxt3ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pete Zaitcev <zaitcev@redhat.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 7.0 035/307] usb: usblp: fix uninitialized heap leak via LPGETSTATUS ioctl
+	Quan Zhou <quan.zhou@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.18 029/270] wifi: mt76: mt7921: fix ROC abort flow interruption in mt7921_roc_work
 Date: Tue, 12 May 2026 19:37:10 +0200
-Message-ID: <20260512173940.867069887@linuxfoundation.org>
+Message-ID: <20260512173939.071081380@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7650752714C
+X-Rspamd-Queue-Id: A15DD5271C6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246358-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246081-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,61 +89,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,nbd.name:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Quan Zhou <quan.zhou@mediatek.com>
 
-commit b38e53cbfb9d84732e5984fbd73e128d592415c5 upstream.
+commit fdfa39f9f4fbae532b162da913a67b2410caf38f upstream.
 
-Just like in a previous problem in this driver, usblp_ctrl_msg() will
-collapse the usb_control_msg() return value to 0/-errno, discarding the
-actual number of bytes transferred.
+The mt7921_set_roc API may be executed concurrently with mt7921_roc_work,
+specifically between the following code paths:
 
-Ideally that short command should be detected and error out, but many
-printers are known to send "incorrect" responses back so we can't just
-do that.
+- The check and clear of MT76_STATE_ROC in mt7921_roc_work:
+    if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
+        return;
 
-statusbuf is kmalloc(8) at probe time and never filled before the first
-LPGETSTATUS ioctl.
+- The execution of ieee80211_iterate_active_interfaces.
 
-usblp_read_status() requests 1 byte. If a malicious printer responds
-with zero bytes, *statusbuf is one byte of stale kmalloc heap,
-sign-extended into the local int status, which the LPGETSTATUS path then
-copy_to_user()s directly to the ioctl caller.
+This race condition can interrupt the ROC abort flow, resulting in
+the ROC process failing to abort as expected.
 
-Fix this all by just zapping out the memory buffer when allocated at
-probe time.  If a later call does a short read, the data will be
-identical to what the device sent it the last time, so there is no
-"leak" of information happening.
+To address this defect, the modification of MT76_STATE_ROC is now
+protected by mt792x_mutex_acquire(phy->dev). This ensures that
+changes to the ROC state are properly synchronized, preventing
+race conditions and ensuring the ROC abort flow is not interrupted.
 
-Cc: Pete Zaitcev <zaitcev@redhat.com>
-Assisted-by: gkh_clanker_t1000
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/2026042011-shredder-savage-48c6@gregkh
+Fixes: 034ae28b56f1 ("wifi: mt76: mt7921: introduce remain_on_channel support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Reviewed-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/2568ece8b557e5dda79391414c834ef3233049b6.1769133724.git.quan.zhou@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usblp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/class/usblp.c
-+++ b/drivers/usb/class/usblp.c
-@@ -1178,7 +1178,7 @@ static int usblp_probe(struct usb_interf
- 	}
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -387,10 +387,11 @@ void mt7921_roc_work(struct work_struct
+ 	phy = (struct mt792x_phy *)container_of(work, struct mt792x_phy,
+ 						roc_work);
  
- 	/* Allocate buffer for printer status */
--	usblp->statusbuf = kmalloc(STATUS_BUF_SIZE, GFP_KERNEL);
-+	usblp->statusbuf = kzalloc(STATUS_BUF_SIZE, GFP_KERNEL);
- 	if (!usblp->statusbuf) {
- 		retval = -ENOMEM;
- 		goto abort;
+-	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
+-		return;
+-
+ 	mt792x_mutex_acquire(phy->dev);
++	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state)) {
++		mt792x_mutex_release(phy->dev);
++		return;
++	}
+ 	ieee80211_iterate_active_interfaces(phy->mt76->hw,
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
+ 					    mt7921_roc_iter, phy);
 
 
 
