@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245883-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBgGNXJvA2qI5wEAu9opvQ
-	(envelope-from <stable+bounces-246411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:34 +0200
+	id EF8ANllnA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245883-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32555275BD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A47526100
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2A7B1309BA42
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A51EE30578AF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2110F3EDE55;
-	Tue, 12 May 2026 18:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816983DB980;
+	Tue, 12 May 2026 17:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Te+xGNHw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odReXINW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A2236896D;
-	Tue, 12 May 2026 18:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AD7385D85;
+	Tue, 12 May 2026 17:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609156; cv=none; b=E/Wj0gWoQMggqT5Iz6nlYR8A36ZlRGvgLC5NdR47DewaiM3/UUfV/4BQ73onIG22/GRNL3MxK77zUxWnehAr2HiCcdZed9luExCD4AZ4MYZzTvttJDiQyHV0xwxh02YB5QC/JI40Prfo44NpAUdcKH1NvbanZdEGBdnHMJ4XKSo=
+	t=1778607800; cv=none; b=PGjacGoG7bPXZ73ar5VzyDDicxYodAdr48L/y0PcV85kMlymH1xN7zJtSA9iEmvw63iIEKQtlequH8NH5q1rz36cvdBrVBKUvKzlJlP+PtFiXRZ0B423DmZ5Sd/rz5RsPaCYkALJgRhwRRkpGjIwB9gCEhKnsajc0alkSgRpJeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609156; c=relaxed/simple;
-	bh=L+3d7OkG30sXvp3vL7OHKxfjTUx//A8tB9EVRCdO/6I=;
+	s=arc-20240116; t=1778607800; c=relaxed/simple;
+	bh=IIOJ+HMUEb9sa/ccCrAasUGUvoUpEx3ULhzAwFxutjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IyxuDnlkCeImSlIuurdxj8GZ7ALEpu0pVMfA2zQUc/p/Sz90xrsn3WEfWAUK/S1QIp8MHimjB8Mj0nqPwqzqcHg9NIz2H1rhaPfaAtJJZH71AZizFrCj0/DoKJY8y+fRGoAw2EwHg98vCea1D73Vnn12ZtmPKWhSirWu/N6GrzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Te+xGNHw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669D0C2BCC7;
-	Tue, 12 May 2026 18:05:56 +0000 (UTC)
+	 MIME-Version; b=P6YFrDnIn+vbJ5umAymVH0rSlWBm1O8klosy/XT0EN6Vhg3UnhqGVyDWV4eGIw8KfHF3sAtvjo7RtC0PxwxwlhIzBtFBauHBxbCd6w3wOsHxoWm61DRacw34DXZCd8k2lk0WmtEBre1OCEv2FgXq+PvsWP1BFwVFEsgCZWP54jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odReXINW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3F5C2BCB0;
+	Tue, 12 May 2026 17:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609156;
-	bh=L+3d7OkG30sXvp3vL7OHKxfjTUx//A8tB9EVRCdO/6I=;
+	s=korg; t=1778607800;
+	bh=IIOJ+HMUEb9sa/ccCrAasUGUvoUpEx3ULhzAwFxutjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Te+xGNHwsojtFbPFodSN/au6vPze6xfZGt0D/zCdgBbuPPm7IDCMYKw1xtGXub4WK
-	 jqNAsDoBpvBXy8Q2gL84BbNRBrvshFvNAnxicWxi0ihFsJYbFthDUhCxaDxyH9C/h8
-	 aofsNli6YDRthsX1pvZQt8soF4s/Ua6rV8vR/SKU=
+	b=odReXINWZiUU985d+f7Q5wR7+jq8Xzo2F6mZPLjrG5vek8rw6jGPb1ehmU1o23fsN
+	 exgVtiIHzwEtGMocNxbHu6S+Hw4ndO/p6H2CsbD5tBjrRyxBu1motIruGwrgYOai8d
+	 IByyOyQr+mp+/GMbuZYZJlO8Ph12Z+YxsBRMU8C4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Soenke Huster <soenke.huster@eknoes.de>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 7.0 070/307] Bluetooth: virtio_bt: validate rx pkt_type header length
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 013/206] ksmbd: rewrite stop_sessions() with restartable iteration
 Date: Tue, 12 May 2026 19:37:45 +0200
-Message-ID: <20260512173941.600615827@linuxfoundation.org>
+Message-ID: <20260512173933.101448450@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +64,227 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A32555275BD
+X-Rspamd-Queue-Id: 82A47526100
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246411-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,eknoes.de,gmail.com,intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245883-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[eknoes.de:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-commit daf23014e5d975e72ea9c02b5160d3fcf070ea47 upstream.
+commit c444139cb747bf6de1922b39900fdf02281490f4 upstream.
 
-virtbt_rx_handle() reads the leading pkt_type byte from the RX skb
-and forwards the remainder to hci_recv_frame() for every
-event/ACL/SCO/ISO type, without checking that the remaining payload
-is at least the fixed HCI header for that type.
+stop_sessions() walks conn_list with hash_for_each() and, for every
+entry, drops conn_list_lock across the transport ->shutdown() call
+before re-acquiring the read lock to continue the loop.  The hash
+walk relies on cross-iteration state (the current bucket and the
+hlist position), which is not preserved across unlock/relock: if
+another thread performs a list mutation during the unlocked window,
+the ongoing iteration becomes unreliable and can re-visit
+connections that have already been handled or skip connections that
+have not.  The outer `if (!hash_empty(conn_list)) goto again;` retry
+masks the symptom in the common case but does not address the
+unsafe iteration itself.
 
-After the preceding patch bounds the backend-supplied used.len to
-[1, VIRTBT_RX_BUF_SIZE], a one-byte completion still reaches
-hci_recv_frame() with skb->len already pulled to 0. If the byte
-happened to be HCI_ACLDATA_PKT, the ACL-vs-ISO classification
-fast-path in hci_dev_classify_pkt_type() dereferences
-hci_acl_hdr(skb)->handle whenever the HCI device has an active
-CIS_LINK, BIS_LINK, or PA_LINK connection, reading two bytes of
-uninitialized RX-buffer data. The same hazard exists for every
-packet type the driver accepts because none of the switch cases in
-virtbt_rx_handle() check skb->len against the per-type minimum HCI
-header size before handing the frame to the core.
+Reframe the loop so it never relies on iterator state across
+unlock/relock.  Under conn_list_lock held for read, pick the first
+connection whose ->shutdown() has not yet been issued by this path,
+pin it by taking an extra reference, record that fact on the
+connection and mark it EXITING while still inside the locked walk,
+then drop the lock.  Then call ->shutdown() outside the lock, drop
+the pin (freeing the connection if the handler already released its
+reference), and restart from the top.
 
-After stripping pkt_type, require skb->len to cover the fixed
-header size for the selected type (event 2, ACL 4, SCO 3, ISO 4)
-before calling hci_recv_frame(); drop ratelimited otherwise.
-Unknown pkt_type values still take the original kfree_skb() default
-path.
+Use a new per-connection flag, conn->stop_called, as the "shutdown
+issued from stop_sessions()" marker rather than reusing the status
+state.  ksmbd_conn_set_exiting() is also invoked by
+ksmbd_sessions_deregister() on sibling channels of a multichannel
+session without issuing a transport shutdown, so treating
+KSMBD_SESS_EXITING as "already handled here" would skip connections
+that still need shutdown() to wake their handler out of recv(),
+leaving the outer retry waiting indefinitely for the hash to drain.
+stop_sessions() is serialised by init_lock in
+ksmbd_conn_transport_destroy(), so writing stop_called under the
+read lock has no other writer.
 
-Use bt_dev_err_ratelimited() because both the length and pkt_type
-values come from an untrusted backend that can otherwise flood the
-kernel log.
+Set EXITING inside the locked walk so the selection, the stop_called
+marker, and the status transition all happen together, and guard
+against regressing a connection that has already advanced to
+KSMBD_SESS_RELEASING on its own (for example, if the handler exited
+its receive loop for an unrelated reason between teardown steps).
 
-Fixes: 160fbcf3bfb9 ("Bluetooth: virtio_bt: Use skb_put to set length")
+When the pin drop is the last put, release the transport and pair
+ida_destroy(&target->async_ida) with the ida_init() done in
+ksmbd_conn_alloc(), so stop_sessions() retiring a connection on its
+own does not leak the xarray backing of the embedded async_ida.
+
+The outer retry with msleep() is kept to wait for handler threads to
+reach ksmbd_conn_free() and drain the hash.
+
+Observed with an instrumented build that logs one line per visit and
+widens the unlocked window before ->shutdown() by 200 ms, under
+five concurrent cifs mounts (nosharesock, one connection each):
+
+  * Current code: the same connection address is revisited many
+    times during a single stop_sessions() call and ->shutdown() is
+    invoked well beyond the number of live connections before the
+    hash finally drains.
+
+  * Rewritten code: each live connection produces exactly one
+    ->shutdown() call; the function returns as soon as the hash is
+    empty.
+
+Functional teardown via `ksmbd.control --shutdown` with the same
+five mounts completes cleanly on the rewritten path.
+
+Performance is observably unchanged.  Tearing down N concurrent
+nosharesock cifs connections with `ksmbd.control --shutdown` +
+`rmmod ksmbd` takes essentially the same wall time before and after
+the rewrite:
+
+    N        before        after
+    10       4.93s         5.34s
+    30       7.34s         7.03s
+    50       7.31s         7.01s     (3-run avg: 7.04s vs 7.25s)
+   100       6.98s         6.78s
+   200       6.77s         6.89s
+
+and the number of ->shutdown() calls equals the number of live
+connections on both paths when the race is not widened.  The
+teardown is dominated by the msleep(100)-based outer retry waiting
+for handler threads to run ksmbd_conn_free(), not by the iteration
+itself; the restartable loop's worst-case O(N^2) visit cost is in
+the microseconds even at N=200 and sits far below the msleep(100)
+granularity.
+
+Applied alone on top of ksmbd-for-next-next, this patch does not
+introduce a new leak site.  Under the same reproducer (10x
+concurrent-holders + ss -K + ksmbd.control --shutdown + rmmod), the
+tree still shows the pre-existing per-connection transport leak
+count that arises when the last refcount drop lands in one of
+ksmbd_conn_r_count_dec(), __free_opinfo() or session_fd_check() -
+all of which end with a bare kfree() today.  kmemleak backtraces
+for the unreferenced objects point into the TCP accept path
+(sk_clone -> inet_csk_clone_lock, sock_alloc_inode) and none
+involve stop_sessions().  Plugging those bare-kfree sites is the
+responsibility of the follow-up patch.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
 Cc: stable@vger.kernel.org
-Cc: Soenke Huster <soenke.huster@eknoes.de>
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/virtio_bt.c |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ fs/smb/server/connection.c |   46 +++++++++++++++++++++++++++++++++++++--------
+ fs/smb/server/connection.h |    1 
+ 2 files changed, 39 insertions(+), 8 deletions(-)
 
---- a/drivers/bluetooth/virtio_bt.c
-+++ b/drivers/bluetooth/virtio_bt.c
-@@ -198,6 +198,7 @@ static int virtbt_shutdown_generic(struc
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -475,24 +475,54 @@ out:
  
- static void virtbt_rx_handle(struct virtio_bluetooth *vbt, struct sk_buff *skb)
+ static void stop_sessions(void)
  {
-+	size_t min_hdr;
- 	__u8 pkt_type;
+-	struct ksmbd_conn *conn;
++	struct ksmbd_conn *conn, *target;
+ 	struct ksmbd_transport *t;
++	bool any;
+ 	int bkt;
  
- 	pkt_type = *((__u8 *) skb->data);
-@@ -205,16 +206,32 @@ static void virtbt_rx_handle(struct virt
- 
- 	switch (pkt_type) {
- 	case HCI_EVENT_PKT:
-+		min_hdr = sizeof(struct hci_event_hdr);
++	/*
++	 * Serialised via init_lock; no concurrent stop_sessions() can
++	 * touch conn->stop_called, so writing it under the read lock is
++	 * safe.
++	 */
+ again:
++	target = NULL;
++	any = false;
+ 	down_read(&conn_list_lock);
+ 	hash_for_each(conn_list, bkt, conn, hlist) {
+-		t = conn->transport;
+-		ksmbd_conn_set_exiting(conn);
+-		if (t->ops->shutdown) {
+-			up_read(&conn_list_lock);
++		any = true;
++		if (conn->stop_called)
++			continue;
++		atomic_inc(&conn->refcnt);
++		conn->stop_called = true;
++		/*
++		 * Mark the connection EXITING while still holding the
++		 * read lock so the selection and the status transition
++		 * happen together.  Do not regress a connection that has
++		 * already advanced to RELEASING on its own (e.g. the
++		 * handler exited its receive loop for an unrelated
++		 * reason).
++		 */
++		if (READ_ONCE(conn->status) != KSMBD_SESS_RELEASING)
++			ksmbd_conn_set_exiting(conn);
++		target = conn;
 +		break;
- 	case HCI_ACLDATA_PKT:
-+		min_hdr = sizeof(struct hci_acl_hdr);
-+		break;
- 	case HCI_SCODATA_PKT:
-+		min_hdr = sizeof(struct hci_sco_hdr);
-+		break;
- 	case HCI_ISODATA_PKT:
--		hci_skb_pkt_type(skb) = pkt_type;
--		hci_recv_frame(vbt->hdev, skb);
-+		min_hdr = sizeof(struct hci_iso_hdr);
- 		break;
- 	default:
- 		kfree_skb(skb);
--		break;
-+		return;
- 	}
-+
-+	if (skb->len < min_hdr) {
-+		bt_dev_err_ratelimited(vbt->hdev,
-+				       "rx pkt_type 0x%02x payload %u < hdr %zu\n",
-+				       pkt_type, skb->len, min_hdr);
-+		kfree_skb(skb);
-+		return;
 +	}
++	up_read(&conn_list_lock);
 +
-+	hci_skb_pkt_type(skb) = pkt_type;
-+	hci_recv_frame(vbt->hdev, skb);
- }
++	if (target) {
++		t = target->transport;
++		if (t->ops->shutdown)
+ 			t->ops->shutdown(t);
+-			down_read(&conn_list_lock);
++		if (atomic_dec_and_test(&target->refcnt)) {
++			ida_destroy(&target->async_ida);
++			t->ops->free_transport(t);
++			kfree(target);
+ 		}
++		goto again;
+ 	}
+-	up_read(&conn_list_lock);
  
- static void virtbt_rx_work(struct work_struct *work)
+-	if (!hash_empty(conn_list)) {
++	if (any) {
+ 		msleep(100);
+ 		goto again;
+ 	}
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -46,6 +46,7 @@ struct ksmbd_conn {
+ 	struct mutex			srv_mutex;
+ 	int				status;
+ 	unsigned int			cli_cap;
++	bool				stop_called;
+ 	union {
+ 		__be32			inet_addr;
+ #if IS_ENABLED(CONFIG_IPV6)
 
 
 
