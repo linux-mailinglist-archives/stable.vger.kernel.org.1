@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-245880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gF+FHVBnA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:52 +0200
+	id YNuBH+JvA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC295260DC
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:45:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9845276F0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 126713051A84
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:43:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86EE931F331E
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05203DC86D;
-	Tue, 12 May 2026 17:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4833EDE61;
+	Tue, 12 May 2026 18:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6rcHEw4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAh4X45C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43413B1EE2;
-	Tue, 12 May 2026 17:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31AF34405B;
+	Tue, 12 May 2026 18:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607792; cv=none; b=geL6ib+cnAIK231RNc9b+0nty3nw7vcOrIjbTUUqbUAW8aW2yDx6vwODAPDZkxvEEro64rPccXcGikofZ0C8xmxOGEkUuMd8l6o431lUxpnstO9goGUFdSwcyoF6dmD5wKT5pH0vARPhQlZasV2ZmkpB2cRyJOONoo0ietRIT7I=
+	t=1778609174; cv=none; b=tVqjOWefqYVfDUOJCCArgkM1YeWBdsnR6Ua2N7o1QhnhaJpvQpLW1cG/PUA0hAcSL7qCewZBIdWaBHhBoWy/2/6o93SgXfIhqwr3w0ajbESUcfpu3beCuLQVxi9HwMrS6h4Vu2WfxEYP4naov7Ou+/c3733rLGt8aBCfmCsn1E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607792; c=relaxed/simple;
-	bh=CnrDto2rnHH7f6HOy0l1eKcVpLpRtWV1R7m9KYFkVm8=;
+	s=arc-20240116; t=1778609174; c=relaxed/simple;
+	bh=xMI8b0/l3Yqu0D/U31ZrJpGt/oqSx+tcBE77km+Wyms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VmnX2EZwE8czaKV/Ve64u3HsaZMouBsZ7jVAdS5x2oI//z81FFAt6cKMQYBn/cZUc1rZ57p9JrhMNWqP7JYc4Ct44lFaUnd7YPsz2nD4l4hlDgrBXdTtmDqVMgmtmi0cFiXm5JN8u5uKQf0vy9LgmSSB8c7x9C4yVkoIv3yHEZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6rcHEw4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E9DC2BCB0;
-	Tue, 12 May 2026 17:43:11 +0000 (UTC)
+	 MIME-Version; b=h6IRAzXQcHTcKD7IEAvL7Z7Q1yc6guWO4W0WEl5qgoyGqNFPj4mme9gZ+KS0QDljP68d4jsItxRARKHwpHNXirIUeZnzg13jTAfF/Al2OLemebD7VWtcD5nFjHEKMPbK7n4QeRXg32ER0jhLOUAX8SA6ZckE7aBs1AddVEzOMC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAh4X45C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A7BC2BCB0;
+	Tue, 12 May 2026 18:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607792;
-	bh=CnrDto2rnHH7f6HOy0l1eKcVpLpRtWV1R7m9KYFkVm8=;
+	s=korg; t=1778609174;
+	bh=xMI8b0/l3Yqu0D/U31ZrJpGt/oqSx+tcBE77km+Wyms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6rcHEw4czKqJ2I3r+vkL3LDP088AzpycAxO/KA/U4NO8p9BZ1EnN7A8K09TGWgNI
-	 tgAri2JUyAhc17eg5ccyyeEuuQkr5XLIFgpGOx47188fdS+p16dwaAKhJqq0DRsSDD
-	 YV2zulRVRca3ylDj848TJqUzWltJQjCGkoZnD1Ps=
+	b=iAh4X45CTYu2BIZA2s8ZxwPL3UhUGsokkVzCYgSDd/uTySBVwHLeO172LVgcVYhHR
+	 Pw4eoG7Eg9M0vYN1npiYGIhRUgBvtlM/SXDKP5eDjk3fBSwBG7w3ZGF3hX8W3MzYzV
+	 HyuhtN6qemLqEtaTdvbtwxWg79wJTNFp/bA3wiBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Vincent Danjean <vdanjean@debian.org>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.12 037/206] wifi: ath5k: do not access array OOB
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 7.0 094/307] mtd: spi-nor: debugfs: fix out-of-bounds read in spi_nor_params_show()
 Date: Tue, 12 May 2026 19:38:09 +0200
-Message-ID: <20260512173933.617084940@linuxfoundation.org>
+Message-ID: <20260512173942.110326860@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +66,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BFC295260DC
+X-Rspamd-Queue-Id: DF9845276F0
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246418-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245880-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,infineon.com:email,linaro.org:email,sashiko.dev:url]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-commit d748603f12baff112caa3ab7d39f50100f010dbd upstream.
+commit e47029b977e747cb3a9174308fd55762cce70147 upstream.
 
-Vincent reports:
-> The ath5k driver seems to do an array-index-out-of-bounds access as
-> shown by the UBSAN kernel message:
-> UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath5k/base.c:1741:20
-> index 4 is out of range for type 'ieee80211_tx_rate [4]'
-> ...
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x5d/0x80
->  ubsan_epilogue+0x5/0x2b
->  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
->  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
->  tasklet_action_common+0xb5/0x1c0
+Sashiko noticed an out-of-bounds read [1].
 
-It is real. 'ts->ts_final_idx' can be 3 on 5212, so:
-   info->status.rates[ts->ts_final_idx + 1].idx = -1;
-with the array defined as:
-   struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
-while the size is:
-   #define IEEE80211_TX_MAX_RATES  4
-is indeed bogus.
+In spi_nor_params_show(), the snor_f_names array is passed to
+spi_nor_print_flags() using sizeof(snor_f_names).
 
-Set this 'idx = -1' sentinel only if the array index is less than the
-array size. As mac80211 will not look at rates beyond the size
-(IEEE80211_TX_MAX_RATES).
+Since snor_f_names is an array of pointers, sizeof() returns the total
+number of bytes occupied by the pointers
+	(element_count * sizeof(void *))
+rather than the element count itself. On 64-bit systems, this makes the
+passed length 8x larger than intended.
 
-Note: The effect of the OOB write is negligible. It just overwrites the
-next member of info->status, i.e. ack_signal.
+Inside spi_nor_print_flags(), the 'names_len' argument is used to
+bounds-check the 'names' array access. An out-of-bounds read occurs
+if a flag bit is set that exceeds the array's actual element count
+but is within the inflated byte-size count.
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Reported-by: Vincent Danjean <vdanjean@debian.org>
-Link: https://lore.kernel.org/all/aQYUkIaT87ccDCin@eldamar.lan
-Closes: https://bugs.debian.org/1119093
-Fixes: 6d7b97b23e11 ("ath5k: fix tx status reporting issues")
+Correct this by using ARRAY_SIZE() to pass the actual number of
+string pointers in the array.
+
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251209100459.2253198-1-jirislaby@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 0257be79fc4a ("mtd: spi-nor: expose internal parameters via debugfs")
+Closes: https://sashiko.dev/#/patchset/20260417-die-erase-fix-v2-1-73bb7004ebad%40infineon.com [1]
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Takahiro Kuwano <takahiro.kuwano@infineon.com>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath5k/base.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/spi-nor/debugfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath5k/base.c
-+++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -1738,7 +1738,8 @@ ath5k_tx_frame_completed(struct ath5k_hw
- 	}
+--- a/drivers/mtd/spi-nor/debugfs.c
++++ b/drivers/mtd/spi-nor/debugfs.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
  
- 	info->status.rates[ts->ts_final_idx].count = ts->ts_final_retry;
--	info->status.rates[ts->ts_final_idx + 1].idx = -1;
-+	if (ts->ts_final_idx + 1 < IEEE80211_TX_MAX_RATES)
-+		info->status.rates[ts->ts_final_idx + 1].idx = -1;
++#include <linux/array_size.h>
+ #include <linux/debugfs.h>
+ #include <linux/mtd/spi-nor.h>
+ #include <linux/spi/spi.h>
+@@ -92,7 +93,8 @@ static int spi_nor_params_show(struct se
+ 	seq_printf(s, "address nbytes\t%u\n", nor->addr_nbytes);
  
- 	if (unlikely(ts->ts_status)) {
- 		ah->stats.ack_fail++;
+ 	seq_puts(s, "flags\t\t");
+-	spi_nor_print_flags(s, nor->flags, snor_f_names, sizeof(snor_f_names));
++	spi_nor_print_flags(s, nor->flags, snor_f_names,
++			    ARRAY_SIZE(snor_f_names));
+ 	seq_puts(s, "\n");
+ 
+ 	seq_puts(s, "\nopcodes\n");
 
 
 
