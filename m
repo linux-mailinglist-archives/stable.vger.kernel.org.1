@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245921-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKMwAnRvA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246222-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:36 +0200
+	id yCY2IRJoA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245921-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:49:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E5C5275C4
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE485526284
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C21D30E4020
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD9B030C74EC
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C227356755;
-	Tue, 12 May 2026 17:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2D63E0721;
+	Tue, 12 May 2026 17:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mClVe8R3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+dOU8Mj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19403EDE41;
-	Tue, 12 May 2026 17:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0713B1EE2;
+	Tue, 12 May 2026 17:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608672; cv=none; b=cjkFGkRzAWVm49UIV7O5jJ8pS6WpzMu+ganKAspHdzGQkSFPGkkPnWHtHzIrMMHlBmPYTxWrZj3R3ELxg/nXk9mcs76c3O/KJ5666/x1xj9CxvCbv4E2Rn6737AgLbI8wMDtv1acW4RjAq8BQ/XtHoX82+5WXbchyS4Fe6IKz/o=
+	t=1778607898; cv=none; b=jRRL0Mj+otEY0jJNIuX8s3X0S3nez9eVN02ldZGQihPVklnlfc8W6DERhsXecbUbzqkZXfgOhWmNWd7TcJILNBdAWrz31MMUKFNRmdxNc2N55+B9saYyTkLMN8EmDCAojNZ3VaswYrzdPJr8kS+Q88+vVvEvZOzkW5ZvUIo/+yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608672; c=relaxed/simple;
-	bh=Ezdl8c71RYmwsWtXoORhZnGc9v8oMFsSzzKosYNmc8Y=;
+	s=arc-20240116; t=1778607898; c=relaxed/simple;
+	bh=h7fc6FKuyCEjLhKSmv6YfreVMTn9d+ul+lpuf6/IEqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVBNXtpyGiad7XwXI9DIhMC+mYiTuPkMxyCcQE6ySzInNWXOBge4a1yOEv2qWZ9y+QcbLAoPaqLHk851Rj0EruUZythQHcFB6TWiZrRZdBaiBvMJSxd/exDoBt3zzdj3HE5/ojtyT7J6CxkisGxVtqWGDyeTKUBv5nO/s+buk00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mClVe8R3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60259C2BCB0;
-	Tue, 12 May 2026 17:57:52 +0000 (UTC)
+	 MIME-Version; b=nMO78VIkx4IDe7e88W/q1sBbRBVuvHqpVvjNb7vy9/PtwvUw13Vsvq+Eb+uCWPMWsL3Evp8/DCwWN1nlvXTUBM51SG6xyjr69SPSKWtDcM6MIkFJqVtfFwiIXyZWZ6bGGC5VKCAQAxlA1AwDybl2G8KktHbpamq2pZr72+oBe8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+dOU8Mj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AD5C2BCB0;
+	Tue, 12 May 2026 17:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608672;
-	bh=Ezdl8c71RYmwsWtXoORhZnGc9v8oMFsSzzKosYNmc8Y=;
+	s=korg; t=1778607898;
+	bh=h7fc6FKuyCEjLhKSmv6YfreVMTn9d+ul+lpuf6/IEqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mClVe8R3/a5GOoIK0V4nzyoz0wKGlWEqPvmlHCqwKrk3dLh7GkAUAZLiY+cRJ8zNu
-	 sXOersd9pEVW8Y4oO1UFzERqRiZkhD7Yn4ceuGJAIG/Wo9FpNYGpjefOM8ZtajYaAi
-	 PV5v2UlvPkgbeIcozB9QmDM7dlC63UKPlN7ghXLs=
+	b=B+dOU8MjU1uHtAZyNSnxwNZX+9n/F07zE7OPeaHpscrsPye9dlr/TejBO+Y045JWt
+	 kiY4FkZ9auixu8NlEBC4rvPb7is/RHcq1pD7Rh6EGhod1Aukr8dj0RyEYaSnWW8C1z
+	 IZ5jayQdYyIYCpu1vlWYuWBRkWYqPqI1hGt1HhJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 129/270] spi: microchip-core-qspi: control built-in cs manually
+	Kai Zen <kai.aizen.dev@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 078/206] net: rtnetlink: zero ifla_vf_broadcast to avoid stack infoleak in rtnl_fill_vfinfo
 Date: Tue, 12 May 2026 19:38:50 +0200
-Message-ID: <20260512173941.169842331@linuxfoundation.org>
+Message-ID: <20260512173934.503771566@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,229 +63,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 98E5C5275C4
+X-Rspamd-Queue-Id: CE485526284
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246222-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245921-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Kai Zen <kai.aizen.dev@gmail.com>
 
-commit 7672749e1496215e8683ce57cf323119033954cf upstream.
+commit 4b9e327991815e128ad3af75c3a04630a63ce3e0 upstream.
 
-The coreQSPI IP supports only a single chip select, which is
-automagically operated by the hardware - set low when the transmit
-buffer first gets written to and set high when the number of bytes
-written to the TOTALBYTES field of the FRAMES register have been sent on
-the bus. Additional devices must use GPIOs for their chip selects.
-It was reported to me that if there are two devices attached to this
-QSPI controller that the in-built chip select is set low while linux
-tries to access the device attached to the GPIO.
+rtnl_fill_vfinfo() declares struct ifla_vf_broadcast on the stack
+without initialisation:
 
-This went undetected as the boards that connected multiple devices to
-the SPI controller all exclusively used GPIOs for chip selects, not
-relying on the built-in chip select at all. It turns out that this was
-because the built-in chip select, when controlled automagically, is set
-low when active and high when inactive, thereby ruling out its use for
-active-high devices or devices that need to transmit with the chip
-select disabled.
+	struct ifla_vf_broadcast vf_broadcast;
 
-Modify the driver so that it controls chip select directly, retaining
-the behaviour for mem_ops of setting the chip select active for the
-entire duration of the transfer in the exec_op callback. For regular
-transfers, implement the set_cs callback for the core to use.
+The struct contains a single fixed 32-byte field:
 
-As part of this, the existing setup callback, mchp_coreqspi_setup_op(),
-is removed. Modifying the CLKIDLE field is not safe to do during
-operation when there are multiple devices, so this code is removed
-entirely. Setting the MASTER and ENABLE fields is something that can be
-done once at probe, it doesn't need to be re-run for each device.
-Instead the new setup callback sets the built-in chip select to its
-inactive state for active-low devices, as the reset value of the chip
-select in software controlled mode is low.
+	/* include/uapi/linux/if_link.h */
+	struct ifla_vf_broadcast {
+		__u8 broadcast[32];
+	};
 
-Fixes: 8f9cf02c88528 ("spi: microchip-core-qspi: Add regular transfers")
-Fixes: 8596124c4c1bc ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
-CC: stable@vger.kernel.org
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20260430-hamstring-busload-f941d0347b5e@spud
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The function then copies dev->broadcast into it using dev->addr_len
+as the length:
+
+	memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
+
+On Ethernet devices (the overwhelming majority of SR-IOV NICs)
+dev->addr_len is 6, so only the first 6 bytes of broadcast[] are
+written. The remaining 26 bytes retain whatever was previously on
+the kernel stack. The full struct is then handed to userspace via:
+
+	nla_put(skb, IFLA_VF_BROADCAST,
+		sizeof(vf_broadcast), &vf_broadcast)
+
+leaking up to 26 bytes of uninitialised kernel stack per VF per
+RTM_GETLINK request, repeatable.
+
+The other vf_* structs in the same function are explicitly zeroed
+for exactly this reason - see the memset() calls for ivi,
+vf_vlan_info, node_guid and port_guid a few lines above.
+vf_broadcast was simply missed when it was added.
+
+Reachability: any unprivileged local process can open AF_NETLINK /
+NETLINK_ROUTE without capabilities and send RTM_GETLINK with an
+IFLA_EXT_MASK attribute carrying RTEXT_FILTER_VF. The kernel walks
+each VF and emits IFLA_VF_BROADCAST, leaking 26 bytes of stack per
+VF per request. Stack residue at this call site can include return
+addresses and transient sensitive data; KASAN with stack
+instrumentation, or KMSAN, will flag the nla_put() when reproduced.
+
+Zero the on-stack struct before the partial memcpy, matching the
+existing pattern used for the other vf_* structs in the same
+function.
+
+Fixes: 75345f888f70 ("ipoib: show VF broadcast address")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kai Zen <kai.aizen.dev@gmail.com>
+Link: https://patch.msgid.link/3c506e8f936e52b57620269b55c348af05d413a2.1777557228.git.kai.aizen.dev@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-microchip-core-qspi.c |   79 +++++++++++++++++++++++++++-------
- 1 file changed, 64 insertions(+), 15 deletions(-)
+ net/core/rtnetlink.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -74,6 +74,13 @@
- #define STATUS_FLAGSX4		BIT(8)
- #define STATUS_MASK		GENMASK(8, 0)
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1369,6 +1369,7 @@ static noinline_for_stack int rtnl_fill_
+ 		port_guid.vf = ivi.vf;
  
-+/*
-+ * QSPI Direct Access register defines
-+ */
-+#define DIRECT_ACCESS_EN_SSEL		BIT(0)
-+#define DIRECT_ACCESS_OP_SSEL		BIT(1)
-+#define DIRECT_ACCESS_OP_SSEL_SHIFT	1
-+
- #define BYTESUPPER_MASK		GENMASK(31, 16)
- #define BYTESLOWER_MASK		GENMASK(15, 0)
- 
-@@ -158,6 +165,38 @@ static int mchp_coreqspi_set_mode(struct
- 	return 0;
- }
- 
-+static void mchp_coreqspi_set_cs(struct spi_device *spi, bool enable)
-+{
-+	struct mchp_coreqspi *qspi = spi_controller_get_devdata(spi->controller);
-+	u32 val;
-+
-+	val = readl(qspi->regs + REG_DIRECT_ACCESS);
-+
-+	val &= ~DIRECT_ACCESS_OP_SSEL;
-+	val |= !enable << DIRECT_ACCESS_OP_SSEL_SHIFT;
-+
-+	writel(val, qspi->regs + REG_DIRECT_ACCESS);
-+}
-+
-+static int mchp_coreqspi_setup(struct spi_device *spi)
-+{
-+	struct mchp_coreqspi *qspi = spi_controller_get_devdata(spi->controller);
-+	u32 val;
-+
-+	/*
-+	 * Active low devices need to be specifically set to their inactive
-+	 * states during probe.
-+	 */
-+	if (spi->mode & SPI_CS_HIGH)
-+		return 0;
-+
-+	val = readl(qspi->regs + REG_DIRECT_ACCESS);
-+	val |= DIRECT_ACCESS_OP_SSEL;
-+	writel(val, qspi->regs + REG_DIRECT_ACCESS);
-+
-+	return 0;
-+}
-+
- static inline void mchp_coreqspi_read_op(struct mchp_coreqspi *qspi)
- {
- 	u32 control, data;
-@@ -380,19 +419,6 @@ static int mchp_coreqspi_setup_clock(str
- 	return 0;
- }
- 
--static int mchp_coreqspi_setup_op(struct spi_device *spi_dev)
--{
--	struct spi_controller *ctlr = spi_dev->controller;
--	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
--	u32 control = readl_relaxed(qspi->regs + REG_CONTROL);
--
--	control |= (CONTROL_MASTER | CONTROL_ENABLE);
--	control &= ~CONTROL_CLKIDLE;
--	writel_relaxed(control, qspi->regs + REG_CONTROL);
--
--	return 0;
--}
--
- static inline void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const struct spi_mem_op *op)
- {
- 	u32 idle_cycles = 0;
-@@ -483,6 +509,7 @@ static int mchp_coreqspi_exec_op(struct
- 
- 	reinit_completion(&qspi->data_completion);
- 	mchp_coreqspi_config_op(qspi, op);
-+	mchp_coreqspi_set_cs(mem->spi, true);
- 	if (op->cmd.opcode) {
- 		qspi->txbuf = &opcode;
- 		qspi->rxbuf = NULL;
-@@ -523,6 +550,7 @@ static int mchp_coreqspi_exec_op(struct
- 		err = -ETIMEDOUT;
- 
- error:
-+	mchp_coreqspi_set_cs(mem->spi, false);
- 	mutex_unlock(&qspi->op_lock);
- 	mchp_coreqspi_disable_ints(qspi);
- 
-@@ -696,6 +724,7 @@ static int mchp_coreqspi_probe(struct pl
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = dev->of_node;
- 	int ret;
-+	u32 num_cs, val;
- 
- 	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*qspi));
- 	if (!ctlr)
-@@ -728,10 +757,18 @@ static int mchp_coreqspi_probe(struct pl
- 		return ret;
- 	}
- 
-+	/*
-+	 * The IP core only has a single CS, any more have to be provided via
-+	 * gpios
-+	 */
-+	if (of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs))
-+		num_cs = 1;
-+
-+	ctlr->num_chipselect = num_cs;
-+
- 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
- 	ctlr->mem_ops = &mchp_coreqspi_mem_ops;
- 	ctlr->mem_caps = &mchp_coreqspi_mem_caps;
--	ctlr->setup = mchp_coreqspi_setup_op;
- 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
- 			  SPI_TX_DUAL | SPI_TX_QUAD;
- 	ctlr->dev.of_node = np;
-@@ -739,9 +776,21 @@ static int mchp_coreqspi_probe(struct pl
- 	ctlr->prepare_message = mchp_coreqspi_prepare_message;
- 	ctlr->unprepare_message = mchp_coreqspi_unprepare_message;
- 	ctlr->transfer_one = mchp_coreqspi_transfer_one;
--	ctlr->num_chipselect = 2;
-+	ctlr->setup = mchp_coreqspi_setup;
-+	ctlr->set_cs = mchp_coreqspi_set_cs;
- 	ctlr->use_gpio_descriptors = true;
- 
-+	val = readl_relaxed(qspi->regs + REG_CONTROL);
-+	val |= (CONTROL_MASTER | CONTROL_ENABLE);
-+	writel_relaxed(val, qspi->regs + REG_CONTROL);
-+
-+	/*
-+	 * Put cs into software controlled mode
-+	 */
-+	val = readl_relaxed(qspi->regs + REG_DIRECT_ACCESS);
-+	val |= DIRECT_ACCESS_EN_SSEL;
-+	writel(val, qspi->regs + REG_DIRECT_ACCESS);
-+
- 	ret = spi_register_controller(ctlr);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
+ 	memcpy(vf_mac.mac, ivi.mac, sizeof(ivi.mac));
++	memset(&vf_broadcast, 0, sizeof(vf_broadcast));
+ 	memcpy(vf_broadcast.broadcast, dev->broadcast, dev->addr_len);
+ 	vf_vlan.vlan = ivi.vlan;
+ 	vf_vlan.qos = ivi.qos;
 
 
 
