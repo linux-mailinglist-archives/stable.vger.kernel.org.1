@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-246442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCfNM6FsA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:33 +0200
+	id yKKfE9ZyA2q55wEAu9opvQ
+	(envelope-from <stable+bounces-246401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:35:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FDA4526D93
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E8D527CE2
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 745903038015
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:07:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33AB531C39E3
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D4D2D060B;
-	Tue, 12 May 2026 18:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5011D3EDE68;
+	Tue, 12 May 2026 18:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiKrywZq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfVgiaKp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186A63EDE45;
-	Tue, 12 May 2026 18:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0762325FA29;
+	Tue, 12 May 2026 18:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609239; cv=none; b=O+dZqyKvKgyDW8ODu7e4aBF3r0oyMu2m82ZH2Ru+FHlfxr1sbtIkGtFEvM+w7xZtDCJrj2il3iGI6Y13BJWlXA7/pSfr3O6p+tD+kEkiFsgQ2xhXx2wKcbjqnOEkUTEHVl9V1O+3dXSqHaYfZReAYz+2ZKYfiTP+8/euolQ42SM=
+	t=1778609131; cv=none; b=FJekyw+XinJvC/ajwK+quzTLwZEBcDsisKuKemMmZlX8tVkA4v6sPTehVqI0SWSyiE0Csj5mV/DpZh1C43Id6x4T8GWPd9t2PD43PzoDwVFSCMrx4Beckjd7Rr7kEADeq1NCtlpGdnKGj4WEa0w07LBly5ef3gpq/iGpeU9xOrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609239; c=relaxed/simple;
-	bh=qDNiAptU+XeqrRK/sYWisypSgmf9L4MlHwM7B6UtiY4=;
+	s=arc-20240116; t=1778609131; c=relaxed/simple;
+	bh=8q0Rh3BxTPuIlvgKr084CTxcnbgMRAUcN5Eigf0UH9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o0d0DhvEet9LZM0h6D8ux6EVFH5U9VMZZhMamKEGirbKYkikePVd8lBngYtUjvUZSnser7Mw3becAROoRTL66vb8lmidk4vQpR2EaqtwMh/oXQPT6E8EMVImZ5vHqZ5Q5vOkGKtVo/KUsU78nzCk6iKQqV4jTugk26wlFXIk2lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiKrywZq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F07CC2BCB0;
-	Tue, 12 May 2026 18:07:18 +0000 (UTC)
+	 MIME-Version; b=MyrIid143nAlfrbdWs2xg+ApqXqQdNDjxAjRWUcuiOoDxd9kpQEgjeXf2+PK/JuCerjK+7QErMLNq7+gzVGFd6cP4xFB7PsZh9PDpnz4F9w21EAcDR2lxP0rNasKODkNEZVxNLOzu9hKbh92AZSMz9A1Cl4UnPa1mriB6G5cUWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfVgiaKp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A16DC2BCB0;
+	Tue, 12 May 2026 18:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609238;
-	bh=qDNiAptU+XeqrRK/sYWisypSgmf9L4MlHwM7B6UtiY4=;
+	s=korg; t=1778609130;
+	bh=8q0Rh3BxTPuIlvgKr084CTxcnbgMRAUcN5Eigf0UH9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiKrywZqMfFfIkZ5akyR2EnTLXYEy+jMGmrnG3vBVte+AzjoZuV4S9BI5UdLZ5o0E
-	 VZNA2vkNUf8TentEHPq0SE2cS8gpG78v192tsRk3aUBHXQVO8Gf7lxXn8xi+grj6AB
-	 NhWZA2ZjYSBQavM+dAcZodKndCfGBwicQ7/BK4lo=
+	b=qfVgiaKpTWLANVFFzs2wZmPSubLpYKHMf7zlZE2aVCuHduEWAqzX+vQtS23JeBwMD
+	 Q7oMUSKQLmNUnFepuDz5oDFSuI8kix08dVTVVa1GM2RjWcdccc1RD7QLAN6GQjssHy
+	 vGgKkr0v2D8Tqu7g9n0+7vpJTpfXGV2qjWEjRi34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 7.0 077/307] rust: drm: gem: clean up GEM state in init failure case
-Date: Tue, 12 May 2026 19:37:52 +0200
-Message-ID: <20260512173941.746077564@linuxfoundation.org>
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 7.0 078/307] rust: allow `clippy::collapsible_match` globally
+Date: Tue, 12 May 2026 19:37:53 +0200
+Message-ID: <20260512173941.766198623@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
 References: <20260512173940.117428952@linuxfoundation.org>
@@ -64,85 +62,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6FDA4526D93
+X-Rspamd-Queue-Id: A1E8D527CE2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246442-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246401-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,onurozkan.dev:email,nvidia.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,garyguo.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eliot Courtney <ecourtney@nvidia.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 2e42a17b8f6bc3c0cd69d7556b588011d3ec2394 upstream.
+commit 838d852da8503372f3a1779bfbd1ccb93153ab4e upstream.
 
-Currently, if `drm_gem_object_init` fails, the object is freed without
-any cleanup. Perform the cleanup in that case.
+The `clippy::collapsible_match` lint [1] can make code harder to read
+in certain cases [2], e.g.
 
-Cc: stable@vger.kernel.org
-Fixes: c284d3e42338 ("rust: drm: gem: Add GEM object abstraction")
-Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Onur Özkan <work@onurozkan.dev>
-Link: https://patch.msgid.link/20260423-fix-gem-1-v1-1-e12e35f7bba9@nvidia.com
-[ Move safety comment closer to unsafe block to avoid a clippy warning.
-  - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+      CLIPPY P rust/libmacros.so - due to command line change
+    warning: this `if` can be collapsed into the outer `match`
+      --> rust/pin-init/internal/src/helpers.rs:91:17
+       |
+    91 | /                 if nesting == 1 {
+    92 | |                     impl_generics.push(tt.clone());
+    93 | |                     impl_generics.push(tt);
+    94 | |                     skip_until_comma = false;
+    95 | |                 }
+       | |_________________^
+       |
+       = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_match
+       = note: `-W clippy::collapsible-match` implied by `-W clippy::all`
+       = help: to override `-W clippy::all` add `#[allow(clippy::collapsible_match)]`
+    help: collapse nested if block
+       |
+    90 ~             TokenTree::Punct(p) if skip_until_comma && p.as_char() == ','
+    91 ~                 && nesting == 1 => {
+    92 |                     impl_generics.push(tt.clone());
+    93 |                     impl_generics.push(tt);
+    94 |                     skip_until_comma = false;
+    95 ~                 }
+       |
+
+The lint does not have much upside -- when the suggestion may be a good
+one, it would still read fine when nested anyway. And it is the kind of
+lint that may easily bias people to just apply the suggestion instead
+of allowing it.
+
+[ In addition, as Gary points out [3], the suggestion is also wrong [4] and
+  in the process of being fixed [5], possibly for Rust 1.97.0:
+
+  Link: https://lore.kernel.org/rust-for-linux/DI3YV94TH9I3.1SOHW51552497@garyguo.net/ [3]
+  Link: https://github.com/rust-lang/rust-clippy/issues/16875 [4]
+  Link: https://github.com/rust-lang/rust-clippy/pull/16878 [5]
+
+    - Miguel ]
+
+Thus just let developers decide on their own.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_match [1]
+Link: https://lore.kernel.org/rust-for-linux/CANiq72nWYJna_hdFxjQCQZK6yJBrr1Mb86iKavivV0U0BgufeA@mail.gmail.com/ [2]
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260426144201.227108-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/drm/gem/mod.rs |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -207,8 +207,17 @@ impl<T: DriverObject> Object<T> {
-         // SAFETY: `obj.as_raw()` is guaranteed to be valid by the initialization above.
-         unsafe { (*obj.as_raw()).funcs = &Self::OBJECT_FUNCS };
- 
--        // SAFETY: The arguments are all valid per the type invariants.
--        to_result(unsafe { bindings::drm_gem_object_init(dev.as_raw(), obj.obj.get(), size) })?;
-+        if let Err(err) =
-+            // SAFETY: The arguments are all valid per the type invariants.
-+            to_result(unsafe {
-+                bindings::drm_gem_object_init(dev.as_raw(), obj.obj.get(), size)
-+            })
-+        {
-+            // SAFETY: `drm_gem_object_init()` initializes the private GEM object state before
-+            // failing, so `drm_gem_private_object_fini()` is the matching cleanup.
-+            unsafe { bindings::drm_gem_private_object_fini(obj.obj.get()) };
-+            return Err(err);
-+        }
- 
-         // SAFETY: We will never move out of `Self` as `ARef<Self>` is always treated as pinned.
-         let ptr = KBox::into_raw(unsafe { Pin::into_inner_unchecked(obj) });
+--- a/Makefile
++++ b/Makefile
+@@ -486,6 +486,7 @@ export rust_common_flags := --edition=20
+ 			    -Wclippy::as_ptr_cast_mut \
+ 			    -Wclippy::as_underscore \
+ 			    -Wclippy::cast_lossless \
++			    -Aclippy::collapsible_match \
+ 			    -Wclippy::ignored_unit_patterns \
+ 			    -Wclippy::mut_mut \
+ 			    -Wclippy::needless_bitwise_bool \
 
 
 
