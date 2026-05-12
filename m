@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIxcH+JwA2p15wEAu9opvQ
-	(envelope-from <stable+bounces-246525-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:26:42 +0200
+	id 8C6QMuVpA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-245988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:56:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006AF52793D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:26:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458E8526513
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53E4F32991FF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 583A83153F64
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC0536C9E4;
-	Tue, 12 May 2026 18:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A423955D7;
+	Tue, 12 May 2026 17:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBwoagrb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsBZiguT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1C3368972;
-	Tue, 12 May 2026 18:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730FA3955CF;
+	Tue, 12 May 2026 17:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609450; cv=none; b=YPn2fJelKLjMaKgRvU9YLhfMr5/vYpzGjRAY4BXNKu+Rv3WI1xpwBDeQZpuXzqXm5Pkoo/qY3n0wcLf7TFuV1qtDMZnTMIvwI4zQ6qlGB91c3pz/3CGO6oaQgtmHgYkQNGd+NZk40ANRuo5fYhnKrfZWsR2xoIc1LfpZx2rLZU8=
+	t=1778608069; cv=none; b=ZokV2to1UF2sPNlMZzUukJZvgNwUgpqT+wncpBBFzBXR/ste4e2bfurQrEntb5D0mqZvPMdTEP5fUwRbB4wwLszKUjzIIFQvWXt7Q05KE3X8NEuP+lgcdGPgAO5VlWm8ciB8P/mPyqjGa3MP7rq1dkbQ30nw2sxNPBT/xvPa3iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609450; c=relaxed/simple;
-	bh=EQoPxhIvZCdYPCNpfrqEO3DJSBaLZZdw/syknobOJOc=;
+	s=arc-20240116; t=1778608069; c=relaxed/simple;
+	bh=I44x3pAgrX2HlJyIzX5nMNEDFiHJHULKnsGCEc8uN2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnIf98Ep34mMnqMfPyZzdY+7jAXtBvi+7SB2CcuR+sdkr7lwWLZRkVE7FSLBydfaJOhaamQAozX4ejKV9AfKXdn1gAWdyVp38VcBS5t+fwCPGoI2qPsmvVsXoKmGLAY7WTmpif7/sWCkh2aC9NbLF6n8sy5J0NYYU0F97CH/uvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBwoagrb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03173C2BCB0;
-	Tue, 12 May 2026 18:10:49 +0000 (UTC)
+	 MIME-Version; b=BGAJR/WoaVoVTicVhzb/yv4+FQHhXHPjuAvWW9EK4VG4tsEhIsQw3FRbpDPkeB7li95Q0gpk0PAsG5KMV3/edfjWAEkkYn2vndTfzb/7lzHlFUZOkFoUy2gtOJaWKvE2+S27irkJY8mBI8Yr4BpNoBJNExs/ihtGxmY1urn/5ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsBZiguT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A543C2BCB0;
+	Tue, 12 May 2026 17:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609450;
-	bh=EQoPxhIvZCdYPCNpfrqEO3DJSBaLZZdw/syknobOJOc=;
+	s=korg; t=1778608069;
+	bh=I44x3pAgrX2HlJyIzX5nMNEDFiHJHULKnsGCEc8uN2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBwoagrb4535rNtZZ/YagD0BO30lLsp+68/lqp/LlrWa70+t/77eBhsySYhBNFBc7
-	 oYCHAlqsFyXFpgMZI8ZNnkPplpurjDHPvQ4L3Bqjydtz4btBs50CyaR0X5tv38iNgY
-	 D0tgSQjupfvegpMrcYeMnltrabRtukjuCd2uyfwo=
+	b=hsBZiguTFGKn8K1p0cRL3d2aMN6rehODE2c9TJWpE+5g5pV3yfB64yG7b8myhIJac
+	 lPoGoxZNTTnJZGiygntQN4lqT4vW7gde8VPUPhymbRpC3YvQoW/sbU0Ar1x5UdcsTg
+	 XXcz5zLjo6G9q325TbiR7YP6L5864jA2yu3TYPRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 7.0 198/307] libceph: Fix slab-out-of-bounds access in auth message processing
-Date: Tue, 12 May 2026 19:39:53 +0200
-Message-ID: <20260512173944.298605062@linuxfoundation.org>
+	Junxi Qian <qjx1298677004@gmail.com>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 142/206] mm/damon/sysfs-schemes: protect memcg_path kfree() with damon_sysfs_lock
+Date: Tue, 12 May 2026 19:39:54 +0200
+Message-ID: <20260512173935.869081299@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,27 +64,27 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 006AF52793D
+X-Rspamd-Queue-Id: 458E8526513
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246525-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
+	TAGGED_FROM(0.00)[bounces-245988-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -92,67 +93,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tu-ilmenau.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: SeongJae Park <sj@kernel.org>
 
-commit 1c439de70b1c3eb3c6bffa8245c16b9fc318f114 upstream.
+commit 1e68eb96e8beb1abefd12dd22c5637795d8a877e upstream.
 
-If a (potentially corrupted) message of type CEPH_MSG_AUTH_REPLY
-contains a positive value in its result field, it is treated as an
-error code by ceph_handle_auth_reply() and returned to
-handle_auth_reply(). Thereafter, an attempt is made to send the
-preallocated message of type CEPH_MSG_AUTH, where the returned value is
-interpreted as the size of the front segment to send. If the result
-value in the message is greater than the size of the memory buffer
-allocated for the front segment, an out-of-bounds access occurs, and
-the content of the memory region beyond this buffer is sent out.
+Patch series "mm/damon/sysfs-schemes: fix use-after-free for [memcg_]path".
 
-This patch fixes the issue by treating only negative values in the
-result field as errors. Positive values are therefore treated as success
-in the same way as a zero value. Additionally, a BUG_ON is added to
-__send_prepared_auth_request() comparing the len parameter to
-front_alloc_len to prevent sending the message if it exceeds the bounds
-of the allocation and to make it easier to catch any logic flaws leading
-to this.
+Reads of 'memcg_path' and 'path' files in DAMON sysfs interface could race
+with their writes, results in use-after-free.  Fix those.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+
+This patch (of 2):
+
+damon_sysfs_scheme_filter->mmecg_path can be read and written by users,
+via DAMON sysfs memcg_path file.  It can also be indirectly read, for the
+parameters {on,off}line committing to DAMON.  The reads for parameters
+committing are protected by damon_sysfs_lock to avoid the sysfs files
+being destroyed while any of the parameters are being read.  But the
+user-driven direct reads and writes are not protected by any lock, while
+the write is deallocating the memcg_path-pointing buffer.  As a result,
+the readers could read the already freed buffer (user-after-free).  Note
+that the user-reads don't race when the same open file is used by the
+writer, due to kernfs's open file locking.  Nonetheless, doing the reads
+and writes with separate open files would be common.  Fix it by protecting
+both the user-direct reads and writes with damon_sysfs_lock.
+
+Link: https://lore.kernel.org/20260423150253.111520-1-sj@kernel.org
+Link: https://lore.kernel.org/20260423150253.111520-2-sj@kernel.org
+Fixes: 4f489fe6afb3 ("mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write")
+Co-developed-by: Junxi Qian <qjx1298677004@gmail.com>
+Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.16.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/auth.c       |    2 +-
- net/ceph/mon_client.c |    2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ mm/damon/sysfs-schemes.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/net/ceph/auth.c
-+++ b/net/ceph/auth.c
-@@ -257,7 +257,7 @@ int ceph_handle_auth_reply(struct ceph_a
- 		ac->negotiating = false;
- 	}
- 
--	if (result) {
-+	if (result < 0) {
- 		pr_err("auth protocol '%s' mauth authentication failed: %d\n",
- 		       ceph_auth_proto_name(ac->protocol), result);
- 		ret = result;
---- a/net/ceph/mon_client.c
-+++ b/net/ceph/mon_client.c
-@@ -174,6 +174,8 @@ int ceph_monmap_contains(struct ceph_mon
-  */
- static void __send_prepared_auth_request(struct ceph_mon_client *monc, int len)
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -407,9 +407,14 @@ static ssize_t memcg_path_show(struct ko
  {
-+	BUG_ON(len > monc->m_auth->front_alloc_len);
-+
- 	monc->pending_auth = 1;
- 	monc->m_auth->front.iov_len = len;
- 	monc->m_auth->hdr.front_len = cpu_to_le32(len);
+ 	struct damon_sysfs_scheme_filter *filter = container_of(kobj,
+ 			struct damon_sysfs_scheme_filter, kobj);
++	int len;
+ 
+-	return sysfs_emit(buf, "%s\n",
++	if (!mutex_trylock(&damon_sysfs_lock))
++		return -EBUSY;
++	len = sysfs_emit(buf, "%s\n",
+ 			filter->memcg_path ? filter->memcg_path : "");
++	mutex_unlock(&damon_sysfs_lock);
++	return len;
+ }
+ 
+ static ssize_t memcg_path_store(struct kobject *kobj,
+@@ -423,8 +428,13 @@ static ssize_t memcg_path_store(struct k
+ 		return -ENOMEM;
+ 
+ 	strscpy(path, buf, count + 1);
++	if (!mutex_trylock(&damon_sysfs_lock)) {
++		kfree(path);
++		return -EBUSY;
++	}
+ 	kfree(filter->memcg_path);
+ 	filter->memcg_path = path;
++	mutex_unlock(&damon_sysfs_lock);
+ 	return count;
+ }
+ 
 
 
 
