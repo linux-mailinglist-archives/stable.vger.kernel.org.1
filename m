@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-246572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246033-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CKBCRd1A2oV6AEAu9opvQ
-	(envelope-from <stable+bounces-246572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:44:39 +0200
+	id UHreH4JqA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246033-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D475280CD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C71C652671B
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8DC3332CD527
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A91A23184FFA
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B282343D9D;
-	Tue, 12 May 2026 18:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D453955CC;
+	Tue, 12 May 2026 17:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+HQi4qm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Una/zLJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AB1368D56;
-	Tue, 12 May 2026 18:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE0C3EDE66;
+	Tue, 12 May 2026 17:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609569; cv=none; b=SliIGT2MmH9e1H8N0uEuSjWmQrFi/mHInJibYhxSFa6ZkPDuI22G6AlJEOrM5KDnkovzwnpBk6xBrLYqjDrAU+CCujOBbzRCPJrjdUAtETr+zcLkS9WNSJ8wHFv3zfQLXJIR3poNomeA9X2F5GMs4MOqS+11cFXQsP/WLBEcUMg=
+	t=1778608186; cv=none; b=BU20xfzA4KqskRNDrdvBl+CPsmFHliwofJrdgSZxn7iUO5QS7ArN0272mlxytPXs/M+rM2bDj9pQXCYr/oebbUchN+YAIm/xBHzwFv/5S5I21VZm0DoBgo8zZ7Fq6ey7KmGPOxUSpY9c2a0ST3kCV2U9L++wUSuIYBQoCQgRWaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609569; c=relaxed/simple;
-	bh=fmiYJlwM0ihFw1o0AbrOopFWPvXHzqW347Ovmwobuj4=;
+	s=arc-20240116; t=1778608186; c=relaxed/simple;
+	bh=gzlw+KUuTmaJWJ1Vk1WouWVM9+5PX2PPiTwSG0sVKzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P9r/Oan9drvYYhSh6oimhRMlHjoAgW6wPOXSqZAtwSV9s6h2nyukA9m62L/i7D5UPWY76bSdhu0HZT8s7TI/aftQ0V42kUnZMa6K0ySghEZoewoyUbsE2I+DGBHMUu0fKzCKh4dPmlhV5pZCultUzHlod0smbQBDSo6LDDWhyQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+HQi4qm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE53C2BCB0;
-	Tue, 12 May 2026 18:12:48 +0000 (UTC)
+	 MIME-Version; b=q3NDTYkTBB4O2FGd6Sg/E0JQXlOk8ypDBNVz68VYRotmKHV1vz3yBGRjWoF5Ak1xKEFiU/3Xf+fmu3KPE8q1NuVMQqlNa5mu0JjiNMyyFSNswbVW14SXNB+4bzvtzRxa+Ekq3RqRe7qxFQTsWiW5rc+bcZw8ucoPGIhsE0jKUOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Una/zLJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E88C2BCB0;
+	Tue, 12 May 2026 17:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609568;
-	bh=fmiYJlwM0ihFw1o0AbrOopFWPvXHzqW347Ovmwobuj4=;
+	s=korg; t=1778608185;
+	bh=gzlw+KUuTmaJWJ1Vk1WouWVM9+5PX2PPiTwSG0sVKzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+HQi4qmi0lM4gkkJlTGg19UugsUNPHY03otykH43NnABeIgkLQgZZ/0X82pE85Xp
-	 HVir/7t4yow3Z421Dau2g/qGrSrsZ0vLS90qL3DT1G4Dwauy15zQYH4mTFL2sdQJKd
-	 Mf43ktncfzCMq/NaCAvIi/nvY00gFIv9v2MErGt0=
+	b=Una/zLJ4jZp9wB9BLPbVY9YJm+wpj9a0gDqvHyz+ttCZrR+7fF/5myirgQ1+bi+eL
+	 eoTv1zyacPNR4NTwfMouUyPP9tZnMD6MCYj6JMGiB4I1bBrT9TC0iLZpfbGuIMVD/g
+	 BI78Y5IoSkfqsNFIGUkWCyDboGHhN5ff19g0p1jM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Peng Fan <peng.fan@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 7.0 244/307] remoteproc: imx_rproc: Fix NULL vs IS_ERR() bug in imx_rproc_addr_init()
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 187/206] mtd: spinand: winbond: Declare the QE bit on W25NxxJW
 Date: Tue, 12 May 2026 19:40:39 +0200
-Message-ID: <20260512173945.272694756@linuxfoundation.org>
+Message-ID: <20260512173936.826184970@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 86D475280CD
+X-Rspamd-Queue-Id: C71C652671B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246572-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246033-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,45 +88,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 665eebebb029690a5b2f92e481020877cc6c8d36 upstream.
+[ Upstream commit 7866ce992cf0d3c3b50fe8bf4acb1dbb173a2304 ]
 
-The devm_ioremap_resource_wc() function never returns NULL, it returns
-error pointers.  Update the error checking to match.
+Factory default for this bit is "set" (at least on the chips I have),
+but we must make sure it is actually set by Linux explicitly, as the
+bit is writable by an earlier stage.
 
-Fixes: 67a7bc7f0358 ("remoteproc: Use of_reserved_mem_region_* functions for "memory-region"")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Fixes: 6a804fb72de5 ("mtd: spinand: winbond: add support for serial NAND flash")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20260227091546.4044246-1-nichen@iscas.ac.cn
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+[ adapted chip name W25N02JW to W25N02JWZEIF and applied flag change via read_cache_variants context instead of read_cache_dual_quad_dtr_variants ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/imx_rproc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/spi/winbond.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -812,7 +812,7 @@ static int imx_rproc_addr_init(struct im
- 
- 		/* Not use resource version, because we might share region */
- 		priv->mem[b].cpu_addr = devm_ioremap_resource_wc(&pdev->dev, &res);
--		if (!priv->mem[b].cpu_addr) {
-+		if (IS_ERR(priv->mem[b].cpu_addr)) {
- 			dev_err(dev, "failed to remap %pr\n", &res);
- 			return -ENOMEM;
- 		}
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -240,7 +240,7 @@ static const struct spinand_info winbond
+ 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+-		     0,
++		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&w25n01jw_ooblayout, NULL)),
+ 	SPINAND_INFO("W25N02JWZEIF",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xbf, 0x22),
+@@ -249,7 +249,7 @@ static const struct spinand_info winbond
+ 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+-		     0,
++		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
+ 	SPINAND_INFO("W25N512GW",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xba, 0x20),
 
 
 
