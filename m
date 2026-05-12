@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-245944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDN/Fq1oA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:41 +0200
+	id wC7OGnZqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8985263A5
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:51:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1B05266F3
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B300B30FBAEF
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:45:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E9133306E51A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F2921FF21;
-	Tue, 12 May 2026 17:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5F336A378;
+	Tue, 12 May 2026 17:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mChtL9QA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGD9TSy8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4403E3D9693;
-	Tue, 12 May 2026 17:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDCF3EDE41;
+	Tue, 12 May 2026 17:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607957; cv=none; b=HWDFAQhg0RNEe3N2LbdCsPXQW6jQkVxwe+wVnOwF41MubeiIXsZSnIAqrVLwwgcuXB84885oWbo/GVZdknEYZAICyUqJSsqqoSZkKvmv9Z9P6eQ26Z992guJszqKAwjNocmnIx+plsTEY9+1R0vYODviqAwv+kEEd7BF4EZHxgI=
+	t=1778608621; cv=none; b=FzwFf6kVU7nBgutYY2T9MnHLTxEwi5uuIYLdf2yl41JHk+BwXO78202Em/NzNmmZKmcgYdzUuwDuJwk+9+XZLO+v381IaL6EYCcAqEMd5GxgECAMOlezpL0/clKjfHtux4WRwm3Kn9UXhUcABJ5NRLeh+N7+tX26viYIoLqm7v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607957; c=relaxed/simple;
-	bh=kZnrlTl5U2zDjPl+Dao4Yb13ghNl3NfxmMuyFyb5hek=;
+	s=arc-20240116; t=1778608621; c=relaxed/simple;
+	bh=2oFHIkWHEUhG8Y3F4ngpHSMfVZmiCiNVEFJ+jbwTpLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIxLl6nDy2/pOxFaiNetnBhEIQvFbfhwBTfx03AmMqlvQHBfC3xnpB5Yq7tQNeDAM6sNwtn6nVPHRMG562TTCUwsMvygMfV9R/A+Kboz9HGCN6pf8/A6hWVsC7/2SiJ337RNQd7yaMw91Ng76jb8BpuBzKuH9+k5X9E4mUfgDBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mChtL9QA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5D9C2BCB0;
-	Tue, 12 May 2026 17:45:56 +0000 (UTC)
+	 MIME-Version; b=B9apsKGC2x5es0XXo11/apxz13VGLE3BfsOHSA4Q+cDLlerXk4MMvUU6lkYJU7j50GKgcJntFJ1J+KatzFEHYa/gHjFMmxHDhft5aV7KEUlzLLQl+330YoqeYni+BIciY2b2P3hy4kvMZxuFj2Ape4+RF/16XA+rsGCNkWRc2SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGD9TSy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B29C2BCB0;
+	Tue, 12 May 2026 17:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607957;
-	bh=kZnrlTl5U2zDjPl+Dao4Yb13ghNl3NfxmMuyFyb5hek=;
+	s=korg; t=1778608621;
+	bh=2oFHIkWHEUhG8Y3F4ngpHSMfVZmiCiNVEFJ+jbwTpLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mChtL9QA0CaiM9IwzREpEi5iVbI50n9ANRpPoipQE0uGC9XIw3tcGkcqQ6B3YqG4i
-	 kw7+RPW3PK+Ud6CHiEDREMvDCzs7oPHur3/1O7Gsi/6AKpFbC3oYSg2tarX62izad1
-	 hVQXpsCCfRt/A0YwuUOf79qo12RtgpTEbOahfXFg=
+	b=fGD9TSy8tnHXAVkAxh2xgxpfkrjKa7s+AW7FYXrw/K+5duzffSghFWasdn2oevk5B
+	 jIzC1sptq5GV+kixC1jGC3Uv3a/ZauW43uXFXBpkQH8br3ehspjJG2UbPtEVO+62KW
+	 AL0WHv55jaF6IRzFNA52ig6MeDyQ0/QYbtvoXY9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.12 099/206] udf: reject descriptors with oversized CRC length
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.18 150/270] dm-thin: fix metadata refcount underflow
 Date: Tue, 12 May 2026 19:39:11 +0200
-Message-ID: <20260512173934.955487124@linuxfoundation.org>
+Message-ID: <20260512173941.608979123@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EA8985263A5
+X-Rspamd-Queue-Id: 0C1B05266F3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245944-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246202-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.cz:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 55d41b0a20128e86b9e960dd2e3f0a2d69a18df7 upstream.
+commit 09a65adc7d8bbfce06392cb6d375468e2728ead5 upstream.
 
-udf_read_tagged() skips CRC verification when descCRCLength +
-sizeof(struct tag) exceeds the block size.  A crafted UDF image can
-set descCRCLength to an oversized value to bypass CRC validation
-entirely; the descriptor is then accepted based solely on the 8-bit
-tag checksum, which is trivially recomputable.
+There's a bug in dm-thin in the function rebalance_children. If the
+internal btree node has one entry, the code tries to copy all btree
+entries from the node's child to the node itself and then decrement the
+child's reference count.
 
-Reject such descriptors instead of silently accepting them.  A
-legitimate single-block descriptor should never have a CRC length that
-exceeds the block.
+If the child node is shared (it has reference count > 1), we won't free
+it, so there would be two pointers to each of the grandchildren nodes.
+But the reference counts of the grandchildren is not increased, thus the
+reference count doesn't match the number of pointers that point to the
+grandchildren. This results in "device mapper: space map common: unable
+to decrement block" errors.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fix this bug by incrementing reference counts on the grandchildren if the
+btree node is shared.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 3241b1d3e0aa ("dm: add persistent data library")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260413211240.853662-1-michael.bommarito@gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/misc.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/md/persistent-data/dm-btree-remove.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/udf/misc.c
-+++ b/fs/udf/misc.c
-@@ -230,8 +230,12 @@ struct buffer_head *udf_read_tagged(stru
- 	}
+--- a/drivers/md/persistent-data/dm-btree-remove.c
++++ b/drivers/md/persistent-data/dm-btree-remove.c
+@@ -490,12 +490,20 @@ static int rebalance_children(struct sha
  
- 	/* Verify the descriptor CRC */
--	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize ||
--	    le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
-+	if (le16_to_cpu(tag_p->descCRCLength) + sizeof(struct tag) > sb->s_blocksize) {
-+		udf_err(sb, "block %u: CRC length %u exceeds block size\n",
-+			block, le16_to_cpu(tag_p->descCRCLength));
-+		goto error_out;
-+	}
-+	if (le16_to_cpu(tag_p->descCRC) == crc_itu_t(0,
- 					bh->b_data + sizeof(struct tag),
- 					le16_to_cpu(tag_p->descCRCLength)))
- 		return bh;
+ 	if (le32_to_cpu(n->header.nr_entries) == 1) {
+ 		struct dm_block *child;
++		int is_shared;
+ 		dm_block_t b = value64(n, 0);
+ 
++		r = dm_tm_block_is_shared(info->tm, b, &is_shared);
++		if (r)
++			return r;
++
+ 		r = dm_tm_read_lock(info->tm, b, &btree_node_validator, &child);
+ 		if (r)
+ 			return r;
+ 
++		if (is_shared)
++			inc_children(info->tm, dm_block_data(child), vt);
++
+ 		memcpy(n, dm_block_data(child),
+ 		       dm_bm_block_size(dm_tm_get_bm(info->tm)));
+ 
 
 
 
