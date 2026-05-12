@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-245928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEjCB1VoA2qa5gEAu9opvQ
-	(envelope-from <stable+bounces-245928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:50:13 +0200
+	id MF8zBmhsA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC965262F8
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88073526D04
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:07:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B21BB30DE84C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:45:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0ED153236305
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540B53E0739;
-	Tue, 12 May 2026 17:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C7039060B;
+	Tue, 12 May 2026 17:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfMXasTW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeOM7nPL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAA833B6E8;
-	Tue, 12 May 2026 17:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85703BB106;
+	Tue, 12 May 2026 17:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778607916; cv=none; b=a3Qq/iQDKDGu1qosPt0KYvbUsdvKSaWv1UasTIfD1pdrmHRX73UZCkhA5xNwuLmXhSvUrYdtYSTSkkWETlNwlTR9G6V5Psjc1BSTk2ZnkBJuqfaKVS37qJNHhnSZTk5WF+JbqokCuyyTCGcvIvlNCufGmoRZOg+/vW8rV3vOQaE=
+	t=1778608584; cv=none; b=YcRDCxDIU7F4DSfqucybpWuWxxicxVadk63c9jcSkCZM8U/pQ8FIGKM/CpmReJ5B7+bmLZbHTo4taGhegDEY2ov1HT91d3qCRQPZIAo/QQhei6bh7YeQH4zjSbLMS2xU2Hq8kcrEr8paPYtrCcCukabnJr+6F5/lsvBpRzfo12M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778607916; c=relaxed/simple;
-	bh=65Go8eplAufQ8iHblHS02Gdz+MbpzpgPz6MB0w4oLOI=;
+	s=arc-20240116; t=1778608584; c=relaxed/simple;
+	bh=S2XMlmduH34w/Grx5pl+GXlvTy55A7AP7whliyZxyCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mftsV0TOePWe2vaAOzPzTxKp9iEV3pm/6JtqEoIatj5qYkdkNHBlSJeZgYRTI9vct9Aq1bQ6BLsan7OdScKUH0wR3q/OrYKiXAhKV353InOhS/2ltuC7KPbmk0Hy65uCilr7H4MQ3vmw+xOEgG5w1B3nV9i/1M+Hxck52xYZOog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfMXasTW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941C8C2BCB0;
-	Tue, 12 May 2026 17:45:15 +0000 (UTC)
+	 MIME-Version; b=tgwHSr/+CIqe+9zH+cgqhYBIv9smV28J4pCehPqD7psAUOlCH5YmsudGIgqYixCn7HB0R+uihygpnE0stqEbvlRBvTsBB/QdncvkVHrkYE01q2MXZ2mB50CxWZhgxnM8X8bmVe/Qnu016dIa9xwWc1MvWaD38rBq0NfFg66ub50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeOM7nPL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FAFC2BCB0;
+	Tue, 12 May 2026 17:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778607915;
-	bh=65Go8eplAufQ8iHblHS02Gdz+MbpzpgPz6MB0w4oLOI=;
+	s=korg; t=1778608584;
+	bh=S2XMlmduH34w/Grx5pl+GXlvTy55A7AP7whliyZxyCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfMXasTWqWRz5NW5ZaEyn+L7kDTd+vQMswfDhw/FbTuyFGSO7EvDV358TZNjVUouo
-	 mz+2TKGzVOhxhrX5/I1GDDvnnYw8yx7cplgVEN+TJ/DSd1lfSLtQmkKQnPiyHw4vkh
-	 i2rtV2LU/LXmojJDKegoZRpPGCHlVKdp1FQY0ZFQ=
+	b=XeOM7nPLPwOKB9AA8ZjHLFoUM8lZMTihmdxuXbTKiwm/MdKRRLOKcgYCTE+IzYQad
+	 VVaw2xWWeB1uZeFsNSi6EEWNiXdQxI04dMpHNkKjxnuFt8Y64F+Ljn43hQ8/LYXnRn
+	 DMCe2SVsW0KXigPBNLmyS2wVjkIjmdaVXqySGEyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.12 085/206] hwmon: (ltc2992) Clamp threshold writes to hardware range
-Date: Tue, 12 May 2026 19:38:57 +0200
-Message-ID: <20260512173934.651676341@linuxfoundation.org>
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.18 137/270] tracing/probes: Limit size of event probe to 3K
+Date: Tue, 12 May 2026 19:38:58 +0200
+Message-ID: <20260512173941.337269117@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9AC965262F8
+X-Rspamd-Queue-Id: 88073526D04
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-245928-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246188-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,126 +89,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[efficios.com:email,goodmis.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit d6cc7c99bf1f73eda7d565d224d791d16239bb41 upstream.
+commit b2aa3b4d64e460ac606f386c24e7d8a873ce6f1a upstream.
 
-ltc2992_set_voltage(), ltc2992_set_current(), and ltc2992_set_power()
-do not validate the user-supplied value before converting it to a
-register value. This can result in:
+There currently isn't a max limit an event probe can be. One could make an
+event greater than PAGE_SIZE, which makes the event useless because if
+it's bigger than the max event that can be recorded into the ring buffer,
+then it will never be recorded.
 
-1. Negative input values wrapping to large positive register values.
-   For power, the negative long is implicitly cast to u64 in
-   mul_u64_u32_div(), producing an incorrect value. For voltage and
-   current, the negative converted value wraps when passed to
-   ltc2992_write_reg() as a u32.
+A event probe should never need to be greater than 3K, so make that the
+max size. As long as the max is less than the max that can be recorded
+onto the ring buffer, it should be fine.
 
-2. Intermediate arithmetic exceeding the range representable in u64 on
-   64-bit platforms. In ltc2992_set_voltage(), (u64)val * 1000 can
-   exceed U64_MAX when val is a large positive long. In
-   ltc2992_set_current(), (u64)val * r_sense_uohm can overflow
-   similarly. In ltc2992_set_power(), the computed value may not fit
-   in u64.
-
-3. Register values exceeding the hardware field width. Voltage and
-   current threshold registers are 12-bit (stored left-justified in
-   16 bits), and power threshold registers are 24-bit. Without
-   clamping, bits above the field width are truncated in
-   ltc2992_write_reg().
-
-Fix by clamping negative values to zero, clamping positive values to
-the rounded hardware-representable maximum (the value returned by the
-read path for a full-scale register) to prevent intermediate overflow,
-and clamping the converted register value to the hardware field width
-before writing. The existing conversion formula and rounding behavior
-are preserved.
-
-In the power write path, cancel the factor of 1000 from both the
-numerator (r_sense_uohm * 1000) and the denominator
-(VADC_UV_LSB * IADC_NANOV_LSB) to also eliminate a u32 overflow of
-r_sense_uohm * 1000 when r_sense_uohm exceeds about 4.29 ohms.
-
-Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260416215904.101969-2-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 93ccae7a22274 ("tracing/kprobes: Support basic types on dynamic events")
+Link: https://patch.msgid.link/20260428122302.706610ba@gandalf.local.home
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ltc2992.c |   35 ++++++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 7 deletions(-)
+ kernel/trace/trace_probe.c |    6 ++++++
+ kernel/trace/trace_probe.h |    4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/hwmon/ltc2992.c
-+++ b/drivers/hwmon/ltc2992.c
-@@ -421,10 +421,16 @@ static int ltc2992_get_voltage(struct lt
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -1523,6 +1523,12 @@ static int traceprobe_parse_probe_arg_bo
+ 	parg->offset = *size;
+ 	*size += parg->type->size * (parg->count ?: 1);
  
- static int ltc2992_set_voltage(struct ltc2992_state *st, u32 reg, u32 scale, long val)
- {
--	val = DIV_ROUND_CLOSEST(val * 1000, scale);
--	val = val << 4;
-+	u32 reg_val;
-+	long vmax;
++	if (*size > MAX_PROBE_EVENT_SIZE) {
++		ret = -E2BIG;
++		trace_probe_log_err(ctx->offset, EVENT_TOO_BIG);
++		goto fail;
++	}
 +
-+	vmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * scale, 1000);
-+	val = max(val, 0L);
-+	val = min(val, vmax);
-+	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * 1000, scale),
-+		      0xFFFULL) << 4;
+ 	if (parg->count) {
+ 		len = strlen(parg->type->fmttype) + 6;
+ 		parg->fmt = kmalloc(len, GFP_KERNEL);
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -38,6 +38,7 @@
+ #define MAX_BTF_ARGS_LEN	128
+ #define MAX_DENTRY_ARGS_LEN	256
+ #define MAX_STRING_SIZE		PATH_MAX
++#define MAX_PROBE_EVENT_SIZE	3072
  
--	return ltc2992_write_reg(st, reg, 2, val);
-+	return ltc2992_write_reg(st, reg, 2, reg_val);
- }
+ /* Reserved field names */
+ #define FIELD_STRING_IP		"__probe_ip"
+@@ -561,7 +562,8 @@ extern int traceprobe_define_arg_fields(
+ 	C(BAD_TYPE4STR,		"This type does not fit for string."),\
+ 	C(NEED_STRING_TYPE,	"$comm and immediate-string only accepts string type"),\
+ 	C(TOO_MANY_ARGS,	"Too many arguments are specified"),	\
+-	C(TOO_MANY_EARGS,	"Too many entry arguments specified"),
++	C(TOO_MANY_EARGS,	"Too many entry arguments specified"),	\
++	C(EVENT_TOO_BIG,	"Event too big (too many fields?)"),
  
- static int ltc2992_read_gpio_alarm(struct ltc2992_state *st, int nr_gpio, u32 attr, long *val)
-@@ -549,9 +555,15 @@ static int ltc2992_get_current(struct lt
- static int ltc2992_set_current(struct ltc2992_state *st, u32 reg, u32 channel, long val)
- {
- 	u32 reg_val;
-+	long cmax;
- 
--	reg_val = DIV_ROUND_CLOSEST(val * st->r_sense_uohm[channel], LTC2992_IADC_NANOV_LSB);
--	reg_val = reg_val << 4;
-+	cmax = DIV_ROUND_CLOSEST_ULL(0xFFFULL * LTC2992_IADC_NANOV_LSB,
-+				     st->r_sense_uohm[channel]);
-+	val = max(val, 0L);
-+	val = min(val, cmax);
-+	reg_val = min(DIV_ROUND_CLOSEST_ULL((u64)val * st->r_sense_uohm[channel],
-+					    LTC2992_IADC_NANOV_LSB),
-+		      0xFFFULL) << 4;
- 
- 	return ltc2992_write_reg(st, reg, 2, reg_val);
- }
-@@ -624,9 +636,18 @@ static int ltc2992_get_power(struct ltc2
- static int ltc2992_set_power(struct ltc2992_state *st, u32 reg, u32 channel, long val)
- {
- 	u32 reg_val;
-+	u64 pmax, uval;
- 
--	reg_val = mul_u64_u32_div(val, st->r_sense_uohm[channel] * 1000,
--				  LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB);
-+	uval = max(val, 0L);
-+	pmax = mul_u64_u32_div(0xFFFFFFULL,
-+			       LTC2992_VADC_UV_LSB / 1000 *
-+			       LTC2992_IADC_NANOV_LSB,
-+			       st->r_sense_uohm[channel]);
-+	uval = min(uval, pmax);
-+	reg_val = min(mul_u64_u32_div(uval, st->r_sense_uohm[channel],
-+				      LTC2992_VADC_UV_LSB / 1000 *
-+				      LTC2992_IADC_NANOV_LSB),
-+		      0xFFFFFFULL);
- 
- 	return ltc2992_write_reg(st, reg, 3, reg_val);
- }
+ #undef C
+ #define C(a, b)		TP_ERR_##a
 
 
 
