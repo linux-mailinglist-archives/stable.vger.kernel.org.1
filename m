@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-246070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246366-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOqZEvZqA2rf5gEAu9opvQ
-	(envelope-from <stable+bounces-246070-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:26 +0200
+	id AG8OBWVwA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246366-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:24:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1AC526873
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63BD4527864
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1502531B30FE
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:52:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA2D830733D0
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA43EDE49;
-	Tue, 12 May 2026 17:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CA4343D9D;
+	Tue, 12 May 2026 18:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eo7wZ/VR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDYVuUPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C283EDE4B;
-	Tue, 12 May 2026 17:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7DF3EDE5D;
+	Tue, 12 May 2026 18:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608281; cv=none; b=rilYHQlrGylhZaOmTBvEuDUJ6aDsJjhfQjN2pCDjV7iovY0dZbvFdtfMfdvi1NPVPUkP0knk/tt8SWWPkLEW1nhav2m7Mwb/Szv2MIJHFVzzh0ngZRpHviuwsG7umXVGAqJUsQeXc4oXaYTIA0HygmdmMk7gCIYUfWvgH+hs0qk=
+	t=1778609041; cv=none; b=k6Sa3UFE7mr7rZ9VY0lQO9tMzfaFxKd5eULgCa23Wc+gcGt6iYalO87b3dHRdi6j2+Hk5FtXRaJtIYcYNIdgYzyg2mCWuFb2nZZjzcgib5RoK27Ws/Jp86heu7FGoMbpaR+a+k5YAeqSu0bOdVR8nDz5SnTuk51gJb/eCJ23JQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608281; c=relaxed/simple;
-	bh=r6iGfvEkABTRsQCaOzhJ+9EtOFpe0/NJFhEL5nlRTQw=;
+	s=arc-20240116; t=1778609041; c=relaxed/simple;
+	bh=j1kqhjg/VQbavXrYRepnNIbGPMBXSJLSN25JFAXi75Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ge9mHbxIcp7gFvnUfdFwcZJ2c0wI+Z1eR8xZCl8weM5cbOnpSg+xly8J18BC7dzWrreGc6S/v99jr3xKEHMHId/dMvt1umj5lf02dbncd9c3umZfkcWChFLMl5/heHOUSKD7jBh+ZNiqFprPsmBRnNCq6/7O21Zs1wv1++DGDaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eo7wZ/VR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF20C2BCC7;
-	Tue, 12 May 2026 17:51:20 +0000 (UTC)
+	 MIME-Version; b=HVWPDHk97HFdoyuzBM2M6IuDyt3XsDlBXB+VlJLp7xVPYsU10J7XYGB7KlvwhkLU5q2tJAJ0MWcpJlQnvttXkHriXwQmTNh5nyvL2cOj+z/01KgmVSrzbP4Zo80aoypVXDJi3pywQZdD0taKP0BXn0gXIRx0uYg82xpmph9xsDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDYVuUPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D854BC2BCB0;
+	Tue, 12 May 2026 18:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608280;
-	bh=r6iGfvEkABTRsQCaOzhJ+9EtOFpe0/NJFhEL5nlRTQw=;
+	s=korg; t=1778609041;
+	bh=j1kqhjg/VQbavXrYRepnNIbGPMBXSJLSN25JFAXi75Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eo7wZ/VR5URPMkOS0IAjEqdIPUZCYoDIttH79EGmofXA6X7KKPP6Vn/S1+mRycMLq
-	 0hsiFr1Y9MoXnlCh80iKlc9XF2EriM/Qw62vAzbyW344ZmwRdezpvJE41QN3WuVO7r
-	 AOvTppe/YjEQTtLnjAa4mlliHmR7BFD4ZHwRBxgY=
+	b=ZDYVuUPE/L3dh7gBYZoATm49lyueEE4GjTFp6EyzRxVyJDsJondDP2vZBZ72nvPV5
+	 8kvLijdEUDphApWTFLTmKUbDItZpgJ+7AIVey6lxxEcDahAfgkFK5LW/ECPmc578f+
+	 Q3ePMepSulAdgxgqWlnO/kzuCealpWJPVf82AQgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gang Yan <yangang@kylinos.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 019/270] mptcp: sync the msk->sndbuf at accept() time
+	Quan Zhou <quan.zhou@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 7.0 025/307] wifi: mt76: mt7921: fix ROC abort flow interruption in mt7921_roc_work
 Date: Tue, 12 May 2026 19:37:00 +0200
-Message-ID: <20260512173938.861898101@linuxfoundation.org>
+Message-ID: <20260512173940.656622079@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9E1AC526873
+X-Rspamd-Queue-Id: 63BD4527864
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -76,97 +75,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246070-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246366-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nbd.name:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Quan Zhou <quan.zhou@mediatek.com>
 
-commit fcf04b14334641f4b0b8647824480935e9416d52 upstream.
+commit fdfa39f9f4fbae532b162da913a67b2410caf38f upstream.
 
-On passive MPTCP connections, the msk sndbuf is not updated correctly.
+The mt7921_set_roc API may be executed concurrently with mt7921_roc_work,
+specifically between the following code paths:
 
-The root cause is an order issue in the accept path:
+- The check and clear of MT76_STATE_ROC in mt7921_roc_work:
+    if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
+        return;
 
-- tcp_check_req() -> subflow_syn_recv_sock() -> mptcp_sk_clone_init()
-  calls __mptcp_propagate_sndbuf() to copy the ssk sndbuf into msk
+- The execution of ieee80211_iterate_active_interfaces.
 
-- Later, tcp_child_process() -> tcp_init_transfer() ->
-  tcp_sndbuf_expand() grows the ssk sndbuf.
+This race condition can interrupt the ROC abort flow, resulting in
+the ROC process failing to abort as expected.
 
-So __mptcp_propagate_sndbuf() runs before the ssk sndbuf has been
-expanded and the msk ends up with a much smaller sndbuf than the
-subflow:
+To address this defect, the modification of MT76_STATE_ROC is now
+protected by mt792x_mutex_acquire(phy->dev). This ensures that
+changes to the ROC state are properly synchronized, preventing
+race conditions and ensuring the ROC abort flow is not interrupted.
 
-  MPTCP: msk->sndbuf:20480, msk->first->sndbuf:2626560
-
-Fix this by moving the __mptcp_propagate_sndbuf() call from
-mptcp_sk_clone_init() -- the ssk sndbuf is not yet finalized there -- to
-__mptcp_propagate_sndbuf() at accept() time, when the ssk sndbuf has
-been fully expanded by tcp_sndbuf_expand().
-
-Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
+Fixes: 034ae28b56f1 ("wifi: mt76: mt7921: introduce remain_on_channel support")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/602
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260420-net-mptcp-sync-sndbuf-accept-v1-1-e3523e3aeb44@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ No conflicts, but move __mptcp_propagate_sndbuf() above the for-loop
-  (mptcp_for_each_subflow()) present in this version, which will modify
-  'subflow' used by __mptcp_propagate_sndbuf() in this new patch. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Reviewed-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/2568ece8b557e5dda79391414c834ef3233049b6.1769133724.git.quan.zhou@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 09e1a93b7daab..c805d36fe50d5 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3428,7 +3428,6 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 	 * uses the correct data
- 	 */
- 	mptcp_copy_inaddrs(nsk, ssk);
--	__mptcp_propagate_sndbuf(nsk, ssk);
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -387,10 +387,11 @@ void mt7921_roc_work(struct work_struct
+ 	phy = (struct mt792x_phy *)container_of(work, struct mt792x_phy,
+ 						roc_work);
  
- 	mptcp_rcv_space_init(msk, ssk);
- 	msk->rcvq_space.time = mptcp_stamp();
-@@ -4027,6 +4026,8 @@ static int mptcp_stream_accept(struct socket *sock, struct socket *newsock,
- 		msk = mptcp_sk(newsk);
- 		msk->in_accept_queue = 0;
- 
-+		__mptcp_propagate_sndbuf(newsk, mptcp_subflow_tcp_sock(subflow));
-+
- 		/* set ssk->sk_socket of accept()ed flows to mptcp socket.
- 		 * This is needed so NOSPACE flag can be set from tcp stack.
- 		 */
--- 
-2.53.0
-
+-	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
+-		return;
+-
+ 	mt792x_mutex_acquire(phy->dev);
++	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state)) {
++		mt792x_mutex_release(phy->dev);
++		return;
++	}
+ 	ieee80211_iterate_active_interfaces(phy->mt76->hw,
+ 					    IEEE80211_IFACE_ITER_RESUME_ALL,
+ 					    mt7921_roc_iter, phy);
 
 
 
