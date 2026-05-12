@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-246566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246029-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cML4BlxxA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:44 +0200
+	id UNOQLWxqA2rF5gEAu9opvQ
+	(envelope-from <stable+bounces-246029-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23BC5279A9
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BA65266C8
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B489132CA7B0
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85537317AFF5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F441349AF5;
-	Tue, 12 May 2026 18:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC95D3EDE64;
+	Tue, 12 May 2026 17:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lB6FOQ4m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9IBDLw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8CF352F86;
-	Tue, 12 May 2026 18:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA793EDE46;
+	Tue, 12 May 2026 17:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609556; cv=none; b=KW+tnkpLilUPQyvVKKqJ7UI14Vn0YYjVYUWjQ7rUvX/O388QV7xyOJXmB+wM6s/2r7+Lx0zYJiKHLbuLIyrnhFnnCxmOLpr1cWC5Da3PRJHulmgQFS5KNe26walJrBW0vjw1+awQc7MgB4XdBVegKXzyTmUeeXOur8wCJFAsLXg=
+	t=1778608175; cv=none; b=QJy5s4ybYTWTa0FcgNFZm0IpqyhrH3Vf3+ADzsufkmv/PNDWa2UcjgcvpqiqF82g2bRMn4ySWXQ27NnuBpkFpb1ntsio/npR/bIJaoQHp6yJJyMHSvYxtDUiiSqG7yVNSTXDNsfku1KIozxv5dHEMhMMFOTmn/aDglqCMD1FmRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609556; c=relaxed/simple;
-	bh=/jHY/82Pi3OvOkGcZUyfK/sCNJYiSbYMa2i3v74XIks=;
+	s=arc-20240116; t=1778608175; c=relaxed/simple;
+	bh=InBOl4qVCdo3s/gqxq0zTs4/8wuy1nxo5/EtunvUE1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DP4eeuMPhinjs02j3XyevuBmmaVvcFqFY5c3/eG6tA4ljXbDvP7WREgfj7p38VpVk0u4EOoxy1retfgMZ8ePIPC0GnMtJHxGcqOdeZ7Rj5DPlP9Z5bK1988GI4gm19YIXyklFPsUkzhYDhaGS+Sy8fDv3BlZVEWIaAKFb1Gyhus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lB6FOQ4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD42C2BCB0;
-	Tue, 12 May 2026 18:12:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qBUTYIZHhAyLYz5Q0m0emco5k71o+4uc2QL8dPysIAQyXEsICKhnS+Z/Nnac9pzE0mt6j0ZRvsUR6UjJ6U8basqZtAEVsoszCiFhO8nynAPubflLL4rbREl0yta7PER1Zwt46s898IUszGL4XgwaVTGg/gh0CytxiUlLFmtqz4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9IBDLw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A38C2BCF6;
+	Tue, 12 May 2026 17:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609556;
-	bh=/jHY/82Pi3OvOkGcZUyfK/sCNJYiSbYMa2i3v74XIks=;
+	s=korg; t=1778608175;
+	bh=InBOl4qVCdo3s/gqxq0zTs4/8wuy1nxo5/EtunvUE1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lB6FOQ4macnC0EWOPaRGO/kzpTSXrIqtUIeRxHlgmPF1K+/PmEmCl/HJ7zf/E/z8g
-	 fDQUuV23ETUHCmlS66qJPQehOh8XaMfFw8/l7+R55aSsd1BI3ZBpQJO/DFC1AWAA17
-	 Xr58L2Qz6MNRQ5YB2MG1jidTV/C8q60jOSL0++to=
+	b=r9IBDLw0GByvykpTcNPiE+Vjqi5rD1bgvQ/uDpdgDCYwf6Hf1FAb/0b0iQCZu9Hhm
+	 ArQiTy8I7u+CjLPgJQQflctikW7aXyKuV5RBtfmh5ZYeQcrQ+uas86OM/bUQ4W6BWs
+	 +ZxipzUwgBc4oJDn3wNTqzY6TcKT00Hzw9fYtMpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 7.0 240/307] RDMA/ocrdma: Dont NULL deref uctx on errors in ocrdma_copy_pd_uresp()
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 183/206] hwmon: (powerz) Avoid cacheline sharing for DMA buffer
 Date: Tue, 12 May 2026 19:40:35 +0200
-Message-ID: <20260512173945.187874867@linuxfoundation.org>
+Message-ID: <20260512173936.737676152@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +63,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B23BC5279A9
+X-Rspamd-Queue-Id: 33BA65266C8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246566-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246029-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sashiko.dev:url,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 34fbf48cf3b410d2a6e8c586fa952a36331ca5ba upstream.
+[ Upstream commit 3023c050af3600bf451153335dea5e073c9a3088 ]
 
-Sashiko points out that pd->uctx isn't initialized until late in the
-function so all these error flow references are NULL and will crash. Use
-the uctx that isn't NULL.
+Depending on the architecture the transfer buffer may share a cacheline
+with the following mutex. As the buffer may be used for DMA, that is
+problematic.
 
-Cc: stable@vger.kernel.org
-Fixes: fe2caefcdf58 ("RDMA/ocrdma: Add driver for Emulex OneConnect IBoE RDMA adapter")
-Link: https://sashiko.dev/#/patchset/0-v1-e911b76a94d1%2B65d95-rdma_udata_rep_jgg%40nvidia.com?part=4
-Link: https://patch.msgid.link/r/9-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Use the high-level DMA helpers to make sure that cacheline sharing can
+not happen.
+
+Also drop the comment, as the helpers are documentation enough.
+
+https://sashiko.dev/#/message/20260408175814.934BFC19421%40smtp.kernel.org
+
+Fixes: 4381a36abdf1c ("hwmon: add POWER-Z driver")
+Cc: stable@vger.kernel.org # ca085faabb42: dma-mapping: add __dma_from_device_group_begin()/end()
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20260408-powerz-cacheline-alias-v1-1-1254891be0dd@weissschuh.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/ocrdma/ocrdma_verbs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/powerz.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/infiniband/hw/ocrdma/ocrdma_verbs.c
-+++ b/drivers/infiniband/hw/ocrdma/ocrdma_verbs.c
-@@ -620,9 +620,9 @@ static int ocrdma_copy_pd_uresp(struct o
+--- a/drivers/hwmon/powerz.c
++++ b/drivers/hwmon/powerz.c
+@@ -6,6 +6,7 @@
  
- ucopy_err:
- 	if (pd->dpp_enabled)
--		ocrdma_del_mmap(pd->uctx, dpp_page_addr, PAGE_SIZE);
-+		ocrdma_del_mmap(uctx, dpp_page_addr, PAGE_SIZE);
- dpp_map_err:
--	ocrdma_del_mmap(pd->uctx, db_page_addr, db_page_size);
-+	ocrdma_del_mmap(uctx, db_page_addr, db_page_size);
- 	return status;
- }
+ #include <linux/completion.h>
+ #include <linux/device.h>
++#include <linux/dma-mapping.h>
+ #include <linux/hwmon.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+@@ -33,7 +34,9 @@ struct powerz_sensor_data {
+ } __packed;
  
+ struct powerz_priv {
+-	char transfer_buffer[64];	/* first member to satisfy DMA alignment */
++	__dma_from_device_group_begin();
++	char transfer_buffer[64];
++	__dma_from_device_group_end();
+ 	struct mutex mutex;
+ 	struct completion completion;
+ 	struct urb *urb;
 
 
 
