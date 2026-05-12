@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uC7XMhluA2rF5gEAu9opvQ
-	(envelope-from <stable+bounces-246244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:49 +0200
+	id mIxcH+JwA2p15wEAu9opvQ
+	(envelope-from <stable+bounces-246525-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:26:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A0345271D7
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:14:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 006AF52793D
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2025D3017313
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:58:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53E4F32991FF
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9218C3EDE55;
-	Tue, 12 May 2026 17:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC0536C9E4;
+	Tue, 12 May 2026 18:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnQpLEAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBwoagrb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567163EDE41;
-	Tue, 12 May 2026 17:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1C3368972;
+	Tue, 12 May 2026 18:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608729; cv=none; b=qOVFTIN8541xwJa49W6mTOymroZJK1fM3Az0/dFFFp6v/jrHm43ZHedPRKrJqteqalG1sfXsAdpkMMR1LvclD8tL35R78jFdjfbelqQh7ox5uVsxSEqgIkgAQLoBhksRdK6IsScBqOS1KNxUaQbDdGRk6Q8Sh99JueFkX1yf8CA=
+	t=1778609450; cv=none; b=YPn2fJelKLjMaKgRvU9YLhfMr5/vYpzGjRAY4BXNKu+Rv3WI1xpwBDeQZpuXzqXm5Pkoo/qY3n0wcLf7TFuV1qtDMZnTMIvwI4zQ6qlGB91c3pz/3CGO6oaQgtmHgYkQNGd+NZk40ANRuo5fYhnKrfZWsR2xoIc1LfpZx2rLZU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608729; c=relaxed/simple;
-	bh=IAgHFtwG7oElHZtgxMi76Y9pr4C8WucO6wPlXg8zAn4=;
+	s=arc-20240116; t=1778609450; c=relaxed/simple;
+	bh=EQoPxhIvZCdYPCNpfrqEO3DJSBaLZZdw/syknobOJOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3436OzAIFcOFqgjg8no8Pkaw17b9mEgshkbVZDfP6saMmDr+ss/ZIigU+BL99PfxZz9bqIrvXq4KZId4Q81G+suousqs3BrrAsyc2Z5D6bFg/M9hSpLUE3ZnV/GXzCqIEYQUWG23d7Ak7F5q+iXVwT7IOYREo2z/D5FKmJJHZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnQpLEAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BB5C2BCB0;
-	Tue, 12 May 2026 17:58:48 +0000 (UTC)
+	 MIME-Version; b=SnIf98Ep34mMnqMfPyZzdY+7jAXtBvi+7SB2CcuR+sdkr7lwWLZRkVE7FSLBydfaJOhaamQAozX4ejKV9AfKXdn1gAWdyVp38VcBS5t+fwCPGoI2qPsmvVsXoKmGLAY7WTmpif7/sWCkh2aC9NbLF6n8sy5J0NYYU0F97CH/uvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBwoagrb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03173C2BCB0;
+	Tue, 12 May 2026 18:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608729;
-	bh=IAgHFtwG7oElHZtgxMi76Y9pr4C8WucO6wPlXg8zAn4=;
+	s=korg; t=1778609450;
+	bh=EQoPxhIvZCdYPCNpfrqEO3DJSBaLZZdw/syknobOJOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnQpLEAvE2FXsOMl9jvi7jdtpJTEXLWTAUBfekkAr0vCyGq/EagqYttIes2IRZ9aC
-	 UMlnjofb3wlHxmS64hJA7PUd+JuUwy+7LlRuuE0qIYLd4+o2zaXmpL0WI8DzfaXrUZ
-	 fVPpFdu7zKj5zksY+ppwX/FkNZg7cshm0p2MJrVc=
+	b=SBwoagrb4535rNtZZ/YagD0BO30lLsp+68/lqp/LlrWa70+t/77eBhsySYhBNFBc7
+	 oYCHAlqsFyXFpgMZI8ZNnkPplpurjDHPvQ4L3Bqjydtz4btBs50CyaR0X5tv38iNgY
+	 D0tgSQjupfvegpMrcYeMnltrabRtukjuCd2uyfwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Aizen <kai.aizen.dev@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.18 192/270] RDMA/ionic: bound node_desc sysfs read with %.64s
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 7.0 198/307] libceph: Fix slab-out-of-bounds access in auth message processing
 Date: Tue, 12 May 2026 19:39:53 +0200
-Message-ID: <20260512173942.491565383@linuxfoundation.org>
+Message-ID: <20260512173944.298605062@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+References: <20260512173940.117428952@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2A0345271D7
+X-Rspamd-Queue-Id: 006AF52793D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246244-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246525-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tu-ilmenau.de:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Zen <kai.aizen.dev@gmail.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-commit 654a27f25530d052eeedf086e6c3e2d585c203bd upstream.
+commit 1c439de70b1c3eb3c6bffa8245c16b9fc318f114 upstream.
 
-node_desc[64] in struct ib_device is not guaranteed to be NUL-
-terminated. The core IB sysfs handler uses "%.64s" for exactly this
-reason (drivers/infiniband/core/sysfs.c:1307), since node_desc_store()
-performs a raw memcpy of up to IB_DEVICE_NODE_DESC_MAX bytes with no NUL
-termination:
+If a (potentially corrupted) message of type CEPH_MSG_AUTH_REPLY
+contains a positive value in its result field, it is treated as an
+error code by ceph_handle_auth_reply() and returned to
+handle_auth_reply(). Thereafter, an attempt is made to send the
+preallocated message of type CEPH_MSG_AUTH, where the returned value is
+interpreted as the size of the front segment to send. If the result
+value in the message is greater than the size of the memory buffer
+allocated for the front segment, an out-of-bounds access occurs, and
+the content of the memory region beyond this buffer is sent out.
 
-  memcpy(desc.node_desc, buf, min_t(int, count, IB_DEVICE_NODE_DESC_MAX));
-
-If exactly 64 bytes are written via the node_desc sysfs file, the array
-contains no NUL byte. The ionic hca_type_show() handler uses unbounded
-"%s" and will read past the end of node_desc into adjacent fields of
-struct ib_device until it encounters a NUL.
-
-ionic supports IB_DEVICE_MODIFY_NODE_DESC, so this is triggerable by
-userspace.
-
-Match the core handler and bound the format specifier.
+This patch fixes the issue by treating only negative values in the
+result field as errors. Positive values are therefore treated as success
+in the same way as a zero value. Additionally, a BUG_ON is added to
+__send_prepared_auth_request() comparing the len parameter to
+front_alloc_len to prevent sending the message if it exceeds the bounds
+of the allocation and to make it easier to catch any logic flaws leading
+to this.
 
 Cc: stable@vger.kernel.org
-Fixes: 2075bbe8ef03 ("RDMA/ionic: Register device ops for miscellaneous functionality")
-Link: https://patch.msgid.link/r/CALynFi7NAbhDCt1tdaDbf6TnLvAqbaHa6-Wqf6OkzREbA_PAfg@mail.gmail.com
-Signed-off-by: Kai Aizen <kai.aizen.dev@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/ionic/ionic_ibdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ceph/auth.c       |    2 +-
+ net/ceph/mon_client.c |    2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/ionic/ionic_ibdev.c b/drivers/infiniband/hw/ionic/ionic_ibdev.c
-index bd4c73e530d0..0382a64839d2 100644
---- a/drivers/infiniband/hw/ionic/ionic_ibdev.c
-+++ b/drivers/infiniband/hw/ionic/ionic_ibdev.c
-@@ -185,7 +185,7 @@ static ssize_t hca_type_show(struct device *device,
- 	struct ionic_ibdev *dev =
- 		rdma_device_to_drv_device(device, struct ionic_ibdev, ibdev);
+--- a/net/ceph/auth.c
++++ b/net/ceph/auth.c
+@@ -257,7 +257,7 @@ int ceph_handle_auth_reply(struct ceph_a
+ 		ac->negotiating = false;
+ 	}
  
--	return sysfs_emit(buf, "%s\n", dev->ibdev.node_desc);
-+	return sysfs_emit(buf, "%s.64\n", dev->ibdev.node_desc);
- }
- static DEVICE_ATTR_RO(hca_type);
- 
--- 
-2.54.0
-
+-	if (result) {
++	if (result < 0) {
+ 		pr_err("auth protocol '%s' mauth authentication failed: %d\n",
+ 		       ceph_auth_proto_name(ac->protocol), result);
+ 		ret = result;
+--- a/net/ceph/mon_client.c
++++ b/net/ceph/mon_client.c
+@@ -174,6 +174,8 @@ int ceph_monmap_contains(struct ceph_mon
+  */
+ static void __send_prepared_auth_request(struct ceph_mon_client *monc, int len)
+ {
++	BUG_ON(len > monc->m_auth->front_alloc_len);
++
+ 	monc->pending_auth = 1;
+ 	monc->m_auth->front.iov_len = len;
+ 	monc->m_auth->hdr.front_len = cpu_to_le32(len);
 
 
 
