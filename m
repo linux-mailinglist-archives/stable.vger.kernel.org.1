@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-246553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGftLDdxA2q55wEAu9opvQ
-	(envelope-from <stable+bounces-246553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:07 +0200
+	id eNjwCQ1qA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A0652798D
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:28:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F0752657A
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3796E32BC6B6
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:12:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A2B393147DD5
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D996352F86;
-	Tue, 12 May 2026 18:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58AB13E5A14;
+	Tue, 12 May 2026 17:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yetDqgUX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iy4WTDPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BC86FC5;
-	Tue, 12 May 2026 18:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC423DD879;
+	Tue, 12 May 2026 17:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778609522; cv=none; b=P9HL79PSPYxe9fmtoBZ/1HEn7CrZm+asDIAcy3aqc0v/+sse11gApu3vsV6SIZaIe5aC/Nwwk/C4Ivqsc55ScRribsCWXyqEeQ7HDGofpTQhZvE/CqiBx28cc41YKyAP8uKnU8uzv0gciacuVJbWT6sB3Ekro3MVT0s/W7PHkrI=
+	t=1778608142; cv=none; b=AUD0opSRtvOQJMC98QJWWwr9Xr3Cxz4vqmB+QCNCEisrWnDfc394IHvmVQnYK5M3+LNK0mBhNlrhbKUW2Ipxqf/eeL6I02QKWkXxCuzUhTnNwRzigAtRXYttDP9Qc9bvlyetApvbJdt4m3EbQWcpxf5gIAJqwPUGeboePiWv9co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778609522; c=relaxed/simple;
-	bh=nPQRQrNq7itYRi5+1WzGoDrAbTYWHvDhTd31FYYJ1Ws=;
+	s=arc-20240116; t=1778608142; c=relaxed/simple;
+	bh=l943F94ppSn1EYu3gR5qa4WJlSKzqbflMM1zx+jbXds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbHD2xa7Jg2NOeIV/+aidjlZt5ejdR2WTjpLGPTiAP7jkycKxhe1UE0igcACN7FO/SNdjKCaQ/dvm5OiLh93udOJEAqmgGlaeN/bJ0XUcYcOm4rT4Khy9D+vJmz5oTxLB2W2YHjOO2M4HHZcVNxGw2SR7uCPysxhka2yZr6q8gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yetDqgUX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF3BC2BCC7;
-	Tue, 12 May 2026 18:12:02 +0000 (UTC)
+	 MIME-Version; b=smF9AUG+8J7DnKqqBrRjQVZ/OpF8Q0B9TNMo6gI+TC0J3ZyXnowjDx/y4uXM5giJdRB1RjbhS4DuebWB7iNha/a3KMSgflerwgBHBtnm4v4G4bCw2jQu4i2iL3G77X48f/lzVNbc8EP+7NPaVU5b8HO4BZoNutgn2D5+Q6pVJjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iy4WTDPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70B7C2BCB0;
+	Tue, 12 May 2026 17:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778609522;
-	bh=nPQRQrNq7itYRi5+1WzGoDrAbTYWHvDhTd31FYYJ1Ws=;
+	s=korg; t=1778608142;
+	bh=l943F94ppSn1EYu3gR5qa4WJlSKzqbflMM1zx+jbXds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yetDqgUXhtW9lTwF5kmh0+N2K7QJYK9dy5LzH2WqR9VYG10w/YL451XPWjP87CPy1
-	 t+JFbW4MGU0iTk0ej/P7EGB/iv5Wj426tzb/jaPEAJYbrw451/d8WRC8Bk0PPpWrKe
-	 6FcTZK1LsWrbJLkmmryiq0W8ACARZqX/25uiwS6g=
+	b=Iy4WTDPmkwWYFwoYiqaYm9uy2h6FYEFfxSaKHihSg/VmXBIxI7euts4LfhSZkDTGZ
+	 M4evbGdSVm7PedqOOtAuQdTO5GnHcWugGKrZ5DjgtulJyObpCSMlyXSWs2DGzkNZ5w
+	 iuaIicjpUTrbAAIZdtvtx2gkYDSc8LdarAH0q9NY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 7.0 228/307] perf/x86/intel: Always reprogram ACR events to prevent stale masks
+	Wentao Guan <guanwentao@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 171/206] LoongArch: Fix potential ADE in loongson_gpu_fixup_dma_hang()
 Date: Tue, 12 May 2026 19:40:23 +0200
-Message-ID: <20260512173944.930704019@linuxfoundation.org>
+Message-ID: <20260512173936.482641162@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
-References: <20260512173940.117428952@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 22A0652798D
+X-Rspamd-Queue-Id: A9F0752657A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246553-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246016-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,78 +90,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Wentao Guan <guanwentao@uniontech.com>
 
-commit 8ba0b706a485b1e607594cf4210786d517ad1611 upstream.
+commit 8dfa2f8780e486d05b9a0ffce70b8f5fbd62053e upstream.
 
-Members of an ACR group are logically linked via a bitmask of their
-hardware counter indices. If some members of the group are assigned new
-hardware counters during rescheduling, even events that keep their
-original counter index must be updated with a new mask.
+The switch case in loongson_gpu_fixup_dma_hang() may not DC2 or DC3, and
+readl(crtc_reg) will access with random address, because the "device" is
+from "base+PCI_DEVICE_ID", "base" is from "pdev->devfn+1". This is wrong
+when my platform inserts a discrete GPU:
 
-Without this, an event will continue to use a stale acr_mask that
-references the old indices of its group peers. Ensure all ACR events are
-reprogrammed during the scheduling path to maintain consistency across
-the group.
+lspci -tv
+-[0000:00]-+-00.0  Loongson Technology LLC Hyper Transport Bridge Controller
+...
+           +-06.0  Loongson Technology LLC LG100 GPU
+           +-06.2  Loongson Technology LLC Device 7a37
+...
 
-Fixes: ec980e4facef ("perf/x86/intel: Support auto counter reload")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Add a default switch case to fix the panic as below:
+
+ Kernel ade access[#1]:
+ CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.136-loong64-desktop-hwe+ #4
+ pc 90000000017e5534 ra 90000000017e54c0 tp 90000001002f8000 sp 90000001002fb6c0
+ a0 80000efe00003100 a1 0000000000003100 a2 0000000000000000 a3 0000000000000002
+ a4 90000001002fb6b4 a5 900000087cdb58fd a6 90000000027af000 a7 0000000000000001
+ t0 00000000000085b9 t1 000000000000ffff t2 0000000000000000 t3 0000000000000000
+ t4 fffffffffffffffd t5 00000000fffb6d9c t6 0000000000083b00 t7 00000000000070c0
+ t8 900000087cdb4d94 u0 900000087cdb58fd s9 90000001002fb826 s0 90000000031c12c8
+ s1 7fffffffffffff00 s2 90000000031c12d0 s3 0000000000002710 s4 0000000000000000
+ s5 0000000000000000 s6 9000000100053000 s7 7fffffffffffff00 s8 90000000030d4000
+    ra: 90000000017e54c0 loongson_gpu_fixup_dma_hang+0x40/0x210
+   ERA: 90000000017e5534 loongson_gpu_fixup_dma_hang+0xb4/0x210
+  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+  PRMD: 00000004 (PPLV0 +PIE -PWE)
+  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
+ ESTAT: 00480000 [ADEM] (IS= ECode=8 EsubCode=1)
+  BADV: 7fffffffffffff00
+  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
+ Modules linked in:
+ Process swapper/0 (pid: 1, threadinfo=(____ptrval____), task=(____ptrval____))
+ Stack : 0000000000000006 90000001002fb778 90000001002fb704 0000000000000007
+         0000000016a65700 90000000017e5690 000000000000ffff ffffffffffffffff
+         900000000209f7c0 9000000100053000 900000000209f7a8 9000000000eebc08
+         0000000000000000 0000000000000000 0000000000000006 90000001002fb778
+         90000001000530b8 90000000027af000 0000000000000000 9000000100054000
+         9000000100053000 9000000000ebb70c 9000000100004c00 9000000004000001
+         90000001002fb7e4 bae765461f31cb12 0000000000000000 0000000000000000
+         0000000000000006 90000000027af000 0000000000000030 90000000027af000
+         900000087cd6f800 9000000100053000 0000000000000000 9000000000ebc560
+         7a2500147cdaf720 bae765461f31cb12 0000000000000001 0000000000000030
+         ...
+ Call Trace:
+ [<90000000017e5534>] loongson_gpu_fixup_dma_hang+0xb4/0x210
+ [<9000000000eebc08>] pci_fixup_device+0x108/0x280
+ [<9000000000ebb70c>] pci_setup_device+0x24c/0x690
+ [<9000000000ebc560>] pci_scan_single_device+0xe0/0x140
+ [<9000000000ebc684>] pci_scan_slot+0xc4/0x280
+ [<9000000000ebdd00>] pci_scan_child_bus_extend+0x60/0x3f0
+ [<9000000000f5bc94>] acpi_pci_root_create+0x2b4/0x420
+ [<90000000017e5e74>] pci_acpi_scan_root+0x2d4/0x440
+ [<9000000000f5b02c>] acpi_pci_root_add+0x21c/0x3a0
+ [<9000000000f4ee54>] acpi_bus_attach+0x1a4/0x3c0
+ [<90000000010e200c>] device_for_each_child+0x6c/0xe0
+ [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
+ [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
+ [<90000000010e200c>] device_for_each_child+0x6c/0xe0
+ [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
+ [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
+ [<9000000000f5211c>] acpi_bus_scan+0x6c/0x280
+ [<900000000189c028>] acpi_scan_init+0x194/0x310
+ [<900000000189bc6c>] acpi_init+0xcc/0x140
+ [<9000000000220cdc>] do_one_initcall+0x4c/0x310
+ [<90000000018618fc>] kernel_init_freeable+0x258/0x2d4
+ [<900000000184326c>] kernel_init+0x28/0x13c
+ [<9000000000222008>] ret_from_kernel_thread+0xc/0xa4
+
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260430002558.712334-3-dapeng1.mi@linux.intel.com
+Fixes: 95db0c9f526d ("LoongArch: Workaround LS2K/LS7A GPU DMA hang bug")
+Link: https://gist.github.com/opsiff/ebf2dac51b4013d22462f2124c55f807
+Link: https://gist.github.com/opsiff/a62f2a73db0492b3c49bf223a339b133
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/core.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/loongarch/pci/pci.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1294,13 +1294,16 @@ int x86_perf_rdpmc_index(struct perf_eve
- 	return event->hw.event_base_rdpmc;
- }
+--- a/arch/loongarch/pci/pci.c
++++ b/arch/loongarch/pci/pci.c
+@@ -133,6 +133,9 @@ static void loongson_gpu_fixup_dma_hang(
+ 		crtc_reg = regbase;
+ 		crtc_offset = 0x400;
+ 		break;
++	default:
++		iounmap(regbase);
++		return;
+ 	}
  
--static inline int match_prev_assignment(struct hw_perf_event *hwc,
-+static inline int match_prev_assignment(struct perf_event *event,
- 					struct cpu_hw_events *cpuc,
- 					int i)
- {
-+	struct hw_perf_event *hwc = &event->hw;
-+
- 	return hwc->idx == cpuc->assign[i] &&
--		hwc->last_cpu == smp_processor_id() &&
--		hwc->last_tag == cpuc->tags[i];
-+	       hwc->last_cpu == smp_processor_id() &&
-+	       hwc->last_tag == cpuc->tags[i] &&
-+	       !is_acr_event_group(event);
- }
- 
- static void x86_pmu_start(struct perf_event *event, int flags);
-@@ -1346,7 +1349,7 @@ static void x86_pmu_enable(struct pmu *p
- 			 * - no other event has used the counter since
- 			 */
- 			if (hwc->idx == -1 ||
--			    match_prev_assignment(hwc, cpuc, i))
-+			    match_prev_assignment(event, cpuc, i))
- 				continue;
- 
- 			/*
-@@ -1367,7 +1370,7 @@ static void x86_pmu_enable(struct pmu *p
- 			event = cpuc->event_list[i];
- 			hwc = &event->hw;
- 
--			if (!match_prev_assignment(hwc, cpuc, i))
-+			if (!match_prev_assignment(event, cpuc, i))
- 				x86_assign_hw_event(event, cpuc, i);
- 			else if (i < n_running)
- 				continue;
+ 	for (i = 0; i < CRTC_NUM_MAX; i++, crtc_reg += crtc_offset) {
 
 
 
