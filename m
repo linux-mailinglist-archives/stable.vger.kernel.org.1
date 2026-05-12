@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-246116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKdMNatsA2of5wEAu9opvQ
-	(envelope-from <stable+bounces-246116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:43 +0200
+	id 8N2EAp5mA2qa5gEAu9opvQ
+	(envelope-from <stable+bounces-245872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:42:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27252526DDD
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:08:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BEFF525F93
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 19:42:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7FBE430D1522
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:55:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 755D13059329
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B0A3955EE;
-	Tue, 12 May 2026 17:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D33D3B1EE2;
+	Tue, 12 May 2026 17:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzRun2lq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ei38lpqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9777230BB80;
-	Tue, 12 May 2026 17:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E333CDBDD;
+	Tue, 12 May 2026 17:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608399; cv=none; b=lM5S5WJ+GT6lMXjdI4j5ubb4qYoNh/Uwxjoc3Rt+bzGP6B5jAn28ermVNLW1xjJ0bmHebWfJGk9q4iJy0MDE3iJs2+Q1XVlvLk6aMRpjgrGJu2CDCj8QKBr48qy1yccmvg+m6/CXGTNK6ob+fRgs2tQJyiDCnxzy6nUU1JyTZYM=
+	t=1778607772; cv=none; b=VxeAwKYeq6JaT4ZdYvWaUtZupAwYjapvpnmRmAsh6CotreEX3sq0T64CkRn/F1e+nq6RwSG2SJRi3IpOrvV9n19C5b1UYpPLNiw2H0n40Jg6LH0KrkBXfVXY4DgYx06f7rKFq2TbM5b2sOytN9NqDDdxavAIgmrFREbhi7F9P/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608399; c=relaxed/simple;
-	bh=3MR/3sA1ayrUGRPTLsIYEB3ZL5JQHTwqvqjKqP2XxYs=;
+	s=arc-20240116; t=1778607772; c=relaxed/simple;
+	bh=0TtdTtinQzUlx7pfLOW4eu3ZkdTOYQwQgi1ADAxzwg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pIGWhAI7lr62PVF17wrshzbIYjcbFCF+GufzjKxl/EZKFYW0nnAc/gQjZsgjilb/DJ2GFYGpN9wo11M/MB3PjaENcZi0VYHY8b92vf2CMkvWZjFuY7mZl5ZJA6LHlOPslQeewlEcqPg0bcAfLrWCx9934RO2dFQ6Ert0DBP0tgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzRun2lq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23D1C2BCB0;
-	Tue, 12 May 2026 17:53:18 +0000 (UTC)
+	 MIME-Version; b=hK7RvVOy08kkURjtx07asQy5yXAmk70RbNenWLrOuD/ik5zuFWWxTo3mGM1mBn1EyXBGqPXK6dvgYefQfEt++wuim8407dKq1iu6z3RcGrP1mwtsIVhymSQ1Dn1nD3I1MHvWS1Xn/CIPLWh4uuBN8lcKIweCmMJ41RP6uGCvy4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ei38lpqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F057C2BCB0;
+	Tue, 12 May 2026 17:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608399;
-	bh=3MR/3sA1ayrUGRPTLsIYEB3ZL5JQHTwqvqjKqP2XxYs=;
+	s=korg; t=1778607771;
+	bh=0TtdTtinQzUlx7pfLOW4eu3ZkdTOYQwQgi1ADAxzwg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wzRun2lq4OI33Shk3EO0lVJ3dZLY0JXRY6Xnuw8RopBLIr1BqaixDLxUwNiXS2l0a
-	 UjRxW97AhK3Ld2yWuwLNedx1YMsZtLHkcwLWu7YEQRSrDydFxCZ9Y2GDvw1cm6LB+j
-	 QWWer4L0fEqHnrBcIVj7G1kiyXds9uYbgEbiONl8=
+	b=Ei38lpqz8YAqdFM07uVniO6RzLD3xTe5uEppN8BbLDoBStyfylNhMpIxz+sPOCA2O
+	 ZTHamOBUCRQf40LqBGSLeZh163boAFf9lvK0a7YN0YZ9JlSqw+4IBbw45LQt5bLDVO
+	 oFLdGQi7jK5tbdyilCHL1U58ufkUiO0+Hx4SxZa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.18 063/270] selinux: shrink critical section in sel_write_load()
+	addy ke <addy.ke@rock-chips.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 012/206] spi: rockchip: fix controller deregistration
 Date: Tue, 12 May 2026 19:37:44 +0200
-Message-ID: <20260512173939.778162205@linuxfoundation.org>
+Message-ID: <20260512173933.080165596@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
-References: <20260512173938.452574370@linuxfoundation.org>
+In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+References: <20260512173932.810559588@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +64,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 27252526DDD
+X-Rspamd-Queue-Id: 8BEFF525F93
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246116-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paul-moore.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-245872-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,paul-moore.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,rock-chips.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 868f31e4061eca8c3cd607d79d954d5e54f204aa upstream.
+commit 53e7a16070feb7d1d4d81a583eaac5e25048b9c3 upstream.
 
-Currently sel_write_load() takes the policy mutex earlier than
-necessary. Move the taking of the mutex later. This avoids
-holding it unnecessarily across the vmalloc() and copy_from_user()
-of the policy data.
+Make sure to deregister the controller before freeing underlying
+resources like DMA channels during driver unbind.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: 64e36824b32b ("spi/rockchip: add driver for Rockchip RK3xxx SoCs integrated SPI")
+Cc: stable@vger.kernel.org	# 3.17
+Cc: addy ke <addy.ke@rock-chips.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260324082326.901043-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/selinuxfs.c |   18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/spi/spi-rockchip.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -583,34 +583,31 @@ static ssize_t sel_write_load(struct fil
- 	if (!count)
- 		return -EINVAL;
- 
--	mutex_lock(&selinux_state.policy_mutex);
--
- 	length = avc_has_perm(current_sid(), SECINITSID_SECURITY,
- 			      SECCLASS_SECURITY, SECURITY__LOAD_POLICY, NULL);
- 	if (length)
--		goto out;
-+		return length;
- 
- 	data = vmalloc(count);
--	if (!data) {
--		length = -ENOMEM;
--		goto out;
--	}
-+	if (!data)
-+		return -ENOMEM;
- 	if (copy_from_user(data, buf, count) != 0) {
- 		length = -EFAULT;
- 		goto out;
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -914,7 +914,7 @@ static int rockchip_spi_probe(struct pla
+ 		break;
  	}
  
-+	mutex_lock(&selinux_state.policy_mutex);
- 	length = security_load_policy(data, count, &load_state);
- 	if (length) {
- 		pr_warn_ratelimited("SELinux: failed to load policy\n");
--		goto out;
-+		goto out_unlock;
- 	}
- 	fsi = file_inode(file)->i_sb->s_fs_info;
- 	length = sel_make_policy_nodes(fsi, load_state.policy);
- 	if (length) {
- 		pr_warn_ratelimited("SELinux: failed to initialize selinuxfs\n");
- 		selinux_policy_cancel(&load_state);
--		goto out;
-+		goto out_unlock;
- 	}
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to register controller\n");
+ 		goto err_free_dma_rx;
+@@ -942,6 +942,8 @@ static void rockchip_spi_remove(struct p
  
- 	selinux_policy_commit(&load_state);
-@@ -620,8 +617,9 @@ static ssize_t sel_write_load(struct fil
- 		from_kuid(&init_user_ns, audit_get_loginuid(current)),
- 		audit_get_sessionid(current));
+ 	pm_runtime_get_sync(&pdev->dev);
  
--out:
-+out_unlock:
- 	mutex_unlock(&selinux_state.policy_mutex);
-+out:
- 	vfree(data);
- 	return length;
- }
++	spi_unregister_controller(ctlr);
++
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
 
 
 
