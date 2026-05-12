@@ -1,312 +1,362 @@
-Return-Path: <stable+bounces-245439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-245440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EL4NCwgMA2pmzwEAu9opvQ
-	(envelope-from <stable+bounces-245439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:16:24 +0200
+	id IDKTC8AMA2pI0AEAu9opvQ
+	(envelope-from <stable+bounces-245440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:19:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B92A51F308
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:16:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 927FD51F405
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 13:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 71E3E302532C
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 11:15:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C44FD302FA34
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 11:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DF247AF65;
-	Tue, 12 May 2026 11:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839BA47B413;
+	Tue, 12 May 2026 11:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V049/lV3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nnq6+2Yv"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3D93D649A;
-	Tue, 12 May 2026 11:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778584529; cv=none; b=MSoqU2pQfJSH+Zmtmpjq472xJsiF+WVWJ8n+T9udDe65m7ai3FQSVGekvDetccD5oMYHr/e3kZarHOJ0Epwj89prWU1WGYOEher0ZXYPUu2N/OHjgyPQrzUUNBDsMQkd8xrqmrUdSPmwf2ibsRns5X5RAzV7p02KcI4Zl4Ls+Tg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778584529; c=relaxed/simple;
-	bh=owds3NhV2YSPbKyZxnxeFXcN9qHcUUzVWH5UtjTMxNM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o6r1tranHoR7TyTxpR4OL3+NDVDMgXI6ZNKyAUKt8NeiBlRMpULLeSUdDJmvtOgz6OtuppjoQ8EDOogPsqWjx3FepaFVGNrFu9Xjz1wIk66wPFbvgCHCBrJPPKFp6mDfulCkLyjWPZMX+oAg3CIYfWUark2XzpEQ3AA2nG5g09I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V049/lV3; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778584528; x=1810120528;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=owds3NhV2YSPbKyZxnxeFXcN9qHcUUzVWH5UtjTMxNM=;
-  b=V049/lV3dq5EJipdkSiuXWeXt0Wv+yW9qs+G5RimHLeILRRDGhmv0HrT
-   AlwghL7RRQG62dkvdx3vzow9+igNGKkTVG5f1ly5211mKazL+fCC4z0hA
-   LjFDQ5ZPiDU8emLY6k/AloilzIH45pQIVjS3/nV1SPkVT9jfVKJAM6kGv
-   XTUfiDvih7Z/mo0J+oEMDa9CXrkw1EukQe6myE+AG+rz65lH90xE7Wf88
-   n5bHz5cnzsjS9OljL9ksXq+oK6yyn0qDJxR5SK3ruqluT1CIT6yAFMSvt
-   7ylut8K77v3rJhLtT6c0o5kKiL2uAUzJLm6S6UBp569SwbF0lHjgIShRO
-   A==;
-X-CSE-ConnectionGUID: Xh7Iv1bSQDqzJsjLEtXItg==
-X-CSE-MsgGUID: oR7BAM+HQ3qFDVgSlFjcrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79473905"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="79473905"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:15:19 -0700
-X-CSE-ConnectionGUID: TiuAy2vIQ5mBNH95h9/nUw==
-X-CSE-MsgGUID: fZZnPAizQS6526++syv1rQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="242736179"
-Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.111.192]) ([10.125.111.192])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:15:18 -0700
-Message-ID: <3a6b3499a8f2d39bac2bcf483ee48123823795d9.camel@linux.intel.com>
-Subject: Re: [PATCH] cpufreq: intel_pstate: Fix Raptor Lake-E cpufreq limits
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: viresh.kumar@linaro.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Henry Tseng <henrytseng@qnap.com>, 
-	stable@vger.kernel.org
-Date: Tue, 12 May 2026 04:15:17 -0700
-In-Reply-To: <CAJZ5v0gVK7qF9Bfw952Vkb+-5WPOH+_M9-bRAwjJvHX3U=WOOg@mail.gmail.com>
-References: <20260511235328.2018458-1-srinivas.pandruvada@linux.intel.com>
-	 <CAJZ5v0gVK7qF9Bfw952Vkb+-5WPOH+_M9-bRAwjJvHX3U=WOOg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95D13859FD
+	for <stable@vger.kernel.org>; Tue, 12 May 2026 11:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778584756; cv=pass; b=jOYLLShELjSGYh1aYZHX+FKfeH3KOI/JTb5i3qYgENLMSaqZypmMH9uPCwaDzPpj9wTk3ZFPxwvlKVIausUoPFimEzWfUOivccxDgE+QxIxIrOdjrjGUmLhLUMRz9ZlIqmCwGDcrwnrMVfzzRo3sP0zmHNXk5K0jgALxwQHkBaU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778584756; c=relaxed/simple;
+	bh=MIxIHIH3CJAVup1aGyzZP5Vqx3tluLei17C5chffE1g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hUoQ+hCkRqueWuuwuQqRR2LYEbSNDmbFbVIs0kH1UcTd2h+DvQbOu7f7EBCRcQKe4izN1XL29J4SwMdIJoW23fgbXztNnqd9E9aFKHMDB9bUHPvpv0vsDBsdZmuLBYuAjx1t3Gjj6mdJQd0FLsyQsmsGGwyheHxMC9dcdzaVbYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nnq6+2Yv; arc=pass smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7dcd17e19b6so3078667a34.1
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 04:19:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778584753; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ojkw2nnBpzDCWZkENHvpXdd+jz0JHIZ0bjs/BtYx5gNmdrg5uM2UDgahL3bnXIj5Ed
+         p7mL5ikWzctsgWolS7ptFFtycuQ70d7LhjzHHnoy3HUjGHAqiLol/sbmN5WBT9OFue++
+         HPZ20mrdIC2yd8kBS7NUciEu/NqtPn6oub0/roWq/BQeyiZiTHZBEZ+imTE1IiXVhHSX
+         95BOTkitgRF254b+3LsJPR5hRUhQPCHwX92BsFjdpCHlSgBViofe/sUhw+NFEGXjt8iK
+         HtxPkrjKQaMmQbqIbdp2GS03lAxwZjtwUl6VJOGnVb492TVNOTEqdp+qA1hsci5UnaN4
+         AsvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=5mtEH2w3LwavrlBiwkdHe6W2Vm7Xq8WeRiZjP7eFhqs=;
+        fh=axzzE00nuHasitSahtrVVfsYp+pDLCwRgrEnGouvIWw=;
+        b=bRuBaRDxLDXGL/YTQdtmgi4pcwtCeFQXx15c1YGXAYUvSGCV5CVye57HJjEMPqt3Xg
+         fq3kxNo2KmDkmb8w8sVgVY8EG9p155MalBXoBkrGjsLS5FpSDWPVAEsE0qLeLjCRkSDY
+         2p5RUw1aN35+jOiboFxLkxu5D/yZ13jsQDS/gv/S/wnzzKDgP6TAxj0WbyAZdnFHrkYC
+         H5xhuF4WtILpf0NipM3QfNIGzQ4V9oDLrs3waEb8ve8HL0qmVfJgY0+bY74vau/V3SiA
+         n0JmulnDWKq72+D5Pu2nsESK9VI5C3XDwaKQsWQoA5ZM+czzOkIMl5YWj+w7bS9T6fBA
+         ONOg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778584753; x=1779189553; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5mtEH2w3LwavrlBiwkdHe6W2Vm7Xq8WeRiZjP7eFhqs=;
+        b=Nnq6+2YvWeaas2ib3YH5a5Zmqwe5C37R2zEiI+dklcWRWq2a15GG4vhb4jiMHiMVgf
+         7v9jbACiLBaMZZQHW5PMNd7GY8wa5/YNrW8KCArqAqRIyRYofYtFd6k/2jJu8YH3+UlH
+         NAu43jWbqeRGU9VP1fKiEC/QAgTUYNfHsZCMY72qCryZT5KhnREXNYwuukzTX12r2bkj
+         TY86yHataWDb9REHlXrSuyB6BgWad7kz0lXNV2zXNV0rrAkb2cmGhsLms7dUyoXZ/ppc
+         nR780kMBPlnLtOcFRH2uUA4MYaKeqFYHfnuvdFkt0ZCDze3s8SZC9xe2pkL0ktOjvp0d
+         Utuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778584753; x=1779189553;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5mtEH2w3LwavrlBiwkdHe6W2Vm7Xq8WeRiZjP7eFhqs=;
+        b=ZoQgbQ+8Cg5IZFBcBi6yhgeyWGro0KDssFk9ShIPYVIPxxCjf8EL5E2PnwBOZ7r2Dy
+         qojHIpmxzaGLrOEx19ARY2tphIb9QezeOV3Eyy1Mh4jcnGjV4sPUXUesdwHSewFoloat
+         95cOIQdXcq9/MHJzIEhwkgrRGxnQSQVZPtYtpwrka1YNBS1X2PVw4HNaXKvE4sqoAo64
+         ftfcOu6r6KtvCX5pbu/aG0kae2SRVRfJQ43ESCrjCeGBUDaw1WSuSBkYfVr17MhMV07P
+         F6ZBfubl71HKTvmFrxV6f+NQpUs9UDfylbVqLSmuNHbSCxiHKByo+5L6Nyq2wWZ7bLQz
+         oDPQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8Oe6pCxuhdOlX+IWLap5U9IbvRognAwuoe/XzsUIXPIyHbdOeU2e++ygdGpk16idHiK/Mllv0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yww1N0wRZ6jBqIiw1gPvm18I4bjaFj+MmpOiFLzviSR5035Ohir
+	y0sPqw0ljfq2sFqEWF9TTzE9/up9yzp/wGm1P6OoJ2UMsQUfD5nNupY+vWv1UHh5x1W6GMr7IDr
+	OLEOx00mY0eNxFtG22d8Hp1ZFaBcTEzI=
+X-Gm-Gg: Acq92OFmxxiKzdQQUKcyHPC+DiHRGQpV8v3wW2xU8lTDjnmTcq0PMaecf2UIi5ulBWm
+	Bf/f2pMtJMuYIwqNQcJzG3+5IGHcyRh1n01WbHaODOUvrBcIBZZu0tgML1GbVbhGE5DCbQH/WAg
+	pJhh9zgwe9OcSfhvMi+040wtAEEWvv15zQWwl//ROWzvL0p6tzvtjKXV7uXdnoK1nYu4pwpErIR
+	BOAZec0Sd1NeS20XaCcQJU7q+q7bJGM/FT9GBa15Y3DyVFY9JXwk3g8n7KyZQJO7L/UhxwelOPL
+	WXS9nz9eUF5wVeLHDWxJ5yNoUSYrY9Ffsdr1t2meyj+RYHXEHWqk6Ra7+7Ys8M4Il7jP
+X-Received: by 2002:a05:6820:4df7:b0:694:9b71:3743 with SMTP id
+ 006d021491bc7-69b36ec93d4mr7234995eaf.51.1778584753583; Tue, 12 May 2026
+ 04:19:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 0B92A51F308
+References: <20260512014343.3770664-1-mendozayt13@gmail.com> <2026051221-glory-macaroni-dce6@gregkh>
+In-Reply-To: <2026051221-glory-macaroni-dce6@gregkh>
+From: Sebastian EM <mendozayt13@gmail.com>
+Date: Tue, 12 May 2026 06:18:54 -0500
+X-Gm-Features: AVHnY4LmjCKV23YG8mUs_u94kVase5gG9LFIqjdkQdDi5hMCxypzAWbazOwnxiQ
+Message-ID: <CAD89HyBhwxDsat_JCFFfA-tUYVatxByDj=ikpc9Rxj=kAqn=Sw@mail.gmail.com>
+Subject: Re: [PATCH] usb: gadget: composite: fix integer underflow in WebUSB
+ GET_URL handling
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: multipart/mixed; boundary="00000000000070da2106519d086a"
+X-Rspamd-Queue-Id: 927FD51F405
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,multipart/alternative,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-245439-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-245440-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~,4:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-0.981];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[srinivas.pandruvada@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[mendozayt13@gmail.com,stable@vger.kernel.org];
+	HAS_ATTACHMENT(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,linux.intel.com:mid,qnap.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Tue, 2026-05-12 at 12:20 +0200, Rafael J. Wysocki wrote:
-> On Tue, May 12, 2026 at 1:53=E2=80=AFAM Srinivas Pandruvada
-> <srinivas.pandruvada@linux.intel.com> wrote:
-> >=20
-> > Raptor Lake-E processors are not correctly showing cpufreq
-> > frequency
-> > limits.
-> >=20
-> > These CPUs don't set X86_FEATURE_HYBRID_CPU and have no E-cores,
-> > but
-> > P-cores still use hybrid scaling factor.
-> >=20
-> > commit 0fcfc9e51990 ("cpufreq: intel_pstate: Fix scaling for
-> > hybrid-capable systems with disabled E-cores") added support for
-> > such configuration. Here using CPPC nominal freq and perf was
-> > compared
-> > to still return hybrid scaling factor.
-> >=20
-> > Commit 9b18d536b124 ("cpufreq: intel_pstate: Use CPPC to get
-> > scaling
-> > factors") restructured hwp_get_cpu_scaling() and added an explicit
-> > check
-> > for X86_FEATURE_HYBRID_CPU and when not set returns core scaling
-> > factor.
-> >=20
-> > To address this remove check for X86_FEATURE_HYBRID_CPU and call
-> > intel_pstate_cppc_get_scaling().
-> >=20
-> > Ideally this change should be enough. But using CPPC for scaling
-> > factor
-> > results in rounding error, so still doesn't restore the original
-> > behavior.
-> >=20
-> > In intel_pstate_cppc_get_scaling() return core scaling factor when
-> > ACPI CPPC is not present or when CPPC nominal frequency or nominal
-> > performance are invalid.
-> >=20
-> > Use hybrid_scaling_factor for P-cores when defined for a CPU, if
-> > not
-> > calculate from ACPI CPPC nominal frequency and performance.
-> >=20
-> > Fixes: 9b18d536b124 ("cpufreq: intel_pstate: Use CPPC to get
-> > scaling factors")
-> > Reported-by: Henry Tseng <henrytseng@qnap.com>
-> > Closes:
-> > https://lore.kernel.org/linux-pm/20260508063032.3248602-1-henrytseng@qn=
-ap.com/
-> > Signed-off-by: Srinivas Pandruvada
-> > <srinivas.pandruvada@linux.intel.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> > =C2=A0drivers/cpufreq/intel_pstate.c | 29 +++++++++++++++--------------
-> > =C2=A01 file changed, 15 insertions(+), 14 deletions(-)
-> >=20
-> > diff --git a/drivers/cpufreq/intel_pstate.c
-> > b/drivers/cpufreq/intel_pstate.c
-> > index 1292da53e5fc..0379efdee5f8 100644
-> > --- a/drivers/cpufreq/intel_pstate.c
-> > +++ b/drivers/cpufreq/intel_pstate.c
-> > @@ -421,15 +421,23 @@ static int intel_pstate_cppc_get_scaling(int
-> > cpu)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct cppc_perf_caps cppc_p=
-erf;
-> >=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (cppc_get_perf_caps(cpu, &cppc=
-_perf) ||
-> > !cppc_perf.nominal_freq ||
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !cppc_per=
-f.nominal_perf)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 goto core_scaling;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (cppc_perf.nominal_perf * 100 =
-=3D=3D cppc_perf.nominal_freq)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 goto core_scaling;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (hybrid_scaling_factor)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 return hybrid_scaling_factor;
-> > +
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Compute the perf-to-frequ=
-ency scaling factor for the
-> > given CPU if
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * possible, unless it would=
- be 0.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Compute the perf-to-frequ=
-ency scaling factor for the
-> > given CPU
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * from nominal freq and nom=
-inal_perf
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!cppc_get_perf_caps(cpu, &cpp=
-c_perf) &&
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cppc_perf=
-.nominal_perf && cppc_perf.nominal_freq)
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 return div_u64(cppc_perf.nominal_freq *
-> > KHZ_PER_MHZ,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cppc_perf.nominal_perf);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return div_u64(cppc_perf.nominal_=
-freq * KHZ_PER_MHZ,
-> > cppc_perf.nominal_perf);
-> >=20
-> > +core_scaling:
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return core_get_scaling();
-> > =C2=A0}
-> >=20
-> > @@ -2281,17 +2289,10 @@ static int hwp_get_cpu_scaling(int cpu)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 if (hybrid_get_cpu_type(cpu) =3D=3D
-> > INTEL_CPU_TYPE_CORE)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 retur=
-n hybrid_scaling_factor;
-> > -
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 return core_get_scaling();
->=20
-> Why is this change necessary or even useful?
->=20
-> This is about E-cores (because P-cores have been covered above) and
-> if
-> hybrid_scaling_factor is set, it is known that the processor is
-> hybrid
-> and E-cores have the "core" scaling factor.
->=20
-> Or is Raptor Lake-E covered by one of the
-> intel_hybrid_scaling_factor[] entries and hybrid_get_cpu_type(cpu)
-> doesn't return INTEL_CPU_TYPE_CORE on it?=C2=A0 This piece of information
-> is missing from the changelog.
+--00000000000070da2106519d086a
+Content-Type: multipart/alternative; boundary="00000000000070da2006519d0868"
 
-Raptor Lake-E (Xeon) uses CPU model as Raptor Lake-S, for which there
-is already a hardcoded scaling factor in the driver. So this "if" block
-will enter. But since there is no hybrid CPUID feature is defined,
-hybrid_get_cpu_type(cpu) will return 0 for P-core or E-core. Here there
-are no E-cores. So need to remove core_get_scaling() as this will
-return non hybrid factor.
+--00000000000070da2006519d0868
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Greg,
 
+Thanks for the review.
 
->=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> >=20
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Use core scaling on non-hybrid=
- systems. */
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!cpu_feature_enabled(X86_FEAT=
-URE_HYBRID_CPU))
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 return core_get_scaling();
-> > -
->=20
-> So we're now exposing all of the non-hybrid processors to the fun
-> with
-> possibly incorrectly populated CPPC, which is kind of risky.
->=20
+You are right; the self Reported-by tag does not belong there, so I dropped
+it in v2.
 
-This was already used before with
-commit0fcfc9e51990246a9813475716746ff5eb98c6aa
-relying that all non hybrid processor (including servers) didn't set
-nominal frequency, so will return core_scaling without using CPPC.
-I retested change on servers and non hybrids.
+The introducing commit is:
 
-> If Raptor Lake-E is not covered by an existing
-> intel_hybrid_scaling_factor[] entry, why don't we add one for it with
-> a "scaling factor" value indicating that CPPC needs to be used for
-> computing it on all CPUs?
+93c473948c58 ("usb: gadget: add WebUSB landing page support")
 
-It is already covered by existing, but we can only call=20
-for intel_pstate_cppc_get_scaling() when hybrid_scaling_factor is
-defined. This will require a hardcoding for Bartlett Lake also which
-uses different CPU model, which Henry Tseng is planing to send.
+I also added:
+
+Cc: stable@vger.kernel.org
+
+since the issue was introduced with the WebUSB GET_URL handling path and
+the fix is a small bounds/underflow fix suitable for stable kernels.
+
+v2 is attached as a plain patch:
+
+0001-v2-usb-gadget-composite-fix-integer-underflow-in-WebUSB-GET_URL-handli=
+ng.patch
 
 Thanks,
-Srinivas
+Jeremy
 
+El mar, 12 may 2026 a las 0:40, Greg Kroah-Hartman (<
+gregkh@linuxfoundation.org>) escribi=C3=B3:
 
->=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * The system is hybrid, but=
- the hybrid scaling factor is
-> > not known or
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * the CPU type is not one o=
-f the above, so use CPPC to
-> > compute the
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * The system is hybrid, so =
-use CPPC to compute the
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * scaling factor for t=
-his CPU.
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return intel_pstate_cppc_get=
-_scaling(cpu);
-> > --
+> On Tue, May 12, 2026 at 01:43:43AM +0000, Jeremy Erazo wrote:
+> > The WebUSB GET_URL handler in composite_setup() narrows
+> > landing_page_length to fit the host-supplied wLength using
+> >
+> >       landing_page_length =3D w_length
+> >               - WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH +
+> landing_page_offset;
+> >
+> > If wLength is smaller than WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH the
+> > unsigned subtraction wraps, and the subsequent
+> >
+> >       memcpy(url_descriptor->URL,
+> >              cdev->landing_page + landing_page_offset,
+> >              landing_page_length - landing_page_offset);
+> >
+> > ends up copying close to UINT_MAX bytes from cdev->landing_page into
+> > cdev->req->buf.  KASAN reports a slab-out-of-bounds in composite_setup
+> > on the kmalloc-2k gadget_info allocation, and FORTIFY_SOURCE traps the
+> > memcpy as a 4294967293-byte field-spanning write into
+> > url_descriptor->URL (size 252).
+> >
+> > A USB host can reach this from a single SETUP packet against any
+> > gadget that has webusb/use=3D1 and a landingPage configured.
+> >
+> > Handle the small-wLength case before the math: when the host requested
+> > fewer bytes than the URL descriptor header, only the header is
+> > meaningful and no URL bytes need to be copied.  Setting
+> > landing_page_length to landing_page_offset makes the existing memcpy a
+> > no-op and leaves the descriptor returned to the host unchanged for all
+> > larger wLength values.
+> >
+> > Reported-by: Jeremy Erazo <mendozayt13@gmail.com>
+> > Signed-off-by: Jeremy Erazo <mendozayt13@gmail.com>
+>
+> You don't need a reported-by when you are the author and sign off on
+> something.
+>
+> What commit id does this fix?  Why not backport it to stable kernels?
+>
+> thanks,
+>
+> greg k-h
+>
+
+--00000000000070da2006519d0868
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><p class=3D"gmail-isSelectedEnd">Hi Greg,=
+</p><p class=3D"gmail-isSelectedEnd">Thanks for the review.</p><p class=3D"=
+gmail-isSelectedEnd">You are right; the self <code dir=3D"ltr">Reported-by<=
+/code> tag does not belong there, so I dropped it in v2.</p><p class=3D"gma=
+il-isSelectedEnd">The introducing commit is:</p><p class=3D"gmail-isSelecte=
+dEnd"><code dir=3D"ltr">93c473948c58 (&quot;usb: gadget: add WebUSB landing=
+ page support&quot;)</code></p><p class=3D"gmail-isSelectedEnd">I also adde=
+d:</p><p class=3D"gmail-isSelectedEnd"><code dir=3D"ltr">Cc: <a href=3D"mai=
+lto:stable@vger.kernel.org">stable@vger.kernel.org</a></code></p><p class=
+=3D"gmail-isSelectedEnd">since the issue was introduced with the WebUSB GET=
+_URL handling path and the fix is a small bounds/underflow fix suitable for=
+ stable kernels.</p><p class=3D"gmail-isSelectedEnd">v2 is attached as a pl=
+ain patch:</p><p class=3D"gmail-isSelectedEnd"><code dir=3D"ltr">0001-v2-us=
+b-gadget-composite-fix-integer-underflow-in-WebUSB-GET_URL-handling.patch</=
+code></p><p>Thanks,<br>Jeremy</p></div><br><img width=3D"0" height=3D"0" cl=
+ass=3D"mailtrack-img" alt=3D"" style=3D"display:flex" src=3D"https://mailtr=
+ack.io/trace/mail/1d1278f3f46b0425fcef0a2e9a90bcf63807a760.png?u=3D13483695=
+"><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=
+=3D"gmail_attr">El mar, 12 may 2026 a las 0:40, Greg Kroah-Hartman (&lt;<a =
+href=3D"mailto:gregkh@linuxfoundation.org">gregkh@linuxfoundation.org</a>&g=
+t;) escribi=C3=B3:<br></div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x">On Tue, May 12, 2026 at 01:43:43AM +0000, Jeremy Erazo wrote:<br>
+&gt; The WebUSB GET_URL handler in composite_setup() narrows<br>
+&gt; landing_page_length to fit the host-supplied wLength using<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0landing_page_length =3D w_length<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0- WEBUSB_URL_DES=
+CRIPTOR_HEADER_LENGTH + landing_page_offset;<br>
+&gt; <br>
+&gt; If wLength is smaller than WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH the<br>
+&gt; unsigned subtraction wraps, and the subsequent<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0memcpy(url_descriptor-&gt;URL,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cdev-&gt;landing_page =
++ landing_page_offset,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 landing_page_length - =
+landing_page_offset);<br>
+&gt; <br>
+&gt; ends up copying close to UINT_MAX bytes from cdev-&gt;landing_page int=
+o<br>
+&gt; cdev-&gt;req-&gt;buf.=C2=A0 KASAN reports a slab-out-of-bounds in comp=
+osite_setup<br>
+&gt; on the kmalloc-2k gadget_info allocation, and FORTIFY_SOURCE traps the=
+<br>
+&gt; memcpy as a 4294967293-byte field-spanning write into<br>
+&gt; url_descriptor-&gt;URL (size 252).<br>
+&gt; <br>
+&gt; A USB host can reach this from a single SETUP packet against any<br>
+&gt; gadget that has webusb/use=3D1 and a landingPage configured.<br>
+&gt; <br>
+&gt; Handle the small-wLength case before the math: when the host requested=
+<br>
+&gt; fewer bytes than the URL descriptor header, only the header is<br>
+&gt; meaningful and no URL bytes need to be copied.=C2=A0 Setting<br>
+&gt; landing_page_length to landing_page_offset makes the existing memcpy a=
+<br>
+&gt; no-op and leaves the descriptor returned to the host unchanged for all=
+<br>
+&gt; larger wLength values.<br>
+&gt; <br>
+&gt; Reported-by: Jeremy Erazo &lt;<a href=3D"mailto:mendozayt13@gmail.com"=
+ target=3D"_blank">mendozayt13@gmail.com</a>&gt;<br>
+&gt; Signed-off-by: Jeremy Erazo &lt;<a href=3D"mailto:mendozayt13@gmail.co=
+m" target=3D"_blank">mendozayt13@gmail.com</a>&gt;<br>
+<br>
+You don&#39;t need a reported-by when you are the author and sign off on<br=
+>
+something.<br>
+<br>
+What commit id does this fix?=C2=A0 Why not backport it to stable kernels?<=
+br>
+<br>
+thanks,<br>
+<br>
+greg k-h<br>
+</blockquote></div></div>
+
+--00000000000070da2006519d0868--
+--00000000000070da2106519d086a
+Content-Type: application/octet-stream; 
+	name="0001-v2-usb-gadget-composite-fix-integer-underflow-in-WebUSB-GET_URL-handling.patch"
+Content-Disposition: attachment; 
+	filename="0001-v2-usb-gadget-composite-fix-integer-underflow-in-WebUSB-GET_URL-handling.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mp2jf6aq0>
+X-Attachment-Id: f_mp2jf6aq0
+
+RnJvbSA0ZDY1ZTM4NmEzMmMyN2MzZWU0NmE5YmYzZjM4MDdmODk4MDViNWIwIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBKZXJlbXkgRXJhem8gPG1lbmRvemF5dDEzQGdtYWlsLmNvbT4K
+RGF0ZTogVHVlLCAxMiBNYXkgMjAyNiAwMTozMToxNiArMDAwMApTdWJqZWN0OiBbUEFUQ0ggdjJd
+IHVzYjogZ2FkZ2V0OiBjb21wb3NpdGU6IGZpeCBpbnRlZ2VyIHVuZGVyZmxvdyBpbiBXZWJVU0IK
+IEdFVF9VUkwgaGFuZGxpbmcKClRoZSBXZWJVU0IgR0VUX1VSTCBoYW5kbGVyIGluIGNvbXBvc2l0
+ZV9zZXR1cCgpIG5hcnJvd3MKbGFuZGluZ19wYWdlX2xlbmd0aCB0byBmaXQgdGhlIGhvc3Qtc3Vw
+cGxpZWQgd0xlbmd0aCB1c2luZwoKCWxhbmRpbmdfcGFnZV9sZW5ndGggPSB3X2xlbmd0aAoJCS0g
+V0VCVVNCX1VSTF9ERVNDUklQVE9SX0hFQURFUl9MRU5HVEggKyBsYW5kaW5nX3BhZ2Vfb2Zmc2V0
+OwoKSWYgd0xlbmd0aCBpcyBzbWFsbGVyIHRoYW4gV0VCVVNCX1VSTF9ERVNDUklQVE9SX0hFQURF
+Ul9MRU5HVEggdGhlCnVuc2lnbmVkIHN1YnRyYWN0aW9uIHdyYXBzLCBhbmQgdGhlIHN1YnNlcXVl
+bnQKCgltZW1jcHkodXJsX2Rlc2NyaXB0b3ItPlVSTCwKCSAgICAgICBjZGV2LT5sYW5kaW5nX3Bh
+Z2UgKyBsYW5kaW5nX3BhZ2Vfb2Zmc2V0LAoJICAgICAgIGxhbmRpbmdfcGFnZV9sZW5ndGggLSBs
+YW5kaW5nX3BhZ2Vfb2Zmc2V0KTsKCmVuZHMgdXAgY29weWluZyBjbG9zZSB0byBVSU5UX01BWCBi
+eXRlcyBmcm9tIGNkZXYtPmxhbmRpbmdfcGFnZSBpbnRvCmNkZXYtPnJlcS0+YnVmLiAgS0FTQU4g
+cmVwb3J0cyBhIHNsYWItb3V0LW9mLWJvdW5kcyBpbiBjb21wb3NpdGVfc2V0dXAKb24gdGhlIGtt
+YWxsb2MtMmsgZ2FkZ2V0X2luZm8gYWxsb2NhdGlvbiwgYW5kIEZPUlRJRllfU09VUkNFIHRyYXBz
+IHRoZQptZW1jcHkgYXMgYSA0Mjk0OTY3MjkzLWJ5dGUgZmllbGQtc3Bhbm5pbmcgd3JpdGUgaW50
+bwp1cmxfZGVzY3JpcHRvci0+VVJMIChzaXplIDI1MikuCgpBIFVTQiBob3N0IGNhbiByZWFjaCB0
+aGlzIGZyb20gYSBzaW5nbGUgU0VUVVAgcGFja2V0IGFnYWluc3QgYW55CmdhZGdldCB0aGF0IGhh
+cyB3ZWJ1c2IvdXNlPTEgYW5kIGEgbGFuZGluZ1BhZ2UgY29uZmlndXJlZC4KCkhhbmRsZSB0aGUg
+c21hbGwtd0xlbmd0aCBjYXNlIGJlZm9yZSB0aGUgbWF0aDogd2hlbiB0aGUgaG9zdCByZXF1ZXN0
+ZWQKZmV3ZXIgYnl0ZXMgdGhhbiB0aGUgVVJMIGRlc2NyaXB0b3IgaGVhZGVyLCBvbmx5IHRoZSBo
+ZWFkZXIgaXMKbWVhbmluZ2Z1bCBhbmQgbm8gVVJMIGJ5dGVzIG5lZWQgdG8gYmUgY29waWVkLiAg
+U2V0dGluZwpsYW5kaW5nX3BhZ2VfbGVuZ3RoIHRvIGxhbmRpbmdfcGFnZV9vZmZzZXQgbWFrZXMg
+dGhlIGV4aXN0aW5nIG1lbWNweSBhCm5vLW9wIGFuZCBsZWF2ZXMgdGhlIGRlc2NyaXB0b3IgcmV0
+dXJuZWQgdG8gdGhlIGhvc3QgdW5jaGFuZ2VkIGZvciBhbGwKbGFyZ2VyIHdMZW5ndGggdmFsdWVz
+LgoKRml4ZXM6IDkzYzQ3Mzk0OGM1OCAoInVzYjogZ2FkZ2V0OiBhZGQgV2ViVVNCIGxhbmRpbmcg
+cGFnZSBzdXBwb3J0IikKQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKU2lnbmVkLW9mZi1ieTog
+SmVyZW15IEVyYXpvIDxtZW5kb3pheXQxM0BnbWFpbC5jb20+Ci0tLQogZHJpdmVycy91c2IvZ2Fk
+Z2V0L2NvbXBvc2l0ZS5jIHwgNSArKysrLQogMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygr
+KSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvdXNiL2dhZGdldC9jb21wb3Np
+dGUuYyBiL2RyaXZlcnMvdXNiL2dhZGdldC9jb21wb3NpdGUuYwppbmRleCBhOTAyMTg0YmQuLmRj
+MzY2NDM3NCAxMDA2NDQKLS0tIGEvZHJpdmVycy91c2IvZ2FkZ2V0L2NvbXBvc2l0ZS5jCisrKyBi
+L2RyaXZlcnMvdXNiL2dhZGdldC9jb21wb3NpdGUuYwpAQCAtMjE3Miw3ICsyMTcyLDEwIEBAIGNv
+bXBvc2l0ZV9zZXR1cChzdHJ1Y3QgdXNiX2dhZGdldCAqZ2FkZ2V0LCBjb25zdCBzdHJ1Y3QgdXNi
+X2N0cmxyZXF1ZXN0ICpjdHJsKQogCQkJCXNpemVvZih1cmxfZGVzY3JpcHRvci0+VVJMKQogCQkJ
+CS0gV0VCVVNCX1VSTF9ERVNDUklQVE9SX0hFQURFUl9MRU5HVEggKyBsYW5kaW5nX3BhZ2Vfb2Zm
+c2V0KTsKIAotCQkJaWYgKHdfbGVuZ3RoIDwgV0VCVVNCX1VSTF9ERVNDUklQVE9SX0hFQURFUl9M
+RU5HVEggKyBsYW5kaW5nX3BhZ2VfbGVuZ3RoKQorCQkJaWYgKHdfbGVuZ3RoIDwgV0VCVVNCX1VS
+TF9ERVNDUklQVE9SX0hFQURFUl9MRU5HVEgpCisJCQkJbGFuZGluZ19wYWdlX2xlbmd0aCA9IGxh
+bmRpbmdfcGFnZV9vZmZzZXQ7CisJCQllbHNlIGlmICh3X2xlbmd0aCA8CisJCQkJIFdFQlVTQl9V
+UkxfREVTQ1JJUFRPUl9IRUFERVJfTEVOR1RIICsgbGFuZGluZ19wYWdlX2xlbmd0aCkKIAkJCQls
+YW5kaW5nX3BhZ2VfbGVuZ3RoID0gd19sZW5ndGgKIAkJCQktIFdFQlVTQl9VUkxfREVTQ1JJUFRP
+Ul9IRUFERVJfTEVOR1RIICsgbGFuZGluZ19wYWdlX29mZnNldDsKIAotLSAKMi41My4wCgo=
+--00000000000070da2106519d086a--
 
