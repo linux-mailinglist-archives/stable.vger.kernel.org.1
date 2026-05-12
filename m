@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-246030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GO6/EaxtA2pS5wEAu9opvQ
-	(envelope-from <stable+bounces-246030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:13:00 +0200
+	id wGBUJmhrA2rf5gEAu9opvQ
+	(envelope-from <stable+bounces-246288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5B952708F
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:12:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5135269C6
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 20:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9708830F87EA
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 17:51:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 97DAC305EAD7
+	for <lists+stable@lfdr.de>; Tue, 12 May 2026 18:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5F03EDE6B;
-	Tue, 12 May 2026 17:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB0A343D9D;
+	Tue, 12 May 2026 18:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HN2bztN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5VGfaQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5B13EDE46;
-	Tue, 12 May 2026 17:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD96E342524;
+	Tue, 12 May 2026 18:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778608178; cv=none; b=lKXfYTXo6PGj/jOVZKYb8lSS7eoz0RDtdAAd8y00Qnv7ljMj3n+WK5FTDTOY8t6aHD7nuALJPhJCKdmbL+FVKMhOg6UcahXaQeOqy1hBjpltyNzQfr1jYUFTNrzeK8y06OmCBWZ9EKmQyaLasCt6LPUXvJZr1ir8oCPwYnSsztE=
+	t=1778608840; cv=none; b=YnkRDo0pFo4upKGT+QMnvG8R+JX0OzP64cy9FXx3yimMkp1JBVfzCFE/2uhyhOtNc0uIQUYfgpeleQPLFMBZzV1I7ozR3PPk0Ukb9TW+Yyn/V9zcWVgiyLfFgI0efjzEHsiqmBFXDqYw1bAYMm4iWBvNAsH5Wlz46u2OQzFn1DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778608178; c=relaxed/simple;
-	bh=FkoISWk1+sXjaBEmdnFtgW+ouTm6WvJfgJOdcgXQ5Zc=;
+	s=arc-20240116; t=1778608840; c=relaxed/simple;
+	bh=0y0HQbV6ElBkioq6RWE4ccrmLn5s0xy6CipKeM6hrxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpbKyhJCgCYhAfEDPKq25dpFzD4OAGlI+L/kf4ZehVnXbbnHgNEoPvYrwM+gjlSHy8K2+x92c1U9f31xAJEeJ6y4pr1wXP2uyWWVZWyYICjZN6XeG3AsUBcFZN0K2mLwocx9JwfO2Z0Bcbp+EFDzY7CJ7mVhOYHmoLAYiVoScGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HN2bztN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D8BC2BCF6;
-	Tue, 12 May 2026 17:49:37 +0000 (UTC)
+	 MIME-Version; b=SCK8MvmqDFfCPgmJQtbaWFjgTF6gQPKgxE3abdYLyFE250m2rA1e+N200IPjcLkLatXVPFSX5MNaDl1qhXKzGy5SzvMcpnL1y5bWQNOUoNBPwHiKijF1q3xf5zRQYyWCpepUXbGxxZFhkuvpH8PdPpr8JM9PnioXG0IFbvzTpaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5VGfaQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4218DC2BCB0;
+	Tue, 12 May 2026 18:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778608178;
-	bh=FkoISWk1+sXjaBEmdnFtgW+ouTm6WvJfgJOdcgXQ5Zc=;
+	s=korg; t=1778608840;
+	bh=0y0HQbV6ElBkioq6RWE4ccrmLn5s0xy6CipKeM6hrxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HN2bztN5r0j6XdGMQFMV4eTEpCjt35mTUmOFTFWY04XvAbcNSnEVI6dODBJGc4a+a
-	 +X95ijdhQEeqEw4mh/LCTzQEy4QdvN3mTnIWFpa0FTkyjojX1uUlyOqechXctvCcPC
-	 sr6tdwLiT1c2+FW5Y4GoyJdTkTWt3reiwBAWQ4dU=
+	b=C5VGfaQPwKcUqJwU+xcFKHfqerMsuDmxLkKr8gyQZJNC7iEkuDVvumMB6M9UtxUXF
+	 gZJ+zPjxA5QmpZ4Ts/KAlMrYtSz8GB9J4NHEqxz6Vk3DerjrrNnVxhrEMTAPh1cy0x
+	 cczftDya1lHNgxz2VEY5ZfuEnPzlgaFJUGPSapt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 184/206] octeon_ep_vf: add NULL check for napi_build_skb()
+	Quentin Perret <qperret@google.com>,
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.18 235/270] KVM: arm64: Fix initialisation order in __pkvm_init_finalise()
 Date: Tue, 12 May 2026 19:40:36 +0200
-Message-ID: <20260512173936.760178307@linuxfoundation.org>
+Message-ID: <20260512173943.391018898@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
-References: <20260512173932.810559588@linuxfoundation.org>
+In-Reply-To: <20260512173938.452574370@linuxfoundation.org>
+References: <20260512173938.452574370@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +64,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DB5B952708F
+X-Rspamd-Queue-Id: 2C5135269C6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246030-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246288-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Quentin Perret <qperret@google.com>
 
-[ Upstream commit dd66b42854705e4e4ee7f14d260f86c578bed3e3 ]
+commit 5bb0aed57ba944f8c201e4e82ec066e0187e0f85 upstream.
 
-napi_build_skb() can return NULL on allocation failure. In
-__octep_vf_oq_process_rx(), the result is used directly without a NULL
-check in both the single-buffer and multi-fragment paths, leading to a
-NULL pointer dereference.
+fix_host_ownership() walks the hypervisor's stage-1 page-table to
+adjust the host's stage-2 accordingly. Any such adjustment that
+requires cache maintenance operations depends on the per-CPU hyp
+fixmap being present. However, fix_host_ownership() is currently
+called before fix_hyp_pgtable_refcnt() and hyp_create_fixmap(), so
+the fixmap does not yet exist when it runs.
 
-Add NULL checks after both napi_build_skb() calls, properly advancing
-descriptors and consuming remaining fragments on failure.
+This is benign today because the host stage-2 starts empty and no
+CMOs are needed, but it becomes a latent crash as soon as
+fix_host_ownership() is extended to operate on a non-empty
+page-table.
 
-Fixes: 1cd3b407977c ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
+Reorder the calls so that fix_hyp_pgtable_refcnt() and
+hyp_create_fixmap() complete before fix_host_ownership() is invoked.
+
+Fixes: 0d16d12eb26e ("KVM: arm64: Fix-up hyp stage-1 refcounts for all pages mapped at EL2")
+Signed-off-by: Quentin Perret <qperret@google.com>
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Link: https://patch.msgid.link/20260424084908.370776-7-tabba@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Link: https://patch.msgid.link/20260409184009.930359-3-devnexen@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ inlined missing octep_vf_oq_next_idx() helper as read_idx++ with wraparound ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c |   36 +++++++++++++++-
- 1 file changed, 34 insertions(+), 2 deletions(-)
+ arch/arm64/kvm/hyp/nvhe/setup.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-@@ -409,10 +409,17 @@ static int __octep_vf_oq_process_rx(stru
- 			data_offset = OCTEP_VF_OQ_RESP_HW_SIZE;
- 			rx_ol_flags = 0;
- 		}
--		rx_bytes += buff_info->len;
--
- 		if (buff_info->len <= oq->max_single_buffer_size) {
- 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
-+			if (!skb) {
-+				oq->stats->alloc_failures++;
-+				desc_used++;
-+				read_idx++;
-+				if (read_idx == oq->max_count)
-+					read_idx = 0;
-+				continue;
-+			}
-+			rx_bytes += buff_info->len;
- 			skb_reserve(skb, data_offset);
- 			skb_put(skb, buff_info->len);
- 			read_idx++;
-@@ -424,6 +431,31 @@ static int __octep_vf_oq_process_rx(stru
- 			u16 data_len;
+--- a/arch/arm64/kvm/hyp/nvhe/setup.c
++++ b/arch/arm64/kvm/hyp/nvhe/setup.c
+@@ -312,15 +312,15 @@ void __noreturn __pkvm_init_finalise(voi
+ 	};
+ 	pkvm_pgtable.mm_ops = &pkvm_pgtable_mm_ops;
  
- 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
-+			if (!skb) {
-+				oq->stats->alloc_failures++;
-+				desc_used++;
-+				read_idx++;
-+				if (read_idx == oq->max_count)
-+					read_idx = 0;
-+				data_len = buff_info->len - oq->max_single_buffer_size;
-+				while (data_len) {
-+					dma_unmap_page(oq->dev, oq->desc_ring[read_idx].buffer_ptr,
-+						       PAGE_SIZE, DMA_FROM_DEVICE);
-+					buff_info = (struct octep_vf_rx_buffer *)
-+						    &oq->buff_info[read_idx];
-+					buff_info->page = NULL;
-+					if (data_len < oq->buffer_size)
-+						data_len = 0;
-+					else
-+						data_len -= oq->buffer_size;
-+					desc_used++;
-+					read_idx++;
-+					if (read_idx == oq->max_count)
-+						read_idx = 0;
-+				}
-+				continue;
-+			}
-+			rx_bytes += buff_info->len;
- 			skb_reserve(skb, data_offset);
- 			/* Head fragment includes response header(s);
- 			 * subsequent fragments contains only data.
+-	ret = fix_host_ownership();
++	ret = fix_hyp_pgtable_refcnt();
+ 	if (ret)
+ 		goto out;
+ 
+-	ret = fix_hyp_pgtable_refcnt();
++	ret = hyp_create_fixmap();
+ 	if (ret)
+ 		goto out;
+ 
+-	ret = hyp_create_fixmap();
++	ret = fix_host_ownership();
+ 	if (ret)
+ 		goto out;
+ 
 
 
 
