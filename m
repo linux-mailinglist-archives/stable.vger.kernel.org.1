@@ -1,177 +1,201 @@
-Return-Path: <stable+bounces-246912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAE4I06XBGpiLwIAu9opvQ
-	(envelope-from <stable+bounces-246912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:22:54 +0200
+	id kHrlN+ObBGr3LwIAu9opvQ
+	(envelope-from <stable+bounces-246906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:42:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD65536017
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:22:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547775365B2
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D68CF30041E4
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:22:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1862C31DE6B2
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13404921BC;
-	Wed, 13 May 2026 15:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDBF25B098;
+	Wed, 13 May 2026 15:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fap7XRwG"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ym3tPGL5"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012037.outbound.protection.outlook.com [40.107.200.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3D13321B1;
-	Wed, 13 May 2026 15:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778685627; cv=none; b=qSKPWavUraJdAdKmbkAcrncxAB9yYnEHGa70WeSQPjE+rfzSRUDf4hcuntdJGNUXKrJMN0L7hdbJwtC9/izMzc0Oa1cFKw5XHePN2Fp5mXnGabsCuw+TIqPiJDEk7Fh4hgvVJjXpwRT/K0XhgY1+SZIr+ltbeIuKJRHU7R2C5yo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778685627; c=relaxed/simple;
-	bh=wn/mjkuuLW+DWToBm1KYcumvzh96coldrZOHO3ezGmE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W5mBSW/8TcQ74uG5lAMCg5i++m1AzxphDmi3xyWXsrbpElJp57IAzFCrId9GzKWHHDDo5KbRZbnb3eliAZIYzoGSFN+6sJGf5S9049YdXiOYjyTSQTtDUg5uNsjB4pLua6Lpc7Akmqj6FjJwEvCHP+Cggujj+HXUZ6O52fpC00A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fap7XRwG; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778685625; x=1810221625;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=wn/mjkuuLW+DWToBm1KYcumvzh96coldrZOHO3ezGmE=;
-  b=Fap7XRwG5ljjdhLTcxGMFP+mCzap2MHJKZqeYlwO1/F++XAuO1Lwn3/5
-   euLJZ+C3GMZtyxwGDhCl/n6Kr/YkTT3JIFwSpn+dkSuk+eu0AhAyXqoj3
-   BwSfqAWKbDG3jRNFgXEnrSpcPeP3otQSdY9OoPiVF5lVP6L97ozKHVF92
-   KmQKEBSRyd2N0dH1zLi0/EsXn2bIBc2bIUXZY6jn6RCyRZoaUH8/olFXE
-   IJzlEDKwBu+tG39+PfPIPqUBfBqrdG6Rx54VizwIhmRTENPyjDf4yr+V6
-   BMcbAJGqDMJcmdTxdB3xABfGBTQav7G0WXY7VPdOzQv+ynpy8SqJF4wVq
-   g==;
-X-CSE-ConnectionGUID: UfUs7f6CQvK1g+mkwNJ5MQ==
-X-CSE-MsgGUID: URMamPSfTLaW10piGVFTDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="83489532"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="83489532"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:20:25 -0700
-X-CSE-ConnectionGUID: /Sv31jP7SjaGJAof2d1bWQ==
-X-CSE-MsgGUID: id/gk2/TS7SDUs/D/9GxeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="239931574"
-Received: from zp3110c001s1504.deacluster.intel.com ([10.219.161.39])
-  by fmviesa004.fm.intel.com with ESMTP; 13 May 2026 08:20:24 -0700
-From: Ahsan Atta <ahsan.atta@intel.com>
-To: herbert@gondor.apana.org.au
-Cc: linux-crypto@vger.kernel.org,
-	qat-linux@intel.com,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	stable@vger.kernel.org,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Damian Muszynski <damian.muszynski@intel.com>
-Subject: [PATCH 6/6] crypto: qat - handle sysfs-triggered reset callbacks
-Date: Wed, 13 May 2026 17:16:59 +0200
-Message-ID: <b1229b6e45cb61aecd5df50cb99b4b8b16fb3126.1778685152.git.ahsan.atta@intel.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <cover.1778685152.git.ahsan.atta@intel.com>
-References: <cover.1778685152.git.ahsan.atta@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657333264E9
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 15:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778685534; cv=fail; b=d2w2/6iI1qac+XF1GNYS2ip9Ii29222KoTtOp/K7KHQX0wyyn6+OwXyAS/Rr+XGg1sbCls1NRITnco+slkzbp2Fttj1cSYJ9cbpdOuQ2Kj00FNjDxySwBv9qw1yXWneFgpx6PCPvlWE2faCFp3wUYcxwunglXFS7gmvTdM78WbA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778685534; c=relaxed/simple;
+	bh=shiwBhd8O4RjeA81XUHIEum68Q9Etvtheec5VdYTw+U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pxz1+BwisKMm+P/oZjNAjm9tnxIMa7xPsjirYLuh8ZaiwprW4h5fk5/CTOqilAtrAetOpvJ9a7HDxpBZduBrhNsAPvl+P35l7MiGlKUFucsWbjBctZzOJ7vayrEMqlc7z/7fVGHY6bo7QpDWApzF5nj+DOEJP8Krt5MHhxwuunw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ym3tPGL5; arc=fail smtp.client-ip=40.107.200.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T/zsMFO3rZNepVySzX27B0bK/eT9zZp+AR+Oisc9Mw6uRBiOuyhMFPVIRc+VVy5S3f/yK/LGp+AmERZZblRvK8R6iQN2kMXR1DREdVeo/jEN0LNXOG3BuiRY8mza3EnqbLEQYitQT1MJPSdxIcbLzs+bVvAM2+W/QxSLX//KLUSBn0zpCIvxkUTLfPpWHUjuX0PM3lcve02O3oKxzclsPW+ibBJwr1hqfHFxqDoUauurOGCjSi36gKL+JuyePVLOfdspHWeNQbqbwTZvngXuF/zeWGa3AGFCRF8s3G8eTLo5UsiI1u9mPTC5BG1OsHKvLoNGysmMfAETwFTg90FAow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Bkk0uKyHTKJeSVlHhG2p+picVmGAnkWT0OOfxTh4ZmQ=;
+ b=Ddjb3mGUTVl2Wm3f/3D2b+P/sZ9y/DYrBBecndIIfaDgTl1EbwgNkBqlnJ4dDsyJq7vcZmJjxbGEp3SIvbSpjPezQ70KjbqMrTKZZ5TZVmdGSTHh4106kFG5tCyGDcit5gOfU1C7qT81iMednZNj7baqyvY/iEhuS2870Cq2wAXXxglwiWqRq67GmMAMedIdb85sww3isgt3FjOcMtPRxekU932a4WlqFS5C84Gn2GdjZXAsTIqXbSEIGBGt7iV2iHggcV6cxBTV4Yce7I5dN/iaY3OkA04PtPsTd7xyruI3TbZgmRzAZWF8Zj5W3vLuBulUYo9FUK2eqEE6UmyT3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Bkk0uKyHTKJeSVlHhG2p+picVmGAnkWT0OOfxTh4ZmQ=;
+ b=Ym3tPGL5X68fA00Iis8AYGT4Uwrvd2AAzkOUJtEqR4HiluMfbywoK49Q4e/I1mA/95nLQ3u+qROjLTs4K98X5iSIQXoVMgXrHcZ8o8KtjFytJDmOX67TmVO3e5ps/+h1UQsYBWmCcqH80fmHb2svdGcF3C5Z57vtgPXQEY3fWlfO5Fn/86BOjuIC8q5A/oQKgUf5s6dy5xUakwHMALdQICr93Msule7HuN49cDxERE0o0wjG3YKApn6dckKuPRwI05s8Sm2TSDEStWTu/ZHK+gvHkPAO0ACJLvZlaRJ9XclSibcgGJI0hr//ZzXlckCu22hs1qXKW/Pb7EhmHiPY+Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by DS0PR12MB9059.namprd12.prod.outlook.com (2603:10b6:8:c5::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.21; Wed, 13 May
+ 2026 15:18:47 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9913.009; Wed, 13 May 2026
+ 15:18:47 +0000
+Date: Wed, 13 May 2026 12:18:46 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Mostafa Saleh <smostafa@google.com>
+Cc: iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+	Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>,
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>, patches@lists.linux.dev,
+	Pranjal Shrivastava <praan@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH rc 3/5] iommu: Handle unmap error when iommu_debug is
+ enabled
+Message-ID: <20260513151846.GB787748@nvidia.com>
+References: <0-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
+ <3-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
+ <agSVJeBx849TqOBM@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agSVJeBx849TqOBM@google.com>
+X-ClientProxiedBy: DS7PR03CA0018.namprd03.prod.outlook.com
+ (2603:10b6:5:3b8::23) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3AD65536017
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DS0PR12MB9059:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4bb67dbe-3ed1-47ff-b086-08deb102ee06
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|18002099003|11063799003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	XSQ/mPU9QrYctEhvUANQjEKfG2cVfAEauCMBBd4Bi3WpvauQupumlpdeDIuSniKTjmcouaPstTsZY0Usr4lIUJ5Lkb9mX9V2pgMds6jaSJduNRLjqiipm7mBZvQbSWVabUDHpgfjVLCEllWwXIJKuxfAIsqUSXiBCWlhguYwABff1KbmYyoE2Pxw5un6cakz8Ce8v9/zISak1L783rqGkY+oPQVydJBy12vRMzHuBNQz/SEQgrciMhNwCPtUWwIsod99oc7p6106MBYP2E5Jv0r3EaA5JeTQ9VvA1X1869iyTCmSPGa47TKxDrJQstBhgRFJfrt4giyNBM5eG6+VU+R3nT/rizV4OgYybjK+4hC/amV2TZKpafYu+tC/CVE0JBYHKygVjBF9wV96DJw9sLpAt8cLqVgGp5Ysyt0uR75uqMBs3ipttCaOwgSyrLNBXtp7IkQMkeAh6TgxkX0V+rcgD3EI+U2ajbGC2i6Jy8VrVDudQj3zE1Vo9l9PTpWbS34mq1Fer50Yn10MGrUgRv5CO/SytsyF/yoxtcv+59WhJxchEBCswTgwCT+UJz0TBqb2JWQ4MFKxIWjcOR0q1jvA72XKPzg/6XfNME7MPioyXIG/mY2ChpFhl+2UGKFdDll9ahrCQaCX2zpU8RKzfc/bbUXK+2EdpLsi6PQcOW7irz+1IQ4OsbiI9CVfL8BE
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(18002099003)(11063799003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kSOeBSNH8d2RcCfGs/8tOjVlcx8JqJ/IIrUiC679x8qvSLHdOEcvDL5oIaj9?=
+ =?us-ascii?Q?NKjqocRyI0yTaado+0VTSMkbDt+hJgIa7+iaLmvHZU4foD39K/Ngea1nUhfF?=
+ =?us-ascii?Q?HPP6Ay4uHAqy/Y5WHh/42coucfqvVhxNyb95RH56JHsv625cdxfhJtRRyBC1?=
+ =?us-ascii?Q?Kfl2VmUDppi3brZyW922RRaf1UUjo0SqzdtVEOsTVJaRD6jlgYw8x68eP77y?=
+ =?us-ascii?Q?fGM1H8hm6680yoPNZBpWk5dMIaVBPfVkCt8LQtRqsyLt/K1KH5+TapHRCno7?=
+ =?us-ascii?Q?2X1Ry/C7vb0mDs/6UJuETHtTBFZRZ9voNuolwVRuEuJ5B7FUOqouNL0elbZT?=
+ =?us-ascii?Q?SoP00uDgOitOMaYxLy5dCsZ8cYyu8lIPyQs6PtDh+TpIbjd3T/mB58rpHmHi?=
+ =?us-ascii?Q?jxM4OovHTlrFdhqbnk81tqxtwPhLNq9qXWNhlWgR/NAMPjhfV2XxZbXGgXa3?=
+ =?us-ascii?Q?1H8R3wABJOC52ClVESKhFSzX/1jKyIKoKERUosJZJYL/lzomteUiFaYetDL4?=
+ =?us-ascii?Q?8kynedwbqd0ASDHwFMwQpm5spnUs7HrVIU5FGyMs1d7ADFfAfw2nwu+tN0FF?=
+ =?us-ascii?Q?GC4+VoUaO79gopDS/RrZh0ihcXp2LSSwdGhTdk7bHrFY+fd4ragg10ALeRuJ?=
+ =?us-ascii?Q?l8kVEGe9zKAvqaQ4iHio7uxfIEy41Mmgu8eYPVrTAKol5pAtkd9aTskVrwEa?=
+ =?us-ascii?Q?DZpmXV0CKu50UpykdTN8Q8v+OfJxoTOQPFxDkm7Y+XtaJYQee9+9tkef2K1N?=
+ =?us-ascii?Q?ZIJbsTza/kfZqQ7rAVmYpCYweWHURuZyFBrZUOM2l34amQpEXngrgbC9W78t?=
+ =?us-ascii?Q?Ck2gAqHtSUOESW8n6N4pYp6pdt/sgX/JxZHBarGU3UEKIjQuBJqJaNiYW26Y?=
+ =?us-ascii?Q?5w6AWksxr8ADxybDoP6EMS/99KIqVkpxK18FiAuy+ZozLArv2g+XwrVwkjcQ?=
+ =?us-ascii?Q?D3t8AnUkNiXy9BUzwk9qdLO0bHjbMZgOBIr9Z7m18TngnnF6Sgh9G9cL89r9?=
+ =?us-ascii?Q?ToQjPbE67eVNfTrEKckp4SamnC1lazLzWMQzdQrT55+mIOFIp5cglGPDaugR?=
+ =?us-ascii?Q?CmSsbvB1EcLzaH9iBn1vtVoqgcK+YQAv6V7PUTal2OuIoOZ1X+5aFmhM0ILF?=
+ =?us-ascii?Q?wbdRtGe1YgfbxCkNVDQULvsZh0u5Tz01ny9lsFjRBEGiuoFimpjD/Q4CjP+x?=
+ =?us-ascii?Q?N+udpLVO7ywFeUPirTAznJgOkPwROfPSq5E8FTmmmXmf2SfSd3CmDBG2O50B?=
+ =?us-ascii?Q?A9U/9WBL5jkVGecnMBeqNKejPjbWNTFL4NUfddhHu1GJ9johhY/IPyUKkRNx?=
+ =?us-ascii?Q?Yu0lwS9roNGQCcG+/FADHjEGuQEpbaWj1UKpKTAcgtz+ii2uaCRUkCV0/5ax?=
+ =?us-ascii?Q?DEYMbZVOl5/Gu/SpvwhxFD6DwyA5CDKQ3567MwnlrnLmqegpausiI6GJ1QWj?=
+ =?us-ascii?Q?/icGfqIZ1+/fUaiH3Q00fANtDyQhQ7CJh8Y5atdFaFivFQWgGy5kglYvvU8x?=
+ =?us-ascii?Q?LmE1hgyUQkwCv/BKrlb/hmf/Bzo7T7jA5AuzNScDWbMxhafXH1fz1+wWCTIm?=
+ =?us-ascii?Q?44Cf6ZmTLVzc7DKTx+AJ1FHpepwvH9iyQyysF3PRgroM53dtwnAR4oSyBi2p?=
+ =?us-ascii?Q?3xbGbfVC3zp1rzLsU8/pxohlc0sbDqNx/p5WAx5yv87dZYpunWiR1sxZKC4b?=
+ =?us-ascii?Q?6dSC6w4HalkF0Zj1QmrNZIwsrhVbhZ9AeqjcCGjntuQuU9/3?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4bb67dbe-3ed1-47ff-b086-08deb102ee06
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 15:18:47.5598
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HqeIl67Auq+Zfj9tOCbEEd1za4yrHKVHzR3RTbXXXuWp3NVujyaHeS9gCN5tw5or
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9059
+X-Rspamd-Queue-Id: 547775365B2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246912-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246906-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ahsan.atta@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,Nvidia.com:dkim]
 X-Rspamd-Action: no action
 
-A reset requested through /sys/bus/pci/devices/.../reset invokes the
-driver reset_prepare() and reset_done() callbacks. The QAT driver does
-not implement those callbacks today, so the reset proceeds without
-quiescing the device or bringing it back up afterward, which leaves
-the device unusable.
+On Wed, May 13, 2026 at 03:13:41PM +0000, Mostafa Saleh wrote:
+> On Tue, May 12, 2026 at 01:46:15PM -0300, Jason Gunthorpe wrote:
+> > Sashiko noticed a latent bug where the map error flow called iommu_unmap()
+> > which calls iommu_debug_unmap_begin()/iommu_debug_unmap_end() however
+> > since this is an error path the map flow never actually established the
+> > original iommu_debug_map() it will malfunction.
+> > 
+> > Lift the unmap error handling into iommu_map_nosync() and reorder it so
+> > the trace_map()/iommu_debug_map() records the partial mapping and then
+> > immediately unmaps it. This avoid creating the unbalanced tracking and
+> > provides saner tracing instead of a unmap unmatched to any map.
+> 
+> There is usually littel coverage in such paths, I have been thinking
+> of creating some test-suites on the IOMMU and io-pgtable/SMMUv3 level
+> to cover some of the failure cases and some of the tricky page table
+> operations, the problem is that there are many things to cover (starting
+> from the crashes/logical issues till TLB invalidation correctness of
+> some operations).
 
-Hook reset_prepare() and reset_done() into adf_err_handler so the
-common shutdown and recovery flow also runs for reset. Skip device
-quiesce if the device is already in a down state.
+I think the existing kunit for iommupt would have caught this if it is run
+with the debug option. I didn't test the io-pgtable stuff but I'm
+working on removing more of that..
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
----
- drivers/crypto/intel/qat/qat_common/adf_aer.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_aer.c b/drivers/crypto/intel/qat/qat_common/adf_aer.c
-index d29f70eb84b8..af028488e660 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_aer.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_aer.c
-@@ -250,10 +250,22 @@ static void adf_resume(struct pci_dev *pdev)
- 	dev_info(&pdev->dev, "Device is up and running\n");
- }
- 
-+static void adf_reset_prepare(struct pci_dev *pdev)
-+{
-+	reset_prepare(pdev);
-+}
-+
-+static void adf_reset_done(struct pci_dev *pdev)
-+{
-+	reset_done(pdev);
-+}
-+
- const struct pci_error_handlers adf_err_handler = {
- 	.error_detected = adf_error_detected,
- 	.slot_reset = adf_slot_reset,
- 	.resume = adf_resume,
-+	.reset_prepare = adf_reset_prepare,
-+	.reset_done = adf_reset_done,
- };
- EXPORT_SYMBOL_GPL(adf_err_handler);
- 
--- 
-2.45.0
-
---------------------------------------------------------------
-Intel Research and Development Ireland Limited
-Registered in Ireland
-Registered Office: Collinstown Industrial Park, Leixlip, County Kildare
-Registered Number: 308263
-
-
-This e-mail and any attachments may contain confidential material for the sole
-use of the intended recipient(s). Any review or distribution by others is
-strictly prohibited. If you are not the intended recipient, please contact the
-sender and delete all copies.
-
+Jason
 
