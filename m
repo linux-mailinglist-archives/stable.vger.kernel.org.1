@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-247015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KO1gGxPEBGqbNwIAu9opvQ
-	(envelope-from <stable+bounces-247015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:33:55 +0200
+	id sC5ZIhTEBGoxNwIAu9opvQ
+	(envelope-from <stable+bounces-247016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:33:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135AA539015
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FEF53901D
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5CF413008C01
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:33:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3993F30098AC
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534203A7F4A;
-	Wed, 13 May 2026 18:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B0D3A785E;
+	Wed, 13 May 2026 18:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZfJU2RU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SA+G65Xh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1775A2D6E44
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 18:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982FF2D6E44
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 18:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778697233; cv=none; b=jKiXHmg2NxpEZ8n3GTYKr9auAvrxV2QlKczwh5cda7NMTlgNINWd6WPcXwDTsFVDClGTdsrNBQZFuz2VVpPplEYi52RjBqR6z4go/0XvxqQiXLW3yuK8FN9SCak3IDUrPZdZfTsozhrzLbvoiMaS5M32muBpB2x+qAsAKLsdzFA=
+	t=1778697234; cv=none; b=Qi93Nd7A3QBAqaXG3c7Z8j4tvo55PSF+pdTPIFmCzIkTo87S7TIaP43udtk5prjV5yXLA2LvQd016ps3kQRZG5h8Ur0guUpm3fmhWqEY6QPlhAXEb5c9YE+CVl/EqtTYz0SeasXhsaMlHctWx2UbYCN2KTr6jk4sFnQhgy7bX8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778697233; c=relaxed/simple;
-	bh=L724IYE/nLaRSzqx4pX1XxwqeKozzPsF0afjN7Y44Ps=;
+	s=arc-20240116; t=1778697234; c=relaxed/simple;
+	bh=MU20TOvr9sTBX6bUmd9qWSI/ecCxRjPKCFo+Kdr4A9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDxFumd9trDAhAkVYgWEil2nvCAC9WcCPQ4UpVKoxTX7uOjlt/BqX5dXnrkZKre0TpLHKghPsKH3eoGg+s+F1pFHa4XegOL9MUloisgGYsabgxuqglcbA+7PUEowHqj5t3LXTzcEtIY+JhN3EXdNrSqIM+r0k6rCjEvOis/DlBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZfJU2RU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D78C19425;
-	Wed, 13 May 2026 18:33:52 +0000 (UTC)
+	 MIME-Version; b=JkSFLA6vtr4cT8TmvyNQaRXZobcx+RazrBfmZfYPs4LiieyE0bLhWnG6FdRSH5+ip76C0+oPXlBRfWzDwe8fGdJ/rjEIeL2Se8HtLSO6eMnygZbhDNdDpszIn9Ar/3Em/gr0I1niP/QbPTZhoiDm+aYIkp7nI9NuNHn4F6bvu+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SA+G65Xh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB031C19425;
+	Wed, 13 May 2026 18:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778697232;
-	bh=L724IYE/nLaRSzqx4pX1XxwqeKozzPsF0afjN7Y44Ps=;
+	s=k20201202; t=1778697234;
+	bh=MU20TOvr9sTBX6bUmd9qWSI/ecCxRjPKCFo+Kdr4A9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZfJU2RUyX0f3YnDBrq0EbEv5SwjbEN0Iaw3HfG7BtGCtn+YlRiQVG68Y7X2oPxEq
-	 p1E3UvjZPoZysh0AkyoPofzmr+tH6EuS08z8TbCehtUdxvagJafzoiEOVx9XROc8mS
-	 ErAXUUp6WlUV8am7CmOn+XTNvNnlLKSh8Z1ZzI5ouYuL8lRLJkPLBVMW8ETiYLWXMG
-	 29rVP19mteY553k1//Y0aJHINLJwE+uOZcpL6mVr7abVwCLJk6N9lUjp27U8YKk5Di
-	 9UpmWtIyhyePAKlxqO9C7SAyEBmUB65cTlrYqHTGt1HONnEKOqhFCQvh+JqznPuUuG
-	 RzTMBKzHv/kNA==
+	b=SA+G65XhYZLCJA5q6TnH82kzDJPDRK1Kc0skQGDQw1pMmMdDGXEtJn5hh0qakNBYJ
+	 oM5SaceHEfpslvoTMPFc7ByPs16ol+L+NwA+4B8qBaHKJcI5DJZqAURwHNV+8A23yG
+	 6JFP85bJitwbAXd/M1m7NTLy4DdgJVxXNpl1ioAXpQK3XTJpdCd09PAWWo1ox+ShYG
+	 vKkH9jsLS62QOtd0tZy9vwVcoUjDfZ2yeQOevv37DOjH+k6KnDzRUV0mLFJsaYVgWA
+	 bbWsxHoVZhJtJcmFUEHeI+v+LaAkep+GGjXjUoj/R2o7S3t+7mjz71TJiT/bw1eDjI
+	 /4zsYjf3NyWfg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Johan Hovold <johan@kernel.org>,
-	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
+	Masahisa Kojima <masahisa.kojima@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] spi: zynq-qspi: fix controller deregistration
-Date: Wed, 13 May 2026 14:33:48 -0400
-Message-ID: <20260513183348.3927281-3-sashal@kernel.org>
+Subject: [PATCH 5.10.y] spi: syncuacer: fix controller deregistration
+Date: Wed, 13 May 2026 14:33:51 -0400
+Message-ID: <20260513183351.3927329-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260513183348.3927281-1-sashal@kernel.org>
-References: <2026051203-dealmaker-flounder-0204@gregkh>
- <20260513183348.3927281-1-sashal@kernel.org>
+In-Reply-To: <2026051242-fax-huddle-8d32@gregkh>
+References: <2026051242-fax-huddle-8d32@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 135AA539015
+X-Rspamd-Queue-Id: 53FEF53901D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -77,7 +76,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247015-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247016-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -92,75 +91,58 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,xilinx.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit c9c012706c9fa8ca6d129a9161caf92ab625a3fd ]
+[ Upstream commit 75d849c3452e9611de031db45b3149ba9a99035f ]
 
-Make sure to deregister the controller before disabling it during driver
-unbind.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Note that clocks were also disabled before the recent commit
-1f8fd9490e31 ("spi: zynq-qspi: Simplify clock handling with
-devm_clk_get_enabled()").
-
-Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-Cc: stable@vger.kernel.org	# 5.2: 8eb2fd00f65a
-Cc: stable@vger.kernel.org	# 5.2
-Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Fixes: b0823ee35cf9 ("spi: Add spi driver for Socionext SynQuacer platform")
+Cc: stable@vger.kernel.org	# 5.3
+Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-27-johan@kernel.org
+Link: https://patch.msgid.link/20260410081757.503099-21-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
+[ renamed spi_controller/host to spi_master/master and kept int return type with `return 0;` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/spi/spi-synquacer.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index f640c80ed60ca..3c537b1c0e22d 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -641,7 +641,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-synquacer.c b/drivers/spi/spi-synquacer.c
+index dc188f9202c97..4422fe9d92ff9 100644
+--- a/drivers/spi/spi-synquacer.c
++++ b/drivers/spi/spi-synquacer.c
+@@ -719,7 +719,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(sspi->dev);
+ 	pm_runtime_enable(sspi->dev);
  
- 	xqspi = spi_controller_get_devdata(ctlr);
- 	xqspi->dev = dev;
--	platform_set_drvdata(pdev, xqspi);
-+	platform_set_drvdata(pdev, ctlr);
- 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xqspi->regs)) {
- 		ret = PTR_ERR(xqspi->regs);
-@@ -699,9 +699,9 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	/* QSPI controller initializations */
- 	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
+-	ret = devm_spi_register_master(sspi->dev, master);
++	ret = spi_register_master(master);
+ 	if (ret)
+ 		goto disable_pm;
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret) {
--		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
-+		dev_err(&pdev->dev, "failed to register controller\n");
- 		goto remove_ctlr;
- 	}
+@@ -740,10 +740,16 @@ static int synquacer_spi_remove(struct platform_device *pdev)
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct synquacer_spi *sspi = spi_master_get_devdata(master);
  
-@@ -725,9 +725,16 @@ static int zynq_qspi_probe(struct platform_device *pdev)
-  */
- static void zynq_qspi_remove(struct platform_device *pdev)
- {
--	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-+	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
++	spi_master_get(master);
 +
-+	spi_controller_get(ctlr);
++	spi_unregister_master(master);
 +
-+	spi_unregister_controller(ctlr);
+ 	pm_runtime_disable(sspi->dev);
  
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
+ 	clk_disable_unprepare(sspi->clk);
+ 
++	spi_master_put(master);
 +
-+	spi_controller_put(ctlr);
+ 	return 0;
  }
  
- static const struct of_device_id zynq_qspi_of_match[] = {
 -- 
 2.53.0
 
