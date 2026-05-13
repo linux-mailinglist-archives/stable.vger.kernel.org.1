@@ -1,399 +1,186 @@
-Return-Path: <stable+bounces-246707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WM4xIGm9A2og9wEAu9opvQ
-	(envelope-from <stable+bounces-246707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 01:53:13 +0200
+	id kDRAD3LQA2qz+wEAu9opvQ
+	(envelope-from <stable+bounces-246708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 03:14:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA1C452B66D
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 01:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B345852BC25
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 03:14:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 050F3306D620
-	for <lists+stable@lfdr.de>; Tue, 12 May 2026 23:52:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58868302DB51
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 01:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F7B3655F7;
-	Tue, 12 May 2026 23:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4806357D03;
+	Wed, 13 May 2026 01:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K8KC0TzI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L7TvQDkG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E920A34844C
-	for <stable@vger.kernel.org>; Tue, 12 May 2026 23:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778629978; cv=pass; b=nrHuggQ4+Wn6XgEQVj3YJuGRBAaHYnCGhzMHUIDgwRZW8QoOH/SOzr2qFCNg0LL5noswGP8HywjQMYgG9eO6zldXn3ors7w42N5Ipdq1QMAk6wbNGTISk1LgV0dyogmI0b2PDktx1x0r/I5vG+I76r4LeGJp2uWzQBve5C1rbqg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778629978; c=relaxed/simple;
-	bh=M4OskHsBAFUee/E1HyOtty5ctmQ+ue41zkwBlCBiRQQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WAMz1AWq48/RUHF7etC9+dn7YziFOpJPRzv7229G0aFSt9iJbeMKSDqqtekjAJkh32YZYOC8Lb1KLCYAT2AsyBJZqvHQeLW8KIcU+pTeQLZuAByazSUf6hZea4+PVRSTDzgs6825xT95UoDTwTPjxMyT6ulefQeKLGw0Jn+0jqI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K8KC0TzI; arc=pass smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7dea20cf21aso5587559a34.1
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 16:52:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778629975; cv=none;
-        d=google.com; s=arc-20240605;
-        b=K4mRyuHzeu7zXK2uESuSUigBIZanoDSNTiRDCxw8jCL4cew3hY2s183aOa00Eoeg66
-         qomELNFqgRWmqr01IcAHkbkI9h+ILWwOkZicnglWTMXECIfFN5fA+eVbigwpKuU7d0Mb
-         LHJGOOXLsVxi7+yaTkuQKth+jEwvFcNdp047HaEerzcyFjWrFXk7EMqZs+XULTQANPZ4
-         PEIqQ14s1uSIvhcuXC/5b5tAu5v8mVqSn8YF8AmsFs9VgZWGdzFuUYAWIDdEAeBtdpYM
-         ZCXVioZ1jSH7bhm9Lm9Kt03kYMTe0KGojgvcp8hNaFDhjsNXkbvAvbww5S7J9Y1WZa0R
-         PxLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+FGA8pZgJ3IPsHpCBVW+DHejdlYtVVwJny+rnPHDZOg=;
-        fh=2gzaD6RhKHtAOGKDFjLc40dWUTilRw2gYAkZu/HqSp8=;
-        b=UlFp10ygo2ankUDQwH5MK52m33OPwQAqXfHxFYCQtkWqddRtml1gvLlnKhnE+hmrJ4
-         rznFUDfqkCPxDsEWUX+jDw6Ad05EmbMsu8nLhPvXS8CwZApdbTIqEmmtLut52kNE208f
-         KkxDmfjcE3AG4UGwhXP6Za8fY+1RwPWCgIgQ5eAwD8RvCTqV22boTJNSMtT0lZuPWy8u
-         xuBHW1QT1JSaH5R835RE+uLtsyfzOd2Cv/+6cR6Q77qadrY8nzoUmO86lHVLSFTapTKm
-         6DNBVFrrXr27NSSn1fMdDQiSGBZTie7lXOU0IjNdDZbalSX98Os++o5dCx1n/qAtkCkU
-         O43Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778629975; x=1779234775; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+FGA8pZgJ3IPsHpCBVW+DHejdlYtVVwJny+rnPHDZOg=;
-        b=K8KC0TzISBY1O1cO1dOy6ieW9wXIoLOWpsuvuV8EWQn4096GsjghGLzTFLHtivUw/O
-         2WLt4WTRhXOBdD+zGqr2WkUb+Og7lv+1DNW0qF6J46HrGBbsxeqVpRHxDIVxvFov/GTo
-         Xw0x7rC8LkATweFmKKP/uH+NlMkW46lgtVnGHieWB+d0BkJtxjwXmO5wR0QRu4QupeSu
-         +t/grIR3B8r08FK9UpTr3UIUd8uCVL0wwdsL8vtBx28ly69mxgvC4oXO4F3mqfKT0oWD
-         DnBQH++KggPmJVcsL4AbZBlk7WM02g6vfcv6UNNO1xVRPRwnpGUiiInmurEcMTPaotgM
-         lSsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778629975; x=1779234775;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+FGA8pZgJ3IPsHpCBVW+DHejdlYtVVwJny+rnPHDZOg=;
-        b=pXLH53Kzt6ioiALVPfoCPvuXZQvU3AYSpjDOfPBycY+QOSoHU1VV9KOH9w5BNWIdgo
-         Etw9jvH0Az9svXDVSkx8JUHi3LAu1hFSQAzvgNVpVQJ0YKrWqSWCp+evOoKSXdutldui
-         tZB0P/TDePo/Kj9ykvFZPAmX7hh1FO2XfmHFYfWvQZkB89B/sRzgoZYTe6VZt9TWgf4E
-         xjO5+u0gY42lLq+9qvx83ct1yValHIlvr8K9guV2GuvEDeqCN/WGkqFV19FCFZ+Ifl/l
-         G0DbxUKPzT+hlqU1TqlY4q1YXmFDdp4DifP0y5QLZTX1iFY3kcd0V9X89EOvoqIizseM
-         AUEg==
-X-Forwarded-Encrypted: i=1; AFNElJ8hhabjCkpZwKlsXvW0keydloMUhiMDQK9z1a81hbY60mBxnDTmH3jgjxBXPkph4mhjl8Ru4Y0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6T8E30pLpyTXV6HEXvyD1SLID3HQZC7Vd0eZVQvf2+IPS9PpC
-	rrFyAy4ZpBJ8AMmPzPDp6hJEepC6YUCfxK/vI2mWz7419ST8JIXtL/htnIOWk8u6cgl3GGeDnwb
-	zQCbSs8iYpxWwZwmQzWZnrfKJKfpP68daDmromdPz
-X-Gm-Gg: Acq92OHXFpwV01epsU3O5iVk5EWCzr2hoONpcCnGIsuQZWXr97hx8y5Eb7BNm6n9GM0
-	TBQ+5it0pRU36n7zdV8Eerr215iuVrf+WvDaaRMmSjro6/Nz6RwoGQt539NZy2P1kLdaQ8mcl3v
-	tzQFGeQSSWy4uWRO0/XPvXqoZDpHDAVp7DsQQUcHPB79GpnzzmiIa4adxI+TfVvi0wXgKh6YdAA
-	/DiwK9sUdjOLfflpGtop+a6375HgT/qBCcmOr8rFAJreS6S3p6jhEh4HhJuHJxseJdYYwC7hmM7
-	6FP0tFzvv2o2T0vUu9gc84SrmerZa71pSTbkQuUWpjhrS0aEmCt4Ma9ft5s=
-X-Received: by 2002:a05:6820:1908:b0:694:9e10:fdce with SMTP id
- 006d021491bc7-69b78d48a1fmr540205eaf.4.1778629974495; Tue, 12 May 2026
- 16:52:54 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667D6357CEA;
+	Wed, 13 May 2026 01:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778634859; cv=none; b=IbJJ8tSXuncFv0P720vahrahtzzcAI9uVo9xjS0Xduq6TSGBPuy0LmmXiE/vjvdfl0SAQQOZziU0nhGPdLZ0R00pV7kp+QvI6MPYTrNSHd5XG2kQ+TPuMlR8J6bKEGY7SNMX/0sfQgVl8RGDxMeGHuDeVHIXJvT+srrfIW+F50c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778634859; c=relaxed/simple;
+	bh=FU2ILKRpRtG6dnEOsQC0n7PNp/hPFcLs2D3fDHxUb84=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GaxdS4KlM6blnYXC4vCLAHlOMrpsdsTk3x2T5lky2ZtRUbh26eKpUB9pZ7gf1c7iX6m3J4u5/uUW9V4seCyS7wz4gMpVziQ0BX/WkDcnpcT5hs3G7R7MylAfHE80hpqGzczFldgtL+etzfCjeZW0EtGe8s260FB31o5y136/JRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L7TvQDkG; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778634856; x=1810170856;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=FU2ILKRpRtG6dnEOsQC0n7PNp/hPFcLs2D3fDHxUb84=;
+  b=L7TvQDkGgp0V39kLn/zjDipUHpGlqfsIZZuHHkwBILLGPCV9qBDfofJJ
+   02+3+qC60Fg/vQ0M0OzXUKLZz+tZy/oB0Pd3mX4dLCyD6OXhdDcqonqaI
+   VytQPWjV5cMn3xJLQch1ojhztHtrcmjoo0k1YXrpVTVsBcHzPhJJJHR7u
+   yX1zsDnEAHGOh2zcYEFHcqiTMeT9bCBFfzDPaU7jiul8EdDNVh97vHDM1
+   Ed8nXc41UJRWNUA6RQ/jazp9rkFdpxe2O8QSzzz/+y63l7WEmKXYzmPNH
+   RM9a1TcfjoZzzkHJ6jHG03Y3E6RRDfbgCiNjAy1q9VYrJgKkgXr/9NFVT
+   A==;
+X-CSE-ConnectionGUID: FFQaQOpFQgC3i+3zmqxmrQ==
+X-CSE-MsgGUID: VhYcaOeyTSiRbCWeQUM5EQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="82123247"
+X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
+   d="scan'208";a="82123247"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 18:14:15 -0700
+X-CSE-ConnectionGUID: Rt5d8lv1T5iZ6ZPBEYe4TA==
+X-CSE-MsgGUID: J9zyCEBWQ1yr1OmhhEqe6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
+   d="scan'208";a="238181695"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.11]) ([10.125.108.11])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 18:14:15 -0700
+Message-ID: <bf92ebbf-8d70-406a-aea1-c11ca576de90@intel.com>
+Date: Tue, 12 May 2026 18:14:13 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260429-tcpm-discover-modes-nak-fix-v4-1-75945d0ed30f@collabora.com>
-In-Reply-To: <20260429-tcpm-discover-modes-nak-fix-v4-1-75945d0ed30f@collabora.com>
-From: RD Babiera <rdbabiera@google.com>
-Date: Tue, 12 May 2026 16:52:41 -0700
-X-Gm-Features: AVHnY4LfJ8Mvw0TkiFibkz2XCR8My-z9f4kN448nFcDnUZezatAPoamXYLKTZro
-Message-ID: <CALzBnUGhad0r3oLDTG3TrFPBsJpyGa_Ra7DCM0Gju0-rKSxx9A@mail.gmail.com>
-Subject: Re: [PATCH v4] usb: typec: tcpm: improve handling of DISCOVER_MODES failures
-To: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: Badhri Jagan Sridharan <badhri@google.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: EA1C452B66D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org
+Cc: "H . Peter Anvin" <hpa@zytor.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>,
+ Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, stable@vger.kernel.org
+References: <20260428125632.129770-1-kas@kernel.org>
+ <20260428125632.129770-3-kas@kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260428125632.129770-3-kas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B345852BC25
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246707-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246708-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[zytor.com,intel.com,linux.intel.com,gmail.com,vger.kernel.org,lists.linux.dev];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rdbabiera@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,collabora.com:email,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim]
 X-Rspamd-Action: no action
 
-On Wed, Apr 29, 2026 at 9:33=E2=80=AFAM Sebastian Reichel
-<sebastian.reichel@collabora.com> wrote:
->
-> UGREEN USB-C Multifunction Adapter Model CM512 (AKA "Revodok 107")
-> exposes two SVIDs: 0xff01 (DP Alt Mode) and 0x1d5c. The DISCOVER_MODES
-> step succeeds for 0xff01 and gets a NAK for 0x1d5c. Currently this
-> results in DP Alt Mode not being registered either, since the modes
-> are only registered once all of them have been discovered. The NAK
-> results in the processing being stopped and thus no Alt modes being
-> registered.
->
-> Improve the situation by handling the NAK gracefully and continue
-> processing the other modes.
->
-> Before this change, the TCPM log ends like this:
->
-> (more log entries before this)
-> [    5.028287] AMS DISCOVER_SVIDS finished
-> [    5.028291] cc:=3D4
-> [    5.040040] SVID 1: 0xff01
-> [    5.040054] SVID 2: 0x1d5c
-> [    5.040082] AMS DISCOVER_MODES start
-> [    5.040096] PD TX, header: 0x1b6f
-> [    5.050946] PD TX complete, status: 0
-> [    5.059609] PD RX, header: 0x264f [1]
-> [    5.059626] Rx VDM cmd 0xff018043 type 1 cmd 3 len 2
-> [    5.059640] AMS DISCOVER_MODES finished
-> [    5.059644] cc:=3D4
-> [    5.069994]  Alternate mode 0: SVID 0xff01, VDO 1: 0x000c0045
-> [    5.070029] AMS DISCOVER_MODES start
-> [    5.070043] PD TX, header: 0x1d6f
-> [    5.081139] PD TX complete, status: 0
-> [    5.087498] PD RX, header: 0x184f [1]
-> [    5.087515] Rx VDM cmd 0x1d5c8083 type 2 cmd 3 len 1
-> [    5.087529] AMS DISCOVER_MODES finished
-> [    5.087534] cc:=3D4
-> (no further log entries after this point)
->
-> After this patch the TCPM log looks exactly the same, but then
-> continues like this:
->
-> [    5.100222] Skip SVID 0x1d5c (failed to discover mode)
-> [    5.101699] AMS DFP_TO_UFP_ENTER_MODE start
-> (log goes on as the system initializes DP AltMode)
->
-> Cc: stable@vger.kernel.org
-> Fixes: 41d9d75344d9 ("usb: typec: tcpm: add discover svids and discover m=
-odes support for sop'")
-> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+On 4/28/26 05:56, Kiryl Shutsemau (Meta) wrote:
+> +	if (size == 4)
+> +		regs->ax = 0;
+> +	else
+> +		regs->ax &= ~mask;
 
-Reviewed-by: RD Babiera <rdbabiera@google.com>
+I haven't thought about this _that_ much, but this feels wrong. Why is
+is 4 so special cased?
 
-> ---
-> Changes in v4:
-> - Link to v3: https://lore.kernel.org/r/20260309-tcpm-discover-modes-nak-=
-fix-v3-1-a4447f5c1c61@collabora.com
-> - Rebase to v7.1-rc1
-> - Collect Reviewed-by from Heikki Krogerus
->
-> Changes in v3:
-> - Link to v2: https://lore.kernel.org/r/20260303-tcpm-discover-modes-nak-=
-fix-v2-1-5a630070025a@collabora.com
-> - Move svdm_consume_modes() out of tcpm_handle_discover_mode() (Heikki Kr=
-ogerus)
-> - Move rlen return pointer argument into proper return code (Heikki Kroge=
-rus)
-> - Drop multiple tcpm_handle_discover_mode() arguments by re-getting them
->   in the function  (Heikki Krogerus)
-> - Restructure if/else branches after these changes to make checkpatch hap=
-py
-> - Did not pick up R-b tag from Badhri Jagan Sridharan due to the amount
->   of changes
->
-> Changes in v2:
-> - Link to v1: https://lore.kernel.org/r/20260213-tcpm-discover-modes-nak-=
-fix-v1-0-9bcb5adb4ef6@collabora.com
-> - Squash patches (Badhri Jagan Sridharan)
-> - Add Fixes tag (Badhri Jagan Sridharan)
-> - Move common svdm_consume_modes out of conditional statement (Badhri Jag=
-an Sridharan)
-> - Add TCPM log to commit message (Badhri Jagan Sridharan)
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 97 +++++++++++++++++++++++++++----------=
-------
->  1 file changed, 61 insertions(+), 36 deletions(-)
->
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.=
-c
-> index dfbb94ddc98a..44ab7e0e5d50 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -2142,6 +2142,55 @@ static bool tcpm_cable_vdm_supported(struct tcpm_p=
-ort *port)
->                tcpm_can_communicate_sop_prime(port);
->  }
->
-> +static int tcpm_handle_discover_mode(struct tcpm_port *port, u32 *respon=
-se,
-> +                                    enum tcpm_transmit_type rx_sop_type,
-> +                                    enum tcpm_transmit_type *response_tx=
-_sop_type)
-> +{
-> +       struct typec_port *typec =3D port->typec_port;
-> +       struct pd_mode_data *modep;
-> +
-> +       if (rx_sop_type =3D=3D TCPC_TX_SOP) {
-> +               modep =3D &port->mode_data;
-> +               modep->svid_index++;
-> +
-> +               if (modep->svid_index < modep->nsvids) {
-> +                       u16 svid =3D modep->svids[modep->svid_index];
-> +                       *response_tx_sop_type =3D TCPC_TX_SOP;
-> +                       response[0] =3D VDO(svid, 1,
-> +                                         typec_get_negotiated_svdm_versi=
-on(typec),
-> +                                         CMD_DISCOVER_MODES);
-> +                       return 1;
-> +               }
-> +
-> +               if (tcpm_cable_vdm_supported(port)) {
-> +                       *response_tx_sop_type =3D TCPC_TX_SOP_PRIME;
-> +                       response[0] =3D VDO(USB_SID_PD, 1,
-> +                                         typec_get_cable_svdm_version(ty=
-pec),
-> +                                         CMD_DISCOVER_SVID);
-> +                       return 1;
-> +               }
-> +
-> +               tcpm_register_partner_altmodes(port);
-> +       } else if (rx_sop_type =3D=3D TCPC_TX_SOP_PRIME) {
-> +               modep =3D &port->mode_data_prime;
-> +               modep->svid_index++;
-> +
-> +               if (modep->svid_index < modep->nsvids) {
-> +                       u16 svid =3D modep->svids[modep->svid_index];
-> +                       *response_tx_sop_type =3D TCPC_TX_SOP_PRIME;
-> +                       response[0] =3D VDO(svid, 1,
-> +                                         typec_get_cable_svdm_version(ty=
-pec),
-> +                                         CMD_DISCOVER_MODES);
-> +                       return 1;
-> +               }
-> +
-> +               tcpm_register_plug_altmodes(port);
-> +               tcpm_register_partner_altmodes(port);
-> +       }
-> +
-> +       return 0;
-> +}
-> +
->  static int tcpm_pd_svdm(struct tcpm_port *port, struct typec_altmode *ad=
-ev,
->                         const u32 *p, int cnt, u32 *response,
->                         enum adev_actions *adev_action,
-> @@ -2399,41 +2448,11 @@ static int tcpm_pd_svdm(struct tcpm_port *port, s=
-truct typec_altmode *adev,
->                         }
->                         break;
->                 case CMD_DISCOVER_MODES:
-> -                       if (rx_sop_type =3D=3D TCPC_TX_SOP) {
-> -                               /* 6.4.4.3.3 */
-> -                               svdm_consume_modes(port, p, cnt, rx_sop_t=
-ype);
-> -                               modep->svid_index++;
-> -                               if (modep->svid_index < modep->nsvids) {
-> -                                       u16 svid =3D modep->svids[modep->=
-svid_index];
-> -                                       *response_tx_sop_type =3D TCPC_TX=
-_SOP;
-> -                                       response[0] =3D VDO(svid, 1, svdm=
-_version,
-> -                                                         CMD_DISCOVER_MO=
-DES);
-> -                                       rlen =3D 1;
-> -                               } else if (tcpm_cable_vdm_supported(port)=
-) {
-> -                                       *response_tx_sop_type =3D TCPC_TX=
-_SOP_PRIME;
-> -                                       response[0] =3D VDO(USB_SID_PD, 1=
-,
-> -                                                         typec_get_cable=
-_svdm_version(typec),
-> -                                                         CMD_DISCOVER_SV=
-ID);
-> -                                       rlen =3D 1;
-> -                               } else {
-> -                                       tcpm_register_partner_altmodes(po=
-rt);
-> -                               }
-> -                       } else if (rx_sop_type =3D=3D TCPC_TX_SOP_PRIME) =
-{
-> -                               /* 6.4.4.3.3 */
-> -                               svdm_consume_modes(port, p, cnt, rx_sop_t=
-ype);
-> -                               modep_prime->svid_index++;
-> -                               if (modep_prime->svid_index < modep_prime=
-->nsvids) {
-> -                                       u16 svid =3D modep_prime->svids[m=
-odep_prime->svid_index];
-> -                                       *response_tx_sop_type =3D TCPC_TX=
-_SOP_PRIME;
-> -                                       response[0] =3D VDO(svid, 1,
-> -                                                         typec_get_cable=
-_svdm_version(typec),
-> -                                                         CMD_DISCOVER_MO=
-DES);
-> -                                       rlen =3D 1;
-> -                               } else {
-> -                                       tcpm_register_plug_altmodes(port)=
-;
-> -                                       tcpm_register_partner_altmodes(po=
-rt);
-> -                               }
-> -                       }
-> +                       /* 6.4.4.3.3 */
-> +                       svdm_consume_modes(port, p, cnt, rx_sop_type);
-> +                       rlen =3D tcpm_handle_discover_mode(port, response=
-,
-> +                                                        rx_sop_type,
-> +                                                        response_tx_sop_=
-type);
->                         break;
->                 case CMD_ENTER_MODE:
->                         *response_tx_sop_type =3D rx_sop_type;
-> @@ -2476,9 +2495,15 @@ static int tcpm_pd_svdm(struct tcpm_port *port, st=
-ruct typec_altmode *adev,
->                 switch (cmd) {
->                 case CMD_DISCOVER_IDENT:
->                 case CMD_DISCOVER_SVID:
-> -               case CMD_DISCOVER_MODES:
->                 case VDO_CMD_VENDOR(0) ... VDO_CMD_VENDOR(15):
->                         break;
-> +               case CMD_DISCOVER_MODES:
-> +                       tcpm_log(port, "Skip SVID 0x%04x (failed to disco=
-ver mode)",
-> +                                PD_VDO_SVID_SVID0(p[0]));
-> +                       rlen =3D tcpm_handle_discover_mode(port, response=
-,
-> +                                                        rx_sop_type,
-> +                                                        response_tx_sop_=
-type);
-> +                       break;
->                 case CMD_ENTER_MODE:
->                         /* Back to USB Operation */
->                         *adev_action =3D ADEV_NOTIFY_USB_AND_QUEUE_VDM;
->
-> ---
-> base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
-> change-id: 20260213-tcpm-discover-modes-nak-fix-09070bb529c5
->
-> Best regards,
-> --
-> Sebastian Reichel <sebastian.reichel@collabora.com>
->
+Also, what _are_ the limits on the registers that 'in' can be used on?
+
+RAX - n/a, no 64-bit I/O
+EAX - size=4
+AX  - size=2
+AH  - n/a no encoding for inb
+AL  - size=1
+
+I'd find this much easier to grasp if there was a nice table of what the
+registers, sizes, and masks ended up being usable. As usual, x86 is
+"fun" here.
 
