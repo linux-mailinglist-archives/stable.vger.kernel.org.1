@@ -1,161 +1,148 @@
-Return-Path: <stable+bounces-246842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246843-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMMfAlB3BGqpKAIAu9opvQ
-	(envelope-from <stable+bounces-246842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:06:24 +0200
+	id sMslDtd0BGqdJwIAu9opvQ
+	(envelope-from <stable+bounces-246843-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:55:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FD053395C
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:06:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA7853369A
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 419EB3154F62
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:48:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CBC07318AFB9
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADA7425CCD;
-	Wed, 13 May 2026 12:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81573426EA3;
+	Wed, 13 May 2026 12:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mnej4WuZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gak/LPfN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBC542317A
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 12:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45360426699
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 12:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778676510; cv=none; b=vGNLubyIkBpCiicS2oL/b/lUYBpImFMDuf6j0fMYQXpfwGzJZkRXJa51FwQwmu5F0HKow027jUz80C+bHkOS85iiQp69v1xR1VvLKQH1FSbAu68RFnHf9unw+2npVVcF0hqAzVM3r2GlMIG390cXCBhmGsnn8elwzWVZ6UJdZYU=
+	t=1778676524; cv=none; b=QGU3zb50m44i9y0BJ9pw2p56/x7OMExRJlibF3THbfD5BF8A4btRFJP7Ee4P03JIkjo9K7fwE5l2+krResJ/CnnKwuAkUe9n0MNTUE4vhDaxpYqKWoEUb2FAvBM1KJ93C7QX+SgyxJ9SsZaZbIEsAjS3RGUlfGLqNSvl1NTany8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778676510; c=relaxed/simple;
-	bh=+GsX+CdK0ydxnGXslSMT5BS3MNBH9LFYKOpievZvUwc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IZhR6SPzzwyrtd2ld0VZWvOOQXHF7CYrhhTQ9xxk+oSlXGHA7/qOcanJBj9BqvPdyCvw1pE+i9WnnElygU/WcCpqZuQ6MAzRgR5MzDKlv845B072ViFCx/DZ6J+brjojrB3aLRjvitZC2PFASvZIQLz9zPNU6NBTuPagVlIul0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mnej4WuZ; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-83544d05c5aso3674045b3a.2
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 05:48:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778676508; x=1779281308; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+5eHMVfb/Er3xuFGOIw7f+q4SdOyV+C6CS8hVi39b+g=;
-        b=mnej4WuZcLYu2spTIG5qsYwOGpRrFVWUh1G6pwOf2Mx5QM6vOMiV6D30zRyvyQEdfq
-         PmxYTNYJRFI5MvXCCvaQ4eQx1ZYsdyPJW2Y/X1NN/Jzf5q0SLrhvqB2sgUAoBAVoVIr8
-         fBx9mmJ/FdusAKWtzQmEWYCb9txBI9RwHIO8TMLJCHfzBCj1ffWFXKqM4Z613nojbOl1
-         V1NbzgsMF8zmpmkph2/+n+uQGeicHvVjPt24LoGDs0URNtZrRasEtNLbm0Ul+yDxJqH/
-         lc7yY4iIL1Ru0STc+UcnNdS3NukWypz3OdoHdRzBNkmDYUIz2P9UYbDZNeyM9celjfnV
-         RwBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778676508; x=1779281308;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+5eHMVfb/Er3xuFGOIw7f+q4SdOyV+C6CS8hVi39b+g=;
-        b=aFKVturmgkZHoLPrNdaJyCbcdaRoBn/483AL/rTsyE4EHwKKmLg9Jf4kOn0+hC4je8
-         WRz6e84r09lwPbtkJnhpFL5wXef0f/t+DJwDx4sgNTCBBqsS/Fr+/H7GyI2gtAsBEAkK
-         KrUE7DBaq0R0fbED1Mu1o8fjSfbEsAf2WlWYPZTEmw6vYt4kFJ9bY1KgDAGKG9nrxSHS
-         XgKSiQN4vX8QAOoaFwnh/+5tRNeOYTVLeW+l9S9V01CCJFTuMQxwV+0iFKU4kkxuyGVR
-         0CMmSugF550sBWJ+Jz76cD76UvI8o9UZrmuR5bxeDoCB6w3N90YxBUQyxDHU7cwDIF0c
-         1r+A==
-X-Forwarded-Encrypted: i=1; AFNElJ9FpDTExGZUtSoBCHbyLspFPkA+HKtgYZaC4Z1Hn1IPr/Hoj07LtMO8QC6LFwIg0EG78ncjD54=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAHpWoez0j5Ov6hKJMFtbjs1POLG6illcqOH3lsbKgiLCTP4CO
-	CIS0IIgmMsCNkLK7cFCHLFjy41Z9HRd+PC17ehOhOTusHm8bM+vVCBc6ZqbPrK0s6J3ttFFlUp8
-	XnFIbfg==
-X-Received: from pfnn24.prod.google.com ([2002:a05:6a00:2b98:b0:835:4568:a5a0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:8887:0:b0:837:b5b6:1b97
- with SMTP id d2e1a72fcca58-83f03fcc53amr3291170b3a.12.1778676507889; Wed, 13
- May 2026 05:48:27 -0700 (PDT)
-Date: Wed, 13 May 2026 05:48:27 -0700
-In-Reply-To: <B8D6B43E-4C3D-4E1F-BD07-5632E1BBECEA@zytor.com>
+	s=arc-20240116; t=1778676524; c=relaxed/simple;
+	bh=nBTOImue/7Ox3okmnQuOqwPuv8DYIODfrumCVl5ZVOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SCVsb8suHkGZFA8FikpC4PiS0cx74VFzf8LZf4UuidXU9MMNSKE8sWmVtNd3XN4wlzmJGgIERpEc1M8pw7VAdgmZwQTPQK782sNCuUWvZjv1hT+IVLgMk5zztFxQNddWqvgE1xEU7cCm8yuWxVr2UtnzI3VvV9EPhKa9nN9MF3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gak/LPfN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19140C2BCC7;
+	Wed, 13 May 2026 12:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778676523;
+	bh=nBTOImue/7Ox3okmnQuOqwPuv8DYIODfrumCVl5ZVOI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gak/LPfNO5t7SvtyLnecZ0Eojd5dqjhf8JgaPAmPuBzu4cbVUlZUHOAYubDOUEnXG
+	 MU8MV/tD95uBw8QRGeM+Wl/H1UzPWnFn/d/U27cLx567Iochoks/A1K2kb4fEFkCKi
+	 wScuXyXPjSo2MqbpwNGS/RCYjUvqkXLuujybRJ9aC4Vzu/+ikFm4h2O3/dNemv4Aw6
+	 A+sEtaeHmkRcnSn2MtOQHUWSk3nPaU6wStrlh9qfqAgxPiOrjED7W0aCvcJeGeVkWn
+	 cm/SVCkt7RDVmtyV2I9RTAZ8PIa8HVzj0chKTplythFKEhkwRs0kVUeaXMfW7OahFk
+	 BFMoXAT4+vxTA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] wifi: brcmfmac: Fix potential use-after-free issue when stopping watchdog task
+Date: Wed, 13 May 2026 08:48:41 -0400
+Message-ID: <20260513124841.3712467-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051206-scalded-clone-94cb@gregkh>
+References: <2026051206-scalded-clone-94cb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260428125632.129770-1-kas@kernel.org> <20260428125632.129770-3-kas@kernel.org>
- <bf92ebbf-8d70-406a-aea1-c11ca576de90@intel.com> <B8D6B43E-4C3D-4E1F-BD07-5632E1BBECEA@zytor.com>
-Message-ID: <agRzBsoQG2C0sHxe@google.com>
-Subject: Re: [PATCH v2 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
-From: Sean Christopherson <seanjc@google.com>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Kai Huang <kai.huang@intel.com>, Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: B9FD053395C
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8BA7853369A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246842-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,kernel.org,redhat.com,alien8.de,linux.intel.com,gmail.com,vger.kernel.org,lists.linux.dev];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-246843-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,broadcom.com:email]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026, H. Peter Anvin wrote:
-> On May 12, 2026 6:14:13 PM PDT, Dave Hansen <dave.hansen@intel.com> wrote:
-> >On 4/28/26 05:56, Kiryl Shutsemau (Meta) wrote:
-> >> +	if (size == 4)
-> >> +		regs->ax = 0;
-> >> +	else
-> >> +		regs->ax &= ~mask;
-> >
-> >I haven't thought about this _that_ much, but this feels wrong. Why is
-> >is 4 so special cased?
-> >
-> >Also, what _are_ the limits on the registers that 'in' can be used on?
-> >
-> >RAX - n/a, no 64-bit I/O
-> >EAX - size=4
-> >AX  - size=2
-> >AH  - n/a no encoding for inb
-> >AL  - size=1
-> >
-> >I'd find this much easier to grasp if there was a nice table of what the
-> >registers, sizes, and masks ended up being usable. As usual, x86 is
-> >"fun" here.
-> 
-> Because zero extension only applies to dwords.
-> 
-> x86-64 has three subregisters per GPR:
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-Aren't there four?  The fourth being 31:0, which is the one that is zero-extended
-and so "clobbers" 63:32.
+[ Upstream commit c623b63580880cc742255eaed3d79804c1b91143 ]
 
-> Bits 7-0
-> Bits 15-8
-> Bits 63-16
+Watchdog task might end between send_sig() and kthread_stop() calls, what
+results in the use-after-free issue. Fix this by increasing watchdog task
+reference count before calling send_sig() and dropping it by switching to
+kthread_stop_put().
 
-I assume you mean 15:0?  63:16 isn't addressable.  And these are the ones that
-aren't zero-extended, i.e. don't "clobber" other bits.
+Cc: stable@vger.kernel.org
+Fixes: 373c83a801f1 ("brcmfmac: stop watchdog before detach and free everything")
+Fixes: a9ffda88be74 ("brcm80211: fmac: abstract bus_stop interface function pointer")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20260416093339.2066829-1-m.szyprowski@samsung.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ replaced kthread_stop_put() with open-coded kthread_stop() + put_task_struct() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index e265a2e411a09..5f6c0afe22d49 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -2477,8 +2477,10 @@ static void brcmf_sdio_bus_stop(struct device *dev)
+ 	brcmf_dbg(TRACE, "Enter\n");
+ 
+ 	if (bus->watchdog_tsk) {
++		get_task_struct(bus->watchdog_tsk);
+ 		send_sig(SIGTERM, bus->watchdog_tsk, 1);
+ 		kthread_stop(bus->watchdog_tsk);
++		put_task_struct(bus->watchdog_tsk);
+ 		bus->watchdog_tsk = NULL;
+ 	}
+ 
+@@ -4549,8 +4551,10 @@ void brcmf_sdio_remove(struct brcmf_sdio *bus)
+ 	if (bus) {
+ 		/* Stop watchdog task */
+ 		if (bus->watchdog_tsk) {
++			get_task_struct(bus->watchdog_tsk);
+ 			send_sig(SIGTERM, bus->watchdog_tsk, 1);
+ 			kthread_stop(bus->watchdog_tsk);
++			put_task_struct(bus->watchdog_tsk);
+ 			bus->watchdog_tsk = NULL;
+ 		}
+ 
+-- 
+2.53.0
+
 
