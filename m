@@ -1,200 +1,169 @@
-Return-Path: <stable+bounces-247021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SExsMcTMBGrMPAIAu9opvQ
-	(envelope-from <stable+bounces-247021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:11:00 +0200
+	id 8Ej9LeHQBGr0PQIAu9opvQ
+	(envelope-from <stable+bounces-247022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:28:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B3E539A5C
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:10:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421F1539F12
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:28:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 698CC304AAA7
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:08:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21E27317246A
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829A53B1EC7;
-	Wed, 13 May 2026 19:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846153B27C1;
+	Wed, 13 May 2026 19:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="ol0wKIf/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EHKq4Vqp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tDMG+VS+"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2C218E025;
-	Wed, 13 May 2026 19:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB3B3B0ADD
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 19:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778699279; cv=none; b=kgdsL+0eRoF8x0uT9Qj9SY3lm29Q0tQCOGEi4DLoWd8Nv1IKmI6Umwy+E3FpXJJLt5rf5X+DnZHNwi44sPmYorj6SBvbjRoY36alkGtyv2cuhynW3gh1wmv6tJZuo1aN/2kpsp1RTFqAI0MMhVnqgGla7glVHmUpIO8jCm6BPi4=
+	t=1778699352; cv=none; b=LRGpTP5nlHH9rbaBFIjD15wMCOipNTLMVBlm/52zZxH22/hS1T7ld08aN0sYvzfdhP4scdg95cDuTQ0ZNnFUU7oYDcNf6rHkXRFzdKXED3Yh5hvSMxnt6obU5Wp2/0Vn6GHVWyQNRburihWNLu5NYB0nUe6ufn/Oin95h/p+ISU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778699279; c=relaxed/simple;
-	bh=9dyW0i1uEyQbY20h8QmZQNdlAA8PYklMtMjKAtEbdO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vAf61v5jCqz8rSMTY9RjjZ6QIJxyE667VTZ+f8ZzhOR+SsbKH1h9Ku18cVvf2eJr6PjPxu75wcl9yHS8jTNc+EPtQD9vI75p5yKvt5jIXHsHyGGMrtA/VKr3Wh17dkf+UGBC8La8mEv+avi3cmKMZciQGnkNtXl9MXThxdUCz8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=ol0wKIf/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EHKq4Vqp; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id B21E6EC0237;
-	Wed, 13 May 2026 15:07:56 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 13 May 2026 15:07:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1778699276;
-	 x=1778785676; bh=Pdi+Fsgqu8rY3Pf5OyrhZJWHhF8X8iBfSSYCAuxhxlg=; b=
-	ol0wKIf/gpMAtWYrv44KmJAKVKUzOIlDDb86vUCuYBUz9XctmJOaZz03kXdf2hhI
-	KwSreF7bKTWCEjnFLoCr9JErM3rsiY+R0MxfG1Z6oXWXkKoJXgsBKgoSmBr5YxqF
-	iaxZOdHc73YshYrQtL7MHdZJ2zFs6zXQVBczH+pOFDS6s76MzAngvibxlb0KQdST
-	5Bl/Sz3i7JeGKIyK++ahs0+N8wGi2Ssl3HILAwA9GCgKqvRicYTMIdLe4eKXyVab
-	wdfg/StyOqZW0uHMfb4Z82+Dli7ZYoNoPlkTKL1UAcT492fZ2ow5wzvKFwE6ee2a
-	YI9TKVxPafbdq3AouV9Iyg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778699276; x=
-	1778785676; bh=Pdi+Fsgqu8rY3Pf5OyrhZJWHhF8X8iBfSSYCAuxhxlg=; b=E
-	HKq4VqpPyeIumW7itoOq9YLD5zxZ/r/c1P4V7+c3salqwsICZ4ph7aCUCggpk+wC
-	bm3GImR/HdWYqqxFP0Ov65JhAJb5qpNOH/SwYOwLP/wyNvQzcqm3EhgbfOk005Nj
-	nbAGDrtLfxQu/ZdoNnSvAWnhuibkTiue7ZVffnveBJpeOE+uXeqxKjnf2VFXOx+Q
-	+tvQXVjZcISHS9N/d2t8oCcdc5pDZlxdcYd+T6+kdb006hx0Udh6cIR23mKSIiyg
-	r97efbS6SOtVPYA7dLgTtGI6AgihK3JT4H0Ci8OfJyTPyrh+eQAusX2/S/iB+Fq9
-	ZnK/IblXI6Tp2FGvcNBBQ==
-X-ME-Sender: <xms:C8wEaujnYTHeuiHQEQFeS-vTr3QlFaSOlql8-X2mtvLYH6dGfxlKCA>
-    <xme:C8wEakmNnarw3p7kFILhaCQEakXPzZfdFF0WggZXtqHWlVRXnXOfspx78GenOJIBR
-    OESoBy2qOoFshd7__5TcOMM1Z8GgW_uaNTdvIpJ0Z3RgXHAT2FWboY>
-X-ME-Received: <xmr:C8wEavpFotMsX-M3tAdfCZjyh-ftFkAgflVetkaR55Di61zWZgoR_XESHIiRnT7QAoUO610LMSOb3AdtPzC_wmyNvCioxj5IFhUX>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvdehgeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefpihhklhgr
-    shcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrg
-    htvggthhdrshgvqeenucggtffrrghtthgvrhhnpeevteegtddvvdfhtdekgefhfeefheet
-    heekkeegfeejudeiudeuleegtdehkeekteenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhn
-    rghtvggthhdrshgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtohepphhrrggshhgrkhgrrhdrtghsvghnghhgsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtoheplhgruhhrvghnthdrphhinhgthhgrrhhtodhrvghnvghsrghssehiuggvrg
-    hsohhnsghorghrugdrtghomhdprhgtphhtthhopehjrggtohhpohdrmhhonhguihesihgu
-    vggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohepthhomhhirdhvrghlkhgvihhnvg
-    hnodhrvghnvghsrghssehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehm
-    tghhvghhrggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgvggvrhhtodhrvghnvg
-    hsrghssehglhhiuggvrhdrsggvpdhrtghpthhtohepmhgrghhnuhhsrdgurghmmhesghhm
-    rghilhdrtghomhdprhgtphhtthhopehhvhgvrhhkuhhilheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheplhhinhhugidqmhgvughirgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:C8wEaoKl9BQLrMmL5ZghS-xDrgWeWDowyfHlIb_lAOrUFh_6_7AE7A>
-    <xmx:C8wEajBgsX4iiPR2LVd3zZrdoFldgF7CAAsODVjSwDJB1PEyU6vGPw>
-    <xmx:C8wEai5gl2sAZnhhJXQ45kKy8R7sCJXuki8g3rUwQIpbhFYYoGsTTQ>
-    <xmx:C8wEanGFRC6LLGjA23CAZKcTCEYPYMdrhIBYubNrE7moOuiURqjXdQ>
-    <xmx:DMwEamEYXBrxGJGl7pC6hWx1rJl4ywUbIDK9qIrZvtmwkzph3ObMZC-z>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 13 May 2026 15:07:55 -0400 (EDT)
-Date: Wed, 13 May 2026 21:07:52 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] media: rcar-vin: Enable NV12 support for RZ/G2H
-Message-ID: <20260513190752.GC332351@ragnatech.se>
-References: <20260512202931.1051379-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+	s=arc-20240116; t=1778699352; c=relaxed/simple;
+	bh=QX5G2rB7ifXMkwPdHvgF7zs1jKDfOFey5yX8c24qomQ=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=HFTqS5EzepUJqa8vhRezJuKoE51RZfLfCMuS5v0oVjn7mwIsugXj+X9Unfj2AsZj4PB9FuPsU3RKcHjavFZMtyq7oVoG5D2gEA2SWSbTp2VTi9wETbahRrSj/aCIbtJ8Ml3DO0AdHmSUQvJtBybEOHT6wVW3d2vGDy+yR+JBXL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tDMG+VS+; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-50e5c7eb565so69174991cf.3
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 12:09:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778699349; x=1779304149; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=UtNWbA0oJC/4NfkSFTFtpG8npNpENo6PjEJYah1z9Iw=;
+        b=tDMG+VS+/VC3E27ViYeUohtgsl7JtVSrAu7HEmoUUOmupKVj/rvNBwZ6n+67m3Z8n5
+         wE6FOEiS6tJImUJ5vWLok0hh2I8gNBB+M+yL4LHoCKj4sRJD0R1OjdVP0v3sWvQJQKKK
+         f1J2vctZQP1bjVkw6+kpMGjV+jiuNwCnDKdqnxY42HN8vrd/lRt31JApO93pFjZbtQUp
+         1z/xITr4PLHFmGgiKAoA5/G6ub5wDaYQUMF8MEJ2jhBdJDbB69rMBZ3XWDk5E10NyN+1
+         cWylqxSobSo/Fb29yvUuMViPlOpaJfUH8h31aT8UFt98BUzRJtDX+1YQ7YAP+bSM4MVR
+         09HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778699349; x=1779304149;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UtNWbA0oJC/4NfkSFTFtpG8npNpENo6PjEJYah1z9Iw=;
+        b=qBK/ewrCCnu9Jg7zAfrTLy6n8rP9F8t1RZ82pxuahbvuQL5eCOM/PQps1MXzlKw3Ej
+         x6Yi3UzvBNVOUu9tDBPk2RK3ddLJzMsTaVbDVWFP0m3zwrylBu+uDk4HeLoCk9Sfvxmc
+         KWlrq9v9m/vS2igWRhzMXAHCi6baNNyD3yD8Mx8Q3xBNVrJcGEjuylsGiJKo7Dq/uU0w
+         N0+kl5hrkBg9RDOolOuyyPqQf38FZ70p0I4lszUynmA1NQ6qdXGDWMRaDmFM4NBO78fn
+         R0s1iznuuIlvnKq76/LI9klDwNi2pQSpM5UA+uHjJGVu9+EYshzmaf1wrNfzPgQJ7j1H
+         lu9g==
+X-Forwarded-Encrypted: i=1; AFNElJ+3vCIzwenDCDd1N7PlvIshYi+MFWU7GMK43hUXTo5lU0iChp0sFvXtoy374spIOTlcZw2+zsY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTuTdWN5n0T/rZ2o75TcVRjxiA6JEdYwb9F0PpSMYroj42AsAj
+	i67+AO/2BUtBD1t2HxUS94587//orgw+E7meIeHj0U9UZAd5ewKGa2db
+X-Gm-Gg: Acq92OECcpuhPv8Q9kHhGVvBDLU5vK/Rstw2/iz+t+7aiVHdrY89lyjAUPR62uWZlFU
+	Tur0V+M5Egv9Ei+5+Gxd9c5zuDqb56rceVNYtAtqLnp1dAO5mRDZl3u2jBH3sYR0exZocGQTVhh
+	52fwD6bC0+11mLFE8CyxsojD0UBRwbbN0h5dfFh8igBALDwOJUS5QRuaOJG26nXMbBMnTfYLe/W
+	eh/rURt+ffrRc4B4YzKYMGM+AcaLZTMkSF7A7f0+WoFLA/7hJn/9GCeOQGS2XbhSdL/1Wpr7x/a
+	m17vNubASYhkYGjon9N7jizAnv1kk7cK49I7+ou/jwfpLijiJowOIcU3lhelYxArGXoM7isAaOA
+	19V3dTJp2lm7E3kWM+bss8LEu58ShJsK/GGpTyiooAWiDhNjx7ECd0UICUdevhUldiELS+fKvgw
+	PO8GrPJybvekVi0b7nNX1XLGGPlt+aGm/kw7Evds9gfQIJp+c3yTKZ4/LE+fx5
+X-Received: by 2002:a05:622a:64c:b0:50f:b81e:c655 with SMTP id d75a77b69052e-5162f68d146mr63497791cf.57.1778699348501;
+        Wed, 13 May 2026 12:09:08 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148e830ddfsm153785331cf.27.2026.05.13.12.09.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 May 2026 12:09:07 -0700 (PDT)
+Message-ID: <268c8519-84d4-4795-b06c-4159d8bf48f4@gmail.com>
+Date: Wed, 13 May 2026 12:09:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260512202931.1051379-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Rspamd-Queue-Id: 43B3E539A5C
+User-Agent: Mozilla Thunderbird
+From: Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 7.0 000/305] 7.0.7-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260513153754.934923793@linuxfoundation.org>
+Content-Language: en-US
+In-Reply-To: <20260513153754.934923793@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 421F1539F12
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ragnatech.se,none];
-	R_DKIM_ALLOW(-0.20)[ragnatech.se:s=fm2,messagingengine.com:s=fm3];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[ideasonboard.com,kernel.org,glider.be,gmail.com,vger.kernel.org,bp.renesas.com,renesas.com];
-	TAGGED_FROM(0.00)[bounces-247021-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247022-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ragnatech.se:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[niklas.soderlund@ragnatech.se,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,messagingengine.com:dkim,renesas.com:email,ragnatech.se:email,ragnatech.se:mid,ragnatech.se:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
 X-Rspamd-Action: no action
 
-Hello Prabhakar,
 
-Thanks for your work.
 
-On 2026-05-12 21:29:31 +0100, Prabhakar wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+On 5/13/2026 9:17 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.0.7 release.
+> There are 305 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> The Renesas RZ/G2H (R8A774E1) SoC supports outputting NV12 format, but
-> this capability is currently not advertised by the driver.
+> Responses should be made by Fri, 15 May 2026 15:37:27 +0000.
+> Anything received after that time might be too late.
 > 
-> Set the .nv12 flag to true in the rcar_info_r8a774e1 structure to enable
-> support for this format.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.7-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
+> and the diffstat can be found below.
 > 
-> Fixes: fe98df32bd9e4 ("media: rcar-vin: Enable support for R8A774E1")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> thanks,
+> 
+> greg k-h
 
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels build tested on 
+BMIPS_GENERIC:
 
-> ---
->  drivers/media/platform/renesas/rcar-vin/rcar-core.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-core.c b/drivers/media/platform/renesas/rcar-vin/rcar-core.c
-> index c8d564aa1eba..e16b33096fd2 100644
-> --- a/drivers/media/platform/renesas/rcar-vin/rcar-core.c
-> +++ b/drivers/media/platform/renesas/rcar-vin/rcar-core.c
-> @@ -925,6 +925,7 @@ static const struct rvin_group_route rcar_info_r8a774e1_routes[] = {
->  
->  static const struct rvin_info rcar_info_r8a774e1 = {
->  	.model = RCAR_GEN3,
-> +	.nv12 = true,
->  	.max_width = 4096,
->  	.max_height = 4096,
->  	.routes = rcar_info_r8a774e1_routes,
-> -- 
-> 2.54.0
-> 
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 
+Same perf build issue as reported for 6.12.y (and 6.18.y FWIW) due to 
+older kernel headers with our toolchain.
+
+Thanks!
 -- 
-Kind Regards,
-Niklas Söderlund
+Florian
+
 
