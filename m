@@ -1,214 +1,200 @@
-Return-Path: <stable+bounces-247020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIgAHO7JBGp2OwIAu9opvQ
-	(envelope-from <stable+bounces-247020-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:58:54 +0200
+	id SExsMcTMBGrMPAIAu9opvQ
+	(envelope-from <stable+bounces-247021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:11:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A92E539705
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:58:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B3E539A5C
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02D3030254EB
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:53:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 698CC304AAA7
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50043AE6E2;
-	Wed, 13 May 2026 18:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829A53B1EC7;
+	Wed, 13 May 2026 19:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VWD9NxQF"
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="ol0wKIf/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EHKq4Vqp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A8F34E766
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 18:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2C218E025;
+	Wed, 13 May 2026 19:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778698428; cv=none; b=A4E2id82zFxq4Rb2J1UwpiYi4Ph5ZJRxeKKMjopLYb1KSPtUUdz6rVU942vh3jNJtWLxL3l6hIxUaW1Io3AIEdyXBX/SW3KVJjeI0WleKva5hKL4Lut3GoAwCG5P9q52tZIaDDOAN5I489/UK5t86jR3cK+W/TaF8Y/dR+bAkRk=
+	t=1778699279; cv=none; b=kgdsL+0eRoF8x0uT9Qj9SY3lm29Q0tQCOGEi4DLoWd8Nv1IKmI6Umwy+E3FpXJJLt5rf5X+DnZHNwi44sPmYorj6SBvbjRoY36alkGtyv2cuhynW3gh1wmv6tJZuo1aN/2kpsp1RTFqAI0MMhVnqgGla7glVHmUpIO8jCm6BPi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778698428; c=relaxed/simple;
-	bh=1T+8gtW07YW1Q2hsQQ/eNWlwxVUQfk7M7+0pK1hZj3A=;
+	s=arc-20240116; t=1778699279; c=relaxed/simple;
+	bh=9dyW0i1uEyQbY20h8QmZQNdlAA8PYklMtMjKAtEbdO8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KdwF8qKLcbm+lYtnriG/9F9Y1hfuQN6ZRyIWSlqxCl8JsfXiWSKmsgYrHArKHe9FIKG5cYDxjfpJydRGyuUq1mv/nmQ35XtZFqQnvkOAgNnHd5OqO7ypc5zIAlfC8eJhbL9rLyOESHXR0cZxTtWeTBc3kRhF4T3z3kMFf/Yzq7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VWD9NxQF; arc=none smtp.client-ip=74.125.82.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-132cccd3d77so256c88.1
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 11:53:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778698426; x=1779303226; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=F5FAcCWafjYrA9kZBinQj9N8tnqNIZ+FA0Q4wW5bFp4=;
-        b=VWD9NxQFCsyA9hcIS6JG4iRpp7PM/W4tt91y5AVVsks2+9qQJnoOFbd0ma5GziAbzW
-         SbADfBLwXwqOQ1/Tk9V1fITuPNeAknHrjNfsBQvabvjMfkEb0iH7SPRUKiMcqeVnauvd
-         N1Pv0RYRa6u5LTooLk07KfXRLWcbKQEp8xDq30nnJd6AtezBzc3XtbT/2O431zujaefQ
-         M8+3HDf1RVMoAunCa/fMitDnQPPBVo1mVn5t1JxVIIIRNAA0q8w4TYcFDkmil4Xo/wOX
-         U3DyCmFwVNhx6auPAHvTKGsCbBK1sYdA2DfaUjWD/d1vZ5FpJ2OBBERNIQVGHPEbJVVd
-         Tfwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778698426; x=1779303226;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F5FAcCWafjYrA9kZBinQj9N8tnqNIZ+FA0Q4wW5bFp4=;
-        b=Wx8Z7v6in1W3suWsYox0CwsAIwpBuXs/vhtz0TjB/if3EjZ//rxfVGFyKzyCCO2NXF
-         D5S9bVkJBc7EG3q+qp5Qtw7GXfG2ZJ16pgydAl8mgH6q+aFzrN/3034DtyDK6XaAtqcB
-         ADg69JpPnOf/A5apgR56eRA0JXYWZWEV4zlCTZfwrg/tm8mzE+LgmgTdsboV44Qa9won
-         vL/IvmuEySy+r2Gh+lov8ljnMouk287gSbjKH5B59995vfZaxuEnDd8a/61b/3NXuDqY
-         h3vy8gAJodQoSI0RhSeB5SRs417udjXLDFPwHDS/Q3p6Bat2z+mssBHHNO31vUQGpE3C
-         PgNA==
-X-Forwarded-Encrypted: i=1; AFNElJ+yr/z+NDxevjg4DIF7DCfY5YkIQrNpgn6TrUJuz9EhWwh/v8awo3EJtPABOtEKAgEO+cI7QKg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdRrIyx4KhESZBtfBkncOsyAiHaLzRJVKiB+9xC9zoQHuLK55w
-	i/UOn+vx/VG6ljMSXM9bZXqe5BnmAP6DFbvOCaczdVJETs+9mvKA7ttV/Rb4fhSk5w==
-X-Gm-Gg: Acq92OGC0uk8jV92tSVNqZzQZTaZ8XDzU+IG0cV0Cg/6Jw4sB6nPnbac0HvnNKcypzS
-	5ePHAytCsgxW3ar92beWRkoyEybtc1Bsf7jpjj4SX3fR+LhZyBwHvnw2Yv2J9O+CvsnMgDx45t9
-	JR6ltHMe9hJXIXDISXwzELKi0okzPjx1RJaRjIV7R6RE+FWm9kE0sCz5PGTOf2L1pDL4g4JyK/V
-	+4I07CqNkYqdPTrDmnCNSJY4d9WVf1AVwIRS9D1U1AUvR8/uXcvWN/H+eXUovDfpz2rjRDF83Tc
-	T8+79c6SmUZN0sig7o3PAZRzEKfMfbgUO1q2Fr4wTY5OZTeRt3HdXj+jsxXTU+dzRl7Vsr7kCS5
-	CZBDH+Fx6UTY8+PPCqd6KOprQ59xJnJffDPCH6BLKh9Xg696UF9TP24hKxXVCOqoQXJsg8ldd68
-	Qsd8EoNbG3g6Gp5f98LfELvy7GxeP3Jsq+dmasgbsOug4jPGlpy1u20sW2uDVYV47g2sQ0fEcof
-	UREEJ+Q
-X-Received: by 2002:a05:7022:f9c:b0:130:c9cc:2919 with SMTP id a92af1059eb24-134cc1108bbmr38022c88.19.1778698425009;
-        Wed, 13 May 2026 11:53:45 -0700 (PDT)
-Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f8884752ccsm22785382eec.17.2026.05.13.11.53.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 11:53:44 -0700 (PDT)
-Date: Wed, 13 May 2026 18:53:40 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>, 
-	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, Lu Baolu <baolu.lu@linux.intel.com>, 
-	Joerg Roedel <joerg.roedel@amd.com>, Josua Mayer <josua@solid-run.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	patches@lists.linux.dev, Pranjal Shrivastava <praan@google.com>, 
-	Mostafa Saleh <smostafa@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH rc 5/5] iommupt: Fix the end_index calculation in
- __map_range_leaf()
-Message-ID: <agTHzU3KYofnszp4@google.com>
-References: <0-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
- <5-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=vAf61v5jCqz8rSMTY9RjjZ6QIJxyE667VTZ+f8ZzhOR+SsbKH1h9Ku18cVvf2eJr6PjPxu75wcl9yHS8jTNc+EPtQD9vI75p5yKvt5jIXHsHyGGMrtA/VKr3Wh17dkf+UGBC8La8mEv+avi3cmKMZciQGnkNtXl9MXThxdUCz8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=ol0wKIf/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EHKq4Vqp; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id B21E6EC0237;
+	Wed, 13 May 2026 15:07:56 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 13 May 2026 15:07:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1778699276;
+	 x=1778785676; bh=Pdi+Fsgqu8rY3Pf5OyrhZJWHhF8X8iBfSSYCAuxhxlg=; b=
+	ol0wKIf/gpMAtWYrv44KmJAKVKUzOIlDDb86vUCuYBUz9XctmJOaZz03kXdf2hhI
+	KwSreF7bKTWCEjnFLoCr9JErM3rsiY+R0MxfG1Z6oXWXkKoJXgsBKgoSmBr5YxqF
+	iaxZOdHc73YshYrQtL7MHdZJ2zFs6zXQVBczH+pOFDS6s76MzAngvibxlb0KQdST
+	5Bl/Sz3i7JeGKIyK++ahs0+N8wGi2Ssl3HILAwA9GCgKqvRicYTMIdLe4eKXyVab
+	wdfg/StyOqZW0uHMfb4Z82+Dli7ZYoNoPlkTKL1UAcT492fZ2ow5wzvKFwE6ee2a
+	YI9TKVxPafbdq3AouV9Iyg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778699276; x=
+	1778785676; bh=Pdi+Fsgqu8rY3Pf5OyrhZJWHhF8X8iBfSSYCAuxhxlg=; b=E
+	HKq4VqpPyeIumW7itoOq9YLD5zxZ/r/c1P4V7+c3salqwsICZ4ph7aCUCggpk+wC
+	bm3GImR/HdWYqqxFP0Ov65JhAJb5qpNOH/SwYOwLP/wyNvQzcqm3EhgbfOk005Nj
+	nbAGDrtLfxQu/ZdoNnSvAWnhuibkTiue7ZVffnveBJpeOE+uXeqxKjnf2VFXOx+Q
+	+tvQXVjZcISHS9N/d2t8oCcdc5pDZlxdcYd+T6+kdb006hx0Udh6cIR23mKSIiyg
+	r97efbS6SOtVPYA7dLgTtGI6AgihK3JT4H0Ci8OfJyTPyrh+eQAusX2/S/iB+Fq9
+	ZnK/IblXI6Tp2FGvcNBBQ==
+X-ME-Sender: <xms:C8wEaujnYTHeuiHQEQFeS-vTr3QlFaSOlql8-X2mtvLYH6dGfxlKCA>
+    <xme:C8wEakmNnarw3p7kFILhaCQEakXPzZfdFF0WggZXtqHWlVRXnXOfspx78GenOJIBR
+    OESoBy2qOoFshd7__5TcOMM1Z8GgW_uaNTdvIpJ0Z3RgXHAT2FWboY>
+X-ME-Received: <xmr:C8wEavpFotMsX-M3tAdfCZjyh-ftFkAgflVetkaR55Di61zWZgoR_XESHIiRnT7QAoUO610LMSOb3AdtPzC_wmyNvCioxj5IFhUX>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvdehgeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefpihhklhgr
+    shcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrg
+    htvggthhdrshgvqeenucggtffrrghtthgvrhhnpeevteegtddvvdfhtdekgefhfeefheet
+    heekkeegfeejudeiudeuleegtdehkeekteenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhn
+    rghtvggthhdrshgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpd
+    hrtghpthhtohepphhrrggshhgrkhgrrhdrtghsvghnghhgsehgmhgrihhlrdgtohhmpdhr
+    tghpthhtoheplhgruhhrvghnthdrphhinhgthhgrrhhtodhrvghnvghsrghssehiuggvrg
+    hsohhnsghorghrugdrtghomhdprhgtphhtthhopehjrggtohhpohdrmhhonhguihesihgu
+    vggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohepthhomhhirdhvrghlkhgvihhnvg
+    hnodhrvghnvghsrghssehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehm
+    tghhvghhrggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgvggvrhhtodhrvghnvg
+    hsrghssehglhhiuggvrhdrsggvpdhrtghpthhtohepmhgrghhnuhhsrdgurghmmhesghhm
+    rghilhdrtghomhdprhgtphhtthhopehhvhgvrhhkuhhilheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhinhhugidqmhgvughirgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:C8wEaoKl9BQLrMmL5ZghS-xDrgWeWDowyfHlIb_lAOrUFh_6_7AE7A>
+    <xmx:C8wEajBgsX4iiPR2LVd3zZrdoFldgF7CAAsODVjSwDJB1PEyU6vGPw>
+    <xmx:C8wEai5gl2sAZnhhJXQ45kKy8R7sCJXuki8g3rUwQIpbhFYYoGsTTQ>
+    <xmx:C8wEanGFRC6LLGjA23CAZKcTCEYPYMdrhIBYubNrE7moOuiURqjXdQ>
+    <xmx:DMwEamEYXBrxGJGl7pC6hWx1rJl4ywUbIDK9qIrZvtmwkzph3ObMZC-z>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 13 May 2026 15:07:55 -0400 (EDT)
+Date: Wed, 13 May 2026 21:07:52 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
+To: Prabhakar <prabhakar.csengg@gmail.com>
+Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] media: rcar-vin: Enable NV12 support for RZ/G2H
+Message-ID: <20260513190752.GC332351@ragnatech.se>
+References: <20260512202931.1051379-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <5-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
-X-Rspamd-Queue-Id: 1A92E539705
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260512202931.1051379-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+X-Rspamd-Queue-Id: 43B3E539A5C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[ragnatech.se,none];
+	R_DKIM_ALLOW(-0.20)[ragnatech.se:s=fm2,messagingengine.com:s=fm3];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[google.com:+];
+	FREEMAIL_CC(0.00)[ideasonboard.com,kernel.org,glider.be,gmail.com,vger.kernel.org,bp.renesas.com,renesas.com];
+	TAGGED_FROM(0.00)[bounces-247021-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247020-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ragnatech.se:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[skhawaja@google.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[niklas.soderlund@ragnatech.se,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,messagingengine.com:dkim,renesas.com:email,ragnatech.se:email,ragnatech.se:mid,ragnatech.se:dkim]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026 at 01:46:17PM -0300, Jason Gunthorpe wrote:
->Sashiko noticed a mismatch of units in this math: num_leaves is
->actually the number of leaf *entries* (so a 16-item contiguous leaf
->is one num_leaves), while index is in items. The mismatch in maths
->causes __map_range_leaf() to exit early instead of efficiently
->filling a larger range of contiguous PTEs.
->
->The early exit is caught by the functions above and then
->__map_range_leaf() is re-invoked, so there is no functional issue.
->
->Correct the misuse of units by adjusting num_leaves with the leaf
->size and avoid the performance cost of looping externally.
->
->There are also some mismatched types for num_leaves; simplify
->things to remove the duplicated calculations.
->
->Fixes: d6c65b0fd621 ("iommupt: Avoid rewalking during map")
->Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
->---
-> drivers/iommu/generic_pt/iommu_pt.h | 20 +++++++++++++-------
-> 1 file changed, 13 insertions(+), 7 deletions(-)
->
->diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
->index 4877b05291c9d4..dc91fb4e2f61cb 100644
->--- a/drivers/iommu/generic_pt/iommu_pt.h
->+++ b/drivers/iommu/generic_pt/iommu_pt.h
->@@ -534,10 +534,12 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
-> 	struct pt_state pts = pt_init(range, level, table);
-> 	struct pt_iommu_map_args *map = arg;
-> 	unsigned int leaf_pgsize_lg2 = map->leaf_pgsize_lg2;
->+	unsigned int leaves_avail;
-> 	unsigned int start_index;
-> 	pt_oaddr_t oa = map->oa;
->-	unsigned int num_leaves;
->+	pt_vaddr_t num_leaves;
-> 	unsigned int orig_end;
->+	unsigned int step_lg2;
-> 	pt_vaddr_t last_va;
-> 	unsigned int step;
-> 	bool need_contig;
->@@ -546,21 +548,25 @@ static int __map_range_leaf(struct pt_range *range, void *arg,
-> 	PT_WARN_ON(map->leaf_level != level);
-> 	PT_WARN_ON(!pt_can_have_leaf(&pts));
->
->-	step = log2_to_int_t(unsigned int,
->-			     leaf_pgsize_lg2 - pt_table_item_lg2sz(&pts));
->-	need_contig = leaf_pgsize_lg2 != pt_table_item_lg2sz(&pts);
->+	step_lg2 = leaf_pgsize_lg2 - pt_table_item_lg2sz(&pts);
->+	step = log2_to_int_t(unsigned int, step_lg2);
->+	need_contig = step_lg2 != 0;
->
-> 	_pt_iter_first(&pts);
-> 	start_index = pts.index;
-> 	orig_end = pts.end_index;
->-	if (pts.index + map->num_leaves < pts.end_index) {
->+	leaves_avail =
->+		log2_div_t(unsigned int, pts.end_index - pts.index, step_lg2);
->+	if (map->num_leaves <= leaves_avail) {
-> 		/* Need to stop in the middle of the table to change sizes */
->-		pts.end_index = pts.index + map->num_leaves;
->+		pts.end_index = pts.index + log2_mul(map->num_leaves, step_lg2);
-> 		num_leaves = 0;
-> 	} else {
->-		num_leaves = map->num_leaves - (pts.end_index - pts.index);
->+		num_leaves = map->num_leaves - leaves_avail;
-> 	}
->
->+	PT_WARN_ON(
->+		log2_mod_t(unsigned int, pts.end_index - pts.index, step_lg2));
-> 	do {
-> 		pts.type = pt_load_entry_raw(&pts);
-> 		if (pts.type != PT_ENTRY_EMPTY || need_contig) {
->-- 
->2.43.0
->
+Hello Prabhakar,
 
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Thanks for your work.
 
-Thanks,
-Sami
+On 2026-05-12 21:29:31 +0100, Prabhakar wrote:
+> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> 
+> The Renesas RZ/G2H (R8A774E1) SoC supports outputting NV12 format, but
+> this capability is currently not advertised by the driver.
+> 
+> Set the .nv12 flag to true in the rcar_info_r8a774e1 structure to enable
+> support for this format.
+> 
+> Fixes: fe98df32bd9e4 ("media: rcar-vin: Enable support for R8A774E1")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+
+> ---
+>  drivers/media/platform/renesas/rcar-vin/rcar-core.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-core.c b/drivers/media/platform/renesas/rcar-vin/rcar-core.c
+> index c8d564aa1eba..e16b33096fd2 100644
+> --- a/drivers/media/platform/renesas/rcar-vin/rcar-core.c
+> +++ b/drivers/media/platform/renesas/rcar-vin/rcar-core.c
+> @@ -925,6 +925,7 @@ static const struct rvin_group_route rcar_info_r8a774e1_routes[] = {
+>  
+>  static const struct rvin_info rcar_info_r8a774e1 = {
+>  	.model = RCAR_GEN3,
+> +	.nv12 = true,
+>  	.max_width = 4096,
+>  	.max_height = 4096,
+>  	.routes = rcar_info_r8a774e1_routes,
+> -- 
+> 2.54.0
+> 
+
+-- 
+Kind Regards,
+Niklas Söderlund
 
