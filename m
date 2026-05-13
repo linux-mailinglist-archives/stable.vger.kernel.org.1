@@ -1,123 +1,151 @@
-Return-Path: <stable+bounces-246872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4ObZMeeHBGoJLQIAu9opvQ
-	(envelope-from <stable+bounces-246872-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:17:11 +0200
+	id 4CWSHBWJBGoxLQIAu9opvQ
+	(envelope-from <stable+bounces-246873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:22:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F99534D8F
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:17:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D995534EF4
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ECCF7301B06F
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:03:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 15EBE300BEB6
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE0E2E11A6;
-	Wed, 13 May 2026 14:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JWcMztLE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2359130BBB6;
+	Wed, 13 May 2026 14:09:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7612D3725;
-	Wed, 13 May 2026 14:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4AD224AF7;
+	Wed, 13 May 2026 14:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778681028; cv=none; b=ZjMhHEFnfs2C2p4Wu2eo+rJyoRdfz3681e/AKtIl2s4gJfhvJS+8x2uy4FlWCmq6beH8vOleHKufAySkjekBBdtRsf/FlmftjnbC1f2blJ9IZ++57YHMGp2z0Y/I2DzYp9On6RsyffWQl3lpQmvt+6sOwVUk+ynmjxTxiRrWOn8=
+	t=1778681356; cv=none; b=YfI+nQpYuvh5cc/eJm4LZjp72/2ufFajgS61tjOcoLTADWxfpb+ReB3ozgMPUed2IQuQrp21IE5Apu2c1A9Gs5vrT5hKYbPTSRzxFRjpGbz31xyisO7Jb8lf7i7CBOfa6SkpwcywTOZNSmm1RJBXO7Jh71OxYJf37oEBrnqzehg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778681028; c=relaxed/simple;
-	bh=+DlhqxbsUxs8TSFy328TyjZOji9gRCtPaLK2MQ9YrE0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oTaPN23S40goZkUr3BwP0onqQRqGwuevUe3KQXzaob+Z6fxt1B5PGiR7zFzlT2XDIMTO4HJO3mgbjPC5qYYHNj6mPMnvQn9kd/V1Ro5/ChGrWFFGv32PV69elWvyeA5UNFi4PVebkHVBQIKvC3xnGNDt3OKrNw26WN264deq96U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JWcMztLE; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=/l
-	wiOPTnvlBpog3cv49D12gfGRsm5qJ0BLZQamnSSg0=; b=JWcMztLEhA7kS0JHqg
-	EmpAqZK9WQoqCxXZzTk5weZVCoW5P+6gMt9FWbXLePTUj99/RmkKih2od4xB9KkN
-	mMIcTzWJKPsUHJUCMa6ZdpHsRESXVyZfJOgRyWkT3SCfLP+WuD+23QBggiJUOYhm
-	e1kSjxxpLh3U6zFEF4St6CCIc=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgDXniBxhARqrEiHDg--.29S2;
-	Wed, 13 May 2026 22:02:27 +0800 (CST)
-From: wang wei <a929244872@163.com>
-To: richardycc@google.com
-Cc: akpm@linux-foundation.org,
-	axboe@kernel.dk,
-	bgeffon@google.com,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	liumartin@google.com,
-	minchan@kernel.org,
-	senozhatsky@chromium.org,
-	stable@vger.kernel.org,
-	wang wei <a929244872@163.com>
-Subject: [PATCH] Re:[PATCH v3] zram: fix use-after-free in zram_writeback_endio
-Date: Wed, 13 May 2026 22:02:18 +0800
-Message-Id: <20260513140218.7425-1-a929244872@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260512074918.2606208-1-richardycc@google.com>
-References: <20260512074918.2606208-1-richardycc@google.com>
+	s=arc-20240116; t=1778681356; c=relaxed/simple;
+	bh=NUhZ34fNkOd0L2mNb0uN3WZEPb0BkQiMpixwaAv7GVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZM6TYPc+7ZxQAzfhAj1TjocyChoMYWZ5rKUWNbLRfc/6Zcj+UT+3YTz3v3SablIhgIrbo1biOdJHQlWaym+EH6+z9UpOueqc3SZotCWEB0HseIP745nhPpYd/tTkm7no9aAnaXx4P9h/9iBeXRCWJIyAsePDfxeSzsfzeUFi24c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout1.hostsharing.net (Postfix) with ESMTPS id B4D05371;
+	Wed, 13 May 2026 16:09:11 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 912B16016B8F; Wed, 13 May 2026 16:09:11 +0200 (CEST)
+Date: Wed, 13 May 2026 16:09:11 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: Anastasia Tishchenko <sv3iry@gmail.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Ignat Korchagin <ignat@linux.win>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] crypto: ecc - Fix carry overflow in vli multiplication
+Message-ID: <agSGB39WGpsiv1ep@wunner.de>
+References: <20260513105741.55534-1-sv3iry@gmail.com>
+ <20260513123948.842-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgDXniBxhARqrEiHDg--.29S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRPrcfUUUUU
-X-CM-SenderInfo: jdzsmjiuuylji6rwjhhfrp/xtbC6hTZgGoEhHRf4wAA3F
-X-Rspamd-Queue-Id: C7F99534D8F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260513123948.842-1-qingfang.deng@linux.dev>
+X-Rspamd-Queue-Id: 6D995534EF4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246872-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.dk,google.com,vger.kernel.org,kvack.org,kernel.org,chromium.org,163.com];
-	DKIM_TRACE(0.00)[163.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[a929244872@163.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,linux.ibm.com,linux.win,gondor.apana.org.au,davemloft.net,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-246873-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,wunner.de:mid]
 X-Rspamd-Action: no action
 
->@@ -847,7 +849,7 @@ static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
-> 		release_wb_req(req);
-> 	}
->
->-	kfree(wb_ctl);
->+	kfree_rcu(wb_ctl, rcu);
-> }
+On Wed, May 13, 2026 at 08:39:48PM +0800, Qingfang Deng wrote:
+> On Wed, 13 May 2026 at 13:57:40 +0300, Anastasia Tishchenko wrote:
+> > +++ b/crypto/ecc.c
+> > @@ -393,14 +393,26 @@ static uint128_t mul_64_64(u64 left, u64 right)
+> >  	return result;
+> >  }
+> >  
+> > -static uint128_t add_128_128(uint128_t a, uint128_t b)
+> > +/* Calculate addition with overflow checking. Returns true on wrap-around,
+> > + * false otherwise.
+> > + */
+> > +static bool check_add_128_128_overflow(uint128_t *result, uint128_t a,
+> > +				       uint128_t b)
+> >  {
+> > -	uint128_t result;
+> > +	bool carry;
+> >  
+> > -	result.m_low = a.m_low + b.m_low;
+> > -	result.m_high = a.m_high + b.m_high + (result.m_low < a.m_low);
+> > +	result->m_low = a.m_low + b.m_low;
+> > +	carry = (result->m_low < a.m_low);
+> >  
+> > -	return result;
+> > +	result->m_high = a.m_high + b.m_high + carry;
+> 
+> If CONFIG_ARCH_SUPPORTS_INT128 is defined, you can convert them to
+> "unsigned __int128" as done in mul_64_64(), and use check_add_overflow()
+> to get the carry.
 
-Do we need to add a 'rcu_assign_pointer(wb_ctl, NULL);' before 'kfree_rcu(wb_ctl, rcu)'?
+Okay, but that would be a separate feature on top of this fix.
+This fix applies to *all* architectures whereas using native
+128-bit integers would only solve the problem on arches which
+support such integers.
 
-Signed-off-by: wang wei <a929244872@163.com>
+ARCH_SUPPORTS_INT128 actually depends on CC_HAS_INT128 on all arches
+that support it (arm64, loongarch, riscv, s390, x86).  Interestingly,
+s390 additionally requires CC_IS_CLANG.  Commit fbac266f095d ("s390:
+select ARCH_SUPPORTS_INT128") explains that "gcc generates inefficient
+code, which may lead to stack overflows" when handling 128-bit integers.
+It goes on to say: "The gcc generated functions have 6kb stack frames,
+compared to only 1kb of the code generated with clang."
 
--- 
-2.25.1
+That reminds me of the high stack usage issue we're seeing when compiling
+crypto/ecc.c on arm 32-bit:
 
+https://lore.kernel.org/r/7e3d64a53efb28740b32d1f934e78c10086208ab.1778073318.git.lukas@wunner.de/
+
+I'm fine with adding native 128-bit usage to check_add_128_128_overflow()
+on top of this fix if somebody wants to submit a patch.  But I suspect
+it might only actually be useful on s390 with clang.
+
+Thanks,
+
+Lukas
 
