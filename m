@@ -1,228 +1,153 @@
-Return-Path: <stable+bounces-247049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHw0C3AGBWpRRgIAu9opvQ
-	(envelope-from <stable+bounces-247049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 01:17:04 +0200
+	id MEBGHKEHBWpRRgIAu9opvQ
+	(envelope-from <stable+bounces-247051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 01:22:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960C653BE17
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 01:17:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E173653BF13
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 01:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A14B306FE56
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 23:15:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C55E306919E
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 23:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3473CC7C6;
-	Wed, 13 May 2026 23:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B977838CFF8;
+	Wed, 13 May 2026 23:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="lFXyBoMo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HkDvro1I"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160BA3CC323;
-	Wed, 13 May 2026 23:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C64D3A63F9
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 23:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778714106; cv=none; b=QRMpFE9LPoKZ1rSq0wn4yI/TU1w6X4bYG2H2S3wIPtRX7EIe/h/MICs/SIbOIBqaLiyyx9FPdJ3Bp4xM1xKVXXElse26uw064u00q4D7QF4Wsdjqk14hKSczorbl8dYTH/QnBLxopmN0jOh+5/hqCfo/2yqfNeIc9pXaBHzQyyc=
+	t=1778714466; cv=none; b=YE+/l8LKZRSiUQo8TvZPnxyF8rQtbkeRjTh7ApyqJ7k7ZeKtxeXLe2v8gQWupxqsjCNkJgn4aB1GLQhtDB4zjkmnyhuq9LJdDO3z3cglihPqEgkaB+0ZaVG8G++rruyQswsAWZRoh3Sff4on40K5TaQ5Uy+rWCiv02/xutVc8kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778714106; c=relaxed/simple;
-	bh=EWlxknBUuLAJpNU9FCMY/xu4GoSwo/c7hcv48hFJA5I=;
-	h=Date:To:From:Subject:Message-Id; b=rEuo4yG0G4ALZbPeQcfXb3tbQRdkxCn9jIXcL+V+wjNu4jtSXKHb+NAHMUxd5uDRbxed7wcbIu6kPF+L0efcKjB1HD6IIT9BCFDAMTz9IhY+YECtOiccW5rcvUBtsajW0CB/djn/7ERttIL0QKcWz3xhA6IvghrdJiv9NYqm968=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=lFXyBoMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE9EC19425;
-	Wed, 13 May 2026 23:15:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778714105;
-	bh=EWlxknBUuLAJpNU9FCMY/xu4GoSwo/c7hcv48hFJA5I=;
-	h=Date:To:From:Subject:From;
-	b=lFXyBoMoogaWZIEPcYqqm7oaQbVAYoR2JI5bMWsp4f4C/xV1yeE9MTYibwoML/SyT
-	 vvWlwRworwQIB+JG/5ZZRmaQtvst9vTYyRif982BMrzFepjXP3l5LDOUjC+mcnE1Lf
-	 FKuLPIXzMd0nNWx3oC9x72kic6lqxGiIWvoCaBKg=
-Date: Wed, 13 May 2026 16:15:04 -0700
-To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,peterx@redhat.com,jack@suse.cz,david@kernel.org,brauner@kernel.org,rppt@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + userfaultfd-ensure-mremap_userfaultfd_fail-releases-mmap_changing.patch added to mm-new branch
-Message-Id: <20260513231505.6DE9EC19425@smtp.kernel.org>
+	s=arc-20240116; t=1778714466; c=relaxed/simple;
+	bh=8eMawit0OW6ad3SVf7uGB8gFZ+2QQvYBgQHoNHZfxY8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JOm2pUFfJj++HnymKUDIDDGlF5Lq+WSHE6RtTIIJ8tK05hKIZZ3JPRUfJvVhK9YT6TYwY1uHgYLBr46+1w93BqgsLOZkPU7iXLG+6tPojtosdra0ZftHwCxlgpZORDPU+Au1lNFmKO6W+xt3o8/1cB/Rab0fA8B1l1wdGlNFEvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HkDvro1I; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3665b67ed66so3792751a91.1
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 16:21:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778714464; x=1779319264; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TDJV2MG7QKyZ3RMtUvYJDqEzlimYTMaUR24f6p6E6NU=;
+        b=HkDvro1IYQNpaCCHmUb4OWTu8rAqj5mPUk1fK95N6aLSRugsQKxKpIiD+ZEA5hA8tS
+         nIicpHgaTLz2HGhuuIk04TnZ+ZyVf6S2GTfAe/MaoP8JQGMrBSBLwh1FKhUJyR3XcHeU
+         mfMAQAmrqqVSnkhuWtFudv7ngBRsjUAuk8REb+UKhD5XibOZZ8wDP5UmTnew8kVsWFxk
+         vIvtQC0B19Xx1+HPkLhlZYFgEUI/pVg+KI8PbLdG6WiwiTMFw15U/WNnRkEafsiXxU6e
+         4HUWSM9DqzMS6kshJBN2ac6Xf2CitGJfY36PFLU60Ad98u3g2dKkV2ZBhvI8Su0P870s
+         py5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778714464; x=1779319264;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TDJV2MG7QKyZ3RMtUvYJDqEzlimYTMaUR24f6p6E6NU=;
+        b=qRRyq4anJRs8GfbPs9Qyx+C9kBLfF0z1s0sU1hiVTCR/VcX95xRGhHtEsjkzzx07+F
+         BPkf9qx/z0JANyUvjA/UCdunJEe/zRqxCFV6xh0uVx7hrVPC1ZnSe6e+txRNyRGoyXga
+         dOWU987KK+qxxo5Nms8RVIEXn0aQ73mMVnJ9phLAhHBGWXqiFoOuL2VBW60Np/GL7ty7
+         hAu1Wycuf76BTEWieR3zhT2zJ6PZxAn48KZoOVEqtcLMbwyThjFJh1H6rkvXm2kPbK3v
+         sF5j8C1/yPZerbYj3IEfQj3UXWKH4FNzlUiiK04khdhqhjldYqVvPm1Mb4qU8k4srFE8
+         F7aQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+HcN6mPZcc2yVcL2hx+QyquFYmVZ4fR6jt7l//U2wtr/bAdu6ig2S4I81aryjmmD22zG5ZVN8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywr+MALbb+KTqi7zQsSd0QYRjV6z8ewnLagFVdW5xvewDqFBhps
+	kCPuvyvrgFTUziVsa0EiPFdLVn5yHdPNKP7nLJoMzWrUieIG95BDKL3B
+X-Gm-Gg: Acq92OFDuYXnYkT9eoq3F0qUt133wlHubGv0FcVllKUsjxWrBIxkPUxJV10YGXdgPKg
+	geXTNfOp9h3k+gyH6dUFaVzgnOTJDQ0i6uMMAM1KhMXS0n0sHT1dfpsMZsTzv8RORl5AJ4cdUGc
+	KDyF7lBe7ilDSRtWSr3Qt9M8oBp0c+fqG7viWZXeyDsavbzoEcaZI5po6jpgynRugPjeOPQzOqS
+	ygkHCZqiE7yxOzChVHXi05075Ld0QjFGkuQn34qT4ppV493hgIGj9FBA29yXA3ekvCFvdApOr7J
+	lVDdbD9uVOk9PHps1p2XqfUG+mo+gugLKW256elG9tyjLomjBo4JuzrKMqcTsLniJKnVH/y6PW6
+	IbnQSMgARzlLpjAjD5ERtIrj9i6XmxefMvxKQ0nCHWB9R5WIIjBDzRJJgWh2Ct1AGU8cVAwZ6n2
+	XgV7D4oFqwVzJhTOfoHITIaC5Z
+X-Received: by 2002:a17:90b:3a46:b0:367:b9ed:dec4 with SMTP id 98e67ed59e1d1-368f3e7c1acmr6104542a91.27.1778714464483;
+        Wed, 13 May 2026 16:21:04 -0700 (PDT)
+Received: from sabzi.. ([2409:40d0:2506:51c1:7958:24d2:8e36:e527])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368ede2074esm4089669a91.1.2026.05.13.16.21.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 16:21:04 -0700 (PDT)
+From: Aditya <mail4adityaa@gmail.com>
+To: dpenkler@gmail.com
+Cc: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Aditya <mail4adityaa@gmail.com>
+Subject: [PATCH] gpib: lpvo_usb_gpib: fix heap buffer overflow in lpvo_do_write()
+Date: Thu, 14 May 2026 04:50:16 +0530
+Message-ID: <20260513232016.94653-1-mail4adityaa@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 960C653BE17
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E173653BF13
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-247049-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-247051-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[mail4adityaa@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
+The memcpy in lpvo_do_write() uses the original unbounded 'count' parameter instead of the capped 'writesize', causing a heap buffer overflow when a user writes more than MAX_TRANSFER (3584 bytes) to /dev/lpvo_raw%d.
 
-The patch titled
-     Subject: userfaultfd: ensure mremap_userfaultfd_fail() releases mmap_changing
-has been added to the -mm mm-new branch.  Its filename is
-     userfaultfd-ensure-mremap_userfaultfd_fail-releases-mmap_changing.patch
+Fix by using 'writesize' which is already capped to MAX_TRANSFER.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/userfaultfd-ensure-mremap_userfaultfd_fail-releases-mmap_changing.patch
-
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-The mm-new branch of mm.git is not included in linux-next
-
-If a few days of testing in mm-new is successful, the patch will me moved
-into mm.git's mm-unstable branch, which is included in linux-next
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: userfaultfd: ensure mremap_userfaultfd_fail() releases mmap_changing
-Date: Wed, 13 May 2026 11:14:16 +0300
-
-Sashiko says:
-
-  mremap_userfaultfd_prep() increments ctx->mmap_changing to stall
-  concurrent operations, but mremap_userfaultfd_fail() does not
-  decrement it before dropping the context reference.
-
-If an mremap operation fails, ctx->mmap_changing remains elevated. This
-will causes subsequent userfaultfd operations like a UFFDIO_COPY to fail
-with -EAGAIN.
-
-Decrement ctx->mmap_changing in mremap_userfaultfd_fail().
-
-Link: https://sashiko.dev/#/patchset/20260430113512.115938-1-rppt@kernel.org
-Link: https://lore.kernel.org/20260513081416.495963-1-rppt@kernel.org
-Fixes: df2cc96e7701 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Aditya <mail4adityaa@gmail.com>
 ---
+ drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- fs/userfaultfd.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/fs/userfaultfd.c~userfaultfd-ensure-mremap_userfaultfd_fail-releases-mmap_changing
-+++ a/fs/userfaultfd.c
-@@ -786,6 +786,8 @@ void mremap_userfaultfd_fail(struct vm_u
- 	if (!ctx)
- 		return;
+diff --git a/drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c b/drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c
+index e6ea9422d6f2..ff7cef08031d 100644
+--- a/drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c
++++ b/drivers/gpib/lpvo_usb_gpib/lpvo_usb_gpib.c
+@@ -1638,7 +1638,7 @@ static ssize_t lpvo_do_write(struct lpvo *dev, const char *buffer, size_t count)
+ 		goto error;
+ 	}
  
-+	atomic_dec(&ctx->mmap_changing);
-+	VM_WARN_ON_ONCE(atomic_read(&ctx->mmap_changing) < 0);
- 	userfaultfd_ctx_put(ctx);
- }
+-	memcpy(buf, buffer, count);
++	memcpy(buf, buffer, writesize);
  
-_
-
-Patches currently in -mm which might be from rppt@kernel.org are
-
-maintainers-add-tree-for-kdump-and-kexec.patch
-maintainers-add-kexec-list-to-live-update-entry.patch
-sh-fix-fallout-from-zero_page-consolidation.patch
-selftests-mm-hugetlb-read-hwpoison-add-sigbus-handler.patch
-selftests-mm-migration-dont-assume-huge-page-is-twomeg.patch
-selftests-mm-migration-make-nthreads-represent-number-of-working-threads.patch
-selftests-mm-migration-properly-cleanup-forked-processes.patch
-selftests-mm-run_vmtestssh-dont-gate-thp-and-ksm-tests-on-have_hugepages.patch
-selftests-mm-merge-map_hugetlb-into-hugepage-mmap.patch
-selftests-mm-rename-hugepage-tests-to-hugetlb.patch
-selftests-mm-hugetlb-shm-use-kselftest-framework.patch
-selftests-mm-hugetlb-vmemmap-use-kselftest-framework.patch
-selftests-mm-hugetlb-madvise-use-kselftest-framework.patch
-selftests-mm-hugetlb_madv_vs_map-use-kselftest-framework.patch
-selftests-mm-hugetlb-read-hwpoison-use-kselftest-framework.patch
-selftests-mm-khugepaged-group-tests-in-an-array.patch
-selftests-mm-khugepaged-use-ksefltest-framework.patch
-selftests-mm-khugepaged-use-ksefltest-framework-fix.patch
-selftests-mm-ksm_tests-use-kselftest-framework.patch
-selftests-mm-protection_keys-use-descriptive-test-names-in-the-output.patch
-selftests-mm-protection_keys-use-kselftest-framework.patch
-selftests-mm-uffd-common-use-kselftest-framework.patch
-selftests-mm-uffd-stress-use-kselftest-framework.patch
-selftests-mm-uffd-unit-tests-use-kselftest-framework.patch
-selftests-mm-va_high_addr_switch-use-kselftest-framework.patch
-selftests-mm-add-atexit-and-signal-handlers-to-thp_settings.patch
-selftests-mm-rename-thp_settings-to-hugepage_settings.patch
-selftests-mm-move-hugetlb-helpers-to-hugepage_settings.patch
-selftests-mm-hugepage_settings-use-unsigned-long-in-detect_hugetlb_page_size.patch
-selftests-mm-hugepage_settings-add-apis-to-get-and-set-nr_hugepages.patch
-selftests-mm-hugepage_settings-rename-and-rework-get_free_hugepages.patch
-selftests-mm-hugepage_settings-add-apis-for-hugetlb-setup-and-teardown.patch
-selftests-mm-move-read_file-read_num-and-write_num-to-vm_util.patch
-selftests-mm-vm_util-add-helpers-to-set-and-restore-shm-limits.patch
-selftests-mm-compaction_test-use-hugetlb-helpers.patch
-selftests-mm-cow-add-setup-of-hugetlb-pages.patch
-selftests-mm-gup_longterm-add-setup-of-hugetlb-pages.patch
-selftests-mm-gup_test-add-setup-of-hugetlb-pages.patch
-selftests-mm-hmm-tests-add-setup-of-hugetlb-pages.patch
-selftests-mm-hugepage_dio-add-setup-of-hugetlb-pages.patch
-selftests-mm-hugetlb_fault_after_madv-add-setup-of-hugetlb-pages.patch
-selftests-mm-hugetlb-madvise-add-setup-of-hugetlb-pages.patch
-selftests-mm-hugetlb_madv_vs_map-add-setup-of-hugetlb-pages.patch
-selftests-mm-hugetlb-mmap-add-setup-of-hugetlb-pages.patch
-selftests-mm-hugetlb-mremap-add-setup-of-hugetlb-pages.patch
-selftests-mm-hugetlb-shm-add-setup-of-hugetlb-pages.patch
-selftests-mm-hugetlb-soft-offline-add-setup-of-hugetlb-pages.patch
-selftests-mm-hugetlb-vmemmap-add-setup-of-hugetlb-pages.patch
-selftests-mm-migration-add-setup-of-hugetlb-pages.patch
-selftests-mm-pagemap_ioctl-add-setup-of-hugetlb-pages.patch
-selftests-mm-protection_keys-use-library-code-for-hugetlb-setup.patch
-selftests-mm-thuge-gen-add-setup-of-hugetlb-pages.patch
-selftests-mm-uffd-stress-use-hugetlb_save-and-alloc-huge-pages.patch
-selftests-mm-uffd-unit-tests-add-setup-of-hugetlb-pages.patch
-selftests-mm-uffd-wp-mremap-add-setup-of-hugetlb-pages.patch
-selftests-mm-va_high_addr_switch-add-setup-of-hugetlb-pages.patch
-selftests-mm-va_high_addr_switchsh-drop-huge-pages-setup.patch
-selftests-mm-run_vmtestssh-free-memory-if-available-memory-is-low.patch
-selftests-mm-run_vmtestssh-drop-detection-and-setup-of-hugetlb.patch
-userfaultfd-ensure-mremap_userfaultfd_fail-releases-mmap_changing.patch
+ 	/* this lock makes sure we don't submit URBs to gone devices */
+ 	mutex_lock(&dev->io_mutex);
+-- 
+2.43.0
 
 
