@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-246936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iL/JNDuvBGp6NAIAu9opvQ
-	(envelope-from <stable+bounces-246936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:04:59 +0200
+	id YEAbHEarBGoxMwIAu9opvQ
+	(envelope-from <stable+bounces-246937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:48:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A47537A44
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:04:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B0B53763C
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 559A431DA3D8
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:33:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 878393083C40
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B2B4C9010;
-	Wed, 13 May 2026 16:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FBC254B18;
+	Wed, 13 May 2026 16:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KzuZrmkO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GsigsY4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD964CA282
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 16:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA18A34753F
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 16:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778689998; cv=none; b=Q2neSuCwvKl8/i+2EpJ2HezwLirns3s7z/NYg0l4N/2r9UcBhwVmpEvGTP7ldUnZVysmYRpKcZce96wFtAfVMR+uGez7L3JuRx//PLYe19Fq0S4qOQjj3JEL1KRv3vE92QG5qCs7Chh0l5QwwGLXMN7h7ngQ72FLMf2DZlu6FD0=
+	t=1778690005; cv=none; b=Hx6MiLi9XCbShRnNoQUr33d34F+oaJVwl/NbCdSOrnYcVd1ZEbd63N+MzjbtYWSFPmH8SouXgN8FFBBu2QWbycxs46HZof3Vlycv7rfscZamoK+DNdW3DIXYIlJ1vJxkGVnaMEsxRj9YrSh0Eads+dYALJeAUlJ5CYH7TPGzU5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778689998; c=relaxed/simple;
-	bh=RemIegFp0TprWsj3z98q+kow9s5FJRTMFcpyvqPblTc=;
+	s=arc-20240116; t=1778690005; c=relaxed/simple;
+	bh=ijc5DuPkrdefG6UblgzlgfN78R4DsNkJbWJnnF0AsCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mbd9fpWirZOY/w8FQaPTcQLmWzvPf7snzCtXtAiE5iz3G7uieJCS5nCoGFerHTEkdFqcYn056RWy48kuyU2W45AIX7U463eSAbPfXlhSB3B9/BsTvJ+Rg5sYMcx32Mfgg43ujV0ntw/uaKtpCvs4T5/CFoRyoSTat7le/l6M4pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KzuZrmkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41789C2BCB7;
-	Wed, 13 May 2026 16:33:17 +0000 (UTC)
+	 MIME-Version; b=KFc/EwG3NRwYb2d0UFn+alFyIpXM4WqSCRf3uEwq0wHWg+fzb3wjYwIcxZmJZGxia1GYwarGjtPUFMGyWrGNErQ6ykDCS8G9H8w3ENhdKFqpoONCQqW9PDIlMkLYOlwbbCuSjFPFbPZQIfJmWiD3+8jVmct2PkgghfdFibUKGWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GsigsY4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34ABFC19425;
+	Wed, 13 May 2026 16:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778689997;
-	bh=RemIegFp0TprWsj3z98q+kow9s5FJRTMFcpyvqPblTc=;
+	s=k20201202; t=1778690004;
+	bh=ijc5DuPkrdefG6UblgzlgfN78R4DsNkJbWJnnF0AsCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KzuZrmkOz2aMsK03Ut7DGni9YlnSH/atASR/5/9gLEc6NFUjF1m2fGkC2VTGiuPSx
-	 2cjWXXrNXKxYfC142hZ32ZOnd3AoKN7mmhRmfJXuX1ajzDYF7x0er5dDge0i7Uk3VI
-	 6lzS1PhreJBCwDbe99IdmBvdqwf0pmfeB8MhePemtmvZgYhMO+CHVls2kygloy2Sis
-	 xqNID8adjideYeemPJCmJ2u5fHU4+HCFt+NdWc71qb9VBFLvnVXKfGQK8cifapuDjB
-	 73EVd2KuiYVRRQ9Rkwgl5jGPPVfaIx/UiyzI00Aq7eZp5Qo4o6VHS3ifJbEvfBBU/5
-	 ksPSQwbmhACnA==
+	b=GsigsY4tZ8SmpAocyhj0xX+aylqx4B9uW0j9IWG1iXsBVSw1cAd/yORgDYboYRQkH
+	 6+eyBCF0UZxQkTnx920eSzYr60WyNQSoSLUcTwjUpXg6wmI8dFVTktwWCooDEpCbDx
+	 dUd1nD0vpEHCOTuyKKs+fEksf8/8xkeV77+P+MgFg3YHsoe30jxFdvGkpWx8oq6NAx
+	 Gfuw8NQ3I4oz1+m/xqScUjK4zQGmQhZv+CrrYKUfcjUsDNVuXWrHqsB8xSepZDwfwm
+	 K3+FOhNVUjj55BMs2U4zhiM8TL8pAUHAP0uwkhgAmt1qVn8WGqHiJmDwmMQMOFBjva
+	 S2ZHqWIZmLS/w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Martin Pitt <martin@piware.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+Cc: zhidao su <suzhidao@xiaomi.com>,
+	zhidao su <soolaugust@gmail.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0.y 2/2] cgroup: Defer css percpu_ref kill on rmdir until cgroup is depopulated
-Date: Wed, 13 May 2026 12:33:14 -0400
-Message-ID: <20260513163314.3807064-2-sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/2] sched/ext: Implement cgroup_set_idle() callback
+Date: Wed, 13 May 2026 12:33:21 -0400
+Message-ID: <20260513163322.3807202-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260513163314.3807064-1-sashal@kernel.org>
-References: <2026051228-thrift-subside-ee8f@gregkh>
- <20260513163314.3807064-1-sashal@kernel.org>
+In-Reply-To: <2026051219-oval-unbalance-97f6@gregkh>
+References: <2026051219-oval-unbalance-97f6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,26 +63,27 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 50A47537A44
+X-Rspamd-Queue-Id: 70B0B53763C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246936-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[xiaomi.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246937-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,493 +91,127 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,xiaomi.com:email]
 X-Rspamd-Action: no action
 
-From: Tejun Heo <tj@kernel.org>
+From: zhidao su <suzhidao@xiaomi.com>
 
-[ Upstream commit 93618edf753838a727dbff63c7c291dee22d656b ]
+[ Upstream commit 347ed2d566dabb06c7970fff01129c4f59995ed6 ]
 
-A chain of commits going back to v7.0 reworked rmdir to satisfy the
-controller invariant that a subsystem's ->css_offline() must not run while
-tasks are still doing kernel-side work in the cgroup.
+Implement the missing cgroup_set_idle() callback that was marked as a
+TODO. This allows BPF schedulers to be notified when a cgroup's idle
+state changes, enabling them to adjust their scheduling behavior
+accordingly.
 
-[1] d245698d727a ("cgroup: Defer task cgroup unlink until after the task is done switching out")
-[2] a72f73c4dd9b ("cgroup: Don't expose dead tasks in cgroup")
-[3] 1b164b876c36 ("cgroup: Wait for dying tasks to leave on rmdir")
-[4] 4c56a8ac6869 ("cgroup: Fix cgroup_drain_dying() testing the wrong condition")
-[5] 13e786b64bd3 ("cgroup: Increment nr_dying_subsys_* from rmdir context")
+The implementation follows the same pattern as other cgroup callbacks
+like cgroup_set_weight() and cgroup_set_bandwidth(). It checks if the
+BPF scheduler has implemented the callback and invokes it with the
+appropriate parameters.
 
-[1] moved task cset unlink from do_exit() to finish_task_switch() so a
-task's cset link drops only after the task has fully stopped scheduling.
-That made tasks past exit_signals() linger on cset->tasks until their final
-context switch, which led to a series of problems as what userspace expected
-to see after rmdir diverged from what the kernel needs to wait for. [2]-[5]
-tried to bridge that divergence: [2] filtered the exiting tasks from
-cgroup.procs; [3] had rmdir(2) sleep in TASK_UNINTERRUPTIBLE for them; [4]
-fixed the wait's condition; [5] made nr_dying_subsys_* visible
-synchronously.
+Fixes a spelling error in the cgroup_set_bandwidth() documentation.
 
-The cgroup_drain_dying() wait in [3] turned out to be a dead end. When the
-rmdir caller is also the reaper of a zombie that pins a pidns teardown (e.g.
-host PID 1 systemd reaping orphan pids that were re-parented to it during
-the same teardown), rmdir blocks in TASK_UNINTERRUPTIBLE waiting for those
-pids to free, the pids can't free because PID 1 is the reaper and it's stuck
-in rmdir, and the system A-A deadlocks. No internal lock ordering breaks
-this; the wait itself is the bug.
+tj: s/scx_cgroup_rwsem/scx_cgroup_ops_rwsem/ to fix build breakage.
 
-The css killing side that drove the original reorder, however, can be made
-cleanly asynchronous: ->css_offline() is already async, run from
-css_killed_work_fn() driven by percpu_ref_kill_and_confirm(). The fix is to
-make that chain start only after all tasks have left the cgroup. rmdir's
-user-visible side then returns as soon as cgroup.procs and friends are
-empty, while ->css_offline() still runs only after the cgroup is fully
-drained.
-
-Verified by the original reproducer (pidns teardown + zombie reaper, runs
-under vng) which hangs vanilla and succeeds here, and by per-commit
-deterministic repros for [2], [3], [4], [5] with a boot parameter that
-widens the post-exit_signals() window so each state is reliably reachable.
-Some stress tests on top of that.
-
-cgroup_apply_control_disable() has the same shape of pre-existing race:
-when a controller is disabled via subtree_control, kill_css() ran
-synchronously while tasks past exit_signals() could still be linked to
-the cgroup's csets, and ->css_offline() could fire before they drained.
-This patch preserves the existing synchronous behavior at that call site
-(kill_css_sync() + kill_css_finish() back-to-back) and a follow-up patch
-will defer kill_css_finish() there using a per-css trigger.
-
-This seems like the right approach and I don't see problems with it. The
-changes are somewhat invasive but not excessively so, so backporting to
--stable should be okay. If something does turn out to be wrong, the fallback
-is to revert the entire chain ([1]-[5]) and rework in the development branch
-instead.
-
-v2: Pin cgrp across the deferred destroy work with explicit
-    cgroup_get()/cgroup_put() around queue_work() and the work_fn. v1
-    wasn't actually broken (ordered cgroup_offline_wq + queue_work order
-    in cgroup_task_dead() saved it) but the explicit ref removes the
-    dependency on those non-obvious invariants. Also note the
-    pre-existing cgroup_apply_control_disable() race in the description;
-    a follow-up will defer kill_css_finish() there.
-
-Fixes: 1b164b876c36 ("cgroup: Wait for dying tasks to leave on rmdir")
-Cc: stable@vger.kernel.org # v7.0+
-Reported-and-tested-by: Martin Pitt <martin@piware.de>
-Link: https://lore.kernel.org/all/afHNg2VX2jy9bW7y@piware.de/
-Link: https://lore.kernel.org/all/35e0670adb4abeab13da2c321582af9f@kernel.org/
+Signed-off-by: zhidao su <soolaugust@gmail.com>
 Signed-off-by: Tejun Heo <tj@kernel.org>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Stable-dep-of: 80afd4c84bc8 ("sched_ext: Read scx_root under scx_cgroup_ops_rwsem in cgroup setters")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cgroup-defs.h |   4 +-
- kernel/cgroup/cgroup.c      | 250 +++++++++++++++++-------------------
- 2 files changed, 119 insertions(+), 135 deletions(-)
+ include/linux/sched/ext.h   |  1 +
+ kernel/sched/ext.c          | 16 +++++++++++++++-
+ kernel/sched/ext_internal.h | 13 ++++++++++++-
+ 3 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-index 7f87399938fa2..8e7afb5a5980a 100644
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -609,8 +609,8 @@ struct cgroup {
- 	/* used to wait for offlining of csses */
- 	wait_queue_head_t offline_waitq;
- 
--	/* used by cgroup_rmdir() to wait for dying tasks to leave */
--	wait_queue_head_t dying_populated_waitq;
-+	/* defers killing csses after removal until cgroup is depopulated */
-+	struct work_struct finish_destroy_work;
- 
- 	/* used to schedule release agent */
- 	struct work_struct release_agent_work;
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index ef517f0e929af..6b2ee75c63ebc 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -278,10 +278,12 @@ static void cgroup_finalize_control(struct cgroup *cgrp, int ret);
- static void css_task_iter_skip(struct css_task_iter *it,
- 			       struct task_struct *task);
- static int cgroup_destroy_locked(struct cgroup *cgrp);
-+static void cgroup_finish_destroy(struct cgroup *cgrp);
-+static void kill_css_sync(struct cgroup_subsys_state *css);
-+static void kill_css_finish(struct cgroup_subsys_state *css);
- static struct cgroup_subsys_state *css_create(struct cgroup *cgrp,
- 					      struct cgroup_subsys *ss);
- static void css_release(struct percpu_ref *ref);
--static void kill_css(struct cgroup_subsys_state *css);
- static int cgroup_addrm_files(struct cgroup_subsys_state *css,
- 			      struct cgroup *cgrp, struct cftype cfts[],
- 			      bool is_add);
-@@ -858,6 +860,16 @@ static void cgroup_update_populated(struct cgroup *cgrp, bool populated)
- 		if (was_populated == cgroup_is_populated(cgrp))
- 			break;
- 
-+		/*
-+		 * Subtree just emptied below an offlined cgrp. Fire deferred
-+		 * destroy. The transition is one-shot.
-+		 */
-+		if (was_populated && !css_is_online(&cgrp->self)) {
-+			cgroup_get(cgrp);
-+			WARN_ON_ONCE(!queue_work(cgroup_offline_wq,
-+						 &cgrp->finish_destroy_work));
-+		}
-+
- 		cgroup1_check_for_release(cgrp);
- 		TRACE_CGROUP_PATH(notify_populated, cgrp,
- 				  cgroup_is_populated(cgrp));
-@@ -2100,6 +2112,16 @@ static int cgroup_reconfigure(struct fs_context *fc)
- 	return 0;
- }
- 
-+static void cgroup_finish_destroy_work_fn(struct work_struct *work)
-+{
-+	struct cgroup *cgrp = container_of(work, struct cgroup, finish_destroy_work);
-+
-+	cgroup_lock();
-+	cgroup_finish_destroy(cgrp);
-+	cgroup_unlock();
-+	cgroup_put(cgrp);
-+}
-+
- static void init_cgroup_housekeeping(struct cgroup *cgrp)
- {
- 	struct cgroup_subsys *ss;
-@@ -2126,7 +2148,7 @@ static void init_cgroup_housekeeping(struct cgroup *cgrp)
+diff --git a/include/linux/sched/ext.h b/include/linux/sched/ext.h
+index d82b7a9b0658b..9848aeab27864 100644
+--- a/include/linux/sched/ext.h
++++ b/include/linux/sched/ext.h
+@@ -228,6 +228,7 @@ struct scx_task_group {
+ 	u64			bw_period_us;
+ 	u64			bw_quota_us;
+ 	u64			bw_burst_us;
++	bool			idle;
  #endif
- 
- 	init_waitqueue_head(&cgrp->offline_waitq);
--	init_waitqueue_head(&cgrp->dying_populated_waitq);
-+	INIT_WORK(&cgrp->finish_destroy_work, cgroup_finish_destroy_work_fn);
- 	INIT_WORK(&cgrp->release_agent_work, cgroup1_release_agent);
- }
- 
-@@ -3436,7 +3458,8 @@ static void cgroup_apply_control_disable(struct cgroup *cgrp)
- 
- 			if (css->parent &&
- 			    !(cgroup_ss_mask(dsct) & (1 << ss->id))) {
--				kill_css(css);
-+				kill_css_sync(css);
-+				kill_css_finish(css);
- 			} else if (!css_visible(css)) {
- 				css_clear_dir(css);
- 				if (ss->css_reset)
-@@ -5558,7 +5581,7 @@ static struct cftype cgroup_psi_files[] = {
-  * css destruction is four-stage process.
-  *
-  * 1. Destruction starts.  Killing of the percpu_ref is initiated.
-- *    Implemented in kill_css().
-+ *    Implemented in kill_css_finish().
-  *
-  * 2. When the percpu_ref is confirmed to be visible as killed on all CPUs
-  *    and thus css_tryget_online() is guaranteed to fail, the css can be
-@@ -6037,7 +6060,7 @@ int cgroup_mkdir(struct kernfs_node *parent_kn, const char *name, umode_t mode)
- /*
-  * This is called when the refcnt of a css is confirmed to be killed.
-  * css_tryget_online() is now guaranteed to fail.  Tell the subsystem to
-- * initiate destruction and put the css ref from kill_css().
-+ * initiate destruction and put the css ref from kill_css_finish().
-  */
- static void css_killed_work_fn(struct work_struct *work)
- {
-@@ -6069,15 +6092,12 @@ static void css_killed_ref_fn(struct percpu_ref *ref)
- }
- 
- /**
-- * kill_css - destroy a css
-- * @css: css to destroy
-+ * kill_css_sync - synchronous half of css teardown
-+ * @css: css being killed
-  *
-- * This function initiates destruction of @css by removing cgroup interface
-- * files and putting its base reference.  ->css_offline() will be invoked
-- * asynchronously once css_tryget_online() is guaranteed to fail and when
-- * the reference count reaches zero, @css will be released.
-+ * See cgroup_destroy_locked().
-  */
--static void kill_css(struct cgroup_subsys_state *css)
-+static void kill_css_sync(struct cgroup_subsys_state *css)
- {
- 	struct cgroup_subsys *ss = css->ss;
- 
-@@ -6100,24 +6120,6 @@ static void kill_css(struct cgroup_subsys_state *css)
- 	 */
- 	css_clear_dir(css);
- 
--	/*
--	 * Killing would put the base ref, but we need to keep it alive
--	 * until after ->css_offline().
--	 */
--	css_get(css);
--
--	/*
--	 * cgroup core guarantees that, by the time ->css_offline() is
--	 * invoked, no new css reference will be given out via
--	 * css_tryget_online().  We can't simply call percpu_ref_kill() and
--	 * proceed to offlining css's because percpu_ref_kill() doesn't
--	 * guarantee that the ref is seen as killed on all CPUs on return.
--	 *
--	 * Use percpu_ref_kill_and_confirm() to get notifications as each
--	 * css is confirmed to be seen as killed on all CPUs.
--	 */
--	percpu_ref_kill_and_confirm(&css->refcnt, css_killed_ref_fn);
--
- 	css->cgroup->nr_dying_subsys[ss->id]++;
- 	/*
- 	 * Parent css and cgroup cannot be freed until after the freeing
-@@ -6130,44 +6132,88 @@ static void kill_css(struct cgroup_subsys_state *css)
- }
- 
- /**
-- * cgroup_destroy_locked - the first stage of cgroup destruction
-+ * kill_css_finish - deferred half of css teardown
-+ * @css: css being killed
-+ *
-+ * See cgroup_destroy_locked().
-+ */
-+static void kill_css_finish(struct cgroup_subsys_state *css)
-+{
-+	lockdep_assert_held(&cgroup_mutex);
-+
-+	/*
-+	 * Skip on re-entry: cgroup_apply_control_disable() may have killed @css
-+	 * earlier. cgroup_destroy_locked() can still walk it because
-+	 * offline_css() (which NULLs cgrp->subsys[ssid]) runs async.
-+	 */
-+	if (percpu_ref_is_dying(&css->refcnt))
-+		return;
-+
-+	/*
-+	 * Killing would put the base ref, but we need to keep it alive until
-+	 * after ->css_offline().
-+	 */
-+	css_get(css);
-+
-+	/*
-+	 * cgroup core guarantees that, by the time ->css_offline() is invoked,
-+	 * no new css reference will be given out via css_tryget_online(). We
-+	 * can't simply call percpu_ref_kill() and proceed to offlining css's
-+	 * because percpu_ref_kill() doesn't guarantee that the ref is seen as
-+	 * killed on all CPUs on return.
-+	 *
-+	 * Use percpu_ref_kill_and_confirm() to get notifications as each css is
-+	 * confirmed to be seen as killed on all CPUs.
-+	 */
-+	percpu_ref_kill_and_confirm(&css->refcnt, css_killed_ref_fn);
-+}
-+
-+/**
-+ * cgroup_destroy_locked - destroy @cgrp (called on rmdir)
-  * @cgrp: cgroup to be destroyed
-  *
-- * css's make use of percpu refcnts whose killing latency shouldn't be
-- * exposed to userland and are RCU protected.  Also, cgroup core needs to
-- * guarantee that css_tryget_online() won't succeed by the time
-- * ->css_offline() is invoked.  To satisfy all the requirements,
-- * destruction is implemented in the following two steps.
-- *
-- * s1. Verify @cgrp can be destroyed and mark it dying.  Remove all
-- *     userland visible parts and start killing the percpu refcnts of
-- *     css's.  Set up so that the next stage will be kicked off once all
-- *     the percpu refcnts are confirmed to be killed.
-- *
-- * s2. Invoke ->css_offline(), mark the cgroup dead and proceed with the
-- *     rest of destruction.  Once all cgroup references are gone, the
-- *     cgroup is RCU-freed.
-- *
-- * This function implements s1.  After this step, @cgrp is gone as far as
-- * the userland is concerned and a new cgroup with the same name may be
-- * created.  As cgroup doesn't care about the names internally, this
-- * doesn't cause any problem.
-+ * Tear down @cgrp on behalf of rmdir. Constraints:
-+ *
-+ * - Userspace: rmdir must succeed when cgroup.procs and friends are empty.
-+ *
-+ * - Kernel: subsystem ->css_offline() must not run while any task in @cgrp's
-+ *   subtree is still doing kernel work. A task hidden from cgroup.procs (past
-+ *   exit_signals() with signal->live cleared) can still schedule, allocate, and
-+ *   consume resources until its final context switch. Dying descendants in the
-+ *   subtree can host such tasks too.
-+ *
-+ * - Kernel: css_tryget_online() must fail by the time ->css_offline() runs.
-+ *
-+ * The destruction runs in three parts:
-+ *
-+ * - This function: synchronous user-visible state teardown plus kill_css_sync()
-+ *   on each subsystem css.
-+ *
-+ * - cgroup_finish_destroy(): kicks the percpu_ref kill via kill_css_finish() on
-+ *   each subsystem css. Fires once @cgrp's subtree is fully drained, either
-+ *   inline here or from cgroup_update_populated().
-+ *
-+ * - The percpu_ref kill chain: css_killed_ref_fn -> css_killed_work_fn ->
-+ *   ->css_offline() -> release/free.
-+ *
-+ * Return 0 on success, -EBUSY if a userspace-visible task or an online child
-+ * remains.
-  */
- static int cgroup_destroy_locked(struct cgroup *cgrp)
--	__releases(&cgroup_mutex) __acquires(&cgroup_mutex)
- {
- 	struct cgroup *tcgrp, *parent = cgroup_parent(cgrp);
- 	struct cgroup_subsys_state *css;
- 	struct cgrp_cset_link *link;
-+	struct css_task_iter it;
-+	struct task_struct *task;
- 	int ssid, ret;
- 
- 	lockdep_assert_held(&cgroup_mutex);
- 
--	/*
--	 * Only migration can raise populated from zero and we're already
--	 * holding cgroup_mutex.
--	 */
--	if (cgroup_is_populated(cgrp))
-+	css_task_iter_start(&cgrp->self, 0, &it);
-+	task = css_task_iter_next(&it);
-+	css_task_iter_end(&it);
-+	if (task)
- 		return -EBUSY;
- 
- 	/*
-@@ -6191,9 +6237,8 @@ static int cgroup_destroy_locked(struct cgroup *cgrp)
- 		link->cset->dead = true;
- 	spin_unlock_irq(&css_set_lock);
- 
--	/* initiate massacre of all css's */
- 	for_each_css(css, ssid, cgrp)
--		kill_css(css);
-+		kill_css_sync(css);
- 
- 	/* clear and remove @cgrp dir, @cgrp has an extra ref on its kn */
- 	css_clear_dir(&cgrp->self);
-@@ -6224,79 +6269,27 @@ static int cgroup_destroy_locked(struct cgroup *cgrp)
- 	/* put the base reference */
- 	percpu_ref_kill(&cgrp->self.refcnt);
- 
-+	if (!cgroup_is_populated(cgrp))
-+		cgroup_finish_destroy(cgrp);
-+
- 	return 0;
  };
  
- /**
-- * cgroup_drain_dying - wait for dying tasks to leave before rmdir
-- * @cgrp: the cgroup being removed
-- *
-- * cgroup.procs and cgroup.threads use css_task_iter which filters out
-- * PF_EXITING tasks so that userspace doesn't see tasks that have already been
-- * reaped via waitpid(). However, cgroup_has_tasks() - which tests whether the
-- * cgroup has non-empty css_sets - is only updated when dying tasks pass through
-- * cgroup_task_dead() in finish_task_switch(). This creates a window where
-- * cgroup.procs reads empty but cgroup_has_tasks() is still true, making rmdir
-- * fail with -EBUSY from cgroup_destroy_locked() even though userspace sees no
-- * tasks.
-- *
-- * This function aligns cgroup_has_tasks() with what userspace can observe. If
-- * cgroup_has_tasks() but the task iterator sees nothing (all remaining tasks are
-- * PF_EXITING), we wait for cgroup_task_dead() to finish processing them. As the
-- * window between PF_EXITING and cgroup_task_dead() is short, the wait is brief.
-+ * cgroup_finish_destroy - deferred half of @cgrp destruction
-+ * @cgrp: cgroup whose subtree just became empty
-  *
-- * This function only concerns itself with this cgroup's own dying tasks.
-- * Whether the cgroup has children is cgroup_destroy_locked()'s problem.
-- *
-- * Each cgroup_task_dead() kicks the waitqueue via cset->cgrp_links, and we
-- * retry the full check from scratch.
-- *
-- * Must be called with cgroup_mutex held.
-+ * See cgroup_destroy_locked() for the rationale.
-  */
--static int cgroup_drain_dying(struct cgroup *cgrp)
--	__releases(&cgroup_mutex) __acquires(&cgroup_mutex)
-+static void cgroup_finish_destroy(struct cgroup *cgrp)
- {
--	struct css_task_iter it;
--	struct task_struct *task;
--	DEFINE_WAIT(wait);
-+	struct cgroup_subsys_state *css;
-+	int ssid;
- 
- 	lockdep_assert_held(&cgroup_mutex);
--retry:
--	if (!cgroup_has_tasks(cgrp))
--		return 0;
--
--	/* Same iterator as cgroup.threads - if any task is visible, it's busy */
--	css_task_iter_start(&cgrp->self, 0, &it);
--	task = css_task_iter_next(&it);
--	css_task_iter_end(&it);
--
--	if (task)
--		return -EBUSY;
- 
--	/*
--	 * All remaining tasks are PF_EXITING and will pass through
--	 * cgroup_task_dead() shortly. Wait for a kick and retry.
--	 *
--	 * cgroup_has_tasks() can't transition from false to true while we're
--	 * holding cgroup_mutex, but the true to false transition happens
--	 * under css_set_lock (via cgroup_task_dead()). We must retest and
--	 * prepare_to_wait() under css_set_lock. Otherwise, the transition
--	 * can happen between our first test and prepare_to_wait(), and we
--	 * sleep with no one to wake us.
--	 */
--	spin_lock_irq(&css_set_lock);
--	if (!cgroup_has_tasks(cgrp)) {
--		spin_unlock_irq(&css_set_lock);
--		return 0;
--	}
--	prepare_to_wait(&cgrp->dying_populated_waitq, &wait,
--			TASK_UNINTERRUPTIBLE);
--	spin_unlock_irq(&css_set_lock);
--	mutex_unlock(&cgroup_mutex);
--	schedule();
--	finish_wait(&cgrp->dying_populated_waitq, &wait);
--	mutex_lock(&cgroup_mutex);
--	goto retry;
-+	for_each_css(css, ssid, cgrp)
-+		kill_css_finish(css);
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index ee031ba877d9c..423098966a291 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -3118,6 +3118,7 @@ void scx_tg_init(struct task_group *tg)
+ 	tg->scx.weight = CGROUP_WEIGHT_DFL;
+ 	tg->scx.bw_period_us = default_bw_period_us();
+ 	tg->scx.bw_quota_us = RUNTIME_INF;
++	tg->scx.idle = false;
  }
  
- int cgroup_rmdir(struct kernfs_node *kn)
-@@ -6308,12 +6301,9 @@ int cgroup_rmdir(struct kernfs_node *kn)
- 	if (!cgrp)
- 		return 0;
+ int scx_tg_online(struct task_group *tg)
+@@ -3266,7 +3267,18 @@ void scx_group_set_weight(struct task_group *tg, unsigned long weight)
  
--	ret = cgroup_drain_dying(cgrp);
--	if (!ret) {
--		ret = cgroup_destroy_locked(cgrp);
--		if (!ret)
--			TRACE_CGROUP_PATH(rmdir, cgrp);
--	}
-+	ret = cgroup_destroy_locked(cgrp);
-+	if (!ret)
-+		TRACE_CGROUP_PATH(rmdir, cgrp);
- 
- 	cgroup_kn_unlock(kn);
- 	return ret;
-@@ -7073,7 +7063,6 @@ void cgroup_task_exit(struct task_struct *tsk)
- 
- static void do_cgroup_task_dead(struct task_struct *tsk)
+ void scx_group_set_idle(struct task_group *tg, bool idle)
  {
--	struct cgrp_cset_link *link;
- 	struct css_set *cset;
- 	unsigned long flags;
+-	/* TODO: Implement ops->cgroup_set_idle() */
++	struct scx_sched *sch = scx_root;
++
++	percpu_down_read(&scx_cgroup_ops_rwsem);
++
++	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_idle))
++		SCX_CALL_OP(sch, SCX_KF_UNLOCKED, cgroup_set_idle, NULL,
++			    tg_cgrp(tg), idle);
++
++	/* Update the task group's idle state */
++	tg->scx.idle = idle;
++
++	percpu_up_read(&scx_cgroup_ops_rwsem);
+ }
  
-@@ -7087,11 +7076,6 @@ static void do_cgroup_task_dead(struct task_struct *tsk)
- 	if (thread_group_leader(tsk) && atomic_read(&tsk->signal->live))
- 		list_add_tail(&tsk->cg_list, &cset->dying_tasks);
+ void scx_group_set_bandwidth(struct task_group *tg,
+@@ -5126,6 +5138,7 @@ static void sched_ext_ops__cgroup_move(struct task_struct *p, struct cgroup *fro
+ static void sched_ext_ops__cgroup_cancel_move(struct task_struct *p, struct cgroup *from, struct cgroup *to) {}
+ static void sched_ext_ops__cgroup_set_weight(struct cgroup *cgrp, u32 weight) {}
+ static void sched_ext_ops__cgroup_set_bandwidth(struct cgroup *cgrp, u64 period_us, u64 quota_us, u64 burst_us) {}
++static void sched_ext_ops__cgroup_set_idle(struct cgroup *cgrp, bool idle) {}
+ #endif
+ static void sched_ext_ops__cpu_online(s32 cpu) {}
+ static void sched_ext_ops__cpu_offline(s32 cpu) {}
+@@ -5164,6 +5177,7 @@ static struct sched_ext_ops __bpf_ops_sched_ext_ops = {
+ 	.cgroup_cancel_move	= sched_ext_ops__cgroup_cancel_move,
+ 	.cgroup_set_weight	= sched_ext_ops__cgroup_set_weight,
+ 	.cgroup_set_bandwidth	= sched_ext_ops__cgroup_set_bandwidth,
++	.cgroup_set_idle	= sched_ext_ops__cgroup_set_idle,
+ #endif
+ 	.cpu_online		= sched_ext_ops__cpu_online,
+ 	.cpu_offline		= sched_ext_ops__cpu_offline,
+diff --git a/kernel/sched/ext_internal.h b/kernel/sched/ext_internal.h
+index 8039a750490f8..5b2dd105fa92a 100644
+--- a/kernel/sched/ext_internal.h
++++ b/kernel/sched/ext_internal.h
+@@ -697,12 +697,23 @@ struct sched_ext_ops {
+ 	 * 2_500_000. @cgrp is entitled to 2.5 CPUs. @burst_us can be
+ 	 * interpreted in the same fashion and specifies how much @cgrp can
+ 	 * burst temporarily. The specific control mechanism and thus the
+-	 * interpretation of @period_us and burstiness is upto to the BPF
++	 * interpretation of @period_us and burstiness is up to the BPF
+ 	 * scheduler.
+ 	 */
+ 	void (*cgroup_set_bandwidth)(struct cgroup *cgrp,
+ 				     u64 period_us, u64 quota_us, u64 burst_us);
  
--	/* kick cgroup_drain_dying() waiters, see cgroup_rmdir() */
--	list_for_each_entry(link, &cset->cgrp_links, cgrp_link)
--		if (waitqueue_active(&link->cgrp->dying_populated_waitq))
--			wake_up(&link->cgrp->dying_populated_waitq);
--
- 	if (dl_task(tsk))
- 		dec_dl_tasks_cs(tsk);
++	/**
++	 * @cgroup_set_idle: A cgroup's idle state is being changed
++	 * @cgrp: cgroup whose idle state is being updated
++	 * @idle: whether the cgroup is entering or exiting idle state
++	 *
++	 * Update @cgrp's idle state to @idle. This callback is invoked when
++	 * a cgroup transitions between idle and non-idle states, allowing the
++	 * BPF scheduler to adjust its behavior accordingly.
++	 */
++	void (*cgroup_set_idle)(struct cgroup *cgrp, bool idle);
++
+ #endif	/* CONFIG_EXT_GROUP_SCHED */
  
+ 	/*
 -- 
 2.53.0
 
