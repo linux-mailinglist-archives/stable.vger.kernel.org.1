@@ -1,132 +1,186 @@
-Return-Path: <stable+bounces-246717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBVbNvbnA2oPAQIAu9opvQ
-	(envelope-from <stable+bounces-246717-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:54:46 +0200
+	id gH84ImPoA2oPAQIAu9opvQ
+	(envelope-from <stable+bounces-246716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:56:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5598852C720
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:54:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F392B52C784
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B7C9300DD44
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 02:52:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 76CC03023DD6
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 02:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB7535DA55;
-	Wed, 13 May 2026 02:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EE0390985;
+	Wed, 13 May 2026 02:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcnQ/Hfv"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mJYFc58W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE15314B63;
-	Wed, 13 May 2026 02:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35DE349CFC;
+	Wed, 13 May 2026 02:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778640773; cv=none; b=fXI30YDXrS9YvazKGeYjqomu0tHIsITjAoDa5iBh/zhvdSlUD4MKXZSXCd5vmGdBxSC3XMWLlOnZaHLnLZNvmvZOtTcbxdHhEYgwCuPyk43IuMlZVIwn/4oRBNss6zOpZO43dUELgq2YKyxNw8rtX9ihHSyy1BOXahHiuJCBRL4=
+	t=1778640768; cv=none; b=gZ5PaJA8x9QcIIa6FHM155nmZmtaafrIEl6/Gooreg4N/3zx+tZVfS5L7fn6dlY5qeXX5ZeU9Y+tGlAYr5Nk80EwUyAUjb3ABX8xecLR9zVQMei+MKPd1M5SL8pYhUv4imdIgTEzmDC23qaGXIolxbGydNiBJXhjCD6m3eSleuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778640773; c=relaxed/simple;
-	bh=2676fvscMyjK0OHdfxMRrCy/Jw9r9ZG+EZ144GRJAac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MYaDd3pNfvvgQIiF91DXt/WZVQsX/asnq5uZAlqA8PgbtvtBI+D9prFn41gKz6uN3VzFHi64LPE8nqxMQ/CxKfpmzT7RQfp+yAijcHhAZwv5DsmNfTjzm0B+40tTlddxWNHDqxTG2gRUd4gr41XuJlQebhZn0UILdjLdQLKNcB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcnQ/Hfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED52C2BCB0;
-	Wed, 13 May 2026 02:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778640773;
-	bh=2676fvscMyjK0OHdfxMRrCy/Jw9r9ZG+EZ144GRJAac=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XcnQ/Hfve8mooLMOavb764ZOVphPq5/lPWXEu6rBY+IHDqJ6WweTBCBNhF0XCPOru
-	 IF36sPg85LRJXDbTPo85WN3VwsYhOQmEiClVuVQ2oUuIxFKGNarkS9VvAm4vRyKnK4
-	 aN/p7lzdOWxo5sjqKuv458SZqheE22c6thBqOS19meaSEDpbCSg1D+LHxNGR3kEV2+
-	 EAAo7uxMCoYTbYgU5PdopOm9aTG0IJZh0y4nTAD2DNQHXRrLpCli0Kl2P+ReTMCbRI
-	 KxUUNk1K5mPtRtijnskA5gldvxC6Xi2nmVlk70rc5SFqIgDMPW62HLjhE8UZ7gRyb8
-	 J+0dmmzTouIqg==
-Date: Tue, 12 May 2026 19:51:30 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: lukas@wunner.de, ignat@linux.win, jarkko@kernel.org,
-	yimingqian591@gmail.com, stable@vger.kernel.org,
-	linux-crypto@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] lib/crypto: mpi: Fix integer underflow
- in" failed to apply to 6.1-stable tree
-Message-ID: <20260513025130.GA3110@sol>
-References: <2026051223-undercoat-reps-6626@gregkh>
+	s=arc-20240116; t=1778640768; c=relaxed/simple;
+	bh=3hDimKE1fAKscOhJHZokQog4qjU3uAU1wJQQEOH5qKE=;
+	h=Date:To:From:Subject:Message-Id; b=qThLtJwIO0E7REjC0CoJ58UCVt7X/Dv2p71UgeHaURZEt8yMoCxXQg22alYnxZqvzNQRRFTDNQFjk93q3JS9+F5qkbViupd7RX8S8cxHZzk5Zioxbn05XbF1d7xzTKpoB1cL3/MeObffI3FlIAhHZKHYYZzmVMJostntch5FQRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mJYFc58W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F91C2BCB0;
+	Wed, 13 May 2026 02:52:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778640767;
+	bh=3hDimKE1fAKscOhJHZokQog4qjU3uAU1wJQQEOH5qKE=;
+	h=Date:To:From:Subject:From;
+	b=mJYFc58WqK2xliPZbi3IVRbt335npuyJ4eUCN8f+8flCWZ/6IjGZaGkOnmkh6FtlH
+	 DVYqu3iN9hbfgbSWZPyGC4KwT8JZrqj7NGluAKcuFTkZCHU68XUl91HwcEcHiComzJ
+	 7cqZ1WotGlw2U6Pu14kRToYTl5TQljh6k4MtB5ns=
+Date: Tue, 12 May 2026 19:52:46 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shakeel.butt@linux.dev,ryncsn@gmail.com,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,hughd@google.com,hannes@cmpxchg.org,david@kernel.org,baohua@kernel.org,jose.fernandez@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-swap_cgroup-fix-null-deref-in-lookup_swap_cgroup_id-on-swapless-host.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260513025247.60F91C2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026051223-undercoat-reps-6626@gregkh>
-X-Rspamd-Queue-Id: 5598852C720
+X-Rspamd-Queue-Id: F392B52C784
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[wunner.de,linux.win,kernel.org,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-246717-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246716-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,linux.dev,gmail.com,kernel.org,google.com,cmpxchg.org,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cmpxchg.org:email,linux.dev:email]
 X-Rspamd-Action: no action
 
-[+Cc linux-crypto@vger.kernel.org]
 
-On Tue, May 12, 2026 at 04:01:23PM +0200, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 8c2f1288250a90a4b5cabed5d888d7e3aeed4035
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051223-undercoat-reps-6626@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-> 
-> Possible dependencies:
+The patch titled
+     Subject: mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id on swapless host
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-swap_cgroup-fix-null-deref-in-lookup_swap_cgroup_id-on-swapless-host.patch
 
-A couple issues.  First, this email wasn't sent to the subsystem's
-mailing list (linux-crypto@vger.kernel.org in this case).  That greatly
-reduces the number of people who are made aware that this didn't get
-automatically backported.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap_cgroup-fix-null-deref-in-lookup_swap_cgroup_id-on-swapless-host.patch
 
-Second, the upstream commit cherry-picks to 6.1, 5.15, and 5.10 without
-conflict.  (The file being changed was renamed between 6.1 and 6.6, but
-'git cherry-pick' handles that automatically.)
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-I don't know what you're doing exactly that caused it to be
-unnecessarily marked as FAILED.  But whatever it is, it's not working,
-and it is causing backports to be missed.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-- Eric
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
+Subject: mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id on swapless host
+Date: Mon, 04 May 2026 12:55:17 +0000
+
+lookup_swap_cgroup_id() passes swap_cgroup_ctrl[type].map to
+__swap_cgroup_id_lookup() without checking that the type was ever
+registered via swap_cgroup_swapon().  On a swapless host every ctrl->map
+is NULL, so __swap_cgroup_id_lookup() dereferences NULL + a scaled
+swp_offset().
+
+Since commit bea67dcc5eea ("mm: attempt to batch free swap entries for
+zap_pte_range()"), zap_pte_range() -> swap_pte_batch() calls
+lookup_swap_cgroup_id() on any non-present, non-none PTE that decodes as a
+real swap entry, without first validating it against swap_info[].  A
+single PTE corrupted into a type-0 swap entry takes the host down at
+process exit.
+
+We hit this in production on a swapless 6.12.58 host: ~1s of
+"get_swap_device: Bad swap file entry 3f800204222bb" (do_swap_page() being
+correctly defensive about the same entry) followed by
+
+  BUG: unable to handle page fault for address: 000003f800204220
+  RIP: 0010:lookup_swap_cgroup_id+0x2b/0x60
+  Call Trace:
+   swap_pte_batch+0xbf/0x230
+   zap_pte_range+0x4c8/0x780
+   unmap_page_range+0x190/0x3e0
+   exit_mmap+0xd9/0x3c0
+   do_exit+0x20c/0x4b0
+
+syzbot has reported the identical stack.
+
+The source of the PTE corruption is a separate bug; this change makes the
+teardown path as robust as the fault path already is.  Every other caller
+of lookup_swap_cgroup_id() is downstream of a get_swap_device() that has
+already validated the entry, so the new branch is cold.
+
+Link: https://lore.kernel.org/20260504-swap-cgroup-fix-7-0-v1-1-f53ff41ee553@linux.dev
+Fixes: bea67dcc5eea ("mm: attempt to batch free swap entries for zap_pte_range()")
+Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+Reported-by: syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/69859728.050a0220.3b3015.0033.GAE@google.com
+Assisted-by: Claude:unspecified
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/swap_cgroup.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/mm/swap_cgroup.c~mm-swap_cgroup-fix-null-deref-in-lookup_swap_cgroup_id-on-swapless-host
++++ a/mm/swap_cgroup.c
+@@ -124,6 +124,8 @@ unsigned short lookup_swap_cgroup_id(swp
+ 		return 0;
+ 
+ 	ctrl = &swap_cgroup_ctrl[swp_type(ent)];
++	if (unlikely(!ctrl->map))
++		return 0;
+ 	return __swap_cgroup_id_lookup(ctrl->map, swp_offset(ent));
+ }
+ 
+_
+
+Patches currently in -mm which might be from jose.fernandez@linux.dev are
+
+mm-swap_cgroup-fix-null-deref-in-lookup_swap_cgroup_id-on-swapless-host.patch
+
 
