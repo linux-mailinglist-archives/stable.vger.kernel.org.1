@@ -1,182 +1,253 @@
-Return-Path: <stable+bounces-246754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEBaKysTBGoMDAIAu9opvQ
-	(envelope-from <stable+bounces-246754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:59:07 +0200
+	id OLVsLTYVBGqDDQIAu9opvQ
+	(envelope-from <stable+bounces-246755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:07:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E3052DE2F
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:59:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE6052DF14
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4034630B2A29
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 05:57:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B02DF305760A
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47AF3B9601;
-	Wed, 13 May 2026 05:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE053D332A;
+	Wed, 13 May 2026 06:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MmJz9zxi"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IXjwnqKy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010053.outbound.protection.outlook.com [52.101.61.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532E53B5846
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 05:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778651874; cv=none; b=etd17k9qmZ6os7Pyo91kbTAsxlLQVgqdd+lBUOr2ejLsdD5xOJMsv4HCS+1Jdd3YtZlcWZhfo8IDtsmTQwMUxyRcs7KtwlTHDjH3g6KgJDD9Htms5Az3HF1mqwMW9TPolF45beNLiR2LTpVY5pBGFzlUooroy+x5kw9abnZkqPQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778651874; c=relaxed/simple;
-	bh=TDlNAtlCXiNocCZK6YySKkE/9f3Hcn33gL0f6Cl/y34=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s7WD1EFbvUVd3j1zOP5WuGuCY1YWjVk7CLjLwd7v7lUF1akpDLjnSlPbO/K7BbXfsxxsfme6DjbGVM/IgeJIs3v0c8/KJw48AdjYChiIR/msf308b2RHUrxEgVfGm+a+cQBvaICO5/AQiziUlcP/nGQAVbJVIWUFQBqhR3TGjwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MmJz9zxi; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48374014a77so57096675e9.3
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 22:57:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778651869; x=1779256669; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QEQj27JotGwcy3B3913f7GCdMKTwi/C//9qHIUHYfrE=;
-        b=MmJz9zxiERxMUA1EFaQ2sbYxl4akeB5L7TUAokzljRB7slZhKImKs09DPTatQLNz3U
-         ET/U359gp9jJEgk8a80w97XF/4e4am96LxPJqxH/8TTLdYRymXwNp1pOsJPtsmn0rOXM
-         rePEEAZY/RHOAsgMZErL1TG2tlrFeG3BJtfChOgtQkiTUkSYHSob9OUttESN6cAokAn5
-         OX0iIsSDDnppHtW7ejlanvszqaDFmF3Jw3QYkD1AlrVkyPM1TbWXhNQg/FfK26k9inkp
-         EFJ2LR3d31/c580seO4Hl7V0rCka3Uxu1uPHW73XBpv5nApepKPTfm4Br94onwbPfIC2
-         8xkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778651869; x=1779256669;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QEQj27JotGwcy3B3913f7GCdMKTwi/C//9qHIUHYfrE=;
-        b=fspQ7jzuG1H3iiqKMIak0lxoz6VRqwlysQiv2n0ie9VF3k1sZ3LLGWyHJjgz1EvGFB
-         m5fR6KptYh1PMX+QmvXkpjcYQ5LB80O/OnKsHag7DWP33NUQcGTct8E29pGkQmN2hLg/
-         QpN29v4gOHUg7riSyYFIy0Xctd23YPcjyCCwoGv5D05C0DyuzJPhM37ZLfqEedCo+rgA
-         63n+D2EAr3BfAhHwwhHwrn4ZSIkGNcnZDpQUnFj1U6RnRzlJsJ41pFivGLbXTs25LN10
-         5lzoRy1jcg5ogN/gHombNJk8j3n25hYnlZNZyrI5mitIpple42etbBRyRE/o95ry+Ztx
-         6SKw==
-X-Gm-Message-State: AOJu0YxpeLzSdBchvYfwV1SKjhbXLGNyyNTlVR0yFZrBzjKrtXWI9ik7
-	47daX8Dta2at5SHGWjWJcG+hRTy8DjnYC8bKZKlTTXTYwcqHQT7c8eNd
-X-Gm-Gg: Acq92OFMU1ow+fFgaYzJ3Y9idjpQtt+gIcaU+0hrX+h20t/ovxbqHOl2HceZRLSxV+B
-	DzIfXKZ7h4CBaXlmqhhc/7NznK+4xeG8wxEqjce4aGp8z+8mMYLCopm7PHBRlNEhvY8So8iQIoi
-	dcfwjgip/yuMz/GC7Izu+DEgTPlifkGHZu8htx9/YoZGvngOtISb1lOfpfrhT/JE4kFRg2B7Snf
-	ZJHl/Vg74f4e+x0Z9F8BGqhXfvWMSd4bDUwQEHbr0PAlKaTWyJHGONHKEBI2RnDOrOqTW8lmVvD
-	urmXhJOoMHFXs7Lnrku+gczken2lue4h+ymUebmdQ42TwwxJy/I5+P+MD1WApj6ilGhGRRzbiW0
-	Bp0Wc9jro2ixviB8e42zYti51Wz6axsfznMw645LEamllwiHZG5teZgFh6xfDdrfM/Je//quZED
-	mlhW5QmRU4KyPTye5eewrmMywEwHvhDdVzxY4HGBwqnJaob3XiqWTZuPEB6W6MzKZCle4=
-X-Received: by 2002:a05:600c:698d:b0:48a:7676:30bc with SMTP id 5b1f17b1804b1-48fc9a31279mr24251685e9.14.1778651869210;
-        Tue, 12 May 2026 22:57:49 -0700 (PDT)
-Received: from va-HP-Pavilion-Desktop-595-p0xxx.mshome.net ([31.7.57.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f3cf0cdsm59724455e9.2.2026.05.12.22.57.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 22:57:48 -0700 (PDT)
-From: Valery Borovsky <vebohr@gmail.com>
-To: mchehab@kernel.org,
-	crope@iki.fi,
-	linux-media@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Valery Borovsky <vebohr@gmail.com>
-Subject: [PATCH] media: rtl2832_sdr: free DMA stream buffers before clearing udev on remove
-Date: Wed, 13 May 2026 08:57:45 +0300
-Message-ID: <20260513055745.146998-1-vebohr@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CB72C11E2;
+	Wed, 13 May 2026 06:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778652362; cv=fail; b=XJSOowlSjT2mURgmJG39JkNHCOMSXwsAxq2F5ECSgMv3F3cangH5pQhv2FClhEPMQ5UhpKZhImiUDDgQCp9iovmKP0Eui6D8Gwo9A40vR8V4LMEHuqoKd2BYeDXz4e+vcFl0yK2q75nmdILMPr5onWy96R8XtngcPOtk22d4v/Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778652362; c=relaxed/simple;
+	bh=tZCg59DUlIxV/CPcRmWPIAmILpXX4Jgg5JlzcNxxsM4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DN7cueDDhMLKcqFuxBSP/DVwRPLdh26kur30xp/pObMepZ1ib7GSGFWvsZHtmu0/d5Xu8RbwF3Ie+KL5y8YW0LTHMd00LTqzOMmAdHKdwYrjxoJBeFHgKO9P5UHEDNamyik65Sf8rLFYEy0CuNdXm4cpl0aoVq3v165XQqqgpBk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IXjwnqKy; arc=fail smtp.client-ip=52.101.61.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=njRi0kh3bkjrYcQlXM/0s24k4NDbPK3P/FJ7KIS4C54/0MzWUDW8KYtLIxqf1W/LuYD+PbcWAaVpCkeAdofKYmzw/+zENj3Xa+BinjI4NyI6etn7dXsqc+mk6D1zpDTch7HGojJrcVKpMPy5A3IYTDaXDS85coN9m00OFkjBANJCFPS2dJKdC7tt9/kHh2XAfqe79KWPtg9/XnZDLw0v+AKAFkt4M14v9DER6107MeYzfEWB0MYku+t4/WsCuOrRGAibglDt4dKuacAzaoLtm4s8LcTCfDh6VNItYHMQ6LflZedBUu6dPg91HgBszhDAOdAAh3sRALtFSpZIw2hr8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8UZq1Nr9WvlPyxu/jXS9/ItZlm2gKQ0wHw8GqT9xpOQ=;
+ b=diG1d5jit8zkY7P8QSlRFNMobV5Aj7vF0HCw6nmkX9cPvzsZmPNQekReGrox1AtCd2b83tH634Qhw67kVQVpPJLcsNMyBGTeGf4ud3szi5eL31mIEvSmQVCjvQ4NVSCwHYuSMzAFDDktpQd3JwhhFHwHedU3BiuOMqwETnOp4Wg0gt14aWaQVvh8Jaezu2RVMAc26Z81GZHMwtuPViHY+ePfEHNR8+uhh43P0953NpidtWQOew8qQkZviJM3P2Gbuc+zFk/xRCxhPhdYcob8OlrpxxnZ6mthxZ9OL9sH4htLp+WxZnK4eThOtG8uDQGaozbQHCHU/ofU8FYt8jtr0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8UZq1Nr9WvlPyxu/jXS9/ItZlm2gKQ0wHw8GqT9xpOQ=;
+ b=IXjwnqKyjQfx+mPcIWWBNEeXJ003ptwhIsWfdNf7stC3RTU8sBaKH3JGzj3xF0YcBv6pCYeyU/pivoE9u7/Y2gehKrYELex1596TYnpBAY85PFbznU8s52ew6y9sASpPpQD7IOMV9s30gjugjx7vMiJFEr7V/hm2NCF7TDZy/+Ep0Qo1Tek6Z0HxIIQYQhi6Bv4WLoRFyRNRuVCgqADdOPzjkSyah2AmzqBAJ45ZGCLQsC09Y+P0mlt0eX7wNta5m2ncEmrQfCdn2v3LRgk9ZCOfMxT/3FIaIl9JGUsLYt7PS1C3zrg3fc3TrDb/aPVzkIHYMbMG8Qbf+lLj6GNTcQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by DM6PR12MB4314.namprd12.prod.outlook.com (2603:10b6:5:211::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
+ 2026 06:05:54 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9913.009; Wed, 13 May 2026
+ 06:05:54 +0000
+Date: Wed, 13 May 2026 08:05:45 +0200
+From: Andrea Righi <arighi@nvidia.com>
+To: Peter Schneider <pschneider1968@googlemail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@nabladev.com,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com, Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH 7.0 000/307] 7.0.7-rc1 review
+Message-ID: <agQUuUpJ2fu1JfVG@gpd4>
+References: <20260512173940.117428952@linuxfoundation.org>
+ <90116a48-a75d-48c9-b09f-97f541c0031c@googlemail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <90116a48-a75d-48c9-b09f-97f541c0031c@googlemail.com>
+X-ClientProxiedBy: MI2P293CA0014.ITAP293.PROD.OUTLOOK.COM
+ (2603:10a6:290:45::13) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 36E3052DE2F
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DM6PR12MB4314:EE_
+X-MS-Office365-Filtering-Correlation-Id: afa1ad2a-c22f-490b-00b9-08deb0b5b16e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|56012099003|22082099003|18002099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	JTdKOJdgGNtsEYcpcpcNl1gA9RY3UgOdXUJE4kke+4wus/AaGd3dkrN4QB7NzbwR0arZn7xdrvn2o0PlpY9flv0cskGWGS8KWXWMosS7M/H1beEGuVHM16P0EbUvp1QQ0HsvmbP0u0fkhFyHHVAJfYB4+uLnW7+CB0VARUxVLOIIRqwJ5yrin2T5KqpEZwo+pMIeeVQ3I3OyHtKxeUqgT+UDIGLlp3ddbCNACBjeI2NFFWc+thjKahEHL0oMQqM7mzLnxrjcirnUuGhHPJAL3WBOOAUfcGZN+kQkO2q+4XDWNPEkX7rnST5IK0YlhTBT4PjLeDWqVdPTjd7++Cj8nEwZhCgathUQILen9x/1MrK6XHyCiNEn05a2lVNjh4ciBLhbhlGVnzdawuE7A8/hTkHSPPiHkM7fjX0MbZ88TPwb+xhSqkKJxpNvT4AS8uIcb10Sr9cnuop8ooefmRmUPNR9irEk9GWc/mYiKGBYTvXYdxf0jmE+pTBC78ctA/YRPcY6Lpq+qoQJHavCPhcJ6QH0ajCjjl3nqIhBnnBLZfWwo7vRVn73Hd2fjJsO8ZiCe0PaaddIJmKvTJwlhWPTlndnjBg7thDt3H34Ko4kWA9BP3QDnoHv045H2NpSGtYV4+/ZhKG1mBmiVqpAW0MVWgalJOgtCnZsAVShlXgUDbblTijJi0j/wKaR8qn9lEOK
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(56012099003)(22082099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dVVVaHBpdWM3Ky9NRW9JbWQ3N3p6V1BLVzlJN2ZveCtqWHBnZWhqOVRIQytq?=
+ =?utf-8?B?cngrV1dtVE81bTdYOUJOYVN0aU1teHduVWhuZ21LT0kvcm0wbXhKc1FqVUp6?=
+ =?utf-8?B?YWRLdVZpMGZ6emRyWXRiWVZLTUt6RDI0QnRTY050cFQzT29yTWEzbUUzUXA3?=
+ =?utf-8?B?a3hFRVo2eGU0bnlJclg0WXpVUEFDWEVyd0l3elRTQmhTQXFFTW45d21pVFdY?=
+ =?utf-8?B?QUl3ZkhsbGZ1Z1lMNzhBbDY0MWFEU0hhRWo3SUY1QzF2cDJkNm9XRWo5cklS?=
+ =?utf-8?B?aVlJbnl4WlJWd2dMc1ZuZHRpODhaZ01rRndKMGs2NGx0ZlJjNHU4Z2JiUlU5?=
+ =?utf-8?B?Z1VBYllNU05Ja1V6S2Ezc1l2dGZka0RvRC9xVFNLYUlwTVIxdTRnemNUVEtw?=
+ =?utf-8?B?aFh3Sm9CakQ2OHVhUHN0Qm05SE4wMlQzdHZiSmUwaGZKNFRmc09GUDR1WEx4?=
+ =?utf-8?B?OHpTbXJjRHR3R3FoQzBUa2hBRVdLNUpmOFdOS2RPK3ZseVNNb3NYbnNPOE1Q?=
+ =?utf-8?B?aEEyMVA2bENDYUNRK2x2WFREajZxZ1ZiSXBPSVpGYUxHNW5zcVBsc1BNNXNE?=
+ =?utf-8?B?a2VjdnEwUSt4YittNENyTUlnQ2FmT2hpWmIvQ2VjLzU4enNzejFGTC9KNWhk?=
+ =?utf-8?B?ajNTaUlwUjRpdlAyY2ZMdFRCVFQxd05TRFhYV3Yrc1VqY21KZXQrTkFVZUha?=
+ =?utf-8?B?SjJ1TjZnT1pLbHk4UHRlako5QmZVenhoNHVOSTVPNkpIcWRFSk5yUW1ab0Ur?=
+ =?utf-8?B?M21ZcmpHU0ZjY3ZnWGRra0xtNWphWERuOG5iOEtaRDZiNDdTM05TcldNemo5?=
+ =?utf-8?B?clhOOEJkWFdiV3FzY05ocUtydUo2QkoweFREVlpzK0xsTnp2VUNZdlhCb3lD?=
+ =?utf-8?B?YVgxcWltWElXWi92YTVVRDRxQ0ZBeUs4V0VidmVSL0JpZy8yVW0zaXhIMmhE?=
+ =?utf-8?B?NDl1Y2RCenNXREdPa2Z1NUkxL1V5SG9GN21TL0hZaTUyaERZNGtZZHRXK2c5?=
+ =?utf-8?B?ME1xVWlVZEd5d1N5L1ZhSlFxWWZoZHZiQkt5Z0h5TUJYSzV3ajdnUm1lUkw3?=
+ =?utf-8?B?R0dMejE3QVdXeWxBOUM3T2x5VGRaQWF3c3lQMmlFNEZ3ODVVWmJabEFlTWp6?=
+ =?utf-8?B?VWRvQTdlV2NSa1I1eEpNalBrS1Z1aEcwT2xoc2NzUEErMTMxMnd5TVE4UU9T?=
+ =?utf-8?B?aC82UXFheThvTUhod0RZd1FDYTZXTGhOZ1VTaTNtM2RMUTRDcDJ4cXZRaSs5?=
+ =?utf-8?B?UnBDT1hNeEdGK0YvUm1wWmk5MUFPVTlOZUdlbGc4SVBydUJKZDUwNnR3NGo3?=
+ =?utf-8?B?SXRCMnh3dkFxNjN1MWtOdlRqQUZ1Mmh1YkpjRTJNWEhLRHdzaUZIQWt1THZo?=
+ =?utf-8?B?dUNNanVTNGdLTmxCdkxreFo3UjhwUmwybG9TeHc0QXQwLytGZWc1a2R0MjFG?=
+ =?utf-8?B?ZnR1L2R5aXNpenhuaWIwM1JvdENINXZkcDg4Vy91L0poZlJjWE5VbWExaHJD?=
+ =?utf-8?B?QmxwdmlrVS9zNG1kQzkvbloycEQwWmdyTmI3d3VhM0Z5MGVuVTVqYkR3ZzNi?=
+ =?utf-8?B?MEg5MU5vMmxPOXhKRlZFSTliYkFQYk9OcHBXTEgxb3ZKdDdzWUFpRitjOEZT?=
+ =?utf-8?B?cHpYRGZSVFp2TFF6NXZRMWFoRXBKOUNVdzdOYldPYmFNOHI3ZmJ4VHFlMlZh?=
+ =?utf-8?B?VVQ4WWhzNm51Qk4rcE52V05ZanpiRlRKYTdlYXJkcjJFSmtHNFBxQ1h5Z0tv?=
+ =?utf-8?B?K2ExVjNwYWxld1IxdTU3N0k4OVNQYmpzWHFPZUJkQVAwZVJCYlFybjlxWFhv?=
+ =?utf-8?B?MDNNR3JpMWhnK3VQNzFmd3NVbFhjYTJKOWhzV0NQeHBGV3FhU1hUVzhmU1NO?=
+ =?utf-8?B?bTNTSWRIdWh3Vnh5S3FYZ0VEQ3RGejg3TVZOTHhFcjcxRkc5b1BOT0dZZDBz?=
+ =?utf-8?B?R3k5a1VyUGw0WnJheUQxVkNSL29ocUN0Um82SnIvQ25hei93blAyemdDa204?=
+ =?utf-8?B?Qnp0SU9tUFdEMjF3WlBweDVSWm1JMkJ5Z2hkMFRNcHNTN0dsZHNPZnZ3OU8z?=
+ =?utf-8?B?UVd0VXV3Q0xzdERUd1phUEJCb3dNTWFqbEtTSUtpTXVQTjM1MFNwSE1qWGdl?=
+ =?utf-8?B?cEgxeWJKZDRVNy8yV3lqTDIwSGdlNVluQ211MWhBVnQ3RU1BaDdHUDZVNmIv?=
+ =?utf-8?B?NWhQVXJVY1paYUlTN3NmcGw0eExUdzFRVXcvZ3cvV0dlNHJKNzNyNnNhdHpr?=
+ =?utf-8?B?UVgwVEczTGFxZkw1VG5WRFJ3SHp0MDg2Z1ZNNW9YWTRnVC93TCswTGxIRnR2?=
+ =?utf-8?Q?qEkhfmksbg9uRvCRDA?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: afa1ad2a-c22f-490b-00b9-08deb0b5b16e
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 06:05:54.7641
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EXOyYUVq+n5hECCyZaBhVrOvW/QUeym5uXpz/Zx8TSI7oVO2W4C97KsO9FZ7AMMAqgkN70BRKuvrFBL6EZTv+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4314
+X-Rspamd-Queue-Id: 1CE6052DF14
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [1.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-246754-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246755-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[googlemail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vebohr@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[arighi@nvidia.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linus:email]
 X-Rspamd-Action: no action
 
-rtl2832_sdr_remove() runs on USB disconnect and immediately clears
-dev->udev to NULL before any pending streaming teardown can run. When
-the user-space application later closes its file descriptor, vb2 calls
-rtl2832_sdr_stop_streaming() which in turn calls
-rtl2832_sdr_free_stream_bufs(). That helper releases each coherent
-buffer with:
+Hello,
 
-    usb_free_coherent(dev->udev, dev->buf_size,
-                      dev->buf_list[dev->buf_num],
-                      dev->dma_addr[dev->buf_num]);
+On Wed, May 13, 2026 at 01:31:00AM +0200, Peter Schneider wrote:
+> Hi Greg,
+> 
+> Am 12.05.2026 um 19:36 schrieb Greg Kroah-Hartman:
+> > This is the start of the stable review cycle for the 7.0.7 release.
+> > There are 307 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> 
+> Trying to build 7.0.7-rc1, I get this build error.
+> 
+> In file included from kernel/sched/build_policy.c:62:
+> kernel/sched/ext.c: In function ‘bypass_lb_cpu’:
+> kernel/sched/ext.c:4019:35: error: ‘donor_rq’ undeclared (first use in this function); did you mean ‘donee_rq’?
+>  4019 |                 if (task_rq(p) != donor_rq)
+>       |                                   ^~~~~~~~
+>       |                                   donee_rq
+> kernel/sched/ext.c:4019:35: note: each undeclared identifier is reported only once for each function it appears in
+> make[4]: *** [scripts/Makefile.build:289: kernel/sched/build_policy.o] Fehler 1
+> make[3]: *** [scripts/Makefile.build:548: kernel/sched] Fehler 2
+> make[2]: *** [scripts/Makefile.build:548: kernel] Fehler 2
+> make[1]: *** [/usr/src/linux-stable-rc/Makefile:2108: .] Fehler 2
+> make: *** [Makefile:248: __sub-make] Fehler 2
+> root@linus:/usr/src/linux-stable-rc#
+> 
+> The offending line seems to be part of eb5b997dadc517 (sched_ext: Skip tasks with stale task_rq in bypass_lb_cpu())
+> Adding Tejun and Andrea to CC.
 
-usb_free_coherent() returns immediately when its dev argument is NULL,
-so every DMA stream buffer that was live at disconnect is silently
-leaked. The URBs allocated in rtl2832_sdr_alloc_urbs() outlive the
-device for the same reason.
+The upstream commit (da2d81b4118a) was written on top of ff06f727a941
+("sched_ext: Move bypass_dsq into scx_sched_pcpu"), which renamed @rq to
+@donor_rq (among other things). That refactor is not in 7.0.y and it's not
+stable material.
 
-Tear down the streaming state in rtl2832_sdr_remove() while dev->udev
-is still valid: call rtl2832_sdr_kill_urbs(), rtl2832_sdr_free_urbs()
-and rtl2832_sdr_free_stream_bufs() before zeroing dev->udev. The
-helpers are idempotent (they clear urbs_submitted, urbs_initialized
-and the URB_BUF flag), so the subsequent stop_streaming() path from
-the vb2 release sequence becomes a safe no-op.
+I think The minimal fix is to rename donor_rq -> rq in the backported hunk, in
+7.0.y the function still takes struct rq *rq directly, and that is the donor rq.
 
-Issue identified by automated review of the INV-003 series at
-https://sashiko.dev/
+Greg, can you fold the following into the queued patch? Do you prefer a
+separate/updated patch?
 
-Fixes: 771138920eaf ("[media] rtl2832_sdr: Realtek RTL2832 SDR driver module")
-Cc: stable@vger.kernel.org
-Signed-off-by: Valery Borovsky <vebohr@gmail.com>
----
- drivers/media/dvb-frontends/rtl2832_sdr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Thanks,
+-Andrea
 
-diff --git a/drivers/media/dvb-frontends/rtl2832_sdr.c b/drivers/media/dvb-frontends/rtl2832_sdr.c
-index 422d1a7b5456..817d91faa598 100644
---- a/drivers/media/dvb-frontends/rtl2832_sdr.c
-+++ b/drivers/media/dvb-frontends/rtl2832_sdr.c
-@@ -1470,6 +1470,14 @@ static void rtl2832_sdr_remove(struct platform_device *pdev)
+ kernel/sched/ext.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 3cb8025b433e0..2bb7c7a902679 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4013,10 +4013,10 @@ static u32 bypass_lb_cpu(struct scx_sched *sch, struct rq *rq,
+ 		/*
+ 		 * If an earlier pass placed @p on @donor_dsq from a different
+ 		 * CPU and the donee hasn't consumed it yet, @p is still on the
+-		 * previous CPU and task_rq(@p) != @donor_rq. @p can't be moved
++		 * previous CPU and task_rq(@p) != @rq. @p can't be moved
+ 		 * without its rq locked. Skip.
+ 		 */
+-		if (task_rq(p) != donor_rq)
++		if (task_rq(p) != rq)
+ 			continue;
  
- 	mutex_lock(&dev->vb_queue_lock);
- 	mutex_lock(&dev->v4l2_lock);
-+	/*
-+	 * Release URBs and coherent DMA stream buffers while dev->udev
-+	 * is still valid; once it is cleared, usb_free_coherent() silently
-+	 * returns and any later stop_streaming() leaks the DMA memory.
-+	 */
-+	rtl2832_sdr_kill_urbs(dev);
-+	rtl2832_sdr_free_urbs(dev);
-+	rtl2832_sdr_free_stream_bufs(dev);
- 	/* No need to keep the urbs around after disconnection */
- 	dev->udev = NULL;
- 	v4l2_device_disconnect(&dev->v4l2_dev);
--- 
-2.51.0
+ 		donee = cpumask_any_and_distribute(donee_mask, p->cpus_ptr);
 
 
