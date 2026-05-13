@@ -1,135 +1,147 @@
-Return-Path: <stable+bounces-246987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBCdIzi8BGrrNQIAu9opvQ
-	(envelope-from <stable+bounces-246987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:00:24 +0200
+	id qIWyCxe9BGrrNQIAu9opvQ
+	(envelope-from <stable+bounces-246988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:04:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F5C5387D9
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1DB538898
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E8CD31558CF
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:51:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 551BC3055BE8
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F80B4DD6C2;
-	Wed, 13 May 2026 17:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803A04DD6FA;
+	Wed, 13 May 2026 17:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nfITAXPS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UlC3tomm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D057327BF8;
-	Wed, 13 May 2026 17:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5240A4DD6C8;
+	Wed, 13 May 2026 17:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778694685; cv=none; b=rZq2/DpLTok5YzCfExD40ZHjjuXa/yf9ubiCF26u7wqhCfn4uD6KbToL60jpX/S7/sjUVY5YXByhVJ3JMcyEAv6tbwpmIo6CCWHWf50+M8m7FVAdZ+EH6sSsRwsVAusCf9yfboEaxoQRCokJIAtoscqUldUENJN4buyFtFu89H0=
+	t=1778694992; cv=none; b=qfSbDMN+U3Ih0cQKRBu+QFFrqeXzwXHUTrTg5y2m6i3liI2VKRUf5itajOpE2V9e22i2txlD/8kypE3zCXlK05q5puJ1Twzy5+DkbUlJFTC9IlSmUk2WQutsj2qJHas6jwQywjem0oPE9nOcfDEhWzD0kFXvQWJjFEt6qW7yggw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778694685; c=relaxed/simple;
-	bh=WhETy1A1wMdxvS7CzsIzIem5tVJ3SfVlf/HYIcaDxro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d7yCiBlgMija1Y4asMlPUufkekhrorctVb0Nnt+Esa4X198N0uyRgkpFJ8wcT87YZSBo2SY69lgY+PotdC5G5Gn+cGd0TOSutNL+9Z9HJOdjN9H1nnZwqs0iewxcKzUxrXiAwKrSx9tOVQpKohhTuXXo51KIHzA9GMU4/UAFCf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nfITAXPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3C6C19425;
-	Wed, 13 May 2026 17:51:24 +0000 (UTC)
+	s=arc-20240116; t=1778694992; c=relaxed/simple;
+	bh=R9lC2749pYg3wxcS/LuhtOmsNwsluS2P+2LMmHtrIR8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kIYbVfeaPJwG9qFuoS2DmpI3z/CRjR3U5rqE6v+jnnsPTh55mDzFNaflXxaYJjxPKvTjJAn0j/rcUbJ0hNB4hDFZ1otpZH3QyTGjxwc4OC9DoCQGsHzdwC4DrREEQDNoF/uKtpv8dbapahVqXIoGmTk6D0+zYXLBq8WEBy6FVP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UlC3tomm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0E0C19425;
+	Wed, 13 May 2026 17:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778694684;
-	bh=WhETy1A1wMdxvS7CzsIzIem5tVJ3SfVlf/HYIcaDxro=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nfITAXPSmCaaoisykuojRos//8tVRJ9nXTc5wfW6gTMLhEDl5+mM98wAoK5zMYl8r
-	 SUaammZyGoENwfBxAjoKWfc/7c3z0kileCV/TZPOOjHsisyVUsfDflJkWLw8EVtyV9
-	 KIeYWYCzcWEpOX/YpVZIw35CSCkXx1uY7m+Vrv4ptL0CYk6sxNBcFif18y8TjXkoqd
-	 zL53pVxhXVskaT4xCuxHQk0aKTYwhCxcC4GLlELZlwZLgdZP/nBNKWBcVlrJHxLdZq
-	 1WxIgCCgPvECIiLo5pxwGw1qs7mOenJ0hSnmEXF3ywPL1p7rdyLT/vpfUqJ6UAMg6+
-	 r3LED4HNgs/yA==
-Date: Wed, 13 May 2026 10:51:22 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: Re: [PATCH 5.10.y 1/3] net: ipv4: stop checking
- crypto_ahash_alignmask
-Message-ID: <20260513175122.GC2128@quark>
-References: <2026051236-writing-prior-b532@gregkh>
- <20260513171555.3876989-1-sashal@kernel.org>
+	s=k20201202; t=1778694991;
+	bh=R9lC2749pYg3wxcS/LuhtOmsNwsluS2P+2LMmHtrIR8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UlC3tommUgk81x0Vz8nrqtYtM4ybnYofCqYJtBQsZeexEqJGaUFagb63Mnw/vWeGt
+	 8u3FLGRtZv/5jlmh5wtEPfZNk0uu/EQpgaNaniYd9K6hQWoKbssO/7+oDYm1CQTiP/
+	 IMSFx61clUQX0f3ciqykpAi9nADakFW/+8skkg0YGWRcVXOWiEpd+uKMQqfDQDTk7x
+	 Y6gmb7/aPvFhX6q2Oc1rb/WsQGOehKMqRr1kMXCwggJwbVdgPt2N3zo+KD0hekXUMB
+	 JzjnYEWaP+DTs9mMv7nE9WyH4/28jfkPUxftMPxoa+GK13ywBMNIr0eWlQ4XDu4bsx
+	 XJrWO9benvIpw==
+From: Conor Dooley <conor@kernel.org>
+To: linux-riscv@lists.infradead.org
+Cc: conor@kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	stable@vger.kernel.org,
+	Valentina.FernandezAlanis@microchip.com,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-rtc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] rtc: mpfs: fix counter upload completion condition
+Date: Wed, 13 May 2026 18:55:55 +0100
+Message-ID: <20260513-panhandle-ashy-70c6abf84d59@spud>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513171555.3876989-1-sashal@kernel.org>
-X-Rspamd-Queue-Id: E5F5C5387D9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1915; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=iFFJRLWAlC3iNYSd01SHBiZHfPiSVbTpLx9DxnbFIe8=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDFksu7VnrLR5eyTIO+zdkgeqk5U3v5rbMH1bzeXfa+39d v2JYNkb31HKwiDGxSArpsiSeLuvRWr9H5cdzj1vYeawMoEMYeDiFICJsMQw/BXSvV5VH6rmJp+S n2A6lSu3o/idyu4te/n7/KfxiQW2JDMyTFnvYXohcvGtqYYLmW9rnubvrjBxLcy09BGO5lkruOA yIwA=
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8B1DB538898
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246987-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246988-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,secunet.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,infradead.org:email]
 X-Rspamd-Action: no action
 
-[+Cc linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
-     Steffen Klassert <steffen.klassert@secunet.com> ]
+From: Conor Dooley <conor.dooley@microchip.com>
 
-On Wed, May 13, 2026 at 01:15:52PM -0400, Sasha Levin wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> [ Upstream commit e77f5dd701381cef35b9ea8b6dea6e62c8a7f9f3 ]
-> 
-> Now that the alignmask for ahash and shash algorithms is always 0,
-> crypto_ahash_alignmask() always returns 0 and will be removed.  In
-> preparation for this, stop checking crypto_ahash_alignmask() in ah4.c.
-> 
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-> Stable-dep-of: ec54093e6a8f ("xfrm: ah: account for ESN high bits in async callbacks")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+The condition that needs to be checked for upload completion is the
+UPLOAD bit in the completion register going low. The original iterations
+of this driver used a do-while and this was converted to a
+read_poll_timeout() during upstreaming without the condition being
+inverted as it should have been.
 
-You forgot to send this to the IPsec maintainers, linux-crypto, and
-netdev.  See Documentation/process/submitting-patches.rst for some tips
-on how to use scripts/get_maintainer.pl to find the right place to send
-kernel patches.
+I suspect that this went unnoticed until now because a) the first read
+was done when the bit was still set, immediately completing the
+read_poll_timeout() and b) because the RTC doesn't hold time when power
+is removed from the SoC reducing its utility (I for one keep it
+disabled). If my first suspicion was true when the driver was
+upstreamed, it's not true any longer though, hence the detection of the
+problem.
 
-This commit was part of the series
-https://lore.kernel.org/linux-crypto/20231022081100.123613-1-ebiggers@kernel.org/
+Fixes: 0b31d703598dc ("rtc: Add driver for Microchip PolarFire SoC")
+CC: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+---
+CC: Valentina.FernandezAlanis@microchip.com
+CC: Conor Dooley <conor.dooley@microchip.com>
+CC: Daire McNamara <daire.mcnamara@microchip.com>
+CC: Alexandre Belloni <alexandre.belloni@bootlin.com>
+CC: linux-riscv@lists.infradead.org
+CC: linux-rtc@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
+---
+ drivers/rtc/rtc-mpfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-What is your rationale for why it's safe to backport this patch 18 of a
-30-patch series by itself?  "The alignmask for ahash and shash
-algorithms is always 0" is definitely *not* true in older kernels.
+diff --git a/drivers/rtc/rtc-mpfs.c b/drivers/rtc/rtc-mpfs.c
+index 6aa3eae575d2a..ece6de4a6adbd 100644
+--- a/drivers/rtc/rtc-mpfs.c
++++ b/drivers/rtc/rtc-mpfs.c
+@@ -112,7 +112,7 @@ static int mpfs_rtc_settime(struct device *dev, struct rtc_time *tm)
+ 	ctrl |= CONTROL_UPLOAD_BIT;
+ 	writel(ctrl, rtcdev->base + CONTROL_REG);
+ 
+-	ret = read_poll_timeout(readl, prog, prog & CONTROL_UPLOAD_BIT, 0, UPLOAD_TIMEOUT_US,
++	ret = read_poll_timeout(readl, prog, !(prog & CONTROL_UPLOAD_BIT), 0, UPLOAD_TIMEOUT_US,
+ 				false, rtcdev->base + CONTROL_REG);
+ 	if (ret) {
+ 		dev_err(dev, "timed out uploading time to rtc");
+-- 
+2.53.0
 
-I *think* it's probably okay.  I think this would just regress AH
-performance in some cases, and "no one" uses AH anyway.
-
-Just keep in mind this is effectively new development, which needs
-review like any other kernel patch.  Not even Cc'ing the subsystem
-mailing lists isn't a great approach.
-
-- Eric
 
