@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-246966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246967-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJXxEba5BGplNQIAu9opvQ
-	(envelope-from <stable+bounces-246966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:49:42 +0200
+	id CFjOHL65BGplNQIAu9opvQ
+	(envelope-from <stable+bounces-246967-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:49:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A12BA5384CD
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1FA95384D5
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1988A311ACC8
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:31:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC2293139E98
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B3E4DBD7E;
-	Wed, 13 May 2026 17:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B624A13A1;
+	Wed, 13 May 2026 17:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVcXtZpl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dS4T0dLT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4606D4C956B
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 17:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137FB3FFAB7
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 17:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778693506; cv=none; b=dX5OmuZPqVqPrITD4nEPNvtU5s6VKlSV2oV28gFQfDSNPB9YKBEFpbkgpRzYMS9tOiP8Ca0AFdgIk0JQwR2JmK+zObdBRvgOhZ786XEKYxEEOvaxZMnP8HJeq1B8Bl52CISBoVNYV+Ls83R+TVBNuZJHXKQQqaaOKJ2KjHhH8rg=
+	t=1778693509; cv=none; b=kdZcyKNYd7+IjUFbQViiKOicSXDGSeTnFsI/rHFDOZ6PPcUWNW7jC6Yh4+pw1PYTB54UZ8Yo4FNQhYvIpbj1rkTyEyPEUxDHGp3arHW8mgKO2xQj3FdrkrEK3kMgonMxGZmc5BaV1Brr2irMaMMo4Nw2wJSiIS2WCkxS1v3ns0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778693506; c=relaxed/simple;
-	bh=cQFoqvtAcnqqoTszZodwXAkMGc8ksEuxsq2zmqZYF5o=;
+	s=arc-20240116; t=1778693509; c=relaxed/simple;
+	bh=x/F/9HaTVWDCVxlihNwFiy5ujqS7yotV+mwH/Mzbqcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JF6zLaeGwYumaDzSmhXPj51QbH8CdSvQ5mhr5wpymXa3/ctf+iYASFGzSjg77CVeV33i7nzJ16g3GRF2LGmqHnHwJGn0kszZ5O+Vf/25zD/FHrxFuNGu/w+hLIG+C0xM9eTnQlhVo5IiDJjfuCQ186N3f9ZtUbX0z5Invt9rDqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVcXtZpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB91C19425;
-	Wed, 13 May 2026 17:31:45 +0000 (UTC)
+	 MIME-Version; b=Vt4CSx9OfLiR9jyEYKq6YWcS6sjhAzZ8np995vnO220z9U0sgnrBhUpsVj+G5axQZzC9TmApYwBn8zZGDf3Tryqt34t6IZgoXXqSadGGbbywTvZNQrfHqWh4sfKRROdfVH//vSXQbND5O46hGZ6gw3Ovm8zxDA8H63m9cgpK018=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dS4T0dLT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379DCC19425;
+	Wed, 13 May 2026 17:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778693506;
-	bh=cQFoqvtAcnqqoTszZodwXAkMGc8ksEuxsq2zmqZYF5o=;
+	s=k20201202; t=1778693508;
+	bh=x/F/9HaTVWDCVxlihNwFiy5ujqS7yotV+mwH/Mzbqcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FVcXtZplGXenvQfwhJkBz1Y+g2w5j1nvAUKIPCt4WUaffPWSZBkmmLHsutdjGoFsB
-	 G9a80NlN7htvn6HK8vK0KKNbpOzqhA/hTGMx81//xdMSz4Z3HFeplV7kO1CrgoiALr
-	 7iHX1KK9WUi1lBx4xe6TX1zB61zgW+aROVvi+CJpoJ3EDf8FJN5uIdCjKZ9oNlKvw3
-	 DGA5uozT+NUfY9irLS7bW0GryMDnKReaOjnatyXPjbw9Lgt72xGQRcNjL1rRHpGlf4
-	 iny3I8V3MEzH8FfU76BXvJY43403/J1IFrLTOmQsjbS90TqZmY0ncMjqT3F97QfxxL
-	 lafJp7QVN1NEQ==
+	b=dS4T0dLTEZk560fWr+mVZaBmggFCY3LeNcv4OxLUTTSYolRrzq46wFiFjB8Bnb1qD
+	 iPb3E8TuFze6hzoGilIlL6u2ns4EA+G1MBMZfUiPIG5CdivMU6YnoghsCklAfQYOnF
+	 0oFCMpbT/iHUbvlZzxsJjTv4d1k/1sQJnf2c3z+valIFrvBSsYqsKHH6V0YWi0BFsj
+	 g1tHtyZXWAVqEgDII7BH8p82ctxC/OUfuzaqR1HzKjVP34OMIBimr5gpKSwEdgs2ko
+	 I9qkAm3apCJz1LRwiKizX1vvCTmzoYlQg4OSQ6TAPQMhuzYxBgXtuDZi6426YoXQmh
+	 7/QyLWMiDJduQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Michal Kosiorek <mkosiorek121@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+Cc: David Carlier <devnexen@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete
-Date: Wed, 13 May 2026 13:31:43 -0400
-Message-ID: <20260513173143.3885911-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] Bluetooth: hci_conn: fix potential UAF in create_big_sync
+Date: Wed, 13 May 2026 13:31:46 -0400
+Message-ID: <20260513173146.3885958-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051213-nappy-veal-2d0a@gregkh>
-References: <2026051213-nappy-veal-2d0a@gregkh>
+In-Reply-To: <2026051231-dipper-launch-ac75@gregkh>
+References: <2026051231-dipper-launch-ac75@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A12BA5384CD
+X-Rspamd-Queue-Id: E1FA95384D5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -70,17 +70,17 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com,secunet.com,kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,intel.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246966-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246967-lists,stable=lfdr.de];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -91,120 +91,97 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
 X-Rspamd-Action: no action
 
-From: Michal Kosiorek <mkosiorek121@gmail.com>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit 14acf9652e5690de3c7486c6db5fb8dafd0a32a3 ]
+[ Upstream commit 0beddb0c380bed5f5b8e61ddbe14635bb73d0b41 ]
 
-KASAN reproduces a slab-use-after-free in __xfrm_state_delete()'s
-hlist_del_rcu calls under syzkaller load on linux-6.12.y stable
-(reproduced on 6.12.47, also reachable via the same code path on
-torvalds/master and on the ipsec tree). Nine unique signatures cluster
-in the xfrm_state lifecycle, the load-bearing one being:
+Add hci_conn_valid() check in create_big_sync() to detect stale
+connections before proceeding with BIG creation. Handle the
+resulting -ECANCELED in create_big_complete() and re-validate the
+connection under hci_dev_lock() before dereferencing, matching the
+pattern used by create_le_conn_complete() and create_pa_complete().
 
-  BUG: KASAN: slab-use-after-free in __hlist_del include/linux/list.h:990 [inline]
-  BUG: KASAN: slab-use-after-free in hlist_del_rcu include/linux/rculist.h:516 [inline]
-  BUG: KASAN: slab-use-after-free in __xfrm_state_delete net/xfrm/xfrm_state.c
-  Write of size 8 at addr ffff8881198bcb70 by task kworker/u8:9/435
+Keep the hci_conn object alive across the async boundary by taking
+a reference via hci_conn_get() when queueing create_big_sync(), and
+dropping it in the completion callback. The refcount and the lock
+are complementary: the refcount keeps the object allocated, while
+hci_dev_lock() serializes hci_conn_hash_del()'s list_del_rcu() on
+hdev->conn_hash, as required by hci_conn_del().
 
-  Workqueue: netns cleanup_net
-  Call Trace:
-   __hlist_del / hlist_del_rcu
-   __xfrm_state_delete
-   xfrm_state_delete
-   xfrm_state_flush
-   xfrm_state_fini
-   ops_exit_list
-   cleanup_net
+hci_conn_put() is called outside hci_dev_unlock() so the final put
+(which resolves to kfree() via bt_link_release) does not run under
+hdev->lock, though the release path would be safe either way.
 
-The other observed signatures hit the same slab object from
-__xfrm_state_lookup, xfrm_alloc_spi, __xfrm_state_insert and an OOB
-write variant of __xfrm_state_delete, all on the byseq/byspi
-hash chains.
+Without this, create_big_complete() would unconditionally
+dereference the conn pointer on error, causing a use-after-free
+via hci_connect_cfm() and hci_conn_del().
 
-__xfrm_state_delete() guards its byseq and byspi unhashes with
-value-based predicates:
-
-	if (x->km.seq)
-		hlist_del_rcu(&x->byseq);
-	if (x->id.spi)
-		hlist_del_rcu(&x->byspi);
-
-while everywhere else in the file (e.g. state_cache, state_cache_input)
-the safer hlist_unhashed() check is used. xfrm_alloc_spi() sets
-x->id.spi = newspi inside xfrm_state_lock and then immediately inserts
-into byspi, but a path that observes x->id.spi != 0 outside of
-xfrm_state_lock can still skip-or-hit the byspi unhash inconsistently
-with whether x is actually on the list. The same holds for x->km.seq
-versus byseq, and the bydst/bysrc unhashes have no predicate at all,
-so a second __xfrm_state_delete() on the same object writes through
-LIST_POISON pprev.
-
-The defensive change here:
-
-  - Use hlist_del_init_rcu() instead of hlist_del_rcu() on bydst,
-    bysrc, byseq and byspi so a second deletion is a no-op rather
-    than a write through LIST_POISON pprev. The byseq/byspi nodes
-    are already initialised in xfrm_state_alloc().
-  - Test hlist_unhashed() rather than the value predicate for
-    byseq/byspi, so the unhash decision tracks list state rather than
-    mutable scalar fields.
-
-Empirical verification: applied this patch on top of v6.12.47, rebuilt,
-and re-ran the same syzkaller harness for 1h16m on a previously-crashy
-configuration that produced ~100 hits each of slab-use-after-free
-Read in xfrm_alloc_spi / Read in __xfrm_state_lookup / Write in
-__xfrm_state_delete. After the patch, 7.1M execs across 32 VMs at
-~1550 exec/sec produced zero xfrm_state UAF/OOB hits. /proc/slabinfo
-confirms the xfrm_state slab is actively allocated and freed during
-the run (~143 KiB resident), so the fuzzer is still exercising those
-code paths -- they just no longer crash.
-
-Reproduction:
-
-  - Linux 6.12.47 x86_64 + KASAN_GENERIC + KASAN_INLINE + KCOV
-  - syzkaller @ 746545b8b1e4c3a128db8652b340d3df90ce61db
-  - 32 QEMU/KVM VMs x 2 vCPU on AWS c5.metal bare metal
-  - 9 unique signatures collected in ~9h, all within xfrm_state
-    lifecycle
-
-Fixes: fe9f1d8779cb ("xfrm: add state hashtable keyed by seq")
-Fixes: 7b4dc3600e48 ("[XFRM]: Do not add a state whose SPI is zero to the SPI hash.")
-Reported-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Tested-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-[ dropped state_cache/state_cache_input unhash hunks and xfrm_nat_keepalive_state_updated() call ]
+Co-developed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ kept stable's `qos->bcast.out.phy == 0x02` context line instead of upstream's renamed `qos->bcast.out.phys == BIT(1)` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_state.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/bluetooth/hci_conn.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 7dd536d5f43f3..42fd76b8163f4 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -682,12 +682,12 @@ int __xfrm_state_delete(struct xfrm_state *x)
- 		x->km.state = XFRM_STATE_DEAD;
- 		spin_lock(&net->xfrm.xfrm_state_lock);
- 		list_del(&x->km.all);
--		hlist_del_rcu(&x->bydst);
--		hlist_del_rcu(&x->bysrc);
--		if (x->km.seq)
--			hlist_del_rcu(&x->byseq);
--		if (x->id.spi)
--			hlist_del_rcu(&x->byspi);
-+		hlist_del_init_rcu(&x->bydst);
-+		hlist_del_init_rcu(&x->bysrc);
-+		if (!hlist_unhashed(&x->byseq))
-+			hlist_del_init_rcu(&x->byseq);
-+		if (!hlist_unhashed(&x->byspi))
-+			hlist_del_init_rcu(&x->byspi);
- 		net->xfrm.state_num--;
- 		spin_unlock(&net->xfrm.xfrm_state_lock);
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 97e48c1f69aff..f51c530a3c458 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -2014,6 +2014,9 @@ static int create_big_sync(struct hci_dev *hdev, void *data)
+ 	u32 flags = 0;
+ 	int err;
+ 
++	if (!hci_conn_valid(hdev, conn))
++		return -ECANCELED;
++
+ 	if (qos->bcast.out.phy == 0x02)
+ 		flags |= MGMT_ADV_FLAG_SEC_2M;
+ 
+@@ -2125,11 +2128,24 @@ static void create_big_complete(struct hci_dev *hdev, void *data, int err)
+ 
+ 	bt_dev_dbg(hdev, "conn %p", conn);
+ 
++	if (err == -ECANCELED)
++		goto done;
++
++	hci_dev_lock(hdev);
++
++	if (!hci_conn_valid(hdev, conn))
++		goto unlock;
++
+ 	if (err) {
+ 		bt_dev_err(hdev, "Unable to create BIG: %d", err);
+ 		hci_connect_cfm(conn, err);
+ 		hci_conn_del(conn);
+ 	}
++
++unlock:
++	hci_dev_unlock(hdev);
++done:
++	hci_conn_put(conn);
+ }
+ 
+ struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst,
+@@ -2230,10 +2246,11 @@ struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
+ 				 BT_BOUND, &data);
+ 
+ 	/* Queue start periodic advertising and create BIG */
+-	err = hci_cmd_sync_queue(hdev, create_big_sync, conn,
++	err = hci_cmd_sync_queue(hdev, create_big_sync, hci_conn_get(conn),
+ 				 create_big_complete);
+ 	if (err < 0) {
+ 		hci_conn_drop(conn);
++		hci_conn_put(conn);
+ 		return ERR_PTR(err);
+ 	}
  
 -- 
 2.53.0
