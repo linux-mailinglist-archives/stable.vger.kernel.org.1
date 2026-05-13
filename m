@@ -1,229 +1,113 @@
-Return-Path: <stable+bounces-246892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246893-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIr/BNqQBGoVLgIAu9opvQ
-	(envelope-from <stable+bounces-246892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:55:22 +0200
+	id iK2MFWiVBGqrLgIAu9opvQ
+	(envelope-from <stable+bounces-246893-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:14:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F685358BD
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:55:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D3D535DD3
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:14:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A3235300361B
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:54:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 782FB3102D2E
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C285F38D6B1;
-	Wed, 13 May 2026 14:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F4438E120;
+	Wed, 13 May 2026 14:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OvLTF6/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CF+aITZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7667D38CFF6;
-	Wed, 13 May 2026 14:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFDA388E45;
+	Wed, 13 May 2026 14:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778684076; cv=none; b=jGnLOcYhcgsRWjO7C6tAsVzxvi6MtMpJ6qgGI6//MD5hHf4HyC7y/MngmFJ6Ns41fWzRA6ePnXa4QQKsfaJiyZmajXhSENDaXZHQot2z/7fhdfyrh1LPPL6AopoOd0NykDc3Gci+A7G1HMp4U5FB6duaGc0UY5USAmt9+/1uv14=
+	t=1778684212; cv=none; b=dpsYmKpu1MBjMNyQ/vYq6yu9mNnNP1XtY2R//wzUXo+5jGWMvSX9bE0kovEBdxDa8JnT4/YjHWcAA1dvOBQagFTN2UcnSrttPgICXVYIarhvxYPfaJNL8gWECYjD5ScvBonOzmFSdEVYk9Ob08AwwzisfSRa3sTZy0dQVuhuc74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778684076; c=relaxed/simple;
-	bh=5tb/dZ3Z6XZ9rdTRViFJg2CQhxIhIhB3K1EbtjSZ+/0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OxQkraJwf4jPFkTw7+qyHUJjtGTqGeWEYSL7baFPWZP6bZwzTalY6FG47HNaFEPWuSROJV+Kd0Zo+Gj9Nl4aTSdgyEQlZnupj6wITiCfh06ZAnb4wgZBImuAnkku02n9nub5UX0C0XrYnF6+puVSRbq3GliCzgnjIfefBHoBduI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OvLTF6/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FC9C19425;
-	Wed, 13 May 2026 14:54:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778684076;
-	bh=5tb/dZ3Z6XZ9rdTRViFJg2CQhxIhIhB3K1EbtjSZ+/0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OvLTF6/v0D+Is1Oo2vvsUkztjB8o43huMqy8iw+pSIEJ/nvZeP4oZB7YNeLzpX70+
-	 F6KHL8ycBfURSnQT1p+fKlIB9OhRQVTn0tCsXa1apa7oDIctXQWRwXvxjqjrRXnGVK
-	 vd0ARq2IWqI97wp/22xXUA4xRls5LUhWjIkH09oIc79WCYDerBL44nYC8NvA/NJ6ri
-	 F+QGxwMrRLrw+4UqlN3r2QqLBtZCTVNDdmCrzGaBuNlD8cL0XM2IFfnEbrmTW1Rw7d
-	 GJhSsAo2QS1ZHFIkt5/EhT5m/ZBORkFb5yljim2NIz9XpXL5HyJ43DPn1XUH7ViMLt
-	 BGE9bIg+4eV6w==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Will Deacon <will@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	linux-kbuild@vger.kernel.org,
-	stable@vger.kernel.org,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kees Cook <kees@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] [v2] iommu, debugobjects: avoid gcc-16.1 section mismatch warnings
-Date: Wed, 13 May 2026 16:53:54 +0200
-Message-Id: <20260513145425.1579430-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1778684212; c=relaxed/simple;
+	bh=XSyN4227EgJzXUPhESPl66rmjv08rHrHLMMNEzphjjY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X0jtEQN2ZyDSyEvtB1E74Fp/wiRq57hb2/hMf8M1pBOzHDTypj5IyCj8l/8SWEPBPC66Eg0X14x0n0G/aTrZRb1vroPXvjraJD11IZJPwN0NBsc9ub6wGMu/wGv5sjnp+ebeIjJ4tPUbEp/A9eYoMubSGILBud/+LXnHAn3AFR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CF+aITZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE677C19425;
+	Wed, 13 May 2026 14:56:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778684212;
+	bh=XSyN4227EgJzXUPhESPl66rmjv08rHrHLMMNEzphjjY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CF+aITZdEU7W+CYjVJyXS8ZUYaEoCnXn2++DPmURmsFdczZt2UG6rxZETesMsquUW
+	 cWFDyzi8ZONoIJ8zu1DMmsd7/r0s3gIIw/hvhRI/B0KD69UCj005WEj19YQZVnbLoR
+	 8IHhn1U8O30cTu1436gmXmHheX1jTS/Mu4ZBMj/4=
+Date: Wed, 13 May 2026 16:56:56 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Stephano Cetola <stephano@cetola.net>
+Cc: Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Chris Mason <clm@meta.com>,
+	Tejun Heo <tj@kernel.org>, Andrea Righi <arighi@nvidia.com>
+Subject: Re: [PATCH 7.0 247/307] sched_ext: Skip tasks with stale task_rq in
+ bypass_lb_cpu()
+Message-ID: <2026051342-canon-apply-bf42@gregkh>
+References: <20260512173940.117428952@linuxfoundation.org>
+ <20260512173945.338221208@linuxfoundation.org>
+ <2f509cbf-f14f-4dfc-8ba9-d53dc10e0aad@kernel.org>
+ <2026051301-tusk-parcel-15ee@gregkh>
+ <67725402aaddb935a94d2cd751f317e6bb844654.camel@cetola.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B6F685358BD
+In-Reply-To: <67725402aaddb935a94d2cd751f317e6bb844654.camel@cetola.net>
+X-Rspamd-Queue-Id: D7D3D535DD3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246892-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246893-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arnd@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gnu.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Wed, May 13, 2026 at 07:39:22AM -0700, Stephano Cetola wrote:
+> On Wed, 2026-05-13 at 13:58 +0200, Greg Kroah-Hartman wrote:
+> > 
+> > This is odd that it doesn't show up in my test builds/runs.  I'll go
+> > drop this now, and push out a -rc2, thanks!
+> > 
+> > greg k-h
+> 
+> One of my build machines was able to build 7.0.7_rc1 successfully. The
+> only difference I see is that it does not have:
+> CONFIG_SCHED_CLASS_EXT=y
 
-gcc-16 has gained some more advanced inter-procedual optimization
-techniques that enable it to inline the dummy_tlb_add_page() and
-dummy_tlb_flush() function pointers into a specialized version of
-__arm_v7s_unmap:
-
-WARNING: modpost: vmlinux: section mismatch in reference: __arm_v7s_unmap+0x2cc (section: .text) -> dummy_tlb_add_page (section: .init.text)
-ERROR: modpost: Section mismatches detected.
-
-From what I can tell, the transformation is correct, as this is only
-called when __arm_v7s_unmap() is called from arm_v7s_do_selftests(),
-which is also __init. Since __arm_v7s_unmap() however is not __init,
-gcc cannot inline the inner function calls directly.
-
-In debug_objects_selftest(), the same thing happens. Both the
-caller and the leaf function are __init, but the IPA pulls
-it into a non-init one:
-
-WARNING: modpost: vmlinux: section mismatch in reference: lookup_object_or_alloc+0x7c (section: .text.lookup_object_or_alloc) -> is_static_object (section: .init.text)
-
-Marking the affected functions as not "__init" would reliably avoid this
-issue but is not a good solution because it removes an otherwise correct
-annotation. I tried marking the functions as 'noinline', but that ended
-up not covering all the affected configurations.
-
-With some more experimenting, I found that marking these functions as
-__attribute__((noipa)) is both logical and reliable.
-
-In order to keep the syntax readable, add a custom macro for this in
-include/linux/compiler_attributes.h next to other related macros and
-use it to annotate both files.
-
-Link: https://lore.kernel.org/all/abRB6g-48ZX6Yl2r@willie-the-truck/
-Cc: Will Deacon <will@kernel.org>
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: linux-kbuild@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-v2: I merged both patches into one, to simplify the dependency
-on the new compiler_attributes.h macro.
----
- drivers/iommu/io-pgtable-arm-v7s.c  | 18 ++++++++++++------
- include/linux/compiler_attributes.h | 11 +++++++++++
- lib/debugobjects.c                  |  2 +-
- 3 files changed, 24 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/iommu/io-pgtable-arm-v7s.c b/drivers/iommu/io-pgtable-arm-v7s.c
-index 40e33257d3c2..1dbef8c55007 100644
---- a/drivers/iommu/io-pgtable-arm-v7s.c
-+++ b/drivers/iommu/io-pgtable-arm-v7s.c
-@@ -777,21 +777,27 @@ struct io_pgtable_init_fns io_pgtable_arm_v7s_init_fns = {
- 
- static struct io_pgtable_cfg *cfg_cookie __initdata;
- 
--static void __init dummy_tlb_flush_all(void *cookie)
-+/*
-+ * __noipa prevents gcc from turning indirect iommu_flush_ops calls
-+ * into direct calls from a specialized __arm_v7s_unmap() that triggers
-+ * a build time section mismatch assertion.
-+ */
-+static __noipa void __init dummy_tlb_flush_all(void *cookie)
- {
- 	WARN_ON(cookie != cfg_cookie);
- }
- 
--static void __init dummy_tlb_flush(unsigned long iova, size_t size,
--				   size_t granule, void *cookie)
-+static __noipa void __init dummy_tlb_flush(unsigned long iova, size_t size,
-+					   size_t granule, void *cookie)
- {
- 	WARN_ON(cookie != cfg_cookie);
- 	WARN_ON(!(size & cfg_cookie->pgsize_bitmap));
- }
- 
--static void __init dummy_tlb_add_page(struct iommu_iotlb_gather *gather,
--				      unsigned long iova, size_t granule,
--				      void *cookie)
-+static __noipa void __init dummy_tlb_add_page(struct iommu_iotlb_gather *gather,
-+					      unsigned long iova,
-+					      size_t granule,
-+					      void *cookie)
- {
- 	dummy_tlb_flush(iova, granule, granule, cookie);
- }
-diff --git a/include/linux/compiler_attributes.h b/include/linux/compiler_attributes.h
-index c16d4199bf92..836a50f5917a 100644
---- a/include/linux/compiler_attributes.h
-+++ b/include/linux/compiler_attributes.h
-@@ -396,6 +396,17 @@
- # define __disable_sanitizer_instrumentation
- #endif
- 
-+/*
-+ * Optional: not supported by clang
-+ *
-+ *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Attributes.html#index-noipa
-+ */
-+#if __has_attribute(noipa)
-+# define __noipa __attribute__((noipa))
-+#else
-+# define __noipa
-+#endif
-+
- /*
-  *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-weak-function-attribute
-  *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-weak-variable-attribute
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index 12e2e42e6a31..c93b7ca3e1ab 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -1212,7 +1212,7 @@ struct self_test {
- 
- static __initconst const struct debug_obj_descr descr_type_test;
- 
--static bool __init is_static_object(void *addr)
-+static __noipa bool __init is_static_object(void *addr)
- {
- 	struct self_test *obj = addr;
- 
--- 
-2.39.5
-
+Which somehow doesn't get enabled with `make allmodconfig` :(
 
