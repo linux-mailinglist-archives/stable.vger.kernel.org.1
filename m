@@ -1,246 +1,227 @@
-Return-Path: <stable+bounces-246771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MI/zOKkmBGqDEwIAu9opvQ
-	(envelope-from <stable+bounces-246771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:22:17 +0200
+	id kDfWKgEoBGqDEwIAu9opvQ
+	(envelope-from <stable+bounces-246772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:28:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BBF52E8CA
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:22:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AAC852E9EA
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A6D9B3091A3F
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:19:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 083FC30D441E
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277523D6466;
-	Wed, 13 May 2026 07:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3E339B943;
+	Wed, 13 May 2026 07:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="lc+V16PP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZENBfBg0"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [194.59.206.189])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B997038F24F;
-	Wed, 13 May 2026 07:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.59.206.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03683D34BF
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 07:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778656754; cv=none; b=LbN+uQet1TPuhwxKNgHB9Qp+nQT1IKXdfAqq+q7pEkisFa+64mZcUvNHCPeg5EPMHSYUs2NqV8FyegVtGQFpGCroe1aIYaR830x7ecbfb28Jb5CFvl6BaHpf5NateSfxvMcHH4TsOPDuU1NumFLFMTEjWclDfJnjVbfLgf2Zcnc=
+	t=1778656862; cv=none; b=pKtZSXvdHurDqJH/jMD0e1stxJNO2p9Zv3f4EgxgleJhzMFjpj8SmaW3cIYN4WNtnGIQVQr5qjz3RdEoxyR9U4pXgAt3jmFLDL4m04BlddyZbMoPBDCyP188MTc3iZ3a9/Awz2OIxCkL3BR4vkrSgNIPTe2NZqppjv3RDz0rEV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778656754; c=relaxed/simple;
-	bh=5kxVGKfQe8uBn9mf2fs5xsMbfVIyrxVpHyE3jgy1Fd8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PqId/og6Iyl8w61NTVErOxtBD1TUmBO1eBRiC7E+E0H8iaKGmy0MzpK4P17ME2VoxqLKBiNlrE+uWswN/GS415iPAWYhFn2PeKykf5c4T+MKv3Ij3N4OXZjJm+UrLX3cXgTV1Jk+KFrABwAEylac1J1jGMnWJBBoFRp7BIEzdWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=lc+V16PP; arc=none smtp.client-ip=194.59.206.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from relay02-mors.netcup.net (localhost [127.0.0.1])
-	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4gFlFN11Dvz4F7D;
-	Wed, 13 May 2026 09:19:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1778656744;
-	bh=5kxVGKfQe8uBn9mf2fs5xsMbfVIyrxVpHyE3jgy1Fd8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lc+V16PPveBadlZYCOkbn+9whCItXAenypm5jWaMuYU7tORDmg+YwY5zPurTT826g
-	 jwZucYVWPJ58OSCKG5EB/s+sOtZt557mWTPf/W+tAzDMLOJ2JkzNCZp/T4yRhO3aCL
-	 xBQo4xOhoMX92Xb7gj0gUndk/51msCjjKG8J5AXgQ7fYPxhWX4gB25Druu3Cl5YmZ7
-	 89pWsk5qIo/VgHQJ86tcbBnG86Iq0B0fC/Ul2d9yNAImRzh4Xddvaj2yB1qo4JW6Nc
-	 X36eyqMHsdk1wNbOE6bQigDsOLCZincbtgsUTsNUO4k3ovH6Skyiam5KfsoC5Tjz5m
-	 Ojl4SVIZ0aKDg==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4gFlF40DMQz7wtc;
-	Wed, 13 May 2026 09:18:48 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4gFlF32Svqz8sZP;
-	Wed, 13 May 2026 09:18:47 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 9633961840;
-	Wed, 13 May 2026 09:18:46 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <971ecb6c-2687-429f-af86-fc980c2d04f9@leemhuis.info>
-Date: Wed, 13 May 2026 09:18:45 +0200
+	s=arc-20240116; t=1778656862; c=relaxed/simple;
+	bh=8Pf3UZtBPmTUC54/TMtWx2SebrwAHuEtJ5XI7lvahhg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nFRqCNA7O7nprL9+lNT2duF3oH6LlK6+3IxkOgBhpK6K+JN8NNsbCYR6Gjrxd6eDrzCPkRlKYVO8na9xWEdaul1iiYWL6wL9ZhTcFkkdIMEaQ8yO5ckjy+Js/GB42JskwHAfI7FMyKK2aURa6SEp4MyDa56tP7rapUH+dMaJZBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZENBfBg0; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778656861; x=1810192861;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8Pf3UZtBPmTUC54/TMtWx2SebrwAHuEtJ5XI7lvahhg=;
+  b=ZENBfBg0lmvtimfTOVgB4y/8lkysnH5j440qHNQsbaGdlML75/pT6w1n
+   SYJsRZnhMWSYUZZFNfn9Dj1KOtxrrJ6R3p8NTcbSR9a1hocDblvwEpj3t
+   t+BP8VBxX5ABdo+AZRoEYC+lcNWIG2ZPI6vuswVDJ2JCOjfLZ8bEOgrqz
+   MPAgzZ5n8MrvhI9daSxOYqxa9gj6a+7iGkf4I0UZIy37zGoajRDBM2kb1
+   3SUx1ELmagzwu1jjaRZ+J64W6X7+D9qY1jrTRvJCp34SH74fUM0tfQ17f
+   NF0zEqzNorvUVi/kCRcdeJyIICJ3fEJ5M4d43H0btsW5uxI7i0ctSxaJ7
+   g==;
+X-CSE-ConnectionGUID: BLQLbEl7RiOz89XtfWBSTA==
+X-CSE-MsgGUID: OlrYSU36RnG8Aibcp1PI2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="97002995"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="97002995"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 00:21:00 -0700
+X-CSE-ConnectionGUID: cspXtXtrQXapiE9erISACw==
+X-CSE-MsgGUID: I/qqA0Z/Sh+bSpHlKEaJzA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="242964678"
+Received: from lkp-server01.sh.intel.com (HELO dca79079c3eb) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 13 May 2026 00:20:58 -0700
+Received: from kbuild by dca79079c3eb with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wN3tn-000000003eR-13jN;
+	Wed, 13 May 2026 07:20:55 +0000
+Date: Wed, 13 May 2026 15:20:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	intel-xe@lists.freedesktop.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Dave Airlie <airlied@redhat.com>, dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] drm/ttm: Fix ttm_bo_shrink() infinite LRU walk on backup
+ failure
+Message-ID: <202605131522.yUSpVs9Q-lkp@intel.com>
+References: <20260511162443.24352-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] NFSv4: clear exception state on successful mkdir retry
-To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>
-Cc: NeilBrown <neil@brown.name>, =?UTF-8?B?SmFuIMSMw61wYQ==?=
- <jan.cipa@gooddata.com>, linux-nfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Igor Raits <igor.raits@gmail.com>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <177745671692.1474915.5018486129724109553@noble.neil.brown.name>
- <20260429104938.1776671-1-igor.raits@gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-X-Enigmail-Draft-Status: N11222
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 MEK4
-In-Reply-To: <20260429104938.1776671-1-igor.raits@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <177865672697.2026246.4275505350607620547@mxe9fb.netcup.net>
-X-NC-CID: ygNZwBd7ph64L/KKoGw8R+beybIRJGKhvAc2Q28ZTMwh6wJ0svQ=
-X-Rspamd-Queue-Id: C1BBF52E8CA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260511162443.24352-1-thomas.hellstrom@linux.intel.com>
+X-Rspamd-Queue-Id: 0AAC852E9EA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[brown.name,gooddata.com,vger.kernel.org,gmail.com,lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-246772-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246771-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,01.org:url,intel.com:email,intel.com:mid,intel.com:dkim,gitlab.freedesktop.org:url]
 X-Rspamd-Action: no action
 
-[top-posting to facilitate processing]
+Hi Thomas,
 
-@NFSv4 maintainers, just wondering, did this patch maybe fall through
-the cracks? It fixes a regression, that's why it's on my radar. Or was
-there some progress and I missed it?
+kernel test robot noticed the following build errors:
 
-Ciao, Thorsten
+[auto build test ERROR on drm-misc/drm-misc-next]
+[also build test ERROR on linus/master v7.1-rc3 next-20260508]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-On 4/29/26 12:49, Igor Raits wrote:
-> After a server returns NFS4ERR_DELAY for an NFSv4 CREATE issued by
-> mkdir(2), the client correctly waits and retries.  When the retry
-> succeeds, however, mkdir(2) can still surface -EEXIST to userspace
-> even though the directory was just created on the server.
-> 
-> Reproducer (random 16-hex names so collisions are not the cause)
-> against an in-kernel Linux nfsd; reproduces under both NFSv4.0 and
-> NFSv4.2:
-> 
->   N=2000000; base=/var/gdc/export
->   for ((i=1; i<=N; i++)); do
->       d=$base/$(openssl rand -hex 8)
->       mkdir "$d" 2>/dev/null || echo "$(date +%T) failed loop=$i $d"
->       rmdir "$d" 2>/dev/null
->   done
-> 
-> Failures cluster at the cadence at which the server-side auth/export
-> cache refresh path causes nfsd to return NFS4ERR_DELAY for CREATE.
-> 
-> A wire trace of one failure (the three CREATE RPCs all come from a
-> single mkdir(2), generated by the do-while in nfs4_proc_mkdir()):
-> 
->   client -> server  CREATE name=...  -> NFS4ERR_DELAY
->   ~100 ms later
->   client -> server  CREATE name=...  -> NFS4_OK         (dir created)
->   ~80 us later
->   client -> server  CREATE name=...  -> NFS4ERR_EXIST   (correct)
-> 
-> Since commit dd862da61e91 ("nfs: fix incorrect handling of large-number
-> NFS errors in nfs4_do_mkdir()"), nfs4_handle_exception() is called only
-> when _nfs4_proc_mkdir() returned an error.  That gate breaks retry-state
-> hygiene: nfs4_do_handle_exception() resets exception.{delay,recovering,
-> retry} to 0 on entry, so calling it on success is what previously
-> cleared the retry flag set by the preceding NFS4ERR_DELAY iteration.
-> With the gate in place, exception.retry stays at 1 after the successful
-> retry, the loop runs once more, and the resulting CREATE for an
-> already-created name yields NFS4ERR_EXIST -> -EEXIST to userspace.
-> 
-> Drop the conditional and call nfs4_handle_exception() unconditionally,
-> matching every other do-while in fs/nfs/nfs4proc.c (nfs4_proc_symlink(),
-> nfs4_proc_link(), etc.).  The dentry/status separation introduced by
-> that commit is preserved.
-> 
-> Fixes: dd862da61e91 ("nfs: fix incorrect handling of large-number NFS errors in nfs4_do_mkdir()")
-> Reported-and-tested-by: Jan Čípa <jan.cipa@gooddata.com>
-> Closes: https://lore.kernel.org/linux-nfs/CA+9S74hSp_tJu2Ffe2BPNC2T25gfkhgjjDkdgSsF5c2rnJq_wA@mail.gmail.com/
-> Reviewed-by: NeilBrown <neil@brown.name>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Igor Raits <igor.raits@gmail.com>
-> ---
->  fs/nfs/nfs4proc.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-> index a0885ae55abc..ffd14141ea1d 100644
-> --- a/fs/nfs/nfs4proc.c
-> +++ b/fs/nfs/nfs4proc.c
-> @@ -5393,10 +5393,9 @@ static struct dentry *nfs4_proc_mkdir(struct inode *dir, struct dentry *dentry,
->  	do {
->  		alias = _nfs4_proc_mkdir(dir, dentry, sattr, label, &err);
->  		trace_nfs4_mkdir(dir, &dentry->d_name, err);
-> +		err = nfs4_handle_exception(NFS_SERVER(dir), err, &exception);
->  		if (err)
-> -			alias = ERR_PTR(nfs4_handle_exception(NFS_SERVER(dir),
-> -							      err,
-> -							      &exception));
-> +			alias = ERR_PTR(err);
->  	} while (exception.retry);
->  	nfs4_label_release_security(label);
->  
+url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Hellstr-m/drm-ttm-Fix-ttm_bo_shrink-infinite-LRU-walk-on-backup-failure/20260513-095356
+base:   https://gitlab.freedesktop.org/drm/misc/kernel.git drm-misc-next
+patch link:    https://lore.kernel.org/r/20260511162443.24352-1-thomas.hellstrom%40linux.intel.com
+patch subject: [PATCH] drm/ttm: Fix ttm_bo_shrink() infinite LRU walk on backup failure
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260513/202605131522.yUSpVs9Q-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260513/202605131522.yUSpVs9Q-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605131522.yUSpVs9Q-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/gpu/drm/ttm/ttm_bo_util.c: In function 'ttm_bo_shrink':
+>> drivers/gpu/drm/ttm/ttm_bo_util.c:1121:17: error: implicit declaration of function 'ttm_resource_del_bulk_move_unevictable'; did you mean 'ttm_resource_del_bulk_move'? [-Wimplicit-function-declaration]
+    1121 |                 ttm_resource_del_bulk_move_unevictable(bo->resource, bo);
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                 ttm_resource_del_bulk_move
+
+
+vim +1121 drivers/gpu/drm/ttm/ttm_bo_util.c
+
+  1067	
+  1068	/**
+  1069	 * ttm_bo_shrink() - Helper to shrink a ttm buffer object.
+  1070	 * @ctx: The struct ttm_operation_ctx used for the shrinking operation.
+  1071	 * @bo: The buffer object.
+  1072	 * @flags: Flags governing the shrinking behaviour.
+  1073	 *
+  1074	 * The function uses the ttm_tt_back_up functionality to back up or
+  1075	 * purge a struct ttm_tt. If the bo is not in system, it's first
+  1076	 * moved there.
+  1077	 *
+  1078	 * Return: The number of pages shrunken or purged, or
+  1079	 * negative error code on failure.
+  1080	 */
+  1081	long ttm_bo_shrink(struct ttm_operation_ctx *ctx, struct ttm_buffer_object *bo,
+  1082			   const struct ttm_bo_shrink_flags flags)
+  1083	{
+  1084		static const struct ttm_place sys_placement_flags = {
+  1085			.fpfn = 0,
+  1086			.lpfn = 0,
+  1087			.mem_type = TTM_PL_SYSTEM,
+  1088			.flags = 0,
+  1089		};
+  1090		static struct ttm_placement sys_placement = {
+  1091			.num_placement = 1,
+  1092			.placement = &sys_placement_flags,
+  1093		};
+  1094		struct ttm_device *bdev = bo->bdev;
+  1095		long lret;
+  1096	
+  1097		dma_resv_assert_held(bo->base.resv);
+  1098	
+  1099		if (flags.allow_move && bo->resource->mem_type != TTM_PL_SYSTEM) {
+  1100			int ret = ttm_bo_validate(bo, &sys_placement, ctx);
+  1101	
+  1102			/* Consider -ENOMEM and -ENOSPC non-fatal. */
+  1103			if (ret) {
+  1104				if (ret == -ENOMEM || ret == -ENOSPC)
+  1105					ret = -EBUSY;
+  1106				return ret;
+  1107			}
+  1108		}
+  1109	
+  1110		ttm_bo_unmap_virtual(bo);
+  1111		lret = ttm_bo_wait_ctx(bo, ctx);
+  1112		if (lret < 0)
+  1113			return lret;
+  1114	
+  1115		lret = ttm_tt_backup(bdev, bo->ttm, (struct ttm_backup_flags)
+  1116				     {.purge = flags.purge,
+  1117				      .writeback = flags.writeback});
+  1118	
+  1119		if (lret > 0) {
+  1120			spin_lock(&bdev->lru_lock);
+> 1121			ttm_resource_del_bulk_move_unevictable(bo->resource, bo);
+  1122			ttm_resource_move_to_lru_tail(bo->resource);
+  1123			spin_unlock(&bdev->lru_lock);
+  1124		}
+  1125	
+  1126		if (lret < 0 && lret != -EINTR)
+  1127			return -EBUSY;
+  1128	
+  1129		return lret;
+  1130	}
+  1131	EXPORT_SYMBOL(ttm_bo_shrink);
+  1132	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
