@@ -1,134 +1,140 @@
-Return-Path: <stable+bounces-247039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247040-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wLAiOiT0BGoTQwIAu9opvQ
-	(envelope-from <stable+bounces-247039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 23:59:00 +0200
+	id cJooDgf5BGpuRAIAu9opvQ
+	(envelope-from <stable+bounces-247040-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:19:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4009653B341
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 23:59:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6B053B5F0
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C87723031813
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:58:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3B1C13019D18
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 22:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E683C9899;
-	Wed, 13 May 2026 21:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A18339182A;
+	Wed, 13 May 2026 22:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="AaX1y2Gx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GA0PZi0g"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D793C9885
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 21:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E4038E5E9
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 22:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778709538; cv=none; b=NNWzMyORmiHqh7A5PkgKFwPQYAgxeIakFKN/Kbs/Eiq4Lpa3syQ3qSCxOxQfroIw29lFON0lARtYKlUA/IvO4DQsXJ9UgxzCTNqSwDxIgC78QLCHG9mrXsgG2A4ejB8cm7kFhvae9VlZqnX0w1wbpKkBmxM5Ih01fG57/Qv+4T0=
+	t=1778710785; cv=none; b=hb+IpnaopYVayjErE4CAU9swjNH0KCVnxkN2MyiZUTaTAc4s4V5Hv66L8Xy6DA5bMxySnnAb9u3ms7IuzKLWCJjaL3W9Ord/K9gNan4bxblHv05GcQTBwOXgAJgGtGzdo9az9ofYOQpM0PFEUsZETTxOXxkFVDBRECE8BWVeSLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778709538; c=relaxed/simple;
-	bh=S/LePRUV5aauwrD2/aCKy5ZB6QqFqRXKBlmyivFUPpM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QGnLhDFlanO0kuS3bR1+fPiejMOMWe2JZuEXYKSv7pD8c76xJ2zwnm4vADO8stCW8Ybsy2XBEjTWo7PDyxki+apRxH3CrDFy5Tm9CiPh7J+Gf5DDYD15QKFRxqp5djCrmVxMuqTBxE0MxmTkIQEjqtux6BbxNds3dmVP+lu63u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=AaX1y2Gx; arc=none smtp.client-ip=74.125.82.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2ee990e8597so12441899eec.1
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 14:58:56 -0700 (PDT)
+	s=arc-20240116; t=1778710785; c=relaxed/simple;
+	bh=cxTxPuiEpchvxoE6s7FBoPyKjzZaCBOY4cXbh/fZYUc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TcMb+ugC6kSL3I4aX/IVQpYeKZzGdrbpRGNda+IAf7EXTsxgQoDSVu+MK1TDCBDTRLK0HPkq+U8BAW3r/LyEVUwmxMmOnaNMAVNQ6j5Hdwy1ulA1pauFedSsDy8ITN+qGIEm7NC3eq8jbuY7sXsrm1aetC3UbS5QMvFP2yKJfJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GA0PZi0g; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50d6b9bca48so88411981cf.2
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 15:19:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1778709535; x=1779314335; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NTfDsttXTXW7TlK3rMWi2LRQ6SPJ5zcQ74dCRudTTV0=;
-        b=AaX1y2Gx+zdVMSEuKM3WClkMwjJGH3bZZ5fyNTZu3M50vfBZkQsd2ucZVbjVpu3gFZ
-         SpEqwSQxV30gC22KwE2Phrq9BFHXUTM4PpAhQQvAPZ3tb4PBjb9IEBN0O/astrS06Mlc
-         mPEjzAJUR/J836DmH4e1ot24lRLiC9H9Sb3VM=
+        d=gmail.com; s=20251104; t=1778710781; x=1779315581; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YgwA9bz7u/SZRuejSIAFTZG+KPn1vJm2yiXaNhSWDjg=;
+        b=GA0PZi0gZLbJwkRHN69s7zqccJ3XXGDJ5YKHrMxyBZzBkq90Xw56HXOTV9+pfrbTSN
+         H0Ayd2fxTK23tkXl9rQt73e8SpTjjNEin0yc6yNCyfR8HWGG7d2DDqF9qx3GHaLfLUMN
+         ZU/cUtV1L/blbeYjRzAzedtDIK0dsieXRTVspC4DKrOduv/fW4J+ADjuNRp3HY5bWcBd
+         vr3HZuu44zf2GcwBaha+I/Xh0jTHkVE3oYVCJpLw6dt0pXnju+QC6s0Gvj/+A2hyO4AW
+         NHFqENmFzDcZIFvSx5QD8uLMb8foRVgRbZMc0kgJXlOxJTjYcumcNea0uqtRWvFY/fFr
+         yKAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778709535; x=1779314335;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NTfDsttXTXW7TlK3rMWi2LRQ6SPJ5zcQ74dCRudTTV0=;
-        b=TcjV33JlbP1w78Cyy3Q5FJT27T8oxdECfMJtfazvRL/40c3ziF8ilgUWspwj2BvGNS
-         s2zyGXUmZV9ozNj22z5HBGYc3OeycGQFXvSXsd/J+LRRLiWTyVPJlA51QnPbI3ywhrBF
-         7XW2k1v4InlhSyteXI5Hyk3tETFIAjyyqyNNUFEocRy05JnnumOxIgon1agn7Q8Y0oF2
-         mwJCbV9Tws5mAI3t7v/5wEktb43sDrsQOUL9CnHm6wuxUOIEwxFMX2s/iW3GUXZFygLD
-         ulQNKMkztDM0eUHiZb5JQD59YQhkZzzENliK9jI3CVFEEGIxUiHj6xD7sQ15U3zeeaID
-         4kYA==
-X-Gm-Message-State: AOJu0YxxZdCMOXr053O5r3a/+h29e9zKlWCsb3E6XEkJ5XmKfOi7Oh2L
-	wIkpEUbyK1grSScvH8eEtfbuc3IGkLip3LPZ5epJKB8WKkoabvHRiEgT9z9tk4EZDg==
-X-Gm-Gg: Acq92OGP9zKefrLb4Nq30kebtF/vN1j4IWaDgpuCL3KAd1j5ZM/Px4FP+TQCQLpjm4Y
-	jxoCWQ+aCxZOwaVnwS32Tt+R5LJNA6jg6XNdNGXBpZBOUAptttfpXoqfKN9ASUzpFOj2WQNgiwr
-	V9MLEMGVJF5PLZl1axfEJGWK+VN8GK36YJk4sdRB+Bl8jP6XK2zPh3KtpQ2NgUbZlDSHqbTS+eD
-	Gqt0qy/TpEvV/7RdbvFkm6SzP0fltw231nUzbfOClqOkPLuSP62g7Yn6RWCzf0KwK1/b0rsrSQD
-	Mc9stCEr2VzuBkLS5Aw1OsvehChyETBPb79eVtTvK4sZL/iLMJ4oWC/FBoo0soqycuqVefOpKA/
-	s/T8ruOBlukSH3ZODjfPv4/iFki4X8+gigSJJxQKZ84DhXM00Q8aijwAc1m3NfFu5v1flYzTLu/
-	qjzVePa7fwKuy205Uo8zl+IIkyG/Ax8DIxLtfjJd6z6w==
-X-Received: by 2002:a05:7300:e105:b0:2f6:811e:c840 with SMTP id 5a478bee46e88-30118daa1f4mr3316321eec.18.1778709535579;
-        Wed, 13 May 2026 14:58:55 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([98.97.105.111])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30296dcc458sm804611eec.18.2026.05.13.14.58.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 14:58:54 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Wed, 13 May 2026 15:58:51 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 7.0 000/305] 7.0.7-rc2 review
-Message-ID: <agT0G1B4cLWB4UKg@fedora64.linuxtx.org>
-References: <20260513153754.934923793@linuxfoundation.org>
+        d=1e100.net; s=20251104; t=1778710781; x=1779315581;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YgwA9bz7u/SZRuejSIAFTZG+KPn1vJm2yiXaNhSWDjg=;
+        b=On2pjxR/2fOHCwK/NEqmqhihqsQHb/XDYijB5YJ/Hf15Kt1LFTQ42lOjHQLeBNU2Y2
+         ttW60xq/56v5pMZnh2TCs9hQ/RUcZnpyXfci9dBpPiaXrZEzxlgj//WgQ0GJXCuIt9LK
+         25pp/i6coLNJtl+5xNm5mcGQ8YQ7qLnjJibCOcd9RE5hXCTHN5b0l1eOvQQPVk0uez5s
+         h+xPpsV3yVp412/CHGBfyT4MRYKB1zF5YjTHtDZrbSyB0xQt2W9fyHWnzaJkj9iEnc2K
+         sayIvVlaT4W5TWg8rCqJOOjcF8aKrvxPOs4Wb7ws3pl8JzWrNtLXfxn8Rwd5UI++P30N
+         Wxzg==
+X-Forwarded-Encrypted: i=1; AFNElJ87M280aRuLua+r5Hs8o98Iwqq5KH5kQc2FrVqEZKrkrBHSJngEz6Hb3SlkdpET/PKvfOgqIcY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/aDJpkzPiuD/cRovxDsPXxlV4mJxLRCyJwlJ8BlitwwIQfzJp
+	lybyzYnXMUdbKO0Dnzg9HNrRfSipXqsfvF1wXNsqtUrObYHqYTyqwJ8i
+X-Gm-Gg: Acq92OH1CocIJylypIWoH9QdcwEeBTA6IVNZccc4/l6cUYyxtmvHk4AOY3HJ8SzXCb4
+	++e+F4oHOsnkxPZ1jfwnmbZPk+s1/y6LqfM0kGEY0Qf5xzXN2o4gYZSX+Bc9882GkfemP8gojo3
+	u12VGmlBT4JNsuofSaJYt/MhIiD1b8OeHW3dDRZX4YoDETmjmjQLlr8A7vCboRBy4A1pMqGTTyV
+	4O7jgOdG976lso36r4Ea4PiKot5BmIpUnS3AnuWcbshgOXRyQOjSkQundS/MWiPDy8sRlT3IYGd
+	iI+SvHZt0edpZzaT24U/SDNL1Gp+RXSDsGJDDyzzCe3fYBLVCliyfzk8YhF05NrLn3rbVG+gniP
+	nBAn68H9ggJ4ZsFRk9BmzGYLWtzR6W2+BbP7chG3dv2EeUOBIgOeU5Xrfz5p2I58AayG+Kx7Z1H
+	RwkVTcMPxuIeZ/sGC0tEMZio1N7HYQnCVrMHXvHuVn02qhSZ+xohmsIXD+Euae
+X-Received: by 2002:a05:622a:5c85:b0:50b:3788:ab59 with SMTP id d75a77b69052e-5162f4b00dfmr75902121cf.22.1778710781154;
+        Wed, 13 May 2026 15:19:41 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516456b6cf7sm1499921cf.8.2026.05.13.15.19.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 May 2026 15:19:40 -0700 (PDT)
+Message-ID: <2ec12f83-9d43-4c07-928d-a300dd0f48f7@gmail.com>
+Date: Wed, 13 May 2026 15:19:36 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.0 000/305] 7.0.7-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260513153754.934923793@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
 In-Reply-To: <20260513153754.934923793@linuxfoundation.org>
-X-Rspamd-Queue-Id: 4009653B341
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: BD6B053B5F0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[linuxtx.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[fedoraproject.org : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247039-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247040-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxtx.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jforbes@fedoraproject.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fedoraproject.org:email,linuxtx.org:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,broadcom.com:email]
 X-Rspamd-Action: no action
 
-On Wed, May 13, 2026 at 06:17:34PM +0200, Greg Kroah-Hartman wrote:
+On 5/13/26 09:17, Greg Kroah-Hartman wrote:
 > This is the start of the stable review cycle for the 7.0.7 release.
 > There are 305 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
@@ -147,8 +153,10 @@ On Wed, May 13, 2026 at 06:17:34PM +0200, Greg Kroah-Hartman wrote:
 > 
 > greg k-h
 
-Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
