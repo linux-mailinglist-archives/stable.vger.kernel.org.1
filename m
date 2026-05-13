@@ -1,151 +1,158 @@
-Return-Path: <stable+bounces-246873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CWSHBWJBGoxLQIAu9opvQ
-	(envelope-from <stable+bounces-246873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:22:13 +0200
+	id mLBcHkGVBGqrLgIAu9opvQ
+	(envelope-from <stable+bounces-246874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:14:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D995534EF4
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:22:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D620A535DC1
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 15EBE300BEB6
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:09:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6113A3175A49
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2359130BBB6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9EEB3126B2;
 	Wed, 13 May 2026 14:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ur0FZEoX"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4AD224AF7;
-	Wed, 13 May 2026 14:09:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E23311592
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 14:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778681356; cv=none; b=YfI+nQpYuvh5cc/eJm4LZjp72/2ufFajgS61tjOcoLTADWxfpb+ReB3ozgMPUed2IQuQrp21IE5Apu2c1A9Gs5vrT5hKYbPTSRzxFRjpGbz31xyisO7Jb8lf7i7CBOfa6SkpwcywTOZNSmm1RJBXO7Jh71OxYJf37oEBrnqzehg=
+	t=1778681356; cv=none; b=TT1pdquRNi4yWKC2ipZ1kcD9uAV7HIHBbkoHG6OnYxoVX+PEHRlKXlloYdnkFxGcwKjRjc4y4N5/hA6YdTxIc8BS0FIu8OZJg7YDKuiM5tTP8kBlWJuwWOlZaQDzsJts/xlLqkwiG1TZgXVo1wBmP8naHG71f8k1rUlDces8eSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778681356; c=relaxed/simple;
-	bh=NUhZ34fNkOd0L2mNb0uN3WZEPb0BkQiMpixwaAv7GVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZM6TYPc+7ZxQAzfhAj1TjocyChoMYWZ5rKUWNbLRfc/6Zcj+UT+3YTz3v3SablIhgIrbo1biOdJHQlWaym+EH6+z9UpOueqc3SZotCWEB0HseIP745nhPpYd/tTkm7no9aAnaXx4P9h/9iBeXRCWJIyAsePDfxeSzsfzeUFi24c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by mailout1.hostsharing.net (Postfix) with ESMTPS id B4D05371;
-	Wed, 13 May 2026 16:09:11 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 912B16016B8F; Wed, 13 May 2026 16:09:11 +0200 (CEST)
-Date: Wed, 13 May 2026 16:09:11 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: Anastasia Tishchenko <sv3iry@gmail.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Ignat Korchagin <ignat@linux.win>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] crypto: ecc - Fix carry overflow in vli multiplication
-Message-ID: <agSGB39WGpsiv1ep@wunner.de>
-References: <20260513105741.55534-1-sv3iry@gmail.com>
- <20260513123948.842-1-qingfang.deng@linux.dev>
+	bh=VnXjZ6AJVxVYzsJ68WzbQlHx/iUQzt7aJedAHNU8Nm0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Zsg4Z7fqftVBd5OfkTis8Ztx9EbCnevYg4IktW9E08WXettdfAemA7wqMR5URvKw1X+A/KSisg7Rx2WOEOdtNU/TdtYETHgKbm9kur3h3bhJRoZ1DdEVd3kWayzCceZ8fm7OmFqJLPKoNXuN+Ca0jFhC4+7yCU/EdGR4WDkm180=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ur0FZEoX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE54C19425;
+	Wed, 13 May 2026 14:09:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778681356;
+	bh=VnXjZ6AJVxVYzsJ68WzbQlHx/iUQzt7aJedAHNU8Nm0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ur0FZEoXRCEe1/ZprjmAT5yYeyxSNPsCbbXd5M2wl2mMNi9Ix3obJzw+miu+d01Zx
+	 fOg7gRLX4tGADTNO4svQDUhDShT9T4xBZ1gp4imnarmPyPzCLk23N4bxMxzxVUseCn
+	 2ejabuh5Fv5vDxoLq2wIKX47g5xCG1Bb8KNiJzVQm/zd7yZBBDP8RftVzzokEZxaaO
+	 r5DzyOKcw27ZMhm8F/Jpib4zYG/Puh/H5fVFkOrVnUW5OxWyBdx+wE4Iufi790LdiO
+	 6b0AxXuznYM2mH+p0slMXC627zkv4DNpagS+cUdb7/YgTMaMiYOkSdr7UoRaZpyMR+
+	 MHw5BEh7NDxRg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	stable <stable@kernel.org>,
+	Pritam Manohar Sutar <pritam.sutar@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] usb: dwc3: Move GUID programming after PHY initialization
+Date: Wed, 13 May 2026 10:09:13 -0400
+Message-ID: <20260513140913.3746791-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051247-tyke-varmint-56e0@gregkh>
+References: <2026051247-tyke-varmint-56e0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513123948.842-1-qingfang.deng@linux.dev>
-X-Rspamd-Queue-Id: 6D995534EF4
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D620A535DC1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,linux.ibm.com,linux.win,gondor.apana.org.au,davemloft.net,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-246873-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
+	TAGGED_FROM(0.00)[bounces-246874-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,wunner.de:mid]
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,synopsys.com:email,samsung.com:email]
 X-Rspamd-Action: no action
 
-On Wed, May 13, 2026 at 08:39:48PM +0800, Qingfang Deng wrote:
-> On Wed, 13 May 2026 at 13:57:40 +0300, Anastasia Tishchenko wrote:
-> > +++ b/crypto/ecc.c
-> > @@ -393,14 +393,26 @@ static uint128_t mul_64_64(u64 left, u64 right)
-> >  	return result;
-> >  }
-> >  
-> > -static uint128_t add_128_128(uint128_t a, uint128_t b)
-> > +/* Calculate addition with overflow checking. Returns true on wrap-around,
-> > + * false otherwise.
-> > + */
-> > +static bool check_add_128_128_overflow(uint128_t *result, uint128_t a,
-> > +				       uint128_t b)
-> >  {
-> > -	uint128_t result;
-> > +	bool carry;
-> >  
-> > -	result.m_low = a.m_low + b.m_low;
-> > -	result.m_high = a.m_high + b.m_high + (result.m_low < a.m_low);
-> > +	result->m_low = a.m_low + b.m_low;
-> > +	carry = (result->m_low < a.m_low);
-> >  
-> > -	return result;
-> > +	result->m_high = a.m_high + b.m_high + carry;
-> 
-> If CONFIG_ARCH_SUPPORTS_INT128 is defined, you can convert them to
-> "unsigned __int128" as done in mul_64_64(), and use check_add_overflow()
-> to get the carry.
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-Okay, but that would be a separate feature on top of this fix.
-This fix applies to *all* architectures whereas using native
-128-bit integers would only solve the problem on arches which
-support such integers.
+[ Upstream commit aad35f9c926ec220b0742af1ada45666ae667956 ]
 
-ARCH_SUPPORTS_INT128 actually depends on CC_HAS_INT128 on all arches
-that support it (arm64, loongarch, riscv, s390, x86).  Interestingly,
-s390 additionally requires CC_IS_CLANG.  Commit fbac266f095d ("s390:
-select ARCH_SUPPORTS_INT128") explains that "gcc generates inefficient
-code, which may lead to stack overflows" when handling 128-bit integers.
-It goes on to say: "The gcc generated functions have 6kb stack frames,
-compared to only 1kb of the code generated with clang."
+The Linux Version Code is currently written to the GUID register before
+PHY initialization. Certain PHY implementations (such as Synopsys eUSB
+PHY performing link_sw_reset) clear the GUID register to its default
+value during initialization, causing the kernel version information to
+be lost.
 
-That reminds me of the high stack usage issue we're seeing when compiling
-crypto/ecc.c on arm 32-bit:
+Move the GUID register programming to occur after PHY initialization
+completes to ensure the Linux version information persists.
 
-https://lore.kernel.org/r/7e3d64a53efb28740b32d1f934e78c10086208ab.1778073318.git.lukas@wunner.de/
+Fixes: fa0ea13e9f1c ("usb: dwc3: core: write LINUX_VERSION_CODE to our GUID register")
+Cc: stable <stable@kernel.org>
+Reported-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20260417063314.2359-1-selvarasu.g@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ adapted dwc3_writel(dwc, ...) to dwc3_writel(dwc->regs, ...) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/usb/dwc3/core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-I'm fine with adding native 128-bit usage to check_add_128_128_overflow()
-on top of this fix if somebody wants to submit a patch.  But I suspect
-it might only actually be useful on s390 with clang.
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 77be06b680914..a115fd874cee6 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -978,12 +978,6 @@ static int dwc3_core_init(struct dwc3 *dwc)
+ 
+ 	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
+ 
+-	/*
+-	 * Write Linux Version Code to our GUID register so it's easy to figure
+-	 * out which kernel version a bug was found.
+-	 */
+-	dwc3_writel(dwc->regs, DWC3_GUID, LINUX_VERSION_CODE);
+-
+ 	ret = dwc3_phy_setup(dwc);
+ 	if (ret)
+ 		goto err0;
+@@ -1023,6 +1017,12 @@ static int dwc3_core_init(struct dwc3 *dwc)
+ 	if (ret)
+ 		goto err1;
+ 
++	/*
++	 * Write Linux Version Code to our GUID register so it's easy to figure
++	 * out which kernel version a bug was found.
++	 */
++	dwc3_writel(dwc->regs, DWC3_GUID, LINUX_VERSION_CODE);
++
+ 	dwc3_core_setup_global_control(dwc);
+ 	dwc3_core_num_eps(dwc);
+ 
+-- 
+2.53.0
 
-Thanks,
-
-Lukas
 
