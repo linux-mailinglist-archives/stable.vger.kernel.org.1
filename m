@@ -1,141 +1,223 @@
-Return-Path: <stable+bounces-246802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0B1ZNrRUBGp/HAIAu9opvQ
-	(envelope-from <stable+bounces-246802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:38:44 +0200
+	id 6LGfNL9WBGqjHAIAu9opvQ
+	(envelope-from <stable+bounces-246803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:47:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948965316FA
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:38:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE40531984
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:47:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A252630FEFD0
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 10:35:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D986302C0C1
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 10:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C203FBEA3;
-	Wed, 13 May 2026 10:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EA73EF64E;
+	Wed, 13 May 2026 10:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X38PZ1xc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mf40hjKM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60CB3FB7D8;
-	Wed, 13 May 2026 10:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E74B3EFD24
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 10:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778668538; cv=none; b=W3MXRtyzRViFjavgipDb7jLj36qFZ2/BIRDk7bzRw52jtL96DsBC7wrJ/xC2HCgJvlFmtkB5nlhxgH6GZy9nk+0c9x1Vc5b6oPfu2aqgXrN+axi99Xkqior7O+e03BRZXmKEHgxxcsmIDbjHDQTQASJcAG6KTtJ9HEIwZHUJnTY=
+	t=1778669239; cv=none; b=qdFFCQYHf1H0tSXfGr5s5Kcidee00qzP7LtoAX9/jvhz5IctQEpJKX3OKGn5dKrf1ihm3VSXYsJXi8BzIEWOHJ2TKwsNby7PCuDzoUgPVBHp+1GP4Wxc0cuZE2FxSBTudrIYTrvoaWi5LcarNWcsiS3mHkqeQ/EWVEDQZsYlZXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778668538; c=relaxed/simple;
-	bh=PgYUA7hyMQU35w2tWxgO7E3e+8hlDNjjRn+TL+oArtQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OowVJYnybCG+R3ItIl7qfps/tAA582gBhvE30WCFSzFHKYaW9DHByk4PZpTHLpZuG1Zi0fJrPPPH4pUSnvOFDzWfVSk4h8/h/l6vpTsHIGZBZ/3ZJjphTCxRNFnzgPnncxSsn2StPpaaScwQ12ea5YdX0XQJJebGzKGqtNE271M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X38PZ1xc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B6EC2BCB7;
-	Wed, 13 May 2026 10:35:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778668538;
-	bh=PgYUA7hyMQU35w2tWxgO7E3e+8hlDNjjRn+TL+oArtQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X38PZ1xcaDPSmYeqJ8ExMKC51VICKf8/X0wLWhLACugcMWLX7CNi7c+lFX9Rg0On9
-	 kX9/GYS+b/XLs3RXgpQuw/Z/rwVozY9hl5os0OKVcLVtBumpSLKUby/7TTROeOLbuS
-	 /0EaXX8q8MYJj5CElsfGK2vGxQjVBaJIxF+A2qgc=
-Date: Wed, 13 May 2026 12:34:38 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: lukas@wunner.de, ignat@linux.win, jarkko@kernel.org,
-	yimingqian591@gmail.com, stable@vger.kernel.org,
-	linux-crypto@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] lib/crypto: mpi: Fix integer underflow
- in" failed to apply to 6.1-stable tree
-Message-ID: <2026051334-showgirl-hurdle-22eb@gregkh>
-References: <2026051223-undercoat-reps-6626@gregkh>
- <20260513025130.GA3110@sol>
+	s=arc-20240116; t=1778669239; c=relaxed/simple;
+	bh=OSAPTZ4bB1kxfjIUiuDj++83VkMSwbDE89SR8KPjrNw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kuPfMemL24WKWPXODXy49QaMzVxGSM1C0vqX1EKK/hBauz6odtVwXiNMvdBNZrI7k9ZhT6ViOu6uR4TH5BFK7kRxsHd9n9jwm3x3Zd3vbwYbfZzn6BGJ0R2wHprtASthaE5mNs+h8FaOm/NLY+vF0vIo4RFsZiaqS/oS3ghniAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mf40hjKM; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a40d02b58bso4972747e87.3
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 03:47:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778669236; x=1779274036; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VMjpDUARMtR5AUsyIxsLefMdjzuzzMzYSmslCfW06Fc=;
+        b=mf40hjKMsqiYbcm1924oMNUBMHdW28njVebsDzFP8EEb582YzMVE/sfOew+d9AbxTC
+         wUtTYAMLeXcBZFeg4PH1LPa9jAEYYjlQP3mq6yu99rbtXv5ytwF13KWoRT9GPdrRXZCC
+         aOfl8rNZLehEXgOM0DMM/iP+KQ9lVCGBeT5qsC4dGYjjRWuM0V9rfLWxmf2WaA4+6sFB
+         Q7LCEkGftHsDNrVLoG9xyI/CGiG2xtsaOF4sWve0e+XZFeOsYy83yaHbxyIKMhxeeLOO
+         0hs4Adq3X+jx7xdn0lz+JEPwmQaf2GeXnsHgU5Ikb3YliwuZtvhcS9nnRwhRO4irgkFp
+         TOOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778669236; x=1779274036;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VMjpDUARMtR5AUsyIxsLefMdjzuzzMzYSmslCfW06Fc=;
+        b=CzaHJhgffuaS+VHjLi4uUtaH/2tT/0Dz9+Dtuig0YrUpaXXzoa6aZ/6NlGX28bSIZu
+         XneblRWoHvdIq+A5Ah9+wN0heOx+53q+/+iKVlmOdNzuCaug3pqQZ+qLbkYx57So59UW
+         IIq4FPz6ZtTvq5lOO3ht0+DQ3u8ALoKA5pITNBDo7g2sOLZRQ3/01mlJ8+iEB5D5oOhU
+         GohcHg+THSC578cBEwSrSW179Ru0IIZC+NQkLcYsjX/UG6ezkf+fGOscB8fl24Qh7sdm
+         d0eDlJ43LlV9sc3APt87rLz/1zuXWJLcLn9Q58c5Bf6IUh905AKAroavR2tkWCJzp45T
+         FIKA==
+X-Forwarded-Encrypted: i=1; AFNElJ8EzsLCqibbky+hjtIbJRS2SoQxXaLTCPeCGnCT/2mNGTEAeEuGDKqevgIvel7bKUEt4eSMA6A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvecuY5Lybt2nm+4UWDiWKKy/WSYWf8SJs9DXxkCtApl40XLQK
+	ATs9pWWDVada9j/VmjDNfyLYH2rf3a0Ugh6wwBp5sEux9gXL6lCMYlhUV8I8pE94
+X-Gm-Gg: Acq92OE67bS/m2Js969UFjzePuIGdKRG16urh0daEDDm8rrrZvhQnzsrQhe60KBANy0
+	gdiZXSsYB14T5yOyvWyEfrRG5+CT3YkXmbTdYIC2IoXgEiR1Q7DXCC4R5BLyj7WUTQ9PkH3VYvB
+	cL2EoVxiJcK7Z4m2IwUVgQRFOgBRRLeY5r8xlE2shlGR59prsMk+lsni45He5cai/yOCFaOwW7n
+	qrL4qA0NHAkUP+Tmv7N/q2wcVTY0LTOUISS1wAOb1HCLAJ8VN4eVsmctqEFQdP7nmao9sa9EJA2
+	77sBnfstNx+cpPgSMAuA7DvtSLZ74iqEFs42fl7Lg12+044+53S49pZ4+kFILeaukYzHpIx8lTZ
+	4Smug6Za6FkFEReAKoQiVG8wCPXAwjtC3pJBH8bX2oON2nWlUWkaTAkWsinB7Zxdppmrk5PNgYx
+	tnqp/M2R7e2Leqwr8QNDFsQJ9ZlK+wG+KSyIrb3AWToXqRug==
+X-Received: by 2002:a05:6512:3ba2:b0:5a8:7f58:5fba with SMTP id 2adb3069b0e04-5a8ef93959emr932584e87.9.1778669236039;
+        Wed, 13 May 2026 03:47:16 -0700 (PDT)
+Received: from svery.. (109-252-11-240.nat.spd-mgts.ru. [109.252.11.240])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a8a951d2cfsm4076485e87.25.2026.05.13.03.47.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 03:47:15 -0700 (PDT)
+From: Anastasia Tishchenko <sv3iry@gmail.com>
+To: tcherganov@astralinux.ru
+Cc: Anastasia Tishchenko <sv3iry@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] crypto: ecc - Fix carry overflow in vli multiplication
+Date: Wed, 13 May 2026 13:47:10 +0300
+Message-ID: <20260513104711.54889-1-sv3iry@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513025130.GA3110@sol>
-X-Rspamd-Queue-Id: 948965316FA
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2EE40531984
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246802-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[wunner.de,linux.win,kernel.org,gmail.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:email,linuxfoundation.org:dkim]
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246803-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sv3iry@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026 at 07:51:30PM -0700, Eric Biggers wrote:
-> [+Cc linux-crypto@vger.kernel.org]
-> 
-> On Tue, May 12, 2026 at 04:01:23PM +0200, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 6.1-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 8c2f1288250a90a4b5cabed5d888d7e3aeed4035
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051223-undercoat-reps-6626@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-> > 
-> > Possible dependencies:
-> 
-> A couple issues.  First, this email wasn't sent to the subsystem's
-> mailing list (linux-crypto@vger.kernel.org in this case).  That greatly
-> reduces the number of people who are made aware that this didn't get
-> automatically backported.
+The carry flag calculation fails when r01.m_high is saturated
+(0xFFFFFFFFFFFFFFFF) and addition of lower bits overflows.
 
-We never send out these FAILED emails to the mailing lists, as that
-would make just even more noise.  It's always been this way, sorry.
+The condition (r01.m_high < product.m_high) doesn't handle the case
+where r01.m_high == product.m_high and an additional carry exists
+from lower-bit overflow.
 
-> Second, the upstream commit cherry-picks to 6.1, 5.15, and 5.10 without
-> conflict.  (The file being changed was renamed between 6.1 and 6.6, but
-> 'git cherry-pick' handles that automatically.)
-> 
-> I don't know what you're doing exactly that caused it to be
-> unnecessarily marked as FAILED.  But whatever it is, it's not working,
-> and it is causing backports to be missed.
+When commit 3c4b23901a0c ("crypto: ecdh - Add ECDH software support")
+introduced crypto/ecc.c, it split the muladd() function in the
+micro-ecc library into separate mul_64_64() and add_128_128() helpers.
+It seems the check got lost in translation.
 
-We don't use git for cherry-picking as we have a patch queue, so renames
-will often times fail, like it did here.  This has always been the case
-in the decades we have been running the stable kernels :)
+Add proper handling for this boundary by accounting for the carry
+from the lower addition.
 
-thanks,
+Fixes: 3c4b23901a0c ("crypto: ecdh - Add ECDH software support")
+Signed-off-by: Anastasia Tishchenko <sv3iry@gmail.com>
+Cc: stable@vger.kernel.org # v4.8+
+---
+Changes v1 -> v2:
+* Rename add_128_128() to check_add_128_128_overflow() and let it return a bool indicating whether an overflow occurred
+* Rewrite an explicit if-else statement using constant-time bitwise arithmetic to avoid a timing side-channel
 
-greg k-h
+Link to v1:
+https://lore.kernel.org/r/20260508114844.29694-1-sv3iry@gmail.com/
+---
+ crypto/ecc.c | 31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
+
+diff --git a/crypto/ecc.c b/crypto/ecc.c
+index 43b0def3a225..6eb4d97a5f0d 100644
+--- a/crypto/ecc.c
++++ b/crypto/ecc.c
+@@ -393,14 +393,26 @@ static uint128_t mul_64_64(u64 left, u64 right)
+ 	return result;
+ }
+ 
+-static uint128_t add_128_128(uint128_t a, uint128_t b)
++/* Calculate addition with overflow checking. Returns true on wrap-around,
++ * false otherwise.
++ */
++static bool check_add_128_128_overflow(uint128_t *result, uint128_t a,
++				       uint128_t b)
+ {
+-	uint128_t result;
++	bool carry;
+ 
+-	result.m_low = a.m_low + b.m_low;
+-	result.m_high = a.m_high + b.m_high + (result.m_low < a.m_low);
++	result->m_low = a.m_low + b.m_low;
++	carry = (result->m_low < a.m_low);
+ 
+-	return result;
++	result->m_high = a.m_high + b.m_high + carry;
++
++	/* Using constant-time bitwise arithmetic to prevent timing
++	 * side-channels.
++	 */
++	carry = (result->m_high < a.m_high) |
++		((result->m_high == a.m_high) & carry);
++
++	return carry;
+ }
+ 
+ static void vli_mult(u64 *result, const u64 *left, const u64 *right,
+@@ -425,9 +437,7 @@ static void vli_mult(u64 *result, const u64 *left, const u64 *right,
+ 			uint128_t product;
+ 
+ 			product = mul_64_64(left[i], right[k - i]);
+-
+-			r01 = add_128_128(r01, product);
+-			r2 += (r01.m_high < product.m_high);
++			r2 += check_add_128_128_overflow(&r01, r01, product);
+ 		}
+ 
+ 		result[k] = r01.m_low;
+@@ -450,7 +460,7 @@ static void vli_umult(u64 *result, const u64 *left, u32 right,
+ 		uint128_t product;
+ 
+ 		product = mul_64_64(left[k], right);
+-		r01 = add_128_128(r01, product);
++		check_add_128_128_overflow(&r01, r01, product);
+ 		/* no carry */
+ 		result[k] = r01.m_low;
+ 		r01.m_low = r01.m_high;
+@@ -487,8 +497,7 @@ static void vli_square(u64 *result, const u64 *left, unsigned int ndigits)
+ 				product.m_low <<= 1;
+ 			}
+ 
+-			r01 = add_128_128(r01, product);
+-			r2 += (r01.m_high < product.m_high);
++			r2 += check_add_128_128_overflow(&r01, r01, product);
+ 		}
+ 
+ 		result[k] = r01.m_low;
+-- 
+2.43.0
+
 
