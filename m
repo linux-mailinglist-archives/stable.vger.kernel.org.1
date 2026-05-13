@@ -1,200 +1,366 @@
-Return-Path: <stable+bounces-246739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EA7FlcBBGqGCAIAu9opvQ
-	(envelope-from <stable+bounces-246739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:43:03 +0200
+	id YNEwEbcCBGrLCAIAu9opvQ
+	(envelope-from <stable+bounces-246740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:48:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E3A52D34B
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DE752D3EC
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF3093024CAC
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:43:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1FE4730A3E69
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B6435CB6F;
-	Wed, 13 May 2026 04:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CDE357CF8;
+	Wed, 13 May 2026 04:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GHVomdX5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gdQ+gFPu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A360418787A
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 04:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3194A25B085;
+	Wed, 13 May 2026 04:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778647380; cv=none; b=GU7bYWTrbQDEtXsue6QbcKSVSlC5GI3NWiWrwlphSjdEaBl4SuqMa/kfVzfw0gzHDWA+a+CSWu1ssZbP623eO18Wps3fVQYm4ws4OwtIBGepW5lqvdOmG/20kmnAtgsGGC0yuYSNwryv1Oo93suISiDTdJ47eQWsvuDw3n77Ma8=
+	t=1778647634; cv=none; b=bxMndS6o8Ey5fqaoTir908eppkE4pOaM94ZS7mpGkBBkMv/wY1GI2ichWYWrYukHiUdxV57AuxLInZ7aX+uZPFf9wgMLw1urMSkheQe4kBOGhYtM7lIKcJ49oscgUz06fUneWM4gWdVGp6NopuWW0ip2c2AvgkEuylrpC/l6aa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778647380; c=relaxed/simple;
-	bh=5cHhcj35f2X+ib4lWQ7yYzd8fJmz3lMT65RhPz3N0v0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TOzp2py81h16grqt4sJg/MZciBj+jIzAXDFrAFYNQWIcHtHxz3aZ1f3dWE9OrG9Ec+M/CH531i4OZG4VZyQifEzilyIbM8ikEKi70HGmNZv84TZigvZ9nHze5i4oD668m5N97AXtQc0hFJnW7eYsrOv6f2GCvy7m5pOtgdMepKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GHVomdX5; arc=none smtp.client-ip=74.125.82.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-13312af37fdso9689480c88.0
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 21:42:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778647378; x=1779252178; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=M5MavqidYKA5Hl3+Xn6475nEpmRetlYvYy9oz+S0lmc=;
-        b=GHVomdX57A7kdOVlpLag0W4KB7BSANTqwCT6MMfCo0IuLKsPpdk3F32U28Z1DoOe2k
-         YnemCm4ksDqLwkDtvdRURoZyEUmWALtd9AAZOmGSkNBya5yALPcRoJ2aMPeGL9RgttzH
-         2pb9zHLRK1PBLvJx/A9PX42nRkJxCrdbpEkrclon85p0TROoReXelqMhYXx6b6op4jaa
-         9X7asIrkfnXktNH6Z18T2/3eXcvs98CdT5hkXaJrYeqBsw8K5YKApgSkN4ROwoDuNhUz
-         j4W3RXOc9/3fBJ7J92h4Ypo+9spzaMQ2oyLCJJF+dT5PkEjMqwNEpTo0gAhpY6GxDpEv
-         SHCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778647378; x=1779252178;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M5MavqidYKA5Hl3+Xn6475nEpmRetlYvYy9oz+S0lmc=;
-        b=BfGdvH9ioI5kzNzqvcUxEI/nO9vG/afMecbdIrDr/fZFIX56zpitkhRbmCwpqU8dG5
-         97iXYcJpKSpcSShWvp9I5aN/WvzccG804bp3mc7Qal1zhUSMO2zovsHFA/Zbuv9blEj9
-         zNWiHiFbQ4DUpUiNHXsTGirr5PsCafypFHknjymgyawTqskOxpPkzQ4IPdhtoZ3B/uip
-         3qoOrMz4lwd2ostDFeK4tNSBbk6SGNe3J9JQ1hksVBVPf4YDzFbRNemYQx/9V5170PCy
-         YvxOTGRIh3rSww8aoxlajKG7EcjVL2kpL7iWxRIT3tIdy43LjuFvbtsHaLDOs/twn0i/
-         Mgvw==
-X-Gm-Message-State: AOJu0YyX9rGG31VNTLGMlsFfZ4s0BAzlLpBbS5jTrvSqfpnLsim3R7ut
-	JjW/SwCilyrJpgg6u30I/nCIgIuTsI/HhPbbhtKCbMnNqf02ROnExlunOQ454GV5Dy/wK5BzM1i
-	Uchm2fPU4yPYt6hKeYfKAJ60tqPdQc91JlaIn/MGFgwJzZbnZZlh0Q7B5aDHwpCOiCqXmSssQAq
-	xNr8feLjGv8ilKYjLZSUjIB9L8hlk+G+PIoAK7
-X-Received: from dlbvv20.prod.google.com ([2002:a05:7022:5f14:b0:132:8d92:4d66])
- (user=amitsd job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:6886:b0:130:6936:dcde
- with SMTP id a92af1059eb24-1342ef432a1mr1108067c88.14.1778647377312; Tue, 12
- May 2026 21:42:57 -0700 (PDT)
-Date: Wed, 13 May 2026 04:41:38 +0000
-In-Reply-To: <20260512173932.810559588@linuxfoundation.org>
+	s=arc-20240116; t=1778647634; c=relaxed/simple;
+	bh=H8FJyDizHMYDXw9eQlca0BCU3eZ+oXavbvNJM3HyFxI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IzITXxwimcQ8kQu1dizzRBfDoJuv90/iSGcp3VxzUGknv9OnW0uyiGkohBFKShOEszEuGT4sZBAYBZSkx9UGGTgQjvfYl4C+I7iLkPqnqMg0NmUyjI7RuHCCohu6kZ4gglDbTsQv7yZumx8jU7979Zhai6U1S+ZJT90z9lgn5Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gdQ+gFPu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973D5C2BCC9;
+	Wed, 13 May 2026 04:47:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778647633;
+	bh=H8FJyDizHMYDXw9eQlca0BCU3eZ+oXavbvNJM3HyFxI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gdQ+gFPu2sehcBH8GUGoCQlDniTGVclg9HTCjmq46wYgDUuA21RVhHlxA40EQK1/X
+	 hBqL0f/zjCOL4tdjZ0Bis1GlaQImke5XfhJUAvexY8LQhgZYl8wT/x3nc/BxV+6nim
+	 Cc+2MOwJkdJLQt5Kt51QL2eh+TSNeGJ6/hxN0L/M0ObRhlLyg585WyZMhu8F9ia2NU
+	 AV75cpga+F1VJxmi0QoTIblwgcREjFiB4baIvDuomvEJp4d8WeNCiXNPV9bDUcLaqz
+	 6udLngSHbvY9ZV7bSmYg78mvSJhtTAyW3YcU2DpPxx88BmqKkPPYZRnB2iZ7i+Q1LL
+	 sJm5JB8Ez820Q==
+From: SeongJae Park <sj@kernel.org>
+To: stable@vger.kernel.org
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	Liew Rui Yan <aethernet65535@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12.y] mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
+Date: Tue, 12 May 2026 21:46:58 -0700
+Message-ID: <20260513044700.193786-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026051255-roundup-crushing-4344@gregkh>
+References: <2026051255-roundup-crushing-4344@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260512173932.810559588@linuxfoundation.org>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260513044138.3681247-1-amitsd@google.com>
-Subject: [PATCH 6.12.y] usb: typec: tcpm: reset internal port states on soft
- reset AMS
-From: Amit Sunil Dhamne <amitsd@google.com>
-To: stable@vger.kernel.org
-Cc: Amit Sunil Dhamne <amitsd@google.com>, stable <stable@kernel.org>, 
-	Badhri Jagan Sridharan <badhri@google.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: A7E3A52D34B
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A1DE752D3EC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246739-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,lists.linux.dev,gmail.com,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-246740-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[amitsd@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,intel.com:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Reset internal port states (such as vdm_sm_running and
-explicit_contract) on soft reset AMS as the port needs to negotiate a
-new contract. The consequence of leaving the states in as-is cond are as
-follows:
-  * port is in SRC power role and an explicit contract is negotiated
-    with the port partner (in sink role)
-  * port partner sends a Soft Reset AMS while VDM State Machine is
-    running
-  * port accepts the Soft Reset request and the port advertises src caps
-  * port partner sends a Request message but since the explicit_contract
-    and vdm_sm_running are true from previous negotiation, the port ends
-    up sending Soft Reset instead of Accept msg.
+DAMON_LRU_SORT updates 'enabled' and 'kdamond_pid' parameter values, which
+represents the running status of its kdamond, when the user explicitly
+requests start/stop of the kdamond.  The kdamond can, however, be stopped
+in events other than the explicit user request in the following three
+events.
 
-Stub Log:
-[  203.653942] AMS DISCOVER_IDENTITY start
-[  203.653947] PD TX, header: 0x176f
-[  203.655901] PD TX complete, status: 0
-[  203.657470] PD RX, header: 0x124f [1]
-[  203.657477] Rx VDM cmd 0xff008081 type 2 cmd 1 len 1
-[  203.657482] AMS DISCOVER_IDENTITY finished
-[  203.657484] cc:=4
-[  204.155698] PD RX, header: 0x144f [1]
-[  204.155718] Rx VDM cmd 0xeeee8001 type 0 cmd 1 len 1
-[  204.155741] PD TX, header: 0x196f
-[  204.157622] PD TX complete, status: 0
-[  204.160060] PD RX, header: 0x4d [1]
-[  204.160066] state change SRC_READY -> SOFT_RESET [rev2 SOFT_RESET_AMS]
-[  204.160076] PD TX, header: 0x163
-[  204.162486] PD TX complete, status: 0
-[  204.162832] AMS SOFT_RESET_AMS finished
-[  204.162840] cc:=4
-[  204.162891] AMS POWER_NEGOTIATION start
-[  204.162896] state change SOFT_RESET -> AMS_START [rev2 POWER_NEGOTIATION]
-[  204.162908] state change AMS_START -> SRC_SEND_CAPABILITIES [rev2 POWER_NEGOTIATION]
-[  204.162913] PD TX, header: 0x1361
-[  204.165529] PD TX complete, status: 0
-[  204.165571] pending state change SRC_SEND_CAPABILITIES -> SRC_SEND_CAPABILITIES_TIMEOUT @ 60 ms [rev2 POWER_NEGOTIATION]
-[  204.166996] PD RX, header: 0x1242 [1]
-[  204.167009] state change SRC_SEND_CAPABILITIES -> SRC_SOFT_RESET_WAIT_SNK_TX [rev2 POWER_NEGOTIATION]
-[  204.167019] AMS POWER_NEGOTIATION finished
-[  204.167020] cc:=4
-[  204.167083] AMS SOFT_RESET_AMS start
-[  204.167086] state change SRC_SOFT_RESET_WAIT_SNK_TX -> SOFT_RESET_SEND [rev2 SOFT_RESET_AMS]
-[  204.167092] PD TX, header: 0x16d
-[  204.168824] PD TX complete, status: 0
-[  204.168854] pending state change SOFT_RESET_SEND -> HARD_RESET_SEND @ 60 ms [rev2 SOFT_RESET_AMS]
-[  204.171876] PD RX, header: 0x43 [1]
-[  204.171879] AMS SOFT_RESET_AMS finished
+1. ctx->regions_score_histogram allocation failure at beginning of the
+   execution,
+2. damon_commit_ctx() failure due to invalid user input, and
+3. damon_commit_ctx() failure due to its internal allocation failures.
 
-This causes COMMON.PROC.PD.11.2 check failure for
-TEST.PD.VDM.SRC.2_Rev2Src test on the PD compliance tester.
+Hence, if the kdamond is stopped by the above three events, the values of
+the status parameters can be stale.  Users could show the stale values and
+be confused.  This is already bad, but the real consequence is worse.
+DAMON_LRU_SORT avoids unnecessary damon_start() and damon_stop() calls
+based on the 'enabled' parameter value.  And the update of 'enabled'
+parameter value depends on the damon_start() and damon_stop() call
+results.  Hence, once the kdamond has stopped by the unintentional events,
+the user cannot restart the kdamond before the system reboot.  For
+example, the issue can be reproduced via below steps.
 
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Fixes: 8d3a0578ad1a ("usb: typec: tcpm: Respond Wait if VDM state machine is running")
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260414-fix-soft-reset-v1-1-01d7cb9764e2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-(cherry picked from commit 2909f0d4994fb4306bf116df5ccee797791fce2c)
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+    # cd /sys/module/damon_lru_sort/parameters
+    #
+    # # start DAMON_LRU_SORT
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
+    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # commit wrong input to stop kdamond withou explicit stop request
+    # echo 3 > addr_unit
+    # echo Y > commit_inputs
+    bash: echo: write error: Invalid argument
+    #
+    # # confirm kdamond is stopped
+    # ps -ef | grep kdamond
+    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # users casn now show stable status
+    # cat enabled
+    Y
+    # cat kdamond_pid
+    806
+    #
+    # # even after fixing the wrong parameter,
+    # # kdamond cannot be restarted.
+    # echo 1 > addr_unit
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
+
+The problem will only rarely happen in real and common setups for the
+following reasons.  The allocation failures are unlikely in such setups
+since those allocations are arguably too small to fail.  Also sane users
+on real production environments may not commit wrong input parameters.
+But once it happens, the consequence is quite bad.  And the bug is a bug.
+
+The issue stems from the fact that there are multiple events that can
+change the status, and following all the events is challenging.
+Dynamically detect and use the fresh status for the parameters when those
+are requested.
+
+Link: https://lore.kernel.org/20260513040734.144259-2-sj@kernel.org
+Link: https://lore.kernel.org/20260419161003.79176-3-sj@kernel.org
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.0.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit b98b7ff6025ae82570d4915e083f0cbd8d48b3cf)
+Signed-off-by: SeongJae Park <sj@kernel.org>
+(port parts of 42b7491af14c ("mm/damon/core: introduce damon_call()")
+and d2b5be741a50 ("mm/damon/sysfs: use DAMON core API
+damon_is_running()") for damon_is_running() dependency)
+Cc: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 2 ++
- 1 file changed, 2 insertions(+)
+This depends on other two backported patches [1,2].  Please apply this
+after those.
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index b0e6c58e6a59..c0306b00256b 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -5407,6 +5407,8 @@ static void run_state_machine(struct tcpm_port *port)
- 		usb_power_delivery_unregister_capabilities(port->partner_source_caps);
- 		port->partner_source_caps = NULL;
- 		tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
-+		port->vdm_sm_running = false;
-+		port->explicit_contract = false;
- 		tcpm_ams_finish(port);
- 		if (port->pwr_role == TYPEC_SOURCE) {
- 			port->upcoming_state = SRC_SEND_CAPABILITIES;
+[1] https://lore.kernel.org/20260513040734.144259-1-sj@kernel.org
+[2] https://lore.kernel.org/20260513040734.144259-2-sj@kernel.org
+
+ include/linux/damon.h |  1 +
+ mm/damon/core.c       | 16 ++++++++
+ mm/damon/lru_sort.c   | 88 +++++++++++++++++++++++++++----------------
+ 3 files changed, 73 insertions(+), 32 deletions(-)
+
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 77f8f05cf26fb..e92e9e8a81375 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -778,6 +778,7 @@ static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs
+ 
+ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
+ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
++bool damon_is_running(struct damon_ctx *ctx);
+ int damon_kdamond_pid(struct damon_ctx *ctx);
+ 
+ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 75d391b4ad72f..df721c13c2ca8 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1163,6 +1163,22 @@ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs)
+ 	return err;
+ }
+ 
++/**
++ * damon_is_running() - Returns if a given DAMON context is running.
++ * @ctx:	The DAMON context to see if running.
++ *
++ * Return: true if @ctx is running, false otherwise.
++ */
++bool damon_is_running(struct damon_ctx *ctx)
++{
++	bool running;
++
++	mutex_lock(&ctx->kdamond_lock);
++	running = ctx->kdamond != NULL;
++	mutex_unlock(&ctx->kdamond_lock);
++	return running;
++}
++
+ /**
+  * damon_kdamond_pid() - Return pid of a given DAMON context's worker thread.
+  * @ctx:	The DAMON context of the question.
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 5654e31a198a4..4fdc5c76ff109 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -111,15 +111,6 @@ module_param(monitor_region_start, ulong, 0600);
+ static unsigned long monitor_region_end __read_mostly;
+ module_param(monitor_region_end, ulong, 0600);
+ 
+-/*
+- * PID of the DAMON thread
+- *
+- * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
+- * Else, -1.
+- */
+-static int kdamond_pid __read_mostly = -1;
+-module_param(kdamond_pid, int, 0400);
+-
+ static struct damos_stat damon_lru_sort_hot_stat;
+ DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_lru_sort_hot_stat,
+ 		lru_sort_tried_hot_regions, lru_sorted_hot_regions,
+@@ -239,60 +230,93 @@ static int damon_lru_sort_turn(bool on)
+ {
+ 	int err;
+ 
+-	if (!on) {
+-		err = damon_stop(&ctx, 1);
+-		if (!err)
+-			kdamond_pid = -1;
+-		return err;
+-	}
++	if (!on)
++		return damon_stop(&ctx, 1);
+ 
+ 	err = damon_lru_sort_apply_parameters();
+ 	if (err)
+ 		return err;
+ 
+-	err = damon_start(&ctx, 1, true);
+-	if (err)
+-		return err;
+-	kdamond_pid = ctx->kdamond->pid;
+-	return 0;
++	return damon_start(&ctx, 1, true);
++}
++
++static bool damon_lru_sort_enabled(void)
++{
++	if (!ctx)
++		return false;
++	return damon_is_running(ctx);
+ }
+ 
+ static int damon_lru_sort_enabled_store(const char *val,
+ 		const struct kernel_param *kp)
+ {
+-	bool is_enabled = enabled;
+-	bool enable;
+ 	int err;
+ 
+-	err = kstrtobool(val, &enable);
++	err = kstrtobool(val, &enabled);
+ 	if (err)
+ 		return err;
+ 
+-	if (is_enabled == enable)
++	if (damon_lru_sort_enabled() == enabled)
+ 		return 0;
+ 
+ 	/* Called before init function.  The function will handle this. */
+ 	if (!ctx)
+-		goto set_param_out;
++		return 0;
+ 
+-	err = damon_lru_sort_turn(enable);
+-	if (err)
+-		return err;
++	return damon_lru_sort_turn(enabled);
++}
+ 
+-set_param_out:
+-	enabled = enable;
+-	return err;
++static int damon_lru_sort_enabled_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	return sprintf(buffer, "%c\n", damon_lru_sort_enabled() ? 'Y' : 'N');
+ }
+ 
+ static const struct kernel_param_ops enabled_param_ops = {
+ 	.set = damon_lru_sort_enabled_store,
+-	.get = param_get_bool,
++	.get = damon_lru_sort_enabled_load,
+ };
+ 
+ module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
+ MODULE_PARM_DESC(enabled,
+ 	"Enable or disable DAMON_LRU_SORT (default: disabled)");
+ 
++static int damon_lru_sort_kdamond_pid_store(const char *val,
++		const struct kernel_param *kp)
++{
++	/*
++	 * kdamond_pid is read-only, but kernel command line could write it.
++	 * Do nothing here.
++	 */
++	return 0;
++}
++
++static int damon_lru_sort_kdamond_pid_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	int kdamond_pid = -1;
++
++	if (ctx) {
++		kdamond_pid = damon_kdamond_pid(ctx);
++		if (kdamond_pid < 0)
++			kdamond_pid = -1;
++	}
++	return sprintf(buffer, "%d\n", kdamond_pid);
++}
++
++static const struct kernel_param_ops kdamond_pid_param_ops = {
++	.set = damon_lru_sort_kdamond_pid_store,
++	.get = damon_lru_sort_kdamond_pid_load,
++};
++
++/*
++ * PID of the DAMON thread
++ *
++ * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
++ * Else, -1.
++ */
++module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
++
+ static int damon_lru_sort_handle_commit_inputs(void)
+ {
+ 	int err;
 -- 
-2.54.0.563.g4f69b47b94-goog
+2.47.3
 
 
