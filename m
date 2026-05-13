@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-246888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCg/EoSNBGoALgIAu9opvQ
-	(envelope-from <stable+bounces-246888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:41:08 +0200
+	id GP0HEFOOBGoVLgIAu9opvQ
+	(envelope-from <stable+bounces-246889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:44:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22EDD53548E
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:41:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D865355A9
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:44:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 901833024FA4
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:34:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5AC87300B283
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E66843D51E;
-	Wed, 13 May 2026 14:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25ED443CEED;
+	Wed, 13 May 2026 14:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u3JEDfJy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pws5wOi0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D87D449EBB
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 14:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C56D30ACF0
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 14:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778682877; cv=none; b=ZHK+QKEPlTo6XTspLLfmVf5DCPF74wltnnMli9sXkNK6P/iAAzSMbxsvmEtypKh88mSSOUzovUHf04J6Xkd0ywRNrBP6L7bR1cehWfdkYyBSC9vvYmGdIvj2B2goEZweuGaaRDvwoFPr0amzIQXHlqZ0CldNL9TYDi4D6sTwZdE=
+	t=1778682877; cv=none; b=tuLGJ5sgMSAxIenTzbtczBekMO1K9stpwiDtD1iTu80YrZ6aJ9cQ5ss9RVL5kzW6dpwOTYommK62Tyx0Snh9Lxg/Xc70KlLA5p5n7Pbb0H/YjanfIQh2Rhi64viI3tHyy6GDqG1th8olq3oABtbMO3GlvIS1NkJyL4tJ4gbXl4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778682877; c=relaxed/simple;
-	bh=8DN6coJTPUxuqrpo4XenHfxMg55z27zILPTOyVh/F3I=;
+	bh=A9qL67fRAZqQZ5fN5HLDD9iRYpULquQ37/ahXEYuxts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4PD9D61k5sdEtXuk7A++miNnywdYEZ4FNXYdTUTy0uuNAFA8aI7Hw9PtNrVYmHrSuzsL8YbnqOChb/n6x6gIh16Fca3G/GAwzaKXfImE6aMHA2T6muRwW34j8KffT2uIpzEaTfk2XVYojMFBESvnFSyuR/OLp8oNmA23J8lo/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u3JEDfJy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20246C2BCF7;
+	 MIME-Version:Content-Type; b=pFD+LLBYJxt2Vbys7/pR6T+RIbZY/KnDZZlbLizNjYXQUOG7JYqCwLzPNQJ9GrOyJHPTT9GgrEoOdyx5uKaL9eWKrRqfXPgv82mFtxkOohjkNJjKuxMz/ceyRffOqwdbw5id1R4IWmH6qWc+zbEMnh6MqhM8ss1x1LFYDe7T8Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pws5wOi0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D66C19425;
 	Wed, 13 May 2026 14:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778682876;
-	bh=8DN6coJTPUxuqrpo4XenHfxMg55z27zILPTOyVh/F3I=;
+	s=k20201202; t=1778682877;
+	bh=A9qL67fRAZqQZ5fN5HLDD9iRYpULquQ37/ahXEYuxts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u3JEDfJyOoYm1uPFXxjycISEGMhzHCu4m0aIpm8kius+mxFrIZ1bgyB1gLRqzv2nQ
-	 vh6at66HYCD/JaegtPazSoijevEPCwEyFA5w+zCp6IaHK/B2o1i5xVb7RVwdJm/z+Z
-	 KOk6LRyLoBLQhaTx0gF+iz4QGHWJqCn5HTup/vPHmcP/qmrL0HaMcwAeKFvea50I0a
-	 RPWrkU2qeFBvB37CD/U/L7y4/XMf7QIIPVtzK5ZXJkc4a5g/htY9TD+v1PqSv+Z1Oo
-	 jRyu6uPknzK0m7mRaL+KVSMjYHDkH8xwUV9SEA+CODTJ1YDCdBiK6vAcQbqmfJF11d
-	 x1+8MVcOB5SDQ==
+	b=Pws5wOi0bKq2HuoOkgqAE742lFKaE9wMDBWjXK+ymgBc7C5A8enJ4QBaxhhXd2LOk
+	 fOE74DugNspHCRiaiutZzZ/2rz3IOtzlbQB1dMf/Ee1/WSu2lfPVzCsrss7YzI3z1n
+	 MEmCI0Jwp+KtD3egW39+QWxjpxq8eWzu3UTZ2EAnBaZ3u2oVFChedS82QEzk9QsW7B
+	 4KayD4KTa5reZojPhohMyIpEwwSnsfB0A1ma4OzvR/7nt2klF4G55ctNNfb1wpB/Hp
+	 xvB4Z4VS5VEqIvkvsHsUk8DJVCpO7HZWPUkz9NMuBrYznmnh7EnmfL01RLN3vkuGf6
+	 UpEhfKGBlxvxw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
-	Jake Lamberson <lamberson.jake@gmail.com>,
+Cc: =?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/3] ALSA: core: Fix potential data race at fasync handling
-Date: Wed, 13 May 2026 10:34:32 -0400
-Message-ID: <20260513143433.3755085-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 3/3] ALSA: core: Serialize deferred fasync state checks
+Date: Wed, 13 May 2026 10:34:33 -0400
+Message-ID: <20260513143433.3755085-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260513143433.3755085-1-sashal@kernel.org>
 References: <2026051252-doozy-thyself-9752@gregkh>
@@ -62,108 +62,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 22EDD53548E
+X-Rspamd-Queue-Id: 46D865355A9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[suse.de,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,suse.de,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246889-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246888-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 8146cd333d235ed32d48bb803fdf743472d7c783 ]
+[ Upstream commit 5337213381df578058e2e41da93cbd0e4639935f ]
 
-In snd_fasync_work_fn(), which is the offload work for traversing and
-processing the pending fasync list, the call of kill_fasync() is done
-outside the snd_fasync_lock for avoiding deadlocks.  The problem is
-that its the references of fasync->on, fasync->signal and fasync->poll
-are done there also outside the lock.  Since these may be modified by
-snd_kill_fasync() call concurrently from other process, inconsistent
-values might be passed to kill_fasync().  Although there shouldn't be
-critical UAF, it's still better to be addressed.
+snd_fasync_helper() updates fasync->on under snd_fasync_lock, and
+snd_fasync_work_fn() now also evaluates fasync->on under the same
+lock. snd_kill_fasync() still tests the flag before taking the lock,
+leaving an unsynchronized read against FASYNC enable/disable updates.
 
-This patch moves the kill_fasync() argument evaluations inside the
-snd_fasync_lock for avoiding the data races above.  The handling in
-fasync->on flag is optimized in the loop to skip directly.
+Move the enabled-state check into the locked section.
 
-Also, for more clarity, snd_fasync_free() takes the lock and unlink
-the pending entry more directly instead of clearing fasync->on flag.
+Also clear fasync->on under snd_fasync_lock in snd_fasync_free()
+before unlinking the pending entry. Together with the locked sender-side
+check, this publishes teardown before flushing the deferred work and
+prevents a racing sender from requeueing the entry after free has
+started.
 
-Reported-by: Jake Lamberson <lamberson.jake@gmail.com>
 Fixes: ef34a0ae7a26 ("ALSA: core: Add async signal helpers")
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260420061721.3253644-1-tiwai@suse.de
+Fixes: 8146cd333d23 ("ALSA: core: Fix potential data race at fasync handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260506-alsa-core-fasync-on-lock-v1-1-ea48c77d6ca4@gmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 5337213381df ("ALSA: core: Serialize deferred fasync state checks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/misc.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ sound/core/misc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/sound/core/misc.c b/sound/core/misc.c
-index a6dd4d38a46b3..918d59a541c82 100644
+index 918d59a541c82..fd891a3ceb963 100644
 --- a/sound/core/misc.c
 +++ b/sound/core/misc.c
-@@ -171,14 +171,18 @@ static LIST_HEAD(snd_fasync_list);
- static void snd_fasync_work_fn(struct work_struct *work)
- {
- 	struct snd_fasync *fasync;
-+	int signal, poll;
+@@ -219,9 +219,11 @@ EXPORT_SYMBOL_GPL(snd_fasync_helper);
  
- 	spin_lock_irq(&snd_fasync_lock);
- 	while (!list_empty(&snd_fasync_list)) {
- 		fasync = list_first_entry(&snd_fasync_list, struct snd_fasync, list);
- 		list_del_init(&fasync->list);
-+		if (!fasync->on)
-+			continue;
-+		signal = fasync->signal;
-+		poll = fasync->poll;
- 		spin_unlock_irq(&snd_fasync_lock);
--		if (fasync->on)
--			kill_fasync(&fasync->fasync, fasync->signal, fasync->poll);
-+		kill_fasync(&fasync->fasync, signal, poll);
- 		spin_lock_irq(&snd_fasync_lock);
- 	}
- 	spin_unlock_irq(&snd_fasync_lock);
-@@ -229,7 +233,10 @@ void snd_fasync_free(struct snd_fasync *fasync)
+ void snd_kill_fasync(struct snd_fasync *fasync, int signal, int poll)
  {
+-	if (!fasync || !fasync->on)
++	if (!fasync)
+ 		return;
+ 	guard(spinlock_irqsave)(&snd_fasync_lock);
++	if (!fasync->on)
++		return;
+ 	fasync->signal = signal;
+ 	fasync->poll = poll;
+ 	list_move(&fasync->list, &snd_fasync_list);
+@@ -234,8 +236,10 @@ void snd_fasync_free(struct snd_fasync *fasync)
  	if (!fasync)
  		return;
--	fasync->on = 0;
-+
-+	scoped_guard(spinlock_irq, &snd_fasync_lock)
-+		list_del_init(&fasync->list);
-+
+ 
+-	scoped_guard(spinlock_irq, &snd_fasync_lock)
++	scoped_guard(spinlock_irq, &snd_fasync_lock) {
++		fasync->on = 0;
+ 		list_del_init(&fasync->list);
++	}
+ 
  	flush_work(&snd_fasync_work);
  	kfree(fasync);
- }
 -- 
 2.53.0
 
