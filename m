@@ -1,313 +1,231 @@
-Return-Path: <stable+bounces-246805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QK+TIsNXBGqjHAIAu9opvQ
-	(envelope-from <stable+bounces-246805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:51:47 +0200
+	id oOWgEFpZBGozHQIAu9opvQ
+	(envelope-from <stable+bounces-246806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:58:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC39531A95
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D339531C01
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 622B1303863D
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 10:51:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F0621305D0D8
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 10:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC16B3F9F22;
-	Wed, 13 May 2026 10:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387C43FCB03;
+	Wed, 13 May 2026 10:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="h73615tz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iEiNA0Ox"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-bc0a.mail.infomaniak.ch (smtp-bc0a.mail.infomaniak.ch [45.157.188.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9333F661F
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 10:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B453DB964
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 10:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778669496; cv=none; b=GsgN78HvhK/h9kn0rz1eALmlFi/uDnAWNt/1Xz2AMRxk4PHmWA36Vr7+W3C+KyPKnK155BW6Hv3cNgVGxwKaEalLMUhnpUX5gIKyML5YP3wGXyuouz+ymYZyKDhayKPe+IEZILigoXTrlFJxOwGKSGoKmaLe2ds5hnQv67IGXyQ=
+	t=1778669893; cv=none; b=ZOuq5Y7N/if9Jb9Kk6R44NHbgxfcEcKowSj7mEsg9fZZeB7OudJS3p1rA2QKj8r/b3h9rIvwlZdQ1F0JerPjxG9pB+cqJTBidw6txa2roQa5iBEoDP1Ssny4NdnKK0u7dF3Hq8Y5rjMjcHcWcurPCOVIOLHGEM8dgwuwy+zna9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778669496; c=relaxed/simple;
-	bh=ZBat0gz5r2HYR0mFQEmBGLl1xOCE0BCxQ73lFhCi4oc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pOYBL6FcQcLUM3dnBjL+D8ycLLEm5Q9XEJUOW0i4x5Dh8OuYZBMrqhNBDZzmoUD8l81mRaSnsWh2s1qd9vdIwIwzfzGa6ykeM/kebIHvmeOf2Q3ASB3pp4JVQS62MbY2Y4xxsCr7e50IYj6P3E4h2CxIyws/eK5/G+CaYkcAcrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=h73615tz; arc=none smtp.client-ip=45.157.188.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
-Received: from smtp-3-0001.mail.infomaniak.ch (smtp-3-0001.mail.infomaniak.ch [10.4.36.108])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gFqyR3SXKzZcD;
-	Wed, 13 May 2026 12:51:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1778669487;
-	bh=TR+npEwXsiHWo2aYB9UuJbOsGkOrIvCASZvUoiFn+Lw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h73615tzqn9mWz/q2q0uAx9ZcS6oLQ5cthAmP3Gd9yJKtjsErOIycKz2tm7f1ow3J
-	 sBQS8TtgS5+BlNDhfeBKt2NNLCSx/v38EQ5YcFmuzVVX9soIiwzCj5E513MmupZjV+
-	 c46sGFkXhfpeXZfc775g9ZjQld/Q4Xe7kifGEXYk=
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gFqyQ3n6DzkBH;
-	Wed, 13 May 2026 12:51:26 +0200 (CEST)
-From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-To: 
-Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	kernel test robot <oliver.sang@intel.com>,
+	s=arc-20240116; t=1778669893; c=relaxed/simple;
+	bh=ZV04lyVPArME+npQY4qcyNI8K6Mzz6Qn49etnV7UOjQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JIfRpmIyEPmSOKhqsmTqoVmqpJI5pu22jSi45/ZnRT1UA8686ynUnES4akEbjhF8tOvZ6eDyuF2nxSMPbcGTIT4gdnTOxI5lqj8phtuOKjvi9J5RYbTaMRdkbkBmFpaEC7nXLvjY9dATRRz/rzQRWsGzYwL8EA+12RGED7po2Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iEiNA0Ox; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-67b32c695efso12088988a12.1
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 03:58:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778669889; x=1779274689; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2sLwoHvJvcfpvNr/4u698QcTPwR9URSepxShcHXDFhY=;
+        b=iEiNA0OxKWjF86ugkka/LKfu/cPv7D/1pF7FBWSTF2DAgdavpAb+9ef3JvGDpDJ7ue
+         zdIhgCIZ7CTRxOIe35rACkC9X4gtKXtEaK/9jThUNxlH2maL75wC+0mDG0Z5mekeFjSQ
+         aWqK0/fCT0RVmHNVzoV6dfGldQkrd5reWR7RtHMj2IpVOvCl2X1NDmfRVQqxct8QleJG
+         QcYhMgBxpA/pSGYiYNPR4cYvjs7gL+8Qzb9wZIY9dqYAhFdyqMyhhsXc4lV9g2+StMil
+         39Wpf+8PZbhGCMG2PejWYB5Ixi0QRk4kqfIT+rvgxSYcN56JbvhINO4oWUcJgKEtVjPh
+         S/WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778669889; x=1779274689;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2sLwoHvJvcfpvNr/4u698QcTPwR9URSepxShcHXDFhY=;
+        b=GlKDlkD1zQJnUCw4cd4cvpMmGwsh5svzA6UeHtj4t6qFaMsrpCybvPsHnoFgaKtRY2
+         IeupKyMlvmf1DYj7pVxF5JiVmiX5dQwtxKk5sVjX1xCPxS07qzFEkM4h9+45kBbOQWnM
+         8qku86s62mA89GO3yLjWjwWIven7QcoGwnG5c7jnmV7CIckV95Vc6fSxsXGdGnRqKcbB
+         HLNc0rKNp3q2s77zDD1o2XL6/E4blBXoJ7fg5r7gOAotG30s2Na+ngAIoPGbqZwoIUsr
+         mySDw3T+YM2Eu1a1+7qXN97l6vgCTkORDwP+2xodo/QKExjVrtemyDzVYsXYb0QBDzBp
+         6BOg==
+X-Forwarded-Encrypted: i=1; AFNElJ+yFLTUPCDexnD3Se69SY5qDi7z0dnt7uWQ+lvBMWApuHzEVLQl9Oe9GlgRlCgC5G4ZMMPfGNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGY+CTH4Min5ae9ZDxy6FxkL79WlVWq7KWo6dH4N2RPY+m8/r9
+	lM3BIblGkkDMHtor/6IdZqexNioNExlGiRsdrfa7jZbBZMlTwjTkDYOP
+X-Gm-Gg: Acq92OEuSeah4OzwGRCT5ZR1mk0xUi5Nlm9rP7ZNcoxtEg3TXKpLzzEbPwKgGse4yH3
+	uX01JQD10l1/4yrE+uvNrRoLIJJfUnXxz+LexYVy+AYF7ziCa/Ap8zeUU6vyk/N+V6yrzTQ1uv6
+	axXSduqgYl8RNEWAzLWFaHKvet8tIB8AZuVJYFVPzgAFhclEV3gfkmqqsn+pbtkgkjpUolfScyX
+	71DFt7+dZ8oXk45LvckKPgsFguAUUxw+FF+I84PmnqP2s3pfRdcZ22UtZqq80upq5WkXYtdNmF6
+	Us3YjLHGXTXXQ+9ndTLrIdRCWZY/6nGmCFicf4gf1F1m8MduIGvIQwOJjiAlegz6bhrH21amOl6
+	3faW3wgV77ApFrF7J9XQxj+dFvDBBldKGiKgDlLXzbNrY6VTOkZnmBAEyA8drTRMXXU2TvhuCmy
+	4XtJX1g0qPJ8qRYzHVsks25+Hsf4DMTDNmBOaIaRBiGQ6AAraUbpLoJrKV
+X-Received: by 2002:a17:907:3e85:b0:bd4:7b9c:6f1a with SMTP id a640c23a62f3a-bd47b9c7479mr48352066b.22.1778669888523;
+        Wed, 13 May 2026 03:58:08 -0700 (PDT)
+Received: from svery.. (109-252-11-240.nat.spd-mgts.ru. [109.252.11.240])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bcfebf0ab11sm472188166b.62.2026.05.13.03.58.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 03:58:08 -0700 (PDT)
+From: Anastasia Tishchenko <sv3iry@gmail.com>
+To: Lukas Wunner <lukas@wunner.de>,
+	Stefan Berger <stefanb@linux.ibm.com>
+Cc: Ignat Korchagin <ignat@linux.win>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	linux-crypto@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	lkp@intel.com,
-	oe-lkp@lists.linux.dev,
-	stable@vger.kernel.org,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>
-Subject: [PATCH v1 2/2] selftests/landlock: Increase default audit socket timeout
-Date: Wed, 13 May 2026 12:51:09 +0200
-Message-ID: <20260513105112.140137-2-mic@digikod.net>
-In-Reply-To: <20260513105112.140137-1-mic@digikod.net>
-References: <20260513105112.140137-1-mic@digikod.net>
+	Anastasia Tishchenko <sv3iry@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] crypto: ecc - Fix carry overflow in vli multiplication
+Date: Wed, 13 May 2026 13:57:40 +0300
+Message-ID: <20260513105741.55534-1-sv3iry@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-X-Rspamd-Queue-Id: 3BC39531A95
+X-Rspamd-Queue-Id: 2D339531C01
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.05 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MIXED_CHARSET(0.71)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[digikod.net:s=20191114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[digikod.net,google.com,kernel.org,linuxfoundation.org,linutronix.de,intel.com,vger.kernel.org,lists.linux.dev,gmail.com];
-	TAGGED_FROM(0.00)[bounces-246805-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[digikod.net];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[digikod.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linux.win,gondor.apana.org.au,davemloft.net,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-246806-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[mic@digikod.net,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,digikod.net:email,digikod.net:mid,digikod.net:dkim,intel.com:email,linutronix.de:email]
+	FROM_NEQ_ENVFROM(0.00)[sv3iry@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-matches_log_fs() and other audit_match_record() callers intermittently
-return -EAGAIN under heavy debug configs (KASAN, lockdep).  The audit
-record delivery pipeline is asynchronous: landlock_log_denial() queues
-the record to audit_queue, and kauditd_thread dequeues and delivers via
-netlink.  Under debug configs, kauditd scheduling between
-audit_log_end() and netlink_unicast() can exceed a syscall round trip
-(more than 1 usec), which was the value of the socket timeout used for
-the recvfrom() calls.
+The carry flag calculation fails when r01.m_high is saturated
+(0xFFFFFFFFFFFFFFFF) and addition of lower bits overflows.
 
-The observed failure [1] is an EAGAIN error code (-11) which means that
-the access record had not arrived within the 1 usec timeout of
-recvfrom().  The expected record does arrive, but only after
-matches_log_fs() has already returned.  It is then consumed by a later
-audit_count_records() call, making records.access == 1 instead of 0.
+The condition (r01.m_high < product.m_high) doesn't handle the case
+where r01.m_high == product.m_high and an additional carry exists
+from lower-bit overflow.
 
-Switch the default socket timeout to the slow value (1 second) so all
-audit_match_record() callers wait long enough for kauditd delivery, and
-lower it to the fast value (1 usec) only on the two paths that expect no
-record: audit_count_records() and the expected_domain_id == 0 probe in
-matches_log_domain_deallocated().  audit_init() drains stale records
-with the fast timeout (terminating on -EAGAIN once the backlog is empty)
-and switches to the patient default before returning.  1 second gives
-~10x margin over the observed maximum (~100 ms, while the happy path is
-~23 us).
+When commit 3c4b23901a0c ("crypto: ecdh - Add ECDH software support")
+introduced crypto/ecc.c, it split the muladd() function in the
+micro-ecc library into separate mul_64_64() and add_128_128() helpers.
+It seems the check got lost in translation.
 
-Rename the timeval constants to reflect their new roles:
-- audit_tv_dom_drop (1 second) -> audit_tv_default: default socket
-  timeout, patient enough for asynchronous kauditd delivery.
-- audit_tv_default (1 usec) -> audit_tv_fast: fast timeout for paths
-  that expect no record (drain, audit_count_records(), probes).
+Add proper handling for this boundary by accounting for the carry
+from the lower addition.
 
-Invert the conditional in matches_log_domain_deallocated().  Check
-setsockopt returns on both the lower and restore paths; preserve the
-first error via !err when the restore fails after a prior error so the
-actionable return code is not masked by a bookkeeping failure.
-
-Cc: Günther Noack <gnoack@google.com>
-Cc: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Cc: stable@vger.kernel.org
-Depends-on: 07c2572a8757 ("selftests/landlock: Skip stale records in audit_match_record()")
-Fixes: 6a500b22971c ("selftests/landlock: Add tests for audit flags and domain IDs")
-Reported-by: Günther Noack <gnoack3000@gmail.com>
-Closes: https://lore.kernel.org/r/20260402.eb5c4e85f472@gnoack.org [1]
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202605111649.a8b30a62-lkp@intel.com
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Fixes: 3c4b23901a0c ("crypto: ecdh - Add ECDH software support")
+Signed-off-by: Anastasia Tishchenko <sv3iry@gmail.com>
+Cc: stable@vger.kernel.org # v4.8+
 ---
- tools/testing/selftests/landlock/audit.h | 80 +++++++++++++++++++-----
- 1 file changed, 63 insertions(+), 17 deletions(-)
+Changes v1 -> v2:
+* Rename add_128_128() to check_add_128_128_overflow() and let it return a bool
+  indicating whether an overflow occurred
+* Rewrite an explicit if-else statement using constant-time bitwise arithmetic
+  to avoid a timing side-channel
 
-diff --git a/tools/testing/selftests/landlock/audit.h b/tools/testing/selftests/landlock/audit.h
-index 699aed5ffab4..936fe20f020e 100644
---- a/tools/testing/selftests/landlock/audit.h
-+++ b/tools/testing/selftests/landlock/audit.h
-@@ -45,17 +45,25 @@ struct audit_message {
- 	};
- };
- 
--static const struct timeval audit_tv_dom_drop = {
-+static const struct timeval audit_tv_default = {
- 	/*
--	 * Because domain deallocation is tied to asynchronous credential
--	 * freeing, receiving such event may take some time.  In practice,
--	 * on a small VM, it should not exceed 100k usec, but let's wait up
--	 * to 1 second to be safe.
-+	 * Default socket timeout for audit_match_record() callers that expect a
-+	 * record to arrive.  Asynchronous kauditd delivery can exceed 1 usec
-+	 * under heavy debug configs (KASAN, lockdep), where kauditd_thread
-+	 * scheduling between audit_log_end() and netlink_unicast() takes longer
-+	 * than the previous 1 usec timeout. 1 second is a generous ceiling: on
-+	 * the happy path, kauditd delivers within dozens of usec.
- 	 */
- 	.tv_sec = 1,
- };
- 
--static const struct timeval audit_tv_default = {
-+static const struct timeval audit_tv_fast = {
-+	/*
-+	 * Fast timeout for paths that expect no record (audit_init() drain,
-+	 * audit_count_records(), probes).  Causes audit_recv() to return
-+	 * -EAGAIN once the socket buffer is empty, naturally terminating the
-+	 * read loop.
-+	 */
- 	.tv_usec = 1,
- };
- 
-@@ -334,8 +342,13 @@ static int __maybe_unused matches_log_domain_allocated(int audit_fd, pid_t pid,
-  * Matches a domain deallocation record.  When expected_domain_id is non-zero,
-  * the pattern includes the specific domain ID so that stale deallocation
-  * records from a previous test (with a different domain ID) are skipped by
-- * audit_match_record(), and the socket timeout is temporarily increased to
-- * audit_tv_dom_drop to wait for the asynchronous kworker deallocation.
-+ * audit_match_record(), waiting for the asynchronous kworker deallocation with
-+ * the default patient timeout.
-+ *
-+ * When expected_domain_id is zero, the caller is probing for any dealloc record
-+ * that may or may not arrive.  Temporarily lowers the socket timeout to
-+ * audit_tv_fast for this probe so it returns promptly when no record is
-+ * pending; restores audit_tv_default after.
-  */
- static int __maybe_unused
- matches_log_domain_deallocated(int audit_fd, unsigned int num_denials,
-@@ -361,16 +374,21 @@ matches_log_domain_deallocated(int audit_fd, unsigned int num_denials,
- 	if (log_match_len >= sizeof(log_match))
- 		return -E2BIG;
- 
--	if (expected_domain_id)
--		setsockopt(audit_fd, SOL_SOCKET, SO_RCVTIMEO,
--			   &audit_tv_dom_drop, sizeof(audit_tv_dom_drop));
-+	if (!expected_domain_id) {
-+		if (setsockopt(audit_fd, SOL_SOCKET, SO_RCVTIMEO,
-+			       &audit_tv_fast, sizeof(audit_tv_fast)))
-+			return -errno;
-+	}
- 
- 	err = audit_match_record(audit_fd, AUDIT_LANDLOCK_DOMAIN, log_match,
- 				 domain_id);
- 
--	if (expected_domain_id)
--		setsockopt(audit_fd, SOL_SOCKET, SO_RCVTIMEO, &audit_tv_default,
--			   sizeof(audit_tv_default));
-+	if (!expected_domain_id) {
-+		if (setsockopt(audit_fd, SOL_SOCKET, SO_RCVTIMEO,
-+			       &audit_tv_default, sizeof(audit_tv_default)) &&
-+		    !err)
-+			err = -errno;
-+	}
- 
- 	return err;
+Link to v1:
+https://lore.kernel.org/r/20260508114844.29694-1-sv3iry@gmail.com/
+---
+ crypto/ecc.c | 31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
+
+diff --git a/crypto/ecc.c b/crypto/ecc.c
+index 43b0def3a225..6eb4d97a5f0d 100644
+--- a/crypto/ecc.c
++++ b/crypto/ecc.c
+@@ -393,14 +393,26 @@ static uint128_t mul_64_64(u64 left, u64 right)
+ 	return result;
  }
-@@ -387,6 +405,11 @@ struct audit_records {
-  * audit_init() and after the preceding audit_match_record() call.  Allocation
-  * records are emitted synchronously during landlock_log_denial() in the current
-  * test's syscall context, so only those are counted in records->domain.
-+ *
-+ * Temporarily lowers SO_RCVTIMEO to audit_tv_fast for the read loop: this is a
-+ * "no record expected" path that should terminate on the first -EAGAIN.  The
-+ * default patient timeout is restored on exit for subsequent
-+ * audit_match_record() callers.
-  */
- static int audit_count_records(int audit_fd, struct audit_records *records)
+ 
+-static uint128_t add_128_128(uint128_t a, uint128_t b)
++/* Calculate addition with overflow checking. Returns true on wrap-around,
++ * false otherwise.
++ */
++static bool check_add_128_128_overflow(uint128_t *result, uint128_t a,
++				       uint128_t b)
  {
-@@ -403,6 +426,12 @@ static int audit_count_records(int audit_fd, struct audit_records *records)
- 	records->access = 0;
- 	records->domain = 0;
+-	uint128_t result;
++	bool carry;
  
-+	if (setsockopt(audit_fd, SOL_SOCKET, SO_RCVTIMEO, &audit_tv_fast,
-+		       sizeof(audit_tv_fast))) {
-+		err = -errno;
-+		goto out;
-+	}
+-	result.m_low = a.m_low + b.m_low;
+-	result.m_high = a.m_high + b.m_high + (result.m_low < a.m_low);
++	result->m_low = a.m_low + b.m_low;
++	carry = (result->m_low < a.m_low);
+ 
+-	return result;
++	result->m_high = a.m_high + b.m_high + carry;
 +
- 	do {
- 		memset(&msg, 0, sizeof(msg));
- 		err = audit_recv(audit_fd, &msg);
-@@ -429,6 +458,10 @@ static int audit_count_records(int audit_fd, struct audit_records *records)
- 	} while (true);
- 
- out:
-+	if (setsockopt(audit_fd, SOL_SOCKET, SO_RCVTIMEO, &audit_tv_default,
-+		       sizeof(audit_tv_default)) &&
-+	    !err)
-+		err = -errno;
- 	regfree(&dealloc_re);
- 	return err;
- }
-@@ -449,9 +482,9 @@ static int audit_init(void)
- 	if (err)
- 		goto err_close;
- 
--	/* Sets a timeout for negative tests. */
--	err = setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &audit_tv_default,
--			 sizeof(audit_tv_default));
-+	/* Uses the fast timeout to drain stale records below. */
-+	err = setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &audit_tv_fast,
-+			 sizeof(audit_tv_fast));
- 	if (err) {
- 		err = -errno;
- 		goto err_close;
-@@ -467,6 +500,19 @@ static int audit_init(void)
- 	while (audit_recv(fd, NULL) == 0)
- 		;
- 
-+	/*
-+	 * Restores the default timeout for audit_match_record() callers that
-+	 * expect a record to arrive.  Paths that expect no record restore the
-+	 * fast timeout locally (audit_count_records(), the expected_domain_id
-+	 * == 0 probe in matches_log_domain_deallocated()).
++	/* Using constant-time bitwise arithmetic to prevent timing
++	 * side-channels.
 +	 */
-+	err = setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &audit_tv_default,
-+			 sizeof(audit_tv_default));
-+	if (err) {
-+		err = -errno;
-+		goto err_close;
-+	}
++	carry = (result->m_high < a.m_high) |
++		((result->m_high == a.m_high) & carry);
 +
- 	return fd;
++	return carry;
+ }
  
- err_close:
+ static void vli_mult(u64 *result, const u64 *left, const u64 *right,
+@@ -425,9 +437,7 @@ static void vli_mult(u64 *result, const u64 *left, const u64 *right,
+ 			uint128_t product;
+ 
+ 			product = mul_64_64(left[i], right[k - i]);
+-
+-			r01 = add_128_128(r01, product);
+-			r2 += (r01.m_high < product.m_high);
++			r2 += check_add_128_128_overflow(&r01, r01, product);
+ 		}
+ 
+ 		result[k] = r01.m_low;
+@@ -450,7 +460,7 @@ static void vli_umult(u64 *result, const u64 *left, u32 right,
+ 		uint128_t product;
+ 
+ 		product = mul_64_64(left[k], right);
+-		r01 = add_128_128(r01, product);
++		check_add_128_128_overflow(&r01, r01, product);
+ 		/* no carry */
+ 		result[k] = r01.m_low;
+ 		r01.m_low = r01.m_high;
+@@ -487,8 +497,7 @@ static void vli_square(u64 *result, const u64 *left, unsigned int ndigits)
+ 				product.m_low <<= 1;
+ 			}
+ 
+-			r01 = add_128_128(r01, product);
+-			r2 += (r01.m_high < product.m_high);
++			r2 += check_add_128_128_overflow(&r01, r01, product);
+ 		}
+ 
+ 		result[k] = r01.m_low;
 -- 
-2.54.0
+2.43.0
 
 
