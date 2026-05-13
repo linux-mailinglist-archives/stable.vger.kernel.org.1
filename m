@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-246732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKjfHfX5A2pTBgIAu9opvQ
-	(envelope-from <stable+bounces-246732-lists+stable=lfdr.de@vger.kernel.org>)
+	id +6kRIfX5A2pzBgIAu9opvQ
+	(envelope-from <stable+bounces-246733-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:11:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBABC52D1BE
+	by mail.lfdr.de (Postfix) with ESMTPS id E985852D1BF
 	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:11:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 510B0302514A
+	by tor.lore.kernel.org (Postfix) with ESMTP id C21AE30316F9
 	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B574361658;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CC6374E5A;
 	Wed, 13 May 2026 04:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uS5Dvf1m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vg2XLQt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC11352C2B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73DE368D53;
 	Wed, 13 May 2026 04:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778645490; cv=none; b=ksjbRuCv7s45rLawjtohAx0M4uxuHC5WlTCDMze3iC91N3M6vC33oIt45SdgGpPXe+Hs5DaAiUhe+8YlhEU1p+iCKPLd+h3XQoi6iB0JLGaONh2dobRcC0U6Jhy660mOfsOM91qw65UG8Dx22l84pdHD1QWZo63ZsZgECBj8LPM=
+	t=1778645490; cv=none; b=CF0w1+CwLY0j75kArKcQNKoetnxZ1iw/H8BjAghoWk1oqiIjOLy4EAIJyzlFDtql8hCbGKMoKYRCYmkxqo2d2H0176tfVzZ1o5fhTsVImKxuTCaGk9gsZ2n3ayLhT5BgRu63FdkKAcl2Tls6QQ4h67aUZsBLsAeI9t/tCa8xUlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778645490; c=relaxed/simple;
-	bh=+ef/xQz4oQpOJ/gilL+mVumdWc08CVw8swzietXAplQ=;
+	bh=jkE+denMPIGY0/bOaGAfnj9fHctFwnd7buqrH7fhs0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKXf/VMl1EdCA/QRP+VeMmJdkcuhhDgO617WvkLMpQhlYcO5Pz4JTGnZo3KG3zHgi66TC7aUzCYlUFsGQLGwiMJ0j9Hb/r276+xVVqpI9NAUYeIkK4CUFdaJqljDgcLTsVFfL6iY3GY4TsTFpIpyNd956cdrRvI3n4fPa0WDAX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uS5Dvf1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5FAC2BCC7;
-	Wed, 13 May 2026 04:11:29 +0000 (UTC)
+	 MIME-Version; b=fypOYspL3OgM9KWAr6KWL+/gQYZ91SRo7KY2Jx+eLyDPHC7aZWFQkDDnfit+ZTvGFda6D9Ohv6nQ6dL+U9gSMgffkkxlLm+1FBNQtfQAi0kL+AoHlV6YPXV9ourXv6pN1fBA4aBD9Bj8kovyYkGhNhsEwGEZiLakT3/uhEVvx4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vg2XLQt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C97AC2BCC9;
+	Wed, 13 May 2026 04:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778645490;
-	bh=+ef/xQz4oQpOJ/gilL+mVumdWc08CVw8swzietXAplQ=;
+	bh=jkE+denMPIGY0/bOaGAfnj9fHctFwnd7buqrH7fhs0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uS5Dvf1mECprZ25sSI5k/TyxdZb/oaFhtCYopFvf13kV3dTgQHFZya6KdF4Eyk7dP
-	 uKb/CvbxtTpH4Y2nyEyVQF9RXGn1mRNuwq2sFlbHgGqjqaUIFHLhlPyOvPrbkSCp2f
-	 b4RvIWvFuqg3egjIa2O0kTQoWNgQaeHrcEDJP5ePPjRSBa5UMHjluXsaGfFWXwpYCH
-	 lEmRwufWyH0wDXUJVbbNnL0WZR1xWyMwXtWU9JYlDYFcJo6ieuAkbDDDMa48RJeiCQ
-	 Kod0EjlOEDs61dPdS/xBrxdaJ6GL2ajTNJ2l3l+gYjlsbWVLaSfzne77wRJPmw+oda
-	 peCfLKpPN951Q==
+	b=Vg2XLQt2ZcukyT960rNVLMaoEQlp3cYZ/c2UE56hgKdLijb64EO7yFTmVwCBl1P5h
+	 VDRrXYzBrxUdxHuBtdEK19MBEP4bbprDO8X2soeTtcP/xMT3XE2wFbsYf/76vHQnZu
+	 asLkO/qOMpQ2aPErWMcI6juf62ypygNLogD8SIqtDDngHBIo88fdcExu5WDVOSonf9
+	 7kg0cZkNmT10nSXdt+xSEluRijeLNfUaSzg8DAQrAtkuwcj1Jvqfn6263/8EjPJz9W
+	 8cCWGV189TJ8S8ANRm8Y5veZniHJ2p9kxbZ5IfjvaBi8ba7LrH2hjKWlKPc8KoIQz6
+	 McZT1n52QFtxQ==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
+	Liew Rui Yan <aethernet65535@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y 1/2] mm/damon/core: implement damon_kdamond_pid()
-Date: Tue, 12 May 2026 21:11:13 -0700
-Message-ID: <20260513041117.154407-1-sj@kernel.org>
+Subject: [PATCH 6.6.y 2/2] mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
+Date: Tue, 12 May 2026 21:11:14 -0700
+Message-ID: <20260513041117.154407-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <2026051242-gusto-earful-5086@gregkh>
 References: <2026051242-gusto-earful-5086@gregkh>
@@ -62,26 +63,27 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DBABC52D1BE
+X-Rspamd-Queue-Id: E985852D1BF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,lists.linux.dev,gmail.com,linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246733-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246732-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,93 +91,266 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email]
 X-Rspamd-Action: no action
 
-Patch series "mm/damon: hide kdamond and kdamond_lock from API callers".
+DAMON_LRU_SORT updates 'enabled' and 'kdamond_pid' parameter values, which
+represents the running status of its kdamond, when the user explicitly
+requests start/stop of the kdamond.  The kdamond can, however, be stopped
+in events other than the explicit user request in the following three
+events.
 
-'kdamond' and 'kdamond_lock' fields initially exposed to DAMON API callers
-for flexible synchronization and use cases.  As DAMON API became somewhat
-complicated compared to the early days, Keeping those exposed could only
-encourage the API callers to invent more creative but complicated and
-difficult-to-debug use cases.
+1. ctx->regions_score_histogram allocation failure at beginning of the
+   execution,
+2. damon_commit_ctx() failure due to invalid user input, and
+3. damon_commit_ctx() failure due to its internal allocation failures.
 
-Fortunately DAMON API callers didn't invent that many creative use cases.
-There exist only two use cases of 'kdamond' and 'kdamond_lock'.  Finding
-whether the kdamond is actively running, and getting the pid of the
-kdamond.  For the first use case, a dedicated API function, namely
-'damon_is_running()' is provided, and all DAMON API callers are using the
-function for the use case.  Hence only the second use case is where the
-fields are directly being used by DAMON API callers.
+Hence, if the kdamond is stopped by the above three events, the values of
+the status parameters can be stale.  Users could show the stale values and
+be confused.  This is already bad, but the real consequence is worse.
+DAMON_LRU_SORT avoids unnecessary damon_start() and damon_stop() calls
+based on the 'enabled' parameter value.  And the update of 'enabled'
+parameter value depends on the damon_start() and damon_stop() call
+results.  Hence, once the kdamond has stopped by the unintentional events,
+the user cannot restart the kdamond before the system reboot.  For
+example, the issue can be reproduced via below steps.
 
-To prevent future invention of complicated and erroneous use cases of the
-fields, hide the fields from the API callers.  For that, provide new
-dedicated DAMON API functions for the remaining use case, namely
-damon_kdamond_pid(), migrate DAMON API callers to use the new function,
-and mark the fields as private fields.
+    # cd /sys/module/damon_lru_sort/parameters
+    #
+    # # start DAMON_LRU_SORT
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
+    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # commit wrong input to stop kdamond withou explicit stop request
+    # echo 3 > addr_unit
+    # echo Y > commit_inputs
+    bash: echo: write error: Invalid argument
+    #
+    # # confirm kdamond is stopped
+    # ps -ef | grep kdamond
+    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # users casn now show stable status
+    # cat enabled
+    Y
+    # cat kdamond_pid
+    806
+    #
+    # # even after fixing the wrong parameter,
+    # # kdamond cannot be restarted.
+    # echo 1 > addr_unit
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
 
-This patch (of 5):
+The problem will only rarely happen in real and common setups for the
+following reasons.  The allocation failures are unlikely in such setups
+since those allocations are arguably too small to fail.  Also sane users
+on real production environments may not commit wrong input parameters.
+But once it happens, the consequence is quite bad.  And the bug is a bug.
 
-'kdamond' and 'kdamond_lock' are directly being used by DAMON API callers
-for getting the pid of the corresponding kdamond.  To discourage invention
-of creative but complicated and erroneous new usages of the fields that
-require careful synchronization, implement a new API function that can
-simply be used without the manual synchronizations.
+The issue stems from the fact that there are multiple events that can
+change the status, and following all the events is challenging.
+Dynamically detect and use the fresh status for the parameters when those
+are requested.
 
-Link: https://lkml.kernel.org/r/20260115152047.68415-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20260115152047.68415-2-sj@kernel.org
+Link: https://lore.kernel.org/20260419161003.79176-3-sj@kernel.org
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.0.x
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 4262c53236977de3ceaa3bf2aefdf772c9b874dd)
+(cherry picked from commit b98b7ff6025ae82570d4915e083f0cbd8d48b3cf)
 Signed-off-by: SeongJae Park <sj@kernel.org>
+(port parts of 42b7491af14c ("mm/damon/core: introduce damon_call()")
+and d2b5be741a50 ("mm/damon/sysfs: use DAMON core API
+damon_is_running()") for damon_is_running() dependency)
 ---
-The second patch depends on this commit, so porting this together.
-
  include/linux/damon.h |  1 +
- mm/damon/core.c       | 17 +++++++++++++++++
- 2 files changed, 18 insertions(+)
+ mm/damon/core.c       | 16 ++++++++
+ mm/damon/lru_sort.c   | 88 +++++++++++++++++++++++++++----------------
+ 3 files changed, 73 insertions(+), 32 deletions(-)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 343132a146cf0..4b787a0f21b40 100644
+index 4b787a0f21b40..8d88ac52a72d1 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
 @@ -677,6 +677,7 @@ static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs
  
  int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
  int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
-+int damon_kdamond_pid(struct damon_ctx *ctx);
++bool damon_is_running(struct damon_ctx *ctx);
+ int damon_kdamond_pid(struct damon_ctx *ctx);
  
  int damon_set_region_biggest_system_ram_default(struct damon_target *t,
- 				unsigned long *start, unsigned long *end);
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 48747236c21ca..488f66a0d309c 100644
+index 488f66a0d309c..da564d10445c8 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -762,6 +762,23 @@ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs)
+@@ -762,6 +762,22 @@ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs)
  	return err;
  }
  
 +/**
-+ * damon_kdamond_pid() - Return pid of a given DAMON context's worker thread.
-+ * @ctx:	The DAMON context of the question.
++ * damon_is_running() - Returns if a given DAMON context is running.
++ * @ctx:	The DAMON context to see if running.
 + *
-+ * Return: pid if @ctx is running, negative error code otherwise.
++ * Return: true if @ctx is running, false otherwise.
 + */
-+int damon_kdamond_pid(struct damon_ctx *ctx)
++bool damon_is_running(struct damon_ctx *ctx)
 +{
-+	int pid = -EINVAL;
++	bool running;
 +
 +	mutex_lock(&ctx->kdamond_lock);
-+	if (ctx->kdamond)
-+		pid = ctx->kdamond->pid;
++	running = ctx->kdamond != NULL;
 +	mutex_unlock(&ctx->kdamond_lock);
-+	return pid;
++	return running;
 +}
 +
- /*
-  * Reset the aggregated monitoring results ('nr_accesses' of each region).
-  */
+ /**
+  * damon_kdamond_pid() - Return pid of a given DAMON context's worker thread.
+  * @ctx:	The DAMON context of the question.
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index b4032538b22cf..6797bb24a307f 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -111,15 +111,6 @@ module_param(monitor_region_start, ulong, 0600);
+ static unsigned long monitor_region_end __read_mostly;
+ module_param(monitor_region_end, ulong, 0600);
+ 
+-/*
+- * PID of the DAMON thread
+- *
+- * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
+- * Else, -1.
+- */
+-static int kdamond_pid __read_mostly = -1;
+-module_param(kdamond_pid, int, 0400);
+-
+ static struct damos_stat damon_lru_sort_hot_stat;
+ DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_lru_sort_hot_stat,
+ 		lru_sort_tried_hot_regions, lru_sorted_hot_regions,
+@@ -249,60 +240,93 @@ static int damon_lru_sort_turn(bool on)
+ {
+ 	int err;
+ 
+-	if (!on) {
+-		err = damon_stop(&ctx, 1);
+-		if (!err)
+-			kdamond_pid = -1;
+-		return err;
+-	}
++	if (!on)
++		return damon_stop(&ctx, 1);
+ 
+ 	err = damon_lru_sort_apply_parameters();
+ 	if (err)
+ 		return err;
+ 
+-	err = damon_start(&ctx, 1, true);
+-	if (err)
+-		return err;
+-	kdamond_pid = ctx->kdamond->pid;
+-	return 0;
++	return damon_start(&ctx, 1, true);
++}
++
++static bool damon_lru_sort_enabled(void)
++{
++	if (!ctx)
++		return false;
++	return damon_is_running(ctx);
+ }
+ 
+ static int damon_lru_sort_enabled_store(const char *val,
+ 		const struct kernel_param *kp)
+ {
+-	bool is_enabled = enabled;
+-	bool enable;
+ 	int err;
+ 
+-	err = kstrtobool(val, &enable);
++	err = kstrtobool(val, &enabled);
+ 	if (err)
+ 		return err;
+ 
+-	if (is_enabled == enable)
++	if (damon_lru_sort_enabled() == enabled)
+ 		return 0;
+ 
+ 	/* Called before init function.  The function will handle this. */
+ 	if (!ctx)
+-		goto set_param_out;
++		return 0;
+ 
+-	err = damon_lru_sort_turn(enable);
+-	if (err)
+-		return err;
++	return damon_lru_sort_turn(enabled);
++}
+ 
+-set_param_out:
+-	enabled = enable;
+-	return err;
++static int damon_lru_sort_enabled_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	return sprintf(buffer, "%c\n", damon_lru_sort_enabled() ? 'Y' : 'N');
+ }
+ 
+ static const struct kernel_param_ops enabled_param_ops = {
+ 	.set = damon_lru_sort_enabled_store,
+-	.get = param_get_bool,
++	.get = damon_lru_sort_enabled_load,
+ };
+ 
+ module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
+ MODULE_PARM_DESC(enabled,
+ 	"Enable or disable DAMON_LRU_SORT (default: disabled)");
+ 
++static int damon_lru_sort_kdamond_pid_store(const char *val,
++		const struct kernel_param *kp)
++{
++	/*
++	 * kdamond_pid is read-only, but kernel command line could write it.
++	 * Do nothing here.
++	 */
++	return 0;
++}
++
++static int damon_lru_sort_kdamond_pid_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	int kdamond_pid = -1;
++
++	if (ctx) {
++		kdamond_pid = damon_kdamond_pid(ctx);
++		if (kdamond_pid < 0)
++			kdamond_pid = -1;
++	}
++	return sprintf(buffer, "%d\n", kdamond_pid);
++}
++
++static const struct kernel_param_ops kdamond_pid_param_ops = {
++	.set = damon_lru_sort_kdamond_pid_store,
++	.get = damon_lru_sort_kdamond_pid_load,
++};
++
++/*
++ * PID of the DAMON thread
++ *
++ * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
++ * Else, -1.
++ */
++module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
++
+ static int damon_lru_sort_handle_commit_inputs(void)
+ {
+ 	int err;
 -- 
 2.47.3
 
