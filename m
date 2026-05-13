@@ -1,63 +1,102 @@
-Return-Path: <stable+bounces-246844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBOVBRx1BGprIQIAu9opvQ
-	(envelope-from <stable+bounces-246844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:57:00 +0200
+	id mFZAOp97BGpoKgIAu9opvQ
+	(envelope-from <stable+bounces-246845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:24:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3675336FE
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:56:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B5A53401B
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:24:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACD6131B3FB6
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:50:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F414D3046342
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391CD429825;
-	Wed, 13 May 2026 12:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7AE25B0B2;
+	Wed, 13 May 2026 13:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bht02YRU"
+	dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b="gEsE1YDk";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KSRXIT59"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1028B42B754
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 12:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C8325B091
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 13:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778676543; cv=none; b=nviT55seR6pwWsX9CGFegayynjEdu+sA71PQcTVcdszYsJYHflkqzMEeu7jCdU4u5xKPlvOgUJTz78eSMMoma3yyVQHF8teoh29Hy66Wn79ti3wbbOavfObJ51DcHpw6Q4pjG6lDMPNW2+K85T4Y8HhZ7rso9QRNKzjZgMy2LkE=
+	t=1778677241; cv=none; b=fMOabMgB/fRZ2RyOv/8YYPXuHOf3n8xq1Dmjepwbwuk6kQmpPJ4sXc0Gk4G5KkQC5mHGqFFxypL1s/MqZ0c9N2LhTmbopZNbxrvu3ra/yLEW7BmYKTsqpNv6HBFrW9BFlxLWtD+UGTYwFCb8Z8b6s3odmJvn7oLPQyG4+jBW734=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778676543; c=relaxed/simple;
-	bh=/kCQ9F0+A6iE50KxDwql1d7sbuaJfgpqxLDwbwdGJFI=;
+	s=arc-20240116; t=1778677241; c=relaxed/simple;
+	bh=pOAjCEVsOt3sjNrSU2GVZODzb4uckoGbEXs9JNcIL88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sfsUDoyuR956lFSJ4QsoPexkKRq0J07Y2Ej2ac0mEaNZUt4QQS8bljq++Mv9R4VXxyEydcI/9cYrZ+XinbIOqv+U2OrcG5uFTC0ACxy7MlHuuqILoeFsq6yUoQljYK9IvIz3yzZCwuONsYAhIG2iQlgCp+yz7g9coq+MoUcZRTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bht02YRU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40CAC2BCC7;
-	Wed, 13 May 2026 12:49:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778676542;
-	bh=/kCQ9F0+A6iE50KxDwql1d7sbuaJfgpqxLDwbwdGJFI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bht02YRUOBAVca8vww7CtZuvoS0lvKnwrlBeCdsSYlp7wXlY17dY+YjXa+qUTol5d
-	 xxodNnJbZupQaiWFFwwV3pbHivBp+8YOxILES43vS/mfE5XLlXl+kAyh0aZumj9foi
-	 EJ4phfPxrYEDMOPlEYPrLIHRaBgrIpcr0VS9hxBP4PgTLiF9cwHLk8bf/FiuCkmWTo
-	 47Zt9kj8gio7ZmYRFeqG9UtsHmuPAnliDCD9LbOVX+ogKHp3TR0pd6WCzA8CR5B2bR
-	 C3W/zGC9jQgO2X7VpvRoeVlQi/RP9oZbwJXjj0sWcVRoxqIYJYe/LM3Gc0nwMB0C83
-	 BdhMIn3kLuBkQ==
-From: Sasha Levin <sashal@kernel.org>
+	 MIME-Version; b=XcT0b/QR/u8Wr00C71n4lvkEFPn0q+Ny53qaaN28PUlXM3pirHZ9EUZ+uYN0ZPTvDiEzkao+7TQj9NdVkw9BSSAIojrdaswxiExmbln0yYsUO0WEk0/aHEMESEQZZr+0uqkc2KmlNtlwUuEvRkSq9VBpsw3XdmPMcKaxSBvuRew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz; spf=pass smtp.mailfrom=fourdim.xyz; dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b=gEsE1YDk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KSRXIT59; arc=none smtp.client-ip=202.12.124.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fourdim.xyz
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 5667D1D00082;
+	Wed, 13 May 2026 09:00:37 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Wed, 13 May 2026 09:00:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fourdim.xyz; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1778677237; x=
+	1778763637; bh=UrfoVDgmukh5MHmyEcxHrBiAtWE/cElCFUzuarcZtic=; b=g
+	EsE1YDkaykd3QvhZ65HhVXMys7F6t4jgXmzu8oYZJd/uS+fm9AvhVvUBINZ9TD39
+	tnhEoKMpKiHjB132K5VYUz760/Kq1cveosGsFJMJtXvq/Exe+EAh10ztyu2eylB5
+	e0/qn9/fnRQ0wf+r+G/uz0D3aXVJNCKRJpO2FbWPDygHmVuYUB0SV7wF8EfyDdpw
+	8tM6rOJ/KsWYd4o/VBw5b5Yl1uu5TiRyk2UYrLoRJpADni8BmxtOtKb/Vb6DTK8q
+	3ol1RSXkKXDnlQH9FhZxxL/JBb2nktGuSvXgRmZfssmBguTM61+MvoCsbyCcEErH
+	sNHhLs7yAGNmmiWLTNOxQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm3; t=1778677237; x=1778763637; bh=U
+	rfoVDgmukh5MHmyEcxHrBiAtWE/cElCFUzuarcZtic=; b=KSRXIT595NDv/I2pz
+	9mDmUiWvpWjx6SmnelmYiILN8c+9eY+wawZjl2FKPaPY+3WJjrNkMXGLCx1Gx6PK
+	bCW+sb9nYdYM7V9qSVKdlufoIAmdldwYqn51xCU6UqllMnrxkjIcS5oaxn4zxN8c
+	FX9CVLsNRP5D/cihxNxv3oGaer/9MktyctjHXOL7Y9gbUpD/tXEl82FISNuSYauN
+	JhEaQM/Q2M/TpehxyR3LULUFSK+6YHU3p9Sy34F7HMDKs93RsTTWi0m3JFUrSNdR
+	v+DTfy90xJCkZIjow+SLEj6YDfM13Zpff5qfg3HgGRqkc6oV8Kdro9Vdo07dtPwN
+	LNCdA==
+X-ME-Sender: <xms:9HUEanySlQFtsPzewgqtbIj0f281ONAdNw79PsYb7kKrV_p6l2BhIg>
+    <xme:9HUEamu-bFJJ8GFG2p7nqaerPtkYe1L8i3DYiOmXUW31Edg0zfUgX2gAetX5dYnzb
+    koWXm34uUIXWbRvetSBO4_xdjRf0vpZseNiMPr4hb5Rt0R0wwRSrALx>
+X-ME-Received: <xmr:9HUEaus9g1Q_cx0o5dxqNLG5fnpCvuxaY2wG_FOMeIW6_xJSuD-ae4Ns3f4kVkFz36EqIRs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvdegjedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegfrh
+    hlucfvnfffucdlfeehmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddt
+    necuhfhrohhmpefuihifvghiucgkhhgrnhhguceoohhsshesfhhouhhrughimhdrgiihii
+    eqnecuggftrfgrthhtvghrnhepkedtleeiteevueetudevjeefheejueevffejteffvdeh
+    lefftdffleegleduvdfhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepohhsshesfhhouhhrughimhdrgiihiidpnhgspghrtghpthhtohepfedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepohhsshesfhhouhhrughimhdrgiihiidprhgtphht
+    thhopehluhhiiidrvhhonhdruggvnhhtiiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:9HUEarMC8ay9JEFlind2PME4AZfSW97Pft98Jc5qh9yoo6ZKWQDXkQ>
+    <xmx:9HUEas1zcEyGQX2IKo4Fo5W0qWwPLs1STRQnBnZLNg_SjWfWpr7_BA>
+    <xmx:9HUEanP9eCV67zGwbNNQPae7pHw-mdd6ReLkhG3SZQ592Xb4tWYArA>
+    <xmx:9HUEas1FEHZaNdckDKx1t-ueD-v2-F7z3AqdULRNhlUNsDKeFo2YAA>
+    <xmx:9XUEapcCts7Ilgi5Hb5eeSTkMnvXV67DvbAwJRmBFMUT4pmDvTUeW6nK>
+Feedback-ID: if72e4b10:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 13 May 2026 09:00:36 -0400 (EDT)
+From: Siwei Zhang <oss@fourdim.xyz>
 To: stable@vger.kernel.org
-Cc: Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	stable <stable@kernel.org>,
-	Pritam Manohar Sutar <pritam.sutar@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] usb: dwc3: Move GUID programming after PHY initialization
-Date: Wed, 13 May 2026 08:49:00 -0400
-Message-ID: <20260513124900.3713317-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051246-fool-grumble-b747@gregkh>
-References: <2026051246-fool-grumble-b747@gregkh>
+Cc: Siwei Zhang <oss@fourdim.xyz>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6.y] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_get_sndtimeo_cb()
+Date: Wed, 13 May 2026 09:00:32 -0400
+Message-ID: <20260513130043.2190556-1-oss@fourdim.xyz>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <2026051216-wilt-civic-8fb6@gregkh>
+References: <2026051216-wilt-civic-8fb6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,94 +104,63 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5E3675336FE
+X-Rspamd-Queue-Id: 65B5A53401B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[fourdim.xyz,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[fourdim.xyz:s=fm2,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246844-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-246845-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oss@fourdim.xyz,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[fourdim.xyz:+,messagingengine.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,synopsys.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[fourdim.xyz:email,fourdim.xyz:mid,fourdim.xyz:dkim,messagingengine.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Add the same NULL guard already present in
+l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
 
-[ Upstream commit aad35f9c926ec220b0742af1ada45666ae667956 ]
-
-The Linux Version Code is currently written to the GUID register before
-PHY initialization. Certain PHY implementations (such as Synopsys eUSB
-PHY performing link_sw_reset) clear the GUID register to its default
-value during initialization, causing the kernel version information to
-be lost.
-
-Move the GUID register programming to occur after PHY initialization
-completes to ensure the Linux version information persists.
-
-Fixes: fa0ea13e9f1c ("usb: dwc3: core: write LINUX_VERSION_CODE to our GUID register")
-Cc: stable <stable@kernel.org>
-Reported-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20260417063314.2359-1-selvarasu.g@samsung.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ adapted dwc3_writel(dwc, ...) to dwc3_writel(dwc->regs, ...) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8d836d71e222 ("Bluetooth: Access sk_sndtimeo indirectly in l2cap_core.c")
+Cc: stable@kernel.org
+Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 ---
- drivers/usb/dwc3/core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/bluetooth/l2cap_sock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 526b6a1fa3540..2cdb073aff724 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1336,12 +1336,6 @@ static int dwc3_core_init(struct dwc3 *dwc)
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 1960d35b3be0..adee617517bb 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1725,6 +1725,9 @@ static long l2cap_sock_get_sndtimeo_cb(struct l2cap_chan *chan)
+ {
+ 	struct sock *sk = chan->data;
  
- 	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
- 
--	/*
--	 * Write Linux Version Code to our GUID register so it's easy to figure
--	 * out which kernel version a bug was found.
--	 */
--	dwc3_writel(dwc->regs, DWC3_GUID, LINUX_VERSION_CODE);
--
- 	ret = dwc3_phy_setup(dwc);
- 	if (ret)
- 		return ret;
-@@ -1373,6 +1367,12 @@ static int dwc3_core_init(struct dwc3 *dwc)
- 	if (ret)
- 		goto err_exit_phy;
- 
-+	/*
-+	 * Write Linux Version Code to our GUID register so it's easy to figure
-+	 * out which kernel version a bug was found.
-+	 */
-+	dwc3_writel(dwc->regs, DWC3_GUID, LINUX_VERSION_CODE);
++	if (!sk)
++		return 0;
 +
- 	dwc3_core_setup_global_control(dwc);
- 	dwc3_core_num_eps(dwc);
+ 	return sk->sk_sndtimeo;
+ }
  
 -- 
-2.53.0
+2.54.0
 
 
