@@ -1,109 +1,116 @@
-Return-Path: <stable+bounces-246835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMSKNo5qBGprIQIAu9opvQ
-	(envelope-from <stable+bounces-246835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:11:58 +0200
+	id eAmuOdhiBGq6HgIAu9opvQ
+	(envelope-from <stable+bounces-246816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:39:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6360532D54
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:11:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6F2532654
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9E15F304E524
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:10:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F0695303C9E9
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 11:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C999440243B;
-	Wed, 13 May 2026 12:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9CC349CF1;
+	Wed, 13 May 2026 11:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CJD2UkKr";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="vSoAsNo8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q1KxtVs9"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B423FF8AF;
-	Wed, 13 May 2026 12:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF4E3A5E64
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 11:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778674247; cv=fail; b=YLTtbBhzbF9XkM/+gqhQ2yRqe6DBRUgLx8QB0ceCF8hKAtlDyRAzaFs1WV/xChPEyai8h/TK9x2jcFjsreN+GqKWuSd6qNRfY+3ziX2xE9CjrUv7jWDN9CQPCh4Hyn7o0L4LDgplXHR/ERiuzlrDBBzYHopzHsfF6FjO7G2P8ag=
+	t=1778672342; cv=fail; b=p7UDFbDbuVf0qzO9ATxRg8ZtMKKmDUJ31j0QyJxcOT+wJYkEu/6BUIgFfajJPBtG6uFUPI2/SJfqEUBDXAg8U6AishnYUT0TC0rONIPYeNZZqeOyQP6O5IKlm+kzImgi5MyVrZ5iMYl7Jb/AiD7eGsb8TC8amO3MExvoo28IttQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778674247; c=relaxed/simple;
-	bh=E3pWHBnDNgGzjf4ftvzWR8YsBdic1mdkq3jNStlWxeA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=VpWHJfrorIRsFcl2qRkFtVssu7SodsZXO7FQqYYygDNweAroQC1/3tvRfEJSSH8/u7719/f+Y6I8xQfHzR4VO5SWB/Ed36l+19qk2CkmMm8WsXqE0ARqbtYFW/HqzPvphL1i+xFjBm7MPQwqxsJHxFID2CiBKzkPl1z8SPwj1O8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CJD2UkKr; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=vSoAsNo8; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64D7N1XM1433750;
-	Wed, 13 May 2026 11:36:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=L78OsmOtLDsmfmXaFeGWOaBd9mSgDwpUBe3QwH0A6ME=; b=
-	CJD2UkKrlwgXbgmhrKZYrrarK+uTl5NFr3oqfZ3tnf3EY5EwDV6b8FE2gIkOH9v4
-	DF921mxxkDR48hJVeVkdPt7PbtprpUTzRKcos+8JEnd/N2Yv3k7NyXnryeKjZD3P
-	EK0NIn6QerUixm3o05KLYUtOrIDQVGHERQk/Tpks2SEUjh5J3bMNeRFM1zRuDAtC
-	01fvQjso2kbY6h5XfLYgVUNXCxOc7pCpYFLGr9JA8I8sdNv5+CZ0Rh14doJpU0CX
-	NT1akF7n9KJU19W4ZayNH8ZjHWXMI2oUdi9N/+wFJDUntQP9iuU80MzLyNAPOCvs
-	orvx/m+FeXtD5jPCPSOXng==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4e4c97h0e1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 13 May 2026 11:36:03 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64DBYwPo008805;
-	Wed, 13 May 2026 11:36:02 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012044.outbound.protection.outlook.com [40.93.195.44])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4e3necjm81-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 13 May 2026 11:36:02 +0000 (GMT)
+	s=arc-20240116; t=1778672342; c=relaxed/simple;
+	bh=pvOlMotCvv/lfvR4DMMJcH7VPOcv107Hp6jOJvYDBB0=;
+	h=Content-Type:Date:Message-ID:Subject:From:To:CC:References:
+	 In-Reply-To:MIME-Version; b=RSIg2MxzTmNh0+1efzIVsc/F0SV/YwanTbn30GEn2K74SOly9rUW6bxFZg3g6pg5+aowwQye4LVOp5uEMoJjW2mIfKMD+qTtVjXDAFqbmvAb0b4A9vnQZ1yuWzUGtXEw20amWY9y0q75juYx0x90EAHwb+mvT8jtCxavrqiyBV4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q1KxtVs9; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778672340; x=1810208340;
+  h=content-transfer-encoding:date:message-id:subject:from:
+   to:cc:references:in-reply-to:mime-version;
+  bh=pvOlMotCvv/lfvR4DMMJcH7VPOcv107Hp6jOJvYDBB0=;
+  b=Q1KxtVs9L8XAFlQdpw0o6EXu6Ib+MJT9CvYQHaRCbnHnJ9lDYbZg1yHM
+   IE811zgAoZfGInDWasCBkgKUAvmhq9delkkxCUuV7tsaulUCz3iJe/1XD
+   xZqdBmVjc50WTCKlNX7xfD/Exawc26TVz65+1oZK6qf2dk6odO6YrWNHy
+   vQkhygAWB9ksM0lbFAcsUaiArsRNIh3uQFG9Kfr/Pin8LILCAncwCID9F
+   GDAsNPppO4aoaNbq3mgFkqjsOZ3SEfsZSsPr7kXGW4SKcbuiUsPGCa+KA
+   4+Oa7QS/+lI/KE0RitUCtPsXWCJQJyec8PU2pqwk89HnG5xL51iBqZI++
+   g==;
+X-CSE-ConnectionGUID: kbhsDSX3QLuiXZVBgKBv8g==
+X-CSE-MsgGUID: V6HIHjIyRO6ojLPeAydceA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79454058"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="79454058"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 04:39:00 -0700
+X-CSE-ConnectionGUID: 1ZhwPRDlQ0CSVx50ssbKZA==
+X-CSE-MsgGUID: wgckz58lTGmkHDT4rrFCTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="233792369"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 04:39:00 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 13 May 2026 04:38:59 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 13 May 2026 04:38:59 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.49) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 13 May 2026 04:38:58 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KU+1pcvZSPcdHQj2cWqhHV0HbO9zoAXa9eRNYnQmoXY5tan/vza/K3sz201m63S7bJ83S9gin3R9XO8kbWhbnE6Gb2h3UAg3vuV9SoyR2Dh1yFq7mOHGxWx27s/sPTIqya/Skwdx+xJgN+i2HlU63qtVmcGShA4S31fbzyVwd9ImORFlDTZjYEYgFw33U38T2K0Lol94C/R3C39JUIRQHNUf7xF0/nZpQl5lZb5zTdwPQTPEHS1vvpkX80QfDq+lBIt+/nZxZU/LF4a0kN6BOiFDerAqYFfGHBjUB1ZnMSyXDzwjCuCNCS8y8DQfGR4dyK/JDQK6+LIUrg0ghxtYBQ==
+ b=oFQLjC4EewErqDUgyLsNWwq7VACy6dCMt938Bm+bASAXN921h0NEXjDka6E2EAy+KPxgbJ2eJ95ODwXfQVAHdH0mSVa5y8XFpqVgmPgvY5+QF5/rrXz1qUkCzynKPZedP9zCJuDVaUO3zIpjc/xahdqUJuHyDV2KwZlg4XEbO4k6LZXTx50CdK74Uk6Zf90tkh3kHmptjQTokHMFZnY2zKlOaNydrpm5tv9sSNfUXZPxSHvFj51JydyxdjeL3naWHZpnI0HKRBfEZN/uQhc/NmpEc3t1Eo4awtwukDM5hHgtN5crqNSjHgDwbsD3EpQ5evrSu4VB7IWDjyn0WMj1IQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L78OsmOtLDsmfmXaFeGWOaBd9mSgDwpUBe3QwH0A6ME=;
- b=vZH4NSSkZPqrbyMxWVdDExOgY9GFzHwH8Fhmte638X51yMcFujVCGwvwDJ9E/sX9oqDycVQct1CVlON4ZQKyZyMzT1j8FFM7jQmf20BCJRrE0hjJDd06K0Px/XP+10Ew4dmHHjvLqd2/x5vDGk66Rr7Sk1zVg9SUDQVPsP02DeFSiw4RPutrlBHWQcrpbb8LAkS026f4y6b/C0f5OTx2FTZuaNFEmu2OGYDr+my/Ml3hsfhjvpdl2zEO35J++s4KZ1dv1n0xqX96foXizdVuZepI9xBtghtObwwFySIOlCPFThnC0yCis4tLemHsWPP8akwhHeYxvAsgUssADVoAlA==
+ bh=3gZICSSl6XQino/Ww0D+RJKkoEMI4mKPOXanmj6OQCE=;
+ b=dVg7xUZ+5wj4ZL/gKRbl8PdZOD/lfhHOYuSzuBNCvoUJt0EXWoCDyteQfu3SZIjN1R3kl13qCv9RQDCuQWGW1zEDkN8ZExvOBXftPqRhQdHg1Gj8ZVUCzP2+Io9bQG2sa3zgerJ7ymteZDPIktBN8OX4ppZUrYyNRFHF3rwCc6Fq2BGRiWty7I/Q9zlh8/JDOP9gq3CdcPSUz5H4RL6osX7cKu22QNzhjMu10VNbO3SeocT8By13NaleY1nNfYjVPwHrvk+GsfDW8e2ilGU4m+gYC0RJVT2Id+5P7CTw25yK9U3DQqODqJXY287LJ6q9suGroMBovVdWZbskRanFyg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L78OsmOtLDsmfmXaFeGWOaBd9mSgDwpUBe3QwH0A6ME=;
- b=vSoAsNo8fpXsMoNeMvPX5i9KRCvvv+ILUM3eJ4POwpIJl4gw+7gHJx+2peRmmvJDQl+etHQn9WOGPULGwT8cwiCjZjW3xVz9QENxhhxgz0/RipqY4cucXG4tOB7TEQ3XddjUIWhVqtxGQoqB8HbtQKP89kyMnPV7SEsYZ2SN+O8=
-Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
- by SJ5PPF7A7588508.namprd10.prod.outlook.com (2603:10b6:a0f:fc02::7aa) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MW4PR11MB6909.namprd11.prod.outlook.com (2603:10b6:303:224::12)
+ by LV3PR11MB8694.namprd11.prod.outlook.com (2603:10b6:408:21b::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
- 2026 11:35:58 +0000
-Received: from DS3PR10MB997700.namprd10.prod.outlook.com
- ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
- ([fe80::4c1c:3bb:c4c9:8e7a%7]) with mapi id 15.20.9913.009; Wed, 13 May 2026
- 11:35:58 +0000
-Message-ID: <95aa6c6a-6ebe-4ae0-9376-63aa9fb8872c@oracle.com>
-Date: Wed, 13 May 2026 17:05:50 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 046/206] usb: typec: tcpm: reset internal port states
- on soft reset AMS
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Amit Sunil Dhamne <amitsd@google.com>,
-        stable <stable@kernel.org>, Badhri Jagan Sridharan <badhri@google.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sherry Yang <sherry.yang@oracle.com>,
-        Vijayendra Suman <vijayendra.suman@oracle.com>
-References: <20260512173932.810559588@linuxfoundation.org>
- <20260512173933.811124271@linuxfoundation.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20260512173933.811124271@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN5P287CA0025.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:263::7) To DS3PR10MB997700.namprd10.prod.outlook.com
- (2603:10b6:8:347::19)
+ 2026 11:38:53 +0000
+Received: from MW4PR11MB6909.namprd11.prod.outlook.com
+ ([fe80::9eab:962:806:3794]) by MW4PR11MB6909.namprd11.prod.outlook.com
+ ([fe80::9eab:962:806:3794%4]) with mapi id 15.20.9846.025; Wed, 13 May 2026
+ 11:38:53 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+Date: Wed, 13 May 2026 13:38:47 +0200
+Message-ID: <DIHIPV1FJITR.1FJEZMGRDSR7I@intel.com>
+Subject: Re: [PATCH] drm/i915: skip __i915_request_skip() for already
+ signaled requests
+From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+To: Tvrtko Ursulin <tursulin@ursulin.net>, Sebastian Brzezinka
+	<sebastian.brzezinka@intel.com>, <intel-gfx@lists.freedesktop.org>
+CC: <andi.shyti@linux.intel.com>, <krzysztof.karas@intel.com>,
+	<stable@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <fe76921d35b6ae85aa651822726d0d9815aa5362.1776339012.git.sebastian.brzezinka@intel.com> <c9c1270b-f724-45dd-a66d-f7b30f6c6087@ursulin.net>
+In-Reply-To: <c9c1270b-f724-45dd-a66d-f7b30f6c6087@ursulin.net>
+X-ClientProxiedBy: DB8PR04CA0001.eurprd04.prod.outlook.com
+ (2603:10a6:10:110::11) To MW4PR11MB6909.namprd11.prod.outlook.com
+ (2603:10b6:303:224::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -111,260 +118,225 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|SJ5PPF7A7588508:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b5f4984-0879-47e3-f1f3-08deb0e3cd86
+X-MS-TrafficTypeDiagnostic: MW4PR11MB6909:EE_|LV3PR11MB8694:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4a9fe3bb-5e08-48bb-6f6e-08deb0e435c9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	+9uhWq8FNNE8IYcZpjcVJt168xJN/aoE07UoT4xPsK1cHeRH9nn0SyFDgOw2bLTW5K4AzlLJEFBshgkfWHDvfV4PFhr3HUG05I+QuElZiVwBVdXiv7Y4AqExtxYuaN3K0hRpMuM/whkb4lfmrRvNmS39gwuyhBGv0QCW/qnd/7OM2UMnsbMuWFDbt+DiBCo3geibTjQJS6l55d84/DeLWC4ctrdhEx8RFlgE888RrEARH/VMff0t8L4+/5jXIZiyUsDVGOO7qfHj9nrCbgAPbqGRd3b+N+aJUfYRR2hbvOnfnqsmSvYgMk+8tAQvvaX+xEOT/FfIPUoWU5xtmoq5PrGbj8qkCZD7SSf8LzSj45QZGEGDi4KSn0LkivUvaW2XXeioYp2xqbERA5IodsGnCZokDBUmLQMagohQPBZz4o3jlIWV4Igs479RFdncjRSFc37xogC6P9zEpx6FbruluI70Xg/CaOIfTGdEiBsuj/GIx8BYpix1jpRh9keKy0p3D9OvRzUAPhL2ilBEkYhrE1m2KFM+LbGdzhhQ4pf9jEZ/19wsWrBvKOvXiBIlrsQP/prWPnMvQoWqnqCQigvgXutR6JEhsQzm9kUB7ZTYqv/Mnvx4ybTt+eZlf6szfwNeMeEuFYVmuAsRkCOJ35wnZw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|22082099003|11063799003|56012099003;
+X-Microsoft-Antispam-Message-Info: Q03EFUORLveVh3LUrM++28WhmilpFM+sUXCwNi5f7RKpajprKEj8fFKhG9bl1CWbRMHGMURsk+kfDTADMXRuL7C9E8EavWo2jUAdTOg8Mu2KqVovFYF5ly8uLX38umH93Y+JQJpgnbtF2Yc46n6piupGM0ypFcYIntApyBA6Tewpc4ubHE1LEDY/g44UezJtMR9ZPP0Sz2bJICVyBcqzP55dr8mn5w9Ka8HKZxDiJ4zjPcvHgmUUadFZ1kCvH9rgjBG9ZCIvuDleWtcoG19y1GAqzUY2SR5smMtUDPVU/LpnFhxdQt0Z6aZzEmOAfUbwHa3esC7iUCrFX4eErSSOoIOQJIeG52nKB8Dnv2EadAXJn2ZqjYOAWEwL929JrAzdbS05gi3VVbPXgVHykowa4WRD8j9mKAbGywMYaM8asimd9rPLrsM+ENDd6mdCrWDwqo/lr8vOKGGWtBNpQMYUi+e1OIpm3S5rN4fG6bHFK70dhdyG5u0iJiIn73E453WkjVGOOyNc0ZW4l2erdC9HcC8yxm90UTkdtc+3j6iL6xleXK1fELKw2sFO66m3+1+4//OwNgmDLcrx4EwIsspohVOLo5+S432D2sVLd3wl+YyQ+AsA/pXU+9k9P4KoUGg0YsviBXCHVG+yVzmPmZkSsA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB6909.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(22082099003)(11063799003)(56012099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZHpjSTdZL3ZHakM2amtQL21rQ1V1SDdqZ3ZvZi9HTmpJelFMMjE0S3hQdE9G?=
- =?utf-8?B?MjdCOEhpWlAyc1NLQ1pQb0FlVHhNMXZidWovMHF2VEh3dnRZWEROSUJhRith?=
- =?utf-8?B?WUNob0FuNzNtVXV6QkhXTGxxV3NzS21QRVh6Uko5Vkt2bU83S0JNRXI3aFE0?=
- =?utf-8?B?ekwzdGpIOHdxQlNoNFo2WkI1aDhubTh2RllONUZDOXl6akMvdTNOQzdsbDhX?=
- =?utf-8?B?cHRDbS9NQnl2SHRyelJUK2ZBd0hWQTFYbFJIWmRRS2IyYnVBMm11Ymd6YW44?=
- =?utf-8?B?Y1F1Y2gvTzUzYXdhN1gvWm8ydExhVlUzMEhQV0RBWW80ckExWTNNQWt5cjdV?=
- =?utf-8?B?Z3pQa3ZwYlNWZFF5RG1zZFduK1dHUnI1OVVpQVdmQWwzQ2tKU3QvRjFkdG1t?=
- =?utf-8?B?cW1nelJNUkNUaGJxemdQRjZlbVhOUHk0ZUZteXBISXVWV1ZQT2xHSVNVUFpT?=
- =?utf-8?B?VUVsaFhxazNzNjNyblQ5UFVWM2I5WU0vcWRwdC94WnRFRkpNZzlESU1PSzBV?=
- =?utf-8?B?TytCRFFTbFFjeHhtVHlOSXRVSmFhMkhCbHAwamVXVVlhSjdaRExjNlJualBD?=
- =?utf-8?B?cDA0TXdFOVQxWE8vSENQMUJZZnFSYURWZjN5bFY5SFZSZGNxeFhQY1dmbHN4?=
- =?utf-8?B?ZGNIb2hrVHlWQjVqcWZEWlRIdXliZ0w2SFRTVXN2cEtKblVhblVIQlZTZGVE?=
- =?utf-8?B?TkxkdFVFaUdzMmNBTlZnRTZ3dERSbEpMblFVbXNwNlFFRG5UenRkWEVPMTJV?=
- =?utf-8?B?VmtPYnVHbVhJN3dJWjZYUVZLSklrL3g3ZkNYckVHMTlzaGhVTjFmbkVrOGpL?=
- =?utf-8?B?R2ZobEx1Z3NOMWtSRnZscGtJTDBpT2VEbm9lWDNaS1FvKzFlVTJIZGV6VGdp?=
- =?utf-8?B?TXBvUGNtZXpTdFBhMFBPWXVBVzhhdjRjRHpsSm5yQ0s3RmRwWHV5YmJjVEM0?=
- =?utf-8?B?N1l3UmNsbDRSSHl6Z2JjSllWWmtsNDdyZ2NFSEN5aFRHTjZBUGxPTDJMNFZu?=
- =?utf-8?B?dTFBYTNvNEljK3BkdGVZdFhGOU1MQ2R5cWJ2K0VVVTlSVkxKd09SbERZdWky?=
- =?utf-8?B?N3hBbWZHcTN4cFQrVjVzOFRRay9GQm5ZTW1PczlBVlVVVlpNK0NUYjdTUTZ3?=
- =?utf-8?B?VXVuU0twckR6eUUwYkNIN29XS0ZKelE5SHRXUDd2N1JCak5XOThTOEZSUE8w?=
- =?utf-8?B?MGJyWGxxZ21uUFFJcE82OUxQT2J2dU5uREhOajZCei9qVGF5QjM2dlY1QmdF?=
- =?utf-8?B?c05WbEhRcVErRjZEc2ZnY2pvMHdtcTdQS3JVeVMvZUpDTWU5V0lQblRYaGpJ?=
- =?utf-8?B?T2IrMlpxd2ltTjVnVFZqRVgzT1d4RUVZWUZzR25lMFdTYlMwRUVjb0NTSnpx?=
- =?utf-8?B?emlNVGVhZVh0d1JpbllkcUJiS1lPNWh2VXZhZXJDRzdmMzd5d2VEMGFZcCtP?=
- =?utf-8?B?U3RzODA5Nk5UV3NxL28valJFbXQ2MDE3ZEFlTHdLUnpOdHdsenkzT3FzYlFS?=
- =?utf-8?B?RExzR1gvbmRPRE05YWVPOUVBUnl3Yi8rd3RjTVlTZGVtcnhOSTRVVmtVMnQr?=
- =?utf-8?B?ZVdQN2JUeGlxcFJRUWVyK2pYMFdwWUl0MmZSMHRWc3ZSeEYwanVTN0lTclkw?=
- =?utf-8?B?Y2R3alBpR05MMmJRTGw1QVN4Vm12aGNEOGxtMkE5b3hFV25DQ25xeEtyQzEy?=
- =?utf-8?B?c210OStpWE5RQ2pRWmxpUEhDaDRXMTZoak5NUWRCRituNGhZOWhwWU42djFX?=
- =?utf-8?B?RzJKeEdPVmQ1cmVmTlNJbUYyckZORDVrZEFJRUR2TGVZajlvS2UxWWhzc2xV?=
- =?utf-8?B?RzU4Nnc4ZCtoT09XRStuYlZYRnNvVVk1S3VIRk1WemRuZ0xONmJGb3RGTlQ0?=
- =?utf-8?B?VXJTMS9GOC9DL3NiN1hsQm16RUsvZFZ1U1RBZm1VMkF5ZGdYT2w4RXcxTWJR?=
- =?utf-8?B?dmxGcTRvaDlaMW5KVUpCMFpaMmlnZ1FSN3d0MHcvQzJrSFRZUWxheG5iOVhl?=
- =?utf-8?B?Vit1ZmswTXlUclNxajNBWUN1VnljZXRtd2NPOThoNW10NGhKbmZWMnU5eGlG?=
- =?utf-8?B?cGhTeVJwVkgySDZrOVBUQlhqNlFGaXBFYmFXQ011Mnc4SGdzckZTamMraHAw?=
- =?utf-8?B?QWtOelM1WkxvRWpWNTRZSmFpWmFNVXBpQ1d1QitJSlBnNmY2M3JMem1CcnZG?=
- =?utf-8?B?WUdVU3Z0YW9LMEV1ZnFESTFLalNVY29JYkdla2s3VkJnSVR6T1FIdnpLMEo0?=
- =?utf-8?B?QlZkYzR4VWRwbFhPeHRPM3NNMlkzenFlNHRPZG1kYWl6cFQ4d3d3UGJ4OGE2?=
- =?utf-8?B?cVh2YUJwQnJ1OVNNN1JUbGNZc2JwcE10Nm9YcW9ib29TMHZEdmpyWFBrMlBD?=
- =?utf-8?Q?WKkGfH21CqgbCxHt8jqFx9VSyJG5OrXhgpyXq?=
-X-Exchange-RoutingPolicyChecked:
-	McRvQd9+CnK6Wup5fAFVujyeS+cqWEYpz7xI9NOECbYSItk3N0NtN8yDzrZ4DbZ6GP5RNcOmIyQlER8QSidWVK49k2tpIB1BMNm6refSDzCC+Dew0nPxK4TtN+g9ueOiLktPRTnkBRVPSSdSPlDyVuFC2RhE30VDrbQBIj0/IeXdvwgvOiguNE6S3uZMzUIg+Oei7TcatqOoCfjoS7tiqx1OoWHng43hgWfjLzHdtNenrIEOx0bVHzoP6IMOJhuRSjQCTpmFPfyWCWk38vqZZWrAk/h/axuFfgC5QOKto/M69XbLTn2tPQE57AbgglJaVLdVRd2np0Bj4vODrcVFPA==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	0Xp37lIerjBG0d2KDxdetqalzWnoMv13iB6tE9Ks645N6gHP+wR7gtywUOG5Q+mlAZLp2wYlmtR9aH3LC0+jpfWPkQvfRyyyEcpSBh4KP4WaPWglW6VT06NCmhTphdfJr3SfErkwLSNS5VHuKeYwJFPGmDS+6hDKJ15w8Co6g19gt7vtRCduKql/xb9CZDHwFIsjFlUJ7qrYkMCOg6m2LVJgy9uQSXAv50ZXkFPo+blRLY79rp2fy6fc1NztT2jU+47/+h6Z4haBJq8QUGi7Hvcr7FRYHfTdlQyQfepPPp44HsITbGhRNHOkAaYVmdidX1lhJkKs1Z80iP2jgJt/XL9Q6gGWpcCnFmmsdtSAatdcmgAdPS0iZVs0CuBAAInMBf9QG31nae2J+mMYjHwFCrlmictgwUSrkX2dxS+ngJ+v5WqNio14NxK/reNwtRVTxY4U93hHZBrqVw9Xn6pgWWarTR47iGE+V6CdAH9dN2cLG8H3cv5yg0UEToFWSCEQcwz3Hj56f2//y4Sp4LoLME5Tan1gq9nnRy5IE6SXxWgOT8I3ZSTDUk44GCX+RfuBw7y6TUdCUCv2CuLzYcucDvIOxqYDt8sc31SvsdbrkIg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b5f4984-0879-47e3-f1f3-08deb0e3cd86
-X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NmJVRmsybjk0eFk2OXpFc3hxSEFRUFdGSllhVnlkRFcrb1NBMjR1MGpXN2FD?=
+ =?utf-8?B?bWJZV3RSdEYrdWxqNUNPTko3M0o0aU9EVGQ1VlJEU1BZbzh6dFJnV283elJu?=
+ =?utf-8?B?dTdHaGlwdVppbWZiZmhoWjN6Wjc2TTVHbUJZalp2Smx1TndLREZueCtzNWtN?=
+ =?utf-8?B?cUs2SWJJbjdYT2htcXcydVZsaXlPMTQwOWh4UlByQXVKR3lzelVMWENWdXlF?=
+ =?utf-8?B?UkN6VElnM2lwaDdVeTRaSTlGOWZXby9kamt1WXRveWFhemgzRUlLYjRpZkRR?=
+ =?utf-8?B?VGk1V1VlRGFadUxiS1dYQjhiaFBOS29Ib1Y5cWlmQWVEZ0hIZTNjak5zOXNY?=
+ =?utf-8?B?Q0VEZzlHVTJGc1pTa0xBNkFrREEvNHQxdUxIcUVTV3dBUmh2WDhMOG1YWFcw?=
+ =?utf-8?B?UmM4VzZWdnlmTjNKbmJrSjhlWjRCTFd4U011cTcyOEcvaVA4TDBaMkpsZjRy?=
+ =?utf-8?B?U2orMGIwWnVoR1MwWmJUSTE1OElaTEsvYXBrbk5tZWFIUHpwODVVc3RkRG13?=
+ =?utf-8?B?RW1FQ29abDc3K1NpSEtHVy80NUtHUis1WUw2eEZwNy9HY05QcjZMNW1jTDJW?=
+ =?utf-8?B?ZlVqeWM4ZmpuVG43ZStCYXJGbGJpNEUrMWEyV2RsNHNaOUNlVWxRaFU2V09w?=
+ =?utf-8?B?dTR0T1J4SnYzZ3h0RG1KcDUxVUMvdVVQakNsRW5sRm1NM1RRRm9YaUdUSmk0?=
+ =?utf-8?B?KzBjNHF3T1YzSWJtQ1ZKNStKYzU4b3VuZ1pGWnF6elZVcGVsQzRVTFdZbUI5?=
+ =?utf-8?B?RmlDY3RSQk1CalB3MDhlTDdUMnRSZXpBVkFjb2U4N29LVE5EUDQ2LzJoUk1k?=
+ =?utf-8?B?Yk5UdEVsdms0eENmaUk0d0RkSjBHeEcrRUU1UnlPUC9QT3BFaTdiSUQwRnI0?=
+ =?utf-8?B?TEhQb1Q0Q2syUlYxM1U2aTdXZkxqZzJmejM5V1ZKaGNrSngrcVJ6c1JHbXow?=
+ =?utf-8?B?OWFtTG12TFZSUzF5SERDUlNFd0RXclo5UGh4ckxmd09EaG02U3hYOE96THUw?=
+ =?utf-8?B?QUhqTExqYUhyWVRFaC9DWHAzem05UVdtdlcvWnY1UEVKT1VOK0srSjNkMlpB?=
+ =?utf-8?B?M3VxeXdYTm9VK0JOZko0T3hnaGs4Z3ZhVklHaURrTExvckZLaW1WQ0twei9Y?=
+ =?utf-8?B?aTZaYlJEL25BM041Vlo5NThOL0FJclRENkYxYThMMklGSDdWbjJOMURnTUpp?=
+ =?utf-8?B?bW5vR2hoWEVFUnpEOHFJSHU4Y296MlZib0FITE9iMDdwM1EvM295aG9iRWVY?=
+ =?utf-8?B?dUhHU3JkdklaUC9QT3ZsVDVBeGhUY2lrVFluQ0k0WUhiTTJYM1NvWlRGSlVL?=
+ =?utf-8?B?N0t2V0xCdTZITThqWjhtRDlxTFdtM1hGeGwxajRSTGY0RjB1TDdsam12UWpw?=
+ =?utf-8?B?T1N2UzJFdnpYdFlwZTBxQmczWTJXTmxZQTk3SmxrS0xXZnRteTFwdm5qRWlJ?=
+ =?utf-8?B?cWlXbHpycEtZOUFZYkphRDM4clJaUkN6Uld0emhwZ1ZIejIwUHV5ZXV2aVJ2?=
+ =?utf-8?B?K1ROSGdwOTdYMDhwT3hoWmNxZTFsQlBWTGkraG4vd0UzYjRtanhYZ0dhRVYw?=
+ =?utf-8?B?cVpvSGZSZk1TU1V2ZkNtTGRaQUhEUXhkLzg0UVV0NkFrbzkyM0FmMU5OTlMx?=
+ =?utf-8?B?cm4zcktUZHBtQnppcnRIS2RzZUdTd2swT2I2WWsyNm9ZdjlrMHhXVU15OUNV?=
+ =?utf-8?B?YWkvM3lmc0FDRStOdkhHVE5PSklBTGRHK3ZRaFZKMlFKcjhuNmtHT011ZnVN?=
+ =?utf-8?B?NEpyRHAza1VXQTRoczNCdEhHRnlhZlRTZ2JTc3RhS0wvUTZaeUxYY0tRQnVx?=
+ =?utf-8?B?N0dReGQ2c0d6WmNubW1VblR5UW5JNUovUWxSZlY3Y1J2aHVDeGxDNWUvQXg4?=
+ =?utf-8?B?ME00d1F5cUkzSkswUkM1QUxPTWt1ckR2aGxVZzJ3ak9OMklYQ2ZRWERoS0s5?=
+ =?utf-8?B?WjNKdnBRRS9uaG5aYUU0aWFEQjRSVHdYY2tZZFNhQXU1WVc3MkVLRkVXODFF?=
+ =?utf-8?B?K0hoZVQ0QUlTUHU2NUxvRjVKSmh0TU5Bbk5Qc2daY0VocG5xRCtTTmhYcVU0?=
+ =?utf-8?B?UDJUSUxvQUNjeTJkTXF0Mm4wVE1WZHMzc2JmaUs3ZGVEdGhBUld2NjZMelov?=
+ =?utf-8?B?clNGWm9IOCsxb1F6b2xFWkM1bzRLcXlLTUYzSkdva1lDdkRVNjgvN2U3L09N?=
+ =?utf-8?B?czl0Z3RrUUhZRlozMVZlRU5HVGY5V1pYMkU0OW5hbTNsQUprT1JrVjRsODZm?=
+ =?utf-8?B?UlpiTW5jK25PR3EvQ0p3L1ZzRWdaMUxzTjhscll0VG5PWG9GZWlQYlpaZUNz?=
+ =?utf-8?B?cXVBRFRod25vc3dTdzk4d0ozZjQ5cWZlWUxFdWxMalVKSzA3em85aGFCcjcx?=
+ =?utf-8?Q?Ei3KkR7zm29pcqsc=3D?=
+X-Exchange-RoutingPolicyChecked: BzkNs0Va3Vk7i2Qpq2S/QM/LJj9sdKIPI7FKpE6FTMTaHuZEuxQ9UwAGgf1lX0mK9jjheq5kLcBRCUmcE3wPiVPtyyaWEruVP5cqugRmKPgxPYVJm9Km/vJTHAXQRAmle8nOpdw5RfEzeA0gesGb/XG600gu9JkDbLyqpsF8+GIm4nUKiySH/3RkHWBrdPm9+fDWtuiWxyw19jXGYVEIlQWWUElFBzH4m4cRL0durdyigfhYRJkoC8k8Mk1+UMMH1zO0er0ZfngQU0S1de3o/YjMC/U/UsQiebfSQ4uXB1CeeMoGfQ7Ujy1wRKKMkxexy/bdxfqF1zcBeICj+B272Q==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a9fe3bb-5e08-48bb-6f6e-08deb0e435c9
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6909.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 11:35:58.6192
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 11:38:53.6008
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J5PdghziuetyZC5JAfADLRR76mN48Ag5rQxzdCVho/44ZmI2tnaBZzK6yq1m/225Aw/IUNEJ+iLWqYILEtFSd1gGITundmfWnMV6I/7+qRcNGiaUZHXcAto9bdd9Dv+S
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF7A7588508
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-13_01,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- lowpriorityscore=0 spamscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
- adultscore=0 mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2605050000 definitions=main-2605130121
-X-Proofpoint-GUID: rD7pObitqorW-eT9umOBcNMaixcEv86d
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEzMDEyMSBTYWx0ZWRfX4ZIX76NWS/5Q
- /OfwQRPgegQc2tzNdz0w10Lpy+cGmZPJlWMckGnNcbnIeYxozhah04a4PpZwAcag2zgsOTfj+iW
- WzUaWweIHhLBAxFNrqRv+LLyaIvYgvKSsSJaerUbwYbUKvpcMrIyTfTGT3xbnbI6xRjLtEvB8cp
- QfTUD2PucuyujRPL0Cev8UIKU6P/XeyhsLbPskGzG7TZcllPEXXhxvpACrBHOZ09V7mEmMJCDe0
- TqRv8hvHO4bgm/NC3ksAlEnFsqC6H0IrAJA9oCw0GmnMTjHA/YLcPWZs5eVVtLWfJ2KZ3HRj1be
- JtbeeXcvUuYpwA95xho5VbeheYrGYHVOC44Ia5vR10P6zsr7BUjZ2eEXVFdJ3baLd1umxBgUzBI
- dOI8Re/9VJhL0MYZVlLh0yHR4CsAk+6WGI/i7GhCM66rODIOYrkAW87kWQNtjL1reyuLWunzdRl
- NO88O1Kb2M0Z2r00J4gWdPRe2iC64X1QfvhDnNi0=
-X-Proofpoint-ORIG-GUID: rD7pObitqorW-eT9umOBcNMaixcEv86d
-X-Authority-Analysis: v=2.4 cv=T8a8ifKQ c=1 sm=1 tr=0 ts=6a046223 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=RD47p0oAkeU5bO7t-o6f:22 a=bC-a23v3AAAA:8
- a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=ag1SF4gXAAAA:8
- a=eDMlovH_pQf_qwTT83MA:9 a=QEXdDO2ut3YA:10 a=FO4_E8m0qiDe52t0p3_H:22
- a=Yupwre4RP9_Eg_Bd0iYG:22 a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22
- cc=ntf awl=host:13839
-X-Rspamd-Queue-Id: D6360532D54
+X-MS-Exchange-CrossTenant-UserPrincipalName: QsKNEi7l8j2ROhj+K/1NViNA6chy6Qx1MDMY7h0PiIW+b4e00zKsqeCya28mg+p1kJUD0q/sJyzYP8yMLuODpVO4+3Ysswz87anZqoF6W5s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8694
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: 8B6F2532654
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246835-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
+	TAGGED_FROM(0.00)[bounces-246816-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,gitlab.freedesktop.org:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[sebastian.brzezinka@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[9]
+	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Action: no action
 
-Hi Greg,
+Hi,
 
-On 12/05/26 23:08, Greg Kroah-Hartman wrote:
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Amit Sunil Dhamne <amitsd@google.com>
-> 
-> commit 2909f0d4994fb4306bf116df5ccee797791fce2c upstream.
-> 
-> Reset internal port states (such as vdm_sm_running and
-> explicit_contract) on soft reset AMS as the port needs to negotiate a
-> new contract. The consequence of leaving the states in as-is cond are as
-> follows:
->    * port is in SRC power role and an explicit contract is negotiated
->      with the port partner (in sink role)
->    * port partner sends a Soft Reset AMS while VDM State Machine is
->      running
->    * port accepts the Soft Reset request and the port advertises src caps
->    * port partner sends a Request message but since the explicit_contract
->      and vdm_sm_running are true from previous negotiation, the port ends
->      up sending Soft Reset instead of Accept msg.
-> 
-> Stub Log:
-> [  203.653942] AMS DISCOVER_IDENTITY start
-> [  203.653947] PD TX, header: 0x176f
-> [  203.655901] PD TX complete, status: 0
-> [  203.657470] PD RX, header: 0x124f [1]
-> [  203.657477] Rx VDM cmd 0xff008081 type 2 cmd 1 len 1
-> [  203.657482] AMS DISCOVER_IDENTITY finished
-> [  203.657484] cc:=4
-> [  204.155698] PD RX, header: 0x144f [1]
-> [  204.155718] Rx VDM cmd 0xeeee8001 type 0 cmd 1 len 1
-> [  204.155741] PD TX, header: 0x196f
-> [  204.157622] PD TX complete, status: 0
-> [  204.160060] PD RX, header: 0x4d [1]
-> [  204.160066] state change SRC_READY -> SOFT_RESET [rev2 SOFT_RESET_AMS]
-> [  204.160076] PD TX, header: 0x163
-> [  204.162486] PD TX complete, status: 0
-> [  204.162832] AMS SOFT_RESET_AMS finished
-> [  204.162840] cc:=4
-> [  204.162891] AMS POWER_NEGOTIATION start
-> [  204.162896] state change SOFT_RESET -> AMS_START [rev2 POWER_NEGOTIATION]
-> [  204.162908] state change AMS_START -> SRC_SEND_CAPABILITIES [rev2 POWER_NEGOTIATION]
-> [  204.162913] PD TX, header: 0x1361
-> [  204.165529] PD TX complete, status: 0
-> [  204.165571] pending state change SRC_SEND_CAPABILITIES -> SRC_SEND_CAPABILITIES_TIMEOUT @ 60 ms [rev2 POWER_NEGOTIATION]
-> [  204.166996] PD RX, header: 0x1242 [1]
-> [  204.167009] state change SRC_SEND_CAPABILITIES -> SRC_SOFT_RESET_WAIT_SNK_TX [rev2 POWER_NEGOTIATION]
-> [  204.167019] AMS POWER_NEGOTIATION finished
-> [  204.167020] cc:=4
-> [  204.167083] AMS SOFT_RESET_AMS start
-> [  204.167086] state change SRC_SOFT_RESET_WAIT_SNK_TX -> SOFT_RESET_SEND [rev2 SOFT_RESET_AMS]
-> [  204.167092] PD TX, header: 0x16d
-> [  204.168824] PD TX complete, status: 0
-> [  204.168854] pending state change SOFT_RESET_SEND -> HARD_RESET_SEND @ 60 ms [rev2 SOFT_RESET_AMS]
-> [  204.171876] PD RX, header: 0x43 [1]
-> [  204.171879] AMS SOFT_RESET_AMS finished
-> 
-> This causes COMMON.PROC.PD.11.2 check failure for
-> TEST.PD.VDM.SRC.2_Rev2Src test on the PD compliance tester.
-> 
-> Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-> Fixes: 8d3a0578ad1a ("usb: typec: tcpm: Respond Wait if VDM state machine is running")
-> Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-> Cc: stable <stable@kernel.org>
-> Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Link: https://patch.msgid.link/20260414-fix-soft-reset-v1-1-01d7cb9764e2@google.com
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->   drivers/usb/typec/tcpm/tcpm.c |    2 ++
->   1 file changed, 2 insertions(+)
-> 
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -5614,6 +5614,8 @@ static void run_state_machine(struct tcp
->   
->   	case VCONN_SWAP_ACCEPT:
->   		tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
-> +		port->vdm_sm_running = false;
-> +		port->explicit_contract = false;
+On Wed May 13, 2026 at 10:47 AM CEST, Tvrtko Ursulin wrote:
+>
+> On 16/04/2026 12:31, Sebastian Brzezinka wrote:
+>> After a GPU reset the HWSP is zeroed, so previously completed
+>> requests appear incomplete. If such a request is picked up during
+>> reset_rewind() and marked guilty, i915_request_set_error_once()
+>> returns early (fence already signaled), leaving fence.error without
+>> a fatal error code. The subsequent __i915_request_skip() then hits:
+>> ```
+>> GEM_BUG_ON(!fatal_error(rq->fence.error))
+>> ```
+>>=20
+>> Fixes a kernel BUG observed on Sandy Bridge (Gen6) during
+>> heartbeat-triggered engine resets.
+>> ```
+>> kernel BUG at drivers/gpu/drm/i915/i915_request.c:556!
+>> RIP: __i915_request_skip+0x15e/0x1d0 [i915]
+>> ...
+>> __i915_request_reset+0x212/0xa70 [i915]
+>> reset_rewind+0xe4/0x280 [i915]
+>> intel_gt_reset+0x30d/0x5b0 [i915]
+>> heartbeat+0x516/0x530 [i915]
+>> ```
+>>=20
+>> Guard __i915_request_skip() with i915_request_signaled(), if the
+>> fence is already signaled, the ring content is committed and there
+>> is nothing left to skip.
+>>=20
+>> Cc: stable@vger.kernel.org
+>> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/1372=
+9
+>> Fixes: 36e191f0644b ("drm/i915: Apply i915_request_skip() on submission"=
+)
+>> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+>> ---
+>>   drivers/gpu/drm/i915/gt/intel_reset.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/drivers/gpu/drm/i915/gt/intel_reset.c b/drivers/gpu/drm/i91=
+5/gt/intel_reset.c
+>> index 37272871b0f2..b728a5171e93 100644
+>> --- a/drivers/gpu/drm/i915/gt/intel_reset.c
+>> +++ b/drivers/gpu/drm/i915/gt/intel_reset.c
+>> @@ -133,7 +133,8 @@ void __i915_request_reset(struct i915_request *rq, b=
+ool guilty)
+>>   	rcu_read_lock(); /* protect the GEM context */
+>>   	if (guilty) {
+>>   		i915_request_set_error_once(rq, -EIO);
+>> -		__i915_request_skip(rq);
+>> +		if (!i915_request_signaled(rq))
+>> +			__i915_request_skip(rq);
+>
+> I spotted this patch in drm-intel-fixes today so some questions.
+>
+> If the request is okay why is setting error and marking it guilty left?
+The request can still be guilty even if it already looks signaled
+after reset. The important point is that i915_request_set_error_once()
+will return early once the request is already signaled, so it may not
+actually inject the error. That leaves __i915_request_skip() with no
+error to work with, which is why the guard is needed.
 
+>
+> 1)
+> How confident are you of the Fixes: target? That patch is six years old=20
+> but the Closes: issue is only from last year? Do internal Intel log have=
+=20
+> evidence bug was there in between those two dates? How sporadic was it?=20
+a
+I=E2=80=99m quite confident the fix is correct, and it should not break any=
+thing
+if it is missing some corner detail. This is an extremely rare issue,
+specific to Sandy Bridge, but we know it was present at least as far
+back as 2022 from work item 5774. The bug only shows up when the right
+reset timing lines up, which is why it is so sporadic.
 
-I have run an AI assisted backport review and it spotted an issue: I
-have taken a look and the issues goes like:
+> Were you able to verify the fix easily or with difficulty and how?
+I verified the fix mainly by code analysis. In the worst case, it should
+not break anything because the change only skips __i915_request_skip()
+when the request is already signaled, and  the ring content is already
+committed, so there is nothing left to skip.
 
-Upstream commit adds it here:
+>
+> 2)
+> Is the issue only that the order of setting the error code and the bug=20
+> on got swapped?
+>
+> Ie. before 36e191f0644b
+>
+> __i915_request_reset
+>   -> i915_request_skip
+>         GEM_BUG_ON(!IS_ERR_VALUE((long)error));
+>         dma_fence_set_error(&rq->fence, error);
+>
+> After:
+>
+> __i915_request_reset
+>   i915_request_set_error_once
+>   -> i915_request_skip
+>
+Yes, exactly. In the old code, i915_request_skip(rq, error) always set
+the fence error first, before doing anything else:
+```
+GEM_BUG_ON(!IS_ERR_VALUE((long)error));
+dma_fence_set_error(&rq->fence, error);
+```
 
-         /* Soft_Reset states */
-         case SOFT_RESET:
-                 port->message_id = 0;
-                 port->rx_msgid = -1;
-                 /* remove existing capabilities */
-                 tcpm_partner_source_caps_reset(port);
-                 tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
-+               port->vdm_sm_running = false;
-+               port->explicit_contract = false;
-                 tcpm_ams_finish(port);
-                 if (port->pwr_role == TYPEC_SOURCE) {
-                         port->upcoming_state = SRC_SEND_CAPABILITIES;
-                         tcpm_ams_start(port, POWER_NEGOTIATION);
-                 } else {
+So even if the request was already signaled, the error was still
+recorded. That is the important difference.  After 36e191f0644b, that
+logic was split into two steps:
+```
+i915_request_set_error_once(rq, -EIO);
+__i915_request_skip(rq);
+```
 
-downstream backport adds the reset in other case:
+Now i915_request_set_error_once() can return early when the request is
+already signaled, which means the error may never get set at all. That
+is why the new guard is needed around __i915_request_skip(). The old
+code did not have this problem because the error was set unconditionally
+inside i915_request_skip().
 
+> If that is the case commit message should have been clearer on both=20
+> questions.
+could you tell me how I should send the corrected commit message? Is it
+enough to send it here, or should I send a new version to the mailing
+list?
 
-         case VCONN_SWAP_ACCEPT:
-                 tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
-+               port->vdm_sm_running = false;
-+               port->explicit_contract = false;
-                 tcpm_ams_finish(port);
-                 tcpm_set_state(port, VCONN_SWAP_START, 0);
-                 break;
-
-I think we need to rework on this backport, so I think for the time 
-being we should drop this backport.
-
-Thanks,
-Harshit
-
-
-
->   		tcpm_ams_finish(port);
->   		tcpm_set_state(port, VCONN_SWAP_START, 0);
->   		break;
-> 
-> 
-> 
+--=20
+Best regards,
+Sebastian
 
 
