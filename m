@@ -1,193 +1,212 @@
-Return-Path: <stable+bounces-246963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246964-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHkNBBC0BGowNQIAu9opvQ
-	(envelope-from <stable+bounces-246963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:25:36 +0200
+	id yMJNBN+3BGplNQIAu9opvQ
+	(envelope-from <stable+bounces-246964-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:41:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B681537FE3
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:25:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE1F53830F
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 108E730731E4
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:16:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56D6631BC0CF
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5923A2E07;
-	Wed, 13 May 2026 17:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DB13A380B;
+	Wed, 13 May 2026 17:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fEwYNd2t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3e4/Fee"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BDA353EE5
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 17:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343F13A3E86
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 17:16:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778692585; cv=none; b=mqWhsMjfCngJQT+FA0IxZmRaIzMjGOhUtsLptbgf6W5wGecV847IAlmobn0rK6bv9uMRLwcdZkjQy5N9+us2tiz2YuBZCypi1EbIMM0SVmLmAn76R0njKw1NKb7/XuxMvgaqwJ/kHwGUZfxJV0uhXEmEbIL3iiUgEO0yoCCjgmY=
+	t=1778692592; cv=none; b=U7kmiQza5xynD7kjRzLpgO9QeOfSPPhDIEOuR/K6o8k7P+KSVLnh5ij3iwmOq3VS4FJgu2mfprbBrAkBi5PxWr1L0W06q2aEOs1D1C8YkL3BH8RfdhENLbfCP5KYOnswMQKAO083VAoxDzU4EwqsMkcHKGujH0F3E+mCKKHuQ4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778692585; c=relaxed/simple;
-	bh=K90sbdV+ulm99KUT0SeI9AT5YPATm3JEyQ27ovWRo9o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BhK4dmxp6O6IdJHHfP8eA93Xn1cmpq1mpTJpBoSjl1CGYKs69C7C0Tqi8sbPWcYWTvdybCewKPsJJlYaOQLD5Gd+nx1VLnYmYOmDoVIvp77M9bX3Wdqd25b3hBPeBKzrJrz3tyHrH61+UyCOYzMgPR/U5lLwItImqZSeeNli4OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fEwYNd2t; arc=none smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2f7ca62a3c4so7426232eec.0
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 10:16:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778692581; x=1779297381; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/bMevHUpxvHgmnggs8mtB8OZjWsvTBxv6UxHli9n5VM=;
-        b=fEwYNd2trtmxHflDs7G3YKlkE345smRSrqqvJ6KXXTBzPKebr8Ilez+5o2puIKJofj
-         /awnm7B1LP8Ct6hZGDRhV/poOH3SbQNLcdLelEphKHvQZk5cfyHhGKpJYep79EY8FrCm
-         XAEIa1Wpy7dY/s8gXdJ46K23CCSv2rnRxcdH+fqOPRf5cnob2n7rGs5gKKtg8zmeWARD
-         9qY5NZdM2W2yULE/H3LuD9W2JemSKRB8NhWkUS3y28mOCAjPkr0EhB6ZJ36vYRLsZyBY
-         690Bg358jzLNcx+OJbLn8eMFbUHEQU4MnIdfV9Hf+8krihwck415nJHaSZCaahdoDPS3
-         /7Vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778692581; x=1779297381;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/bMevHUpxvHgmnggs8mtB8OZjWsvTBxv6UxHli9n5VM=;
-        b=GSYY5TiiISwWyPQ06jmvENUwo/SjKm5qxNlYB/KNwmgDcl3qBHplsqwgaUe/Mp/I4W
-         gug8pPFG7aU0ecZ7acYNFRt/tRSvfAvOQPYkpmWwK1No0g7uaWjfU9zK3e+2jKpcqvhY
-         F8Z6BFINY8dH0CUC0BaTPJ+7Y8eJxZLAU30wHyyco423rTkgho917Psp3AGczcwRvymp
-         rlsublBDY5My4CVh1Uhu3X/faTaaSOWiwdvwFelc/vbLm1Z9YoeWiCX3tUwHzSna6JZh
-         GOpbU5eElj3s1FqysU5huNG4xRJ4oTgqRc7UtHcza7GUmRpwupSM2DQu5h4cqqNHaUm7
-         I+FQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9uk68l/Y3xOVih5I7q6QYolFxY+D/+r5aWXwo4bMEwFMICLRNaVl/A7gGCEZF6QkoAStsWx78=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw67IystkFDmAm2F4KmZ7etlhdo0xf+297lQlJnpmdrBxSNyFPV
-	dd/tEpMKa/+nbmRzgy7l0f6fPtrewD2QWXxgtcAVlbShTAt1nYTVFN1mtEwFJA==
-X-Gm-Gg: Acq92OENrEC8qUe/AqnOvK6DRoiwznfW7YJrvcZ18UXAvcsBVTyoBGQkcrNvsaY/7u5
-	/G/Cau70z6BCsUwuHnCyiH+FYuTN1qh30foHFrCLSV3oQW6A7kd2a6IrqbcmY+q9lXC8zHm8Z3a
-	8N4qoZ559uL3+8e/ZB0HWDl8nCGfACEoJ7G+Q6Fev1Cn9134YFPjgu9RnGGuFfksDGZzjyVygXY
-	N3ZyJumYBaucgsiJwhotNBNH5wZo0lwecnRHrkoiZsfK1irbGXymjq6LWPXYEIBoG6MVuYDx5hc
-	jhSYXM6gatRIPueXT3GTQ8BALFhuPR+s07qXyGXxlabVOCMNNcVqu2Y2DC9wO9xFLrDvlKiNRw5
-	9F998TExZe9m2iwiSeOQITGRsG70tC88oMD4Wr6WMMkH9hmIsTTGDUxfxayzPZuYXgvD8Jvtd0u
-	GUd4TN5+l9w+j56EMad3oN84S+83IAJk08PFQ3FmF1932lgJDeJ+Aow+NnVkc3ybtk
-X-Received: by 2002:a05:7300:a984:b0:2dd:5641:f01 with SMTP id 5a478bee46e88-30155b4d27bmr1922956eec.28.1778692580578;
-        Wed, 13 May 2026 10:16:20 -0700 (PDT)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f8859eafc2sm28901475eec.4.2026.05.13.10.16.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 May 2026 10:16:19 -0700 (PDT)
-Message-ID: <481cee2b-1deb-4093-8b9c-b3f1e982ff6d@gmail.com>
-Date: Wed, 13 May 2026 10:16:17 -0700
+	s=arc-20240116; t=1778692592; c=relaxed/simple;
+	bh=nAVFpg4isOGPbjKijuKYNA7yFRBlASRw7e6kaIuH7SQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=h7cIb6NzxR1glZPVfw1Lrt2s0KRMAeJHZ7TFFG3aXJtfkycCDrpBwvlnjwcEyMI4wtBZhqUrTqP3x0dLRC3seuGMvRZSAU1a5AaZrRrFCIfxvHc3ByGNLfFFM1SMkHFM5uj0e0YFotkBpZqSDDlg8Cz//W7WEvz2OpUdOdF5/C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3e4/Fee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD70C19425;
+	Wed, 13 May 2026 17:16:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778692591;
+	bh=nAVFpg4isOGPbjKijuKYNA7yFRBlASRw7e6kaIuH7SQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=b3e4/FeeijAFzbP6nhPYlPJt8hKyN1HhpLxlclw5ljWmL1I4l0AsZp/LcYCvVAOLi
+	 HkO6yi1g1RMarJjKoDQwYQ+DiUR1Ni3wyOmgpFUDECgzoWXul4MVsyOOLhrbPBIpOU
+	 eLeqDA0SOx26kkh7n2BAEybj07ng7ZExJJVEyRBUBh0z4Pdm006iqyVj9GqfGIjPXg
+	 i7AyPKtSmHKEkGlOFaUG43PXzbHxUdz/E/RFhoRqohhcjlYOcQ72wPgH9JgYa9wEd5
+	 6bi+QQFDw03ALsHFOp3exuZnAUg2ygKk75w6IqMb7bFrCa/q8NCEsZ5MzgLmg3U2Wz
+	 gg/Cm/i4tTvAA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Michal Kosiorek <mkosiorek121@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete
+Date: Wed, 13 May 2026 13:16:28 -0400
+Message-ID: <20260513171628.3878131-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051212-caucus-caterer-9e72@gregkh>
+References: <2026051212-caucus-caterer-9e72@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/202] 6.12.88-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260513153743.326058350@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260513153743.326058350@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0B681537FE3
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5FE1F53830F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246963-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,secunet.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246964-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:email]
 X-Rspamd-Action: no action
 
+From: Michal Kosiorek <mkosiorek121@gmail.com>
 
+[ Upstream commit 14acf9652e5690de3c7486c6db5fb8dafd0a32a3 ]
 
-On 5/13/2026 9:17 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.88 release.
-> There are 202 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 15 May 2026 15:37:24 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.88-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+KASAN reproduces a slab-use-after-free in __xfrm_state_delete()'s
+hlist_del_rcu calls under syzkaller load on linux-6.12.y stable
+(reproduced on 6.12.47, also reachable via the same code path on
+torvalds/master and on the ipsec tree). Nine unique signatures cluster
+in the xfrm_state lifecycle, the load-bearing one being:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels:
+  BUG: KASAN: slab-use-after-free in __hlist_del include/linux/list.h:990 [inline]
+  BUG: KASAN: slab-use-after-free in hlist_del_rcu include/linux/rculist.h:516 [inline]
+  BUG: KASAN: slab-use-after-free in __xfrm_state_delete net/xfrm/xfrm_state.c
+  Write of size 8 at addr ffff8881198bcb70 by task kworker/u8:9/435
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+  Workqueue: netns cleanup_net
+  Call Trace:
+   __hlist_del / hlist_del_rcu
+   __xfrm_state_delete
+   xfrm_state_delete
+   xfrm_state_flush
+   xfrm_state_fini
+   ops_exit_list
+   cleanup_net
 
-perf for MIPS fails, largely due because it assumes newer toolchain 
-kernel headers than what I am building with, which we hit with the 
-following build error:
+The other observed signatures hit the same slab object from
+__xfrm_state_lookup, xfrm_alloc_spi, __xfrm_state_insert and an OOB
+write variant of __xfrm_state_delete, all on the byseq/byspi
+hash chains.
 
-trace/beauty/fcntl.c: In function 'syscall_arg__scnprintf_fcntl_arg':
-trace/beauty/fcntl.c:96:13: error: 'F_GET_RW_HINT' undeclared (first use 
-in this function); did you mean 'F_GETOWN'?
-       cmd == F_GET_RW_HINT || cmd == F_SET_RW_HINT ||
-              ^~~~~~~~~~~~~
-              F_GETOWN
-trace/beauty/fcntl.c:96:13: note: each undeclared identifier is reported 
-only once for each function it appears in
-trace/beauty/fcntl.c:96:37: error: 'F_SET_RW_HINT' undeclared (first use 
-in this function); did you mean 'F_SETOWN'?
-       cmd == F_GET_RW_HINT || cmd == F_SET_RW_HINT ||
-                                      ^~~~~~~~~~~~~
-                                      F_SETOWN
-trace/beauty/fcntl.c:97:13: error: 'F_GET_FILE_RW_HINT' undeclared 
-(first use in this function); did you mean 'F_GETOWNER_UIDS'?
-       cmd == F_GET_FILE_RW_HINT || cmd == F_SET_FILE_RW_HINT)
-              ^~~~~~~~~~~~~~~~~~
-              F_GETOWNER_UIDS
-trace/beauty/fcntl.c:97:42: error: 'F_SET_FILE_RW_HINT' undeclared 
-(first use in this function)
-       cmd == F_GET_FILE_RW_HINT || cmd == F_SET_FILE_RW_HINT)
-                                           ^~~~~~~~~~~~~~~~~~
+__xfrm_state_delete() guards its byseq and byspi unhashes with
+value-based predicates:
 
-I will submit a fix upstream for this.
+	if (x->km.seq)
+		hlist_del_rcu(&x->byseq);
+	if (x->id.spi)
+		hlist_del_rcu(&x->byspi);
+
+while everywhere else in the file (e.g. state_cache, state_cache_input)
+the safer hlist_unhashed() check is used. xfrm_alloc_spi() sets
+x->id.spi = newspi inside xfrm_state_lock and then immediately inserts
+into byspi, but a path that observes x->id.spi != 0 outside of
+xfrm_state_lock can still skip-or-hit the byspi unhash inconsistently
+with whether x is actually on the list. The same holds for x->km.seq
+versus byseq, and the bydst/bysrc unhashes have no predicate at all,
+so a second __xfrm_state_delete() on the same object writes through
+LIST_POISON pprev.
+
+The defensive change here:
+
+  - Use hlist_del_init_rcu() instead of hlist_del_rcu() on bydst,
+    bysrc, byseq and byspi so a second deletion is a no-op rather
+    than a write through LIST_POISON pprev. The byseq/byspi nodes
+    are already initialised in xfrm_state_alloc().
+  - Test hlist_unhashed() rather than the value predicate for
+    byseq/byspi, so the unhash decision tracks list state rather than
+    mutable scalar fields.
+
+Empirical verification: applied this patch on top of v6.12.47, rebuilt,
+and re-ran the same syzkaller harness for 1h16m on a previously-crashy
+configuration that produced ~100 hits each of slab-use-after-free
+Read in xfrm_alloc_spi / Read in __xfrm_state_lookup / Write in
+__xfrm_state_delete. After the patch, 7.1M execs across 32 VMs at
+~1550 exec/sec produced zero xfrm_state UAF/OOB hits. /proc/slabinfo
+confirms the xfrm_state slab is actively allocated and freed during
+the run (~143 KiB resident), so the fuzzer is still exercising those
+code paths -- they just no longer crash.
+
+Reproduction:
+
+  - Linux 6.12.47 x86_64 + KASAN_GENERIC + KASAN_INLINE + KCOV
+  - syzkaller @ 746545b8b1e4c3a128db8652b340d3df90ce61db
+  - 32 QEMU/KVM VMs x 2 vCPU on AWS c5.metal bare metal
+  - 9 unique signatures collected in ~9h, all within xfrm_state
+    lifecycle
+
+Fixes: fe9f1d8779cb ("xfrm: add state hashtable keyed by seq")
+Fixes: 7b4dc3600e48 ("[XFRM]: Do not add a state whose SPI is zero to the SPI hash.")
+Reported-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Tested-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+[ dropped state_cache/state_cache_input unhash hunks and xfrm_nat_keepalive_state_updated() call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/xfrm/xfrm_state.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index ca42c9b8cecc3..8ba31cf9b3199 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -752,12 +752,12 @@ int __xfrm_state_delete(struct xfrm_state *x)
+ 		x->km.state = XFRM_STATE_DEAD;
+ 		spin_lock(&net->xfrm.xfrm_state_lock);
+ 		list_del(&x->km.all);
+-		hlist_del_rcu(&x->bydst);
+-		hlist_del_rcu(&x->bysrc);
+-		if (x->km.seq)
+-			hlist_del_rcu(&x->byseq);
+-		if (x->id.spi)
+-			hlist_del_rcu(&x->byspi);
++		hlist_del_init_rcu(&x->bydst);
++		hlist_del_init_rcu(&x->bysrc);
++		if (!hlist_unhashed(&x->byseq))
++			hlist_del_init_rcu(&x->byseq);
++		if (!hlist_unhashed(&x->byspi))
++			hlist_del_init_rcu(&x->byspi);
+ 		net->xfrm.state_num--;
+ 		spin_unlock(&net->xfrm.xfrm_state_lock);
+ 
 -- 
-Florian
+2.53.0
 
 
