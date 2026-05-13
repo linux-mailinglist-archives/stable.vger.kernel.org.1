@@ -1,207 +1,153 @@
-Return-Path: <stable+bounces-247033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICbnJ7HdBGoMQAIAu9opvQ
-	(envelope-from <stable+bounces-247033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 22:23:13 +0200
+	id sCODA67hBGqgQAIAu9opvQ
+	(envelope-from <stable+bounces-247034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 22:40:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A34B53A710
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 22:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6356E53A923
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 22:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26030301DE39
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:23:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7777305D87E
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1655B3ACA62;
-	Wed, 13 May 2026 20:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08542360EED;
+	Wed, 13 May 2026 20:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cRbzyrBr"
+	dkim=pass (4096-bit key) header.d=cipherat.com header.i=@cipherat.com header.b="FSsaWYwS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.cipherat.com (mail.cipherat.com [91.98.42.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854603A9D9F
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 20:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B7434F24A;
+	Wed, 13 May 2026 20:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.98.42.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778703785; cv=none; b=KBuxxhPVmBtvvFc+qOE6QaxwBpaWSyyFAbKKnvVxLqJOmR6YOeex8IVw3A76b/WDiUrFXL7AlEFpxO4H2t9itr4Sfxdu/QfMWrhzytWb/tLayKyZDjrok6GYfMs1jFVdnyo2cVPVaH2j+PZ2QraFanyd80uT0No3+iqFnInHgDY=
+	t=1778704510; cv=none; b=X0bm74LzAMp/YTZ23cyYTzKsO7IBY3mJEJktm9JOvMs2FbCGVSDZuJaF23kOFhdT3UDXV+hjBNMZKR78+lV+5pQHPWdm5kvdw5Kgo5//VtVErRJxvnaNNExX0poHIfBxoBrVCls/lG/RdsbmNzRF1gOf98Y04Md72fPPSU8UMXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778703785; c=relaxed/simple;
-	bh=8VoltUrLdbwL0jcfEn9k3774FHuaNiE9Y3fSoTK1IBo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UyCeBWGKbYHziOGXGNua/nqoaGuqKs2IKLXztVsOl5qR411U5fOj7trBmRIGW88rhuusN4ktWL+vCgumAEymmG48BdKq4Pq7PRCrpge3jKYnrJtaktdhvaEWP2nP0pUnDq2oADhsFMPBh8swI06qHm/5BV3ya3XTAeSDuwoXFfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cRbzyrBr; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-45d96d21e82so170696f8f.0
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 13:23:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778703783; x=1779308583; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7V1myvD5g5e+ykOUotYKcza96x6t5F4ELRDkfltp7Vc=;
-        b=cRbzyrBro4Op7tYb5YLQlIVphHhLiPbf4TnrRFknDk9uHfQOj/qCZ1fX9caVT+GD46
-         1ftRzeqyrXsqtN64PNQobBNW1UPsnFbgewuQhBYNbs7PE2l84vP5669fnbepUlyE2Q8J
-         eO3CDY7VvLjaqd7EhQzEBom0ll9iatcVdzLLF3YgFKzGAQb/Ol+T0O3V279BRhQUqG77
-         1YsAIBLzeLvPRzfwr4TXBdUeVBxkhnzDT+ykHozAbYKVFeB18K6jpSGNBCHi1BBBSUEd
-         Eo78+zvGDJhzwczX9wCsVD1tyYTGVk0tLpZis1+N5GXNngQOqDmLRwRnmxR+8xtoWahl
-         vMBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778703783; x=1779308583;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7V1myvD5g5e+ykOUotYKcza96x6t5F4ELRDkfltp7Vc=;
-        b=qXTjgm1/e1icnk8c00JhKjdyWLkjRUiuXGbIE5iAXDEi/xyqv4Z+qBlfn+dGg9IaPC
-         wgzWW6wYWGQhS202yLR22LaN3ux72LyV8tfxCnKsu1z2fhhCbRClA0XX4wiDHWZCMCez
-         Ci7rqr44sK9dXE1b1MHpdJl+kHvD/vVOtTVRaNwwgekcC9XkDcanP116kSOnfmxm5OTK
-         v80rwlaLCw3lrT/otqKv/jBx+o+e+YEhTRQOZFL2bZKFO+BPuNZYf9KD+GhlU0PgH7W3
-         GZbJfkeBN5HylHAMr8svrOae6x0EiNNr2Kp7iBNk0DSBR/r0ejggctx5xYGFiCDA22q6
-         j0FQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9Aaq8fy/CYsaTAn3P72w+bhCW4e7Mr5Bn02DtOWnOiTcXeo1iQta9fv/Feyv3pzaSKbH2xosg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPa16ZWjod77wx8vL3Nef6DxpWGZzo+u8PctdsVB80Fxgp3svX
-	NCF/CBfOManPqtxN7H2o/zzqrDfPGYzTywu7EXwMrRvOF2wyw3MmurkT
-X-Gm-Gg: Acq92OFTA1wOCeb4XrLGSjSaPrtIrBL9GXct0SnaCAr8tL91bUvd9LAKwGGvMyPzTFy
-	2ZLyDjXBRNsYKZ+ia0h3vt4V2ahJT+sNipjhUprXFcO5TULOZEknDfDNRN1vl4Yb/ii5DOwGe5t
-	eBM119OMvr5piXQevgBA6yp8uOvTZmxjjrDXU75liRGVSvb0+E/WpZj484ihW5t5a5UPgGTpiXZ
-	FPAZ2VpxTj61STpWs086XQypNyBlo516CkYcvKQR9/MaeuKPF3OgAzoEjvem5PmsTVx750rscbf
-	JuO8i4iSCQTaY+24JdCr4jH0GKawQ8ppRkxvkrfa5TiKLzUmKoz2k9DKyRN1Mvd2BLDh+SuvmEb
-	yxslFQuxz64+lOoH7Cu5Fdt+V5LvDuQgbs8faB5Nx0DuhmIVOhL6OvnbhD0XCMlho7CpbWtZOwa
-	uUQB5mHKxbazNV19g03mXoe8kGVp7EQIUXuTGIrfL2L4dDP+JPrCwltG+iosa2dXpdE7p1cg6J7
-	Tfw3oEL
-X-Received: by 2002:a05:6000:24c6:b0:45c:154d:6387 with SMTP id ffacd0b85a97d-45c7a7dc6a2mr7430880f8f.37.1778703782701;
-        Wed, 13 May 2026 13:23:02 -0700 (PDT)
-Received: from jernej-laptop.localnet (46-150-62-216.dynamic.telemach.net. [46.150.62.216])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ed2ffdfsm1279025f8f.15.2026.05.13.13.23.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 13:23:02 -0700 (PDT)
-From: Jernej =?UTF-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To: Sean Young <sean@mess.org>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- =?UTF-8?B?67CV66qF7ZuI?= <mhun512@gmail.com>
-Cc: Myeonghun Pak <mhun512@gmail.com>, Chen-Yu Tsai <wens@kernel.org>,
- Samuel Holland <samuel@sholland.org>, linux-media@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Ijae Kim <ae878000@gmail.com>
-Subject:
- Re: [PATCH] media: rc: sunxi-cir: unregister rc device on probe failure
-Date: Wed, 13 May 2026 22:23:00 +0200
-Message-ID: <YRYbhQnwRdCZPKQIjbWE2A@gmail.com>
-In-Reply-To: <20260424000000.558-1-mhun512@gmail.com>
-References: <20260424000000.558-1-mhun512@gmail.com>
+	s=arc-20240116; t=1778704510; c=relaxed/simple;
+	bh=2EC2A+KtCVbEkMXGimCI74FV2Ow+nof/vs6LyHEd/IM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Usgugy7Q22sBVP21USOpVsr/9ZBrVP7WsgqLAN1p4d0fAi9i7Cp2hnrE2AjLKZhiO5kC8Lofd0NskMddcQF7pQ58g8x4AjFt7akrwWupp3oUfMqmczcH1OrxgUoUjs7qKYJDnBMBEsHizYUYyBFMTNmy/GsHMbrsrcmKGmx0J3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cipherat.com; spf=pass smtp.mailfrom=cipherat.com; dkim=pass (4096-bit key) header.d=cipherat.com header.i=@cipherat.com header.b=FSsaWYwS; arc=none smtp.client-ip=91.98.42.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cipherat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cipherat.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F3AB484FEA;
+	Wed, 13 May 2026 23:34:59 +0300 (+03)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cipherat.com;
+	s=dkim; t=1778704500; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=AqpxKS8ivlE+tUFq+PWlvtMkbw+MHJkFvxPJxX/mejg=;
+	b=FSsaWYwS16TXbCiRL4l+pCke0tEECDbTSg+R0GRlguXTgb1bdOs+DD8O4C7Da2Hku0ZywX
+	9NkCbSDnBUZRr5+I1MrlZCiNDMV+8uovnkIEt3HEk4BFKCErsr69jP/FDJzL/JbR24zdV6
+	0IObROFyYEOH4edJq3paOqzB5KRN+7bz6tAhB0S4T95fcG4+FAw4Dh3K3kCMI6hYbnsJdj
+	GR6D597bwJoa6dRDjhREzawXX2W7hLY4zXpmLW5rXrRDXrj7J/AgSyBP1hantycZiN24aQ
+	GJ/eOdT/PQJ9ifsED+DOXJOF7Uu6Tbfv3Hv45M06JvM/3Ni5s5ws6/Rj/4o0J502YcjksZ
+	+IIIqD9CMzDKxGMBtqkQ0sFlJXeNyDmw8pRicGsejR4esNAzppyvI+godeSvCAS2rS5EoK
+	VelMErxMW9zurfRPEv3mNI0ADHUcDusuzoVkXrrctbG3h2CfplNrdRqOZMBRvFgpbpmito
+	ZAgtTj/T4nWPz9pZzRQqdTluomG4LRVs7tIpe/1Tge/h/r3Po69dVnoDivp/6933vNToHc
+	drso1VibTLhNsH5RgYf193iEaFi0RwFetwMeergN9DZaX9LwLVH+/R0TKE6LfN8RmIUnTw
+	bavdo649LoMourvY6NvcAutMhDw/IY9XckuuTJ70xWRsw3xOz1whA=
+From: Salman Alghamdi <me@cipherat.com>
+To: gregkh@linuxfoundation.org
+Cc: straube.linux@gmail.com,
+	error27@gmail.com,
+	luka.gejak@linux.dev,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v1] staging: rtl8723bs: rtw_mlme: add bounds checks before ie_length subtraction
+Date: Wed, 13 May 2026 23:34:40 +0300
+Message-ID: <20260513203455.31792-1-me@cipherat.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 0A34B53A710
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 6356E53A923
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[cipherat.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247033-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[mess.org,kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,sholland.org,vger.kernel.org,lists.infradead.org,lists.linux.dev];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	DMARC_NA(0.00)[cipherat.com];
+	FREEMAIL_CC(0.00)[gmail.com,linux.dev,lists.linux.dev,vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247034-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[cipherat.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jernejskrabec@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[me@cipherat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cipherat.com:email,cipherat.com:mid,cipherat.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Dne sreda, 13. maj 2026 ob 09:11:03 Srednjeevropski poletni =C4=8Das je =EB=
-=B0=95=EB=AA=85=ED=9B=88 napisal(a):
-> From: Myeonghun Pak <mhun512@gmail.com>
->=20
-> After rc_register_device() succeeds, later probe failures must undo the
-> registration with rc_unregister_device(). The current error path jumps to
-> the allocation cleanup label and only calls rc_free_device(), leaving the
-> rc device registration and resources created by rc_register_device()
-> behind.
->=20
-> Add a registered-device unwind label for the IRQ lookup, IRQ request, and
-> hardware initialization failure paths. Keep rc_free_device() for failures
-> before rc_register_device() succeeds.
->=20
-> Fixes: b4e3e59fb59c ("[media] rc: add sunxi-ir driver")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Ijae Kim <ae878000@gmail.com>
-> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-> ---
->  drivers/media/rc/sunxi-cir.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/media/rc/sunxi-cir.c b/drivers/media/rc/sunxi-cir.c
-> index 92ef4e7c6f..cc64a68dfe 100644
-> --- a/drivers/media/rc/sunxi-cir.c
-> +++ b/drivers/media/rc/sunxi-cir.c
-> @@ -344,22 +344,26 @@ static int sunxi_ir_probe(struct platform_device *p=
-dev)
->  	ir->irq =3D platform_get_irq(pdev, 0);
->  	if (ir->irq < 0) {
->  		ret =3D ir->irq;
-> -		goto exit_free_dev;
-> +		goto exit_unregister_dev;
->  	}
-> =20
->  	ret =3D devm_request_irq(dev, ir->irq, sunxi_ir_irq, 0, SUNXI_IR_DEV, i=
-r);
->  	if (ret) {
->  		dev_err(dev, "failed request irq\n");
-> -		goto exit_free_dev;
-> +		goto exit_unregister_dev;
->  	}
-> =20
->  	ret =3D sunxi_ir_hw_init(dev);
->  	if (ret)
-> -		goto exit_free_dev;
-> +		goto exit_unregister_dev;
-> =20
->  	dev_info(dev, "initialized sunXi IR driver\n");
->  	return 0;
-> =20
-> +exit_unregister_dev:
-> +	rc_unregister_device(ir->rc);
-> +	return ret;
+Add guards to ensure ie_length is large enough before subtracting
+fixed IE offsets to prevent unsigned integer underflow.
 
-This return should not be here.  Device must be freed too.
+Fixes: 2038fe84b8bd ("staging: rtl8723bs: fix spacing around operators")
+Fixes: d3fcee1b78a5 ("staging: rtl8723bs: fix camel case in struct wlan_bssid_ex")
+Closes: https://lore.kernel.org/linux-staging/DI2H39EAAFBZ.3KI5NWN02AQ2S@linux.dev/
+Cc: stable@vger.kernel.org
+Signed-off-by: Salman Alghamdi <me@cipherat.com>
+---
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-Best regards,
-Jernej
-
-> +
->  exit_free_dev:
->  	rc_free_device(ir->rc);
-> =20
->=20
-
-
-
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index 268f294528e6..9f21a2226dbd 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -604,6 +604,8 @@ static bool rtw_is_desired_network(struct adapter *adapter, struct wlan_network
+ 	privacy = pnetwork->network.privacy;
+ 
+ 	if (check_fwstate(pmlmepriv, WIFI_UNDER_WPS)) {
++		if (pnetwork->network.ie_length < _FIXED_IE_LENGTH_)
++			return false;
+ 		if (rtw_get_wps_ie(pnetwork->network.ies + _FIXED_IE_LENGTH_, pnetwork->network.ie_length - _FIXED_IE_LENGTH_, NULL, &wps_ielen))
+ 			return true;
+ 		else
+@@ -617,11 +619,15 @@ static bool rtw_is_desired_network(struct adapter *adapter, struct wlan_network
+ 			bselected = false;
+ 
+ 		if (psecuritypriv->ndisauthtype == Ndis802_11AuthModeWPA2PSK) {
+-			p = rtw_get_ie(pnetwork->network.ies + _BEACON_IE_OFFSET_, WLAN_EID_RSN, &ie_len, (pnetwork->network.ie_length - _BEACON_IE_OFFSET_));
+-			if (p && ie_len > 0)
+-				bselected = true;
+-			else
++			if (pnetwork->network.ie_length < _BEACON_IE_OFFSET_) {
+ 				bselected = false;
++			} else {
++				p = rtw_get_ie(pnetwork->network.ies + _BEACON_IE_OFFSET_, WLAN_EID_RSN, &ie_len, (pnetwork->network.ie_length - _BEACON_IE_OFFSET_));
++				if (p && ie_len > 0)
++					bselected = true;
++				else
++					bselected = false;
++			}
+ 		}
+ 	}
+ 
+-- 
+2.54.0
 
 
