@@ -1,102 +1,91 @@
-Return-Path: <stable+bounces-246764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ME5/IN8gBGpyEAIAu9opvQ
-	(envelope-from <stable+bounces-246764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:57:35 +0200
+	id SKxcMSgiBGoZEwIAu9opvQ
+	(envelope-from <stable+bounces-246765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:03:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA61452E566
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FFD52E607
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:03:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E8EB530684CE
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:57:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1FCA1306BB37
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3360D39FCD0;
-	Wed, 13 May 2026 06:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D143D5645;
+	Wed, 13 May 2026 07:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s1RoJxwO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LRbtAcGu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BBD3D5643
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 06:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D363D411B
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 07:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778655453; cv=none; b=KfqtcdTu1RmIOxKJ/cvX6jtPxTscON2KQUzWCSFW0UKcZsflvBGb1Pb7lkZe6B5Y4yxSKtt37AGw+VYMksmZylfmSTGkGbKA/hb1uBH1A7GAg7NcYoF0K7fb5Qu3myZlp+7i0V1wQoxPc54jgdbSQ6DzhqByAOCDeS1FustaFMs=
+	t=1778655781; cv=none; b=jUy6ANKHzytKh/yitQbVUDIe5VSOhjSTBL1FLc0b3qMJ25vmnOFCnVVKmWc7lM0gajVmQK9Dl+qUfhypL+qTkR3Dy6l+Gvb3e/mQibHf5l6Sh6PNX0FZr6dJX5iTgl1oxUs0YGltgX6wBousDf6YNYLWvyTL7pJNnm9uECF0JXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778655453; c=relaxed/simple;
-	bh=D+rXkpNbYM57iw66//z9yFnWXidsQpnxHALfm7NCx7E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CGsyAPIAHLzsZaBotKfVatRqxXDIzBd6mE75SBVKAD7wqo3mSGL1TiNhzWIZ47/zia63jXotidXJs3PfWnSqR8ho3H2gUeFsg5khcFp+vQMKYnXAe8ZxYxclquO6CggqwZ1euqAiqd1vT9RZ/d1PVlvPjBv3HeqKFH3Xwy2TqdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s1RoJxwO; arc=none smtp.client-ip=209.85.216.42
+	s=arc-20240116; t=1778655781; c=relaxed/simple;
+	bh=eOOYOcqT3op8hwOvsAG2awwbAC9YwaQbYCu+tWEDbu0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PVRftabmPyKaq9wBq+4xxTOMB2d+PAj3ry6qD03hNmG76N1REoISEou5s6l7GCCdLk6jQNOHEcQEQ/I+1bOGn0lJW9Tyni9TIKnFO3b/qBx6ExYCa+q0YmtF5UeKSabMIBYtnSMR/jgk1tNIJ6faqvcMO9oSfdYSFDL8q72918k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LRbtAcGu; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3664df32e91so5137960a91.3
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 23:57:31 -0700 (PDT)
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-83538fbd0b2so2564003b3a.0
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 00:03:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778655450; x=1779260250; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778655780; x=1779260580; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lpyhgMOndReaAQGfFDlhOvUXYhINkrL7L3hO9NJYJ10=;
-        b=s1RoJxwOF1kcvY1d7SVj3EJ26I6vmTtJy2pETN1FRdkK/yOxVMSTTRoVbpWfONtNXo
-         O7HyTkt5eu6BR9vHmp+9bksg0wPzdx94ndZ8eoKPVXLTxEFfX6H1H/jWuIDk4J0ONRPN
-         l6NXMDLDl717K0Cow2uTBo2qA7PIeOogLhl06dDeg7+lvuUiYZcH9FW7z+4hq3eTEPO5
-         C7eOpWUH+Se0XR/ySEmo/HSv/2yW0E969k5WGBGJIf7H3lQWU/pWmZTGacmDGxr6STMz
-         irhyDy2aIOPa2BycXxaZ+KLc28BdLevJh6T03+VaC7LOXyci7Yr4gmzB2Z0NiKM9F3Fm
-         B3/g==
+        bh=GaH9g17uem0QR3nAcOAHHOsv86hTEnX1C7NUBwFlEN0=;
+        b=LRbtAcGu+iIDHOSJxA1Bl1LRZpQwh/GKxKs5DYwhMxmbKwOa9MTZSb4JimKkXGqh56
+         xivUS2+SspTXjQIhYKD72Xyttbkr1WuvZFJUGQGnQGKiUFqNKKJlWupW8kTelNTPGl9k
+         DqnYg5Irhckl5W6+402d84PjmQkpztfWgHU1A3J5pfae3Nzt59EySeL2SgdoSVCcz+Cq
+         e5NIXuXNJmZoBVRs3BF+u9qV9plcbTUQbOF9+MvNGH7vqFJI6krqZThCIqiZ4U1vQdIC
+         +l3WO5q/HNfB9r9FoWwbAjhEJmrC5941cEyyUXUJVLOQVD4afs+2grL09xtqYU6WpUPp
+         e0Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778655450; x=1779260250;
+        d=1e100.net; s=20251104; t=1778655780; x=1779260580;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lpyhgMOndReaAQGfFDlhOvUXYhINkrL7L3hO9NJYJ10=;
-        b=Z5RbvfajNLIHw6yGmUQ5rYxj641bBgbarnSQdxfhJgH2Oxo8uBqwgOfoJqPKIRCxps
-         WA+cIuYI0V4m/mA5Kf+MIvzM44M2wxY5HnvrmFKV6n6p3J2RgFl/xvep7vypesuMKyMq
-         Uqi0wACPtOr9Elf1QWga68jgrd5bR7d9Kfv7ZDubLbg0wz3i0XFYN9kN82HBsBzVJF5C
-         cpiKAUk1d8UBAuXfn/DYDUG2SB1NmBsdHgXQ7V76lC1CCJSGCc4TBISaXY683tbmSSOW
-         3tErj94ZGgQ3g+syfTTryRriIEkaXygwYOuxOs7ZZfNnmz/K2eh9XbnPAkG7jXOf069B
-         t8Xw==
-X-Forwarded-Encrypted: i=1; AFNElJ+3CZvTsYHSLNBRWXyrDCm1yxWzuKGNYa6CsRYRuRe6w81qOB99CnP8fYp47Y7xe5k8bSbuUJs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmMfFPA0A8dUagFiWs8qcJt3/4r114S7lBc4YYQQqgAQX1LspE
-	1yhMLpNpQdE25UBjrb9e3vqkeDgcrRoZqkGMtkdhLtxnO+3VnCEUqUA=
-X-Gm-Gg: Acq92OFR/Qulwc2uyHDPfe2oynKVc17Ic6KqKBleV/6meReOKGkm3R+sBYboFUmCo72
-	m93FKeLJMgmODxY2o6ch+ey7Lyx3Dj4g4b0XmwmkD71u43/uEd1Qhg+2SnLzHq3bG40f1y/crHT
-	2f4exxqzBMaOQkwuYxH+Ai/UbXjw3QBmNogF1NDv233o8b24GIP1KAUxmuEW6OJPMssic5zT0D0
-	Hvz5YGkyIA3kLpVJTX/QNDGsBSw5skGyp9ITDuYkrbzGWLurJgf6pAfuKILRCmKPj6+yJqaA7uc
-	q5archhcZ2BawbSwV4hnSX9IEToAf8bGwYfe9RuKpup6gfOF/5ownOPUow5gsz58N42dSTRZ+U1
-	ISFFeQQmUbACqRth37n0f6Slwa3Fh6/hRBcDA9nntr6WjLJG7hGyUepWIjtdpF6XOrbZDHg94sr
-	3swMPEjRmKEMsFrQKRtZlpaIzJgKDZmKzJPkemG+HQjLz4GV+RtmoJwNzpWop+H5pd7Uwt+F/o3
-	g==
-X-Received: by 2002:a17:90b:3a8e:b0:35f:b5df:463 with SMTP id 98e67ed59e1d1-368f3d1fa46mr2326543a91.14.1778655450438;
-        Tue, 12 May 2026 23:57:30 -0700 (PDT)
+        bh=GaH9g17uem0QR3nAcOAHHOsv86hTEnX1C7NUBwFlEN0=;
+        b=T8XlpwEOlYTfCAm+EqM+Hkl0OI7B8x9EFufjSNacLjcppeh9AG6nH871bCUaTYRuXL
+         2sX1IAs181po16Ta+rGxvxSjU/9p6MpSRPV6fZypsmm7FTPlXUm2+fTqlSdpspV9TlRa
+         gn4cX4j5vNEhiv62/62tknSJ/2pg41zvpRy6oo5MwH0p2Abv/wMFEp3aVTIbv01oMtj6
+         dg3mPrt1YIISLm1Gma1R4w57D9saBqdykRYmkFWbhdNAH5Fs2OH8l3vJSN7XkPIczf/K
+         MwMPqq/zF6xGgrXzidyZ4fX8h5oY8qkLwpJ0a2ic8ceEEFfqrF44ADkRCrf5woOcf51B
+         S+Rg==
+X-Forwarded-Encrypted: i=1; AFNElJ8PMlKZpFXIq9SJtLZXjgQ/wmGZsaYMPWgMXarxTp1Au2zox6aCzucJNnGWeRQTvj48UGVep24=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3Hwxk211JRsIHt2kgOjQBL4C1wErTatG+gQ5HHDzp4uG9HtYV
+	u5XoQ6L/u8Xo0z38dFVSUmPZO1m4/GIiXc7Lz9ACuD9u4UNmLHaMKmo=
+X-Gm-Gg: Acq92OEXi4GlfKNHzYHAMvcIQGacAIqwlj4Zp6fOzIYLPHxk6V/ed73XDHxGzUILuaD
+	iBvJTur0iG1U5xfUtyRagIvXlH3WdAJZTdgcY+OVAUrvg5aoh/Ku3KAPKqDY60qTRVNMWb4ELBk
+	pWsUOGLoZ7lzGxsoN/+8e7xQJVpy4OA4qNPnM+xBx5xa4I9CnPnRNpwdeozo0BO69bRBJaH43fw
+	OnZag/PqiPZUHH1gmynLIsVZxRPUVsOFPQGLls1xoisP50ISWX65eUworqA0jR6F7iLiEXwyIl+
+	BX3bXTunmrGM90MN2LPRJMYysf5+HjHD7pBtXDjH+xeh8Weq3zURf/Zrtnz/BL1CMbYUSZcItHa
+	wmYVldRceRocPR6l+93JRDeNofzev9tkGB5j3kE+ZtZ4+AP6Yh7VcpAGYEqQ4HpT/H31XDr/sY1
+	HSdpHvR2tSYIi17OKZ/0J48jwCRde+vXyHJT8rT4GCZIiTf8RiAnSh6pdNXOwNeGDVIenwPQxpy
+	doKvqGJhvqaOf7d3Nl1WjqSuAC2pP6jZLrQ99Y=
+X-Received: by 2002:a05:6a00:4615:b0:83d:c0dd:62ef with SMTP id d2e1a72fcca58-83f042d4afdmr2101496b3a.45.1778655779889;
+        Wed, 13 May 2026 00:02:59 -0700 (PDT)
 Received: from localhost.localdomain ([211.198.234.66])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368b07163d0sm1945647a91.11.2026.05.12.23.57.27
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83967dbdfb0sm24906420b3a.45.2026.05.13.00.02.57
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 12 May 2026 23:57:29 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: dri-devel@lists.freedesktop.org
-Cc: Myeonghun Pak <mhun512@gmail.com>,
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sui Jingfeng <suijingfeng@loongson.cn>,
-	Jianmin Lv <lvjianmin@loongson.cn>,
-	Qianhai Wu <wuqianhai@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
+        Wed, 13 May 2026 00:02:59 -0700 (PDT)
+From: "=?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?=" <mhun512@gmail.com>
+X-Google-Original-From: =?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?= <pakmyeonghun@bagmyeonghun-ui-MacBookPro.local>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Ijae Kim <ae878000@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH v3] drm/loongson: Use managed KMS polling
-Date: Wed, 13 May 2026 15:57:00 +0900
-Message-ID: <20260513065706.23803-1-mhun512@gmail.com>
+	Myeonghun Pak <mhun512@gmail.com>
+Subject: [PATCH] media: radio-si476x: Unregister v4l2_device on probe failure
+Date: Wed, 13 May 2026 16:02:37 +0900
+Message-ID: <20260513070254.29870-1-pakmyeonghun@bagmyeonghun-ui-MacBookPro.local>
 X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -105,10 +94,9 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EA61452E566
+X-Rspamd-Queue-Id: 39FFD52E607
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
@@ -117,72 +105,63 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246765-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,iscas.ac.cn,suse.de,loongson.cn,kernel.org,aosc.io,xry111.site,linux.intel.com,ffwll.ch,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-246764-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,loongson.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bagmyeonghun-ui-MacBookPro.local:mid]
 X-Rspamd-Action: no action
 
-lsdc_pci_probe() initializes KMS polling before setting up vblank support,
-requesting the IRQ and registering the DRM device. If any of those later
-steps fails, probe returns without finalizing polling. The driver also
-never finalizes polling on regular removal.
+From: Myeonghun Pak <mhun512@gmail.com>
 
-Use drmm_kms_helper_poll_init() so polling is tied to the DRM device
-lifetime and automatically finalized on probe failure and device removal.
+si476x_radio_probe() registers radio->v4l2dev before allocating the V4L2
+controls and before registering the video device. If any of those later
+steps fails, probe returns through the exit label after freeing only the
+control handler.
 
-This issue was identified during our ongoing static-analysis research while
-reviewing kernel code.
+A failed probe does not call si476x_radio_remove(), so the
+v4l2_device_unregister() there is not reached. This leaves the parent
+device reference taken by v4l2_device_register() behind on the error path.
 
-Fixes: f39db26c5428 ("drm: Add kms driver for loongson display controller")
+Unregister the V4L2 device in the probe error path after freeing the
+controls.
+
+Fixes: b879a9c2a755 ("[media] v4l2: Add a V4L2 driver for SI476X MFD")
 Cc: stable@vger.kernel.org
 Co-developed-by: Ijae Kim <ae878000@gmail.com>
 Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Jianmin Lv <lvjianmin@loongson.cn>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 ---
-Changes in v3:
-- Capitalize the subject as suggested by Huacai Chen.
-- Add Reviewed-by and Acked-by tags.
+ drivers/media/radio/radio-si476x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v2:
-- Switch to drmm_kms_helper_poll_init() as suggested by Icenowy Zheng
-  and Thomas Zimmermann instead of adding manual cleanup paths.
-
- drivers/gpu/drm/loongson/lsdc_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/loongson/lsdc_drv.c b/drivers/gpu/drm/loongson/lsdc_drv.c
-index abf5bf68ee..4b97750897 100644
---- a/drivers/gpu/drm/loongson/lsdc_drv.c
-+++ b/drivers/gpu/drm/loongson/lsdc_drv.c
-@@ -292,7 +292,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/drivers/media/radio/radio-si476x.c b/drivers/media/radio/radio-si476x.c
+index 9980346cb5..bfe89782dc 100644
+--- a/drivers/media/radio/radio-si476x.c
++++ b/drivers/media/radio/radio-si476x.c
+@@ -1493,6 +1493,7 @@ static int si476x_radio_probe(struct platform_device *pdev)
+ 	return 0;
+ exit:
+ 	v4l2_ctrl_handler_free(radio->videodev.ctrl_handler);
++	v4l2_device_unregister(&radio->v4l2dev);
+ 	return rval;
+ }
  
- 	vga_client_register(pdev, lsdc_vga_set_decode);
- 
--	drm_kms_helper_poll_init(ddev);
-+	drmm_kms_helper_poll_init(ddev);
- 
- 	if (loongson_vblank) {
- 		ret = drm_vblank_init(ddev, descp->num_of_crtc);
 -- 
-2.47.1
+2.39.5
 
 
