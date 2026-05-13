@@ -1,165 +1,158 @@
-Return-Path: <stable+bounces-246972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246973-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFkrExy6BGplNQIAu9opvQ
-	(envelope-from <stable+bounces-246972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:51:24 +0200
+	id aFVpKcG6BGrHNQIAu9opvQ
+	(envelope-from <stable+bounces-246973-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:54:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C5D538533
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:51:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F39B538662
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52435305246E
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:35:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7C5F3155FE3
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291264DBD8F;
-	Wed, 13 May 2026 17:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5480F4DC536;
+	Wed, 13 May 2026 17:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="grD7cYWf"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mLpdicMO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE794DBD7D
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 17:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A255744B696
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 17:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778693746; cv=none; b=txp/qTH/LuzWPaSFcM4t7bVZI3mPZzpyTeuLkEeuFox+RjAt41Q98BrWq3W/MoAcz4C+qbNsDatoFrCkWxilXrQJ1jRYI8qnH3czDbTX5DxQWndgGhzWBw20nukhLSV47W/rf7TGd0tpkIGqWYHEpB1mfa9vTtERHjZwEUIxY6o=
+	t=1778694153; cv=none; b=jNswCQlu4xXFETLd8Oy+CK9tooy+EBW+IwWIx2v6bjdo7rpoJLQEraG6nB/VqbB2M4/yb5wOWrNoytlUR9RJCVgokAsRB5ErL6NJ/Z9sC006fAwRhcjo/Ua/N74y+/M+u2qFGxdYm6xQmf044ykr83wq2BJFxWqxKqE1Za7du1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778693746; c=relaxed/simple;
-	bh=KCal7kzqZI8+0VK4uQJCVOmFtclj032kNAYQovwtFr4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vw7V2Ode2KyOkJ12PeqjUKB/DfvLOVlpJeAp66P6l5uApG3madtVljYyjjU1OnH+RtCcNUQTJONGfybtBEgS5K4Dd0rKV47Z2k8m3bCS5aNYckJKCDWZoj3RTuig/CFRAfnOXWoJT37xoeUApTdIbw3QfsfinTBntDe6SLx0LLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=grD7cYWf; arc=none smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-12c8f9846c8so10521259c88.0
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 10:35:44 -0700 (PDT)
+	s=arc-20240116; t=1778694153; c=relaxed/simple;
+	bh=Z4DQx2lSeg373FycVPY8LgB/ufohedZhPA83y4EaBOQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pVSV3OdAE9XF2Bq/K+y2xSaO89KYkO/LEU6KJg7nNVA98SvkNLWAaBKmP7xys3OgRiwY7qoUidKXdIQFcME8WdD81UMjiDu24L2MRQ9yGijF6v1OuUA4SQNmMPXXRh4/ZWxYUyAiO8AneQ3ex6stBudxGpmuWNl3eiND+I0gwR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mLpdicMO; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b46da8c48eso2635ad.1
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 10:42:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778693744; x=1779298544; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ul0Nd+LldB2hhhsaIn510nAc6p+u/VtWN9+3RBSesGw=;
-        b=grD7cYWf6zhCwpnwfx2juIRzB7lT9Yfxn9auSSUuyPeSSnbM6U0Jbf/jOZR9Fs8C0I
-         SsQVJSh6PwjT4rWOUXaEpA5rqFlgXyjtkjQNRsx7o3+MfGw3BOR1YBOLcTibKXttMvyR
-         9EtOtedmFCAcA4F1+brsn/TSju4DoEHStt8JEH7ctihRvR0GgKO7fSH3geaTOQogDseR
-         wPCiCxG5G4GNkx9sLpXxsOxtA/keWLy947YbCjfoozS+O6wfl7jDyDhLlKhChGNafDz9
-         9OV6GKUyjy5caxMVwsX9V47X8Nw7jYttitcc2/es5JtCbHD2srLw+BgMgguLJf1UKfGh
-         7W8A==
+        d=google.com; s=20251104; t=1778694151; x=1779298951; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pcBA9DAGtJkPWnf5c2GL3hdpA6y9KY9keSOmEQ3FPfc=;
+        b=mLpdicMOhlEXHzTsxbDP3HpS7DiNz4dg54JfWXCbp2Ye219WgmyqX0eHBu0eQPMEPa
+         FcBy3dV0m0o8/eO3Wg12MCq+P4QbQ5M4kp8QYGQ4cachb2Ho1Iu02ZPUgwUuqw2Pb/LW
+         fH4wC7TmcXMFiovT4s6RmfPLnNtzUwqEFC/+mI9gOTCovjiIB+bImfhlAP3N8jk2sBuJ
+         7Ol0G0CYevv73TDhcRvupgx+thk3gkM/cF53sb8ERgQRhOAp3kxl18JULR17Wc6m8+Bh
+         bolyjPht3en5QCxtOPmoEDsOuExf2C3vSxpSK4sHg3m9Ctod4XGJE4yfZ4tVgAzhOkfc
+         niBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778693744; x=1779298544;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ul0Nd+LldB2hhhsaIn510nAc6p+u/VtWN9+3RBSesGw=;
-        b=CqHKlTIMExxtM2T6698C1SOuu66reHgL72VoKv98xLaDAFh+KUqt3IkCAN92r/RnJZ
-         B1sPk/pjtVI2Gqpd60Y8ZgQheguFgzDTw/66+lvLCwo08337nJoc7gZ56H+uiJujd0w1
-         HqaP0rM8HtMsn/AYG04j5BciTwyE+tflQZ+MYzgx78IlKPMiISUbkyRp4kErJWdSeH92
-         TsUvpUjBDm3Nl4dk7G+XKOFenJDM4F54jP1YGgkWoJOeCv0lH7FWsyAPB7t62U+e7T8F
-         bZgI1jo0DFxhk5n190CVoMAVLdMbaDmf240442SIBz757KmYSH703f6zo19p2moQlqP/
-         p6oQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+5kyZalTlE7ti/TXg+aFIJ9iX9mjvhLzRtx6q6b8Ddu7tR4+yLun0/OUP89g6soweBVWk5YeI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtdxWUTUsrEx3ahxz1VMZVJOiApS0cMG+taM4qo9jdfs269hkK
-	SU9zFrOPzoU3jFD8fn8sHvDd0V2XtRTUZ5SLqVQsV/Gr7UNSy8+N0vmG
-X-Gm-Gg: Acq92OH+n3VpDi7WbhshE07BoHiL+NWb8w6nXB9yK8DBIbQ0/TdLGCOZltq+HMYcgZE
-	xjih/QOAvP8L0AERSU5YqsAQOcpJ+WY5elYtBN7+TqFaphplIDe5p4OeSh0KZ1Vs3UeY7SOfZJJ
-	fMllI55T1CNsXyaMbE2a80IV/6Pj7443/PlXZSLUGn++YUcVbYYTwVS92J1BBuvta0stN4gOsQy
-	jJjUDTztX6ynKOWMkPcQWBAU61gjuWBAu8hx/d01pEvJGrbHHiKBe80Tsws1NMorGujnstdDyTz
-	NbYKZYrLKDbdiUx8lI4Q3L3p5GbyA6uaESwKymFwyOiVCTDQzLMKoIx+/VT14Px1PXka8qLy3xD
-	HiSfIMUZdvA106dvvpeFLcVwbw24U3fsGxPONil+u1yaw7nzbhGLetGRWcOzQHvValfDsPp3+Y8
-	BppV5SsOYEUDlbV544AK3LaZYi3gWe2SSLgc2w0eNBWXj1fcOMynxNVawSRfANrJh1
-X-Received: by 2002:a05:7022:21e:b0:12c:34b9:61bc with SMTP id a92af1059eb24-1342ee3a02emr2676237c88.5.1778693743835;
-        Wed, 13 May 2026 10:35:43 -0700 (PDT)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cc33aac9sm51967c88.14.2026.05.13.10.35.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 May 2026 10:35:43 -0700 (PDT)
-Message-ID: <199abc0a-e5b0-44c4-a0f2-11d1f959e606@gmail.com>
-Date: Wed, 13 May 2026 10:35:42 -0700
+        d=1e100.net; s=20251104; t=1778694151; x=1779298951;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pcBA9DAGtJkPWnf5c2GL3hdpA6y9KY9keSOmEQ3FPfc=;
+        b=NnbAQRJRdVRUlgmSWH2OvL00JVzTRxP86zwkoddozlkj219yED6FlbCUO8UNPuT0Jq
+         ceoIECd2+pg3GxCv//NxD1f1BuF4oFxZTnDkHFHYyfYIiPRZZzfZn3BwicPIArbv5LSw
+         Xt6hAn2uV2oISZhfJFi89ykhbTN+lwHOFthkCV07OAsZ6fqYA2npVCQCjgSrOQG0Sh7U
+         T2vSt8FArvR9+9EKgddgiLS+MqRDUJ06r+IuzA178Niqc2LAzyp1koKpRIabon8nfTVa
+         M2OmN9JRb7ePf46VE9k26qLVc1KZ65bneY7u14Ay45GQhoOQ853mrBWcJhQv8wUMQGwq
+         R3bw==
+X-Forwarded-Encrypted: i=1; AFNElJ8+mdsUZ8r2gQ5OL9OyNSMa/5Xy2WGsuIQuYdHwPz8D3IL4MoAX08dPc3BZJ2MZIgBVWkd4NV0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV0loc/vBPGPNHoMBNr+93Hi2gGs57/C4ocPIpL41CutsfjyBp
+	JO0gfFWKhs3eWEpZIDTIz0mYIzQU2L+ktnU9M5VU+LATmgRPZJ9THOMkVTruyNYXmw==
+X-Gm-Gg: Acq92OEzwM4IwFx+Oqe0QnrvefedqWyiwOm3zdSCmfibPxG/i5v2Mweo0NELUv9GhF/
+	YDL5jW8oNHd1h1OMtuF0HNfBoNkCX0AgKypNSRNhzVY22vJmrHUjWBKL6dKnf2Tu3h2D9+8x0nF
+	RuLR0r5BdwRTZObSyMsI3471LCA2pUL9120RIMIhYhDpQAGSeUbfh43Jsri5naMSPC0ef6cz3MS
+	xNRzm9qlOgIRuta9ZJUYLOodMKL8jBvh+1HpZy/gyGFDG/6ZpEUTYAgbJsmxg5G7yhGg4oZWK1o
+	srZV0Ax2s7cNV6RM8WbLhxYQtYSFI8fj+8uiBNfQorEkNsjE4xWJ2okfckYqLmmv82tyBvKcR/6
+	20g01mw+D2hJyPS6sSzB5x/lTgUKZfnPQWeTtlxIo8AZ9/6FDnZz53afjVcZZxO0b4551Mq8I/s
+	ybMsqEt97Ddbe1ks7srF8eX+kdDi4tYxrPHm7F/c/rnHJ15Rmb+i/47W4wFVZUSov3MClZ
+X-Received: by 2002:a17:903:3c2e:b0:2ba:3b89:c3a5 with SMTP id d9443c01a7336-2bd55e46765mr226415ad.12.1778694150405;
+        Wed, 13 May 2026 10:42:30 -0700 (PDT)
+Received: from google.com (44.234.124.34.bc.googleusercontent.com. [34.124.234.44])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-369224d2f4csm151787a91.0.2026.05.13.10.42.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 10:42:29 -0700 (PDT)
+Date: Wed, 13 May 2026 17:42:22 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+	Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>,
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>, patches@lists.linux.dev,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Mostafa Saleh <smostafa@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH rc 1/5] iommu: Fix loss of errno on map failure for
+ classic ops
+Message-ID: <agS3_gZOW3AjAAhL@google.com>
+References: <0-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
+ <1-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/268] 6.18.30-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260513153744.746440810@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260513153744.746440810@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F3C5D538533
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
+X-Rspamd-Queue-Id: 0F39B538662
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246972-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246973-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[praan@google.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,solid-run.com:email]
 X-Rspamd-Action: no action
 
-
-
-On 5/13/2026 9:17 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.30 release.
-> There are 268 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, May 12, 2026 at 01:46:13PM -0300, Jason Gunthorpe wrote:
+> A typo, likely from a rebase, inverted the condition and caused
+> errors to be lost. Fix it to be "if (ret)".
 > 
-> Responses should be made by Fri, 15 May 2026 15:37:20 +0000.
-> Anything received after that time might be too late.
+> This was breaking iommu_create_device_direct_mappings() on drivers
+> that don't use iommupt and don't fully set up their domain in
+> alloc_pages() (i.e., SMMUv2). In this case the first call of
+> iommu_create_device_direct_mappings() should fail due to the
+> incompletely initialized domain. Since it wrongly returns success,
+> the second call to iommu_create_device_direct_mappings() doesn't
+> happen and IOMMU_RESV_DIRECT is never set up.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.30-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> Cc: stable@vger.kernel.org
+> Fixes: d6c65b0fd621 ("iommupt: Avoid rewalking during map")
+> Reported-by: Josua Mayer <josua@solid-run.com>
+> Closes: https://lore.kernel.org/all/321c2e57-6a17-4aef-ba42-d2ebd577e472@solid-run.com/
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels build tested on 
-BMIPS_GENERIC:
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
-
+Thanks,
+Praan
 
