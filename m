@@ -1,149 +1,167 @@
-Return-Path: <stable+bounces-247017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247018-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJN7J6fFBGqbNwIAu9opvQ
-	(envelope-from <stable+bounces-247017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:40:39 +0200
+	id aNnRFELHBGrdNwIAu9opvQ
+	(envelope-from <stable+bounces-247018-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:47:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FF353921D
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:40:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4997653939A
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCCF330221E8
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:34:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4C4F73004D00
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B833A785E;
-	Wed, 13 May 2026 18:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196673A7829;
+	Wed, 13 May 2026 18:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aisMIBI7"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MddIMw4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99706352C2B
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 18:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03482D6E44;
+	Wed, 13 May 2026 18:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778697245; cv=none; b=mHfFWTFLBHSkwr7DiUHj64J/JrzXyRonBVh3aTI4EKg38Nn+Ftqni78RHw8fZFv2f2W2AREZch936wlexgLFjT5uzn/BRX6pS+W1lswhZPxo5mWKYX5Eg/wWUkqgGY3Y6wLUoZepWRvWFN38BGMJU+0+JN1mS16Y9chJnZ5uaVQ=
+	t=1778697308; cv=none; b=jOziSRnaJsQb8q9Zhx4sePwR83/ue7SAglbitvHp3txVnVNDJDTZIC5FRv8CHvjAgp94MbdYy71tgiRQtpD7wNSB3QUG0923vftWd61AKB2YOpORl2dCDecxeyW9Vx6aLzycdb2CGxd1xfH+W9I9dK6iTsMiQiVVgh8jxLtVfHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778697245; c=relaxed/simple;
-	bh=ECUfdJOF5sx/Lwk+jawY2WKGn7NqF+yoSu6V1IYz4UI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiBlFtdE3O7V3O0I4Z8+gAi7iPEIvnX/HHhDkXhvk0upB+W+79le5jAZrkOLB2NihjheWbWSetoDce2gLnuk530MQKpdaSfGoFbJ/IPD01uqPAdpOiK6Bg3XkXBUzjAgyeRjw/qJITTLFqzGkw9gIrAFpHA/6yuTydutGMsbUEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aisMIBI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EB4C19425;
-	Wed, 13 May 2026 18:34:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778697245;
-	bh=ECUfdJOF5sx/Lwk+jawY2WKGn7NqF+yoSu6V1IYz4UI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aisMIBI7B6GkvO4NvWqcytwdM8sk3lBUksvv34WNrSOY0CwFMqKL+0jhSRs52ywog
-	 1vOgrFAW+2yYTeSFQZ8TocDLx8J5t3EJxvuXUjabbJL6dJH9JUJ2pNJEvQnwNHnUji
-	 U4azEnZdO6pmEaX0vvY+OCgFlXg+ni72j3jhi1MM2Rnc+oUebCyvg0U3gyrns/+SdE
-	 176JayJ2dxoLrzHxyCK7ghHFf4D8RgJrn2GZ57Nsuua0rLiUFSjVL+sC3LFWafquqZ
-	 zzfHDY/ZzIZsuRcRMaImtYExpQAJDASH11+zcumY7i2d9UVu2e4HJUOvDLYwZ4R/3n
-	 04IrwJLjJPCig==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] spi: sun4i: fix controller deregistration
-Date: Wed, 13 May 2026 14:34:01 -0400
-Message-ID: <20260513183401.3927454-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051253-fabric-rocky-e5b7@gregkh>
-References: <2026051253-fabric-rocky-e5b7@gregkh>
+	s=arc-20240116; t=1778697308; c=relaxed/simple;
+	bh=GfJ3DboiwFm8hVMw/nXzl/gOAngVCipYQtAF1PsoRmM=;
+	h=Date:To:From:Subject:Message-Id; b=YAY+LTwlkgbg9/C/cnPDs4JamKyqPB2bmX21Vr+yxiNbwxND01klVPEJ2K8vi0kFKZ1HBpAsNlIBGkWVLij30L7YoRkwdI4tw4tclnSLrv6RQZsNtBDKxuzMOEO7pVs5vWluPiyCR4T3movP7Asr9ULSZ1/qATepapmcuWOAvH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MddIMw4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC6BC19425;
+	Wed, 13 May 2026 18:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778697308;
+	bh=GfJ3DboiwFm8hVMw/nXzl/gOAngVCipYQtAF1PsoRmM=;
+	h=Date:To:From:Subject:From;
+	b=MddIMw4eMv+y+uiMqZPtDEiyF5FpD3OMb+emYvOJTBbbfPzYExid7pQ0Vf5W7G107
+	 UjYeKIRMOZ+LwGmE6NXurhw1aQgX4Zb4+QMIUXSeeedPI+7yUWKpU8FffTy6U8g19S
+	 wo3yIqchx6UWxvoeOWl4/0SHXWO5LarWe6framDo=
+Date: Wed, 13 May 2026 11:35:07 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,leon@kernel.org,jgg@ziepe.ca,balbirs@nvidia.com,hao.ge@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + lib-test_hmm-use-kvfree-to-free-kvcalloc-allocations.patch added to mm-new branch
+Message-Id: <20260513183508.3BC6BC19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F1FF353921D
+X-Rspamd-Queue-Id: 4997653939A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247017-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-247018-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,linux-foundation.org:email,linux-foundation.org:dkim]
 X-Rspamd-Action: no action
 
-From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 42108a2f03e0fdeabe9d02d085bdb058baa1189f ]
+The patch titled
+     Subject: lib/test_hmm: use kvfree() to free kvcalloc() allocations
+has been added to the -mm mm-new branch.  Its filename is
+     lib-test_hmm-use-kvfree-to-free-kvcalloc-allocations.patch
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-test_hmm-use-kvfree-to-free-kvcalloc-allocations.patch
 
-Fixes: b5f6517948cc ("spi: sunxi: Add Allwinner A10 SPI controller driver")
-Cc: stable@vger.kernel.org	# 3.15
-Cc: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-19-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed `host`/`spi_controller` to `master`/`spi_master` and kept `int` return type with `return 0` in remove ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+The mm-new branch of mm.git is not included in linux-next
+
+If a few days of testing in mm-new is successful, the patch will me moved
+into mm.git's mm-unstable branch, which is included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Hao Ge <hao.ge@linux.dev>
+Subject: lib/test_hmm: use kvfree() to free kvcalloc() allocations
+Date: Wed, 13 May 2026 16:25:25 +0800
+
+Coccinelle scripts/coccinelle/api/kfree_mismatch.cocci reports
+the following warnings:
+
+  lib/test_hmm.c:1256:15-16: WARNING kvmalloc is used to allocate this memory at line 1191
+  lib/test_hmm.c:1257:15-16: WARNING kvmalloc is used to allocate this memory at line 1196
+
+Fix this by replacing kfree() with kvfree() to correctly handle the
+vmalloc() fallback path of kvcalloc().
+
+Link: https://lore.kernel.org/20260513082525.154036-1-hao.ge@linux.dev
+Fixes: 775465fd26a3 ("lib/test_hmm: add zone device private THP test infrastructure")
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+Acked-by: Balbir Singh <balbirs@nvidia.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/spi/spi-sun4i.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index a8fba310d7004..ab99cc7438652 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -503,7 +503,7 @@ static int sun4i_spi_probe(struct platform_device *pdev)
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_idle(&pdev->dev);
- 
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "cannot register SPI master\n");
- 		goto err_pm_disable;
-@@ -521,8 +521,16 @@ static int sun4i_spi_probe(struct platform_device *pdev)
- 
- static int sun4i_spi_remove(struct platform_device *pdev)
- {
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	pm_runtime_force_suspend(&pdev->dev);
- 
-+	spi_master_put(master);
-+
- 	return 0;
+ lib/test_hmm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/lib/test_hmm.c~lib-test_hmm-use-kvfree-to-free-kvcalloc-allocations
++++ a/lib/test_hmm.c
+@@ -1253,8 +1253,8 @@ out:
+ 	mmap_read_unlock(mm);
+ 	mmput(mm);
+ free_mem:
+-	kfree(src_pfns);
+-	kfree(dst_pfns);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
+ 	return ret;
  }
  
--- 
-2.53.0
+_
+
+Patches currently in -mm which might be from hao.ge@linux.dev are
+
+mm-alloc_tag-replace-fixed-size-early-pfn-array-with-dynamic-linked-list.patch
+proc-meminfo-expose-per-node-balloon-pages-in-node-meminfo.patch
+lib-test_hmm-use-kvfree-to-free-kvcalloc-allocations.patch
 
 
