@@ -1,281 +1,203 @@
-Return-Path: <stable+bounces-246900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246901-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDhRJtSfBGqbMAIAu9opvQ
-	(envelope-from <stable+bounces-246900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:59:16 +0200
+	id 0HjEMxe+BGoBNgIAu9opvQ
+	(envelope-from <stable+bounces-246901-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:08:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0043536A56
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F8053898C
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33BA931FD02C
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:11:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4822031446D9
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A92388885;
-	Wed, 13 May 2026 15:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E9B47A0A1;
+	Wed, 13 May 2026 15:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ursulin.net header.i=@ursulin.net header.b="iJ6WA420"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="b7j7xYmQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010057.outbound.protection.outlook.com [52.101.193.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDEB387578
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 15:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778685066; cv=none; b=FVXXI5qidoF2ai9yA3h0lAik4a9SjmcCRJUHYH7G3IqIqCIsDxgALMnvHa+9zuu4P8LYnvIcL8nOCA409Vb41MqSAPninYdngrrccm/F5nORHJ0t7LoFXQMSPRj+pv0zuuhmiadYH34OZZUn3XBTQrOlpW/8wIcN+7NsSv9r8Rs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778685066; c=relaxed/simple;
-	bh=XZwkileRecnbrwGvJinGmTK+/wq/uUIw6IB2B1HlAks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BERLUaBRU4wdyMRKC64lfm6I34Y0NdDECJsLgNTwaicPpheOIlg6UWrfHkWujOzfUvU5BUB2zxCxn2/1oMqzKd5LotdJM0DJ0I9Mz94h41vNP5NAolQFcrFQwVBTPuqGI08lAFIZ5DizmEvDU0QHj9sKURbRuaN06vFaaYDYg/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net; spf=pass smtp.mailfrom=ursulin.net; dkim=pass (2048-bit key) header.d=ursulin.net header.i=@ursulin.net header.b=iJ6WA420; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ursulin.net
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4891b0786beso44083935e9.1
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 08:11:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ursulin.net; s=google; t=1778685063; x=1779289863; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7xx7YpaJm7o+t/t0AKRTj9xeoYgQ9FQh5c3bwuIiEQc=;
-        b=iJ6WA420enbwvQVdkW8383TEE+6VQo4y+LG0k7R5N0z0FgpT4HE+6rAr8Qjpf1NlZp
-         CfiAHYFOzuOgNILdf8C5bilzasVL3S57AhKCkX+fygnu1vRR5x7Gg95yS9xhGoxuuyua
-         NWPxixHYrA90nfkcGPF7VWPxlkv3/BhUwe3NzHOlCFPHuNDbWb0gol96pQXpei9/LGuo
-         9p6RGBA7/gB9HIsgpR16z4spW1R3nvz1OoAdlrP1vwEUbfebXHc5NvHQFZz2iDheaJ6U
-         voITItJbXlXoFmEpB0GHz0hfnGFzpY78LyAonXDOBptXaNUiVPNj/1TAKWAMuvt8yVQF
-         HqNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778685063; x=1779289863;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7xx7YpaJm7o+t/t0AKRTj9xeoYgQ9FQh5c3bwuIiEQc=;
-        b=LlmkXwQV72XBwGwn4d+HLVG7Bra7YyLuYmMQ+mit2FpKbyvIQV7BLbvxxIwH1HojGG
-         HL3XNK5UUHuZs1N0WJGtnB6efClAAFiDFnuAb+ta+PO3dTtfhTTtGPoKScz0ApfIcS2U
-         1VjBFzDuCmwx8/Ga/zzBFo3q5+DIoxFOF4f8iRE5Kh0DKirUUJWLerWnzLmpPbKzrNJE
-         S0il58IooUVRI4UmNtkWCK1LgBhMo0nMWsZKcjffnvdHod/nNu6jpBcjRpbIlAjAgxjp
-         JRqvBMMVauz758k5e7hoKaDHupKRB+xrdcB2TKHu33shz1aBxTbJSG4j2b8OqqHLatmt
-         O9hQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/KRieuEXsVWaZKsSDaNI0ovKGZdLe6lF22MlCfwkhOHpnN0ltp04LqZTK3l34fhm8covBURxw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwM6Urf9aM2pHkNF+JmEwrKkfH/dxEu4XicXrSqLja98TGP/YIj
-	ZDK7zowzTGB5brR6HOtlsAri8PkVk1znX+d+ecB2iw76/sbZ+TsIvbjnArsCHImYXGuy4Cffnjc
-	GMQdj
-X-Gm-Gg: Acq92OHfCJVWjtUwuIiMthviI040EZ+jRU0IalZmTs+6Z1GL5AuJrrdpOSrAMsjVlSd
-	Rfp2WUhcp3zilQFVXs66B4IgUeGKdslH4bv7CJTeDXUvHwLjbDuNj7rO6coED4O4bpyEfVHuESI
-	NpNUcYECyoQWUdZvegMdZfccuRwHA/WzDnsJ9lYkhdVh9vhVNSifljCQfTjS8RBKIBWinXFiMrA
-	HiwIqdr4a3nj+pErXGdphosnql7QQdteYsxfx6L9e2fxTHq0TtVojBKZnOp92RV1axZjYxZS9hR
-	lPz3n17JUWSYsZwoNr8VrcTqHGWsP9CEpbnkiZPbGxnfAM73LH7//f2POpEI59Ep/nrpHckjKDO
-	xfXTPclcpe+cEgmAzxRP4x5K46QCRArC8+9+mf7+7Aeeg3DfEv7dZy8wrR6ZGEaf8srulcuBawF
-	B1xvAdrhbtHZiM7f2/bhHUkEgskODoE3JjBBuHlWUQTZzC
-X-Received: by 2002:a05:600c:a31b:b0:488:b187:3c with SMTP id 5b1f17b1804b1-48fd5b4f6cbmr13108955e9.14.1778685062938;
-        Wed, 13 May 2026 08:11:02 -0700 (PDT)
-Received: from [192.168.0.101] ([90.240.106.137])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fce05e45esm55186845e9.4.2026.05.13.08.11.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 May 2026 08:11:02 -0700 (PDT)
-Message-ID: <9186ca2b-86be-4000-8903-0e64a5245280@ursulin.net>
-Date: Wed, 13 May 2026 16:11:01 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB4C315D58
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 15:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778685092; cv=fail; b=Tu8NRHW3qGiXmlfMlXlR3s5db26kw6JhohH4KBCOXO+EafwLUniP8AwVB/hCyI4DJPD/B6j9wNAipBtBs9sW+KiqaK/omhLNCdLN1AF932J6pEpL22EwCUo7BpOgpoePX3lfE66mjtHAS2YqFaGc6+KQ9W7Sb0nAyH13DsrBW+E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778685092; c=relaxed/simple;
+	bh=6Xd2Im1c3U5e0TcmML3lbgGVEuzo4D6h0fVlKukuBEk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Sh6pxyk/9cCxH4w3fFPKVYm1+N3+Spt67zPyUoaKSCouv3wvwrL92DCgDQ+BT6XHnWpd4sghXCP+aRmu1F4Aopos1FXhq/2Z68KswCtmIKDvi2to79T+4LMH5XJhU3EejY+LyRYDr5FLlYLareZUmt04M8/kt27aXenfJabaXdE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=b7j7xYmQ reason="signature verification failed"; arc=fail smtp.client-ip=52.101.193.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cw07fsuKqgnnKBOu1ojaIXPqftfRQXQywKPXeCGsqIJ896FW65upXuAvroz/7cojoneh22EJrrJueKtMwhwwISLd7rGU1OKGjZCCXuP8MtRRaEMr9kOAm2fTzjPhXpg/mSj7Z72SaNu6XVcd7n48/sN+budTlZ0UqmX2bk2CIzQf73pHU6UKuzNy402Kav8ZL0xi2v+kW+X/RujX3Y5XcKlQVMfpF/iQOycTAsN9HLQeR8pcffjvvwm2dT5HKvgwGImh+YbpoAzcNU8eWl47HvxZ/bX7HfQHDHRJmxfWwxxCohjcR51rVwijuwCLv4QoAXx+roY1FnScf8mVwKQ23Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aZCdZtWDaVoJJKe9vYb/v8du9sah+etyYTG5G4wy5tE=;
+ b=ypb4EhktzXn6Qiu5+pHqrwiulkU9pwXhVGwFOXHayNtdXaHDTddYPA4GO/Ucg+mgTqzw0b+vTiTr+mmkQnY6PnDmsFCB3B+X0z09Rex5rrKd2lOshiURC09GR4jf8X4BFfayLf4rNJ1YZ+Rzvd8g6+MAChnc9sJfOWq4GvXcGrbSfD0VS6uC6XUaji85q9Yea+Ngthf7tLgafUCNfdidxXaLN4oHApYO12t+QO7h0OPGsnCU2kBrZqZUilXnp6pNoeIc7YQbGW+rExu/BOeQoTztKhqesAHJEgTUqq+bNWQttdVIia95xsyxmdJGtMO6pcZrrGphPcOU0fetcQXu3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aZCdZtWDaVoJJKe9vYb/v8du9sah+etyYTG5G4wy5tE=;
+ b=b7j7xYmQw/23R0b5B4rObAF3tBVaTXKm0forkRZB9XaGqHY9Ry0Y7LEa809gAH/bdX4zK54Hi44r7Og47CL7uEgM5/LlYeb/c2x0YX6/j+oA71ct+0ivuzOMFcvNWA/xc+VONDqUDMGK5g/Z9WZChtikheshE+ZKCuWSpIjfO+qWrl10ZF5/K4OSaoNg0CS6a8NR9iEu3zvntep2awlNoi/1utnmUBSczWhbUt1K853wzi1It42MMwqktprSGgbX2G9EVSYdVy6koNMujTeXHKOYkOGvu1DBwvnm7b+d9zuugg40R5ImoV81izhZxqpzRgCO99NpM5Wl5ZybCyubeA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by DS4PR12MB999077.namprd12.prod.outlook.com (2603:10b6:8:2f9::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Wed, 13 May
+ 2026 15:11:28 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9913.009; Wed, 13 May 2026
+ 15:11:27 +0000
+Date: Wed, 13 May 2026 17:11:20 +0200
+From: Andrea Righi <arighi@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Stephano Cetola <stephano@cetola.net>,
+	Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Chris Mason <clm@meta.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH 7.0 247/307] sched_ext: Skip tasks with stale task_rq in
+ bypass_lb_cpu()
+Message-ID: <agSUmB_A7tECRrtp@gpd4>
+References: <20260512173940.117428952@linuxfoundation.org>
+ <20260512173945.338221208@linuxfoundation.org>
+ <2f509cbf-f14f-4dfc-8ba9-d53dc10e0aad@kernel.org>
+ <2026051301-tusk-parcel-15ee@gregkh>
+ <67725402aaddb935a94d2cd751f317e6bb844654.camel@cetola.net>
+ <2026051342-canon-apply-bf42@gregkh>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2026051342-canon-apply-bf42@gregkh>
+X-ClientProxiedBy: ZR2P278CA0050.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:53::10) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/i915: skip __i915_request_skip() for already signaled
- requests
-To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- intel-gfx@lists.freedesktop.org
-Cc: andi.shyti@linux.intel.com, krzysztof.karas@intel.com,
- stable@vger.kernel.org
-References: <fe76921d35b6ae85aa651822726d0d9815aa5362.1776339012.git.sebastian.brzezinka@intel.com>
- <c9c1270b-f724-45dd-a66d-f7b30f6c6087@ursulin.net>
- <DIHIPV1FJITR.1FJEZMGRDSR7I@intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <DIHIPV1FJITR.1FJEZMGRDSR7I@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F0043536A56
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DS4PR12MB999077:EE_
+X-MS-Office365-Filtering-Correlation-Id: 29b6b0f4-d339-4b9d-478c-08deb101e7c6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|56012099003|11063799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	ZqxV00rykxxfULzP4tN9n0gq+eENV2uUj+0driMzXNPkInCe5ul9xJEwOYNvyIj8u4dIV4scgpsgEJC7XjZWMgLVF8KefQAQVm/ms/Zsa04J9Khdj7BS+wCr/rVIhP3SE2iWaB2t1MZ0Gdtld/N6bxoCf3xQiI3pTjTANN36C2NGqIaNax6eYsE8fp1JvkZBrPC+IiTdgrLwUqopA+XrL366Be+W/BFlADnObRXUgUjou8VLlKQsBLbvNtv9R5ZB0oeKuMXbTaD/VK0bLOnIaQuZ8staJhMPWSAOUZrOhzLmBXN+ExhzMysYPJ+ZFJ36Zms5oK7W0tUNjravtSBIqG9x7Vnl3jdix08I4ve5gsP6iddhw0CvklYUhU2BDLAcGI1MnBn1g2oTCK5EigOJ4tr6vverV6GNU7iuBGsIDmO8y7MOuXipVrA/BQ8zVNxwgBurzBbYozMVfPILLB6D1ap6C4RGeMf3TYx5I7/Ju1kVXXuSy1Og+W7GY75gWxn94dcSDBc2OG3J61rtWnJYaNKRYXF8Y/Fq4fb5rQpmdBncfADQkMvzbGRFx42JSqiYc0AOiP0UoBBg2RYuFZVxoeNIu93f6XYRHtMwDDGQja/PyMV4fmUBRCmQRNsrrc8d1+IJr9n5Sssdv9ijBUphbfMAimvcWbQePiiKQy4bxjuskS/eFg0rY5ArstzSKaTc
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(56012099003)(11063799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?B4LQ/za+qiUw0bwgpGEbvlRYRtmPr4aa6ZB7f3VGfOUWHIgMOV3Sn8iP4V?=
+ =?iso-8859-1?Q?38EUvyYF1oqHSJhN0ZpFRir+dKQGXF2D/FLFJYd0QqsXSbcxr2D7OGDQma?=
+ =?iso-8859-1?Q?ijULqXRu/vRbmVMQxAcFhw6CfxJhhQQzF45W8ZaqpHf9trqf5pSwTIh3pA?=
+ =?iso-8859-1?Q?fsE+1CD4+MCPwdW8uEuM07p+mrZRC4JnWhiiiKDF5ZIGXgHXFyG3SXKwK5?=
+ =?iso-8859-1?Q?uZENU8OAvZTW9F6T/8wLaLr4h8QrR5Nma/DuTrP8r7rPSCy4LHRwCV8YrI?=
+ =?iso-8859-1?Q?k8/soRm1au1ejPul6uB952wo4e8iz23uC2wp/9nWx4xa5jNpeQCJ1cMxgl?=
+ =?iso-8859-1?Q?kfyaiweXF4zVic999N5FWqZcFbZcP8LO0lHFAAwFfoS+kkREgR+vWcYvv7?=
+ =?iso-8859-1?Q?8Dd/h0EEUl15Cy4MD2UUcxtMFmetOkRuirNlze2MuZwJ/MF9UwPthMWmyN?=
+ =?iso-8859-1?Q?8sMTP1HL+mLUQwdDTM0dyClkiGjluPFk8bCsIumZd1pvvMhm65zjiQVMCi?=
+ =?iso-8859-1?Q?Yd8+WtIdAuM09cQirpoZSsFxv6gqTbx3lgUKgXU08wd8ZSzr0EUPPx3B9h?=
+ =?iso-8859-1?Q?iXSMoq2atd87XQfoUDMv+cUGpI+y193eJHrqMMfNk4RV6jLoMg3TV2moSQ?=
+ =?iso-8859-1?Q?vGkpqta6fa6WeLVKV8npUQlNOwGTEb5VAyFlPkOGuE0hGP8e/mDCbHqdEI?=
+ =?iso-8859-1?Q?zkbbM/72ixY3ZTZjCCxCJaM2jTqMHaE0evtpsoo/l3BRhorunrwtX722gl?=
+ =?iso-8859-1?Q?CfRnE4GHfLSnES53LRdlT8TNyXFdqs+ciLcVa3n52CfJn6xl+BdnVxAn2f?=
+ =?iso-8859-1?Q?5CvwU1kp0iioEPFCv1q4jQp8yzQtzdCSBlz45YZayrvq5jLBV80A//02H2?=
+ =?iso-8859-1?Q?m7szI5H+eZ44fekLh3kEQqESaaTMo9VQm2nu9hMI5S5MEo5fTkF9Xamt7S?=
+ =?iso-8859-1?Q?2bojf0B5Cb7UQwrWdIj5gEobZuHt1h9sBITE++0dXSRZFlC8qZlvfQ0rnq?=
+ =?iso-8859-1?Q?B0ML7q202wmgdbfsb7VSf5pjxGfrjntEL4J6TxQ0j2O8dZBNjuWzAkqDK+?=
+ =?iso-8859-1?Q?0RbbD2p2+L0a4TcJ+u+zUTbCSfDxhavbv4llb48kcZyvx8mpn0WRdOwqTr?=
+ =?iso-8859-1?Q?CrZg51r0oJvZXWqQnoQ8t9siHa1fo88bz9xsllTL2QKO0NNbnZ5o8QR3Kk?=
+ =?iso-8859-1?Q?cQSQRYlbOeAggl3kHQ5D0UibITtEXlfww2adTXpj0GThUvIgftW42WniC0?=
+ =?iso-8859-1?Q?kvgxeGMSjrfS1pXYzT3g/ZcTjpoun7bYVd4EoPMEo8tsfL/Qec1fwfBKpo?=
+ =?iso-8859-1?Q?emdxCOlOlrbw8AdU5tiXbmwV7sNth6Ak+YLbTtdnLC3ytvpdtHWggX+GXS?=
+ =?iso-8859-1?Q?ZFXqkSm1/pPXlznuqOY4aL3UcNpjptKD1FcUPLqU6pOrP5MPv0wBhCoHEF?=
+ =?iso-8859-1?Q?/xvqcC5nidqOoadiYeBpHjXV0iQ9dN+jjYXczl0Ctx+xnlqG3UoXYSsNTG?=
+ =?iso-8859-1?Q?1gm/x52dYdR+Ae/ybSe1nxf/JX0xU5k+adFRpYi1OK8g6eLzhShatPUOJ1?=
+ =?iso-8859-1?Q?T+roXve2D9HvEDkGxfVdvXq/TUDWopJKXTlvtp4l16MD0EmR+ZUVKvRzsv?=
+ =?iso-8859-1?Q?4sNZHoba2Z5vp6VI1lPxeUItmwnsAragw+/hgOQrus24jvWbRcEp9m6HcR?=
+ =?iso-8859-1?Q?yCP7bmnk2jaDTm5JEyC9SSHPDhg73vNWBYAo5ZKt53ZG1qotnG6FGNkiCd?=
+ =?iso-8859-1?Q?zxQ5hgGKrrjvQiyq9rqQ1Gsrh/3RDL2YPsMMm+5N5nT+xy?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29b6b0f4-d339-4b9d-478c-08deb101e7c6
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 15:11:27.6484
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PexeZKCDMNutQWhvQp/8ScsVxWKQe+/jZeMvCtzdYCA+V+ajGiGasPWbcTLUlVd1AlsVgzkx6jagA015d2aO3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB999077
+X-Rspamd-Queue-Id: 30F8053898C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [4.04 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[nvidia.com : SPF not aligned (relaxed),reject];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_DKIM_REJECT(1.00)[Nvidia.com:s=selector2];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ursulin.net:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246900-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246901-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[ursulin.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ursulin.net:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	GREYLIST(0.00)[pass,body];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:-];
+	NEURAL_SPAM(0.00)[0.412];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tursulin@ursulin.net,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[arighi@nvidia.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
+Hi Greg,
 
-On 13/05/2026 12:38, Sebastian Brzezinka wrote:
-> Hi,
+On Wed, May 13, 2026 at 04:56:56PM +0200, Greg Kroah-Hartman wrote:
+> On Wed, May 13, 2026 at 07:39:22AM -0700, Stephano Cetola wrote:
+> > On Wed, 2026-05-13 at 13:58 +0200, Greg Kroah-Hartman wrote:
+> > > 
+> > > This is odd that it doesn't show up in my test builds/runs.  I'll go
+> > > drop this now, and push out a -rc2, thanks!
+> > > 
+> > > greg k-h
+> > 
+> > One of my build machines was able to build 7.0.7_rc1 successfully. The
+> > only difference I see is that it does not have:
+> > CONFIG_SCHED_CLASS_EXT=y
 > 
-> On Wed May 13, 2026 at 10:47 AM CEST, Tvrtko Ursulin wrote:
->>
->> On 16/04/2026 12:31, Sebastian Brzezinka wrote:
->>> After a GPU reset the HWSP is zeroed, so previously completed
->>> requests appear incomplete. If such a request is picked up during
->>> reset_rewind() and marked guilty, i915_request_set_error_once()
->>> returns early (fence already signaled), leaving fence.error without
->>> a fatal error code. The subsequent __i915_request_skip() then hits:
->>> ```
->>> GEM_BUG_ON(!fatal_error(rq->fence.error))
->>> ```
->>>
->>> Fixes a kernel BUG observed on Sandy Bridge (Gen6) during
->>> heartbeat-triggered engine resets.
->>> ```
->>> kernel BUG at drivers/gpu/drm/i915/i915_request.c:556!
->>> RIP: __i915_request_skip+0x15e/0x1d0 [i915]
->>> ...
->>> __i915_request_reset+0x212/0xa70 [i915]
->>> reset_rewind+0xe4/0x280 [i915]
->>> intel_gt_reset+0x30d/0x5b0 [i915]
->>> heartbeat+0x516/0x530 [i915]
->>> ```
->>>
->>> Guard __i915_request_skip() with i915_request_signaled(), if the
->>> fence is already signaled, the ring content is committed and there
->>> is nothing left to skip.
->>>
->>> Cc: stable@vger.kernel.org
->>> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/13729
->>> Fixes: 36e191f0644b ("drm/i915: Apply i915_request_skip() on submission")
->>> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
->>> ---
->>>    drivers/gpu/drm/i915/gt/intel_reset.c | 3 ++-
->>>    1 file changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/gpu/drm/i915/gt/intel_reset.c b/drivers/gpu/drm/i915/gt/intel_reset.c
->>> index 37272871b0f2..b728a5171e93 100644
->>> --- a/drivers/gpu/drm/i915/gt/intel_reset.c
->>> +++ b/drivers/gpu/drm/i915/gt/intel_reset.c
->>> @@ -133,7 +133,8 @@ void __i915_request_reset(struct i915_request *rq, bool guilty)
->>>    	rcu_read_lock(); /* protect the GEM context */
->>>    	if (guilty) {
->>>    		i915_request_set_error_once(rq, -EIO);
->>> -		__i915_request_skip(rq);
->>> +		if (!i915_request_signaled(rq))
->>> +			__i915_request_skip(rq);
->>
->> I spotted this patch in drm-intel-fixes today so some questions.
->>
->> If the request is okay why is setting error and marking it guilty left?
-> The request can still be guilty even if it already looks signaled
-> after reset. The important point is that i915_request_set_error_once()
-> will return early once the request is already signaled, so it may not
-> actually inject the error. That leaves __i915_request_skip() with no
-> error to work with, which is why the guard is needed.
-> 
->>
->> 1)
->> How confident are you of the Fixes: target? That patch is six years old
->> but the Closes: issue is only from last year? Do internal Intel log have
->> evidence bug was there in between those two dates? How sporadic was it?
-> a
-> Iâ€™m quite confident the fix is correct, and it should not break anything
-> if it is missing some corner detail. This is an extremely rare issue,
-> specific to Sandy Bridge, but we know it was present at least as far
-> back as 2022 from work item 5774. The bug only shows up when the right
-> reset timing lines up, which is why it is so sporadic.
-> 
->> Were you able to verify the fix easily or with difficulty and how?
-> I verified the fix mainly by code analysis. In the worst case, it should
-> not break anything because the change only skips __i915_request_skip()
-> when the request is already signaled, and  the ring content is already
-> committed, so there is nothing left to skip.
-> 
->>
->> 2)
->> Is the issue only that the order of setting the error code and the bug
->> on got swapped?
->>
->> Ie. before 36e191f0644b
->>
->> __i915_request_reset
->>    -> i915_request_skip
->>          GEM_BUG_ON(!IS_ERR_VALUE((long)error));
->>          dma_fence_set_error(&rq->fence, error);
->>
->> After:
->>
->> __i915_request_reset
->>    i915_request_set_error_once
->>    -> i915_request_skip
->>
-> Yes, exactly. In the old code, i915_request_skip(rq, error) always set
-> the fence error first, before doing anything else:
-> ```
-> GEM_BUG_ON(!IS_ERR_VALUE((long)error));
-> dma_fence_set_error(&rq->fence, error);
-> ```
-> 
-> So even if the request was already signaled, the error was still
-> recorded. That is the important difference.  After 36e191f0644b, that
-> logic was split into two steps:
-> ```
-> i915_request_set_error_once(rq, -EIO);
-> __i915_request_skip(rq);
-> ```
-> 
-> Now i915_request_set_error_once() can return early when the request is
-> already signaled, which means the error may never get set at all. That
-> is why the new guard is needed around __i915_request_skip(). The old
-> code did not have this problem because the error was set unconditionally
-> inside i915_request_skip().
+> Which somehow doesn't get enabled with `make allmodconfig` :(
 
-Hmm right, I did not look into i915_request_set_error_once() so did not 
-spot it already has the i915_request_signaled() check.
+Do you have DEBUG_INFO_BTF disabled?
 
-Would it then be nicer if the code was written as:
+I think allmodconfig selects CONFIG_DEBUG_INFO_NONE=y => CONFIG_DEBUG_INFO_BTF=n
+=> CONFIG_SCHED_CLASS_EXT=n, because:
 
-if (i915_request_set_error_once(rq, -EIO))
-	__i915_request_skip(eq);
+config SCHED_CLASS_EXT
+...
+        depends on BPF_SYSCALL && BPF_JIT && DEBUG_INFO_BTF
 
-?
-
-But the above is details. What worried me more is whether with the patch 
-there is scope for regressions due not zapping request in a chain, 
-depending on timing. TBH I don't remember exactly how the reset flow 
-works, especially on Gen6 which was before my time.
-
-Okay, lets have this as is for now and hope it is good.
-
-Regards,
-
-Tvrtko
-
-> 
->> If that is the case commit message should have been clearer on both
->> questions.
-> could you tell me how I should send the corrected commit message? Is it
-> enough to send it here, or should I send a new version to the mailing
-> list?
-> 
-
+-Andrea
 
