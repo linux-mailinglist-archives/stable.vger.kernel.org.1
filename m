@@ -1,190 +1,160 @@
-Return-Path: <stable+bounces-246829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBcjCuxnBGpVIAIAu9opvQ
-	(envelope-from <stable+bounces-246829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:00:44 +0200
+	id aJWOKHZnBGpVIAIAu9opvQ
+	(envelope-from <stable+bounces-246827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:58:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270EA532AB6
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 14:00:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52FB6532A55
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EB1B53022AB4
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 11:59:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 378A930041D2
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 11:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C77D3FF8AF;
-	Wed, 13 May 2026 11:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD2A3FF8B4;
+	Wed, 13 May 2026 11:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="KYBhXU6S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3AXs98m"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7D938F94C;
-	Wed, 13 May 2026 11:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FA638F94C;
+	Wed, 13 May 2026 11:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778673596; cv=none; b=rt5+e8IrWPAv2WS+G1iBhaV12pGAogHmokBhzdaQyqWBiZ3IlKlrWunOOP81b/+NlrBtW6eX8bc58Ied0NiECjIC7JVCUpaCwL1PZyZ8yJcTBOmPUHfGVViAgN2rS3EYx8eL31IoWezKX5KZL+KXsv/YzNikdn6YC5Wop3R/uHc=
+	t=1778673523; cv=none; b=FgT3FTZzZMMK5RE/mbW98pitEZYIABd5s+G90DKB5mRykWiXqIAdJSb+H7/5u8nz5mqNJKMbEwgSqPmwP9pApH1I+2Cdhx7OxRHie6olf8kSmt3x0KGMCQ8l+L+VsRoMicaNnKklZwSjU3sEMuiHBDp+y67xR/1mulQlkObc/Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778673596; c=relaxed/simple;
-	bh=763pFe1J8vID9eAOLiyYmWwQJg6mRSiyJJD/9SABoV8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k8WE7N1GGHTqEOGd3VpCae3PIr1qDYIjg2yYHuXIwz5gw0rBh0odcp8JL8cv0Gjw6iSbmFVeilZVTryWoqQKFEZv705zXV3gtyTHYPLbdPiApf8bVr/sa++uHhhXRAKuE5eymWsbhRn+ATP2IWnCkhkOh2ZeaNjN9thEdRSa7yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=KYBhXU6S; arc=none smtp.client-ip=54.243.244.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1778673572;
-	bh=xEH2z8WCWcgrophkMiTtUC2J3DxjG4vcq5q2behA75Q=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=KYBhXU6SYQ/HPkrbyis/SBstMxVHmeTRIdCwJcD3ufr+8U9ysu07zm9ZZEheoTN76
-	 NQjOSnNF2/m3OZSF9/lVacVPdNAOfaebysynHDAfiI0ddsJb6C5jcawGYIZ73jW9eC
-	 PkR78N+oMYTLbRSQENFTuIX6ZFuPbmhwei+sd5ow=
-X-QQ-mid: zesmtpip4t1778673570t776de1df
-X-QQ-Originating-IP: viOzyJ1fnQCzw4A7aaGWbCFEU/bkgfmroHrcN7wPcDI=
-Received: from localhost.localdomain ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 13 May 2026 19:59:28 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 842056211250941492
-From: Wentao Guan <guanwentao@uniontech.com>
-To: gregkh@linuxfoundation.org
-Cc: chenhuacai@kernel.org,
-	chenhuacai@loongson.cn,
-	dave.hansen@linux.intel.com,
-	kvm@vger.kernel.org,
-	lixianglai@loongson.cn,
-	loongarch@lists.linux.dev,
-	maobibo@loongson.cn,
-	ojeda@kernel.org,
-	patches@lists.linux.dev,
-	seanjc@google.com,
-	stable@vger.kernel.org,
-	zhaotianrui@loongson.cn
-Subject: Re: Re: [PATCH 6.18 091/270] LoongArch: KVM: Compile switch.S directly into the kernel
-Date: Wed, 13 May 2026 19:58:10 +0800
-Message-Id: <20260513115810.338478-1-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <2026051319-lazily-machine-5ab3@gregkh>
-References: <2026051319-lazily-machine-5ab3@gregkh>
+	s=arc-20240116; t=1778673523; c=relaxed/simple;
+	bh=In8fYXQWtJzf6WlIE9aIJm782/mBwpstRnkGghUmsao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ca831lY8uoPKTPGteFp5In1wt2XEZ92nNkQ4k7QOibLJCjoLyiVmh2De95P9MPI/6lq7qu4YsjI4EuvIlcmpBEgDjn8xWUf2aJ3Cz2JGEqL2C++LDVcSJbdTfMyHYspfQVRyyY2QMN5+QdpX59GTC3GeC2FoQTrMPTO77AaIEB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3AXs98m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9210FC2BCB7;
+	Wed, 13 May 2026 11:58:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778673522;
+	bh=In8fYXQWtJzf6WlIE9aIJm782/mBwpstRnkGghUmsao=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A3AXs98mDEJhZuCL50H299avQ3XDiJhoyP4As9cF8NIx8giLyLX+CaR+1vXkjjvlo
+	 KjLQlzP8q7zf7EGtBKnJjlXspL+WSo3ZpD03/KKVq8vlRm+RDmhWeHOM1BK+RqAVvn
+	 Z1w53IyzhogIQA7uWa1cpFdHmXr7hHuh7+2HN92A=
+Date: Wed, 13 May 2026 13:58:47 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Chris Mason <clm@meta.com>, Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>
+Subject: Re: [PATCH 7.0 247/307] sched_ext: Skip tasks with stale task_rq in
+ bypass_lb_cpu()
+Message-ID: <2026051301-tusk-parcel-15ee@gregkh>
+References: <20260512173940.117428952@linuxfoundation.org>
+ <20260512173945.338221208@linuxfoundation.org>
+ <2f509cbf-f14f-4dfc-8ba9-d53dc10e0aad@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: N9ponxXGLTJpF01jxHgfic02HtxrEHLD4oQNYB9Dp0AZcW8oEk3+6ksn
-	PjlJO2YiyLYkqdGd49R8o8JGfZQE3pgqGO+ke0d7VG8ZggfIwj4dnFtU2/nFTNGR8+mhmSf
-	Y4DbCZiL3UKovPn8eISrGNfGRaxbuxzODdhMbO2Xzu8iMUNceWRGRgrJQzNLt+USbLta0IV
-	iTctFuia/DaJjQgcX1gfHBMPeNh1ve4MBC47mm8t4UQs+w6v+fRwKhbZcq/Erg7PbIOXWwD
-	U6Cdo6s3GCGKUED9Joh6scffUlpbzAKpOH+hEHZaG3vcUtg36DXC4ah2AeziaeRv11r1fdm
-	lj+ZQbp+KuBlZXQ/kNJIQGjsrSstA4DxseFu059yumGPGWjKZMGEbRqTbbJFRaWsM9EG15q
-	/5fO4vuP51FY5n8SEtwQLy036KiQD4LTJaJyWzTqa1a3Sn70c0nZa2FEKQZKgbEUIn+q7hH
-	WgtVnGoS16WJsLubQtfcukm6jDn6/N69rqmoMNY7ov3VAJob5ygOdFmelWiLgjf8yH4QFe2
-	Ts7nHCc8go1VIofWr856r5fR1J0EppElxNzTXkl5Z3d0VDMktvDwN4dnB99FaTWdiWX7QAe
-	1vW8Vhe7d3Hmm2p2mH/gu3x1VF9qkZUoeuOgwsxuE+oq8Ybvh/HZVIejbX85p8vuVGXxwFo
-	g/m/8utDm9L9OKmBVVC1+pqoqZkR9pATZIRZOUKBek01YR+2P6oQV+3+9ALMKb89/rpj0yP
-	W/eFt+fSTw8kTT/tpTkurL2luL6DkhNTjKx4gnf9c5OxjStbyg+AvFCE6DCapxE8EIfDzsk
-	ITsYC+rj3VYrQPqzax/jSTYoeFhmC1fJ43L6nTBqSVoM/ENvww/DLvOv4iDPcltmPsqWRAW
-	CSuR3xfQR9scM1A1ob5DuMjPItc6dsLtlRxoOwbEkMPtQ0kJuYXoEnr+mI/BIVu9urIzDFK
-	UKfiku/qTTBULU2sZxR09SqP9hDy+b1xcrlmobg2zjMRpkt/nQ9nkxX59iu/Jn6tV9oq38L
-	WFBt6htv4I3Hzo5jypDB5U8+wIJ/0tmkM2VR+9VjFY4kCiTFFqq0yplyq6dk/YgJdBS/L4P
-	w==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: 270EA532AB6
+In-Reply-To: <2f509cbf-f14f-4dfc-8ba9-d53dc10e0aad@kernel.org>
+X-Rspamd-Queue-Id: 52FB6532A55
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246829-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[uniontech.com:query timed out];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246827-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	RSPAMD_EMAILBL_FAIL(0.00)[seanjc.google.com:query timed out,lixianglai.loongson.cn:query timed out,stable-commits.vger.kernel.org:query timed out];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,uniontech.com:mid,uniontech.com:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,meta.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Hello,
-
-> On Wed, May 13, 2026 at 11:06:20AM +0800, Huacai Chen wrote:
-> > On Wed, May 13, 2026 at 5:53 AM Sean Christopherson <seanjc@google.com> wrote:
-> > >
-> > > On Tue, May 12, 2026, Miguel Ojeda wrote:
-> > > > On Tue, 12 May 2026 19:38:12 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > 6.18-stable review patch.  If anyone has any objections, please let me know.
-> > > > >
-> > > > > ------------------
-> > > > >
-> > > > > From: Xianglai Li <lixianglai@loongson.cn>
-> > > > >
-> > > > > commit 5203012fa6045aac4b69d4e7c212e16dcf38ef10 upstream.
-> > > > >
-> > > > > If we directly compile the switch.S file into the kernel, the address of
-> > > > > the kvm_exc_entry function will definitely be within the DMW memory area.
-> > > > > Therefore, we will no longer need to perform a copy relocation of the
-> > > > > kvm_exc_entry.
-> > > > >
-> > > > > So this patch compiles switch.S directly into the kernel, and then remove
-> > > > > the copy relocation execution logic for the kvm_exc_entry function.
-> > > > >
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-> > > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > >
-> > > > For loongarch64, I am seeing a bunch of errors like:
-> > > >
-> > > >     arch/loongarch/kvm/switch.S:201:1: error: unrecognized instruction mnemonic
-> > > >     EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
-> > > >     ^
-> > > >
-> > > > `EXPORT_SYMBOL_FOR_KVM` does not exist in 6.18. Does this need a subset
-> > > > of commit 6276c67f2bc4 ("x86: Restrict KVM-induced symbol exports to KVM
-> > > > modules where obvious/possible")?
-> > >
-> > > Either that or just convert EXPORT_SYMBOL_FOR_KVM() => EXPORT_SYMBOL_GPL().  If
-> > > that's somewhat scriptable for ongoing LTS backports, that's probably the best
-> > > option.  EXPORT_SYMBOL_FOR_KVM() will only work for 6.18, and the list of backports
-> > > needed to get EXPORT_SYMBOL_FOR_MODULES() working on older LTS kernels looks to
-> > > be non-trivial
-> > >
-> > > If we do end up backporting EXPORT_SYMBOL_FOR_KVM() and others, we might as well
-> > > also grab a subset of 01122b89361e ("perf: Use EXPORT_SYMBOL_FOR_KVM() for the
-> > > mediated APIs") to ensure a kvm_types.h stub is present on all archs.  That way
-> > > EXPORT_SYMBOL_FOR_KVM() usage in arch-neutral code will also work.
-> > I have already noticed Greg about this before.
+On Wed, May 13, 2026 at 06:59:56AM +0200, Jiri Slaby wrote:
+> On 12. 05. 26, 19:40, Greg Kroah-Hartman wrote:
+> > 7.0-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Tejun Heo <tj@kernel.org>
+> > 
+> > commit da2d81b4118a74e65d2335e221a38d665902a98c upstream.
+> > 
+> > bypass_lb_cpu() transfers tasks between per-CPU bypass DSQs without
+> > migrating them - task_cpu() only updates when the donee later consumes the
+> > task via move_remote_task_to_local_dsq(). If the LB timer fires again before
+> > consumption and the new DSQ becomes a donor, @p is still on the previous CPU
+> > and task_rq(@p) != donor_rq. @p can't be moved without its own rq locked.
+> > 
+> > Skip such tasks.
+> > 
+> > Fixes: 95d1df610cdc ("sched_ext: Implement load balancer for bypass mode")
+> > Cc: stable@vger.kernel.org # v6.19+
+> > Reported-by: Chris Mason <clm@meta.com>
+> > Signed-off-by: Tejun Heo <tj@kernel.org>
+> > Reviewed-by: Andrea Righi <arighi@nvidia.com>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >   kernel/sched/ext.c |    9 +++++++++
+> >   1 file changed, 9 insertions(+)
+> > 
+> > --- a/kernel/sched/ext.c
+> > +++ b/kernel/sched/ext.c
+> > @@ -4008,6 +4008,15 @@ resume:
+> >   		if (cpumask_empty(donee_mask))
+> >   			break;
+> > +		/*
+> > +		 * If an earlier pass placed @p on @donor_dsq from a different
+> > +		 * CPU and the donee hasn't consumed it yet, @p is still on the
+> > +		 * previous CPU and task_rq(@p) != @donor_rq. @p can't be moved
+> > +		 * without its rq locked. Skip.
+> > +		 */
+> > +		if (task_rq(p) != donor_rq)
+> > +			continue;
 > 
-> You did?  Where?
+> As others pointed out already:
+> [   75s] In file included from ../kernel/sched/build_policy.c:62:
+> [   75s] ../kernel/sched/ext.c: In function ‘bypass_lb_cpu’:
+> [   75s] ../kernel/sched/ext.c:4019:35: error: ‘donor_rq’ undeclared (first
+> use in this function); did you mean ‘donee_rq’?
+> [   75s]  4019 |                 if (task_rq(p) != donor_rq)
+> [   75s]       |                                   ^~~~~~~~
+> [   75s]       |                                   donee_rq
+> 
+> Donor and donor_rq were introduced in:
+> commit ff06f727a9412b3c9f2f13f1441a5a0d2a31366b
+> Author: Tejun Heo <tj@kernel.org>
+> Date:   Fri Mar 6 07:58:03 2026 -1000
+> 
+>     sched_ext: Move bypass_dsq into scx_sched_pcpu
 
-Small problem, I guess where he means is 'stable-commits@vger.kernel.org', is a
-not public maillist? I want to find it in 'lore.kernel.org' but not found... 
+This is odd that it doesn't show up in my test builds/runs.  I'll go
+drop this now, and push out a -rc2, thanks!
 
-BRs
-Wentao Guan
+greg k-h
 
