@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-246742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246744-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCAsHKoDBGoHCQIAu9opvQ
-	(envelope-from <stable+bounces-246742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:52:58 +0200
+	id mMeGBSQFBGoHCQIAu9opvQ
+	(envelope-from <stable+bounces-246744-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:59:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14B852D543
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:52:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8044752D5F1
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:59:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 555BE305093A
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:52:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0790B3013728
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FF938E8D2;
-	Wed, 13 May 2026 04:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E2A3921FB;
+	Wed, 13 May 2026 04:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jiTGL/oT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NeuXLMGv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5957E309EEC;
-	Wed, 13 May 2026 04:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423AA3630A4;
+	Wed, 13 May 2026 04:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778647968; cv=none; b=n4Xao7bPWN/2hzIkM20+UtGQIxuS0gGfpm9gHcfcCqlcRwnEFHi4sjWXnCWEFqi3RwdYbpd3BrM2LpgXMdH4IVCXFc7c9KT/7KLeNUvihs0PvSOtIurGdSa9jGymVR9nun2pB8xcolG0t3AXj2WpJcPBrnKkpce+NLy0Va1asPA=
+	t=1778648351; cv=none; b=e2tfpwAmZLjS7CdHK6LW0DQVd94EpAJRzvpTmG7EaLuZSYbNeOvjfXfM2ANSouUUorw+UQ4yxWvA+w8eSTQ2ngBRSKIx0P9xjsSrXjAsU2a9RFT+WTR1zTTE+z78LZnq1wTdyZw2T4xo5rm2H9lmYhc9mRa17Sb6KuOhE60kjhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778647968; c=relaxed/simple;
-	bh=37wf3hJ6T+BrjbfaQiG2/TrdyCcqcVu56kfVlwSJ+rc=;
+	s=arc-20240116; t=1778648351; c=relaxed/simple;
+	bh=yITepPkjgF6pxqmkdnbYSefqkFmOST5wosed1/iqef8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmYBNDz+01h/GmfmhFFnBibb5MZnEYQnLR2wHlrnq4z/bYdSsOHr4gPTamS1ufv/vLPyoXA3nq/gQoQHsUW/SJ7Kh/KK5t8/uBxf8ohUTfYBIJKBQ5cBYHjk7qbXVm6ip/nIkpquehgXCna2IVIk1R2IYG31fK/8/Fa9+b2oWUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jiTGL/oT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E94C2BCB7;
-	Wed, 13 May 2026 04:52:47 +0000 (UTC)
+	 MIME-Version; b=GdAK9Gdq9RSXRtVE45w8Y8X9ClcQwX3xB6AE9ov3QAorwtWg/DSW04U7vQKyfcWiH/QXnukvCGWgQOGzndbNufiTll3t+EzB0kgIcFg5HLL50NEEqCvj/+2U+YtSZRqtQuEsCInj3HjhvLGOW2Dq4oDsax/UenOVHY6JBhvQsdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NeuXLMGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09D7C2BCB7;
+	Wed, 13 May 2026 04:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778647967;
-	bh=37wf3hJ6T+BrjbfaQiG2/TrdyCcqcVu56kfVlwSJ+rc=;
+	s=k20201202; t=1778648351;
+	bh=yITepPkjgF6pxqmkdnbYSefqkFmOST5wosed1/iqef8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jiTGL/oTcuw6eHpCY/u4d4HkNKVblmSlZHE1cdpbv501tdzgvKB0j/vDBqc859ZDt
-	 FKuqmujFeK2l0RQ0HoNX4J0jWF6td02DK7k2cmJwZ08Vu5bYUjCXEE6SIqyg/2MvD+
-	 iEFuIC2qsjXWXP9rGQvE1RqqaWjMNW+DatHv1n2vDTSTFrFBvtuebEYb45ix0LbkZF
-	 jd/WcuJXsT9uXiGuLsXG2uiacNCKDqMg7gfL5HYdVR1yQLt3H0mgs9P49QizSPIcxm
-	 EO+czpiaOStzHHJhAAIYhGGR5AdVErqyKkAU6hvvgpyNDwFmcYK9BoyYGmkn6kk3Bk
-	 6w8r3ZmpPdxQw==
+	b=NeuXLMGvYzx+TtdmaP8vTU9Me0sWtcPmN9LNY94AyHwGEYxDAuxM8KRRQuRjbxb0/
+	 bg1QvTNufffZBNLWs+nQA+vwBS2hhe/JUXGuJRO1A09y/jVdMi7DOuDhVwaNTdTxHR
+	 D9EnUVl9J4v27JbkfIvkgg5ielmKjX/3PqhYdVOXA1Aw/nw6zIrbQFwUV8xoOdSp8D
+	 AWEe1LIQ2td+vSmqSRWx/9S/S916zhouTENjJibBMXErTxJxjd/VgZw3nezASLNRSb
+	 AbpBEYWzwlMuJWqIe9iLqpm4GwwhPJVNlmgoo6l8XQYR8yfNvbJLiJrAQfUOgtkWW1
+	 vFRDJ+1+f0KeA==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	Liew Rui Yan <aethernet65535@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12.y] mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values
-Date: Tue, 12 May 2026 21:52:37 -0700
-Message-ID: <20260513045238.194161-1-sj@kernel.org>
+Subject: [PATCH 6.6.y] mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values
+Date: Tue, 12 May 2026 21:58:54 -0700
+Message-ID: <20260513045858.204442-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026051255-roundup-crushing-4344@gregkh>
-References: <2026051255-roundup-crushing-4344@gregkh>
+In-Reply-To: <2026051256-ribcage-celtic-33be@gregkh>
+References: <2026051256-ribcage-celtic-33be@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E14B852D543
+X-Rspamd-Queue-Id: 8044752D5F1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[kernel.org,lists.linux.dev,gmail.com,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246742-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246744-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 Patch series "mm/damon/modules: detect and use fresh status", v3.
@@ -190,17 +190,17 @@ Signed-off-by: SeongJae Park <sj@kernel.org>
 This depends on other two backported patches [1,2].  Please apply this
 after those.
 
-[1] https://lore.kernel.org/20260513040734.144259-1-sj@kernel.org
-[2] https://lore.kernel.org/20260513040734.144259-2-sj@kernel.org
+[1] https://lore.kernel.org/20260513041117.154407-1-sj@kernel.org
+[2] https://lore.kernel.org/20260513041117.154407-2-sj@kernel.org
 
  mm/damon/reclaim.c | 88 +++++++++++++++++++++++++++++-----------------
  1 file changed, 56 insertions(+), 32 deletions(-)
 
 diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 65842e6854fd1..9df096218beb7 100644
+index 586daa2cefe4f..e264f202714eb 100644
 --- a/mm/damon/reclaim.c
 +++ b/mm/damon/reclaim.c
-@@ -137,15 +137,6 @@ module_param(monitor_region_end, ulong, 0600);
+@@ -107,15 +107,6 @@ module_param(monitor_region_end, ulong, 0600);
  static bool skip_anon __read_mostly;
  module_param(skip_anon, bool, 0600);
  
@@ -216,7 +216,7 @@ index 65842e6854fd1..9df096218beb7 100644
  static struct damos_stat damon_reclaim_stat;
  DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_reclaim_stat,
  		reclaim_tried_regions, reclaimed_regions, quota_exceeds);
-@@ -247,60 +238,93 @@ static int damon_reclaim_turn(bool on)
+@@ -203,60 +194,93 @@ static int damon_reclaim_turn(bool on)
  {
  	int err;
  
