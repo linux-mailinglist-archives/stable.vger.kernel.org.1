@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-246723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDHKKjbsA2ruAgIAu9opvQ
-	(envelope-from <stable+bounces-246723-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 05:12:54 +0200
+	id wGJCIkjsA2ruAgIAu9opvQ
+	(envelope-from <stable+bounces-246724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 05:13:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454EE52CAAD
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 05:12:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D0152CACB
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 05:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9BE88303C398
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 03:12:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E52843020D4C
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 03:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB0A3921C1;
-	Wed, 13 May 2026 03:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E80F3921FB;
+	Wed, 13 May 2026 03:13:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA193314D9;
-	Wed, 13 May 2026 03:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81383314D9;
+	Wed, 13 May 2026 03:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778641969; cv=none; b=s6t1Fxebgi//dOG0s6wwvr2tVXGt17dlPt6VdpF6q6bL0kfKl40hyOynqw9Ix+q2kGhz4ox/fdsZVI2CiWVUe8/XTIVwb5LiEM8CrCuoQw7hHnBgBfmV71xwsjHlzfuYsyaQW9x8Ws7ddL3lbx+xT5Gdszjt4xLjffh1zeZfRaw=
+	t=1778641986; cv=none; b=nscUtMp3nlnV5hJLPITZzoBle67wl+0xX3zOXMQFa8HajQKEuOTt8T28N1zHlb+hTbi1hAcMd2TP1eLW7it8sxDYU1C4jid2PMaGcZ91rECiHAZsa9UGE/lGLewOcxA9Yd9eMKFU5t3sSN1ijeouNHrIXzzSWk+90r93tc9gpLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778641969; c=relaxed/simple;
-	bh=TLosTcmhMDtSRy2T9FmMdEHWVx8xwNPgbEN+XzNK1aM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tc56tdfG/fd6uIsqbJK7C20PBUSx7zylM7/5+Se5lH+ebd5StCyFagSpUKdZ/abJSixJmX4pkOL7tGqdE7MZuUc8VsJO1eSd8FLggEeHXBEjmR9dN73HCe7neKw4TW2BBS5y87wmmc3t1mlqf6wy77G0kt2DZiZ/QqMBd9A4QjQ=
+	s=arc-20240116; t=1778641986; c=relaxed/simple;
+	bh=Y4Yrac6ZPe/TgKOOj4TCF7k9yx2DhqGjFqPUAK0TEUU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ecRvBbnYrsiArhPFRgrEtBjEmcipStsD28QMEcBTM26U6CAjx49hv3x9QEqqAdWGP3jNfjGclXHYso53R0TlBoA+ojVxcZuH1rrzope8wogQqnOziVl1Iu4kJSNtUk1Wum1Yw630vAkQHbDB2PLdmg1T1BvkeoJtrwJz7eouajg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.68.59])
-	by gateway (Coremail) with SMTP id _____8DxBOkq7ANqh14JAA--.22624S3;
-	Wed, 13 May 2026 11:12:43 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8DxFOg87ANqjl4JAA--.22618S3;
+	Wed, 13 May 2026 11:13:00 +0800 (CST)
 Received: from kernelserver (unknown [223.64.68.59])
-	by front1 (Coremail) with SMTP id qMiowJAxlsAl7ANq4c6AAA--.48423S2;
-	Wed, 13 May 2026 11:12:42 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJAxlsA37ANq7M6AAA--.48424S2;
+	Wed, 13 May 2026 11:12:59 +0800 (CST)
 From: Huacai Chen <chenhuacai@loongson.cn>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
@@ -47,9 +47,9 @@ Cc: Xuerui Wang <kernel@xen0n.name>,
 	linux-kernel@vger.kernel.org,
 	Xianglai Li <lixianglai@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH for 6.12] LoongArch: KVM: Compile switch.S directly into the kernel
-Date: Wed, 13 May 2026 11:12:24 +0800
-Message-ID: <20260513031224.2122119-1-chenhuacai@loongson.cn>
+Subject: [PATCH for 6.18] LoongArch: KVM: Compile switch.S directly into the kernel
+Date: Wed, 13 May 2026 11:12:49 +0800
+Message-ID: <20260513031249.2122316-1-chenhuacai@loongson.cn>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -58,39 +58,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxlsAl7ANq4c6AAA--.48423S2
+X-CM-TRANSID:qMiowJAxlsA37ANq7M6AAA--.48424S2
 X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3WF45Ar4UJw1kZw4rJw1xXrc_yoWfXr1kpa
-	sxArs5tF48GFn3XryDJ3WDXr98Xw4vgr1I9F12y3yrCr129ry5ZF1ktrWqqFy0kw4kJFWF
-	vFyrJwnavFyUA3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoW3WF45Ar48ZrW3JF17Cr18CrX_yoWfXF13pa
+	sxArs5tF4rGFn3XryDJ3WDXr98Xw4vgr1I9Fy2y3yrCr129ry5ZF1ktrWDXFy0kw4kJF4F
+	vFyrXwnavFyDJabCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
 	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU90b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y
-	6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_
-	Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
-	AY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
-	cVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
-	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVj
-	vjDU0xZFpf9x07jjwZcUUUUU=
-X-Rspamd-Queue-Id: 454EE52CAAD
+	0xBIdaVrnRJUUUkYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE
+	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x
+	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
+	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF
+	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8wNVDUUUUU==
+X-Rspamd-Queue-Id: E0D0152CACB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246723-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246724-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[loongson.cn];
@@ -100,10 +99,10 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.934];
+	NEURAL_HAM(-0.00)[-0.929];
 	RCVD_COUNT_FIVE(0.00)[5];
 	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,loongson.cn:email,loongson.cn:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:email,loongson.cn:mid]
 X-Rspamd-Action: no action
 
 From: Xianglai Li <lixianglai@loongson.cn>
@@ -126,11 +125,11 @@ Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
  arch/loongarch/include/asm/kvm_host.h       |  3 --
  arch/loongarch/kvm/Makefile                 |  3 +-
  arch/loongarch/kvm/main.c                   | 35 ++-------------------
- arch/loongarch/kvm/switch.S                 | 19 ++++++++---
- 6 files changed, 40 insertions(+), 42 deletions(-)
+ arch/loongarch/kvm/switch.S                 | 20 +++++++++---
+ 6 files changed, 41 insertions(+), 42 deletions(-)
 
 diff --git a/arch/loongarch/Kbuild b/arch/loongarch/Kbuild
-index bfa21465d83a..604adaff2623 100644
+index beb8499dd8ed..1c7a0dbe5e72 100644
 --- a/arch/loongarch/Kbuild
 +++ b/arch/loongarch/Kbuild
 @@ -3,7 +3,7 @@ obj-y += mm/
@@ -139,17 +138,17 @@ index bfa21465d83a..604adaff2623 100644
  
 -obj-$(CONFIG_KVM) += kvm/
 +obj-$(subst m,y,$(CONFIG_KVM)) += kvm/
- obj-$(CONFIG_BUILTIN_DTB) += boot/dts/
  
  # for cleaning
+ subdir- += boot
 diff --git a/arch/loongarch/include/asm/asm-prototypes.h b/arch/loongarch/include/asm/asm-prototypes.h
-index 51f224bcfc65..50c66b2a817a 100644
+index 704066b4f736..de0c17f3f49c 100644
 --- a/arch/loongarch/include/asm/asm-prototypes.h
 +++ b/arch/loongarch/include/asm/asm-prototypes.h
-@@ -12,3 +12,23 @@ __int128_t __ashlti3(__int128_t a, int b);
- __int128_t __ashrti3(__int128_t a, int b);
- __int128_t __lshrti3(__int128_t a, int b);
- #endif
+@@ -20,3 +20,23 @@ asmlinkage void noinstr __no_stack_protector ret_from_kernel_thread(struct task_
+ 								    struct pt_regs *regs,
+ 								    int (*fn)(void *),
+ 								    void *fn_arg);
 +
 +struct kvm_run;
 +struct kvm_vcpu;
@@ -171,7 +170,7 @@ index 51f224bcfc65..50c66b2a817a 100644
 +void kvm_restore_lasx(struct loongarch_fpu *fpu);
 +#endif
 diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
-index 4955e7c7d4c3..de141b3af23d 100644
+index 130cedbb6b39..776bc487a705 100644
 --- a/arch/loongarch/include/asm/kvm_host.h
 +++ b/arch/loongarch/include/asm/kvm_host.h
 @@ -87,7 +87,6 @@ struct kvm_context {
@@ -182,7 +181,7 @@ index 4955e7c7d4c3..de141b3af23d 100644
  };
  
  #define MAX_PGTABLE_LEVELS	4
-@@ -360,8 +359,6 @@ void kvm_exc_entry(void);
+@@ -359,8 +358,6 @@ void kvm_exc_entry(void);
  int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
  
  extern unsigned long vpid_mask;
@@ -274,10 +273,14 @@ index a75c9b9e53ff..24553fe34979 100644
  	}
  
 diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
-index f1768b7a6194..e1180802dcba 100644
+index f1768b7a6194..6fa5928b3ca6 100644
 --- a/arch/loongarch/kvm/switch.S
 +++ b/arch/loongarch/kvm/switch.S
-@@ -7,6 +7,7 @@
+@@ -4,9 +4,11 @@
+  */
+ 
+ #include <linux/linkage.h>
++#include <linux/kvm_types.h>
  #include <asm/asm.h>
  #include <asm/asmmacro.h>
  #include <asm/loongarch.h>
@@ -285,7 +288,7 @@ index f1768b7a6194..e1180802dcba 100644
  #include <asm/regdef.h>
  #include <asm/unwind_hints.h>
  
-@@ -100,8 +101,13 @@
+@@ -100,8 +102,13 @@
  	 *  -        is still in guest mode, such as pgd table/vmid registers etc,
  	 *  -        will fix with hw page walk enabled in future
  	 * load kvm_vcpu from reserved CSR KVM_VCPU_KS, and save a2 to KVM_TEMP_KS
@@ -299,7 +302,7 @@ index f1768b7a6194..e1180802dcba 100644
  	.cfi_sections	.debug_frame
  SYM_CODE_START(kvm_exc_entry)
  	UNWIND_HINT_UNDEFINED
-@@ -190,8 +196,8 @@ ret_to_host:
+@@ -190,8 +197,8 @@ ret_to_host:
  	kvm_restore_host_gpr    a2
  	jr      ra
  
@@ -309,7 +312,7 @@ index f1768b7a6194..e1180802dcba 100644
  
  /*
   * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
-@@ -215,8 +221,8 @@ SYM_FUNC_START(kvm_enter_guest)
+@@ -215,8 +222,8 @@ SYM_FUNC_START(kvm_enter_guest)
  	/* Save kvm_vcpu to kscratch */
  	csrwr	a1, KVM_VCPU_KS
  	kvm_switch_to_guest
@@ -319,7 +322,7 @@ index f1768b7a6194..e1180802dcba 100644
  
  SYM_FUNC_START(kvm_save_fpu)
  	fpu_save_csr	a0 t1
-@@ -224,6 +230,7 @@ SYM_FUNC_START(kvm_save_fpu)
+@@ -224,6 +231,7 @@ SYM_FUNC_START(kvm_save_fpu)
  	fpu_save_cc	a0 t1 t2
  	jr              ra
  SYM_FUNC_END(kvm_save_fpu)
@@ -327,7 +330,7 @@ index f1768b7a6194..e1180802dcba 100644
  
  SYM_FUNC_START(kvm_restore_fpu)
  	fpu_restore_double a0 t1
-@@ -231,6 +238,7 @@ SYM_FUNC_START(kvm_restore_fpu)
+@@ -231,6 +239,7 @@ SYM_FUNC_START(kvm_restore_fpu)
  	fpu_restore_cc	   a0 t1 t2
  	jr                 ra
  SYM_FUNC_END(kvm_restore_fpu)
@@ -335,7 +338,7 @@ index f1768b7a6194..e1180802dcba 100644
  
  #ifdef CONFIG_CPU_HAS_LSX
  SYM_FUNC_START(kvm_save_lsx)
-@@ -239,6 +247,7 @@ SYM_FUNC_START(kvm_save_lsx)
+@@ -239,6 +248,7 @@ SYM_FUNC_START(kvm_save_lsx)
  	lsx_save_data   a0 t1
  	jr              ra
  SYM_FUNC_END(kvm_save_lsx)
@@ -343,7 +346,7 @@ index f1768b7a6194..e1180802dcba 100644
  
  SYM_FUNC_START(kvm_restore_lsx)
  	lsx_restore_data a0 t1
-@@ -246,6 +255,7 @@ SYM_FUNC_START(kvm_restore_lsx)
+@@ -246,6 +256,7 @@ SYM_FUNC_START(kvm_restore_lsx)
  	fpu_restore_csr  a0 t1 t2
  	jr               ra
  SYM_FUNC_END(kvm_restore_lsx)
@@ -351,7 +354,7 @@ index f1768b7a6194..e1180802dcba 100644
  #endif
  
  #ifdef CONFIG_CPU_HAS_LASX
-@@ -255,6 +265,7 @@ SYM_FUNC_START(kvm_save_lasx)
+@@ -255,6 +266,7 @@ SYM_FUNC_START(kvm_save_lasx)
  	lasx_save_data  a0 t1
  	jr              ra
  SYM_FUNC_END(kvm_save_lasx)
@@ -359,7 +362,7 @@ index f1768b7a6194..e1180802dcba 100644
  
  SYM_FUNC_START(kvm_restore_lasx)
  	lasx_restore_data a0 t1
-@@ -262,10 +273,8 @@ SYM_FUNC_START(kvm_restore_lasx)
+@@ -262,10 +274,8 @@ SYM_FUNC_START(kvm_restore_lasx)
  	fpu_restore_csr   a0 t1 t2
  	jr                ra
  SYM_FUNC_END(kvm_restore_lasx)
