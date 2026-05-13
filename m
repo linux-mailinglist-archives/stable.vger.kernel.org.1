@@ -1,158 +1,172 @@
-Return-Path: <stable+bounces-246973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFVpKcG6BGrHNQIAu9opvQ
-	(envelope-from <stable+bounces-246973-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:54:09 +0200
+	id CKpVIOO6BGrFNQIAu9opvQ
+	(envelope-from <stable+bounces-246974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:54:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F39B538662
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:54:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E4B5386A1
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7C5F3155FE3
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:42:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A1B23176890
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5480F4DC536;
-	Wed, 13 May 2026 17:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA794DC522;
+	Wed, 13 May 2026 17:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mLpdicMO"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IRtolmjs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A255744B696
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 17:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E06349B1F
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 17:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778694153; cv=none; b=jNswCQlu4xXFETLd8Oy+CK9tooy+EBW+IwWIx2v6bjdo7rpoJLQEraG6nB/VqbB2M4/yb5wOWrNoytlUR9RJCVgokAsRB5ErL6NJ/Z9sC006fAwRhcjo/Ua/N74y+/M+u2qFGxdYm6xQmf044ykr83wq2BJFxWqxKqE1Za7du1k=
+	t=1778694187; cv=none; b=kFnjfDu+GOHVyQafcZ9YYYeMjKJJWECrx2SsZDcf7rrdrtKvEF50AvznPveWtXcTBCDgM8G/qKv7xrfPkVE6QLl1Tv14Q16JZptnaOoXyVQzGOsqswtN7rcS7ziI5Cf2FQFFOMsjsSmDOO+KrM4+2gl9wkmEJPlJvzJaSVnIdnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778694153; c=relaxed/simple;
-	bh=Z4DQx2lSeg373FycVPY8LgB/ufohedZhPA83y4EaBOQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pVSV3OdAE9XF2Bq/K+y2xSaO89KYkO/LEU6KJg7nNVA98SvkNLWAaBKmP7xys3OgRiwY7qoUidKXdIQFcME8WdD81UMjiDu24L2MRQ9yGijF6v1OuUA4SQNmMPXXRh4/ZWxYUyAiO8AneQ3ex6stBudxGpmuWNl3eiND+I0gwR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mLpdicMO; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b46da8c48eso2635ad.1
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 10:42:31 -0700 (PDT)
+	s=arc-20240116; t=1778694187; c=relaxed/simple;
+	bh=lc+IGH0poue7EOWyWEhf4BsBdmd01TDgiIasq1HkBDA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qnhKG9/1Rw1xxfSQRRbCMiRNrTGmaeZFZhpo36hMiKV2SaCzbc/UUtZDwi7lDbqBZK5FhGgi1F7fSMDlpejG8SYb9muAiY03XuQys1ZGHoLs0BNm6X3KprZlGgYKE+v9eRyCHrK/hQ0dSBcUW3OR2AP/ZCTSjp5MCF5UeqxqNBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IRtolmjs; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48984d29fe3so75943285e9.0
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 10:43:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778694151; x=1779298951; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pcBA9DAGtJkPWnf5c2GL3hdpA6y9KY9keSOmEQ3FPfc=;
-        b=mLpdicMOhlEXHzTsxbDP3HpS7DiNz4dg54JfWXCbp2Ye219WgmyqX0eHBu0eQPMEPa
-         FcBy3dV0m0o8/eO3Wg12MCq+P4QbQ5M4kp8QYGQ4cachb2Ho1Iu02ZPUgwUuqw2Pb/LW
-         fH4wC7TmcXMFiovT4s6RmfPLnNtzUwqEFC/+mI9gOTCovjiIB+bImfhlAP3N8jk2sBuJ
-         7Ol0G0CYevv73TDhcRvupgx+thk3gkM/cF53sb8ERgQRhOAp3kxl18JULR17Wc6m8+Bh
-         bolyjPht3en5QCxtOPmoEDsOuExf2C3vSxpSK4sHg3m9Ctod4XGJE4yfZ4tVgAzhOkfc
-         niBA==
+        d=suse.com; s=google; t=1778694184; x=1779298984; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z/U/GzJ8VybTWe2MVWA1b3Y2w7oCzXqTk6bWcPUWOoc=;
+        b=IRtolmjsDJxGpU++5UwtGo7mdJA/JaPXnhZ7Spux0y4tUB8WZmvFgSlG4BCWrS983Z
+         C6t1kT5CwIu840kZy3F4vTU3rvoNLPOoGOX3DEKfkBcuOmEUz9x6nwznyTKNF7wamQxN
+         /7Wy30h9g1xWd0PBt61YaMASPZfjhnabob4TpIccFU/6U3e/6q7vsJflxfuzG9J8lAZI
+         jZyBmct9Ww1ytYK3icWN9twsoid71O7qhTxEuwYWyhcOYqsEcdyjjVWUcMBp3fkPWEhW
+         92NaubFakXbhYyInHR6KHdWY+ormInw4gWV/QoNOA84EzRSvyJ35eI5+odjPQdWrXXnN
+         h/Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778694151; x=1779298951;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pcBA9DAGtJkPWnf5c2GL3hdpA6y9KY9keSOmEQ3FPfc=;
-        b=NnbAQRJRdVRUlgmSWH2OvL00JVzTRxP86zwkoddozlkj219yED6FlbCUO8UNPuT0Jq
-         ceoIECd2+pg3GxCv//NxD1f1BuF4oFxZTnDkHFHYyfYIiPRZZzfZn3BwicPIArbv5LSw
-         Xt6hAn2uV2oISZhfJFi89ykhbTN+lwHOFthkCV07OAsZ6fqYA2npVCQCjgSrOQG0Sh7U
-         T2vSt8FArvR9+9EKgddgiLS+MqRDUJ06r+IuzA178Niqc2LAzyp1koKpRIabon8nfTVa
-         M2OmN9JRb7ePf46VE9k26qLVc1KZ65bneY7u14Ay45GQhoOQ853mrBWcJhQv8wUMQGwq
-         R3bw==
-X-Forwarded-Encrypted: i=1; AFNElJ8+mdsUZ8r2gQ5OL9OyNSMa/5Xy2WGsuIQuYdHwPz8D3IL4MoAX08dPc3BZJ2MZIgBVWkd4NV0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyV0loc/vBPGPNHoMBNr+93Hi2gGs57/C4ocPIpL41CutsfjyBp
-	JO0gfFWKhs3eWEpZIDTIz0mYIzQU2L+ktnU9M5VU+LATmgRPZJ9THOMkVTruyNYXmw==
-X-Gm-Gg: Acq92OEzwM4IwFx+Oqe0QnrvefedqWyiwOm3zdSCmfibPxG/i5v2Mweo0NELUv9GhF/
-	YDL5jW8oNHd1h1OMtuF0HNfBoNkCX0AgKypNSRNhzVY22vJmrHUjWBKL6dKnf2Tu3h2D9+8x0nF
-	RuLR0r5BdwRTZObSyMsI3471LCA2pUL9120RIMIhYhDpQAGSeUbfh43Jsri5naMSPC0ef6cz3MS
-	xNRzm9qlOgIRuta9ZJUYLOodMKL8jBvh+1HpZy/gyGFDG/6ZpEUTYAgbJsmxg5G7yhGg4oZWK1o
-	srZV0Ax2s7cNV6RM8WbLhxYQtYSFI8fj+8uiBNfQorEkNsjE4xWJ2okfckYqLmmv82tyBvKcR/6
-	20g01mw+D2hJyPS6sSzB5x/lTgUKZfnPQWeTtlxIo8AZ9/6FDnZz53afjVcZZxO0b4551Mq8I/s
-	ybMsqEt97Ddbe1ks7srF8eX+kdDi4tYxrPHm7F/c/rnHJ15Rmb+i/47W4wFVZUSov3MClZ
-X-Received: by 2002:a17:903:3c2e:b0:2ba:3b89:c3a5 with SMTP id d9443c01a7336-2bd55e46765mr226415ad.12.1778694150405;
-        Wed, 13 May 2026 10:42:30 -0700 (PDT)
-Received: from google.com (44.234.124.34.bc.googleusercontent.com. [34.124.234.44])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-369224d2f4csm151787a91.0.2026.05.13.10.42.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 10:42:29 -0700 (PDT)
-Date: Wed, 13 May 2026 17:42:22 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
-	Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>,
-	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>, patches@lists.linux.dev,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Mostafa Saleh <smostafa@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH rc 1/5] iommu: Fix loss of errno on map failure for
- classic ops
-Message-ID: <agS3_gZOW3AjAAhL@google.com>
-References: <0-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
- <1-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
+        d=1e100.net; s=20251104; t=1778694184; x=1779298984;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Z/U/GzJ8VybTWe2MVWA1b3Y2w7oCzXqTk6bWcPUWOoc=;
+        b=orY9E9Lo0AFkqCMJcnfcoVOiop+IF3tDJHO/1i5DCF812yTzsK0PB2QZBEI3YAPcKo
+         2Xk87Kv+mwddDomlTw2DEgzX/AsLRPt7pQLuQ4tV/eyOFqIbu2UfUlobGKhGba0ETjPe
+         6MZo0sliRThalFHsQ3TmmopVEhGSRskehqYLiiH6a1H2dHiijdh2OgcIbyDCYS4AJJYa
+         +WXdl+kwWbH2tGjROcrOc8jBALZhd7+qISwgmtOxwqhgYKr3J4icezCTWZJvyI5gkSYq
+         I44YPeALix1uzuMoJYbaZFHY5a4QEjZ4p0/cjGRVnrfjva1bX0J07AFAKywvbbD3XeQR
+         8uXw==
+X-Forwarded-Encrypted: i=1; AFNElJ/pyIJiiWE8JnlKegrQ6mleTNEDek+PDwsSi7osHUIYtaRXCl9umKfbQHMvIof5PqMtM1sgf+4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRGCfPOuHF0Mibe/iIydDI7TJ37lXHCrm6zKkWc9wLkVW6TTmo
+	P8j2k7gAwxLJM1i/NDX0sVgepv4Uju4lB2QPlO1Lz9bnlSxypTx3td9Y1RwSf+XR7NVpM86z6KB
+	6GMXOaeI=
+X-Gm-Gg: Acq92OFgTM23I1+BILMk8TsJIIcuh7hhI5UWriyAdDf6ZyCrou6DFri9jjEGYiZ7ENT
+	1kc5/2deINEZ+sEEkfvAB3fyQeFSb87CVNlcdxDWBmkrVpijgLx6DCLBcDI//M1nKTQBicijjbD
+	mJUc+fYKQhqmhWFwPxh4GxwU/T23uAee5XbFbd5yDA8Y1yS0P7aGOQc84ZaSobn2uLnsmzKsxBK
+	L+ISjGWu1p/3Dm+0nCTGnrE9t9HCCz/IbLgO/Qh9DfICTb6dvd/zYhg5KJXU6vLfyZqAbspUPV5
+	BbbDbDZB9kGnzteYn6kbzQGXigXQAbUBQyQg2ImxvhE4zxZOG2zWVP59sBM4deOBczriki5L7Xv
+	9nZCISkUMArdjUudiJ/5wNT1zQp6GBo4iR7Yr8XtZUqiDDC/SbEh5xrXT5mTYufd/PLZ6bgfCE+
+	yoPFvPK88dwtpj5Elu9qweGvlSipu8kAl1JAb+lcnHE+v/n+4u0x3Ek/6m9wdZD0SHftKfQJoTr
+	J3EUm9dfGeoJDTPqqHtSAUu
+X-Received: by 2002:a05:600c:870f:b0:48e:8741:fd42 with SMTP id 5b1f17b1804b1-48fc9a0ef1cmr71204045e9.12.1778694184055;
+        Wed, 13 May 2026 10:43:04 -0700 (PDT)
+Received: from localhost (p200300de374a06005c73df0aad605173.dip0.t-ipconnect.de. [2003:de:374a:600:5c73:df0a:ad60:5173])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48fd62b500fsm3897975e9.1.2026.05.13.10.43.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 May 2026 10:43:03 -0700 (PDT)
+From: Martin Wilck <martin.wilck@suse.com>
+X-Google-Original-From: Martin Wilck <mwilck@suse.com>
+To: "Martin K. Petersen" <martin.petersen@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Don Brace <don.brace@microchip.com>,
+	ranjan.kumar@broadcom.com
+Cc: linux-scsi@vger.kernel.org,
+	Hannes Reinecke <hare@suse.de>,
+	Lee Duncan <lduncan@suse.com>,
+	Martin Wilck <mwilck@suse.com>,
+	mpi3mr-linuxdrv.pdl@broadcom.com,
+	Martin Wilck <martin.wilck@suse.com>,
+	storagedev@microchip.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] scsi: smartpqi: use shost_to_hba() in pqi_scan_finished()
+Date: Wed, 13 May 2026 19:42:35 +0200
+Message-ID: <20260513174236.430465-2-mwilck@suse.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260513174236.430465-1-mwilck@suse.com>
+References: <20260513174236.430465-1-mwilck@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
-X-Rspamd-Queue-Id: 0F39B538662
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F2E4B5386A1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246973-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[praan@google.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-246974-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[martin.wilck@suse.com,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[suse.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,solid-run.com:email]
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,suse.com:mid,suse.com:dkim,microchip.com:email]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026 at 01:46:13PM -0300, Jason Gunthorpe wrote:
-> A typo, likely from a rebase, inverted the condition and caused
-> errors to be lost. Fix it to be "if (ret)".
-> 
-> This was breaking iommu_create_device_direct_mappings() on drivers
-> that don't use iommupt and don't fully set up their domain in
-> alloc_pages() (i.e., SMMUv2). In this case the first call of
-> iommu_create_device_direct_mappings() should fail due to the
-> incompletely initialized domain. Since it wrongly returns success,
-> the second call to iommu_create_device_direct_mappings() doesn't
-> happen and IOMMU_RESV_DIRECT is never set up.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: d6c65b0fd621 ("iommupt: Avoid rewalking during map")
-> Reported-by: Josua Mayer <josua@solid-run.com>
-> Closes: https://lore.kernel.org/all/321c2e57-6a17-4aef-ba42-d2ebd577e472@solid-run.com/
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+From: Martin Wilck <martin.wilck@suse.com>
 
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
+shost_to_hba() is used everywhere except to obtain pqi_ctrl_info
+from shosti, except in pqi_scan_finished(), where shost_priv() is used.
+This causes one pointer dereference to be missed, as shost->hostdata
+is a pointer in smartpqi. Fix it.
 
-Thanks,
-Praan
+Fixes: 6c223761eb54 ("smartpqi: initial commit of Microsemi smartpqi driver")
+Signed-off-by: Martin Wilck <mwilck@suse.com>
+Reviewed-by: Don Brace <don.brace@microchip.com>
+Cc: Don Brace <don.brace@microchip.com>
+Cc: storagedev@microchip.com
+Cc: stable@vger.kernel.org
+---
+ drivers/scsi/smartpqi/smartpqi_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 2026ac645d6a..5ec583dc2e7d 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -2642,7 +2642,7 @@ static int pqi_scan_finished(struct Scsi_Host *shost,
+ {
+ 	struct pqi_ctrl_info *ctrl_info;
+ 
+-	ctrl_info = shost_priv(shost);
++	ctrl_info = shost_to_hba(shost);
+ 
+ 	return !mutex_is_locked(&ctrl_info->scan_mutex);
+ }
+-- 
+2.54.0
+
 
