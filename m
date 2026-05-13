@@ -1,186 +1,218 @@
-Return-Path: <stable+bounces-246716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gH84ImPoA2oPAQIAu9opvQ
-	(envelope-from <stable+bounces-246716-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:56:35 +0200
+	id EE1RKf3nA2q6AAIAu9opvQ
+	(envelope-from <stable+bounces-246718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:54:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F392B52C784
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:56:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E6D552C736
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 04:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76CC03023DD6
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 02:52:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3AE1330128D7
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 02:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EE0390985;
-	Wed, 13 May 2026 02:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE2A39061A;
+	Wed, 13 May 2026 02:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mJYFc58W"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HY7FEwZ9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35DE349CFC;
-	Wed, 13 May 2026 02:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02874145B11;
+	Wed, 13 May 2026 02:53:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778640768; cv=none; b=gZ5PaJA8x9QcIIa6FHM155nmZmtaafrIEl6/Gooreg4N/3zx+tZVfS5L7fn6dlY5qeXX5ZeU9Y+tGlAYr5Nk80EwUyAUjb3ABX8xecLR9zVQMei+MKPd1M5SL8pYhUv4imdIgTEzmDC23qaGXIolxbGydNiBJXhjCD6m3eSleuI=
+	t=1778640821; cv=none; b=CNPvuKyQHI1nGbKT/5aQXFKdcICRN1g9HalmMTLEsZdL7baHyQzqS3NzzvdZpPPEkNtfSahSNVqOs/Uo9G+udZcWguvOUavtM8RrHOlybgcVrS6cogzRwMsDrtG/vQbOZbp96cjbSmbxPLGI/1CDBJAotmCJ4JsEr1OqYSTpDHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778640768; c=relaxed/simple;
-	bh=3hDimKE1fAKscOhJHZokQog4qjU3uAU1wJQQEOH5qKE=;
-	h=Date:To:From:Subject:Message-Id; b=qThLtJwIO0E7REjC0CoJ58UCVt7X/Dv2p71UgeHaURZEt8yMoCxXQg22alYnxZqvzNQRRFTDNQFjk93q3JS9+F5qkbViupd7RX8S8cxHZzk5Zioxbn05XbF1d7xzTKpoB1cL3/MeObffI3FlIAhHZKHYYZzmVMJostntch5FQRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mJYFc58W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F91C2BCB0;
-	Wed, 13 May 2026 02:52:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778640767;
-	bh=3hDimKE1fAKscOhJHZokQog4qjU3uAU1wJQQEOH5qKE=;
-	h=Date:To:From:Subject:From;
-	b=mJYFc58WqK2xliPZbi3IVRbt335npuyJ4eUCN8f+8flCWZ/6IjGZaGkOnmkh6FtlH
-	 DVYqu3iN9hbfgbSWZPyGC4KwT8JZrqj7NGluAKcuFTkZCHU68XUl91HwcEcHiComzJ
-	 7cqZ1WotGlw2U6Pu14kRToYTl5TQljh6k4MtB5ns=
-Date: Tue, 12 May 2026 19:52:46 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shakeel.butt@linux.dev,ryncsn@gmail.com,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,hughd@google.com,hannes@cmpxchg.org,david@kernel.org,baohua@kernel.org,jose.fernandez@linux.dev,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-swap_cgroup-fix-null-deref-in-lookup_swap_cgroup_id-on-swapless-host.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260513025247.60F91C2BCB0@smtp.kernel.org>
+	s=arc-20240116; t=1778640821; c=relaxed/simple;
+	bh=gktVRTQwx0kuPYssen49JKdkggZ0ZSpaMiBgWqEuarg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lh7KV5SIb3k2APdILgEh+XHDpMYA65usUn1gNmfDqcwHXMeDfdX0gZ1qG92M9orpRLAzF8v8geGjjHoKnNa911xslbkI3VZfO77d4vpQwAb8v6ucarVSoz0ZXNRfQ7EGdWshGlt4Ko3Yu9jYSqAZT7JJ3B4aVFf/pcSfjngELls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HY7FEwZ9; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778640819; x=1810176819;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gktVRTQwx0kuPYssen49JKdkggZ0ZSpaMiBgWqEuarg=;
+  b=HY7FEwZ9BSJZ3wyQ2pgWHa3W4I3+D1se5EH5yQnd/ztRou7dUNvvnM6h
+   bzAsbK7i60MRjdM1G2+C81hwwsD1A4GHZ8h1IAdoqs6E9RABFQMDAOivO
+   s9s0EHnK8xQfQE+2pW/9WL+W1py43UwQPd2prtjGPPnJTIy1WlSjA51Nu
+   K9tGnM1zjb392YYlHKck5/0nObdkImsNtBalf8AIX9UPur+TFHVyIIsTa
+   w0qf8wv3Qe0fMp1sc0Gd5E4vau4TXEjwKs/C0RRBGu/Css0x7nm1cguiv
+   ZQ8EHPQt9uDxCX9Mv7MePgkz7Q4grqtAKSe3a/zKY6xFGuqq3NBV/nI+a
+   g==;
+X-CSE-ConnectionGUID: ypzjrFzDT1euHWjinAvl+Q==
+X-CSE-MsgGUID: AnS1phyeR/2K1F7Qv94n3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79738483"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="79738483"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 19:53:39 -0700
+X-CSE-ConnectionGUID: ZtxaRZz2TcOFTzfqBh/Dpg==
+X-CSE-MsgGUID: YNhP+ZQbRe2VbetB28kmwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="235282242"
+Received: from lkp-server01.sh.intel.com (HELO dca79079c3eb) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 12 May 2026 19:53:36 -0700
+Received: from kbuild by dca79079c3eb with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wMzj3-000000003G7-07sR;
+	Wed, 13 May 2026 02:53:33 +0000
+Date: Wed, 13 May 2026 10:52:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wentao Liang <vulab@iscas.ac.cn>, linux@armlinux.org.uk,
+	airlied@gmail.com, simona@ffwll.ch
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/armada: fix device_node reference leak in
+ armada_lcd_bind()
+Message-ID: <202605131053.Tvq0phKC-lkp@intel.com>
+References: <20260509091821.963513-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: F392B52C784
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260509091821.963513-1-vulab@iscas.ac.cn>
+X-Rspamd-Queue-Id: 2E6D552C736
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246716-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,linux.dev,gmail.com,kernel.org,google.com,cmpxchg.org,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-246718-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[iscas.ac.cn,armlinux.org.uk,gmail.com,ffwll.ch];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cmpxchg.org:email,linux.dev:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim,git-scm.com:url,01.org:url]
 X-Rspamd-Action: no action
 
+Hi Wentao,
 
-The patch titled
-     Subject: mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id on swapless host
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-swap_cgroup-fix-null-deref-in-lookup_swap_cgroup_id-on-swapless-host.patch
+kernel test robot noticed the following build errors:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap_cgroup-fix-null-deref-in-lookup_swap_cgroup_id-on-swapless-host.patch
+[auto build test ERROR on daeinki-drm-exynos/exynos-drm-next]
+[also build test ERROR on drm/drm-next drm-i915/for-linux-next drm-i915/for-linux-next-fixes drm-misc/drm-misc-next drm-tip/drm-tip linus/master rmk-arm/drm-armada-devel v7.1-rc3 next-20260508]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/drm-armada-fix-device_node-reference-leak-in-armada_lcd_bind/20260512-194755
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/daeinki/drm-exynos.git exynos-drm-next
+patch link:    https://lore.kernel.org/r/20260509091821.963513-1-vulab%40iscas.ac.cn
+patch subject: [PATCH] drm/armada: fix device_node reference leak in armada_lcd_bind()
+config: arm-randconfig-003-20260512 (https://download.01.org/0day-ci/archive/20260513/202605131053.Tvq0phKC-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260513/202605131053.Tvq0phKC-lkp@intel.com/reproduce)
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605131053.Tvq0phKC-lkp@intel.com/
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+All errors (new ones prefixed by >>):
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+>> drivers/gpu/drm/armada/armada_crtc.c:1039:2: error: use of undeclared identifier 'ret'; did you mean 'res'?
+    1039 |         ret = armada_drm_crtc_create(drm, dev, res, irq, variant, port);
+         |         ^~~
+         |         res
+   drivers/gpu/drm/armada/armada_crtc.c:1013:19: note: 'res' declared here
+    1013 |         struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+         |                          ^
+>> drivers/gpu/drm/armada/armada_crtc.c:1039:6: error: incompatible integer to pointer conversion assigning to 'struct resource *' from 'int' [-Wint-conversion]
+    1039 |         ret = armada_drm_crtc_create(drm, dev, res, irq, variant, port);
+         |             ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/gpu/drm/armada/armada_crtc.c:1040:6: error: use of undeclared identifier 'ret'; did you mean 'res'?
+    1040 |         if (ret)
+         |             ^~~
+         |             res
+   drivers/gpu/drm/armada/armada_crtc.c:1013:19: note: 'res' declared here
+    1013 |         struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+         |                          ^
+   drivers/gpu/drm/armada/armada_crtc.c:1042:9: error: use of undeclared identifier 'ret'; did you mean 'res'?
+    1042 |         return ret;
+         |                ^~~
+         |                res
+   drivers/gpu/drm/armada/armada_crtc.c:1013:19: note: 'res' declared here
+    1013 |         struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+         |                          ^
+>> drivers/gpu/drm/armada/armada_crtc.c:1042:9: error: incompatible pointer to integer conversion returning 'struct resource *' from a function with result type 'int' [-Wint-conversion]
+    1042 |         return ret;
+         |                ^~~
+   5 errors generated.
 
-------------------------------------------------------
-From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Subject: mm: swap_cgroup: fix NULL deref in lookup_swap_cgroup_id on swapless host
-Date: Mon, 04 May 2026 12:55:17 +0000
 
-lookup_swap_cgroup_id() passes swap_cgroup_ctrl[type].map to
-__swap_cgroup_id_lookup() without checking that the type was ever
-registered via swap_cgroup_swapon().  On a swapless host every ctrl->map
-is NULL, so __swap_cgroup_id_lookup() dereferences NULL + a scaled
-swp_offset().
+vim +1039 drivers/gpu/drm/armada/armada_crtc.c
 
-Since commit bea67dcc5eea ("mm: attempt to batch free swap entries for
-zap_pte_range()"), zap_pte_range() -> swap_pte_batch() calls
-lookup_swap_cgroup_id() on any non-present, non-none PTE that decodes as a
-real swap entry, without first validating it against swap_info[].  A
-single PTE corrupted into a type-0 swap entry takes the host down at
-process exit.
+  1007	
+  1008	static int
+  1009	armada_lcd_bind(struct device *dev, struct device *master, void *data)
+  1010	{
+  1011		struct platform_device *pdev = to_platform_device(dev);
+  1012		struct drm_device *drm = data;
+  1013		struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+  1014		int irq = platform_get_irq(pdev, 0);
+  1015		const struct armada_variant *variant;
+  1016		struct device_node *port = NULL;
+  1017		struct device_node *np, *parent = dev->of_node;
+  1018	
+  1019		if (irq < 0)
+  1020			return irq;
+  1021	
+  1022	
+  1023		variant = device_get_match_data(dev);
+  1024		if (!variant)
+  1025			return -ENXIO;
+  1026	
+  1027		if (parent) {
+  1028			np = of_get_child_by_name(parent, "ports");
+  1029			if (np)
+  1030				parent = np;
+  1031			port = of_get_child_by_name(parent, "port");
+  1032			of_node_put(np);
+  1033			if (!port) {
+  1034				dev_err(dev, "no port node found in %pOF\n", parent);
+  1035				return -ENXIO;
+  1036			}
+  1037		}
+  1038	
+> 1039		ret = armada_drm_crtc_create(drm, dev, res, irq, variant, port);
+  1040		if (ret)
+  1041			of_node_put(port);
+> 1042		return ret;
+  1043	}
+  1044	
 
-We hit this in production on a swapless 6.12.58 host: ~1s of
-"get_swap_device: Bad swap file entry 3f800204222bb" (do_swap_page() being
-correctly defensive about the same entry) followed by
-
-  BUG: unable to handle page fault for address: 000003f800204220
-  RIP: 0010:lookup_swap_cgroup_id+0x2b/0x60
-  Call Trace:
-   swap_pte_batch+0xbf/0x230
-   zap_pte_range+0x4c8/0x780
-   unmap_page_range+0x190/0x3e0
-   exit_mmap+0xd9/0x3c0
-   do_exit+0x20c/0x4b0
-
-syzbot has reported the identical stack.
-
-The source of the PTE corruption is a separate bug; this change makes the
-teardown path as robust as the fault path already is.  Every other caller
-of lookup_swap_cgroup_id() is downstream of a get_swap_device() that has
-already validated the entry, so the new branch is cold.
-
-Link: https://lore.kernel.org/20260504-swap-cgroup-fix-7-0-v1-1-f53ff41ee553@linux.dev
-Fixes: bea67dcc5eea ("mm: attempt to batch free swap entries for zap_pte_range()")
-Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
-Reported-by: syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/69859728.050a0220.3b3015.0033.GAE@google.com
-Assisted-by: Claude:unspecified
-Cc: Barry Song <baohua@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/swap_cgroup.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/mm/swap_cgroup.c~mm-swap_cgroup-fix-null-deref-in-lookup_swap_cgroup_id-on-swapless-host
-+++ a/mm/swap_cgroup.c
-@@ -124,6 +124,8 @@ unsigned short lookup_swap_cgroup_id(swp
- 		return 0;
- 
- 	ctrl = &swap_cgroup_ctrl[swp_type(ent)];
-+	if (unlikely(!ctrl->map))
-+		return 0;
- 	return __swap_cgroup_id_lookup(ctrl->map, swp_offset(ent));
- }
- 
-_
-
-Patches currently in -mm which might be from jose.fernandez@linux.dev are
-
-mm-swap_cgroup-fix-null-deref-in-lookup_swap_cgroup_id-on-swapless-host.patch
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
