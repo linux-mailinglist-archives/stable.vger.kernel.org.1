@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-247026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIWPIUrSBGr0PQIAu9opvQ
-	(envelope-from <stable+bounces-247026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:34:34 +0200
+	id oIa5C1PSBGr0PQIAu9opvQ
+	(envelope-from <stable+bounces-247027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:34:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B09453A04F
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:34:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D8B53A06C
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:34:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C55D23040C91
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:34:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 57EC53046EED
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513513B777B;
-	Wed, 13 May 2026 19:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134A53B774A;
+	Wed, 13 May 2026 19:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QhdElovf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oTRk1f1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD823B6C03
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 19:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89943AC0F0
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 19:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778700865; cv=none; b=Y2wTE2APPeu+dnKK5njZF4qeCk1PvdFpXiPQYX3Lpbu2ZZsjREvkms80v1w3jPozs9i9bsZ9sgkOyPnmpmH028HYQHmASVg1ZW2TGBf2RgwRfnJMempvhxSo57RLYeCjYxKZpYmODAqEhSrfL7jMpTMh2ssk41FGFBhtsMCZNPY=
+	t=1778700865; cv=none; b=q8fHmI4yU18rJj8+O4badtWLrWW4woGb41v0aE5cEGHfkY4SxhBfo0xovQfAosFuSrS5ePfZWWrzoC8Qv4zxjyjLX1IiLbXIaYr9tiWj0lkqHlujs1Ge/9qyejs1rgdxuvxRqxw40A9+uSPceQ2IxOj2Mg80piXc1FzpuSFJHKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778700865; c=relaxed/simple;
-	bh=xRAEaNWnBUdOD7kpqIDp5YbWJNJnFnJQTp5Lbh0sTeU=;
+	bh=7BQZJB3qArvvD0BDGlb7xQ+eSCEOi+/KY6OEbPJ++OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vGbWYRhbIHdyiefgrUgT4wdCEm02FXGBGVAu+hHkzo9q4KgKAJUxvCG0zQujIoMSWtKSFh92uTWZjq8SXkSRKrBgwhyESjLpNBOJkNc0Vi1aVVVnMJz/T1Ek4AmuQDYtoPWf6oBVV9Wt1Fprw1EmFDKelT314L6UncXOserWbwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QhdElovf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDCFC19425;
+	 MIME-Version; b=DvQnlxo1Wn3EbMM6wNUkjidvHiTtMFpnQqtkb7grQ5C+CLkTHEsAsiH1fKyq5RerXk1u1oHI5/Ypy7Q2GCWhPzLDbp7kWBR/zDGX4KIyNDTJ9F9iU+tEJQNSB2wQ9WhqgpL3+TOguN/RaFn+ege+GSy19gaIKY5dcDfYKxuY9pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oTRk1f1a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AEBC2BCB7;
 	Wed, 13 May 2026 19:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778700864;
-	bh=xRAEaNWnBUdOD7kpqIDp5YbWJNJnFnJQTp5Lbh0sTeU=;
+	s=k20201202; t=1778700865;
+	bh=7BQZJB3qArvvD0BDGlb7xQ+eSCEOi+/KY6OEbPJ++OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QhdElovfUwReKtWR1aPGrsA8NRBy5OvpAv11v72v+X22gb33ddCdqKaf4fccup2om
-	 HYfVeQH/6btTwvowpzyld/F2EHHZW6YKcxYd6ECZDmv8L0jRtr0IFY4zPPimDVv3zH
-	 60KKkY2vrqHkz1rny4E54KW1FS5b9IvgczNPe+8b+aQRiGseeJWTYRzyQ68L+lWp9j
-	 VkpVFC6eyA6zzI3IDoOpsXV3X/WhFmqHhaa4ps0gjEatpEDC5GL2Rak0+aJMPMN4Lz
-	 Iy8qJgBsUgYpXuqFQ3OuyP6ymsD58UpL3OVAfTxYuybaIctTs3KzDvQmZbJ2rwAnVZ
-	 GosVeTTSXZ0PQ==
+	b=oTRk1f1ayrU0JcB/dit/N2DEkjRXi32xVsLKYz1TyFesCA3WS9SEF+Pb1V3+JnQUt
+	 zEZicb4Rq9RSERtwHEOzfaPSqz0yZPw0OaCO1F8+OXF+Qz/ZGmptb+0OLKHpBy/HDe
+	 O4rvOiCONjR6RvTUuOAbGcY86qmIFmhn9NqtKH9e4MydkHtWYlChQTPr7ZWgIXhKys
+	 FjuFpGXfwJCgO1dXpRWkefkQ5bonFFSg4T5G1F4MozQzXhhFcPvodEEud+fsq/k947
+	 Nlp66Noh3TLQ1xYPyK3bxaX6qSKy2wGq2kLuz6Crt4+Y0klglAK7n0faEw9UxVexNG
+	 Hjs8kQviW3Owg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Yang Yingliang <yangyingliang@huawei.com>,
+Cc: Pei Xiao <xiaopei01@kylinos.cn>,
+	Michal Simek <michal.simek@amd.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 3/5] spi: zynq-qspi: switch to use modern name
-Date: Wed, 13 May 2026 15:34:18 -0400
-Message-ID: <20260513193420.3938432-3-sashal@kernel.org>
+Subject: [PATCH 6.1.y 4/5] spi: zynq-qspi: Simplify clock handling with devm_clk_get_enabled()
+Date: Wed, 13 May 2026 15:34:19 -0400
+Message-ID: <20260513193420.3938432-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260513193420.3938432-1-sashal@kernel.org>
 References: <2026051203-regain-crablike-8461@gregkh>
@@ -63,26 +64,26 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2B09453A04F
+X-Rspamd-Queue-Id: A7D8B53A06C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247026-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-247027-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,148 +91,145 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email]
 X-Rspamd-Action: no action
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 178ebb0c505b0a35edb4fb2a0e23a1f29e1db14d ]
+[ Upstream commit 1f8fd9490e3184e9a2394df2e682901a1d57ce71 ]
 
-Change legacy name master/slave to modern name host/target or controller.
+Replace devm_clk_get() followed by clk_prepare_enable() with
+devm_clk_get_enabled() for both "pclk" and "ref_clk". This removes
+the need for explicit clock enable and disable calls, as the managed
+API automatically disables the clocks on device removal or probe
+failure.
 
-No functional changed.
+Remove the now-unnecessary clk_disable_unprepare() calls from the
+probe error paths and the remove callback. Simplify error handling
+by jumping directly to the remove_ctlr label.
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://msgid.link/r/20231128093031.3707034-24-yangyingliang@huawei.com
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Link: https://patch.msgid.link/24043625f89376da36feca2408f990a85be7ab36.1775555500.git.xiaopei01@kylinos.cn
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Stable-dep-of: c9c012706c9f ("spi: zynq-qspi: fix controller deregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/spi/spi-zynq-qspi.c | 42 ++++++-------------------------------
+ 1 file changed, 6 insertions(+), 36 deletions(-)
 
 diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 3cc2b0cb14f61..c933254e6d319 100644
+index c933254e6d319..695ded977b911 100644
 --- a/drivers/spi/spi-zynq-qspi.c
 +++ b/drivers/spi/spi-zynq-qspi.c
-@@ -54,10 +54,10 @@
- #define ZYNQ_QSPI_CONFIG_MSTREN_MASK	BIT(0) /* Master Mode */
- 
- /*
-- * QSPI Configuration Register - Baud rate and slave select
-+ * QSPI Configuration Register - Baud rate and target select
-  *
-  * These are the values used in the calculation of baud rate divisor and
-- * setting the slave select.
-+ * setting the target select.
-  */
- #define ZYNQ_QSPI_CONFIG_BAUD_DIV_MAX	GENMASK(2, 0) /* Baud rate maximum */
- #define ZYNQ_QSPI_CONFIG_BAUD_DIV_SHIFT	3 /* Baud rate divisor shift */
-@@ -164,14 +164,14 @@ static inline void zynq_qspi_write(struct zynq_qspi *xqspi, u32 offset,
-  *
-  * The default settings of the QSPI controller's configurable parameters on
-  * reset are
-- *	- Master mode
-+ *	- Host mode
-  *	- Baud rate divisor is set to 2
-  *	- Tx threshold set to 1l Rx threshold set to 32
-  *	- Flash memory interface mode enabled
-  *	- Size of the word to be transferred as 8 bit
-  * This function performs the following actions
-  *	- Disable and clear all the interrupts
-- *	- Enable manual slave select
-+ *	- Enable manual target select
-  *	- Enable manual start
-  *	- Deselect all the chip select lines
-  *	- Set the size of the word to be transferred as 32 bit
-@@ -289,7 +289,7 @@ static void zynq_qspi_txfifo_op(struct zynq_qspi *xqspi, unsigned int size)
-  */
- static void zynq_qspi_chipselect(struct spi_device *spi, bool assert)
+@@ -379,21 +379,10 @@ static int zynq_qspi_setup_op(struct spi_device *spi)
  {
--	struct spi_controller *ctlr = spi->master;
-+	struct spi_controller *ctlr = spi->controller;
- 	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
- 	u32 config_reg;
- 
-@@ -377,7 +377,7 @@ static int zynq_qspi_config_op(struct zynq_qspi *xqspi, struct spi_device *spi)
-  */
- static int zynq_qspi_setup_op(struct spi_device *spi)
- {
--	struct spi_controller *ctlr = spi->master;
-+	struct spi_controller *ctlr = spi->controller;
+ 	struct spi_controller *ctlr = spi->controller;
  	struct zynq_qspi *qspi = spi_controller_get_devdata(ctlr);
- 	int ret;
+-	int ret;
  
-@@ -534,7 +534,7 @@ static irqreturn_t zynq_qspi_irq(int irq, void *dev_id)
- static int zynq_qspi_exec_mem_op(struct spi_mem *mem,
- 				 const struct spi_mem_op *op)
- {
--	struct zynq_qspi *xqspi = spi_controller_get_devdata(mem->spi->master);
-+	struct zynq_qspi *xqspi = spi_controller_get_devdata(mem->spi->controller);
- 	int err = 0, i;
- 	u8 *tmpbuf;
+ 	if (ctlr->busy)
+ 		return -EBUSY;
  
-@@ -646,7 +646,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	struct zynq_qspi *xqspi;
- 	u32 num_cs;
+-	ret = clk_enable(qspi->refclk);
+-	if (ret)
+-		return ret;
+-
+-	ret = clk_enable(qspi->pclk);
+-	if (ret) {
+-		clk_disable(qspi->refclk);
+-		return ret;
+-	}
+-
+ 	zynq_qspi_write(qspi, ZYNQ_QSPI_ENABLE_OFFSET,
+ 			ZYNQ_QSPI_ENABLE_ENABLE_MASK);
  
--	ctlr = spi_alloc_master(&pdev->dev, sizeof(*xqspi));
-+	ctlr = spi_alloc_host(&pdev->dev, sizeof(*xqspi));
- 	if (!ctlr)
- 		return -ENOMEM;
- 
-@@ -656,14 +656,14 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xqspi->regs)) {
- 		ret = PTR_ERR(xqspi->regs);
--		goto remove_master;
-+		goto remove_ctlr;
+@@ -659,7 +648,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 		goto remove_ctlr;
  	}
  
- 	xqspi->pclk = devm_clk_get(&pdev->dev, "pclk");
+-	xqspi->pclk = devm_clk_get(&pdev->dev, "pclk");
++	xqspi->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
  	if (IS_ERR(xqspi->pclk)) {
  		dev_err(&pdev->dev, "pclk clock not found.\n");
  		ret = PTR_ERR(xqspi->pclk);
--		goto remove_master;
-+		goto remove_ctlr;
- 	}
+@@ -668,36 +657,24 @@ static int zynq_qspi_probe(struct platform_device *pdev)
  
  	init_completion(&xqspi->data_completion);
-@@ -672,13 +672,13 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 
+-	xqspi->refclk = devm_clk_get(&pdev->dev, "ref_clk");
++	xqspi->refclk = devm_clk_get_enabled(&pdev->dev, "ref_clk");
  	if (IS_ERR(xqspi->refclk)) {
  		dev_err(&pdev->dev, "ref_clk clock not found.\n");
  		ret = PTR_ERR(xqspi->refclk);
--		goto remove_master;
+ 		goto remove_ctlr;
+ 	}
+ 
+-	ret = clk_prepare_enable(xqspi->pclk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Unable to enable APB clock.\n");
+-		goto remove_ctlr;
+-	}
+-
+-	ret = clk_prepare_enable(xqspi->refclk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Unable to enable device clock.\n");
+-		goto clk_dis_pclk;
+-	}
+-
+ 	xqspi->irq = platform_get_irq(pdev, 0);
+ 	if (xqspi->irq < 0) {
+ 		ret = xqspi->irq;
+-		goto clk_dis_all;
++		goto remove_ctlr;
+ 	}
+ 	ret = devm_request_irq(&pdev->dev, xqspi->irq, zynq_qspi_irq,
+ 			       0, pdev->name, xqspi);
+ 	if (ret != 0) {
+ 		ret = -ENXIO;
+ 		dev_err(&pdev->dev, "request_irq failed\n");
+-		goto clk_dis_all;
 +		goto remove_ctlr;
  	}
  
- 	ret = clk_prepare_enable(xqspi->pclk);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Unable to enable APB clock.\n");
--		goto remove_master;
+ 	ret = of_property_read_u32(np, "num-cs",
+@@ -707,7 +684,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 	} else if (num_cs > ZYNQ_QSPI_MAX_NUM_CS) {
+ 		ret = -EINVAL;
+ 		dev_err(&pdev->dev, "only 2 chip selects are available\n");
+-		goto clk_dis_all;
 +		goto remove_ctlr;
+ 	} else {
+ 		ctlr->num_chipselect = num_cs;
  	}
- 
- 	ret = clk_prepare_enable(xqspi->refclk);
-@@ -724,7 +724,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 
+@@ -725,15 +702,11 @@ static int zynq_qspi_probe(struct platform_device *pdev)
  	ret = devm_spi_register_controller(&pdev->dev, ctlr);
  	if (ret) {
--		dev_err(&pdev->dev, "spi_register_master failed\n");
-+		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
- 		goto clk_dis_all;
+ 		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
+-		goto clk_dis_all;
++		goto remove_ctlr;
  	}
  
-@@ -734,7 +734,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	clk_disable_unprepare(xqspi->refclk);
- clk_dis_pclk:
- 	clk_disable_unprepare(xqspi->pclk);
--remove_master:
-+remove_ctlr:
+ 	return ret;
+ 
+-clk_dis_all:
+-	clk_disable_unprepare(xqspi->refclk);
+-clk_dis_pclk:
+-	clk_disable_unprepare(xqspi->pclk);
+ remove_ctlr:
  	spi_controller_put(ctlr);
  
- 	return ret;
+@@ -755,9 +728,6 @@ static void zynq_qspi_remove(struct platform_device *pdev)
+ 	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
+ 
+ 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
+-
+-	clk_disable_unprepare(xqspi->refclk);
+-	clk_disable_unprepare(xqspi->pclk);
+ }
+ 
+ static const struct of_device_id zynq_qspi_of_match[] = {
 -- 
 2.53.0
 
