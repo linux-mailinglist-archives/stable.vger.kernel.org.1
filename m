@@ -1,89 +1,88 @@
-Return-Path: <stable+bounces-246752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EL4AImcPBGoMDAIAu9opvQ
-	(envelope-from <stable+bounces-246752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:43:03 +0200
+	id qLU+Hd4SBGoMDAIAu9opvQ
+	(envelope-from <stable+bounces-246753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:57:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE5D52DA83
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:43:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFA252DDDC
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F06383044BA0
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 05:42:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FDD8304C955
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 05:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAB73A6B78;
-	Wed, 13 May 2026 05:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF4A3B895F;
+	Wed, 13 May 2026 05:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i9ZSlOdZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YOOCPeRI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1BD3A6EEF
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 05:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D283B8406
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 05:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778650974; cv=none; b=eRIUIm8ifvILyeMqU7a6KSBWXoe/g8z8DW9Tz+lEPthb0oUxuv2JN/TVoCXTthQwiAoJVpDVVO8jbJh98DxEknvBNIo7/jdwYVrlVeTdU8izyRloV8ZXJ8DFQ0j0O0HOe1o50s2c46rFeNgB6mLcWULdAXVBD1v1LHvGMZYoiDc=
+	t=1778651863; cv=none; b=XTXvRMCAj/62NwOhtSrlGV9zW8XabvO8SKGFO0YtbGoUa3jaB45D+GsowciKiUfLepj5vcF5msDSqY5G8rVzoO8sIjmjPE4ShLmNKybv3Hg4P2dJrEka0Ei8Zzn3CJ3shmQlxhMCkvVdbqs/pOUPAnF4th1AvK2Niy7Y7aAAIhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778650974; c=relaxed/simple;
-	bh=AUFheTiaIdq9G2k4NVJD81/GQk2hPB7b+FIJOQIso9w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=me/LgLWQEdYpJsMYLCUjtC/jJ1ATP/D67feDxrEIiQop2h94WlvXIgFuDfvQF5XHl2LS3h/GyZdJG/ShMsNPtABwi5uzX/Ckwi+uplA003bNLan1Udhp2rk30I9vVOdPPhrKoh99UtHp/B40ZtAzPlFBw8J0HGQGUnLP7gVfsrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i9ZSlOdZ; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1778651863; c=relaxed/simple;
+	bh=s6BfnkAql2MTDlPesu3S+RGrhsYSXwRQZEBa/vKhnW0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EreZzpdnoIi3LGEwDlLJLzmUXxzvMFN32f3W4lDqmvC6n/CnNQCNWZefiL9vjgNKl4FEUBwEQQz5rt9YnjndCyMB9xKhGFFtmz8R4+mztouWizHOmqpcv3HyRNFWWqK0zY21tu5rpsk80xmND8MVQzebf0QZNobdX8csC//eEJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YOOCPeRI; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so57458845e9.0
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 22:42:51 -0700 (PDT)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-459bf19e87bso1641243f8f.1
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 22:57:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778650970; x=1779255770; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778651858; x=1779256658; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yYBEv39uEgMy3N++VlBuBjtbHkIyYso+pXEc18UPlvk=;
-        b=i9ZSlOdZg4mmOpjerXieSv0dag7k37jcmPIvfypYeERjNpfVzKPcsE1HgHxo0OuFiX
-         rlYOAVxpLmalWozT+7vL0yBF5S5GFPlY1KqXgSsMHR8igRadrX2gUa17w4jEjjYQImyz
-         GUMN9cKMKJZ1p/iudPC6WP5MewRM5ddKXgQ186o7DBOjpxCEOOSVkstNDmnfUMU54/2H
-         v7xXFmKA49viGnQ0B8FMwYGRErVDX6NAAlsbBX0FPfuBlgUIJqzRtpd30wyESG4bIopc
-         fn/I9+utPJFb2z3MdQgIH9piM0tOGvky/Nx1ROzsYm5vWy5wdVfqNTAYUoBdohFVtVxC
-         W9zA==
+        bh=MUFuofREYZSwb8K19QV9xCXORpxZYXHR7ZkCUNHTKDk=;
+        b=YOOCPeRIlPCyljhgquYup6R2864qZ4Z4CKhL6i/DIZspLXlGE/Eaww7bHzsb31Kb9k
+         ECV4DQPn2HZqtSuJEaof2FA2Fjafg6xgPgEb2iNyQqwKG0DnxWn2CcZ5IdPL8HiriYir
+         EQPf2LQCPp3kHi9AiTNUTdX4n1AXOVCXepTZs92xHCR0ruS5X1Z0wXYADR9o/ax2PNNl
+         xBA+Ilx6eQWLroi1PN2yJPVoOVd8QC9x+4b2ZGeoTplfrVnPDm3aT+Zrgvz/j3Mc9M6X
+         C9omFhc5DpUWFLAEFFSzQZhNDuEayYlz3XMcXsCIZ6QTbAvaqZpwaT5DfS3NYy/OazS/
+         4otA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778650970; x=1779255770;
+        d=1e100.net; s=20251104; t=1778651858; x=1779256658;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yYBEv39uEgMy3N++VlBuBjtbHkIyYso+pXEc18UPlvk=;
-        b=G+FszxBYuwnsxgleqR0GJ1nkNq2UDj4YRq1/yKZMcYjkmcKBtuphk2umt1BuhPagqJ
-         5bUdCKkveVfJT8WhTRM8RzdoRu9ci/sI/EkaRcU1ef4EA+n0t+6e74oCTgsalz5Uoiml
-         Pmi7tcCXJ3I8HyR+3Gq+0/YKwURNueYDGD9oIe3mIq49MhwFHV1zoKGesgYF7QVPw+Hq
-         Az6iJIDRINqp+JixvZ4sKdVbK/r9ImMPml3ykynF0gEvMJK3feKaknVwY8V/AJEKrDHL
-         xsbQ1Hy5onT03M1Aec8F78+zI77Q/Ds0PNe1a9h9eKz3yP/zgXmBStLwpbaBvDbe4Oh5
-         nYTA==
-X-Gm-Message-State: AOJu0Yypflad1uom+u617FGOE4GpuMEbLZ3tNpvIeg1xqxllLaaZugqt
-	zWT7CALcJGOUp2NJnlRZK8K4fpQEENq/p0qDwxA4JJWN4DUaAiW09rVq
-X-Gm-Gg: Acq92OFqnmQXNdeTzmD9PCa1wBYJE0fnrq7005zjLIsoPNwrNXXtGs638ZfAEraDHeE
-	VAmveiA4mCzsvX7FXE+DRrqePfraM+C002MOqkDJfOmpOcgjbv1kgtgRWQtY4hW/etiCYasz48y
-	6Q5FmUomzbqwC71jgpZQAV2D9NHKm9f2zgdQDGMngYywc36gmfchyNKKVHuSygySNirSuiQA+vj
-	/Oer2p9UWTlz+FSYLe3O1PZlLhsYh80/sW9/8Li9bChL/59gtoyb/PBrqZhcZoOLMGll+K7RDGL
-	/pESC9Z2iaslOweusBPA3LoCR/HpF4/UKwkS3wSRz1Js4IBUWABs23akv5dLWoC3rd3qVUuLhqN
-	5SGEKVHa/WZNwAfQ+qFqIQ3SjoSvF9CV4GIvgO1aj7Y+9tqkGrGAS3CtPLXz5Kj4geUU2UUXZIF
-	OoN+S+yRvXDWR/8Ff+40q1mnxvt9BibDj+dpMpF7lQSft0Y9P9VsIyvERJ
-X-Received: by 2002:a05:600c:3f0c:b0:48a:55d8:7882 with SMTP id 5b1f17b1804b1-48fc9a0ead2mr20611005e9.9.1778650969796;
-        Tue, 12 May 2026 22:42:49 -0700 (PDT)
+        bh=MUFuofREYZSwb8K19QV9xCXORpxZYXHR7ZkCUNHTKDk=;
+        b=F/QbTv0zX3q8hshLwrM3RKd3/xE00EK3y0tDGKi7zkFihQutDKiUfi4wuU/9/NNQ1d
+         yDxW0GUmicV9/61KzNOGAw7gapKgeXH0L5+mxgKS+B34HMxKTdj6pHNmD3Nd7oYwfOgV
+         z1HfBpM/RteavCPEVAkTTpAragcfH/PFzbQNnHsOljDGHC7HoGNsB/GHDtkC/7R9dnNM
+         ICVojD3M0fXUaiMDgwsazzCVn/8wy0zkvwN7loXMWF9GIVOKJ3dPvf3lihoLtXV8uMa6
+         6ls4KgMEUbfxI0YvA1oUe/7RykVm6lzgfBgaW0uVdmqAtsPb+zEOAWwOOPcEp27NoIdu
+         AArg==
+X-Gm-Message-State: AOJu0YyOzX2VEcExUN3Y1TotWd+uqUhrO6y25eqCjXAeSVM1aFRYGw3n
+	+hbV29myDihMlxDei2I33HJhiN9eaxwWdU07TJ4PhfdHkPqdOc2TNSqW
+X-Gm-Gg: Acq92OH5/fdSavRgtc8OECASOjVIeuyzndbGBBxtAsXcfCrWf44E8dGKD7wYKzis4o+
+	oVVV587Z/iclSJpmyyOM73NTIS9AiYJpaZK4BaoZZJhIyMFUDgW/rg51DzLvn60Seat5aRkFGeA
+	dpK+zjfBLpM60mUagPCZiBGFZ08ah2Jw0jilGLpTr5LvXP5qIfOcXFW//lMuF+U35X9uyFpweOE
+	/ZYCLpNvwjk0gpiwiQ/nkKKRBjLaXFTUpldrKpK028fVPEGAoXe87IYqvx1WeTvVDWaE87kQb61
+	W8jz85D4lwTBTj5sH8IYiw6gcJjv6cOENp1yVcHyY6MCxrcFOokh/HH6FYgDxuknhO2bVfw/WA2
+	RU5i8xGzY3thqbV7owCxBqN9LonmzZ75OG5hdSFdYdVFOQpVMAr3zdIfnM+0YePykgd7ybozVwH
+	QvieZU544vVBFS2NlBUkqooUdTtb6YQThU5nnX6RFkmQAUoVCraXCrRZ1gGno8xC3C+XM=
+X-Received: by 2002:a05:600c:6096:b0:48a:592c:e63d with SMTP id 5b1f17b1804b1-48fc9a30d10mr22234605e9.14.1778651858485;
+        Tue, 12 May 2026 22:57:38 -0700 (PDT)
 Received: from va-HP-Pavilion-Desktop-595-p0xxx.mshome.net ([31.7.57.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fce37b182sm38558085e9.9.2026.05.12.22.42.47
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4549120f1f9sm38447271f8f.24.2026.05.12.22.57.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 22:42:49 -0700 (PDT)
+        Tue, 12 May 2026 22:57:38 -0700 (PDT)
 From: Valery Borovsky <vebohr@gmail.com>
-To: hverkuil@kernel.org,
-	mchehab@kernel.org,
-	hansg@kernel.org,
+To: mchehab@kernel.org,
+	crope@iki.fi,
 	linux-media@vger.kernel.org
 Cc: stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Valery Borovsky <vebohr@gmail.com>
-Subject: [PATCH] media: pwc: Drain fill_buf on start_streaming() failure
-Date: Wed, 13 May 2026 08:42:44 +0300
-Message-ID: <20260513054244.143866-1-vebohr@gmail.com>
+Subject: [PATCH] media: rtl2832_sdr: release URBs and stream buffers on start_streaming() failure
+Date: Wed, 13 May 2026 08:57:33 +0300
+Message-ID: <20260513055733.146905-1-vebohr@gmail.com>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -92,93 +91,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DFE5D52DA83
+X-Rspamd-Queue-Id: CAFA252DDDC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-246752-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246753-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vebohr@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[vebohr@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-pwc_isoc_init() submits its isochronous URBs with
-usb_submit_urb(.., GFP_KERNEL) in a loop. After the first URB is
-submitted, its completion handler pwc_isoc_handler() can run on another
-CPU before the loop finishes:
+rtl2832_sdr_start_streaming() calls rtl2832_sdr_alloc_stream_bufs(),
+rtl2832_sdr_alloc_urbs() and rtl2832_sdr_submit_urbs() in sequence and
+shares a single err: label that only unlocks the mutex and returns.
+When alloc_urbs() succeeds but submit_urbs() fails, or when alloc_urbs()
+itself returns -ENOMEM after alloc_stream_bufs() has already succeeded,
+the URBs and/or the coherent DMA stream buffers stay allocated while
+streaming reports failure to vb2. Two latent defects follow on the next
+VIDIOC_STREAMON:
 
-  start_streaming()
-    pwc_isoc_init()
-      usb_submit_urb(urbs[0], GFP_KERNEL)
-                                  pwc_isoc_handler(urbs[0])
-                                    pdev->fill_buf =
-                                      pwc_get_next_fill_buf(pdev)
-      usb_submit_urb(urbs[i>0], ..)  -> fails
-      pwc_isoc_cleanup(pdev)           /* kills URBs */
-      return ret;
-    pwc_cleanup_queued_bufs(pdev, VB2_BUF_STATE_QUEUED)
+1) rtl2832_sdr_alloc_stream_bufs() unconditionally resets dev->buf_num
+   to 0 and overwrites dev->buf_list[]/dev->dma_addr[], permanently
+   leaking the coherent DMA memory allocated by the previous attempt.
 
-pwc_get_next_fill_buf() detaches a buffer from pdev->queued_bufs and
-stores it in pdev->fill_buf. The error path in start_streaming() only
-drains pdev->queued_bufs, so the buffer parked in pdev->fill_buf is
-leaked. vb2_start_streaming() then triggers
-WARN_ON(owned_by_drv_count).
+2) rtl2832_sdr_alloc_urbs() never resets dev->urbs_initialized and only
+   increments it. After a second successful pass urbs_initialized can
+   exceed MAX_BULK_BUFS, so the subsequent rtl2832_sdr_free_urbs() walks
+   from urbs_initialized - 1 down to 0 and reads past the end of
+   dev->urb_list[], passing garbage pointers to usb_free_urb().
 
-stop_streaming() already handles this since commit 80b0963e1698
-("[media] pwc: fix WARN_ON"), which added the fill_buf drain in the
-teardown path but not in the start_streaming() error path. Mirror that
-handling on failure so start_streaming() returns with no buffer owned
-by the driver.
+Mirror the teardown that stop_streaming() already performs: on the error
+path call rtl2832_sdr_free_urbs() and rtl2832_sdr_free_stream_bufs()
+before unlocking. Both helpers are idempotent (free_urbs kills and zeros
+urbs_initialized; free_stream_bufs is gated on URB_BUF and clears the
+buf_num counter), so partial-failure paths and the no-allocation paths
+remain safe.
 
 Issue identified by automated review of the INV-003 series at
 https://sashiko.dev/
 
-Fixes: 885fe18f5542 ("[media] pwc: Replace private buffer management code with videobuf2")
+Fixes: 771138920eaf ("[media] rtl2832_sdr: Realtek RTL2832 SDR driver module")
 Cc: stable@vger.kernel.org
 Signed-off-by: Valery Borovsky <vebohr@gmail.com>
 ---
- drivers/media/usb/pwc/pwc-if.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/dvb-frontends/rtl2832_sdr.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/media/usb/pwc/pwc-if.c b/drivers/media/usb/pwc/pwc-if.c
-index c416e2fc5754..26ce7106ae30 100644
---- a/drivers/media/usb/pwc/pwc-if.c
-+++ b/drivers/media/usb/pwc/pwc-if.c
-@@ -726,6 +726,11 @@ static int start_streaming(struct vb2_queue *vq, unsigned int count)
- 		pwc_camera_power(pdev, 0);
- 		/* And cleanup any queued bufs!! */
- 		pwc_cleanup_queued_bufs(pdev, VB2_BUF_STATE_QUEUED);
-+		if (pdev->fill_buf) {
-+			vb2_buffer_done(&pdev->fill_buf->vb.vb2_buf,
-+					VB2_BUF_STATE_QUEUED);
-+			pdev->fill_buf = NULL;
-+		}
- 	}
- 	mutex_unlock(&pdev->v4l2_lock);
+diff --git a/drivers/media/dvb-frontends/rtl2832_sdr.c b/drivers/media/dvb-frontends/rtl2832_sdr.c
+index 422d1a7b5456..efcef1317cf9 100644
+--- a/drivers/media/dvb-frontends/rtl2832_sdr.c
++++ b/drivers/media/dvb-frontends/rtl2832_sdr.c
+@@ -900,7 +900,13 @@ static int rtl2832_sdr_start_streaming(struct vb2_queue *vq, unsigned int count)
+ 	if (ret)
+ 		goto err;
  
++	mutex_unlock(&dev->v4l2_lock);
++
++	return 0;
++
+ err:
++	rtl2832_sdr_free_urbs(dev);
++	rtl2832_sdr_free_stream_bufs(dev);
+ 	mutex_unlock(&dev->v4l2_lock);
+ 
+ 	return ret;
 -- 
 2.51.0
 
