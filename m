@@ -1,90 +1,85 @@
-Return-Path: <stable+bounces-246760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLtKGfYbBGpyEAIAu9opvQ
-	(envelope-from <stable+bounces-246760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:36:38 +0200
+	id UFVpN0EcBGpyEAIAu9opvQ
+	(envelope-from <stable+bounces-246761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:37:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024B552E22D
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:36:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D20F252E268
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 329D1308011B
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:35:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5C7AD3016B03
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456DC3D45CB;
-	Wed, 13 May 2026 06:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15133D45E6;
+	Wed, 13 May 2026 06:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="d61Jp6MW";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="UmIQQytb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OFyIgCRY"
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860B1357CE3;
-	Wed, 13 May 2026 06:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.165
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778654154; cv=pass; b=U4ZwNO2pxaMwAo+ATMsG9n9bzPypnA8IEmqQ3PPpKXMgogmbN7mTHyyl9HX9e8uzaYaNSbwzOygYt3EHDE6ka6I7RDDiXo6PwZyVR1b5IZC2oeO6vwF2RJ9pOi9kcdgIJjCalqxvZQtEIIzgWMFUAfa5RT23WavosLUhtVX1M3I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778654154; c=relaxed/simple;
-	bh=uhwAHbNn994yD69fS9MOINtdMaAwobwvE5EDbdcH+LM=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A143D45D4
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 06:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778654258; cv=none; b=ruuPdjD6nZBa409+oDLiKINReogKqAV+fflbOEeAVBPaGftVVrVkNCHDMY/hxQA6Hrj0WqD4MBbhaAgGqAsk6cHhU+cVWf2/EXKFLtZ406Iqr56A7CAA8e/crduyTYfjy50QbwSYmqp5KAwId3qn9kUeX+8fZvQIClSuxx+Rr4M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778654258; c=relaxed/simple;
+	bh=23nRyB6EeCiLbuphx27oCth+e7CyIUQIhmUlPJEO9V0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n2Zmp8HfJrRW8gA5CJX6wtQvsWsBVNQwV1QN1aTv9p9vsELYbGS75C1kP4ngBqaItMvM4aJcK3nK8Uc/2mKZcHY7v19RZ2+sawFDeiVgSFxIwebo4MtTl7ARg+VSrsyxV978tgPKdfMtqwr0R+nS0/Iu5BxpqOIUkumQgTr/cWs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=d61Jp6MW; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=UmIQQytb; arc=pass smtp.client-ip=81.169.146.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
-ARC-Seal: i=1; a=rsa-sha256; t=1778654116; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=YUpB8l3NrO08fFcw9ldbUkh2b6+hKqoiSe6G7jFtn7ke8jyiW6j2F0ZAv1HD4oYkti
-    1YeNjlVX+6knQJjpbGfZO5D/Q207mW4RD/SoykXWLaQwdXTscCzu+Qbmt9ufHfhy4nHv
-    2P1EvjUhEvnz5WvyhiDlmw6YidAcCwquj5w1xeDfCsIDX6Ot+74jqY/ZihRaucuOzDyG
-    n4I+L78a4CDkRuwLNRsMASGCZK7X03hdZgLOPyNQ3LRw7Bl1REQ7/vgWrcXYfHElacfq
-    OpceMdTp+mPPX+bxiiiSIMy17aZEb0MUMy2VwzK+DEOlkVRv1zUSuFAwPwMO/WYK7OU1
-    QPQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1778654116;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=UqDc0ZWgKlbYGD/0a/63ZGYz6DA/sViimk9z4rFSOFU=;
-    b=Nfv7qgMU35rWJYRpXHzhDI1qxKdBByYQmgnRjlvYOQYLOxawJ0OJWci0++Vay+pVdw
-    oni+Hhg2+F1OPim8Iw/eZbue33EC6lIoywz5w+Ljf1x2xjpFfqvXKkDh2Hp+lpC4EyFU
-    EyH9+8YKyyDb96UtqOdONZCrhYzcglA3U10dAmvJ8zcYEyy0kP/BpY8rAC+HKIsF/RD3
-    4t7Oc0t45IWcZdZXg+T2730hv/ZgpaWTfpn2e9+/BHd3lAkqfJ1kv2UiixyZCv8gQKJB
-    i9Ccnwh+DfvleML4onqhq+cMsOw99gM2siaKoqnzxWSFJLPpKArT7OMc8jtiNDE8SxD2
-    FynQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1778654116;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=UqDc0ZWgKlbYGD/0a/63ZGYz6DA/sViimk9z4rFSOFU=;
-    b=d61Jp6MWsZGq+1wxFoTAbGkhtCWrkzUkx0e6o2GwddeQV+kmeGlKzd/tq+LEZ/IYGw
-    5sAP4oexozBTT1dCVI+gRe/8Iy8Fh/IWKZkrZhXKeqw0iRQFgR9QzeqYOkUemy83j6Oa
-    VQ4r9szK9M8yLi4p84ACai5NgCv2rxJAVoaade47woglvhsX/9091XmU2rm01c+6hOKK
-    8SOBDUvwRsaXbjUbsu3mRdC64kMmiCHKEj3hepWsYAFF8tpLIvnlicSJpoHl6zq+nwfK
-    wmasTFp3hKq2a0qbLSII+ZXYOcloTCjclb2MtHr6/mG1XTlDQnUS+/V1IeSAtc+uNR+3
-    vPjA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1778654116;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=UqDc0ZWgKlbYGD/0a/63ZGYz6DA/sViimk9z4rFSOFU=;
-    b=UmIQQytbCw/lbgLwnWzZPbyrG1Rtfncj7l02rTNSLCFpxio1Nr0ysf0b10vfaEhetk
-    6bCicL1x1tPuAl/4hgBQ==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7tnMDLztswwlyqon4XDpA0w0c7HaA=="
-Received: from [IPV6:2a00:6020:4a38:6810:ae1c:f386:228b:f98a]
-    by smtp.strato.de (RZmta 55.0.1 AUTH)
-    with ESMTPSA id Kba96d24D6ZGyDw
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 13 May 2026 08:35:16 +0200 (CEST)
-Message-ID: <cddb23c3-8c07-461b-b6c2-3d9a62d5179b@hartkopp.net>
-Date: Wed, 13 May 2026 08:35:09 +0200
+	 In-Reply-To:Content-Type; b=DdkIHswQDoHGk5Dtep2toQQclp90j6wGC+qTe1ivhCUq5yE1zOGFmwqu1mSmJH85WuhgtvMmnhTf9y7q/Cep99JV1FSbHc1rur2O2X94KY+BQss2f49J/U98Togwb1qd8uaTJzYBKbuUscD/3QJ5dNUDtU/sInaxhbvcjbkzjQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OFyIgCRY; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-366070f71adso5750850a91.2
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 23:37:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778654256; x=1779259056; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZA44Oj1Ru1vNN5fRaQe05rAsggrRQftNF5X+ITnNbuA=;
+        b=OFyIgCRYl4Pjbu+RlG2rZJ72tuMJqa6zBvOo1TKoOY6Ofm9/8EFPoSLVmzVV5eva6h
+         7PbsPx/S+CE5LnTDAF1dvTF7RsthMupRkI3X93RXfA8ViWx5KJPQqmgZMELk6RlgD7t4
+         XBtUgaoIey/A27aYX1Xo9/9EfzoKpsCXpmYcV7pEb81JQ2S5BwyVRQojxlLLvPnb/aKg
+         8C7pwAV6NjquOnIHYZN0NxVUwuM7a8SRn/Hqh5HZwx3amMyPAOQtgZMuAJKNeWciyFPZ
+         R1/Zn7IyNXvqsVBJCtj2MKPoj3/k62JWO8QjRa3/OL1PPoJ+mM3TqJfU6+/lHtJt5tF2
+         rwIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778654256; x=1779259056;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZA44Oj1Ru1vNN5fRaQe05rAsggrRQftNF5X+ITnNbuA=;
+        b=YMcwILVN0gY8ajD3DouDRFu/KxAVDX0pAdUKKRwjXG5ZLUoXJ4dSiAY66eCx3HRouw
+         HDZrCSaiDwiD1u9u/XagHXXyKVSVJPiPS6AOuf2gwd/JMG1RUwa3Z6azEkYVOcvkL+gk
+         2KH98AYhWqyek+np75sfZ4HXMTO1Cp7vbpD7YBdnDm+dlHeeJpDON4kZNDoWplEGZN+E
+         +1Y2nmI+fvf9ntGbxSLgSh18YH9cuZXlGB+hjI4Fz79b4MH6YbQ7NIftqGLiQ3FIQB5A
+         8uK0cB79PPU7IRxs7YaPzCgURsLKGDMDQo/SeQXIRLjH2n5HTI+gZuGkbLh0SoZyiq4T
+         X1tA==
+X-Forwarded-Encrypted: i=1; AFNElJ9MewN4GgY482IynwysAIVyx1cw3PEFzhXcxkzXrpupwy2Dwj2BSdID7dTynfTVhoMXoAVHHBg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbXQWYTk7U9shAKGleB6IiUJR41OyqHikvUeSD5Fkp9dG5CCZC
+	RuUaZP8kN28xWvqu6BoCsiczJo/xaSwnJ66yOXWzs3FO5r4LYLx8hOyD
+X-Gm-Gg: Acq92OHFvujK8mV1+SyvxKO0fjofCOhBSI6Y/nia5x+kXUgBpDCYL7uJ7YrNXo6N01c
+	d0vK4Q+G36MKwInvLtv2DWatIQUYEbSWKHvHo26UOvWxtF3QXxX9axefuohxRyxrhJ9lDpp+1Z5
+	JKHg36A9ZZHPw1HAP8JCosIvNRIa9ay3lvv0w3bA1pwHawd2lUuOVkE2mynrb7vVS/l5kMLM5g1
+	QjS8RIFeZakKRvAKyPxUFwc/LmePjCMKOVKhby6D8Dxk0sk+mkuWSKKrxsNxIDXwLLgVmwKLzzU
+	qP3MHAhDBByRSTa86P7Nepf7Zs/mo3INI+8fqqAlOnbU6gs7nKBtrjBMg8Nfvd13lmvrn717lku
+	urajI2KZFgGS0MlLDpEXg/BAo5l82Ik6kOQV+CRZ38uM/0TJvGjDVGd6Lwx4YvvCL3aIChkCS7g
+	JDwriGuAY2ss8/3RTbgkN0Z/bGGI6K7lgBjblzFz/W1jgtTae8tEWLWAOweXk/ilqcI/lsAfTS/
+	AErNr3m2/9S1PRihDUVCu7/xUleKHTm
+X-Received: by 2002:a17:903:bcb:b0:2b9:cd2d:6f14 with SMTP id d9443c01a7336-2bd2f4f740fmr12353835ad.2.1778654256516;
+        Tue, 12 May 2026 23:37:36 -0700 (PDT)
+Received: from ?IPV6:2401:4900:883a:c989:e9ef:3e82:226d:3f46? ([2401:4900:883a:c989:e9ef:3e82:226d:3f46])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1ebea72sm159054275ad.77.2026.05.12.23.37.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2026 23:37:36 -0700 (PDT)
+Message-ID: <369f39de-e013-4b60-9b24-831a72af4ff6@gmail.com>
+Date: Wed, 13 May 2026 12:07:30 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,124 +87,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1.y] can: raw: fix ro->uniq use-after-free in raw_rcv()
-To: Jianqiang kang <jianqkang@sina.cn>, gregkh@linuxfoundation.org,
- stable@vger.kernel.org, sam@bynar.io
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- mkl@pengutronix.de, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-can@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20260513061828.3671533-1-jianqkang@sina.cn>
+Subject: Re: [PATCH 6.1.y v2 00/18] Backport fixes for -Wdiscarded-qualifiers
+ and -Wnonnull with newer glibc
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: acme@kernel.org, linux@treblig.org, mikhail.v.gavrilov@gmail.com,
+ stable@vger.kernel.org
+References: <20260511071051.537859-1-yesshedi@gmail.com>
+ <2026051124-wildlife-entrust-5690@gregkh>
 Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <20260513061828.3671533-1-jianqkang@sina.cn>
+From: Shreenidhi Shedi <yesshedi@gmail.com>
+In-Reply-To: <2026051124-wildlife-entrust-5690@gregkh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 024B552E22D
+X-Rspamd-Queue-Id: D20F252E268
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[hartkopp.net,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[hartkopp.net:s=strato-dkim-0002,hartkopp.net:s=strato-dkim-0003];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-246761-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[sina.cn,linuxfoundation.org,vger.kernel.org,bynar.io];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246760-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[socketcan@hartkopp.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[hartkopp.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_CC(0.00)[kernel.org,treblig.org,gmail.com,vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,bynar.io:email,sina.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hartkopp.net:email,hartkopp.net:mid,hartkopp.net:dkim,pengutronix.de:email]
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yesshedi@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-
-
-On 13.05.26 08:18, Jianqiang kang wrote:
-> From: Samuel Page <sam@bynar.io>
+On 11/05/26 13:46, Greg KH wrote:
+> On Mon, May 11, 2026 at 12:40:33PM +0530, Shreenidhi Shedi wrote:
+>> Hi all,
+>>
+>> This patch series backports a number of patches from master to 6.1.y
+>> to fix `-Wdiscarded-qualifiers` and `-Wnonnull` build issues with
+>> newer glibc versions.
+>>
+>> I will port these changes to other stable trees once this gets reviewed.
 > 
-> [ Upstream commit a535a9217ca3f2fccedaafb2fddb4c48f27d36dc ]
+> You need to do this first for newer kernel trees, and only if they are
+> accepted there, should you do this for older ones as you do not want to
+> have regressions moving to newer kernels, right?
 > 
-> raw_release() unregisters raw CAN receive filters via can_rx_unregister(),
-> but receiver deletion is deferred with call_rcu(). This leaves a window
-> where raw_rcv() may still be running in an RCU read-side critical section
-> after raw_release() frees ro->uniq, leading to a use-after-free of the
-> percpu uniq storage.
+> But first, why do this at all?  You should always be using the latest
+> kernel version of perf on older kernels, especially if you are updating
+> glibc.
 > 
-> Move free_percpu(ro->uniq) out of raw_release() and into a raw-specific
-> socket destructor. can_rx_unregister() takes an extra reference to the
-> socket and only drops it from the RCU callback, so freeing uniq from
-> sk_destruct ensures the percpu area is not released until the relevant
-> callbacks have drained.
+> And if you update glibc, WHY ARE YOU NOT UPDATING YOUR KERNEL?
 > 
-> Fixes: 514ac99c64b2 ("can: fix multiple delivery of a single CAN frame for overlapping CAN filters")
-> Cc: stable@vger.kernel.org # v4.1+
-
-This fix is not only missing in 6.1.y but also for older stable kernels. 
-It has only be applied to 6.18.y so far.
-
-Best regards,
-Oliver
-
-> Assisted-by: Bynario AI
-> Signed-off-by: Samuel Page <sam@bynar.io>
-> Link: https://patch.msgid.link/26ec626d-cae7-4418-9782-7198864d070c@bynar.io
-> Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-> [mkl: applied manually]
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
-> ---
->   net/can/raw.c | 11 ++++++++++-
->   1 file changed, 10 insertions(+), 1 deletion(-)
+> Why would you be using an old kernel tree like this?  That's very odd,
+> please do not do that.
 > 
-> diff --git a/net/can/raw.c b/net/can/raw.c
-> index 488320738e31..bcd6061f43d8 100644
-> --- a/net/can/raw.c
-> +++ b/net/can/raw.c
-> @@ -336,6 +336,14 @@ static int raw_notifier(struct notifier_block *nb, unsigned long msg,
->   	return NOTIFY_DONE;
->   }
->   
-> +static void raw_sock_destruct(struct sock *sk)
-> +{
-> +	struct raw_sock *ro = raw_sk(sk);
-> +
-> +	free_percpu(ro->uniq);
-> +	can_sock_destruct(sk);
-> +}
-> +
->   static int raw_init(struct sock *sk)
->   {
->   	struct raw_sock *ro = raw_sk(sk);
-> @@ -362,6 +370,8 @@ static int raw_init(struct sock *sk)
->   	if (unlikely(!ro->uniq))
->   		return -ENOMEM;
->   
-> +	sk->sk_destruct = raw_sock_destruct;
-> +
->   	/* set notifier */
->   	spin_lock(&raw_notifier_lock);
->   	list_add_tail(&ro->notifier, &raw_notifier_list);
-> @@ -409,7 +419,6 @@ static int raw_release(struct socket *sock)
->   	ro->bound = 0;
->   	ro->dev = NULL;
->   	ro->count = 0;
-> -	free_percpu(ro->uniq);
->   
->   	sock_orphan(sk);
->   	sock->sk = NULL;
+> thanks,
+> 
+> greg k-h
 
+Hi Greg,
+
+Thanks for the response. We have our own distro with 6.1.y kernel and we 
+are trying to upgrade glibc to 2.43. As 6.1.y is well within support 
+period I thought it would be good to keep it working with glibc-2.43 as 
+these are harmless fixes and would help many (if someone is building 
+6.1.y tree in Fedora rawhide for example).
+
+Updating kernel to latest LTS is not feasible for us at the moment.
+
+I will send a patch series to newer LTS releases soon. Thanks for the 
+advice.
+
+-- 
+Shedi
 
