@@ -1,134 +1,207 @@
-Return-Path: <stable+bounces-247032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247033-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id X94XKUDcBGoMQAIAu9opvQ
-	(envelope-from <stable+bounces-247032-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 22:17:04 +0200
+	id ICbnJ7HdBGoMQAIAu9opvQ
+	(envelope-from <stable+bounces-247033-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 22:23:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4757D53A673
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 22:17:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A34B53A710
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 22:23:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49F66300EDAE
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:17:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26030301DE39
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B6E3B83EC;
-	Wed, 13 May 2026 20:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1655B3ACA62;
+	Wed, 13 May 2026 20:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MlKD5Yno"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cRbzyrBr"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B751439FCD0
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 20:16:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854603A9D9F
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 20:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778703421; cv=none; b=RSm8Rv7/iTXG/A1Xa12YWPInEhmkMzmkW/7L1h6ThpUwlCzPzzuc5HmH69h8m+z+dvrIsspRZpIZwituD51LxSm5sl+bPL5IYFWBHz/o7AxCRYruG/anvNSaYwn0VG9s6uECX9bmGciOo67mNwnQYfG3SmOvwGFH/khU6dZnGVQ=
+	t=1778703785; cv=none; b=KBuxxhPVmBtvvFc+qOE6QaxwBpaWSyyFAbKKnvVxLqJOmR6YOeex8IVw3A76b/WDiUrFXL7AlEFpxO4H2t9itr4Sfxdu/QfMWrhzytWb/tLayKyZDjrok6GYfMs1jFVdnyo2cVPVaH2j+PZ2QraFanyd80uT0No3+iqFnInHgDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778703421; c=relaxed/simple;
-	bh=GJKD3Dd7idpMyczr0fWgC3EMCWM4ywg9m3HKwYagIH8=;
-	h=From:In-Reply-To:References:Cc:Subject:MIME-Version:Content-Type:
-	 Date:Message-ID; b=NaZsBCSTcx3lbWzMMJ0i8XyY7DFQZRVZVOayEKl3Tfl86KRDX7WzwcmcrBrvTGdY9jQHAHg1aYoAAEyaONwlBUi+G3v7tnk6kzZHuetFcMjzu0cdRW+swuSoDQN6jkVpt03rzF+S1KTDIK1Ah+CWel/3ChrJoia46sv1N1yb/zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MlKD5Yno; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778703418;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DmxfjKyS9fuAJVxLQAwUjqnNHQEjnWz1KrW4T6ZbphY=;
-	b=MlKD5YnoddWy+hPZVll4IL3KOdjxpuArfgflOrb3/L+0GYM4JW2kzMBHJH0I1vlJLXIFVJ
-	2mUL34Fi7WVMSHAWfTKEyiDvJEuw4C9tbbphVaVtpBDTS8DVWS1IHNjDEk2R4+wBuUnS64
-	RVOYIFnZ0UCN+r4Uaqd9mIaNQIbnEO0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-of0K6lSLO6yTTFK94msuhw-1; Wed,
- 13 May 2026 16:16:53 -0400
-X-MC-Unique: of0K6lSLO6yTTFK94msuhw-1
-X-Mimecast-MFC-AGG-ID: of0K6lSLO6yTTFK94msuhw_1778703410
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ADC6219560B7;
-	Wed, 13 May 2026 20:16:49 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.48.83])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 837701800576;
-	Wed, 13 May 2026 20:16:44 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20260513131941.1439155-3-dhowells@redhat.com>
-References: <20260513131941.1439155-3-dhowells@redhat.com> <20260513131941.1439155-1-dhowells@redhat.com>
-Cc: dhowells@redhat.com, netdev@vger.kernel.org,
-    Hyunwoo Kim <imv4bel@gmail.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Jakub Kicinski <kuba@kernel.org>,
-    "David
- S. Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-    Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
-    linux-kernel@vger.kernel.org, Jeffrey Altman <jaltman@auristor.com>,
-    Herbert Xu <herbert@gondor.apana.org.au>,
-    Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org,
-    linux-crypto@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v2 2/4] crypto/krb5, rxrpc: Fix lack of pre-decrypt/pre-verify length checks
+	s=arc-20240116; t=1778703785; c=relaxed/simple;
+	bh=8VoltUrLdbwL0jcfEn9k3774FHuaNiE9Y3fSoTK1IBo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UyCeBWGKbYHziOGXGNua/nqoaGuqKs2IKLXztVsOl5qR411U5fOj7trBmRIGW88rhuusN4ktWL+vCgumAEymmG48BdKq4Pq7PRCrpge3jKYnrJtaktdhvaEWP2nP0pUnDq2oADhsFMPBh8swI06qHm/5BV3ya3XTAeSDuwoXFfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cRbzyrBr; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-45d96d21e82so170696f8f.0
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 13:23:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778703783; x=1779308583; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7V1myvD5g5e+ykOUotYKcza96x6t5F4ELRDkfltp7Vc=;
+        b=cRbzyrBro4Op7tYb5YLQlIVphHhLiPbf4TnrRFknDk9uHfQOj/qCZ1fX9caVT+GD46
+         1ftRzeqyrXsqtN64PNQobBNW1UPsnFbgewuQhBYNbs7PE2l84vP5669fnbepUlyE2Q8J
+         eO3CDY7VvLjaqd7EhQzEBom0ll9iatcVdzLLF3YgFKzGAQb/Ol+T0O3V279BRhQUqG77
+         1YsAIBLzeLvPRzfwr4TXBdUeVBxkhnzDT+ykHozAbYKVFeB18K6jpSGNBCHi1BBBSUEd
+         Eo78+zvGDJhzwczX9wCsVD1tyYTGVk0tLpZis1+N5GXNngQOqDmLRwRnmxR+8xtoWahl
+         vMBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778703783; x=1779308583;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7V1myvD5g5e+ykOUotYKcza96x6t5F4ELRDkfltp7Vc=;
+        b=qXTjgm1/e1icnk8c00JhKjdyWLkjRUiuXGbIE5iAXDEi/xyqv4Z+qBlfn+dGg9IaPC
+         wgzWW6wYWGQhS202yLR22LaN3ux72LyV8tfxCnKsu1z2fhhCbRClA0XX4wiDHWZCMCez
+         Ci7rqr44sK9dXE1b1MHpdJl+kHvD/vVOtTVRaNwwgekcC9XkDcanP116kSOnfmxm5OTK
+         v80rwlaLCw3lrT/otqKv/jBx+o+e+YEhTRQOZFL2bZKFO+BPuNZYf9KD+GhlU0PgH7W3
+         GZbJfkeBN5HylHAMr8svrOae6x0EiNNr2Kp7iBNk0DSBR/r0ejggctx5xYGFiCDA22q6
+         j0FQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Aaq8fy/CYsaTAn3P72w+bhCW4e7Mr5Bn02DtOWnOiTcXeo1iQta9fv/Feyv3pzaSKbH2xosg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPa16ZWjod77wx8vL3Nef6DxpWGZzo+u8PctdsVB80Fxgp3svX
+	NCF/CBfOManPqtxN7H2o/zzqrDfPGYzTywu7EXwMrRvOF2wyw3MmurkT
+X-Gm-Gg: Acq92OFTA1wOCeb4XrLGSjSaPrtIrBL9GXct0SnaCAr8tL91bUvd9LAKwGGvMyPzTFy
+	2ZLyDjXBRNsYKZ+ia0h3vt4V2ahJT+sNipjhUprXFcO5TULOZEknDfDNRN1vl4Yb/ii5DOwGe5t
+	eBM119OMvr5piXQevgBA6yp8uOvTZmxjjrDXU75liRGVSvb0+E/WpZj484ihW5t5a5UPgGTpiXZ
+	FPAZ2VpxTj61STpWs086XQypNyBlo516CkYcvKQR9/MaeuKPF3OgAzoEjvem5PmsTVx750rscbf
+	JuO8i4iSCQTaY+24JdCr4jH0GKawQ8ppRkxvkrfa5TiKLzUmKoz2k9DKyRN1Mvd2BLDh+SuvmEb
+	yxslFQuxz64+lOoH7Cu5Fdt+V5LvDuQgbs8faB5Nx0DuhmIVOhL6OvnbhD0XCMlho7CpbWtZOwa
+	uUQB5mHKxbazNV19g03mXoe8kGVp7EQIUXuTGIrfL2L4dDP+JPrCwltG+iosa2dXpdE7p1cg6J7
+	Tfw3oEL
+X-Received: by 2002:a05:6000:24c6:b0:45c:154d:6387 with SMTP id ffacd0b85a97d-45c7a7dc6a2mr7430880f8f.37.1778703782701;
+        Wed, 13 May 2026 13:23:02 -0700 (PDT)
+Received: from jernej-laptop.localnet (46-150-62-216.dynamic.telemach.net. [46.150.62.216])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ed2ffdfsm1279025f8f.15.2026.05.13.13.23.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 13:23:02 -0700 (PDT)
+From: Jernej =?UTF-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To: Sean Young <sean@mess.org>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ =?UTF-8?B?67CV66qF7ZuI?= <mhun512@gmail.com>
+Cc: Myeonghun Pak <mhun512@gmail.com>, Chen-Yu Tsai <wens@kernel.org>,
+ Samuel Holland <samuel@sholland.org>, linux-media@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Ijae Kim <ae878000@gmail.com>
+Subject:
+ Re: [PATCH] media: rc: sunxi-cir: unregister rc device on probe failure
+Date: Wed, 13 May 2026 22:23:00 +0200
+Message-ID: <YRYbhQnwRdCZPKQIjbWE2A@gmail.com>
+In-Reply-To: <20260424000000.558-1-mhun512@gmail.com>
+References: <20260424000000.558-1-mhun512@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1969092.1778703403.1@warthog.procyon.org.uk>
-Date: Wed, 13 May 2026 21:16:43 +0100
-Message-ID: <1969093.1778703403@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: 4757D53A673
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: 0A34B53A710
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MISSING_TO(2.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[redhat.com,vger.kernel.org,gmail.com,auristor.com,kernel.org,davemloft.net,google.com,lists.infradead.org,gondor.apana.org.au,oracle.com];
-	TAGGED_FROM(0.00)[bounces-247032-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247033-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_TO(0.00)[mess.org,kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,sholland.org,vger.kernel.org,lists.infradead.org,lists.linux.dev];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[warthog.procyon.org.uk:mid]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jernejskrabec@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-David Howells <dhowells@redhat.com> wrote:
+Dne sreda, 13. maj 2026 ob 09:11:03 Srednjeevropski poletni =C4=8Das je =EB=
+=B0=95=EB=AA=85=ED=9B=88 napisal(a):
+> From: Myeonghun Pak <mhun512@gmail.com>
+>=20
+> After rc_register_device() succeeds, later probe failures must undo the
+> registration with rc_unregister_device(). The current error path jumps to
+> the allocation cleanup label and only calls rc_free_device(), leaving the
+> rc device registration and resources created by rc_register_device()
+> behind.
+>=20
+> Add a registered-device unwind label for the IRQ lookup, IRQ request, and
+> hardware initialization failure paths. Keep rc_free_device() for failures
+> before rc_register_device() succeeds.
+>=20
+> Fixes: b4e3e59fb59c ("[media] rc: add sunxi-ir driver")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> ---
+>  drivers/media/rc/sunxi-cir.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/media/rc/sunxi-cir.c b/drivers/media/rc/sunxi-cir.c
+> index 92ef4e7c6f..cc64a68dfe 100644
+> --- a/drivers/media/rc/sunxi-cir.c
+> +++ b/drivers/media/rc/sunxi-cir.c
+> @@ -344,22 +344,26 @@ static int sunxi_ir_probe(struct platform_device *p=
+dev)
+>  	ir->irq =3D platform_get_irq(pdev, 0);
+>  	if (ir->irq < 0) {
+>  		ret =3D ir->irq;
+> -		goto exit_free_dev;
+> +		goto exit_unregister_dev;
+>  	}
+> =20
+>  	ret =3D devm_request_irq(dev, ir->irq, sunxi_ir_irq, 0, SUNXI_IR_DEV, i=
+r);
+>  	if (ret) {
+>  		dev_err(dev, "failed request irq\n");
+> -		goto exit_free_dev;
+> +		goto exit_unregister_dev;
+>  	}
+> =20
+>  	ret =3D sunxi_ir_hw_init(dev);
+>  	if (ret)
+> -		goto exit_free_dev;
+> +		goto exit_unregister_dev;
+> =20
+>  	dev_info(dev, "initialized sunXi IR driver\n");
+>  	return 0;
+> =20
+> +exit_unregister_dev:
+> +	rc_unregister_device(ir->rc);
+> +	return ret;
 
-> +	if (crypto_krb5_check_data_len(gk->krb5, KRB5_ENCRYPT_MODE,
-> +				       len, sizeof(*hdr)) < 0)
+This return should not be here.  Device must be freed too.
 
-This should be sizeof(hdr) here in patch 2 and sizeof(*hdr) in patch 3.
+Best regards,
+Jernej
 
-David
+> +
+>  exit_free_dev:
+>  	rc_free_device(ir->rc);
+> =20
+>=20
+
+
+
 
 
