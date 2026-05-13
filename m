@@ -1,96 +1,59 @@
-Return-Path: <stable+bounces-246998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGsDCdO+BGoeNgIAu9opvQ
-	(envelope-from <stable+bounces-246998-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:11:31 +0200
+	id yAONEJ2/BGo1NgIAu9opvQ
+	(envelope-from <stable+bounces-246999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:14:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330A0538A81
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:11:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296BF538B53
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9314C3012874
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:09:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 55E1D3009F16
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D4B4DC532;
-	Wed, 13 May 2026 18:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C193A6EF6;
+	Wed, 13 May 2026 18:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WHmQvW9P"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Z07gbawt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CDC1EF36E
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 18:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3C030BB97
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 18:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778695766; cv=none; b=p7ahbzpVOwR55IdtMjs/J1LrK9lJtjEid5pbx9vfmZmmVB1SEERvvRWjpqD3VnMQxBDOvOYNAzchECj5a1ne6jEXK9Ai1Aj69wvhgCq3qn2ulR72vqp7I0wP+KaLIaRLbzo54kCvBX7MbRoYgTrxkZkX4/CRw1ZEpcks71JuvGA=
+	t=1778695815; cv=none; b=NEoWczdv3MYoW8Vqpx5trK4H5euya2+MPvwOfnIPY5klzLNnh2PktvJnjJzMnL+LT36fTGefgRTVtTRDGPiSHP12CUArC/9JmDSN4BKFYZpo0uBP6fVa9GbSKZ2qnGV51Gb0gzHDQ/LwC2KOBid9/Ks6d1Z/oeGwM9HLn/UC+/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778695766; c=relaxed/simple;
-	bh=a473AoW/EYrJtLZg75oKWL9iS0yO8FVEqZPKLR/uLTA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e1FoWZQ/ehwEZmqqEL8aKz/ZjKXvZMTzZJ1iRfNMa+kM8Pb+k5ptxQOQgCFbRUUYJUhAITFBw1SgjuFB5KuHubRJ+RYDKI44Gym/9EAgnf+L2eFW4J278QFe7ViwUzb4V3ZwTZAdwXVICon2Iw6DAIejCl5CCFtOxtxzq4dg2Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WHmQvW9P; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-90b2fcf90a0so454853285a.1
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 11:09:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778695763; x=1779300563; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=d7rgq4Cpe/q3En5LdQk+EFyKvDIOSkydeGDE5rAIQC0=;
-        b=WHmQvW9PBRW/ehyqVGwGSvd4W8rwiwTrrOgOOJbkMO63zyDL5B6Z0IICsEcQakMJ2x
-         hMumljh4bCjZ8DoyUAeK46aEQ2gJfK6J8oD0REfSAxWo+BVlPMq+5dG2WI0e8ReW5OLZ
-         NLjQ2ZR9Zv4jKvN++NumQN8gEADWT4I6/fwdn4Z6hkrhZPfcn37OqowFr+BaUvrrSWKg
-         luWTvNKRZZqH1JCeZ/h3OtoELFtJwa2wnwWpD1Tr/KKi2DwF2Q5a0xF/toRg/hqmiZD4
-         wsAKs7vmH95cOQ/BYZIJyg2w9oRYPVU2dVQJ732wwOn+bN26d9rRCTCg7GgQpcIOk2QI
-         t8BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778695763; x=1779300563;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d7rgq4Cpe/q3En5LdQk+EFyKvDIOSkydeGDE5rAIQC0=;
-        b=lOIVzi5ONOTIirT2DNHHCZW5j9OywxWra0qJnCMYMf/1ksYvEiX4YUqJAsTnjkNhBg
-         chqrTB4fRgDasZycqyBSqPi5n3lRp2QgetZxpV3iP42T8QMDk7XRw2Ua8zyvugqMQea7
-         B9PtMRdmC06u8dhck3vnULljMl8lD8/kKJVqIW8aGvbfeAYG2R7U28Kqsqp3oB8q6TzR
-         J4DeB/HDkd2x74R9o3LUxgi4yFpi2UKJRm59qrXSzQ8UR8SLfRPsxvh4awA6qzlJC41g
-         jdzoLR79CD7PhtC4tzk9MEGdh70oTA3E3f/60FodFyB77XoI6I/X+OwyN0B0ObSH7vLT
-         Mx7w==
-X-Forwarded-Encrypted: i=1; AFNElJ+k97ePbgtiUuDzWzyTJLLySzpA7S+B+JbHsRgW4BwT4VSHjSjqYSdfjXjlXExlJ06v6HNygEM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznULY42RvJ26ie4WC+bpXnhVc/JBVvt6gt+Ca0nV6uCiO00yND
-	sJwayqaYMUnuPmL2HaxiuHgEwzPtPFCYT0aBtc2waolS4phJOn5JBIHljJrlDidy
-X-Gm-Gg: Acq92OG7/7eZbaozXVI2WAxxeen0ZhjCIdFrF9lectYXQxXE1i/WrT4BMHKWCcuBA4j
-	2PG54T+ihOXUNCda+rsvRQAkkvbHUqqMikDeapskoHDQFpFQY3cuy44RMsK6e5CsSpVBqYqdvpu
-	w2DxhlFQNOt+EZQCuspGeJNz1nmVSDFuIBBRSlI9Jj0NFRTFJyYIEvpUeMqrS8mQXiSpK8Cfa2X
-	tQrI36GgPA7x+8YgVC91DqBDzXWb5tNngLxDtnCfn+w5SVx39+Tlnx2Qw49zCtCHiFZbh5Bw+iI
-	egIZI9nZh3kL6sBlyc2/1NC2GmuSWzsr+3llElrv4/jFHP/bcvAdFV23MxMNk1V9S4/vQ8JZxmP
-	Z60f/7N+IK4Vv/VysuJVsejmaFrTNh8cLaLhKU0vFKII6AzUuSMldc/44R5c25XORB7/Xg2PVxF
-	F4ZIXldI3cdvrwSfjqvp7sjlNaSsdcY5QEIO/HpkTWK/szdSEfjueWnTorasVrZt/QSzwRYENLY
-	Lai2g6/rMY3h2bxEkn2fKWPXJT51kkkuzG9cLyAuOo=
-X-Received: by 2002:a05:620a:1995:b0:8cf:d5ca:adf8 with SMTP id af79cd13be357-910b0f08f19mr82490985a.29.1778695762828;
-        Wed, 13 May 2026 11:09:22 -0700 (PDT)
-Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910ba182540sm27011485a.4.2026.05.13.11.09.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 11:09:22 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
+	s=arc-20240116; t=1778695815; c=relaxed/simple;
+	bh=sJtHrEMTFFpjbfbBxtT8DmeJ+xf4OampWD4O1gu7XZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tt/TCO2h7eL59Fi5sIiFkmyXeeKZsa69vU9IucYNqWe78uBPrWWf1VPIWmIn+uovXZLCPAYZDLXhkRB7+o1QauhHqinc10RZvmHS+rb+G7kjUoyOX3M4hXGBsATkkJ2DdVwmoV4ajgNr2CmOidw2UpE49uhQzX5mI7c23syE3Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Z07gbawt; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778695802;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5Mndf8I3e0nWas0WTii+mXglPnbHTyRnv4gH4/oY+ls=;
+	b=Z07gbawtRzpsC5jotyv3IW87ib49IfaiTjmPf27Bta5iIuZ34Ydi3SdWzjXIulDBI++v7v
+	Jh2mjtVbDmp3WqojZfc3kryJl2e4Gi9p6LR/u6l6PvjRtVdcecHuunFBqeTarFS1oehQTH
+	Hr/k0vdK4lpPeC7xarPmIQXz4B9n90Q=
+From: luka.gejak@linux.dev
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Luka Gejak <luka.gejak@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH] rxrpc: Fix read+write past skb_headlen in soft-ACK parser
-Date: Wed, 13 May 2026 14:09:07 -0400
-Message-ID: <20260513180907.2061972-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+Subject: [PATCH v3] wifi: rtw88: increase TX report timeout to fix race condition
+Date: Wed, 13 May 2026 20:09:35 +0200
+Message-ID: <20260513180935.13289-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,123 +61,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 330A0538A81
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 296BF538B53
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246998-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246999-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,linux.dev:mid,linux.dev:dkim]
 X-Rspamd-Action: no action
 
-rxrpc_input_soft_acks() builds a raw `u8 *acks = skb->data + ...`
-pointer and walks it for `sp->ack.nr_acks` iterations, performing a
-read-modify-write (shiftr_adv_rotr) on each byte.
+From: Luka Gejak <luka.gejak@linux.dev>
 
-The caller rxrpc_input_ack() only validates that the bytes exist
-somewhere in the skb (`offset > skb->len - nr_acks`) and best-effort
-linearises the head with skb_condense().  skb_condense() returns
-without pulling when the skb is cloned, when paged data exceeds the
-linear-head tailroom, or when frags are unreadable.  On a nonlinear
-skb that survives the condense step (cloned by AF_PACKET capture,
-frag_list-style after IP-fragment reassembly, or paged-frag receive
-on real NICs), skb->data covers only the linear head.  The parser
-then walks past skb_headlen(skb) into skb tailroom, skb_shared_info,
-or the next slab object, doing in-place 1-byte shifts on up to 255
-attacker-controlled offsets per ACK packet.
+The driver expects the firmware to report TX status within 500ms.
+However, a timeout can be triggered when the hardware performs
+background scans while under TX load. During these scans, the firmware
+stays off-channel for periods exceeding 500ms, delaying the delivery of
+TX reports back to the driver.
 
-Sibling parsers in the same file already use the safe pattern:
-rxrpc_extract_header(), rxrpc_extract_abort(), rxrpc_input_split_jumbo(),
-and the rxrpc_input_ack_trailer() call site all use skb_copy_bits()
-with explicit length checks.  The soft-ACK call path is the lone
-direct-deref site.
+When this occurs, the purge timer fires prematurely and drops the
+tracking skbs from the queue. This results in the host stack
+interpreting the missing status as packet loss, leading to TCP window
+collapse. In testing with iperf3, this causes throughput to drop from
+~90 Mbps to near-zero for approximately 2 seconds until the connection
+recovers.
 
-Add an explicit pskb_may_pull() check before invoking the parser so
-that the linear head is guaranteed to cover the SACK bitmap.  On
-allocation failure return rxrpc_proto_abort() with the same
-eproto_ackr_short_sack disposition the existing length check uses.
-skb_condense() is retained on the path; its truesize-accounting side
-effect is independent of the linearisation guarantee that
-pskb_may_pull() now provides.
+Increase RTW_TX_PROBE_TIMEOUT to 2500ms for RTL8723DU. This duration is
+sufficient to accommodate off-channel dwell time during full background
+scans, ensuring the purge timer only trips during genuine firmware
+lockups and preventing unnecessary TCP retransmission cycles.
 
-The bug shape was reproduced under UML+KASAN in two complementary
-harnesses:
-
-(1) A kmod that lifts the parser's inner shift loop verbatim and
-    exercises it against a kmalloc(47) buffer.  KASAN reports a
-    slab-out-of-bounds read on the first byte past the allocation:
-
-      BUG: KASAN: slab-out-of-bounds in run_rxrpc_soft_acks_loop+0x52/0x74
-      Read of size 1 at addr 63a7032f by task insmod/37
-       which belongs to the cache kmalloc-64 of size 64
-       allocated 47-byte region [63a70300, 63a7032f)
-
-(2) A second kmod uses the in-kernel rxrpc API to allocate a real
-    rxrpc_call, builds a nonlinear hostile ACK skb (linear head=46,
-    paged frag=79, skb->cloned=1, nr_acks=60) and drives the
-    upstream rxrpc_input_call_packet() -> rxrpc_input_ack() ->
-    rxrpc_input_soft_acks() chain directly.  Sixty 0xAA sentinel
-    bytes placed in the linear-head tailroom are all right-shifted
-    to 0x55 by the unmodified upstream rxrpc_input_soft_acks() on
-    a stock kernel.  On the patched kernel, zero of sixty shift --
-    pskb_may_pull aborts the call before the parser runs.
-
-Note: the real-path demonstration does NOT produce a literal
-KASAN slab-out-of-bounds splat, because the on-wire nAcks field
-is a u8 (max 255) and the OOB shift stays within the same kmalloc
-slab object that holds skb_shared_info.  Per-byte corruption of
-skb_shared_info and the linear-head tailroom is the actual
-production effect.
-
-A regression check on a fully-linear ACK skb confirms pskb_may_pull
-is a no-op on that path; the parser continues to read in-bounds.
-
-Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than marking txbufs")
+Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
 Cc: stable@vger.kernel.org
-Reported via internal source-audit pipeline on 2026-04-21.
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Tested-by: Luka Gejak <luka.gejak@linux.dev>
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
 ---
- net/rxrpc/input.c | 2 ++
- 1 file changed, 2 insertions(+)
+Changes in v3:
+ -Declared timeout with RTW_TX_PROBE_TIMEOUT as the default value and 
+ removed the else branch.
+ -Updated the Fixes tag to the commit that introduced USB support.
+Changes in v2:
+ -Isolated the change to RTL8723DU as requested by Ping-Ke
 
-diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-index 24aceb183c2c..52ace0f98d06 100644
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -1173,6 +1173,8 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	if (nr_acks > 0) {
- 		if (offset > (int)skb->len - nr_acks)
- 			return rxrpc_proto_abort(call, 0, rxrpc_eproto_ackr_short_sack);
-+		if (!pskb_may_pull(skb, offset + nr_acks))
-+			return rxrpc_proto_abort(call, 0, rxrpc_eproto_ackr_short_sack);
- 		rxrpc_input_soft_acks(call, &summary, skb);
- 	}
+ drivers/net/wireless/realtek/rtw88/tx.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index 3106edb84fb4..a6e43314a4e9 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -196,6 +196,7 @@ void rtw_tx_report_purge_timer(struct timer_list *t)
+ void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
+ {
+ 	struct rtw_tx_report *tx_report = &rtwdev->tx_report;
++	unsigned long timeout = RTW_TX_PROBE_TIMEOUT;
+ 	unsigned long flags;
+ 	u8 *drv_data;
+ 
+@@ -207,7 +208,11 @@ void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
+ 	__skb_queue_tail(&tx_report->queue, skb);
+ 	spin_unlock_irqrestore(&tx_report->q_lock, flags);
+ 
+-	mod_timer(&tx_report->purge_timer, jiffies + RTW_TX_PROBE_TIMEOUT);
++	if (rtwdev->chip->id == RTW_CHIP_TYPE_8723D &&
++	    rtwdev->hci.type == RTW_HCI_TYPE_USB)
++		timeout = msecs_to_jiffies(2500);
++
++	mod_timer(&tx_report->purge_timer, jiffies + timeout);
+ }
+ EXPORT_SYMBOL(rtw_tx_report_enqueue);
  
 -- 
-2.53.0
+2.54.0
 
 
