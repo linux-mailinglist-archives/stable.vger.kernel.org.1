@@ -1,185 +1,161 @@
-Return-Path: <stable+bounces-246841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKYcOUt3BGqpKAIAu9opvQ
-	(envelope-from <stable+bounces-246841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:06:19 +0200
+	id IMMfAlB3BGqpKAIAu9opvQ
+	(envelope-from <stable+bounces-246842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:06:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F0153394C
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9FD053395C
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D26CF3108242
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:48:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 419EB3154F62
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 12:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B03D423A7C;
-	Wed, 13 May 2026 12:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADA7425CCD;
+	Wed, 13 May 2026 12:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="URwHVnaq"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mnej4WuZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C5E423A66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBC542317A
 	for <stable@vger.kernel.org>; Wed, 13 May 2026 12:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778676509; cv=none; b=PDKyUGkZ5hzsFRDwMUrCQ7Mi6uvo8Q57diDK1a+vJrHK6xH41qtFdcJ4bbeUkaXpXvEjx6hJqAekXQgFHPk0+P8ewDf0y7A9ZVkt3WQDT5Ch6g8ibww2rUuiGaAEs51qA3AEgJBVLuwiva604tp2P+CJwJO3Ggs2EktRiSa6FVs=
+	t=1778676510; cv=none; b=vGNLubyIkBpCiicS2oL/b/lUYBpImFMDuf6j0fMYQXpfwGzJZkRXJa51FwQwmu5F0HKow027jUz80C+bHkOS85iiQp69v1xR1VvLKQH1FSbAu68RFnHf9unw+2npVVcF0hqAzVM3r2GlMIG390cXCBhmGsnn8elwzWVZ6UJdZYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778676509; c=relaxed/simple;
-	bh=X5gUelo3bCkwRhBEPpTyD+19NDKnVPBSLxNEGqVhhVw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4zWUrZyNtU6nL8II0znw47TJnWB1eOGoaQXgurK2Rg8U1lzSmF4k5XB3Kc2lviBB+tCLQaSwy1Vjfrn5fIiIsfXRAk0l5Zyz1qhFbDMhjjx2LXbzMt0gyLuUBOYcOVHRgMFoiqC11yveiFPqCm45YkZOebR3nhcNswl+tGSQlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=URwHVnaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D70C2BCB7;
-	Wed, 13 May 2026 12:48:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778676508;
-	bh=X5gUelo3bCkwRhBEPpTyD+19NDKnVPBSLxNEGqVhhVw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URwHVnaqMJnP4vtL55654MuVW7P4LBdb9iq7mCAD+k9NmGYq6wFVHghfb2Q+DxgK5
-	 x0NsGYrj+xPnpnYgeiHdSSqlyxkCtwB9JnTcHwfdXGBVhwD9d3wQAQVDptNS29Nm2f
-	 ctMCuIPBqnw5LQWxrwUDlH2TDi7vPbym66La8Eg7hMOXf6mOerNSrFfBZvbq5Ny0qH
-	 /jEEDLlhg6qi8aU4qXJUgiXcY37niGeUObc/khffbGt7sKVYHBLI4fuX0HkZ9xYo/Y
-	 tysR2+nzwI52wXElEZZTJWDCKNnMb8+fwf1m4Ha3dBvJc3iYiYwsSqWkQKbNIQi58m
-	 /d4G7GwGyjOlA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Amit Sunil Dhamne <amitsd@google.com>,
-	stable <stable@kernel.org>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] usb: typec: tcpm: reset internal port states on soft reset AMS
-Date: Wed, 13 May 2026 08:48:25 -0400
-Message-ID: <20260513124826.3711905-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051213-dad-armed-619f@gregkh>
-References: <2026051213-dad-armed-619f@gregkh>
+	s=arc-20240116; t=1778676510; c=relaxed/simple;
+	bh=+GsX+CdK0ydxnGXslSMT5BS3MNBH9LFYKOpievZvUwc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=IZhR6SPzzwyrtd2ld0VZWvOOQXHF7CYrhhTQ9xxk+oSlXGHA7/qOcanJBj9BqvPdyCvw1pE+i9WnnElygU/WcCpqZuQ6MAzRgR5MzDKlv845B072ViFCx/DZ6J+brjojrB3aLRjvitZC2PFASvZIQLz9zPNU6NBTuPagVlIul0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mnej4WuZ; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-83544d05c5aso3674045b3a.2
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 05:48:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778676508; x=1779281308; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+5eHMVfb/Er3xuFGOIw7f+q4SdOyV+C6CS8hVi39b+g=;
+        b=mnej4WuZcLYu2spTIG5qsYwOGpRrFVWUh1G6pwOf2Mx5QM6vOMiV6D30zRyvyQEdfq
+         PmxYTNYJRFI5MvXCCvaQ4eQx1ZYsdyPJW2Y/X1NN/Jzf5q0SLrhvqB2sgUAoBAVoVIr8
+         fBx9mmJ/FdusAKWtzQmEWYCb9txBI9RwHIO8TMLJCHfzBCj1ffWFXKqM4Z613nojbOl1
+         V1NbzgsMF8zmpmkph2/+n+uQGeicHvVjPt24LoGDs0URNtZrRasEtNLbm0Ul+yDxJqH/
+         lc7yY4iIL1Ru0STc+UcnNdS3NukWypz3OdoHdRzBNkmDYUIz2P9UYbDZNeyM9celjfnV
+         RwBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778676508; x=1779281308;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+5eHMVfb/Er3xuFGOIw7f+q4SdOyV+C6CS8hVi39b+g=;
+        b=aFKVturmgkZHoLPrNdaJyCbcdaRoBn/483AL/rTsyE4EHwKKmLg9Jf4kOn0+hC4je8
+         WRz6e84r09lwPbtkJnhpFL5wXef0f/t+DJwDx4sgNTCBBqsS/Fr+/H7GyI2gtAsBEAkK
+         KrUE7DBaq0R0fbED1Mu1o8fjSfbEsAf2WlWYPZTEmw6vYt4kFJ9bY1KgDAGKG9nrxSHS
+         XgKSiQN4vX8QAOoaFwnh/+5tRNeOYTVLeW+l9S9V01CCJFTuMQxwV+0iFKU4kkxuyGVR
+         0CMmSugF550sBWJ+Jz76cD76UvI8o9UZrmuR5bxeDoCB6w3N90YxBUQyxDHU7cwDIF0c
+         1r+A==
+X-Forwarded-Encrypted: i=1; AFNElJ9FpDTExGZUtSoBCHbyLspFPkA+HKtgYZaC4Z1Hn1IPr/Hoj07LtMO8QC6LFwIg0EG78ncjD54=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAHpWoez0j5Ov6hKJMFtbjs1POLG6illcqOH3lsbKgiLCTP4CO
+	CIS0IIgmMsCNkLK7cFCHLFjy41Z9HRd+PC17ehOhOTusHm8bM+vVCBc6ZqbPrK0s6J3ttFFlUp8
+	XnFIbfg==
+X-Received: from pfnn24.prod.google.com ([2002:a05:6a00:2b98:b0:835:4568:a5a0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:8887:0:b0:837:b5b6:1b97
+ with SMTP id d2e1a72fcca58-83f03fcc53amr3291170b3a.12.1778676507889; Wed, 13
+ May 2026 05:48:27 -0700 (PDT)
+Date: Wed, 13 May 2026 05:48:27 -0700
+In-Reply-To: <B8D6B43E-4C3D-4E1F-BD07-5632E1BBECEA@zytor.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 62F0153394C
+Mime-Version: 1.0
+References: <20260428125632.129770-1-kas@kernel.org> <20260428125632.129770-3-kas@kernel.org>
+ <bf92ebbf-8d70-406a-aea1-c11ca576de90@intel.com> <B8D6B43E-4C3D-4E1F-BD07-5632E1BBECEA@zytor.com>
+Message-ID: <agRzBsoQG2C0sHxe@google.com>
+Subject: Re: [PATCH v2 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
+From: Sean Christopherson <seanjc@google.com>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: B9FD053395C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246841-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246842-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[intel.com,kernel.org,redhat.com,alien8.de,linux.intel.com,gmail.com,vger.kernel.org,lists.linux.dev];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+On Tue, May 12, 2026, H. Peter Anvin wrote:
+> On May 12, 2026 6:14:13 PM PDT, Dave Hansen <dave.hansen@intel.com> wrote:
+> >On 4/28/26 05:56, Kiryl Shutsemau (Meta) wrote:
+> >> +	if (size == 4)
+> >> +		regs->ax = 0;
+> >> +	else
+> >> +		regs->ax &= ~mask;
+> >
+> >I haven't thought about this _that_ much, but this feels wrong. Why is
+> >is 4 so special cased?
+> >
+> >Also, what _are_ the limits on the registers that 'in' can be used on?
+> >
+> >RAX - n/a, no 64-bit I/O
+> >EAX - size=4
+> >AX  - size=2
+> >AH  - n/a no encoding for inb
+> >AL  - size=1
+> >
+> >I'd find this much easier to grasp if there was a nice table of what the
+> >registers, sizes, and masks ended up being usable. As usual, x86 is
+> >"fun" here.
+> 
+> Because zero extension only applies to dwords.
+> 
+> x86-64 has three subregisters per GPR:
 
-[ Upstream commit 2909f0d4994fb4306bf116df5ccee797791fce2c ]
+Aren't there four?  The fourth being 31:0, which is the one that is zero-extended
+and so "clobbers" 63:32.
 
-Reset internal port states (such as vdm_sm_running and
-explicit_contract) on soft reset AMS as the port needs to negotiate a
-new contract. The consequence of leaving the states in as-is cond are as
-follows:
-  * port is in SRC power role and an explicit contract is negotiated
-    with the port partner (in sink role)
-  * port partner sends a Soft Reset AMS while VDM State Machine is
-    running
-  * port accepts the Soft Reset request and the port advertises src caps
-  * port partner sends a Request message but since the explicit_contract
-    and vdm_sm_running are true from previous negotiation, the port ends
-    up sending Soft Reset instead of Accept msg.
+> Bits 7-0
+> Bits 15-8
+> Bits 63-16
 
-Stub Log:
-[  203.653942] AMS DISCOVER_IDENTITY start
-[  203.653947] PD TX, header: 0x176f
-[  203.655901] PD TX complete, status: 0
-[  203.657470] PD RX, header: 0x124f [1]
-[  203.657477] Rx VDM cmd 0xff008081 type 2 cmd 1 len 1
-[  203.657482] AMS DISCOVER_IDENTITY finished
-[  203.657484] cc:=4
-[  204.155698] PD RX, header: 0x144f [1]
-[  204.155718] Rx VDM cmd 0xeeee8001 type 0 cmd 1 len 1
-[  204.155741] PD TX, header: 0x196f
-[  204.157622] PD TX complete, status: 0
-[  204.160060] PD RX, header: 0x4d [1]
-[  204.160066] state change SRC_READY -> SOFT_RESET [rev2 SOFT_RESET_AMS]
-[  204.160076] PD TX, header: 0x163
-[  204.162486] PD TX complete, status: 0
-[  204.162832] AMS SOFT_RESET_AMS finished
-[  204.162840] cc:=4
-[  204.162891] AMS POWER_NEGOTIATION start
-[  204.162896] state change SOFT_RESET -> AMS_START [rev2 POWER_NEGOTIATION]
-[  204.162908] state change AMS_START -> SRC_SEND_CAPABILITIES [rev2 POWER_NEGOTIATION]
-[  204.162913] PD TX, header: 0x1361
-[  204.165529] PD TX complete, status: 0
-[  204.165571] pending state change SRC_SEND_CAPABILITIES -> SRC_SEND_CAPABILITIES_TIMEOUT @ 60 ms [rev2 POWER_NEGOTIATION]
-[  204.166996] PD RX, header: 0x1242 [1]
-[  204.167009] state change SRC_SEND_CAPABILITIES -> SRC_SOFT_RESET_WAIT_SNK_TX [rev2 POWER_NEGOTIATION]
-[  204.167019] AMS POWER_NEGOTIATION finished
-[  204.167020] cc:=4
-[  204.167083] AMS SOFT_RESET_AMS start
-[  204.167086] state change SRC_SOFT_RESET_WAIT_SNK_TX -> SOFT_RESET_SEND [rev2 SOFT_RESET_AMS]
-[  204.167092] PD TX, header: 0x16d
-[  204.168824] PD TX complete, status: 0
-[  204.168854] pending state change SOFT_RESET_SEND -> HARD_RESET_SEND @ 60 ms [rev2 SOFT_RESET_AMS]
-[  204.171876] PD RX, header: 0x43 [1]
-[  204.171879] AMS SOFT_RESET_AMS finished
-
-This causes COMMON.PROC.PD.11.2 check failure for
-TEST.PD.VDM.SRC.2_Rev2Src test on the PD compliance tester.
-
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Fixes: 8d3a0578ad1a ("usb: typec: tcpm: Respond Wait if VDM state machine is running")
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260414-fix-soft-reset-v1-1-01d7cb9764e2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ kept `tcpm_pd_send_control(port, PD_CTRL_ACCEPT)` call unchanged ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/typec/tcpm/tcpm.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index d70813c89fff9..f8ef556a795d6 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4576,6 +4576,8 @@ static void run_state_machine(struct tcpm_port *port)
- 		port->message_id = 0;
- 		port->rx_msgid = -1;
- 		tcpm_pd_send_control(port, PD_CTRL_ACCEPT);
-+		port->vdm_sm_running = false;
-+		port->explicit_contract = false;
- 		tcpm_ams_finish(port);
- 		if (port->pwr_role == TYPEC_SOURCE) {
- 			port->upcoming_state = SRC_SEND_CAPABILITIES;
--- 
-2.53.0
-
+I assume you mean 15:0?  63:16 isn't addressable.  And these are the ones that
+aren't zero-extended, i.e. don't "clobber" other bits.
 
