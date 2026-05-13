@@ -1,158 +1,200 @@
-Return-Path: <stable+bounces-246939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246940-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFxkEYavBGrENAIAu9opvQ
-	(envelope-from <stable+bounces-246939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:06:14 +0200
+	id eKlBJLysBGrIMwIAu9opvQ
+	(envelope-from <stable+bounces-246940-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:54:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D25537AAD
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:06:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 089195377EB
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 18:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8D0531A0CAA
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:34:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D1D83099776
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637584CA265;
-	Wed, 13 May 2026 16:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B13F3815F5;
+	Wed, 13 May 2026 16:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TvwiQVf3"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="mCBSLcmk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2453E4C9579
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 16:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117E33264E9;
+	Wed, 13 May 2026 16:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778690068; cv=none; b=ARLjZTDLCnFJ0WfHBDOqObkCdY19NPFhObR8mRT7FWsJ+k/gdo/3vaWsm2Dy1xvmxdT6i2MUUumK1fMpUpYMRSCmH3HUPy+zVrMVBkETDk2N2KPjPNdUBLuD+d4/9htfWplUVQjNTs+NwH75IkDWI7xMTgxN/D09jIZKIW7+Fp8=
+	t=1778690707; cv=none; b=DCjN4myvZREHU82YtV5vrBiOKNdNh39Q/MRJE6debv+VU9bV1h5wIw+m72lDIYkeqpk0IIrEZMJK5+u5Qfsq0jakRv/puuPcYp2Hwdp8QqwQvBPh8c830O5mLizcweQ/+kZ6l0B8t3JmxjVpgxDpNe8hTzGwmpEeKoZlNaBRxEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778690068; c=relaxed/simple;
-	bh=1bMm1S5i2O7vB4LtzcYX0gRb+I30GRPnNWKsUzrOzsU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cfKQzzj9EiE+IbsyPlmREpBm8XnRTqJuJmCAkGsbcGnM4OQNoCAV34pnjIx4sZfys0/uLHiIWSKke6FCQ+Mg/I3EBB3maXEuDLj82Q6kHbpaDiTqkxXmCKtXoyijWd79BiKnTYiNWJ4ReCcZBSRrbLoEinNrpGdMe8x/tzCRr+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TvwiQVf3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A15DC2BCF7;
-	Wed, 13 May 2026 16:34:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778690067;
-	bh=1bMm1S5i2O7vB4LtzcYX0gRb+I30GRPnNWKsUzrOzsU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TvwiQVf3pTc4zbOVF9C/snJZ5dKwM3rIXbVgHCcJYzpINtSn5WpGuke7ASBIo3YNA
-	 3IB3TpzxjUh39zoyQHtuRv9lcYbGMVwdmsBCAqLfIrOMyA8psuSw+6okDTh6UEHxvT
-	 Aj3PbKdw6oW5NW95vlwXP/Y8U0krTswQoV/89yxjzHDpIw7PFmekSXjkvYTTjueiv7
-	 hp7/9CUEIl89Vxw+cjjVUeIsf+0qw2ssiw5cZbIzDumsFXH02gDq5el0lNoFG4JLNy
-	 JQWotH8gVu14x6C9Q/hD2Fh5DqdMT8LoB39EhFtcY1TOyXDlAM8cXmm/pbpUV+cjro
-	 QF9Bhwhn53hMQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] ALSA: core: Serialize deferred fasync state checks
-Date: Wed, 13 May 2026 12:34:25 -0400
-Message-ID: <20260513163425.3808876-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051255-pushup-cheek-6781@gregkh>
-References: <2026051255-pushup-cheek-6781@gregkh>
+	s=arc-20240116; t=1778690707; c=relaxed/simple;
+	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R5h+OtKH1+hFpQU83H1D+fMci+hn8DCL8KYbrXe4IOfHp+ZAKt+BqW7CdW5hiqsOliLwKExBmP4AR2lA5hfGxzqdXC3asbAzyDmAAT5OORojdOmXDsPFmSvV4cob7hCChexzCZ2JpbJTB/mjdf4xy2jhKNwxCCLE7xQxKhsFKNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=mCBSLcmk; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1778690669; x=1779295469; i=rwarsow@gmx.de;
+	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=mCBSLcmkYFsvYkz6Azbcki/XWZZ9CXuYbDaDGEtOgNcS34WAvkck384zBIWMjvdJ
+	 sK/qjjFoEH7ap/4PY3Jbdiq+N7SEnQcKKqrs/G08UJdfU89fa1DHfodAERPDmQrqV
+	 9N5Z1HVDMt8q4gq3gs8tI0wxZZHuNgLB6da//THlK7FfEieGYin90e+xcQQWq8XN1
+	 WTgXje/DB9fdYqHb54VghYd9ja656VzNDMgBdk0JHlV4WJRWCBIaRAt6BRUTqIfdh
+	 FukUsMerjhVU4ajFfEr7G2Bh+xRkAMNrMtBATlOc1pQjNd/PF6U321WZRQlIQIUdr
+	 E2GgSHBvZWc/CAyx2Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mxm3Q-1xJzaF1RIU-0177Hg; Wed, 13
+ May 2026 18:44:29 +0200
+Message-ID: <600196ef-5d69-4fdc-ab27-a37f1391ad97@gmx.de>
+Date: Wed, 13 May 2026 18:44:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A6D25537AAD
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.0 000/305] 7.0.7-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260513153754.934923793@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260513153754.934923793@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:eOwG/Ka96ee+f5LGzNrl3gcR8WxsVmDaCieVSUQI5Jp8cI4Up8T
+ hXGwAX/fl3hskM1tyCTseIYdNEW/4/D+aR4bGPpKD3eQ4dLi2I2b+n7MJh/APUPGME+tWdM
+ +o3J+++Sb8kL13MA8og3oTEKQnwiSPJmE39c2KS9Hpf1V+NNwitXYIhAJ4M+3ILX0968mXX
+ Ffplj3QrMqYthd4VfARtQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:xEA+5PTMOao=;lgjRgxAQFWi6OBADkkl1M04lJt9
+ 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
+ n9YQ2FkTEuL
+X-Rspamd-Queue-Id: 089195377EB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,suse.de,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246939-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246940-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmx.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmx.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gmx.de:email,gmx.de:mid,gmx.de:dkim]
 X-Rspamd-Action: no action
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Hi
 
-[ Upstream commit 5337213381df578058e2e41da93cbd0e4639935f ]
+no regressions here on x86_64 (Intel 11th Gen. CPU)
 
-snd_fasync_helper() updates fasync->on under snd_fasync_lock, and
-snd_fasync_work_fn() now also evaluates fasync->on under the same
-lock. snd_kill_fasync() still tests the flag before taking the lock,
-leaving an unsynchronized read against FASYNC enable/disable updates.
+Thanks
 
-Move the enabled-state check into the locked section.
-
-Also clear fasync->on under snd_fasync_lock in snd_fasync_free()
-before unlinking the pending entry. Together with the locked sender-side
-check, this publishes teardown before flushing the deferred work and
-prevents a racing sender from requeueing the entry after free has
-started.
-
-Fixes: ef34a0ae7a26 ("ALSA: core: Add async signal helpers")
-Fixes: 8146cd333d23 ("ALSA: core: Fix potential data race at fasync handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260506-alsa-core-fasync-on-lock-v1-1-ea48c77d6ca4@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ converted upstream guard()/scoped_guard() to explicit spin_lock_irqsave/spin_lock_irq and dropped the list_del_init() from a missing prerequisite ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/core/misc.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/sound/core/misc.c b/sound/core/misc.c
-index d32a19976a2b9..40dd3a23dac02 100644
---- a/sound/core/misc.c
-+++ b/sound/core/misc.c
-@@ -219,9 +219,13 @@ void snd_kill_fasync(struct snd_fasync *fasync, int signal, int poll)
- {
- 	unsigned long flags;
- 
--	if (!fasync || !fasync->on)
-+	if (!fasync)
- 		return;
- 	spin_lock_irqsave(&snd_fasync_lock, flags);
-+	if (!fasync->on) {
-+		spin_unlock_irqrestore(&snd_fasync_lock, flags);
-+		return;
-+	}
- 	fasync->signal = signal;
- 	fasync->poll = poll;
- 	list_move(&fasync->list, &snd_fasync_list);
-@@ -234,7 +238,9 @@ void snd_fasync_free(struct snd_fasync *fasync)
- {
- 	if (!fasync)
- 		return;
-+	spin_lock_irq(&snd_fasync_lock);
- 	fasync->on = 0;
-+	spin_unlock_irq(&snd_fasync_lock);
- 	flush_work(&snd_fasync_work);
- 	kfree(fasync);
- }
--- 
-2.53.0
-
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
