@@ -1,169 +1,168 @@
-Return-Path: <stable+bounces-247022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Ej9LeHQBGr0PQIAu9opvQ
-	(envelope-from <stable+bounces-247022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:28:33 +0200
+	id EKPjMTzSBGr0PQIAu9opvQ
+	(envelope-from <stable+bounces-247023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:34:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421F1539F12
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:28:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3E953A031
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21E27317246A
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:09:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CC953300490A
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846153B27C1;
-	Wed, 13 May 2026 19:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EAD3B6BE3;
+	Wed, 13 May 2026 19:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tDMG+VS+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L35q+T+r"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB3B3B0ADD
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 19:09:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282E834A3A5
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 19:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778699352; cv=none; b=LRGpTP5nlHH9rbaBFIjD15wMCOipNTLMVBlm/52zZxH22/hS1T7ld08aN0sYvzfdhP4scdg95cDuTQ0ZNnFUU7oYDcNf6rHkXRFzdKXED3Yh5hvSMxnt6obU5Wp2/0Vn6GHVWyQNRburihWNLu5NYB0nUe6ufn/Oin95h/p+ISU=
+	t=1778700858; cv=none; b=MlivBu2kMQ5ENmFwpbjbKf3SmPHlT2/k2MAHp3TU2wanmxyQkgD4bv0aGN+aZLqDAAu6YyVWplFf6CI62ohIUCD6mhtPTf9g7/IWLI95o6BmnteL7fpA4fnJMAYZGZILiC6T/aTQMozLiHzcaOJekRYvtstYC7prw25xn34WLoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778699352; c=relaxed/simple;
-	bh=QX5G2rB7ifXMkwPdHvgF7zs1jKDfOFey5yX8c24qomQ=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=HFTqS5EzepUJqa8vhRezJuKoE51RZfLfCMuS5v0oVjn7mwIsugXj+X9Unfj2AsZj4PB9FuPsU3RKcHjavFZMtyq7oVoG5D2gEA2SWSbTp2VTi9wETbahRrSj/aCIbtJ8Ml3DO0AdHmSUQvJtBybEOHT6wVW3d2vGDy+yR+JBXL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tDMG+VS+; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-50e5c7eb565so69174991cf.3
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 12:09:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778699349; x=1779304149; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=UtNWbA0oJC/4NfkSFTFtpG8npNpENo6PjEJYah1z9Iw=;
-        b=tDMG+VS+/VC3E27ViYeUohtgsl7JtVSrAu7HEmoUUOmupKVj/rvNBwZ6n+67m3Z8n5
-         wE6FOEiS6tJImUJ5vWLok0hh2I8gNBB+M+yL4LHoCKj4sRJD0R1OjdVP0v3sWvQJQKKK
-         f1J2vctZQP1bjVkw6+kpMGjV+jiuNwCnDKdqnxY42HN8vrd/lRt31JApO93pFjZbtQUp
-         1z/xITr4PLHFmGgiKAoA5/G6ub5wDaYQUMF8MEJ2jhBdJDbB69rMBZ3XWDk5E10NyN+1
-         cWylqxSobSo/Fb29yvUuMViPlOpaJfUH8h31aT8UFt98BUzRJtDX+1YQ7YAP+bSM4MVR
-         09HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778699349; x=1779304149;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UtNWbA0oJC/4NfkSFTFtpG8npNpENo6PjEJYah1z9Iw=;
-        b=qBK/ewrCCnu9Jg7zAfrTLy6n8rP9F8t1RZ82pxuahbvuQL5eCOM/PQps1MXzlKw3Ej
-         x6Yi3UzvBNVOUu9tDBPk2RK3ddLJzMsTaVbDVWFP0m3zwrylBu+uDk4HeLoCk9Sfvxmc
-         KWlrq9v9m/vS2igWRhzMXAHCi6baNNyD3yD8Mx8Q3xBNVrJcGEjuylsGiJKo7Dq/uU0w
-         N0+kl5hrkBg9RDOolOuyyPqQf38FZ70p0I4lszUynmA1NQ6qdXGDWMRaDmFM4NBO78fn
-         R0s1iznuuIlvnKq76/LI9klDwNi2pQSpM5UA+uHjJGVu9+EYshzmaf1wrNfzPgQJ7j1H
-         lu9g==
-X-Forwarded-Encrypted: i=1; AFNElJ+3vCIzwenDCDd1N7PlvIshYi+MFWU7GMK43hUXTo5lU0iChp0sFvXtoy374spIOTlcZw2+zsY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTuTdWN5n0T/rZ2o75TcVRjxiA6JEdYwb9F0PpSMYroj42AsAj
-	i67+AO/2BUtBD1t2HxUS94587//orgw+E7meIeHj0U9UZAd5ewKGa2db
-X-Gm-Gg: Acq92OECcpuhPv8Q9kHhGVvBDLU5vK/Rstw2/iz+t+7aiVHdrY89lyjAUPR62uWZlFU
-	Tur0V+M5Egv9Ei+5+Gxd9c5zuDqb56rceVNYtAtqLnp1dAO5mRDZl3u2jBH3sYR0exZocGQTVhh
-	52fwD6bC0+11mLFE8CyxsojD0UBRwbbN0h5dfFh8igBALDwOJUS5QRuaOJG26nXMbBMnTfYLe/W
-	eh/rURt+ffrRc4B4YzKYMGM+AcaLZTMkSF7A7f0+WoFLA/7hJn/9GCeOQGS2XbhSdL/1Wpr7x/a
-	m17vNubASYhkYGjon9N7jizAnv1kk7cK49I7+ou/jwfpLijiJowOIcU3lhelYxArGXoM7isAaOA
-	19V3dTJp2lm7E3kWM+bss8LEu58ShJsK/GGpTyiooAWiDhNjx7ECd0UICUdevhUldiELS+fKvgw
-	PO8GrPJybvekVi0b7nNX1XLGGPlt+aGm/kw7Evds9gfQIJp+c3yTKZ4/LE+fx5
-X-Received: by 2002:a05:622a:64c:b0:50f:b81e:c655 with SMTP id d75a77b69052e-5162f68d146mr63497791cf.57.1778699348501;
-        Wed, 13 May 2026 12:09:08 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148e830ddfsm153785331cf.27.2026.05.13.12.09.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 May 2026 12:09:07 -0700 (PDT)
-Message-ID: <268c8519-84d4-4795-b06c-4159d8bf48f4@gmail.com>
-Date: Wed, 13 May 2026 12:09:04 -0700
+	s=arc-20240116; t=1778700858; c=relaxed/simple;
+	bh=bD99+Hczp73/QOzukEvy+BVlW0doGU4r/EWPHwlgLzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fUEsCEYrccu+o2888lCq8+MGgA1Z7BQ5F485OENDXS9keAeRrMZlpkKYxori3Bln1B/EGDvOJl+S27J7gplL2whmAhLhBHFnSJK28U2VNI2RGPqP4a8AWrjrjaAAHXgQXRNsDs6+bT1llN+rC6KAC9H7+VKci1JeQ2mK2QwSs/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L35q+T+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBC8C19425;
+	Wed, 13 May 2026 19:34:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778700857;
+	bh=bD99+Hczp73/QOzukEvy+BVlW0doGU4r/EWPHwlgLzc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=L35q+T+r1LU9zUAdwMnqT5IhzDyS5MrrQ1ynwV4rvQewnGYIsn9uLPif1wKHmEEAD
+	 s7QC0uEDSgy2WvOOY+xoINyFbiB2H9e+YuWy0nO5e6EemFmMasf1Ft2rfY1toYQAGB
+	 m/Q4WUrRqzzObTknSi4TFGnC/jPqTsXvGeN0+gPBX5/OD0xBm8iqUFaGSGgIPlhtc7
+	 FcAR42Kfe8DEZ/0css0RcEs2yjQOcDXdn/+/Koq5XRnegtmwh+UUBYmmM/9uWrOVKM
+	 TJbUOFqFztjaQdrEC/oCarqS7va+zMuM51GmN10Oxdl+JzFaKWiEjeWAnQWdjQhFhk
+	 34Q/U/IEf+I1A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/2] spi: spi-ti-qspi: Convert to platform remove callback returning void
+Date: Wed, 13 May 2026 15:34:13 -0400
+Message-ID: <20260513193414.3938310-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051215-rebound-collie-a3aa@gregkh>
+References: <2026051215-rebound-collie-a3aa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 7.0 000/305] 7.0.7-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260513153754.934923793@linuxfoundation.org>
-Content-Language: en-US
-In-Reply-To: <20260513153754.934923793@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 421F1539F12
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7B3E953A031
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247022-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247023-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,pengutronix.de:email]
 X-Rspamd-Action: no action
 
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
+[ Upstream commit 2f2802d1a59d79a3d00cb429841db502c2bbc3df ]
 
-On 5/13/2026 9:17 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 7.0.7 release.
-> There are 305 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 15 May 2026 15:37:27 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.7-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels build tested on 
-BMIPS_GENERIC:
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Add an error message to the error path that returned an error before to
+replace the core's error message with more information. Apart from the
+different wording of the error message, this patch doesn't introduce a
+semantic difference.
 
-Same perf build issue as reported for 6.12.y (and 6.18.y FWIW) due to 
-older kernel headers with our toolchain.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231105172649.3738556-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0c18a1bacbb1 ("spi: ti-qspi: fix controller deregistration")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-ti-qspi.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-Thanks!
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 081da1fd3fd7e..f2ccd264230f7 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -906,21 +906,22 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static int ti_qspi_remove(struct platform_device *pdev)
++static void ti_qspi_remove(struct platform_device *pdev)
+ {
+ 	struct ti_qspi *qspi = platform_get_drvdata(pdev);
+ 	int rc;
+ 
+ 	rc = spi_master_suspend(qspi->master);
+-	if (rc)
+-		return rc;
++	if (rc) {
++		dev_alert(&pdev->dev, "spi_master_suspend() failed (%pe)\n",
++			  ERR_PTR(rc));
++		return;
++	}
+ 
+ 	pm_runtime_put_sync(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	ti_qspi_dma_cleanup(qspi);
+-
+-	return 0;
+ }
+ 
+ static const struct dev_pm_ops ti_qspi_pm_ops = {
+@@ -929,7 +930,7 @@ static const struct dev_pm_ops ti_qspi_pm_ops = {
+ 
+ static struct platform_driver ti_qspi_driver = {
+ 	.probe	= ti_qspi_probe,
+-	.remove = ti_qspi_remove,
++	.remove_new = ti_qspi_remove,
+ 	.driver = {
+ 		.name	= "ti-qspi",
+ 		.pm =   &ti_qspi_pm_ops,
 -- 
-Florian
+2.53.0
 
 
