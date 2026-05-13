@@ -1,170 +1,212 @@
-Return-Path: <stable+bounces-246965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJ9FChOyBGoQNQIAu9opvQ
-	(envelope-from <stable+bounces-246965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:17:07 +0200
+	id CJXxEba5BGplNQIAu9opvQ
+	(envelope-from <stable+bounces-246966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:49:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C108C537D8F
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:17:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12BA5384CD
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:49:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C59C3012232
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:16:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1988A311ACC8
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9393911C0;
-	Wed, 13 May 2026 17:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B3E4DBD7E;
+	Wed, 13 May 2026 17:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K7DpjLws"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FVcXtZpl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC62F2248B4
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 17:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4606D4C956B
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 17:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778692600; cv=none; b=POJCmSMsBR5a4DlI78wWa/ryN0020hYUA7KqDeTHgh8/KZ2Tvp/OkG5p/BNmwSTjeVPNXg/hPeiTOiRBaUfCbXccwui+N0kwty6zCMs4X05JrijccKSaX+0Npfki8gVOy63q9LDN2YNFzX980/hxzpaBgE4/zi+O4JnaJn3kIA4=
+	t=1778693506; cv=none; b=dX5OmuZPqVqPrITD4nEPNvtU5s6VKlSV2oV28gFQfDSNPB9YKBEFpbkgpRzYMS9tOiP8Ca0AFdgIk0JQwR2JmK+zObdBRvgOhZ786XEKYxEEOvaxZMnP8HJeq1B8Bl52CISBoVNYV+Ls83R+TVBNuZJHXKQQqaaOKJ2KjHhH8rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778692600; c=relaxed/simple;
-	bh=faSlA/Gy4+hGhFjhHo18QPT5jT1Kuy+RVGGvkXN4szQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ApOJt7h7pofpbJhWvVpFlappAgn7q4z8gkBQ3NtqM7HvA/O/y+om6CLF2LZqaidnUfyNtpAKbKN+S0/H9x1NW7Eb1/Ky9YZ8LD72LyQeKeY9XNjfMN61BS2jcGOZpC5KCNexI3eHH+Ei63YmjcWUL9woVsdlLOyIuxdYWc/yh40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K7DpjLws; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3665a90bcd3so5345590a91.1
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 10:16:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778692596; x=1779297396; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KZWcV0rAryTMJnbVXU/76vXU1STIeSGIC5/F+Khj1D8=;
-        b=K7DpjLwsdDF8MGXRqWdydrjl1Qb0oEYyIvSmu47ohVZwaNOGTNYi4FllQr6alceT7f
-         F3jnWfJbE3xOnLdkQo4zSAnGxev8fWkUxVLl+AgMIKdD12aQVG5CWNGaY1djwJnbo4y6
-         jZOYR3f3amke4MpTgivCdN2zleQJqEy80fNY3spvdSHwvfKIvDcK+rR5jeD0OmM30bnZ
-         5n/giydgPctb6JVyQehb8IGNr1sh408f5MKEkDrLPNhZok89F2Y2QbHs1TeMucGsXd1u
-         7tCztZC89zdWbGEJrcoP7OYeQIfmU3KhqJz3An2Rdhdfv57A1R+e5nBBM/HCZ1aSjND3
-         KYZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778692596; x=1779297396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KZWcV0rAryTMJnbVXU/76vXU1STIeSGIC5/F+Khj1D8=;
-        b=QTg74jV7EnNjAbBHNXAQZGRowHX5roCVlJwPg9tXK+JpW6MqBF+Sj7JCeBrXdHlzuj
-         8Lh9sU7NsJDgR1Zi3B246agt/6Q/liUaB1/trD6OKI0N6dn+mC4XIK1Vj7A4yDqBd/W2
-         VyjJHTXfxNKOyNfSPByZwbJ6O7wC4USztVO/1+oYTgyYhCOSnc7pWg9IaHYguz1A4uWB
-         mDu44Oe2Uy8qFKrlJPQVaikHj9YkEHwxR0dpSRmwTmBVS/zJoZvVuzT8Q7YzNg3TOY59
-         idRdUE+yNccJd4hzH4jW6cKcsqD0g9y9JxYuFRMYvgGfOsODmN2wD5dP0vJ9ifczKdYc
-         quWQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8MUNlu4N8vjiInHrcgQS7CS6laLiEZ2qy5/ca0xMWqZydMtPK+/uTUrH/FAEnet4f8wue+kjM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvIel/8INZhRG1hl2p4Qp1J0ZHlz/PUUZtBdh1l3sISzdIz3r9
-	Zb70NJmlNlqmpp9lTi7/QXoQvrweZxFbPB981BoScoxfWpcRdEIHdoIx
-X-Gm-Gg: Acq92OEaEHpMOOKNmQH1gJGFYtx8cGVwquoS4+iA+sL0WtwzJOW2ln6sOqBeLNyRpj7
-	AL+/bB3pDuhuF05lb4fXHDkv8UdRM/yB3LYagPjr8N7Yc0cW8fj0Q4FS2SsyGnhL0Tu+b/zvPe1
-	5Mgz/+o6YhVmszNRmaE17nEewA1+1Pv2tGtQk5k7phzGpqdbJiL2zrQVTXAZMgNvD86LTB/hGFz
-	ZFBT6WK/GIGV3T9brTG9CGbUiVMmoqwdBU84pZR01VNTCmXLUU4nwlYleIrraB/6lXM7j5cYKdJ
-	HhzeanGSWlb3ewsrUmkgZd0GXuPGQcxiaVw3v3dU0brNrseOLDnSwUV33hUZWo3rUe1RmrKAEkj
-	Myz/dtOh3Umu2TzJCirClGcZp0rzs8adH1pQ4LlVLB++Z116SZDw5G1c9qOJ1PNh+84NV7LcxFM
-	D8PHQKtpR8q2SpwH6VKOzy/mzQdrLdWDoAV46YE8H8GXruiTFsHbpJ6PoY1A36PtCy
-X-Received: by 2002:a17:90a:a81:b0:369:1dff:6bd5 with SMTP id 98e67ed59e1d1-3691dff76dcmr743122a91.17.1778692595883;
-        Wed, 13 May 2026 10:16:35 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368eddf5161sm5087917a91.2.2026.05.13.10.16.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 10:16:35 -0700 (PDT)
-Date: Thu, 14 May 2026 02:16:31 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Ben Hutchings <ben@decadent.org.uk>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au, dsahern@kernel.org, vakzz@zellic.io,
-	stable@vger.kernel.org, netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net] net: skbuff: propagate shared-frag marker through
- pskb_copy()
-Message-ID: <agSx78pXBFCdn08p@v4bel>
-References: <agRfuVOeMI5pbHhY@v4bel>
- <811b31f3373526d1ff60160c2f32ddb359e54c31.camel@decadent.org.uk>
+	s=arc-20240116; t=1778693506; c=relaxed/simple;
+	bh=cQFoqvtAcnqqoTszZodwXAkMGc8ksEuxsq2zmqZYF5o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JF6zLaeGwYumaDzSmhXPj51QbH8CdSvQ5mhr5wpymXa3/ctf+iYASFGzSjg77CVeV33i7nzJ16g3GRF2LGmqHnHwJGn0kszZ5O+Vf/25zD/FHrxFuNGu/w+hLIG+C0xM9eTnQlhVo5IiDJjfuCQ186N3f9ZtUbX0z5Invt9rDqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FVcXtZpl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB91C19425;
+	Wed, 13 May 2026 17:31:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778693506;
+	bh=cQFoqvtAcnqqoTszZodwXAkMGc8ksEuxsq2zmqZYF5o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FVcXtZplGXenvQfwhJkBz1Y+g2w5j1nvAUKIPCt4WUaffPWSZBkmmLHsutdjGoFsB
+	 G9a80NlN7htvn6HK8vK0KKNbpOzqhA/hTGMx81//xdMSz4Z3HFeplV7kO1CrgoiALr
+	 7iHX1KK9WUi1lBx4xe6TX1zB61zgW+aROVvi+CJpoJ3EDf8FJN5uIdCjKZ9oNlKvw3
+	 DGA5uozT+NUfY9irLS7bW0GryMDnKReaOjnatyXPjbw9Lgt72xGQRcNjL1rRHpGlf4
+	 iny3I8V3MEzH8FfU76BXvJY43403/J1IFrLTOmQsjbS90TqZmY0ncMjqT3F97QfxxL
+	 lafJp7QVN1NEQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Michal Kosiorek <mkosiorek121@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete
+Date: Wed, 13 May 2026 13:31:43 -0400
+Message-ID: <20260513173143.3885911-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051213-nappy-veal-2d0a@gregkh>
+References: <2026051213-nappy-veal-2d0a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <811b31f3373526d1ff60160c2f32ddb359e54c31.camel@decadent.org.uk>
-X-Rspamd-Queue-Id: C108C537D8F
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A12BA5384CD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,secunet.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246965-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,secunet.com,gondor.apana.org.au,zellic.io,vger.kernel.org,gmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-246966-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[imv4bel@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:email]
 X-Rspamd-Action: no action
 
-On Wed, May 13, 2026 at 06:21:45PM +0200, Ben Hutchings wrote:
-> On Wed, 2026-05-13 at 20:25 +0900, Hyunwoo Kim wrote:
-> > __pskb_copy_fclone() shallow-copies the source's frag descriptors and
-> > bumps each page's refcount via skb_frag_ref(), then defers the rest
-> > of the shinfo metadata to skb_copy_header().  That helper only carries
-> > over gso_{size,segs,type} and never touches skb_shinfo()->flags, so
-> > the destination skb keeps a reference to the same externally-owned or
-> > page-cache-backed pages while reporting skb_has_shared_frag() as
-> > false.
-> >
-> > The mismatch is harmful in any in-place writer that uses
-> > skb_has_shared_frag() to decide whether shared pages must be detoured
-> > through skb_cow_data().  ESP input is one such writer (esp4.c,
-> > esp6.c), and a single nft 'dup to <local>' rule -- or any other
-> > nf_dup_ipv4() / xt_TEE caller -- is enough to land a pskb_copy()'d
-> > skb in esp_input() with the marker stripped, letting an unprivileged
-> > user write into the page cache of a root-owned read-only file via
-> > authencesn-ESN stray writes.
-> > 
-> > Set SKBFL_SHARED_FRAG on the destination whenever frag descriptors
-> > were actually moved from the source.  skb_copy() and skb_copy_expand()
-> > share skb_copy_header() too but linearize all paged data into freshly
-> > allocated head storage and emerge with nr_frags == 0, so
-> > skb_has_shared_frag() returns false on its own; they need no change.
-> 
-> What about skb_shift()?  It seems like that should also propagate this
-> flag.  But I could be missing some reason why it's not necessary.
+From: Michal Kosiorek <mkosiorek121@gmail.com>
 
-Yes, since skb_shift() is also a function that moves frag descriptors, 
-I think SHARED_FRAG should be propagated as well. The actual trigger 
-conditions are tricky (not deterministic) due to TCP write-queue skb 
-merging, but I believe the fix is the right thing to do. 
+[ Upstream commit 14acf9652e5690de3c7486c6db5fb8dafd0a32a3 ]
 
-I'm planning to submit a v2 patch. What do you think?
+KASAN reproduces a slab-use-after-free in __xfrm_state_delete()'s
+hlist_del_rcu calls under syzkaller load on linux-6.12.y stable
+(reproduced on 6.12.47, also reachable via the same code path on
+torvalds/master and on the ipsec tree). Nine unique signatures cluster
+in the xfrm_state lifecycle, the load-bearing one being:
 
+  BUG: KASAN: slab-use-after-free in __hlist_del include/linux/list.h:990 [inline]
+  BUG: KASAN: slab-use-after-free in hlist_del_rcu include/linux/rculist.h:516 [inline]
+  BUG: KASAN: slab-use-after-free in __xfrm_state_delete net/xfrm/xfrm_state.c
+  Write of size 8 at addr ffff8881198bcb70 by task kworker/u8:9/435
 
-Best regards,
-Hyunwoo Kim
+  Workqueue: netns cleanup_net
+  Call Trace:
+   __hlist_del / hlist_del_rcu
+   __xfrm_state_delete
+   xfrm_state_delete
+   xfrm_state_flush
+   xfrm_state_fini
+   ops_exit_list
+   cleanup_net
+
+The other observed signatures hit the same slab object from
+__xfrm_state_lookup, xfrm_alloc_spi, __xfrm_state_insert and an OOB
+write variant of __xfrm_state_delete, all on the byseq/byspi
+hash chains.
+
+__xfrm_state_delete() guards its byseq and byspi unhashes with
+value-based predicates:
+
+	if (x->km.seq)
+		hlist_del_rcu(&x->byseq);
+	if (x->id.spi)
+		hlist_del_rcu(&x->byspi);
+
+while everywhere else in the file (e.g. state_cache, state_cache_input)
+the safer hlist_unhashed() check is used. xfrm_alloc_spi() sets
+x->id.spi = newspi inside xfrm_state_lock and then immediately inserts
+into byspi, but a path that observes x->id.spi != 0 outside of
+xfrm_state_lock can still skip-or-hit the byspi unhash inconsistently
+with whether x is actually on the list. The same holds for x->km.seq
+versus byseq, and the bydst/bysrc unhashes have no predicate at all,
+so a second __xfrm_state_delete() on the same object writes through
+LIST_POISON pprev.
+
+The defensive change here:
+
+  - Use hlist_del_init_rcu() instead of hlist_del_rcu() on bydst,
+    bysrc, byseq and byspi so a second deletion is a no-op rather
+    than a write through LIST_POISON pprev. The byseq/byspi nodes
+    are already initialised in xfrm_state_alloc().
+  - Test hlist_unhashed() rather than the value predicate for
+    byseq/byspi, so the unhash decision tracks list state rather than
+    mutable scalar fields.
+
+Empirical verification: applied this patch on top of v6.12.47, rebuilt,
+and re-ran the same syzkaller harness for 1h16m on a previously-crashy
+configuration that produced ~100 hits each of slab-use-after-free
+Read in xfrm_alloc_spi / Read in __xfrm_state_lookup / Write in
+__xfrm_state_delete. After the patch, 7.1M execs across 32 VMs at
+~1550 exec/sec produced zero xfrm_state UAF/OOB hits. /proc/slabinfo
+confirms the xfrm_state slab is actively allocated and freed during
+the run (~143 KiB resident), so the fuzzer is still exercising those
+code paths -- they just no longer crash.
+
+Reproduction:
+
+  - Linux 6.12.47 x86_64 + KASAN_GENERIC + KASAN_INLINE + KCOV
+  - syzkaller @ 746545b8b1e4c3a128db8652b340d3df90ce61db
+  - 32 QEMU/KVM VMs x 2 vCPU on AWS c5.metal bare metal
+  - 9 unique signatures collected in ~9h, all within xfrm_state
+    lifecycle
+
+Fixes: fe9f1d8779cb ("xfrm: add state hashtable keyed by seq")
+Fixes: 7b4dc3600e48 ("[XFRM]: Do not add a state whose SPI is zero to the SPI hash.")
+Reported-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Tested-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+[ dropped state_cache/state_cache_input unhash hunks and xfrm_nat_keepalive_state_updated() call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/xfrm/xfrm_state.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 7dd536d5f43f3..42fd76b8163f4 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -682,12 +682,12 @@ int __xfrm_state_delete(struct xfrm_state *x)
+ 		x->km.state = XFRM_STATE_DEAD;
+ 		spin_lock(&net->xfrm.xfrm_state_lock);
+ 		list_del(&x->km.all);
+-		hlist_del_rcu(&x->bydst);
+-		hlist_del_rcu(&x->bysrc);
+-		if (x->km.seq)
+-			hlist_del_rcu(&x->byseq);
+-		if (x->id.spi)
+-			hlist_del_rcu(&x->byspi);
++		hlist_del_init_rcu(&x->bydst);
++		hlist_del_init_rcu(&x->bysrc);
++		if (!hlist_unhashed(&x->byseq))
++			hlist_del_init_rcu(&x->byseq);
++		if (!hlist_unhashed(&x->byspi))
++			hlist_del_init_rcu(&x->byspi);
+ 		net->xfrm.state_num--;
+ 		spin_unlock(&net->xfrm.xfrm_state_lock);
+ 
+-- 
+2.53.0
+
 
