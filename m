@@ -1,182 +1,206 @@
-Return-Path: <stable+bounces-246796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246797-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NSYDjhHBGrNGgIAu9opvQ
-	(envelope-from <stable+bounces-246796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 11:41:12 +0200
+	id YO1JE6BKBGrNGgIAu9opvQ
+	(envelope-from <stable+bounces-246797-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 11:55:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66E8530D1A
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 11:41:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7047530FF7
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 11:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 945893015D06
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:40:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BB1830C60AD
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3533A3E717F;
-	Wed, 13 May 2026 09:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69176387581;
+	Wed, 13 May 2026 09:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jzfLSY7c"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="rTU84VUG";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="V7Rxr3aq";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="rTU84VUG";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="V7Rxr3aq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FFE3C8733
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 09:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEF73859DF
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 09:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778665209; cv=none; b=brcAAcsvvb97tbYxiL1y1Q5T2QsYI5gCqxSyYaKvmDkilBowR7YIJJBc9tJ3KwMoTFxL8pAFj9m1L1Feqf0TZLogt6y4QP6/hPo+LxrQVd2p32yxo0PuTGrj1hbM/1YrXKMOl5E0H9mSqopfRv+HYkcbA5+eAEDnNJP5KCFYLsA=
+	t=1778665655; cv=none; b=SXOqTp6PlUOxdLWAhJwTDa4wKDSEdI3jhrPEr9gKvSEguzEF990w4Qt5OpWbohiI/bab7P/4QUxfDIMiqYIOcBCNuXYJnzrCYn8zYEDH7i9sv1l2szFoz8Jx1xF/+egaj97K5TQPm8zCZQPvtUMKjdulUSgvHXQDiAY5t5XViEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778665209; c=relaxed/simple;
-	bh=R0E17z7r+LYNRSdvyWdyqZP/kUEcYvbbo/0Srhey10I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gD0C1ad8xwOkCu2Va9YMAQJxB1h5Q8Vb1i2f/4/XsUfu/ipO3nQBxSPVw+1e4BJ3BFDpUkpUG7QU8Mu/dghbz5s95VfMvn4wUKnz+/zIn6xcJyW4g3Hrt2t/Eb4hI+ffsdBNpnxAZXorXevvxMKmQHSjgyr6jyXR7Lc4Csm7v30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jzfLSY7c; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488e1a8ac40so63267175e9.2
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 02:40:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778665205; x=1779270005; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=R0E17z7r+LYNRSdvyWdyqZP/kUEcYvbbo/0Srhey10I=;
-        b=jzfLSY7cavs/yDze9MwRISa4ZVPK0xcg57MsYPaKKvuUfUGPFvgOL3vfG4i9SK0pW+
-         dnpgDl50cbs8UeSa9HbLysiymQJxV3uX27T0DUlr4ipnTI/fDJFBPFn0CdEJe9464sKN
-         MSDuwj2/jo9IpenDpG7Um0i/EVQaih42OzMEQYo9ayIFask/liz7ia9BY4AIxmHG/9ZM
-         EO1u92uTKIR3pUGClzhfsUr19Sjec2mU3/MSgz+eTv5iExRED4X/gqy07BI5GbEzgKlq
-         6qQe1QhGHKjWZ32UoeJ56xHnwVJd37S7GFK7kZHAzeXT4SaG0NPrDDG0gQpTNcgFE8vd
-         giLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778665205; x=1779270005;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R0E17z7r+LYNRSdvyWdyqZP/kUEcYvbbo/0Srhey10I=;
-        b=YsqO/d+YBVRovAyOZRKhnnXRWACv5/3LD7rfzM2omdI+65jq0tc1uoKcTl3GY7E+Il
-         6Xkigf4U5DSNq4IqHl77XAgQVnwbLfEGq/97lA3eNppXkZyJTWRvZIKXj1yGQUgRY57G
-         H3jufj+F0HxuNtoX7lgoFyddMRN5H8FW/A6sDhieVknn0GrCbIvsj/F7lXq74aYHaX4x
-         yQKZRGzFq/fmiMohVBrLKvwNpWTT1oOAmLX+yYsU1tuO2JpmMlC3CEwU84fVRBqTnrY3
-         sdf5aBmJXwBLp0Dmufb8Eh+jCKMZPShwJtwGIxH05sk3rDEjWzT07ji20S+c9clEHMDa
-         36QQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9uVc3bih3/5WNwbQdeqt8fW+AXC8tAO3D49EhPMv3JjwxyF+Pz6G47fg/t42ts5R6qZARGExA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPdbjPjoOwUZ2Ok1uHa89AYcBtDSmCnfWFzvchTut3y0/7gjn0
-	l6ElQcrI/8aMoBrRurtpswjbL3WjIL4aLCM9HO5LSMJ5J9qYK3oPwRSF
-X-Gm-Gg: Acq92OGu5hdoAZYIwrTXXjMMy5BHDEaJ9dc+UnfvMLpa8dGPGJ+iYKKr9bUx0OG661V
-	fI36rtEqSy1p2NLPYiuE3U6SbLDls5OimML81CFYW0P3bvN20wyKQGMbR1pN4JiktTZmFRQsOVp
-	G99CzF4YTUR98nRU8e4ZIlAbEbgPerMAaZnedcik6LTomkmuDyhaHxWC8+K39mxHZAYp9g77yAG
-	nUxg1uv2kuoO95JE0lknXsJgaZvce28mYCWjT9MdYZvcKT383KcaC14Jgt7dCviFFBDr3OtzKIn
-	nyAZ6QP2h/I7Re188ngNvcOK3HqcxJpJndKUQPOEzXjKDAIOV0vFTCxact3hGEdtNiASFpe0AEE
-	m4oZzTWNnGIHYsWterN5wZAmZ1t1We3d/p62iNdv+yyem9p6q75Pduda+o+nZF5WtTk9O5PxwOa
-	psDMJgNZe/6cxsMUEYxa18eBDOVZ1hHOVLdFIMy8QGgL7eEloC
-X-Received: by 2002:a05:600c:8b12:b0:48e:978f:c45a with SMTP id 5b1f17b1804b1-48fc9a3ba11mr39073755e9.19.1778665205077;
-        Wed, 13 May 2026 02:40:05 -0700 (PDT)
-Received: from vitor-nb.Home (dsl-113-208.bl27.telepac.pt. [176.79.113.208])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fce37b308sm65629665e9.10.2026.05.13.02.40.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 02:40:03 -0700 (PDT)
-Message-ID: <17e3511e4bf46f83c91088bd4e081d4323e1bd93.camel@gmail.com>
-Subject: Re: [PATCH] pmdomain: ti_sci: add wakeup constraint to parent
- devices of wakeup source
-From: Vitor Soares <ivitro@gmail.com>
-To: Kendall Willis <k-willis@ti.com>
-Cc: Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>, Santosh
- Shilimkar <ssantosh@kernel.org>, Ulf Hansson <ulfh@kernel.org>, Kevin
- Hilman <khilman@baylibre.com>,  Dhruva Gole <d-gole@ti.com>,
- linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- tomi.valkeinen@ideasonboard.com, sebin.francis@ti.com, devarsht@ti.com, 
- vigneshr@ti.com, vishalm@ti.com, vitor.soares@toradex.com
-Date: Wed, 13 May 2026 10:40:02 +0100
-In-Reply-To: <20260512161737.pflweaz2r3q3nrfl@uda0506412>
-References: <20260506-wkup-constraint-v1-1-0a4bce791b29@ti.com>
-	 <becb54adc0bea88578c8fe4c7c1b7b68bf5cc6d4.camel@gmail.com>
-	 <20260512161737.pflweaz2r3q3nrfl@uda0506412>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	s=arc-20240116; t=1778665655; c=relaxed/simple;
+	bh=HUzEpswVCyyAW2Ewl65pwnczTFhdeK04DrvwUYipUSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R8f1BykqBXXa3st9sw7tYdie6/zwqKlRsmh4aPO3EV8cokBVllsfuDqovdpnqOcRKSiotiE8nPLCNWl23gVxCs5e6ywpXqRyJ9+06UVK35mZZfKeTWOaNmO4VHgphjVgAh6pg6M72kH1tMd+BTAV2lt6edBHbeP/dFI4e1n4uuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=rTU84VUG; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=V7Rxr3aq; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=rTU84VUG; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=V7Rxr3aq; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9B34C625DF;
+	Wed, 13 May 2026 09:47:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1778665647; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nvF4XmaIpA1Bhq1Js4sxvrYKvTxg38IRQ85Tq0Zt6mg=;
+	b=rTU84VUG1yTwIIvV6asNppCVS38m5RIPb8yCrZ7rJdsGCSErxJyW0kb2r9Cvcx/vc+ptLH
+	OC5stGPZYvywfGBvVaiH9r7JLrYdX2hGPnfjKuasVv7RCDornpN5ZbLfL0fesU7juFgRLI
+	CtKD2o6fcyIEbMujMbIXBMCSyNATCcc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1778665647;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nvF4XmaIpA1Bhq1Js4sxvrYKvTxg38IRQ85Tq0Zt6mg=;
+	b=V7Rxr3aqL5+C6x85b81iU9SZf8+G99bFLIJ2jnajqINs8Vdy7g0LADUg7ZxRhl+40J+gQZ
+	cLmbhToITEk35dAg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rTU84VUG;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=V7Rxr3aq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1778665647; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nvF4XmaIpA1Bhq1Js4sxvrYKvTxg38IRQ85Tq0Zt6mg=;
+	b=rTU84VUG1yTwIIvV6asNppCVS38m5RIPb8yCrZ7rJdsGCSErxJyW0kb2r9Cvcx/vc+ptLH
+	OC5stGPZYvywfGBvVaiH9r7JLrYdX2hGPnfjKuasVv7RCDornpN5ZbLfL0fesU7juFgRLI
+	CtKD2o6fcyIEbMujMbIXBMCSyNATCcc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1778665647;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nvF4XmaIpA1Bhq1Js4sxvrYKvTxg38IRQ85Tq0Zt6mg=;
+	b=V7Rxr3aqL5+C6x85b81iU9SZf8+G99bFLIJ2jnajqINs8Vdy7g0LADUg7ZxRhl+40J+gQZ
+	cLmbhToITEk35dAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E5AC593AA;
+	Wed, 13 May 2026 09:47:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sW2xIq9IBGoofAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 13 May 2026 09:47:27 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 4089FA0800; Wed, 13 May 2026 11:47:19 +0200 (CEST)
+Date: Wed, 13 May 2026 11:47:19 +0200
+From: Jan Kara <jack@suse.cz>
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: Theodore Ts'o <tytso@mit.edu>, Jan Kara <jack@suse.com>, 
+	Harshad Shirwadkar <harshadshirwadkar@gmail.com>, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] jbd2: fix integer underflow in
+ jbd2_journal_initialize_fast_commit()
+Message-ID: <dekyomnjc5t3k3thj62nlw556pdiumwbzhbscbpbyeubv3ufeu@tcdr7t4qe4jc>
+References: <SYBPR01MB78813DD23B28BD49B1AA1123AF392@SYBPR01MB7881.ausprd01.prod.outlook.com>
+ <SYBPR01MB7881663C927DE9D7BBF4D1DFAF062@SYBPR01MB7881.ausprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: A66E8530D1A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SYBPR01MB7881663C927DE9D7BBF4D1DFAF062@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
+X-Spam-Level: 
+X-Rspamd-Queue-Id: A7047530FF7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246796-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246797-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,suse.cz:dkim,outlook.com:email,suse.com:email];
+	DMARC_NA(0.00)[suse.cz];
+	FREEMAIL_TO(0.00)[outlook.com];
+	FREEMAIL_CC(0.00)[mit.edu,suse.com,gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ivitro@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[toradex.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-On Tue, 2026-05-12 at 11:17 -0500, Kendall Willis wrote:
-> On 17:51-20260511, Vitor Soares wrote:
-> > Hi Kendall,
-> >=20
-> > On Wed, 2026-05-06 at 22:16 -0500, Kendall Willis wrote:
-> > > Set wakeup constraint for any device in a wakeup path. All parent dev=
-ices
-> > > of a wakeup device should not be turned off during suspend. This ensu=
-res
-> > > the wakeup device is kept on while the system is suspended.
-> > >=20
-> >=20
-> > Thanks for the patch.
-> >=20
-> > I tested it on our Verdin AM62P. As expected, suspend now fails cleanly=
- with
-> > "-
-> > 19" when an SDIO WiFi module is registered as a wakeup source, instead =
-of
-> > crashing on resume:
-> >=20
-> > ti-sci 44043000.system-controller: PM: failed to suspend: error -19
-> >=20
-> > I did not test the IO daisy chain wakeup path, since that is out of sco=
-pe
-> > for
-> > this patch.
-> >=20
-> > Best regards,
-> > Vitor Soares
-> >=20
->=20
-> Hi Vitor,
->=20
-> Thanks for testing the patch! Could you add your Tested-by tag?
->=20
-> Best,
-> Kendall
+On Wed 13-05-26 17:28:40, Junrui Luo wrote:
+> jbd2_journal_initialize_fast_commit() validates journal capacity by
+> checking (journal->j_last - num_fc_blks < JBD2_MIN_JOURNAL_BLOCKS).
+> Both j_last and num_fc_blks are unsigned, so when num_fc_blks exceeds
+> j_last the subtraction wraps to a large value, bypassing the bounds
+> check.
+> 
+> The resulting underflow corrupts j_last, j_fc_first, and j_free,
+> leading to journal abort.
+> 
+> Fix by checking num_fc_blks against j_last before the subtraction,
+> returning -EFSCORRUPTED.
+> 
+> Fixes: 6866d7b3f2bb ("ext4 / jbd2: add fast commit initialization")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 
-Hi Kendall,
+Looks good. Feel free to add:
 
-Sure:
-Tested-by: Vitor Soares vitor.soares@toradex.com
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Best regards,
-Vitor
+								Honza
+
+> ---
+> Changes in v2:
+> - Return -EFSCORRUPTED instead of -ENOSPC
+> - Link to v1: https://lore.kernel.org/all/SYBPR01MB78813DD23B28BD49B1AA1123AF392@SYBPR01MB7881.ausprd01.prod.outlook.com/
+> ---
+>  fs/jbd2/journal.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+> index cb2c529a8f1b..0bb97459fbf0 100644
+> --- a/fs/jbd2/journal.c
+> +++ b/fs/jbd2/journal.c
+> @@ -2263,6 +2263,8 @@ jbd2_journal_initialize_fast_commit(journal_t *journal)
+>  	unsigned long long num_fc_blks;
+>  
+>  	num_fc_blks = jbd2_journal_get_num_fc_blks(sb);
+> +	if (num_fc_blks > journal->j_last)
+> +		return -EFSCORRUPTED;
+>  	if (journal->j_last - num_fc_blks < JBD2_MIN_JOURNAL_BLOCKS)
+>  		return -ENOSPC;
+>  
+> 
+> ---
+> base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
+> change-id: 20260513-fixes-e6dcda3273d4
+> 
+> Best regards,
+> -- 
+> Junrui Luo <moonafterrain@outlook.com>
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
