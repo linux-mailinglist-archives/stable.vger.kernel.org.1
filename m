@@ -1,229 +1,255 @@
-Return-Path: <stable+bounces-246948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CK3WAMazBGowNQIAu9opvQ
-	(envelope-from <stable+bounces-246948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:24:22 +0200
+	id 8JSSGhSvBGp6NAIAu9opvQ
+	(envelope-from <stable+bounces-246949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:04:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF78537F5F
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:24:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D058C537A18
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F79E31F822E
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:53:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 278A730073CE
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 16:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46DF48A2CE;
-	Wed, 13 May 2026 16:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947CC3F411C;
+	Wed, 13 May 2026 16:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VnVl0EQF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aTnaEnu2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A849E3321B1
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 16:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7EC4D9918
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 16:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778691179; cv=none; b=fosg40zkop0pccclltmS70OyNmMtfKuPcMPA6BXe2ue8JYZRU9exUp/L4V6743osbpT7ciER7ysVbGRv4nGSiPvMGV1MiU6ICv7L9LaKw/QhbAsYZIIrp0hyY6W3k2JZKSI65sj7jSsAUXD0VC++woas7fIalvfiMj5BVEdmm6k=
+	t=1778691404; cv=none; b=sq2BQ+KhOK/Gt0Omo4tqALZYlsHE7X5maogsZe1rdqB7O22fdPpuloTUEVd9MXO8NzJNhNFyUP8QCa6Vpjr3xnKvA9ce1P4xM91AmC9uA2zJwZyHI56Q5GI/0ParjVC1OlNbpoOy/GK1M2NcNVuf24TMeFBaHUC3GdUr5j5eOg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778691179; c=relaxed/simple;
-	bh=4QwqJzyl49415VWPWBSUkZmeLz6PfWVdHKkgboy+wW8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecqYVWDHk2vgM5HxUk36bsKsAsZJvNILZKZdseCOhIgzD7WU9NZnTiBckQncDZzr3WckvCeC92iYQse0nMZezgdFn7colRSa8CShwMii/1ynYGQzZ2tsWjmoC/Gu6Nw5Z0pWvC9j4p2hlxAMJKZNnL+QIio5Hp8cgIUdTiwspkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VnVl0EQF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA765C2BCB7;
-	Wed, 13 May 2026 16:52:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778691179;
-	bh=4QwqJzyl49415VWPWBSUkZmeLz6PfWVdHKkgboy+wW8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VnVl0EQF4UlwUSAgjTFw7K/vTu4IXacInBPYgSbe8xjNsrdCjhBY0kZy+3ImAWjJD
-	 TI0OeuU6GC7qhexkJfTVNByiLLpLo+n3rMeM5Ac6gyer1vKJblNqhsqdxxKOrepDOL
-	 iMhNtLAV+tUHEqk10Cod5GGw8d+47+uQw6UdI1aBtWL5H+b0cr1HpBWlZdVhFCbjN0
-	 5WCn2BzJg1KK+Yvuwh4XrIZ4ImdXHbYYvKmFVNrm2x/QW4ggrK38l/vtmdH2WLDylB
-	 y76FjxLzaYnbcAGUJgR6INqXQag/ZrbQ/e2laUVuRJn5V+QNaJqkL07LahjNV8W18x
-	 p4xNvc9Ifjqcg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Michael Bommarito <michael.bommarito@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 3/3] xfrm: ah: account for ESN high bits in async callbacks
-Date: Wed, 13 May 2026 12:52:55 -0400
-Message-ID: <20260513165255.3822003-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260513165255.3822003-1-sashal@kernel.org>
-References: <2026051235-gigolo-wriggle-f7a3@gregkh>
- <20260513165255.3822003-1-sashal@kernel.org>
+	s=arc-20240116; t=1778691404; c=relaxed/simple;
+	bh=Ut5l11CKVrSjVJL/SXBTdKTB+m65fhYWOTIJs46hZ4Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r3dX9RO85H3FrDFe+6ju/GZ+0QSAmVXMll8cPQYW+xPDRo5K8F78AGZIj4pFeqe7+x6/lChN13iM3YYHEgFBm9v9LxhyfXyA3SDLamiE7nWVSkB8WozlLJ2R3E7AeT0//ALtQlkfuCxVhaxYltQrGEXSoLwA9rNOG/i9jzLWa6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aTnaEnu2; arc=none smtp.client-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-133362c30cfso1492c88.0
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 09:56:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778691399; x=1779296199; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=X3lVfNFiffp+uU+9DlG1DEynuXNArzY2ybDWxR4v/kU=;
+        b=aTnaEnu2SOWv+Ih1rSXzm9mUnqp2C7WmEXkhpHuUFN526oULyt2fmxBDjx9TT6i8Dt
+         LLr0wseIfz0omLJnM/cZkjJUOKdjYuvdQ/9u+kj3cksb+GiedrosowvSy/cBPDqYeB/j
+         tUVqR5xChTUJleK0By5m2sFMIUiG8sA3FkcqZ04IZa2PZFQPkxR41oD8K+U4ujh+A8GD
+         5y5AeZICJiB98+mUqCMV3xtj3aJDzQFIkVjI0gkygis6YGMzaePNqHZNgsPtLKCnexBH
+         zJnm9bIGZPjqxbAphERy5SY+Cg6xfARfwEXjbtiih8sM/fub3zRcwj/LT5/ZRdie7wUm
+         fGAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778691399; x=1779296199;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X3lVfNFiffp+uU+9DlG1DEynuXNArzY2ybDWxR4v/kU=;
+        b=qZC0v/TRIUAz0yDpXWANgMk3djxFw0zlHrEOI3wjckC8Nb9pvSX+me7cvabg1geDbY
+         l0fQs/DdvNJQsG0ugWBXkB+bXo3oM/4MovRPuyIyiLluVlCzSIr4xUQ0EqHGF+kf6JIT
+         jObXRR6kZHIH/5DA0hFG2EmLSQGeyM4L7eylv2kLv3vOyh91SatISInXh7zuSQ7FMFeK
+         a6532K/YrpztGT88JvESnaegI3qS0O/0paXAHXq5ufi972kbONXCOHXOka8e+zMn54Pa
+         rhX40XEtJT7ITPLpq+Dn/3tFw6cXjTV6mxks2aFob/bg8zc/Nv2TcXZKzO1hpSY5PXAa
+         Ek9Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8Vm/l9fIgpnv0aWzmAAK+u62Wt5nNHaNExrIkgOPCCy/jnOqBW1jDleIwUEc7rKZhJWW6mrDU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyi+yQ/0p8dv1QnPRXY6FZ3rOZ7z7+buFeY+OGmQImXOUxQzqX0
+	3SRiQFFGHwMFgPlRcfrLdgUWFjjnJgKScxJ2ceDoBKcX1i4afkjvgrh6YEtOC5KI4g==
+X-Gm-Gg: Acq92OHZY34STSKxpyT+3SSTpY4nVUtGr1JL/c2u4ZMPYk+FkM5AZZz3JrCsVOTHEDO
+	1tBSKXM5TuMprs/iqW4zcmLuvGRswcOhsoFUEE5LjDpBpgyMXfopNrgyQOIZUpscJMYYR+kmlwS
+	rgLpsoigqUM0rIuEE5O3SW3rBlL86DESEJ2jcjrZl6NOeexjSrHd81btiHUc3P7w8gfe1pnfN9j
+	harV/IJQNwf2tSTzH9ZRxjw7YIQYlOnGiLu2S1gC9DmLKn0UbRJkwjR0Ykm/r60AMjWV+/5HeVW
+	uYV4N3agEoBC6VFC5ECj3sdnAuJZwvndWrD8/WLqRs7PXHeGPwb0xdqDSdzO7QZeujAGGiUNED4
+	bSjfAM9ZtXa/Rll7z7N6tgObV+XFDax/o8829JGH4yGSAIPoXHsn7g4SMV+DkLFoEXcKkpi1omF
+	sJvZ6s95gqmO5mUaHch5uwsxGDZWZemJFTEu0//g71yDTwGazxl549rX2gVukzibhibxCqzg==
+X-Received: by 2002:a05:7022:ef05:b0:12c:7ec:b96 with SMTP id a92af1059eb24-1347dbc6465mr209272c88.1.1778691397968;
+        Wed, 13 May 2026 09:56:37 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f888c3b301sm29447066eec.23.2026.05.13.09.56.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 09:56:37 -0700 (PDT)
+Date: Wed, 13 May 2026 16:56:33 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>, 
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	Joerg Roedel <joerg.roedel@amd.com>, Josua Mayer <josua@solid-run.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	patches@lists.linux.dev, Pranjal Shrivastava <praan@google.com>, 
+	Mostafa Saleh <smostafa@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH rc 3/5] iommu: Handle unmap error when iommu_debug is
+ enabled
+Message-ID: <agSswSq8bTYiI6Uv@google.com>
+References: <0-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
+ <3-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6CF78537F5F
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <3-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
+X-Rspamd-Queue-Id: D058C537A18
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,secunet.com,kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246948-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246949-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[skhawaja@google.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+On Tue, May 12, 2026 at 01:46:15PM -0300, Jason Gunthorpe wrote:
+>Sashiko noticed a latent bug where the map error flow called iommu_unmap()
+>which calls iommu_debug_unmap_begin()/iommu_debug_unmap_end() however
+>since this is an error path the map flow never actually established the
+>original iommu_debug_map() it will malfunction.
+>
+>Lift the unmap error handling into iommu_map_nosync() and reorder it so
+>the trace_map()/iommu_debug_map() records the partial mapping and then
+>immediately unmaps it. This avoid creating the unbalanced tracking and
+>provides saner tracing instead of a unmap unmatched to any map.
+>
+>Fixes: ccc21213f013 ("iommu: Add calls for IOMMU_DEBUG_PAGEALLOC")
+>Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+>---
+> drivers/iommu/iommu.c | 49 +++++++++++++++++--------------------------
+> 1 file changed, 19 insertions(+), 30 deletions(-)
+>
+>diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+>index e334588a2476b4..e5fa9875900228 100644
+>--- a/drivers/iommu/iommu.c
+>+++ b/drivers/iommu/iommu.c
+>@@ -2575,12 +2575,11 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
+>
+> static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
+> 				    unsigned long iova, phys_addr_t paddr,
+>-				    size_t size, int prot, gfp_t gfp)
+>+				    size_t size, int prot, gfp_t gfp,
+>+				    size_t *mapped)
+> {
+> 	const struct iommu_domain_ops *ops = domain->ops;
+>-	unsigned long orig_iova = iova;
+> 	unsigned int min_pagesz;
+>-	size_t orig_size = size;
+> 	int ret = 0;
+>
+> 	if (WARN_ON(!ops->map_pages))
+>@@ -2603,31 +2602,25 @@ static int __iommu_map_domain_pgtbl(struct iommu_domain *domain,
+> 	pr_debug("map: iova 0x%lx pa %pa size 0x%zx\n", iova, &paddr, size);
+>
+> 	while (size) {
+>-		size_t pgsize, count, mapped = 0;
+>+		size_t pgsize, count, op_mapped = 0;
+>
+> 		pgsize = iommu_pgsize(domain, iova, paddr, size, &count);
+>
+> 		pr_debug("mapping: iova 0x%lx pa %pa pgsize 0x%zx count %zu\n",
+> 			 iova, &paddr, pgsize, count);
+> 		ret = ops->map_pages(domain, iova, paddr, pgsize, count, prot,
+>-				     gfp, &mapped);
+>+				     gfp, &op_mapped);
+> 		/*
+> 		 * Some pages may have been mapped, even if an error occurred,
+> 		 * so we should account for those so they can be unmapped.
+> 		 */
+>-		size -= mapped;
+>-
+>+		*mapped += op_mapped;
+> 		if (ret)
+>-			break;
+>+			return ret;
+>
+>-		iova += mapped;
+>-		paddr += mapped;
+>-	}
+>-
+>-	/* unroll mapping in case something went wrong */
+>-	if (ret) {
+>-		iommu_unmap(domain, orig_iova, orig_size - size);
+>-		return ret;
+>+		size -= op_mapped;
+>+		iova += op_mapped;
+>+		paddr += op_mapped;
+> 	}
+> 	return 0;
+> }
+>@@ -2645,6 +2638,7 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
+> 		phys_addr_t paddr, size_t size, int prot, gfp_t gfp)
+> {
+> 	struct pt_iommu *pt = iommupt_from_domain(domain);
+>+	size_t mapped = 0;
+> 	int ret;
+>
+> 	might_sleep_if(gfpflags_allow_blocking(gfp));
+>@@ -2656,24 +2650,19 @@ int iommu_map_nosync(struct iommu_domain *domain, unsigned long iova,
+> 				 __GFP_HIGHMEM))))
+> 		return -EINVAL;
+>
+>-	if (pt) {
+>-		size_t mapped = 0;
+>-
+>+	if (pt)
+> 		ret = pt->ops->map_range(pt, iova, paddr, size, prot, gfp,
+> 					 &mapped);
+>-		if (ret) {
+>-			iommu_unmap(domain, iova, mapped);
+>-			return ret;
+>-		}
+>-	} else {
+>+	else
+> 		ret = __iommu_map_domain_pgtbl(domain, iova, paddr, size, prot,
+>-					       gfp);
+>-		if (ret)
+>-			return ret;
+>-	}
+>+					       gfp, &mapped);
+>
+>-	trace_map(iova, paddr, size);
+>-	iommu_debug_map(domain, paddr, size);
+>+	trace_map(iova, paddr, mapped);
+>+	iommu_debug_map(domain, paddr, mapped);
+>+	if (ret) {
+>+		iommu_unmap(domain, iova, mapped);
+>+		return ret;
+>+	}
+> 	return 0;
+> }
+>
+>-- 
+>2.43.0
+>
 
-[ Upstream commit ec54093e6a8f87e800bb6aa15eb7fc1e33faa524 ]
-
-AH allocates its temporary auth/ICV layout differently when ESN is enabled:
-the async ahash setup appends a 4-byte seqhi slot before the ICV or
-auth_data area, but the async completion callbacks still reconstruct the
-temporary layout as if seqhi were absent.
-
-With an async AH implementation selected, that makes AH copy or compare
-the wrong bytes on both the IPv4 and IPv6 paths. In UML repro on IPv4 AH
-with ESN and forced async hmac(sha1), ping fails with 100% packet loss,
-and the callback logs show the pre-fix drift:
-
-  ah4 output_done: esn=1 err=0 icv_off=20 expected_off=24
-  ah4 input_done: esn=1 auth_off=20 expected_auth_off=24 icv_off=32 expected_icv_off=36
-
-Reconstruct the callback-side layout the same way the setup path built it
-by skipping the ESN seqhi slot before locating the saved auth_data or ICV.
-Per RFC 4302, the ESN high-order 32 bits participate in the AH ICV
-computation, so the async callbacks must account for the seqhi slot.
-
-Post-fix, the same IPv4 AH+ESN+forced-async-hmac(sha1) UML repro shows
-the corrected offset (ah4 output_done: esn=1 err=0 icv_off=24
-expected_off=24) and ping succeeds; net/ipv4/ah4.o and net/ipv6/ah6.o
-build clean at W=1. IPv6 AH+ESN was not exercised at runtime, and the
-change has not been tested against a real async hardware AH engine.
-
-Fixes: d4d573d0334d ("{IPv4,xfrm} Add ESN support for AH egress part")
-Fixes: d8b2a8600b0e ("{IPv4,xfrm} Add ESN support for AH ingress part")
-Fixes: 26dd70c3fad3 ("{IPv6,xfrm} Add ESN support for AH egress part")
-Fixes: 8d6da6f32557 ("{IPv6,xfrm} Add ESN support for AH ingress part")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5-4
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/ipv4/ah4.c | 14 ++++++++++++--
- net/ipv6/ah6.c | 14 ++++++++++++--
- 2 files changed, 24 insertions(+), 4 deletions(-)
-
-diff --git a/net/ipv4/ah4.c b/net/ipv4/ah4.c
-index c64e3212581bc..e83049e00ed1c 100644
---- a/net/ipv4/ah4.c
-+++ b/net/ipv4/ah4.c
-@@ -124,9 +124,14 @@ static void ah_output_done(struct crypto_async_request *base, int err)
- 	struct iphdr *top_iph = ip_hdr(skb);
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	int ihl = ip_hdrlen(skb);
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
- 
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	iph = AH_SKB_CB(skb)->tmp;
--	icv = ah_tmp_icv(iph, ihl);
-+	seqhi = (__be32 *)((char *)iph + ihl);
-+	icv = ah_tmp_icv(seqhi, seqhi_len);
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
- 
- 	top_iph->tos = iph->tos;
-@@ -270,12 +275,17 @@ static void ah_input_done(struct crypto_async_request *base, int err)
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	int ihl = ip_hdrlen(skb);
- 	int ah_hlen = (ah->hdrlen + 2) << 2;
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
- 
- 	if (err)
- 		goto out;
- 
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	work_iph = AH_SKB_CB(skb)->tmp;
--	auth_data = ah_tmp_auth(work_iph, ihl);
-+	seqhi = (__be32 *)((char *)work_iph + ihl);
-+	auth_data = ah_tmp_auth(seqhi, seqhi_len);
- 	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
- 
- 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
-diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
-index 68896e7828b6d..2c505823c18d0 100644
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -317,14 +317,19 @@ static void ah6_output_done(struct crypto_async_request *base, int err)
- 	struct ipv6hdr *top_iph = ipv6_hdr(skb);
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	struct tmp_ext *iph_ext;
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
- 
- 	extlen = skb_network_header_len(skb) - sizeof(struct ipv6hdr);
- 	if (extlen)
- 		extlen += sizeof(*iph_ext);
- 
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	iph_base = AH_SKB_CB(skb)->tmp;
- 	iph_ext = ah_tmp_ext(iph_base);
--	icv = ah_tmp_icv(iph_ext, extlen);
-+	seqhi = (__be32 *)((char *)iph_ext + extlen);
-+	icv = ah_tmp_icv(seqhi, seqhi_len);
- 
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
- 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
-@@ -471,13 +476,18 @@ static void ah6_input_done(struct crypto_async_request *base, int err)
- 	struct ip_auth_hdr *ah = ip_auth_hdr(skb);
- 	int hdr_len = skb_network_header_len(skb);
- 	int ah_hlen = ipv6_authlen(ah);
-+	int seqhi_len = 0;
-+	__be32 *seqhi;
- 
- 	if (err)
- 		goto out;
- 
-+	if (x->props.flags & XFRM_STATE_ESN)
-+		seqhi_len = sizeof(*seqhi);
- 	work_iph = AH_SKB_CB(skb)->tmp;
- 	auth_data = ah_tmp_auth(work_iph, hdr_len);
--	icv = ah_tmp_icv(auth_data, ahp->icv_trunc_len);
-+	seqhi = (__be32 *)(auth_data + ahp->icv_trunc_len);
-+	icv = ah_tmp_icv(seqhi, seqhi_len);
- 
- 	err = crypto_memneq(icv, auth_data, ahp->icv_trunc_len) ? -EBADMSG : 0;
- 	if (err)
--- 
-2.53.0
-
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
 
