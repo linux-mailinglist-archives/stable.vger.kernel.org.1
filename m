@@ -1,172 +1,228 @@
-Return-Path: <stable+bounces-247050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247049-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6BIWMHYGBWqiRgIAu9opvQ
-	(envelope-from <stable+bounces-247050-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 01:17:10 +0200
+	id CHw0C3AGBWpRRgIAu9opvQ
+	(envelope-from <stable+bounces-247049-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 01:17:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8074653BE2F
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 01:17:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 960C653BE17
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 01:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8719930323B7
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 23:15:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A14B306FE56
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 23:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5973659E8;
-	Wed, 13 May 2026 23:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3473CC7C6;
+	Wed, 13 May 2026 23:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="il1vKm3s"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="lFXyBoMo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB41356763
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 23:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160BA3CC323;
+	Wed, 13 May 2026 23:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778714133; cv=none; b=ACTJwesYHQd4lkWrSBw09rJTYZQDL2aDRYue2nGBfgRid0XghOtWQHAtgSXgv5fiTgJW4ajjiYUQyMCon6trQ1ILRF29Zloe5wxn2KDVMFjm29Gv3K3ln93Ncw54QNslRsZtMKLQH9kXpJFt1xxAZel9OJYXAQ4t1yFZihh3z88=
+	t=1778714106; cv=none; b=QRMpFE9LPoKZ1rSq0wn4yI/TU1w6X4bYG2H2S3wIPtRX7EIe/h/MICs/SIbOIBqaLiyyx9FPdJ3Bp4xM1xKVXXElse26uw064u00q4D7QF4Wsdjqk14hKSczorbl8dYTH/QnBLxopmN0jOh+5/hqCfo/2yqfNeIc9pXaBHzQyyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778714133; c=relaxed/simple;
-	bh=OP6feStZGZdFFWZ14CThiMu8VdQOuHA2BR9V1ND4ff4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cuPmsY/LxZLF0kVN8mQpjSbRR/7D3wUUB9K3KBwg0/+2TftiSwL73/VZ+LAfJvlgxxAWXSqgJlXfsLKCqjNgcKGpg+2EOr7yEovf8i9py0NDV9JWz8UurHLcb2z0x57p5NC2+9+CgGROoFP1xVGlFZ12YPhX9Mc9vGM0qgpv1xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=il1vKm3s; arc=none smtp.client-ip=74.125.224.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-65c2cd216c9so7599817d50.3
-        for <stable@vger.kernel.org>; Wed, 13 May 2026 16:15:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778714131; x=1779318931; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=W+tDo1tY/LI2PXPcsTmkqJ4CzUr5sNutShNSx1ijTlg=;
-        b=il1vKm3s87qWg3Q/+fmMkDFFgnwteJmVQDgvTMevvl0MLcY9Apkl01e13T6YGrU4sy
-         p3ULtJL16jeoUj+tjFwoYF3KBoCMH5IcuvKCNQtWHO8BoIkukJH45G5Q4QxfvGDE3+VK
-         l7KoAOkW+xyd6tYyADjv401OAL2Q8lCLIYxQE9efufpC9z0jj5ZNleGqHhB1A3k8IYTz
-         IeeCwxFC5q7QFaz0fVeSYnDVdI4lbmYcQCLDruBzQwEybMMNRcVourUOuZNTOE7c4Kk3
-         dJmnCm/yB9rC3Iy8v48WemazFR2uum9Kz9rzliXQSQEoLCi3rnxNZaBUGLpFOtolUOy2
-         ERVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778714131; x=1779318931;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W+tDo1tY/LI2PXPcsTmkqJ4CzUr5sNutShNSx1ijTlg=;
-        b=kXKRUN/tWtLKmdPW3G7+KQ3bkQZCq+VdHLfGE5iZNDXGw0qOXYt+lUwWo8LjKuu9Ai
-         FPv6SCVLnD4vfJwxrxKW49vXhGc/VwZ6qr3Ix8sDf9v2iYjtC74K6+GzF7oNc0R0TY06
-         GbzLA9dCskDvm4kCjWcxl1+O2SjVJWGwGKewqdSTGLWKjgGT6FmPim2MOIFp8JAnBmbZ
-         5OJnT/HlpvqM4ljVGNARWh7o85XIAZEKptUD8WnC2hpMZg18NkvEPnBAaDb7JHIrCzXR
-         D/QB+Cz0XUVbEmVIIJHLDf0Kv7f7zGhWRcG79rNGApZr6QC+vemdLTBZ7aUz33WrjCR4
-         oKVA==
-X-Forwarded-Encrypted: i=1; AFNElJ/rEin8q2GzPwdbWG1IdZ1QmjROmsOtQWeMk9Tyh9ZqFKQGpQluqFjatQWaDmYZLXYK/R9+XoI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3UtQzbnbH1pcf6GWgNXseHVQdWGLqi7A5J6/ksE9a+pNfkiaa
-	E7gwWJVClxHP8ew4Y9mjE49BIiBsMHmHS7nEj2NjIqdNt5E/FDi+Sa9z
-X-Gm-Gg: Acq92OFoEigbSpvvXAQDJvDYARGi+44EGEV3SjdwypbYOLoYDliR9IpuNMnZdE635IL
-	hF9Wcu2eqFUPfcAHNTCAusJ8/j5KuNMco5hSPFDoe17yGqZWKu0kBz0sLF+sxkV+hmI5P8EpmJb
-	nrjISd2I+H1KzQfA+QilQ3G92SfQEDaLfK68kZZyfNl7qODg36L6qjOCxDUzIqxp/JIP/thrknR
-	fQx2YKtrsF765wwKyThyD/2dUahnfRW0CK4teuuN2rq5+en4GhmxOldUho57EDAoxXDu+eYlp0J
-	dcCb7DwOeiW7l3ZAX3Smmtb5sWDjPi2OI4m7vNfIF6XQIEC7RRfwJ5GpWKTwPX+QR28cv0AQvyB
-	7/2F2N20MEHKGyial/+1dqrZH2dd8LKyM1FpBlt5WhxEwIBxNA+FuBIOtaMibK8SqyGvnNA6V9E
-	/cq0rKaty7Qsb4mDA+L9JS
-X-Received: by 2002:a05:690e:4808:b0:65c:1df4:545f with SMTP id 956f58d0204a3-65df63468admr4097359d50.47.1778714131098;
-        Wed, 13 May 2026 16:15:31 -0700 (PDT)
-Received: from localhost ([2a03:2880:f806:50::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65e0dbd101asm254164d50.19.2026.05.13.16.15.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 16:15:30 -0700 (PDT)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: miklos@szeredi.hu
-Cc: amir73il@gmail.com,
-	fuse-devel@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v2] fuse: use copy_splice_read() for FOPEN_DIRECT_IO splice read
-Date: Wed, 13 May 2026 16:14:37 -0700
-Message-ID: <20260513231437.1806724-1-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1778714106; c=relaxed/simple;
+	bh=EWlxknBUuLAJpNU9FCMY/xu4GoSwo/c7hcv48hFJA5I=;
+	h=Date:To:From:Subject:Message-Id; b=rEuo4yG0G4ALZbPeQcfXb3tbQRdkxCn9jIXcL+V+wjNu4jtSXKHb+NAHMUxd5uDRbxed7wcbIu6kPF+L0efcKjB1HD6IIT9BCFDAMTz9IhY+YECtOiccW5rcvUBtsajW0CB/djn/7ERttIL0QKcWz3xhA6IvghrdJiv9NYqm968=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=lFXyBoMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE9EC19425;
+	Wed, 13 May 2026 23:15:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778714105;
+	bh=EWlxknBUuLAJpNU9FCMY/xu4GoSwo/c7hcv48hFJA5I=;
+	h=Date:To:From:Subject:From;
+	b=lFXyBoMoogaWZIEPcYqqm7oaQbVAYoR2JI5bMWsp4f4C/xV1yeE9MTYibwoML/SyT
+	 vvWlwRworwQIB+JG/5ZZRmaQtvst9vTYyRif982BMrzFepjXP3l5LDOUjC+mcnE1Lf
+	 FKuLPIXzMd0nNWx3oC9x72kic6lqxGiIWvoCaBKg=
+Date: Wed, 13 May 2026 16:15:04 -0700
+To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,peterx@redhat.com,jack@suse.cz,david@kernel.org,brauner@kernel.org,rppt@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + userfaultfd-ensure-mremap_userfaultfd_fail-releases-mmap_changing.patch added to mm-new branch
+Message-Id: <20260513231505.6DE9EC19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8074653BE2F
+X-Rspamd-Queue-Id: 960C653BE17
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,lists.linux.dev,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247050-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-247049-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-When FOPEN_DIRECT_IO is set, fuse_splice_read() calls
-filemap_splice_read(), which populates the pipe with pages from the fuse
-inode's page cache.
 
-This is incorrect for files opened with FOPEN_DIRECT_IO, where reads
-should fetch fresh data from the server rather than using cached (and
-potentially stale) data.
+The patch titled
+     Subject: userfaultfd: ensure mremap_userfaultfd_fail() releases mmap_changing
+has been added to the -mm mm-new branch.  Its filename is
+     userfaultfd-ensure-mremap_userfaultfd_fail-releases-mmap_changing.patch
 
-Use copy_splice_read() instead, which will invoke ->read_iter() on each
-splice read, sending a FUSE_READ to the server every time.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/userfaultfd-ensure-mremap_userfaultfd_fail-releases-mmap_changing.patch
 
-We do not need to add checking for O_DIRECT since this is already
-handled at the vfs layer in do_splice_read().
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Fixes: 2cb1e08985e3 ("splice: Use filemap_splice_read() instead of generic_file_splice_read()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+The mm-new branch of mm.git is not included in linux-next
+
+If a few days of testing in mm-new is successful, the patch will me moved
+into mm.git's mm-unstable branch, which is included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: userfaultfd: ensure mremap_userfaultfd_fail() releases mmap_changing
+Date: Wed, 13 May 2026 11:14:16 +0300
+
+Sashiko says:
+
+  mremap_userfaultfd_prep() increments ctx->mmap_changing to stall
+  concurrent operations, but mremap_userfaultfd_fail() does not
+  decrement it before dropping the context reference.
+
+If an mremap operation fails, ctx->mmap_changing remains elevated. This
+will causes subsequent userfaultfd operations like a UFFDIO_COPY to fail
+with -EAGAIN.
+
+Decrement ctx->mmap_changing in mremap_userfaultfd_fail().
+
+Link: https://sashiko.dev/#/patchset/20260430113512.115938-1-rppt@kernel.org
+Link: https://lore.kernel.org/20260513081416.495963-1-rppt@kernel.org
+Fixes: df2cc96e7701 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-v1 -> v2: 
-- Reword commit message to be more accurate, per Amir's feedback
 
-v1: https://lore.kernel.org/fuse-devel/20260512200448.3818665-1-joannelkoong@gmail.com/
----
- fs/fuse/file.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/userfaultfd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index b8fd148dc109..7a35ac3e0023 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1858,7 +1858,9 @@ static ssize_t fuse_splice_read(struct file *in, loff_t *ppos,
- 	struct fuse_file *ff = in->private_data;
+--- a/fs/userfaultfd.c~userfaultfd-ensure-mremap_userfaultfd_fail-releases-mmap_changing
++++ a/fs/userfaultfd.c
+@@ -786,6 +786,8 @@ void mremap_userfaultfd_fail(struct vm_u
+ 	if (!ctx)
+ 		return;
  
- 	/* FOPEN_DIRECT_IO overrides FOPEN_PASSTHROUGH */
--	if (fuse_file_passthrough(ff) && !(ff->open_flags & FOPEN_DIRECT_IO))
-+	if (ff->open_flags & FOPEN_DIRECT_IO)
-+		return copy_splice_read(in, ppos, pipe, len, flags);
-+	else if (fuse_file_passthrough(ff))
- 		return fuse_passthrough_splice_read(in, ppos, pipe, len, flags);
- 	else
- 		return filemap_splice_read(in, ppos, pipe, len, flags);
--- 
-2.52.0
++	atomic_dec(&ctx->mmap_changing);
++	VM_WARN_ON_ONCE(atomic_read(&ctx->mmap_changing) < 0);
+ 	userfaultfd_ctx_put(ctx);
+ }
+ 
+_
+
+Patches currently in -mm which might be from rppt@kernel.org are
+
+maintainers-add-tree-for-kdump-and-kexec.patch
+maintainers-add-kexec-list-to-live-update-entry.patch
+sh-fix-fallout-from-zero_page-consolidation.patch
+selftests-mm-hugetlb-read-hwpoison-add-sigbus-handler.patch
+selftests-mm-migration-dont-assume-huge-page-is-twomeg.patch
+selftests-mm-migration-make-nthreads-represent-number-of-working-threads.patch
+selftests-mm-migration-properly-cleanup-forked-processes.patch
+selftests-mm-run_vmtestssh-dont-gate-thp-and-ksm-tests-on-have_hugepages.patch
+selftests-mm-merge-map_hugetlb-into-hugepage-mmap.patch
+selftests-mm-rename-hugepage-tests-to-hugetlb.patch
+selftests-mm-hugetlb-shm-use-kselftest-framework.patch
+selftests-mm-hugetlb-vmemmap-use-kselftest-framework.patch
+selftests-mm-hugetlb-madvise-use-kselftest-framework.patch
+selftests-mm-hugetlb_madv_vs_map-use-kselftest-framework.patch
+selftests-mm-hugetlb-read-hwpoison-use-kselftest-framework.patch
+selftests-mm-khugepaged-group-tests-in-an-array.patch
+selftests-mm-khugepaged-use-ksefltest-framework.patch
+selftests-mm-khugepaged-use-ksefltest-framework-fix.patch
+selftests-mm-ksm_tests-use-kselftest-framework.patch
+selftests-mm-protection_keys-use-descriptive-test-names-in-the-output.patch
+selftests-mm-protection_keys-use-kselftest-framework.patch
+selftests-mm-uffd-common-use-kselftest-framework.patch
+selftests-mm-uffd-stress-use-kselftest-framework.patch
+selftests-mm-uffd-unit-tests-use-kselftest-framework.patch
+selftests-mm-va_high_addr_switch-use-kselftest-framework.patch
+selftests-mm-add-atexit-and-signal-handlers-to-thp_settings.patch
+selftests-mm-rename-thp_settings-to-hugepage_settings.patch
+selftests-mm-move-hugetlb-helpers-to-hugepage_settings.patch
+selftests-mm-hugepage_settings-use-unsigned-long-in-detect_hugetlb_page_size.patch
+selftests-mm-hugepage_settings-add-apis-to-get-and-set-nr_hugepages.patch
+selftests-mm-hugepage_settings-rename-and-rework-get_free_hugepages.patch
+selftests-mm-hugepage_settings-add-apis-for-hugetlb-setup-and-teardown.patch
+selftests-mm-move-read_file-read_num-and-write_num-to-vm_util.patch
+selftests-mm-vm_util-add-helpers-to-set-and-restore-shm-limits.patch
+selftests-mm-compaction_test-use-hugetlb-helpers.patch
+selftests-mm-cow-add-setup-of-hugetlb-pages.patch
+selftests-mm-gup_longterm-add-setup-of-hugetlb-pages.patch
+selftests-mm-gup_test-add-setup-of-hugetlb-pages.patch
+selftests-mm-hmm-tests-add-setup-of-hugetlb-pages.patch
+selftests-mm-hugepage_dio-add-setup-of-hugetlb-pages.patch
+selftests-mm-hugetlb_fault_after_madv-add-setup-of-hugetlb-pages.patch
+selftests-mm-hugetlb-madvise-add-setup-of-hugetlb-pages.patch
+selftests-mm-hugetlb_madv_vs_map-add-setup-of-hugetlb-pages.patch
+selftests-mm-hugetlb-mmap-add-setup-of-hugetlb-pages.patch
+selftests-mm-hugetlb-mremap-add-setup-of-hugetlb-pages.patch
+selftests-mm-hugetlb-shm-add-setup-of-hugetlb-pages.patch
+selftests-mm-hugetlb-soft-offline-add-setup-of-hugetlb-pages.patch
+selftests-mm-hugetlb-vmemmap-add-setup-of-hugetlb-pages.patch
+selftests-mm-migration-add-setup-of-hugetlb-pages.patch
+selftests-mm-pagemap_ioctl-add-setup-of-hugetlb-pages.patch
+selftests-mm-protection_keys-use-library-code-for-hugetlb-setup.patch
+selftests-mm-thuge-gen-add-setup-of-hugetlb-pages.patch
+selftests-mm-uffd-stress-use-hugetlb_save-and-alloc-huge-pages.patch
+selftests-mm-uffd-unit-tests-add-setup-of-hugetlb-pages.patch
+selftests-mm-uffd-wp-mremap-add-setup-of-hugetlb-pages.patch
+selftests-mm-va_high_addr_switch-add-setup-of-hugetlb-pages.patch
+selftests-mm-va_high_addr_switchsh-drop-huge-pages-setup.patch
+selftests-mm-run_vmtestssh-free-memory-if-available-memory-is-low.patch
+selftests-mm-run_vmtestssh-drop-detection-and-setup-of-hugetlb.patch
+userfaultfd-ensure-mremap_userfaultfd_fail-releases-mmap_changing.patch
 
 
