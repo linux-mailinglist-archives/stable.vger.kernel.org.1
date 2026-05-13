@@ -1,79 +1,60 @@
-Return-Path: <stable+bounces-246986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPRzKTq6BGplNQIAu9opvQ
-	(envelope-from <stable+bounces-246986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:51:54 +0200
+	id wBCdIzi8BGrrNQIAu9opvQ
+	(envelope-from <stable+bounces-246987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:00:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD3F538578
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:51:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F5C5387D9
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 20:00:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 831B230087E1
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:51:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E8CD31558CF
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0649B4DBD76;
-	Wed, 13 May 2026 17:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F80B4DD6C2;
+	Wed, 13 May 2026 17:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DekB4VFO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nfITAXPS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06087327BF8;
-	Wed, 13 May 2026 17:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D057327BF8;
+	Wed, 13 May 2026 17:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778694679; cv=none; b=diRi84yfSZg4nU/4yDoDLAL0GRFc67JiBGJd06cm+N3cggo0InTu6iAxjv1CP4FdSt/enVlVWco+4C0AurSnd6SOjtuxqINcaskQAOocBzGAG+1QlSnBfoOg7XpUHFTnu050yn3nYXGo7anoiihyojMrxz4HRoakTpO+EqLTXMw=
+	t=1778694685; cv=none; b=rZq2/DpLTok5YzCfExD40ZHjjuXa/yf9ubiCF26u7wqhCfn4uD6KbToL60jpX/S7/sjUVY5YXByhVJ3JMcyEAv6tbwpmIo6CCWHWf50+M8m7FVAdZ+EH6sSsRwsVAusCf9yfboEaxoQRCokJIAtoscqUldUENJN4buyFtFu89H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778694679; c=relaxed/simple;
-	bh=zrd1NYBQl6ccVmOdqd7dePf7qdGGzxyFkgLDK/Lw9KY=;
+	s=arc-20240116; t=1778694685; c=relaxed/simple;
+	bh=WhETy1A1wMdxvS7CzsIzIem5tVJ3SfVlf/HYIcaDxro=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=groL1qUSagLhfYweZcs4cMHJUK5VW9T2bZ+R6NKF6UTuj+JO+drCWPH6/CX8XWnAs1haWdh6taP+tr4E7xz3Vnpkvk/ragNavwBw9cHron/+kPL0V/M3MaSyoDi56RB/UfZ7zQLW32UkS37Mdk/pDW/8kZAVM1RIpQfqS9fnSjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DekB4VFO; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778694678; x=1810230678;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zrd1NYBQl6ccVmOdqd7dePf7qdGGzxyFkgLDK/Lw9KY=;
-  b=DekB4VFOoH3ApqazNBN2oHq30xRNyB+G2Gi1yGcmddNgBg0VJPTnb+9v
-   iFT5QRzHwHUFDLkMi/8tsUAt7EuWjTsGQqM1cVd1gvNF3coR8eVHSK95n
-   mSLADn5IKvV8BA6HR6qLbc5iPg6Y56UmRIzrfK7KqX1CqFoyHEyGASHW9
-   +K3BVyLAhB8UJAkbL0xNyijckBvQHcvIZ5jQ+zP6D7EdchYX2WaeyNOb0
-   emh31tubb+vXTmluoCbdZfU2Lueq0P0IOOh3M5Va0rNsgIgM01Di5cO5Q
-   XZ2xn7LRw43RXylRLmVIE/liytBSkMTokvoSKADjb2I7fV/N5JOnBcz0u
-   Q==;
-X-CSE-ConnectionGUID: F6jyyyOXSaufFCb26Kz56g==
-X-CSE-MsgGUID: wofvEb7ISmifR0fUNHMv1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="97200517"
-X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; 
-   d="scan'208";a="97200517"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 10:51:17 -0700
-X-CSE-ConnectionGUID: kgmlUvT8QHmKaku41LsYiA==
-X-CSE-MsgGUID: zrX0KErsSbquxiYcvd7yXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,233,1770624000"; 
-   d="scan'208";a="268485989"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.106])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 10:51:15 -0700
-Date: Wed, 13 May 2026 20:51:12 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jacques Nilo <jnilo@free.fr>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] serial: 8250: fix BREAK+SysRq dispatch on
- guard()-locked IRQ handlers
-Message-ID: <agS6EG8hd0E6DI5u@ashevche-desk.local>
-References: <cover.1778592805.git.jnilo@free.fr>
- <cover.1778675349.git.jnilo@free.fr>
+	 Content-Type:Content-Disposition:In-Reply-To; b=d7yCiBlgMija1Y4asMlPUufkekhrorctVb0Nnt+Esa4X198N0uyRgkpFJ8wcT87YZSBo2SY69lgY+PotdC5G5Gn+cGd0TOSutNL+9Z9HJOdjN9H1nnZwqs0iewxcKzUxrXiAwKrSx9tOVQpKohhTuXXo51KIHzA9GMU4/UAFCf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nfITAXPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3C6C19425;
+	Wed, 13 May 2026 17:51:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778694684;
+	bh=WhETy1A1wMdxvS7CzsIzIem5tVJ3SfVlf/HYIcaDxro=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nfITAXPSmCaaoisykuojRos//8tVRJ9nXTc5wfW6gTMLhEDl5+mM98wAoK5zMYl8r
+	 SUaammZyGoENwfBxAjoKWfc/7c3z0kileCV/TZPOOjHsisyVUsfDflJkWLw8EVtyV9
+	 KIeYWYCzcWEpOX/YpVZIw35CSCkXx1uY7m+Vrv4ptL0CYk6sxNBcFif18y8TjXkoqd
+	 zL53pVxhXVskaT4xCuxHQk0aKTYwhCxcC4GLlELZlwZLgdZP/nBNKWBcVlrJHxLdZq
+	 1WxIgCCgPvECIiLo5pxwGw1qs7mOenJ0hSnmEXF3ywPL1p7rdyLT/vpfUqJ6UAMg6+
+	 r3LED4HNgs/yA==
+Date: Wed, 13 May 2026 10:51:22 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: Re: [PATCH 5.10.y 1/3] net: ipv4: stop checking
+ crypto_ahash_alignmask
+Message-ID: <20260513175122.GC2128@quark>
+References: <2026051236-writing-prior-b532@gregkh>
+ <20260513171555.3876989-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,51 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1778675349.git.jnilo@free.fr>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Queue-Id: 2DD3F538578
+In-Reply-To: <20260513171555.3876989-1-sashal@kernel.org>
+X-Rspamd-Queue-Id: E5F5C5387D9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246986-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[free.fr];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246987-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ashevche-desk.local:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,secunet.com:email]
 X-Rspamd-Action: no action
 
-On Wed, May 13, 2026 at 03:30:22PM +0200, Jacques Nilo wrote:
-> This series fixes a silent regression where a SysRq character entered as
-> BREAK + key on the serial console is consumed by the kernel but never
-> dispatched to handle_sysrq(). Same description as v1 [1].
+[+Cc linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
+     Steffen Klassert <steffen.klassert@secunet.com> ]
 
-I have read the v1 discussion and v2 makes sense to me and looks good
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+On Wed, May 13, 2026 at 01:15:52PM -0400, Sasha Levin wrote:
+> From: Eric Biggers <ebiggers@google.com>
+> 
+> [ Upstream commit e77f5dd701381cef35b9ea8b6dea6e62c8a7f9f3 ]
+> 
+> Now that the alignmask for ahash and shash algorithms is always 0,
+> crypto_ahash_alignmask() always returns 0 and will be removed.  In
+> preparation for this, stop checking crypto_ahash_alignmask() in ah4.c.
+> 
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+> Stable-dep-of: ec54093e6a8f ("xfrm: ah: account for ESN high bits in async callbacks")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
--- 
-With Best Regards,
-Andy Shevchenko
+You forgot to send this to the IPsec maintainers, linux-crypto, and
+netdev.  See Documentation/process/submitting-patches.rst for some tips
+on how to use scripts/get_maintainer.pl to find the right place to send
+kernel patches.
 
+This commit was part of the series
+https://lore.kernel.org/linux-crypto/20231022081100.123613-1-ebiggers@kernel.org/
 
+What is your rationale for why it's safe to backport this patch 18 of a
+30-patch series by itself?  "The alignmask for ahash and shash
+algorithms is always 0" is definitely *not* true in older kernels.
+
+I *think* it's probably okay.  I think this would just regress AH
+performance in some cases, and "no one" uses AH anyway.
+
+Just keep in mind this is effectively new development, which needs
+review like any other kernel patch.  Not even Cc'ing the subsystem
+mailing lists isn't a great approach.
+
+- Eric
 
