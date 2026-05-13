@@ -1,334 +1,151 @@
-Return-Path: <stable+bounces-246953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHSVJ6ivBGrENAIAu9opvQ
-	(envelope-from <stable+bounces-246953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:06:48 +0200
+	id uCk2C8WvBGp6NAIAu9opvQ
+	(envelope-from <stable+bounces-246954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:07:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF23537AE8
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:06:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16363537B06
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:07:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 461E13029169
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:04:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DF323300F5CE
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 17:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46B74DB572;
-	Wed, 13 May 2026 17:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700D53A0B24;
+	Wed, 13 May 2026 17:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="elRHtTCe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZoDvSU/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA7E4DA551;
-	Wed, 13 May 2026 17:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3196738887A;
+	Wed, 13 May 2026 17:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778691864; cv=none; b=H2k2smuvx7Vpqf6VHzSCkdXBQyQvMbv9Kky1kfrWJwoHRtc8A+KHAFRqEGyMEPU26ms02j4OdADGi03NdMAqxM1fbAW3RpnuxV/29Pi9ilPh1Tr1HA9qOKPz2T+X/C+M2zFjiAFPBW5BvnB2qEoc3evuDGYxUDPxZQH3jy+OUFs=
+	t=1778691888; cv=none; b=f+60IbFCGK1siC0ROhQxDEfgUAQLHsq59fGUUn9xZmUobYk7nCPtZRF3jMNNw5YbmVBfkjHCaE20epuILSsedZbKUxCUkXtJu4BPMtnxPw20LuDtAvgfIGFRfqYdd9jPgXVU4EIiGOX3lGz/qmiKsR6awvjqBtphDx2LABWgIxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778691864; c=relaxed/simple;
-	bh=j7jgZEJB2DskvKS8w+ZVQxLVbzOdCr5DmvQJUjgcbq4=;
-	h=Date:To:From:Subject:Message-Id; b=mFrRBPPv84ma+GchJN9uD8BNNbheKj6CancYYrWCtx6c1v2SjRJLW7BRX2DzeTmsHMD1r12UD0IkZWvFREmWCFY/ryblCpsVT0X9MyfHvNE5lSgrHReZfC9Ibscm7rnOnKcgMzAEP8WmOqyvs90f4nj3w+v/W3Jp7BGN/LHQEgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=elRHtTCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5D9C19425;
-	Wed, 13 May 2026 17:04:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778691864;
-	bh=j7jgZEJB2DskvKS8w+ZVQxLVbzOdCr5DmvQJUjgcbq4=;
-	h=Date:To:From:Subject:From;
-	b=elRHtTCeUb66bv0eIHCP1QfFISYGxDdkzpyqgY0vWPDufRwTDbhSVhA0Co8VQ74c5
-	 U6rtiM/8Jykc/rpayHu7AIjk7JMwM+MI/84has10vrx3IpwcPc060uxef2KJ8FqHfx
-	 yS2s7/CI32uCxOf3vMymk9heJjGv4lRtubG1j9qk=
-Date: Wed, 13 May 2026 10:04:23 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,jannh@google.com,david@kernel.org,ljs@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-avoid-false-positive-lockdep-assertion.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260513170424.4F5D9C19425@smtp.kernel.org>
+	s=arc-20240116; t=1778691888; c=relaxed/simple;
+	bh=GypdLqU+oACmwsK8Vg+4Mujn2qGmp2FDnQaZtFaemCg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lclTCQgvvXhPkvj1ihGPoNTZD/ziJtHSF0HJz89JTGlVFQ5i1rU9oX9rYPXBTpxNjXaKD3lTPgaqcoGP91HHRavSuqEiBqMsL/mmhqUkWfzUKLTEJ8KFZq3VaF7OampB7JQxrQfCg4cy1SlzXRQuuUBk8BO8GIl6zZYOMZkT+AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZoDvSU/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E44C19425;
+	Wed, 13 May 2026 17:04:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778691887;
+	bh=GypdLqU+oACmwsK8Vg+4Mujn2qGmp2FDnQaZtFaemCg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZoDvSU/Od2dFhbOfjKZYsrksK6pLg8V8AI90yr65ivoDN5L8nn0YvzZBHni8qhmzB
+	 GIQ/hOP2Oh9GNJC0DKk2FCfCPfu33944rvnSOx3vuq4xaa8YTOeJzM9D36UBzPSxzJ
+	 ey/ULlvAiPqvIMfnt8UN5q9yuAIDJmkSz36vwlxy+fFmh2F8fu6h3nZkifwKhRyvns
+	 hxGWGU05+hBjZs+vstkTZfcGjSVAemMOBzupYcSeTmJGqZ4qKmp2EfhdxZ5U9mKrRx
+	 H63adnSK+g33uRnsUGLmzLcsNKKmW1m7u6cFV2o2Y5tvGgSb/cE4HpipDLLrsRJ4np
+	 qcfAg+A9cDz7g==
+Date: Wed, 13 May 2026 10:04:45 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: lukas@wunner.de, ignat@linux.win, jarkko@kernel.org,
+	yimingqian591@gmail.com, stable@vger.kernel.org,
+	linux-crypto@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] lib/crypto: mpi: Fix integer underflow
+ in" failed to apply to 6.1-stable tree
+Message-ID: <20260513170445.GA2128@quark>
+References: <2026051223-undercoat-reps-6626@gregkh>
+ <20260513025130.GA3110@sol>
+ <2026051334-showgirl-hurdle-22eb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 4CF23537AE8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026051334-showgirl-hurdle-22eb@gregkh>
+X-Rspamd-Queue-Id: 16363537B06
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-246953-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[wunner.de,linux.win,kernel.org,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-246954-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,smtp.kernel.org:mid,linux-foundation.org:email,linux-foundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email]
 X-Rspamd-Action: no action
 
+On Wed, May 13, 2026 at 12:34:38PM +0200, Greg KH wrote:
+> On Tue, May 12, 2026 at 07:51:30PM -0700, Eric Biggers wrote:
+> > [+Cc linux-crypto@vger.kernel.org]
+> > 
+> > On Tue, May 12, 2026 at 04:01:23PM +0200, gregkh@linuxfoundation.org wrote:
+> > > 
+> > > The patch below does not apply to the 6.1-stable tree.
+> > > If someone wants it applied there, or to any other stable or longterm
+> > > tree, then please email the backport, including the original git commit
+> > > id to <stable@vger.kernel.org>.
+> > > 
+> > > To reproduce the conflict and resubmit, you may use the following commands:
+> > > 
+> > > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> > > git checkout FETCH_HEAD
+> > > git cherry-pick -x 8c2f1288250a90a4b5cabed5d888d7e3aeed4035
+> > > # <resolve conflicts, build, test, etc.>
+> > > git commit -s
+> > > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051223-undercoat-reps-6626@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> > > 
+> > > Possible dependencies:
+> > 
+> > A couple issues.  First, this email wasn't sent to the subsystem's
+> > mailing list (linux-crypto@vger.kernel.org in this case).  That greatly
+> > reduces the number of people who are made aware that this didn't get
+> > automatically backported.
+> 
+> We never send out these FAILED emails to the mailing lists, as that
+> would make just even more noise.  It's always been this way, sorry.
 
-The patch titled
-     Subject: mm/hugetlb: avoid false positive lockdep assertion
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-avoid-false-positive-lockdep-assertion.patch
+Yes, this has been a problem for a long time, resulting in lots of
+missed backports including the copy.fail ones.  It's time for you to fix
+your process.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-avoid-false-positive-lockdep-assertion.patch
+> > Second, the upstream commit cherry-picks to 6.1, 5.15, and 5.10 without
+> > conflict.  (The file being changed was renamed between 6.1 and 6.6, but
+> > 'git cherry-pick' handles that automatically.)
+> > 
+> > I don't know what you're doing exactly that caused it to be
+> > unnecessarily marked as FAILED.  But whatever it is, it's not working,
+> > and it is causing backports to be missed.
+> 
+> We don't use git for cherry-picking as we have a patch queue, so renames
+> will often times fail, like it did here.  This has always been the case
+> in the decades we have been running the stable kernels :)
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Again, this has been a problem for a long time, and it's time for you to
+fix your process.  You can still have the patch queue; just use git for
+the actual cherry-pick.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Lorenzo Stoakes <ljs@kernel.org>
-Subject: mm/hugetlb: avoid false positive lockdep assertion
-Date: Wed, 13 May 2026 09:56:58 +0100
-
-Commit 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split,
-not before") changed the locking model around hugetlbfs PMD unsharing on
-VMA split, but did not update the function which asserts the locks,
-hugetlb_vma_assert_locked().
-
-This function asserts that either the hugetlb VMA lock is held (if a
-shared mapping) or that the reservation map lock is held (if private).
-
-If you get an unfortunate race between something which results in one of
-these locks being released and a hugetlb VMA split and you have
-CONFIG_LOCKDEP enabled, you can therefore see a false positive assertion
-arise when there is in fact no issue.
-
-Since this change introduced a new take_locks parameter to
-hugetlb_unshare_pmds(), which, when set to false, indicates that locking
-is sufficient, simply pass this to the unsharing logic and predicate the
-lock assertions on this.
-
-This is safe, as we already asserted the file rmap lock and the VMA write
-lock prior to this (implying exclusive mmap write lock), so we cannot be
-raced by either rmap or page fault page table walkers which the asserted
-locks are intended to protect against (we don't mind GUP-fast).
-
-Separate out huge_pmd_unshare() into __huge_pmd_unshare() to add a
-check_locks parameter, and update hugetlb_unshare_pmds() to pass this
-parameter to it.
-
-This leaves all other callers of huge_pmd_unshare() still correctly
-asserting the locks.
-
-The below reproducer will trigger the assert in a kernel with
-CONFIG_LOCKDEP enabled by racing process teardown (which will release the
-hugetlb lock) against a hugetlb split.
-
-void execute_one(void)
-{
-	void *ptr;
-	pid_t pid;
-
-	/*
-	 * Create a hugetlb mapping spanning a PUD entry.
-	 *
-	 * We force the hugetlb page allocation with populate and
-	 * noreserve.
-	 *
-	 * |---------------------|
-	 * |                     |
-	 * |---------------------|
-	 * 0                 PUD boundary
-	 */
-	ptr = mmap(0, PUD_SIZE, PROT_READ | PROT_WRITE,
-		   MAP_FIXED | MAP_SHARED | MAP_ANON |
-		   MAP_NORESERVE | MAP_HUGETLB | MAP_POPULATE,
-		   -1, 0);
-	if (ptr == MAP_FAILED) {
-		perror("mmap");
-		exit(EXIT_FAILURE);
-	}
-
-	/*
-	 * Fork but with a bogus stack pointer so we try to execute code in
-	 * a non-VM_EXEC VMA, causing segfault + teardown via exit_mmap().
-	 *
-	 * The clone will cause PMD page table sharing between the
-	 * processes first via:
-	 * copy_process() -> ... -> huge_pte_alloc() -> huge_pmd_share()
-	 *
-	 * Then tear down and release the hugetlb 'VMA' lock via:
-	 * exit_mmap() -> ... -> vma_close() -> hugetlb_vma_lock_free()
-	 */
-	pid = syscall(__NR_clone, 0, 2 * PMD_SIZE, 0, 0, 0);
-	if (pid < 0) {
-		perror("clone");
-		exit(EXIT_FAILURE);
-	} if (pid == 0) {
-		/* Pop stack... */
-		return;
-	}
-
-	/*
-	 * We are the parent process.
-	 *
-	 * Race the child process's teardown with a PMD unshare.
-	 *
-	 * We do this by triggering:
-	 *
-	 * __split_vma() -> hugetlb_split() -> hugetlb_unshare_pmds()
-	 *
-	 * Which, importantly, doesn't hold the hugetlb VMA lock (nor can
-	 * it), meaning we assert in hugetlb_vma_assert_locked().
-	 *
-	 *            .
-	 * |----------.----------|
-	 * |          .          |
-	 * |----------.----------|
-	 * 0          .     PUD boundary
-	 */
-	mmap(0, PUD_SIZE / 2, PROT_READ | PROT_WRITE,
-	     MAP_FIXED | MAP_ANON | MAP_PRIVATE, -1, 0);
-}
-
-int main(void)
-{
-	int i;
-
-	/* Kick off fork children. */
-	for (i = 0; i < NUM_FORKS; i++) {
-		pid_t pid = fork();
-
-		if (pid < 0) {
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-
-		/* Fork children do their work and exit. */
-		if (!pid) {
-			int j;
-
-			for (j = 0; j < NUM_ITERS; j++)
-				execute_one();
-			return EXIT_SUCCESS;
-		}
-	}
-
-	/* If we succeeded, wait on children. */
-	for (i = 0; i < NUM_FORKS; i++)
-		wait(NULL);
-
-	return EXIT_SUCCESS;
-}
-
-Link: https://lore.kernel.org/20260513085658.45264-1-ljs@kernel.org
-Fixes: 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not before")
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Jann Horn <jannh@google.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |   46 +++++++++++++++++++++++++++-------------------
- 1 file changed, 27 insertions(+), 19 deletions(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-avoid-false-positive-lockdep-assertion
-+++ a/mm/hugetlb.c
-@@ -6892,6 +6892,31 @@ out:
- 	return pte;
- }
- 
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks)
-+{
-+	unsigned long sz = huge_page_size(hstate_vma(vma));
-+	struct mm_struct *mm = vma->vm_mm;
-+	pgd_t *pgd = pgd_offset(mm, addr);
-+	p4d_t *p4d = p4d_offset(pgd, addr);
-+	pud_t *pud = pud_offset(p4d, addr);
-+
-+	if (sz != PMD_SIZE)
-+		return 0;
-+	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
-+		return 0;
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+	if (check_locks)
-+		hugetlb_vma_assert_locked(vma);
-+	pud_clear(pud);
-+
-+	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
-+
-+	mm_dec_nr_pmds(mm);
-+	return 1;
-+}
-+
- /**
-  * huge_pmd_unshare - Unmap a pmd table if it is shared by multiple users
-  * @tlb: the current mmu_gather.
-@@ -6911,24 +6936,7 @@ out:
- int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep)
- {
--	unsigned long sz = huge_page_size(hstate_vma(vma));
--	struct mm_struct *mm = vma->vm_mm;
--	pgd_t *pgd = pgd_offset(mm, addr);
--	p4d_t *p4d = p4d_offset(pgd, addr);
--	pud_t *pud = pud_offset(p4d, addr);
--
--	if (sz != PMD_SIZE)
--		return 0;
--	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
--		return 0;
--	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
--	hugetlb_vma_assert_locked(vma);
--	pud_clear(pud);
--
--	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
--
--	mm_dec_nr_pmds(mm);
--	return 1;
-+	return __huge_pmd_unshare(tlb, vma, addr, ptep, /*check_locks=*/true);
- }
- 
- /*
-@@ -7270,7 +7278,7 @@ static void hugetlb_unshare_pmds(struct
- 		if (!ptep)
- 			continue;
- 		ptl = huge_pte_lock(h, mm, ptep);
--		huge_pmd_unshare(&tlb, vma, address, ptep);
-+		__huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
- 		spin_unlock(ptl);
- 	}
- 	huge_pmd_unshare_flush(&tlb, vma);
-_
-
-Patches currently in -mm which might be from ljs@kernel.org are
-
-revert-mm-hugetlbfs-update-hugetlbfs-to-use-mmap_prepare.patch
-mm-hugetlb-avoid-false-positive-lockdep-assertion.patch
-
+- Eric
 
