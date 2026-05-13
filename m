@@ -1,169 +1,178 @@
-Return-Path: <stable+bounces-246757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNR0HkQXBGpLDgIAu9opvQ
-	(envelope-from <stable+bounces-246757-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:16:36 +0200
+	id KOuWGWcYBGpLDgIAu9opvQ
+	(envelope-from <stable+bounces-246758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:21:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759A252E00D
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:16:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E5F52E0B7
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:21:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F3E613031F5A
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:16:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78D4D30B9449
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 06:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70693382DE;
-	Wed, 13 May 2026 06:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EF53D3D1E;
+	Wed, 13 May 2026 06:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="mAumR7Sr"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="wjw8yAQm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail114-241.sinamail.sina.com.cn (mail114-241.sinamail.sina.com.cn [218.30.114.241])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256323D1A86
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 06:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5E13101C0
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 06:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.114.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778652988; cv=none; b=WBSjKIHKoItOZqlXi0ftaZ+Ji0yCp0ywDcNu86RtakCSNDRE/XhH6qiaWT17shsYinTiMEy0zDhvdgMipgqothK1xErBXvnMGt+qgg+PILu81oUkNFUMhpAVSC2KfnuveWSlMKUiG/7z6xLtZXuSTWDvgjJB/I/Yq9k0H9xrVGM=
+	t=1778653160; cv=none; b=I6llTU6fhBLHnU0YmYbpRs1IgSIfZhPPO4woUo+f6VNKKREFStS4LywC85t3h5js54oyY/i81gxgQmkWhFfY+CLa6pAsqML8g5hX/VLqZ37auQrbqBHTyrfDpmDRTG8d2w2rxXB9QL7j/L26OEPS9zLqvJeG0CdzTibppJ9dwC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778652988; c=relaxed/simple;
-	bh=nMH9bltGHRhs/AbTtr4aKYbvb984xhXoh9kz+aCGdq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GIM0bd25Cf3yJNsMMRz8B4BnM/w23UO39J3Rsa/QyULtUBAehKSXhS/wG5j4ub1RXoY8jN7fh7VsWhZpD3sWV6PLmzgT0DEM/g3BxapzrilewnnZQ382TYXJuGSUzokA2vQ+lRLsj8Rryxius7E6MDELI2xOjNmy//4UpXX5Ges=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=mAumR7Sr; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-366375c43c2so3738123a91.2
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 23:16:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1778652986; x=1779257786; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=M3/NmllfS+SrHzBU2sfiASJiEbjQXEMBJ1jiZMSTpf8=;
-        b=mAumR7Sr8eux0/mOniFATpvnCHQ8ketH88GUTpEQNHLcgo7wp+/Q93NnMjRTDvabd8
-         hS36UCKddn9kw60Nvon8hirmAfLLq9Qp+Jn7oKH2aovMiuStt2ePARiSpP4BqAuK1EsK
-         vKsTyvboCVsi2A2M8YccZzUfzB0UQHtIVKDC4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778652986; x=1779257786;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M3/NmllfS+SrHzBU2sfiASJiEbjQXEMBJ1jiZMSTpf8=;
-        b=mNgtddpCxst8p15hoyKYiHImVOwy/uxkm9dzwVBF6zToxs/jorp2+EMCNDM6BwWOob
-         WLIvjozKo+sLljwmcwoIFyTuD+luYvSkTnRPxQ14MGfYVV4HpiwiyvT3h+ZC5jSN02M0
-         Gcb+5rqgJihChfFDmO/1nZTTldh7p6pQ0b+HyGbOSsQAXK65xIjSZvEDA29KfH/YAV1c
-         HOk5y1DHRm1RlcjqxfHX76ddtLLKU0EANU+CfMl5SpqIOx7CKistpUU/17dxJQQtrU6l
-         FTMtZCaiyodeDla1OAfMs22FcnRLRcp7nX6WJqbt7ISX0SD0KpvMoo1+fKsBiHOx8x1R
-         vRvQ==
-X-Forwarded-Encrypted: i=1; AFNElJ93SRWvcqRMZCC7sw6QY9c73esNpXiS/+9lcstQ0tQQpkR00SppsS9j8JQY7Rqy5tzWdAQM92o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUaLAahvgz4shrPcsnXDgGbPtAvHsV3sWV7UjD5fCasgp/qAVc
-	SGBe2Ui4ccVpUSO5iY9P6E4N3eYJ6eXWZokvHBSmbY2oekrJRCemoS0z7x/OnPEbyw==
-X-Gm-Gg: Acq92OEFLzvkyI4ndmeR7AhNrRA/WoUr1seKTmNNZrIXWcZnnOxcjDGpqQLPunJLWBO
-	IrIWf6St30MhYaQYw4E+Y09dxNQk/cuZiHjptmnbKho4ZdStcTbOVGgsolnnIPv3DdK0ynoSdhS
-	ip/7+/cptdgEsXTVI2ANYe7KcMhOqlRKUH2fFMBzPRwE6vwBDQ12uDaKwJb136YNC5eFio4L+VC
-	uc/btGMdWBP+SQ75gGMcZ7qIlovZPmzoCHXtuSfV7HesyfUs9R+2fZea/Jxs1Tz4HTcx2kCyhco
-	8jJxhs1YH4G0wR8F8yRatnNHL7+2DHFu7hZuGMV7PKjI9dmJ18JY1BhXv03/xBf+RL5c676oy9Q
-	SEelOPYVYfi8nAXXupVCkjk44h3WWw40fZnYOFit+T9i2+ReWrTCMRei/q/EKQJVzyKQcu1FOBR
-	BH/VleDPSeW/33Y1QGZQqrt6rPyfMTAio/sYYCP+MiNy9d/dy+6pehGlKL22/+9ns=
-X-Received: by 2002:a17:90b:3c0e:b0:35f:bfdd:f5a1 with SMTP id 98e67ed59e1d1-368f3e680femr2025227a91.13.1778652986403;
-        Tue, 12 May 2026 23:16:26 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:e541:a7ed:e8ee:843c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368b04b2138sm1740198a91.9.2026.05.12.23.16.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 23:16:25 -0700 (PDT)
-Date: Wed, 13 May 2026 15:16:22 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: mm-commits@vger.kernel.org, stable@vger.kernel.org, 
-	senozhatsky@chromium.org, minchan@kernel.org, hannes@cmpxchg.org, gourry@gourry.net, 
-	dan.j.williams@intel.com, chengming.zhou@linux.dev, contact.kartikn@gmail.com
-Subject: Re: +
- zsmalloc-zero-initialize-zspage-memory-to-prevent-kmsan-uninit-reads.patch
- added to mm-hotfixes-unstable branch
-Message-ID: <agQWo3GZfuGMkgn5@google.com>
-References: <20260512214850.3AE80C2BCB0@smtp.kernel.org>
+	s=arc-20240116; t=1778653160; c=relaxed/simple;
+	bh=PHaGKgtvzC6KHwX0lmmeI2qFFzCI2UodpxK+IBGcxnM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ks6bafHAYG/XgoY9sdQYq08rLzh+39RRozIijAj15++Kj52gSQZb/s6gXGKoFfJQiha06RdUjTclVfxbt/y8VRQOBRXf9drbC06P0BCmW4d0LJfLjLNPXy5Qtqs9dJO0sUbiJzE4MnlmGYD2n9Vclk0xCXtEsx+Xnrk9w8Od60U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=wjw8yAQm; arc=none smtp.client-ip=218.30.114.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1778653155;
+	bh=ZPfd4QVU32sg85rtvgJTvaqyRqM7XRlftnMouVyTzP4=;
+	h=From:Subject:Date:Message-Id;
+	b=wjw8yAQm1kBOhHKxZ3m+E5DLvy27dfC9Z8zC2osojBxPqvxeQyqZCHbLGH/qpquzx
+	 SuTCmH7WDzdNxEwwz/llt5TR/UQHVHiWpkaZrmlrlNyxkGRZJHx06VM+3IpvQQ1pkw
+	 7oq/IYnle2T6DkntRF8lN00EG5Dach8WrMjrlWnk=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.23) with ESMTP
+	id 6A0417B4000014C5; Wed, 13 May 2026 14:18:34 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 3135098913013
+X-SMAIL-UIID: CD07E9044C1644B3847C377BF3937D6D-20260513-141834-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	sam@bynar.io
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	socketcan@hartkopp.net,
+	mkl@pengutronix.de,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH 6.1.y] can: raw: fix ro->uniq use-after-free in raw_rcv()
+Date: Wed, 13 May 2026 14:18:28 +0800
+Message-Id: <20260513061828.3671533-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260512214850.3AE80C2BCB0@smtp.kernel.org>
-X-Rspamd-Queue-Id: 759A252E00D
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 10E5F52E0B7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,chromium.org,kernel.org,cmpxchg.org,gourry.net,intel.com,linux.dev,gmail.com];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-246758-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	TAGGED_FROM(0.00)[bounces-246757-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[senozhatsky@chromium.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sina.cn:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,chromium.org:dkim]
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[sina.cn];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hartkopp.net:email,bynar.io:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,pengutronix.de:email]
 X-Rspamd-Action: no action
 
-On (26/05/12 14:48), Andrew Morton wrote:
-> The patch titled
->      Subject: zsmalloc: zero-initialize zspage memory to prevent KMSAN uninit reads
-> has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
->      zsmalloc-zero-initialize-zspage-memory-to-prevent-kmsan-uninit-reads.patch
-> 
-> This patch will shortly appear at
->      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zsmalloc-zero-initialize-zspage-memory-to-prevent-kmsan-uninit-reads.patch
-> 
-> This patch will later appear in the mm-hotfixes-unstable branch at
->     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> 
-> Before you just go and hit "reply", please:
->    a) Consider who else should be cc'ed
->    b) Prefer to cc a suitable mailing list as well
->    c) Ideally: find the original patch on the mailing list and do a
->       reply-to-all to that, adding suitable additional cc's
-> 
-> *** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-> 
-> The -mm tree is included into linux-next via various
-> branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> and is updated there most days
-> 
-> ------------------------------------------------------
-> From: Kartik Nair <contact.kartikn@gmail.com>
-> Subject: zsmalloc: zero-initialize zspage memory to prevent KMSAN uninit reads
-> Date: Tue, 12 May 2026 03:06:58 +0530
-> 
-> Pages allocated via alloc_zpdesc() use alloc_pages_node() without
-> __GFP_ZERO, leaving physical memory uninitialized.  When a compressed
-> object spans two physical pages in a zspage, zs_obj_read_sg_begin() sets
-> up a scatterlist pointing directly at the raw second page.  If the second
-> page was freshly allocated and never written beyond the object boundary,
-> KMSAN detects reads of uninitialized memory downstream in the decompressor
-> (e.g.  sw842_decompress reading the CRC trailer).
-> 
-> Fix this by passing __GFP_ZERO to alloc_zpdesc() in alloc_zspage() so
-> all pages backing a zspage are zero-initialized at allocation time.
+From: Samuel Page <sam@bynar.io>
 
-This is very unlikely to fix anything, we should not have out-of-bounds
-reads in the first place.
+[ Upstream commit a535a9217ca3f2fccedaafb2fddb4c48f27d36dc ]
+
+raw_release() unregisters raw CAN receive filters via can_rx_unregister(),
+but receiver deletion is deferred with call_rcu(). This leaves a window
+where raw_rcv() may still be running in an RCU read-side critical section
+after raw_release() frees ro->uniq, leading to a use-after-free of the
+percpu uniq storage.
+
+Move free_percpu(ro->uniq) out of raw_release() and into a raw-specific
+socket destructor. can_rx_unregister() takes an extra reference to the
+socket and only drops it from the RCU callback, so freeing uniq from
+sk_destruct ensures the percpu area is not released until the relevant
+callbacks have drained.
+
+Fixes: 514ac99c64b2 ("can: fix multiple delivery of a single CAN frame for overlapping CAN filters")
+Cc: stable@vger.kernel.org # v4.1+
+Assisted-by: Bynario AI
+Signed-off-by: Samuel Page <sam@bynar.io>
+Link: https://patch.msgid.link/26ec626d-cae7-4418-9782-7198864d070c@bynar.io
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+[mkl: applied manually]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+---
+ net/can/raw.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/net/can/raw.c b/net/can/raw.c
+index 488320738e31..bcd6061f43d8 100644
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -336,6 +336,14 @@ static int raw_notifier(struct notifier_block *nb, unsigned long msg,
+ 	return NOTIFY_DONE;
+ }
+ 
++static void raw_sock_destruct(struct sock *sk)
++{
++	struct raw_sock *ro = raw_sk(sk);
++
++	free_percpu(ro->uniq);
++	can_sock_destruct(sk);
++}
++
+ static int raw_init(struct sock *sk)
+ {
+ 	struct raw_sock *ro = raw_sk(sk);
+@@ -362,6 +370,8 @@ static int raw_init(struct sock *sk)
+ 	if (unlikely(!ro->uniq))
+ 		return -ENOMEM;
+ 
++	sk->sk_destruct = raw_sock_destruct;
++
+ 	/* set notifier */
+ 	spin_lock(&raw_notifier_lock);
+ 	list_add_tail(&ro->notifier, &raw_notifier_list);
+@@ -409,7 +419,6 @@ static int raw_release(struct socket *sock)
+ 	ro->bound = 0;
+ 	ro->dev = NULL;
+ 	ro->count = 0;
+-	free_percpu(ro->uniq);
+ 
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
+-- 
+2.34.1
+
 
