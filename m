@@ -1,176 +1,189 @@
-Return-Path: <stable+bounces-247030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Pt3COjSBGp3PgIAu9opvQ
-	(envelope-from <stable+bounces-247030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:37:12 +0200
+	id iA6eDG3TBGr0PQIAu9opvQ
+	(envelope-from <stable+bounces-247031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:39:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D546053A14B
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B95553A1D0
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 21:39:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 361A2306745D
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:36:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D4D330398AE
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 19:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8440B3B6C09;
-	Wed, 13 May 2026 19:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9AD3B0AFB;
+	Wed, 13 May 2026 19:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="aPcM25ay";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aPHxvsIV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilkVdvR4"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32693B7773;
-	Wed, 13 May 2026 19:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AC33A6F15;
+	Wed, 13 May 2026 19:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778700960; cv=none; b=EPwDTY/A/dNwlccxwHcsNWsJH4IX7TISTk+zBDdfWICscMSwCEWZDewTLQ47MYmy9gJIq+ii/y2xW27BiZgNqiGF0kXMEjrBPc2MPVU69XD7Ymfl5u8/6ZO3nBCa7NbBIxj8LKyfnngbYVLWuGKT2D5fFxAGnspRj/WMnbRL97o=
+	t=1778701155; cv=none; b=ErB0IMpEwD0jvfYHHipZ8ZzJvLm13M1I9zziw/rykuCG7DXlDfLpv3Wp8FFpYoRN+QoKvwzE9NE5XY7ZUrk1DLB45YrsNXWo2dzafBBkd2I0qucZUIp9QfvrvIQ+V9iosS7lsS6McxiIlu06nSyBdQb80jxW6v5ugXxgbTerfgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778700960; c=relaxed/simple;
-	bh=Khx6itO4f6h2LJ2n1xbCjOUxSfRTCgdmu9E86Yug4S8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=YrbKmAHikFNZ4POWJySHftLWwJjFkZH12EDsdVvm13EVWHs0uVpQZZJGxZyWVbWY6wvjKVGH3suymoNXdLR7RF1LUPB2DuultmuNmi3BN7soYl31PfXiHauTDfmsqb/WuPH8CYWcYLcLI4loGlxR3Y1cra3FpY9r9rW1jrbebEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=aPcM25ay; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=aPHxvsIV; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id EBF79EC00DD;
-	Wed, 13 May 2026 15:35:56 -0400 (EDT)
-Received: from phl-imap-12 ([10.202.2.86])
-  by phl-compute-04.internal (MEProxy); Wed, 13 May 2026 15:35:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1778700956;
-	 x=1778787356; bh=OHAXGNS2uZNJvowLRr51yYDMzB+i8UXrJCrf7upji3U=; b=
-	aPcM25ayM0XuFhS9n+688nxNsXjMY0r/BYzD7/ntFpJo9l4god2FFckBFiI98wiJ
-	+eQNmb6SeUpYUp6eKcEp3KGsy+8o0XffMGucJF1E1A75q6hYNMZMlzV7RHCjQcHK
-	ov9LOR3w/yu0L8aBXo541GRq3Kxy7kdGuD5KnVlUGDZZGQLyq9ClwItiejgpNNQA
-	xilGHH83gmhqc3U6EvZ6lgRPg3r/AiZHEkwnFst8uRUC8RK/nbMYA8PETxcMoypg
-	UC5W6xEMeQoChiMh3XqaE7rc3vg6SnoCl6iV7biaUMIPfFko4duAEow/IJR2Qvnd
-	WOwMxbKrBBnElStCexxoQg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778700956; x=
-	1778787356; bh=OHAXGNS2uZNJvowLRr51yYDMzB+i8UXrJCrf7upji3U=; b=a
-	PHxvsIVPJpW1HeGgtPyFE+l1MctbzfXIrE3LD9aWPy5QF/jqcoyz13Isdmq3YS9A
-	41IROyONSKO9B1/TgIHB5TzaRDY/GJwEsZ1jrErc9vSn6ym1m+mLMIhIemP1hoeO
-	kAAwKiGtDg8Z77NVFBZuwCJq3fdzk/EIzuMgtgKD2B3RVKzkrg4gRpUvdqsXLt6+
-	cohvemK4xp1LCZE/q6omJ4bzcch5Doahmw1BifOIagrgfFpcjL5+hasjd5O3vAoD
-	mnfiAkzQ+tSH32OA6ee0ptRFIh+rvxtTdc/EHKgqjeEB2NNvI6QYZCh1ivnfC7/q
-	rC89B7wahFMIDCGmkyelg==
-X-ME-Sender: <xms:nNIEajaoHW-4H7iyOe7hdtlJJORZYWQT2u6ot7DkYeMUD2HHSObnOw>
-    <xme:nNIEatP2F7Yxl4qJltGnjdQceo6GA_21SNhvL0JEPtLtK9faPC5NzH4Od38VeQlIQ
-    l55XxDA9i8ozoMFIidzhBRXpqYYhBdL3U0M7IN1QeGiZJHxL4dDGEk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvdehhedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdegjedvfeehtdeggeevheefleej
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopehjohhroheskegshihtvghsrdhorhhgpdhrtghpthhtoheprhhosg
-    hinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthhtohepmhhighhuvghlrdhojhgv
-    uggrrdhsrghnughonhhishesghhmrghilhdrtghomhdprhgtphhtthhopegrrhhnugeskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvvghssehkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurg
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:nNIEaifciD9rlNDoMgz1_wJRSTbIq36gaKPXjDBn2aJ6sFaoPg6t2w>
-    <xmx:nNIEahwmuHw5lD_K8siXNUGo0lWeKqc6wC8RKPjHx5IlKqkOvNneIA>
-    <xmx:nNIEatHpxgrZk0qs60zbrhENfjgJyyd_h55p_eBsVDkLJoG_viYPlg>
-    <xmx:nNIEag2S9fafatiAisPMi8fI6xWkARnTwePJu2XFhyy6ahDD2CfH1w>
-    <xmx:nNIEai1yYh147Ht3nTYXXvFX6h0iyp5PvJ0HKdH0PVa0zSnSOVch68h0>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 4F9921060065; Wed, 13 May 2026 15:35:56 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1778701155; c=relaxed/simple;
+	bh=bZh8ajTH/FHxGTNxvIEWwd6OX3IPyj4iu4FOoERxskg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rcxMQyr6d0sJttAx6bbNe/sqjXkYbwv5O2bNzLcZc0QKSpn1dOsZlThkJuYeeYovsIPanNMR1IZMEmoLTIIZPihKGNUt/ACYYNWkjunjgF+6Ck7kWQUmQ7rcxdKfhoXrAHO8dT30Y9CTXwxXivSZkVllaXZKXpcYFTTy2RwwDME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilkVdvR4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E434C2BCB7;
+	Wed, 13 May 2026 19:39:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778701155;
+	bh=bZh8ajTH/FHxGTNxvIEWwd6OX3IPyj4iu4FOoERxskg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ilkVdvR4g6fxP/acHHEDFSNiPxqkgjfXau0TgrXSPrWxHGm/TXD84deKhu/Tg/NJf
+	 AK/rcMT22hOq0DF0oeiZZwx7M3j+rxK7lDyu4ho0H2awSI2ywsAbJzH5a4+r0hSoNe
+	 SAl5QyvJ8QqGvdMBclSQpH0dsj9hslxZG/0C2w+bE6TRE1J4QQDw4lNbAUFvb8W9sq
+	 ch9GPiFftgcSrVkS9yEQ1od2SuAhI6beKhf2/GTs5g6dkxgCCeES7XJ3rXP3ZaskGh
+	 wLSmODjP9AMi9tyNF8b2dWcUnBbrP+8ocLvQpxUJShxWK71eWQ5Xb+TPvBxs/iC86C
+	 rYpHGGTh5xYRw==
+From: Tejun Heo <tj@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Tejun Heo <tj@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kyle McMartin <jkkm@meta.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Linux RT Development <linux-rt-devel@lists.linux.dev>,
+	Clark Williams <williams@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	John Kacur <jkacur@redhat.com>
+Subject: Re: [PATCH sched/core] sched/rt: Fix RT_PUSH_IPI soft lockup loop
+Date: Wed, 13 May 2026 09:39:14 -1000
+Message-ID: <20260513193914.1593369-1-tj@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260512172847.5024e5e8@gandalf.local.home>
+References: <20260506235716.2530720-1-tj@kernel.org> <20260507141437.GJ3102624@noisy.programming.kicks-ass.net> <20260512113754.448c1f5b@gandalf.local.home> <056f95bc5805f7e161458984fff4b3cb@kernel.org> <20260512172847.5024e5e8@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AR4HEWfQKB-F
-Date: Wed, 13 May 2026 21:35:36 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
- "Arnd Bergmann" <arnd@kernel.org>
-Cc: "Will Deacon" <will@kernel.org>, "Joerg Roedel" <joro@8bytes.org>,
- "Miguel Ojeda" <ojeda@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Thomas Gleixner" <tglx@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
- linux-kbuild@vger.kernel.org, stable@vger.kernel.org,
- "Robin Murphy" <robin.murphy@arm.com>, "Kees Cook" <kees@kernel.org>,
- linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Message-Id: <be9cbaf0-b6dd-4a62-9da8-b42dcac907c8@app.fastmail.com>
-In-Reply-To: 
- <CANiq72nbRw14wdZA4GH17K22Krh4ujB_wtuv9u5RQTGtidpq0g@mail.gmail.com>
-References: <20260513145425.1579430-1-arnd@kernel.org>
- <CANiq72nbRw14wdZA4GH17K22Krh4ujB_wtuv9u5RQTGtidpq0g@mail.gmail.com>
-Subject: Re: [PATCH] [v2] iommu, debugobjects: avoid gcc-16.1 section mismatch warnings
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D546053A14B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9B95553A1D0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arndb.de,none];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[arndb.de:s=fm2,messagingengine.com:s=fm3];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	TAGGED_FROM(0.00)[bounces-247030-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[arnd@arndb.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[arndb.de:+,messagingengine.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-247031-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arndb.de:dkim,app.fastmail.com:mid]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Wed, May 13, 2026, at 17:48, Miguel Ojeda wrote:
-> On Wed, May 13, 2026 at 4:54=E2=80=AFPM Arnd Bergmann <arnd@kernel.org=
-> wrote:
->>
->> With some more experimenting, I found that marking these functions as
->> __attribute__((noipa)) is both logical and reliable.
->>
->> In order to keep the syntax readable, add a custom macro for this in
->> include/linux/compiler_attributes.h next to other related macros and
->> use it to annotate both files.
->
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Hello,
 
-Thanks!
+Capturing this on the actual production hosts is awkward. It requires
+a fleet with a particular management operation in flight, and while
+the aggregate occurrence rate is reliable, which specific machine
+hits it isn't predictable, so I haven't been able to catch one with
+tracing on.
 
-> If you don't mind, please add underscores (i.e. `((__noipa__))`) and
-> place it after `__noinline__` to keep it sorted (the file is meant to
-> be sorted by actual attribute name, though some entries were added
-> that break that, but I will clean that and a couple other things up at
-> some point).
+Production context: hosts serve live network traffic and storage IO.
+CPU util before lockup is moderate (~30-40% steady state), but the
+moment-to-moment softirq work is bursty - traffic patterns, IO
+completions, plus the PSI poll triggers that source the migratable
+psimon. Once softirq processing falls behind on a CPU, work piles
+up. With the prio-bail-without-clearing-overload path, the IPI
+storm forms on top and amplifies the slowdown.
 
-Ok, changed now, will wait for other comments before resending.
+So, here's a capture from a synthetic reproducer that I think
+models the dynamic and reaches the same end state.
 
-       Arnd
+Test box, 192 CPUs, kernel without the fix:
+
+- Per-target hrtimer (HRTIMER_MODE_REL_PINNED_HARD) fires every
+  750us. Each fire schedules one tasklet round-robin from a pool
+  of 20k distinct tasklets. Each tasklet body is a 500us cpu_relax
+  loop, standing in for "process one item of softirq work".
+
+- Storm driver: 190 SCHED_FIFO-50 nanosleep loops on non-target
+  CPUs drive tell_cpu_to_push from balance_rt. Two synthetic
+  psimon-shaped kthreads (FIFO 1) bound to the targets to pin
+  them into rto_mask.
+
+Baseline (no storm helpers): ~85% softirq util, no lockup, runs
+indefinitely. The reproducer's baseline is higher than production -
+my guess is we need to scrape up against capacity to grow a backlog
+with the fixed-shape workload here, while production gets the same
+effect from bursty arrivals during brief slowdowns.
+
+With the storm: walker IPI overhead stretches each tasklet body
+from 500us to ~1.1ms. Service rate drops below arrival, backlog
+grows ~430/s. After ~46s, one tasklet_action_common snapshot has
+~20k tasklets which it processes serially in BH-disabled softirq
+context. That's ~22s uninterruptible, watchdog fires.
+
+Six soft-lockups in a 120s run:
+
+  [61125.38] BUG: soft lockup - CPU#95 stuck for 22s! [kworker/95:0]
+  [61145.38] BUG: soft lockup - CPU#47 stuck for 45s! [migration/47]
+  [61173.38] BUG: soft lockup - CPU#47 stuck for 71s! [migration/47]
+  [61197.38] BUG: soft lockup - CPU#95 stuck for 22s! [migration/95]
+  [61209.38] BUG: soft lockup - CPU#47 stuck for 21s! [kworker/47:1]
+  [61225.38] BUG: soft lockup - CPU#95 stuck for 48s! [migration/95]
+
+Stack at fire:
+
+  rt_storm_wedge_fn+0x22/0xe0
+  tasklet_action_common+0x100/0x2b0
+  handle_softirqs+0xbe/0x280
+  __irq_exit_rcu+0x47/0x100
+  sysvec_apic_timer_interrupt+0x3a/0x80     <- watchdog hrtimer
+  asm_sysvec_apic_timer_interrupt+0x16/0x20
+  RIP: 0033:0x...     <- user task (rt_storm_hog)
+
+Trace captured with your event list plus IPI:
+
+  -e sched_switch -e sched_waking -e irq -e workqueue -e ipi
+  -e irq_vectors:call_function_single_entry/exit
+  -e irq_vectors:irq_work_entry/exit
+  -e irq_vectors:reschedule_entry/exit
+  -e irq_vectors:local_timer_entry/exit
+
+Sliced to a 17s window around the first RCU stall + first
+soft-lockup, filtered to CPUs 47 and 95, gzipped text (~11MB):
+
+  https://drive.google.com/file/d/11AN6dyvOWiZLVNEEuVtQieRyAxJYbCbt/view?usp=sharing
+
+Thanks.
+
+--
+tejun
 
