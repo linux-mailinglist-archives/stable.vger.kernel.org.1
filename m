@@ -1,93 +1,93 @@
-Return-Path: <stable+bounces-246823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPPrH7JlBGpVIAIAu9opvQ
-	(envelope-from <stable+bounces-246823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:51:14 +0200
+	id 2B/SK35lBGq6HgIAu9opvQ
+	(envelope-from <stable+bounces-246825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:50:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9185328BF
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:51:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22B0532888
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 81A78300D92D
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 11:50:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 123D13040B4E
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 11:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6B339AD32;
-	Wed, 13 May 2026 11:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8BD3FE651;
+	Wed, 13 May 2026 11:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MSICViyB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jAcC9CKe"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA7137F72F;
-	Wed, 13 May 2026 11:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAB63A63FE;
+	Wed, 13 May 2026 11:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778673001; cv=none; b=K5C3zZuIKrVCXUlLglm4xjeV8/nLkvZcC43de7BBa2o6q6nUgx2KBNEkidSJx8LfZUknKhCZ3jFgsz6IWV8eNuwJFELAgdA+MnwZMj1aS0brJydAAc7cxcosqoyBZrzTldzTiiZKQ+0y3IZDjlzj00XHjCfV1tIt1R11186CMB0=
+	t=1778673017; cv=none; b=nBjshM+aqmi5rvDFgPb9E7NGxyawXg3vPa8llvBawX+fXeLAV/UiMcb0X65v6gJ7K7gLwwAEpjjfe8hECcQqL1S+n4QuQIUpA/CUZ6b29xAl2vsYaFXpCioHrPqNaDt8GgNXWziTkA88Qlr94xeqMxeEkNSLBGUTDWg8Cbhyf9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778673001; c=relaxed/simple;
-	bh=y7YTdDNOgPWmZ8e7kGA0uKrl3g7cfC6t3Ce8lQyE80k=;
+	s=arc-20240116; t=1778673017; c=relaxed/simple;
+	bh=Nd501hgChR/UL/dVI5/rbdNXtUQk8uLIpkOH1WQ6lZk=;
 	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=OXDXxp/xf8xNsW0S7Vf5/yiPaEytyHNOA0iS6Kh8bmENLogXaRVU/lPtn2/Pooi6zdLlY2ObuHdoTd+H+AUw/YMQOmMBLWXSt1vlu3tY11nkXQD86wVo460/34ZWKPyEcm3Gdlk4oJ5wmvT9dxLP4RFZbuRR+3b0zd6/424zV4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MSICViyB; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version:Content-Type; b=NJ8W0cvZfvPTyEDDc80HvYtyV5o0RgxyajePEF/rkFwqfF8EQCmbGefzgGjDwlMGfCa6+NMcHBcMfxuFk413VVDOzK6RCgn4ZEFwwywNZBKvNVgGREY6GS1RPDaJ6hhc40wY4xe9BUCGMT0Kd4Kq0shTFJvnnW5CFUjMPgwrN88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jAcC9CKe; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778672999; x=1810208999;
+  t=1778673016; x=1810209016;
   h=from:date:to:cc:subject:in-reply-to:message-id:
    references:mime-version;
-  bh=y7YTdDNOgPWmZ8e7kGA0uKrl3g7cfC6t3Ce8lQyE80k=;
-  b=MSICViyBLc8eAcgyttKS3k2sKhd1kVrkCj87ULHH/SHAo6Cc7kZOicmY
-   ttQpa9f9UV/m+bRGxJ5aFmM6ZVNmjjFiNWDaqrndWiifJR/sE0VGo213X
-   +9ViPtpP9hug5jym7PngLIbTt1yfJO2a8dhjywK2nBNig5Hf+3auoL9pZ
-   hMBPxtzauuSOw/y60VvJbn9sC4MDFxEhFdKr2EdsLyQrLmfeDiqlYcWKr
-   rblwwVu+oRCQwbU7PjWrultjR7X4NpA49WsabLUALX+q3jQMeHlNcZBtr
-   VldeJw1m5/7ZPQ/MX2kcJm8X9mKUYCIPuSj6mYE4hbiZJRGluSX0+hNYp
-   Q==;
-X-CSE-ConnectionGUID: JAPATyl/Tj+JmtTKOQCC7Q==
-X-CSE-MsgGUID: acMWjL0NQwaJZwXz/NHVbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79455059"
+  bh=Nd501hgChR/UL/dVI5/rbdNXtUQk8uLIpkOH1WQ6lZk=;
+  b=jAcC9CKeFu+JXWqu1pPwn8YhJcU89pjCDH4wFyZekS2FmQTGcMuVN3k/
+   150rpeJRWhP2OkficfpCrVzAVWg7Z4LoYkqWbgpzSahlISfQw1AFXCBAj
+   0tAtfgMfN4zaAOczLX/jkPkjBa55ug8xK7dBN5YLfBUnT6Hz/eEa0SsGH
+   z4T+IZ3+z80Eu5tzoGhDARjn93nWYXa9VPX8IQnJPjwmlYiC4W0R4IE5/
+   6CO6eMoVqeHYGI93pZfg0zKWCsowUC6Ul18cCIMcQgXIAGUurbOOQ7dR6
+   I/WKzb0SVAx1gic2iJxa4S7AmE7ClQZQIh4dlCXAY6qA4pEF+aViTLo/f
+   g==;
+X-CSE-ConnectionGUID: I9Mn4HPySK2HUwQ2chBoiA==
+X-CSE-MsgGUID: 2YR3+KgjSjCrOuO1wQ7HXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79455098"
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="79455059"
+   d="scan'208";a="79455098"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 04:49:58 -0700
-X-CSE-ConnectionGUID: EipZDLHcQM2FXOkV95eq+g==
-X-CSE-MsgGUID: GVCCyDd1Sze8aaDyfYZH+g==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 04:50:15 -0700
+X-CSE-ConnectionGUID: cMQg6anwRT6AKE4cDK3h2g==
+X-CSE-MsgGUID: kgrbea+hSo2Nzp4TUIDClA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="242078877"
+   d="scan'208";a="242078997"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.110])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 04:49:57 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 04:50:14 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 13 May 2026 14:49:53 +0300 (EEST)
+Date: Wed, 13 May 2026 14:50:10 +0300 (EEST)
 To: Jacques Nilo <jnilo@free.fr>
 cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
     Jiri Slaby <jirislaby@kernel.org>, 
     linux-serial <linux-serial@vger.kernel.org>, 
     LKML <linux-kernel@vger.kernel.org>, Johan Hovold <johan@kernel.org>, 
     stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] serial: 8250: dispatch SysRq character in
- serial8250_handle_irq()
-In-Reply-To: <5d6d693aa9e92f05412d0f9395872d41e1b8e444.1778592805.git.jnilo@free.fr>
-Message-ID: <8e222497-313e-6322-609b-547a3c87c165@linux.intel.com>
-References: <5efe9e03-4d86-43a0-9ec2-e610ff31095d@free.fr> <cover.1778592805.git.jnilo@free.fr> <5d6d693aa9e92f05412d0f9395872d41e1b8e444.1778592805.git.jnilo@free.fr>
+Subject: Re: [PATCH 3/3] serial: 8250_dw: dispatch SysRq character in
+ dw8250_handle_irq()
+In-Reply-To: <340a4a76e5dbeb2e49ad4b8d41b9631e09e94bec.1778592805.git.jnilo@free.fr>
+Message-ID: <fa464674-82cd-35e7-9317-92475694e291@linux.intel.com>
+References: <5efe9e03-4d86-43a0-9ec2-e610ff31095d@free.fr> <cover.1778592805.git.jnilo@free.fr> <340a4a76e5dbeb2e49ad4b8d41b9631e09e94bec.1778592805.git.jnilo@free.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1798024874-1778672993=:12534"
-X-Rspamd-Queue-Id: EA9185328BF
+Content-Type: multipart/mixed; boundary="8323328-1139180977-1778673010=:12534"
+X-Rspamd-Queue-Id: D22B0532888
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	CTYPE_MIXED_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
@@ -97,10 +97,10 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	DKIM_TRACE(0.00)[intel.com:+];
 	FREEMAIL_TO(0.00)[free.fr];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246823-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-246825-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -110,81 +110,56 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
 X-Rspamd-Action: no action
 
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323328-1798024874-1778672993=:12534
+--8323328-1139180977-1778673010=:12534
 Content-Type: text/plain; charset=ISO-8859-15
 Content-Transfer-Encoding: QUOTED-PRINTABLE
 
 On Tue, 12 May 2026, Jacques Nilo wrote:
 
-> serial8250_handle_irq() captures a SysRq character into port->sysrq_ch
-> inside serial8250_handle_irq_locked() via uart_prepare_sysrq_char()
-> (reached from serial8250_read_char()). Dispatch of that captured
-> character to handle_sysrq() is expected to happen at port-unlock time,
-> through uart_unlock_and_check_sysrq[_irqrestore]().
+> dw8250_handle_irq() calls serial8250_handle_irq_locked() with the port
+> lock held via guard(uart_port_lock_irqsave). The guard destructor is
+> plain uart_port_unlock_irqrestore(), so a SysRq character captured into
+> port->sysrq_ch by uart_prepare_sysrq_char() is dropped without ever
+> being dispatched to handle_sysrq().
 >=20
-> After commit 8324a54f604d ("serial: 8250: Add
-> serial8250_handle_irq_locked()") the function was reduced to a wrapper
-> that takes the port lock via guard(uart_port_lock_irqsave) whose
-> destructor is plain uart_port_unlock_irqrestore(). The sysrq-aware
-> unlock helper is no longer called, so port->sysrq_ch is captured but
-> never dispatched: BREAK + SysRq key is consumed silently.
+> This is the same regression pattern as in serial8250_handle_irq(),
+> introduced when 883c5a2bc934 ("serial: 8250_dw: Rework
+> dw8250_handle_irq() locking and IIR handling") moved the function to
+> the guard()-based locking scheme without using the sysrq-aware unlock
+> helper.
 >=20
-> This was the very condition Johan Hovold's 853a9ae29e978 ("serial:
-> 8250: fix handle_irq locking", 2021) introduced
-> uart_unlock_and_check_sysrq_irqrestore() to address.
+> Switch to guard(uart_port_lock_sysrq_irqsave) so that captured
+> sysrq_ch is dispatched on scope exit, matching the fix in
+> serial8250_handle_irq().
 >=20
-> Switch to the new guard(uart_port_lock_sysrq_irqsave), whose destructor
-> is the sysrq-aware unlock helper, restoring the pre-split behaviour.
-> Update the Context: comment on serial8250_handle_irq_locked() so future
-> HW-specific 8250 wrappers know to use the same guard or the explicit
-> sysrq-aware unlock.
->=20
-> Verified on RTL8196E with CONFIG_MAGIC_SYSRQ_SERIAL=3Dy: BREAK + 'h' on
-> the console UART produces the SysRq help dump in dmesg and the brk
-> counter in /proc/tty/driver/serial increments correctly.
->=20
-> Fixes: 8324a54f604d ("serial: 8250: Add serial8250_handle_irq_locked()")
+> Fixes: 883c5a2bc934 ("serial: 8250_dw: Rework dw8250_handle_irq() locking=
+ and IIR handling")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Jacques Nilo <jnilo@free.fr>
 > ---
->  drivers/tty/serial/8250/8250_port.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  drivers/tty/serial/8250/8250_dw.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/825=
-0/8250_port.c
-> index e4e6a53eb..64f3487e8 100644
-> --- a/drivers/tty/serial/8250/8250_port.c
-> +++ b/drivers/tty/serial/8250/8250_port.c
-> @@ -1786,7 +1786,10 @@ static bool handle_rx_dma(struct uart_8250_port *u=
-p, unsigned int iir)
->  }
+> diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/=
+8250_dw.c
+> index 55e40c10f..237543fa7 100644
+> --- a/drivers/tty/serial/8250/8250_dw.c
+> +++ b/drivers/tty/serial/8250/8250_dw.c
+> @@ -416,7 +416,7 @@ static int dw8250_handle_irq(struct uart_port *p)
+>  =09unsigned int quirks =3D d->pdata->quirks;
+>  =09unsigned int status;
 > =20
->  /*
-> - * Context: port's lock must be held by the caller.
-> + * Context: port's lock must be held by the caller. The caller must
-> + * release it via guard(uart_port_lock_sysrq_irqsave) or
-> + * uart_unlock_and_check_sysrq_irqrestore(), which captures SysRq
-> + * character on unlock.
->   */
->  void serial8250_handle_irq_locked(struct uart_port *port, unsigned int i=
-ir)
->  {
-> @@ -1839,7 +1842,7 @@ int serial8250_handle_irq(struct uart_port *port, u=
-nsigned int iir)
->  =09if (iir & UART_IIR_NO_INT)
->  =09=09return 0;
+> -=09guard(uart_port_lock_irqsave)(p);
+> +=09guard(uart_port_lock_sysrq_irqsave)(p);
 > =20
-> -=09guard(uart_port_lock_irqsave)(port);
-> +=09guard(uart_port_lock_sysrq_irqsave)(port);
->  =09serial8250_handle_irq_locked(port, iir);
-> =20
->  =09return 1;
+>  =09switch (FIELD_GET(DW_UART_IIR_IID, iir)) {
+>  =09case UART_IIR_NO_INT:
 >=20
 
 Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
@@ -192,5 +167,5 @@ Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
 --=20
  i.
 
---8323328-1798024874-1778672993=:12534--
+--8323328-1139180977-1778673010=:12534--
 
