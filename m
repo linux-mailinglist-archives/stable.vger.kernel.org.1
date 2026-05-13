@@ -1,200 +1,185 @@
-Return-Path: <stable+bounces-246751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246752-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sG2TIUANBGqLCwIAu9opvQ
-	(envelope-from <stable+bounces-246751-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:33:52 +0200
+	id EL4AImcPBGoMDAIAu9opvQ
+	(envelope-from <stable+bounces-246752-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:43:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D4652D946
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:33:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE5D52DA83
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 35444306CB23
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 05:33:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F06383044BA0
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 05:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764F13A543B;
-	Wed, 13 May 2026 05:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAB73A6B78;
+	Wed, 13 May 2026 05:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PLSAH4cI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i9ZSlOdZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB2630FC27
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 05:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1BD3A6EEF
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 05:42:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778650427; cv=none; b=U+JIm4mOH4MdT7voyIP+n4Ey4Z0sB3ufP5Rr/X+muUNymlmFZKiwtZjBCMayVCRLVZIc9ctHh7jQNpKtshExG2rMQbBhwbYnPUZollHBaktnXUOSV3GI0axcNYXEdxXVfPDxE8OtUg9Kqvkt5uFzYcpnv+MqnSFTXtTrvCIlEtM=
+	t=1778650974; cv=none; b=eRIUIm8ifvILyeMqU7a6KSBWXoe/g8z8DW9Tz+lEPthb0oUxuv2JN/TVoCXTthQwiAoJVpDVVO8jbJh98DxEknvBNIo7/jdwYVrlVeTdU8izyRloV8ZXJ8DFQ0j0O0HOe1o50s2c46rFeNgB6mLcWULdAXVBD1v1LHvGMZYoiDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778650427; c=relaxed/simple;
-	bh=ywHjxzNY3uTJw/A4IRbRbj7/TeQCHfR+qStLFB0xjdI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SOy1MQHTbHuaX/lZO7KRKfVlvRXUnGZL8oH51hdtVUt9gUNCOkomGTCSZ8jDAiLA5MYzrug4H41LML6AeRx7JEWeX9iETuV+tc/cmg/ML9kbMy0PWWBSicKyhwzgEvmgztcstbPXBar1fQCFPTFwf7BVls0LWVF1kMPEwvtM9DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PLSAH4cI; arc=none smtp.client-ip=74.125.82.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2f485961555so15554228eec.1
-        for <stable@vger.kernel.org>; Tue, 12 May 2026 22:33:45 -0700 (PDT)
+	s=arc-20240116; t=1778650974; c=relaxed/simple;
+	bh=AUFheTiaIdq9G2k4NVJD81/GQk2hPB7b+FIJOQIso9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=me/LgLWQEdYpJsMYLCUjtC/jJ1ATP/D67feDxrEIiQop2h94WlvXIgFuDfvQF5XHl2LS3h/GyZdJG/ShMsNPtABwi5uzX/Ckwi+uplA003bNLan1Udhp2rk30I9vVOdPPhrKoh99UtHp/B40ZtAzPlFBw8J0HGQGUnLP7gVfsrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i9ZSlOdZ; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so57458845e9.0
+        for <stable@vger.kernel.org>; Tue, 12 May 2026 22:42:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778650425; x=1779255225; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yD4uczaoBtE4wv2HzhlD+gXzbPGjt6KufsjG+4Ch3Kg=;
-        b=PLSAH4cId/WyYB2EgTCeCMUYvzSpeelYCFQGwJIfdYh14uGsAmyIy9opuHMvwtZyWG
-         nFwh0qF0SYC07ozqGSRdLSzjVHY7+PEH0RmnAAIh+BkEcJasPa32KcSGq73Ky/fxVNsW
-         eQm69rw+ZXISpN6csbp1UeTKwVUvFU0QIUj7VIN1Z0Du0S7bT+5ZSR+IVbYonWXYWWK9
-         J1/Y+nkA4jNpt0CjGNett5M3FnKiKxnoTgw99Zog9oHwG0WGg6VlN3oNlhio+jyqRyuW
-         20u0ReGFYB4C8uRpwGvs/9049/mlAqJ3mMxfry6Xqc9CUKX3NxExpxiO6MUPOBZvsxxf
-         VW8Q==
+        d=gmail.com; s=20251104; t=1778650970; x=1779255770; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yYBEv39uEgMy3N++VlBuBjtbHkIyYso+pXEc18UPlvk=;
+        b=i9ZSlOdZg4mmOpjerXieSv0dag7k37jcmPIvfypYeERjNpfVzKPcsE1HgHxo0OuFiX
+         rlYOAVxpLmalWozT+7vL0yBF5S5GFPlY1KqXgSsMHR8igRadrX2gUa17w4jEjjYQImyz
+         GUMN9cKMKJZ1p/iudPC6WP5MewRM5ddKXgQ186o7DBOjpxCEOOSVkstNDmnfUMU54/2H
+         v7xXFmKA49viGnQ0B8FMwYGRErVDX6NAAlsbBX0FPfuBlgUIJqzRtpd30wyESG4bIopc
+         fn/I9+utPJFb2z3MdQgIH9piM0tOGvky/Nx1ROzsYm5vWy5wdVfqNTAYUoBdohFVtVxC
+         W9zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778650425; x=1779255225;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yD4uczaoBtE4wv2HzhlD+gXzbPGjt6KufsjG+4Ch3Kg=;
-        b=GKJJ7HGUll9JhdH+wiCciLQJzzT0Gec8HAIdjIRr/en4KtWzTXk6bs1zLMcZh+Ze8+
-         7VqAg3AtLpFVrYcurjULQoR9fjkHQ85Qng0+lAocuRA23vDpO82dIdYFPAcuA+3ny5ox
-         VqvbJNXoDG8PrnXmN4ITTy2NBtAc3+CpE5SFZ7ImcDXq94zYaT9dwgW0CzyEBnWvydiX
-         9eWcDXVvJ+IWKXPjt33iII2bjVSD2dthkmH8NFZbTLI9WkyIzE/2yw3RSb4P3/n1d7sW
-         z0w7QYeKayfJ/21I757fWMie79u/KWJbpyCiiLXgDHudWwr+sbnxwAih5Xmx4+ZtUuvL
-         Pe4g==
-X-Gm-Message-State: AOJu0YzkU8u20aVTustDeyjW1X8XngmeH8odDINtbHiTaiY5G6oCpxDg
-	zYxe/sTv+79NQSoWz1aD8Qgj/uYLkfCtIGQ58DoPfUPDUpmSkEJXcK8Zi66H1ZFz4U7iS8VyZmE
-	TySaIIc3LpYNeC5gqM+dn42GFlBvCRwOc24eE7hbnEOKkYtZAo0zOUJKLFFeltgVSLbnNj1Q66j
-	zQWx8EnsZlubM86oixQ3BXD/SJlnbmpn5IAPa1
-X-Received: from dycqv12.prod.google.com ([2002:a05:7300:df4c:b0:2f9:af7:503f])
- (user=amitsd job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:5415:b0:2ed:e17:d50e
- with SMTP id 5a478bee46e88-3011ac4350amr1206554eec.33.1778650424526; Tue, 12
- May 2026 22:33:44 -0700 (PDT)
-Date: Wed, 13 May 2026 05:33:36 +0000
-In-Reply-To: <20260512173940.117428952@linuxfoundation.org>
+        d=1e100.net; s=20251104; t=1778650970; x=1779255770;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yYBEv39uEgMy3N++VlBuBjtbHkIyYso+pXEc18UPlvk=;
+        b=G+FszxBYuwnsxgleqR0GJ1nkNq2UDj4YRq1/yKZMcYjkmcKBtuphk2umt1BuhPagqJ
+         5bUdCKkveVfJT8WhTRM8RzdoRu9ci/sI/EkaRcU1ef4EA+n0t+6e74oCTgsalz5Uoiml
+         Pmi7tcCXJ3I8HyR+3Gq+0/YKwURNueYDGD9oIe3mIq49MhwFHV1zoKGesgYF7QVPw+Hq
+         Az6iJIDRINqp+JixvZ4sKdVbK/r9ImMPml3ykynF0gEvMJK3feKaknVwY8V/AJEKrDHL
+         xsbQ1Hy5onT03M1Aec8F78+zI77Q/Ds0PNe1a9h9eKz3yP/zgXmBStLwpbaBvDbe4Oh5
+         nYTA==
+X-Gm-Message-State: AOJu0Yypflad1uom+u617FGOE4GpuMEbLZ3tNpvIeg1xqxllLaaZugqt
+	zWT7CALcJGOUp2NJnlRZK8K4fpQEENq/p0qDwxA4JJWN4DUaAiW09rVq
+X-Gm-Gg: Acq92OFqnmQXNdeTzmD9PCa1wBYJE0fnrq7005zjLIsoPNwrNXXtGs638ZfAEraDHeE
+	VAmveiA4mCzsvX7FXE+DRrqePfraM+C002MOqkDJfOmpOcgjbv1kgtgRWQtY4hW/etiCYasz48y
+	6Q5FmUomzbqwC71jgpZQAV2D9NHKm9f2zgdQDGMngYywc36gmfchyNKKVHuSygySNirSuiQA+vj
+	/Oer2p9UWTlz+FSYLe3O1PZlLhsYh80/sW9/8Li9bChL/59gtoyb/PBrqZhcZoOLMGll+K7RDGL
+	/pESC9Z2iaslOweusBPA3LoCR/HpF4/UKwkS3wSRz1Js4IBUWABs23akv5dLWoC3rd3qVUuLhqN
+	5SGEKVHa/WZNwAfQ+qFqIQ3SjoSvF9CV4GIvgO1aj7Y+9tqkGrGAS3CtPLXz5Kj4geUU2UUXZIF
+	OoN+S+yRvXDWR/8Ff+40q1mnxvt9BibDj+dpMpF7lQSft0Y9P9VsIyvERJ
+X-Received: by 2002:a05:600c:3f0c:b0:48a:55d8:7882 with SMTP id 5b1f17b1804b1-48fc9a0ead2mr20611005e9.9.1778650969796;
+        Tue, 12 May 2026 22:42:49 -0700 (PDT)
+Received: from va-HP-Pavilion-Desktop-595-p0xxx.mshome.net ([31.7.57.58])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fce37b182sm38558085e9.9.2026.05.12.22.42.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 22:42:49 -0700 (PDT)
+From: Valery Borovsky <vebohr@gmail.com>
+To: hverkuil@kernel.org,
+	mchehab@kernel.org,
+	hansg@kernel.org,
+	linux-media@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Valery Borovsky <vebohr@gmail.com>
+Subject: [PATCH] media: pwc: Drain fill_buf on start_streaming() failure
+Date: Wed, 13 May 2026 08:42:44 +0300
+Message-ID: <20260513054244.143866-1-vebohr@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260512173940.117428952@linuxfoundation.org>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260513053336.3789575-1-amitsd@google.com>
-Subject: [PATCH 7.0.y] usb: typec: tcpm: reset internal port states on soft
- reset AMS
-From: Amit Sunil Dhamne <amitsd@google.com>
-To: stable@vger.kernel.org
-Cc: Amit Sunil Dhamne <amitsd@google.com>, stable <stable@kernel.org>, 
-	Badhri Jagan Sridharan <badhri@google.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: E6D4652D946
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: DFE5D52DA83
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246751-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-246752-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vebohr@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[amitsd@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
 X-Rspamd-Action: no action
 
-Reset internal port states (such as vdm_sm_running and
-explicit_contract) on soft reset AMS as the port needs to negotiate a
-new contract. The consequence of leaving the states in as-is cond are as
-follows:
-  * port is in SRC power role and an explicit contract is negotiated
-    with the port partner (in sink role)
-  * port partner sends a Soft Reset AMS while VDM State Machine is
-    running
-  * port accepts the Soft Reset request and the port advertises src caps
-  * port partner sends a Request message but since the explicit_contract
-    and vdm_sm_running are true from previous negotiation, the port ends
-    up sending Soft Reset instead of Accept msg.
+pwc_isoc_init() submits its isochronous URBs with
+usb_submit_urb(.., GFP_KERNEL) in a loop. After the first URB is
+submitted, its completion handler pwc_isoc_handler() can run on another
+CPU before the loop finishes:
 
-Stub Log:
-[  203.653942] AMS DISCOVER_IDENTITY start
-[  203.653947] PD TX, header: 0x176f
-[  203.655901] PD TX complete, status: 0
-[  203.657470] PD RX, header: 0x124f [1]
-[  203.657477] Rx VDM cmd 0xff008081 type 2 cmd 1 len 1
-[  203.657482] AMS DISCOVER_IDENTITY finished
-[  203.657484] cc:=4
-[  204.155698] PD RX, header: 0x144f [1]
-[  204.155718] Rx VDM cmd 0xeeee8001 type 0 cmd 1 len 1
-[  204.155741] PD TX, header: 0x196f
-[  204.157622] PD TX complete, status: 0
-[  204.160060] PD RX, header: 0x4d [1]
-[  204.160066] state change SRC_READY -> SOFT_RESET [rev2 SOFT_RESET_AMS]
-[  204.160076] PD TX, header: 0x163
-[  204.162486] PD TX complete, status: 0
-[  204.162832] AMS SOFT_RESET_AMS finished
-[  204.162840] cc:=4
-[  204.162891] AMS POWER_NEGOTIATION start
-[  204.162896] state change SOFT_RESET -> AMS_START [rev2 POWER_NEGOTIATION]
-[  204.162908] state change AMS_START -> SRC_SEND_CAPABILITIES [rev2 POWER_NEGOTIATION]
-[  204.162913] PD TX, header: 0x1361
-[  204.165529] PD TX complete, status: 0
-[  204.165571] pending state change SRC_SEND_CAPABILITIES -> SRC_SEND_CAPABILITIES_TIMEOUT @ 60 ms [rev2 POWER_NEGOTIATION]
-[  204.166996] PD RX, header: 0x1242 [1]
-[  204.167009] state change SRC_SEND_CAPABILITIES -> SRC_SOFT_RESET_WAIT_SNK_TX [rev2 POWER_NEGOTIATION]
-[  204.167019] AMS POWER_NEGOTIATION finished
-[  204.167020] cc:=4
-[  204.167083] AMS SOFT_RESET_AMS start
-[  204.167086] state change SRC_SOFT_RESET_WAIT_SNK_TX -> SOFT_RESET_SEND [rev2 SOFT_RESET_AMS]
-[  204.167092] PD TX, header: 0x16d
-[  204.168824] PD TX complete, status: 0
-[  204.168854] pending state change SOFT_RESET_SEND -> HARD_RESET_SEND @ 60 ms [rev2 SOFT_RESET_AMS]
-[  204.171876] PD RX, header: 0x43 [1]
-[  204.171879] AMS SOFT_RESET_AMS finished
+  start_streaming()
+    pwc_isoc_init()
+      usb_submit_urb(urbs[0], GFP_KERNEL)
+                                  pwc_isoc_handler(urbs[0])
+                                    pdev->fill_buf =
+                                      pwc_get_next_fill_buf(pdev)
+      usb_submit_urb(urbs[i>0], ..)  -> fails
+      pwc_isoc_cleanup(pdev)           /* kills URBs */
+      return ret;
+    pwc_cleanup_queued_bufs(pdev, VB2_BUF_STATE_QUEUED)
 
-This causes COMMON.PROC.PD.11.2 check failure for
-TEST.PD.VDM.SRC.2_Rev2Src test on the PD compliance tester.
+pwc_get_next_fill_buf() detaches a buffer from pdev->queued_bufs and
+stores it in pdev->fill_buf. The error path in start_streaming() only
+drains pdev->queued_bufs, so the buffer parked in pdev->fill_buf is
+leaked. vb2_start_streaming() then triggers
+WARN_ON(owned_by_drv_count).
 
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Fixes: 8d3a0578ad1a ("usb: typec: tcpm: Respond Wait if VDM state machine is running")
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260414-fix-soft-reset-v1-1-01d7cb9764e2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-(cherry picked from commit 2909f0d4994fb4306bf116df5ccee797791fce2c)
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+stop_streaming() already handles this since commit 80b0963e1698
+("[media] pwc: fix WARN_ON"), which added the fill_buf drain in the
+teardown path but not in the start_streaming() error path. Mirror that
+handling on failure so start_streaming() returns with no buffer owned
+by the driver.
+
+Issue identified by automated review of the INV-003 series at
+https://sashiko.dev/
+
+Fixes: 885fe18f5542 ("[media] pwc: Replace private buffer management code with videobuf2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Valery Borovsky <vebohr@gmail.com>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/usb/pwc/pwc-if.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 8e0e14a2704e..c73e5daafcf1 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -5534,6 +5534,8 @@ static void run_state_machine(struct tcpm_port *port)
- 		usb_power_delivery_unregister_capabilities(port->partner_source_caps);
- 		port->partner_source_caps = NULL;
- 		tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
-+		port->vdm_sm_running = false;
-+		port->explicit_contract = false;
- 		tcpm_ams_finish(port);
- 		if (port->pwr_role == TYPEC_SOURCE) {
- 			port->upcoming_state = SRC_SEND_CAPABILITIES;
+diff --git a/drivers/media/usb/pwc/pwc-if.c b/drivers/media/usb/pwc/pwc-if.c
+index c416e2fc5754..26ce7106ae30 100644
+--- a/drivers/media/usb/pwc/pwc-if.c
++++ b/drivers/media/usb/pwc/pwc-if.c
+@@ -726,6 +726,11 @@ static int start_streaming(struct vb2_queue *vq, unsigned int count)
+ 		pwc_camera_power(pdev, 0);
+ 		/* And cleanup any queued bufs!! */
+ 		pwc_cleanup_queued_bufs(pdev, VB2_BUF_STATE_QUEUED);
++		if (pdev->fill_buf) {
++			vb2_buffer_done(&pdev->fill_buf->vb.vb2_buf,
++					VB2_BUF_STATE_QUEUED);
++			pdev->fill_buf = NULL;
++		}
+ 	}
+ 	mutex_unlock(&pdev->v4l2_lock);
+ 
 -- 
-2.54.0.563.g4f69b47b94-goog
+2.51.0
 
 
