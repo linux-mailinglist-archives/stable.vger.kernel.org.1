@@ -1,776 +1,114 @@
-Return-Path: <stable+bounces-246856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sB5JM/l+BGpoKgIAu9opvQ
-	(envelope-from <stable+bounces-246856-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:39:05 +0200
+	id SO8yCf6ABGrmKwIAu9opvQ
+	(envelope-from <stable+bounces-246857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:47:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936D7534339
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:39:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8564453453B
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 15:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 993F03082D33
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:26:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BD78130E159D
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 13:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E19477E51;
-	Wed, 13 May 2026 13:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y8cGYHz2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F0B2EA171;
+	Wed, 13 May 2026 13:24:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF794779B1
-	for <stable@vger.kernel.org>; Wed, 13 May 2026 13:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083373F4128
+	for <stable@vger.kernel.org>; Wed, 13 May 2026 13:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778678416; cv=none; b=vBqbxIJa8TtZ6nXqz26k+yQO4BZxlkP+IZBpncevjzE3to+EA8zT/0OnOc6MiwtVJ+6BDuoY016veyUl+9qfvN7Fyf8KSQgAP8DBeChsgNJHIwYUHwmBWOSTYpSXl8q/wGYbDUkRXIn4owSLHfGekXz88JdW74DFLM4eKdBRCmg=
+	t=1778678678; cv=none; b=ZeS2OcdMJKm+0EoxUDnmnVKPeIGCFY+APJlXP2eo25CBuyqMQFE4RTPgYp7k/qh3oG+1kBSJGkZPgQBjsfJfuO99ZSkyuzQt2earhxOOX55X3Oc1cQPzto8d5Tw1F9xbJOuMKywfJInQDg8BFZfwFJsZxPm77w1fchUr38A2aI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778678416; c=relaxed/simple;
-	bh=IYgIZSqpbkzhZ7+b47fbXIns8el61RasxlNy3NFG/dk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qR0ypGkG73lXoa0cYfRtKHV6qAshmtM/FH21sDWh30fuC2rjRv0fnaPVEI6ocYWFuQswfrZ8Kh9Al+RAAYm+X8Rm2Pw+mArgkO3JNwCAKuusSr944P694vrvxarSi28I+/V5WLw2/zrooUh1vCt0Qq2zt2SQjocYXuPfokbG/1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y8cGYHz2; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778678413;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bGNvhNMkTL8OTQrzN3rz6RTBZyBHYjixMWmDGEpud1U=;
-	b=Y8cGYHz2AptjQKE2baZbjHwDSjdCHnNtsUOfy7Jni8mu+wiFbMM7wMkQGh0saJFFO4b7BV
-	SIe6x6wtuBcVUwOkbOnnhoGbO0qIV74tKcdDChAmn9huuZLbYreitIIVZSwLH6i5RcFxAR
-	pUPCh+UlfAmFSdoNdV4kXjGhvlfeAjo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-77-xcs2HdMKPeeJ_CqdUCZT2A-1; Wed,
- 13 May 2026 09:20:10 -0400
-X-MC-Unique: xcs2HdMKPeeJ_CqdUCZT2A-1
-X-Mimecast-MFC-AGG-ID: xcs2HdMKPeeJ_CqdUCZT2A_1778678408
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	s=arc-20240116; t=1778678678; c=relaxed/simple;
+	bh=MqoFmTwrvH+mo1WqmW7lECGd8obLUv7J4XGMpXvGLRY=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=Cu6aWFaPlhArksK/sMuqOWLVqIJxNzcJEBvtKB/EyZwVBrd45FgmaVToHpY3cz5gu3G2nswN7EyHCVaKe/EBSWqOPrx8m5mYwPbTl/n9iQC3vUjgkxSjs9q0w2j7msDYehsu+imrRorarCC09IIzAI7bUCcxcOqZBdjEoSTPlVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F20918005B9;
-	Wed, 13 May 2026 13:20:08 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.48.83])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D07DA180058F;
-	Wed, 13 May 2026 13:20:03 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 3/4] rxrpc: Fix DATA decrypt vs splice() by copying data to buffer in recvmsg
-Date: Wed, 13 May 2026 14:19:39 +0100
-Message-ID: <20260513131941.1439155-4-dhowells@redhat.com>
-In-Reply-To: <20260513131941.1439155-1-dhowells@redhat.com>
-References: <20260513131941.1439155-1-dhowells@redhat.com>
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 7F1324C4019BA7;
+	Wed, 13 May 2026 15:24:29 +0200 (CEST)
+Message-ID: <35e9c59e-6e54-4683-9751-175d425fbc37@molgen.mpg.de>
+Date: Wed, 13 May 2026 15:24:28 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable@vger.kernel.org
+Cc: manish1@arista.com
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: Please backport b8e753128ed074 (exit: Sleep at TASK_IDLE when waiting
+ for application core dump) to < 6.12
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: 936D7534339
+X-Rspamd-Queue-Id: 8564453453B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[redhat.com,gmail.com,auristor.com,kernel.org,davemloft.net,google.com,lists.infradead.org,vger.kernel.org,linux.dev];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-246856-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-246857-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[mpg.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,stable@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[auristor.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-This improves the fix for CVE-2026-43500.
+Dear Linux folks,
 
-Fix the pagecache corruption from in-place decryption of a DATA packet
-transmitted locally by splice() by getting rid of the packet sharing in the
-I/O thread and unconditionally extracting the packet content into a bounce
-buffer in which the buffer is decrypted.  recvmsg() (or the kernel
-equivalent) then copies the data from the bounce buffer to the destination
-buffer.  The sk_buff then remains unmodified.
 
-This has an additional advantage in that the packet is then arranged in the
-buffer with the correct alignment required for the crypto algorithms to
-process directly.  The performance of the crypto does seem to be a little
-faster and, surprisingly, the unencrypted performance doesn't seem to
-change much - possibly due to removing complexity from the I/O thread.
+I am forwarding a backport request from SONiC Linux kernel [1]. It’d be 
+great if you could apply commit b8e753128ed074fcb48e9ceded940752f6b1c19f 
+[2] to Linux 6.1 and older.
 
-Yet another advantage is that the I/O thread doesn't have to copy packets
-which would slow down packet distribution, ACK generation, etc..
+> On Linux 6.1, coredump_task_exit() parks sibling threads in 
+> TASK_UNINTERRUPTIBLE|TASK_FREEZABLE while one thread of the group
+> writes the core file. Under sustained memory pressure the dump can
+> take longer than kernel.hung_task_timeout_secs, at which point
+> khungtaskd flags the parked siblings and (with hung_task_panic=1)
+> panics the box.
+> 
+> Backport mainline v6.12 commit b8e753128ed0 ("exit: Sleep at
+> TASK_IDLE when waiting for application core dump") which switches
+> that wait to TASK_IDLE|TASK_FREEZABLE so the watchdog skips it.
 
-The buffer belongs to the call and is allocated initially at 2K,
-sufficiently large to hold a whole jumbo subpacket, but the buffer will be
-increased in size if needed.  There is one downside here, and that's if a
-MSG_PEEK of more than one byte occurs, it may move on to the next packet,
-replacing the content of the buffer.  In such a case, it has to go back and
-re-decrypt the current packet.
 
-Note that rx_pkt_offset may legitimately see 0 as a valid offset now, so
-switch to using USHRT_MAX to indicate an invalid offset.
+Kind regards,
 
-Note also that I would generally prefer to replace the buffers of the
-current sk_buff with a new kmalloc'd buffer of the right size, ditching the
-old data and frags as this makes the handling of MSG_PEEK easier and
-removes the double-decryption issue, but this looks like quite a
-complicated thing to achieve.  skb_morph() looks half way to what I want,
-but I don't want to have to allocate a new sk_buff.
+Paul
 
-Fixes: d0d5c0cd1e71 ("rxrpc: Use skb_unshare() rather than skb_cow_data()")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Closes: https://lore.kernel.org/r/afKV2zGR6rrelPC7@v4bel/
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-cc: netdev@vger.kernel.org
-cc: linux-afs@lists.infradead.org
-cc: stable@vger.kernel.org
----
- net/rxrpc/ar-internal.h |  7 +++-
- net/rxrpc/call_event.c  | 22 +----------
- net/rxrpc/call_object.c |  2 +
- net/rxrpc/insecure.c    |  3 --
- net/rxrpc/recvmsg.c     | 72 +++++++++++++++++++++++++++-------
- net/rxrpc/rxgk.c        | 49 +++++++++++------------
- net/rxrpc/rxgk_common.h | 82 +++++++++++++++++++++++++++++++++++++++
- net/rxrpc/rxkad.c       | 86 +++++++++++++++--------------------------
- 8 files changed, 203 insertions(+), 120 deletions(-)
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 27c2aa2dd023..783367eea798 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -213,8 +213,6 @@ struct rxrpc_skb_priv {
- 		struct {
- 			u16		offset;		/* Offset of data */
- 			u16		len;		/* Length of data */
--			u8		flags;
--#define RXRPC_RX_VERIFIED	0x01
- 		};
- 		struct {
- 			rxrpc_seq_t	first_ack;	/* First packet in acks table */
-@@ -774,6 +772,11 @@ struct rxrpc_call {
- 	struct sk_buff_head	recvmsg_queue;	/* Queue of packets ready for recvmsg() */
- 	struct sk_buff_head	rx_queue;	/* Queue of packets for this call to receive */
- 	struct sk_buff_head	rx_oos_queue;	/* Queue of out of sequence packets */
-+	void			*rx_dec_buffer;	/* Decryption buffer */
-+	unsigned short		rx_dec_bsize;	/* rx_dec_buffer size */
-+	unsigned short		rx_dec_offset;	/* Decrypted packet data offset */
-+	unsigned short		rx_dec_len;	/* Decrypted packet data len */
-+	rxrpc_seq_t		rx_dec_seq;	/* Packet in decryption buffer */
- 
- 	rxrpc_seq_t		rx_highest_seq;	/* Higest sequence number received */
- 	rxrpc_seq_t		rx_consumed;	/* Highest packet consumed */
-diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
-index 2b19b252225e..fec59d9338b9 100644
---- a/net/rxrpc/call_event.c
-+++ b/net/rxrpc/call_event.c
-@@ -332,27 +332,7 @@ bool rxrpc_input_call_event(struct rxrpc_call *call)
- 
- 			saw_ack |= sp->hdr.type == RXRPC_PACKET_TYPE_ACK;
- 
--			if (sp->hdr.type == RXRPC_PACKET_TYPE_DATA &&
--			    sp->hdr.securityIndex != 0 &&
--			    (skb_cloned(skb) ||
--			     skb_has_frag_list(skb) ||
--			     skb_has_shared_frag(skb))) {
--				/* Unshare the packet so that it can be
--				 * modified by in-place decryption.
--				 */
--				struct sk_buff *nskb = skb_copy(skb, GFP_ATOMIC);
--
--				if (nskb) {
--					rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
--					rxrpc_input_call_packet(call, nskb);
--					rxrpc_free_skb(nskb, rxrpc_skb_put_call_rx);
--				} else {
--					/* OOM - Drop the packet. */
--					rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
--				}
--			} else {
--				rxrpc_input_call_packet(call, skb);
--			}
-+			rxrpc_input_call_packet(call, skb);
- 			rxrpc_free_skb(skb, rxrpc_skb_put_call_rx);
- 			did_receive = true;
- 		}
-diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
-index f035f486c139..fcb9d38bb521 100644
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -152,6 +152,7 @@ struct rxrpc_call *rxrpc_alloc_call(struct rxrpc_sock *rx, gfp_t gfp,
- 	spin_lock_init(&call->notify_lock);
- 	refcount_set(&call->ref, 1);
- 	call->debug_id		= debug_id;
-+	call->rx_pkt_offset	= USHRT_MAX;
- 	call->tx_total_len	= -1;
- 	call->tx_jumbo_max	= 1;
- 	call->next_rx_timo	= 20 * HZ;
-@@ -553,6 +554,7 @@ static void rxrpc_cleanup_rx_buffers(struct rxrpc_call *call)
- 	rxrpc_purge_queue(&call->recvmsg_queue);
- 	rxrpc_purge_queue(&call->rx_queue);
- 	rxrpc_purge_queue(&call->rx_oos_queue);
-+	kfree(call->rx_dec_buffer);
- }
- 
- /*
-diff --git a/net/rxrpc/insecure.c b/net/rxrpc/insecure.c
-index 0a260df45d25..7a26c6097d03 100644
---- a/net/rxrpc/insecure.c
-+++ b/net/rxrpc/insecure.c
-@@ -32,9 +32,6 @@ static int none_secure_packet(struct rxrpc_call *call, struct rxrpc_txbuf *txb)
- 
- static int none_verify_packet(struct rxrpc_call *call, struct sk_buff *skb)
- {
--	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
--
--	sp->flags |= RXRPC_RX_VERIFIED;
- 	return 0;
- }
- 
-diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
-index e1f7513a46db..d6d7f4522b85 100644
---- a/net/rxrpc/recvmsg.c
-+++ b/net/rxrpc/recvmsg.c
-@@ -147,15 +147,55 @@ static void rxrpc_rotate_rx_window(struct rxrpc_call *call)
- }
- 
- /*
-- * Decrypt and verify a DATA packet.
-+ * Decrypt and verify a DATA packet.  The content of the packet is pulled out
-+ * into a flat buffer rather than decrypting in place in the skbuff.  This also
-+ * has the advantage of aligning the buffer correctly for the crypto routines.
-+ *
-+ * We keep track of the sequence number of the packet currently decrypted into
-+ * the buffer in ->rx_dec_seq.  Unfortunately, this means that a MSG_PEEK of
-+ * more than one byte may cause a later packet to be decrypted into the buffer,
-+ * requiring the original to be re-decrypted when recvmsg() is called again.
-  */
- static int rxrpc_verify_data(struct rxrpc_call *call, struct sk_buff *skb)
- {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+	int ret;
- 
--	if (sp->flags & RXRPC_RX_VERIFIED)
-+	if (call->rx_dec_seq == sp->hdr.seq && call->rx_dec_buffer)
- 		return 0;
--	return call->security->verify_packet(call, skb);
-+
-+	if (sp->len > call->rx_dec_bsize) {
-+		/* Make sure we can hold a 1412-byte jumbo subpacket and make
-+		 * sure that the buffer size is aligned to a crypto blocksize.
-+		 */
-+		size_t size = max(round_up(sp->len, 32), 2048);
-+		void *buffer = krealloc(call->rx_dec_buffer, size, GFP_NOFS);
-+
-+		if (!buffer)
-+			return -ENOMEM;
-+		call->rx_dec_buffer = buffer;
-+		call->rx_dec_bsize = size;
-+	}
-+
-+	ret = -EFAULT;
-+	if (skb_copy_bits(skb, sp->offset, call->rx_dec_buffer, sp->len) < 0)
-+		goto err;
-+
-+	call->rx_dec_offset = 0;
-+	call->rx_dec_len = sp->len;
-+	call->rx_dec_seq = sp->hdr.seq;
-+	ret = call->security->verify_packet(call, skb);
-+	if (ret < 0)
-+		goto err;
-+	return 0;
-+
-+err:
-+	kfree(call->rx_dec_buffer);
-+	call->rx_dec_buffer = NULL;
-+	call->rx_dec_bsize = 0;
-+	call->rx_dec_offset = 0;
-+	call->rx_dec_len = 0;
-+	return ret;
- }
- 
- /*
-@@ -283,16 +323,19 @@ static int rxrpc_recvmsg_data(struct socket *sock, struct rxrpc_call *call,
- 		if (msg)
- 			sock_recv_timestamp(msg, sock->sk, skb);
- 
--		if (rx_pkt_offset == 0) {
-+		if (rx_pkt_offset == USHRT_MAX) {
- 			ret2 = rxrpc_verify_data(call, skb);
- 			trace_rxrpc_recvdata(call, rxrpc_recvmsg_next, seq,
--					     sp->offset, sp->len, ret2);
-+					     call->rx_dec_offset,
-+					     call->rx_dec_len, ret2);
- 			if (ret2 < 0) {
- 				ret = ret2;
- 				goto out;
- 			}
--			rx_pkt_offset = sp->offset;
--			rx_pkt_len = sp->len;
-+			sp = rxrpc_skb(skb);
-+			seq = sp->hdr.seq;
-+			rx_pkt_offset = call->rx_dec_offset;
-+			rx_pkt_len = call->rx_dec_len;
- 		} else {
- 			trace_rxrpc_recvdata(call, rxrpc_recvmsg_cont, seq,
- 					     rx_pkt_offset, rx_pkt_len, 0);
-@@ -304,10 +347,10 @@ static int rxrpc_recvmsg_data(struct socket *sock, struct rxrpc_call *call,
- 		if (copy > remain)
- 			copy = remain;
- 		if (copy > 0) {
--			ret2 = skb_copy_datagram_iter(skb, rx_pkt_offset, iter,
--						      copy);
--			if (ret2 < 0) {
--				ret = ret2;
-+			ret2 = copy_to_iter(call->rx_dec_buffer + rx_pkt_offset,
-+					    copy, iter);
-+			if (ret2 != copy) {
-+				ret = -EFAULT;
- 				goto out;
- 			}
- 
-@@ -328,13 +371,14 @@ static int rxrpc_recvmsg_data(struct socket *sock, struct rxrpc_call *call,
- 		/* The whole packet has been transferred. */
- 		if (sp->hdr.flags & RXRPC_LAST_PACKET)
- 			ret = 1;
--		rx_pkt_offset = 0;
-+		rx_pkt_offset = USHRT_MAX;
- 		rx_pkt_len = 0;
-+		if (unlikely(flags & MSG_PEEK))
-+			break;
- 
- 		skb = skb_peek_next(skb, &call->recvmsg_queue);
- 
--		if (!(flags & MSG_PEEK))
--			rxrpc_rotate_rx_window(call);
-+		rxrpc_rotate_rx_window(call);
- 
- 		if (!rx->app_ops &&
- 		    !skb_queue_empty_lockless(&rx->recvmsg_oobq)) {
-diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
-index 41180263e527..85a59d74aea8 100644
---- a/net/rxrpc/rxgk.c
-+++ b/net/rxrpc/rxgk.c
-@@ -473,8 +473,9 @@ static int rxgk_verify_packet_integrity(struct rxrpc_call *call,
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxgk_header *hdr;
- 	struct krb5_buffer metadata;
--	unsigned int offset = sp->offset, len = sp->len;
-+	unsigned int len = call->rx_dec_len;
- 	size_t data_offset = 0, data_len = len;
-+	void *data = call->rx_dec_buffer, *p = data;
- 	u32 ac = 0;
- 	int ret = -ENOMEM;
- 
-@@ -498,16 +499,15 @@ static int rxgk_verify_packet_integrity(struct rxrpc_call *call,
- 
- 	metadata.len = sizeof(*hdr);
- 	metadata.data = hdr;
--	ret = rxgk_verify_mic_skb(gk->krb5, gk->rx_Kc, &metadata,
--				  skb, &offset, &len, &ac);
-+	ret = rxgk_verify_mic(gk->krb5, gk->rx_Kc, &metadata, &p, &len, &ac);
- 	kfree(hdr);
- 	if (ret < 0) {
- 		if (ret != -ENOMEM)
- 			rxrpc_abort_eproto(call, skb, ac,
- 					   rxgk_abort_1_verify_mic_eproto);
- 	} else {
--		sp->offset = offset;
--		sp->len = len;
-+		call->rx_dec_offset = p - data;
-+		call->rx_dec_len = len;
- 	}
- 
- put_gk:
-@@ -524,8 +524,9 @@ static int rxgk_verify_packet_encrypted(struct rxrpc_call *call,
- 					struct sk_buff *skb)
- {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
--	struct rxgk_header hdr;
--	unsigned int offset = sp->offset, len = sp->len;
-+	struct rxgk_header *hdr;
-+	unsigned int offset = 0, len = call->rx_dec_len;
-+	void *data = call->rx_dec_buffer, *p = data;
- 	int ret;
- 	u32 ac = 0;
- 
-@@ -536,42 +537,38 @@ static int rxgk_verify_packet_encrypted(struct rxrpc_call *call,
- 		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
- 					  rxgk_abort_2_short_header);
- 
--	ret = rxgk_decrypt_skb(gk->krb5, gk->rx_enc, skb, &offset, &len, &ac);
-+	ret = rxgk_decrypt(gk->krb5, gk->rx_enc, &p, &len, &ac);
- 	if (ret < 0) {
- 		if (ret != -ENOMEM)
- 			rxrpc_abort_eproto(call, skb, ac, rxgk_abort_2_decrypt_eproto);
- 		goto error;
- 	}
-+	offset = p - data;
- 
--	if (len < sizeof(hdr)) {
-+	if (len < sizeof(*hdr)) {
- 		ret = rxrpc_abort_eproto(call, skb, RXGK_PACKETSHORT,
- 					 rxgk_abort_2_short_header);
- 		goto error;
- 	}
- 
- 	/* Extract the header from the skb */
--	ret = skb_copy_bits(skb, offset, &hdr, sizeof(hdr));
--	if (ret < 0) {
--		ret = rxrpc_abort_eproto(call, skb, RXGK_PACKETSHORT,
--					 rxgk_abort_2_short_encdata);
--		goto error;
--	}
--	offset += sizeof(hdr);
--	len -= sizeof(hdr);
--
--	if (ntohl(hdr.epoch)		!= call->conn->proto.epoch ||
--	    ntohl(hdr.cid)		!= call->cid ||
--	    ntohl(hdr.call_number)	!= call->call_id ||
--	    ntohl(hdr.seq)		!= sp->hdr.seq ||
--	    ntohl(hdr.sec_index)	!= call->security_ix ||
--	    ntohl(hdr.data_len)		> len) {
-+	hdr = data + offset;
-+	offset += sizeof(*hdr);
-+	len -= sizeof(*hdr);
-+
-+	if (ntohl(hdr->epoch)		!= call->conn->proto.epoch ||
-+	    ntohl(hdr->cid)		!= call->cid ||
-+	    ntohl(hdr->call_number)	!= call->call_id ||
-+	    ntohl(hdr->seq)		!= sp->hdr.seq ||
-+	    ntohl(hdr->sec_index)	!= call->security_ix ||
-+	    ntohl(hdr->data_len)	> len) {
- 		ret = rxrpc_abort_eproto(call, skb, RXGK_SEALEDINCON,
- 					 rxgk_abort_2_short_data);
- 		goto error;
- 	}
- 
--	sp->offset = offset;
--	sp->len = ntohl(hdr.data_len);
-+	call->rx_dec_offset = offset;
-+	call->rx_dec_len = ntohl(hdr->data_len);
- 	ret = 0;
- error:
- 	rxgk_put(gk);
-diff --git a/net/rxrpc/rxgk_common.h b/net/rxrpc/rxgk_common.h
-index 1e257d7ab8ec..112b5366ce11 100644
---- a/net/rxrpc/rxgk_common.h
-+++ b/net/rxrpc/rxgk_common.h
-@@ -105,6 +105,49 @@ int rxgk_decrypt_skb(const struct krb5_enctype *krb5,
- 	return ret;
- }
- 
-+/*
-+ * Apply decryption and checksumming functions a flat data buffer.  The data
-+ * point and length are updated to reflect the actual content of the encrypted
-+ * region.
-+ */
-+static inline int rxgk_decrypt(const struct krb5_enctype *krb5,
-+			       struct crypto_aead *aead,
-+			       void **_data, unsigned int *_len,
-+			       int *_error_code)
-+{
-+	struct scatterlist sg[1];
-+	size_t offset = 0, len = *_len;
-+	int ret;
-+
-+	sg_init_one(sg, *_data, len);
-+
-+	ret = crypto_krb5_decrypt(krb5, aead, sg, 1, &offset, &len);
-+	switch (ret) {
-+	case 0:
-+		if (offset & 3) {
-+			*_error_code = RXGK_INCONSISTENCY;
-+			ret = -EPROTO;
-+			break;
-+		}
-+		*_data += offset;
-+		*_len = len;
-+		break;
-+	case -EBADMSG: /* Checksum mismatch. */
-+	case -EPROTO:
-+		*_error_code = RXGK_SEALEDINCON;
-+		break;
-+	case -EMSGSIZE:
-+		*_error_code = RXGK_PACKETSHORT;
-+		break;
-+	case -ENOPKG: /* Would prefer RXGK_BADETYPE, but not available for YFS. */
-+	default:
-+		*_error_code = RXGK_INCONSISTENCY;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
- /*
-  * Check the MIC on a region of an skbuff.  The offset and length are updated
-  * to reflect the actual content of the secure region.
-@@ -148,3 +191,42 @@ int rxgk_verify_mic_skb(const struct krb5_enctype *krb5,
- 
- 	return ret;
- }
-+
-+/*
-+ * Check the MIC on a flat buffer.  The data pointer and length are updated to
-+ * reflect the actual content of the secure region.
-+ */
-+static inline
-+int rxgk_verify_mic(const struct krb5_enctype *krb5,
-+		    struct crypto_shash *shash,
-+		    const struct krb5_buffer *metadata,
-+		    void **_data, unsigned int *_len,
-+		    u32 *_error_code)
-+{
-+	struct scatterlist sg[1];
-+	size_t offset = 0, len = *_len;
-+	int ret;
-+
-+	sg_init_one(sg, *_data, len);
-+
-+	ret = crypto_krb5_verify_mic(krb5, shash, metadata, sg, 1, &offset, &len);
-+	switch (ret) {
-+	case 0:
-+		*_data += offset;
-+		*_len = len;
-+		break;
-+	case -EBADMSG: /* Checksum mismatch */
-+	case -EPROTO:
-+		*_error_code = RXGK_SEALEDINCON;
-+		break;
-+	case -EMSGSIZE:
-+		*_error_code = RXGK_PACKETSHORT;
-+		break;
-+	case -ENOPKG: /* Would prefer RXGK_BADETYPE, but not available for YFS. */
-+	default:
-+		*_error_code = RXGK_INCONSISTENCY;
-+		break;
-+	}
-+
-+	return ret;
-+}
-diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
-index cba7935977f0..075936337836 100644
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -430,27 +430,25 @@ static int rxkad_verify_packet_1(struct rxrpc_call *call, struct sk_buff *skb,
- 				 rxrpc_seq_t seq,
- 				 struct skcipher_request *req)
- {
--	struct rxkad_level1_hdr sechdr;
-+	struct rxkad_level1_hdr *sechdr;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxrpc_crypt iv;
--	struct scatterlist sg[16];
--	u32 data_size, buf;
-+	struct scatterlist sg[1];
-+	void *data = call->rx_dec_buffer;
-+	u32 len = sp->len, data_size, buf;
- 	u16 check;
- 	int ret;
- 
- 	_enter("");
- 
--	if (sp->len < 8)
-+	if (len < 8)
- 		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
- 					  rxkad_abort_1_short_header);
- 
- 	/* Decrypt the skbuff in-place.  TODO: We really want to decrypt
- 	 * directly into the target buffer.
- 	 */
--	sg_init_table(sg, ARRAY_SIZE(sg));
--	ret = skb_to_sgvec(skb, sg, sp->offset, 8);
--	if (unlikely(ret < 0))
--		return ret;
-+	sg_init_one(sg, data, len);
- 
- 	/* start the decryption afresh */
- 	memset(&iv, 0, sizeof(iv));
-@@ -464,13 +462,11 @@ static int rxkad_verify_packet_1(struct rxrpc_call *call, struct sk_buff *skb,
- 		return ret;
- 
- 	/* Extract the decrypted packet length */
--	if (skb_copy_bits(skb, sp->offset, &sechdr, sizeof(sechdr)) < 0)
--		return rxrpc_abort_eproto(call, skb, RXKADDATALEN,
--					  rxkad_abort_1_short_encdata);
--	sp->offset += sizeof(sechdr);
--	sp->len    -= sizeof(sechdr);
-+	sechdr = data;
-+	call->rx_dec_offset = sizeof(*sechdr);
-+	len -= sizeof(*sechdr);
- 
--	buf = ntohl(sechdr.data_size);
-+	buf = ntohl(sechdr->data_size);
- 	data_size = buf & 0xffff;
- 
- 	check = buf >> 16;
-@@ -479,10 +475,10 @@ static int rxkad_verify_packet_1(struct rxrpc_call *call, struct sk_buff *skb,
- 	if (check != 0)
- 		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
- 					  rxkad_abort_1_short_check);
--	if (data_size > sp->len)
-+	if (data_size > len)
- 		return rxrpc_abort_eproto(call, skb, RXKADDATALEN,
- 					  rxkad_abort_1_short_data);
--	sp->len = data_size;
-+	call->rx_dec_len = data_size;
- 
- 	_leave(" = 0 [dlen=%x]", data_size);
- 	return 0;
-@@ -496,43 +492,28 @@ static int rxkad_verify_packet_2(struct rxrpc_call *call, struct sk_buff *skb,
- 				 struct skcipher_request *req)
- {
- 	const struct rxrpc_key_token *token;
--	struct rxkad_level2_hdr sechdr;
-+	struct rxkad_level2_hdr *sechdr;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxrpc_crypt iv;
--	struct scatterlist _sg[4], *sg;
--	u32 data_size, buf;
-+	struct scatterlist sg[1];
-+	void *data = call->rx_dec_buffer;
-+	u32 len = sp->len, data_size, buf;
- 	u16 check;
--	int nsg, ret;
-+	int ret;
- 
--	_enter(",{%d}", sp->len);
-+	_enter(",{%d}", len);
- 
--	if (sp->len < 8)
-+	if (len < 8)
- 		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
- 					  rxkad_abort_2_short_header);
- 
- 	/* Don't let the crypto algo see a misaligned length. */
--	sp->len = round_down(sp->len, 8);
-+	len = round_down(len, 8);
- 
--	/* Decrypt the skbuff in-place.  TODO: We really want to decrypt
--	 * directly into the target buffer.
-+	/* Decrypt in place in the call's decryption buffer.  TODO: We really
-+	 * want to decrypt directly into the target buffer.
- 	 */
--	sg = _sg;
--	nsg = skb_shinfo(skb)->nr_frags + 1;
--	if (nsg <= 4) {
--		nsg = 4;
--	} else {
--		sg = kmalloc_objs(*sg, nsg, GFP_NOIO);
--		if (!sg)
--			return -ENOMEM;
--	}
--
--	sg_init_table(sg, nsg);
--	ret = skb_to_sgvec(skb, sg, sp->offset, sp->len);
--	if (unlikely(ret < 0)) {
--		if (sg != _sg)
--			kfree(sg);
--		return ret;
--	}
-+	sg_init_one(sg, data, len);
- 
- 	/* decrypt from the session key */
- 	token = call->conn->key->payload.data[0];
-@@ -540,11 +521,9 @@ static int rxkad_verify_packet_2(struct rxrpc_call *call, struct sk_buff *skb,
- 
- 	skcipher_request_set_sync_tfm(req, call->conn->rxkad.cipher);
- 	skcipher_request_set_callback(req, 0, NULL, NULL);
--	skcipher_request_set_crypt(req, sg, sg, sp->len, iv.x);
-+	skcipher_request_set_crypt(req, sg, sg, len, iv.x);
- 	ret = crypto_skcipher_decrypt(req);
- 	skcipher_request_zero(req);
--	if (sg != _sg)
--		kfree(sg);
- 	if (ret < 0) {
- 		if (ret == -ENOMEM)
- 			return ret;
-@@ -553,13 +532,11 @@ static int rxkad_verify_packet_2(struct rxrpc_call *call, struct sk_buff *skb,
- 	}
- 
- 	/* Extract the decrypted packet length */
--	if (skb_copy_bits(skb, sp->offset, &sechdr, sizeof(sechdr)) < 0)
--		return rxrpc_abort_eproto(call, skb, RXKADDATALEN,
--					  rxkad_abort_2_short_len);
--	sp->offset += sizeof(sechdr);
--	sp->len    -= sizeof(sechdr);
-+	sechdr = data;
-+	call->rx_dec_offset = sizeof(*sechdr);
-+	len -= sizeof(*sechdr);
- 
--	buf = ntohl(sechdr.data_size);
-+	buf = ntohl(sechdr->data_size);
- 	data_size = buf & 0xffff;
- 
- 	check = buf >> 16;
-@@ -569,17 +546,18 @@ static int rxkad_verify_packet_2(struct rxrpc_call *call, struct sk_buff *skb,
- 		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
- 					  rxkad_abort_2_short_check);
- 
--	if (data_size > sp->len)
-+	if (data_size > len)
- 		return rxrpc_abort_eproto(call, skb, RXKADDATALEN,
- 					  rxkad_abort_2_short_data);
- 
--	sp->len = data_size;
-+	call->rx_dec_len = data_size;
- 	_leave(" = 0 [dlen=%x]", data_size);
- 	return 0;
- }
- 
- /*
-- * Verify the security on a received packet and the subpackets therein.
-+ * Verify the security on a received (sub)packet.  If the packet needs
-+ * modifying (e.g. decrypting), it must be copied.
-  */
- static int rxkad_verify_packet(struct rxrpc_call *call, struct sk_buff *skb)
- {
-
+[1]: https://github.com/sonic-net/sonic-linux-kernel/pull/575/
+[2]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b8e753128ed074fcb48e9ceded940752f6b1c19f
 
