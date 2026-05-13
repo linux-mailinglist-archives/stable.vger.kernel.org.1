@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-246780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OA8qDFwvBGo/FAIAu9opvQ
-	(envelope-from <stable+bounces-246780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:59:24 +0200
+	id gEaMINowBGo9FQIAu9opvQ
+	(envelope-from <stable+bounces-246781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 10:05:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8BE52F38D
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:59:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D64C52F4F8
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 10:05:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B5A4A3054CE1
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:57:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7053B300D87F
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 08:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCD93D79FE;
-	Wed, 13 May 2026 07:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C5836F90A;
+	Wed, 13 May 2026 08:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Qw7k/od9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t+n4kDjk"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4A53EDE4C;
-	Wed, 13 May 2026 07:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A19368D77;
+	Wed, 13 May 2026 08:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778659064; cv=none; b=A9+Ui55fN/xLFtqaCH17FZQ0H69sCccxRzbnBVEqrsc1/a81s579/HY8IqYvoNkwUCpjh005hyx1x3VtinTMwpXtOhGS2cR3I17hZmRyyPrmQ3xOiQsciTKk5TFy7yTPRMoCGs0r6PlmoeXPhM1GINwObea7kbqMnaXUbwg2KvM=
+	t=1778659278; cv=none; b=N4IcfNA48mqNpA/yxFa67f+psoHzZ4WShz3bH9E7f5GpC5AFsF8CVirIQXHXTWT3hlaBl1AqxgVakFnm+YpIAEoqdlIxRih9S8JVFqftlXDcQUzWeV+u//YqCEVMdfrNCGIq6o1GKSGRWPNWTWMtsX2xlkrwrPq0ygjgHfB7mQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778659064; c=relaxed/simple;
-	bh=q1kYmQJIIXdK7nHLWyP1FRpGZnD6+wdlRASZoMilCpM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gxaaHwAK7L528WvXVDszAj8KkNOvrAGJ+22voE/P/jgAYqsBT/fgzdgkqLBzYlSaVN+60ENPxr2xfWKu9ytUEB3dQQzP927fT8iRZW7yET2M9IEwJFxe3jNhhk2RDSnBfM06RB5bWiVuzHBNkmwNH0Sf3uoSfe1mfpDjxlFSnUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Qw7k/od9; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=QN
-	J0pX4HvWDuJCJuN3VN499U7DmFHT6TG7ja77n/UiY=; b=Qw7k/od90YlkvU6+Wb
-	LxMfbDMhMYuhtd0ltslbOb3IzcBKWAw4xOpgM1V+yjgJzsG9RpUyclbxL6zfoue2
-	jMNper4sTXrfIaB/aOa9F10pkbmhOPkvegbOj63c71OjXXTAQPvzcfcYR72FSvW2
-	0iw9a45UD4cDB/gIb992W1jTc=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wCXdeHHLgRqvE5+BA--.7181S2;
-	Wed, 13 May 2026 15:56:55 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Tejun Heo <tj@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Breno Leitao <leitao@debian.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	cgroups@vger.kernel.org,
-	linux-block@vger.kernel.org,
+	s=arc-20240116; t=1778659278; c=relaxed/simple;
+	bh=58qnot80DX+F+OvA46/Uf+lFEZfUYoIG7HZYVg2Hp9U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pUlvrxp/f7Y2h4PWYidZPuI7agIgDa5XJgm1LBlOStviX4+ciisS1ZQhefEjhgcBzNKb7Ip9RHBqrE4SHil8VPvwjF7cKMfcgzDS+rFYKSDtfuo+Thu4GdJhwr24+PadMPztzxxJaIsIsJU1LYEmqYcwIy6Q1cYbjQtzu0iFiLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t+n4kDjk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B461C2BCB7;
+	Wed, 13 May 2026 08:01:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778659278;
+	bh=58qnot80DX+F+OvA46/Uf+lFEZfUYoIG7HZYVg2Hp9U=;
+	h=From:To:Cc:Subject:Date:From;
+	b=t+n4kDjkbd++erQODQq7cEBlevxeThPl0uBOEpZuvBX78YcbVrimzXF8zRxp5aVy7
+	 l6A+5zi+VbrZQ6coLwXp0TJd32MiO+aLFPGZcJQIWxn7vWoqs17OMDe8+IbOuPl/kV
+	 +xfUIUuVIC8KXtG2jGtTPG9BXqCpHoloKhXRGgUUQbhJEWBC0nAxkMFccnoerlfqiA
+	 lMYW7m0qgY3pZs1LfEhf46vCIO9XZRT24/0RpCeEakvcT8zX4PFEPra7zSz0GSZpXg
+	 C0R2gehIonZwRB8DWnB61vTHZR5XOoWG+qlQcc9llZ1MXEX+7UVbcF2RSi5isO1yeG
+	 HTNlxNhIEDyiw==
+From: Lee Jones <lee@kernel.org>
+To: lee@kernel.org,
+	Ping Cheng <ping.cheng@wacom.com>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	linux-input@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.1.y] blk-cgroup: Fix NULL deref caused by blkg_policy_data being installed before init
-Date: Wed, 13 May 2026 15:56:54 +0800
-Message-Id: <20260513075654.2132595-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/1] HID: wacom: Fix OOB write in wacom_hid_set_device_mode()
+Date: Wed, 13 May 2026 08:59:34 +0100
+Message-ID: <20260513075935.1715836-1-lee@kernel.org>
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,207 +63,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCXdeHHLgRqvE5+BA--.7181S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr1fXF48tryDuw47AFyxXwb_yoWxJrW5pF
-	43Kry5GrW0qr4xWF4jgF15uryYgan5A3WUArWfurn5AF1UKrn7Z3WDAFWUZryfAr47WF4a
-	qr4Ut3y8Kwn0kaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_c_-DUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5ghZxGoELsgYoAAA3D
-X-Rspamd-Queue-Id: 9D8BE52F38D
+X-Rspamd-Queue-Id: 1D64C52F4F8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-246780-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.dk,debian.org,toxicpanda.com,163.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-246781-lists,stable=lfdr.de];
+	RBL_SEM_FAIL(0.00)[172.234.253.10:query timed out];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Tejun Heo <tj@kernel.org>
+wacom_hid_set_device_mode() currently assumes that the HID_DG_INPUTMODE
+usage is always located in the first field (field[0]) of the feature report.
+However, a device can specify HID_DG_INPUTMODE in a different field.
 
-[ Upstream commit ec14a87ee1999b19d8b7ed0fa95fea80644624ae ]
+If HID_DG_INPUTMODE is in a field other than the first one and the first
+field has a report_count smaller than the usage_index of HID_DG_INPUTMODE,
+this leads to an out-of-bounds write to r->field[0]->value.
 
-blk-iocost sometimes causes the following crash:
+Fix this by storing the field index of HID_DG_INPUTMODE in 'struct
+hid_data' during feature mapping.  In wacom_hid_set_device_mode(), use
+this stored field index to access the correct field and add bounds
+checks to ensure both the field index and the value index are within
+valid ranges before writing.
 
-  BUG: kernel NULL pointer dereference, address: 00000000000000e0
-  ...
-  RIP: 0010:_raw_spin_lock+0x17/0x30
-  Code: be 01 02 00 00 e8 79 38 39 ff 31 d2 89 d0 5d c3 0f 1f 00 0f 1f 44 00 00 55 48 89 e5 65 ff 05 48 d0 34 7e b9 01 00 00 00 31 c0 <f0> 0f b1 0f 75 02 5d c3 89 c6 e8 ea 04 00 00 5d c3 0f 1f 84 00 00
-  RSP: 0018:ffffc900023b3d40 EFLAGS: 00010046
-  RAX: 0000000000000000 RBX: 00000000000000e0 RCX: 0000000000000001
-  RDX: ffffc900023b3d20 RSI: ffffc900023b3cf0 RDI: 00000000000000e0
-  RBP: ffffc900023b3d40 R08: ffffc900023b3c10 R09: 0000000000000003
-  R10: 0000000000000064 R11: 000000000000000a R12: ffff888102337000
-  R13: fffffffffffffff2 R14: ffff88810af408c8 R15: ffff8881070c3600
-  FS:  00007faaaf364fc0(0000) GS:ffff88842fdc0000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00000000000000e0 CR3: 00000001097b1000 CR4: 0000000000350ea0
-  Call Trace:
-   <TASK>
-   ioc_weight_write+0x13d/0x410
-   cgroup_file_write+0x7a/0x130
-   kernfs_fop_write_iter+0xf5/0x170
-   vfs_write+0x298/0x370
-   ksys_write+0x5f/0xb0
-   __x64_sys_write+0x1b/0x20
-   do_syscall_64+0x3d/0x80
-   entry_SYSCALL_64_after_hwframe+0x46/0xb0
-
-This happens because iocg->ioc is NULL. The field is initialized by
-ioc_pd_init() and never cleared. The NULL deref is caused by
-blkcg_activate_policy() installing blkg_policy_data before initializing it.
-
-blkcg_activate_policy() was doing the following:
-
-1. Allocate pd's for all existing blkg's and install them in blkg->pd[].
-2. Initialize all pd's.
-3. Online all pd's.
-
-blkcg_activate_policy() only grabs the queue_lock and may release and
-re-acquire the lock as allocation may need to sleep. ioc_weight_write()
-grabs blkcg->lock and iterates all its blkg's. The two can race and if
-ioc_weight_write() runs during #1 or between #1 and #2, it can encounter a
-pd which is not initialized yet, leading to crash.
-
-The crash can be reproduced with the following script:
-
-  #!/bin/bash
-
-  echo +io > /sys/fs/cgroup/cgroup.subtree_control
-  systemd-run --unit touch-sda --scope dd if=/dev/sda of=/dev/null bs=1M count=1 iflag=direct
-  echo 100 > /sys/fs/cgroup/system.slice/io.weight
-  bash -c "echo '8:0 enable=1' > /sys/fs/cgroup/io.cost.qos" &
-  sleep .2
-  echo 100 > /sys/fs/cgroup/system.slice/io.weight
-
-with the following patch applied:
-
-> diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-> index fc49be622e05..38d671d5e10c 100644
-> --- a/block/blk-cgroup.c
-> +++ b/block/blk-cgroup.c
-> @@ -1553,6 +1553,12 @@ int blkcg_activate_policy(struct gendisk *disk, const struct blkcg_policy *pol)
-> 		pd->online = false;
-> 	}
->
-> +       if (system_state == SYSTEM_RUNNING) {
-> +               spin_unlock_irq(&q->queue_lock);
-> +               ssleep(1);
-> +               spin_lock_irq(&q->queue_lock);
-> +       }
-> +
-> 	/* all allocated, init in the same order */
-> 	if (pol->pd_init_fn)
-> 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
-
-I don't see a reason why all pd's should be allocated, initialized and
-onlined together. The only ordering requirement is that parent blkgs to be
-initialized and onlined before children, which is guaranteed from the
-walking order. Let's fix the bug by allocating, initializing and onlining pd
-for each blkg and holding blkcg->lock over initialization and onlining. This
-ensures that an installed blkg is always fully initialized and onlined
-removing the the race window.
-
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reported-by: Breno Leitao <leitao@debian.org>
-Fixes: 9d179b865449 ("blkcg: Fix multiple bugs in blkcg_activate_policy()")
-Link: https://lore.kernel.org/r/ZN0p5_W-Q9mAHBVY@slm.duckdns.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Cc: stable@vger.kernel.org
+Fixes: 5ae6e89f7409 ("HID: wacom: implement the finger part of the HID generic handling")
+Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- block/blk-cgroup.c | 32 ++++++++++++++++++--------------
- 1 file changed, 18 insertions(+), 14 deletions(-)
+ drivers/hid/wacom_sys.c | 13 ++++++++++---
+ drivers/hid/wacom_wac.h |  1 +
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index f314192b6de8..ce074d9fb709 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1392,7 +1392,7 @@ int blkcg_activate_policy(struct request_queue *q,
- retry:
- 	spin_lock_irq(&q->queue_lock);
+diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
+index 1b1112772777..a6c5281afa06 100644
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -341,6 +341,7 @@ static void wacom_feature_mapping(struct hid_device *hdev,
  
--	/* blkg_list is pushed at the head, reverse walk to allocate parents first */
-+	/* blkg_list is pushed at the head, reverse walk to initialize parents first */
- 	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
- 		struct blkg_policy_data *pd;
+ 		hid_data->inputmode = field->report->id;
+ 		hid_data->inputmode_index = usage->usage_index;
++		hid_data->inputmode_field_index = field->index;
+ 		break;
  
-@@ -1430,21 +1430,20 @@ int blkcg_activate_policy(struct request_queue *q,
- 				goto enomem;
- 		}
+ 	case HID_UP_DIGITIZER:
+@@ -556,9 +557,14 @@ static int wacom_hid_set_device_mode(struct hid_device *hdev)
  
--		blkg->pd[pol->plid] = pd;
-+		spin_lock(&blkg->blkcg->lock);
+ 	re = &(hdev->report_enum[HID_FEATURE_REPORT]);
+ 	r = re->report_id_hash[hid_data->inputmode];
+-	if (r) {
+-		r->field[0]->value[hid_data->inputmode_index] = 2;
+-		hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
++	if (r && hid_data->inputmode_field_index >= 0 &&
++	    hid_data->inputmode_field_index < r->maxfield) {
++		struct hid_field *field = r->field[hid_data->inputmode_field_index];
 +
- 		pd->blkg = blkg;
- 		pd->plid = pol->plid;
--		pd->online = false;
--	}
-+		blkg->pd[pol->plid] = pd;
- 
--	/* all allocated, init in the same order */
--	if (pol->pd_init_fn)
--		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
--			pol->pd_init_fn(blkg->pd[pol->plid]);
-+		if (pol->pd_init_fn)
-+			pol->pd_init_fn(pd);
- 
--	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
- 		if (pol->pd_online_fn)
--			pol->pd_online_fn(blkg->pd[pol->plid]);
--		blkg->pd[pol->plid]->online = true;
-+			pol->pd_online_fn(pd);
-+		pd->online = true;
-+
-+		spin_unlock(&blkg->blkcg->lock);
++		if (field && hid_data->inputmode_index < field->report_count) {
++			field->value[hid_data->inputmode_index] = 2;
++			hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
++		}
  	}
+ 	return 0;
+ }
+@@ -2819,6 +2825,7 @@ static int wacom_probe(struct hid_device *hdev,
+ 		return error;
  
- 	__set_bit(pol->plid, q->blkcg_pols);
-@@ -1461,14 +1460,19 @@ int blkcg_activate_policy(struct request_queue *q,
- 	return ret;
+ 	wacom_wac->hid_data.inputmode = -1;
++	wacom_wac->hid_data.inputmode_field_index = -1;
+ 	wacom_wac->mode_report = -1;
  
- enomem:
--	/* alloc failed, nothing's initialized yet, free everything */
-+	/* alloc failed, take down everything */
- 	spin_lock_irq(&q->queue_lock);
- 	list_for_each_entry(blkg, &q->blkg_list, q_node) {
- 		struct blkcg *blkcg = blkg->blkcg;
-+		struct blkg_policy_data *pd;
- 
- 		spin_lock(&blkcg->lock);
--		if (blkg->pd[pol->plid]) {
--			pol->pd_free_fn(blkg->pd[pol->plid]);
-+		pd = blkg->pd[pol->plid];
-+		if (pd) {
-+			if (pd->online && pol->pd_offline_fn)
-+				pol->pd_offline_fn(pd);
-+			pd->online = false;
-+			pol->pd_free_fn(pd);
- 			blkg->pd[pol->plid] = NULL;
- 		}
- 		spin_unlock(&blkcg->lock);
+ 	if (hid_is_usb(hdev)) {
+diff --git a/drivers/hid/wacom_wac.h b/drivers/hid/wacom_wac.h
+index c8803d5c6a71..b2e74d7ab3c4 100644
+--- a/drivers/hid/wacom_wac.h
++++ b/drivers/hid/wacom_wac.h
+@@ -298,6 +298,7 @@ struct wacom_shared {
+ struct hid_data {
+ 	__s16 inputmode;	/* InputMode HID feature, -1 if non-existent */
+ 	__s16 inputmode_index;	/* InputMode HID feature index in the report */
++	__s16 inputmode_field_index; /* InputMode HID feature field index in the report */
+ 	bool sense_state;
+ 	bool inrange_state;
+ 	bool invert_state;
 -- 
-2.34.1
+2.54.0.563.g4f69b47b94-goog
 
 
