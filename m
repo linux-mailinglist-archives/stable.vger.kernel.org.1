@@ -1,332 +1,269 @@
-Return-Path: <stable+bounces-246779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-246780-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEYSDxAvBGo/FAIAu9opvQ
-	(envelope-from <stable+bounces-246779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:58:08 +0200
+	id OA8qDFwvBGo/FAIAu9opvQ
+	(envelope-from <stable+bounces-246780-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:59:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BEB952F30E
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:58:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8BE52F38D
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 09:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8ED4A30E4543
-	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:54:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B5A4A3054CE1
+	for <lists+stable@lfdr.de>; Wed, 13 May 2026 07:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEA63D7D75;
-	Wed, 13 May 2026 07:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCD93D79FE;
+	Wed, 13 May 2026 07:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="oEfIujZT"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Qw7k/od9"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51E63D79FF;
-	Wed, 13 May 2026 07:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4A53EDE4C;
+	Wed, 13 May 2026 07:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778658895; cv=none; b=Lb+gCz9p2kXipRjPyFS2lKjEmIWibt5YDz1T+7JcSWYgoeeN0y3G1vqq2HKT0dx/PyO1Hq+MFUOWo9aLvm7CF/CVRGeDFwivGUBBWar7hjz0v+0Y4YUvtE+GjDRHD0uKAdYH7YBQfIZVjV+l9tzMdXYfQVGjlpHxK7oIu4q/xuY=
+	t=1778659064; cv=none; b=A9+Ui55fN/xLFtqaCH17FZQ0H69sCccxRzbnBVEqrsc1/a81s579/HY8IqYvoNkwUCpjh005hyx1x3VtinTMwpXtOhGS2cR3I17hZmRyyPrmQ3xOiQsciTKk5TFy7yTPRMoCGs0r6PlmoeXPhM1GINwObea7kbqMnaXUbwg2KvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778658895; c=relaxed/simple;
-	bh=UJVIouv4Ts/OopCK3b7wLY0paQNXcLFhBkB4TXBBRu4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JytGn0yQHUww4LCHvextB7pONOm/0rpwYhJU9L0PNObYWwxftdCfC3ieGfF9BcXUr+xEWsVexos6+ijha6MwVN3/8lV74bj0yhz8G+ZbnZpjw9cL91pWgSTNWnlLkxM7AzB9E5NJPzl5tNfr78XNp5Ddbl+BDEwL0gO2bt0PxUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=oEfIujZT; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from ideasonboard.com (net-93-65-100-155.cust.vodafonedsl.it [93.65.100.155])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7BF3B229;
-	Wed, 13 May 2026 09:54:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1778658879;
-	bh=UJVIouv4Ts/OopCK3b7wLY0paQNXcLFhBkB4TXBBRu4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oEfIujZTS3KRkRBQG7ZA5tZDziFjnQdjTCPFbucXek1ISzJ8VbDTGbiHnbOZbsqL3
-	 2myndaNr1qvC+E5yRht4PRZmzDo+IsO+zdPCYY8yq3V110EqKSkpPCMkAdXT8zsC+7
-	 /Vadv+1imWVVhBD6iJWgCXjnsConyhUoIjflY0DI=
-Date: Wed, 13 May 2026 09:54:44 +0200
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To: Nicolas Dufresne <nicolas@ndufresne.ca>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
-	Daniel Scally <dan.scally@ideasonboard.com>, 
-	=?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <barnabas.pocze@ideasonboard.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil <hverkuil+cisco@kernel.org>, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] media: rzv2h-ivc: Wait for frame end in stop_streaming
-Message-ID: <agQmhGJGSVpuoTDS@zed>
-References: <20260401-ivc-stop-streaming-v1-1-b7599982c280@ideasonboard.com>
- <ba485144c4d469c834b0f65ed3ce753a331e207a.camel@ndufresne.ca>
+	s=arc-20240116; t=1778659064; c=relaxed/simple;
+	bh=q1kYmQJIIXdK7nHLWyP1FRpGZnD6+wdlRASZoMilCpM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gxaaHwAK7L528WvXVDszAj8KkNOvrAGJ+22voE/P/jgAYqsBT/fgzdgkqLBzYlSaVN+60ENPxr2xfWKu9ytUEB3dQQzP927fT8iRZW7yET2M9IEwJFxe3jNhhk2RDSnBfM06RB5bWiVuzHBNkmwNH0Sf3uoSfe1mfpDjxlFSnUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Qw7k/od9; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=QN
+	J0pX4HvWDuJCJuN3VN499U7DmFHT6TG7ja77n/UiY=; b=Qw7k/od90YlkvU6+Wb
+	LxMfbDMhMYuhtd0ltslbOb3IzcBKWAw4xOpgM1V+yjgJzsG9RpUyclbxL6zfoue2
+	jMNper4sTXrfIaB/aOa9F10pkbmhOPkvegbOj63c71OjXXTAQPvzcfcYR72FSvW2
+	0iw9a45UD4cDB/gIb992W1jTc=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wCXdeHHLgRqvE5+BA--.7181S2;
+	Wed, 13 May 2026 15:56:55 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Breno Leitao <leitao@debian.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	cgroups@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.1.y] blk-cgroup: Fix NULL deref caused by blkg_policy_data being installed before init
+Date: Wed, 13 May 2026 15:56:54 +0800
+Message-Id: <20260513075654.2132595-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ytqmxrkyxmbf6yso"
-Content-Disposition: inline
-In-Reply-To: <ba485144c4d469c834b0f65ed3ce753a331e207a.camel@ndufresne.ca>
-X-Rspamd-Queue-Id: 8BEB952F30E
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCXdeHHLgRqvE5+BA--.7181S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr1fXF48tryDuw47AFyxXwb_yoWxJrW5pF
+	43Kry5GrW0qr4xWF4jgF15uryYgan5A3WUArWfurn5AF1UKrn7Z3WDAFWUZryfAr47WF4a
+	qr4Ut3y8Kwn0kaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_c_-DUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5ghZxGoELsgYoAAA3D
+X-Rspamd-Queue-Id: 9D8BE52F38D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-3.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-246779-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco,renesas];
+	TAGGED_FROM(0.00)[bounces-246780-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.dk,debian.org,toxicpanda.com,163.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,10bi:email,ideasonboard.com:email,ideasonboard.com:dkim,10bit:email]
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
+From: Tejun Heo <tj@kernel.org>
 
---ytqmxrkyxmbf6yso
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] media: rzv2h-ivc: Wait for frame end in stop_streaming
-MIME-Version: 1.0
+[ Upstream commit ec14a87ee1999b19d8b7ed0fa95fea80644624ae ]
 
-Hi Nicolas
+blk-iocost sometimes causes the following crash:
 
-   thanks for looking into this
+  BUG: kernel NULL pointer dereference, address: 00000000000000e0
+  ...
+  RIP: 0010:_raw_spin_lock+0x17/0x30
+  Code: be 01 02 00 00 e8 79 38 39 ff 31 d2 89 d0 5d c3 0f 1f 00 0f 1f 44 00 00 55 48 89 e5 65 ff 05 48 d0 34 7e b9 01 00 00 00 31 c0 <f0> 0f b1 0f 75 02 5d c3 89 c6 e8 ea 04 00 00 5d c3 0f 1f 84 00 00
+  RSP: 0018:ffffc900023b3d40 EFLAGS: 00010046
+  RAX: 0000000000000000 RBX: 00000000000000e0 RCX: 0000000000000001
+  RDX: ffffc900023b3d20 RSI: ffffc900023b3cf0 RDI: 00000000000000e0
+  RBP: ffffc900023b3d40 R08: ffffc900023b3c10 R09: 0000000000000003
+  R10: 0000000000000064 R11: 000000000000000a R12: ffff888102337000
+  R13: fffffffffffffff2 R14: ffff88810af408c8 R15: ffff8881070c3600
+  FS:  00007faaaf364fc0(0000) GS:ffff88842fdc0000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00000000000000e0 CR3: 00000001097b1000 CR4: 0000000000350ea0
+  Call Trace:
+   <TASK>
+   ioc_weight_write+0x13d/0x410
+   cgroup_file_write+0x7a/0x130
+   kernfs_fop_write_iter+0xf5/0x170
+   vfs_write+0x298/0x370
+   ksys_write+0x5f/0xb0
+   __x64_sys_write+0x1b/0x20
+   do_syscall_64+0x3d/0x80
+   entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
-On Tue, May 12, 2026 at 01:46:31PM -0400, Nicolas Dufresne wrote:
-> Le mercredi 01 avril 2026 =C3=A0 17:35 +0200, Jacopo Mondi a =C3=A9crit=
-=C2=A0:
-> > From: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
-> >
-> > The rzv2h-ivc driver fails to handle back-2-back streaming sessions that
-> > do not go through a peripheral reset. As the driver uses an autosuspend
-> > delay of 2 seconds, it is quite possible that two consecutive streaming
-> > sessions won't go through a suspend/resume sequence.
-> >
-> > If the peripheral is not reset the second streaming session hangs and no
-> > frames are delivered to the ISP.
-> >
-> > This is because the stop_streaming() procedure implemented in the driver
-> > doesn't match what's prescribed by the chip datasheet:
-> >
-> > 1) The chip manual suggests to poll the RZV2H_IVC_FM_INT_STAT_STPEND bit
-> > =C2=A0=C2=A0 of RZV2H_IVC_REG_FM_INT_STA instead of polling on RZV2H_IV=
-C_REG_FM_STOP
-> > =C2=A0=C2=A0 and prescribes to clear the bit after polling has completed
-> >
-> > 2) More importantly: the RZV2H_IVC_REG_FM_STOP_FSTOP bit has to be set
-> > =C2=A0=C2=A0 on RZV2H_IVC_REG_FM_STOP -only- if a frame transfer to the=
- ISP is in
-> > =C2=A0=C2=A0 progress. Setting the RZV2H_IVC_REG_FM_STOP_FSTOP bit when=
- no frame is
-> > =C2=A0=C2=A0 being transferred causes the polling routine to timeout an=
-d the next
-> > =C2=A0=C2=A0 streaming session fails to start
-> >
-> > As a frame transfer of an image in 1920x1080@10bi takes 5 milliseconds
-> > at most, it is quite possible that the frame transfer completion interr=
-upt
-> > races with the stop procedure.
-> >
-> > Instead of forcing a frame transfer abort, simply wait for the
-> > in-progress transfer to complete by polling the ivc->vvalid_ifp status
-> > variable in an hand-rolled loop that allows to inspect the variable
-> > while holding the spinlock, to allow the irq handler to complete the
-> > current buffer.
-> >
-> > With this change, streaming back-2-back without suspending the
-> > peripheral works successfully.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control =
-block
-> > driver")
-> > Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
-> > ---
-> > As detailed in the commit message, re-starting a streaming session
-> > without going through a peripheral reset doesn't currently work.
-> >
-> > I initially thought this is because the stop_streaming() procedure
-> > implemented in the rzv2h-ivc driver does not comply with what is
-> > prescribed by the chip manual.
-> >
-> > So I went and modified it according to the manual.
-> >
-> > Unfortunately, even by following the suggested procedure, once
-> > RZV2H_IVC_REG_FM_STOP is set and a forceful frame transfer abort is
-> > started, the RZV2H_IVC_FM_INT_STAT_STPEND bit takes a long time to
-> > clear, during which is most often times the case the current in-progress
-> > transfer completes by itself. If this happen, then a peripheral
-> > reset is required to restart streaming regardless if I forcefully clear
-> > the RZV2H_IVC_REG_FM_STOP_FSTOP and RZV2H_IVC_FM_INT_STAT_STPEND bits.
-> >
-> > I have tried several strategies to properly forcefully stop an
-> > in-progress transfer and handle the potential race betwee the
-> > transfer-complete irq and the polling the RZV2H_IVC_REG_FM_INT_STA
-> > register (which could potentially sleep), but it's still quite easy to
-> > get races between frame completion and the forced stop procedure unless
-> > I hold on to the ivc->spinlock preventing the irq handler to run.
-> >
-> > Once I timed the transfer time for a 1920x1080@10bit frame to 5 milli-s=
-econds
-> > at most I decided to simply wait for the current in-progress transfer to
-> > complete, as this seems the most reliable way to be able to re-start
-> > streaming without resetting the peripheral.
-> > ---
-> > =C2=A0.../platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c=C2=A0=C2=A0 | 31=
- ++++++++++++++++++---
-> > -
-> > =C2=A01 file changed, 26 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> > b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> > index b167f1bab7ef..932fed38cf3f 100644
-> > --- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> > +++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-> > @@ -297,12 +297,33 @@ static int rzv2h_ivc_start_streaming(struct vb2_q=
-ueue
-> > *q, unsigned int count)
-> > =C2=A0static void rzv2h_ivc_stop_streaming(struct vb2_queue *q)
-> > =C2=A0{
-> > =C2=A0	struct rzv2h_ivc *ivc =3D vb2_get_drv_priv(q);
-> > -	u32 val =3D 0;
-> > +	unsigned int loop =3D 5;
-> > =C2=A0
-> > -	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_FM_STOP,
-> > RZV2H_IVC_REG_FM_STOP_FSTOP);
-> > -	readl_poll_timeout(ivc->base + RZV2H_IVC_REG_FM_STOP,
-> > -			=C2=A0=C2=A0 val, !(val & RZV2H_IVC_REG_FM_STOP_FSTOP),
-> > -			=C2=A0=C2=A0 10 * USEC_PER_MSEC, 250 * USEC_PER_MSEC);
-> > +	/*
-> > +	 * If no frame transfer is in progress, we're done, otherwise, wait
-> > for
-> > +	 * the transfer to complete.
-> > +	 *
-> > +	 * Transferring a 1920x1080@10bit frame to the ISP takes less than 5
-> > +	 * msec so sleep for 2.5 msec (+- 25%) and give up after 5 attempts.
-> > +	 */
-> > +	for (; loop > 0; loop--) {
-> > +		unsigned int vvalid_ifp;
-> > +
-> > +		/*
-> > +		 * Inspect the ivc->vvalid_ifp variable holding the spinlock
-> > not
-> > +		 * to the race with the rzv2h_ivc_buffer_done() call in the
-> > irq
-> > +		 * handler.
-> > +		 */
-> > +		scoped_guard(spinlock_irq, &ivc->spinlock) {
-> > +			vvalid_ifp =3D ivc->vvalid_ifp;
-> > +		}
-> > +		if (vvalid_ifp < 2)
-> > +			break;
-> > +
-> > +		fsleep(2500);
-> > +	}
-> > +	if (!loop)
-> > +		dev_err(ivc->dev, "Failed to stop streaming\n");
+This happens because iocg->ioc is NULL. The field is initialized by
+ioc_pd_init() and never cleared. The NULL deref is caused by
+blkcg_activate_policy() installing blkg_policy_data before initializing it.
+
+blkcg_activate_policy() was doing the following:
+
+1. Allocate pd's for all existing blkg's and install them in blkg->pd[].
+2. Initialize all pd's.
+3. Online all pd's.
+
+blkcg_activate_policy() only grabs the queue_lock and may release and
+re-acquire the lock as allocation may need to sleep. ioc_weight_write()
+grabs blkcg->lock and iterates all its blkg's. The two can race and if
+ioc_weight_write() runs during #1 or between #1 and #2, it can encounter a
+pd which is not initialized yet, leading to crash.
+
+The crash can be reproduced with the following script:
+
+  #!/bin/bash
+
+  echo +io > /sys/fs/cgroup/cgroup.subtree_control
+  systemd-run --unit touch-sda --scope dd if=/dev/sda of=/dev/null bs=1M count=1 iflag=direct
+  echo 100 > /sys/fs/cgroup/system.slice/io.weight
+  bash -c "echo '8:0 enable=1' > /sys/fs/cgroup/io.cost.qos" &
+  sleep .2
+  echo 100 > /sys/fs/cgroup/system.slice/io.weight
+
+with the following patch applied:
+
+> diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+> index fc49be622e05..38d671d5e10c 100644
+> --- a/block/blk-cgroup.c
+> +++ b/block/blk-cgroup.c
+> @@ -1553,6 +1553,12 @@ int blkcg_activate_policy(struct gendisk *disk, const struct blkcg_policy *pol)
+> 		pd->online = false;
+> 	}
 >
-> Would simply using vb2_wait_for_all_buffers() worked for your use case ? =
-Or does
+> +       if (system_state == SYSTEM_RUNNING) {
+> +               spin_unlock_irq(&q->queue_lock);
+> +               ssleep(1);
+> +               spin_lock_irq(&q->queue_lock);
+> +       }
+> +
+> 	/* all allocated, init in the same order */
+> 	if (pol->pd_init_fn)
+> 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
 
-Good suggestion. Let me explain why I think vb2_wait_for_all_buffers()
-doesn't really apply here, but as I realized while writing this email
-maybe I'm getting requirements wrong, so my below recollection might
-not be accurate.
+I don't see a reason why all pd's should be allocated, initialized and
+onlined together. The only ordering requirement is that parent blkgs to be
+initialized and onlined before children, which is guaranteed from the
+walking order. Let's fix the bug by allocating, initializing and onlining pd
+for each blkg and holding blkcg->lock over initialization and onlining. This
+ensures that an installed blkg is always fully initialized and onlined
+removing the the race window.
 
-vb2_wait_for_all_buffers() waits until the driver doesn't call
-vb2_buffer_done() all the buffers it has been given. Not unusually,
-the IVC keeps a list of queued buffers and processes them one after
-the other.
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: Breno Leitao <leitao@debian.org>
+Fixes: 9d179b865449 ("blkcg: Fix multiple bugs in blkcg_activate_policy()")
+Link: https://lore.kernel.org/r/ZN0p5_W-Q9mAHBVY@slm.duckdns.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ block/blk-cgroup.c | 32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
 
-Now, assume stop_streaming() is called while a buffer transfer is in
-progress. What we can do here is
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index f314192b6de8..ce074d9fb709 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -1392,7 +1392,7 @@ int blkcg_activate_policy(struct request_queue *q,
+ retry:
+ 	spin_lock_irq(&q->queue_lock);
+ 
+-	/* blkg_list is pushed at the head, reverse walk to allocate parents first */
++	/* blkg_list is pushed at the head, reverse walk to initialize parents first */
+ 	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
+ 		struct blkg_policy_data *pd;
+ 
+@@ -1430,21 +1430,20 @@ int blkcg_activate_policy(struct request_queue *q,
+ 				goto enomem;
+ 		}
+ 
+-		blkg->pd[pol->plid] = pd;
++		spin_lock(&blkg->blkcg->lock);
++
+ 		pd->blkg = blkg;
+ 		pd->plid = pol->plid;
+-		pd->online = false;
+-	}
++		blkg->pd[pol->plid] = pd;
+ 
+-	/* all allocated, init in the same order */
+-	if (pol->pd_init_fn)
+-		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
+-			pol->pd_init_fn(blkg->pd[pol->plid]);
++		if (pol->pd_init_fn)
++			pol->pd_init_fn(pd);
+ 
+-	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
+ 		if (pol->pd_online_fn)
+-			pol->pd_online_fn(blkg->pd[pol->plid]);
+-		blkg->pd[pol->plid]->online = true;
++			pol->pd_online_fn(pd);
++		pd->online = true;
++
++		spin_unlock(&blkg->blkcg->lock);
+ 	}
+ 
+ 	__set_bit(pol->plid, q->blkcg_pols);
+@@ -1461,14 +1460,19 @@ int blkcg_activate_policy(struct request_queue *q,
+ 	return ret;
+ 
+ enomem:
+-	/* alloc failed, nothing's initialized yet, free everything */
++	/* alloc failed, take down everything */
+ 	spin_lock_irq(&q->queue_lock);
+ 	list_for_each_entry(blkg, &q->blkg_list, q_node) {
+ 		struct blkcg *blkcg = blkg->blkcg;
++		struct blkg_policy_data *pd;
+ 
+ 		spin_lock(&blkcg->lock);
+-		if (blkg->pd[pol->plid]) {
+-			pol->pd_free_fn(blkg->pd[pol->plid]);
++		pd = blkg->pd[pol->plid];
++		if (pd) {
++			if (pd->online && pol->pd_offline_fn)
++				pol->pd_offline_fn(pd);
++			pd->online = false;
++			pol->pd_free_fn(pd);
+ 			blkg->pd[pol->plid] = NULL;
+ 		}
+ 		spin_unlock(&blkcg->lock);
+-- 
+2.34.1
 
-1) forcefully stop the transfer and return the current buffer in ERROR
-state and then complete in ERROR state all the buffers queued to the
-driver
-2) wait until the transfer competes, return the current buffer in DONE
-state and then complete in ERROR state all the buffers queued to the
-driver
-
-For reasons explained above, below the commit message, I ditched
-option 1).
-
-So now, we have to wait for the current transfer in progress, return the
-current buffer and then complete all the queued ones. Only at this
-point we could call vb2_wait_for_all_buffers(), but that would be
-useless as we have completed all buffers.
-
-Now, all of this is under the assumption that we aim to complete
-buffers in the same order as they have been queued. So the currently
-in-progress buffer has to be competed first, then we can return all
-the other ones. Surprisingly I didn't find this requirement mentioned
-in the VIDIOC_STREAMOFF documentation, nor I clearly found this
-requirement being enforced in the v4l2-compliance tests.
-
-Iff we can complete buffers out of order then yes, I can complete all
-queued buffers in error state first, then let the current in-progress
-one complete and just calling vb2_wait_for_all_buffers() here.
-
-I'll check with Hans about the ordering requirement.
-
-> RZV2H_IVC_REG_FM_STOP mask off IRQ causing buffers to never be signalled ?
-
-This patch removes usage of RZV2H_IVC_REG_FM_STOP.
-
-Thanks
-  j
-
->
-> > =C2=A0
-> > =C2=A0	rzv2h_ivc_return_buffers(ivc, VB2_BUF_STATE_ERROR);
-> > =C2=A0	video_device_pipeline_stop(&ivc->vdev.dev);
-> >
-> > ---
-> > base-commit: 4fbeef21f5387234111b5d52924e77757626faa5
-> > change-id: 20260331-ivc-stop-streaming-2c992277b050
-> >
-> > Best regards,
-
-
-
---ytqmxrkyxmbf6yso
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEtcQ9SICaIIqPWDjAcjQGjxahVjwFAmoELkQACgkQcjQGjxah
-Vjz2bg/7Bgt8YBat9GnvzLBn/rQuwa/gal/ViPUZlmCk7pC2hv2FEpM/UfcK3GT7
-jB5gU8YL6zSDd3+aUB9hokWeTi0mDA8IgqFdzLMZsenxA2ajo4FELCufVuWI02Xy
-5Hndy2A9DXCwStTY5Y5lY82is3zTkRuOpLFQM0xuY2k+ktnmRJzLsUVzz8adOVZU
-tRSZINl1OC2eQ67EUNGa7Nr0PKo/JlhNFwdPi4n2+GzsLTQ34Tgut48lOYDylGix
-irvtktrSRtRW9N/ANRjeOuCFg0MN7iH/ULbDkaoEV4r3kBjXXJs9VAAfGL34cB04
-p6KM9Ncuutqzb5q/waRn02n0B+q7ICay0FA4zDE/XCQiduq5TxMAB69iEZcPN5ZR
-CMXas4FiHxAXatHwGKMQQVHTgch8NrXyFqLIdBC/0zinLxPHlm0A0mqWRQFB11yr
-J2/FNyiWg4jaI1VzE5D22HTbd/EPuK52t9nYNdSRH4eYJiesQEXBKZJdXPdk5V7d
-8oiRWF9WRWATextzqFdyvZSj+ZDfuThhhnLbXc5N4DvFhdBBrge7iGEwKRXltB1t
-2dW3Cek7xgSWeMUmae4g3843xwP7MnhVNBnBAyHgRNopms4UzFaCtTvPA2Du3VoN
-rAxWBzEq59dHGhJUHLnrPQ1snILN/2iBX2wtIZ2U68r7Z289nS0=
-=dIAE
------END PGP SIGNATURE-----
-
---ytqmxrkyxmbf6yso--
 
