@@ -1,151 +1,113 @@
-Return-Path: <stable+bounces-247180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELmxFgS5BWpZaAIAu9opvQ
-	(envelope-from <stable+bounces-247180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 13:59:00 +0200
+	id aMBsKTm5BWpZaAIAu9opvQ
+	(envelope-from <stable+bounces-247181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 13:59:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7D35414D5
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 13:58:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 004B75414ED
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 13:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 422DC3011F78
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 11:58:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1FAC303CE0A
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 11:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007CE3A783E;
-	Thu, 14 May 2026 11:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CA93C277F;
+	Thu, 14 May 2026 11:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOcjEwv3"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="i1/cW2GO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FDE3909AE
-	for <stable@vger.kernel.org>; Thu, 14 May 2026 11:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC239399892;
+	Thu, 14 May 2026 11:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778759932; cv=none; b=u6dfLImm0QHzatXg4AgF+XV3zNY3BQAFEu4abYikc0lm4XDpySfXrbmIaX5nMSKPIVg8SancfI9BXlrQKtl4/yjQFzpTetrkWleF6OG821FDPmeYd3jWa8zZxOEn6B9M7R9tBcWPKQWzAW89/Ic7+Ji8dCQexw0RgRidcK/Y8AI=
+	t=1778759989; cv=none; b=EVhoi3wZUuZxQ/JXh1qbA0KRSyjZjT7AQ4rrdJWEbxQaAu9IUGcWd6EP80OWS8knhwN0P1mNCKeGuv6MM17eJZSsnuyzO/E11CfFl0F6dACpK3SVAAkA1flC+eZbP68B/93XgYMPwYESwp6xAI+Zq0gycbiqVfIphH6uU+3s4b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778759932; c=relaxed/simple;
-	bh=NhvYFvQOaIf268qMXsWATuz245AeKQLHHopI61eI5UE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqVFZCm/rM/KbR8DqIALcCbkeM327NTPxlytPQCMikD5NKuy+CIRsZqJpJXHNXec35cWkIWeLWyCaw9+u0vZpLdh9onEM0zkmlNtjQAuiYu34Qgk91ZL4nX+Iim+3yjsf4I5src94E/i0OBPkXeSWdLJ/8G5fWDixEyOOBFl9n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOcjEwv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FE1C2BCB8;
-	Thu, 14 May 2026 11:58:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778759932;
-	bh=NhvYFvQOaIf268qMXsWATuz245AeKQLHHopI61eI5UE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOcjEwv3URMrJRh7Oomtu8d/xmmtJIYqz9nsAHyRPXDAIb0lPXnaW95BxHsNdVSOS
-	 gF0726FEsSB3BBZm5zPrknJgqtGohY5hSFwIDT2AFyLzAn2Q+Iuc5AEyyBn9f12OCL
-	 /QCit24HZ8Sdhujjoq+a1p68BGJpI7XSZoYGtfA7qaNP/ehqpIVTgB9FDW56BxKBDd
-	 RQl+1OlNqU9iBKDKPcTi36Tjaq8j9Z38r4MrtvlQKG7WCMlkgb61s6p6ZiYw1gH3Ni
-	 YhLV/tGqkjJHrOZ+vOm6IaeuYCW6Bz6hqbIVcWi7BWMC62fCFIQGyFIr01bpRWUlGj
-	 VXuy+pwl0Qt+A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] spi: tegra20-sflash: fix controller deregistration
-Date: Thu, 14 May 2026 07:58:49 -0400
-Message-ID: <20260514115849.189593-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051258-zigzagged-refusal-42a6@gregkh>
-References: <2026051258-zigzagged-refusal-42a6@gregkh>
+	s=arc-20240116; t=1778759989; c=relaxed/simple;
+	bh=PVBeJb8wrQ4ls6WOJspmZ6aU8l0SukGC9SlYz4EvF24=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fNkxv36XUjtqEUXx5zsHMw42KquoMBWvqxs6lbfvw08K0m3Kswo9TqD4GQSc9/OvXfxTwhgYUIbQhpOVcboM4KxXw0st2iEbcqmLLZ4ddjaKK0KBrSoCWAz6tK+5pGh8poOml+cBH5qoI5Gl4H5yGL4bZ2ZBlr2sZ08i5FGkcjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=i1/cW2GO; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 385A61F92A;
+	Thu, 14 May 2026 13:59:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1778759984;
+	bh=U8YREDNUUsB/v1tJ6TEOknoVCf4/EvZwsTxSLR50ZPw=; h=From:To:Subject;
+	b=i1/cW2GOyVeIyoF7jr+C17HxCw+mInzPYflXBqtmBsFWqnLKPiJU9wpgpgb918qVI
+	 vf1lMC0kak6ttrBVnwutEhiJgxUNKzRex+OQzGzzOnYK3EEwwfd5c7CpiTzz9150gK
+	 Z/Xn6I1letqjLv03nkwuqNXARdpNJ1gfLXy8cfaps7tKhwkwnHoY2iustQEEKfd7eb
+	 e0HsbuWdvQSNWUj6YiFG1iWMQCHnnT5AnIsDkaubBO2tlpiBOfmKUHjK+vhn6hkzK7
+	 aTpt/ZctTe+ogAB/HCr9KGDKgRuIx0id3sWn2BzF3QeOsI5dSv4T5ZLnFNPpmhi7OX
+	 J9oft77rmSBXA==
+Date: Thu, 14 May 2026 13:59:40 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/202] 6.12.88-rc2 review
+Message-ID: <20260514115940.GA6968@francesco-nb>
+References: <20260513153743.326058350@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4F7D35414D5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260513153743.326058350@linuxfoundation.org>
+X-Rspamd-Queue-Id: 004B75414ED
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
+	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247180-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247181-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[dolcini.it:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,samsung.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,toradex.com:email,dolcini.it:dkim]
 X-Rspamd-Action: no action
 
-From: Johan Hovold <johan@kernel.org>
+On Wed, May 13, 2026 at 06:17:18PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.88 release.
+> There are 202 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-[ Upstream commit ad7310e983327f939dd6c4e801eab13238992572 ]
-
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
-
-Fixes: f12f7318c44a ("spi: tegra20-sflash: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-23-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_controller/host APIs to spi_master/master equivalents and switched devm_spi_register_master to spi_register_master ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-tegra20-sflash.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 6915451cc93e2..8ac062d0460c6 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -507,7 +507,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 	pm_runtime_put(&pdev->dev);
- 
- 	master->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
- 		goto exit_pm_disable;
-@@ -530,12 +530,18 @@ static int tegra_sflash_remove(struct platform_device *pdev)
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct tegra_sflash_data	*tsd = spi_master_get_devdata(master);
- 
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	free_irq(tsd->irq, tsd);
- 
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_sflash_runtime_suspend(&pdev->dev);
- 
-+	spi_master_put(master);
-+
- 	return 0;
- }
- 
--- 
-2.53.0
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
 
