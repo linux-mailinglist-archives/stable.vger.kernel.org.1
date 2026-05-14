@@ -1,183 +1,282 @@
-Return-Path: <stable+bounces-247159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDD5HCaYBWp2YwIAu9opvQ
-	(envelope-from <stable+bounces-247159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 11:38:46 +0200
+	id wA43OxKaBWqJYwIAu9opvQ
+	(envelope-from <stable+bounces-247160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 11:46:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC0253FE86
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 11:38:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB6353FF8D
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 11:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 81A56300C0E7
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 09:38:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2FE43016522
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 09:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBFB3A542A;
-	Thu, 14 May 2026 09:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1859F3A9DB5;
+	Thu, 14 May 2026 09:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DvCy5jGB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EkoU6SkV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6633655D3
-	for <stable@vger.kernel.org>; Thu, 14 May 2026 09:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C817939A046
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 09:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778751521; cv=none; b=dlBOLtlKmriZC56KECEmhRG7ymX+Br2LjL5fhoQa+YJsW6v/WVNdEVVPj9mnIollIOFItPgqDYbr4sO5h1VkrJ+m9L+TbAYlRk13PuViX6MHe0lLxmebkPPZLG8vVtYsiXd22Z5enZJCxPbU9BKYRnwPbuga/MWwAH8V6umjOKk=
+	t=1778751903; cv=none; b=R+ViMCUdD2WaVlVirqYX5r/itvMTUGLIH/9YKVxJHbMpLvw44Y97z9YqXVGdxy5b3lIk9ey3PSOcMGxrIyLF1HkY9lRqyiChdhWNWeWZ8NMpky4YCwxgk1ZQW07LRVuPGImrkzASuj5CRFP1hA49lWkK7AVrfwipWRl2jJRSDdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778751521; c=relaxed/simple;
-	bh=wyQryMAcqgKBmpH59WF4pkW+5nGBprWHuGbAgn7gqQY=;
+	s=arc-20240116; t=1778751903; c=relaxed/simple;
+	bh=PLNJMPTVnkRKB2ZVyKp4WUwzWIH4JrjwI4L1YKFK+5E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GM4o1TcVrFQAGI+zcPs+619gh8CN4NLFgyEbcKY4yEEBIf7aaY5mLpChjxmFydwRGygge6lZEgpQXNJGuyOw81lSPgnUWMKpsqxPvp4EHfmIZMqHfHxmFEUPwHShBGs4IFbClQ48EZrgUG45k7L4ZSKhBNPeBsW8/Xef2tXaew4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DvCy5jGB; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c801912c903so3680051a12.0
-        for <stable@vger.kernel.org>; Thu, 14 May 2026 02:38:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778751520; x=1779356320; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cjTEfY1YCfQns58oCl7WBrAFJdM70zfUdAnzlrIHCvU=;
-        b=DvCy5jGBA2eYzTSPwwU8JkxilbOuazjVBJeV4Zeatv8VVeKiCDeizZh1ZnEV6AI3HO
-         3ud+Oj9bLskVy7hPsx8qgufVX/lTOHAAITjLEVbMD4iarpvo+M3ags3IWzwkvHNjKmYG
-         h5lhnTCOHRLS+17/uOZmwPwG0xnXAkmCZ/8AsDFPcgyGpCCZ8DcZ4gBLqyLeBkQfEJpJ
-         7T5BSdTpqJ5AWYH47cQMz5rmjVPQgMyH6SX65UFIc0qnMrtEoR9dkWvpgtjH/T8yp8az
-         RukrZmGUQmp8ykgUauzk9VwWmwjDPh0b/iZTjuQblVMCcCllOI/dsyp4qOJsoRL0pZqv
-         OggQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778751520; x=1779356320;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cjTEfY1YCfQns58oCl7WBrAFJdM70zfUdAnzlrIHCvU=;
-        b=gbo+hj1xHTGAGyN9EGjew8bIYhoizmnxsJ97KNk8Pmmd7pPUbhYJbELOQh/d2mGHsS
-         qfOnOnOmr5BWPXPUbSr/IWLsZmSNcLcFjHUfbYpEgfIImRDJvb/CREYOreoSXXI3rMSS
-         Zxe8JJ9EPjAiURpPVYKOHG7thYL6FyE1lW/9C5TX7zlhpjiIWXSwkpND5BZQ/jGBQkJA
-         5nsag2IT8n6R+uXx+oFtyZxZRcvfw0EDu2ib+S9n7MS/tzewELTfrkfiHdhBqduXt+u+
-         XjXIDGB4wTbjdDH4UAF7pAmu5nvkb4YwdzMyEZ2rV3EE1C3oAsvl7+BoG1hEvYPcyjPP
-         dx6w==
-X-Forwarded-Encrypted: i=1; AFNElJ9QxfpAjhkslVybGMElZFgiYkB5jfNMhyBS+9oSXvmASiRTHJH4g761/smmSLqP9Exe4mE6BU0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNytEwwtYkQ8ucgpM37fhr580mkyVxpMKLb4eejjvxPBrxjEg/
-	t4XjnprlRmpWm40mais17YfbNn00O78BNKgcVaY6+wJZ2W44XvLF8TEH
-X-Gm-Gg: Acq92OF8BOKacIMeS/u3wYgk9ygO72TYfX8onIr49vK8UMQHwuBWwWufZK5iyvnjnEY
-	TE5vDcEy14hM13JayNnuZGEBuuQKkeHXfKJW/yr2539MCboxGkPxXDCErKur3g46yOmLbqbP2m8
-	1eh+ii121vJ12czYBYcjPa107+PzGW/V5ipRDVVWlksHQ7DSvzMsH7zBT7b8ptpPukp4YcaBygO
-	9UT4rH5DfEEsz1Nksc1lV9DBgWRR/3gOPgHEX785G0gkGTkRgOjATqywN84kAI678+bY+yaz2Uo
-	XumKXkl2eYorDkbX9OOG6eY8DM8EPQYyLoV/R55YFsdDmI5LlW1qdsgjBaXFJGIJrboNTSeI/mZ
-	xoanalBoCTwxcFui1aoNMwF3tZ6sguI27/r6oZGgJ4hwxeYkBvJPTC7Pkvp9DvsnfGjI67lmyuI
-	88s9qU1FlsW8sQ1emYVHGGKXhU+Y061TO9cL9wos0G8J0=
-X-Received: by 2002:a05:6a21:3299:b0:398:79a8:5bf4 with SMTP id adf61e73a8af0-3af8197717amr8098006637.37.1778751519422;
-        Thu, 14 May 2026 02:38:39 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb0ff4easm1715464a12.18.2026.05.14.02.38.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 02:38:38 -0700 (PDT)
-Date: Thu, 14 May 2026 18:38:34 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: kuba@kernel.org, steffen.klassert@secunet.com, netdev@vger.kernel.org,
-	stable@vger.kernel.org, mhal@rbox.co, davem@davemloft.net,
-	horms@kernel.org, edumazet@google.com, kerneljasonxing@gmail.com,
-	herbert@gondor.apana.org.au, vakzz@zellic.io, kuniyu@google.com,
-	jiayuan.chen@linux.dev, ben@decadent.org.uk, dsahern@kernel.org,
-	Sabrina Dubroca <sd@queasysnail.net>, imv4bel@gmail.com
-Subject: Re: [PATCH net v2] net: skbuff: propagate shared-frag marker through
- frag-transfer helpers
-Message-ID: <agWYGuJ__OtpgjnB@v4bel>
-References: <agToIEDI4TaTNLRb@v4bel>
- <92ec6190-0255-4b7c-9524-254cb37476ab@redhat.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=X1BklmpyC8kuh9sVu+GX/HiqiwlzfbFEUE2Ni7sCxZ2MiX1ActOccO3YpDJ1+2qm780xdXWxZ6y0n837sBCJQ3cc0ks4NGM4ZZ0d4k71C17eDbPB99QjahCOfayOqqJ315Rv+lgOJRGEFdC1GX9tM+oUO3IrQLgUXnQTQcGKycc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EkoU6SkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED29DC2BCB3;
+	Thu, 14 May 2026 09:45:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778751903;
+	bh=PLNJMPTVnkRKB2ZVyKp4WUwzWIH4JrjwI4L1YKFK+5E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EkoU6SkVlkLreI3yOVr8L+wl8F9b3HyU2LzVUKB4V4atMh+/XhxHNwLwuhes9k3/f
+	 02P+xM6XY3kqYpGPkkxGAQ5wjSGLEuZwVSjvYOyr1FPKll5jzffV0MNgvBnVKmaNpb
+	 HB3zHJRARq+FEqWhiz/jBsoS1M/+bVs3QNGGoCAX59UDZ3hFJyfOmubFYC+wLFRYul
+	 YOP8d3YjQyD7NzOfUb3etaPbM/T5ON9VNhDx8XjkXLFC6KscLNAPlxo8RqmXrClFwd
+	 x2zIHInQdC3oqd9t7RvoPXa5vwMBtX+kPSUP4YJoiJGxNM91Fz4Fw1nM9zmXWRlTzU
+	 HKvAtqCJLU01A==
+Date: Thu, 14 May 2026 10:45:00 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	aarsenovic@baylibre.com, dri-devel@lists.freedesktop.org, matthew.brost@intel.com, 
+	thomas.hellstrom@linux.intel.com, jhubbard@nvidia.com, david@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/memory: Fix spurious warning when unmapping
+ device-private/exclusive pages
+Message-ID: <agWYFd2H8baj_Six@lucifer>
+References: <20260501065116.2057242-1-apopple@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <92ec6190-0255-4b7c-9524-254cb37476ab@redhat.com>
-X-Rspamd-Queue-Id: 1DC0253FE86
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260501065116.2057242-1-apopple@nvidia.com>
+X-Rspamd-Queue-Id: 4BB6353FF8D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247159-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,secunet.com,vger.kernel.org,rbox.co,davemloft.net,google.com,gmail.com,gondor.apana.org.au,zellic.io,linux.dev,decadent.org.uk,queasysnail.net];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247160-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[imv4bel@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Thu, May 14, 2026 at 10:04:29AM +0200, Paolo Abeni wrote:
-> On 5/13/26 11:07 PM, Hyunwoo Kim wrote:
-> > Three frag-transfer helpers (__pskb_copy_fclone(), skb_try_coalesce(),
-> > and skb_shift()) fail to propagate the SKBFL_SHARED_FRAG bit in
-> > skb_shinfo()->flags when moving frags from source to destination.
-> > __pskb_copy_fclone() defers the rest of the shinfo metadata to
-> > skb_copy_header() after copying frag descriptors, but that helper
-> > only carries over gso_{size,segs,type} and never touches
-> > skb_shinfo()->flags; skb_try_coalesce() and skb_shift() move frag
-> > descriptors directly and leave flags untouched.  As a result, the
-> > destination skb keeps a reference to the same externally-owned or
-> > page-cache-backed pages while reporting skb_has_shared_frag() as
-> > false.
-> > 
-> > The mismatch is harmful in any in-place writer that uses
-> > skb_has_shared_frag() to decide whether shared pages must be detoured
-> > through skb_cow_data().  ESP input is one such writer (esp4.c,
-> > esp6.c), and a single nft 'dup to <local>' rule -- or any other
-> > nf_dup_ipv4() / xt_TEE caller -- is enough to land a pskb_copy()'d
-> > skb in esp_input() with the marker stripped, letting an unprivileged
-> > user write into the page cache of a root-owned read-only file via
-> > authencesn-ESN stray writes.
-> > 
-> > Set SKBFL_SHARED_FRAG on the destination whenever frag descriptors
-> > were actually moved from the source.  skb_copy() and skb_copy_expand()
-> > share skb_copy_header() too but linearize all paged data into freshly
-> > allocated head storage and emerge with nr_frags == 0, so
-> > skb_has_shared_frag() returns false on its own; they need no change.
-> > 
-> > Fixes: cef401de7be8 ("net: fix possible wrong checksum generation")
-> > Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb frags")
-> 
-> WRT the 2nd fixes tag, I *think* f4c50a4034e6 would need
-> additionally/instead a follow-up similar to the one mentioned by Jakub here:
-> 
-> https://lore.kernel.org/all/20260510084520.476745b5@kernel.org/
+On Fri, May 01, 2026 at 04:51:16PM +1000, Alistair Popple wrote:
+> Device private and exclusive entries are only supported for anonymous
+> folios. This condition is tested in __migrate_device_pages() and
+> make_device_exclusive() using folio_test_anon(). However the unmap path
+> tests this assumption using vma_is_anonymous().
+>
+> This is wrong because whilst anonymous VMAs can only contain folios
+> where folio_test_anon() is true the opposite relation does not
+> hold. A folio for which folio_test_anon() is true does not imply
+> vma_is_anonymous() is true. Such a condition can occur if for example a
+> folio is part of a private filebacked mapping.
 
-Agreed. tracing SKBFL_SHARED_FRAG propagation paths one by one is
-not a robust direction for the fix. Even minor logic changes elsewhere
-could cause the issue to resurface.
+Yes this is a classic case of anon _VMA_ vs. anon _folio_ :) and it's our good
+friend MAP_PRIVATE file-backed mappings at play also.
 
-As a follow-up,	eliminating the in-place handling in esp_input -- accepting 
-the performance trade-off -- seems necessary. That was actually the
-direction of my initial proposal:
+>
+> In this case vma_is_anonymous() is false as the mapping is filebacked,
+> but folio_test_anon() may be true, thus permitting devices to migrate
+> the folio to device private memory. This can lead to the following
+> spurious warnings during process teardown:
+>
+> [  772.737706] ------------[ cut here ]------------
+> [  772.739201] WARNING: mm/memory.c:1754 at unmap_page_range.cold+0x26/0x18a, CPU#17: hmm-tests/2041
+> [  772.742050] Modules linked in: test_hmm nvidia_uvm(O) nvidia(O)
+> [  772.743959] CPU: 17 UID: 0 PID: 2041 Comm: hmm-tests Tainted: G        W  O        7.0.0+ #387 PREEMPT(full)
+> [  772.747104] Tainted: [W]=WARN, [O]=OOT_MODULE
+> [  772.748509] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+> [  772.752117] RIP: 0010:unmap_page_range.cold+0x26/0x18a
+> [  772.753780] Code: 7e fe ff ff 48 89 4c 24 78 4c 89 44 24 38 e8 f2 ff b1 00 48 8b 4c 24 78 4c 8b 44 24 38 48 8b 44 24 18 48 83 78 48 00 74 04 90 <0f> 0b 90 48 89 ca b8 ff ff 37 00 48 c1 ea 03 48 c1 e0 2a 80 3c 02
+> [  772.759602] RSP: 0018:ffff888112607550 EFLAGS: 00010286
+> [  772.761310] RAX: ffff88811bbf4dc0 RBX: dffffc0000000000 RCX: ffffea03e9bfffd8
+> [  772.763583] RDX: 1ffff1102377e9c1 RSI: 0000000000000008 RDI: ffff88811bbf4e08
+> [  772.765914] RBP: 0000000000000006 R08: ffff8881059f7448 R09: ffffed10224c0e68
+> [  772.768184] R10: ffff888112607347 R11: 0000000000000001 R12: 0000000000000001
+> [  772.770461] R13: ffffea03e9bfffc0 R14: ffff888112607908 R15: ffffea03e9bfffc0
+> [  772.772782] FS:  00007f327caa2780(0000) GS:ffff888427b7d000(0000) knlGS:0000000000000000
+> [  772.775328] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  772.777187] CR2: 00007f327ca89000 CR3: 00000001994d5000 CR4: 00000000000006f0
+> [  772.779135] Call Trace:
+> [  772.779792]  <TASK>
+> [  772.780317]  ? dmirror_interval_invalidate+0x1a3/0x290 [test_hmm]
+> [  772.781873]  ? vm_normal_page_pud+0x2b0/0x2b0
+> [  772.782992]  ? __rwlock_init+0x150/0x150
+> [  772.784006]  ? lock_release+0x216/0x2b0
+> [  772.785008]  ? __mmu_notifier_invalidate_range_start+0x505/0x6e0
+> [  772.786522]  ? lock_release+0x216/0x2b0
+> [  772.787498]  ? unmap_single_vma+0xb6/0x210
+> [  772.788573]  unmap_vmas+0x27d/0x520
+> [  772.789506]  ? unmap_single_vma+0x210/0x210
+> [  772.790607]  ? mas_update_gap.part.0+0x620/0x620
+> [  772.791834]  unmap_region+0x19e/0x350
+> [  772.792769]  ? remove_vma+0x130/0x130
+> [  772.793684]  ? mas_alloc_nodes+0x1f2/0x300
+> [  772.794730]  vms_complete_munmap_vmas+0x8c1/0xe20
+> [  772.795926]  ? unmap_region+0x350/0x350
+> [  772.796917]  do_vmi_align_munmap+0x36a/0x4e0
+> [  772.798018]  ? lock_release+0x216/0x2b0
+> [  772.799024]  ? vma_shrink+0x620/0x620
+> [  772.799983]  do_vmi_munmap+0x150/0x2c0
+> [  772.800939]  __vm_munmap+0x161/0x2c0
+> [  772.801872]  ? expand_downwards+0xd60/0xd60
+> [  772.802948]  ? clockevents_program_event+0x1ef/0x540
+> [  772.804217]  ? lock_release+0x216/0x2b0
+> [  772.805158]  __x64_sys_munmap+0x59/0x80
+> [  772.805776]  do_syscall_64+0xfc/0x670
+> [  772.806336]  ? irqentry_exit+0xda/0x580
+> [  772.806976]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+> [  772.807772] RIP: 0033:0x7f327cbb2717
+> [  772.808323] Code: 73 01 c3 48 8b 0d f9 76 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 0b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d c9 76 0d 00 f7 d8 64 89 01 48
+> [  772.811337] RSP: 002b:00007ffde7f57d38 EFLAGS: 00000202 ORIG_RAX: 000000000000000b
+> [  772.812564] RAX: ffffffffffffffda RBX: 00007f327cc9c000 RCX: 00007f327cbb2717
+> [  772.813733] RDX: 0000000000000000 RSI: 0000000000400000 RDI: 00007f327c289000
+> [  772.814867] RBP: 0000000000421360 R08: 000000000000001a R09: 0000000000000000
+> [  772.815991] R10: 0000000000000003 R11: 0000000000000202 R12: 00007ffde7f57d74
+> [  772.817121] R13: 00007f327c689010 R14: 0000000000100000 R15: 00007f327c289000
+> [  772.818272]  </TASK>
+> [  772.818614] irq event stamp: 0
+> [  772.819159] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+> [  772.820174] hardirqs last disabled at (0): [<ffffffff82a57ab3>] copy_process+0x19f3/0x6440
+> [  772.821511] softirqs last  enabled at (0): [<ffffffff82a57b00>] copy_process+0x1a40/0x6440
+> [  772.822869] softirqs last disabled at (0): [<0000000000000000>] 0x0
+> [  772.823871] ---[ end trace 0000000000000000 ]---
+>
+> Fix this by using the same check for folio_test_anon() in
+> zap_nonpresent_ptes(). Also add a hmm-test case for this.
+>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
 
-https://lore.kernel.org/all/afLDKSvAvMwGh7Fy@v4bel/
+LGTM so:
 
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Best regards,
-Hyunwoo Kim
+Cheers, Lorenzo
+
+> Reported-by: Arsen Arsenović <aarsenovic@baylibre.com>
+> Fixes: 999dad824c39e ("mm/shmem: persist uffd-wp bit across zapping for file-backed")
+> Cc: stable@vger.kernel.org
+> ---
+>  mm/memory.c                            |  2 +-
+>  tools/testing/selftests/mm/hmm-tests.c | 50 ++++++++++++++++++++++++++
+>  2 files changed, 51 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index c65e82c86fed..3f22a67a4d7f 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -1750,7 +1750,7 @@ static inline int zap_nonpresent_ptes(struct mmu_gather *tlb,
+>  		 * consider uffd-wp bit when zap. For more information,
+>  		 * see zap_install_uffd_wp_if_needed().
+>  		 */
+> -		WARN_ON_ONCE(!vma_is_anonymous(vma));
+
+I actually wonder if we should rename this to vma_is_pure_anon() or something to
+make it clearer. But that'd be quite some churn, even for me :)
+
+> +		WARN_ON_ONCE(!folio_test_anon(folio));
+>  		rss[mm_counter(folio)]--;
+>  		folio_remove_rmap_pte(folio, page, vma);
+>  		folio_put(folio);
+> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+> index e8328c89d855..eb860b5d6f85 100644
+> --- a/tools/testing/selftests/mm/hmm-tests.c
+> +++ b/tools/testing/selftests/mm/hmm-tests.c
+> @@ -1034,6 +1034,56 @@ TEST_F(hmm, migrate)
+>  	hmm_buffer_free(buffer);
+>  }
+>
+> +/*
+> + * Migrate private file memory to device private memory.
+> + */
+> +TEST_F(hmm, migrate_file_private)
+> +{
+> +	struct hmm_buffer *buffer;
+> +	unsigned long npages;
+> +	unsigned long size;
+> +	unsigned long i;
+> +	int *ptr;
+> +	int ret;
+> +	int fd;
+> +
+> +	npages = ALIGN(HMM_BUFFER_SIZE, self->page_size) >> self->page_shift;
+> +	ASSERT_NE(npages, 0);
+> +	size = npages << self->page_shift;
+> +
+> +	fd = hmm_create_file(size);
+> +	ASSERT_GE(fd, 0);
+> +
+> +	buffer = malloc(sizeof(*buffer));
+> +	ASSERT_NE(buffer, NULL);
+> +
+> +	buffer->fd = fd;
+> +	buffer->size = size;
+> +	buffer->mirror = malloc(size);
+> +	ASSERT_NE(buffer->mirror, NULL);
+> +
+> +	buffer->ptr = mmap(NULL, size,
+> +			   PROT_READ | PROT_WRITE,
+> +			   MAP_PRIVATE,
+> +			   buffer->fd, 0);
+> +	ASSERT_NE(buffer->ptr, MAP_FAILED);
+> +
+> +	/* Initialize buffer in system memory. */
+> +	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
+> +		ptr[i] = i;
+> +
+> +	/* Migrate memory to device. */
+> +	ret = hmm_migrate_sys_to_dev(self->fd, buffer, npages);
+> +	ASSERT_EQ(ret, 0);
+> +	ASSERT_EQ(buffer->cpages, npages);
+> +
+> +	/* Check what the device read. */
+> +	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
+> +		ASSERT_EQ(ptr[i], i);
+> +
+> +	hmm_buffer_free(buffer);
+> +}
+> +
+>  /*
+>   * Migrate anonymous memory to device private memory and fault some of it back
+>   * to system memory, then try migrating the resulting mix of system and device
+> --
+> 2.54.0
+>
+>
+>
 
