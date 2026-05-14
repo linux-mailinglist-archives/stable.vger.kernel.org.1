@@ -1,86 +1,85 @@
-Return-Path: <stable+bounces-247149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247150-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLq6NqqHBWr5XwIAu9opvQ
-	(envelope-from <stable+bounces-247149-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:28:26 +0200
+	id MB4cHb6HBWr5XwIAu9opvQ
+	(envelope-from <stable+bounces-247150-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:28:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B4653F53B
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC1153F566
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A100E3056634
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 08:26:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EE8F303FFE6
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 08:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E22D3D9DD9;
-	Thu, 14 May 2026 08:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDEC3DA5DB;
+	Thu, 14 May 2026 08:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b="k91Y4giH"
+	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b="N4djrP1e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DEA3D902E
-	for <stable@vger.kernel.org>; Thu, 14 May 2026 08:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912163D8120
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 08:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778747177; cv=none; b=oOmAksSLkYP4fWqrnwO9Rc1LGtK53TZPcQ/rvGdZGXsI4qavClj/PXn69q0s5hqS8DqTxBCwFW8mMyddZX6N25TqPO/RseNGP59+HmlsnVSF//HHwN93wVZveLQzQas3G4QUcGs0ske8yAsVjhO0wflPIVQe3HIQFlefMXhxDqE=
+	t=1778747183; cv=none; b=JQUhnWAJBcPDW9LC0XmnyWDClEEiwTBcifb2n0AEUmHDAQc9jLQKnT1+4mm12/wKfvb2KYw0lO7IqpLJeuyAaMmEr/Xc3af5EwhhB0bBvqzzXaBaAOSsBRt0HMyC1tZol/P/L5Ids26zzjdTGa2g4x3seoKWy0xGV1tiCpOwNqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778747177; c=relaxed/simple;
-	bh=Clp/7+dps7CMjUewVBlwf75eLhdxMdYd3dH4NKEEqKc=;
+	s=arc-20240116; t=1778747183; c=relaxed/simple;
+	bh=IYxpemUzApEKYrRLdtgG2hm2hB0JVowGXr41xfSQwNc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KCLxqIO2csOcm1GaPq3jDlKnxbL3SKHFUtJnqv0xA1LI/oDYNZXd9x24TSyDR6Dr+69n2USBaaXvOF2rmS2fuCQpF95eo3l/cuMV7WAP7j/axw5m46ZnUY6LDS8cD3Uo/Gtkc2sDLvOTD1BPxuAJc7w1Ixjkv0PXE4oVCe1q6X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=k91Y4giH; arc=none smtp.client-ip=209.85.215.172
+	 In-Reply-To:To:Cc; b=ErqLVszOOJBRWZNFz5/o04tNjEjUa5UyOcx8L4xLGBdCneOQANMbLCkSVCJT+w3CMU/2PWOzhHboZ9nIf4rilyV3C305MLkrUW3ufmz1/szx/+C7QMfEUVVL5SDJYkONy7bHTNVzyxeCxRj0UxNwF4tq18pD7WKahvZ2QWmGDj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=N4djrP1e; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c70c112cb61so5967025a12.0
-        for <stable@vger.kernel.org>; Thu, 14 May 2026 01:26:13 -0700 (PDT)
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c8027e876fcso3257247a12.1
+        for <stable@vger.kernel.org>; Thu, 14 May 2026 01:26:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1778747172; x=1779351972; darn=vger.kernel.org;
+        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1778747179; x=1779351979; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GheaXfm6WhMIcKtl8e6E9+wMuBUvLISEtMm7ivNoGig=;
-        b=k91Y4giHff01yxWojuLia/M9fAL4RljVppDZPb60vAs3vI6vvXcysEMJ4dM+ZdJPRo
-         rtJuyF9e0tOv+mefyYhoCtda8ZaXIoexCsB4eNz5j0k+9K3Mn8BRb6qBX2WdJLt3TIdY
-         MMa/8DMmkrqKDq+XL0tX5VARTK1ndH3c25lmdhhLwCdBXBOk7e0MHxg6Cdjgqk+6WbmU
-         yRmjb3iZPgkJU1SK4I5tWOlhkAQmhiiaZlqD7dtI27z3Bpi0At628qbrFY9zY7ImF7BT
-         HgnZrsjVZT+3qpC/MUteJT/Jts/unfTCx8NcMF7rud8jEeF7LFVHMDnJt3rj7F2kutJD
-         EAwg==
+        bh=Bcm+FEfphE7RWlNG6KH2TrNjmFAxIKcw/vHzKLgiSIA=;
+        b=N4djrP1e2EnGfPPSSWpRwc2m+ldSTOCQCL1Ub+kM78RtnJUjpiWxERDjGJGP9iS1G2
+         fGsO8xXuYbbTU3xjzMprNuTfOXJOfm83B+tP5x+8jMnED+xQSQdzAS1lRq5Kc0CuCs7q
+         h3VEkcrldyXHjgL0uSI6PFIwYLsoyODK6s0vc5yS2lGzwSWc4IZ1qc+azLXMyj2TWnb3
+         EI+zcL/WigcJub6646lqlZgHkUXkH5PrGEYgCr9HxmbC80XOvGmD6R0fjcMYj2ZZ1bkn
+         U1YNfcgmVwKUGP4oKHsrv/IVAUfdSvfj72ZR7PaXypXO6Kfv7DxDoPfnVwhtHYklDMfW
+         JgrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778747172; x=1779351972;
+        d=1e100.net; s=20251104; t=1778747179; x=1779351979;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=GheaXfm6WhMIcKtl8e6E9+wMuBUvLISEtMm7ivNoGig=;
-        b=YIlUtsAkcre5iW7WMS+/XJDa/aWttvsS5jpCCkF9coSvdR9lk03uMzmhBlTZvWNI6h
-         ikKyJwpHbNJSslLPDfSvxY+zUb93kaLOV6ezk8YFgs8w7KVuGPBD92xdQaYOAibUXIQ3
-         7S6W0+bVpFl03cvhHlNfO9TKLjxmyfGUBxaz4MxHPSgxVMtsW4D20KWG1BoR0IB35nnc
-         q4w7teEHYRX/TUIfG1XyNWJxbObxvWkRNtdqy0ZGY0M3z7ypUmLoFWrvt7SGOPbkECQ+
-         8ggUqJ9TPI5EZ2eAk2T5vWr2Olw4/HNHKUg/9fq+vwWjcHVHsadFuMKYBHgpiZbkzPpj
-         RWKw==
-X-Forwarded-Encrypted: i=1; AFNElJ/IJm0oPQfaSe2m0r7VgWGxOefhS9etRegXHztzDOqkuTcx1P/FgQkhCZZuAyHwiPgWZmVIxkc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+vmw/LSQjFPjJuzDb1s9GAX5tJ+InNd8yT7n+giw2tuk/YLqq
-	ddrkw7EoloLvzECsQBdj0k6eE596NjJBAqVRYj5iyFT7n4zk1Ue2u2gSzfuOunSBXIM=
-X-Gm-Gg: Acq92OGZU7i6sKlsyzr8ETH4w/dcvzWg99rVLtlhexn8HAjGBcTQgZPCNfjFnJvXCU9
-	FTL0syJI0ExJ3RdieqI9PNj4rgMB+7mawzBewJTKTueOwX1uF++rrKLCtND6zq8Cw//Fm3cwpq4
-	qVBPuPxmNEgMfcLwsQHU8gxIDJG6rv9dGtCRl6nDAo2DjbMx6T/hLYtyLbWs4mNzsTln714foVi
-	JPdl3t5LZftuBLusLtXoCZCeGwluVtDVkHcLEAGV9oGKdGIv01eifC/dO8GpCfHS1Zmy5W9FYbZ
-	qDIkKbxjypu1wMv6qMozt98pWHtbLIu7z8KrrSuaDSwJYlUKU4FDu8TvlMVBkWobP3S99mG+fSm
-	VuICsdldrLIh9SiwL0wPlj6ILBDDpQuGVsgwvklJm8B++G5cCiL+RUCMxxWm4wM9pScR9uusMEo
-	PWtIzrbJaUajQcfk71iDKTj3wMXGV6YEJ3KGBwzIIYdmAvVsvb5YgP6zdKvwITrBou25VdINL6Y
-	+SIDCb/GYuk37ITXCBcj+UC6a1XO3coiVzeE2f/jWtM
-X-Received: by 2002:a05:6a20:7f8e:b0:398:8002:8033 with SMTP id adf61e73a8af0-3afb0524b0fmr7156205637.49.1778747171713;
-        Thu, 14 May 2026 01:26:11 -0700 (PDT)
+        bh=Bcm+FEfphE7RWlNG6KH2TrNjmFAxIKcw/vHzKLgiSIA=;
+        b=ZQytT91iCM9xTx6kTNeOi73EfVXEGqhRfghN3csEQos2SIoDnhImS0GoOSf2UtrXVm
+         I0WVl8uKZbHxWclH2OhrdkPX/4Hf2ZYhjAVmZRcn+0PBVEWQqb7LA713F4KkfTTwQIPj
+         Sh5f8/XTboTnLCC70asmZyUTyF5ds6UjOXahAtotfuHOeL+wZMAHRHDwYMI/Hu2z/GUH
+         kWgOZFnA8kUHd20+pJuOpn0u3jDVA+dHZ+6R33Oll3AFBWYrnrNbvwJsqFhylAy3vx0b
+         WwCyDswSUzlxbpJKvO6xcUxwIHl4Ps1oaeuCJkpbP96EX616ZWH7L2Ougs/iQ5eU/YK2
+         BKqg==
+X-Forwarded-Encrypted: i=1; AFNElJ9X7JrneqELVIPylin9OjeD1sZwSlCvMMW/fYOAj8+2WCqAHW+t+49IVscE0B2d1gc7ecLbH8s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2Ixb5ZUD2cpC6/Tg2RV675s3rLkZzAkj7qmhrKgYC+yRcQnLQ
+	sb/1qRP+NJnhQlOYBI3nBFMWP9nPU/E5WPyHf2kT7BiAFJ6SWyJhztbLaKCmUBAkMN8=
+X-Gm-Gg: Acq92OELbOOnqH4oEJpKnBxaXzXGJ8XyUeVHrKtgDMDnrMM19raybGRPtcnFMBjQBUa
+	HBBpfiEkx8zipePB2jeTvgHSb0nfvzxnO3zb+IxCnWaQXf22OzbXy8zBfJSI3I+ivXVx2lPMWaJ
+	fJlorsoMwabFOdUX4xuXxd6gggBgueQr7ftgUyjSf5aXOenzfPKdCJbrbbSV2+oZuLwlnMHqQIr
+	11X71nPnWFQoiaMqj99zgJuV1jsXi/JEXMhERbc8JkBzx55y1t6OMRcqCRxWoYB+BKf6LHE+uwq
+	MDYUp53GaJP2Jeui3c4CGL92oqsQLC8PaPADYQiZsLa0NiHfd9IUdmp4TWCsBvlhNat2OynxbPc
+	yh1V4h2G4nc7KtmOONrpMjpYq+VevdF4o3+3jXBRR1QUVX4uc/69wWbXlxDYOLTaOnYwis12mtF
+	FMXxuZHDAPPusanKWZzaLPNFI2wdY9OVwJmXlYa5/Sdz76A+rKAEML/PDyc/rOOS/U+2Dx3Aus/
+	TL+y0htJlw/bLwObMMGQIY/Lv5kJJDoe//H3q5wQJkv
+X-Received: by 2002:a05:6a21:998e:b0:3ab:13f4:c721 with SMTP id adf61e73a8af0-3afaf522ea5mr6800186637.18.1778747178988;
+        Thu, 14 May 2026 01:26:18 -0700 (PDT)
 Received: from [127.0.1.1] ([103.158.43.41])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c82bb06875bsm1589102a12.3.2026.05.14.01.26.04
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c82bb06875bsm1589102a12.3.2026.05.14.01.26.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 01:26:11 -0700 (PDT)
+        Thu, 14 May 2026 01:26:18 -0700 (PDT)
 From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Date: Thu, 14 May 2026 13:54:40 +0530
-Subject: [PATCH 11/14] fbdev: uvesafb: fix potential memory leak in
- uvesafb_probe()
+Date: Thu, 14 May 2026 13:54:41 +0530
+Subject: [PATCH 12/14] fbdev: efifb: fix memory leak in efifb_probe()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,7 +88,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260514-fbdev-v1-11-b3a2474fa720@cse.iitm.ac.in>
+Message-Id: <20260514-fbdev-v1-12-b3a2474fa720@cse.iitm.ac.in>
 References: <20260514-fbdev-v1-0-b3a2474fa720@cse.iitm.ac.in>
 In-Reply-To: <20260514-fbdev-v1-0-b3a2474fa720@cse.iitm.ac.in>
 To: Helge Deller <deller@gmx.de>, 
@@ -108,7 +107,7 @@ Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
  Abdun Nihaal <nihaal@cse.iitm.ac.in>
 X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: 39B4653F53B
+X-Rspamd-Queue-Id: 0AC1153F566
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.56 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -119,7 +118,7 @@ X-Spamd-Result: default: False [-1.56 / 15.00];
 	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247149-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247150-lists,stable=lfdr.de];
 	FREEMAIL_TO(0.00)[gmx.de,redhat.com,suse.de,kernel.crashing.org,linux-foundation.org,linutronix.de,rainbow-software.org,gmail.com,linux-sh.org,wp.pl,ti.com,gentoo.org,denx.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
@@ -136,41 +135,33 @@ X-Spamd-Result: default: False [-1.56 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iitm.ac.in:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cse.iitm.ac.in:mid,cse-iitm-ac-in.20251104.gappssmtp.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iitm.ac.in:email,cse.iitm.ac.in:mid,cse-iitm-ac-in.20251104.gappssmtp.com:dkim]
 X-Rspamd-Action: no action
 
-Due to an incorrect goto label, memory allocated for modedb and modelist
-in uvesafb_vbe_init() is not freed in some error paths. Fix this by
-updating the goto label.
+Since commit 73ce73c30ba9 ("fbdev: Transfer video= option strings to
+caller; clarify ownership") the string returned from fb_get_options()
+is expected to be freed by the caller, but the string is not freed in
+efifb_probe(). Fix that by freeing the option string after setup.
 
-Fixes: 8bdb3a2d7df4 ("uvesafb: the driver core")
+Fixes: 73ce73c30ba9 ("fbdev: Transfer video= option strings to caller; clarify ownership")
 Cc: stable@vger.kernel.org
 Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 ---
- drivers/video/fbdev/uvesafb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/efifb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
-index 88667fccc27b..9d82326c744f 100644
---- a/drivers/video/fbdev/uvesafb.c
-+++ b/drivers/video/fbdev/uvesafb.c
-@@ -1694,14 +1694,14 @@ static int uvesafb_probe(struct platform_device *dev)
- 	i = uvesafb_vbe_init_mode(info);
- 	if (i < 0) {
- 		err = -EINVAL;
--		goto out;
-+		goto out_mode;
- 	} else {
- 		mode = &par->vbe_modes[i];
- 	}
+diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
+index 47ebc0107209..ad8dec7807c3 100644
+--- a/drivers/video/fbdev/efifb.c
++++ b/drivers/video/fbdev/efifb.c
+@@ -377,6 +377,7 @@ static int efifb_probe(struct platform_device *dev)
+ 	if (fb_get_options("efifb", &option))
+ 		return -ENODEV;
+ 	efifb_setup(si, option);
++	kfree(option);
  
- 	if (fb_alloc_cmap(&info->cmap, 256, 0) < 0) {
- 		err = -ENXIO;
--		goto out;
-+		goto out_mode;
- 	}
- 
- 	uvesafb_init_info(info, mode);
+ 	/* We don't get linelength from UGA Draw Protocol, only from
+ 	 * EFI Graphics Protocol.  So if it's not in DMI, and it's not
 
 -- 
 2.43.0
