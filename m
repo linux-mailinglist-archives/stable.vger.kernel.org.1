@@ -1,303 +1,247 @@
-Return-Path: <stable+bounces-247130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKcVLs1yBWrFXAIAu9opvQ
-	(envelope-from <stable+bounces-247130-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 08:59:25 +0200
+	id UFItDQ1yBWoTXAIAu9opvQ
+	(envelope-from <stable+bounces-247128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 08:56:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6223553E9CD
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 08:59:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A7B53E962
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 08:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C7A72301C343
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 06:59:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 43292301F7E4
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 06:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22FE3CBE93;
-	Thu, 14 May 2026 06:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C7B3CB91C;
+	Thu, 14 May 2026 06:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="pasf3sKd"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="frOwhw54";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="OgUtoV4H"
 X-Original-To: stable@vger.kernel.org
-Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazolkn19012014.outbound.protection.outlook.com [52.103.72.14])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9943A3E94;
-	Thu, 14 May 2026 06:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778741960; cv=fail; b=Jb2pHJrXKcrgV9gcTx47Og8+/jrEbQmru7SO8f0p+UU9+YPjEKxHbxiI1d/3wXJ5vYkiAiIGLr9PXkVYMFHPlolGe9SOQlnLpZwxVEUEVe2eQpG1MjzCftQ5knduNPICMH9flbduqVdPjGwHvOOTSMjpm6P7jY9Im6pm3RkvoCU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778741960; c=relaxed/simple;
-	bh=4GBPaN1SRM77r9F4tuY5yhp5IVn7AfiSBv3pckMqAhY=;
-	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:In-Reply-To:
-	 MIME-Version; b=ATXVo55PaoseZAepjhbL0quibEFSyyMgroilZdsp+4bnupFUDW2pc7AQJp/YSBbsPPxCiCygM0yqIO/OiKiF+K8uTG6SNda4V4ZfsvuVM9zKVfBF8RY3GMGwSG39JhZc5BtZxUtYWR0etpAsww2+42RVVMqJdOf12IWmbh+UGeQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=pasf3sKd; arc=fail smtp.client-ip=52.103.72.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=i4NRNITEGXJeKVWEFUJapx8a7anNUVvG//ZQ/UnEtf80dGoWzOjlLXD8VCy2Hx7uRrKC/dmC3TPtsjzo4fd0D616w8mXhqIhI3rS2QzMvTe0NzwlquwZhwwgtpJymwj4JAXkXDoeBHBiNZ+tc0hLFbouCfFnE8Noqk3fopATMGcb2ANWtnpWC9j4UT4ycurvknInRWOw01wLj5DPyjB4dSOd+4OusBvfBncauAgtGcR1hNrI4LXrPxYDD6WmnclrLMAo+CBuwavFbs+Y6dhblvlWuBmWdkFvk/b2AIhALtwSxD3nMWIIfxIV+OnfpNMcK9xPe5dRHB6lgnK9Gwca6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+BrInpqMneXn70MPHO2ko2sEAgGVLrxrBuzd8vYUg+o=;
- b=aO1ndC7F1/VSnBC2Stl7y1eG8DbYoTGm7tAqpmPlrpOpsAYXzTA8+xUeOX09MPfSre1yvO3KX5AtZzOpY7ajPqbo44w9OZsJOHrsOpt62lobMfrHUNU1LxpvcpJY7AAnS/xye/3iXAXQAHJPRZH6Kue1fLvziKWNYpqyck9Gequt5aXL1xW7wN9WoNwpLwGWKMZH2xctWNWbRZK+jJaS3Dmhj8KePTr4oRMzwk0iocz/fMjFAY5f4L/s9TL5HboGO1KU6uIh3bkOWLFJJg94SPh/9mUF0aX/YxX/xI8SgNqbg5TPoLyurqeV8NcJCe3dvqscXvVF+0UQYG+mNL+mpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+BrInpqMneXn70MPHO2ko2sEAgGVLrxrBuzd8vYUg+o=;
- b=pasf3sKdezr+rsEL3tawnU9KgrURAh8XNyiXICtU6/PJeP8cvaukFkvyOZyY99cEW94riLwWLL5X3MU2lySq1jSqLhjPx3wSiFin7jvTKknH6SUaYkdiz46E8Sn5Q2TBuCUhGQKp/6mNBEVTqTOVF0NlMXhSOLt0wKsnfoliKK60TXEQ35UbMhcrKXAhuSwhT7rWmYUQwM5oxzravHoqErYit6bs6KJofxFZWEvaTK1Sn7xKSbqPKHjJ0q7wZRK0uYA1VojhW3FtT3TWJjlM7oMMtcIa1vTqbIbtKjth5LgTNglZYGauhxfIKIyHUfKQYONU1oKaJeaDy0JAFVWA6w==
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
- by ME3PR01MB6562.ausprd01.prod.outlook.com (2603:10c6:220:109::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.18; Thu, 14 May
- 2026 06:59:11 +0000
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c%3]) with mapi id 15.21.0025.012; Thu, 14 May 2026
- 06:59:11 +0000
-From: Junrui Luo <moonafterrain@outlook.com>
-Date: Thu, 14 May 2026 14:55:04 +0800
-Subject: [PATCH net v2] iavf: validate num_vsis in
- VIRTCHNL_OP_GET_VF_RESOURCES response
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID:
- <SYBPR01MB788139F8F31129E4B64E66D4AF072@SYBPR01MB7881.ausprd01.prod.outlook.com>
-X-B4-Tracking: v=1; b=H4sIAMdxBWoC/1WMsQ6CMBRFf4W8WZq+phR0EopuJkYnYxxIqdKol
- LRANIR/t2FzPPec3Am8dkZ72EQTOD0ab2wbgK0iUE3VPnRs6sDAKBM0QR7fzUf7uBKKYyoUVaK
- C0HZOLyKkV2h1D7cwNsb31n2X7xEXdb4UxxPFQ5FmGeZ7RMmTfFdKWnKZZ2sZNirY9i8j1eA7V
- 1MknbM1sUP/svZJlH3DbZ7nH679dyfDAAAA
-X-Change-ID: 20260514-fixes-a6c4176c0c6a
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Mitch Williams <mitch.a.williams@intel.com>, 
- Greg Rose <gregory.v.rose@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>, 
- stable@vger.kernel.org, Junrui Luo <moonafterrain@outlook.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3513;
- i=moonafterrain@outlook.com; h=from:subject:message-id;
- bh=4GBPaN1SRM77r9F4tuY5yhp5IVn7AfiSBv3pckMqAhY=;
- b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGLNbC4w2SwR5chS+4u1+sF9wv19Yun8XQcfyId7foB
- pGXD91vuHWUsjCIcTHIiimyHC+49M3Cd4vuFp8tyTBzWJlAhjBwcQrARGRvMzLsXfXm/MFVCkXc
- 3ydY+FwvTdiiLPXdx/eUT+Kko7ufTC6NZPgft2IBy5lH+r/5NIwjymfd9jae1SFcoR/dfPxQ0vQ
- wmQlMAM3xSU4=
-X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
- fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
-In-Reply-To: <SYBPR01MB7881AF11C45AEDC0D4CA89C1AF062@SYBPR01MB7881.ausprd01.prod.outlook.com>
-X-ClientProxiedBy: TYCP286CA0087.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:2b3::18) To SYBPR01MB7881.ausprd01.prod.outlook.com
- (2603:10c6:10:1b0::5)
-X-Microsoft-Original-Message-ID:
- <20260514-fixes-v2-1-48dc2c9e3e80@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D508B2E173D
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 06:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778741768; cv=none; b=J9oHRqAH0XbVxjH4KyBaqrIsQC491cMYVpE1PtYhuOCfMwXlNnsdPL/aWJME3eF31NvdIOT3nV3+r4tp8j7zb3bSS7Kt7YcoVTBhT6ZquesPRw1nnjAwvON+61H6gjh4yqRvMcvfHGzrplQwCQX3DL6tXPquc4jav6DLaQeLFdw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778741768; c=relaxed/simple;
+	bh=DhPGY6UsF4oTbf0f1Os+FQL/IrtUC5+741eb5FoC/x8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JscDbUMUPuYjgmOqsTSey3+Ew06YqbH6gcZMh1k4OmQa/sH7irM/xutbRv35LYL7kmZibDIbhF2LI6Vetx9inSmJsQisQFWWH1IUURUNmSD5GzrIMPuTbYl6X3E5vLg8wVgwMzym7FjUe52mXElK8dN/RI6+2am+JocUDHKnkvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=frOwhw54; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=OgUtoV4H; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64E2FoYT2524359
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 06:56:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	sOOJkS0Nd5Z+bZiqJQePyXnIYm4EiF7YiYsc7T/csgA=; b=frOwhw54gnxyf/7i
+	Y30LFkbBnOhTlOx3d4m8ILfwnJuOLS5G8mp/kkb2lyTcamJEjUVjiLkX3MKeHD99
+	eRa4BObIwcYOdCWjPdaYHVYehsCBEUAjYECjlNH0gXkwfV8qmFShI8XFvYE5TqP0
+	g8IG1ArjacrX4VhOoa3rsF0+MD8GNHNK3Mg0o696UWLlDpvC+dnDKSewREk9t4VT
+	N74onSt5yc/CLYkWImwnmxhooGFQrxRq3OauQjGly1H4FurLxvYMuZhKr8umbONk
+	Dtiaa8KzgMQA3P+/5gZShhMKjcJwSc/CEPXVb6CKyNZXfqEe2m/Iq1Ru3F5gJFKU
+	556oIQ==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e4vkjjq1r-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 06:56:05 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2bd5b20aaa6so5932095ad.2
+        for <stable@vger.kernel.org>; Wed, 13 May 2026 23:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1778741765; x=1779346565; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sOOJkS0Nd5Z+bZiqJQePyXnIYm4EiF7YiYsc7T/csgA=;
+        b=OgUtoV4HCLo6wEzO+DATG9coRw35P6rSNpNX7BW3PWtPbNjo1yyyTP0tAp5H0QR1QW
+         nYXyChUlX37MRRJDwCWTbrbQzjhAyQh6wIwYaeArAcEWVoFhqR68tmCrNPRku9gX6uBp
+         e8kGTIhDrdN5aQ9UIQKqL0m3nHC3GRTKbSDACqph/+qNkJzTvenbDmLtX4t4fUpiuUQU
+         kwloTcVgp+ngdgne8Rk+KwXlHtSy7UmW1r1ngZfD6W1Nc78ehS38q3Ab3SPP92UcQo2m
+         GaTvaflI5+mQeFQmH/EJHvVaykHKSDkLfkEUfEpE+1bZrfFzjqPcXBO1lp8W7Mg8BvqU
+         9Uaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778741765; x=1779346565;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sOOJkS0Nd5Z+bZiqJQePyXnIYm4EiF7YiYsc7T/csgA=;
+        b=dkdRKtnYZSq/wYOIgUmb0U42IZTev8uihvCNKqly4LUH5ZbmanrCug86CJeZKCuaEX
+         n6qMn0N5D/vK+ZCBXGesYdhSS1wDvnKWo63frLycmns7uWJlxeHp94Y3USfoKQtpddHJ
+         MYSWAsTL+aMoa9+oaSgsgMpcPSkIAgHH9jhTMUv/cA10vq8KqW2joHWlTKGllAqL756f
+         ynDyn3NvaO6sYUZHlffuJogCcyAIhYxXg1f4O8yaYbJ7Ptqb/WwgbMTC/MUaQujohEPM
+         gi5jqislm1oaf9mDXUyDVzVZZTzZYE8Scnb4o9IwbQIm2y5JuW0waQKE1DjZkfg8mRAO
+         SlRA==
+X-Forwarded-Encrypted: i=1; AFNElJ9LrSN8vEaO8LoQFLbX0vlBkeLLn9IvoUv47DLDNTsSq2pwDtGtdssaG0vGMeA7IpJMdDbO4U0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz72QMvNcfdv++tuR2qYXDiyFyBvdd9OwoXIa8wKj88HZbw+kga
+	LL0kXggf7xhAJhVEwmF0ijnI8FYH9yZA8/pjkod7+UKFuzy1gHrLknq6PXMmQxiikuKi7k2+MAu
+	34W/Gk0SUP0Sx9UEuObMtQG0Ij+texBH/fiZPSrB6rGPnS1PZADMRHMYsTj4=
+X-Gm-Gg: Acq92OEhTie46vlgdFzGUo9yhIpg4vDCmTnJYpr4fwoUnvYjv06fnwKKMXyDENWWz2O
+	DhwyXQ1RxB+Ez5UcIVqDJ7NYaZdAU4sCm4MXgy+e5DYbr9vSX77HOpLw470eTTQSUxNmj3DrcXh
+	CirecZha931U66Fnxgji6WnW8Gwoa5U3kSy+bQkyLGX/UfOw/xSxVtbMUC5pA2dgbCNT7JRixhk
+	6CD7bh2pcNLipQhItNJ2P04fgnbWnCXiCLCIlZcOUH/cdBlql1RTvk1pgAiK2Vb7yrKvLTDkGT7
+	ADvoSnVqk//z+sJvZ+27ZC44u0iO8oGpHWuLJtlVR5o/LK2l3C8oThYSoB+CHOkv7gpDxzb1aAm
+	jmVEMzRL/FETeduls540Unao+0HdTD24bcwaOahDG6D3rRWsGoVvbjJwZOU9r1A==
+X-Received: by 2002:a17:903:907:b0:2b0:5ae9:ee4 with SMTP id d9443c01a7336-2bd2713c355mr71238205ad.5.1778741764655;
+        Wed, 13 May 2026 23:56:04 -0700 (PDT)
+X-Received: by 2002:a17:903:907:b0:2b0:5ae9:ee4 with SMTP id d9443c01a7336-2bd2713c355mr71237815ad.5.1778741764132;
+        Wed, 13 May 2026 23:56:04 -0700 (PDT)
+Received: from [10.152.199.23] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5c0600b4sm14120975ad.28.2026.05.13.23.56.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 May 2026 23:56:03 -0700 (PDT)
+Message-ID: <95bff017-3554-425f-ad8e-767f9cbe1277@oss.qualcomm.com>
+Date: Thu, 14 May 2026 12:25:59 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|ME3PR01MB6562:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d4b2bce-61d4-4bac-cfe5-08deb1864d1d
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|55001999006|24021099003|22091999003|24121999003|5072599009|51005399006|6090799003|8060799015|23021999003|15080799012|41001999006|19110799012|1602099012|40105399003|3412199025|440099028|4302099013|10035399007|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WDI3R0FTQ2VldVVGemd2TnVwM294dUxQWm9qdWxTbzlzMUZtaGJuaktBb016?=
- =?utf-8?B?cmdETWUvRUlISTBWNGQ1YmtZOXZXWjRpb2tEZ3BGbXIxRElhTXQ1dVVua0lS?=
- =?utf-8?B?MjFlQkkrcnFTbVBEaEQwVjJhZ294WHBCUE56bVhXQkZwUGEza1ovckkzK0FW?=
- =?utf-8?B?K1VEaUZ3QURIVmpPdDZHMTZQWXFyU1pjRkl0czZjaThnK0szdHpCTGwxV0wv?=
- =?utf-8?B?QStpRktmRGdUSDlLS2t3dkhSNmhIampma1Bya0J6Vm44RnNUQUxORGc0TEIv?=
- =?utf-8?B?WG9pZy9kYitYNFg5cm9obG1VTXR3WGcxSEQ2MjRUTzNsd25DQVkxa0N3QnN2?=
- =?utf-8?B?N3ZscDI3QjFvSlI5SHNVMGhSTjNsZ2V5enppZ0dSSnFWV0UvekhKTmJJaVNL?=
- =?utf-8?B?M0Vrd1ZRQTJvTXgwRFJ0VlEyMmJxVDQrOTgxZzg5eUlFWGFuaTlyd3k1dDBB?=
- =?utf-8?B?U1RmOFVQNWo4OGZQekJ0TjN6SzQxYUFOM1JDa3dTaUx0OG1oTnIwNkdVV2px?=
- =?utf-8?B?N21nM3pzdDVONVJHSklYenBlR0RHd1B2WEhZWFNySFlQVGhYVWlDWVlBejQw?=
- =?utf-8?B?c1dzNEpsa0hPRUJSaHZvU01EVDE4d0FaU2hhcVM1RXNidk9OWktpZCsyNEZ1?=
- =?utf-8?B?K3BPa2pGWUNkakRack9BdjhiN3krNTNTem5mZEVPVmZJL3NsZ1h1UnNNZjgz?=
- =?utf-8?B?WW9mQWZLcTdNaHJHU0ZPOFJXZWdvbUN4K0c2S2xMWVdNWDN5TU5ZZHo1RWpv?=
- =?utf-8?B?a2I0MDJGZ2h6NStaZzF1dDUxYTU1N25qZzdKM0pROGtvTEFYK2VDQ0d0eVZJ?=
- =?utf-8?B?cUd0NU1DaWhrRWwxL3duakRIZmlNWGxqL1FpZWNuWklMMnU0eVliakxzQlcr?=
- =?utf-8?B?U0JKc1hMQjBMTG5PeGxJZjMyR0tCNm10TWgybGYzaG1HRHNUNjVJTmZJc2t0?=
- =?utf-8?B?bndTWG9TWlFsZzRFajdCSUtJUVkvNkJhdFpTa3QyUkdRbUh4NEZEcEY3ZlRu?=
- =?utf-8?B?ZFpHMTFlL21mZE90Z0psbkFWUndXU004M2U4MmVmRFFrNzFIWGVKS1MzQzhZ?=
- =?utf-8?B?N2ROTFphc0VicGFSTlZYaEJnVHUyaVRLcDRFNE5icy9CZ2FxUFZPYk15a3U4?=
- =?utf-8?B?V2MrWFBaWGtmQWE3bzBsc0VJMk5IckpBOGhLRmxOTjRnTWJRa2ZvRVJFakZr?=
- =?utf-8?B?RW5EcnJhQWRjb3N6OVBXVVhKVXpqOE9JVDZnSVgrcmVOcnVxNWQ3a0poazRN?=
- =?utf-8?B?K3VkZHpKWGhxQUJCVDNZVHNZMis0VXdRNTVqQXQwcGRPQWhxTythZStBbDhG?=
- =?utf-8?B?UER3aWk3ZlFwL2pYbHFiYTc3bFlPd255Vm1vSkZGWkxrOUh6eEF4c0pZRGlS?=
- =?utf-8?B?U21reENmaGRCQjNRdGRmejRXZkZheHFEY2lOcG1QYVJmV3lqYzZ6aXNFYWJC?=
- =?utf-8?B?TlpTb0Y0U05uS3RJN012ejFpVXdOUHFKalRNWDBZZWxDWlQyR243QWlSNllQ?=
- =?utf-8?B?ZEh0V2t6SWhQZHpYbzN0bWREd2d1THp5eEZKVnRJMk9zS1RnRDRWSy9KUEdo?=
- =?utf-8?Q?vUcDw+N8HJ6Ks5bbd6QFoI81I=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WEhEN3BQcm5IZVUwdjc5KzduSHRhZFdBZ0ExMkdjZkFyOTNxMCsxUE5qdStP?=
- =?utf-8?B?ZXcyTHVpeWd5dzRkeThXZHA1T2dDeVhadVg4NVJYa1puN29reGRsZEhCdmE3?=
- =?utf-8?B?THFDV3JtT2JkMjZ6ZkhMNUhSaWlNcmIzV3JNM1F5SFNYRFBsWjdWdDQxQXR2?=
- =?utf-8?B?Rm01WkdsZ01hZ1BLeng1anpBeWRZbnJvVktNQnBUUVc0aTJtMU5KaUV2eXJr?=
- =?utf-8?B?bmRTN0FrcjlPVjFEU3BVODhPeTV0OFBQK0NoMkxqMDB5azNBUzRqNEY2cVlC?=
- =?utf-8?B?dExDaXdNV3FWZWxJbnBwNlg5REhTNVNMTlE1VnFlT3ZWNld4Wm1UWGZCa09D?=
- =?utf-8?B?Lzh2Tm5XVUk5YlBUQXNjRVBtc0hRZzk1VXR1SHNGNDViUjkwV0JmZDgxZkhE?=
- =?utf-8?B?b2o1VFA2bGEycUJsMjlJWW9zUHF1S2RWU2dyVUJUbGdpaW5pMGdwYmdxVkh6?=
- =?utf-8?B?TjRVbDRIeFlYN0UvZVBsVmpnV0Z4cUVjNVlUMDNDUTl5T0VOTkh2YUhwSmYr?=
- =?utf-8?B?SXBpNnIvWDFmcktleWdrQm85L2xNL2JWZ0RTK1BUa1cxd1dNMXh6dko4MUNZ?=
- =?utf-8?B?bUdKa1JkcFY3R0NVM1E5K0ZxWUFkOGZ3ZTI4aHdRNGVKYTkyd1pZUysyaVpH?=
- =?utf-8?B?TEdxM2UvV0xWcTFIVU5ObVlJNjZyeUprRm5uNHY3L0tvM1JmUkdsMHRuUDBr?=
- =?utf-8?B?dnE3d3dDU200NWdRTW91TWJzN0xSNkFsQXpVYXRhNzlyWHBBbGtZUTNGVXBm?=
- =?utf-8?B?ajFnNEYyYW00MnJOcXFYN0w3MTE1a3hrRHZia2FHMFNBUFdRREIzdGZFRExz?=
- =?utf-8?B?RnVBZ3UvWDRVbWZ2UkFKaTFGTnR3ajRpSzFoNEk2ZEpIVXVPVEFhRm1DMVov?=
- =?utf-8?B?ZGtiT29HaXBmNjYzYk9EQUtqNkVNUnJqT2FhRTJsSVBOMUlxU1NVelJ4TzF4?=
- =?utf-8?B?c1lGNE1BQjlWN1ZTUmFNWnhEby9HZ3NZK25Qb0NkN3lKRWl0QVBDYmVBMi8y?=
- =?utf-8?B?MFpmV0lWdm9aZ2QzS3hLQm5ESWtaNGp5TkIyalVyeEFDTU5GclA0eDhFOFEz?=
- =?utf-8?B?NEJSTkxFMTVHU2krV2U3QTBmTmhmTkttL3JIUzJrNDhaSWdTeHNEVVBPRDVD?=
- =?utf-8?B?Ly84enhGK2ZGMWlkRmJpbFdyd0hmTXVPWVJNQUpoZ2ZOS0RSc3krUkJSS1Fi?=
- =?utf-8?B?cXJWemVwakk0elBHSWxoRzdzclA4bTFTTjM4ZmpSUi9FZFBQcE1uSkJxRUFS?=
- =?utf-8?B?VStOaVNzQzJOYmRWSjV2RFdmT3dnMXVzazZMakp2blVzZ0F6TS85M1hqZEYw?=
- =?utf-8?B?dU9wY2FHS0o5eExsWGtLdnAzZDc4N0VleDVkcXBUMC9EL1AwRGJNeVUxejhN?=
- =?utf-8?B?NGw2MlY0WGQ4M0p0UFIwVVdPa1ZEUjVCb2EwbXpDMFVRbVlLREw3LzRFOVlO?=
- =?utf-8?B?aUxsdVlwYmZabDZpbGZSRm04MkszYXpJZlV1MytDRGt4aHdVMGZEQUVKcXJh?=
- =?utf-8?B?Z1V5UFdSWGZxOHcwaEpReUtLcFNJUEQveTgvOEJnaVJOclR4dm00R3orQkRD?=
- =?utf-8?B?aVNRQnk4d0FqL2s1N09lSS8rYTQrYUpOcjZPVXJzZ2VFa2NFMVlkRXJwbnYx?=
- =?utf-8?B?T1ZwdnBFZ3JqeDUvYUtxMDUzUWNXb01DNWRuT01DOWJWTXZsT2FVWHRRZ0Jh?=
- =?utf-8?B?UzBUNzlWSHBIaVlhTlRuVzA2cDFESkRqT1hwWDdlRm5iVGNHZHN6WGRDaXp1?=
- =?utf-8?B?eUVFWWwwM3hFdVNYdVZ4V3BaNUtVeGtuT25Wb3k4YVQrdWVJRFZ3aklBeHoz?=
- =?utf-8?B?U3dBZUF4ZjdmSGtaWlE2bXQ4TmlWYWsvcWY1T2RwTWphcUFWTTdqVTgyY3ZV?=
- =?utf-8?B?bWxNMnNLOW0vQzRXclN2OEVwOFpIREtTemFOYXJQR3Z4U3c9PQ==?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d4b2bce-61d4-4bac-cfe5-08deb1864d1d
-X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2026 06:59:11.3747
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME3PR01MB6562
-X-Rspamd-Queue-Id: 6223553E9CD
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: fix warning when unbinding
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: ath11k@lists.infradead.org, jjohnson@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20260507070808.367442-1-jtornosm@redhat.com>
+ <20260514061841.9517-1-jtornosm@redhat.com>
+Content-Language: en-US
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+In-Reply-To: <20260514061841.9517-1-jtornosm@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: C45K5qUPZSTAcNpUeuLV6IWB4flHd6nH
+X-Proofpoint-ORIG-GUID: C45K5qUPZSTAcNpUeuLV6IWB4flHd6nH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDA2NyBTYWx0ZWRfX1h1G/qn80TjR
+ WY8mq1viEmZ+v5ZlMS8nAV0fS9Lm7GVNFAwwdw9rrhx56uKPzG7n0esy25fnmS7ZaQoQHhbMD7h
+ MIKH/Bebkch/6MH1jmv68s06Qa3aK+IF/3g7otMnRhB/7TXdTQYXJMPxGpD+hLVWF2KajADOJS0
+ XqC00LJ7qpPDLT3o0neMQ647saCJBaZ8bLN5ETNoCrKr7t3PeoGklpjzUvQfBjDfj3RBLcLAZkH
+ 8uENFrNkGd1BGXKrE9Wiag5McJbKClq77Vt/VhEvZOud6KA8M2ZGxhgR+6Mir1PhB0F2XFglnRU
+ xpxW+NgjiwpyF7dRPaiBXHBwPnCMa7PKe4KxWrj2vGQ9E6jX2pFU9N80Ct73wZM5DJ5RPkY9pol
+ bSziVZiIcOGkbuyJZdiz9ACN4wfIvlk/jo1rGxihfCozzdbgPd9JbuZa1NFEZl6UdTyInBdzkep
+ 3hBWvDd1JsmEcTb19Ag==
+X-Authority-Analysis: v=2.4 cv=PbDPQChd c=1 sm=1 tr=0 ts=6a057205 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=M9fMFvqIQJQtvAFehJMA:9 a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-14_01,2026-05-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 malwarescore=0 spamscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605050000
+ definitions=main-2605140067
+X-Rspamd-Queue-Id: D1A7B53E962
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
-	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247130-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[outlook.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_CC(0.00)[lists.osuosl.org,vger.kernel.org,gmail.com,outlook.com];
-	DKIM_TRACE(0.00)[outlook.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247128-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rameshkumar.sundaram@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,outlook.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-The VF allocates a fixed-size buffer for IAVF_MAX_VF_VSI (3) VSI
-entries when processing a VIRTCHNL_OP_GET_VF_RESOURCES response from
-the PF. However, num_vsis from the PF response is used unchecked as
-the loop bound when iterating over vsi_res[] in multiple functions.
+On 5/14/2026 11:48 AM, Jose Ignacio Tornos Martinez wrote:
+> Hello Rameshkumar,
+> 
+>> I agree that setting tx_status to NULL makes ath11k_dp_free() more
+>> defensive, and it matches the ath12k fix.
+> Ok, I agree too.
+> 
+>> However, i am still wondering how the second ath11k_dp_free() is reached
+>> if ATH11K_FLAG_QMI_FAIL is set.
+>>
+>> In ath11k_pci_remove(), when ATH11K_FLAG_QMI_FAIL is set, we take the
+>> qmi_fail path and skip ath11k_core_deinit(). So the normal remove path:
+>>
+>>      ath11k_pci_remove()
+>>        ath11k_core_deinit()
+>>          ath11k_core_soc_destroy()
+>>            ath11k_dp_free()
+>>
+>> should not run.
+>>
+>> So if the double free is still reproducible with QMI_FAIL set (with the
+>> change i proposed), either the flag is not actually set in this failure
+>> case, or there is another path calling ath11k_dp_free() ?
+> Let me try to clarify the issue more.
+> There are two error actions:
+> - First the previous error. I reproduce the situation as I commented: running
+> in a VM the default upstream kernel (with this card using PCI passthrough),
+> since this is always failing. Let me show the logs in this situation:
+> [   15.906564] ath11k_pci 0000:07:00.0: BAR 0 [mem 0xfdc00000-0xfddfffff 64bit]: assigned
+> [   15.926520] ath11k_pci 0000:07:00.0: MSI vectors: 32
+> [   15.928572] ath11k_pci 0000:07:00.0: wcn6855 hw2.0
+> [   16.984192] ath11k_pci 0000:07:00.0: chip_id 0x2 chip_family 0xb board_id 0xff soc_id 0x400c0200
+> [   16.984351] ath11k_pci 0000:07:00.0: fw_version 0x11088c35 fw_build_timestamp 2024-04-17 08:34 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+> [   18.186971] ath11k_pci 0000:07:00.0: failed to receive control response completion, polling..
+> [   19.211036] ath11k_pci 0000:07:00.0: Service connect timeout
+> [   19.211815] ath11k_pci 0000:07:00.0: failed to connect to HTT: -110
+> [   19.214181] ath11k_pci 0000:07:00.0: failed to start core: -110
+> [   19.531989] ath11k_pci 0000:07:00.0: firmware crashed: MHI_CB_EE_RDDM
+> [   19.532930] ath11k_pci 0000:07:00.0: ignore reset dev flags 0xc000
+> [   29.259157] ath11k_pci 0000:07:00.0: failed to wait wlan mode request (mode 4): -110
+> [   29.259229] ath11k_pci 0000:07:00.0: qmi failed to send wlan mode off: -110
+> - Second after this, I commanded the unbinded (ath11_pci) and I get the
+> warning. Let extend here the stack trace:
+> [   24.238198]  ? free_large_kmalloc+0x57/0x90
+> [   24.238199]  ? report_bug+0x16b/0x180
+> [   24.238210]  ? handle_bug+0x3c/0x70
+> [   24.238218]  ? exc_invalid_op+0x14/0x70
+> [   24.238218]  ? asm_exc_invalid_op+0x16/0x20
+> [   24.238224]  ? free_large_kmalloc+0x57/0x90
+> [   24.238227]  ath11k_dp_free+0x99/0xb0 [ath11k]
+> [   24.238275]  ath11k_core_deinit+0x12b/0x1a0 [ath11k]
+> [   24.238287]  ath11k_pci_remove+0x7b/0x120 [ath11k_pci]
+> [   24.238294]  pci_device_remove+0x3e/0xb0
+> [   24.238304]  device_release_driver_internal+0x193/0x200
+> [   24.238315]  unbind_store+0x9d/0xb0
+> [   24.238320]  kernfs_fop_write_iter+0x13a/0x1d0
+> [   24.238330]  vfs_write+0x32e/0x470
+> [   24.238335]  ksys_write+0x5f/0xe0
+> [   24.238336]  do_syscall_64+0x5f/0xe0
+> Very easy to reproduce.
+> 
 
-A PF sending num_vsis greater than IAVF_MAX_VF_VSI, or the received
-message is shorter than num_vsis claims leads to out-of-bounds accesses
-on the vsi_res[] array.
 
-Clamp num_vsis based on the actual bytes copied from the PF response.
+Thanks much for the logs, that makes sense. The timestamps explain why 
+my earlier reasoning did not match the trace: unbind reaches 
+ath11k_pci_remove() before ATH11K_FLAG_QMI_FAIL is set by the QMI event 
+worker as it is held up on wlan mode off qmi transaction, so remove 
+still takes the normal ath11k_core_deinit() path.
 
-Fixes: 5eae00c57f5e ("i40evf: main driver core")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
----
-Changes in v2:
-- Clamp num_vsis based on actual received message length instead of
-IAVF_MAX_VF_VSI suggested by Przemek
-- Link to v1: https://lore.kernel.org/r/SYBPR01MB7881AF11C45AEDC0D4CA89C1AF062@SYBPR01MB7881.ausprd01.prod.outlook.com
----
- drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 26 ++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index a52c100dcbc5..1f9a2fc70084 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -248,12 +248,28 @@ int iavf_send_vf_ptp_caps_msg(struct iavf_adapter *adapter)
- /**
-  * iavf_validate_num_queues
-  * @adapter: adapter structure
-+ * @msglen: length of the received VF resource message
-  *
-- * Validate that the number of queues the PF has sent in
-- * VIRTCHNL_OP_GET_VF_RESOURCES is not larger than the VF can handle.
-+ * Validate the VIRTCHNL_OP_GET_VF_RESOURCES response from the PF. Ensure
-+ * num_vsis does not exceed what the message length can cover, and cap
-+ * num_queue_pairs to the VF maximum.
-  **/
--static void iavf_validate_num_queues(struct iavf_adapter *adapter)
-+static void iavf_validate_num_queues(struct iavf_adapter *adapter, u16 msglen)
- {
-+	u16 max_vsis;
-+
-+	if (msglen < sizeof(struct virtchnl_vf_resource))
-+		max_vsis = 0;
-+	else
-+		max_vsis = (msglen - sizeof(struct virtchnl_vf_resource)) /
-+			   sizeof(struct virtchnl_vsi_resource);
-+
-+	if (adapter->vf_res->num_vsis > max_vsis) {
-+		dev_info(&adapter->pdev->dev, "Received %d VSIs, but message can only cover %d\n",
-+			 adapter->vf_res->num_vsis, max_vsis);
-+		adapter->vf_res->num_vsis = max_vsis;
-+	}
-+
- 	if (adapter->vf_res->num_queue_pairs > IAVF_MAX_REQ_QUEUES) {
- 		struct virtchnl_vsi_resource *vsi_res;
- 		int i;
-@@ -300,7 +316,7 @@ int iavf_get_vf_config(struct iavf_adapter *adapter)
- 	 * we aren't getting too many queues
- 	 */
- 	if (!err)
--		iavf_validate_num_queues(adapter);
-+		iavf_validate_num_queues(adapter, min(event.msg_len, len));
- 	iavf_vf_parse_hw_config(hw, adapter->vf_res);
- 
- 	kfree(event.msg_buf);
-@@ -2609,7 +2625,7 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 		u16 len = IAVF_VIRTCHNL_VF_RESOURCE_SIZE;
- 
- 		memcpy(adapter->vf_res, msg, min(msglen, len));
--		iavf_validate_num_queues(adapter);
-+		iavf_validate_num_queues(adapter, min(msglen, len));
- 		iavf_vf_parse_hw_config(&adapter->hw, adapter->vf_res);
- 		if (is_zero_ether_addr(adapter->hw.mac.addr)) {
- 			/* restore current mac address */
-
----
-base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
-change-id: 20260514-fixes-a6c4176c0c6a
-
-Best regards,
--- 
-Junrui Luo <moonafterrain@outlook.com>
-
+--
+Ramesh
 
