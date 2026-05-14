@@ -1,208 +1,238 @@
-Return-Path: <stable+bounces-247261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGyOGBALBmqfeQIAu9opvQ
-	(envelope-from <stable+bounces-247261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 19:49:04 +0200
+	id eBIVMzwNBmrSeQIAu9opvQ
+	(envelope-from <stable+bounces-247262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 19:58:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A852B54583E
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 19:49:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8EC545946
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 19:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78C0D3010176
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 17:48:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD68E3014FDA
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 17:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419E7393DDC;
-	Thu, 14 May 2026 17:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11C938F951;
+	Thu, 14 May 2026 17:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqXStCPZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fDM7vq7y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019023939B5;
-	Thu, 14 May 2026 17:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74841314A98
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 17:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778780921; cv=none; b=N2kUIOhCmmK9ef5mlXLcl/wkUTDwnkF4zaZSO6KH9n3Ug6pb4venJ+VW/dSu/nrkM58GdoE4Uz4BA8e48Z149LyHJ8lBj79pz3EtLFqsj9DiIDfrpeP9HHcxMsKmOyaCvPI7Sb9IytPK9PN72i1FAtHqZmCDZl1gAg359OAP9ZU=
+	t=1778781496; cv=none; b=LdUuInfIvMALzfyfHPOtnat29uOMr1D7QkbtPDGDy4JVHwLaNPu4aFgEOe3EJAuUrKLWp57g+lgDouunVqlZ52is2iaV3gWIcDJUUlXOrdoryJBEP2Y40LxR8WMtL7QPk2zOEFqka3s8jalVxZ+kLtDvWEPF4WgYszDSFDUo/YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778780921; c=relaxed/simple;
-	bh=SpC0Q2FuxRUJkqZhyltOgdHrXLX0XT2Kl77zMRud2Rg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Mze41lZnxHXzHoKjf8INGprDf9i8l4WmEdqXRc9EKFNMeGmBAf73MMr9Mm/Yhmlu7hfpoka1zHbCT1wlQDgJOy9vWhlVOqCsPQ6WiNBlYaMnh16EqWzNDLOjyGKr98wxy6CwofE2FVAiyXkfaTl3HJkc0DzdPQwR+Xa8pdr5QjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqXStCPZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8BAECC2BCB3;
-	Thu, 14 May 2026 17:48:40 +0000 (UTC)
+	s=arc-20240116; t=1778781496; c=relaxed/simple;
+	bh=Ob1RXTvuijlyJH84WP5CklzYgC4r1bp5tOcl0QoALvA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ulhvShH6kX7hk6lSZ/z9cd7ZG0S3mFXBMTcb2mpa5DWoSi6UnYa0kcwFXcz9/6aPRsj/dc10DSBHsS8AkmlPqFEArfuOZuY8Ud/ruUbmoRHYKyXxBknkos7ZuVuc2dtuBRs14gvzAGVCx4i8/uTx7EHpB9fcSgnytBgye6rooNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fDM7vq7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974D5C2BCB3;
+	Thu, 14 May 2026 17:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778780920;
-	bh=SpC0Q2FuxRUJkqZhyltOgdHrXLX0XT2Kl77zMRud2Rg=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=cqXStCPZefM/4HVlY65OqWQEFYCtuY5dih7LDuVI6CVgR7b7glkM7rD7SpeGtT2WZ
-	 +81T+kUJLGoWRSEENd7NJW7hS8zZUgxSqCxqrTm5Zi8qqi/B7zrTp0+kO+Z/x2NXAf
-	 AJWjPOrs7KnxKV6xEvJWrnUaTvLJO4f3RYcU6bwaYoRQ83ngAktiGDj3x8Jhb+v2DP
-	 ee53vKgTKR2Coz//T78didhhs/zzxJy5XB2vppXZZcJHdetoq0JWmYnNHl965Wro1i
-	 G1Azyg7RHvfBR111A4cHwxoyXm6X443kchfC3SJCJCr+te4aM1mVYLca8BjR9cuR85
-	 o8tV94wVv5pgA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67082CD37AC;
-	Thu, 14 May 2026 17:48:40 +0000 (UTC)
-From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
-Date: Thu, 14 May 2026 23:18:13 +0530
-Subject: [PATCH] Bluetooth: btmtk: Fix FUNC_CTRL parsing for devices with
- zero-length payloads
+	s=k20201202; t=1778781496;
+	bh=Ob1RXTvuijlyJH84WP5CklzYgC4r1bp5tOcl0QoALvA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fDM7vq7yGs2QxQ6/ZqWLBcxg+mOEKqyChyghllcpXDd6U+BpxCCIXTVQtfn+aPoMr
+	 9vqJu69BotkxsyEnDY+1YHg/yjvCRtwq5xx1CFmbm0yMn+5l2S1SF2/0N58GdEM15p
+	 lbu2Ve7RRf0KxLhUtoka37+0egl0XTlh5fH/3SpAPVNcq0t6nEukNlVAUyoGnPpckD
+	 epYXwi7qrKLIzijBvqzh4GVbdTYHnNg9CNa5vy2nLcZl3KQr2zUMe+GivOuAl+SX1+
+	 NVqNZJSXQ3fK9NMyZXOCEBl0HIW4Q0Wi1PkhmaPyU+rYOLVViH1N0uyT91ZmjleGd4
+	 HzZYmEGvSOVkw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Pavitra Jha <jhapavitra98@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] net: wwan: t7xx: validate port_count against message length in t7xx_port_enum_msg_handler
+Date: Thu, 14 May 2026 13:58:13 -0400
+Message-ID: <20260514175813.518419-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051251-blunderer-treat-334d@gregkh>
+References: <2026051251-blunderer-treat-334d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260514-bluetooh-fix-mt7922-v1-1-499c878af1e5@zohomail.in>
-X-B4-Tracking: v=1; b=H4sIANwKBmoC/yXMQQqDMBCF4avIrB3QwSrpVYoLx050RE1JohTEu
- zfW5cfj/QcE8SoBntkBXnYN6taEMs+gH7t1ENR3MlBBdfEoK+R5k+jciFa/uMTGEKEhZhZriQx
- Den68pPVffbW3w8aT9PFKwXn+AIppPYt3AAAA
-X-Change-ID: 20260514-bluetooh-fix-mt7922-92bbbeff229b
-To: Marcel Holtmann <marcel@holtmann.org>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Tristan Madani <tristan@talencesecurity.com>
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>, 
- linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- stable@vger.kernel.org, Shivam Kalra <shivamkalra98@zohomail.in>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778780918; l=3281;
- i=shivamkalra98@zohomail.in; s=20260402; h=from:subject:message-id;
- bh=bcjmkVn6V3NtLKEjGgmZqORTUn19c/SPpadc1fesit4=;
- b=/01nuKC6TNTxIJytg/c6BI11qqo/OIDmX6XK3217Rpx6jibl/qWUCcWwasbS3GKv892fZ2oGI
- SPlPJOfwOb7Bb7mBGJhTkzaJRnWAUswPzEcElVilQ2/qgwkjMgJeW7S
-X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
- pk=U8kQSxcte8P8iZ6zB7phIj+Yl+i/5ntifBGuclgypx8=
-X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260402
- with auth_id=716
-X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
-Reply-To: shivamkalra98@zohomail.in
-X-Rspamd-Queue-Id: A852B54583E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6A8EC545946
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247261-lists,stable=lfdr.de,shivamkalra98.zohomail.in];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[holtmann.org,gmail.com,collabora.com,talencesecurity.com];
+	TAGGED_FROM(0.00)[bounces-247262-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[shivamkalra98@zohomail.in];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zohomail.in:email,zohomail.in:mid,zohomail.in:replyto]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Shivam Kalra <shivamkalra98@zohomail.in>
+From: Pavitra Jha <jhapavitra98@gmail.com>
 
-Commit 634a4408c061 ("Bluetooth: btmtk: validate WMT event SKB length
-before struct access") added strict SKB length checks to prevent OOB
-memory reads when parsing WMT events.
+[ Upstream commit 0e7c074cfcd9bd93765505f9eb8b42f03ed2a744 ]
 
-However, when enabling the protocol (flag = 0), the MT7922 returns a WMT
-event with a zero-length payload (skb->len == 7), omitting the 2-byte
-status field entirely.
+t7xx_port_enum_msg_handler() uses the modem-supplied port_count field as
+a loop bound over port_msg->data[] without checking that the message buffer
+contains sufficient data. A modem sending port_count=65535 in a 12-byte
+buffer triggers a slab-out-of-bounds read of up to 262140 bytes.
 
-The strict sizeof() check unconditionally enforced the presence of the
-status field for all BTMTK_WMT_FUNC_CTRL events. This caused the driver
-to reject these payload-less responses with -EINVAL, failing Bluetooth
-initialization ("Failed to send wmt func ctrl (-22)").
+Add a sizeof(*port_msg) check before accessing the port message header
+fields to guard against undersized messages.
 
-Fix this by making skb_pull_data() conditional: if the status payload is
-present, parse it as before; if omitted, default to BTMTK_WMT_ON_UNDONE.
-This restores the pre-regression initialization behavior while
-maintaining the memory safety bounds of the previous patch.
+Add a struct_size() check after extracting port_count and before the loop.
 
-Fixes: 634a4408c061 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221511
+In t7xx_parse_host_rt_data(), guard the rt_feature header read with a
+remaining-buffer check before accessing data_len, validate feat_data_len
+against the actual remaining buffer to prevent OOB reads and signed
+integer overflow on offset.
+
+Pass msg_len from both call sites: skb->len at the DPMAIF path after
+skb_pull(), and the validated feat_data_len at the handshake path.
+
+Fixes: da45d2566a1d ("net: wwan: t7xx: Add control port")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+Link: https://patch.msgid.link/20260501110713.145563-1-jhapavitra98@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Tested on a laptop with a single MediaTek MT7922 (USB ID 0489:e0e0)
-Bluetooth controller. Before this patch, Bluetooth initialization failed
-with "Failed to send wmt func ctrl (-22)" on every boot. After applying
-this patch, initialization succeeds reliably.
+ drivers/net/wwan/t7xx/t7xx_modem_ops.c     | 17 +++++++++++++++--
+ drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c | 18 ++++++++++++++++--
+ drivers/net/wwan/t7xx/t7xx_port_proxy.h    |  2 +-
+ 3 files changed, 32 insertions(+), 5 deletions(-)
 
-This regression is also reported by other users on the kernel bug
-tracker [1].
-
-Note: btmtksdio.c and btmtkuart.c have similar FUNC_CTRL parsing code
-but were not modified by the original commit 634a4408c061, so they are
-not affected by this regression and do not require changes.
-
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=221511
----
- drivers/bluetooth/btmtk.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-index f70c1b0f8990..026e5a76b086 100644
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -717,19 +717,19 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
- 			status = BTMTK_WMT_PATCH_DONE;
- 		break;
- 	case BTMTK_WMT_FUNC_CTRL:
--		if (!skb_pull_data(data->evt_skb,
--				   sizeof(wmt_evt_funcc->status))) {
--			err = -EINVAL;
--			goto err_free_skb;
--		}
--
--		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
--		if (be16_to_cpu(wmt_evt_funcc->status) == 0x404)
--			status = BTMTK_WMT_ON_DONE;
--		else if (be16_to_cpu(wmt_evt_funcc->status) == 0x420)
--			status = BTMTK_WMT_ON_PROGRESS;
--		else
-+		if (skb_pull_data(data->evt_skb,
-+				  sizeof(wmt_evt_funcc->status))) {
-+			wmt_evt_funcc =
-+				(struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
-+			if (be16_to_cpu(wmt_evt_funcc->status) == 0x404)
-+				status = BTMTK_WMT_ON_DONE;
-+			else if (be16_to_cpu(wmt_evt_funcc->status) == 0x420)
-+				status = BTMTK_WMT_ON_PROGRESS;
-+			else
-+				status = BTMTK_WMT_ON_UNDONE;
-+		} else {
- 			status = BTMTK_WMT_ON_UNDONE;
-+		}
- 		break;
- 	case BTMTK_WMT_PATCH_DWNLD:
- 		if (wmt_evt->whdr.flag == 2)
-
----
-base-commit: 5d6919055dec134de3c40167a490f33c74c12581
-change-id: 20260514-bluetooh-fix-mt7922-92bbbeff229b
-
-Best regards,
---  
-Shivam Kalra <shivamkalra98@zohomail.in>
-
+diff --git a/drivers/net/wwan/t7xx/t7xx_modem_ops.c b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
+index 7d0f5e4f0a781..d90300a1d2804 100644
+--- a/drivers/net/wwan/t7xx/t7xx_modem_ops.c
++++ b/drivers/net/wwan/t7xx/t7xx_modem_ops.c
+@@ -415,8 +415,20 @@ static int t7xx_parse_host_rt_data(struct t7xx_fsm_ctl *ctl, struct t7xx_sys_inf
+ 
+ 	offset = sizeof(struct feature_query);
+ 	for (i = 0; i < FEATURE_COUNT && offset < data_length; i++) {
++		size_t remaining = data_length - offset;
++		size_t feat_data_len, feat_total;
++
++		if (remaining < sizeof(*rt_feature))
++			break;
++
+ 		rt_feature = data + offset;
+-		offset += sizeof(*rt_feature) + le32_to_cpu(rt_feature->data_len);
++		feat_data_len = le32_to_cpu(rt_feature->data_len);
++
++		if (feat_data_len > remaining - sizeof(*rt_feature))
++			break;
++
++		feat_total = sizeof(*rt_feature) + feat_data_len;
++		offset += feat_total;
+ 
+ 		ft_spt_cfg = FIELD_GET(FEATURE_MSK, core->feature_set[i]);
+ 		if (ft_spt_cfg != MTK_FEATURE_MUST_BE_SUPPORTED)
+@@ -427,7 +439,8 @@ static int t7xx_parse_host_rt_data(struct t7xx_fsm_ctl *ctl, struct t7xx_sys_inf
+ 			return -EINVAL;
+ 
+ 		if (i == RT_ID_MD_PORT_ENUM)
+-			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data);
++			t7xx_port_enum_msg_handler(ctl->md, rt_feature->data,
++						   feat_data_len);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
+index 68430b130a678..245b5b1df88d4 100644
+--- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
++++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
+@@ -117,6 +117,7 @@ static int fsm_ee_message_handler(struct t7xx_port *port, struct t7xx_fsm_ctl *c
+  * t7xx_port_enum_msg_handler() - Parse the port enumeration message to create/remove nodes.
+  * @md: Modem context.
+  * @msg: Message.
++ * @msg_len:	Length of @msg in bytes.
+  *
+  * Used to control create/remove device node.
+  *
+@@ -124,12 +125,18 @@ static int fsm_ee_message_handler(struct t7xx_port *port, struct t7xx_fsm_ctl *c
+  * * 0		- Success.
+  * * -EFAULT	- Message check failure.
+  */
+-int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
++int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len)
+ {
+ 	struct device *dev = &md->t7xx_dev->pdev->dev;
+ 	unsigned int version, port_count, i;
+ 	struct port_msg *port_msg = msg;
+ 
++	if (msg_len < sizeof(*port_msg)) {
++		dev_err(dev, "Port enum msg too short for header: need %zu, have %zu\n",
++			sizeof(*port_msg), msg_len);
++		return -EINVAL;
++	}
++
+ 	version = FIELD_GET(PORT_MSG_VERSION, le32_to_cpu(port_msg->info));
+ 	if (version != PORT_ENUM_VER ||
+ 	    le32_to_cpu(port_msg->head_pattern) != PORT_ENUM_HEAD_PATTERN ||
+@@ -141,6 +148,13 @@ int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg)
+ 	}
+ 
+ 	port_count = FIELD_GET(PORT_MSG_PRT_CNT, le32_to_cpu(port_msg->info));
++
++	if (msg_len < struct_size(port_msg, data, port_count)) {
++		dev_err(dev, "Port enum msg too short: need %zu, have %zu\n",
++			struct_size(port_msg, data, port_count), msg_len);
++		return -EINVAL;
++	}
++
+ 	for (i = 0; i < port_count; i++) {
+ 		u32 port_info = le32_to_cpu(port_msg->data[i]);
+ 		unsigned int ch_id;
+@@ -187,7 +201,7 @@ static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
+ 
+ 	case CTL_ID_PORT_ENUM:
+ 		skb_pull(skb, sizeof(*ctrl_msg_h));
+-		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data);
++		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data, skb->len);
+ 		if (!ret)
+ 			ret = port_ctl_send_msg_to_md(port, CTL_ID_PORT_ENUM, 0);
+ 		else
+diff --git a/drivers/net/wwan/t7xx/t7xx_port_proxy.h b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
+index bc1ff5c6c7005..8632f6325ae49 100644
+--- a/drivers/net/wwan/t7xx/t7xx_port_proxy.h
++++ b/drivers/net/wwan/t7xx/t7xx_port_proxy.h
+@@ -91,7 +91,7 @@ void t7xx_port_proxy_reset(struct port_proxy *port_prox);
+ void t7xx_port_proxy_uninit(struct port_proxy *port_prox);
+ int t7xx_port_proxy_init(struct t7xx_modem *md);
+ void t7xx_port_proxy_md_status_notify(struct port_proxy *port_prox, unsigned int state);
+-int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg);
++int t7xx_port_enum_msg_handler(struct t7xx_modem *md, void *msg, size_t msg_len);
+ int t7xx_port_proxy_chl_enable_disable(struct port_proxy *port_prox, unsigned int ch_id,
+ 				       bool en_flag);
+ 
+-- 
+2.53.0
 
 
