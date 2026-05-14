@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-247094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247095-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJ+JMjQ9BWqHTgIAu9opvQ
-	(envelope-from <stable+bounces-247094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 05:10:44 +0200
+	id 8De7NUM9BWqHTgIAu9opvQ
+	(envelope-from <stable+bounces-247095-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 05:10:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E48F53D425
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 05:10:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C835253D42D
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 05:10:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 94288302FEAA
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 03:10:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9297730173BA
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 03:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297C43016E3;
-	Thu, 14 May 2026 03:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E3030EF89;
+	Thu, 14 May 2026 03:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FTm7FU2n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Idgz/Eld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C562D739C
-	for <stable@vger.kernel.org>; Thu, 14 May 2026 03:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E3E2D876B
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 03:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778728240; cv=none; b=Yc8HOZgutj1xMBBRO9a+n0AGMBY4HvV4GCBXGrGj/cbYFwwho2Ri0ESAnXJn+5vAk8c4BYWzdrzkVLSpVZo2Cr69qCWrhNLa0PGDrBQzj6PDQMaCIXW6PFQivpok2RUSmoLM/PNrp+USqhkRky4d28YpplDB2esxr27y9YRQQMs=
+	t=1778728254; cv=none; b=SNkcUjuWoToI8b0gIoaN+SuXv0xlPLhCaE342TulBulNp7ALWpEIwqsm8P837OCFp/6VzE1xQ0T8pgFs11f5gok/MwzX6jerTn2Loh+XgoshUA9yLUFZau070p+29i8s0+xz12AZuIUSZqQzUWoS1Y53tOZwF6t0g2cpqwaMm4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778728240; c=relaxed/simple;
-	bh=/0A1PaDhq5apXTHRHJC3p/ZlxkRDfUtVxVZ9qD5XZ3Y=;
+	s=arc-20240116; t=1778728254; c=relaxed/simple;
+	bh=O2x7dfmOfH68Dum5XszZLc4m/ewJl8Ctu40cXfFzSEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cWHKaxSNE4e/dxc/8dq+/BKKb985cjb1yCIR37rqF0+x6h2v3VRNYpjmt5BicHB8FHYHOQhifVGRopUxDHuezxuwbe4XTnSIeOLLjC/abQjH3ch20dq+cwPMMuQIqED17s42zL004jSzNw7G+OnQMfjug8LCQNKQCJ2XB9l57yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FTm7FU2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DAEC19425;
-	Thu, 14 May 2026 03:10:39 +0000 (UTC)
+	 MIME-Version; b=HYEqQ/rtrSY96KxRr8V98XopWVJNW0hMImmrEyqLjISVW/Z2bBYLIYQi69NWVGUQz5V/xeE0TFM/tSmsL0qpgfSmH6X2sEWBofNMvn2oGj3HRYvXjBuyn4nqNLr5so/TRxqOTK12VYRtZqJX+Zl4er+mUieqY2ZLVRTWMDaLCgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Idgz/Eld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6F6C19425;
+	Thu, 14 May 2026 03:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778728239;
-	bh=/0A1PaDhq5apXTHRHJC3p/ZlxkRDfUtVxVZ9qD5XZ3Y=;
+	s=k20201202; t=1778728253;
+	bh=O2x7dfmOfH68Dum5XszZLc4m/ewJl8Ctu40cXfFzSEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FTm7FU2nNQ8amRC4F8mjIf5mYE6yrnUqMq0i1btiu4dJnQj+yoRVk6ie8yjldfZPO
-	 5wUPzMzTSQqDkHbbcOWiUYeZUCdurn4TD9soON933+aEoWMyqwCqRiTVIt6i5HFXtq
-	 tkYrS7P3Bpw3EldgrN85zRCxsJ50Q/5ta2pWdrTn7WcbPDF8TPqCX+k6zLkRhwLoEk
-	 OGrQSw9J0jocEx525x4gF3bVbroPnDrgsBotY2eAbTwIBrznZMeotBv6UC1bBIoKE0
-	 rTHm/axt7OPlexd10Y1z8XRey5nsTORKADVZdK0O3PJH9/und34rBHBcS2FPKNbnWO
-	 QI4oE8w/syNTA==
+	b=Idgz/EldL/N9G6vAGdc5Eo1eJ0Yyqsk5WAY3szmn/PjcEINT005+7XnhZ6VTHloea
+	 4SZKRBSxVfyAn2xKwjmiT1NF6l9BWEXl73y5hyuB0WqRe7zZEi4IUntVXaNiYCiXmm
+	 2CfBlo6Scpv9u8VGwW51gpA0kHhtmGrXQKRw2QddLSzFo4dTskIPAs3XilJLLjeNhP
+	 SrpcpG4cZACj7ottoGa8i3orv1AM2TeyMPpJIq2XytOYOAGhu/CeKf5Xqyd754pEyp
+	 V1P9l2vJu1jeG66gAX6i4HM9ltU+Heyyon2SzIE7685eGcUj+Oh2hdSeKfH+vek2XD
+	 ZYlNH7F1HrGbw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Johan Hovold <johan@kernel.org>,
-	Jingoo Han <jg1.han@samsung.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] spi: tegra114: fix controller deregistration
-Date: Wed, 13 May 2026 23:10:37 -0400
-Message-ID: <20260514031037.4119194-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] spi: sun6i: fix controller deregistration
+Date: Wed, 13 May 2026 23:10:51 -0400
+Message-ID: <20260514031051.4119801-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051237-disband-manual-6d4e@gregkh>
-References: <2026051237-disband-manual-6d4e@gregkh>
+In-Reply-To: <2026051227-glorifier-undoing-ee5b@gregkh>
+References: <2026051227-glorifier-undoing-ee5b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,25 +63,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3E48F53D425
+X-Rspamd-Queue-Id: C835253D42D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247094-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247095-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -91,61 +91,61 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 9c9c27ff2058142d8f800de3186d6864184958de ]
+[ Upstream commit d874a1c33aee0d88fb4ba2f8aeadaa9f1965209a ]
 
 Make sure to deregister the controller before disabling underlying
 resources like clocks during driver unbind.
 
-Fixes: 5c8096439600 ("spi: tegra114: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
+Fixes: 3558fe900e8a ("spi: sunxi: Add Allwinner A31 SPI controller driver")
+Cc: stable@vger.kernel.org	# 3.15
+Cc: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-22-johan@kernel.org
+Link: https://patch.msgid.link/20260410081757.503099-20-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
-[ kept `host->dev.of_node = pdev->dev.of_node;` context line above the `spi_register_controller()` conversion ]
+[ renamed spi_controller APIs to spi_master equivalents and kept int return type for sun6i_spi_remove ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sun6i.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 48fb11fea55f2..a28597b6b80d6 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -1416,7 +1416,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index d79853ba7792a..834957bb04ba8 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -688,7 +688,7 @@ static int sun6i_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
  
- 	host->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to host err %d\n", ret);
- 		goto exit_free_irq;
-@@ -1442,6 +1442,10 @@ static void tegra_spi_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct tegra_spi_data	*tspi = spi_controller_get_devdata(host);
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	ret = spi_register_master(master);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "cannot register SPI master\n");
+ 		goto err_pm_disable;
+@@ -714,12 +714,19 @@ static int sun6i_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_master *master = platform_get_drvdata(pdev);
  
-+	spi_controller_get(host);
++	spi_master_get(master);
 +
-+	spi_unregister_controller(host);
++	spi_unregister_master(master);
 +
- 	free_irq(tspi->irq, tspi);
+ 	pm_runtime_force_suspend(&pdev->dev);
  
- 	if (tspi->tx_dma_chan)
-@@ -1453,6 +1457,8 @@ static void tegra_spi_remove(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_spi_runtime_suspend(&pdev->dev);
+ 	if (master->dma_tx)
+ 		dma_release_channel(master->dma_tx);
+ 	if (master->dma_rx)
+ 		dma_release_channel(master->dma_rx);
 +
-+	spi_controller_put(host);
++	spi_master_put(master);
++
+ 	return 0;
  }
  
- #ifdef CONFIG_PM_SLEEP
 -- 
 2.53.0
 
