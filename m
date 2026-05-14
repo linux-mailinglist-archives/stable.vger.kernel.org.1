@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-247070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOH8BgwaBWrOSQIAu9opvQ
-	(envelope-from <stable+bounces-247070-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:40:44 +0200
+	id iDJXAiQaBWrOSQIAu9opvQ
+	(envelope-from <stable+bounces-247071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:41:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3D753C670
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:40:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FFD953C68D
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:41:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E06023015728
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:40:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 082E93045EEF
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BB82E54B6;
-	Thu, 14 May 2026 00:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02772E8B83;
+	Thu, 14 May 2026 00:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rqY98pnt"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jNmnvH04"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD182DF13B;
-	Thu, 14 May 2026 00:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25D22DF155;
+	Thu, 14 May 2026 00:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778719241; cv=none; b=bjljLrcFioblP+TMFkFD7uq09LnIcE6RzmpFjiQRd9GiYCpuCrBJmQnuibL3hdGGPKTYdY9OYlWXAtB+hLb+M15QG0k5LQ+YGdxQpPoVvNzCpkv22oHWhzHORjJyySNsar/jboDCrYaXe1ffKyIJfwQP0gNzO/t3WsLAWL/Uibw=
+	t=1778719243; cv=none; b=hXKMdQZTCYSh5MSDPSrQtwsML2zfRJjyY5CsPCnUemHQX1XOgqATWGMeDB8pXHhWw4PPg7rNeT9ADilopabZKFwiByq0atUPAVDvMXFjLfmysorruwLbsktHrVYdj8BxXrp04TE9oUz5dtT/N51XmSfYglRWsrw7PxmW3LW9+3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778719241; c=relaxed/simple;
-	bh=enMeri4ZgBUuSEv4ae3VQT2Qs8Bq+/pwXBTYa+imw+Q=;
-	h=Date:To:From:Subject:Message-Id; b=GU4tMOkov6bQLO/H7kSsejL6XiWB1nngE7Pxor0oBoRb9G1QgHbngUg4o7ihphKwI+n7BaOBbYfC/ntSXgeq7Gy7nKC2120bTrB/d2/4RCHef5UTXRVOsfUXbMDnqRyuQlW1fP+zY2ykORGwVr/EINwBm71v0z3B11An62PQ0Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rqY98pnt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A549AC19425;
-	Thu, 14 May 2026 00:40:41 +0000 (UTC)
+	s=arc-20240116; t=1778719243; c=relaxed/simple;
+	bh=QFVIvYwLvgHhK6IInnk0IlsrGXoYyYy+7WKfhejoHUs=;
+	h=Date:To:From:Subject:Message-Id; b=jWJhp4e/VSELNJOZ5/VnE51/IXQ1+DwsmoI2b7GjYp6bhSCNHSaiaodSfB7/UE3g1rMeH+oLz2XvnaKDWh1V9rdeNRYB+aWB1++/o+ikovfIzoSauv9pCMkwIgrkOlgZSXkCiTGFS+cm3gzV1lcY3SQP2O/3r1Usl8JT2VmkfVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jNmnvH04; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456F9C19425;
+	Thu, 14 May 2026 00:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778719241;
-	bh=enMeri4ZgBUuSEv4ae3VQT2Qs8Bq+/pwXBTYa+imw+Q=;
+	s=korg; t=1778719243;
+	bh=QFVIvYwLvgHhK6IInnk0IlsrGXoYyYy+7WKfhejoHUs=;
 	h=Date:To:From:Subject:From;
-	b=rqY98pntx/Qqq1Hhovh2+llUWj3/w0KxHON1hw6JK+pepIR874qvO4VupnQJ46OLO
-	 VkPK2IIoLP/pIyN83LCAN3UXposDjMs7WIJivVqQ3EvoheNe+gWMMYXSlGRbaC9yRm
-	 RZYZcmU+ipPhAWHnzBkXrsAwX+VUAPOojIo7x5bA=
-Date: Wed, 13 May 2026 17:40:41 -0700
+	b=jNmnvH04VxNXSxBoCPIeIV41QFz6XfQ+A5SJ6gNOil21pM0HThcC1NVa+emuA9uOF
+	 WECJDpWgCY0EmzU26tCHIS/o+GOw/H/BhSFli+1Z+hYYLH3xX2Zaivk9RIk8Dlnkpo
+	 lqC5FwiPRVQbhc6a8+PHTxP50mUmBJggLw37nSQA=
+Date: Wed, 13 May 2026 17:40:42 -0700
 To: mm-commits@vger.kernel.org,vishal.l.verma@intel.com,stable@vger.kernel.org,rafael@kernel.org,osalvador@suse.de,nao.horiguchi@gmail.com,linmiaohe@huawei.com,huang.ying.caritas@gmail.com,gregkh@linuxfoundation.org,david@kernel.org,dakr@kernel.org,songmuchun@bytedance.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memory_hotplug-fix-memory-block-reference-leak-on-remove.patch removed from -mm tree
-Message-Id: <20260514004041.A549AC19425@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] drivers-base-memory-fix-memory-block-reference-leak-in-poison-accounting.patch removed from -mm tree
+Message-Id: <20260514004043.456F9C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: AC3D753C670
+X-Rspamd-Queue-Id: 5FFD953C68D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247070-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247071-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[vger.kernel.org,intel.com,kernel.org,suse.de,gmail.com,huawei.com,linuxfoundation.org,bytedance.com,linux-foundation.org];
 	DMARC_NA(0.00)[linux-foundation.org];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
@@ -80,50 +80,40 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,linux-foundation.org:email,linux-foundation.org:dkim,intel.com:email,suse.de:email,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid,intel.com:email,linux-foundation.org:email,linux-foundation.org:dkim,suse.de:email]
 X-Rspamd-Action: no action
 
 
 The quilt patch titled
-     Subject: mm/memory_hotplug: fix memory block reference leak on remove
+     Subject: drivers/base/memory: fix memory block reference leak in poison accounting
 has been removed from the -mm tree.  Its filename was
-     mm-memory_hotplug-fix-memory-block-reference-leak-on-remove.patch
+     drivers-base-memory-fix-memory-block-reference-leak-in-poison-accounting.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
 From: Muchun Song <songmuchun@bytedance.com>
-Subject: mm/memory_hotplug: fix memory block reference leak on remove
-Date: Tue, 28 Apr 2026 16:52:17 +0800
+Subject: drivers/base/memory: fix memory block reference leak in poison accounting
+Date: Tue, 28 Apr 2026 16:52:18 +0800
 
-Patch series "mm: Fix memory block leaks and locking", v2.
+memblk_nr_poison_inc() and memblk_nr_poison_sub() look up a memory block
+via find_memory_block_by_id(), which acquires a reference to the memory
+block device.
 
-This series fixes two memory block device reference leaks and one locking
-issue around the per-memory_block hwpoison counter.
+Both helpers use the returned memory block without dropping that
+reference, leaking the device reference on each successful lookup.  Drop
+the reference after updating nr_hwpoison.
 
-
-This patch (of 2):
-
-remove_memory_blocks_and_altmaps() looks up each memory block with
-find_memory_block(), which acquires a reference to the memory block
-device.
-
-That reference is never dropped on this path, resulting in a leaked device
-reference when removing memory blocks and their altmaps.  Drop the
-reference after retrieving mem->altmap and clearing mem->altmap, before
-removing the memory block device.
-
-Link: https://lore.kernel.org/20260428085219.1316047-1-songmuchun@bytedance.com
-Link: https://lore.kernel.org/20260428085219.1316047-2-songmuchun@bytedance.com
-Fixes: 6b8f0798b85a ("mm/memory_hotplug: split memmap_on_memory requests across memblocks")
+Link: https://lore.kernel.org/20260428085219.1316047-3-songmuchun@bytedance.com
+Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 Acked-by: Oscar Salvador <osalvador@suse.de>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Cc: Danilo Krummrich <dakr@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
 Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: Vishal Verma <vishal.l.verma@intel.com>
@@ -131,20 +121,35 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memory_hotplug.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/base/memory.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/mm/memory_hotplug.c~mm-memory_hotplug-fix-memory-block-reference-leak-on-remove
-+++ a/mm/memory_hotplug.c
-@@ -1422,6 +1422,8 @@ static void remove_memory_blocks_and_alt
+--- a/drivers/base/memory.c~drivers-base-memory-fix-memory-block-reference-leak-in-poison-accounting
++++ a/drivers/base/memory.c
+@@ -1230,8 +1230,10 @@ void memblk_nr_poison_inc(unsigned long
+ 	const unsigned long block_id = pfn_to_block_id(pfn);
+ 	struct memory_block *mem = find_memory_block_by_id(block_id);
  
- 		altmap = mem->altmap;
- 		mem->altmap = NULL;
-+		/* drop the ref. we got via find_memory_block() */
+-	if (mem)
++	if (mem) {
+ 		atomic_long_inc(&mem->nr_hwpoison);
 +		put_device(&mem->dev);
++	}
+ }
  
- 		remove_memory_block_devices(cur_start, memblock_size);
+ void memblk_nr_poison_sub(unsigned long pfn, long i)
+@@ -1239,8 +1241,10 @@ void memblk_nr_poison_sub(unsigned long
+ 	const unsigned long block_id = pfn_to_block_id(pfn);
+ 	struct memory_block *mem = find_memory_block_by_id(block_id);
  
+-	if (mem)
++	if (mem) {
+ 		atomic_long_sub(i, &mem->nr_hwpoison);
++		put_device(&mem->dev);
++	}
+ }
+ 
+ static unsigned long memblk_nr_poison(struct memory_block *mem)
 _
 
 Patches currently in -mm which might be from songmuchun@bytedance.com are
