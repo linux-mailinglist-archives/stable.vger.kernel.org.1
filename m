@@ -1,210 +1,394 @@
-Return-Path: <stable+bounces-247162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KcSMBqiBWo1ZAIAu9opvQ
-	(envelope-from <stable+bounces-247162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 12:21:14 +0200
+	id yOuUOV6lBWppZQIAu9opvQ
+	(envelope-from <stable+bounces-247163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 12:35:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7FE54052F
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 12:21:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565A75406E6
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 12:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9BF54301572C
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:21:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFF7E301CFB2
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DBDC3909A4;
-	Thu, 14 May 2026 10:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20BD368D67;
+	Thu, 14 May 2026 10:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="VS5aZHUb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="srz6LnlD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PhgKtl87"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821A8386572;
-	Thu, 14 May 2026 10:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8411F3630A4
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 10:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778754071; cv=none; b=W2rhQVI9Yg5IbOH0P4S8/687a5QyhbZmvevYs0wDSMPi1RaPSsnPFsG/xzAv3hhfXLhVtH8mxJl2ks1oY5H5J4YlZz7MQKpoVAn2WRlLROOB3VqNOWOg8VuPEmv0vRr1v0IdiycMKWKi+LTef2qaiquu5Si48j4K45ZAjpS0ZFM=
+	t=1778754810; cv=none; b=nHoRAzJYT9cHoU9yycWRronbWVzUGOpdDVei/MDfBxDbXOLn9Kcfa9ROCPOTM1cfRYGe1tRZI2FM+KiD6U22UCuIIStY7HD/m2HwkQhUDSMzFSePdExf5IZLIh26yMCXUkhkn4KDexg4nEfL8ERscO7GZVhUeRty0vk75h/cFHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778754071; c=relaxed/simple;
-	bh=fyftp4iasBnUciMCnM4ih4eUsfsD+0Ri23BKLLqY2ZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G2NFLpGUG1bhqKKMDo+UEeIS/o6YHYfGQG6UJqSpuRaATnKE7osRc2p3TtaWZM3YGSNlLU8ZZBm1h4nHfpuWhTqENPY7NJeRrjF6Fyp6biMEreDGY3CxiDEDdHv2RN3QXfqo+GQpOs7LuCdae+fqdYpDkY/WDYa7cm7UErcc1HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=VS5aZHUb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=srz6LnlD; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id 96F33EC021F;
-	Thu, 14 May 2026 06:21:07 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Thu, 14 May 2026 06:21:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1778754067; x=
-	1778840467; bh=oF8/clMVOVZTaaaI32fozRcP/Wi9a3HrHpi5Mv76kI0=; b=V
-	S5aZHUb5RPGhOhQnfFh3G4dJ7exkG4pk2NQXht8jHBSL+7QQ+rImjSWTrFQoLcqM
-	HGS26c9Uv62aScZ41am969nLFzhgAI2JoHUdpWD4Nk9J7wlYor2CfUVMMuZQuLd9
-	xtMNKMUK2z9bYebj4k7+xD2D5p3ya1Sl44SPCznuT/y9GYyrPT5xh4mjQbyPX09M
-	F1DAF8xURY56SLn6gvnfb8TGbBtM04NI0234pCnQvrAocg9Tu7RYBL+jyIBrRzCo
-	x5VydIebM5RBOObgyWvzLW9j4F/3A48agi/xZsgsTn5ZNfud0FqiE3tzEFeF3uq7
-	s1tZ1dm+6fJmzTU2l1Uug==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1778754067; x=1778840467; bh=oF8/clMVOVZTaaaI32fozRcP/Wi9a3HrHpi
-	5Mv76kI0=; b=srz6LnlDTMXtHv3m8z7dsucblkUkP9zWHgkFixn/QS+MRV/UUWP
-	1Qo7HO04W5+zDrUwibHJUDGlpxvi7QOrtRKaFtnm4kXUUwfq/HSByRFBUjP6NdnO
-	4nRfgZbjzOFi5wgR97phkLuFe2MmkUB5KWaSUu1ywBLEP8+fDSbXUeJgChC7Achr
-	1A8KCkcoHVRzje0GetL4fkiEi4D6ZnvZ7IvsHQvYqVLof35khCwGEZ23un+ApmMo
-	VlrLiqp+zIrsCbE5Aq4ULxxsSqJF2S99eBOPQJ+YjaFrcYGwNZzLwxn06JEO0Tcs
-	VMaW9MtfNjuDYXcUWQilqvOncO60FrjkEyA==
-X-ME-Sender: <xms:EaIFamyImrPr1ohksyZhJvs_5zPXw5VapGcAZkWBtr7qkSaxW-2PFw>
-    <xme:EaIFauPcMQSw6pLpb5jEkbwO3ngpLBEdB0QTCEPWreAzuGIutWnyr25Ljt0uYz_zT
-    GRU0CK4aj8NTvOuo4rm5tsgTZ5KHc0DsZ12xpv8HHr5frnIhIoyz8M>
-X-ME-Received: <xmr:EaIFauea1NNJspmCLGH4vcWRSPYWY914xpDqigqxjihLXHr4c8lxGlS8n10ysc5d6W3DK_sYs6uzymx1vJGXZkA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvdejvdeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
-    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepgefhffdtvedugfekffejvdeiieelhfetffeffefghedvvefhjeejvdek
-    feelgefgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsugesqhhuvggrshihshhnrghilhdr
-    nhgvthdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphhtth
-    hopehimhhvgegsvghlsehgmhgrihhlrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehr
-    vgguhhgrthdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtohepshhtvghffhgvnhdrkhhlrghsshgvrhhtsehsvggtuhhnvghtrdgtohhmpdhr
-    tghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhhrghl
-    sehrsghogidrtghopdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvth
-    dprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:EaIFai5XS3YJ6722Vai9ffVY4TNuq9NOkelNN-vWCdj4GMCi5dD2ow>
-    <xmx:EaIFamIlj13qmb0dxB7qgdstrg4MfG30Fz64qwhoXeyO-4VWXIxvew>
-    <xmx:EaIFam6SCYEJQ1qGK7b3ShqpX-vpudhDV9CBIZsBOuQC_aRYI5JbTQ>
-    <xmx:EaIFalZMqTakV01b7_KSkyKLnBHVyvkHSrbDHlFwoSPPWlQlqb3Yeg>
-    <xmx:E6IFagyq0Bl9nsFPUymvN7fvbKgePQ0jUgpv58QyXwdQelrwzOx6EYkj>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 14 May 2026 06:21:05 -0400 (EDT)
-Date: Thu, 14 May 2026 12:21:02 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, kuba@kernel.org,
-	steffen.klassert@secunet.com, netdev@vger.kernel.org,
-	stable@vger.kernel.org, mhal@rbox.co, davem@davemloft.net,
-	horms@kernel.org, edumazet@google.com, kerneljasonxing@gmail.com,
-	herbert@gondor.apana.org.au, vakzz@zellic.io, kuniyu@google.com,
-	jiayuan.chen@linux.dev, ben@decadent.org.uk, dsahern@kernel.org
-Subject: Re: [PATCH net v2] net: skbuff: propagate shared-frag marker through
- frag-transfer helpers
-Message-ID: <agWiDlvu351MSuqO@krikkit>
-References: <agToIEDI4TaTNLRb@v4bel>
- <92ec6190-0255-4b7c-9524-254cb37476ab@redhat.com>
- <agWYGuJ__OtpgjnB@v4bel>
+	s=arc-20240116; t=1778754810; c=relaxed/simple;
+	bh=UVpNi4Z4lfkYQ666fHOmUgQUWrFtq8Hy6hXi6J+onow=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kS/ajQYyMX9S5rBb7AudM2lp49hp6iZzi5MfJ44sEHi7Dj/Wt8dkViBMOHSHlZkL+pFzKeZ1nDDwbKGjus2lqolO5eunh0rAd6Om+mYIwLufBX9CUaVneTJB5qb2yAIJV54k02wxVIdzBaxQ5z27eRKvZhw4vkNs/aaxN3IGEbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PhgKtl87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADA3C2BCC9
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 10:33:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778754810;
+	bh=UVpNi4Z4lfkYQ666fHOmUgQUWrFtq8Hy6hXi6J+onow=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=PhgKtl879Z8eU/Uvk57S1MjS9EDKr6SCr4avyddZDXwJbgojgmJx5D7F+f7NBFs7Z
+	 gUrUR2m1ZfGn/5QKy8saG0ivMpg179w6DeOa1MtXQS+PklrMhN41G7AS972Rvr2Jjj
+	 bQzxPDAUFozIVptsNiZPMLCHGq0oRRvmmlG7zkBHo73BXPJ6bi3xsLKgcLmqrmLEkl
+	 eGVzkJUG+vtB5i9kD3Vkkenu2vSRY2WTD7MUZn3wJ5p3ePfode4iom1d3/uj6FpKzQ
+	 A+GTwkpKPvle2yjjP48t+F8j5xAQiDpixIaasOmZWu10IXTBMlK5xj2zC4bJV+XfCv
+	 rcpuG5ycJjXhQ==
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: stable@vger.kernel.org
+Subject: [PATCH 7.0.y] mm/vma: do not try to unmap a VMA if mmap_prepare() invoked from mmap()
+Date: Thu, 14 May 2026 11:33:20 +0100
+Message-ID: <20260514103320.155081-1-ljs@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <2026051252-diabetic-cognition-76a6@gregkh>
+References: <2026051252-diabetic-cognition-76a6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <agWYGuJ__OtpgjnB@v4bel>
-X-Rspamd-Queue-Id: 3F7FE54052F
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 565A75406E6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[queasysnail.net:s=fm1,messagingengine.com:s=fm3];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247163-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-247162-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DMARC_NA(0.00)[queasysnail.net];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[redhat.com,kernel.org,secunet.com,vger.kernel.org,rbox.co,davemloft.net,google.com,gmail.com,gondor.apana.org.au,zellic.io,linux.dev,decadent.org.uk];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sd@queasysnail.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[queasysnail.net:+,messagingengine.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,queasysnail.net:dkim]
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,suse.de:email,linux-foundation.org:email,appspotmail.com:email]
 X-Rspamd-Action: no action
 
-2026-05-14, 18:38:34 +0900, Hyunwoo Kim wrote:
-> On Thu, May 14, 2026 at 10:04:29AM +0200, Paolo Abeni wrote:
-> > On 5/13/26 11:07 PM, Hyunwoo Kim wrote:
-> > > Three frag-transfer helpers (__pskb_copy_fclone(), skb_try_coalesce(),
-> > > and skb_shift()) fail to propagate the SKBFL_SHARED_FRAG bit in
-> > > skb_shinfo()->flags when moving frags from source to destination.
-> > > __pskb_copy_fclone() defers the rest of the shinfo metadata to
-> > > skb_copy_header() after copying frag descriptors, but that helper
-> > > only carries over gso_{size,segs,type} and never touches
-> > > skb_shinfo()->flags; skb_try_coalesce() and skb_shift() move frag
-> > > descriptors directly and leave flags untouched.  As a result, the
-> > > destination skb keeps a reference to the same externally-owned or
-> > > page-cache-backed pages while reporting skb_has_shared_frag() as
-> > > false.
-> > > 
-> > > The mismatch is harmful in any in-place writer that uses
-> > > skb_has_shared_frag() to decide whether shared pages must be detoured
-> > > through skb_cow_data().  ESP input is one such writer (esp4.c,
-> > > esp6.c), and a single nft 'dup to <local>' rule -- or any other
-> > > nf_dup_ipv4() / xt_TEE caller -- is enough to land a pskb_copy()'d
-> > > skb in esp_input() with the marker stripped, letting an unprivileged
-> > > user write into the page cache of a root-owned read-only file via
-> > > authencesn-ESN stray writes.
-> > > 
-> > > Set SKBFL_SHARED_FRAG on the destination whenever frag descriptors
-> > > were actually moved from the source.  skb_copy() and skb_copy_expand()
-> > > share skb_copy_header() too but linearize all paged data into freshly
-> > > allocated head storage and emerge with nr_frags == 0, so
-> > > skb_has_shared_frag() returns false on its own; they need no change.
-> > > 
-> > > Fixes: cef401de7be8 ("net: fix possible wrong checksum generation")
-> > > Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb frags")
-> > 
-> > WRT the 2nd fixes tag, I *think* f4c50a4034e6 would need
-> > additionally/instead a follow-up similar to the one mentioned by Jakub here:
-> > 
-> > https://lore.kernel.org/all/20260510084520.476745b5@kernel.org/
-> 
-> Agreed. tracing SKBFL_SHARED_FRAG propagation paths one by one is
-> not a robust direction for the fix. Even minor logic changes elsewhere
-> could cause the issue to resurface.
->
-> As a follow-up,	eliminating the in-place handling in esp_input -- accepting 
+[ Upstream commit 619eab23e1ce7c97e54bfc5a417306d94b3f6f13 ]
 
-It would close this group of vulnerabilities, but there are other
-parts of the networking stack that consume this flag. For those,
-chasing missing flag propagation is still a useful task.
+The mmap_prepare hook functionality includes the ability to invoke
+mmap_prepare() from the mmap() hook of existing 'stacked' drivers, that is
+ones which are capable of calling the mmap hooks of other drivers/file
+systems (e.g.  overlayfs, shm).
 
-> the performance trade-off -- seems necessary. That was actually the
-> direction of my initial proposal:
->
-> https://lore.kernel.org/all/afLDKSvAvMwGh7Fy@v4bel/
+As part of the mmap_prepare action functionality, we deal with errors by
+unmapping the VMA should one arise.  This works in the usual mmap_prepare
+case, as we invoke this action at the last moment, when the VMA is
+established in the maple tree.
 
-But you chose to abandon this approach (I guess because of the AI
-feedback Simon forwarded? feedback doesn't necessarily mean "drop this
-entirely").
+However, the mmap() hook passes a not-fully-established VMA pointer to the
+caller (which is the motivation behind the mmap_prepare() work), which is
+detached.
 
+So attempting to unmap a VMA in this state will be problematic, with the
+most obvious symptom being a warning in vma_mark_detached(), because the
+VMA is already detached.
+
+It's also unncessary - the mmap() handler will clean up the VMA on error.
+
+So to fix this issue, this patch propagates whether or not an mmap action
+is being completed via the compatibility layer or directly.
+
+If the former, then we do not attempt VMA cleanup, if the latter, then we
+do.
+
+This patch also updates the userland VMA tests to reflect the change.
+
+Link: https://lore.kernel.org/20260421102150.189982-1-ljs@kernel.org
+Fixes: ac0a3fc9c07d ("mm: add ability to take further action in vm_area_desc")
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Reported-by: syzbot+db390288d141a1dccf96@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e69734.050a0220.24bfd3.0027.GAE@google.com/
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+---
+ include/linux/mm.h                |  2 +-
+ mm/util.c                         | 51 ++++++++++++++++++-------------
+ mm/vma.c                          |  3 +-
+ tools/testing/vma/include/dup.h   | 41 ++++++++++++-------------
+ tools/testing/vma/include/stubs.h |  3 +-
+ 5 files changed, 53 insertions(+), 47 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0ceba2c86d9c..2d6d268a2798 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4080,7 +4080,7 @@ static inline void mmap_action_ioremap_full(struct vm_area_desc *desc,
+ 
+ int mmap_action_prepare(struct vm_area_desc *desc);
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action);
++			 struct mmap_action *action, bool is_compat);
+ 
+ /* Look up the first VMA which exactly match the interval vm_start ... vm_end */
+ static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
+diff --git a/mm/util.c b/mm/util.c
+index e2a51e3cfb24..a14de66c9458 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1186,7 +1186,8 @@ int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+ 		return err;
+ 
+ 	set_vma_from_desc(vma, &desc);
+-	err = mmap_action_complete(vma, &desc.action);
++	err = mmap_action_complete(vma, &desc.action,
++				   /*is_compat=*/true);
+ 	if (err) {
+ 		const size_t len = vma_pages(vma) << PAGE_SHIFT;
+ 
+@@ -1277,28 +1278,31 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
+ }
+ 
+ static int mmap_action_finish(struct vm_area_struct *vma,
+-			      struct mmap_action *action, int err)
++			      struct mmap_action *action, int err,
++			      bool is_compat)
+ {
++	if (!err && action->success_hook)
++		err = action->success_hook(vma);
++
++	/*
++	 * If this is invoked from the compatibility layer, post-mmap() hook
++	 * logic will handle cleanup for us.
++	 */
++	if (!err || is_compat)
++		return err;
++
+ 	/*
+ 	 * If an error occurs, unmap the VMA altogether and return an error. We
+ 	 * only clear the newly allocated VMA, since this function is only
+ 	 * invoked if we do NOT merge, so we only clean up the VMA we created.
+ 	 */
+-	if (err) {
+-		if (action->error_hook) {
+-			/* We may want to filter the error. */
+-			err = action->error_hook(err);
+-
+-			/* The caller should not clear the error. */
+-			VM_WARN_ON_ONCE(!err);
+-		}
+-		return err;
++	if (action->error_hook) {
++		/* We may want to filter the error. */
++		err = action->error_hook(err);
++		/* The caller should not clear the error. */
++		VM_WARN_ON_ONCE(!err);
+ 	}
+-
+-	if (action->success_hook)
+-		return action->success_hook(vma);
+-
+-	return 0;
++	return err;
+ }
+ 
+ #ifdef CONFIG_MMU
+@@ -1329,14 +1333,16 @@ EXPORT_SYMBOL(mmap_action_prepare);
+  * mmap_action_complete - Execute VMA descriptor action.
+  * @vma: The VMA to perform the action upon.
+  * @action: The action to perform.
++ * @is_compat: Is this being invoked from the compatibility layer?
+  *
+  * Similar to mmap_action_prepare().
+  *
+- * Return: 0 on success, or error, at which point the VMA will be unmapped.
++ * Return: 0 on success, or error, at which point the VMA will be unmapped if
++ * !@is_compat.
+  */
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action)
+-
++			 struct mmap_action *action,
++			 bool is_compat)
+ {
+ 	int err = 0;
+ 
+@@ -1353,7 +1359,7 @@ int mmap_action_complete(struct vm_area_struct *vma,
+ 		break;
+ 	}
+ 
+-	return mmap_action_finish(vma, action, err);
++	return mmap_action_finish(vma, action, err, is_compat);
+ }
+ EXPORT_SYMBOL(mmap_action_complete);
+ #else
+@@ -1373,7 +1379,8 @@ int mmap_action_prepare(struct vm_area_desc *desc)
+ EXPORT_SYMBOL(mmap_action_prepare);
+ 
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action)
++			 struct mmap_action *action,
++			 bool is_compat)
+ {
+ 	int err = 0;
+ 
+@@ -1388,7 +1395,7 @@ int mmap_action_complete(struct vm_area_struct *vma,
+ 		break;
+ 	}
+ 
+-	return mmap_action_finish(vma, action, err);
++	return mmap_action_finish(vma, action, err, is_compat);
+ }
+ EXPORT_SYMBOL(mmap_action_complete);
+ #endif
+diff --git a/mm/vma.c b/mm/vma.c
+index 30e8a2d254b8..5cd80cdcf82f 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2708,7 +2708,7 @@ static int call_action_complete(struct mmap_state *map,
+ {
+ 	int err;
+ 
+-	err = mmap_action_complete(vma, action);
++	err = mmap_action_complete(vma, action, /*is_compat=*/false);
+ 
+ 	/* If we held the file rmap we need to release it. */
+ 	if (map->hold_file_rmap_lock) {
+@@ -2778,7 +2778,6 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ 
+ 	if (have_mmap_prepare && allocated_new) {
+ 		error = call_action_complete(&map, &desc.action, vma);
+-
+ 		if (error)
+ 			return error;
+ 	}
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 6299c76c3b7d..79d34f448217 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -1071,8 +1071,17 @@ static inline void vma_set_anonymous(struct vm_area_struct *vma)
+ static inline void set_vma_from_desc(struct vm_area_struct *vma,
+ 		struct vm_area_desc *desc);
+ 
+-static inline int __compat_vma_mmap(const struct file_operations *f_op,
+-		struct file *file, struct vm_area_struct *vma)
++static inline unsigned long vma_pages(struct vm_area_struct *vma)
++{
++	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
++}
++
++static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
++{
++	return file->f_op->mmap_prepare(desc);
++}
++
++static inline int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+ 	struct vm_area_desc desc = {
+ 		.mm = vma->vm_mm,
+@@ -1082,14 +1091,14 @@ static inline int __compat_vma_mmap(const struct file_operations *f_op,
+ 
+ 		.pgoff = vma->vm_pgoff,
+ 		.vm_file = vma->vm_file,
+-		.vm_flags = vma->vm_flags,
++		.vma_flags = vma->flags,
+ 		.page_prot = vma->vm_page_prot,
+ 
+ 		.action.type = MMAP_NOTHING, /* Default */
+ 	};
+ 	int err;
+ 
+-	err = f_op->mmap_prepare(&desc);
++	err = vfs_mmap_prepare(file, &desc);
+ 	if (err)
+ 		return err;
+ 
+@@ -1098,27 +1107,22 @@ static inline int __compat_vma_mmap(const struct file_operations *f_op,
+ 		return err;
+ 
+ 	set_vma_from_desc(vma, &desc);
+-	return mmap_action_complete(vma, &desc.action);
+-}
++	err = mmap_action_complete(vma, &desc.action,
++				   /*is_compat=*/true);
++	if (err) {
++		const size_t len = vma_pages(vma) << PAGE_SHIFT;
+ 
+-static inline int compat_vma_mmap(struct file *file,
+-		struct vm_area_struct *vma)
+-{
+-	return __compat_vma_mmap(file->f_op, file, vma);
++		do_munmap(current->mm, vma->vm_start, len, NULL);
++	}
++	return err;
+ }
+ 
+-
+ static inline void vma_iter_init(struct vma_iterator *vmi,
+ 		struct mm_struct *mm, unsigned long addr)
+ {
+ 	mas_init(&vmi->mas, &mm->mm_mt, addr);
+ }
+ 
+-static inline unsigned long vma_pages(struct vm_area_struct *vma)
+-{
+-	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+-}
+-
+ static inline void mmap_assert_locked(struct mm_struct *);
+ static inline struct vm_area_struct *find_vma_intersection(struct mm_struct *mm,
+ 						unsigned long start_addr,
+@@ -1309,11 +1313,6 @@ static inline int vfs_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return file->f_op->mmap(file, vma);
+ }
+ 
+-static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
+-{
+-	return file->f_op->mmap_prepare(desc);
+-}
+-
+ static inline void vma_set_file(struct vm_area_struct *vma, struct file *file)
+ {
+ 	/* Changing an anonymous vma with this is illegal */
+diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+index 11192a6c6978..c56d96979d4d 100644
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -87,7 +87,8 @@ static inline int mmap_action_prepare(struct vm_area_desc *desc)
+ }
+ 
+ static inline int mmap_action_complete(struct vm_area_struct *vma,
+-				       struct mmap_action *action)
++				       struct mmap_action *action,
++				       bool is_compat)
+ {
+ 	return 0;
+ }
 -- 
-Sabrina
+2.54.0
+
 
