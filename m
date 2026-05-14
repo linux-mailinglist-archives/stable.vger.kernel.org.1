@@ -1,86 +1,94 @@
-Return-Path: <stable+bounces-247269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KE48G/kNBmrSeQIAu9opvQ
-	(envelope-from <stable+bounces-247269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 20:01:29 +0200
+	id KNnVD6gPBmoFegIAu9opvQ
+	(envelope-from <stable+bounces-247270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 20:08:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2855459B8
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 20:01:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBABD545ACA
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 20:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20AF63035D79
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 18:01:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3309301544C
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 18:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092B7391E64;
-	Thu, 14 May 2026 18:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6039E372069;
+	Thu, 14 May 2026 18:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ScEeQI2b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1B+JfYZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC4826FA7A;
-	Thu, 14 May 2026 18:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BAA33B6F1
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 18:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778781672; cv=none; b=ONhG9pF7CtnHzk0E+FYh7e4kwG7Ld3J6wNfu0k0Nj4TCebygSh/c13Hg1n7+Ft2X0Gx7IL1J5AYSlPGemPWTdMBNFgHfI4iQZOLdJfANjZ33kFMMWCH3tRf/jnaJgBJ5IljdJVrxNRIYWJ/jTeVTrnZ5E/5NkH7i5wcKAhXjUuk=
+	t=1778782115; cv=none; b=O4ZYDDgSqStSNq0GmRjmaiW0G9Z4Syr2kvFsgUlsxeNlX5t4xSXTCRzEGioco7LPVYFrz9aznsOX+U2lY4+AenF1xsRrs2A3HCy2n52z6RmZcvL/94rj7tlczw2HFwRZ8ZkV2X1aGNWT21xcI282AAgReV1GsV18Z+XkZTGg90Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778781672; c=relaxed/simple;
-	bh=k4KMELZOZMjReqUINd6UWjfPtFpSJBooYrdFY9fuOQQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mg0AQkNz4pY4JQZClooadNO3aVc5g9aV9ZMahAyXZT2UJjD/tpiLDmR7A6u+CFjTi/D4Mmf8QOcTl3kN5W8EQ1V+Y7SKvEuYaRWHCDx/+3lMR2QXLygkyrSXqTVGqNgSJbofhDlw3L17eYaBOUnnidlNgwavU8Eb3ntWomzEgNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ScEeQI2b; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64E6cQWa3185046;
-	Thu, 14 May 2026 18:01:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=SsYY2v5J0FFWddj+V
-	ekcEqqu1s6FY7VRl+LYEUz+cfQ=; b=ScEeQI2bu/eplbwuC90Bf+3rhJSCE5B6P
-	oNklVsxDUeeueWmIYo5Sa5kAfHp+4s0sxi10H4izQog8gPGg8FapPXZ1yTivgPs8
-	8cz2JyaYhhxavw/sYR9+iQlOSqG++dEB//tc4xMlJOQqn1BcdYs2qa7D67NIvFCa
-	xMAIoF6o+Yj4xD6c7Or+vaTsG/cOUcJh7QpGgd/6vzFlCTVqBTDoSVgvJMVMDSjN
-	EC16lWHyeSyqZctSQBzMIp++HncsU/i50C51Vm/Em2s4zmAgMB64pRhXMcpLrYkW
-	VxEZikMdTFrGJk7OD16P1xe1q+AvDitTU/K5ziUwbqWj4Xk1iPSUg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e3nv5nuu1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 May 2026 18:01:06 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64EHsWLT029409;
-	Thu, 14 May 2026 18:01:05 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e3nfh5keu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 May 2026 18:01:05 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64EI14VK10158708
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 14 May 2026 18:01:04 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4BAF058054;
-	Thu, 14 May 2026 18:01:04 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 45DBA58050;
-	Thu, 14 May 2026 18:01:03 +0000 (GMT)
-Received: from IBM-D32RQW3.ibm.com (unknown [9.61.254.43])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 14 May 2026 18:01:03 +0000 (GMT)
-From: Farhan Ali <alifm@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Cc: helgaas@kernel.org, alex@shazbot.org, alifm@linux.ibm.com,
-        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, stable@vger.kernel.org
-Subject: [PATCH v16 1/7] PCI: Allow per function PCI slots to fix slot reset on s390
-Date: Thu, 14 May 2026 11:00:53 -0700
-Message-ID: <20260514180059.1553-2-alifm@linux.ibm.com>
+	s=arc-20240116; t=1778782115; c=relaxed/simple;
+	bh=h960HNNe+V92ZvI6gP4RcHkyEzNtTuItTy+rZhYvONw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r9Yc8htX1vdxTq2FXG+bruhcg16tJ5Hk0/ESOV52bq8zORZM7IX/CxwWgSewlL+Xlyjq/h1KRznDHvDsKp7rtgvvsDp+kp9RUrxzbFOpvg4Df4gl3mk/DYOumW+RqZFzdCbrW2FXqXtSc7eY2ECgXXc7wVXBzpgeIp+mYvpB+Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1B+JfYZ; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-366330b6751so5672980a91.1
+        for <stable@vger.kernel.org>; Thu, 14 May 2026 11:08:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778782113; x=1779386913; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VfK6dWNOnCHbnZz/I7gFF8NkM/beIlUpgruzfOvGbLA=;
+        b=i1B+JfYZPFT6jhx1TBIEHA00RotfcPsHOmW9w5moILxFkl8+vpe8IzUaFYMVIGY5Lw
+         6Q+2PqxRuZEN0+T4mMVWg2d+en30wMMGuTzBQAsh/Z7Te9ZJCxnqaWZev4O/c5EUCG3g
+         3Yb3fIfUeNi+/olQXjLyAl8g84fhMXB0zPf94pUtuB5iaOyI5bkOP5NHUhR3SJVkJCvb
+         MiFelLwFZB19n4IXJjT8hGFSyZ+9Ua3hpnaW8nx6Rx5GXwP1KAwUqdfDic1JcgaC8Etq
+         3z59zQuxazqcmcpWsvmG0FzWyqIy8pK16Hlpzz6aqmHdVCveG9SDNJdatF66Kb1J/PI+
+         OA/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778782113; x=1779386913;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VfK6dWNOnCHbnZz/I7gFF8NkM/beIlUpgruzfOvGbLA=;
+        b=aFJp0t0hv0pX7N6F2fZBafdbhrQ/5YxgBSeu5oXK2mGr1tbdIeP0H/ViOIgKzq0/R2
+         sy6cX7pzwFTFD+0Z/Ryme2hGttE76JMAxR4NhQ1OZS5aEcJxO/W5c9dIppL52BPoWdya
+         ozzi/Km0nXxUQKLDUSjEMdBkSD/dqj41PuYGKdzXg5pC7ZpyoYfAxUgEMloMagRVhKr5
+         KG9YngaLmoxDBhnlWDGZUaKGQrKgsJ91DgWq+fdfzYpq2G7yeHnER+SP6WNVWc1rQn9S
+         xpxzDLm3UTHl55D+PFlMeS47hT4vRexBGb+DFTkZmNKadRl0AV8N6TJ0AyMOsQSkRDKJ
+         GnZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+OJ66lZxxR+jJ868DNKmnhF0XDHoHHSEaVVjGj+uuQfGTHqdB6ftrvbZMe8eKOqTUnhmsD+GI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySASKZO9iMzmuFclHUZ8Us1ujklgwIQYIpNIcaD5+NHgN1ShIq
+	GOiCnHFahsNUWQ8zhlgf0TDJxnylx0YIf8Sl5Bc8An/XxfIYf43ndCzwGiKfJ28f
+X-Gm-Gg: Acq92OFHavzn4WWTvIGMRY0Tt8zOR4OOoxEzGp4SEvn9/ad11nbgWw48tysB1iMUooV
+	dSp1C7hpaGCgqKdFwEs4SDC8Hm6aELsq8/PswpTF3ahwuHqKUeWmdFqsfPEmqgFwixed/bSxeOb
+	i7aLqqF9s/bMqaO/Nch9ibKjhyXXafmmZY5u53SM9OIvBHpBYy6eroE8PTlgfFUlCg8xPmMXf5N
+	uZYZyM7sY0MUAMxkAh+5/b7w2mG2xjvoinBntGZgcVQdRTyXwYmABiZhyHMWh7xfwEFGoEamDbP
+	VcEXCj0SKtYwK/o+fNDg9MuoF+aV81DJrhPcUYUZ785HT2+j0EkGQPqL6aBEKEB0EyVKqcyRg74
+	HXdJw++Nw1HsLS4qEGKTx0mwQjB+bPy/q6ohi0dTqBBWm113fWcRMNUSbflAIVxbZPxb42XznE3
+	+DInL4C5ZxhlzDMLRY81nhmMi5wQ+2A5wcY+UlmZgHRWF2/QDdjCSye1MfLxzX6Zrf
+X-Received: by 2002:a17:90b:3dc4:b0:365:fca2:8bdd with SMTP id 98e67ed59e1d1-36951778509mr545563a91.0.1778782112950;
+        Thu, 14 May 2026 11:08:32 -0700 (PDT)
+Received: from sprasad-dev1.corp.microsoft.com ([167.220.110.104])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb121cd6sm3134589a12.30.2026.05.14.11.08.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 May 2026 11:08:32 -0700 (PDT)
+From: nspmangalore@gmail.com
+X-Google-Original-From: sprasad@microsoft.com
+To: linux-cifs@vger.kernel.org,
+	smfrench@gmail.com,
+	pc@manguebit.org,
+	bharathsm@microsoft.com,
+	dhowells@redhat.com,
+	henrique.carvalho@suse.com,
+	ematsumiya@suse.de
+Cc: Shyam Prasad N <sprasad@microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 01/17] cifs: invalidate cfid on unlink/rename/rmdir
+Date: Thu, 14 May 2026 23:38:07 +0530
+Message-ID: <20260514180823.497293-1-sprasad@microsoft.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260514180059.1553-1-alifm@linux.ibm.com>
-References: <20260514180059.1553-1-alifm@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,238 +96,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=cPHQdFeN c=1 sm=1 tr=0 ts=6a060de2 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=9_SSeoq7eJPDN4OswFYA:9 a=O8hF6Hzn-FEA:10
-X-Proofpoint-ORIG-GUID: kWlFgyau5h5KGjymVy7G4gG1-o4uRywj
-X-Proofpoint-GUID: kWlFgyau5h5KGjymVy7G4gG1-o4uRywj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDE3NiBTYWx0ZWRfX7TkbkgRoNZ2C
- H4JYqj83mRQOi0BxvJCTqkUgSKuDYx0z5WArQdcV646mE8gdm+Ef4iDrRgupFfURikFrOplv30h
- +eBtQ4IKGge/MhJLQZ0yb5vm0z5dHf+5NsDM1+rmb3FI3mIerIuZonRiJ63Kp51i8tEc8JUlgiI
- s9/1/trkhsHiWFOCv5xsukKRDp/yfmJoL9b3rnB+NUsBR7HTmRxA9CbZ1RCqDvwUXxSmxYulzMt
- bNnPq0s4A+1H/xL/C6KipU3omjdk+ZbqTCJWGw4NP1sUq5wAqf7isq0RHW3xO7A3f9OP11iUcbn
- I0w1yA3k/LS9oBsilFgr+2dMnzxlWgt7KGQV4bA8f8VQH31M4EdQgqsl1XjUJGmI6H3YgHgU5mt
- dRRCaYkCejHGhp0868dSCQdrraCbfhEKa0qF7DqgMLyeLhK7/jZbJFqXGqYVKC0YHdqeZgE9Ksd
- UR9xPcHELzEzgEcHb1Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-14_04,2026-05-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 phishscore=0 clxscore=1015 spamscore=0
- impostorscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605140176
-X-Rspamd-Queue-Id: DB2855459B8
+X-Rspamd-Queue-Id: DBABD545ACA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247269-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	TAGGED_FROM(0.00)[bounces-247270-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,manguebit.org,microsoft.com,redhat.com,suse.com,suse.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nspmangalore@gmail.com,stable@vger.kernel.org];
+	FROM_NO_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On s390 systems, which use a machine level hypervisor, PCI devices are
-always accessed through a form of PCI pass-through which fundamentally
-operates on a per PCI function granularity. This is also reflected in the
-s390 PCI hotplug driver which creates hotplug slots for individual PCI
-functions. Its reset_slot() function, which is a wrapper for
-zpci_hot_reset_device(), thus also resets individual functions.
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-Currently, the kernel's PCI_SLOT() macro assigns the same pci_slot object
-to multifunction devices. This approach worked fine on s390 systems that
-only exposed virtual functions as individual PCI domains to the operating
-system.  Since commit 44510d6fa0c0 ("s390/pci: Handling multifunctions")
-s390 supports exposing the topology of multifunction PCI devices by
-grouping them in a shared PCI domain. This creates a problem when resetting
-a function through the hotplug driver's slot_reset() interface.
+Today we do not invalidate the cached_dirent or the entire
+parent cfid when a dentry in a dir has been removed/moved.
 
-When attempting to reset a function through the hotplug driver, the shared
-slot assignment causes the wrong function to be reset instead of the
-intended one. It also leaks memory as we do create a pci_slot object for
-the function, but don't correctly free it in pci_slot_release().
+This change invalidates the parent cfid so that we don't serve
+directory contents from the cache.
 
-Add a flag for struct pci_slot to allow per function PCI slots for
-functions managed through a hypervisor, which exposes individual PCI
-functions while retaining the topology. Since we can use all 8 bits
-for slot 'number' (for ARI devices), change slot 'number' u16 to
-account for special values -1 and PCI_SLOT_ALL_DEVICES.
-
-Fixes: 44510d6fa0c0 ("s390/pci: Handling multifunctions")
-Cc: stable@vger.kernel.org
-Suggested-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
 ---
- drivers/pci/hotplug/rpaphp_slot.c |  2 +-
- drivers/pci/pci.c                 |  5 +++--
- drivers/pci/slot.c                | 33 +++++++++++++++++++++++--------
- include/linux/pci.h               |  8 ++++++--
- 4 files changed, 35 insertions(+), 13 deletions(-)
+ fs/smb/client/inode.c | 30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/hotplug/rpaphp_slot.c b/drivers/pci/hotplug/rpaphp_slot.c
-index 67362e5b9971..92eabf5f61b9 100644
---- a/drivers/pci/hotplug/rpaphp_slot.c
-+++ b/drivers/pci/hotplug/rpaphp_slot.c
-@@ -84,7 +84,7 @@ int rpaphp_register_slot(struct slot *slot)
- 	struct hotplug_slot *php_slot = &slot->hotplug_slot;
- 	u32 my_index;
- 	int retval;
--	int slotno = -1;
-+	int slotno = PCI_SLOT_PLACEHOLDER;
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 16a5310155d5a..61f4b9ba2bd25 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -28,6 +28,23 @@
+ #include "cached_dir.h"
+ #include "reparse.h"
  
- 	dbg("%s registering slot:path[%pOF] index[%x], name[%s] pdomain[%x] type[%d]\n",
- 		__func__, slot->dn, slot->index, slot->name,
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index d34266651ad0..f5f8291482b0 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4865,8 +4865,9 @@ static int pci_reset_hotplug_slot(struct hotplug_slot *hotplug, bool probe)
- 
- static int pci_dev_reset_slot_function(struct pci_dev *dev, bool probe)
- {
--	if (dev->multifunction || dev->subordinate || !dev->slot ||
--	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
-+	if (dev->subordinate || !dev->slot ||
-+	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
-+	    (dev->multifunction && !dev->slot->per_func_slot))
- 		return -ENOTTY;
- 
- 	return pci_reset_hotplug_slot(dev->slot->hotplug, probe);
-diff --git a/drivers/pci/slot.c b/drivers/pci/slot.c
-index 6d5cd37bfb1e..894d6213ed30 100644
---- a/drivers/pci/slot.c
-+++ b/drivers/pci/slot.c
-@@ -37,7 +37,7 @@ static const struct sysfs_ops pci_slot_sysfs_ops = {
- 
- static ssize_t address_read_file(struct pci_slot *slot, char *buf)
- {
--	if (slot->number == 0xff)
-+	if (slot->number == (u16)PCI_SLOT_PLACEHOLDER)
- 		return sysfs_emit(buf, "%04x:%02x\n",
- 				  pci_domain_nr(slot->bus),
- 				  slot->bus->number);
-@@ -72,6 +72,23 @@ static ssize_t cur_speed_read_file(struct pci_slot *slot, char *buf)
- 	return bus_speed_read(slot->bus->cur_bus_speed, buf);
- }
- 
-+static bool pci_dev_matches_slot(struct pci_dev *dev, struct pci_slot *slot)
++static void cifs_invalidate_cached_dir(struct cifs_tcon *tcon,
++				       struct dentry *parent)
 +{
-+	if (slot->per_func_slot)
-+		return dev->devfn == slot->number;
++	struct cached_fid *parent_cfid = NULL;
 +
-+	return slot->number == PCI_SLOT_ALL_DEVICES ||
-+		PCI_SLOT(dev->devfn) == slot->number;
++	if (!tcon || !parent)
++		return;
++
++	if (!open_cached_dir_by_dentry(tcon, parent, &parent_cfid)) {
++		mutex_lock(&parent_cfid->dirents.de_mutex);
++		parent_cfid->dirents.is_valid = false;
++		parent_cfid->dirents.is_failed = true;
++		mutex_unlock(&parent_cfid->dirents.de_mutex);
++		close_cached_dir(parent_cfid);
++	}
 +}
 +
-+static bool pci_slot_enabled_per_func(void)
-+{
-+	if (IS_ENABLED(CONFIG_S390))
-+		return true;
-+
-+	return false;
-+}
-+
- static void pci_slot_release(struct kobject *kobj)
- {
- 	struct pci_dev *dev;
-@@ -82,8 +99,7 @@ static void pci_slot_release(struct kobject *kobj)
- 
- 	down_read(&pci_bus_sem);
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list)
--		if (slot->number == PCI_SLOT_ALL_DEVICES ||
--		    PCI_SLOT(dev->devfn) == slot->number)
-+		if (pci_dev_matches_slot(dev, slot))
- 			dev->slot = NULL;
- 	up_read(&pci_bus_sem);
- 
-@@ -187,8 +203,7 @@ void pci_dev_assign_slot(struct pci_dev *dev)
- 
- 	mutex_lock(&pci_slot_mutex);
- 	list_for_each_entry(slot, &dev->bus->slots, list)
--		if (slot->number == PCI_SLOT_ALL_DEVICES ||
--		    PCI_SLOT(dev->devfn) == slot->number)
-+		if (pci_dev_matches_slot(dev, slot))
- 			dev->slot = slot;
- 	mutex_unlock(&pci_slot_mutex);
- }
-@@ -267,7 +282,7 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
- 
- 	mutex_lock(&pci_slot_mutex);
- 
--	if (slot_nr == -1)
-+	if (slot_nr == PCI_SLOT_PLACEHOLDER)
- 		goto placeholder;
- 
- 	/*
-@@ -298,6 +313,9 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
- 	slot->bus = pci_bus_get(parent);
- 	slot->number = slot_nr;
- 
-+	if (pci_slot_enabled_per_func())
-+		slot->per_func_slot = 1;
-+
- 	slot->kobj.kset = pci_slots_kset;
- 
- 	slot_name = make_slot_name(name);
-@@ -318,8 +336,7 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
- 
- 	down_read(&pci_bus_sem);
- 	list_for_each_entry(dev, &parent->devices, bus_list)
--		if (slot_nr == PCI_SLOT_ALL_DEVICES ||
--		    PCI_SLOT(dev->devfn) == slot_nr)
-+		if (pci_dev_matches_slot(dev, slot))
- 			dev->slot = slot;
- 	up_read(&pci_bus_sem);
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 2c4454583c11..d58982aa8730 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -78,14 +78,18 @@
-  * and, if ARI Forwarding is enabled, functions may appear to be on multiple
-  * devices.
+ /*
+  * Set parameters for the netfs library
   */
--#define PCI_SLOT_ALL_DEVICES	0xfe
-+#define PCI_SLOT_ALL_DEVICES	0xfeff
+@@ -2067,6 +2084,9 @@ static int __cifs_unlink(struct inode *dir, struct dentry *dentry, bool sillyren
+ 		cifs_set_file_info(inode, attrs, xid, full_path, origattr);
+ 
+ out_reval:
++	if (!rc && dentry->d_parent)
++		cifs_invalidate_cached_dir(tcon, dentry->d_parent);
 +
-+/* Used to identify a slot as a placeholder */
-+#define PCI_SLOT_PLACEHOLDER	-1
+ 	if (inode) {
+ 		cifs_inode = CIFS_I(inode);
+ 		cifs_inode->time = 0;	/* will force revalidate to get info
+@@ -2378,7 +2398,6 @@ int cifs_rmdir(struct inode *inode, struct dentry *direntry)
+ 	}
  
- /* pci_slot represents a physical slot */
- struct pci_slot {
- 	struct pci_bus		*bus;		/* Bus this slot is on */
- 	struct list_head	list;		/* Node in list of slots */
- 	struct hotplug_slot	*hotplug;	/* Hotplug info (move here) */
--	unsigned char		number;		/* Device nr, or PCI_SLOT_ALL_DEVICES */
-+	u16			number;		/* Device nr, or PCI_SLOT_ALL_DEVICES */
-+	unsigned int		per_func_slot:1; /* Allow per function slot */
- 	struct kobject		kobj;
- };
+ 	rc = server->ops->rmdir(xid, tcon, full_path, cifs_sb);
+-	cifs_put_tlink(tlink);
  
+ 	cifsInode = CIFS_I(d_inode(direntry));
+ 
+@@ -2388,6 +2407,8 @@ int cifs_rmdir(struct inode *inode, struct dentry *direntry)
+ 		i_size_write(d_inode(direntry), 0);
+ 		clear_nlink(d_inode(direntry));
+ 		spin_unlock(&d_inode(direntry)->i_lock);
++		if (direntry->d_parent)
++			cifs_invalidate_cached_dir(tcon, direntry->d_parent);
+ 	}
+ 
+ 	/* force revalidate to go get info when needed */
+@@ -2402,6 +2423,7 @@ int cifs_rmdir(struct inode *inode, struct dentry *direntry)
+ 
+ 	inode_set_ctime_current(d_inode(direntry));
+ 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
++	cifs_put_tlink(tlink);
+ 
+ rmdir_exit:
+ 	free_dentry_path(page);
+@@ -2668,6 +2690,12 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
+ 	}
+ 
+ 	/* force revalidate to go get info when needed */
++	if (!rc) {
++		cifs_invalidate_cached_dir(tcon, source_dentry->d_parent);
++		if (target_dentry->d_parent != source_dentry->d_parent)
++			cifs_invalidate_cached_dir(tcon, target_dentry->d_parent);
++	}
++
+ 	CIFS_I(source_dir)->time = CIFS_I(target_dir)->time = 0;
+ 
+ cifs_rename_exit:
 -- 
 2.43.0
 
