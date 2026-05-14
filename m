@@ -1,87 +1,86 @@
-Return-Path: <stable+bounces-247139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHkcCdqGBWpOYAIAu9opvQ
-	(envelope-from <stable+bounces-247139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:24:58 +0200
+	id OHxbJ/aGBWr5XwIAu9opvQ
+	(envelope-from <stable+bounces-247140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:25:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB61153F3C4
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:24:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D33853F3FF
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DD963301745A
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 08:24:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F300F3035884
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 08:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8343D8120;
-	Thu, 14 May 2026 08:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8481F3AEF34;
+	Thu, 14 May 2026 08:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b="TyxvKzJw"
+	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b="CVsKybsX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2BB3D75A4
-	for <stable@vger.kernel.org>; Thu, 14 May 2026 08:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC3C3D7D65
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 08:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778747096; cv=none; b=W8AB+Oa0F5r8EaAk0v6N6pOeWaui+7JPPztf+uzom1/Wtcj3Lan509YxV24TYGR4QUI2GGCZEY/+/Yik+iOyyq5T6A/3qHpsdYo4MbUrekmNqzr/Qh84rCtVvRODliOlWU9/FGN5+8Ly442rTq4qPE3Rf4w7tTzlBp1Iz2NUizw=
+	t=1778747104; cv=none; b=tg+qklHnDB5nFSQea1xyJxDLCYEsYFSF2qvsuE0DGt6LRTIHaXvv7SGjDvjQ+3joygMo1J9le5UKulxf7Xsmw7vD3t+wZAolgwfTyA8BXfdK5m6jzWiOJz3352km9zOvsBFKOPd8bjMvUejrlOzhAXLyTIapua3CnHm51YKGDFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778747096; c=relaxed/simple;
-	bh=WWJm/xpIv5plkf8LM1Nw9aJODKA1eKtQKr6e1aIxW0Q=;
+	s=arc-20240116; t=1778747104; c=relaxed/simple;
+	bh=8Z8K1cxzOFKrVJqTydIBAVWPHk0uegI4AOwudkIAUMM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ee9H8ooa0Wm+5VdKyFky+Ex3WJEqp8RE6Q25VovlZXlNUez/T/ChZMY8oc9lGIxHBVt5HgSJcyr//QAt0/BTm4bEJ+GtBgWYFF1HOmt81BGjPnHH4SHQGLCw5ZnYCr/KLjRUicKeCJkB9cxWdMik2omGFovEFlfzelXFOgnaBMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=TyxvKzJw; arc=none smtp.client-ip=209.85.216.45
+	 In-Reply-To:To:Cc; b=Mt6yBwbyB0Y4uya1osDHrB6CwoFoYdpUhRT2WRIfOsEIcya0nygtWyEiddRK6YAj2eziqvq2XRolqpEglUO+pT/tYw1gEbGJDd49lLhYzvgOLA63f7OTsS2OuqeG4vtxpurA/4Unsbk0LgLR/9my6mbmyofzzYB9XQ0WoXnrFTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=CVsKybsX; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-367c26471f5so4000607a91.1
-        for <stable@vger.kernel.org>; Thu, 14 May 2026 01:24:54 -0700 (PDT)
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c8026aa4d53so5504236a12.3
+        for <stable@vger.kernel.org>; Thu, 14 May 2026 01:25:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1778747094; x=1779351894; darn=vger.kernel.org;
+        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1778747102; x=1779351902; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XFQkelQQRKhZpfEoPGAVYNK0Hwvv38SrBtzyzwAZhUY=;
-        b=TyxvKzJwznLCqIX4SPN3uT5eAaPuDct5GAvbEtYAREL7n+a8AKy12pfQA2nB9wrAKR
-         7ywQ1HnUcvmQ36Jn+igoNQtb2tk50CUT7LCI2A9/CL+hkR9Okzjt/fIDhDMAeG12iP9r
-         vp9S3FFrPoAx9VFZiF0b5pV1gR/oYFD0fL8Ptua1cUhebkarmuTwlIc27gsaPQjeLGIJ
-         vVNbDmbzXhhAxwcNUp0YZdmQwOnj5IOBZVqZ4wQoh/ZkMKhhjKyI4T62wbaUryRjJ+5C
-         oD2NCTm2TN1X6fXNxoZJZFgy5xuteeCg4J/FkY3Y2j2fW4ouF9Lz2mKD2Nm+bl4FAK/C
-         FPsg==
+        bh=7d38f+IaIo+LqPs0VUxtKb87zLxGu6BC7Fyaado5mzo=;
+        b=CVsKybsXWDXuCTZclc+ut8IMXNhmqIGPBFYrMQkaLFXdFfmujFt98fCinanHM64J8H
+         53iFU/aBY0VpBu+TjsfeF/QtiAe2+CLoM9fdvsu/HKrO7vp2LOIpFbnAJCbc+DqB4asj
+         tsWkdQpJZ7UYDiAaaZQA3OPxUDYWTXdZbmTqePGte5tfr6+srYAvPnlDWClkl8V2qbcN
+         8DMHRldVeI9/e04AAEBGFmMt0M7Lgg25kJXnsCbhvy/zVxFIH4Ad4KAEaaCD2oWtmxPF
+         1T6gIfm6HKDFci2DeiwsgdShtfrC9k4IdIcs1jE+7U3vLAV1TA/9pDwFft5fRLDlhfPZ
+         615Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778747094; x=1779351894;
+        d=1e100.net; s=20251104; t=1778747102; x=1779351902;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=XFQkelQQRKhZpfEoPGAVYNK0Hwvv38SrBtzyzwAZhUY=;
-        b=mxERRuRD2RGpapVXp2qAAUxiRqb9XvwblSagKbTfC1Pm2j/Ez2PNvSrJ7AX2cgoF7W
-         sI5vsk3pBs57XSsjS2lJc8Gwn9CJK83ximHYHzez34aMPwj35SO9V2QoZ/Ohy/D3Bnge
-         1ZKGOndpwiCG9j6c8jxgHP1nmxwYjU+V4JCKWBWu7QM60lEv0h2fQc/jvo5Q7XtaMZBo
-         8OPf0q8MUDPGMCUoJqUhH+Nu+yrEKLlmKa/XzvDaVg1lwkJgFtkOwBtbJzGBbcmbe6/p
-         4SEX7r6ydlevHQYKG7WV004gW/p+QYDOG8hnzqrjhUWGlgJnLFfka9bQWijooLaDU00U
-         nMhw==
-X-Forwarded-Encrypted: i=1; AFNElJ+h34z6qEL3nLIfO98AB7ecpx5hJrxa4vliiTIMfpTFu943HWlf9Pzvr2PMwz7x9lss+CcURSU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm7d/OKQYXD9y9q4pYSuVlXuEOoKg3zUgO/nOsplRQfl+m7kbS
-	ROvZT/yOv58mTei3wbZ9lSnFNLvufO1Sp9vxN/D7PJHm1mXjkFISEhUP+FbzDLk/1hIXwdPk+NA
-	QR6zwG+E=
-X-Gm-Gg: Acq92OG+4dPchauobyx1n6GgMfa86mz3lBh29B0wJuHX8l99TSGjanYWIA2zpkh/GRR
-	cR2u/UvZ96PUXGzYplX3AnZwL5PNRBvTVxVjZlCwNkoeI62x2YfYpfvOVvVRTg34VgYre/WzCth
-	2NgddS0vuNCzZs/FbxlYQhKN5LTyxdic9E43Iv/oqTONwgT2h0dVdLJ5PxAF4KQyexoHYj+S4jc
-	oR2xwGSx9ChWZGE0fg9FqCRtRT1elXq2Pmx2mR6v7AapeXNYKqV9nF5jTk5bYvrd9amT2hXe/oz
-	7r5ML6de/79wYNlLWgHekZgPJCDh8Xh48nzGSL7l3ezzgMkSBEiW3IQPmU4L1zefWG5GZwdVIC1
-	lyYJ4Mys+IqhxH11U5X2/9ddj7xPti7PFWjSNBQGVET/HA6MzETB3tdT9dk9rSmuo0y1sOL9Bzy
-	wHE458dZHuN094Y1j7EZoAWfU6JgfnHapKvy3YB/5AhjdaGeuqZYo11uj9mIlzqieyjon0HniBH
-	LyLMguokD0z44IQ8bhNDvF6yrOaL3N+0HIdEr+7f2Da
-X-Received: by 2002:a17:90a:ec90:b0:367:b8ad:f0e9 with SMTP id 98e67ed59e1d1-368f7990c58mr6047925a91.16.1778747093565;
-        Thu, 14 May 2026 01:24:53 -0700 (PDT)
+        bh=7d38f+IaIo+LqPs0VUxtKb87zLxGu6BC7Fyaado5mzo=;
+        b=Z3mJV5hC4B5fB3m7BapFw9Pe5c8H18ySK2T60s1IEAcvWpgKfiky3MnepQ4nS04Xgx
+         F+TyuV1XZ3sPNFk3dI+VYjqpv7AP9q/n3xQY8YkGGxxwA1i7rkGrxZS5fsncV935aDvG
+         tAI9nBVw6KVGnsB0eFD95MnKVqBqbBs26wseK2wWR+caqK35whXTeJPWKz73H3O7WB5/
+         y67wYxZXG2QVYp0tjg3HQXJO8EP/QUIkTgwVOoX1zBZD5WGWBaz3/m4SRPv33xF6ceZg
+         Y/0HTis4GpXAoC+PzX8eIVc8n3RZPSPH/dlldtJ0VfXpBkajBTB6XrmrUlFr5fmq2UAI
+         jTbw==
+X-Forwarded-Encrypted: i=1; AFNElJ8wOc3k6QCmtZaRavS4xCKvLr/jlmCZkrkiANS7SkS+jH8SVXuv3sTP3/sPCn6L2roQvi916G4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoNaecz3Ul0jWy92QFVUJy5yPGN58mOy4do3RtcZ4E+U+rcp1n
+	JBEMWiE3OzAciy7Y46enJxOEqu854AD5wN0xLxgwaP7RFxkITFGzVXloHvuBQ2veS+4=
+X-Gm-Gg: Acq92OE3ZtHclnFJEbcYMIzyJiwLgX/FeWynAHRvKfdUWKzf4MPiQ0Rebo/nbHsUC+z
+	lY2ofU+pQYS8GlFFWzA8pL+gNXmqfLtTxgc8e7t6JOqtLyXvV6Z9X5uiIc313fxMC1CpDoSXDEd
+	dLunUQj4Inq0Wq3FRSTXQDdB9tB81GqOIXWTh/EY9TdHhihxV79gh7PZnr0U02vETz0zvQ8/25L
+	jSAz0SHSa1FeUtuKF235H4PmbceElnBz0bkWSlvZ8HdJBUmMebH++PI5/lCiUHYGicEPS9fQbGs
+	A17pheADHOVUMKQ2cV08E8/MQMywRgTO7fqUDFFljUnOikJsALM7rsEOAlQis96BJ/kPFf/fial
+	+96BBOPnzu+XOeQ6rFfusF0qnf5UIJnzPt4wFzuki8BezQzHM4O7VIveHGkX/Q4eoyOeGRo/ZDa
+	OP+P9hsfzjMXRgbbwzHBBbHio082ZHhBWqmwr+Myh2Q4xERb1wKeNHWyxIiGvwxcBGadF7i/CRc
+	+7ASCt8EOs4vbPgfIupuOCQZaLFW8qLXFAmoaBu4wjLHImRJeN5hZk=
+X-Received: by 2002:a05:6a20:7495:b0:38b:d9b5:5de2 with SMTP id adf61e73a8af0-3af83e4433bmr7439055637.50.1778747102141;
+        Thu, 14 May 2026 01:25:02 -0700 (PDT)
 Received: from [127.0.1.1] ([103.158.43.41])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c82bb06875bsm1589102a12.3.2026.05.14.01.24.46
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c82bb06875bsm1589102a12.3.2026.05.14.01.24.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 01:24:53 -0700 (PDT)
+        Thu, 14 May 2026 01:25:01 -0700 (PDT)
 From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Date: Thu, 14 May 2026 13:54:30 +0530
-Subject: [PATCH 01/14] fbdev: hecubafb: fix potential memory leak in
- hecubafb_probe()
+Date: Thu, 14 May 2026 13:54:31 +0530
+Subject: [PATCH 02/14] fbdev: broadsheetfb: fix potential memory leak in
+ broadsheetfb_probe()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,7 +89,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260514-fbdev-v1-1-b3a2474fa720@cse.iitm.ac.in>
+Message-Id: <20260514-fbdev-v1-2-b3a2474fa720@cse.iitm.ac.in>
 References: <20260514-fbdev-v1-0-b3a2474fa720@cse.iitm.ac.in>
 In-Reply-To: <20260514-fbdev-v1-0-b3a2474fa720@cse.iitm.ac.in>
 To: Helge Deller <deller@gmx.de>, 
@@ -109,18 +108,18 @@ Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
  Abdun Nihaal <nihaal@cse.iitm.ac.in>
 X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: EB61153F3C4
+X-Rspamd-Queue-Id: 2D33853F3FF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.56 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[cse-iitm-ac-in.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247139-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247140-lists,stable=lfdr.de];
 	FREEMAIL_TO(0.00)[gmx.de,redhat.com,suse.de,kernel.crashing.org,linux-foundation.org,linutronix.de,rainbow-software.org,gmail.com,linux-sh.org,wp.pl,ti.com,gentoo.org,denx.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
@@ -132,12 +131,12 @@ X-Spamd-Result: default: False [-1.56 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cse.iitm.ac.in:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iitm.ac.in:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cse.iitm.ac.in:mid,cse-iitm-ac-in.20251104.gappssmtp.com:dkim,iitm.ac.in:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 The memory allocated for pagerefs in fb_deferred_io_init() is not freed
@@ -147,33 +146,39 @@ Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
 Cc: stable@vger.kernel.org
 Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 ---
- drivers/video/fbdev/hecubafb.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/broadsheetfb.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/hecubafb.c b/drivers/video/fbdev/hecubafb.c
-index 3547d58a29cf..dd2af980f3d8 100644
---- a/drivers/video/fbdev/hecubafb.c
-+++ b/drivers/video/fbdev/hecubafb.c
-@@ -192,7 +192,9 @@ static int hecubafb_probe(struct platform_device *dev)
+diff --git a/drivers/video/fbdev/broadsheetfb.c b/drivers/video/fbdev/broadsheetfb.c
+index c8ba098a8c42..582f1ee4c9b6 100644
+--- a/drivers/video/fbdev/broadsheetfb.c
++++ b/drivers/video/fbdev/broadsheetfb.c
+@@ -1072,12 +1072,14 @@ static int broadsheetfb_probe(struct platform_device *dev)
  	info->flags = FBINFO_VIRTFB;
  
- 	info->fbdefio = &hecubafb_defio;
+ 	info->fbdefio = &broadsheetfb_defio;
 -	fb_deferred_io_init(info);
 +	retval = fb_deferred_io_init(info);
 +	if (retval)
++		goto err_vfree;
+ 
+ 	retval = fb_alloc_cmap(&info->cmap, 16, 0);
+ 	if (retval < 0) {
+ 		dev_err(&dev->dev, "Failed to allocate colormap\n");
+-		goto err_vfree;
 +		goto err_fbdefio;
+ 	}
  
- 	retval = register_framebuffer(info);
- 	if (retval < 0)
-@@ -209,6 +211,8 @@ static int hecubafb_probe(struct platform_device *dev)
- 
- 	return 0;
- err_fbreg:
-+	fb_deferred_io_cleanup(info);
+ 	/* set cmap */
+@@ -1121,6 +1123,8 @@ static int broadsheetfb_probe(struct platform_device *dev)
+ 	board->cleanup(par);
+ err_cmap:
+ 	fb_dealloc_cmap(&info->cmap);
 +err_fbdefio:
- 	framebuffer_release(info);
- err_fballoc:
++	fb_deferred_io_cleanup(info);
+ err_vfree:
  	vfree(videomemory);
+ err_fb_rel:
 
 -- 
 2.43.0
