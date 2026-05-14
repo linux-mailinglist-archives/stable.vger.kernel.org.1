@@ -1,178 +1,156 @@
-Return-Path: <stable+bounces-247074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ms5EFgkdBWrfSgIAu9opvQ
-	(envelope-from <stable+bounces-247074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:53:29 +0200
+	id AAOiGT0eBWoASwIAu9opvQ
+	(envelope-from <stable+bounces-247075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:58:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7FB53C74E
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:53:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECA953C7E6
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E36E303FDC1
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:53:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 78947302EAA8
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB532F3600;
-	Thu, 14 May 2026 00:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34052FD665;
+	Thu, 14 May 2026 00:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2rwyA8I"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZQWcpiSu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D5E22A4EE;
-	Thu, 14 May 2026 00:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5256B1531C8;
+	Thu, 14 May 2026 00:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778720003; cv=none; b=r6i5D9mUxEpyQx21CmkMgahquz7SSd7ALK0xe7ftLqRk7MyYc9IBZcT7Al/n7p1NgDtg9Esc/iqrQ/i0z1nvVCtNrxnHlI9G0AFzwX+cr+v5LczxTNZ/VVzg4St0fNBIWLIldRuv84qnVcBHtetEgbyH8LSglRAkq9pezS5LrJA=
+	t=1778720312; cv=none; b=OtX655GWgj1tmOrzST23rLc2Jiv3L0abin03+LnLbxYH8AP848X+I6j4IqKB9XM8irsT4U82NYYQG5m+l9lEIxvw+E21ImnL6WydqSbbTYyGfADyQXw+OmUKnMI2si7dO57xvykF/lerUEPfHaSF7nLD3w6vSGx3WhNQE5xmhi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778720003; c=relaxed/simple;
-	bh=tIZqnUSBTfvu8MvGTUzCx4rW3xP45eov3BgjVPVinTA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UprOXCddRcMybLgc2Y7hiUs46lSaEuhHsFg6mNI4fUJREOYdbgelMtnc6GGwqR4M9aK2wcY28hCiZ4ALK4R678jFNuyO7GsBGAQscwxqbb4go49Gmm1I5sAwKxNQMR1AutFL8Eks0Cb0hJ3Tx36v++iGvWt8Aoy8IfkmEVIC/tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2rwyA8I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EA8C19425;
-	Thu, 14 May 2026 00:53:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778720002;
-	bh=tIZqnUSBTfvu8MvGTUzCx4rW3xP45eov3BgjVPVinTA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S2rwyA8IbRA3O4IpvBHu1zfGKqXbXYJc/YlKOllKzF4ltDIlkWrF0b6KCWdNbF3+l
-	 xo1bvJnsQ49FWixDMSvtFTHeLmWV4QOVcy28QKmxHF7rNzxHit9DG+dl1GHx9jaN40
-	 ZyOx/mP6I1dJtnueYXe7LFitI0/rpojK4kefZYpkbjEwqNUtsYADcjoh+bpy4g0+xQ
-	 uqZLrp1zbmDBtGw5dkt6E5pM4gzPaBTTRDvVDhKSctkIoMmGjZfhT6oTRXSMySAszX
-	 vun4RCeRk5PPjztHszHibR9x+hwz30IpaTyqPAlWrHGrBsi+OTMKLJWWVlxAevpkXT
-	 mwQ6b7Gicw7nw==
-Date: Wed, 13 May 2026 14:53:21 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Kyle McMartin <jkkm@meta.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Linux RT Development <linux-rt-devel@lists.linux.dev>,
-	Clark Williams <williams@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	John Kacur <jkacur@redhat.com>
-Subject: Re: [PATCH sched/core] sched/rt: Fix RT_PUSH_IPI soft lockup loop
-Message-ID: <agUdAatmlqQc1NS_@slm.duckdns.org>
-References: <20260506235716.2530720-1-tj@kernel.org>
- <20260507141437.GJ3102624@noisy.programming.kicks-ass.net>
- <20260512113754.448c1f5b@gandalf.local.home>
- <056f95bc5805f7e161458984fff4b3cb@kernel.org>
- <20260512172847.5024e5e8@gandalf.local.home>
- <20260513193914.1593369-1-tj@kernel.org>
- <20260513202432.18dd7b9f@gandalf.local.home>
+	s=arc-20240116; t=1778720312; c=relaxed/simple;
+	bh=pKQ49hwtIw1WVDCIHVG9xLAYGREhRwrtQ+deom15G0U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=FWXPkIdfQxOuUy+wZc0TssX+sR6AbbJiNoop8OfCe24UPHfL6jYn5BowVcn0LaH54JDuWxI4GSWECRCYbbMVtLQsb8QV8smLT+m+rB0Pt45K2f0639KE6l/c9EdsgZvO7zUr4NYzvmzNcvuZV/7L24fwSmeQExOlEfflx/BSZLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZQWcpiSu; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64E0w8bgD1424407, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1778720288; bh=pKQ49hwtIw1WVDCIHVG9xLAYGREhRwrtQ+deom15G0U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=ZQWcpiSuxMVqmGWX2U7LxZZTdPGEfH8nioKCzq5JoG7/pNGndsO+ImJOda23mk95+
+	 Xc5Mot9hJrvQ3W9mNoGNDE/wZ1t8hZMUfag/v2LGxaBBjaBXcWpYNZ5x/7cx4DTBtw
+	 PHNbLk9YiziYFs/BKEayNcaAeY2R0UunjqE+vOpUqdL11J4Np6q7Giw9KELG6W5+F7
+	 czbCQhlRGHUtfHv+mnaEmWj1UfLJ3FcpK+wFH3SrypaYaX+SxYTi35i4r6DmueR52f
+	 WqaiaXMWp+RRNixcYVmD4HCyCKQ3G+nUIkNw6g/jZgusfl4QwAN2iXVwKlJpvkDiRD
+	 LsGBve+i5iGAA==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.27/5.94) with ESMTPS id 64E0w8bgD1424407
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 14 May 2026 08:58:08 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 14 May 2026 08:58:08 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::e6fd:5a3f:8946:92c4%10]) with mapi id
+ 15.02.2562.017; Thu, 14 May 2026 08:58:08 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "luka.gejak@linux.dev" <luka.gejak@linux.dev>,
+        Kalle Valo
+	<kvalo@kernel.org>
+CC: Sascha Hauer <s.hauer@pengutronix.de>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH v3] wifi: rtw88: increase TX report timeout to fix race
+ condition
+Thread-Topic: [PATCH v3] wifi: rtw88: increase TX report timeout to fix race
+ condition
+Thread-Index: AQHc4wPFdTV6Vqbf5UWFMEx2u7URLrYMsscg
+Date: Thu, 14 May 2026 00:58:08 +0000
+Message-ID: <696f2c67b1964ada9171b61c920aabc6@realtek.com>
+References: <20260513180935.13289-1-luka.gejak@linux.dev>
+In-Reply-To: <20260513180935.13289-1-luka.gejak@linux.dev>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513202432.18dd7b9f@gandalf.local.home>
-X-Rspamd-Queue-Id: AB7FB53C74E
+X-Rspamd-Queue-Id: 1ECA953C7E6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[realtek.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[realtek.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247074-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-247075-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[realtek.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[pkshih@realtek.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Hello,
+luka.gejak@linux.dev <luka.gejak@linux.dev> wrote:
+> From: Luka Gejak <luka.gejak@linux.dev>
+>=20
+> The driver expects the firmware to report TX status within 500ms.
+> However, a timeout can be triggered when the hardware performs
+> background scans while under TX load. During these scans, the firmware
+> stays off-channel for periods exceeding 500ms, delaying the delivery of
+> TX reports back to the driver.
+>=20
+> When this occurs, the purge timer fires prematurely and drops the
+> tracking skbs from the queue. This results in the host stack
+> interpreting the missing status as packet loss, leading to TCP window
+> collapse. In testing with iperf3, this causes throughput to drop from
+> ~90 Mbps to near-zero for approximately 2 seconds until the connection
+> recovers.
+>=20
+> Increase RTW_TX_PROBE_TIMEOUT to 2500ms for RTL8723DU. This duration is
+> sufficient to accommodate off-channel dwell time during full background
+> scans, ensuring the purge timer only trips during genuine firmware
+> lockups and preventing unnecessary TCP retransmission cycles.
+>=20
+> Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
 
-On Wed, May 13, 2026 at 08:24:32PM -0400, Steven Rostedt wrote:
-> > - Per-target hrtimer (HRTIMER_MODE_REL_PINNED_HARD) fires every
-> >   750us. Each fire schedules one tasklet round-robin from a pool
-> >   of 20k distinct tasklets. Each tasklet body is a 500us cpu_relax
-> >   loop, standing in for "process one item of softirq work".
-> 
-> So you are running a softirq for 500us every 750us?
-> 
-> This basically prevents any task from running on these CPUs while the
-> softirq is executing.
+Since RTL8723DU is supported by the commit 87caeef032fc, I'd change Fixes
+to below during getting merged.
 
-Hmmm? The utilization is high at around 70%. It can still run something and
-wouldn't lock up. The prod repro case isn't this high. More like 30-40%.
-It's just difficult to make syntheric repro reliable with that.
+Fixes: 87caeef032fc ("wifi: rtw88: Add rtw8723du chipset support")
 
-> > - Storm driver: 190 SCHED_FIFO-50 nanosleep loops on non-target
-> >   CPUs drive tell_cpu_to_push from balance_rt. Two synthetic
-> >   psimon-shaped kthreads (FIFO 1) bound to the targets to pin
-> >   them into rto_mask.
-> 
-> What exactly are these synthetic kthreads doing. Have code to share?
+> Cc: stable@vger.kernel.org
+> Tested-by: Luka Gejak <luka.gejak@linux.dev>
+> Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
 
-It's just looping set number of times. Here's the slop:
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
- https://gist.github.com/htejun/ba43a0a7bc6f6503602ada850f45ce4d
 
-> The IPI walker should only go to the CPUs with overloaded RT tasks. Are you
-> making all the CPUS have overloaded RT tasks?
 
-Only 2 cpus are overloaded. I don't know why it used FIFO threads on CPUs
-that aren't overloaded. It's just using that to pulse CPUs to trigger
-need_pull_rt_task().
-
-> So this is showing that the IPI logic is just extending the softirq work
-> load to something greater than the period of execution and causing a live
-> lock of softirqs.
-> 
-> This still doesn't explain to me why the current process is of a lower
-> priority than a waiting RT task.
-
-1. The CPU was running a fair task.
-
-2. IRQ triggers which creates softirq work.
-
-3. Either IRQ, softirq or another CPU wakes up multiple RT tasks to the CPU.
-
-4. The CPU enters softirq.
-
-5. Other CPUs keep sending pull IPIs, slowing softirq processing.
-
-6. Before softirq processing finishes, another IRQ happens which creates
-   more softirq work. Go back to 4.
-
-> I'm really starting to think you are fixing a symptom and not the cause.
-
-It seems relatively straightforward to me. The CPU was relatively loaded
-with irq/softirq. While in irq context, RT tasks wake up to it and then the
-CPU gets hammered by pull IPIs to the point where it's constantly chasing
-new softirq work and thus can't leave irq context in a reasonable amount of
-time. What am I missing?
-
-Thanks.
-
--- 
-tejun
 
