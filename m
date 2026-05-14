@@ -1,153 +1,603 @@
-Return-Path: <stable+bounces-247182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kK12FPC5BWpZaAIAu9opvQ
-	(envelope-from <stable+bounces-247182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 14:02:56 +0200
+	id IO7vLuu5BWpZaAIAu9opvQ
+	(envelope-from <stable+bounces-247183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 14:02:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A573A54157D
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 14:02:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11106541575
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 14:02:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 310DF3023DC9
+	by tor.lore.kernel.org (Postfix) with ESMTP id 86688302DE2F
 	for <lists+stable@lfdr.de>; Thu, 14 May 2026 12:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1033C65FF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD3D3C5848;
 	Thu, 14 May 2026 12:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2CoIJzV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OH3a5niD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D863C5848
-	for <stable@vger.kernel.org>; Thu, 14 May 2026 12:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7E53C455F
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 12:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778760156; cv=none; b=RhY8DZCrec9PxkTluRFSFKi/xLHUtiBu7/GFbod2QjrwuQqPOPSk1cYW/62irZ1VkkPRKDexPnDFvZB9MoEE5BXecoDDFvWgB10Br4DxFrUOqoz3WoSx4EG7IxAi5QScjcvVJTILC0l9+0x0/cn2F5aEa64mq5T6ZvkLlUtukD8=
+	t=1778760156; cv=none; b=dh9iHeZyn9HFHiyvd+lW12QKfTeoCQwQtTx4iCgi1i5z7up+cWUSaL+zifhsTqmiqxRdJD2buMIpiPbLdRonzohwmZbJb+OUthKi5n/RjRL3pGDjsQzSzC1FUEFsbIbPrDhF3PheHllFpymAmAb5pyVO28Rp9p9r4/HMpDmwhK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778760156; c=relaxed/simple;
-	bh=N/e7O3Ybiol96FTmQAvxcbt52rqA5DMahtijbOLC5Lk=;
+	bh=6lxdnMr62hmn/T1V5OANnk39kOjJi6ZAa2zPmKlYkW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X2/nFOi1cZ5Uyl9YpyiD2sRvID6vhOSK3dw22f/7PSOEJ7qNqaP+BgZ9PhWeBsHK77bOufedosLbPXHOuYx50btXSLATUyk/GEp+ai89Rb2Jr5HZd8limqO3BSTAZ4OEefzjFdaAvnYOzoW9Hxt8y+vpW3C+sXphsx+YJmh90sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2CoIJzV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCF1C2BCB3;
+	 MIME-Version; b=aQhKc+bZ+kA5yqzbqLi1rMnexkthPg9JEMZze2xfWKVSlMW79dh3BU+PV+LT1PBLlKWi7T+/Qszp4KbtjCwiMG0wxlsUiYKUeBvZc6SyrbK8djpEfQzwdvz3bKW269cSZeunxQqCaRhF+84IlQJegzyhEdZ1i0BBqzV9nan24dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OH3a5niD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3544C2BCC9;
 	Thu, 14 May 2026 12:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778760155;
-	bh=N/e7O3Ybiol96FTmQAvxcbt52rqA5DMahtijbOLC5Lk=;
+	s=k20201202; t=1778760156;
+	bh=6lxdnMr62hmn/T1V5OANnk39kOjJi6ZAa2zPmKlYkW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2CoIJzV9nmrf1iJ0evF04lZpxb7k2AND/we8LSWErmQ92S7ywCJiU3Pow6sAomqL
-	 ffkG72I+Y9Xq/3cdnKvwO3uO7kfuavyjTfz/qciV06WeNVRasU1pFsOXpqjKEXv4pD
-	 knw2EM0bep56Zu3+yR6C7odP3Bdo7JSHgs6gRtK49kxQyBlLhk2TeRed3F637dmtCP
-	 hIKtYGSIvoK1gL339rM7yTG1USBIgOVkNXbQXTwh8dvrywcfYgKzP6BzHIBRyns0rE
-	 z9p8M6HM8eq969tuEN1K+35C2//Te5j5B4OFYXUBBChJVzXS8/VR0+XsW69sspADOI
-	 Dv+CLvGtKiPLw==
+	b=OH3a5niDvFvfVBHxpox0e2uo7sBwKMlO+OItLxkAUwZFoQMiFpuSLGQkrW+NBdCJS
+	 2pYWI/150ZH1dCRZci0EHutJP5Vf/bbys0iNrVKQp97+NNKwkxEhvipUPxDOdlIkSa
+	 Onv3M0MFT6NUs7al4sdpHVm9UzjCpQUDas5mCcYW8jlGXCgSEkdNrFfqAyQpQcWNPi
+	 gu4nbhYllOb9gdcbggCvbcteVeaUvOvkZL1Mx9q87mnIQJtBUH+9pwJyI34Pn9nRUe
+	 t4W/TyXkBLLHJJ1a/gPVLxaQyu15eqGFz4zVnJjlZvf7DvtryPXLWQzLRrlUH0Equm
+	 +StKO7l4uPAXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+Cc: Yang Yingliang <yangyingliang@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/4] spi: uniphier: Convert to platform remove callback returning void
-Date: Thu, 14 May 2026 08:02:30 -0400
-Message-ID: <20260514120233.192698-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/4] spi: uniphier: switch to use modern name
+Date: Thu, 14 May 2026 08:02:31 -0400
+Message-ID: <20260514120233.192698-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051213-unsaved-bagpipe-b075@gregkh>
+In-Reply-To: <20260514120233.192698-1-sashal@kernel.org>
 References: <2026051213-unsaved-bagpipe-b075@gregkh>
+ <20260514120233.192698-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A573A54157D
+X-Rspamd-Queue-Id: 11106541575
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247182-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247183-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.c.6.3.0.1.0.0.e.4.0.c.3.0.0.6.2.asn6.rspamd.com:query timed out];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 1b13d196d2813dadc1947940dbd4aaad6ae21c02 ]
+[ Upstream commit 4c2ee0991013ca8a32bb093a017d460204790112 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+Change legacy name master to modern name host or controller.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+No functional changed.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230303172041.2103336-84-u.kleine-koenig@pengutronix.de
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Link: https://msgid.link/r/20231128093031.3707034-19-yangyingliang@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Stable-dep-of: 0245435f7772 ("spi: uniphier: fix controller deregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-uniphier.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-uniphier.c | 194 ++++++++++++++++++-------------------
+ 1 file changed, 97 insertions(+), 97 deletions(-)
 
 diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
-index cc0da48222311..f5344527af0bf 100644
+index f5344527af0bf..4a18cf8961947 100644
 --- a/drivers/spi/spi-uniphier.c
 +++ b/drivers/spi/spi-uniphier.c
-@@ -775,7 +775,7 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+@@ -26,7 +26,7 @@ struct uniphier_spi_priv {
+ 	void __iomem *base;
+ 	dma_addr_t base_dma_addr;
+ 	struct clk *clk;
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct completion xfer_done;
+ 
+ 	int error;
+@@ -127,7 +127,7 @@ static inline void uniphier_spi_irq_disable(struct uniphier_spi_priv *priv,
+ 
+ static void uniphier_spi_set_mode(struct spi_device *spi)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(spi->controller);
+ 	u32 val1, val2;
+ 
+ 	/*
+@@ -180,7 +180,7 @@ static void uniphier_spi_set_mode(struct spi_device *spi)
+ 
+ static void uniphier_spi_set_transfer_size(struct spi_device *spi, int size)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(spi->controller);
+ 	u32 val;
+ 
+ 	val = readl(priv->base + SSI_TXWDS);
+@@ -198,7 +198,7 @@ static void uniphier_spi_set_transfer_size(struct spi_device *spi, int size)
+ static void uniphier_spi_set_baudrate(struct spi_device *spi,
+ 				      unsigned int speed)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(spi->controller);
+ 	u32 val, ckdiv;
+ 
+ 	/*
+@@ -217,7 +217,7 @@ static void uniphier_spi_set_baudrate(struct spi_device *spi,
+ static void uniphier_spi_setup_transfer(struct spi_device *spi,
+ 				       struct spi_transfer *t)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(spi->controller);
+ 	u32 val;
+ 
+ 	priv->error = 0;
+@@ -333,7 +333,7 @@ static void uniphier_spi_fill_tx_fifo(struct uniphier_spi_priv *priv)
+ 
+ static void uniphier_spi_set_cs(struct spi_device *spi, bool enable)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(spi->master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(spi->controller);
+ 	u32 val;
+ 
+ 	val = readl(priv->base + SSI_FPS);
+@@ -346,16 +346,16 @@ static void uniphier_spi_set_cs(struct spi_device *spi, bool enable)
+ 	writel(val, priv->base + SSI_FPS);
+ }
+ 
+-static bool uniphier_spi_can_dma(struct spi_master *master,
++static bool uniphier_spi_can_dma(struct spi_controller *host,
+ 				 struct spi_device *spi,
+ 				 struct spi_transfer *t)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 	unsigned int bpw = bytes_per_word(priv->bits_per_word);
+ 
+-	if ((!master->dma_tx && !master->dma_rx)
+-	    || (!master->dma_tx && t->tx_buf)
+-	    || (!master->dma_rx && t->rx_buf))
++	if ((!host->dma_tx && !host->dma_rx)
++	    || (!host->dma_tx && t->tx_buf)
++	    || (!host->dma_rx && t->rx_buf))
+ 		return false;
+ 
+ 	return DIV_ROUND_UP(t->len, bpw) > SSI_FIFO_DEPTH;
+@@ -363,33 +363,33 @@ static bool uniphier_spi_can_dma(struct spi_master *master,
+ 
+ static void uniphier_spi_dma_rxcb(void *data)
+ {
+-	struct spi_master *master = data;
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
++	struct spi_controller *host = data;
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 	int state = atomic_fetch_andnot(SSI_DMA_RX_BUSY, &priv->dma_busy);
+ 
+ 	uniphier_spi_irq_disable(priv, SSI_IE_RXRE);
+ 
+ 	if (!(state & SSI_DMA_TX_BUSY))
+-		spi_finalize_current_transfer(master);
++		spi_finalize_current_transfer(host);
+ }
+ 
+ static void uniphier_spi_dma_txcb(void *data)
+ {
+-	struct spi_master *master = data;
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
++	struct spi_controller *host = data;
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 	int state = atomic_fetch_andnot(SSI_DMA_TX_BUSY, &priv->dma_busy);
+ 
+ 	uniphier_spi_irq_disable(priv, SSI_IE_TXRE);
+ 
+ 	if (!(state & SSI_DMA_RX_BUSY))
+-		spi_finalize_current_transfer(master);
++		spi_finalize_current_transfer(host);
+ }
+ 
+-static int uniphier_spi_transfer_one_dma(struct spi_master *master,
++static int uniphier_spi_transfer_one_dma(struct spi_controller *host,
+ 					 struct spi_device *spi,
+ 					 struct spi_transfer *t)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 	struct dma_async_tx_descriptor *rxdesc = NULL, *txdesc = NULL;
+ 	int buswidth;
+ 
+@@ -412,23 +412,23 @@ static int uniphier_spi_transfer_one_dma(struct spi_master *master,
+ 			.src_maxburst = SSI_FIFO_BURST_NUM,
+ 		};
+ 
+-		dmaengine_slave_config(master->dma_rx, &rxconf);
++		dmaengine_slave_config(host->dma_rx, &rxconf);
+ 
+ 		rxdesc = dmaengine_prep_slave_sg(
+-			master->dma_rx,
++			host->dma_rx,
+ 			t->rx_sg.sgl, t->rx_sg.nents,
+ 			DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (!rxdesc)
+ 			goto out_err_prep;
+ 
+ 		rxdesc->callback = uniphier_spi_dma_rxcb;
+-		rxdesc->callback_param = master;
++		rxdesc->callback_param = host;
+ 
+ 		uniphier_spi_irq_enable(priv, SSI_IE_RXRE);
+ 		atomic_or(SSI_DMA_RX_BUSY, &priv->dma_busy);
+ 
+ 		dmaengine_submit(rxdesc);
+-		dma_async_issue_pending(master->dma_rx);
++		dma_async_issue_pending(host->dma_rx);
+ 	}
+ 
+ 	if (priv->tx_buf) {
+@@ -439,23 +439,23 @@ static int uniphier_spi_transfer_one_dma(struct spi_master *master,
+ 			.dst_maxburst = SSI_FIFO_BURST_NUM,
+ 		};
+ 
+-		dmaengine_slave_config(master->dma_tx, &txconf);
++		dmaengine_slave_config(host->dma_tx, &txconf);
+ 
+ 		txdesc = dmaengine_prep_slave_sg(
+-			master->dma_tx,
++			host->dma_tx,
+ 			t->tx_sg.sgl, t->tx_sg.nents,
+ 			DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (!txdesc)
+ 			goto out_err_prep;
+ 
+ 		txdesc->callback = uniphier_spi_dma_txcb;
+-		txdesc->callback_param = master;
++		txdesc->callback_param = host;
+ 
+ 		uniphier_spi_irq_enable(priv, SSI_IE_TXRE);
+ 		atomic_or(SSI_DMA_TX_BUSY, &priv->dma_busy);
+ 
+ 		dmaengine_submit(txdesc);
+-		dma_async_issue_pending(master->dma_tx);
++		dma_async_issue_pending(host->dma_tx);
+ 	}
+ 
+ 	/* signal that we need to wait for completion */
+@@ -463,17 +463,17 @@ static int uniphier_spi_transfer_one_dma(struct spi_master *master,
+ 
+ out_err_prep:
+ 	if (rxdesc)
+-		dmaengine_terminate_sync(master->dma_rx);
++		dmaengine_terminate_sync(host->dma_rx);
+ 
+ 	return -EINVAL;
+ }
+ 
+-static int uniphier_spi_transfer_one_irq(struct spi_master *master,
++static int uniphier_spi_transfer_one_irq(struct spi_controller *host,
+ 					 struct spi_device *spi,
+ 					 struct spi_transfer *t)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
+-	struct device *dev = master->dev.parent;
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
++	struct device *dev = host->dev.parent;
+ 	unsigned long time_left;
+ 
+ 	reinit_completion(&priv->xfer_done);
+@@ -495,11 +495,11 @@ static int uniphier_spi_transfer_one_irq(struct spi_master *master,
+ 	return priv->error;
+ }
+ 
+-static int uniphier_spi_transfer_one_poll(struct spi_master *master,
++static int uniphier_spi_transfer_one_poll(struct spi_controller *host,
+ 					  struct spi_device *spi,
+ 					  struct spi_transfer *t)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 	int loop = SSI_POLL_TIMEOUT_US * 10;
+ 
+ 	while (priv->tx_bytes) {
+@@ -520,14 +520,14 @@ static int uniphier_spi_transfer_one_poll(struct spi_master *master,
+ 	return 0;
+ 
+ irq_transfer:
+-	return uniphier_spi_transfer_one_irq(master, spi, t);
++	return uniphier_spi_transfer_one_irq(host, spi, t);
+ }
+ 
+-static int uniphier_spi_transfer_one(struct spi_master *master,
++static int uniphier_spi_transfer_one(struct spi_controller *host,
+ 				     struct spi_device *spi,
+ 				     struct spi_transfer *t)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 	unsigned long threshold;
+ 	bool use_dma;
+ 
+@@ -537,9 +537,9 @@ static int uniphier_spi_transfer_one(struct spi_master *master,
+ 
+ 	uniphier_spi_setup_transfer(spi, t);
+ 
+-	use_dma = master->can_dma ? master->can_dma(master, spi, t) : false;
++	use_dma = host->can_dma ? host->can_dma(host, spi, t) : false;
+ 	if (use_dma)
+-		return uniphier_spi_transfer_one_dma(master, spi, t);
++		return uniphier_spi_transfer_one_dma(host, spi, t);
+ 
+ 	/*
+ 	 * If the transfer operation will take longer than
+@@ -548,33 +548,33 @@ static int uniphier_spi_transfer_one(struct spi_master *master,
+ 	threshold = DIV_ROUND_UP(SSI_POLL_TIMEOUT_US * priv->speed_hz,
+ 					USEC_PER_SEC * BITS_PER_BYTE);
+ 	if (t->len > threshold)
+-		return uniphier_spi_transfer_one_irq(master, spi, t);
++		return uniphier_spi_transfer_one_irq(host, spi, t);
+ 	else
+-		return uniphier_spi_transfer_one_poll(master, spi, t);
++		return uniphier_spi_transfer_one_poll(host, spi, t);
+ }
+ 
+-static int uniphier_spi_prepare_transfer_hardware(struct spi_master *master)
++static int uniphier_spi_prepare_transfer_hardware(struct spi_controller *host)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 
+ 	writel(SSI_CTL_EN, priv->base + SSI_CTL);
+ 
+ 	return 0;
+ }
+ 
+-static int uniphier_spi_unprepare_transfer_hardware(struct spi_master *master)
++static int uniphier_spi_unprepare_transfer_hardware(struct spi_controller *host)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 
+ 	writel(0, priv->base + SSI_CTL);
+ 
+ 	return 0;
+ }
+ 
+-static void uniphier_spi_handle_err(struct spi_master *master,
++static void uniphier_spi_handle_err(struct spi_controller *host,
+ 				    struct spi_message *msg)
+ {
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 	u32 val;
+ 
+ 	/* stop running spi transfer */
+@@ -587,12 +587,12 @@ static void uniphier_spi_handle_err(struct spi_master *master,
+ 	uniphier_spi_irq_disable(priv, SSI_IE_ALL_MASK);
+ 
+ 	if (atomic_read(&priv->dma_busy) & SSI_DMA_TX_BUSY) {
+-		dmaengine_terminate_async(master->dma_tx);
++		dmaengine_terminate_async(host->dma_tx);
+ 		atomic_andnot(SSI_DMA_TX_BUSY, &priv->dma_busy);
+ 	}
+ 
+ 	if (atomic_read(&priv->dma_busy) & SSI_DMA_RX_BUSY) {
+-		dmaengine_terminate_async(master->dma_rx);
++		dmaengine_terminate_async(host->dma_rx);
+ 		atomic_andnot(SSI_DMA_RX_BUSY, &priv->dma_busy);
+ 	}
+ }
+@@ -641,7 +641,7 @@ static irqreturn_t uniphier_spi_handler(int irq, void *dev_id)
+ static int uniphier_spi_probe(struct platform_device *pdev)
+ {
+ 	struct uniphier_spi_priv *priv;
+-	struct spi_master *master;
++	struct spi_controller *host;
+ 	struct resource *res;
+ 	struct dma_slave_caps caps;
+ 	u32 dma_tx_burst = 0, dma_rx_burst = 0;
+@@ -649,20 +649,20 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 	int irq;
+ 	int ret;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
+-	if (!master)
++	host = spi_alloc_host(&pdev->dev, sizeof(*priv));
++	if (!host)
+ 		return -ENOMEM;
+ 
+-	platform_set_drvdata(pdev, master);
++	platform_set_drvdata(pdev, host);
+ 
+-	priv = spi_master_get_devdata(master);
+-	priv->master = master;
++	priv = spi_controller_get_devdata(host);
++	priv->host = host;
+ 	priv->is_save_param = false;
+ 
+ 	priv->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(priv->base)) {
+ 		ret = PTR_ERR(priv->base);
+-		goto out_master_put;
++		goto out_host_put;
+ 	}
+ 	priv->base_dma_addr = res->start;
+ 
+@@ -670,12 +670,12 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->clk)) {
+ 		dev_err(&pdev->dev, "failed to get clock\n");
+ 		ret = PTR_ERR(priv->clk);
+-		goto out_master_put;
++		goto out_host_put;
+ 	}
+ 
+ 	ret = clk_prepare_enable(priv->clk);
+ 	if (ret)
+-		goto out_master_put;
++		goto out_host_put;
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+@@ -694,35 +694,35 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 
+ 	clk_rate = clk_get_rate(priv->clk);
+ 
+-	master->max_speed_hz = DIV_ROUND_UP(clk_rate, SSI_MIN_CLK_DIVIDER);
+-	master->min_speed_hz = DIV_ROUND_UP(clk_rate, SSI_MAX_CLK_DIVIDER);
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
+-	master->dev.of_node = pdev->dev.of_node;
+-	master->bus_num = pdev->id;
+-	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
++	host->max_speed_hz = DIV_ROUND_UP(clk_rate, SSI_MIN_CLK_DIVIDER);
++	host->min_speed_hz = DIV_ROUND_UP(clk_rate, SSI_MAX_CLK_DIVIDER);
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
++	host->dev.of_node = pdev->dev.of_node;
++	host->bus_num = pdev->id;
++	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+ 
+-	master->set_cs = uniphier_spi_set_cs;
+-	master->transfer_one = uniphier_spi_transfer_one;
+-	master->prepare_transfer_hardware
++	host->set_cs = uniphier_spi_set_cs;
++	host->transfer_one = uniphier_spi_transfer_one;
++	host->prepare_transfer_hardware
+ 				= uniphier_spi_prepare_transfer_hardware;
+-	master->unprepare_transfer_hardware
++	host->unprepare_transfer_hardware
+ 				= uniphier_spi_unprepare_transfer_hardware;
+-	master->handle_err = uniphier_spi_handle_err;
+-	master->can_dma = uniphier_spi_can_dma;
++	host->handle_err = uniphier_spi_handle_err;
++	host->can_dma = uniphier_spi_can_dma;
+ 
+-	master->num_chipselect = 1;
+-	master->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX;
++	host->num_chipselect = 1;
++	host->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX;
+ 
+-	master->dma_tx = dma_request_chan(&pdev->dev, "tx");
+-	if (IS_ERR_OR_NULL(master->dma_tx)) {
+-		if (PTR_ERR(master->dma_tx) == -EPROBE_DEFER) {
++	host->dma_tx = dma_request_chan(&pdev->dev, "tx");
++	if (IS_ERR_OR_NULL(host->dma_tx)) {
++		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER) {
+ 			ret = -EPROBE_DEFER;
+ 			goto out_disable_clk;
+ 		}
+-		master->dma_tx = NULL;
++		host->dma_tx = NULL;
+ 		dma_tx_burst = INT_MAX;
+ 	} else {
+-		ret = dma_get_slave_caps(master->dma_tx, &caps);
++		ret = dma_get_slave_caps(host->dma_tx, &caps);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to get TX DMA capacities: %d\n",
+ 				ret);
+@@ -731,16 +731,16 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 		dma_tx_burst = caps.max_burst;
+ 	}
+ 
+-	master->dma_rx = dma_request_chan(&pdev->dev, "rx");
+-	if (IS_ERR_OR_NULL(master->dma_rx)) {
+-		if (PTR_ERR(master->dma_rx) == -EPROBE_DEFER) {
++	host->dma_rx = dma_request_chan(&pdev->dev, "rx");
++	if (IS_ERR_OR_NULL(host->dma_rx)) {
++		if (PTR_ERR(host->dma_rx) == -EPROBE_DEFER) {
+ 			ret = -EPROBE_DEFER;
+ 			goto out_release_dma;
+ 		}
+-		master->dma_rx = NULL;
++		host->dma_rx = NULL;
+ 		dma_rx_burst = INT_MAX;
+ 	} else {
+-		ret = dma_get_slave_caps(master->dma_rx, &caps);
++		ret = dma_get_slave_caps(host->dma_rx, &caps);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to get RX DMA capacities: %d\n",
+ 				ret);
+@@ -749,41 +749,41 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 		dma_rx_burst = caps.max_burst;
+ 	}
+ 
+-	master->max_dma_len = min(dma_tx_burst, dma_rx_burst);
++	host->max_dma_len = min(dma_tx_burst, dma_rx_burst);
+ 
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	ret = devm_spi_register_controller(&pdev->dev, host);
+ 	if (ret)
+ 		goto out_release_dma;
+ 
+ 	return 0;
+ 
+ out_release_dma:
+-	if (!IS_ERR_OR_NULL(master->dma_rx)) {
+-		dma_release_channel(master->dma_rx);
+-		master->dma_rx = NULL;
++	if (!IS_ERR_OR_NULL(host->dma_rx)) {
++		dma_release_channel(host->dma_rx);
++		host->dma_rx = NULL;
+ 	}
+-	if (!IS_ERR_OR_NULL(master->dma_tx)) {
+-		dma_release_channel(master->dma_tx);
+-		master->dma_tx = NULL;
++	if (!IS_ERR_OR_NULL(host->dma_tx)) {
++		dma_release_channel(host->dma_tx);
++		host->dma_tx = NULL;
+ 	}
+ 
+ out_disable_clk:
+ 	clk_disable_unprepare(priv->clk);
+ 
+-out_master_put:
+-	spi_master_put(master);
++out_host_put:
++	spi_controller_put(host);
  	return ret;
  }
  
--static int uniphier_spi_remove(struct platform_device *pdev)
-+static void uniphier_spi_remove(struct platform_device *pdev)
+ static void uniphier_spi_remove(struct platform_device *pdev)
  {
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
-@@ -786,8 +786,6 @@ static int uniphier_spi_remove(struct platform_device *pdev)
- 		dma_release_channel(master->dma_rx);
+-	struct spi_master *master = platform_get_drvdata(pdev);
+-	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
++	struct spi_controller *host = platform_get_drvdata(pdev);
++	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 
+-	if (master->dma_tx)
+-		dma_release_channel(master->dma_tx);
+-	if (master->dma_rx)
+-		dma_release_channel(master->dma_rx);
++	if (host->dma_tx)
++		dma_release_channel(host->dma_tx);
++	if (host->dma_rx)
++		dma_release_channel(host->dma_rx);
  
  	clk_disable_unprepare(priv->clk);
--
--	return 0;
  }
- 
- static const struct of_device_id uniphier_spi_match[] = {
-@@ -798,7 +796,7 @@ MODULE_DEVICE_TABLE(of, uniphier_spi_match);
- 
- static struct platform_driver uniphier_spi_driver = {
- 	.probe = uniphier_spi_probe,
--	.remove = uniphier_spi_remove,
-+	.remove_new = uniphier_spi_remove,
- 	.driver = {
- 		.name = "uniphier-spi",
- 		.of_match_table = uniphier_spi_match,
 -- 
 2.53.0
 
