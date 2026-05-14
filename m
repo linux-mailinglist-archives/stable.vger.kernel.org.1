@@ -1,283 +1,178 @@
-Return-Path: <stable+bounces-247073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBH3IS0aBWrOSQIAu9opvQ
-	(envelope-from <stable+bounces-247073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:41:17 +0200
+	id ms5EFgkdBWrfSgIAu9opvQ
+	(envelope-from <stable+bounces-247074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:53:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD3453C69B
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7FB53C74E
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13B4330477EB
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:40:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E36E303FDC1
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E422D2DD60E;
-	Thu, 14 May 2026 00:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB532F3600;
+	Thu, 14 May 2026 00:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZQtlC2EY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2rwyA8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E282DF13B;
-	Thu, 14 May 2026 00:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D5E22A4EE;
+	Thu, 14 May 2026 00:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778719246; cv=none; b=UN6AdWm8T/9zTjD6Hgp6nbGEpNfmwDWuE3CWDL1vNrot9+8phFiOOSdUCwo/WM1syKCCkN07rT5HDd61RyOd1nn59wHOvcRy+tfhZJoueg3C4y6pnpFw5gz8iJKaOVSnqgx24ZFLMTc7J+w5Z2WHY2rAEpYOBo3LoH9oGHWM+HE=
+	t=1778720003; cv=none; b=r6i5D9mUxEpyQx21CmkMgahquz7SSd7ALK0xe7ftLqRk7MyYc9IBZcT7Al/n7p1NgDtg9Esc/iqrQ/i0z1nvVCtNrxnHlI9G0AFzwX+cr+v5LczxTNZ/VVzg4St0fNBIWLIldRuv84qnVcBHtetEgbyH8LSglRAkq9pezS5LrJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778719246; c=relaxed/simple;
-	bh=NtQFy17Cb1DeMKkiMIndbwTOpPxdusJMJ0Y6NUXnaqA=;
-	h=Date:To:From:Subject:Message-Id; b=YZ4tRsD7GkjEkZHvB+bAfCo0pEgCaNNPLWZzRVksksEcFLYa+7rA5aNplYpG9ZAdGKIePtXy2ALg3kE7bonmjneX4pxAmR/BGX71i/BSdHj8jFPD64sZWm+t73MC+9hk3Th+2D4Rowl/ChKYAthRh3cSyKlinbjJ0mC2s35mshM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZQtlC2EY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA6CC19425;
-	Thu, 14 May 2026 00:40:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778719246;
-	bh=NtQFy17Cb1DeMKkiMIndbwTOpPxdusJMJ0Y6NUXnaqA=;
-	h=Date:To:From:Subject:From;
-	b=ZQtlC2EYfcmxdSCoNQ2TUyRBkPIfNKsh03Vi/JP+kjya55bMlcaRC8jpP4M3zXiFc
-	 5cgTUtZFj5cem5ThK0YTdov2EvzJgZ1STsjN1r0uHLx2n0j9zVZpIFlJJGk9+p/3vK
-	 hVePAhTXOhCJC51HxlboG/2lqykMOBAUXG5BTwsQ=
-Date: Wed, 13 May 2026 17:40:45 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,thomas.hellstrom@linux.intel.com,surenb@google.com,stable@vger.kernel.org,shuah@kernel.org,rppt@kernel.org,peterx@redhat.com,mhocko@suse.com,matthew.brost@intel.com,ljs@kernel.org,liam@infradead.org,leon@kernel.org,jhubbard@nvidia.com,jgg@ziepe.ca,david@kernel.org,balbirs@nvidia.com,aarsenovic@baylibre.com,apopple@nvidia.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memory-fix-spurious-warning-when-unmapping-device-private-exclusive-pages.patch removed from -mm tree
-Message-Id: <20260514004046.6EA6CC19425@smtp.kernel.org>
+	s=arc-20240116; t=1778720003; c=relaxed/simple;
+	bh=tIZqnUSBTfvu8MvGTUzCx4rW3xP45eov3BgjVPVinTA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UprOXCddRcMybLgc2Y7hiUs46lSaEuhHsFg6mNI4fUJREOYdbgelMtnc6GGwqR4M9aK2wcY28hCiZ4ALK4R678jFNuyO7GsBGAQscwxqbb4go49Gmm1I5sAwKxNQMR1AutFL8Eks0Cb0hJ3Tx36v++iGvWt8Aoy8IfkmEVIC/tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2rwyA8I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EA8C19425;
+	Thu, 14 May 2026 00:53:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778720002;
+	bh=tIZqnUSBTfvu8MvGTUzCx4rW3xP45eov3BgjVPVinTA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S2rwyA8IbRA3O4IpvBHu1zfGKqXbXYJc/YlKOllKzF4ltDIlkWrF0b6KCWdNbF3+l
+	 xo1bvJnsQ49FWixDMSvtFTHeLmWV4QOVcy28QKmxHF7rNzxHit9DG+dl1GHx9jaN40
+	 ZyOx/mP6I1dJtnueYXe7LFitI0/rpojK4kefZYpkbjEwqNUtsYADcjoh+bpy4g0+xQ
+	 uqZLrp1zbmDBtGw5dkt6E5pM4gzPaBTTRDvVDhKSctkIoMmGjZfhT6oTRXSMySAszX
+	 vun4RCeRk5PPjztHszHibR9x+hwz30IpaTyqPAlWrHGrBsi+OTMKLJWWVlxAevpkXT
+	 mwQ6b7Gicw7nw==
+Date: Wed, 13 May 2026 14:53:21 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kyle McMartin <jkkm@meta.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Linux RT Development <linux-rt-devel@lists.linux.dev>,
+	Clark Williams <williams@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	John Kacur <jkacur@redhat.com>
+Subject: Re: [PATCH sched/core] sched/rt: Fix RT_PUSH_IPI soft lockup loop
+Message-ID: <agUdAatmlqQc1NS_@slm.duckdns.org>
+References: <20260506235716.2530720-1-tj@kernel.org>
+ <20260507141437.GJ3102624@noisy.programming.kicks-ass.net>
+ <20260512113754.448c1f5b@gandalf.local.home>
+ <056f95bc5805f7e161458984fff4b3cb@kernel.org>
+ <20260512172847.5024e5e8@gandalf.local.home>
+ <20260513193914.1593369-1-tj@kernel.org>
+ <20260513202432.18dd7b9f@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: DFD3453C69B
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260513202432.18dd7b9f@gandalf.local.home>
+X-Rspamd-Queue-Id: AB7FB53C74E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	R_BAD_CTE_7BIT(3.50)[unknown];
-	BROKEN_CONTENT_TYPE(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247073-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247074-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_SPAM(0.00)[0.997];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
+Hello,
 
-The quilt patch titled
-     Subject: mm/memory: fix spurious warning when unmapping device-private/exclusive pages
-has been removed from the -mm tree.  Its filename was
-     mm-memory-fix-spurious-warning-when-unmapping-device-private-exclusive-pages.patch
+On Wed, May 13, 2026 at 08:24:32PM -0400, Steven Rostedt wrote:
+> > - Per-target hrtimer (HRTIMER_MODE_REL_PINNED_HARD) fires every
+> >   750us. Each fire schedules one tasklet round-robin from a pool
+> >   of 20k distinct tasklets. Each tasklet body is a 500us cpu_relax
+> >   loop, standing in for "process one item of softirq work".
+> 
+> So you are running a softirq for 500us every 750us?
+> 
+> This basically prevents any task from running on these CPUs while the
+> softirq is executing.
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Hmmm? The utilization is high at around 70%. It can still run something and
+wouldn't lock up. The prod repro case isn't this high. More like 30-40%.
+It's just difficult to make syntheric repro reliable with that.
 
-------------------------------------------------------
-From: Alistair Popple <apopple@nvidia.com>
-Subject: mm/memory: fix spurious warning when unmapping device-private/exclusive pages
-Date: Fri, 1 May 2026 16:51:16 +1000
+> > - Storm driver: 190 SCHED_FIFO-50 nanosleep loops on non-target
+> >   CPUs drive tell_cpu_to_push from balance_rt. Two synthetic
+> >   psimon-shaped kthreads (FIFO 1) bound to the targets to pin
+> >   them into rto_mask.
+> 
+> What exactly are these synthetic kthreads doing. Have code to share?
 
-Device private and exclusive entries are only supported for anonymous
-folios.  This condition is tested in __migrate_device_pages() and
-make_device_exclusive() using folio_test_anon().  However the unmap path
-tests this assumption using vma_is_anonymous().
+It's just looping set number of times. Here's the slop:
 
-This is wrong because whilst anonymous VMAs can only contain folios where
-folio_test_anon() is true the opposite relation does not hold.  A folio
-for which folio_test_anon() is true does not imply vma_is_anonymous() is
-true.  Such a condition can occur if for example a folio is part of a
-private filebacked mapping.
+ https://gist.github.com/htejun/ba43a0a7bc6f6503602ada850f45ce4d
 
-In this case vma_is_anonymous() is false as the mapping is filebacked, but
-folio_test_anon() may be true, thus permitting devices to migrate the
-folio to device private memory.  This can lead to the following spurious
-warnings during process teardown:
+> The IPI walker should only go to the CPUs with overloaded RT tasks. Are you
+> making all the CPUS have overloaded RT tasks?
 
-[  772.737706] ------------[ cut here ]------------
-[  772.739201] WARNING: mm/memory.c:1754 at unmap_page_range.cold+0x26/0x18a, CPU#17: hmm-tests/2041
-[  772.742050] Modules linked in: test_hmm nvidia_uvm(O) nvidia(O)
-[  772.743959] CPU: 17 UID: 0 PID: 2041 Comm: hmm-tests Tainted: G        W  O        7.0.0+ #387 PREEMPT(full)
-[  772.747104] Tainted: [W]=WARN, [O]=OOT_MODULE
-[  772.748509] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-[  772.752117] RIP: 0010:unmap_page_range.cold+0x26/0x18a
-[  772.753780] Code: 7e fe ff ff 48 89 4c 24 78 4c 89 44 24 38 e8 f2 ff b1 00 48 8b 4c 24 78 4c 8b 44 24 38 48 8b 44 24 18 48 83 78 48 00 74 04 90 <0f> 0b 90 48 89 ca b8 ff ff 37 00 48 c1 ea 03 48 c1 e0 2a 80 3c 02
-[  772.759602] RSP: 0018:ffff888112607550 EFLAGS: 00010286
-[  772.761310] RAX: ffff88811bbf4dc0 RBX: dffffc0000000000 RCX: ffffea03e9bfffd8
-[  772.763583] RDX: 1ffff1102377e9c1 RSI: 0000000000000008 RDI: ffff88811bbf4e08
-[  772.765914] RBP: 0000000000000006 R08: ffff8881059f7448 R09: ffffed10224c0e68
-[  772.768184] R10: ffff888112607347 R11: 0000000000000001 R12: 0000000000000001
-[  772.770461] R13: ffffea03e9bfffc0 R14: ffff888112607908 R15: ffffea03e9bfffc0
-[  772.772782] FS:  00007f327caa2780(0000) GS:ffff888427b7d000(0000) knlGS:0000000000000000
-[  772.775328] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  772.777187] CR2: 00007f327ca89000 CR3: 00000001994d5000 CR4: 00000000000006f0
-[  772.779135] Call Trace:
-[  772.779792]  <TASK>
-[  772.780317]  ? dmirror_interval_invalidate+0x1a3/0x290 [test_hmm]
-[  772.781873]  ? vm_normal_page_pud+0x2b0/0x2b0
-[  772.782992]  ? __rwlock_init+0x150/0x150
-[  772.784006]  ? lock_release+0x216/0x2b0
-[  772.785008]  ? __mmu_notifier_invalidate_range_start+0x505/0x6e0
-[  772.786522]  ? lock_release+0x216/0x2b0
-[  772.787498]  ? unmap_single_vma+0xb6/0x210
-[  772.788573]  unmap_vmas+0x27d/0x520
-[  772.789506]  ? unmap_single_vma+0x210/0x210
-[  772.790607]  ? mas_update_gap.part.0+0x620/0x620
-[  772.791834]  unmap_region+0x19e/0x350
-[  772.792769]  ? remove_vma+0x130/0x130
-[  772.793684]  ? mas_alloc_nodes+0x1f2/0x300
-[  772.794730]  vms_complete_munmap_vmas+0x8c1/0xe20
-[  772.795926]  ? unmap_region+0x350/0x350
-[  772.796917]  do_vmi_align_munmap+0x36a/0x4e0
-[  772.798018]  ? lock_release+0x216/0x2b0
-[  772.799024]  ? vma_shrink+0x620/0x620
-[  772.799983]  do_vmi_munmap+0x150/0x2c0
-[  772.800939]  __vm_munmap+0x161/0x2c0
-[  772.801872]  ? expand_downwards+0xd60/0xd60
-[  772.802948]  ? clockevents_program_event+0x1ef/0x540
-[  772.804217]  ? lock_release+0x216/0x2b0
-[  772.805158]  __x64_sys_munmap+0x59/0x80
-[  772.805776]  do_syscall_64+0xfc/0x670
-[  772.806336]  ? irqentry_exit+0xda/0x580
-[  772.806976]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[  772.807772] RIP: 0033:0x7f327cbb2717
-[  772.808323] Code: 73 01 c3 48 8b 0d f9 76 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 0b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d c9 76 0d 00 f7 d8 64 89 01 48
-[  772.811337] RSP: 002b:00007ffde7f57d38 EFLAGS: 00000202 ORIG_RAX: 000000000000000b
-[  772.812564] RAX: ffffffffffffffda RBX: 00007f327cc9c000 RCX: 00007f327cbb2717
-[  772.813733] RDX: 0000000000000000 RSI: 0000000000400000 RDI: 00007f327c289000
-[  772.814867] RBP: 0000000000421360 R08: 000000000000001a R09: 0000000000000000
-[  772.815991] R10: 0000000000000003 R11: 0000000000000202 R12: 00007ffde7f57d74
-[  772.817121] R13: 00007f327c689010 R14: 0000000000100000 R15: 00007f327c289000
-[  772.818272]  </TASK>
-[  772.818614] irq event stamp: 0
-[  772.819159] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-[  772.820174] hardirqs last disabled at (0): [<ffffffff82a57ab3>] copy_process+0x19f3/0x6440
-[  772.821511] softirqs last  enabled at (0): [<ffffffff82a57b00>] copy_process+0x1a40/0x6440
-[  772.822869] softirqs last disabled at (0): [<0000000000000000>] 0x0
-[  772.823871] ---[ end trace 0000000000000000 ]---
+Only 2 cpus are overloaded. I don't know why it used FIFO threads on CPUs
+that aren't overloaded. It's just using that to pulse CPUs to trigger
+need_pull_rt_task().
 
-Fix this by using the same check for folio_test_anon() in
-zap_nonpresent_ptes(). Also add a hmm-test case for this.
+> So this is showing that the IPI logic is just extending the softirq work
+> load to something greater than the period of execution and causing a live
+> lock of softirqs.
+> 
+> This still doesn't explain to me why the current process is of a lower
+> priority than a waiting RT task.
 
-Link: https://lore.kernel.org/20260501065116.2057242-1-apopple@nvidia.com
-Fixes: 999dad824c39 ("mm/shmem: persist uffd-wp bit across zapping for file-backed")
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Reported-by: Arsen Arsenović <aarsenovic@baylibre.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+1. The CPU was running a fair task.
 
- mm/memory.c                            |    2 
- tools/testing/selftests/mm/hmm-tests.c |   50 +++++++++++++++++++++++
- 2 files changed, 51 insertions(+), 1 deletion(-)
+2. IRQ triggers which creates softirq work.
 
---- a/mm/memory.c~mm-memory-fix-spurious-warning-when-unmapping-device-private-exclusive-pages
-+++ a/mm/memory.c
-@@ -1755,7 +1755,7 @@ static inline int zap_nonpresent_ptes(st
- 		 * consider uffd-wp bit when zap. For more information,
- 		 * see zap_install_uffd_wp_if_needed().
- 		 */
--		WARN_ON_ONCE(!vma_is_anonymous(vma));
-+		WARN_ON_ONCE(!folio_test_anon(folio));
- 		rss[mm_counter(folio)]--;
- 		folio_remove_rmap_pte(folio, page, vma);
- 		folio_put(folio);
---- a/tools/testing/selftests/mm/hmm-tests.c~mm-memory-fix-spurious-warning-when-unmapping-device-private-exclusive-pages
-+++ a/tools/testing/selftests/mm/hmm-tests.c
-@@ -986,6 +986,56 @@ TEST_F(hmm, migrate)
- }
- 
- /*
-+ * Migrate private file memory to device private memory.
-+ */
-+TEST_F(hmm, migrate_file_private)
-+{
-+	struct hmm_buffer *buffer;
-+	unsigned long npages;
-+	unsigned long size;
-+	unsigned long i;
-+	int *ptr;
-+	int ret;
-+	int fd;
-+
-+	npages = ALIGN(HMM_BUFFER_SIZE, self->page_size) >> self->page_shift;
-+	ASSERT_NE(npages, 0);
-+	size = npages << self->page_shift;
-+
-+	fd = hmm_create_file(size);
-+	ASSERT_GE(fd, 0);
-+
-+	buffer = malloc(sizeof(*buffer));
-+	ASSERT_NE(buffer, NULL);
-+
-+	buffer->fd = fd;
-+	buffer->size = size;
-+	buffer->mirror = malloc(size);
-+	ASSERT_NE(buffer->mirror, NULL);
-+
-+	buffer->ptr = mmap(NULL, size,
-+			   PROT_READ | PROT_WRITE,
-+			   MAP_PRIVATE,
-+			   buffer->fd, 0);
-+	ASSERT_NE(buffer->ptr, MAP_FAILED);
-+
-+	/* Initialize buffer in system memory. */
-+	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+		ptr[i] = i;
-+
-+	/* Migrate memory to device. */
-+	ret = hmm_migrate_sys_to_dev(self->fd, buffer, npages);
-+	ASSERT_EQ(ret, 0);
-+	ASSERT_EQ(buffer->cpages, npages);
-+
-+	/* Check what the device read. */
-+	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
-+		ASSERT_EQ(ptr[i], i);
-+
-+	hmm_buffer_free(buffer);
-+}
-+
-+/*
-  * Migrate anonymous memory to device private memory and fault some of it back
-  * to system memory, then try migrating the resulting mix of system and device
-  * private memory to the device.
-_
+3. Either IRQ, softirq or another CPU wakes up multiple RT tasks to the CPU.
 
-Patches currently in -mm which might be from apopple@nvidia.com are
+4. The CPU enters softirq.
 
+5. Other CPUs keep sending pull IPIs, slowing softirq processing.
 
+6. Before softirq processing finishes, another IRQ happens which creates
+   more softirq work. Go back to 4.
+
+> I'm really starting to think you are fixing a symptom and not the cause.
+
+It seems relatively straightforward to me. The CPU was relatively loaded
+with irq/softirq. While in irq context, RT tasks wake up to it and then the
+CPU gets hammered by pull IPIs to the point where it's constantly chasing
+new softirq work and thus can't leave irq context in a reasonable amount of
+time. What am I missing?
+
+Thanks.
+
+-- 
+tejun
 
