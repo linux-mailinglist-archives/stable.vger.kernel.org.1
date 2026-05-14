@@ -1,294 +1,162 @@
-Return-Path: <stable+bounces-247069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wD9pGRYaBWrOSQIAu9opvQ
-	(envelope-from <stable+bounces-247069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:40:54 +0200
+	id IOH8BgwaBWrOSQIAu9opvQ
+	(envelope-from <stable+bounces-247070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:40:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D110253C67F
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:40:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3D753C670
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5DEC30417A7
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:40:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E06023015728
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857FD2DEA6B;
-	Thu, 14 May 2026 00:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BB82E54B6;
+	Thu, 14 May 2026 00:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wcdTTc2J"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rqY98pnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475F12D73BC;
-	Thu, 14 May 2026 00:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD182DF13B;
+	Thu, 14 May 2026 00:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778719237; cv=none; b=TcTIdMnc8CCGxispZFV82LhtDhBp47h40pshrsWt29V+nhaWqOWpzYY/5udC+LijDwMU45/BfTh2lWRcDTJuzDipebSpJUIPiqdM+T0xPEQ8Z4iC7TKCkRewMqxdZgnXACpyZcr1e1DUEq6nlPnKDE/kO7i9NqK/mClBVlIjqXs=
+	t=1778719241; cv=none; b=bjljLrcFioblP+TMFkFD7uq09LnIcE6RzmpFjiQRd9GiYCpuCrBJmQnuibL3hdGGPKTYdY9OYlWXAtB+hLb+M15QG0k5LQ+YGdxQpPoVvNzCpkv22oHWhzHORjJyySNsar/jboDCrYaXe1ffKyIJfwQP0gNzO/t3WsLAWL/Uibw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778719237; c=relaxed/simple;
-	bh=cl+wnXjPl1qda6T0yipZnPozZbu1T/dtbKjVtg+Qiew=;
-	h=Date:To:From:Subject:Message-Id; b=Za0qtmhw16j1zu/VdPgYYsz/lNChmWjokefRwzYLOSjTQcwf1laAAZ8RQ41yI5NX0CeIuY5pqy6syemf5zk97S3Nld9lLN97345IDTXnGr4m00thz+VTEQPNPTPEuSgfDlM0HwmPb5VdGoDO+OcRDBOtjfTIye1YW5welFBXqIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wcdTTc2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F927C19425;
-	Thu, 14 May 2026 00:40:37 +0000 (UTC)
+	s=arc-20240116; t=1778719241; c=relaxed/simple;
+	bh=enMeri4ZgBUuSEv4ae3VQT2Qs8Bq+/pwXBTYa+imw+Q=;
+	h=Date:To:From:Subject:Message-Id; b=GU4tMOkov6bQLO/H7kSsejL6XiWB1nngE7Pxor0oBoRb9G1QgHbngUg4o7ihphKwI+n7BaOBbYfC/ntSXgeq7Gy7nKC2120bTrB/d2/4RCHef5UTXRVOsfUXbMDnqRyuQlW1fP+zY2ykORGwVr/EINwBm71v0z3B11An62PQ0Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rqY98pnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A549AC19425;
+	Thu, 14 May 2026 00:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778719237;
-	bh=cl+wnXjPl1qda6T0yipZnPozZbu1T/dtbKjVtg+Qiew=;
+	s=korg; t=1778719241;
+	bh=enMeri4ZgBUuSEv4ae3VQT2Qs8Bq+/pwXBTYa+imw+Q=;
 	h=Date:To:From:Subject:From;
-	b=wcdTTc2J/KZtEz2WLD0OuSl/xu27PWsz4reta78SUOzWbSEgRP0LevTTJvUpUElGM
-	 rQiRVLQAHLRxViLkyz+RBi4stxYHivLGIc5SesYGIIbH5ziMkomrE7YTdhBfBDyNyb
-	 rIBLYLcQfAdBmsru5XsdkSnD5cZ+rFQJymVUJjBw=
-Date: Wed, 13 May 2026 17:40:36 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,will@kernel.org,surenb@google.com,stable@vger.kernel.org,ryan.roberts@arm.com,rppt@kernel.org,mhocko@suse.com,ljs@kernel.org,liam@infradead.org,lance.yang@linux.dev,jackmanb@google.com,hannes@cmpxchg.org,dev.jain@arm.com,catalin.marinas@arm.com,broonie@kernel.org,david@kernel.org,akpm@linux-foundation.org
+	b=rqY98pntx/Qqq1Hhovh2+llUWj3/w0KxHON1hw6JK+pepIR874qvO4VupnQJ46OLO
+	 VkPK2IIoLP/pIyN83LCAN3UXposDjMs7WIJivVqQ3EvoheNe+gWMMYXSlGRbaC9yRm
+	 RZYZcmU+ipPhAWHnzBkXrsAwX+VUAPOojIo7x5bA=
+Date: Wed, 13 May 2026 17:40:41 -0700
+To: mm-commits@vger.kernel.org,vishal.l.verma@intel.com,stable@vger.kernel.org,rafael@kernel.org,osalvador@suse.de,nao.horiguchi@gmail.com,linmiaohe@huawei.com,huang.ying.caritas@gmail.com,gregkh@linuxfoundation.org,david@kernel.org,dakr@kernel.org,songmuchun@bytedance.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-page_alloc-fix-initialization-of-tags-of-the-huge-zero-folio-with-init_on_free.patch removed from -mm tree
-Message-Id: <20260514004037.1F927C19425@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-memory_hotplug-fix-memory-block-reference-leak-on-remove.patch removed from -mm tree
+Message-Id: <20260514004041.A549AC19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: D110253C67F
+X-Rspamd-Queue-Id: AC3D753C670
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247069-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-247070-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,intel.com,kernel.org,suse.de,gmail.com,huawei.com,linuxfoundation.org,bytedance.com,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,linux-foundation.org:email,linux-foundation.org:dkim,intel.com:email,suse.de:email,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 
 The quilt patch titled
-     Subject: mm/page_alloc: fix initialization of tags of the huge zero folio with init_on_free
+     Subject: mm/memory_hotplug: fix memory block reference leak on remove
 has been removed from the -mm tree.  Its filename was
-     mm-page_alloc-fix-initialization-of-tags-of-the-huge-zero-folio-with-init_on_free.patch
+     mm-memory_hotplug-fix-memory-block-reference-leak-on-remove.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: mm/page_alloc: fix initialization of tags of the huge zero folio with init_on_free
-Date: Tue, 21 Apr 2026 17:39:07 +0200
+From: Muchun Song <songmuchun@bytedance.com>
+Subject: mm/memory_hotplug: fix memory block reference leak on remove
+Date: Tue, 28 Apr 2026 16:52:17 +0800
 
-__GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
-flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
+Patch series "mm: Fix memory block leaks and locking", v2.
 
-If we run with init_on_free, we will zero out pages during
-__free_pages_prepare(), to skip zeroing on the allocation path.
+This series fixes two memory block device reference leaks and one locking
+issue around the per-memory_block hwpoison counter.
 
-However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
-consequently not only skip clearing page content, but also skip clearing
-tag memory.
 
-Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
-will get mapped to user space through set_pte_at() later: set_pte_at() and
-friends will detect that the tags have not been initialized yet
-(PG_mte_tagged not set), and initialize them.
+This patch (of 2):
 
-However, for the huge zero folio, which will be mapped through a PMD
-marked as special, this initialization will not be performed, ending up
-exposing whatever tags were still set for the pages.
+remove_memory_blocks_and_altmaps() looks up each memory block with
+find_memory_block(), which acquires a reference to the memory block
+device.
 
-The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
-that allocation tags are set to 0 when a page is first mapped to user
-space.  That no longer holds with the huge zero folio when init_on_free is
-enabled.
+That reference is never dropped on this path, resulting in a leaked device
+reference when removing memory blocks and their altmaps.  Drop the
+reference after retrieving mem->altmap and clearing mem->altmap, before
+removing the memory block device.
 
-Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
-tag_clear_highpages() whether we want to also clear page content.
-
-Invert the meaning of the tag_clear_highpages() return value to have
-clearer semantics.
-
-Reproduced with the huge zero folio by modifying the check_buffer_fill
-arm64/mte selftest to use a 2 MiB area, after making sure that pages have
-a non-0 tag set when freeing (note that, during boot, we will not actually
-initialize tags, but only set KASAN_TAG_KERNEL in the page flags).
-
-	$ ./check_buffer_fill
-	1..20
-	...
-	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
-	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
-	...
-
-This code needs more cleanups; we'll tackle that next, like
-decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN.
-
-[akpm@linux-foundation.org: s/__GPF_ZERO/__GFP_ZERO/, per David]
-Link: https://lore.kernel.org/20260421-zerotags-v2-1-05cb1035482e@kernel.org
-Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Liam Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
+Link: https://lore.kernel.org/20260428085219.1316047-1-songmuchun@bytedance.com
+Link: https://lore.kernel.org/20260428085219.1316047-2-songmuchun@bytedance.com
+Fixes: 6b8f0798b85a ("mm/memory_hotplug: split memmap_on_memory requests across memblocks")
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/arm64/include/asm/page.h |    2 +-
- arch/arm64/mm/fault.c         |   11 +++++++----
- include/linux/gfp_types.h     |   10 +++++-----
- include/linux/highmem.h       |    7 ++++---
- mm/page_alloc.c               |    8 ++++----
- 5 files changed, 21 insertions(+), 17 deletions(-)
+ mm/memory_hotplug.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/include/asm/page.h~mm-page_alloc-fix-initialization-of-tags-of-the-huge-zero-folio-with-init_on_free
-+++ a/arch/arm64/include/asm/page.h
-@@ -33,7 +33,7 @@ struct folio *vma_alloc_zeroed_movable_f
- 						unsigned long vaddr);
- #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
+--- a/mm/memory_hotplug.c~mm-memory_hotplug-fix-memory-block-reference-leak-on-remove
++++ a/mm/memory_hotplug.c
+@@ -1422,6 +1422,8 @@ static void remove_memory_blocks_and_alt
  
--bool tag_clear_highpages(struct page *to, int numpages);
-+bool tag_clear_highpages(struct page *to, int numpages, bool clear_pages);
- #define __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
+ 		altmap = mem->altmap;
+ 		mem->altmap = NULL;
++		/* drop the ref. we got via find_memory_block() */
++		put_device(&mem->dev);
  
- #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
---- a/arch/arm64/mm/fault.c~mm-page_alloc-fix-initialization-of-tags-of-the-huge-zero-folio-with-init_on_free
-+++ a/arch/arm64/mm/fault.c
-@@ -1018,7 +1018,7 @@ struct folio *vma_alloc_zeroed_movable_f
- 	return vma_alloc_folio(flags, 0, vma, vaddr);
- }
+ 		remove_memory_block_devices(cur_start, memblock_size);
  
--bool tag_clear_highpages(struct page *page, int numpages)
-+bool tag_clear_highpages(struct page *page, int numpages, bool clear_pages)
- {
- 	/*
- 	 * Check if MTE is supported and fall back to clear_highpage().
-@@ -1026,13 +1026,16 @@ bool tag_clear_highpages(struct page *pa
- 	 * post_alloc_hook() will invoke tag_clear_highpages().
- 	 */
- 	if (!system_supports_mte())
--		return false;
-+		return clear_pages;
- 
- 	/* Newly allocated pages, shouldn't have been tagged yet */
- 	for (int i = 0; i < numpages; i++, page++) {
- 		WARN_ON_ONCE(!try_page_mte_tagging(page));
--		mte_zero_clear_page_tags(page_address(page));
-+		if (clear_pages)
-+			mte_zero_clear_page_tags(page_address(page));
-+		else
-+			mte_clear_page_tags(page_address(page));
- 		set_page_mte_tagged(page);
- 	}
--	return true;
-+	return false;
- }
---- a/include/linux/gfp_types.h~mm-page_alloc-fix-initialization-of-tags-of-the-huge-zero-folio-with-init_on_free
-+++ a/include/linux/gfp_types.h
-@@ -273,11 +273,11 @@ enum {
-  *
-  * %__GFP_ZERO returns a zeroed page on success.
-  *
-- * %__GFP_ZEROTAGS zeroes memory tags at allocation time if the memory itself
-- * is being zeroed (either via __GFP_ZERO or via init_on_alloc, provided that
-- * __GFP_SKIP_ZERO is not set). This flag is intended for optimization: setting
-- * memory tags at the same time as zeroing memory has minimal additional
-- * performance impact.
-+ * %__GFP_ZEROTAGS zeroes memory tags at allocation time. Setting memory tags at
-+ * the same time as zeroing memory (e.g., with __GFP_ZERO) has minimal
-+ * additional performance impact. However, __GFP_ZEROTAGS also zeroes the tags
-+ * even if memory is not getting zeroed at allocation time (e.g.,
-+ * with init_on_free).
-  *
-  * %__GFP_SKIP_KASAN makes KASAN skip unpoisoning on page allocation.
-  * Used for userspace and vmalloc pages; the latter are unpoisoned by
---- a/include/linux/highmem.h~mm-page_alloc-fix-initialization-of-tags-of-the-huge-zero-folio-with-init_on_free
-+++ a/include/linux/highmem.h
-@@ -347,10 +347,11 @@ static inline void clear_highpage_kasan_
- 
- #ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
- 
--/* Return false to let people know we did not initialize the pages */
--static inline bool tag_clear_highpages(struct page *page, int numpages)
-+/* Returns true if the caller has to initialize the pages */
-+static inline bool tag_clear_highpages(struct page *page, int numpages,
-+		bool clear_pages)
- {
--	return false;
-+	return clear_pages;
- }
- 
- #endif
---- a/mm/page_alloc.c~mm-page_alloc-fix-initialization-of-tags-of-the-huge-zero-folio-with-init_on_free
-+++ a/mm/page_alloc.c
-@@ -1808,9 +1808,9 @@ static inline bool should_skip_init(gfp_
- inline void post_alloc_hook(struct page *page, unsigned int order,
- 				gfp_t gfp_flags)
- {
-+	const bool zero_tags = gfp_flags & __GFP_ZEROTAGS;
- 	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
- 			!should_skip_init(gfp_flags);
--	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS);
- 	int i;
- 
- 	set_page_private(page, 0);
-@@ -1832,11 +1832,11 @@ inline void post_alloc_hook(struct page
- 	 */
- 
- 	/*
--	 * If memory tags should be zeroed
--	 * (which happens only when memory should be initialized as well).
-+	 * Clearing tags can efficiently clear the memory for us as well, if
-+	 * required.
- 	 */
- 	if (zero_tags)
--		init = !tag_clear_highpages(page, 1 << order);
-+		init = tag_clear_highpages(page, 1 << order, /* clear_pages= */init);
- 
- 	if (!should_skip_kasan_unpoison(gfp_flags) &&
- 	    kasan_unpoison_pages(page, order, init)) {
 _
 
-Patches currently in -mm which might be from david@kernel.org are
+Patches currently in -mm which might be from songmuchun@bytedance.com are
 
-sh-use-folio_mapped-instead-of-page_mapped-in-sh4_flush_cache_page.patch
-bpf-arena-use-page_ref_count-instead-of-page_mapped-in-arena_free_pages.patch
-mm-remove-page_mapped.patch
-sparc-mm-remove-register_page_bootmem_info.patch
-mm-bootmem_info-drop-initialization-of-page-lru.patch
-mm-bootmem_info-stop-using-pg_private.patch
-mm-bootmem_info-remove-call-to-kmemleak_free_part_phys.patch
-mm-bootmem_info-stop-marking-the-pgdat-as-node_info.patch
-mm-bootmem_info-stop-marking-mem_section_usage-as-mix_section_info.patch
-s390-mm-use-free_reserved_page-in-vmem_free_pages.patch
-powerpc-mm-remove-config_have_bootmem_info_node.patch
+mm-sparse-remove-sparse-buffer-pre-allocation-mechanism.patch
+mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch
+mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
+mm-sparse-vmemmap-pass-pgmap-argument-to-memory-deactivation-paths.patch
+mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
+mm-mm_init-fix-pageblock-migratetype-for-zone_device-compound-pages.patch
+mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
+mm-memory_hotplug-factor-out-altmap-freeing-checks.patch
+drivers-base-memory-make-memory-block-get-put-explicit.patch
 
 
