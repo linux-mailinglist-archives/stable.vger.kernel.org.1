@@ -1,194 +1,167 @@
-Return-Path: <stable+bounces-247060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKQ5OWYWBWoUSQIAu9opvQ
-	(envelope-from <stable+bounces-247060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:25:10 +0200
+	id 4CFvG50WBWoUSQIAu9opvQ
+	(envelope-from <stable+bounces-247061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:26:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CC153C542
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:25:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1F753C567
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 02:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98BA2304C06D
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:24:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 04ACC3004DE8
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 00:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DF32765D4;
-	Thu, 14 May 2026 00:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19562285068;
+	Thu, 14 May 2026 00:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="c6j2511d"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54DD274B58;
-	Thu, 14 May 2026 00:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D3B282F2F
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 00:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778718277; cv=none; b=rVE7giX4Ll0dfABuNbxCmf5ivxW647NSysRh7gnqJZD4j1+m29mBR6dAbetSBb5L59k3Typi054n0SboT8NbN37el5SuFW/Hl280zWVsVSLskI1WeXEwnwG7jchQGQjw0gTYaRdhK6i9gbiOBIRlRtb32iTmefJ89MFSSBSL78E=
+	t=1778718362; cv=none; b=YVPHLSjrbsFXTrvGGAt5z88eOAIyNw5bgN1w3t62WgNrQCrIeszwEmPfpwOHzCG00dNF6qX2ITnyUx2YPtCYCgFOn8TdPZRUafQbZ6s4Y028KGWAqUgCXeRm1h95edqT4zJlhmgz3XxiJnljdc1NZRjxqM4oELrmhlr1O4iIo7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778718277; c=relaxed/simple;
-	bh=cgbIM61BgxUEBei4guvyoixjyeeEQyOBVFPm2EctGi4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F1E3mHIXiDx0jErRV3BkMEUVB/Jstp8UE2T/Bj88d3ig8/ga5LJb2ABjeRnEgRf7tLyoAdCEsbbZzy6dGpIQEPd8xaMZWbX87iNdTXIdXbkcvZcee1fg4QZW9tOeXY3kUVJWvD1BkV6LMVEhDJOrjjpLU3MFzTz6quoFG0Ody/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 43B0F404E1;
-	Thu, 14 May 2026 00:24:33 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf05.hostedemail.com (Postfix) with ESMTPA id 6248C20010;
-	Thu, 14 May 2026 00:24:29 +0000 (UTC)
-Date: Wed, 13 May 2026 20:24:32 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Tejun Heo <tj@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
- Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
- Kyle McMartin <jkkm@meta.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Linux RT Development
- <linux-rt-devel@lists.linux.dev>, Clark Williams <williams@redhat.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, John Kacur
- <jkacur@redhat.com>
-Subject: Re: [PATCH sched/core] sched/rt: Fix RT_PUSH_IPI soft lockup loop
-Message-ID: <20260513202432.18dd7b9f@gandalf.local.home>
-In-Reply-To: <20260513193914.1593369-1-tj@kernel.org>
-References: <20260506235716.2530720-1-tj@kernel.org>
-	<20260507141437.GJ3102624@noisy.programming.kicks-ass.net>
-	<20260512113754.448c1f5b@gandalf.local.home>
-	<056f95bc5805f7e161458984fff4b3cb@kernel.org>
-	<20260512172847.5024e5e8@gandalf.local.home>
-	<20260513193914.1593369-1-tj@kernel.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1778718362; c=relaxed/simple;
+	bh=T3IUJ5N3cb2X5Ao8jYR062oCSRceiv9IXx+vsdNY1qE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tzt8om5k+64/hsldQ4Qs1gMWlN0q2am8n1B+A3+gusOFz1TNduTQOSm9dAGhjA9HJO3G2kGH8+qAEMf9xiYWEPKkFLd1E1B9DrTELw7EP+EZUlX8SMugkHlcc43nWIauh9uQu3ppYCdL2Xwoyn+RXtas83Nu6CLYefISHjRvKFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=c6j2511d; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5003b.ext.cloudfilter.net ([10.0.29.155])
+	by cmsmtp with ESMTPS
+	id NJbBwAvEt4RkpNJtiwZ1lh; Thu, 14 May 2026 00:25:54 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id NJthwlXu3CKa1NJthwXrH7; Thu, 14 May 2026 00:25:54 +0000
+X-Authority-Analysis: v=2.4 cv=IaKHWXqa c=1 sm=1 tr=0 ts=6a051692
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ytQjkP0ak7MJFOk13KBVfWAL/1oxQ+ny/1N2uZnwIOY=; b=c6j2511d25Ed8/diummxpE0BiS
+	faTPJrImi+X2jSWn2a6+ZpCNvPBgG2Vji7Ju9SoxPdr2C6oPH3Dd94TecEDPB0nmqPmkP0AegLhri
+	QpqBgF4ZqFRpfXXUHcwFeoDxSI9njIBuUf3GVeJ773+n0RlPysGjO5Nuqw476wTiOP4ZW4/gu7xC4
+	LhxrgDJlX+cAyBcrLmevvjyML0+rrIodV3bY/7VVRRnDP3kl1aexYPXtwirODBPbs31rzzkc4zAxH
+	GQB8rgpP/KMHPO2VUh6+8HoOeET2k7Ce/zb/Sq5Gw5qldZXlxLokkk4MhtuqjHjgnOCH9e3Ucrd/Z
+	zLsJy6CQ==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:42948 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.99.2)
+	(envelope-from <re@w6rz.net>)
+	id 1wNJtg-00000003P7g-2mze;
+	Wed, 13 May 2026 18:25:52 -0600
+Message-ID: <a519a32a-22b9-435c-a282-b6abccf8e1ef@w6rz.net>
+Date: Wed, 13 May 2026 17:25:50 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.0 000/305] 7.0.7-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260513153754.934923793@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260513153754.934923793@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 98t38y7a374y8nf9qrijjju5yfc166gs
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/wd/7dUAYRIsETihoD5y9kDo7zpJbmqQs=
-X-HE-Tag: 1778718269-115700
-X-HE-Meta: U2FsdGVkX1+eaD+TvWZ5qpm5/YpoWNqmfJnUVIfCm49h3cFxWzM7m+XVgyoTOse0zeZ464L1dWkYZ1TIKVx1ghYZJxw9S/K3J0PvRU6ZbFnIoQc0nLBVXrmHsjItl/xHXAxKaiyj1gX34L+acKbCSOXXuuYl3Xf8Rz/4P+a5lEwYDUzsuFuerE2XIw0V8ikw6aoQcN1DYYxVUtGjfTax7H2WC51bDXilJbL9t3BPurcW/oivzMhbQlaryJN9hnhqwBZckRoJ66sOQqw6dLkyLtQnakqEEDu6hdjCo/gJJ/Dk6rnzloDqEzGuMjG6ifQFijUlGoYUO+S2/r3vUK2XjOOoFthgAuxFliXDP7ck16ijjheHd3gbag==
-X-Rspamd-Queue-Id: 47CC153C542
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1wNJtg-00000003P7g-2mze
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:42948
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfMsT/iL8l0TkzSJ6yy8/TpVDoXMM3r/k3UQr/QhuLZpj6OXNZ2koX5r9py05txJK94NSaOZ3RfOU4s4PNdxbKzN60+PU1eQXeFnqeLLgUZILMgomNvmi
+ 5NgBRR4oGea0wf4Aj0RJHh+SbFKHnknUGBSiBtckElYzMKWZjqg++3HqbKJbC+rBUKiXwJAY/4lfow==
+X-Rspamd-Queue-Id: 0C1F753C567
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[goodmis.org : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rostedt@goodmis.org,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-247061-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247060-lists,stable=lfdr.de];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[w6rz.net];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	HAS_X_SOURCE(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_SPAM(0.00)[0.399];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Wed, 13 May 2026 09:39:14 -1000
-Tejun Heo <tj@kernel.org> wrote:
+On 5/13/26 09:17, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.0.7 release.
+> There are 305 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 15 May 2026 15:37:27 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.7-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> So, here's a capture from a synthetic reproducer that I think
-> models the dynamic and reaches the same end state.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Synthetic capture is fine.
-
-> 
-> Test box, 192 CPUs, kernel without the fix:
-> 
-> - Per-target hrtimer (HRTIMER_MODE_REL_PINNED_HARD) fires every
->   750us. Each fire schedules one tasklet round-robin from a pool
->   of 20k distinct tasklets. Each tasklet body is a 500us cpu_relax
->   loop, standing in for "process one item of softirq work".
-
-So you are running a softirq for 500us every 750us?
-
-This basically prevents any task from running on these CPUs while the
-softirq is executing.
-
-> 
-> - Storm driver: 190 SCHED_FIFO-50 nanosleep loops on non-target
->   CPUs drive tell_cpu_to_push from balance_rt. Two synthetic
->   psimon-shaped kthreads (FIFO 1) bound to the targets to pin
->   them into rto_mask.
-
-What exactly are these synthetic kthreads doing. Have code to share?
-
-> 
-> Baseline (no storm helpers): ~85% softirq util, no lockup, runs
-> indefinitely. The reproducer's baseline is higher than production -
-> my guess is we need to scrape up against capacity to grow a backlog
-> with the fixed-shape workload here, while production gets the same
-> effect from bursty arrivals during brief slowdowns.
-> 
-> With the storm: walker IPI overhead stretches each tasklet body
-> from 500us to ~1.1ms. Service rate drops below arrival, backlog
-> grows ~430/s. After ~46s, one tasklet_action_common snapshot has
-> ~20k tasklets which it processes serially in BH-disabled softirq
-> context. That's ~22s uninterruptible, watchdog fires.
-
-The IPI walker should only go to the CPUs with overloaded RT tasks. Are you
-making all the CPUS have overloaded RT tasks?
-
-> 
-> Six soft-lockups in a 120s run:
-> 
->   [61125.38] BUG: soft lockup - CPU#95 stuck for 22s! [kworker/95:0]
->   [61145.38] BUG: soft lockup - CPU#47 stuck for 45s! [migration/47]
->   [61173.38] BUG: soft lockup - CPU#47 stuck for 71s! [migration/47]
->   [61197.38] BUG: soft lockup - CPU#95 stuck for 22s! [migration/95]
->   [61209.38] BUG: soft lockup - CPU#47 stuck for 21s! [kworker/47:1]
->   [61225.38] BUG: soft lockup - CPU#95 stuck for 48s! [migration/95]
-> 
-> Stack at fire:
-> 
->   rt_storm_wedge_fn+0x22/0xe0
->   tasklet_action_common+0x100/0x2b0
->   handle_softirqs+0xbe/0x280
->   __irq_exit_rcu+0x47/0x100
->   sysvec_apic_timer_interrupt+0x3a/0x80     <- watchdog hrtimer
->   asm_sysvec_apic_timer_interrupt+0x16/0x20
->   RIP: 0033:0x...     <- user task (rt_storm_hog)
-> 
-> Trace captured with your event list plus IPI:
-> 
->   -e sched_switch -e sched_waking -e irq -e workqueue -e ipi
->   -e irq_vectors:call_function_single_entry/exit
->   -e irq_vectors:irq_work_entry/exit
->   -e irq_vectors:reschedule_entry/exit
->   -e irq_vectors:local_timer_entry/exit
-> 
-> Sliced to a 17s window around the first RCU stall + first
-> soft-lockup, filtered to CPUs 47 and 95, gzipped text (~11MB):
-> 
->   https://drive.google.com/file/d/11AN6dyvOWiZLVNEEuVtQieRyAxJYbCbt/view?usp=sharing
-> 
-
-So this is showing that the IPI logic is just extending the softirq work
-load to something greater than the period of execution and causing a live
-lock of softirqs.
-
-This still doesn't explain to me why the current process is of a lower
-priority than a waiting RT task.
-
-I'm really starting to think you are fixing a symptom and not the cause.
-
--- Steve
+Tested-by: Ron Economos <re@w6rz.net>
 
 
