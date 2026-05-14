@@ -1,84 +1,105 @@
-Return-Path: <stable+bounces-247136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eC4LJoKCBWo5XwIAu9opvQ
-	(envelope-from <stable+bounces-247136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:06:26 +0200
+	id UfI4HqqEBWqiXwIAu9opvQ
+	(envelope-from <stable+bounces-247137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:15:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0110E53F11B
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:06:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F6B53F270
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C4103301A28A
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 08:06:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7C215301640C
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 08:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E17E3ACF13;
-	Thu, 14 May 2026 08:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DD63A6B75;
+	Thu, 14 May 2026 08:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="L8rWrR7R"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="oY5nvkQ6";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WgjAVfjP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3A53911D5
-	for <stable@vger.kernel.org>; Thu, 14 May 2026 08:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E259334753C
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 08:15:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778745982; cv=none; b=hcCc8JgmYYLzV2SFuai/tfjAUkRgWHH7XygcREAyR0Jo0JVS4bU5m0EcahAr5j0tWit3TFe5t65LvufJVV/qcQTyodFqNIQ5wVh22Ly4dUiwyKh6WfXw/KkLoqBoiiYaRvhFuB2USk/YfrOIwzszUHcRXjx34dJOS+qJvaajbeg=
+	t=1778746536; cv=none; b=okzJg5WW32PwFYmeaI7XVU4Ajl2416eSG1buACT5fkGHeQPNRGnldlg2cwg86J5xIzEz8KUFyOWGOL4wlHyY08vvldycb05M2RgBZmEjh0afUF3su+V6RoMG6Qu2vnLZ1CTnKeHnco9Aa6q5s9iIg4XJNdNgbuQ+BI4tMxvX5J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778745982; c=relaxed/simple;
-	bh=93eSD/kBmjnUPehl5bOd1PkcsxFoeb+z/4IrjvzFW5k=;
+	s=arc-20240116; t=1778746536; c=relaxed/simple;
+	bh=zEEkY2jSKxlfR3UMEU+YviVlz8guzzmOR/Pxg3hB5eU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bb/Qkjtwh9PD3mlhQQFF6/efp238QAzN5MfYyp5AfevDzxOy85ebGhmWqSef33js99f0FrYWX8R9+PHL5R9FVJ2FeBXfw51tRJ3zifskdO066PRyfJBj4fziOEhh/mm0KZIJWf6oYNWmdnR0nS3v01qIBR2OSLNrUyIA0etJn0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=L8rWrR7R; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-449d6c68ed8so6650797f8f.0
-        for <stable@vger.kernel.org>; Thu, 14 May 2026 01:06:20 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=hnaL6Lx3zEtGtYd7EhviDEcsZVzgHRrAZxOtqrrgPJR/TWKqVArH0zcI2saCEf0emJTfowm+IGCBhfLesk3NAWLmuIHwHmLeku5kUO3ELsMuQTfeoJCqdzRV/Z30qdjW3Yq2C3Th8T7RetB5OgL8quQdCYuYDHjhE9FsHsXvB/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=oY5nvkQ6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WgjAVfjP; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64E56p3h828484
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 08:15:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2DQezXlwgxWUm8Dw+7AH5kOEuiqxY5oqs/GcaOSPTjw=; b=oY5nvkQ61UO6cd76
+	a9nx/IFmAUAz+p9ecYcZD4lFCrftdX/zxXk8k1YZLMyqg+ZG1wSlVHgfDHOCmwin
+	J+0ajIbPoC88+G3jJFbvwZN1N24+JErWJoTLM4CQ7mvtFl1vEoABE3/HmYdtZpcp
+	gQ1/JH/vr2mKOz8WquChf3bGbo+7h88lNJZq2Jf/tIB+jVxINgUJnm1x4U6e6cDt
+	l0N0ZY3q+kqUMvlG4U1/lCbnhbhTrGBcvEzs+haTtLHwmQvcBOI8EbA2oRmSLUjP
+	tC++sDO1LtWv53L8+QZHxfxviolES6zgQLhb0CHs87/Bn2cnK4/gHDOuBLFdcZ55
+	83NpDw==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e57y7gksn-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 08:15:34 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3663d5e9b9bso7807002a91.1
+        for <stable@vger.kernel.org>; Thu, 14 May 2026 01:15:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1778745979; x=1779350779; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=oss.qualcomm.com; s=google; t=1778746533; x=1779351333; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=0sEeUOyNcRID3I5ygd6MigioVnL/EYNN2mZD8yeALKU=;
-        b=L8rWrR7RvpXY6Mm7WLNxziaUCQPbtl0onuZ38AlVVdcsoFJtkbmHEzKqR8ZAUKXwlK
-         E1FW1Mp7cxxZEfZXIqeyWZBLbxdsAu42e7B0xhbrB/kEGd8TUGinMCH4goPAoFttDuaA
-         IiQ4eHSjcsstI1tTrtxCoLh+YmNxN5mpKolh7HogRsXxvgRIQIYLH1UIUA3YEMnQF7U/
-         lflhv+v85wS4hPkS4zboNuq/IVCxUDVbFT6zEkZewI0/XYyD8dNn5+iJjcTv6zCQ0fNq
-         WfhbyTzKK8aBm1RKUR7fkaeDuuuNtVLt9eWvo/u0im8XDVmtGtKR6bt10D7CeCpq9CGF
-         tRhQ==
+        bh=2DQezXlwgxWUm8Dw+7AH5kOEuiqxY5oqs/GcaOSPTjw=;
+        b=WgjAVfjPQxDoxcnRN4eUF8bqUVwcbOrzNGgoBnWMnCcqwNWo9PmamhkHBr1jAY/5sB
+         Zn5+7RIjma3SvwFcp2PI+im/DfdnwXMCknv/wgBSL54TKrlnDRrkHjIwx7HTpTaQi1Rg
+         0ihMDUy2kNek5g1QX2GrHqlmH3vYNR2t7HzQe2KbE2eyPfuaduTQerxqwoF5dwYFLjTP
+         vvso4wWv5+LR2pG9C9kQnl58XAZ1bP150jLdiMN5YusLW0MH7b03QW9o7VH64pT43qN+
+         JMFG8Fd+QF0IunB19G8yv2L2Em+xOPD0z6G9XgU/as66VjTS5o+4PSu0L0UMCkOJ983a
+         Z/xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778745979; x=1779350779;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=1e100.net; s=20251104; t=1778746533; x=1779351333;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0sEeUOyNcRID3I5ygd6MigioVnL/EYNN2mZD8yeALKU=;
-        b=hRYrWHnteXMvjhfS/oJ4OlspSNHOio1wevYDQ7nBgQ6wWllPyWulUWP/CI41tt+qkz
-         MaQ2PIUWAmTJgLin/BDoaZAU73WQzB0DPS2U0h6SR8W095RYOoXGeCo9MdEgS9b4Lo++
-         Gci2iJ6dLfL+6g++gTLL9jvw1X9ptPDX1cGtQrin4Xe9U8XECQSsUCQJWXubOMpq0sOa
-         NCgiRFzB4Flpp86R3VH7rBC1cZT6RApsIqqBAN3UeiEWwS7Itammjh5vN590tmp9zSno
-         JXuV2AUCdWroXXElvxmnKcKCaz25F3dgmOLWVE2k6KMB2v1KlOycPTYUMKlsMvaCR7uo
-         vNBw==
-X-Forwarded-Encrypted: i=1; AFNElJ+EFI2vfDUrrihyeSNyxWW7VVOK6Vv8JwM3cbugEIVoNuqAr0/aQQblLvOS71Jswit7lQxEPu8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5zEGe18xAcstZzE+txUesWhMB4pAv6EQA8u7RGDfy1cT4bKRc
-	JSMfqLRvW2ePyJdrb0g9FPOs3Y1/DK9/m3HXHHZ/Lk2nhpbCohBISo38zbclwJlhBNE=
-X-Gm-Gg: Acq92OHxxF//LrImyIaQTUJIdWxXSNcDVYThrB5rDfec38amzyOEUZS/VUKPKKTLi+S
-	iVeV1PNGGPD508ZW3W45KdBjZgmDPGdQEjdh4fTJyM3Epy7862jqRY9yCmH35uBSivk6PdXqcng
-	bxWUw0L1mdgOtO4NTWSPAsJHd+oOt/NBGQNjTU8PrFC+kW5PDzOxGIoU62+ophy0kEoaQkjQP9K
-	eL0+/nJJYrgT5ZP87QhZ+jqF0qzIeiiDFbOPn3z4dR98+se6blXdGZYeJjfHhiqvyoubY5ch9vl
-	Q0Uww2O3gdkiUq+Frl0oMU6tUlWyouSJKAPnpe2NOMU2Y1qIG7/l1vS8iQfIEQaRIdcpgrV8p+6
-	45wXAm5UCdbm3TodiwpJRPSZ7qmcXOQ5EwWACI4KRLwFjg6pqJftUZrUcc2ufhr6+JjwS+3CfHp
-	i3Fk7R8xFcFpbOocnYUqRtgzjdDX2+pV8CKX1T7XPU5z7w
-X-Received: by 2002:a05:6000:2dca:b0:43c:fd7e:72eb with SMTP id ffacd0b85a97d-45c5aa655a4mr10646538f8f.41.1778745979153;
-        Thu, 14 May 2026 01:06:19 -0700 (PDT)
-Received: from [192.168.42.79] (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6449sm4787290f8f.37.2026.05.14.01.06.18
+        bh=2DQezXlwgxWUm8Dw+7AH5kOEuiqxY5oqs/GcaOSPTjw=;
+        b=PMRwhYfmtCGboU9WG5HaxU3jVYundqvSr2mv9GvG2HrDIU7zEAf0zaHCXuoZpfHR9X
+         Q40ExZ1OklVsBHlW0NJstDM1Na9NfJ1N5q9XxhPH8N6+fBa3QNZSJ7iDxMxbJnCWnqj2
+         fCG/yMlBHecgTwjyfmyUxyMXH+DVl0NGotB4WIZR3Sy9G0X47k1X8LWKDn1CLtlbmlHO
+         FfX+YsIoS5fKo+Qj0afNWWKIktViuBzgrEDGg8/iBEkSmnCxijjXel/W/cXzUITwRu84
+         HHl6K409sfdZEQ1R1WxHvx5DoV2cydeDtDPNyz8A5Fma2UD7FFzUcOQKYqvne8Y/A+ms
+         25mQ==
+X-Forwarded-Encrypted: i=1; AFNElJ85IY1KTs9P+tugJo6ju0P8nWzLlvtQ0Z99AqGGPGefrBHSougDdKpqVMHg/JmuuasTIqfSWuw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwI9kIyJwj8yqp87XF6ysCdGhYm5zOe21sVrB414xY6o/bE7Iij
+	cxxYTh85mpvdHSVneB7JglxMEehDgBb/i0oyaEZxQfHQ+jA05nheBk4aWLo6Lh9ByBCGnOaJUWb
+	avSV4EKg+JptpxHk0uyCo8in10bq8X0Kl4X7rX6pUY6yr7BUYKTCKY3Pe3BzPc0uSrXnpDw==
+X-Gm-Gg: Acq92OEt+iM19xSSZkHpdz/dtQ+mN1gn8XAi6mKT4yCU9sljbTUWBgmFZGr8mhc+PBp
+	g6+W+kzHxiUwZCSNJ7IcnsdBpAXfdg3ryr1DBbVZajTe4TdQ/1wwljEGqxFRGy5ZoOnYXiZGEJD
+	GXpu+2uK0bms59V3gehATFIpOCcaEmzT35hdCeu3CuqIS/bNk0mGhMIRhzehxIRBT9VEfNuoKzI
+	MTWlzxkytyT0ICxU+9xItGEZPA3QYhHskxcKOv2EEB8M7VAzhEJYEEVGNkpvsFXu7U/rlkY89+2
+	Aqo2XReCELUSCDXqrksNhpfFYqjm3Qodp3jrX12Gww5KvOS37r54zj0tALE8CZv4mdMdrNv9ILu
+	y5shy6icy9eDzPMowdCP8TRgkUrvckOi7PaGh0JtPsjtk/GYEvG78MIwesjq9v/e8nytBkA8Nex
+	ZEdq0MKXh/VYcyAZD+DOQ=
+X-Received: by 2002:a17:90b:3c0e:b0:366:4f8a:9847 with SMTP id 98e67ed59e1d1-368f3e681bemr6821447a91.17.1778746533337;
+        Thu, 14 May 2026 01:15:33 -0700 (PDT)
+X-Received: by 2002:a17:90b:3c0e:b0:366:4f8a:9847 with SMTP id 98e67ed59e1d1-368f3e681bemr6821390a91.17.1778746532608;
+        Thu, 14 May 2026 01:15:32 -0700 (PDT)
+Received: from [10.133.33.178] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb100706sm1613791a12.17.2026.05.14.01.15.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 May 2026 01:06:18 -0700 (PDT)
-Message-ID: <5bfa28de-9d37-45c2-8c0f-e93b36119910@suse.com>
-Date: Thu, 14 May 2026 10:06:18 +0200
+        Thu, 14 May 2026 01:15:32 -0700 (PDT)
+Message-ID: <c2523379-ab12-47e1-a0d0-ef6073deaf11@oss.qualcomm.com>
+Date: Thu, 14 May 2026 16:15:27 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,79 +107,157 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] params: bound array element output to the caller's
- page buffer
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: Daniel Gomez <da.gomez@samsung.com>,
- Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>,
- Aaron Tomlin <atomlin@atomlin.com>, Dmitry Antipov <dmantipov@yandex.ru>,
- Thorsten Blum <thorsten.blum@linux.dev>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260417075042.26632-1-pengpeng@iscas.ac.cn>
- <20260507082103.94473-1-pengpeng@iscas.ac.cn>
+Subject: Re: [PATCH] wifi: ath11k: fix warning when unbinding
+To: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+        Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: ath11k@lists.infradead.org, jjohnson@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20260507070808.367442-1-jtornosm@redhat.com>
+ <20260514061841.9517-1-jtornosm@redhat.com>
+ <95bff017-3554-425f-ad8e-767f9cbe1277@oss.qualcomm.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260507082103.94473-1-pengpeng@iscas.ac.cn>
+In-Reply-To: <95bff017-3554-425f-ad8e-767f9cbe1277@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0110E53F11B
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: OZYMG6XrI8PaZL4YPyXOZluGARIDuHTp
+X-Authority-Analysis: v=2.4 cv=UY9hjqSN c=1 sm=1 tr=0 ts=6a0584a6 cx=c_pps
+ a=vVfyC5vLCtgYJKYeQD43oA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=kMbTGvAQcfItPFarCmoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=rl5im9kqc5Lf4LNbBjHf:22
+X-Proofpoint-GUID: OZYMG6XrI8PaZL4YPyXOZluGARIDuHTp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDA4MSBTYWx0ZWRfXwQR3oP3fZMAs
+ mrrq42V6HNEvjdssXCEZ5FmN5iuIqxnNNSfgjV6xvmQzmuW3LPZEEyKq/rp9/P1DsOPcddZwtZG
+ OhQOX5qhu3EEVQQn6ewC7ZN32djK9z/JatW3feFnoKMQz4Np9EggMNoKjTmXq6Gi8WGz+tK02bB
+ aSjliFGSS5/YO41d8dSP9NSzFY6kWBoHgHtSONJm08LzGekHSqF1rx5Qp1VEFRmEhIUM4iyNUjY
+ 2mPpDb10uIt7jm249HjkI3nW/MP8qWuYIbhdVrEJ1E9ll3n53NEmZwa6Vs/OBELvOrNLyhhe+xM
+ ggK0Evi5euru4vn6NQ0CBFAaTCIowy+XO1TrfgMEFniGNiKPs7Evl2GMTxGq5NKkSSTmttahKVg
+ /lnfFOBzXULLdXDSVKsSKcdWSk4yxzmonQ/eQI5i78/V2eVgF5EJ35/QshuQu0kboPbQEQmAVYE
+ 4i4cgbWWShEQZi677RA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-14_01,2026-05-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605050000
+ definitions=main-2605140081
+X-Rspamd-Queue-Id: 15F6B53F270
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	FREEMAIL_CC(0.00)[samsung.com,google.com,kernel.org,atomlin.com,yandex.ru,linux.dev,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247136-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247137-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[petr.pavlu@suse.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[baochen.qiang@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Action: no action
 
-On 5/7/26 10:21 AM, Pengpeng Hou wrote:
-> param_array_get() appends each element's string representation into the
-> shared sysfs page buffer by passing buffer + off to the element getter.
-> 
-> That works for getters that only write a small bounded string, but
-> param_get_charp() and similar helpers format against PAGE_SIZE from the
-> pointer they receive. Once off is non-zero, an element getter can
-> therefore write past the end of the original sysfs page buffer.
-> 
-> Collect each element into a temporary PAGE_SIZE buffer first and then
-> copy only the remaining space into the caller's page buffer.
-> 
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> ---
-> Changes since v1:
-> - drop the incorrect Fixes tag; as Petr pointed out, the issue appears
->   to predate mainline git history
-> - add Petr's Reviewed-by
-> - avoid rewriting the previous separator if the page buffer has no room
->   to copy any bytes from the next element
 
-I'm confused by this change. Didn't the simpler v1 already have this
-behavior?
 
--- 
-Thanks,
-Petr
+On 5/14/2026 2:55 PM, Rameshkumar Sundaram wrote:
+> On 5/14/2026 11:48 AM, Jose Ignacio Tornos Martinez wrote:
+>> Hello Rameshkumar,
+>>
+>>> I agree that setting tx_status to NULL makes ath11k_dp_free() more
+>>> defensive, and it matches the ath12k fix.
+>> Ok, I agree too.
+>>
+>>> However, i am still wondering how the second ath11k_dp_free() is reached
+>>> if ATH11K_FLAG_QMI_FAIL is set.
+>>>
+>>> In ath11k_pci_remove(), when ATH11K_FLAG_QMI_FAIL is set, we take the
+>>> qmi_fail path and skip ath11k_core_deinit(). So the normal remove path:
+>>>
+>>>      ath11k_pci_remove()
+>>>        ath11k_core_deinit()
+>>>          ath11k_core_soc_destroy()
+>>>            ath11k_dp_free()
+>>>
+>>> should not run.
+>>>
+>>> So if the double free is still reproducible with QMI_FAIL set (with the
+>>> change i proposed), either the flag is not actually set in this failure
+>>> case, or there is another path calling ath11k_dp_free() ?
+>> Let me try to clarify the issue more.
+>> There are two error actions:
+>> - First the previous error. I reproduce the situation as I commented: running
+>> in a VM the default upstream kernel (with this card using PCI passthrough),
+>> since this is always failing. Let me show the logs in this situation:
+>> [   15.906564] ath11k_pci 0000:07:00.0: BAR 0 [mem 0xfdc00000-0xfddfffff 64bit]: assigned
+>> [   15.926520] ath11k_pci 0000:07:00.0: MSI vectors: 32
+>> [   15.928572] ath11k_pci 0000:07:00.0: wcn6855 hw2.0
+>> [   16.984192] ath11k_pci 0000:07:00.0: chip_id 0x2 chip_family 0xb board_id 0xff soc_id
+>> 0x400c0200
+>> [   16.984351] ath11k_pci 0000:07:00.0: fw_version 0x11088c35 fw_build_timestamp
+>> 2024-04-17 08:34 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+>> [   18.186971] ath11k_pci 0000:07:00.0: failed to receive control response completion,
+>> polling..
+>> [   19.211036] ath11k_pci 0000:07:00.0: Service connect timeout
+>> [   19.211815] ath11k_pci 0000:07:00.0: failed to connect to HTT: -110
+>> [   19.214181] ath11k_pci 0000:07:00.0: failed to start core: -110
+>> [   19.531989] ath11k_pci 0000:07:00.0: firmware crashed: MHI_CB_EE_RDDM
+>> [   19.532930] ath11k_pci 0000:07:00.0: ignore reset dev flags 0xc000
+>> [   29.259157] ath11k_pci 0000:07:00.0: failed to wait wlan mode request (mode 4): -110
+>> [   29.259229] ath11k_pci 0000:07:00.0: qmi failed to send wlan mode off: -110
+>> - Second after this, I commanded the unbinded (ath11_pci) and I get the
+>> warning. Let extend here the stack trace:
+>> [   24.238198]  ? free_large_kmalloc+0x57/0x90
+>> [   24.238199]  ? report_bug+0x16b/0x180
+>> [   24.238210]  ? handle_bug+0x3c/0x70
+>> [   24.238218]  ? exc_invalid_op+0x14/0x70
+>> [   24.238218]  ? asm_exc_invalid_op+0x16/0x20
+>> [   24.238224]  ? free_large_kmalloc+0x57/0x90
+>> [   24.238227]  ath11k_dp_free+0x99/0xb0 [ath11k]
+>> [   24.238275]  ath11k_core_deinit+0x12b/0x1a0 [ath11k]
+>> [   24.238287]  ath11k_pci_remove+0x7b/0x120 [ath11k_pci]
+>> [   24.238294]  pci_device_remove+0x3e/0xb0
+>> [   24.238304]  device_release_driver_internal+0x193/0x200
+>> [   24.238315]  unbind_store+0x9d/0xb0
+>> [   24.238320]  kernfs_fop_write_iter+0x13a/0x1d0
+>> [   24.238330]  vfs_write+0x32e/0x470
+>> [   24.238335]  ksys_write+0x5f/0xe0
+>> [   24.238336]  do_syscall_64+0x5f/0xe0
+>> Very easy to reproduce.
+>>
+> 
+> 
+> Thanks much for the logs, that makes sense. The timestamps explain why my earlier
+> reasoning did not match the trace: unbind reaches ath11k_pci_remove() before
+> ATH11K_FLAG_QMI_FAIL is set by the QMI event worker as it is held up on wlan mode off qmi
+
+how could QMI worker set this flag? the first failure happens in
+ath12k_core_qmi_firmware_ready() and upon this failure the QMI worker just break out
+without setting any flag, no?
+
+> transaction, so remove still takes the normal ath11k_core_deinit() path.
+> 
+> 
+> -- 
+> Ramesh
+> 
+
 
