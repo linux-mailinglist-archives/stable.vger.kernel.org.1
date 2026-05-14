@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-247201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDeuKBzJBWqFbQIAu9opvQ
-	(envelope-from <stable+bounces-247201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:07:40 +0200
+	id oFFHHCTJBWqFbQIAu9opvQ
+	(envelope-from <stable+bounces-247202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:07:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15AD5421D6
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:07:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD9D5421DE
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68B473012EA0
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA634306E678
 	for <lists+stable@lfdr.de>; Thu, 14 May 2026 13:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DE313959D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B270A3DEACE;
 	Thu, 14 May 2026 13:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Be3vrJM0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GgEC5WiW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2353DE431
-	for <stable@vger.kernel.org>; Thu, 14 May 2026 13:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762E318A6CF
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 13:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778764001; cv=none; b=i3QHwKLjWfk8CH8sRdPt8/3MHzR45LNQCp1NnxRMvkkEDXyDtW3NZzkTcmb05EoHPBe5wlAvPS3aaxrAv+eyV+GVIDmY0DmslHd0NpYYx7Dagj+OvA3+QB0iZYhYsxAgpqtyTaYcbS5E1/9wq7FNUBm/t3Ee6ABxl7Mr3kqiKIg=
+	t=1778764001; cv=none; b=ZBIsR0ZiAvEL7xVMsRAQ74us+88ohvlXAHYvfcOxOe7IQI3mcmC/SjZPf4AHYRa9bQSAxwPJow7aNOcyhv2b/uvTEp4styQYcYFrx9qO9SCW0yUii7xSBuE/G6YdwFv0u+xY/nKsyXJFBpkNbHDYDvk54i6HgL//3Tiz0KJkA0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778764001; c=relaxed/simple;
-	bh=qQLOYY2hyFlDRmqdluzOGGA9xPn4wVP6HE20/lSFFHQ=;
+	bh=xvEOOnCge4olF8YpTBC28AzFrMhY9i/xAywFEIPPP0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDBOxm9FHUUQ5AZt5rpOOsSS2v+Ul+fBTaxBbhI24cnE65v9pm3YXN4w4V4XO/j9Tq86QidHCt8niFhn0hO+9R+wxUU7f24tzrPrmUb/sGHW4m+1Ih1srQeUSR62QGh5Gj/vmwKzWu3XxUN2wjAYGDrhCVS+kLHxP9aOR2Hkug0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Be3vrJM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07BFC2BCB3;
-	Thu, 14 May 2026 13:06:39 +0000 (UTC)
+	 MIME-Version; b=GC+Il13uwsERWumXxPwUU9g7Ti8JjF2E/LYV7A7c1m6Y7eTjfNP61r6yqvwiYvMXtYVbDPxBSSCevgYO9Qox90yUU46BXDU07II93OxkMqm+YKktkOy+EF/FBAA6U+aO00Vr9FhG9YnrJeTlbEkBV3RgYpOZtzBclj+QMYYcQLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GgEC5WiW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925FAC2BCB8;
+	Thu, 14 May 2026 13:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778764000;
-	bh=qQLOYY2hyFlDRmqdluzOGGA9xPn4wVP6HE20/lSFFHQ=;
+	s=k20201202; t=1778764001;
+	bh=xvEOOnCge4olF8YpTBC28AzFrMhY9i/xAywFEIPPP0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Be3vrJM0WQab/Rju9KPBDRgncPkaHZWmcuqpVPL41HwzlNJMc35nZGfismBbfaFc+
-	 LIbIg+m/uMiYHasVrTX0C0rF0upQjyVPxZKMFQcUthrsHGNgHXs8XU+9K9Lm8orF03
-	 HCh6PDK4k/ceiaamgfDM0bvNqQsf3gkAzrh3QdvAUfljnHHwFoKcrIsCsK9Tfzj2q1
-	 SAt/v7m9SSxfZSbKXbK+MWWrjrELc33mUrDRcqFzxRJhutbWUI7cVqRRFiS7BRlvhT
-	 3G/w67seb/3IILYTTOTtRstm/PcLmegcsvA29qriX2LyJh7eMjaIoX9Yw8Omj+IjJl
-	 AyOQX7M0mJTRQ==
+	b=GgEC5WiW3C4GmJsjC05ZUdl4MZ0ZddxvzQ/M/+xSOyioiYMPO1UuiyLFuUpFmdmX3
+	 h5VwfdpQ28pa43indUK//qNmcQD1G8XnqYm6S6ZfFyfQXEIL9a2WQTvu13kJlsqApu
+	 Jc5VWJpmaexggN+F83CxctHmn3LLjUlrHcsgOKmZ+hWtdC1MNUF5O8B88+0jAZ4vWn
+	 0Rp5H5ectijWXupCsN4kHF1pgKFH8rILjK3WA977u9tg/tU3f7fGKTTSL655Ze4dGW
+	 jq8n5lPjXiyicyEv1lqJBt+whMnILwd8oFbC/rgggjKJHDfYBdtKTDjwXaAi5kfDwr
+	 cTXCcZX+nqaVw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Johan Hovold <johan@kernel.org>,
+	Keiji Hayashibara <hayashibara.keiji@socionext.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] mm/hugetlb_cma: round up per_node before logging it
-Date: Thu, 14 May 2026 09:06:35 -0400
-Message-ID: <20260514130635.228150-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] spi: uniphier: fix controller deregistration
+Date: Thu, 14 May 2026 09:06:38 -0400
+Message-ID: <20260514130638.228220-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051241-flakily-uniquely-50ca@gregkh>
-References: <2026051241-flakily-uniquely-50ca@gregkh>
+In-Reply-To: <2026051214-stoppable-boney-c3ce@gregkh>
+References: <2026051214-stoppable-boney-c3ce@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,110 +63,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F15AD5421D6
+X-Rspamd-Queue-Id: CCD9D5421DE
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247202-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,linux.dev,kernel.org,suse.de,linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247201-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,linux.dev:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,socionext.com:email]
 X-Rspamd-Action: no action
 
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 8f5ce56b76303c55b78a87af996e2e0f8535f979 ]
+[ Upstream commit 0245435f777264ac45945ed2f325dd095a41d1af ]
 
-When the user requests a total hugetlb CMA size without per-node
-specification, hugetlb_cma_reserve() computes per_node from
-hugetlb_cma_size and the number of nodes that have memory
+Make sure to deregister the controller before releasing underlying
+resources like DMA during driver unbind.
 
-        per_node = DIV_ROUND_UP(hugetlb_cma_size,
-                                nodes_weight(hugetlb_bootmem_nodes));
+Note that clocks were also disabled before the recent commit
+fdca270f8f87 ("spi: uniphier: Simplify clock handling with
+devm_clk_get_enabled()").
 
-The reservation loop later computes
-
-        size = round_up(min(per_node, hugetlb_cma_size - reserved),
-                          PAGE_SIZE << order);
-
-So the actually reserved per_node size is multiple of (PAGE_SIZE <<
-order), but the logged per_node is not rounded up, so it may be smaller
-than the actual reserved size.
-
-For example, as the existing comment describes, if a 3 GB area is
-requested on a machine with 4 NUMA nodes that have memory, 1 GB is
-allocated on the first three nodes, but the printed log is
-
-        hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
-
-Round per_node up to (PAGE_SIZE << order) before logging so that the
-printed log always matches the actual reserved size.  No functional change
-to the actual reservation size, as the following case analysis shows
-
-1. remaining (hugetlb_cma_size - reserved) >= rounded per_node
- - AS-IS: min() picks unrounded per_node;
-    round_up() returns rounded per_node
- - TO-BE: min() picks rounded per_node;
-    round_up() returns rounded per_node (no-op)
-2. remaining < unrounded per_node
- - AS-IS: min() picks remaining;
-    round_up() returns round_up(remaining)
- - TO-BE: min() picks remaining;
-    round_up() returns round_up(remaining)
-3. unrounded per_node <= remaining < rounded per_node
- - AS-IS: min() picks unrounded per_node;
-    round_up() returns rounded per_node
- - TO-BE: min() picks remaining;
-    round_up() returns round_up(remaining) equals rounded per_node
-
-Link: https://lore.kernel.org/20260422143353.852257-1-ekffu200098@gmail.com
-Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma") # 5.7
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ applied the single-line addition to mm/hugetlb.c since mm/hugetlb_cma.c didn't exist yet in 6.12 ]
+Fixes: 5ba155a4d4cc ("spi: add SPI controller driver for UniPhier SoC")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-25-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ renamed spi_*_controller/host APIs to spi_*_master/master aliases and kept the pre-existing clk_disable_unprepare() after unregister ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-uniphier.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index aa0ef3bc4dd65..6a1e0eefd2540 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -7493,6 +7493,7 @@ void __init hugetlb_cma_reserve(int order)
- 		 * let's allocate 1 GB on first three nodes and ignore the last one.
- 		 */
- 		per_node = DIV_ROUND_UP(hugetlb_cma_size, nr_online_nodes);
-+		per_node = round_up(per_node, PAGE_SIZE << order);
- 		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
- 			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
- 	}
+diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
+index ad0088e394723..1b9a8d7ff091d 100644
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -751,7 +751,7 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 
+ 	master->max_dma_len = min(dma_tx_burst, dma_rx_burst);
+ 
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	ret = spi_register_master(master);
+ 	if (ret)
+ 		goto out_release_dma;
+ 
+@@ -780,6 +780,10 @@ static int uniphier_spi_remove(struct platform_device *pdev)
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
+ 
++	spi_master_get(master);
++
++	spi_unregister_master(master);
++
+ 	if (master->dma_tx)
+ 		dma_release_channel(master->dma_tx);
+ 	if (master->dma_rx)
+@@ -787,6 +791,8 @@ static int uniphier_spi_remove(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(priv->clk);
+ 
++	spi_master_put(master);
++
+ 	return 0;
+ }
+ 
 -- 
 2.53.0
 
