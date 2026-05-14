@@ -1,245 +1,210 @@
-Return-Path: <stable+bounces-247161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNr8F8WdBWr4YwIAu9opvQ
-	(envelope-from <stable+bounces-247161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 12:02:45 +0200
+	id 6KcSMBqiBWo1ZAIAu9opvQ
+	(envelope-from <stable+bounces-247162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 12:21:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057E054012E
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 12:02:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7FE54052F
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 12:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 284CD3010B9C
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:01:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9BF54301572C
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 10:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B55A1B4224;
-	Thu, 14 May 2026 10:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DBDC3909A4;
+	Thu, 14 May 2026 10:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JCkoVfXV"
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="VS5aZHUb";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="srz6LnlD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7383F26FDBF
-	for <stable@vger.kernel.org>; Thu, 14 May 2026 10:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821A8386572;
+	Thu, 14 May 2026 10:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778752878; cv=none; b=IfMNfrOmHtyloGwF+t8AL6j4pYQMa6/mYc875n+IUB7sOgoQeXJKiB5Wa4S+Bd9fS6e8s9o/x4iRInITNxRCQ5SIGGipKNAxrYI2PEzicFGHn3cUyAcojCPpcx3yFNjPFP+ye1ECUDOhPJvkNUpet2OkZ3Ve5zuQ6OmvSePLaSA=
+	t=1778754071; cv=none; b=W2rhQVI9Yg5IbOH0P4S8/687a5QyhbZmvevYs0wDSMPi1RaPSsnPFsG/xzAv3hhfXLhVtH8mxJl2ks1oY5H5J4YlZz7MQKpoVAn2WRlLROOB3VqNOWOg8VuPEmv0vRr1v0IdiycMKWKi+LTef2qaiquu5Si48j4K45ZAjpS0ZFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778752878; c=relaxed/simple;
-	bh=+cEb8sKW6+9qraXJdFaXavvqh0KSzrArqd7qpJBvKnk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rr00XsA0NphQgRFSuKK8fx2Du8EFI0R96PYEclIpipLjVqb0ecH2oi/JbQ4FWMikzNRFYhHkKCQ4JDileiw1mIBITis72gz3506DxQNop/aYH1J+Y/OqpHeXSPD8QMbbBq7Q/MC4fceW9Abpvl04Zi0Wqki0LjmMhCKh9QU9oeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JCkoVfXV; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488b3f8fa2bso81704785e9.1
-        for <stable@vger.kernel.org>; Thu, 14 May 2026 03:01:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778752876; x=1779357676; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R8w6xQoQW0qt8Zo29yNIyG0N7oGizsRoHt4bLIQ+cnk=;
-        b=JCkoVfXVpIOxWllUVOEUdsLgbQhoaynrK3wUc5WfnD8EogC0/AMKzFhrOOrnjkKPWZ
-         P6WB8Ej/hfAt/Ptnq+Df5fupyjVk9PumP29Wufv9jNBGCD2szRjlKN4oiC+FvAOy7OVP
-         ujokPOczZ1Eme0Qmtp0FgQiy+RvW1Ri8uV53r2uXxIJHPsyNWmKHrn2RTWfot1eWmJzm
-         V440Fz3NgX5QxOcAat44G9u7ucxOUzVCBfcHXTT7oZDxh5gCdGIwz0uI35R2FjyhoREf
-         4OdpFWOyvMWTzc4/DB30C9C6YFE74uWpwYPL5+xFCoaRJoiVtTFfxMUARq9un4GJk6og
-         lCuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778752876; x=1779357676;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=R8w6xQoQW0qt8Zo29yNIyG0N7oGizsRoHt4bLIQ+cnk=;
-        b=HsKKZjDEx+O0qBWulH4gjHJw6izZpAtvJK9s6DgY2W8FktWr06FXqTDkxGdrCZtMhz
-         lJE2e0PWEWOCE6rRQvs8WAF7/FpsA7R0NQjasExGaXhQ0Z8FdqsZYMrbIj8A5dWonZ2c
-         Croussn58SzwapgNWBASuR5IEa6S4mfZbyTUC6R/nfuTm6NdDTeMnCg7BCYlBdQw7Che
-         pPBZ6SECh6NpMKdUJ8Co5uULZdne7t8T2a6W+9DhlcuRXWwUiYwRZLGB+Tuy6rK6myUx
-         VHzORB05mGqkBjKomStRZM3PNC3nxZmUnPo+dqKpo6S1Rba0+HCXT1BAjVD6CkL2ipJH
-         GVhw==
-X-Gm-Message-State: AOJu0YyQiPOGNI/6rYB2YQ95cZbYOJ4e5lfgzIT8Z3JYlAlNZVp3ni5Q
-	50IidBUDONh6w/Re78e1NotDvSwYcOFTJct8wstaPkkaVgNhTF8EDOF7
-X-Gm-Gg: Acq92OEHoKzZZcdHwXlWvOsM4+ZkptVM+VMPdjbhLU1syTATEN0fdp2hkXREPhGN08V
-	m3K91jckhv6+AJgEgcKM6y75xX6HYFjrsnC+3pCeJbFMapuItTZQ3Pz0b03/zKXf1Xrwfi1/H2T
-	HErBFaYF+Wswseo9ppPITx3W7IMnGmLxwMXsfx8eEACnEZg/wI9SCcqjdJvyCF1cwiywcSQdJfl
-	N0Sw00w9j+u0K9C2WeiRYXItnxa30aMYLIw7FhuxBVt2JluteI2CSw33JuguVipQ1hRjSrSKv0m
-	HhBGTdEiF/LcDPhFppkJsG29xpZpRXNYVwJkgRv5Vxhs3Ddde66EdHF3MyJm7Yq/32OAcCSh3P0
-	aSFo+DuYgm8dDtAp+1qRHaQtH2Sw8sI/Bjodr1TwT51hNHJh0Lw94R8j+MOFNIdVOlTa0O1tUVG
-	AJhYTXdD3cM+m4kRVUkPi/pcm002NICwidFc1JPAvae/Rube7PkAPaeISuRwr1e4WvQCpCFkA=
-X-Received: by 2002:a05:600c:c095:b0:489:32b:ac0b with SMTP id 5b1f17b1804b1-48fe2474bc8mr2818425e9.6.1778752875639;
-        Thu, 14 May 2026 03:01:15 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fdafb6145sm20322885e9.1.2026.05.14.03.01.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 03:01:15 -0700 (PDT)
-Date: Thu, 14 May 2026 11:01:12 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: John Ousterhout <ouster@cs.stanford.edu>
-Cc: stable@vger.kernel.org, anthony.l.nguyen@intel.com,
- intel-wired-lan@lists.osuosl.org, przemyslaw.kitszel@intel.com,
- netdev@vger.kernel.org, jacob.e.keller@intel.com
-Subject: Re: [PATCH net v3] ice: fix packet corruption due to extraneous
- page flip
-Message-ID: <20260514110112.12bdf5ff@pumpkin>
-In-Reply-To: <CAGXJAmx4LaVv=QJ=SanvF6iayJ8+SiLyUqht+jMxouXPX=54-g@mail.gmail.com>
-References: <20260512181953.1689-1-ouster@cs.stanford.edu>
-	<20260513100732.499e3f49@pumpkin>
-	<CAGXJAmzK+56DHnitD1g263mPSgWg9jZyq2z6R+vd8bV_c4ZbuQ@mail.gmail.com>
-	<20260513214927.17a8dd45@pumpkin>
-	<CAGXJAmx4LaVv=QJ=SanvF6iayJ8+SiLyUqht+jMxouXPX=54-g@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1778754071; c=relaxed/simple;
+	bh=fyftp4iasBnUciMCnM4ih4eUsfsD+0Ri23BKLLqY2ZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G2NFLpGUG1bhqKKMDo+UEeIS/o6YHYfGQG6UJqSpuRaATnKE7osRc2p3TtaWZM3YGSNlLU8ZZBm1h4nHfpuWhTqENPY7NJeRrjF6Fyp6biMEreDGY3CxiDEDdHv2RN3QXfqo+GQpOs7LuCdae+fqdYpDkY/WDYa7cm7UErcc1HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=VS5aZHUb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=srz6LnlD; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.phl.internal (Postfix) with ESMTP id 96F33EC021F;
+	Thu, 14 May 2026 06:21:07 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Thu, 14 May 2026 06:21:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1778754067; x=
+	1778840467; bh=oF8/clMVOVZTaaaI32fozRcP/Wi9a3HrHpi5Mv76kI0=; b=V
+	S5aZHUb5RPGhOhQnfFh3G4dJ7exkG4pk2NQXht8jHBSL+7QQ+rImjSWTrFQoLcqM
+	HGS26c9Uv62aScZ41am969nLFzhgAI2JoHUdpWD4Nk9J7wlYor2CfUVMMuZQuLd9
+	xtMNKMUK2z9bYebj4k7+xD2D5p3ya1Sl44SPCznuT/y9GYyrPT5xh4mjQbyPX09M
+	F1DAF8xURY56SLn6gvnfb8TGbBtM04NI0234pCnQvrAocg9Tu7RYBL+jyIBrRzCo
+	x5VydIebM5RBOObgyWvzLW9j4F/3A48agi/xZsgsTn5ZNfud0FqiE3tzEFeF3uq7
+	s1tZ1dm+6fJmzTU2l1Uug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1778754067; x=1778840467; bh=oF8/clMVOVZTaaaI32fozRcP/Wi9a3HrHpi
+	5Mv76kI0=; b=srz6LnlDTMXtHv3m8z7dsucblkUkP9zWHgkFixn/QS+MRV/UUWP
+	1Qo7HO04W5+zDrUwibHJUDGlpxvi7QOrtRKaFtnm4kXUUwfq/HSByRFBUjP6NdnO
+	4nRfgZbjzOFi5wgR97phkLuFe2MmkUB5KWaSUu1ywBLEP8+fDSbXUeJgChC7Achr
+	1A8KCkcoHVRzje0GetL4fkiEi4D6ZnvZ7IvsHQvYqVLof35khCwGEZ23un+ApmMo
+	VlrLiqp+zIrsCbE5Aq4ULxxsSqJF2S99eBOPQJ+YjaFrcYGwNZzLwxn06JEO0Tcs
+	VMaW9MtfNjuDYXcUWQilqvOncO60FrjkEyA==
+X-ME-Sender: <xms:EaIFamyImrPr1ohksyZhJvs_5zPXw5VapGcAZkWBtr7qkSaxW-2PFw>
+    <xme:EaIFauPcMQSw6pLpb5jEkbwO3ngpLBEdB0QTCEPWreAzuGIutWnyr25Ljt0uYz_zT
+    GRU0CK4aj8NTvOuo4rm5tsgTZ5KHc0DsZ12xpv8HHr5frnIhIoyz8M>
+X-ME-Received: <xmr:EaIFauea1NNJspmCLGH4vcWRSPYWY914xpDqigqxjihLXHr4c8lxGlS8n10ysc5d6W3DK_sYs6uzymx1vJGXZkA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvdejvdeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepgefhffdtvedugfekffejvdeiieelhfetffeffefghedvvefhjeejvdek
+    feelgefgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsugesqhhuvggrshihshhnrghilhdr
+    nhgvthdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopehimhhvgegsvghlsehgmhgrihhlrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehr
+    vgguhhgrthdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepshhtvghffhgvnhdrkhhlrghsshgvrhhtsehsvggtuhhnvghtrdgtohhmpdhr
+    tghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhhrghl
+    sehrsghogidrtghopdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvth
+    dprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:EaIFai5XS3YJ6722Vai9ffVY4TNuq9NOkelNN-vWCdj4GMCi5dD2ow>
+    <xmx:EaIFamIlj13qmb0dxB7qgdstrg4MfG30Fz64qwhoXeyO-4VWXIxvew>
+    <xmx:EaIFam6SCYEJQ1qGK7b3ShqpX-vpudhDV9CBIZsBOuQC_aRYI5JbTQ>
+    <xmx:EaIFalZMqTakV01b7_KSkyKLnBHVyvkHSrbDHlFwoSPPWlQlqb3Yeg>
+    <xmx:E6IFagyq0Bl9nsFPUymvN7fvbKgePQ0jUgpv58QyXwdQelrwzOx6EYkj>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 14 May 2026 06:21:05 -0400 (EDT)
+Date: Thu, 14 May 2026 12:21:02 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, kuba@kernel.org,
+	steffen.klassert@secunet.com, netdev@vger.kernel.org,
+	stable@vger.kernel.org, mhal@rbox.co, davem@davemloft.net,
+	horms@kernel.org, edumazet@google.com, kerneljasonxing@gmail.com,
+	herbert@gondor.apana.org.au, vakzz@zellic.io, kuniyu@google.com,
+	jiayuan.chen@linux.dev, ben@decadent.org.uk, dsahern@kernel.org
+Subject: Re: [PATCH net v2] net: skbuff: propagate shared-frag marker through
+ frag-transfer helpers
+Message-ID: <agWiDlvu351MSuqO@krikkit>
+References: <agToIEDI4TaTNLRb@v4bel>
+ <92ec6190-0255-4b7c-9524-254cb37476ab@redhat.com>
+ <agWYGuJ__OtpgjnB@v4bel>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 057E054012E
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <agWYGuJ__OtpgjnB@v4bel>
+X-Rspamd-Queue-Id: 3F7FE54052F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[queasysnail.net:s=fm1,messagingengine.com:s=fm3];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247161-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-247162-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DMARC_NA(0.00)[queasysnail.net];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[redhat.com,kernel.org,secunet.com,vger.kernel.org,rbox.co,davemloft.net,google.com,gmail.com,gondor.apana.org.au,zellic.io,linux.dev,decadent.org.uk];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sd@queasysnail.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[queasysnail.net:+,messagingengine.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[stanford.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,queasysnail.net:dkim]
 X-Rspamd-Action: no action
 
-On Wed, 13 May 2026 21:47:11 -0700
-John Ousterhout <ouster@cs.stanford.edu> wrote:
+2026-05-14, 18:38:34 +0900, Hyunwoo Kim wrote:
+> On Thu, May 14, 2026 at 10:04:29AM +0200, Paolo Abeni wrote:
+> > On 5/13/26 11:07 PM, Hyunwoo Kim wrote:
+> > > Three frag-transfer helpers (__pskb_copy_fclone(), skb_try_coalesce(),
+> > > and skb_shift()) fail to propagate the SKBFL_SHARED_FRAG bit in
+> > > skb_shinfo()->flags when moving frags from source to destination.
+> > > __pskb_copy_fclone() defers the rest of the shinfo metadata to
+> > > skb_copy_header() after copying frag descriptors, but that helper
+> > > only carries over gso_{size,segs,type} and never touches
+> > > skb_shinfo()->flags; skb_try_coalesce() and skb_shift() move frag
+> > > descriptors directly and leave flags untouched.  As a result, the
+> > > destination skb keeps a reference to the same externally-owned or
+> > > page-cache-backed pages while reporting skb_has_shared_frag() as
+> > > false.
+> > > 
+> > > The mismatch is harmful in any in-place writer that uses
+> > > skb_has_shared_frag() to decide whether shared pages must be detoured
+> > > through skb_cow_data().  ESP input is one such writer (esp4.c,
+> > > esp6.c), and a single nft 'dup to <local>' rule -- or any other
+> > > nf_dup_ipv4() / xt_TEE caller -- is enough to land a pskb_copy()'d
+> > > skb in esp_input() with the marker stripped, letting an unprivileged
+> > > user write into the page cache of a root-owned read-only file via
+> > > authencesn-ESN stray writes.
+> > > 
+> > > Set SKBFL_SHARED_FRAG on the destination whenever frag descriptors
+> > > were actually moved from the source.  skb_copy() and skb_copy_expand()
+> > > share skb_copy_header() too but linearize all paged data into freshly
+> > > allocated head storage and emerge with nr_frags == 0, so
+> > > skb_has_shared_frag() returns false on its own; they need no change.
+> > > 
+> > > Fixes: cef401de7be8 ("net: fix possible wrong checksum generation")
+> > > Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb frags")
+> > 
+> > WRT the 2nd fixes tag, I *think* f4c50a4034e6 would need
+> > additionally/instead a follow-up similar to the one mentioned by Jakub here:
+> > 
+> > https://lore.kernel.org/all/20260510084520.476745b5@kernel.org/
+> 
+> Agreed. tracing SKBFL_SHARED_FRAG propagation paths one by one is
+> not a robust direction for the fix. Even minor logic changes elsewhere
+> could cause the issue to resurface.
+>
+> As a follow-up,	eliminating the in-place handling in esp_input -- accepting 
 
-> On Wed, May 13, 2026 at 1:49=E2=80=AFPM David Laight
-> <david.laight.linux@gmail.com> wrote:
-> >
-> > On Wed, 13 May 2026 09:28:40 -0700
-> > John Ousterhout <ouster@cs.stanford.edu> wrote:
-> > =20
-> > > On Wed, May 13, 2026 at 2:07=E2=80=AFAM David Laight
-> > > <david.laight.linux@gmail.com> wrote: =20
-> > > >
-> > > > On Tue, 12 May 2026 11:19:53 -0700
-> > > > John Ousterhout <ouster@cs.stanford.edu> wrote:
-> > > > =20
-> > > > > Consider the following sequence of events:
-> > > > > * The bottom half of a buffer page is filled with data from
-> > > > >   packet A. The page has a net reference count (reference count
-> > > > >   - bias) of 1. The page is returned to the NIC, flipped to
-> > > > >   use the top half.
-> > > > > * Before the reference on the page is released, the NIC returns
-> > > > >   the page with no data in it ('size' is zero in ice_clean_rx_irq=
-).
-> > > > >   In this case the bias does not get decremented. The page still
-> > > > >   has a net reference count of 1, so it gets returned to the NIC.
-> > > > >   However, ice_put_rx_mbuf flipped the page so that the bottom
-> > > > >   half is active.
-> > > > > * If the NIC stores another packet in the page before packet A
-> > > > >   has released its reference, the data in packet A will be
-> > > > >   overwritten with data from the new packet.
-> > > > > * Unfortunately zero-length buffers occur frequently: they seem
-> > > > >   to occur whenever a packet uses every available byte in a
-> > > > >   buffer, ending precisely at the end of the buffer. When this
-> > > > >   happens the NIC seems to generate an extra zero-length
-> > > > >   buffer.
-> > > > > The fix is for ice_put_rx_mbuf not to flip pages that have a
-> > > > > size of 0. =20
-> > > >
-> > > > How is this different from packet B (in the top half) being
-> > > > freed before packet A (in the bottom half)? =20
-> > >
-> > > I'm not sure exactly what you're referring to here. Are you asking
-> > > about a situation where both halves of the page get filled with packet
-> > > data and then the second half to be filled is the first to be freed? I
-> > > believe that the ICE driver abandons a page if both halves are ever
-> > > occupied simultaneously; the page will be returned to the system once
-> > > both halves have dropped their references. Thus it doesn't matter
-> > > which half is freed first. =20
-> >
-> > That is what I was thinking, seems like the logic is over complicated.
-> >
-> > If you need to put 4k pages into some kind of iommu rather than 2k buff=
-ers
-> > (to contain 1536 byte ethernet packets) then I'd have thought you'd
-> > initially put both halves into adjacent tx ring entries.
-> > If a rx buffer is discarded (eg a zero length fragment or a CRC error,
-> > or even 'copy break' for short packets) then, as an optimisation,
-> > you could reuse the buffer for another receive.
-> > The same could be done if the page is freed by an application.
-> >
-> > However it sounds like it doesn't use the 2nd half until the first
-> > completes - otherwise you'd never 'flip' to make the other half
-> > active.
-> >
-> > Thinks...
-> > By only putting half of each 4k 'page' into the rx ring the code
-> > will usually save (expensive) iommu setup in the (probably) normal
-> > case where the buffers are freed 'reasonably quickly'.
-> > But that really requires a 'free/with_nic/busy' state for each half
-> > rather then trying to guess from a reference count.
-> >
-> > But if the low-level code is recycling the rx buffer (for any reason)
-> > it wants to use the same buffer.
-> >
-> > The ethernet driver I wrote (a long time ago, early 90s) allocated
-> > 64k as 128 512byte buffers and did an aligned word-sized copy of
-> > every receive frame - most frames were in contiguous memory.
-> > The simplicity of it made up for the cost of the copy, especially
-> > since that was an iommu system. =20
->=20
-> I'm not here to defend the logic (and it has been replaced with
-> something that is probably simpler and more efficient); I'm just
-> suggesting a bug fix for the stable releases that still have this
-> logic.
+It would close this group of vulnerabilities, but there are other
+parts of the networking stack that consume this flag. For those,
+chasing missing flag propagation is still a useful task.
 
-You've forced me to look at all of the function :-)
-I've noticed a few things:
-- If ice_add_xdp_frag() fails (because there are too many fragments)
-  then the rest of the fragments are left in the tx ring (instead
-  of being discarded) - so are likely to be treated as a full packet
-  later on.
-- Frames with status errors (crc, framing etc) are discarded after
-  the skb is built - surely that should happen before the xdp 'program'
-  is called.
-- If the remote system send a very very long frame (traditionally the PHY's
-  'jabber detect' didn't always work) you can end up with all of the rx
-  ring being full of a single partial packet.
+> the performance trade-off -- seems necessary. That was actually the
+> direction of my initial proposal:
+>
+> https://lore.kernel.org/all/afLDKSvAvMwGh7Fy@v4bel/
 
-I think you need to avoid calling ice_add_xdp_frag() when 'size =3D=3D 0'.
-Then in ice_put_rx_mbuf() unconditionally call ice_put_rx_buf() for
-zero length fragments.
-The comment would be 'zero length fragments can always be reused'.
+But you chose to abandon this approach (I guess because of the AI
+feedback Simon forwarded? feedback doesn't necessarily mean "drop this
+entirely").
 
-The zero length fragments almost certainly exist because the mac hardware
-advances the the new buffer expecting more data - but only gets the=20
-4 byte CRC. So the zero length buffer contains the receive status.
-
--- David
-
->=20
-> -John-
-
+-- 
+Sabrina
 
