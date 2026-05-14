@@ -1,162 +1,175 @@
-Return-Path: <stable+bounces-247200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIuWKfDHBWrDbAIAu9opvQ
-	(envelope-from <stable+bounces-247200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:02:40 +0200
+	id EDeuKBzJBWqFbQIAu9opvQ
+	(envelope-from <stable+bounces-247201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:07:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3808F542121
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:02:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F15AD5421D6
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:07:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E3FE301A1FC
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 13:02:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68B473012EA0
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 13:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1409A2773C3;
-	Thu, 14 May 2026 13:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DE313959D;
+	Thu, 14 May 2026 13:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SH6sGKX8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Be3vrJM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB93318A6CF;
-	Thu, 14 May 2026 13:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2353DE431
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 13:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778763728; cv=none; b=mkF9i0BEyk1QN7gU9MHC7MzPAf5re5CL6xWJ4+ZHw0/vus0wgNYwyPp1Ykt8/nnjzAqYZRhT8/9GfObOpQ2GJbPitZuxoS+ojlTVOexxwAUF0jrkxQsJ4aTTEuZiBqF98YQ22Box8KQPYdQhwuk2IgX2BVIZSgYDNXN1wZDAfy8=
+	t=1778764001; cv=none; b=i3QHwKLjWfk8CH8sRdPt8/3MHzR45LNQCp1NnxRMvkkEDXyDtW3NZzkTcmb05EoHPBe5wlAvPS3aaxrAv+eyV+GVIDmY0DmslHd0NpYYx7Dagj+OvA3+QB0iZYhYsxAgpqtyTaYcbS5E1/9wq7FNUBm/t3Ee6ABxl7Mr3kqiKIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778763728; c=relaxed/simple;
-	bh=6XkcIGEtELfy3FNPsRMpEtSIdSkCha1v4oFloaN5a2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kRkcXz/0S2QnWxk+tlGn0qbgl6rsFZ+9O/kME6d+lL2MVHjRArPUqX3HLXNmz3ot0HxHjBtEAYOYG3H0zKZae6EU61AQauD1+d/QLrPFBE5xssOl3eEnhpaXkvLROO662Po7c1Feg/bNTotNonEqW33sm7WzS8vowTZZUI2tHHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SH6sGKX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F8CC2BCB3;
-	Thu, 14 May 2026 13:02:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778763728;
-	bh=6XkcIGEtELfy3FNPsRMpEtSIdSkCha1v4oFloaN5a2E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SH6sGKX8F7y134uKrqajCxGs00yhXlupBiuPqzVIUY36b/thUbq9Z21AkAvVUCz/1
-	 DYaZoMbeTIMQngQ/t6kQnkyY90yRlBGAWBF08CXB/kw0DXsGLRkOvUp0Vj6+Fz4oX6
-	 4QQOFrS4Qb2Is1u7tQKJIBMa3deSDa3h4XZbMrFw=
-Date: Thu, 14 May 2026 15:02:13 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Nick Chan <towinchenmi@gmail.com>
-Cc: Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
-	Neal Gompa <neal@gompa.dev>, Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>, asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Yuriy Havrylyuk <yhavry@gmail.com>
-Subject: Re: [PATCH] nvme-apple: Reset q->sq_tail during queue init
-Message-ID: <2026051400-concert-cartridge-e96b@gregkh>
-References: <20260514-nvme-apple-sq-reset-v1-1-8931e455281e@gmail.com>
+	s=arc-20240116; t=1778764001; c=relaxed/simple;
+	bh=qQLOYY2hyFlDRmqdluzOGGA9xPn4wVP6HE20/lSFFHQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EDBOxm9FHUUQ5AZt5rpOOsSS2v+Ul+fBTaxBbhI24cnE65v9pm3YXN4w4V4XO/j9Tq86QidHCt8niFhn0hO+9R+wxUU7f24tzrPrmUb/sGHW4m+1Ih1srQeUSR62QGh5Gj/vmwKzWu3XxUN2wjAYGDrhCVS+kLHxP9aOR2Hkug0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Be3vrJM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07BFC2BCB3;
+	Thu, 14 May 2026 13:06:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778764000;
+	bh=qQLOYY2hyFlDRmqdluzOGGA9xPn4wVP6HE20/lSFFHQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Be3vrJM0WQab/Rju9KPBDRgncPkaHZWmcuqpVPL41HwzlNJMc35nZGfismBbfaFc+
+	 LIbIg+m/uMiYHasVrTX0C0rF0upQjyVPxZKMFQcUthrsHGNgHXs8XU+9K9Lm8orF03
+	 HCh6PDK4k/ceiaamgfDM0bvNqQsf3gkAzrh3QdvAUfljnHHwFoKcrIsCsK9Tfzj2q1
+	 SAt/v7m9SSxfZSbKXbK+MWWrjrELc33mUrDRcqFzxRJhutbWUI7cVqRRFiS7BRlvhT
+	 3G/w67seb/3IILYTTOTtRstm/PcLmegcsvA29qriX2LyJh7eMjaIoX9Yw8Omj+IjJl
+	 AyOQX7M0mJTRQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] mm/hugetlb_cma: round up per_node before logging it
+Date: Thu, 14 May 2026 09:06:35 -0400
+Message-ID: <20260514130635.228150-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051241-flakily-uniquely-50ca@gregkh>
+References: <2026051241-flakily-uniquely-50ca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260514-nvme-apple-sq-reset-v1-1-8931e455281e@gmail.com>
-X-Rspamd-Queue-Id: 3808F542121
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F15AD5421D6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247200-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,jannau.net,gompa.dev,kernel.dk,lst.de,grimberg.me,lists.linux.dev,lists.infradead.org,vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linux.dev,kernel.org,suse.de,linux-foundation.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247201-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,linux.dev:email]
 X-Rspamd-Action: no action
 
-On Thu, May 14, 2026 at 08:54:59PM +0800, Nick Chan wrote:
-> Fixes controller reset on Apple A11 / T8015.
-> 
-> Fixes: 04d8ecf37b5e ("nvme: apple: Add Apple A11 support")
-> Suggested-by: Yuriy Havrylyuk <yhavry@gmail.com>
-> Signed-off-by: Nick Chan <towinchenmi@gmail.com>
-> ---
->  drivers/nvme/host/apple.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/nvme/host/apple.c b/drivers/nvme/host/apple.c
-> index 423c9c628e7b..c692fc73babf 100644
-> --- a/drivers/nvme/host/apple.c
-> +++ b/drivers/nvme/host/apple.c
-> @@ -1009,6 +1009,7 @@ static void apple_nvme_init_queue(struct apple_nvme_queue *q)
->  	unsigned int depth = apple_nvme_queue_depth(q);
->  	struct apple_nvme *anv = queue_to_apple_nvme(q);
->  
-> +	q->sq_tail = 0;
->  	q->cq_head = 0;
->  	q->cq_phase = 1;
->  	if (anv->hw->has_lsq_nvmmu)
-> 
-> ---
-> base-commit: 5d6919055dec134de3c40167a490f33c74c12581
-> change-id: 20260514-nvme-apple-sq-reset-53e22e88c7b0
-> 
-> Best regards,
-> -- 
-> Nick Chan <towinchenmi@gmail.com>
-> 
-> 
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-Hi,
+[ Upstream commit 8f5ce56b76303c55b78a87af996e2e0f8535f979 ]
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+When the user requests a total hugetlb CMA size without per-node
+specification, hugetlb_cma_reserve() computes per_node from
+hugetlb_cma_size and the number of nodes that have memory
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+        per_node = DIV_ROUND_UP(hugetlb_cma_size,
+                                nodes_weight(hugetlb_bootmem_nodes));
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
+The reservation loop later computes
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+        size = round_up(min(per_node, hugetlb_cma_size - reserved),
+                          PAGE_SIZE << order);
 
-thanks,
+So the actually reserved per_node size is multiple of (PAGE_SIZE <<
+order), but the logged per_node is not rounded up, so it may be smaller
+than the actual reserved size.
 
-greg k-h's patch email bot
+For example, as the existing comment describes, if a 3 GB area is
+requested on a machine with 4 NUMA nodes that have memory, 1 GB is
+allocated on the first three nodes, but the printed log is
+
+        hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
+
+Round per_node up to (PAGE_SIZE << order) before logging so that the
+printed log always matches the actual reserved size.  No functional change
+to the actual reservation size, as the following case analysis shows
+
+1. remaining (hugetlb_cma_size - reserved) >= rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks rounded per_node;
+    round_up() returns rounded per_node (no-op)
+2. remaining < unrounded per_node
+ - AS-IS: min() picks remaining;
+    round_up() returns round_up(remaining)
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining)
+3. unrounded per_node <= remaining < rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining) equals rounded per_node
+
+Link: https://lore.kernel.org/20260422143353.852257-1-ekffu200098@gmail.com
+Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma") # 5.7
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ applied the single-line addition to mm/hugetlb.c since mm/hugetlb_cma.c didn't exist yet in 6.12 ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ mm/hugetlb.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index aa0ef3bc4dd65..6a1e0eefd2540 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7493,6 +7493,7 @@ void __init hugetlb_cma_reserve(int order)
+ 		 * let's allocate 1 GB on first three nodes and ignore the last one.
+ 		 */
+ 		per_node = DIV_ROUND_UP(hugetlb_cma_size, nr_online_nodes);
++		per_node = round_up(per_node, PAGE_SIZE << order);
+ 		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
+ 			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
+ 	}
+-- 
+2.53.0
+
 
