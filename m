@@ -1,187 +1,254 @@
-Return-Path: <stable+bounces-247203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kD98HTnLBWrvbQIAu9opvQ
-	(envelope-from <stable+bounces-247203-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:16:41 +0200
+	id wN0wLBnNBWpGbgIAu9opvQ
+	(envelope-from <stable+bounces-247204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:24:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776F65422A8
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:16:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D4454249A
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 15:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6DF0330080BE
-	for <lists+stable@lfdr.de>; Thu, 14 May 2026 13:16:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2969830891E2
+	for <lists+stable@lfdr.de>; Thu, 14 May 2026 13:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584C43DFC71;
-	Thu, 14 May 2026 13:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993A53B5F59;
+	Thu, 14 May 2026 13:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YgKB6fyI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="clwTI9yk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D5038A726
-	for <stable@vger.kernel.org>; Thu, 14 May 2026 13:16:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFB222083
+	for <stable@vger.kernel.org>; Thu, 14 May 2026 13:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778764596; cv=none; b=Sf+WwNFro/pFgqxipHexUbDHtdB0l8+byOcjsy0oKs5LNIgtlpGv/AkEg7+oyNjTezoIyIqHAA/1a7tjigiLXzM4WFra3rOWzdK8uDWN/fkYPxXy9jrYRSedyK41Zi9clKNBtwCxPSDNTsKuoiEfHde3wsxKFSvRknw3uk+PzCA=
+	t=1778764792; cv=none; b=SVvKrT91dy2+Vu/GfKrqY9mChfxr8J4KPbPBAJHKM5X9anSa0FLYebFHHfWHkdrnSvTJdylMYqjxdAkgqX8SrdQkQAK1o/zESv5HLN9NV2ofrXygdzb8KBO7DVNovixlYFx9+a+xwKseRP5mRpmLwFP4Ix2Pg8QOZoo/ja7EwY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778764596; c=relaxed/simple;
-	bh=jl08X3NCLgmcZoiX/JRkZFjNthe8bvfBiVgfd+XVW5g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QldawVMzRMgeu1PyGjW5AP85EgnwtHVhlhaFHZiIhZJewiy3a93e6TKQBMSO9BKyC4w1QRnSypGNK9XZaKisjnnvLou8ylyKvlu3xNBT/K6WkLz7L9tpqpQFgvFdZ6miV3zatWnXLFm956QkV/e0oI9M+NdvD+30GeLkYpsd5Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YgKB6fyI; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ba1e9d3687so52369105ad.3
-        for <stable@vger.kernel.org>; Thu, 14 May 2026 06:16:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778764594; x=1779369394; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dxjsDTEPx7x+FMifRYMV1hqCeB1iIjDkPxo6+pakXPM=;
-        b=YgKB6fyIxmkvEQ/e5HjhkfBnD0diRPyLV36UdaEobnsMsGKEHbeSSi/1oiyamTbB57
-         VsZNXXLvg9mMcHhpUbZsphR9RBIaUGnbway8RKLTMzNBS2x0PXWoAr3uIR4EoKq76kpr
-         IEan/0Qz1QQXC1kfZZdQPY+LOeLnLABeak0/12GwoFTf7YMKhOGgj31h1ZtDbat/2LEt
-         nuxI8tbUH0dBx+dOk1tL+zYq+2nQBu0Mnt6JR6Qdgyf2I9pyNu5/BEa3zpwmzvS5wxMv
-         s+5NArS5mavtJhpa7cJ3cH1jKy3Ef/V79RrTM6LzGAKvzbs0yyjwhVzNwjrG/qAbPywO
-         RANw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778764594; x=1779369394;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dxjsDTEPx7x+FMifRYMV1hqCeB1iIjDkPxo6+pakXPM=;
-        b=NZW1AmxqYfDPCvEi48fmkVXjmvx+ZmKe2/4Q+96iYTzcucQq6Sz5YZPhlRtHei6igE
-         smL78yFHEvic93lILGlHc85+ugoeDoK8c1MDZmIMyGyO2yn/sn6/y1zOk5CskYDo9mlf
-         iZF0OLhNApj9xaaJGmnAtFSG7ON0sgx8yUN3W7D6YwmzEeEi7a9rBdRBWCHBb80GB4Q6
-         wnEsAsueQKlJkBU/U4Wp8H0opCWd/CNwLQB6J72FGbS+53qHl+EDD4fL29+IXB3hRkDU
-         ex3xvDvSSJXw1SVliZ3YP2eNY/fDuANJagnhq5kdyq3yqj2u/t8wqUC9A5+kzvLtbLu6
-         WCnQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+CRmz+WBtfqxPM8bNDslRP+wRyK09r342NeA1mJj67rRq+2YTY8P/lrS4lHJqEEcEElt6K/LA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywEGxkUor8o3ww5jfwNl7Q7Sbz/TdnITWenDH9p0eSI1AzUef8
-	bDkrycuAfd/beN793TGr7BYh3n7h0uSBwzoMZbtODfsBe1fpV2MEQMji
-X-Gm-Gg: Acq92OFqYD45PE3P4Aps29dOf7JSbVelMA3vLTlLJ/1YwdSAvOCZ722LNScCX7MUKvK
-	uPyHf8AX/usr41AfH6HdLaCvl/ctDmgedfrSdZi13kA7jkNJAksAws6jYlHti+pZ9sFTLvCjP0u
-	I+R49o6brMsS2gG1gSZTAnsY0zxD3j9p1sX7k6DylaFVco1ndeo9ueKsooU7vI3PILZMXq+bB45
-	Aol+XLVQlQ3KOWDzxWt1BBZxknbHHXxyUheieU24SqN6/Cgj/XRPE2F/TeGjB5HthhQNr2CULJG
-	LiBwfIg0BRm5W2XidjNMhuoNLmaHFtnsnUNmiiItkcPe8tHHwwxXFJBjmQcmyyUuD5p+DQDufrW
-	UzA4oxvgxY89M22/rXS8D16nXBOSThikNwZqX0IQII+aqrAdqru1optzkO3kpkGhqE3uZvGqSLo
-	4JEdpQpG/MpadF5g9VfNJEXvtRUKqnS128Als=
-X-Received: by 2002:a17:903:388c:b0:2bc:e62a:979b with SMTP id d9443c01a7336-2bd30333de6mr80854555ad.30.1778764594127;
-        Thu, 14 May 2026 06:16:34 -0700 (PDT)
-Received: from [127.0.1.1] ([59.188.211.98])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2bd5bd5f30bsm30953275ad.16.2026.05.14.06.16.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 06:16:33 -0700 (PDT)
-From: Nick Chan <towinchenmi@gmail.com>
-Date: Thu, 14 May 2026 21:16:01 +0800
-Subject: [PATCH v2] nvme-apple: Reset q->sq_tail during queue init
+	s=arc-20240116; t=1778764792; c=relaxed/simple;
+	bh=8YEwZD6ZC25p1OEt730T9LNma3AKTPY6c+tu0lmKH5s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YoNGE48HBbugaY28o2Esu1wejW+fRzKCvRVqHTFv3S3Hzlu6n3Kmg1JbvmXLieqDm1J+gOytU0Ikianlj6feXNHg9mONd+Dagx5z2ZZ1JEnq+V1vHYcDPRepaVrQ1yr8exvlsXBM3c+FuZoL44T//m9gx3QAz0uqmPjc42BdtRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=clwTI9yk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C4A7C2BCB8;
+	Thu, 14 May 2026 13:19:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778764792;
+	bh=8YEwZD6ZC25p1OEt730T9LNma3AKTPY6c+tu0lmKH5s=;
+	h=Subject:To:Cc:From:Date:From;
+	b=clwTI9ykiSYGehbiJiYPczRjVacjTDMf4uOga7b5Nt+4D0Fu2ci8fEgQGmkwMkHvc
+	 ldfKap2vaDv4IWTfffhXgdI8DAL0KPBgjhFKqayp6EopXwRre3I4PaPspoU+QZ7tIw
+	 /yZPOidUeQ3qp/t7t87u2eigX2Bfe9eVE4z4sllw=
+Subject: FAILED: patch "[PATCH] ksmbd: validate inherited ACE SID length" failed to apply to 5.15-stable tree
+To: s@zaizen.me,linkinjeon@kernel.org,stfrench@microsoft.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 14 May 2026 15:19:56 +0200
+Message-ID: <2026051456-designing-crewless-2d89@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260514-nvme-apple-sq-reset-v2-1-84cbb5c70bf5@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ6CMBBFr0Jm7RhaqFZW3sOwQPzCJECxJY2Gc
- HcrB3D5XvLfXynACwJV2UoeUYK4KYE+ZNT2zdSB5ZGYdK5PuVElT3EEN/M8gMOLPQIWNgW0hrX
- t+Z5TWs4eT3nv1VuduJewOP/ZT6L62f+9qFixvRQKpTHaKly7sZHh2LqR6m3bvmtHeGy2AAAA
-X-Change-ID: 20260514-nvme-apple-sq-reset-53e22e88c7b0
-To: Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>, 
- Neal Gompa <neal@gompa.dev>, Keith Busch <kbusch@kernel.org>, 
- Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, 
- Sagi Grimberg <sagi@grimberg.me>
-Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Yuriy Havrylyuk <yhavry@gmail.com>, 
- Nick Chan <towinchenmi@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1204; i=towinchenmi@gmail.com;
- h=from:subject:message-id; bh=jl08X3NCLgmcZoiX/JRkZFjNthe8bvfBiVgfd+XVW5g=;
- b=owEBbQKS/ZANAwAKAQHKCLemxQgkAcsmYgBqBcsvQUZgV7lMIoBJkU6SplIAUQALX59m3rswM
- Ju0qI6zlQ6JAjMEAAEKAB0WIQRLUnh4XJes95w8aIMBygi3psUIJAUCagXLLwAKCRABygi3psUI
- JN8JEACwOZAPoKWuJZMLfBID3QAgWkZEOfVVIl1hXXM5d17MAF1zrTZA8DDoNnOxJJhQJiRsOlp
- +QA8rVCZkVF2d3eukmBADzOGA2sLHHgzFHdHsMiC1TzaVmyOyHlosVYQ4QpCOrntfYn8Ief+kf1
- dU2C8V6wfmrP69rmjJWBOxIWG/ITq2+A+PgNZFJw8rvIYw7EmdvudX8Ad+9YnsgyRlsTUEBg1zE
- SPe4LTeH1C9DL0SFhyCuAOsQ3YGr7L0E923wAgUPYmUzmATooVEhyGVouKE0p80jPPTSWjkTq+2
- sIBrK9qlOFgLaWFxUgYP6/Y2R6NFal9KSyn9nQtcuc+JrnbXisbX2XRYRnW4T3zIFqBPJeIwaBr
- HEKQfto0SI0mOrxyueKQsge5FMYjDF5noX0ZqsOmPs9j9yJOI2lAk0PBlAa2trKC3NL1Giz5XuV
- 6pyftpibUZeTTMDlCKryZCaa7P2htuazpMHGUktU6f3mlGDXKPXLu2KW5kZwRovQFlp6HaMR9/1
- 4q+WnDsfn8R3j0qo7VGd1uXtbS4gAGtOJHimc54QP82uq/92L8GUEQu2THl1jhNTbPmZ0XSD1Qq
- JE32qAW2gU2Bskqmit3QUg9ywWgIG/qsW0aqk+BVCKXsASJL2YkOZxQQP1YuKftd/zp6yR95cvp
- 29qFsWAWPK+XS6Q==
-X-Developer-Key: i=towinchenmi@gmail.com; a=openpgp;
- fpr=4B5278785C97ACF79C3C688301CA08B7A6C50824
-X-Rspamd-Queue-Id: 776F65422A8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 09D4454249A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,lists.infradead.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-247203-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[towinchenmi@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-247204-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,zaizen.me:email]
 X-Rspamd-Action: no action
 
-Fixes a "duplicate tag error for tag 0" firmware crash during controller
-reset while setting up the admin queue on Apple A11 / T8015.
 
-Fixes: 04d8ecf37b5e ("nvme: apple: Add Apple A11 support")
-Cc: stable@vger.kernel.org
-Suggested-by: Yuriy Havrylyuk <yhavry@gmail.com>
-Signed-off-by: Nick Chan <towinchenmi@gmail.com>
----
-Changes in v2:
-- Cc stable
-- Details on how controller reset is fixed
-- Link to v1: https://lore.kernel.org/r/20260514-nvme-apple-sq-reset-v1-1-8931e455281e@gmail.com
----
- drivers/nvme/host/apple.c | 1 +
- 1 file changed, 1 insertion(+)
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/drivers/nvme/host/apple.c b/drivers/nvme/host/apple.c
-index 423c9c628e7b..c692fc73babf 100644
---- a/drivers/nvme/host/apple.c
-+++ b/drivers/nvme/host/apple.c
-@@ -1009,6 +1009,7 @@ static void apple_nvme_init_queue(struct apple_nvme_queue *q)
- 	unsigned int depth = apple_nvme_queue_depth(q);
- 	struct apple_nvme *anv = queue_to_apple_nvme(q);
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 996454bc0da84d5a1dedb1a7861823087e01a7ae
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051456-designing-crewless-2d89@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 996454bc0da84d5a1dedb1a7861823087e01a7ae Mon Sep 17 00:00:00 2001
+From: Shota Zaizen <s@zaizen.me>
+Date: Tue, 28 Apr 2026 19:02:55 +0900
+Subject: [PATCH] ksmbd: validate inherited ACE SID length
+
+smb_inherit_dacl() walks the parent directory DACL loaded from the
+security descriptor xattr. It verifies that each ACE contains the fixed
+SID header before using it, but does not verify that the variable-length
+SID described by sid.num_subauth is fully contained in the ACE.
+
+A malformed inheritable ACE can advertise more subauthorities than are
+present in the ACE. compare_sids() may then read past the ACE.
+smb_set_ace() also clamps the copied destination SID, but used the
+unchecked source SID count to compute the inherited ACE size. That could
+advance the temporary inherited ACE buffer pointer and nt_size accounting
+past the allocated buffer.
+
+Fix this by validating the parent ACE SID count and SID length before
+using the SID during inheritance. Compute the inherited ACE size from the
+copied SID so the size matches the bounded destination SID. Reject the
+inherited DACL if size accumulation would overflow smb_acl.size or the
+security descriptor allocation size.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Signed-off-by: Shota Zaizen <s@zaizen.me>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
+index 4bbc2c27e680..c1d1f34581d6 100644
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1068,7 +1068,26 @@ static void smb_set_ace(struct smb_ace *ace, const struct smb_sid *sid, u8 type,
+ 	ace->flags = flags;
+ 	ace->access_req = access_req;
+ 	smb_copy_sid(&ace->sid, sid);
+-	ace->size = cpu_to_le16(1 + 1 + 2 + 4 + 1 + 1 + 6 + (sid->num_subauth * 4));
++	ace->size = cpu_to_le16(1 + 1 + 2 + 4 + 1 + 1 + 6 +
++				(ace->sid.num_subauth * 4));
++}
++
++static int smb_append_inherited_ace(struct smb_ace **ace, int *nt_size,
++				    u16 *ace_cnt, const struct smb_sid *sid,
++				    u8 type, u8 flags, __le32 access_req)
++{
++	int ace_size;
++
++	smb_set_ace(*ace, sid, type, flags, access_req);
++	ace_size = le16_to_cpu((*ace)->size);
++	/* pdacl->size is __le16 and includes struct smb_acl. */
++	if (check_add_overflow(*nt_size, ace_size, nt_size) ||
++	    *nt_size > U16_MAX - (int)sizeof(struct smb_acl))
++		return -EINVAL;
++
++	(*ace_cnt)++;
++	*ace = (struct smb_ace *)((char *)*ace + ace_size);
++	return 0;
+ }
  
-+	q->sq_tail = 0;
- 	q->cq_head = 0;
- 	q->cq_phase = 1;
- 	if (anv->hw->has_lsq_nvmmu)
-
----
-base-commit: 5d6919055dec134de3c40167a490f33c74c12581
-change-id: 20260514-nvme-apple-sq-reset-53e22e88c7b0
-
-Best regards,
--- 
-Nick Chan <towinchenmi@gmail.com>
+ int smb_inherit_dacl(struct ksmbd_conn *conn,
+@@ -1157,6 +1176,12 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 				CIFS_SID_BASE_SIZE)
+ 			break;
+ 
++		if (parent_aces->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
++		    pace_size < offsetof(struct smb_ace, sid) +
++				CIFS_SID_BASE_SIZE +
++				sizeof(__le32) * parent_aces->sid.num_subauth)
++			break;
++
+ 		aces_size -= pace_size;
+ 
+ 		flags = parent_aces->flags;
+@@ -1186,22 +1211,24 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 		}
+ 
+ 		if (is_dir && creator && flags & CONTAINER_INHERIT_ACE) {
+-			smb_set_ace(aces, psid, parent_aces->type, inherited_flags,
+-				    parent_aces->access_req);
+-			nt_size += le16_to_cpu(aces->size);
+-			ace_cnt++;
+-			aces = (struct smb_ace *)((char *)aces + le16_to_cpu(aces->size));
++			rc = smb_append_inherited_ace(&aces, &nt_size, &ace_cnt,
++						      psid, parent_aces->type,
++						      inherited_flags,
++						      parent_aces->access_req);
++			if (rc)
++				goto free_aces_base;
+ 			flags |= INHERIT_ONLY_ACE;
+ 			psid = creator;
+ 		} else if (is_dir && !(parent_aces->flags & NO_PROPAGATE_INHERIT_ACE)) {
+ 			psid = &parent_aces->sid;
+ 		}
+ 
+-		smb_set_ace(aces, psid, parent_aces->type, flags | inherited_flags,
+-			    parent_aces->access_req);
+-		nt_size += le16_to_cpu(aces->size);
+-		aces = (struct smb_ace *)((char *)aces + le16_to_cpu(aces->size));
+-		ace_cnt++;
++		rc = smb_append_inherited_ace(&aces, &nt_size, &ace_cnt, psid,
++					      parent_aces->type,
++					      flags | inherited_flags,
++					      parent_aces->access_req);
++		if (rc)
++			goto free_aces_base;
+ pass:
+ 		parent_aces = (struct smb_ace *)((char *)parent_aces + pace_size);
+ 	}
+@@ -1211,7 +1238,7 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 		struct smb_acl *pdacl;
+ 		struct smb_sid *powner_sid = NULL, *pgroup_sid = NULL;
+ 		int powner_sid_size = 0, pgroup_sid_size = 0, pntsd_size;
+-		int pntsd_alloc_size;
++		size_t pntsd_alloc_size;
+ 
+ 		if (parent_pntsd->osidoffset) {
+ 			powner_sid = (struct smb_sid *)((char *)parent_pntsd +
+@@ -1224,8 +1251,19 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 			pgroup_sid_size = 1 + 1 + 6 + (pgroup_sid->num_subauth * 4);
+ 		}
+ 
+-		pntsd_alloc_size = sizeof(struct smb_ntsd) + powner_sid_size +
+-			pgroup_sid_size + sizeof(struct smb_acl) + nt_size;
++		if (check_add_overflow(sizeof(struct smb_ntsd),
++				       (size_t)powner_sid_size,
++				       &pntsd_alloc_size) ||
++		    check_add_overflow(pntsd_alloc_size,
++				       (size_t)pgroup_sid_size,
++				       &pntsd_alloc_size) ||
++		    check_add_overflow(pntsd_alloc_size, sizeof(struct smb_acl),
++				       &pntsd_alloc_size) ||
++		    check_add_overflow(pntsd_alloc_size, (size_t)nt_size,
++				       &pntsd_alloc_size)) {
++			rc = -EINVAL;
++			goto free_aces_base;
++		}
+ 
+ 		pntsd = kzalloc(pntsd_alloc_size, KSMBD_DEFAULT_GFP);
+ 		if (!pntsd) {
 
 
