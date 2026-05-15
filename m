@@ -1,162 +1,242 @@
-Return-Path: <stable+bounces-247834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EI/6C7U8B2ottwIAu9opvQ
-	(envelope-from <stable+bounces-247834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:33:09 +0200
+	id IONaGps7B2ottwIAu9opvQ
+	(envelope-from <stable+bounces-247825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:28:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8B35522F6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:33:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094D65521FF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29BF1303A8C8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:32:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6EEDA3009F43
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A72F4ADDB2;
-	Fri, 15 May 2026 15:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC3C49550E;
+	Fri, 15 May 2026 15:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="SdU+snal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DstDY0an"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD642C326F;
-	Fri, 15 May 2026 15:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315DE3FE670
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 15:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778859128; cv=none; b=fDsV1bvf2RglLxKANvJ1F0kCfkDirGwqZjsHWIxArLvpcvM05ZwRY4bGNz+vAguDYfF6DIeIBVeWvHC4AogJZkHX660SzTNOXGxBzoZxk1bu2D5dhJAO/c4TIsxls+dYdsM87KCYCwo3/lf6ZhRALBQQtYnbUt/McVp/QqnvMrE=
+	t=1778858905; cv=none; b=UDFbno/pUPOKaa+1tTRxtPzS/n/b+UgzClYM/nDBky7SAkm3xz7J3inZDlIWc1IdN3a0jmIBgpFG/W2g3NKA1bkEkNk1g04ut/RgN6WIiT4J26T85s09maaLTMGTDYnEZOj6NSYQjm6sxnhOZxRLMFDH2CUEorzNkY/rFRyp5S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778859128; c=relaxed/simple;
-	bh=5Gxq9yMynSwJdjKd88FkdCTSrogJTTVnTUWClcg9h4M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dACnFbYa3+1DMC6SWTWDHI5x0vLIEJ9Q2ArcKZkAzkZE5Adipgd/mtKfIUT/rbT/jt7XliQnIM+wHDfql871bdjQs9sokwyGG1nPoZFBqQ74qt5tJZRDMIe2yFFKBc03LYRpxjB9KWLg1dNh6sfb+uk3UqkmcnWjNTcc6+GdhZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=SdU+snal; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3e998b3a5;
-	Fri, 15 May 2026 23:26:45 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: kernel-list@raspberrypi.com
-Cc: mchehab@kernel.org,
-	linux-media@vger.kernel.org,
-	florian.fainelli@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	rjui@broadcom.com,
-	sbranden@broadcom.com,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH] media: bcm2835-unicam: fix dummy buffer double free when register fails
-Date: Fri, 15 May 2026 23:25:29 +0800
-Message-Id: <20260515152529.1007540-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1778858905; c=relaxed/simple;
+	bh=m/vAsjy+7c9OKOsfRl/fgWoItiU200r13XnOBRdohUE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Z1s/6p7rKSpmsyyjk6KMmxHnLe2hZZ74OERgcmqxF5QAp8bJcOWrcUAdGL9wZId5+2b0I6s5TfWJlKKj7ONkT/LM5asQj03uZ16cChSCvQfkJ52/TPcF9xD5JOo88ITqGpODColviMWrOHqeDSA/hJNh6B+5MxIR9sJU0kU9WRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DstDY0an; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F4AC2BCB0;
+	Fri, 15 May 2026 15:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778858904;
+	bh=m/vAsjy+7c9OKOsfRl/fgWoItiU200r13XnOBRdohUE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=DstDY0anZLYUoOgXOK3NYWA9HqzUnZzaZFmd2U2mfNk2moV0Jfo5B76JBvsxByCZR
+	 DgodzukMjO68st9W0SesFEh+YGd1N09WA9Ymb0QgaujLm0Iyny4i+cVaab/KyByqBY
+	 eO5fsy4k1zDtRElJcWrTGhivo2azlhuS/ghCYYYU=
+Subject: FAILED: patch "[PATCH] pseries/papr-hvpipe: Fix null ptr deref in" failed to apply to 6.18-stable tree
+To: ritesh.list@gmail.com,haren@linux.ibm.com,maddy@linux.ibm.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 15 May 2026 17:28:29 +0200
+Message-ID: <2026051529-salami-uncouple-7bcf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e2c3f470303a2kunm2a038511b5e75
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCHkwdVhkYSkIdGBhNQ0JPH1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
-	5DQ1VKS0tVS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=SdU+snalX6XbTgzVHEGABfiY0lcMHjp4/bBOPoOgQd6bkyf96v58DGrzuruV5vUDAEOeOOz1D+5NBOIEcbF2iKpX0+W5ijw4T4v1mxRsse9ULURc2xPkjKAmPxWCotldo1ThZGNEGl4YVk+kwUo2EvwtOPGLzfnKoJYF0tWSArM=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=FL2Ht1pJWO26wflxEZyGX/gD0cNb1r33NP2jdahxIPE=;
-	h=date:mime-version:subject:message-id:from;
-X-Rspamd-Queue-Id: 8B8B35522F6
+X-Rspamd-Queue-Id: 094D65521FF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247834-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-247825-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,linux.ibm.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:dkim]
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-unicam_register_node() allocates node->dummy_buf_cpu_addr before
-registering the video device. If video_register_device() fails, the
-error path frees the dummy buffer but leaves the pointer unchanged.
-unicam_async_complete() then unwinds the partial setup through
-unicam_unregister_nodes(), which sees the stale non-NULL pointer and
-frees the same buffer again.
 
-Set dummy_buf_cpu_addr to NULL after dma_free_coherent() in both the
-local error path and unicam_unregister_nodes() so later cleanup skips
-already released buffers.
+The patch below does not apply to the 6.18-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc3.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Runtime validation was not attempted because reproducing this failure
-path requires fault injection in a hardware-specific driver.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git checkout FETCH_HEAD
+git cherry-pick -x 1b9f7aafa44f5ce852c00509104d10fd9eb0f402
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051529-salami-uncouple-7bcf@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
-Fixes: 392cd78d495f ("media: bcm2835-unicam: Add support for CCP2/CSI2 camera interface")
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 1b9f7aafa44f5ce852c00509104d10fd9eb0f402 Mon Sep 17 00:00:00 2001
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Date: Fri, 1 May 2026 09:41:42 +0530
+Subject: [PATCH] pseries/papr-hvpipe: Fix null ptr deref in
+ papr_hvpipe_dev_create_handle()
+
+commit 6d3789d347a7 ("papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()"),
+changed the create handle to FD_PREPARE(), but it caused kernel
+null-ptr-deref because after call to retain_and_null_ptr(src_info),
+src_info is re-used for adding it to the global list.
+
+Getting the following kernel panic in papr_hvpipe_dev_create_handle()
+when trying to add src_info to the list.
+ Kernel attempted to write user page (0) - exploit attempt? (uid: 0)
+ BUG: Kernel NULL pointer dereference on write at 0x00000000
+ Faulting instruction address: 0xc0000000001b44a0
+ Oops: Kernel access of bad area, sig: 11 [#1]
+ ...
+ Call Trace:
+ papr_hvpipe_dev_ioctl+0x1f4/0x48c (unreliable)
+ sys_ioctl+0x528/0x1064
+ system_call_exception+0x128/0x360
+ system_call_vectored_common+0x15c/0x2ec
+
+Now, the error handling with FD_PREPARE's file cleanup and __free(kfree) auto
+cleanup is getting too convoluted. This is mainly because we need to
+ensure only 1 user get the srcID handle. To simplify this, we allocate
+prepare the src_info in the beginning and add it to the global list
+under a spinlock after checking that no duplicates exist.
+
+This simplify the error handling where if the FD_ADD fails, we can
+simply remove the src_info from the list and consume any pending msg in
+hvpipe to be cleared, after src_info became visible in the global list.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
----
- drivers/media/platform/broadcom/bcm2835-unicam.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Fixes: 6d3789d347a7 ("papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()")
+Reported-by: Haren Myneni <haren@linux.ibm.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/31ad94bc89d44156ee700c5bd006cb47a748e3cb.1777606826.git.ritesh.list@gmail.com
 
-diff --git a/drivers/media/platform/broadcom/bcm2835-unicam.c b/drivers/media/platform/broadcom/bcm2835-unicam.c
-index 8d28ba0b59a3..94c80601c50d 100644
---- a/drivers/media/platform/broadcom/bcm2835-unicam.c
-+++ b/drivers/media/platform/broadcom/bcm2835-unicam.c
-@@ -2360,6 +2360,7 @@ static int unicam_register_node(struct unicam_device *unicam,
- 	dma_free_coherent(unicam->dev, node->dummy_buf.size,
- 			  node->dummy_buf_cpu_addr,
- 			  node->dummy_buf.dma_addr);
-+	node->dummy_buf_cpu_addr = NULL;
- err_entity_cleanup:
- 	media_entity_cleanup(&vdev->entity);
- err_unicam_put:
-@@ -2379,10 +2380,12 @@ static void unicam_unregister_nodes(struct unicam_device *unicam)
- 			node->registered = false;
- 		}
+diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+index 3392874ebdf6..402781299497 100644
+--- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
++++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+@@ -480,23 +480,10 @@ static const struct file_operations papr_hvpipe_handle_ops = {
  
--		if (node->dummy_buf_cpu_addr)
-+		if (node->dummy_buf_cpu_addr) {
- 			dma_free_coherent(unicam->dev, node->dummy_buf.size,
- 					  node->dummy_buf_cpu_addr,
- 					  node->dummy_buf.dma_addr);
-+			node->dummy_buf_cpu_addr = NULL;
-+		}
+ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ {
+-	struct hvpipe_source_info *src_info __free(kfree) = NULL;
++	struct hvpipe_source_info *src_info;
++	int fd;
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+-	/*
+-	 * Do not allow more than one process communicates with
+-	 * each source.
+-	 */
+-	src_info = hvpipe_find_source(srcID);
+-	if (src_info) {
+-		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+-		pr_err("pid(%d) is already using the source(%d)\n",
+-				src_info->tsk->pid, srcID);
+-		return -EALREADY;
+-	}
+-	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+-
+ 	src_info = kzalloc_obj(*src_info, GFP_KERNEL_ACCOUNT);
+ 	if (!src_info)
+ 		return -ENOMEM;
+@@ -505,26 +492,42 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ 	src_info->tsk = current;
+ 	init_waitqueue_head(&src_info->recv_wqh);
+ 
+-	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
+-		   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
+-				      (void *)src_info, O_RDWR));
+-	if (fdf.err)
+-		return fdf.err;
+-
+-	retain_and_null_ptr(src_info);
+-	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+ 	/*
+-	 * If two processes are executing ioctl() for the same
+-	 * source ID concurrently, prevent the second process to
+-	 * acquire FD.
++	 * Do not allow more than one process communicates with
++	 * each source.
+ 	 */
++	spin_lock_irqsave(&hvpipe_src_list_lock, flags);
+ 	if (hvpipe_find_source(srcID)) {
+ 		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
++		pr_err("pid(%d) could not get the source(%d)\n",
++				src_info->tsk->pid, srcID);
++		kfree(src_info);
+ 		return -EALREADY;
  	}
+ 	list_add(&src_info->list, &hvpipe_src_list);
+ 	spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
+-	return fd_publish(fdf);
++
++	fd = FD_ADD(O_RDONLY | O_CLOEXEC,
++		   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
++				      (void *)src_info, O_RDWR));
++	if (fd < 0) {
++		spin_lock_irqsave(&hvpipe_src_list_lock, flags);
++		list_del(&src_info->list);
++		spin_unlock_irqrestore(&hvpipe_src_list_lock, flags);
++		/*
++		 * if we fail to add FD, that means no userspace program is
++		 * polling. In that case if there is a msg pending because the
++		 * interrupt was fired after the src_info was added to the
++		 * global list, then let's consume it here, to unblock the
++		 * hvpipe
++		 */
++		if (src_info->hvpipe_status & HVPIPE_MSG_AVAILABLE)
++			hvpipe_rtas_recv_msg(NULL, 0);
++		kfree(src_info);
++		return fd;
++	}
++
++	return fd;
  }
  
--- 
-2.34.1
+ /*
 
 
