@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248710-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHIlKX1KB2rqwgIAu9opvQ
-	(envelope-from <stable+bounces-247849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:57 +0200
+	id UDPsMD9PB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248710-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DF6553583
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B95D5540FD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C81A30B1F60
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:50:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 42B0830EE507
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FDB63FF1D5;
-	Fri, 15 May 2026 15:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6875A4E379F;
+	Fri, 15 May 2026 16:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5KKk7Du"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="we5nlg9U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0994C3FF1A2;
-	Fri, 15 May 2026 15:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4783F927A;
+	Fri, 15 May 2026 16:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860229; cv=none; b=QinnUrTMIErJZxZ+B7YgcDI3A/dBek1QRlnQai24G5ZWp0c9sMtEMlHnNYEbMMoVDwKwb9WiRwDKPxDebrSHZKbGdvinDiyOBlRjZaYg1kDpPsa/oFaeQFqOp7Iiwc7asOeenSmfyaPoHN0hAqDcziZxU9GyigVX2wLY3RRcxW8=
+	t=1778862430; cv=none; b=C/jGIuvH4Nlx6ZvS7lZUXdMXvAAd6NPgpIibK6kqef+Lb/UIbwDNvHrZIdGCeNFC4KEg5PpDna4ke0pezCUKz7r1vyIHfW8dNyNQMb9i3eO83XdrhKZoX5LZbWckFaoO7lWpm1Vox/F5YI8FXUKSkSyeeA612QiqMrLUDRlyOFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860229; c=relaxed/simple;
-	bh=uwElOG6D3kbAPL0o7PLf5JEOSv6Qoozz0osDeGa6C+A=;
+	s=arc-20240116; t=1778862430; c=relaxed/simple;
+	bh=Vh0ogmnOzRiOXJDmfsf26WgCOGeOcqHP0ga2pGuNt2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K977iMRN2bSNOYIK4yFGjlVCwRh0WB66IfSZDjMf+CMdzRv1zgWScJ0uMoEHMy4z/S5CgB1eCuwxKhi5xeY8zS6q41rtIdV8G/DuVURZZNsvywA9aAxogu4Mr8N5itTZJwojjtZ0rVaIoqocug+UlRw4yM840bnc3CJxy93Fdhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5KKk7Du; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67267C2BCB0;
-	Fri, 15 May 2026 15:50:28 +0000 (UTC)
+	 MIME-Version; b=fiPywHpVwn6tr95ekdlWaQA3Mrr9TwhWwEFK87eGOgaTY0YawuAjBdAvS69kdAB6U3xsTZ95PxMYU4om206qtvEltTrUVp10jWAgmohHLO6un52Y1u4fnNv18IGH+qiT9rLGHxaxPxf1Jyr2io6gvv3Kehsz3YY6bE8Sda2O7eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=we5nlg9U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FD0C2BCB0;
+	Fri, 15 May 2026 16:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860228;
-	bh=uwElOG6D3kbAPL0o7PLf5JEOSv6Qoozz0osDeGa6C+A=;
+	s=korg; t=1778862430;
+	bh=Vh0ogmnOzRiOXJDmfsf26WgCOGeOcqHP0ga2pGuNt2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5KKk7DueT0HudMmHuJJwqmS2v3jySq/r/Hs9iVk67pR6e8Ia1qgM/WgV5X3qLMn8
-	 4c7X6S65AM1Wzct/GSDKlpfiK8DYIqnwyhRFYYL76Q2d5LlitpWj3QR0ZNthMyFL5C
-	 yMIat2/yNG6j//X62hrC8D4VnApwLEpVauy8zLr8=
+	b=we5nlg9U7+UfnkOMFh4jI7AK5oxC2kqhMf5Fdz9kLizX4K3PXdo1VZAA81qszxrn/
+	 yim+zlwAEbdvqPD45CV0ef3/HmTEqiN524VeXKpeYp/gn0M1kIHmCVDW7YCow+TpeG
+	 yDBbZ3ITpX9F/RwfUgLGq9uvrUJ75d7EozvEQD4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyu Jin <xingyuj@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 001/144] HID: playstation: Clamp num_touch_reports
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 009/201] media: rzv2h-ivc: Avoid double job scheduling
 Date: Fri, 15 May 2026 17:47:07 +0200
-Message-ID: <20260515154653.508245430@linuxfoundation.org>
+Message-ID: <20260515154658.739059883@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +64,116 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 22DF6553583
+X-Rspamd-Queue-Id: 6B95D5540FD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248710-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247849-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,renesas,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ideasonboard.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T.J. Mercier <tjmercier@google.com>
+From: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
 
-commit cac61b58a3b6340c52afa06bb15eac033158db2f upstream.
+commit b1de0940a19c1b0001425f8069d6a82369986af7 upstream.
 
-A device would never lie about the number of touch reports would it?
+The scheduling of a new buffer transfer in the IVC driver is triggered
+by two occurrences of the "frame completed" interrupt.
 
-If it does the loop in dualshock4_parse_report will read off the end of
-the touch_reports array, up to about 2 KiB for the maximum number of 256
-loop iteraions. The data that is read is emitted via evdev if the
-DS4_TOUCH_POINT_INACTIVE bit happens to be set. Protect against this by
-clamping the num_touch_reports value provided by the device to the
-maximum size of the touch_reports array.
+The first interrupt occurrence identifies when all image data have been
+transferred to the ISP, the second occurrence identifies when the
+post-transfer VBLANK has completed and a new buffer can be transferred.
 
-Fixes: 752038248808 ("HID: playstation: add DualShock4 touchpad support.")
+Under heavy system load conditions the actual execution of the workqueue
+item might be delayed and two items might happen to run concurrently,
+leading to a new frame transfer being triggered while the previous one
+has not yet finished.
+
+This error condition is only visible because the driver maintains a
+status variable that counts the number of interrupts since the last
+transfer, and warns in case an IRQ happens before the counter has been
+reset.
+
+To ensure sequential execution of the worqueue items and avoid a double
+buffer transfer to run concurrently, protect the whole function body
+with the spinlock that so far was solely used to reset the counter and
+inspect the interrupt counter variable at the beginning of the buffer
+transfer function.
+
+As soon as the ongoing transfer completes, the workqueue item will be
+re-scheduled and will consume the pending buffer.
+
 Cc: stable@vger.kernel.org
-Reported-by: Xingyu Jin <xingyuj@google.com>
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-playstation.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/hid/hid-playstation.c
-+++ b/drivers/hid/hid-playstation.c
-@@ -2248,7 +2248,8 @@ static int dualshock4_parse_report(struc
- 		struct dualshock4_input_report_usb *usb = (struct dualshock4_input_report_usb *)data;
+--- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
++++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+@@ -149,6 +149,11 @@ static void rzv2h_ivc_transfer_buffer(st
+ 					     buffers.work);
+ 	struct rzv2h_ivc_buf *buf;
  
- 		ds4_report = &usb->common;
--		num_touch_reports = usb->num_touch_reports;
-+		num_touch_reports = min_t(u8, usb->num_touch_reports,
-+					  ARRAY_SIZE(usb->touch_reports));
- 		touch_reports = usb->touch_reports;
- 	} else if (hdev->bus == BUS_BLUETOOTH && report->id == DS4_INPUT_REPORT_BT &&
- 			size == DS4_INPUT_REPORT_BT_SIZE) {
-@@ -2262,7 +2263,8 @@ static int dualshock4_parse_report(struc
- 		}
++	guard(spinlock_irqsave)(&ivc->spinlock);
++
++	if (ivc->vvalid_ifp)
++		return;
++
+ 	/* Setup buffers */
+ 	scoped_guard(spinlock_irqsave, &ivc->buffers.lock) {
+ 		buf = list_first_entry_or_null(&ivc->buffers.queue,
+@@ -164,9 +169,7 @@ static void rzv2h_ivc_transfer_buffer(st
+ 	buf->addr = vb2_dma_contig_plane_dma_addr(&buf->vb.vb2_buf, 0);
+ 	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_AXIRX_SADDL_P0, buf->addr);
  
- 		ds4_report = &bt->common;
--		num_touch_reports = bt->num_touch_reports;
-+		num_touch_reports = min_t(u8, bt->num_touch_reports,
-+					  ARRAY_SIZE(bt->touch_reports));
- 		touch_reports = bt->touch_reports;
- 	} else if (hdev->bus == BUS_BLUETOOTH &&
- 		   report->id == DS4_INPUT_REPORT_BT_MINIMAL &&
+-	scoped_guard(spinlock_irqsave, &ivc->spinlock) {
+-		ivc->vvalid_ifp = 2;
+-	}
++	ivc->vvalid_ifp = 2;
+ 	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_FM_FRCON, 0x1);
+ }
+ 
+@@ -201,7 +204,7 @@ static void rzv2h_ivc_buf_queue(struct v
+ 	}
+ 
+ 	scoped_guard(spinlock_irq, &ivc->spinlock) {
+-		if (vb2_is_streaming(vb->vb2_queue) && !ivc->vvalid_ifp)
++		if (vb2_is_streaming(vb->vb2_queue))
+ 			queue_work(ivc->buffers.async_wq, &ivc->buffers.work);
+ 	}
+ }
 
 
 
