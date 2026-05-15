@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-248052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMLOBD9HB2p6wAIAu9opvQ
-	(envelope-from <stable+bounces-248052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:18:07 +0200
+	id 6PTCFEJHB2r6wAIAu9opvQ
+	(envelope-from <stable+bounces-248053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:18:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D0C552F90
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:18:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13A1552FA4
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F5C930F65FF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:59:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F4D132DD0D6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DAC305671;
-	Fri, 15 May 2026 15:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CE5305670;
+	Fri, 15 May 2026 15:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBJuxFFn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByGbOkje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEED17C220;
-	Fri, 15 May 2026 15:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D7117C220;
+	Fri, 15 May 2026 15:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860746; cv=none; b=TjrZVvz5GVyCK1C6JHSke0W2csehuUNQ+qUPykYxf3jcQd2uaXaGnIHuIOBnKJqjHmkvxA2DwZDIjWG0mDFPbefZVCAW8AYQE6yXxMUOBgWTKEZSyadnp3C3No2ruHCB/WsZiO69Llc7fLvJR28CdkWux8mt8RO0iakTPX5LWzw=
+	t=1778860748; cv=none; b=XIX4sRV41h/OqovJm+J/4wRdUrKrwhNmHMIIRmpqHo72RnQA4YHCbr5zp7mHjGRvgQQrlyqrAw5+ldwEin2QAi8lvcsPeVUMLKJHOaXozpXYIjx/sNzSNopwDsvnFVdMe9RVtYbpWyPcp/AQQ5l4/7yzt9JF+RLpStj1CB7/nAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860746; c=relaxed/simple;
-	bh=0V97S2SmNu9bBzNPhAMix1UCDp8PbyCipe/fyYAU7RY=;
+	s=arc-20240116; t=1778860748; c=relaxed/simple;
+	bh=TvswIyeqfr7FodICTSjpZydcwFhocXNXtTE6fhficCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WmK2hd9QXiVzsRgbI80rfvynxR69Rk+l/JDpblsLbxFr8ClHY4S7HxJHWnJZtrZvv83x5NGu+bB8qv/ZelSJYH+vxJxuBb7pIQ1b1j4FhDZjLdUCqH7Cohx4eI8ddLvCmYLzGdAP6aNdG41MJ9UvsxgCzwT5yXV0lqS+qvuOBmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBJuxFFn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A63C2BCB0;
-	Fri, 15 May 2026 15:59:05 +0000 (UTC)
+	 MIME-Version; b=lSyGN0gnGsodNlQIEsGycC+gBNQvW71aSn+rfb9T2Dp2wIfizBHpc3AFKfTm/fmSHC73vRySgoIxgiWR4eEfafJLtM73DezzSm5DZP3JTTlPaDGBvxIOTxtPS5lJHiOnfENGcct7SHNSf5wXeUUb24wi5s6ThWGOj7UOI3CFHL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByGbOkje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E955C2BCC7;
+	Fri, 15 May 2026 15:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860746;
-	bh=0V97S2SmNu9bBzNPhAMix1UCDp8PbyCipe/fyYAU7RY=;
+	s=korg; t=1778860748;
+	bh=TvswIyeqfr7FodICTSjpZydcwFhocXNXtTE6fhficCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBJuxFFnFn7lFKMpkoWPBZw06UgQe4/fdknSEnaAoVolBFAZ7x/HtowRtxBgJ6sx7
-	 /D7tJ2Dd5W5mTJiOGlPiiP2B3QuM0fBeDXon2RL/vGFNCVLNJT/GROAaeHqvI7xUZ6
-	 Rk9/pTgiMsVCst4mk2ba4cvxt3I9ftNxRY9LpBVc=
+	b=ByGbOkjeE6q8i89DO7EhZRpuA6PZxL0f53UYhLhHqWqsQAasrg06DUJoNq/QEXjmI
+	 wELS7CK7VpgIZfcTIUKT4G9xQeoV8USJBW3xrsfl7zCI/mx/isaXmgVCc+1Nof+oHC
+	 8MjqIQDePISurx3Dz39MtrA0J7hvNYT5yI8m8hEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 061/474] ALSA: 6fire: Fix input volume change detection
-Date: Fri, 15 May 2026 17:42:50 +0200
-Message-ID: <20260515154716.363861136@linuxfoundation.org>
+Subject: [PATCH 6.6 062/474] ALSA: pcmtest: fix reference leak on failed device registration
+Date: Fri, 15 May 2026 17:42:51 +0200
+Message-ID: <20260515154716.384625692@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -62,93 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 98D0C552F90
+X-Rspamd-Queue-Id: C13A1552FA4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248052-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248053-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit dc88eef8f55e85e92d016cdf7e291f5560efd79b upstream.
+commit 4ff036f95238f02c87e5d7c0a9d93748582a8950 upstream.
 
-usb6fire_control_input_vol_put() stores the analog capture volume
-as a signed offset in rt->input_vol[] (-15..+15), but it compares
-the cached value against the user-visible mixer value (0..30)
-before subtracting 15.
+When platform_device_register() fails in mod_init(), the embedded struct
+device in pcmtst_pdev has already been initialized by
+device_initialize(), but the failure path returns the error without
+dropping the device reference for the current platform device:
 
-This mixes two domains in the change detection path. Since the
-runtime is zero-initialized, the visible default is 15; writing 0
-right after probe is ignored, while writing 15 is reported as a
-change even though the cached value remains 0.
+  mod_init()
+    -> platform_device_register(&pcmtst_pdev)
+       -> device_initialize(&pcmtst_pdev.dev)
+       -> setup_pdev_dma_masks(&pcmtst_pdev)
+       -> platform_device_add(&pcmtst_pdev)
 
-Normalize the user value before comparing it with the cached offset.
+This leads to a reference leak when platform_device_register() fails.
+Fix this by calling platform_device_put() before returning the error.
 
-Fixes: 06bb4e743501 ("ALSA: snd-usb-6fire: add analog input volume control")
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
+
+Fixes: 315a3d57c64c5 ("ALSA: Implement the new Virtual PCM Test Driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260416-alsa-6fire-input-volume-change-detection-v1-1-ec78299168df@gmail.com
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260415193138.3861297-1-lgs201920130244@gmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/6fire/control.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ sound/drivers/pcmtest.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/usb/6fire/control.c
-+++ b/sound/usb/6fire/control.c
-@@ -290,15 +290,17 @@ static int usb6fire_control_input_vol_pu
- 		struct snd_ctl_elem_value *ucontrol)
- {
- 	struct control_runtime *rt = snd_kcontrol_chip(kcontrol);
-+	int vol0 = ucontrol->value.integer.value[0] - 15;
-+	int vol1 = ucontrol->value.integer.value[1] - 15;
- 	int changed = 0;
- 
--	if (rt->input_vol[0] != ucontrol->value.integer.value[0]) {
--		rt->input_vol[0] = ucontrol->value.integer.value[0] - 15;
-+	if (rt->input_vol[0] != vol0) {
-+		rt->input_vol[0] = vol0;
- 		rt->ivol_updated &= ~(1 << 0);
- 		changed = 1;
- 	}
--	if (rt->input_vol[1] != ucontrol->value.integer.value[1]) {
--		rt->input_vol[1] = ucontrol->value.integer.value[1] - 15;
-+	if (rt->input_vol[1] != vol1) {
-+		rt->input_vol[1] = vol1;
- 		rt->ivol_updated &= ~(1 << 1);
- 		changed = 1;
- 	}
+--- a/sound/drivers/pcmtest.c
++++ b/sound/drivers/pcmtest.c
+@@ -755,8 +755,10 @@ static int __init mod_init(void)
+ 	if (err)
+ 		return err;
+ 	err = platform_device_register(&pcmtst_pdev);
+-	if (err)
++	if (err) {
++		platform_device_put(&pcmtst_pdev);
+ 		return err;
++	}
+ 	err = platform_driver_register(&pcmtst_pdrv);
+ 	if (err)
+ 		platform_device_unregister(&pcmtst_pdev);
 
 
 
