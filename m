@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLw9JTBXB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:08 +0200
+	id aMnUDTNUB2oqywIAu9opvQ
+	(envelope-from <stable+bounces-248748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:13:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD7C555019
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B88315549FB
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:13:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CEFE8336C038
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 13AB83064661
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E5A20297C;
-	Fri, 15 May 2026 16:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447CA3E00A0;
+	Fri, 15 May 2026 16:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8L727f4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtdmUKXE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1332609EE;
-	Fri, 15 May 2026 16:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CC13E7BCC;
+	Fri, 15 May 2026 16:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862028; cv=none; b=jLpPxIGCVNrpL1UGVlA3nJIaP0NXUR5+gJKJb8o5wmfxlwM1uEcFPpxlTm7mgTSTfwRphAKCla6+HzJ72t2j05nC/hG3BEQ+ZkAEpqhkcTcJAi8mYPulS46k3cM2pKzYHf3dvc117lAQ/vLMRLucr258cVHe8RWER34sg/6O/9Q=
+	t=1778862529; cv=none; b=HH9jyUP8mVTbreZ13+kKvNhyHBXLQ4mJvOMU9nVffdl3GoPu2I7OfPMVl1qMpu1tEOFPKmxmkHK61VTRXHVepzg40fDDJkEDB0evD4d03vnHEBdpCb1JDrNA+2mu8XxnrfJYVZGemro4KJXYAluLT+4d/Zsg01W3fuBoAMZN/zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862028; c=relaxed/simple;
-	bh=+YaCQQ2YP6UCTX0GA7iQX4Y+hYPG2SA0UvspnngKhw4=;
+	s=arc-20240116; t=1778862529; c=relaxed/simple;
+	bh=TRzWPFvVAYLE4St4IDrpOPBKL+tLo7z95KDB9L9DidI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djO+PcZWk5LAxol7OrvKBhE+iw1q71pjkWcKttf3NRcMcv9A7ji09yAblZP25fN9iM0W+vN3eVpLw/6gphR2WD/qAx9v+HEoFAFldeoEWmKlwXfSYY1K4RRHpEYZGuWdjqz66VDFpp5cso29rnzOu54BcixJ4pbryVKLoRou2ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8L727f4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A34C2BCB0;
-	Fri, 15 May 2026 16:20:27 +0000 (UTC)
+	 MIME-Version; b=qNvtE+N1Vv7wykxnoevSWOCuKn7why8Kiy1/tHJ0EOUdah8My+fxAMOWD9XqOg4DuB1FtXgh1RpMLmJizloZHSX9zoFuyY5ttZ6m/vZZLtSNmqyAnEuhhThpo7XotfMLl/PWrNkuRfLpT/rNTT+IuRKkdd2CLffaSh/Z5tzCmYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtdmUKXE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92183C2BCB0;
+	Fri, 15 May 2026 16:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862028;
-	bh=+YaCQQ2YP6UCTX0GA7iQX4Y+hYPG2SA0UvspnngKhw4=;
+	s=korg; t=1778862528;
+	bh=TRzWPFvVAYLE4St4IDrpOPBKL+tLo7z95KDB9L9DidI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I8L727f4wxc7HUlMq+5Ep9I5hMl2oIGl20zxn0BjyhYwLC49PICpSkpCTcCnTuJh4
-	 UwDXFHdgmPW0+/l0eu/UPFuCJk2xH7YubKkpzAvTcyAEcWvdbpZMn3FJPWcWnvV+wO
-	 6kUOVsdWgGb568mRLQUqpiNxS/o7d2JG1NWiTaqY=
+	b=DtdmUKXEhHcT+58s6iqjMsMo5uLhEvsUDlzC5pbm7Sz6EdnJ5RFQaz1546+UoUnw3
+	 7s7Tf+hAKVOLjTmSBV7y3L8YiBWcUboOmSTlrqcTTjCwjbhxd8BqAbw8K4AaC9SzbN
+	 YS2I+VxauElVPWVthA2cHgElY/g9lqjbBYS4OXS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 081/188] spi: rspi: fix controller deregistration
-Date: Fri, 15 May 2026 17:48:18 +0200
-Message-ID: <20260515154659.077153839@linuxfoundation.org>
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 081/201] media: qcom: camss: Add missing clocks for VFE lite on sa8775p
+Date: Fri, 15 May 2026 17:48:19 +0200
+Message-ID: <20260515154700.286354520@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +65,168 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1DD7C555019
+X-Rspamd-Queue-Id: B88315549FB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248554-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248748-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samsung.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
 
-commit 9944fa6726afb1e6eb7e2212764e7da0c97f2dcc upstream.
+commit d31fac47b39f5e1ed85a587688ca70b793e421b4 upstream.
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+Add missing required clocks (cpas_ahb and camnoc_axi) for VFE lite
+instances on sa8775p platform. These clocks are necessary for proper
+VFE lite operation:
 
-Fixes: 9e03d05eee4c ("spi: rcar: Use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.14
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-11-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+Fixes: e7b59e1d06fb ("media: qcom: camss: Add support for VFE 690")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-rspi.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/camss/camss.c |   40 ++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 15 deletions(-)
 
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -1171,8 +1171,14 @@ static void rspi_remove(struct platform_
- {
- 	struct rspi_data *rspi = platform_get_drvdata(pdev);
- 
-+	spi_controller_get(rspi->ctlr);
-+
-+	spi_unregister_controller(rspi->ctlr);
-+
- 	rspi_release_dma(rspi->ctlr);
- 	pm_runtime_disable(&pdev->dev);
-+
-+	spi_controller_put(rspi->ctlr);
- }
- 
- static const struct spi_ops rspi_ops = {
-@@ -1377,9 +1383,9 @@ static int rspi_probe(struct platform_de
- 	if (ret < 0)
- 		dev_warn(&pdev->dev, "DMA not available, using PIO\n");
- 
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret < 0) {
--		dev_err(&pdev->dev, "devm_spi_register_controller error.\n");
-+		dev_err(&pdev->dev, "failed to register controller\n");
- 		goto error3;
- 	}
- 
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -3742,15 +3742,17 @@ static const struct camss_subdev_resourc
+ 	/* VFE2 (lite) */
+ 	{
+ 		.regulators = {},
+-		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
++		.clock = { "cpas_ahb", "cpas_vfe_lite", "vfe_lite_ahb",
+ 			   "vfe_lite_csid", "vfe_lite_cphy_rx",
+-			   "vfe_lite"},
++			   "vfe_lite", "camnoc_axi"},
+ 		.clock_rate = {
+-			{ 0, 0, 0, 0  },
++			{ 0 },
++			{ 0 },
+ 			{ 300000000, 400000000, 400000000, 400000000 },
+ 			{ 400000000, 400000000, 400000000, 400000000 },
+ 			{ 400000000, 400000000, 400000000, 400000000 },
+ 			{ 480000000, 600000000, 600000000, 600000000 },
++			{ 400000000 },
+ 		},
+ 		.reg = { "vfe_lite0" },
+ 		.interrupt = { "vfe_lite0" },
+@@ -3765,15 +3767,17 @@ static const struct camss_subdev_resourc
+ 	/* VFE3 (lite) */
+ 	{
+ 		.regulators = {},
+-		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
++		.clock = { "cpas_ahb", "cpas_vfe_lite", "vfe_lite_ahb",
+ 			   "vfe_lite_csid", "vfe_lite_cphy_rx",
+-			   "vfe_lite"},
++			   "vfe_lite", "camnoc_axi"},
+ 		.clock_rate = {
+-			{ 0, 0, 0, 0  },
++			{ 0 },
++			{ 0 },
+ 			{ 300000000, 400000000, 400000000, 400000000 },
+ 			{ 400000000, 400000000, 400000000, 400000000 },
+ 			{ 400000000, 400000000, 400000000, 400000000 },
+ 			{ 480000000, 600000000, 600000000, 600000000 },
++			{ 400000000 },
+ 		},
+ 		.reg = { "vfe_lite1" },
+ 		.interrupt = { "vfe_lite1" },
+@@ -3788,15 +3792,17 @@ static const struct camss_subdev_resourc
+ 	/* VFE4 (lite) */
+ 	{
+ 		.regulators = {},
+-		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
++		.clock = { "cpas_ahb", "cpas_vfe_lite", "vfe_lite_ahb",
+ 			   "vfe_lite_csid", "vfe_lite_cphy_rx",
+-			   "vfe_lite"},
++			   "vfe_lite", "camnoc_axi"},
+ 		.clock_rate = {
+-			{ 0, 0, 0, 0  },
++			{ 0 },
++			{ 0 },
+ 			{ 300000000, 400000000, 400000000, 400000000 },
+ 			{ 400000000, 400000000, 400000000, 400000000 },
+ 			{ 400000000, 400000000, 400000000, 400000000 },
+ 			{ 480000000, 600000000, 600000000, 600000000 },
++			{ 400000000 },
+ 		},
+ 		.reg = { "vfe_lite2" },
+ 		.interrupt = { "vfe_lite2" },
+@@ -3811,15 +3817,17 @@ static const struct camss_subdev_resourc
+ 	/* VFE5 (lite) */
+ 	{
+ 		.regulators = {},
+-		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
++		.clock = { "cpas_ahb", "cpas_vfe_lite", "vfe_lite_ahb",
+ 			   "vfe_lite_csid", "vfe_lite_cphy_rx",
+-			   "vfe_lite"},
++			   "vfe_lite", "camnoc_axi"},
+ 		.clock_rate = {
+-			{ 0, 0, 0, 0  },
++			{ 0 },
++			{ 0 },
+ 			{ 300000000, 400000000, 400000000, 400000000 },
+ 			{ 400000000, 400000000, 400000000, 400000000 },
+ 			{ 400000000, 400000000, 400000000, 400000000 },
+ 			{ 480000000, 600000000, 600000000, 600000000 },
++			{ 400000000 },
+ 		},
+ 		.reg = { "vfe_lite3" },
+ 		.interrupt = { "vfe_lite3" },
+@@ -3834,15 +3842,17 @@ static const struct camss_subdev_resourc
+ 	/* VFE6 (lite) */
+ 	{
+ 		.regulators = {},
+-		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
++		.clock = { "cpas_ahb", "cpas_vfe_lite", "vfe_lite_ahb",
+ 			   "vfe_lite_csid", "vfe_lite_cphy_rx",
+-			   "vfe_lite"},
++			   "vfe_lite", "camnoc_axi"},
+ 		.clock_rate = {
+-			{ 0, 0, 0, 0  },
++			{ 0 },
++			{ 0 },
+ 			{ 300000000, 400000000, 400000000, 400000000 },
+ 			{ 400000000, 400000000, 400000000, 400000000 },
+ 			{ 400000000, 400000000, 400000000, 400000000 },
+ 			{ 480000000, 600000000, 600000000, 600000000 },
++			{ 400000000 },
+ 		},
+ 		.reg = { "vfe_lite4" },
+ 		.interrupt = { "vfe_lite4" },
 
 
 
