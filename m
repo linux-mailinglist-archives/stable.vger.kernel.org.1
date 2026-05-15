@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOnEL61OB2p3xwIAu9opvQ
-	(envelope-from <stable+bounces-248522-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:49 +0200
+	id 4HnjIThaB2qzzwIAu9opvQ
+	(envelope-from <stable+bounces-248753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:39:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58285553FC3
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15AD4555607
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E23053351E31
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 727FF34848B5
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41B64963B0;
-	Fri, 15 May 2026 16:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD5B4C043A;
+	Fri, 15 May 2026 16:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BBRynbq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StgnkUxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A5D48C8BE;
-	Fri, 15 May 2026 16:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C275A3E7BCC;
+	Fri, 15 May 2026 16:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861944; cv=none; b=XzR/Lcz9kp/iOqx/Xqu/0Jt9aASr4//BK1X+1M8M7kWiY3B2yhNd76Dq+Bdy8Zy/Ofpq37uNBof3Xpi/3A1wN9IHPhGSgM02uM+z1p+VsLXABZY/p1lpNpHD1lYICiumXVPt6WO0IyMH2heViAdcx2mUtfEHWzOHB8WCt0EvptM=
+	t=1778862541; cv=none; b=G+8IErJTlzGbmv0I7NVQVYAc51KroylzZ+7G3ZItQ7Ln1Ai5pY7rO3exbY4KokZ5oSJE/+0EYjFIwFJhmtxomAGcLURt5q6dIaeZz8arzU1OL4N7RWgmYqQ0olXCnAEldFmt8vgtFAYgwmUL0HK+rPRHQRJPiwp1Xlsc4HJwsrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861944; c=relaxed/simple;
-	bh=sjiIvNU8hvcP63FRuk2/Hf49j7yEx1/xRXitfss440M=;
+	s=arc-20240116; t=1778862541; c=relaxed/simple;
+	bh=I0lRYFMmNE2EyTYHhdHjSp28tSyED8uV5OYorEJDb3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JyZ8rJSkWCp2NtZa3XkNkyCUvnSVX/jCfU0TLQDZVU+GUaMYIq55u5lBPtciOmJtZGtwo/yAIjzl4/les4qquJJMH2mPVHnBKqaBPTTKq+Rk0bSgi0tVehxb9MBqVD9c0CAAe0KnIFPs3cYgB60H5whEJWawaUhHa51eE3A0syw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BBRynbq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F0DC2BCB3;
-	Fri, 15 May 2026 16:19:04 +0000 (UTC)
+	 MIME-Version; b=N4zPKg+twHwI27Kg4pcibYFjyQL3uQOcFTfNNtVVLNWz+zlleGcSrQU52rU0FnqT0bxrFkMPJxv3FUbKfv18S/XGhvpU18sxquNyj+wr+L4OH6vPiFXcYHu4PuS8z/uHmZanMZesLczeMgXCbkvCkFVz+69BJUg2G680YxsvKBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StgnkUxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52496C2BCB0;
+	Fri, 15 May 2026 16:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861944;
-	bh=sjiIvNU8hvcP63FRuk2/Hf49j7yEx1/xRXitfss440M=;
+	s=korg; t=1778862541;
+	bh=I0lRYFMmNE2EyTYHhdHjSp28tSyED8uV5OYorEJDb3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BBRynbqfh9IanQvIHX24/saaKg51ojjXg7A4LRK6SghxwnvhWcOphOMItLnHa92j
-	 Hp1idhC+8+ev9b3uzV8CVH1RCWtVwnniSUOh1320z9DjQp97q6DgPQnkJOIkfjcB8k
-	 kmWiCWFftQORtr5vOO91+UkOXfS/lARaEB0bq6YE=
+	b=StgnkUxbKhrX8JKfs4b2DR+AN5fX6Kb4Heas94K3uxOG0ZCo7Cb3x5Cc1P+HpNGEx
+	 Ogbd2MA9H0dvLIV8v/0CLoYPbBfillAOnlGTw7yJWWd7KzSBijqwIL9B3jZlZkd7WV
+	 QzXKGY/cas8Xin66yVaIdkxmZgDT4W1ZZeipBIw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregor Herburger <gregor.herburger@linutronix.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Rasmus Villemoes <ravi@prevas.dk>
-Subject: [PATCH 6.18 047/188] arm64: dts: broadcom: bcm2712-d-rpi-5-b: update uart10 interrupt
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 7.0 046/201] media: i2c: imx283: Fix hang when going from large to small resolution
 Date: Fri, 15 May 2026 17:47:44 +0200
-Message-ID: <20260515154658.337368542@linuxfoundation.org>
+Message-ID: <20260515154659.531876322@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +65,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 58285553FC3
+X-Rspamd-Queue-Id: 15AD4555607
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248522-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248753-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linutronix.de:email,prevas.dk:email]
+	TAGGED_RCPT(0.00)[stable,huawei];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregor Herburger <gregor.herburger@linutronix.de>
+From: Jai Luthra <jai.luthra@ideasonboard.com>
 
-commit 18d4a06e10051681de074a9250e54afc1f3ee312 upstream.
+commit 9206359b2c396ff594adf39bc7daaadab0fcb367 upstream.
 
-On the -d revision of bcm2712 the uart interrupt is on 120. Update it
-accordingly.
+When switching between modes (e.g. full resolution to binned),
+standby_cancel() previously cleared XMSTA (starting master mode data
+output) before the new mode's MDSEL, crop, and timing registers were
+programmed in start_streaming(). This caused the sensor to briefly
+output MIPI data using the previous mode's configuration.
 
-Signed-off-by: Gregor Herburger <gregor.herburger@linutronix.de>
-Link: https://lore.kernel.org/r/20260226-raspi-dts-updates-v1-6-60832d20ff04@linutronix.de
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Rasmus Villemoes <ravi@prevas.dk>
+On receivers like imx-mipi-csis, this leads to FIFO overflow errors
+when switching from a higher to a lower resolution, as the receiver is
+configured for the new smaller frame size but receives stale
+full-resolution data.
+
+Fix this by moving the XMSTA and SYNCDRV register writes from
+standby_cancel() to the end of start_streaming(), after all mode,
+crop, and timing registers have been configured. Also explicitly stop
+master mode (XMSTA=1) when stopping the stream, matching the pattern
+used by other Sony sensor drivers (imx290, imx415).
+
+Use named macros IMX283_XMSTA_START/STOP instead of raw 0/BIT(0) for
+readability.
+
+Cc: stable@vger.kernel.org
+Fixes: ccb4eb4496fa ("media: i2c: Add imx283 camera sensor driver")
+Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Tested-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/broadcom/bcm2712-d-rpi-5-b.dts |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/i2c/imx283.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/boot/dts/broadcom/bcm2712-d-rpi-5-b.dts
-+++ b/arch/arm64/boot/dts/broadcom/bcm2712-d-rpi-5-b.dts
-@@ -45,3 +45,7 @@
- 	compatible = "brcm,bcm2712d0-aon-pinctrl";
- 	reg = <0x7d510700 0x1c>;
- };
+--- a/drivers/media/i2c/imx283.c
++++ b/drivers/media/i2c/imx283.c
+@@ -129,7 +129,8 @@
+ 
+ /* Master Mode Operation Control */
+ #define IMX283_REG_XMSTA		CCI_REG8(0x3105)
+-#define   IMX283_XMSTA			BIT(0)
++#define   IMX283_XMSTA_START		0
++#define   IMX283_XMSTA_STOP		BIT(0)
+ 
+ #define IMX283_REG_SYNCDRV		CCI_REG8(0x3107)
+ #define   IMX283_SYNCDRV_XHS_XVS	(0xa0 | 0x02)
+@@ -1023,8 +1024,6 @@ static int imx283_standby_cancel(struct
+ 	usleep_range(19000, 20000);
+ 
+ 	cci_write(imx283->cci, IMX283_REG_CLAMP, IMX283_CLPSQRST, &ret);
+-	cci_write(imx283->cci, IMX283_REG_XMSTA, 0, &ret);
+-	cci_write(imx283->cci, IMX283_REG_SYNCDRV, IMX283_SYNCDRV_XHS_XVS, &ret);
+ 
+ 	return ret;
+ }
+@@ -1117,6 +1116,10 @@ static int imx283_start_streaming(struct
+ 	/* Apply customized values from controls (HMAX/VMAX/SHR) */
+ 	ret =  __v4l2_ctrl_handler_setup(imx283->sd.ctrl_handler);
+ 
++	/* Start master mode */
++	cci_write(imx283->cci, IMX283_REG_XMSTA, IMX283_XMSTA_START, &ret);
++	cci_write(imx283->cci, IMX283_REG_SYNCDRV, IMX283_SYNCDRV_XHS_XVS, &ret);
 +
-+&uart10 {
-+	interrupts = <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>;
-+};
+ 	return ret;
+ }
+ 
+@@ -1153,12 +1156,14 @@ static int imx283_disable_streams(struct
+ 				  u64 streams_mask)
+ {
+ 	struct imx283 *imx283 = to_imx283(sd);
+-	int ret;
++	int ret = 0;
+ 
+ 	if (pad != IMAGE_PAD)
+ 		return -EINVAL;
+ 
+-	ret = cci_write(imx283->cci, IMX283_REG_STANDBY, IMX283_STANDBY, NULL);
++	cci_write(imx283->cci, IMX283_REG_XMSTA, IMX283_XMSTA_STOP, &ret);
++	cci_write(imx283->cci, IMX283_REG_STANDBY, IMX283_STANDBY, &ret);
++
+ 	if (ret)
+ 		dev_err(imx283->dev, "Failed to stop stream\n");
+ 
 
 
 
