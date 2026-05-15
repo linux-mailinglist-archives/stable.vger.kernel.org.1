@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-248335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248290-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OnHNaBVB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:28 +0200
+	id qHTPGNVNB2rAxgIAu9opvQ
+	(envelope-from <stable+bounces-248290-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D22554D2F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3AE1553E08
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7621031A05AF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B975D310F661
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B869A3E008B;
-	Fri, 15 May 2026 16:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF3C3FD95C;
+	Fri, 15 May 2026 16:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqe8FN62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRqo8USw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8D530568A;
-	Fri, 15 May 2026 16:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDC13FD94B;
+	Fri, 15 May 2026 16:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861470; cv=none; b=epqbaqXAjDl77m9c9/iqADXc3TkTM/vf50+ukKosO0Mhn4PJCEOd4inmw1zed8ie+yA9tppWICDkFkxqnluisxApSHQ3TdgvmiFfDKnnIreIoVtXZ7Pd42c7CK4LcWoz+MHFwo91Ibdvb38NL9Q/AcOQkAIDr2YuVuPhDvBnK38=
+	t=1778861356; cv=none; b=QcPCnSmReV4f0BZ8+FqZyJc10PHA7UDLJHCK3D/EXOzM1gbMKMaPbV7cLVbxfQxeLAGxJ8zwfacKHAsRzzZuTFdGg1TdZDTWc1d5MkxA34BuAIBqKpXgaEdwlbviiePzdGM8iEvpbN29uKQPG9W0Mz+OWfwZtpSL2hqageBbuMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861470; c=relaxed/simple;
-	bh=45bGw0tzXu190AbsTWr0tzZ5nFh9+O3m5Gq4h2gKxVU=;
+	s=arc-20240116; t=1778861356; c=relaxed/simple;
+	bh=mucZ4Pf5mVvDwXtiQb9e0lLI7SwELleZyddSm6x5zHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CKxAp1y0RzBLvn0wJIys0AeOor0UFtTDTvpNi9T/tq/roBM2MK0A/KNo7zx5uTKay3Sq9gm23wdBOOQgZhUGjvtMwKYGySJcmcgXR6SJxR4mrl0Z1EiWDj7MbKikrM/AwKhffLRV0VgzOvs7C9k2h3XG0oF88gh1Bwd9HtifbkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqe8FN62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F53DC2BCB0;
-	Fri, 15 May 2026 16:11:09 +0000 (UTC)
+	 MIME-Version; b=S+FQaM43yKNGS7yM19dGfaGlAKZEicciLdz7UAew0kOh9J6AjD1gd8HxEpfhgsdp9QePGWjDVlKbxemfjKxVS0dxpqk0X7Bb9zEAoyEqWQUdna65dovpGTGB0c9atiChrSNbXIYkUKpLzOaYLvmkALsyCaCkz+jkCD4ozzF4/TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRqo8USw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87B1C2BCB0;
+	Fri, 15 May 2026 16:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861470;
-	bh=45bGw0tzXu190AbsTWr0tzZ5nFh9+O3m5Gq4h2gKxVU=;
+	s=korg; t=1778861356;
+	bh=mucZ4Pf5mVvDwXtiQb9e0lLI7SwELleZyddSm6x5zHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqe8FN629csB1j3WiY6Q82JfBbhjhp9+PKQrxZd1qceKiF2obmaPCiu4G3LDSuoUR
-	 Zk8Zig3gSpsmh1+UEUv1jN92gWwf8D+jl7aqJCoA1YvL0hSiNITMOwFjJUxLiz45o5
-	 VlsaPvC0sUT2bZl7lcIS2uQIEebtOfmrDR8S93T8=
+	b=xRqo8USwa71ujFTQaFebuV01V66KMkX03pZ9p1Zm8H/h60dNFVDKzoqgcVKGtCvIX
+	 6ihFMHBjaFJn5LROEp2w70JM29Q56JQ+77eDcbJGLaaV4+VxG2/B8YwqIPnIbdlcxM
+	 gvbBMGPSY8ceor00M+lZuanAB7GeLqQYaX7rIaI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yongpeng Yang <yangyongpeng@xiaomi.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 289/474] f2fs: fix fiemap boundary handling when read extent cache is incomplete
-Date: Fri, 15 May 2026 17:46:38 +0200
-Message-ID: <20260515154721.253438745@linuxfoundation.org>
+Subject: [PATCH 6.6 290/474] f2fs: fix incorrect multidevice info in trace_f2fs_map_blocks()
+Date: Fri, 15 May 2026 17:46:39 +0200
+Message-ID: <20260515154721.275899407@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -64,36 +64,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 51D22554D2F
+X-Rspamd-Queue-Id: C3AE1553E08
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248335-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248290-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
@@ -102,95 +102,37 @@ X-Rspamd-Action: no action
 
 From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-commit 95e159ad3e52f7478cfd22e44ec37c9f334f8993 upstream.
+commit eb2ca3ca983551a80e16a4a25df5a4ce59df8484 upstream.
 
-f2fs_fiemap() calls f2fs_map_blocks() to obtain the block mapping a
-file, and then merges contiguous mappings into extents. If the mapping
-is found in the read extent cache, node blocks do not need to be read.
-However, in the following scenario, a contiguous extent can be split
-into two extents:
+When f2fs_map_blocks()->f2fs_map_blocks_cached() hits the read extent
+cache, map->m_multidev_dio is not updated, which leads to incorrect
+multidevice information being reported by trace_f2fs_map_blocks().
 
-$ dd if=/dev/zero of=data.128M bs=1M count=128
-$ losetup -f data.128M
-$ mkfs.f2fs /dev/loop0 -f
-$ mount -o mode=lfs /dev/loop0 /mnt/f2fs/
-$ cd /mnt/f2fs/
-$ dd if=/dev/zero of=data.72M bs=1M count=72 && sync
-$ dd if=/dev/zero of=data.4M bs=1M count=4 && sync
-$ dd if=/dev/zero of=data.4M bs=1M count=2 seek=2 conv=notrunc && sync
-$ echo 3 > /proc/sys/vm/drop_caches
-$ dd if=/dev/zero of=data.4M bs=1M count=2 seek=0 conv=notrunc && sync
-$ dd if=/dev/zero of=data.4M bs=1M count=2 seek=0 conv=notrunc && sync
-$ f2fs_io fiemap 0 1024 data.4M
-Fiemap: offset = 0 len = 1024
-logical addr.    physical addr.   length           flags
-0	0000000000000000 0000000006400000 0000000000200000 00001000
-1	0000000000200000 0000000006600000 0000000000200000 00001001
-
-Although the physical addresses of the ranges 0～2MB and 2M～4MB are
-contiguous, the mapping for the 2M～4MB range is not present in memory.
-When the physical addresses for the 0～2MB range are updated, no merge
-happens because the adjacent mapping is missing from the in-memory
-cache. As a result, fiemap reports two separate extents instead of a
-single contiguous one.
-
-The root cause is that the read extent cache does not guarantee that all
-blocks of an extent are present in memory. Therefore, when the extent
-length returned by f2fs_map_blocks_cached() is smaller than maxblocks,
-the remaining mappings are retrieved via f2fs_get_dnode_of_data() to
-ensure correct fiemap extent boundary handling.
+This patch updates map->m_multidev_dio in f2fs_map_blocks_cached() when
+the read extent cache is hit.
 
 Cc: stable@kernel.org
-Fixes: cd8fc5226bef ("f2fs: remove the create argument to f2fs_map_blocks")
+Fixes: 0094e98bd147 ("f2fs: factor a f2fs_map_blocks_cached helper")
 Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
 Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ fs/f2fs/data.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 --- a/fs/f2fs/data.c
 +++ b/fs/f2fs/data.c
-@@ -1543,8 +1543,26 @@ int f2fs_map_blocks(struct inode *inode,
- 	if (!maxblocks)
- 		return 0;
+@@ -1507,7 +1507,8 @@ static bool f2fs_map_blocks_cached(struc
+ 		f2fs_wait_on_block_writeback_range(inode,
+ 					map->m_pblk, map->m_len);
  
--	if (!map->m_may_create && f2fs_map_blocks_cached(inode, map, flag))
--		goto out;
-+	if (!map->m_may_create && f2fs_map_blocks_cached(inode, map, flag)) {
-+		struct extent_info ei;
-+
-+		/*
-+		 * 1. If map->m_multidev_dio is true, map->m_pblk cannot be
-+		 * waitted by f2fs_wait_on_block_writeback_range() and are not
-+		 * mergeable.
-+		 * 2. If pgofs hits the read extent cache, it means the mapping
-+		 * is already cached in the extent cache, but it is not
-+		 * mergeable, and there is no need to query the mapping again
-+		 * via f2fs_get_dnode_of_data().
-+		 */
-+		pgofs =	(pgoff_t)map->m_lblk + map->m_len;
-+		if (map->m_len == maxblocks ||
-+			map->m_multidev_dio ||
-+			f2fs_lookup_read_extent_cache(inode, pgofs, &ei))
-+			goto out;
-+		ofs = map->m_len;
-+		goto map_more;
-+	}
+-	if (f2fs_allow_multi_device_dio(sbi, flag)) {
++	map->m_multidev_dio = f2fs_allow_multi_device_dio(sbi, flag);
++	if (map->m_multidev_dio) {
+ 		int bidx = f2fs_target_device_index(sbi, map->m_pblk);
+ 		struct f2fs_dev_info *dev = &sbi->devs[bidx];
  
- 	map->m_bdev = inode->i_sb->s_bdev;
- 	map->m_multidev_dio =
-@@ -1555,7 +1573,8 @@ int f2fs_map_blocks(struct inode *inode,
- 
- 	/* it only supports block size == page size */
- 	pgofs =	(pgoff_t)map->m_lblk;
--	end = pgofs + maxblocks;
-+map_more:
-+	end = (pgoff_t)map->m_lblk + maxblocks;
- 
- next_dnode:
- 	if (map->m_may_create) {
 
 
 
