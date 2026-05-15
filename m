@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GB0ZL85WB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:24:30 +0200
+	id 6EscI+hXB2oozgIAu9opvQ
+	(envelope-from <stable+bounces-248637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BB0554F6D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC8A555172
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12FE233194C1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50C0D3137830
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33383BB68B;
-	Fri, 15 May 2026 16:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEF03E0094;
+	Fri, 15 May 2026 16:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFMf09sh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDWcLNDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66213B19DE;
-	Fri, 15 May 2026 16:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D9F3E7BDE;
+	Fri, 15 May 2026 16:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861829; cv=none; b=qVpZsCUNdYiTbZIWZnZSPcKVy/MGi2IsplDFi159edTOcGmJNlqfwZ407j7WS8wec6yTTSDBgGjIU44WeLtpXtlCdK40bP6dgTe/DRT9DF7no0rCfGCPOaf46YX7sJ3usz0QVBDyTuIwKDpItu0bPqWNndC8dUbv6e8000OtH78=
+	t=1778862243; cv=none; b=niTh75HtLGk0fPtoYsNzQdU4ZbKSeJ5nQUsdowD/WE0kh3X7pAO+zNLI5FwynI0WkdrMinFab/WTJ+w+ppcY3FhE5gbOhogyGrUwwEOphjxOAOiWn2Wv+Y880lUWnT4JTyddHwIRPqawCslzva1jZ7Vw9I/UFdU5VNlgc6bGr6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861829; c=relaxed/simple;
-	bh=D3wWN18aDf/IBhyyVjclfibuEfLVl43xGl+v3shyCAM=;
+	s=arc-20240116; t=1778862243; c=relaxed/simple;
+	bh=p1IqVW/mJwsLkZX2s0uhVkksFiqsPa/p8rbGQURJup0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XuBQSHdAOOwiquFm8sltcQ9+GcF0ELfNKPHm+wE4I4n3mYLpsYWj+3ndkqrWw2EnGfyDXyfL6tgIRD0P3gCIaYxPjV24M9z+HDHj4pucSpDC28ommd+FxHT7mz3QIL4kCZKlrecprBiJ6MiUEdRTG8hLhFtvkg1S2PqK6rdsD0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFMf09sh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED13C2BCB0;
-	Fri, 15 May 2026 16:17:09 +0000 (UTC)
+	 MIME-Version; b=VptgyrIG5mrHntN+MZ5LsF6llYI5xaIm7TyEk8zF2ZB0QuqvCAbyycm7Jhzwpxbl1f8wcHUucweXq0YDUjOMO+BHrvK/PTFf07aQFxzNyoPA5/M+66Tg4af7niYoNVkbpTK/SgezMtE98cUL/Ue14nPRO1lrBg72Yx42cLsRSvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDWcLNDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2540C2BCC9;
+	Fri, 15 May 2026 16:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861829;
-	bh=D3wWN18aDf/IBhyyVjclfibuEfLVl43xGl+v3shyCAM=;
+	s=korg; t=1778862243;
+	bh=p1IqVW/mJwsLkZX2s0uhVkksFiqsPa/p8rbGQURJup0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qFMf09shD9qDLBC39qYQuzafvsDN9AYcpXqlT7yPYqxdWWuYlkXOYAqOdq8gYIIRy
-	 GdruwaJPNps7FO54/dpSBakf4NCjTxjeeYDuH0O0gAz55Wc0/uggW1u6tRPJ3cqoD+
-	 2Mi6LGE1d3HI9x6DYqsKKG0IHczJ/QGylt24AkYs=
+	b=dDWcLNDe04EAUbnYYQWOxIkUObdhOmdAZW4yIIgcU5grC267qDxfb9ztuF7vwyvwT
+	 Xx8wGPuiBhZuIXts1iXSIHCFaEf8SJrI7XMLw8iBBBI43gC0b/8MKNHDhxROQRkiVJ
+	 wSPRF9SCNElWKLjbDk7qZk/Jc+Ibly/HFylXgrjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 472/474] crypto: nx - fix context leak in nx842_crypto_free_ctx
+	Jingoo Han <jg1.han@samsung.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 164/188] spi: tegra20-sflash: fix controller deregistration
 Date: Fri, 15 May 2026 17:49:41 +0200
-Message-ID: <20260515154725.318436695@linuxfoundation.org>
+Message-ID: <20260515154700.889642450@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 07BB0554F6D
+X-Rspamd-Queue-Id: 0EC8A555172
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -75,71 +76,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248637-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248477-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Johan Hovold <johan@kernel.org>
 
-commit 344e6a4f7ff4756b9b3f75e0eb7eaec297e35540 upstream.
+[ Upstream commit ad7310e983327f939dd6c4e801eab13238992572 ]
 
-Since the scomp conversion, nx842_crypto_alloc_ctx() allocates the
-context separately, but nx842_crypto_free_ctx() never releases it. Add
-the missing kfree(ctx) to nx842_crypto_free_ctx(), and reuse
-nx842_crypto_free_ctx() in the allocation error path.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Fixes: 980b5705f4e7 ("crypto: nx - Migrate to scomp API")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: f12f7318c44a ("spi: tegra20-sflash: use devm_spi_register_master()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Jingoo Han <jg1.han@samsung.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-23-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ kept the redundant `host->dev.of_node = pdev->dev.of_node;` line above the registration call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/nx/nx-842.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-tegra20-sflash.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/crypto/nx/nx-842.c
-+++ b/drivers/crypto/nx/nx-842.c
-@@ -115,10 +115,7 @@ void *nx842_crypto_alloc_ctx(struct nx84
- 	ctx->sbounce = (u8 *)__get_free_pages(GFP_KERNEL, BOUNCE_BUFFER_ORDER);
- 	ctx->dbounce = (u8 *)__get_free_pages(GFP_KERNEL, BOUNCE_BUFFER_ORDER);
- 	if (!ctx->wmem || !ctx->sbounce || !ctx->dbounce) {
--		kfree(ctx->wmem);
--		free_pages((unsigned long)ctx->sbounce, BOUNCE_BUFFER_ORDER);
--		free_pages((unsigned long)ctx->dbounce, BOUNCE_BUFFER_ORDER);
--		kfree(ctx);
-+		nx842_crypto_free_ctx(ctx);
- 		return ERR_PTR(-ENOMEM);
- 	}
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -506,7 +506,7 @@ static int tegra_sflash_probe(struct pla
+ 	pm_runtime_put(&pdev->dev);
  
-@@ -133,6 +130,7 @@ void nx842_crypto_free_ctx(void *p)
- 	kfree(ctx->wmem);
- 	free_pages((unsigned long)ctx->sbounce, BOUNCE_BUFFER_ORDER);
- 	free_pages((unsigned long)ctx->dbounce, BOUNCE_BUFFER_ORDER);
-+	kfree(ctx);
+ 	host->dev.of_node = pdev->dev.of_node;
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "can not register to host err %d\n", ret);
+ 		goto exit_pm_disable;
+@@ -529,11 +529,17 @@ static void tegra_sflash_remove(struct p
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct tegra_sflash_data	*tsd = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	free_irq(tsd->irq, tsd);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		tegra_sflash_runtime_suspend(&pdev->dev);
++
++	spi_controller_put(host);
  }
- EXPORT_SYMBOL_GPL(nx842_crypto_free_ctx);
  
+ #ifdef CONFIG_PM_SLEEP
 
 
 
