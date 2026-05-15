@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-248924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPoKGriRB2pU9AIAu9opvQ
-	(envelope-from <stable+bounces-248924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:35:52 +0200
+	id 6H+GAkOVB2pU9AIAu9opvQ
+	(envelope-from <stable+bounces-248925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:50:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C851B558350
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:35:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFBD55871B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:50:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B0E88300D92D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:35:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7D5463001860
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA8C3ECBC2;
-	Fri, 15 May 2026 21:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CF53EB801;
+	Fri, 15 May 2026 21:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UVcbd79L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8KtzRgQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8028231715A
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 21:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF5E364029
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 21:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778880941; cv=none; b=VOjX3Jkf8es6OM5P+Yyn5SJ71EW+mGtbzVY3OgTIEbkb2ZJnT+ZcDaCL2tEQvq7mZPLbd908otqu0OIh/SiOHI+qBHBeIppxpZnaioveGY3WNbYWGwDKdZZ7p0w1QD+neUo6EBOOCwvycSp89rYxDhk07CJTsqiY6idnr8QWUnM=
+	t=1778880962; cv=none; b=qLoLu093a/PVIITAnEVaDDCXDhnKkI/GligyUm6AEtyEYv+MHmmiCB+nb7UUVFS7z8M3qLTD2FgFx9P3VAKOszJrcXi2O+subSadocpIOnO+OVINrtIedZsEwXQNgYgAql8TKwt5+OzRzsVg887ByFFmCbdUVKcNq5xRrTFM+QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778880941; c=relaxed/simple;
-	bh=IsDMa616mloeXOg30c2CAKdWHCxfQOVcPx7jek35cng=;
+	s=arc-20240116; t=1778880962; c=relaxed/simple;
+	bh=sAIw8lBFGScqp5SIgE2i6oye2riLoz5xZBVfaP4yzc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LojpOGL6rrvHAFMSRDuWXC7r0UJACfVvBJCLw6H1lPvZjL1piNpnA+3fsXo/1FINpaYPqM23/QRTUo+BctLPe+clsykGU1D9UPLY8R3Dg89q4+6VFK3Tx0sSSm+9kG0WQ4D8Ah77YCdPouiDC8LdeZFdVAQnWgxB3gisJh+dwPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UVcbd79L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8693C2BCB0;
-	Fri, 15 May 2026 21:35:40 +0000 (UTC)
+	 MIME-Version; b=ff/hoZT+GNwdZ25OMmiTUqSmnZ0PvzG2PADTmOj9l2vpPVzvnqZTVSkALHvaa5AIdrJV0dVkcApL7J8dzQLvZfvfo1xvcJ+L4SHyjXae4Dls+fu55tOGmzve50Ea9ZjZN4dEWLaNvIuE2yjY8GeYdeG3zllKIR4X6cLI0UsM0lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8KtzRgQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7C0C2BCB0;
+	Fri, 15 May 2026 21:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778880941;
-	bh=IsDMa616mloeXOg30c2CAKdWHCxfQOVcPx7jek35cng=;
+	s=k20201202; t=1778880962;
+	bh=sAIw8lBFGScqp5SIgE2i6oye2riLoz5xZBVfaP4yzc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UVcbd79LFbOc6RP3OFLBWSSoZ/8epCgwsUv+G/beDfnMGL6cEKzL6OWQIE90FcG60
-	 jTsIzaKIdRae+M+456tXpbQ4CYfNjtVhMbXM4NvOywnn835VvyGVN8uje45Gk5tZ3g
-	 7Jp1MVGkZtMmFI6Sz5B8pj1YG5ZgqjZ4C1ENLedItKQU6O/YdWojinvmZFkuCrpdnQ
-	 S41LOOUde6B7+FC3wMESLjRHMyVKVszJYOiezs+kLI5zoeg47lhRBoVHR9rMAJfuOc
-	 zZJvWJARQXhO2BEiLWOGBZmqMc2IJSWlPB95eEwjz9Ym0kM3yh3rhObZInfjKIOxzE
-	 luK4xPqkFNQ+g==
+	b=S8KtzRgQtIeIq1m9Nt3DiXZ00QL486ssHm/259Cg/Xf7AV7rVI30kdCyj6SniiGuw
+	 8QM43ti8b3vYDRqrGa5PycStOFzPDXUPcRCweg6TOUrxFMVX5jlqQnecwlEKoUNcJj
+	 del5lNMBuPOLles6MudDfJiQ/+IYk8nBpYpQr1JTgn1o6oco9L9dq+dLduxBB2kcdm
+	 9dkiCHFCF+BucTdjfoCZA4iKmZED9+WQp6tJBaKlZbC8KOkiyb6brd53ldxlfYz/G5
+	 7j519e3nHkIFhVu3lV9TBSOSzfp/RZ8HpXREICUFkl66X4eJxy4dGICTofDvAsu+0W
+	 rGP//SLuxu9YQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+Cc: Michael Bommarito <michael.bommarito@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] pmdomain: core: Fix detach procedure for virtual devices in genpd
-Date: Fri, 15 May 2026 17:35:39 -0400
-Message-ID: <20260515213539.3512446-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] smb: client: validate dacloffset before building DACL pointers
+Date: Fri, 15 May 2026 17:36:00 -0400
+Message-ID: <20260515213600.3513360-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051203-humorist-scowling-5000@gregkh>
-References: <2026051203-humorist-scowling-5000@gregkh>
+In-Reply-To: <2026051249-grandson-underling-d82b@gregkh>
+References: <2026051249-grandson-underling-d82b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,104 +62,152 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C851B558350
+X-Rspamd-Queue-Id: 0BFBD55871B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248924-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248925-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 26735dfdd8930d9ef1fa92e590a9bf77726efdf6 ]
+[ Upstream commit f98b48151cc502ada59d9778f0112d21f2586ca3 ]
 
-If a device is attached to a PM domain through genpd_dev_pm_attach_by_id(),
-genpd calls pm_runtime_enable() for the corresponding virtual device that
-it registers. While this avoids boilerplate code in drivers, there is no
-corresponding call to pm_runtime_disable() in genpd_dev_pm_detach().
+parse_sec_desc(), build_sec_desc(), and the chown path in
+id_mode_to_cifs_acl() all add the server-supplied dacloffset to pntsd
+before proving a DACL header fits inside the returned security
+descriptor.
 
-This means these virtual devices are typically detached from its genpd,
-while runtime PM remains enabled for them, which is not how things are
-designed to work. In worst cases it may lead to critical errors, like a
-NULL pointer dereference bug in genpd_runtime_suspend(), which was recently
-reported. For another case, we may end up keeping an unnecessary vote for a
-performance state for the device.
+On 32-bit builds a malicious server can return dacloffset near
+U32_MAX, wrap the derived DACL pointer below end_of_acl, and then slip
+past the later pointer-based bounds checks. build_sec_desc() and
+id_mode_to_cifs_acl() can then dereference DACL fields from the wrapped
+pointer in the chmod/chown rewrite paths.
 
-To fix these problems, let's add this missing call to pm_runtime_disable()
-in genpd_dev_pm_detach().
+Validate dacloffset numerically before building any DACL pointer and
+reuse the same helper at the three DACL entry points.
 
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/all/CAMuHMdWapT40hV3c+CSBqFOW05aWcV1a6v_NiJYgoYi0i9_PDQ@mail.gmail.com/
-Fixes: 3c095f32a92b ("PM / Domains: Add support for multi PM domains per device to genpd")
+Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
 Cc: stable@vger.kernel.org
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-[ dropped upstream context block referencing nonexistent `default_pstate` field ]
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ renamed smb_ntsd/smb_acl structs to cifs_ntsd/cifs_acl and kept existing inline ACL size check instead of using missing validate_dacl() helper ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/domain.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/smb/client/cifsacl.c | 35 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
-index 7a76f0c53f545..e67040e1d3cd9 100644
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -2525,6 +2525,7 @@ static struct bus_type genpd_bus_type = {
- static void genpd_dev_pm_detach(struct device *dev, bool power_off)
- {
- 	struct generic_pm_domain *pd;
-+	bool is_virt_dev;
- 	unsigned int i;
- 	int ret = 0;
- 
-@@ -2534,6 +2535,13 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
- 
- 	dev_dbg(dev, "removing from PM domain %s\n", pd->name);
- 
-+	/* Check if the device was created by genpd at attach. */
-+	is_virt_dev = dev->bus == &genpd_bus_type;
-+
-+	/* Disable runtime PM if we enabled it at attach. */
-+	if (is_virt_dev)
-+		pm_runtime_disable(dev);
-+
- 	for (i = 1; i < GENPD_RETRY_MAX_MS; i <<= 1) {
- 		ret = genpd_remove_device(pd, dev);
- 		if (ret != -EAGAIN)
-@@ -2553,7 +2561,7 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
- 	genpd_queue_power_off_work(pd);
- 
- 	/* Unregister the device if it was created by genpd. */
--	if (dev->bus == &genpd_bus_type)
-+	if (is_virt_dev)
- 		device_unregister(dev);
+diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
+index a6c7566a01821..1707aaeecd551 100644
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -1183,6 +1183,17 @@ static int parse_sid(struct cifs_sid *psid, char *end_of_acl)
+ 	return 0;
  }
  
++static bool dacl_offset_valid(unsigned int acl_len, __u32 dacloffset)
++{
++	if (acl_len < sizeof(struct cifs_acl))
++		return false;
++
++	if (dacloffset < sizeof(struct cifs_ntsd))
++		return false;
++
++	return dacloffset <= acl_len - sizeof(struct cifs_acl);
++}
++
+ 
+ /* Convert CIFS ACL to POSIX form */
+ static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
+@@ -1203,7 +1214,6 @@ static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
+ 	group_sid_ptr = (struct cifs_sid *)((char *)pntsd +
+ 				le32_to_cpu(pntsd->gsidoffset));
+ 	dacloffset = le32_to_cpu(pntsd->dacloffset);
+-	dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
+ 	cifs_dbg(NOISY, "revision %d type 0x%x ooffset 0x%x goffset 0x%x sacloffset 0x%x dacloffset 0x%x\n",
+ 		 pntsd->revision, pntsd->type, le32_to_cpu(pntsd->osidoffset),
+ 		 le32_to_cpu(pntsd->gsidoffset),
+@@ -1234,11 +1244,18 @@ static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
+ 		return rc;
+ 	}
+ 
+-	if (dacloffset)
++	if (dacloffset) {
++		if (!dacl_offset_valid(acl_len, dacloffset)) {
++			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
++			return -EINVAL;
++		}
++
++		dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
+ 		parse_dacl(dacl_ptr, end_of_acl, owner_sid_ptr,
+ 			   group_sid_ptr, fattr, get_mode_from_special_sid);
+-	else
++	} else {
+ 		cifs_dbg(FYI, "no ACL\n"); /* BB grant all or default perms? */
++	}
+ 
+ 	return rc;
+ }
+@@ -1261,6 +1278,11 @@ static int build_sec_desc(struct cifs_ntsd *pntsd, struct cifs_ntsd *pnntsd,
+ 
+ 	dacloffset = le32_to_cpu(pntsd->dacloffset);
+ 	if (dacloffset) {
++		if (!dacl_offset_valid(secdesclen, dacloffset)) {
++			cifs_dbg(VFS, "Server returned illegal DACL offset\n");
++			return -EINVAL;
++		}
++
+ 		dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
+ 		if (end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size)) {
+ 			cifs_dbg(VFS, "Server returned illegal ACL size\n");
+@@ -1628,6 +1650,12 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
+ 		nsecdesclen = sizeof(struct cifs_ntsd) + (sizeof(struct cifs_sid) * 2);
+ 		dacloffset = le32_to_cpu(pntsd->dacloffset);
+ 		if (dacloffset) {
++			if (!dacl_offset_valid(secdesclen, dacloffset)) {
++				cifs_dbg(VFS, "Server returned illegal DACL offset\n");
++				rc = -EINVAL;
++				goto id_mode_to_cifs_acl_exit;
++			}
++
+ 			dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
+ 			if (mode_from_sid)
+ 				nsecdesclen +=
+@@ -1664,6 +1692,7 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
+ 		rc = ops->set_acl(pnntsd, nsecdesclen, inode, path, aclflag);
+ 		cifs_dbg(NOISY, "set_cifs_acl rc: %d\n", rc);
+ 	}
++id_mode_to_cifs_acl_exit:
+ 	cifs_put_tlink(tlink);
+ 
+ 	kfree(pnntsd);
 -- 
 2.53.0
 
