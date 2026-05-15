@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-248870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFI5BhJTB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:08:34 +0200
+	id MGS+BzZOB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8115547F4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:08:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2057553EEB
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 935083074C4D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:35:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 936A83044A36
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025FB3D9DC7;
-	Fri, 15 May 2026 16:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537143FD966;
+	Fri, 15 May 2026 16:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGkcOE4i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IsG0ncf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0923BED47;
-	Fri, 15 May 2026 16:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1419E3FD95B;
+	Fri, 15 May 2026 16:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862841; cv=none; b=SoyPtsNvCPkfsvtq8Zpwz2Sb7k0M7VlTOPFjBpFt3yrmP9yES6c6ePOgvbPFJH5j3HLQsNabdIGx+9dIFsDwMP0gQLutYr6llcixC10LltPmFXAzHyN5yMonuXgKhVKCVLbvQFb/AOhMmYpNO820w3gkHuPUQGAIx0DR+nBodTU=
+	t=1778862285; cv=none; b=gB0e0KxugSspeWTWARPRPWsfBgA1wnBjD6BYC5qL7Tvoiknqb0X7WHbTMbtYUzkzqc12MbPl8QbcLInASk1zvksyhbLhPhsED3lBVEUkEoAPmr8lOshugyPd1m54E3j0eiSpfAg26a4sHBmYqkLN+qP2kUQ6OGbT0S6dRKu6ivY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862841; c=relaxed/simple;
-	bh=LeujJc6ty9v0I87g+J2BAeLOctVDfh+xYnC5kKG1K6g=;
+	s=arc-20240116; t=1778862285; c=relaxed/simple;
+	bh=0oXHhWObf/2+/ctxpAQxqNuTcXfviTQFyf5vf+EXhMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=un7CSkG9+oSmqBy7y+9f9R3+ObWlCY3kYlaJ2vwqdHeEUNoL7XhCpGLhQ6Dso9mPBL4emIEIWjL5PljScfcTMVuM6dQGPP5SOF7moP9//aiO90EA6guMcOtm3PNm0Ns3YtmnMHZDgdTltcaSk9Y2jjLleo0TRkTGUPzUu0yEb1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGkcOE4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEFEC2BCB0;
-	Fri, 15 May 2026 16:34:00 +0000 (UTC)
+	 MIME-Version; b=U2r4LbRkoDdRq3mKo13cfLcs5CDhGpwoJ6s0gY0arq+L+56LKrvgm4e+fVS2GWh9iE6SksontYtYrRBQwmU//L+G77S25HmKM+1m0Eql+TczrN4wPxIHt9ZZ2+3Xo43nGQiVcSGyOJe+iz8e0bE923we4nUCMQvM81UpFTlFra8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IsG0ncf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C6DC2BCF7;
+	Fri, 15 May 2026 16:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862841;
-	bh=LeujJc6ty9v0I87g+J2BAeLOctVDfh+xYnC5kKG1K6g=;
+	s=korg; t=1778862284;
+	bh=0oXHhWObf/2+/ctxpAQxqNuTcXfviTQFyf5vf+EXhMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qGkcOE4iF8Gjkzz3Iz9uDdx3WmSNauFFMcM/Nn+taEV7spBEKNuvBP13W594c6q1q
-	 VLtr3TFVKpk2PKZ0Vtr5wqsOJyzdoz59h8DiFoqBSJKHGte6/FfH5buR9ciSt91ImX
-	 TUq/yZA8GuOCCzqXMTEDsFGe8BWxl+Gr/p3YcpY4=
+	b=0IsG0ncf0UR1bEDnL3ezabyq0UoLaYrLHF0oRQjIaOFG4DKPZ4prBcY/pNtEjIQwN
+	 6FF7GWwoUNsZ+FQMGUFIP10Q8ZxqoQI01M43bz18eL9gaxmZ66du34ZRwXvAgNoOZS
+	 CHQr05mSgwf8lZxkAMCnBBunhGiHaV2J2w4VsNXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 177/201] batman-adv: tp_meter: fix tp_num leak on kmalloc failure
-Date: Fri, 15 May 2026 17:49:55 +0200
-Message-ID: <20260515154702.411755238@linuxfoundation.org>
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 179/188] tracing/fprobe: Unregister fprobe even if memory allocation fails
+Date: Fri, 15 May 2026 17:49:56 +0200
+Message-ID: <20260515154701.221967844@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8E8115547F4
+X-Rspamd-Queue-Id: F2057553EEB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248870-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248653-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,59 +90,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-commit ce425dd05d0fe7594930a0fb103634f35ac47bb6 upstream.
+[ Upstream commit 1aec9e5c3e31ce1e28f914427fb7f90b91d310df ]
 
-When batadv_tp_start() or batadv_tp_init_recv() fail to allocate a new
-tp_vars object, the previously incremented bat_priv->tp_num counter is
-never decremented. This causes tp_num to drift upward on each allocation
-failure. Since only BATADV_TP_MAX_NUM sessions can be started and the count
-is never reduced for these failed allocations, it causes to an exhaustion
-of throughput meter sessions. In worst case, no new throughput meter
-session can be started until the mesh interface is removed.
+unregister_fprobe() can fail under memory pressure because of memory
+allocation failure, but this maybe called from module unloading, and
+usually there is no way to retry it. Moreover. trace_fprobe does not
+check the return value.
 
-The error handling must decrement tp_num releasing the lock and aborting
-the creation of an throughput meter session
+To fix this problem, unregister fprobe and fprobe_hash_node even if
+working memory allocation fails.
+Anyway, if the last fprobe is removed, the filter will be freed.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Link: https://lore.kernel.org/all/177669365629.132053.8433032896213721288.stgit@mhiramat.tok.corp.google.com/
+
+Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Stable-dep-of: 845947aca681 ("tracing/fprobe: Remove fprobe from hash in failure path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/trace/fprobe.c |   25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -994,6 +994,7 @@ void batadv_tp_start(struct batadv_priv
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -323,9 +323,10 @@ static void fprobe_ftrace_remove_ips(uns
+ 	lockdep_assert_held(&fprobe_mutex);
  
- 	tp_vars = kmalloc_obj(*tp_vars, GFP_ATOMIC);
- 	if (!tp_vars) {
-+		atomic_dec(&bat_priv->tp_num);
- 		spin_unlock_bh(&bat_priv->tp_list_lock);
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: %s cannot allocate list elements\n",
-@@ -1366,8 +1367,10 @@ batadv_tp_init_recv(struct batadv_priv *
+ 	fprobe_ftrace_active--;
+-	if (!fprobe_ftrace_active)
++	if (!fprobe_ftrace_active) {
+ 		unregister_ftrace_function(&fprobe_ftrace_ops);
+-	if (num)
++		ftrace_free_filter(&fprobe_ftrace_ops);
++	} else if (num)
+ 		ftrace_set_filter_ips(&fprobe_ftrace_ops, addrs, num, 1, 0);
+ }
+ 
+@@ -508,10 +509,10 @@ static void fprobe_graph_remove_ips(unsi
+ 
+ 	fprobe_graph_active--;
+ 	/* Q: should we unregister it ? */
+-	if (!fprobe_graph_active)
++	if (!fprobe_graph_active) {
+ 		unregister_ftrace_graph(&fprobe_graph_ops);
+-
+-	if (num)
++		ftrace_free_filter(&fprobe_graph_ops.ops);
++	} else if (num)
+ 		ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 1, 0);
+ }
+ 
+@@ -924,15 +925,19 @@ int unregister_fprobe(struct fprobe *fp)
+ 
+ 	hlist_array = fp->hlist_array;
+ 	addrs = kcalloc(hlist_array->size, sizeof(unsigned long), GFP_KERNEL);
+-	if (!addrs) {
+-		ret = -ENOMEM;	/* TODO: Fallback to one-by-one loop */
+-		goto out;
+-	}
++	/*
++	 * This will remove fprobe_hash_node from the hash table even if
++	 * memory allocation fails. However, ftrace_ops will not be updated.
++	 * Anyway, when the last fprobe is unregistered, ftrace_ops is also
++	 * unregistered.
++	 */
++	if (!addrs)
++		pr_warn("Failed to allocate working array. ftrace_ops may not sync.\n");
+ 
+ 	/* Remove non-synonim ips from table and hash */
+ 	count = 0;
+ 	for (i = 0; i < hlist_array->size; i++) {
+-		if (!delete_fprobe_node(&hlist_array->array[i]))
++		if (!delete_fprobe_node(&hlist_array->array[i]) && addrs)
+ 			addrs[count++] = hlist_array->array[i].addr;
  	}
- 
- 	tp_vars = kmalloc_obj(*tp_vars, GFP_ATOMIC);
--	if (!tp_vars)
-+	if (!tp_vars) {
-+		atomic_dec(&bat_priv->tp_num);
- 		goto out_unlock;
-+	}
- 
- 	ether_addr_copy(tp_vars->other_end, icmp->orig);
- 	tp_vars->role = BATADV_TP_RECEIVER;
+ 	del_fprobe_hash(fp);
 
 
 
