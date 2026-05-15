@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CD67EutOB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:51 +0200
+	id 4I+rBwZaB2qzzwIAu9opvQ
+	(envelope-from <stable+bounces-248726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A5655406D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D72555577
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B9BC1335A638
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37587344708D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D7D44105E;
-	Fri, 15 May 2026 16:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AB53FBB6B;
+	Fri, 15 May 2026 16:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7ovXmTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPdsGIc/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C16743CEE6;
-	Fri, 15 May 2026 16:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BB03FBB55;
+	Fri, 15 May 2026 16:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861986; cv=none; b=dB3uovu0T1T3RL29ieYT+ukqxtsKya4q1J21Nk0Xa2rHhjgbJQ4hLJXqtHlWihHiRYiQWJVDVoY7yHeGOXiE/hcVkhW+S3BlyAw5aYmvRCgBvrvOeD8ZCZ2fQRvMf9pHImkATye/m/JeoL8JqgAE8jIL+KWj2bG6eTGAJdabE84=
+	t=1778862472; cv=none; b=ExolCwLKNri0HF4/xVErBIHxcI0RYOqPKcuOM3eli5JW2ZOMzhvmQdvZ/LDtIRJUWXb6VlbPDvYUtQY5GVgfpi3zm2lO4F/hHTnxOC0vzH5lTZaLOR3M4fIvc3gGdWrZzWLnpac9edn/vPp8RxUQK3aPpMdZ/eW34CKUptx5VzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861986; c=relaxed/simple;
-	bh=HVYp9pJ6UMGQooXfPuahUCoXjhbj1bWk3OHrhnkTfBs=;
+	s=arc-20240116; t=1778862472; c=relaxed/simple;
+	bh=55zdCo+ZqOy+LDeRfebgkb6Kz1/nyd00Yi/v0OOA3+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkDGBmIWGby2THVkwIF+PNb+6J4IdoLY0afFfWr4pLdDFXnwRJu00E3KyqcjJbFyls/EqjtwdLiSrW0ejyrnOCMzPewhuLijNrtyYa1MOmsC1JtjEZZwAM7UpUFC8HvKVPwNHABTo0EO43LG3byCaKwQdMxz+qMXVT6Iff+a0TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7ovXmTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037A9C2BCC7;
-	Fri, 15 May 2026 16:19:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fCrecYp03PSH78kP12rE1rhW2OrTfd+u52FnCceMYRDrng+1BPrbBZMIv7fjHuJZp2a9vvhXKsoSq8+twZW3+spnxLo/isEsyw3md1rk9RLM86UiYZ5LK0fTtyEIkrOq36v70PFXQtHrtGFfKCsS6nosyidSjK4sib3PRM7nGEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPdsGIc/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF6BC2BCB0;
+	Fri, 15 May 2026 16:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861986;
-	bh=HVYp9pJ6UMGQooXfPuahUCoXjhbj1bWk3OHrhnkTfBs=;
+	s=korg; t=1778862472;
+	bh=55zdCo+ZqOy+LDeRfebgkb6Kz1/nyd00Yi/v0OOA3+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7ovXmTn/S2F23OKbWCmdNoO5hmb7BY0Vmm43NmhQV5boZipmqP1vck1kqUu53OPK
-	 IiGMJ+b4MeXtFVUsK+y5/4gt4CgYzR8ueqQp6CAi37SltXtVNLxMTKQYAc0EV5gHnb
-	 oaSCYXdhF+l+OO6qRpPQ5EE5GjjTPooCpyRzImdY=
+	b=rPdsGIc/E+ZVaNTXpZhxKQlzthhLfk0RhBa4TsdyTPgK2oUlgOYIpAWEBaK4A4rCb
+	 xlwqi1IsCNV51csY2eou5t1l6//YJVwLWc99qINoY/f/2hvBGGcWp7IOOKa2VT4nq0
+	 klcVcyoHxrzftF79i8T5fwEGjQ7tGmdfJpTeeqGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 062/188] media: qcom: camss: Add missing clocks for VFE lite on sa8775p
+	"Artem S. Tashkinov" <aros@gmx.com>,
+	Krishna Chomal <krishna.chomal108@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 7.0 061/201] platform/x86: hp-wmi: Ignore backlight and FnLock events
 Date: Fri, 15 May 2026 17:47:59 +0200
-Message-ID: <20260515154658.661441977@linuxfoundation.org>
+Message-ID: <20260515154659.856858362@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,169 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D8A5655406D
+X-Rspamd-Queue-Id: 83D72555577
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248538-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248726-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.com,gmail.com,linux.intel.com];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,gmx.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+From: Krishna Chomal <krishna.chomal108@gmail.com>
 
-commit d31fac47b39f5e1ed85a587688ca70b793e421b4 upstream.
+commit e8c597368b8500a824c639bfb5ed0044068c6870 upstream.
 
-Add missing required clocks (cpas_ahb and camnoc_axi) for VFE lite
-instances on sa8775p platform. These clocks are necessary for proper
-VFE lite operation:
+On HP OmniBook 7 the keyboard backlight and FnLock keys are handled
+directly by the firmware. However, they still trigger WMI events which
+results in "Unknown key code" warnings in dmesg.
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
-Fixes: e7b59e1d06fb ("media: qcom: camss: Add support for VFE 690")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Add these key codes to the keymap with KE_IGNORE to silence the warnings
+since no software action is needed.
+
+Tested-by: Artem S. Tashkinov <aros@gmx.com>
+Reported-by: Artem S. Tashkinov <aros@gmx.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221181
+Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
+Link: https://patch.msgid.link/20260403080155.169653-1-krishna.chomal108@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c |   40 ++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 15 deletions(-)
+ drivers/platform/x86/hp/hp-wmi.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -2926,15 +2926,17 @@ static const struct camss_subdev_resourc
- 	/* VFE2 (lite) */
- 	{
- 		.regulators = {},
--		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
-+		.clock = { "cpas_ahb", "cpas_vfe_lite", "vfe_lite_ahb",
- 			   "vfe_lite_csid", "vfe_lite_cphy_rx",
--			   "vfe_lite"},
-+			   "vfe_lite", "camnoc_axi"},
- 		.clock_rate = {
--			{ 0, 0, 0, 0  },
-+			{ 0 },
-+			{ 0 },
- 			{ 300000000, 400000000, 400000000, 400000000 },
- 			{ 400000000, 400000000, 400000000, 400000000 },
- 			{ 400000000, 400000000, 400000000, 400000000 },
- 			{ 480000000, 600000000, 600000000, 600000000 },
-+			{ 400000000 },
- 		},
- 		.reg = { "vfe_lite0" },
- 		.interrupt = { "vfe_lite0" },
-@@ -2949,15 +2951,17 @@ static const struct camss_subdev_resourc
- 	/* VFE3 (lite) */
- 	{
- 		.regulators = {},
--		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
-+		.clock = { "cpas_ahb", "cpas_vfe_lite", "vfe_lite_ahb",
- 			   "vfe_lite_csid", "vfe_lite_cphy_rx",
--			   "vfe_lite"},
-+			   "vfe_lite", "camnoc_axi"},
- 		.clock_rate = {
--			{ 0, 0, 0, 0  },
-+			{ 0 },
-+			{ 0 },
- 			{ 300000000, 400000000, 400000000, 400000000 },
- 			{ 400000000, 400000000, 400000000, 400000000 },
- 			{ 400000000, 400000000, 400000000, 400000000 },
- 			{ 480000000, 600000000, 600000000, 600000000 },
-+			{ 400000000 },
- 		},
- 		.reg = { "vfe_lite1" },
- 		.interrupt = { "vfe_lite1" },
-@@ -2972,15 +2976,17 @@ static const struct camss_subdev_resourc
- 	/* VFE4 (lite) */
- 	{
- 		.regulators = {},
--		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
-+		.clock = { "cpas_ahb", "cpas_vfe_lite", "vfe_lite_ahb",
- 			   "vfe_lite_csid", "vfe_lite_cphy_rx",
--			   "vfe_lite"},
-+			   "vfe_lite", "camnoc_axi"},
- 		.clock_rate = {
--			{ 0, 0, 0, 0  },
-+			{ 0 },
-+			{ 0 },
- 			{ 300000000, 400000000, 400000000, 400000000 },
- 			{ 400000000, 400000000, 400000000, 400000000 },
- 			{ 400000000, 400000000, 400000000, 400000000 },
- 			{ 480000000, 600000000, 600000000, 600000000 },
-+			{ 400000000 },
- 		},
- 		.reg = { "vfe_lite2" },
- 		.interrupt = { "vfe_lite2" },
-@@ -2995,15 +3001,17 @@ static const struct camss_subdev_resourc
- 	/* VFE5 (lite) */
- 	{
- 		.regulators = {},
--		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
-+		.clock = { "cpas_ahb", "cpas_vfe_lite", "vfe_lite_ahb",
- 			   "vfe_lite_csid", "vfe_lite_cphy_rx",
--			   "vfe_lite"},
-+			   "vfe_lite", "camnoc_axi"},
- 		.clock_rate = {
--			{ 0, 0, 0, 0  },
-+			{ 0 },
-+			{ 0 },
- 			{ 300000000, 400000000, 400000000, 400000000 },
- 			{ 400000000, 400000000, 400000000, 400000000 },
- 			{ 400000000, 400000000, 400000000, 400000000 },
- 			{ 480000000, 600000000, 600000000, 600000000 },
-+			{ 400000000 },
- 		},
- 		.reg = { "vfe_lite3" },
- 		.interrupt = { "vfe_lite3" },
-@@ -3018,15 +3026,17 @@ static const struct camss_subdev_resourc
- 	/* VFE6 (lite) */
- 	{
- 		.regulators = {},
--		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
-+		.clock = { "cpas_ahb", "cpas_vfe_lite", "vfe_lite_ahb",
- 			   "vfe_lite_csid", "vfe_lite_cphy_rx",
--			   "vfe_lite"},
-+			   "vfe_lite", "camnoc_axi"},
- 		.clock_rate = {
--			{ 0, 0, 0, 0  },
-+			{ 0 },
-+			{ 0 },
- 			{ 300000000, 400000000, 400000000, 400000000 },
- 			{ 400000000, 400000000, 400000000, 400000000 },
- 			{ 400000000, 400000000, 400000000, 400000000 },
- 			{ 480000000, 600000000, 600000000, 600000000 },
-+			{ 400000000 },
- 		},
- 		.reg = { "vfe_lite4" },
- 		.interrupt = { "vfe_lite4" },
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -399,6 +399,11 @@ static const struct key_entry hp_wmi_key
+ 	{ KE_KEY, 0x21a9,  { KEY_TOUCHPAD_OFF } },
+ 	{ KE_KEY, 0x121a9, { KEY_TOUCHPAD_ON } },
+ 	{ KE_KEY, 0x231b,  { KEY_HELP } },
++	{ KE_IGNORE, 0x21ab, }, /* FnLock on */
++	{ KE_IGNORE, 0x121ab, }, /* FnLock off */
++	{ KE_IGNORE, 0x30021aa, }, /* kbd backlight: level 2 -> off */
++	{ KE_IGNORE, 0x33221aa, }, /* kbd backlight: off -> level 1 */
++	{ KE_IGNORE, 0x36421aa, }, /* kbd backlight: level 1 -> level 2*/
+ 	{ KE_END, 0 }
+ };
+ 
 
 
 
