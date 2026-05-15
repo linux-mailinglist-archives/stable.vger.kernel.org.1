@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-248858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOtpECxVB2oHzAIAu9opvQ
-	(envelope-from <stable+bounces-248858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:17:32 +0200
+	id 0B9HMhJRB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:00:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07B2554BC9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:17:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7EB5544E7
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 89230314EAB8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C29843077E67
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBF43CF02D;
-	Fri, 15 May 2026 16:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA693CF02A;
+	Fri, 15 May 2026 16:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="syOUcZqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvAqE+PU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A983CAA39;
-	Fri, 15 May 2026 16:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BFB3CF67B;
+	Fri, 15 May 2026 16:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862810; cv=none; b=W74e8i7gv5dW/xjXsQs8YB5/VuSF7zEsKZhcWZ2wp8Q4Zy0ovt8oFDut8tgJwXzJh1hqhw4HI8LA/93YUH8q3pePWbxWkUFcSvJi8L5PbWDToKT/LmXBANIrAVLRwy/iVUat6Z2rfh3OWi2gSsVRqX5aLUlL0e4q85R+fx6TfVI=
+	t=1778862815; cv=none; b=l9bvOT0HgYvBFKWJCPorWSBA6XJTL/lWTJUIODeDuGIm+iUD6Ji4PkOzna4IrqF1UOi4rlToq3tZcXuT02djwAvr2BcHDPo44ZxuPqUE0iK2OLvzV5GdB32cmcs2ykHHgVNiA21VfTPuSIhaf+KzzTRXORlg2aASZzYU5ffJYjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862810; c=relaxed/simple;
-	bh=Dnr1hdeQ3nC5WVgVorxw3JaZMk4fR4RHGAKG2wLU7M8=;
+	s=arc-20240116; t=1778862815; c=relaxed/simple;
+	bh=z2MeJv/JfvhPGl631+65OWjJWFJacsH+MK91bSMvkaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckS8D5jxWGygAK7IfX01OfDC/86f5MQLIvE73E6RuEwVo+X4CEbIAvhpfaXM8DVzQ/4bGho1UFgPhh65IVRH2BWnYtlIhpCVb5uophdIgnwkF16p1MM3QVAJ9qpw2KSst8FfQ2szhLxodmdeclg11xiVlkSiUKR9wjYFnWTJ0Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=syOUcZqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060B3C2BCB0;
-	Fri, 15 May 2026 16:33:29 +0000 (UTC)
+	 MIME-Version; b=N+wqgrTamB6xuZQYQYBp8mxvdqqLFhKnbYlI7wcRwHQUSmFKgNX+bNk+NoUvDYFjtrkgyIdznKIKIjtMHR1HN+1UkZ/d8G036Yy2ANhzG4+W44JJ9B/2lWwn+h3H8CRSW4nPGDmlxt7J3RDVSLDfhA7eC5kYkZNzbMOCXaXCthg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvAqE+PU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DACEC2BCB0;
+	Fri, 15 May 2026 16:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862810;
-	bh=Dnr1hdeQ3nC5WVgVorxw3JaZMk4fR4RHGAKG2wLU7M8=;
+	s=korg; t=1778862815;
+	bh=z2MeJv/JfvhPGl631+65OWjJWFJacsH+MK91bSMvkaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=syOUcZqyYCqZ0dS6T/n76CkDwb1qxBDshDQFM1TvoP3zJShf/OXX/LATrScZWr3R7
-	 MejrXkEqx1TfJq+lAY8S4XX7UoMk2WH3K7dHwA568KnUmcf9IrifQ6PShGSGIaDHkg
-	 4dtsy7etZFpahxsL4KWH6n8356/OcutPyFqld2dg=
+	b=XvAqE+PUhpPgysxkOjXNxqesAgeufEI9PjGMn9JLyEBE45s1CUAAgVW96WUGeyd7j
+	 wmFCdEmENqVeQ+c485pFjFXIdAqdi2bzv46Vom2+niFx+CeiHf1PsChj3r5etVfiwG
+	 q/0NP1WBzHDWKlB8DHFGXbuj/WiEuhJbBfJBV82g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrea Righi <arighi@nvidia.com>
-Subject: [PATCH 7.0 192/201] sched_ext: Skip tasks with stale task_rq in bypass_lb_cpu()
-Date: Fri, 15 May 2026 17:50:10 +0200
-Message-ID: <20260515154702.740335500@linuxfoundation.org>
+	Markus Mayer <mmayer@broadcom.com>,
+	James Clark <james.clark@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 7.0 193/201] perf build: fix "argument list too long" in second location
+Date: Fri, 15 May 2026 17:50:11 +0200
+Message-ID: <20260515154702.761647688@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
 References: <20260515154658.538039039@linuxfoundation.org>
@@ -64,83 +65,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B07B2554BC9
+X-Rspamd-Queue-Id: 6F7EB5544E7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248860-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248858-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,broadcom.com:email,linaro.org:email]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Markus Mayer <mmayer@broadcom.com>
 
-commit da2d81b4118a74e65d2335e221a38d665902a98c upstream.
+commit 97ab89686a9e5d087042dbe73604a32b3de72653 upstream
 
-bypass_lb_cpu() transfers tasks between per-CPU bypass DSQs without
-migrating them - task_cpu() only updates when the donee later consumes the
-task via move_remote_task_to_local_dsq(). If the LB timer fires again before
-consumption and the new DSQ becomes a donor, @p is still on the previous CPU
-and task_rq(@p) != donor_rq. @p can't be moved without its own rq locked.
+Turns out that displaying "RM $^" via quiet_cmd_rm can also upset the
+shell and cause it to display "argument list too long".
 
-Skip such tasks.
+Trying to quote $^ doesn't help.
 
-Fixes: 95d1df610cdc ("sched_ext: Implement load balancer for bypass mode")
-Cc: stable@vger.kernel.org # v6.19+
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-[ arighi: replace donor_rq with rq, not present in v7.0.y ]
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
+In the end, *not* displaying the (potentially long) list of files is
+probably the right thing to do for a "quiet" message, anyway. Instead,
+let's display a count of how many files were removed. There is always
+V=1 if more detail is required.
+
+  TEST    linux/tools/perf/pmu-events/metric_test.log
+  RM      ...634 orphan file(s)...
+  LD      linux/tools/perf/util/perf-util-in.o
+
+Also move the comment regarding xargs before the rule, so it doesn't
+show up in the build output.
+
+Signed-off-by: Markus Mayer <mmayer@broadcom.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/perf/pmu-events/Build |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4010,6 +4010,15 @@ resume:
- 		if (cpumask_empty(donee_mask))
- 			break;
+--- a/tools/perf/pmu-events/Build
++++ b/tools/perf/pmu-events/Build
+@@ -211,10 +211,10 @@ ifneq ($(strip $(ORPHAN_FILES)),)
  
-+		/*
-+		 * If an earlier pass placed @p on @donor_dsq from a different
-+		 * CPU and the donee hasn't consumed it yet, @p is still on the
-+		 * previous CPU and task_rq(@p) != @rq. @p can't be moved
-+		 * without its rq locked. Skip.
-+		 */
-+		if (task_rq(p) != rq)
-+			continue;
-+
- 		donee = cpumask_any_and_distribute(donee_mask, p->cpus_ptr);
- 		if (donee >= nr_cpu_ids)
- 			continue;
+ # Message for $(call echo-cmd,rm). Generally cleaning files isn't part
+ # of a build step.
+-quiet_cmd_rm  = RM      $^
++quiet_cmd_rm = RM      ...$(words $^) orphan file(s)...
+ 
++# The list of files can be long. Use xargs to prevent issues.
+ prune_orphans: $(ORPHAN_FILES)
+-	# The list of files can be long. Use xargs to prevent issues.
+ 	$(Q)$(call echo-cmd,rm)echo "$^" | xargs rm -f
+ 
+ JEVENTS_DEPS += prune_orphans
 
 
 
