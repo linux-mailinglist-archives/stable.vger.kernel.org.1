@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GNkG7dWB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248422-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:24:07 +0200
+	id 0G3hK+lEB2oCvAIAu9opvQ
+	(envelope-from <stable+bounces-247950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F353B554F4A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:24:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32916552B77
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA4F13289B64
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:17:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A95B4322C40B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC0E3B19DE;
-	Fri, 15 May 2026 16:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3623FF1A2;
+	Fri, 15 May 2026 15:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXHhb3Gc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhCVAXXc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF663E009B;
-	Fri, 15 May 2026 16:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC71175A87;
+	Fri, 15 May 2026 15:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861691; cv=none; b=lshWVz5QuYFN6r5p128CldBBHlJucOvV+fHkQnjh0ZY4bp0DyZpkZ+dpmjKZHAW0m67Qc7DxvB61hOOhEqpejFkXbv2U6CKLx0U9fPuL1UsPbBmJblrcGkENbo2Lfr4uQ8tUzYNyFG3bXaMoo2EhtOzCGKRTZtud3jRH33hPY6w=
+	t=1778860490; cv=none; b=iCBMXu2XYYzZSRgZDeLq6TmaT3hXnN4XFbo9SPx6YOpTQDXWrBgu0nXQa6ZF7aQ4BXN4xqDPayfGId4AFw7LibDt2lELPFRCpfSYsP3NIWA37W67bVU4GtP78Ph2qdr9KqisyDaRrkWV6CnaA5Q8DmE2L54dbR6wVnMzpfp38YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861691; c=relaxed/simple;
-	bh=fxr+r+XTVSPkDEzI0bAxcrh3hdlsvaHUECl2182CExU=;
+	s=arc-20240116; t=1778860490; c=relaxed/simple;
+	bh=Ktd8c9uz6DnSb3uv7cHWs8ZZ6ngdRSbuFQVZ6gsby/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUs7p6IGXKRgNjEaRPnRWqcIgixqLsbacY7uiVSklDfM2aoQD01OyC3axvo3Sl6MTlGJ5PJIanUsuJL7mhIUCB/xbuC8Gu4FHQmJrdenhJ+E6lJLKiYQQeH9BC0ADO+nSWd2TAKqNGBbhx0OeHWC53/37UdDqOwwwDZGpPKjHhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXHhb3Gc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4B1C2BCB0;
-	Fri, 15 May 2026 16:14:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OOXx0lDmgYZPKJ6ND5Q4HS5Hn3SJ9eifVBonASvxitemwOeZsSXHOGy2MlryVW28+aRrFUkbmzKeu9wDgzj8TcXIu3ifzBccWj2KaOqLBbxF5FoDeENSEkufQxTrviKChbKoa9B9cEchcqYkA4Q5QqjO3befqYdL2tz7oKThgIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhCVAXXc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A2EC2BCB0;
+	Fri, 15 May 2026 15:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861691;
-	bh=fxr+r+XTVSPkDEzI0bAxcrh3hdlsvaHUECl2182CExU=;
+	s=korg; t=1778860490;
+	bh=Ktd8c9uz6DnSb3uv7cHWs8ZZ6ngdRSbuFQVZ6gsby/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXHhb3GcTqnLoBvR164a0dplGUmBP7MDuVA1kZSSK1+S0uXuDsrb9vHvwsLOzKmNQ
-	 jhm0UPlH2SPqMWk7mHtr5S7JGvz0pkV9FaoW9S7m7CBYw/XSvQeue6SOI9EVoMzLdO
-	 Mqb9D8Xw4yXqUj8+RD4tBhuZVpIZbeKtRhQOx8iA=
+	b=hhCVAXXcaosMPi7LdtPEpLfV4KbQja6pDpZZgcg0mx1X20ljBGPtOB1xAkwpGOQPc
+	 z1MWrnVgTBSwYRPwM6ZupPcMnyNoofoZWzEY1xkFmYRliQ5/nMbpFiP+2OThfn6R6z
+	 MBv5ehxD0PvElHxuPgHIiT0dRdvYj13XDNOZLIRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 384/474] media: rc: igorplugusb: heed coherency rules
+	Amir Shetaia <Amir.Shetaia@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 067/144] drm/amdkfd: Clear VRAM on allocation to prevent stale data exposure
 Date: Fri, 15 May 2026 17:48:13 +0200
-Message-ID: <20260515154723.345202069@linuxfoundation.org>
+Message-ID: <20260515154655.098418734@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F353B554F4A
+X-Rspamd-Queue-Id: 32916552B77
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248422-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-247950-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mess.org:email]
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Amir Shetaia <Amir.Shetaia@amd.com>
 
-[ Upstream commit eac69475b01fe1e861dfe3960b57fa95671c132e ]
+commit ad52d61d82181dbdb7f05826de38352d5e550cc2 upstream.
 
-In a control request, the USB request structure
-can be subject to DMA on some HCs. Hence it must obey
-the rules for DMA coherency. Allocate it separately.
+KFD VRAM allocations set AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE
+but not AMDGPU_GEM_CREATE_VRAM_CLEARED, leaving freshly allocated
+VRAM with stale data from prior use observable by compute kernels.
 
-Fixes: b1c97193c6437 ("[media] rc: port IgorPlug-USB to rc-core")
+The GEM ioctl path already sets VRAM_CLEARED for all userspace
+allocations via amdgpu_gem_create_ioctl() and
+amdgpu_mode_dumb_create(). The KFD path was missing this flag,
+allowing stale page table remnants to leak into user buffers.
+
+This causes crashes in RCCL P2P transport where non-zero data in
+ptrExchange/head/tail fields corrupts the protocol handshake.
+
+Signed-off-by: Amir Shetaia <Amir.Shetaia@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ replaced kzalloc_obj(*ir->request, GFP_KERNEL) with kzalloc(sizeof(*ir->request), GFP_KERNEL) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/igorplugusb.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/media/rc/igorplugusb.c
-+++ b/drivers/media/rc/igorplugusb.c
-@@ -34,7 +34,7 @@ struct igorplugusb {
- 	struct device *dev;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1737,7 +1737,8 @@ int amdgpu_amdkfd_gpuvm_alloc_memory_of_
+ 			alloc_domain = AMDGPU_GEM_DOMAIN_GTT;
+ 			alloc_flags = 0;
+ 		} else {
+-			alloc_flags = AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE;
++			alloc_flags = AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE |
++				AMDGPU_GEM_CREATE_VRAM_CLEARED;
+ 			alloc_flags |= (flags & KFD_IOC_ALLOC_MEM_FLAGS_PUBLIC) ?
+ 			AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED : 0;
  
- 	struct urb *urb;
--	struct usb_ctrlrequest request;
-+	struct usb_ctrlrequest *request;
- 
- 	struct timer_list timer;
- 
-@@ -122,7 +122,7 @@ static void igorplugusb_cmd(struct igorp
- {
- 	int ret;
- 
--	ir->request.bRequest = cmd;
-+	ir->request->bRequest = cmd;
- 	ir->urb->transfer_flags = 0;
- 	ret = usb_submit_urb(ir->urb, GFP_ATOMIC);
- 	if (ret && ret != -EPERM)
-@@ -164,13 +164,17 @@ static int igorplugusb_probe(struct usb_
- 	if (!ir)
- 		return -ENOMEM;
- 
-+	ir->request = kzalloc(sizeof(*ir->request), GFP_KERNEL);
-+	if (!ir->request)
-+		goto fail;
-+
- 	ir->dev = &intf->dev;
- 
- 	timer_setup(&ir->timer, igorplugusb_timer, 0);
- 
--	ir->request.bRequest = GET_INFRACODE;
--	ir->request.bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
--	ir->request.wLength = cpu_to_le16(MAX_PACKET);
-+	ir->request->bRequest = GET_INFRACODE;
-+	ir->request->bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
-+	ir->request->wLength = cpu_to_le16(MAX_PACKET);
- 
- 	ir->urb = usb_alloc_urb(0, GFP_KERNEL);
- 	if (!ir->urb)
-@@ -228,6 +232,7 @@ fail:
- 	usb_free_urb(ir->urb);
- 	rc_free_device(ir->rc);
- 	kfree(ir->buf_in);
-+	kfree(ir->request);
- 
- 	return ret;
- }
-@@ -243,6 +248,7 @@ static void igorplugusb_disconnect(struc
- 	usb_unpoison_urb(ir->urb);
- 	usb_free_urb(ir->urb);
- 	kfree(ir->buf_in);
-+	kfree(ir->request);
- }
- 
- static const struct usb_device_id igorplugusb_table[] = {
 
 
 
