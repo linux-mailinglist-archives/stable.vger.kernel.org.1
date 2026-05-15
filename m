@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-248682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CqDDZZYB2oozgIAu9opvQ
-	(envelope-from <stable+bounces-248682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:32:06 +0200
+	id sKndE5dEB2oCvAIAu9opvQ
+	(envelope-from <stable+bounces-247850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:06:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7845552F2
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:32:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BAA9552AF1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 412E8315E5DD
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 89B2D30229DE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A05D03BB68B;
-	Fri, 15 May 2026 16:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFC43FF1D5;
+	Fri, 15 May 2026 15:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGiAWUUQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asFNYJEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6255C26CE11;
-	Fri, 15 May 2026 16:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EC13FF1AB;
+	Fri, 15 May 2026 15:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862356; cv=none; b=JiGfKIAUxsV62Xs5p4/ZO4UKnMXb5dw7U86ZKeQEyBWJG9vZVJP5gpYeD6qNdVYLY24iYe18fUXCcXcsJCvWUkAehW2Vglw1pWQCJcXNjV0Y8ihKAznljw40KJHsvaORqTwh/yLFiYejCMbQdlA6dTx/r1IRNn8YQAWgy7/7f+0=
+	t=1778860231; cv=none; b=Xbfqd1NW6ryelQnqVcB8bwZiePc+xBhE3iYePpEiuvX/YrbV+YO0gh2eluZTlainHp+eWCbel2jJ1Oi92mS9+CsXgOFQlAs9B3SWLgUW0XO/eCjkY2tgfM0F5mbhAEID7pUCpfqnKCvv32J2OSzwlv3+0rnDQlXg7MOLa8CvjDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862356; c=relaxed/simple;
-	bh=n9Nmm9WI0Mff3ePXdn0t4X+YUN08Mn8XHo6ZSczbd54=;
+	s=arc-20240116; t=1778860231; c=relaxed/simple;
+	bh=7K90zmy8v27WR8ZfjD1LWe/OayHDOsYGlXOiqLyQVpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HrsbprclCpkaxpVeq13aG6D+7F/s45TJJplJQ25CBgarjA3FLMGiGc+3+nRoSbilfJP46uM4CWNV6cJgGJPvX1vRfoyb4julTWqUGw1JxHvK9nO6Hcie7o9xdL+85q1LPr9cEh304E8RPh7KiP7DNth1/V7TrQ10Pf/TxcND3/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGiAWUUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED367C2BCB0;
-	Fri, 15 May 2026 16:25:55 +0000 (UTC)
+	 MIME-Version; b=fP/BFXHNzV6ZREYVwuWTPImrS022M76Q/qHLat4M1aPAuHYwTfS8GTQ2X7YvVhpD0NiEGt+/DNZZ8eXeWsojPGlSlaKGeXQ33Y8m5KDGOFS9YTGyuSGrS6WKTxElFM9FX3Z+kB5OB0CWjgFWcRu3HKAhqvNUWkui2IE33kG3HTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asFNYJEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2759AC2BCB0;
+	Fri, 15 May 2026 15:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862356;
-	bh=n9Nmm9WI0Mff3ePXdn0t4X+YUN08Mn8XHo6ZSczbd54=;
+	s=korg; t=1778860231;
+	bh=7K90zmy8v27WR8ZfjD1LWe/OayHDOsYGlXOiqLyQVpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGiAWUUQl0DF7UKdf9IrH6aYDvdc1d3Vayvnq3QpanOsTRAeJxVBWV03k+QcFIPpg
-	 BLCPIgdBv+r7OjptRMJ0kBCEUrEBcWf+LdPhHDE8/KbqsVqw6I8xDTzICFqqGhaCzJ
-	 npY/5ZI9sSPSNkQznYvtItTjXdgutMN5/LW2LU8E=
+	b=asFNYJEhrqFIgyddRifm79aWKiwcB/qpi/NbEIWJ4NxBNNoaQ+E0TLeoleGDS/1iH
+	 jfP9KuSQ2MDvNRSl6aQz1rqCM00LkQVFZOIAYO5jeRx2uUnMei3EfIX9Yaf1ej6X/y
+	 hULhFlZplBk/DccVjpyvrEFbaxpOUUX3UvECBRHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 018/201] media: renesas: vin: Fix RAW8 (again)
+	Josua Mayer <josua@solid-run.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.12 010/144] arm64: dts: lx2160a-cex7/lx2162a-sr-som: fix usd-cd & gpio pinmux
 Date: Fri, 15 May 2026 17:47:16 +0200
-Message-ID: <20260515154658.929125839@linuxfoundation.org>
+Message-ID: <20260515154653.726280168@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +62,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BC7845552F2
+X-Rspamd-Queue-Id: 0BAA9552AF1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248682-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247850-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas,cisco];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+From: Josua Mayer <josua@solid-run.com>
 
-commit 40c6da8a9c0f897f99a439330584d93ca7d41226 upstream.
+commit 70008aee892bbb5c2969bbe9e5778fc081b14bd2 upstream.
 
-Commit e7376745ad5c ("media: rcar-vin: Fix stride setting for RAW8
-formats") removed dividing the stride by two for RAW8 formats. It is
-unclear how this was tested, but in any of the recent tests this does
-not seem to work and produces quite distorted images.
+Commit 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to
+support bus recovery") introduced pinmux nodes for lx2160 i2c
+interfaces, allowing runtime change between i2c and gpio functions
+implementing bus recovery.
 
-However, reverting the patch fixes the issues only partially. VNIS_REG
-requires alignment to 16 bytes, and when dividing the stride by 2, in
-some cases we end up with a non-aligned stride, producing a tilted
-image. This issue has to be fixed in rvin_format_bytesperline() where we
-do the alignment for bytesperline.
+However, the dynamic configuration area (overwrite MUX) used by the
+pinctrl-single driver initially reads as zero and does not reflect the
+actual hardware state set by the Reset Configuration Word (RCW) at
+power-on.
 
-Adding back the stride division and increasing the alignment for RAW8
-formats to 0x20 fixes the problems related to RAW8.
+Because multiple groups of pins are configured from a single 32-bit
+register, the first write from the pinctrl driver unintentionally clears
+all other bits to zero.
 
-Fixes: e7376745ad5c ("media: rcar-vin: Fix stride setting for RAW8 formats")
+For example, on the LX2162A Clearfog, RCWSR12 is initialized to
+0x08000006. When any i2c pinmux is applied, it clears all other fields.
+This inadvertently disables SD card-detect (IIC2_PMUX) and some GPIOs
+(SDHC1_DIR_PMUX):
+
+LX2162-CF RCWSR12: 0b0000100000000000 0000000000000110
+IIC2_PMUX              |||   |||   || |   |||   |||XXX : I2C/GPIO/CD-WP
+SDHC1_DIR_PMUX         XXX   |||   || |   |||   |||    : SDHC/GPIO/SPI
+
+Reverting the commit in question was considered but bus recovery is an
+important feature.
+
+Instead add pinmux nodes for those pins that were unintentionally
+reconfigured on SolidRun LX2160A Clearfog-CX and LX2162A Clearfog
+boards.
+
+Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/renesas/rcar-vin/rcar-dma.c  |   22 ++++++++++++++++++++
- drivers/media/platform/renesas/rcar-vin/rcar-v4l2.c |   12 ++++++++++
- 2 files changed, 34 insertions(+)
+ arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi         |    7 +++
+ arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi |    2 +
+ arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi              |   24 ++++++++++++
+ arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts      |    2 +
+ arch/arm64/boot/dts/freescale/fsl-lx2162a-sr-som.dtsi       |    7 +++
+ 5 files changed, 42 insertions(+)
 
---- a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-+++ b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-@@ -676,8 +676,30 @@ void rvin_crop_scale_comp(struct rvin_de
- 	if (vin->scaler)
- 		vin->scaler(vin);
+--- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi
+@@ -163,6 +163,8 @@
+ };
  
-+	/*
-+	 * VNIS_REG has four lowest bits always 0, i.e. the stride has to be
-+	 * aligned to 16 bytes. This is done in rvin_format_bytesperline().
-+	 */
-+
- 	fmt = rvin_format_from_pixel(vin, vin->format.pixelformat);
- 	stride = vin->format.bytesperline / fmt->bpp;
-+
-+	/*
-+	 * RAW8 format bpp is 1, but the hardware process RAW8 format in 2 pixel
-+	 * units, so we need to divide the stride by 2.
-+	 */
-+	switch (vin->format.pixelformat) {
-+	case V4L2_PIX_FMT_SBGGR8:
-+	case V4L2_PIX_FMT_SGBRG8:
-+	case V4L2_PIX_FMT_SGRBG8:
-+	case V4L2_PIX_FMT_SRGGB8:
-+	case V4L2_PIX_FMT_GREY:
-+		stride /= 2;
-+		break;
-+	default:
-+		break;
-+	}
-+
- 	rvin_write(vin, stride, VNIS_REG);
- }
+ &fspi {
++	pinctrl-names = "default";
++	pinctrl-0 = <&fspi_data74_pins>, <&fspi_data30_pins>, <&fspi_dqs_sck_cs10_pins>;
+ 	status = "okay";
  
---- a/drivers/media/platform/renesas/rcar-vin/rcar-v4l2.c
-+++ b/drivers/media/platform/renesas/rcar-vin/rcar-v4l2.c
-@@ -155,6 +155,18 @@ static u32 rvin_format_bytesperline(stru
- 	case V4L2_PIX_FMT_NV16:
- 		align = 0x20;
- 		break;
-+	case V4L2_PIX_FMT_SBGGR8:
-+	case V4L2_PIX_FMT_SGBRG8:
-+	case V4L2_PIX_FMT_SGRBG8:
-+	case V4L2_PIX_FMT_SRGGB8:
-+	case V4L2_PIX_FMT_GREY:
-+		/*
-+		 * RAW8 format bpp is 1, but the hardware process RAW8 format in
-+		 * 2 pixel units, and we need to align to 32 bytes. See
-+		 * rvin_crop_scale_comp().
-+		 */
-+		align = 0x20;
-+		break;
- 	default:
- 		align = 0x10;
- 		break;
+ 	flash@0 {
+@@ -178,6 +180,11 @@
+ 	};
+ };
+ 
++&pinmux_i2crv {
++	pinctrl-names = "default";
++	pinctrl-0 = <&gpio0_14_12_pins>;
++};
++
+ &usb0 {
+ 	status = "okay";
+ };
+--- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi
+@@ -89,6 +89,8 @@
+ };
+ 
+ &esdhc0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&esdhc0_cd_wp_pins>, <&esdhc0_cmd_data30_clk_vsel_pins>;
+ 	sd-uhs-sdr104;
+ 	sd-uhs-sdr50;
+ 	sd-uhs-sdr25;
+--- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+@@ -1717,6 +1717,10 @@
+ 				pinctrl-single,bits = <0x0 0x1 0x7>;
+ 			};
+ 
++			esdhc0_cd_wp_pins: iic2-sdhc-pins {
++				pinctrl-single,bits = <0x0 0x6 0x7>;
++			};
++
+ 			i2c2_scl: i2c2-scl-pins {
+ 				pinctrl-single,bits = <0x0 0 (0x7 << 3)>;
+ 			};
+@@ -1749,6 +1753,26 @@
+ 				pinctrl-single,bits = <0x0 (0x1 << 12) (0x7 << 12)>;
+ 			};
+ 
++			fspi_data74_pins: xspi1-data74-pins {
++				pinctrl-single,bits = <0x0 0x0 (0x7 << 15)>;
++			};
++
++			fspi_data30_pins: xspi1-data30-pins {
++				pinctrl-single,bits = <0x0 0x0 (0x7 << 18)>;
++			};
++
++			fspi_dqs_sck_cs10_pins: xspi1-base-pins {
++				pinctrl-single,bits = <0x0 0x0 (0x7 << 21)>;
++			};
++
++			esdhc0_cmd_data30_clk_vsel_pins: sdhc1-base-sdhc-vsel-pins {
++				pinctrl-single,bits = <0x0 0x0 (0x7 << 24)>;
++			};
++
++			gpio0_14_12_pins: sdhc1-dir-gpio-pins {
++				pinctrl-single,bits = <0x0 (0x1 << 27) (0x7 << 27)>;
++			};
++
+ 			i2c6_scl: i2c6-scl-pins {
+ 				pinctrl-single,bits = <0x4 0x2 0x7>;
+ 			};
+--- a/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts
+@@ -223,6 +223,8 @@
+ };
+ 
+ &esdhc0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&esdhc0_cd_wp_pins>, <&esdhc0_cmd_data30_clk_vsel_pins>;
+ 	sd-uhs-sdr104;
+ 	sd-uhs-sdr50;
+ 	sd-uhs-sdr25;
+--- a/arch/arm64/boot/dts/freescale/fsl-lx2162a-sr-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2162a-sr-som.dtsi
+@@ -30,6 +30,8 @@
+ };
+ 
+ &fspi {
++	pinctrl-names = "default";
++	pinctrl-0 = <&fspi_data74_pins>, <&fspi_data30_pins>, <&fspi_dqs_sck_cs10_pins>;
+ 	status = "okay";
+ 
+ 	flash@0 {
+@@ -80,3 +82,8 @@
+ 		reg = <0x6f>;
+ 	};
+ };
++
++&pinmux_i2crv {
++	pinctrl-names = "default";
++	pinctrl-0 = <&gpio0_14_12_pins>;
++};
 
 
 
