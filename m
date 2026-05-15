@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-248700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247866-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBldGoRRB2qmyQIAu9opvQ
-	(envelope-from <stable+bounces-248700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:01:56 +0200
+	id cLK5CqlEB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247866-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:07:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2244554577
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:01:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88015552B25
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D57A33E4586
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:28:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1F08321489D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA97B4BCAA4;
-	Fri, 15 May 2026 16:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7463FF1CD;
+	Fri, 15 May 2026 15:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tihu5GTG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0txPRF8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E194BC030;
-	Fri, 15 May 2026 16:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECB117AE11;
+	Fri, 15 May 2026 15:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862403; cv=none; b=YO8qUy23RY4cZkf0ImOUOGbh1ZE8OE75q22ZUUiyS93328CeCmYJq8HISFx8D92dix9CR1p8CrAUm8PHId2zTQVUiwU+lcLiMwRl8pL13v3EU9rx/dKLNFXAbdtU4jvh7jK6Ejx9Jn2H37FUYKlH0sr9qEvkU8NwA93I22CO5AE=
+	t=1778860273; cv=none; b=uuXE9XVIS8nR+nxXj0fKEoVBxEFiYQRwlewhA4zteP+h+9TwAhAxodDHuN+dTGA92/MfPUAuLRh8oEDtL/RhtT/BFzSs734j3Wgnw2sypPFZ0hSnw45c3zJ9jzM/qrcnvzAvTikUHYbADD6loh27GI7gLxjWBnHeVYNoPLz6yBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862403; c=relaxed/simple;
-	bh=oPmqS/PKJqdXAD/wxKza3lFqD6G7BUiVOAsu7k1tkHI=;
+	s=arc-20240116; t=1778860273; c=relaxed/simple;
+	bh=uFc+fG3WqSC2L3LkRGbYjWor5FHv6Zzr/lSXHoiN0cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOSYcJap37JiNjPxms1LJWSJPG89cWFjM+2Q+8GtM3ZfZRLNlmD0Q7dU2yZJW5stT30oBI40Diow6UVFt3pQj1X6STwkLe1L4sqBtJbfSg5sRNgW50jZ/CdvlxYkNJoFyZRBPQlSlf0NNilbA2eH7n8QCThbQpasucoj0R1tuJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tihu5GTG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0C0C2BCB3;
-	Fri, 15 May 2026 16:26:43 +0000 (UTC)
+	 MIME-Version; b=R8kbP5VX8R0cJFHCvth2UMCoQLvJ4tzPfZAHnGCbm/cFpdLvI1qSDb3mR8NKNGJspUipV3GlFTCWSyblrYC7wB1l1npTDQGAcVD8byamNnn+DO1ipnGMVzuXlpla92VmTIt48Tbjdg5vFIWVI4SbVgjPAZMhy1GEO1Po6GjTL9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0txPRF8d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FCFC2BCB3;
+	Fri, 15 May 2026 15:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862403;
-	bh=oPmqS/PKJqdXAD/wxKza3lFqD6G7BUiVOAsu7k1tkHI=;
+	s=korg; t=1778860273;
+	bh=uFc+fG3WqSC2L3LkRGbYjWor5FHv6Zzr/lSXHoiN0cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tihu5GTGaHJ333gUrfSz2TaHr8zBFNmDsM3l8p25DKs91yNp8g27vqnrqSr3YsEAc
-	 iECtH9aS+rtK5RxesKV3mmemdw147DQseF1L3Mg7aVB1xiXz98GifRO38ac+W57TRO
-	 xtWCFU69u+fL8i4x/69A2ux1RpDF8GHmfl9LXAg4=
+	b=0txPRF8dmrRTCk9ku77izTBmEtRuIAZxLgHb37ZFXjHn/4AEnp+9hnNFxhS6hWlhX
+	 NnP+xbxcLrrOTMALTLosnxYuGXtx4M9e87sCekgYAxm4q/SOqYAFWUiuNZMh9uoHBD
+	 8TB6CQpVF9ZI8QTRJiE6y6OHLv+tSEAt/+rBOrwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 034/201] regulator: max77650: fix OF node reference imbalance
+Subject: [PATCH 6.12 026/144] spi: qup: fix controller deregistration
 Date: Fri, 15 May 2026 17:47:32 +0200
-Message-ID: <20260515154659.273318402@linuxfoundation.org>
+Message-ID: <20260515154654.112882315@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F2244554577
+X-Rspamd-Queue-Id: 88015552B25
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248700-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247866-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,49 +88,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 2edaf5f7ada0ab5c9ec1f0836bd19779a8d85262 upstream.
+commit 443e3a0005a4342b218b6dbd4c6387d3c7fed85a upstream.
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Fix this by using the intended helper for reusing OF nodes.
-
-Fixes: bcc61f1c44fd ("regulator: max77650: add regulator support")
-Cc: stable@vger.kernel.org	# 5.1
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Fixes: 64ff247a978f ("spi: Add Qualcomm QUP SPI controller support")
+Cc: stable@vger.kernel.org	# 3.15
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260408073055.5183-4-johan@kernel.org
+Link: https://patch.msgid.link/20260410081757.503099-10-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/max77650-regulator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-qup.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/regulator/max77650-regulator.c
-+++ b/drivers/regulator/max77650-regulator.c
-@@ -337,7 +337,7 @@ static int max77650_regulator_probe(stru
- 	parent = dev->parent;
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -1194,7 +1194,7 @@ static int spi_qup_probe(struct platform
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
  
- 	if (!dev->of_node)
--		dev->of_node = parent->of_node;
-+		device_set_of_node_from_dev(dev, parent);
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto disable_pm;
  
- 	rdescs = devm_kcalloc(dev, MAX77650_REGULATOR_NUM_REGULATORS,
- 			      sizeof(*rdescs), GFP_KERNEL);
+@@ -1321,6 +1321,10 @@ static void spi_qup_remove(struct platfo
+ 	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	int ret;
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+ 
+ 	if (ret >= 0) {
+@@ -1340,6 +1344,8 @@ static void spi_qup_remove(struct platfo
+ 
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++
++	spi_controller_put(host);
+ }
+ 
+ static const struct of_device_id spi_qup_dt_match[] = {
 
 
 
