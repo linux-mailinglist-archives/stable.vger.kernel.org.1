@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-248475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YP61BM1WB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:24:29 +0200
+	id MO/qIt1XB2pVzQIAu9opvQ
+	(envelope-from <stable+bounces-248635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F892554F66
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DD4555155
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CA1CE3316662
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3FEC633A90B3
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B853BB12D;
-	Fri, 15 May 2026 16:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7823FF1D8;
+	Fri, 15 May 2026 16:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvQAbFKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noCLzGRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F1A3F86F1;
-	Fri, 15 May 2026 16:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03C83B9D91;
+	Fri, 15 May 2026 16:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861824; cv=none; b=UY34cO2NrX/LlzLaAGjEyMrZ4XQgiB+GzVhzq9LciAulCxZ0Ew17jr4FHmM2QW6gG7WPA7mEqGdI/bhLW4oI+5JLoOqxu08ilEoBGx1tDucaXavmDHm5SsNRJx2fI6/6bofygX/jmkC4202kvBHOePUoqpS8ZNMNS2R3Iyktpq4=
+	t=1778862237; cv=none; b=jtCcOrR0V7dh3Bu5o1pRa8c+g143fbEu9BWZ66pDT7o87P/DFyFiql0r2EMksY34wKoHDOaYLoDA2tVXZ3iN+UUS7R7rUKxbX+rPi1TxI9lUe5y79P+iC3lBqQof5y1H0t7tXGADgTCkEj9fX6W8NPfPt1G8uLLLb2HlCP21mnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861824; c=relaxed/simple;
-	bh=LLJb79B851zidpA/qhHUke4xlAya0d6op3u6UxQtoEA=;
+	s=arc-20240116; t=1778862237; c=relaxed/simple;
+	bh=2vYF8xhTKxhXBGNbFgsnNM1DLRNIR8jHFC2QPq1EepU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qyqMs0yrAmntfi3YUvILmXm4UMa33Ou1Sk0Uuh0dy7Vp4LVrBpUCZugfLBtPX4Xl/s/OYQ1FEv4GyymiYvjMkNywkQ2JinsoQe/8D6TZadJK7ds533Y89d5CkjsSynGpG4MSFjobHp4FOX4cLAKV5ByGeMGDr6jMLn3gSqrZggY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvQAbFKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13901C2BCB3;
-	Fri, 15 May 2026 16:17:03 +0000 (UTC)
+	 MIME-Version; b=X6kYBTQdIdc2BigtjmVU7kMrK7Bz0YzeAX/mHOm2B3Yk/UROnypHjXFOCOiXGhZ3gTS/v22vsD7N/4uUVKQjDJU6wgFSgh6/UhQ7MSrJSfs/jS48p50D05Ei61Lu+D0vdTyxQee2iYJWM/7KFvrKcGdHvq/W3HUxxn+h7zMpTKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noCLzGRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BCAC2BCB3;
+	Fri, 15 May 2026 16:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861824;
-	bh=LLJb79B851zidpA/qhHUke4xlAya0d6op3u6UxQtoEA=;
+	s=korg; t=1778862237;
+	bh=2vYF8xhTKxhXBGNbFgsnNM1DLRNIR8jHFC2QPq1EepU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DvQAbFKmUSEi0TkTpoVSEM0AjeKaNOP2GtE8IutvvdBUwxuOrqg+BznE1pEIgk2Cv
-	 4fR4IMjH8MBQ1Zrbgh8LtXEN/Q7f37oY+v1iXZR9Ek0xK1YV2cMYmv0X2yS/DyfIjZ
-	 2NVp2Aim9AmKhZFYZuJSlqTCf/VsnnJyJAfKQ7J4=
+	b=noCLzGRjrfZpU1QhZj/vfZa27q7giO8L6n5dngZy1PnYaclAY8tS97nqBmpibDNj+
+	 4CRDQhs18rnAIdsMHGn1PsmkBYFvZR67hvYc8RkXPOR0AmRg6/KFOQCMZ1cN+sYuns
+	 dj6O6tPpjWhCjMkQVNUl0RzSe4UQdKaFEnVf4Hrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-Subject: [PATCH 6.6 470/474] mtd: spi-nor: sst: Fix SST write failure
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 162/188] spi: uniphier: Simplify clock handling with devm_clk_get_enabled()
 Date: Fri, 15 May 2026 17:49:39 +0200
-Message-ID: <20260515154725.277128925@linuxfoundation.org>
+Message-ID: <20260515154700.843693872@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +64,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7F892554F66
+X-Rspamd-Queue-Id: 06DD4555155
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248475-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248635-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,prolan.hu:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,kylinos.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-commit 539bd20352832b9244238a055eb169ccf1c41ff6 upstream.
+[ Upstream commit fdca270f8f87cae2eb5b619234b9dd11a863ce6b ]
 
-'commit 18bcb4aa54ea ("mtd: spi-nor: sst: Factor out common write operation
-to `sst_nor_write_data()`")' introduced a bug where only one byte of data
-is written, regardless of the number of bytes passed to
-sst_nor_write_data(), causing a kernel crash during the write operation.
-Ensure the correct number of bytes are written as passed to
-sst_nor_write_data().
+Replace devm_clk_get() followed by clk_prepare_enable() with
+devm_clk_get_enabled() for the clock. This removes the need for
+explicit clock enable and disable calls, as the managed API automatically
+handles clock disabling on device removal or probe failure.
 
-Call trace:
-[   57.400180] ------------[ cut here ]------------
-[   57.404842] While writing 2 byte written 1 bytes
-[   57.409493] WARNING: CPU: 0 PID: 737 at drivers/mtd/spi-nor/sst.c:187 sst_nor_write_data+0x6c/0x74
-[   57.418464] Modules linked in:
-[   57.421517] CPU: 0 UID: 0 PID: 737 Comm: mtd_debug Not tainted 6.12.0-g5ad04afd91f9 #30
-[   57.429517] Hardware name: Xilinx Versal A2197 Processor board revA - x-prc-02 revA (DT)
-[   57.437600] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   57.444557] pc : sst_nor_write_data+0x6c/0x74
-[   57.448911] lr : sst_nor_write_data+0x6c/0x74
-[   57.453264] sp : ffff80008232bb40
-[   57.456570] x29: ffff80008232bb40 x28: 0000000000010000 x27: 0000000000000001
-[   57.463708] x26: 000000000000ffff x25: 0000000000000000 x24: 0000000000000000
-[   57.470843] x23: 0000000000010000 x22: ffff80008232bbf0 x21: ffff000816230000
-[   57.477978] x20: ffff0008056c0080 x19: 0000000000000002 x18: 0000000000000006
-[   57.485112] x17: 0000000000000000 x16: 0000000000000000 x15: ffff80008232b580
-[   57.492246] x14: 0000000000000000 x13: ffff8000816d1530 x12: 00000000000004a4
-[   57.499380] x11: 000000000000018c x10: ffff8000816fd530 x9 : ffff8000816d1530
-[   57.506515] x8 : 00000000fffff7ff x7 : ffff8000816fd530 x6 : 0000000000000001
-[   57.513649] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-[   57.520782] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0008049b0000
-[   57.527916] Call trace:
-[   57.530354]  sst_nor_write_data+0x6c/0x74
-[   57.534361]  sst_nor_write+0xb4/0x18c
-[   57.538019]  mtd_write_oob_std+0x7c/0x88
-[   57.541941]  mtd_write_oob+0x70/0xbc
-[   57.545511]  mtd_write+0x68/0xa8
-[   57.548733]  mtdchar_write+0x10c/0x290
-[   57.552477]  vfs_write+0xb4/0x3a8
-[   57.555791]  ksys_write+0x74/0x10c
-[   57.559189]  __arm64_sys_write+0x1c/0x28
-[   57.563109]  invoke_syscall+0x54/0x11c
-[   57.566856]  el0_svc_common.constprop.0+0xc0/0xe0
-[   57.571557]  do_el0_svc+0x1c/0x28
-[   57.574868]  el0_svc+0x30/0xcc
-[   57.577921]  el0t_64_sync_handler+0x120/0x12c
-[   57.582276]  el0t_64_sync+0x190/0x194
-[   57.585933] ---[ end trace 0000000000000000 ]---
+Remove the now-unnecessary clk_disable_unprepare() calls from the probe
+error path and the remove callback. Adjust error labels accordingly.
 
-Cc: stable@vger.kernel.org
-Fixes: 18bcb4aa54ea ("mtd: spi-nor: sst: Factor out common write operation to `sst_nor_write_data()`")
-Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Bence Csókás <csokas.bence@prolan.hu>
-[pratyush@kernel.org: add Cc stable tag]
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Link: https://lore.kernel.org/r/20250213054546.2078121-1-amit.kumar-mahapatra@amd.com
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Reviewed-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://patch.msgid.link/b2deeefd4ef1a4bce71116aabfcb7e81400f6d37.1775546948.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0245435f7772 ("spi: uniphier: fix controller deregistration")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/sst.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-uniphier.c |   18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
---- a/drivers/mtd/spi-nor/sst.c
-+++ b/drivers/mtd/spi-nor/sst.c
-@@ -130,7 +130,7 @@ static int sst_nor_write_data(struct spi
- 	int ret;
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -666,28 +666,24 @@ static int uniphier_spi_probe(struct pla
+ 	}
+ 	priv->base_dma_addr = res->start;
  
- 	nor->program_opcode = op;
--	ret = spi_nor_write_data(nor, to, 1, buf);
-+	ret = spi_nor_write_data(nor, to, len, buf);
- 	if (ret < 0)
- 		return ret;
- 	WARN(ret != len, "While writing %zu byte written %i bytes\n", len, ret);
+-	priv->clk = devm_clk_get(&pdev->dev, NULL);
++	priv->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(priv->clk)) {
+ 		dev_err(&pdev->dev, "failed to get clock\n");
+ 		ret = PTR_ERR(priv->clk);
+ 		goto out_host_put;
+ 	}
+ 
+-	ret = clk_prepare_enable(priv->clk);
+-	if (ret)
+-		goto out_host_put;
+-
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+ 		ret = irq;
+-		goto out_disable_clk;
++		goto out_host_put;
+ 	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, irq, uniphier_spi_handler,
+ 			       0, "uniphier-spi", priv);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to request IRQ\n");
+-		goto out_disable_clk;
++		goto out_host_put;
+ 	}
+ 
+ 	init_completion(&priv->xfer_done);
+@@ -717,7 +713,7 @@ static int uniphier_spi_probe(struct pla
+ 	if (IS_ERR_OR_NULL(host->dma_tx)) {
+ 		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER) {
+ 			ret = -EPROBE_DEFER;
+-			goto out_disable_clk;
++			goto out_host_put;
+ 		}
+ 		host->dma_tx = NULL;
+ 		dma_tx_burst = INT_MAX;
+@@ -767,9 +763,6 @@ out_release_dma:
+ 		host->dma_tx = NULL;
+ 	}
+ 
+-out_disable_clk:
+-	clk_disable_unprepare(priv->clk);
+-
+ out_host_put:
+ 	spi_controller_put(host);
+ 	return ret;
+@@ -778,14 +771,11 @@ out_host_put:
+ static void uniphier_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+-	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 
+ 	if (host->dma_tx)
+ 		dma_release_channel(host->dma_tx);
+ 	if (host->dma_rx)
+ 		dma_release_channel(host->dma_rx);
+-
+-	clk_disable_unprepare(priv->clk);
+ }
+ 
+ static const struct of_device_id uniphier_spi_match[] = {
 
 
 
