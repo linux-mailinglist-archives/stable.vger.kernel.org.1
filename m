@@ -1,258 +1,185 @@
-Return-Path: <stable+bounces-248136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAxKL0lIB2rUwQIAu9opvQ
-	(envelope-from <stable+bounces-248136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:22:33 +0200
+	id gMOqGwZLB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:34:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FF35531CE
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:22:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0A05537B0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 78C4F30388AF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:03:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE9C23199279
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB7A3EFFBB;
-	Fri, 15 May 2026 16:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBE73F44CD;
+	Fri, 15 May 2026 16:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tKqiCYSA"
+	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="crq9587g"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDBF3E7BCF
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 16:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC46E3E7BC4
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 16:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860964; cv=none; b=AohGY1b/nyepD/z99oEkhKwJYUHRoIGTIlZu72+OpFMxRRz1FlFWOdeG95Ao72ymFkE2PI+dHhUxGi/MQPnUZMCzRmeENQnuPUwFZjdkoSMf01gIheeq8OPIny3WURmpXBuDNykwLvtfYj9kRHd/rsK6+uulohsrCXwoSaGRj8A=
+	t=1778861146; cv=none; b=lFJObcj8jpXMS/ThecE9M9t1njUDoEWMFVdcq3IMgmCjGtGlcbMujIDsBXRrH8CrOVuqzKARY1J+LfLKKwVg+AH/A5L+wYA7G3ThFMCSmAfSOBVUgDTP2DUl9hsJGXI/WyAefC1lfFs/UHVUtJbOlYxzzdIF9Fgx045nEb+ih58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860964; c=relaxed/simple;
-	bh=JyGv54D5TTESaZtgZUvwiPYuZSMf0GHqQPQ8V5zwCeo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dcY1TS//2YeXBY1x0i2lolSpOXdvWAfaNhKfzVs+Q2GjEsvJM1rp/W5SwAh/fGuMjGjQsz/zmZNHmocIeBNfVEVmyoApi33k/N359IGDMIBseSpCNhWQm+3VdgcMDEMY4MDyqLQUEBVm9aqQGcRp89Zf18SmUlQYYvliDYvLWns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tKqiCYSA; arc=none smtp.client-ip=74.125.82.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2f33ae12f97so6455538eec.1
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 09:02:41 -0700 (PDT)
+	s=arc-20240116; t=1778861146; c=relaxed/simple;
+	bh=S7nmW61H9+nMxuW+0n6xzgniZ1tS2NmdwakFLGWr4JI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WmhkT9yobSqp7RTzaShOw3E78ubc5T2j4OrmIFZsXJeoEzzvxFEcv/Y+mkELIA05MSQrWwQWByFaOHewpXSmM4iBMHSR/0uYOhKfmX6CdLzOoFz72SKloQhKpoNCmZstrD3PyUQCJ2Nf5XjLO7B2vEH5hLBMNoT1muje3PkVjx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=crq9587g; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7dbca22dbfeso5414205a34.1
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 09:05:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778860961; x=1779465761; darn=vger.kernel.org;
-        h=in-reply-to:content-language:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=minyard.net; s=google; t=1778861144; x=1779465944; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JyGv54D5TTESaZtgZUvwiPYuZSMf0GHqQPQ8V5zwCeo=;
-        b=tKqiCYSArxoqB0leUiy3xqrd+elE9TjNy+cP34/1gL1leWRUZhEBVsO+uh0MW19Y3w
-         Yp7g7h5FkQiAT+LXTFCaWtX2UJNX/I6XKpmCR09GnyCYIaLjT6kkGFScBV5jQ6bIyh3R
-         IC0oUsJ6fYLOnmYPNUCB0T0ME1VJPYoOmI/RsVVFfhvvS17PE4qp19i6LfUmQPwytQ+/
-         lyOJYhNrtdZ4TZrvP6jnFxCdLXMLChIbxdCSKF2We7yJKUc4RE7GhKbekOuHDDkv530m
-         KkhGK3sVbJsEIYATysWhSVi9ZoH80w81cKDflOXb1rZQHqI3e4r7YHkH4kDrEssCjMlk
-         bW0Q==
+        bh=gNmnNWwYNlq1+0WNVpHNbEcI1Ifa9h4My5Raio47HEY=;
+        b=crq9587gFc7ToU/CjwxZVJ4JCgHvVj1JlO6DiUZkgTEM9LNLjxZczOIw/ifexD1iHU
+         p0RbbgdqOk3hsf/XB2XHvhxtpPSnaXA317xZ/X1P6/6SzvV4s1jyJvWc9txKufK+qzQM
+         WyG9/KVleNYkCvaBWy/Af0/XbovlzKAiT4afE00pNvc4FtSWTgMDW3NSMr8Ir2e9YDsN
+         4T+k88ibS5gTIVzCS3tWKqiP3hqAhOfihVZW2jov2yscgL3TQ4xvurb1lMfsizgUtKBb
+         uuV8l9QGrwAuzLgZhaPDUbzKYsTtTMITRO9eMBcSit0NFG6hr38d51Cxj9sssUWVTtsS
+         apZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778860961; x=1779465761;
-        h=in-reply-to:content-language:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JyGv54D5TTESaZtgZUvwiPYuZSMf0GHqQPQ8V5zwCeo=;
-        b=hIxemRT5TYm9am8su6pDa+lxSNRrMUqxRAR92H4NHRsGyasgvMRe+9z0GH95FaAzQ1
-         P/CXof0TeLSbXfylXq89aV1QOYq8cuHO+ZDklIj57Tt+pQvbkGUtWsrcU9VDkAofSV+U
-         2u5xeEpUZon1ZfPhAzA20oyrposhmdPj/zYXNSJqUkP8pFEUJtKsDTVUO6LGFx31Zsqt
-         zIV4nx/mEe8Y2KcEDve4eaj6SPf4F+spBazkr1JI6MdFmZxDeuGRKtdi2C4fjkvTB5dS
-         zPXokYMlTOE/QdtIYzmH6TQziuWWu3dGLKAiI3muwLkOpmUoQ30RHgCtw71aZKz0yto6
-         oeeg==
-X-Forwarded-Encrypted: i=1; AFNElJ/YkYpqvon1jUCNT/BPAERdzcfY61g272dpSkSBY4W1zqlJLLY7RfmfWuR7sFK5Vx5HT8xLzSA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq9My/NxwNu+84NiWVvz1CSv7Jetk6sG7BpiUTRWIrmoNWjBVv
-	cmNIH3+0D9F4yggY5pdJxzF86ZUkpudKZ9cq6xqS+FVHPuKEa2LPtRWZ
-X-Gm-Gg: Acq92OFsiFUm4vOQmKtx4VO1ladMgkBvNB9gh1ZPhAXPv+gdps9EoUhQ89Lxq/JTmxv
-	G+O/luQd+gV9yMmuMO1bBSydQx/2gnWlJiXeFvb7sHNnkIQ1w7rcpkXi7PQNKQ3jzlDXLiIoG7B
-	s1TroMMH8iWMQReFSjd4ldJYkmZrvsevrlZsmeJer4O6WmMJHpVeBJnyCQaWSiYnTRp3sPX54iq
-	WRs/pyHSRy3CTP5wajGZSW53fLjmC0xgoRx9KX+rzrai94IaTdCS4aA9DiQj4DQ3HGYHtufU1/l
-	j9c++XL61Pqh3iM2w08iSeyWQRKS6N3xq6CDFXgUdeDEeMYOD+9K2HmR509uyvKGxfGZgieiPmn
-	x+5cJbElzw7EyxQAbzy6oAHLI8zjI7RDVrYcz1oLU4wniPGvfmDx9Gw9eP5CDfB4pZMUZzkVRK5
-	NVpUaN8wyhfR5wktGpjVzqf+KTTR1TrxPuWHyNpE1FQ2hQ1tQZed8HThRULAKyTREyOsLN2yMjD
-	g==
-X-Received: by 2002:a05:7300:a145:b0:2d9:6373:ad22 with SMTP id 5a478bee46e88-30398172c1emr2498954eec.12.1778860960345;
-        Fri, 15 May 2026 09:02:40 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30296dcc458sm8803477eec.18.2026.05.15.09.02.36
+        d=1e100.net; s=20251104; t=1778861144; x=1779465944;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gNmnNWwYNlq1+0WNVpHNbEcI1Ifa9h4My5Raio47HEY=;
+        b=W6ZBRjc5+HFws+fGg/bN3YhvM3RWi4UYvXdV/WJ7Fdy4w7HaXIr//7D8XA13Bp+AeH
+         J1Q83FByz79zPvAsSFQt0CzSVe/e3QGI1Vs1Fn98PizUon/hk1KCRf9owsH4ArOXKkOY
+         ccuq/HLBcczqvfC5jq0reKhyBTVPoG/KmB4iQyUhOJPoK3YKjQM5/2Nq+1rd3A0S/1kk
+         563WM00W9vWKeNM6WbniWabyC2l2DhwIRMtGPNP7BPdzACx7ADHKvSjMkOY8v5lOq1go
+         lTq0Ur9mgcpOlainM3VZBzyDgLQv7tl8RWjfnYZVpCPDEpi3yD1/shbKFZ+IGAJ5NCYF
+         AKpA==
+X-Gm-Message-State: AOJu0Yx1C6UDV2ucPZMUQYQLukDrCW0flwNrsBEUTgo4/rja6WMkUWNX
+	GcbtQhf0k2VeREZRrGvSj+t1yuntcp0NdFC99hy+oIQ69EBfdwk402ONKnwAC0grvnaw+58x9su
+	OFUnH
+X-Gm-Gg: Acq92OH/YI29ICGtqVkjl0sgvzlH8kXamwC3/AsxVbhw2AUdyAhSvPbeXiC/0Og1Cp9
+	AS3pkrrlVMV4c2kzj49gaKmJ1tgQMIsfInKmiqpzDJQVx7xfZgWsYhp/ylVo9v/b12G9C46EwED
+	YQNk2EHtEVwP3axHN54wu4u3TvrJfFLdH20lTs5WHKYqzoElvtar+TdXEHZ2rHqI791wpxbt2ey
+	QH1Z2kX6FHwazin/zcQsiKxSVDq7dTmWjCYKptF4MmdFYWGfFjvZD6+dU+ZmfYUggWhKAP0PUm1
+	PkVuoUoMVQd5CC7S8Ae0GPu2Ry9UiY/folTQMAdcPawXOUbboQ5R181JohreHMwYZqfyHzgKfCA
+	nwx0P5XyfqzVqJrgo8gFm2zYE7U0/ZtENKnlzWdl7t1WQXttIgNVp63Krf/Gff9DlekkqmWQNcs
+	2I5tjc2+qZVtCL59CWkFc6Igsqm+ggVmrKkZljAhAmzzJhMwfs5M8mG4m9u6VKoc0SknXIaOxoL
+	8Rm
+X-Received: by 2002:a05:6830:6408:b0:7dc:c7aa:22c7 with SMTP id 46e09a7af769-7e4de65c157mr2762889a34.0.1778861143470;
+        Fri, 15 May 2026 09:05:43 -0700 (PDT)
+Received: from localhost ([2001:470:b8f6:1b:5de0:f9c5:a427:bb0])
+        by smtp.gmail.com with UTF8SMTPSA id 46e09a7af769-7e55bbd1a20sm1672924a34.14.2026.05.15.09.05.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 May 2026 09:02:39 -0700 (PDT)
-Message-ID: <3761688d-4964-42cd-a1a7-72fb95154efa@gmail.com>
-Date: Fri, 15 May 2026 13:02:34 -0300
+        Fri, 15 May 2026 09:05:43 -0700 (PDT)
+From: Corey Minyard <corey@minyard.net>
+To: stable@vger.kernel.org
+Cc: Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.6.y 1/2] ipmi:ssif: Remove unnecessary indention
+Date: Fri, 15 May 2026 11:04:20 -0500
+Message-ID: <20260515160422.2057506-1-corey@minyard.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026051540-path-mulled-0e19@gregkh>
+References: <2026051540-path-mulled-0e19@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] ALSA: hda/cs35l41: Fix firmware load work teardown
-To: Takashi Iwai <tiwai@suse.de>,
- Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc: "Stefan Binding (Opensource)" <sbinding@opensource.cirrus.com>,
- 'David Rhodes' <david.rhodes@cirrus.com>,
- 'Richard Fitzgerald' <rf@opensource.cirrus.com>,
- 'Takashi Iwai' <tiwai@suse.com>,
- 'Vitaly Rodionov' <vitalyr@opensource.cirrus.com>,
- 'Jaroslav Kysela' <perex@perex.cz>, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260511-alsa-hda-cs35l41-fw-work-teardown-v1-1-1184e9bc4f25@gmail.com>
- <agbxffucE1h67TRI@opensource.cirrus.com>
- <002f01dce47c$a7859760$f690c620$@opensource.cirrus.com>
- <agdAlJek88n6K53H@opensource.cirrus.com> <878q9ksm37.wl-tiwai@suse.de>
-From: =?UTF-8?Q?C=C3=A1ssio_Gabriel_Monteiro_Pires?=
- <cassiogabrielcontato@gmail.com>
-Content-Language: en-US
-In-Reply-To: <878q9ksm37.wl-tiwai@suse.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------P03C5TJIek002OBwqw9pmNXh"
-X-Rspamd-Queue-Id: 68FF35531CE
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1A0A05537B0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248136-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248206-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[minyard.net:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cirrus.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[minyard.net:email,minyard.net:mid,minyard.net:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------P03C5TJIek002OBwqw9pmNXh
-Content-Type: multipart/mixed; boundary="------------AW6hUK2TkIG00rSxRSt4nzC0";
- protected-headers="v1"
-From: =?UTF-8?Q?C=C3=A1ssio_Gabriel_Monteiro_Pires?=
- <cassiogabrielcontato@gmail.com>
-To: Takashi Iwai <tiwai@suse.de>,
- Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc: "Stefan Binding (Opensource)" <sbinding@opensource.cirrus.com>,
- 'David Rhodes' <david.rhodes@cirrus.com>,
- 'Richard Fitzgerald' <rf@opensource.cirrus.com>,
- 'Takashi Iwai' <tiwai@suse.com>,
- 'Vitaly Rodionov' <vitalyr@opensource.cirrus.com>,
- 'Jaroslav Kysela' <perex@perex.cz>, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Message-ID: <3761688d-4964-42cd-a1a7-72fb95154efa@gmail.com>
-Subject: Re: [PATCH RESEND] ALSA: hda/cs35l41: Fix firmware load work teardown
-References: <20260511-alsa-hda-cs35l41-fw-work-teardown-v1-1-1184e9bc4f25@gmail.com>
- <agbxffucE1h67TRI@opensource.cirrus.com>
- <002f01dce47c$a7859760$f690c620$@opensource.cirrus.com>
- <agdAlJek88n6K53H@opensource.cirrus.com> <878q9ksm37.wl-tiwai@suse.de>
-In-Reply-To: <878q9ksm37.wl-tiwai@suse.de>
-Autocrypt-Gossip: addr=perex@perex.cz; keydata=
- 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
+A section was in {} that didn't need to be, move the variable
+definition to the top and set th eindentino properly.
 
---------------AW6hUK2TkIG00rSxRSt4nzC0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Corey Minyard <corey@minyard.net>
+(cherry picked from commit 91eb7ec7261254b6875909df767185838598e21e)
+---
+ drivers/char/ipmi/ipmi_ssif.c | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-On 5/15/26 12:56, Takashi Iwai wrote:
-> On Fri, 15 May 2026 17:49:40 +0200,
-> Charles Keepax wrote:
->>
->> On Fri, May 15, 2026 at 04:08:14PM +0100, Stefan Binding (Opensource) =
-wrote:
->>>> -----Original Message-----
->>>>
->>>> @Stefan, could you also please have a look.
->>>
->>> I think this is fine to do, and I did some tests to make sure it does=
-n=C2=92t
->>> break anything.
->>> Reviewed-by: Stefan Binding <sbinding@opensource.cirrus.com>
->>
->> If Stefan is happy so I am :-)
->=20
-> OK, let's take it and see whether everything works.
->=20
-> As this doesn't look like a particularly urgent fix, I apply to
-> for-next branch for 7.2.
+diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
+index df8dd50b4cbe..6ded3e51ff8b 100644
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1650,6 +1650,7 @@ static int ssif_probe(struct i2c_client *client)
+ 	int               len = 0;
+ 	int               i;
+ 	u8		  slave_addr = 0;
++	unsigned int      thread_num;
+ 	struct ssif_addr_info *addr_info = NULL;
+ 
+ 	mutex_lock(&ssif_infos_mutex);
+@@ -1858,22 +1859,17 @@ static int ssif_probe(struct i2c_client *client)
+ 	ssif_info->handlers.request_events = request_events;
+ 	ssif_info->handlers.set_need_watch = ssif_set_need_watch;
+ 
+-	{
+-		unsigned int thread_num;
+-
+-		thread_num = ((i2c_adapter_id(ssif_info->client->adapter)
+-			       << 8) |
+-			      ssif_info->client->addr);
+-		init_completion(&ssif_info->wake_thread);
+-		ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
+-					       "kssif%4.4x", thread_num);
+-		if (IS_ERR(ssif_info->thread)) {
+-			rv = PTR_ERR(ssif_info->thread);
+-			dev_notice(&ssif_info->client->dev,
+-				   "Could not start kernel thread: error %d\n",
+-				   rv);
+-			goto out;
+-		}
++	thread_num = ((i2c_adapter_id(ssif_info->client->adapter) << 8) |
++		      ssif_info->client->addr);
++	init_completion(&ssif_info->wake_thread);
++	ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
++					"kssif%4.4x", thread_num);
++	if (IS_ERR(ssif_info->thread)) {
++		rv = PTR_ERR(ssif_info->thread);
++		dev_notice(&ssif_info->client->dev,
++			   "Could not start kernel thread: error %d\n",
++			   rv);
++		goto out;
+ 	}
+ 
+ 	dev_set_drvdata(&ssif_info->client->dev, ssif_info);
+-- 
+2.43.0
 
-I appreciate everyone=E2=80=99s time and effort in reviewing this patch.
-
-Thanks,
-C=C3=A1ssio
-
---------------AW6hUK2TkIG00rSxRSt4nzC0--
-
---------------P03C5TJIek002OBwqw9pmNXh
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQSrYqI5vIrg1X9eqEjQXT8aWv/ugwUCagdDmwUDAAAAAAAKCRDQXT8aWv/ug5N3
-AP94a3w5lzGrPeqsrtOEnUEZn5AKIEOqGjeJCYyiGv+IGgD6A4ZDKN3UYdjFbK7eNCLyNvas/DaZ
-GHT/hzxjWAwTywM=
-=05mg
------END PGP SIGNATURE-----
-
---------------P03C5TJIek002OBwqw9pmNXh--
 
