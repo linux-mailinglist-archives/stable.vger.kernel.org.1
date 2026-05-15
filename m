@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-247976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248446-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yE/BIf1FB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-247976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:12:45 +0200
+	id eDFsNeJOB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248446-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65365552D4F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:12:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65CE4554055
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 221E630352F2
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:55:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8985F332AE2C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A79217C220;
-	Fri, 15 May 2026 15:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D3F4BC005;
+	Fri, 15 May 2026 16:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+ybQ6R8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiYykpRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509863FF1D8;
-	Fri, 15 May 2026 15:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABAD3FF1D8;
+	Fri, 15 May 2026 16:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860552; cv=none; b=RYnpINaJ67wSI65KTTrCVmLDqmppfKTPk3Qw927lYNapfaPf66kbNHIhaXXDjzMXBkLTQPKSaR8s8IW3ZJzkUJ8Xk/3J44eI3phbjKcuzpMfOkOkSJqz+98SdLpfJo7tYQo6LO2tfAgov9CmSrackHJ2j1cQB1JER3n4rSFk5D0=
+	t=1778861754; cv=none; b=eOwyfw/hLcUu3dPdtFhut7q9CDxoV+bnUDAD36OZXJmH/JxTht0n7UKSSJmpgwD2oyyAa3PaQSx91+kyIR8HctCs5zRKJxNwPsxRdvm5b4VDLxBT0G/09EYL6pY9QOPJO96gVB6hptgl058a/aA+sMCuSLxTQ7N/1iKXKRODsN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860552; c=relaxed/simple;
-	bh=O3arwQr2YyeQbvs7bdnPeFP7Xp7vnHZBaZaQ2lM9o84=;
+	s=arc-20240116; t=1778861754; c=relaxed/simple;
+	bh=iXpYHuGvtrriFdiUR7X8R+iMxMM50bK4B6CpyeB7mjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VL01jQDZ0r57UPhZU1wU07qbsfzJyquGOp4T7/4zeuJMYbNXhg1Gfgl1NZxN07DC7RjdbnS4IT7O3XSMZtrfOfZ2Km53QiETS8/l6ABJif8eqLoJG3ZN8hyu9xTqAZHMcvCdmX8WT2xAU6C9fyVvDDBfFBCaqz6ia9UVHtNRISk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+ybQ6R8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD2CC2BCB0;
-	Fri, 15 May 2026 15:55:51 +0000 (UTC)
+	 MIME-Version; b=GNxLbxieH/Ch27OnlDoooHQeCGA5f3AJ6qQyUY/m5SkPSe9MRqMGoEeSTb7cZJ0e34KNBOU6xgGOmJzHDYen58ezJlFEzCn5UUlTqCA/REX18vfNBWDBR3t/RgNrNml5aJTL3EdqTGlLEaDvr/zfHcgCv+Fujy+OZhjXJ2+RPU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiYykpRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8955FC2BCFA;
+	Fri, 15 May 2026 16:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860552;
-	bh=O3arwQr2YyeQbvs7bdnPeFP7Xp7vnHZBaZaQ2lM9o84=;
+	s=korg; t=1778861754;
+	bh=iXpYHuGvtrriFdiUR7X8R+iMxMM50bK4B6CpyeB7mjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+ybQ6R8YYJUl7qbFZbTz5f5UTLaQ6De4bPJFm0q+GJZjnliogZqqiPxB35IkTWBC
-	 O6YcCvbr/qnYdnz++VsLKPdnSSa1HN6qyuAkydP0UftO1k6gvBL8uQnWZDGDP9PmIe
-	 yuf5QWaSls8T6Deo4YIqITOsgaRe2SUpXLgahIpg=
+	b=eiYykpRpPg2V767bWPh1kr/yeVxtUzd4x5PXtb1AhJ/uB9VABrXPp+uL9DLVLPttZ
+	 GGuthAk3fuRDTNZ6W1UL+iiwpNn8eppkgqcZVALxuN6dex/s75Ex4vttJjHeB0M4Ew
+	 aYY5eGeFFi+zQ+pQeRdl5RzoM0Fm+qlNS/BOoROI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/144] btrfs: fix double free in create_space_info_sub_group() error path
+	Liew Rui Yan <aethernet65535@gmail.com>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 450/474] mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
 Date: Fri, 15 May 2026 17:49:19 +0200
-Message-ID: <20260515154656.601727190@linuxfoundation.org>
+Message-ID: <20260515154724.828189104@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +64,296 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 65365552D4F
+X-Rspamd-Queue-Id: 65CE4554055
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-247976-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248446-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit a7449edf96143f192606ec8647e3167e1ecbd728 ]
+commit b98b7ff6025ae82570d4915e083f0cbd8d48b3cf upstream.
 
-When kobject_init_and_add() fails, the call chain is:
+DAMON_LRU_SORT updates 'enabled' and 'kdamond_pid' parameter values, which
+represents the running status of its kdamond, when the user explicitly
+requests start/stop of the kdamond.  The kdamond can, however, be stopped
+in events other than the explicit user request in the following three
+events.
 
-create_space_info_sub_group()
--> btrfs_sysfs_add_space_info_type()
--> kobject_init_and_add()
--> failure
--> kobject_put(&sub_group->kobj)
--> space_info_release()
--> kfree(sub_group)
+1. ctx->regions_score_histogram allocation failure at beginning of the
+   execution,
+2. damon_commit_ctx() failure due to invalid user input, and
+3. damon_commit_ctx() failure due to its internal allocation failures.
 
-Then control returns to create_space_info_sub_group(), where:
+Hence, if the kdamond is stopped by the above three events, the values of
+the status parameters can be stale.  Users could show the stale values and
+be confused.  This is already bad, but the real consequence is worse.
+DAMON_LRU_SORT avoids unnecessary damon_start() and damon_stop() calls
+based on the 'enabled' parameter value.  And the update of 'enabled'
+parameter value depends on the damon_start() and damon_stop() call
+results.  Hence, once the kdamond has stopped by the unintentional events,
+the user cannot restart the kdamond before the system reboot.  For
+example, the issue can be reproduced via below steps.
 
-btrfs_sysfs_add_space_info_type() returns error
--> kfree(sub_group)
+    # cd /sys/module/damon_lru_sort/parameters
+    #
+    # # start DAMON_LRU_SORT
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
+    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # commit wrong input to stop kdamond withou explicit stop request
+    # echo 3 > addr_unit
+    # echo Y > commit_inputs
+    bash: echo: write error: Invalid argument
+    #
+    # # confirm kdamond is stopped
+    # ps -ef | grep kdamond
+    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # users casn now show stable status
+    # cat enabled
+    Y
+    # cat kdamond_pid
+    806
+    #
+    # # even after fixing the wrong parameter,
+    # # kdamond cannot be restarted.
+    # echo 1 > addr_unit
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
 
-Thus, sub_group is freed twice.
+The problem will only rarely happen in real and common setups for the
+following reasons.  The allocation failures are unlikely in such setups
+since those allocations are arguably too small to fail.  Also sane users
+on real production environments may not commit wrong input parameters.
+But once it happens, the consequence is quite bad.  And the bug is a bug.
 
-Keep parent->sub_group[index] = NULL for the failure path, but after
-btrfs_sysfs_add_space_info_type() has called kobject_put(), let the
-kobject release callback handle the cleanup.
+The issue stems from the fact that there are multiple events that can
+change the status, and following all the events is challenging.
+Dynamically detect and use the fresh status for the parameters when those
+are requested.
 
-Fixes: f92ee31e031c ("btrfs: introduce btrfs_space_info sub-group")
-CC: stable@vger.kernel.org # 6.18+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20260419161003.79176-3-sj@kernel.org
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.0.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+(port parts of 42b7491af14c ("mm/damon/core: introduce damon_call()")
+and d2b5be741a50 ("mm/damon/sysfs: use DAMON core API
+damon_is_running()") for damon_is_running() dependency)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/space-info.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/linux/damon.h |    1 
+ mm/damon/core.c       |   16 +++++++++
+ mm/damon/lru_sort.c   |   88 +++++++++++++++++++++++++++++++-------------------
+ 3 files changed, 73 insertions(+), 32 deletions(-)
 
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -266,10 +266,8 @@ static int create_space_info_sub_group(s
- 	sub_group->subgroup_id = id;
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -677,6 +677,7 @@ static inline unsigned int damon_max_nr_
  
- 	ret = btrfs_sysfs_add_space_info_type(sub_group);
--	if (ret) {
--		kfree(sub_group);
-+	if (ret)
- 		parent->sub_group[index] = NULL;
--	}
- 	return ret;
+ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
+ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
++bool damon_is_running(struct damon_ctx *ctx);
+ int damon_kdamond_pid(struct damon_ctx *ctx);
+ 
+ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -763,6 +763,22 @@ int damon_stop(struct damon_ctx **ctxs,
  }
  
+ /**
++ * damon_is_running() - Returns if a given DAMON context is running.
++ * @ctx:	The DAMON context to see if running.
++ *
++ * Return: true if @ctx is running, false otherwise.
++ */
++bool damon_is_running(struct damon_ctx *ctx)
++{
++	bool running;
++
++	mutex_lock(&ctx->kdamond_lock);
++	running = ctx->kdamond != NULL;
++	mutex_unlock(&ctx->kdamond_lock);
++	return running;
++}
++
++/**
+  * damon_kdamond_pid() - Return pid of a given DAMON context's worker thread.
+  * @ctx:	The DAMON context of the question.
+  *
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -111,15 +111,6 @@ module_param(monitor_region_start, ulong
+ static unsigned long monitor_region_end __read_mostly;
+ module_param(monitor_region_end, ulong, 0600);
+ 
+-/*
+- * PID of the DAMON thread
+- *
+- * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
+- * Else, -1.
+- */
+-static int kdamond_pid __read_mostly = -1;
+-module_param(kdamond_pid, int, 0400);
+-
+ static struct damos_stat damon_lru_sort_hot_stat;
+ DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_lru_sort_hot_stat,
+ 		lru_sort_tried_hot_regions, lru_sorted_hot_regions,
+@@ -249,60 +240,93 @@ static int damon_lru_sort_turn(bool on)
+ {
+ 	int err;
+ 
+-	if (!on) {
+-		err = damon_stop(&ctx, 1);
+-		if (!err)
+-			kdamond_pid = -1;
+-		return err;
+-	}
++	if (!on)
++		return damon_stop(&ctx, 1);
+ 
+ 	err = damon_lru_sort_apply_parameters();
+ 	if (err)
+ 		return err;
+ 
+-	err = damon_start(&ctx, 1, true);
+-	if (err)
+-		return err;
+-	kdamond_pid = ctx->kdamond->pid;
+-	return 0;
++	return damon_start(&ctx, 1, true);
++}
++
++static bool damon_lru_sort_enabled(void)
++{
++	if (!ctx)
++		return false;
++	return damon_is_running(ctx);
+ }
+ 
+ static int damon_lru_sort_enabled_store(const char *val,
+ 		const struct kernel_param *kp)
+ {
+-	bool is_enabled = enabled;
+-	bool enable;
+ 	int err;
+ 
+-	err = kstrtobool(val, &enable);
++	err = kstrtobool(val, &enabled);
+ 	if (err)
+ 		return err;
+ 
+-	if (is_enabled == enable)
++	if (damon_lru_sort_enabled() == enabled)
+ 		return 0;
+ 
+ 	/* Called before init function.  The function will handle this. */
+ 	if (!ctx)
+-		goto set_param_out;
++		return 0;
+ 
+-	err = damon_lru_sort_turn(enable);
+-	if (err)
+-		return err;
++	return damon_lru_sort_turn(enabled);
++}
+ 
+-set_param_out:
+-	enabled = enable;
+-	return err;
++static int damon_lru_sort_enabled_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	return sprintf(buffer, "%c\n", damon_lru_sort_enabled() ? 'Y' : 'N');
+ }
+ 
+ static const struct kernel_param_ops enabled_param_ops = {
+ 	.set = damon_lru_sort_enabled_store,
+-	.get = param_get_bool,
++	.get = damon_lru_sort_enabled_load,
+ };
+ 
+ module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
+ MODULE_PARM_DESC(enabled,
+ 	"Enable or disable DAMON_LRU_SORT (default: disabled)");
+ 
++static int damon_lru_sort_kdamond_pid_store(const char *val,
++		const struct kernel_param *kp)
++{
++	/*
++	 * kdamond_pid is read-only, but kernel command line could write it.
++	 * Do nothing here.
++	 */
++	return 0;
++}
++
++static int damon_lru_sort_kdamond_pid_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	int kdamond_pid = -1;
++
++	if (ctx) {
++		kdamond_pid = damon_kdamond_pid(ctx);
++		if (kdamond_pid < 0)
++			kdamond_pid = -1;
++	}
++	return sprintf(buffer, "%d\n", kdamond_pid);
++}
++
++static const struct kernel_param_ops kdamond_pid_param_ops = {
++	.set = damon_lru_sort_kdamond_pid_store,
++	.get = damon_lru_sort_kdamond_pid_load,
++};
++
++/*
++ * PID of the DAMON thread
++ *
++ * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
++ * Else, -1.
++ */
++module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
++
+ static int damon_lru_sort_handle_commit_inputs(void)
+ {
+ 	int err;
 
 
 
