@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-248695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDbRBUZRB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:00:54 +0200
+	id +FgJGZ9KB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8866D554530
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:00:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0506D553608
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CC0FB31CF5B9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 685E630909E6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FFD3F44CB;
-	Fri, 15 May 2026 16:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DD7439006;
+	Fri, 15 May 2026 16:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDPnP929"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YomkVmAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0BE3B9D91;
-	Fri, 15 May 2026 16:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE193F86E1;
+	Fri, 15 May 2026 16:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862390; cv=none; b=A6Sl1HUuLRIBhvz9HrcDjXtDgjOcRTSrDsiAWMl8t/xSr2PAvu90i/UD6Fe63UK1bQ3iNLNJVokRtaxa8Jz2IEjv6noLSlfK2Xs5YbjRbjS9biGfn+x3oprYKpJxYSvRJ3SkugnKKyLBPEP9SP7Sv77HPb73VzR/s5MyV0e9x5I=
+	t=1778861395; cv=none; b=b+cqOs4lHyGTdxu84AAv462Uwr/ZCySGpOcGnc7HHM0Xi3NBiBMeG0Jr6VWJbANDtxbOCTXj6YTqinha641lCONqcuQgCgqyFDR++cnarCCGp+xZ5HLviNzCEUtSKwtUw7Jcu8inZcFWR2nfWKl9Q573GUr38yyPyIdtPlJrmnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862390; c=relaxed/simple;
-	bh=WxR/eWw2WChjZLsQR8Tt5wfnYhZXpyEn32gq3yrW6YQ=;
+	s=arc-20240116; t=1778861395; c=relaxed/simple;
+	bh=+P2x8BUDOtes6AZaYkH9R7qCAjO0Ed+t5Kzjg+76Od8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPK+4DrBRIaXRneHeZB5KmrE09teng9JYMRbzcyy+8+yM7eL8qTTRgVwV2b4+KcQTcuePjW4bPt2e18G/UR7tLH4bmNWIA1qlwHJXFfZLBjPtXq5o00gKutg+7d0tv+XbzxNK0JTF4uQOl7zYKTmZtiCEGj/gp0Hqgh839jl390=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDPnP929; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7CDC2BCB0;
-	Fri, 15 May 2026 16:26:30 +0000 (UTC)
+	 MIME-Version; b=QLCRXfkO16tSQMOUKlAjSi5mbYxL8Bq8asVHe7oDxGUZFkYId6roc/c+ezRfZ9Q+90O47jL4Qyygh+lEq4aD+qOLhTkPugSgVrv7b239mhlsBYtgCzilqOSCDiOwMIBBJ3jKcnkfnm96bFdRn3Yg9ofNgLH0yNTdJbpi973expQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YomkVmAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405C2C2BCB3;
+	Fri, 15 May 2026 16:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862390;
-	bh=WxR/eWw2WChjZLsQR8Tt5wfnYhZXpyEn32gq3yrW6YQ=;
+	s=korg; t=1778861394;
+	bh=+P2x8BUDOtes6AZaYkH9R7qCAjO0Ed+t5Kzjg+76Od8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nDPnP929dJkXiWzdMQr71Dq5igP4/8TSk/ommC/UZvc5Q5fZrzqHPyPIsTQHY30lR
-	 JCytF5chIR9XFlLJG+CsEgQ2kCu83HXxfNLt/bPsSVbYK8fp9XluPAvNvd0U6QS3zr
-	 u5CStylAgK454bZk61OFJDB6muXWCdAx7CvKI88Y=
+	b=YomkVmAxiI/VEY/jcqMNdsDvqyFRg0vEQZY/G2uyCvTmzEo3r+32cKQcwbWFmYqiT
+	 b7rMa0p34tQ0dMxcp21w5S9gx+pGoEdDIw9BjtCUeLNMWxkOZWFpQxH05PlyeoNFmz
+	 9to8dPI8Tsb9Gd/njq7EQkf+kNFd/OokxEDWmwOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sangyun Kim <sangyun.kim@snu.ac.kr>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 7.0 003/201] HID: appletb-kbd: run inactivity autodim from workqueues
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 312/474] spi: qup: fix controller deregistration
 Date: Fri, 15 May 2026 17:47:01 +0200
-Message-ID: <20260515154658.614913599@linuxfoundation.org>
+Message-ID: <20260515154721.761376565@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8866D554530
+X-Rspamd-Queue-Id: 0506D553608
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248695-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248306-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,179 +90,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,snu.ac.kr:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sangyun Kim <sangyun.kim@snu.ac.kr>
+From: Johan Hovold <johan@kernel.org>
 
-commit 1654e53349d4e657b331de354313461f401f5063 upstream.
+commit 443e3a0005a4342b218b6dbd4c6387d3c7fed85a upstream.
 
-The autodim code in hid-appletb-kbd takes backlight_device->ops_lock
-via backlight_device_set_brightness() -> mutex_lock() from two
-different atomic contexts:
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
- * appletb_inactivity_timer() is a struct timer_list callback, so it
-   runs in softirq context.  Every expiry triggers
-
-     BUG: sleeping function called from invalid context at kernel/locking/mutex.c:591
-     Call Trace:
-      <IRQ>
-      __might_resched
-      __mutex_lock
-      backlight_device_set_brightness
-      appletb_inactivity_timer
-      call_timer_fn
-      run_timer_softirq
-
- * reset_inactivity_timer() is called from appletb_kbd_hid_event() and
-   appletb_kbd_inp_event().  On real USB hardware these run in
-   softirq/IRQ context (URB completion and input-event dispatch).
-   When the Touch Bar has already been dimmed or turned off, the
-   reset path calls backlight_device_set_brightness() directly to
-   restore brightness, producing the same warning.
-
-Both call sites hit the same mutex_lock()-from-atomic bug.  Fix them
-together by moving the blocking work onto the system workqueue:
-
- * Convert the inactivity timer from struct timer_list to
-   struct delayed_work; the callback (appletb_inactivity_work) now
-   runs in process context where mutex_lock() is legal.
- * Add a dedicated struct work_struct restore_brightness_work and have
-   reset_inactivity_timer() schedule it instead of calling
-   backlight_device_set_brightness() directly.
-
-Cancel both works synchronously during driver tear-down alongside the
-existing backlight reference drop.
-
-The semantics are unchanged (same delays, same state transitions on
-dim, turn-off and user activity); only the execution context of the
-sleeping call changes.  The timer field and callback are renamed to
-match their new type; reset_inactivity_timer() keeps its name because
-it is invoked from input event paths that read naturally as "reset
-the inactivity timer".
-
-Fixes: 93a0fc489481 ("HID: hid-appletb-kbd: add support for automatic brightness control while using the touchbar")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 64ff247a978f ("spi: Add Qualcomm QUP SPI controller support")
+Cc: stable@vger.kernel.org	# 3.15
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-10-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-appletb-kbd.c |   44 ++++++++++++++++++++++++++++--------------
- 1 file changed, 30 insertions(+), 14 deletions(-)
+ drivers/spi/spi-qup.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/hid-appletb-kbd.c
-+++ b/drivers/hid/hid-appletb-kbd.c
-@@ -17,7 +17,7 @@
- #include <linux/module.h>
- #include <linux/string.h>
- #include <linux/backlight.h>
--#include <linux/timer.h>
-+#include <linux/workqueue.h>
- #include <linux/input/sparse-keymap.h>
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -1149,7 +1149,7 @@ static int spi_qup_probe(struct platform
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
  
- #include "hid-ids.h"
-@@ -62,7 +62,8 @@ struct appletb_kbd {
- 	struct input_handle kbd_handle;
- 	struct input_handle tpd_handle;
- 	struct backlight_device *backlight_dev;
--	struct timer_list inactivity_timer;
-+	struct delayed_work inactivity_work;
-+	struct work_struct restore_brightness_work;
- 	bool has_dimmed;
- 	bool has_turned_off;
- 	u8 saved_mode;
-@@ -164,16 +165,18 @@ static int appletb_tb_key_to_slot(unsign
- 	}
- }
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto disable_pm;
  
--static void appletb_inactivity_timer(struct timer_list *t)
-+static void appletb_inactivity_work(struct work_struct *work)
- {
--	struct appletb_kbd *kbd = timer_container_of(kbd, t, inactivity_timer);
-+	struct appletb_kbd *kbd = container_of(to_delayed_work(work),
-+					       struct appletb_kbd,
-+					       inactivity_work);
+@@ -1274,6 +1274,10 @@ static void spi_qup_remove(struct platfo
+ 	struct spi_qup *controller = spi_controller_get_devdata(host);
+ 	int ret;
  
- 	if (kbd->backlight_dev && appletb_tb_autodim) {
- 		if (!kbd->has_dimmed) {
- 			backlight_device_set_brightness(kbd->backlight_dev, 1);
- 			kbd->has_dimmed = true;
--			mod_timer(&kbd->inactivity_timer,
--				jiffies + secs_to_jiffies(appletb_tb_idle_timeout));
-+			mod_delayed_work(system_wq, &kbd->inactivity_work,
-+					 secs_to_jiffies(appletb_tb_idle_timeout));
- 		} else if (!kbd->has_turned_off) {
- 			backlight_device_set_brightness(kbd->backlight_dev, 0);
- 			kbd->has_turned_off = true;
-@@ -181,16 +184,25 @@ static void appletb_inactivity_timer(str
- 	}
- }
- 
-+static void appletb_restore_brightness_work(struct work_struct *work)
-+{
-+	struct appletb_kbd *kbd = container_of(work, struct appletb_kbd,
-+					       restore_brightness_work);
++	spi_controller_get(host);
 +
-+	if (kbd->backlight_dev)
-+		backlight_device_set_brightness(kbd->backlight_dev, 2);
-+}
++	spi_unregister_controller(host);
 +
- static void reset_inactivity_timer(struct appletb_kbd *kbd)
- {
- 	if (kbd->backlight_dev && appletb_tb_autodim) {
- 		if (kbd->has_dimmed || kbd->has_turned_off) {
--			backlight_device_set_brightness(kbd->backlight_dev, 2);
- 			kbd->has_dimmed = false;
- 			kbd->has_turned_off = false;
-+			schedule_work(&kbd->restore_brightness_work);
- 		}
--		mod_timer(&kbd->inactivity_timer,
--			jiffies + secs_to_jiffies(appletb_tb_dim_timeout));
-+		mod_delayed_work(system_wq, &kbd->inactivity_work,
-+				 secs_to_jiffies(appletb_tb_dim_timeout));
- 	}
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+ 
+ 	if (ret >= 0) {
+@@ -1293,6 +1297,8 @@ static void spi_qup_remove(struct platfo
+ 
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++
++	spi_controller_put(host);
  }
  
-@@ -408,9 +420,11 @@ static int appletb_kbd_probe(struct hid_
- 		dev_err_probe(dev, -ENODEV, "Failed to get backlight device\n");
- 	} else {
- 		backlight_device_set_brightness(kbd->backlight_dev, 2);
--		timer_setup(&kbd->inactivity_timer, appletb_inactivity_timer, 0);
--		mod_timer(&kbd->inactivity_timer,
--			jiffies + secs_to_jiffies(appletb_tb_dim_timeout));
-+		INIT_DELAYED_WORK(&kbd->inactivity_work, appletb_inactivity_work);
-+		INIT_WORK(&kbd->restore_brightness_work,
-+			  appletb_restore_brightness_work);
-+		mod_delayed_work(system_wq, &kbd->inactivity_work,
-+				 secs_to_jiffies(appletb_tb_dim_timeout));
- 	}
- 
- 	kbd->inp_handler.event = appletb_kbd_inp_event;
-@@ -444,7 +458,8 @@ close_hw:
- stop_hw:
- 	hid_hw_stop(hdev);
- 	if (kbd->backlight_dev) {
--		timer_delete_sync(&kbd->inactivity_timer);
-+		cancel_delayed_work_sync(&kbd->inactivity_work);
-+		cancel_work_sync(&kbd->restore_brightness_work);
- 		put_device(&kbd->backlight_dev->dev);
- 	}
- 	return ret;
-@@ -461,7 +476,8 @@ static void appletb_kbd_remove(struct hi
- 	hid_hw_stop(hdev);
- 
- 	if (kbd->backlight_dev) {
--		timer_delete_sync(&kbd->inactivity_timer);
-+		cancel_delayed_work_sync(&kbd->inactivity_work);
-+		cancel_work_sync(&kbd->restore_brightness_work);
- 		put_device(&kbd->backlight_dev->dev);
- 	}
- }
+ static const struct of_device_id spi_qup_dt_match[] = {
 
 
 
