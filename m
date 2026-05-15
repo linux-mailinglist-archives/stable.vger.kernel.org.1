@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-248793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIRZLHRaB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:40:04 +0200
+	id kCm1IvJWB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301B8555653
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:40:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26296554FA7
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FCBB34639A2
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 558ED32D21DD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1FF3D16EA;
-	Fri, 15 May 2026 16:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD264BC006;
+	Fri, 15 May 2026 16:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2+uaN0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJyn8mqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C079F3C4B72;
-	Fri, 15 May 2026 16:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318704B8DEF;
+	Fri, 15 May 2026 16:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862645; cv=none; b=H8ur+KqkgfFtC3bSd2M4rumSnALu5qODzSHn4XwZzH3ecBl0goN1oqmWoxgEGwhLf5p+QoiU2uUUwYMqdo25ny6bY0hgyzwvWAww9rK6A3KX0uOnYfRo38Q/NrixXWX8iFL56W0Sq+9Yt0hhRzWS3cxYeXgWOHxOnxQ8Bfz0+hc=
+	t=1778861712; cv=none; b=BEvC9KFQ/ZfyLqHITj3RgK5iF7WJoSs2BGPMbWg+k6FPxZPiYUwFWpHYLThrxIU78EMAexbgbQw271E93TWSulH83nizaQpOVpWZGVii4RiYNEUap1Wf/QB9NG/4E5YnZMBKnApLDDqdR13b8UQsn2nnYPird5H8cyQbcoTTvvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862645; c=relaxed/simple;
-	bh=DIfUSFQZB6rH9zSHQR2JhPZr58faq/WxFqOonbk76cc=;
+	s=arc-20240116; t=1778861712; c=relaxed/simple;
+	bh=TPJOYNNBHTm7ejohGH+3lH2NChK0yj40ddHRRp82ntc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urWnH9YhBEc5GEcW1qFwXMvS5iayUheXm9go2N96iQUwSmCE+yli7hLrKnfH5GJmMgE6shV/k6+aWzorgCCBiT9MJN1t/39SHfxn8CVgO1yLTeg16gLIlHwZ+0u6iR6u8kbUyCUxlusmzWN2p7gTCbDU69Y35LMb1qZRKRmkgGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2+uaN0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FD1C2BCB0;
-	Fri, 15 May 2026 16:30:45 +0000 (UTC)
+	 MIME-Version; b=fPLc3sfaw+wAzH+t0DPWAcMNk7wkXJULzQ3Xh3DIt/L1kKuRUiiFj7S6kOt7G3fYS1ITLnQPv+hfdpI5oNgDZGN/O4GneLQtkVyBTu7Pa+7J4PcoWe3A17ynCOINQs7wBFu6hoWh3xT5n2Ch/WSWniLBmtzBez/voQZYHB69XDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJyn8mqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3F5C2BCB0;
+	Fri, 15 May 2026 16:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862645;
-	bh=DIfUSFQZB6rH9zSHQR2JhPZr58faq/WxFqOonbk76cc=;
+	s=korg; t=1778861711;
+	bh=TPJOYNNBHTm7ejohGH+3lH2NChK0yj40ddHRRp82ntc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2+uaN0qtSf58f0ojyRT1UzzR2/el3sYzi14lgFhUc46ETKgrMF9T8Yc7j0cp4n1i
-	 0tVhrLXVWaN/D61n4sXpHzv36rVaL3Ql3YZzR+IiznYCfaiNnO01l5L9b/0B8BQj+v
-	 isVrZ6lTcpRL7/l5utuUMQ1Dgw3tNJb1nwYwyEXs=
+	b=zJyn8mqKxKXjk+1Edo1HeGSPl0InUIVlXBcJTLLF6Cl8daxn6nU3VTb4FUuJWsN6+
+	 cJkyPAgZh/iiLlFeTKLbTELX4lO9GGcdd34g9Z/MElP9n9zKkaAyr1q0jzbDpwMwTX
+	 EWTWX04N5SyhmJ1JzDrZitmZQxSdRa4bO9Hp+3co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>
-Subject: [PATCH 7.0 126/201] drm/imx: parallel-display: Prefer bus format set via legacy "interface-pix-fmt" DT property
+	Jingoo Han <jg1.han@samsung.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 435/474] spi: tegra114: fix controller deregistration
 Date: Fri, 15 May 2026 17:49:04 +0200
-Message-ID: <20260515154701.292634744@linuxfoundation.org>
+Message-ID: <20260515154724.490780988@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +65,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 301B8555653
+X-Rspamd-Queue-Id: 26296554FA7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248430-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248793-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nabladev.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,pengutronix.de:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit cdf26e1462c220629bb79d487263b66f8b679eab upstream.
+[ Upstream commit 9c9c27ff2058142d8f800de3186d6864184958de ]
 
-Prefer bus format set via legacy "interface-pix-fmt" DT property
-over panel bus format. This is necessary to retain support for
-DTs which configure the IPUv3 parallel output as 24bit DPI, but
-connect 18bit DPI panels to it with hardware swizzling.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-This used to work up to Linux 6.12, but stopped working in 6.13,
-reinstate the behavior to support old DTs.
-
-Cc: stable@vger.kernel.org
-Fixes: 5f6e56d3319d ("drm/imx: parallel-display: switch to drm_panel_bridge")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Link: https://patch.msgid.link/20260110171510.692666-1-marex@nabladev.com
+Fixes: 5c8096439600 ("spi: tegra114: use devm_spi_register_master()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Jingoo Han <jg1.han@samsung.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-22-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ renamed spi_controller/host API calls to spi_master/master equivalents ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imx/ipuv3/parallel-display.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/spi/spi-tegra114.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-+++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-@@ -110,8 +110,7 @@ imx_pd_bridge_atomic_get_input_bus_fmts(
- 		output_fmt = imxpd->bus_format ? : MEDIA_BUS_FMT_RGB888_1X24;
- 
- 	/* Now make sure the requested output format is supported. */
--	if ((imxpd->bus_format && imxpd->bus_format != output_fmt) ||
--	    !imx_pd_format_supported(output_fmt)) {
-+	if (!imx_pd_format_supported(output_fmt)) {
- 		*num_input_fmts = 0;
- 		return NULL;
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1416,7 +1416,7 @@ static int tegra_spi_probe(struct platfo
  	}
-@@ -121,7 +120,17 @@ imx_pd_bridge_atomic_get_input_bus_fmts(
- 	if (!input_fmts)
- 		return NULL;
  
--	input_fmts[0] = output_fmt;
-+	/*
-+	 * Prefer bus format set via legacy "interface-pix-fmt" DT property
-+	 * over panel bus format. This is necessary to retain support for
-+	 * DTs which configure the IPUv3 parallel output as 24bit, but
-+	 * connect 18bit DPI panels to it with hardware swizzling.
-+	 */
-+	if (imxpd->bus_format && imxpd->bus_format != output_fmt)
-+		input_fmts[0] = imxpd->bus_format;
-+	else
-+		input_fmts[0] = output_fmt;
+ 	master->dev.of_node = pdev->dev.of_node;
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	ret = spi_register_master(master);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
+ 		goto exit_free_irq;
+@@ -1442,6 +1442,10 @@ static void tegra_spi_remove(struct plat
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct tegra_spi_data	*tspi = spi_master_get_devdata(master);
+ 
++	spi_master_get(master);
 +
- 	return input_fmts;
++	spi_unregister_master(master);
++
+ 	free_irq(tspi->irq, tspi);
+ 
+ 	if (tspi->tx_dma_chan)
+@@ -1453,6 +1457,8 @@ static void tegra_spi_remove(struct plat
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		tegra_spi_runtime_suspend(&pdev->dev);
++
++	spi_master_put(master);
  }
  
+ #ifdef CONFIG_PM_SLEEP
 
 
 
