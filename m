@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-248837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WP1VMflQB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:37 +0200
+	id mLaLFvJXB2oozgIAu9opvQ
+	(envelope-from <stable+bounces-248643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823215544C1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83605551A6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D0BCE31225E2
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 280843029A5F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3023530569C;
-	Fri, 15 May 2026 16:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F753EFFC9;
+	Fri, 15 May 2026 16:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIko3zYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXOSIwyl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78BE3CEBA9;
-	Fri, 15 May 2026 16:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0838322FF22;
+	Fri, 15 May 2026 16:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862755; cv=none; b=hMv4VU4EwZPTEBuwspUEh0xiHQYyS9p6UVQ/nZmizeC6NqfygNn+n/CFq17KsUORtclKm6P4g1431KKRRAJkLHDfXNfnaJ9py7c1IGS5IhjECnQui+z0jQF3D5JiyVms9g5nBsUHLcSp5hWv21f98Lw5A1xRMl4cvfxxgJZApUI=
+	t=1778862259; cv=none; b=S5v27EoPKzhlte1WXS12otazFejOPVbaS58+5gzz8xrD5+7RqX7S7IzXbnvbnNRfbQGRJ0XKYHFwX6s5XZfZtqHqO5j+CDTgk6e5PJE+IqGUjkSTmbWP3OURGVpiNl1IIFBr0YFL5x3q2CJBKfzeY1WK/Zhf6uE9eLvibYmghdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862755; c=relaxed/simple;
-	bh=uU1x48hFvK15xDijy6K35kflJWHcdIYjvLy/77amIQw=;
+	s=arc-20240116; t=1778862259; c=relaxed/simple;
+	bh=K2t4+iwCFTkI6n45wOM4VjxHRKNsXQZQyketqapjKKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WlH44j9FeYhzMOGVb7+hVpGY4Jets6qq5BvWn1PvbmzcEXEj2hTkTUUGCiELDDp0otdyN/XP6Vsdep2p/rtl6ZVtnXdcqSMH9yLp+tPR8iB8UEjVwLBmfWmwCNTlE00z1tfU3Cy30bKSoFOOqi4sfWLaL/Yl1O4lG+QeYwM129A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIko3zYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C82FC2BCB0;
-	Fri, 15 May 2026 16:32:34 +0000 (UTC)
+	 MIME-Version; b=uuaT+fKC9eTbeH4rXmReuAluszV0Rr6g1Q6nYwou5neXTlWP/LnE0bRFRCcy0TUQb+BVoHS6uer2h8+uVLumOMVc0FSSUdY4CAwLzzM6S8L3CSCwWEGhAwrAqIzDejUdJXFOeoE9+M24RHvThi4N7ZEcwTf2fWo7IKlph3jPw/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXOSIwyl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9078AC2BCB3;
+	Fri, 15 May 2026 16:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862754;
-	bh=uU1x48hFvK15xDijy6K35kflJWHcdIYjvLy/77amIQw=;
+	s=korg; t=1778862258;
+	bh=K2t4+iwCFTkI6n45wOM4VjxHRKNsXQZQyketqapjKKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nIko3zYFG1GfKsTecbNDHFbeEaHNzM24/IGQC6oU1FAKmuW498IaZYT/bWLyJDc+x
-	 vlksR4qlc75/Bvj8sIr9tbfPeHA69CWkDuRu26FLnuoACtzYQU9qFduuKPhAY2II9t
-	 IiqSA8nc7OmoSRDpgQ6MEIHjVXBCkBQLSCgc0OWE=
+	b=yXOSIwyl/0VKbNihC4IWub4Y44zO0q+CQ34I546mxMnT7wAgCZ8JN64AT6Asp/vam
+	 j5xeGEdyXdLHiVO4xTpCnHXFJ77o2d9opO7ZbQnxzroZTwURHmkbtJcbOeDDOM1N6t
+	 AzMa8yExN8RKzs9aQSb43X7o7LEXGAQZrwQJxFiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 7.0 168/201] arm64: dts: qcom: kodiak: Fix PCIe1 PHY ref clock voting
-Date: Fri, 15 May 2026 17:49:46 +0200
-Message-ID: <20260515154702.215795283@linuxfoundation.org>
+	Chris Mason <clm@meta.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 170/188] sched_ext: Read scx_root under scx_cgroup_ops_rwsem in cgroup setters
+Date: Fri, 15 May 2026 17:49:47 +0200
+Message-ID: <20260515154701.023992674@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,13 +65,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 823215544C1
+X-Rspamd-Queue-Id: E83605551A6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248837-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248643-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,60 +88,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,meta.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit 30e8b6d42e8988eaaf0c2efd8c3797cb3884faea upstream.
+[ Upstream commit 80afd4c84bc8f5e80145ce35279f5ce53f6043db ]
 
-GCC_PCIE_CLKREF_EN controls a repeater that provides the reference clock
-only to the PCIe0 PHY. PCIe1 PHY receives its refclk directly from the CXO
-source.
+scx_group_set_{weight,idle,bandwidth}() cache scx_root before acquiring
+scx_cgroup_ops_rwsem, so the pointer can be stale by the time the op runs.
+If the loaded scheduler is disabled and freed (via RCU work) and another is
+enabled between the naked load and the rwsem acquire, the reader sees
+scx_cgroup_enabled=true (the new scheduler's) but dereferences the freed one
+- UAF on SCX_HAS_OP(sch, ...) / SCX_CALL_OP(sch, ...).
 
-If the PCIe1 driver in HLOS votes for or against GCC_PCIE_CLKREF_EN, it
-will inadvertently modify the refclk to PCIe0 as well. Since PCIe0 is
-managed by WPSS while PCIe1 is managed in HLOS, there is no mechanism to
-coordinate these votes. As a result, HLOS may disable this repeater
-during suspend and cut off the PCIe0 PHY refclk while PCIe0 is still
-active.
+scx_cgroup_enabled is toggled only under scx_cgroup_ops_rwsem write
+(scx_cgroup_{init,exit}), so reading scx_root inside the rwsem read section
+correlates @sch with the enabled snapshot.
 
-Replace the unused GCC_PCIE_CLKREF_EN clock entry with RPMH_CXO_CLK to
-reflect the actual hardware wiring and prevent unintended changes to
-PCIe0 clocking.
-
-Fixes: 92e0ee9f83b3 ("arm64: dts: qcom: sc7280: Add PCIe and PHY related nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260123-fix_pcie1_phy_clk-v1-1-38f82ea01792@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: a5bd6ba30b33 ("sched_ext: Use cgroup_lock/unlock() to synchronize against cgroup operations")
+Cc: stable@vger.kernel.org # v6.18+
+Reported-by: Chris Mason <clm@meta.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/kodiak.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/ext.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/kodiak.dtsi
-+++ b/arch/arm64/boot/dts/qcom/kodiak.dtsi
-@@ -2445,7 +2445,7 @@
- 			reg = <0 0x01c0e000 0 0x1000>;
- 			clocks = <&gcc GCC_PCIE_1_AUX_CLK>,
- 				 <&gcc GCC_PCIE_1_CFG_AHB_CLK>,
--				 <&gcc GCC_PCIE_CLKREF_EN>,
-+				 <&rpmhcc RPMH_CXO_CLK>,
- 				 <&gcc GCC_PCIE1_PHY_RCHNG_CLK>,
- 				 <&gcc GCC_PCIE_1_PIPE_CLK>;
- 			clock-names = "aux",
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -3251,9 +3251,10 @@ void scx_cgroup_cancel_attach(struct cgr
+ 
+ void scx_group_set_weight(struct task_group *tg, unsigned long weight)
+ {
+-	struct scx_sched *sch = scx_root;
++	struct scx_sched *sch;
+ 
+ 	percpu_down_read(&scx_cgroup_ops_rwsem);
++	sch = scx_root;
+ 
+ 	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_weight) &&
+ 	    tg->scx.weight != weight)
+@@ -3267,9 +3268,10 @@ void scx_group_set_weight(struct task_gr
+ 
+ void scx_group_set_idle(struct task_group *tg, bool idle)
+ {
+-	struct scx_sched *sch = scx_root;
++	struct scx_sched *sch;
+ 
+ 	percpu_down_read(&scx_cgroup_ops_rwsem);
++	sch = scx_root;
+ 
+ 	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_idle))
+ 		SCX_CALL_OP(sch, SCX_KF_UNLOCKED, cgroup_set_idle, NULL,
+@@ -3284,9 +3286,10 @@ void scx_group_set_idle(struct task_grou
+ void scx_group_set_bandwidth(struct task_group *tg,
+ 			     u64 period_us, u64 quota_us, u64 burst_us)
+ {
+-	struct scx_sched *sch = scx_root;
++	struct scx_sched *sch;
+ 
+ 	percpu_down_read(&scx_cgroup_ops_rwsem);
++	sch = scx_root;
+ 
+ 	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_bandwidth) &&
+ 	    (tg->scx.bw_period_us != period_us ||
 
 
 
