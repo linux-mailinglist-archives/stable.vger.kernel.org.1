@@ -1,186 +1,174 @@
-Return-Path: <stable+bounces-247725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJ4DCbsaB2rnrgIAu9opvQ
-	(envelope-from <stable+bounces-247725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:08:11 +0200
+	id 2JWEEosNB2oLrAIAu9opvQ
+	(envelope-from <stable+bounces-247726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:11:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D7C55033C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:08:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA5CB54F37A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7A47E305E020
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:05:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 46A293016CDD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BB947A0DB;
-	Fri, 15 May 2026 12:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B37A3D25C6;
+	Fri, 15 May 2026 12:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ObRWGohN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gFVACP36"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E6E3FB046
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778846749; cv=pass; b=MJr0g2rqmN+9SPsJMukkTRiTGDFRlPQHllD++Gw49/wO4viwOpQnidE3BLKRHVlHwj/cKxVZ0oTHEnmXBVZhbToIZoQtVqGuSpDsB7Wh7n722u5T9h35Mxfr4W2gwfHPh2wnTjIJZ8UXso6KlQdK0QjOAA5cjUgYklKzgtXmsdw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778846749; c=relaxed/simple;
-	bh=kW/9C30akUjzDwJkUoDa2H1DV7Pw0sHZs6bPnj1YUMU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SXeq89DNQLHi9UOSPcJRfZDa4pgD+jyocE13sivZmhTjZv0DFAqOK5XuNDkPr4UAm/L8XB/mUElPStljZQwEgFvYO5lv63XJ8IwbY3/MaZ3vrdk5Slw4oq8a/O3LE2RXrJAhIcy+XcvWZVM143vhqzaB0DFWt9+/cwgE0gQXKZA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ObRWGohN; arc=pass smtp.client-ip=74.125.224.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6563f83ae9fso12162881d50.1
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 05:05:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778846747; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YdbHmR2QzNbGgs9qeeOH58haOaofCXxBM7FMGw9sM0CNe5ZKrcp4BUwXY/AJWrttSh
-         iys3QM7q0PWY1InTt/7HPsltXAEfIplhZ5act7F1hWjiFBVde9f0Knu+3Vj1sdABF5c+
-         stVGmk/8gcJH2nAGHT5W9ZmA0JKEgRiuopTYUNGz2TsGi3oBHknd/rIaATubD6YsCa8C
-         YXkNBB9GUufqVEAKOttNsaYWZ/l6e4vMSO89w4Aq9X4Ka90depUc8hpyMv3qkg7GEELy
-         LYukvdTLesvCszUn4ViW3aT0AylRJxFRdTpJdLi4Iwy1XAqE3/ahfsaKVV23EDhoHLMN
-         h53A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5kVosTkW8SNhxTSi2C8qw8i0G8BjP9k3uqUmOQ8n5rQ=;
-        fh=CaBLDJj1+kGYebbrOKKiqb+cZhNNpoIp+yPewh0fmH4=;
-        b=FzvgBGyIZoo0SWGrtLlKscwMrgPcsoYsTAI6DufU+9qMl+TwxX6+Fe5pwt0rfja3pP
-         uTsaI0h3zDhHdm9GxICd68bis61VaWGkvQS9rj0B5gIgYXO0Og+c3M3Mc5UgaOwMPZfO
-         AtJ/x5pdx0ehun+xjto09Oo1GlpZF32N3RGfYcYHPS3GICgzfzc5hNRNIakRYnJAGkss
-         0/Hlqy6lm54saZ8YSaC0Ng9kZyVScy02/hAaK2AtAJ5jqfHu0DoTQ0p72RlUQHGEIiuL
-         Al1LDG8ihciq60UIYU9IvHS2ww8IdEFVq/zHCrI/SIxY6Pf/5sKlrg4tT+HjLgkpWQh8
-         PogA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778846747; x=1779451547; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5kVosTkW8SNhxTSi2C8qw8i0G8BjP9k3uqUmOQ8n5rQ=;
-        b=ObRWGohNPKlEIwNYMDzlGOfDGrfA0/ChbEswY1kRthJJGcNomAK0xpDMuew4l0iLhr
-         +MGUgLRQhLOGdUXc7C2xZ34+D0oC5mTRS14fw/8q+yWwoVLpzoZZZRdQrUSkn3xg8D7B
-         SdCtX0BU4KJ4PlWy0Y7q73GXg/LsTukEJd2c2eiD6Y3CxdHMg3dQPz0hy1qiPSCZ7461
-         0GwxtKhYgSYuWTQBy5dlc8BzBY71LPkuea4d9z/4jRKxP6knqbINdSx4Ui9MZrVz9isL
-         WiPegBHtAO/W5c1jWEUzDyWwqmvnFCzcCRXFpm545Dl9b8dIRfUw2vJFph/4roNXxywC
-         uA7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778846747; x=1779451547;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5kVosTkW8SNhxTSi2C8qw8i0G8BjP9k3uqUmOQ8n5rQ=;
-        b=kV66ljFpRIpKbOyhqHZnNA43ngxpZ1l/kUvTUJQRyn+Z6G6wUOtTgHN+fatEf6DwtG
-         tBP3KpfyjSK28QtoUAeGBW/XwAhkHbG1gRDyAuJwA3xPgiUrCr/Hr+w1mAglkl+zLbfK
-         m6x5CJyskDKtLUJexMYz7cKFn0oLm8nbV+yW3Qjv9YYPDWwkiHqHfQZlzURLmluG8LSj
-         +UbsNXV4hRleMZcg1VpSJE02WDiYbqzZgX3Bi+BNoT0PcuSFSJ7RypjUt/jV3eq4mMjQ
-         vglyfDYMgqxwNHDOqPsBwcsSlW61Zx2mUGvSlkhrmf6U82T8P6HZnSiZMVhyDpCWPVr9
-         26/w==
-X-Forwarded-Encrypted: i=1; AFNElJ8x2JQ0t8/WAsbBkVBygWf1t45OxJ5oZNLqb3bYaUlP8VNXkFyV71j3f1aK5/lwq8UJJQ+I1Nk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUV7P7Jb64LFPJ5zW4iZAKu6lGOSmmPIJHoaQ6ihi4v/qufZGu
-	x/ISxEFSZmrYJEnmuX56a50a8l+hVo1XWTZksXAIr5B/OBjnRpwX3qaJjhFnId1I5e3PkM11ZB7
-	E4l746LmiIo/UGhJHx4CtU0jJh2KAqVg=
-X-Gm-Gg: Acq92OGIzn6f3HnOiL38z7cufYmd+T2UhjVvKRflJkCqN113X+QTkm+MT6p8G7rY0M9
-	ikSPaUneP0L7rxj/w3Ayg6DaNXUbjs9+OZrI4xoMJ8P89B2z7QckB49UozMW5Zztg5duTpSUCYh
-	I1niD4uT2LEt+d9lFxRn2eooo6/4ZoLsKtbckG29lJ/1TaoUghFR0MLhCB+r/TYwln0tovLsH21
-	fiTuLbNMNaRpcDVR9sqOMAue+UcN6HCrggpsjhIZ/acOAaU8L/oULLDjQDCJehM96TN3JZEbqal
-	gNYQHTQ+6kDBgXtuNfCxjFviX0/K+l9fHlLm
-X-Received: by 2002:a05:690e:686:b0:65c:5bfd:b205 with SMTP id
- 956f58d0204a3-65e2290ca0amr2685003d50.62.1778846746950; Fri, 15 May 2026
- 05:05:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA123D5661
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778846778; cv=none; b=MUBx3BQYzAV6q79H8Sn7z4rEpTKIcgAqSEQraM0kIT0/xFhwUyDHsEywORu1cnwTLg8VQ3BFZTTNYOEL53uq7UtAR7OYTv9UBAIXgwmnu+lF2Q/LEBd59nNJOuItkHbnQ0zb+nQgxC2Bn5w0L6UeG7ZX4QcOlWXMfD8f3AdX1GE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778846778; c=relaxed/simple;
+	bh=FpQWMMS8S0Y4Z5OgrisPgmdLEnHpQy8/oAI4buubK/w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DWYukUwb/OnXdBcn4ZrvB9tHoFh/9jPmqQX5OlTui7GYou+2ydjJIjd0RhY79TdZCXprA3WFeFpNrIlBuuvNllaDt4u85b8mqCfgV2OLAHnOBJ8OWv0YeB107vONSIexHQhnNl+V2NatmKaD0JrG6kyIVppm7MpWKtXaUjqTO54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gFVACP36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59258C2BCB0;
+	Fri, 15 May 2026 12:06:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778846778;
+	bh=FpQWMMS8S0Y4Z5OgrisPgmdLEnHpQy8/oAI4buubK/w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gFVACP36Srk10DiUQmYeylxYXzpmEpkhkjvFySAF8qx++wPWy1nDTkVj0QOaAoq42
+	 Rh/RbQ1RQ+lh6anchRV+HmZ1BusllUdxj+5Q6qs39CHfTh60aGQCReoBUnkd1NBGfo
+	 Pzrk0UZoXTF6sYIJ2jgo9Ln0evgACJILnRSdM+n7tUQgy2B1PSNuGaV+2UV9g98z+k
+	 Il5kLJ/iLLDgJnJJa0/k+bhMyEwIaSwvp6MmTsU79ijGEtR11vKF0e17nMNcF1L0Cj
+	 EH7theQ4EaszzkXTrsuJsdCSjcmPX9w6bxofd9B7KHr9WgWBtf7OP4tcx4EJEJI2lr
+	 HIK6mBT1Ri1Bw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/2] btrfs: remove fs_info argument from btrfs_sysfs_add_space_info_type()
+Date: Fri, 15 May 2026 08:06:14 -0400
+Message-ID: <20260515120615.3073340-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051234-decidable-catalyst-a4ae@gregkh>
+References: <2026051234-decidable-catalyst-a4ae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260502132506.1936358-1-michael.bommarito@gmail.com>
- <20260510232455.2245650-1-michael.bommarito@gmail.com> <2632015.1778845625@warthog.procyon.org.uk>
-In-Reply-To: <2632015.1778845625@warthog.procyon.org.uk>
-From: Michael Bommarito <michael.bommarito@gmail.com>
-Date: Fri, 15 May 2026 08:05:33 -0400
-X-Gm-Features: AVHnY4I29IMk4pfB2O_u4c2IAaqwMg7WHsEKDsh2DM4cK4qrbnRcwgxc05ExzdQ
-Message-ID: <CAJJ9bXy2Kor7mn=KYGvN0UnAwN2=oibsyrqLZ9Aq9rTRV-fukg@mail.gmail.com>
-Subject: Re: [PATCH v2] crypto: krb5 - filter out async aead implementations
- at alloc
-To: David Howells <dhowells@redhat.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	linux-crypto@vger.kernel.org, Eric Biggers <ebiggers@kernel.org>, 
-	Marc Dionne <marc.dionne@auristor.com>, linux-afs@lists.infradead.org, 
-	Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>, ceph-devel@vger.kernel.org, 
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 39D7C55033C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EA5CB54F37A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247725-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-247726-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gondor.apana.org.au,davemloft.net,vger.kernel.org,kernel.org,auristor.com,lists.infradead.org,gmail.com,redhat.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-On Fri, May 15, 2026 at 7:47=E2=80=AFAM David Howells <dhowells@redhat.com>=
- wrote:
->
-> Michael Bommarito <michael.bommarito@gmail.com> wrote:
->
-> > -     ci =3D crypto_alloc_aead(krb5->encrypt_name, 0, 0);
-> > +     ci =3D crypto_alloc_aead(krb5->encrypt_name, 0, CRYPTO_ALG_ASYNC)=
-;
->
-> Apologies, but doesn't that do the opposite of what we want?
->
-> Documentation/crypto/architecture.rst says:
->
->         The mask flag restricts the type of cipher. The only allowed flag=
- is
->         CRYPTO_ALG_ASYNC to restrict the cipher lookup function to
->         asynchronous ciphers. Usually, a caller provides a 0 for the mask
->         flag.
->
-> Don't we want only synchronous ciphers?
+From: Filipe Manana <fdmanana@suse.com>
 
-This suggestion originally came from Herbert, but when I checked it, I
-missed that note and just looked at the code at crypto/api.c:71:
+[ Upstream commit 771af6ff72e0ed0eb8bf97e5ae4fa5094e0c5d1d ]
 
-71         if ((q->cra_flags ^ type) & mask)
-  1             continue;
+We don't need it since we can grab fs_info from the given space_info.
+So remove the fs_info argument.
 
-crypto_alloc_sync_aead does the same thing at L212 in aead.c.
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: a7449edf9614 ("btrfs: fix double free in create_space_info_sub_group() error path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/space-info.c | 4 ++--
+ fs/btrfs/sysfs.c      | 5 ++---
+ fs/btrfs/sysfs.h      | 3 +--
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
-So the bit mask should filter the way we want, despite the
-documentation's implication.  Perhaps we should separately update that
-line in the docs to be more clear about filter and how to properly use
-it.
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index a815308e2db91..c4a50550672da 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -275,7 +275,7 @@ static int create_space_info_sub_group(struct btrfs_space_info *parent, u64 flag
+ 	sub_group->parent = parent;
+ 	sub_group->subgroup_id = id;
+ 
+-	ret = btrfs_sysfs_add_space_info_type(fs_info, sub_group);
++	ret = btrfs_sysfs_add_space_info_type(sub_group);
+ 	if (ret) {
+ 		kfree(sub_group);
+ 		parent->sub_group[index] = NULL;
+@@ -309,7 +309,7 @@ static int create_space_info(struct btrfs_fs_info *info, u64 flags)
+ 			goto out_free;
+ 	}
+ 
+-	ret = btrfs_sysfs_add_space_info_type(info, space_info);
++	ret = btrfs_sysfs_add_space_info_type(space_info);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/fs/btrfs/sysfs.c b/fs/btrfs/sysfs.c
+index 81f52c1f55ce5..d66681ce2b3da 100644
+--- a/fs/btrfs/sysfs.c
++++ b/fs/btrfs/sysfs.c
+@@ -1981,13 +1981,12 @@ static const char *alloc_name(struct btrfs_space_info *space_info)
+  * Create a sysfs entry for a space info type at path
+  * /sys/fs/btrfs/UUID/allocation/TYPE
+  */
+-int btrfs_sysfs_add_space_info_type(struct btrfs_fs_info *fs_info,
+-				    struct btrfs_space_info *space_info)
++int btrfs_sysfs_add_space_info_type(struct btrfs_space_info *space_info)
+ {
+ 	int ret;
+ 
+ 	ret = kobject_init_and_add(&space_info->kobj, &space_info_ktype,
+-				   fs_info->space_info_kobj, "%s",
++				   space_info->fs_info->space_info_kobj, "%s",
+ 				   alloc_name(space_info));
+ 	if (ret) {
+ 		kobject_put(&space_info->kobj);
+diff --git a/fs/btrfs/sysfs.h b/fs/btrfs/sysfs.h
+index 0f94ae9232101..05498e5346c39 100644
+--- a/fs/btrfs/sysfs.h
++++ b/fs/btrfs/sysfs.h
+@@ -37,8 +37,7 @@ void __cold btrfs_exit_sysfs(void);
+ int btrfs_sysfs_add_mounted(struct btrfs_fs_info *fs_info);
+ void btrfs_sysfs_remove_mounted(struct btrfs_fs_info *fs_info);
+ void btrfs_sysfs_add_block_group_type(struct btrfs_block_group *cache);
+-int btrfs_sysfs_add_space_info_type(struct btrfs_fs_info *fs_info,
+-				    struct btrfs_space_info *space_info);
++int btrfs_sysfs_add_space_info_type(struct btrfs_space_info *space_info);
+ void btrfs_sysfs_remove_space_info(struct btrfs_space_info *space_info);
+ void btrfs_sysfs_update_devid(struct btrfs_device *device);
+ 
+-- 
+2.53.0
 
-Thanks,
-Mike
 
