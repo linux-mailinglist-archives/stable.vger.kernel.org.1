@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPQ6OepPB2o9yAIAu9opvQ
-	(envelope-from <stable+bounces-248499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:06 +0200
+	id mNUXJbNVB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3C45542DC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBB0554D6A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D48C7342BE86
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AE3B31CDD89
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A073EFFCD;
-	Fri, 15 May 2026 16:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985E03E0093;
+	Fri, 15 May 2026 16:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asTZrSAI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ax89thK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BDE3EFFB0;
-	Fri, 15 May 2026 16:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9E6303CB0;
+	Fri, 15 May 2026 16:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861887; cv=none; b=WRnIbr/MAf5gj/enO/VXNzMSlVu47D3tN1Ms6J764pCleSWkz4XmNs9FmAE8Yhhj2ssIFkBSVew2M6R/2FR8TkioXC7NCFMasgr+H6G4yABv0FDOkTfuFFEfc7ZaQExsjaprNpJKnLAz3CEVWWqO3rhdUv7LzMKy6/OAXXPG/tw=
+	t=1778861501; cv=none; b=E2qVwzGnb/VdrClCSDBWbZy8Ppflk6qs5DqA2V34x6KyFJViovZC6s9P6r8ilDB6pFpU3TFG6ViJC4WuwzS/CFs/Lwqj0Yl7C7HucySpbmpgRAHphaQ14PxRacwchw/9EMZe3h0XX+dsXMg1h/eOuGunUpuxqMjhqpyDeG2lfi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861887; c=relaxed/simple;
-	bh=vqq2nGisvvF1tFaPAIkTp6963/9lFSov8ahLWap3Vxo=;
+	s=arc-20240116; t=1778861501; c=relaxed/simple;
+	bh=ZpxAevFmH1ll5LowV2EZnkm7Qfn74P3G2T0d5nkGNWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sA8WGSLkW5JhzeKwC1BBBFaYWbxAlXREf7lYFknowWTF5vTJpSkmZzNn0gGoov8AYubdSbpIcjQuIGmkmcYTjw8/EqD3hCJ5qrwwub8Plvy7TxtNa34d7r0XetijiTqQRuW72yx9ntDKBxh+bRDHfDyEQxzZ0cRe5fbK/2ZfsPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asTZrSAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCD9C2BCB3;
-	Fri, 15 May 2026 16:18:06 +0000 (UTC)
+	 MIME-Version; b=ZKINwzYhJmwhvP9qdClZbjP9zVqRHQiCMowi5wQDyziQ4EEFDT4funR2HL4UjOvvkrmx8FhqltxrxchEUzXfZF7EpHSRtMzCp81QEVWlwhZQzdWXqXh0phsCvJQoLIOp9bNTr1T29W/rahu/dfNqfeQbP6M5yJD3iiCVeFuq7Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ax89thK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04C6C2BCB0;
+	Fri, 15 May 2026 16:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861887;
-	bh=vqq2nGisvvF1tFaPAIkTp6963/9lFSov8ahLWap3Vxo=;
+	s=korg; t=1778861501;
+	bh=ZpxAevFmH1ll5LowV2EZnkm7Qfn74P3G2T0d5nkGNWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asTZrSAIrV9L/gdbbjQIrTl83AgZvVAjPU6r9jg7Ssnj8I2UFQbciZ1AWNRqhIi9F
-	 /xCDaWRN7I8POAeuJczRLUvvoL1MMxI30WQ5QqbZUQapzdlOsL/VDQvkYBM2x5nol3
-	 gxa6UvxLvGqmsVzkEhyf4aGP645S1ph3s5do/pW8=
+	b=0ax89thKhSdqRD8p4syohYLC5BPkYVi4mpnsIgkJN6Wehab2DNdKG/iZAp1E7I0hP
+	 4jvGXdkEAkYY94sF/IJmQdB/+qAomtfsFlAb2CTO/IrlpBZnTttSQTV5tKF5knEy5m
+	 flV0kO6d1Ser0FsUP63d7Cf4aL9afA8Sv6IalhXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 027/188] media: rc: streamzap: Error handling in probe
-Date: Fri, 15 May 2026 17:47:24 +0200
-Message-ID: <20260515154657.897906581@linuxfoundation.org>
+	Russell King <rmk+kernel@arm.linux.org.uk>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 336/474] spi: orion: fix clock imbalance on registration failure
+Date: Fri, 15 May 2026 17:47:25 +0200
+Message-ID: <20260515154722.285177433@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4E3C45542DC
+X-Rspamd-Queue-Id: EFBB0554D6A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248499-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248347-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,66 +89,63 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,kernel];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mess.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.org.uk:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 42844992664f03ef9f930e64f7370fa481e9c267 upstream.
+commit 443cde0dc59c5d154156ac9f27a7dadef8ebc0c2 upstream.
 
-If submitting the URB fails, the device will be unusable.
-Probe() must fail.
+Make sure that the controller is not runtime suspended before disabling
+clocks on probe failure.
 
-Fixes: 7a569f524dd36 ("V4L/DVB: IR/streamzap: functional in-kernel decoding")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Also restore the autosuspend setting.
+
+Fixes: 5c6786945b4e ("spi: spi-orion: add runtime PM support")
+Cc: stable@vger.kernel.org	# 3.17
+Cc: Russell King <rmk+kernel@arm.linux.org.uk>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260421130211.1537628-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/streamzap.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/spi/spi-orion.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -219,9 +219,8 @@ static void streamzap_callback(struct ur
- 	case -ESHUTDOWN:
- 		/*
- 		 * this urb is terminated, clean up.
--		 * sz might already be invalid at this point
- 		 */
--		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
-+		dev_dbg(sz->dev, "urb terminated, status: %d\n", urb->status);
- 		return;
- 	default:
- 		break;
-@@ -358,11 +357,16 @@ static int streamzap_probe(struct usb_in
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -778,6 +778,7 @@ static int orion_spi_probe(struct platfo
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
++	pm_runtime_get_noresume(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
  
- 	usb_set_intfdata(intf, sz);
+ 	status = orion_spi_reset(spi);
+@@ -789,10 +790,15 @@ static int orion_spi_probe(struct platfo
+ 	if (status < 0)
+ 		goto out_rel_pm;
  
--	if (usb_submit_urb(sz->urb_in, GFP_ATOMIC))
-+	retval = usb_submit_urb(sz->urb_in, GFP_ATOMIC);
-+	if (retval < 0) {
- 		dev_err(sz->dev, "urb submit failed\n");
-+		goto rc_submit_fail;
-+	}
++	pm_runtime_put_autosuspend(&pdev->dev);
++
+ 	return status;
  
- 	return 0;
--
-+rc_submit_fail:
-+	rc_free_device(sz->rdev);
-+	usb_set_intfdata(intf, NULL);
- rc_dev_fail:
- 	usb_free_urb(sz->urb_in);
- free_buf_in:
+ out_rel_pm:
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ out_rel_axi_clk:
+ 	clk_disable_unprepare(spi->axi_clk);
+ out_rel_clk:
 
 
 
