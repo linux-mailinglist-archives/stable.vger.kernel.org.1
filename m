@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIW/FfVCB2oCvAIAu9opvQ
-	(envelope-from <stable+bounces-247911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:59:49 +0200
+	id wLZ8FhFNB2rJxQIAu9opvQ
+	(envelope-from <stable+bounces-248553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:42:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E725528D9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:59:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175C4553C87
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED1AA308C992
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EDB25301E75E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76F43FF1DA;
-	Fri, 15 May 2026 15:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3A2392C34;
+	Fri, 15 May 2026 16:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxpKXkVK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpVUOJcU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6B73FF1A2;
-	Fri, 15 May 2026 15:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C26B33B6E8;
+	Fri, 15 May 2026 16:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860389; cv=none; b=pWuc3Quz2wYr2+au9B9m4OpRCsEdaZh+KC/DXbrfBbFL8z9qoP+76XOWgxROEqVznTmIgwr0zLybPcxxySyjS1GFJDbzWgJELfKbqSSsXJEvLsW5WwJTS3PEm9Z7ngsXF5fzq8uqbKKndtUNIrZ8eVROJa8L8i0p7eoNhgNlm34=
+	t=1778862025; cv=none; b=g4yPfn3oIop/W91LEvi0kd+QHpjwpEDsos4Kv8u/iGLHxM+PzfXHrk4rlX8yagyPL73v13apuQR3BrKQ3meERz2nKBHaCIf0f4cZs7p+pP6e3T/uqBWBH8WLZ8lwrgPP30tZBUILKryiQeHLa9kh7L7AGfUVygIEXLn6VQpyzh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860389; c=relaxed/simple;
-	bh=t50zsXeW7bnO7e77BPC1E5/Llzq8dKNTl08SR89xFyA=;
+	s=arc-20240116; t=1778862025; c=relaxed/simple;
+	bh=wAiWWmMBcm8jDjEhXd7xpqR7zbmfj/H12hu06POidHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMrYH6ZbdHLbPg61LegRgugQZyVLoJNapme0v09cIAo0AP5zj6g+3TpN8HXlmHf8kO1zaa4DwOsm3l9vs1SR1YCBxl0cAM4us6R9JLZaX2rw+Tnr1WY0ZsySP4u+YeKhIhrwR/9fYmLelPdKJNo6Derq+oF2u2UqcW18FlEHCK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxpKXkVK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D8CC2BCB0;
-	Fri, 15 May 2026 15:53:08 +0000 (UTC)
+	 MIME-Version; b=p92tJLM+Ew68zRuZLbj0PG1/6JDtuK4WjL4zE+m7982dA+LW5TkTipj0dBtfS3qGw4SMzZnszS7TpOef8ReWSaMD3xOjXnHKYuGWWQxmfCYXgNDqlOYpzfzLVUrKMWycY1rGoUFTucmyEKElkChOADOndRYL5kG97gW+RVabdzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpVUOJcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B71C2BCB0;
+	Fri, 15 May 2026 16:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860389;
-	bh=t50zsXeW7bnO7e77BPC1E5/Llzq8dKNTl08SR89xFyA=;
+	s=korg; t=1778862025;
+	bh=wAiWWmMBcm8jDjEhXd7xpqR7zbmfj/H12hu06POidHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxpKXkVKsFOkHLfv4G9yI4mpMb5xiEf8n1qG3h4jk7h33U//jPnG0o0okVaR8aRMk
-	 s+oIzoxzzHZxag/+wVjUB2FuppLcHFDyjvGCAK2rCWFfoKMDOlLT5d1luOYX02P8O5
-	 4jR8QLhLslRobffDAOvC/ly7CRzyRPSQjwFOYJto=
+	b=zpVUOJcUQxBw0TWEhsjtKWTygJ8dlEn1VMEIVyilo732WzIsrAiqQfPwDOMGsXwru
+	 /Kg4ySMNU9NxsfteRvrrDgCpcReoZP3I3JzyuLPFROGuNdJZ2wGDPSF0OvoW7bE8Qh
+	 VWMOzRcVGB8HjodF44nU7EQr7Llmz6D+Ji1+sc/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alysa Liu <Alysa.Liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 071/144] drm/amdkfd: Add upper bound check for num_of_nodes
+	Lanqing Liu <lanqing.liu@spreadtrum.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 080/188] spi: sprd: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:17 +0200
-Message-ID: <20260515154655.185175341@linuxfoundation.org>
+Message-ID: <20260515154659.054931855@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E6E725528D9
+X-Rspamd-Queue-Id: 175C4553C87
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247911-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248553-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,75 +91,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,spreadtrum.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alysa Liu <Alysa.Liu@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 74b73fa56a395d46745e4f245225963e9f8be7f1 upstream.
+commit 123d17dbc5f07059752fa5e616385ca29a8f935a upstream.
 
-drm/amdkfd: Add upper bound check for num_of_nodes
-in kfd_ioctl_get_process_apertures_new.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alysa Liu <Alysa.Liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 98ff46a5ea090c14d2cdb4f5b993b05d74f3949f)
-Cc: stable@vger.kernel.org
+Note that the controller is suspended before disabling and releasing
+resources since commit de082d866cce ("spi: sprd: Add the SPI irq
+function for the SPI DMA mode") which avoids issues like unclocked
+accesses but prevents SPI device drivers from doing I/O during
+deregistration.
+
+Fixes: e7d973a31c24 ("spi: sprd: Add SPI driver for Spreadtrum SC9860")
+Cc: stable@vger.kernel.org	# 4.20
+Cc: Lanqing Liu <lanqing.liu@spreadtrum.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-17-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c  |    3 +++
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h     |    1 +
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c |   11 +++++++++++
- 3 files changed, 15 insertions(+)
+ drivers/spi/spi-sprd.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -768,6 +768,9 @@ static int kfd_ioctl_get_process_apertur
- 		goto out_unlock;
+--- a/drivers/spi/spi-sprd.c
++++ b/drivers/spi/spi-sprd.c
+@@ -978,7 +978,7 @@ static int sprd_spi_probe(struct platfor
+ 		goto err_rpm_put;
  	}
  
-+	if (args->num_of_nodes > kfd_topology_get_num_devices())
-+		return -EINVAL;
-+
- 	/* Fill in process-aperture information for all available
- 	 * nodes, but not more than args->num_of_nodes as that is
- 	 * the amount of memory allocated by user
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -1168,6 +1168,7 @@ static inline struct kfd_node *kfd_node_
- 	return NULL;
- }
- int kfd_topology_enum_kfd_devices(uint8_t idx, struct kfd_node **kdev);
-+uint32_t kfd_topology_get_num_devices(void);
- int kfd_numa_node_to_apic_id(int numa_node_id);
+-	ret = devm_spi_register_controller(&pdev->dev, sctlr);
++	ret = spi_register_controller(sctlr);
+ 	if (ret)
+ 		goto err_rpm_put;
  
- /* Interrupts */
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -2291,6 +2291,17 @@ int kfd_topology_remove_device(struct kf
- 	return res;
+@@ -1009,7 +1009,9 @@ static void sprd_spi_remove(struct platf
+ 	if (ret < 0)
+ 		dev_err(ss->dev, "failed to resume SPI controller\n");
+ 
+-	spi_controller_suspend(sctlr);
++	spi_controller_get(sctlr);
++
++	spi_unregister_controller(sctlr);
+ 
+ 	if (ret >= 0) {
+ 		if (ss->dma.enable)
+@@ -1018,6 +1020,8 @@ static void sprd_spi_remove(struct platf
+ 	}
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++
++	spi_controller_put(sctlr);
  }
  
-+uint32_t kfd_topology_get_num_devices(void)
-+{
-+	uint32_t num_devices;
-+
-+	down_read(&topology_lock);
-+	num_devices = sys_props.num_devices;
-+	up_read(&topology_lock);
-+
-+	return num_devices;
-+}
-+
- /* kfd_topology_enum_kfd_devices - Enumerate through all devices in KFD
-  *	topology. If GPU device is found @idx, then valid kfd_dev pointer is
-  *	returned through @kdev
+ static int __maybe_unused sprd_spi_runtime_suspend(struct device *dev)
 
 
 
