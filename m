@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-248141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248147-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LhOKVZIB2rUwQIAu9opvQ
-	(envelope-from <stable+bounces-248141-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:22:46 +0200
+	id QDD/Fw5IB2rUwQIAu9opvQ
+	(envelope-from <stable+bounces-248147-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:21:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5233B5531DC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:22:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5063553157
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6EE153015733
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:03:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41A0C310CF62
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325E53BFE4C;
-	Fri, 15 May 2026 16:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2FF3E008B;
+	Fri, 15 May 2026 16:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPhaztnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cC7kZ+pN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E927530569C;
-	Fri, 15 May 2026 16:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AAE39B971;
+	Fri, 15 May 2026 16:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860976; cv=none; b=eyGiUJubI+2d+O2Gp5XCxpqZOJUHTkDMRR18ztbzIaSZccDqa8fAlXacUuSpfoBE17K9Y5z22DzSHSXXwq6VFxaHdxBE24McFFWTg3sXX4ZorjTbeC9Tbqh38Hrp0wQU3JfKT85Ak2x8NROYIzr41JtNPRt7frSY+5tnoHQJ/0k=
+	t=1778860991; cv=none; b=ooSgcrn0GsP76edSc94Y49scNMiCtwfsWQKJHlHCdKjuCEHJWSWZ3WnhUbqDquxNY522rSIvK4qBywb/VBa4+6Q02ybHRgLkdx2x3CHQg/XmklN4SOVnN5hOdFq8n/+h/8fq1Iw/jh1Ts+CXsQZnMY13VQysBnGx7L5LXWWH+Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860976; c=relaxed/simple;
-	bh=cNV0LpT4J5aeiH/IWYGvVYisqfyxmCIcLKP2m4IgXn4=;
+	s=arc-20240116; t=1778860991; c=relaxed/simple;
+	bh=yj4Lm2h6wyQM39iE8wX7FUBpBWvPeHuGY86rPw9v+WA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTBzCUNnjDNhBTw+Y4CIRQtAHOZxt94O6R/fIRtCo9EonD2sI46S2+uYK2qQl00CZnubIctgpnm6LKRx1X2wwXFRnqiNo5biBY2tXpChbFMOIEMsjU37tB09Veh00FKz4OIrmfeFquNN4oUZf7iPPChNe1VadJTHP32EVtfdwWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPhaztnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5647FC2BCB0;
-	Fri, 15 May 2026 16:02:55 +0000 (UTC)
+	 MIME-Version; b=bRad+JIZoL4xzDjUMk2aRF2vYX9456y9nHJ4lwFcdw6+jCh9+I6cDAhS/fltTwaPqzEDBOzsA2r4/susk0WVInzZTDJ6KLA7q00JSUQn+VWO5teSaRas/y7aE/lN8lGbsiLILu/7UVF+fmiHdXm+5INVwjyblOGyopj4HTHib/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cC7kZ+pN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F95C2BCB0;
+	Fri, 15 May 2026 16:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860975;
-	bh=cNV0LpT4J5aeiH/IWYGvVYisqfyxmCIcLKP2m4IgXn4=;
+	s=korg; t=1778860991;
+	bh=yj4Lm2h6wyQM39iE8wX7FUBpBWvPeHuGY86rPw9v+WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPhaztnUW6cwZVUlgpxiQcum9cYYoZ0wYLosUElvRVVqua1piayJ1AwANa5j6SHyM
-	 csVFHIq0cnU3hIBRBt8Cz40rpVm/p+LaSO/nXvw7pn1HuqEqJxhBRhgA27d3Mr4Qpw
-	 4//OmdapWqPYbPbZBuH3rXBKl0Y3PRamLEUHpIio=
+	b=cC7kZ+pNK926oJCswQs2nSjXI8Y5HOi8j6Hzjkqo7j0zBKR7fr4DK+GcKFIMfaYUl
+	 Rw7WT8+2dPeJoKVvCENxEGFONfjUFBoEleyjZsuQSsjQ8uRkTJOC4YBNDi+cdpTONO
+	 7KvwOOaZ+QweCZrm9JBHaL1cKJOJUkj9vECI7Ob0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yu Kuai <yukuai@fnnas.com>
-Subject: [PATCH 6.6 114/474] md/raid5: validate payload size before accessing journal metadata
-Date: Fri, 15 May 2026 17:43:43 +0200
-Message-ID: <20260515154717.503151934@linuxfoundation.org>
+	Chia-Ming Chang <chiamingc@synology.com>,
+	robbieko <robbieko@synology.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.6 115/474] inotify: fix watch count leak when fsnotify_add_inode_mark_locked() fails
+Date: Fri, 15 May 2026 17:43:44 +0200
+Message-ID: <20260515154717.525991305@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -63,179 +65,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5233B5531DC
+X-Rspamd-Queue-Id: C5063553157
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248141-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,fnnas.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248147-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email,outlook.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,synology.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.cz:email,suse.com:email,msgid.link:url]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Chia-Ming Chang <chiamingc@synology.com>
 
-commit b0cc3ae97e893bf54bbce447f4e9fd2e0b88bff9 upstream.
+commit 6a320935fa4293e9e599ec9f85dc9eb3be7029f8 upstream.
 
-r5c_recovery_analyze_meta_block() and
-r5l_recovery_verify_data_checksum_for_mb() iterate over payloads in a
-journal metadata block using on-disk payload size fields without
-validating them against the remaining space in the metadata block.
+When fsnotify_add_inode_mark_locked() fails in inotify_new_watch(),
+the error path calls inotify_remove_from_idr() but does not call
+dec_inotify_watches() to undo the preceding inc_inotify_watches().
+This leaks a watch count, and repeated failures can exhaust the
+max_user_watches limit with -ENOSPC even when no watches are active.
 
-A corrupted journal contains payload sizes extending beyond the PAGE_SIZE
-boundary can cause out-of-bounds reads when accessing payload fields or
-computing offsets.
+Prior to commit 1cce1eea0aff ("inotify: Convert to using per-namespace
+limits"), the watch count was incremented after fsnotify_add_mark_locked()
+succeeded, so this path was not affected. The conversion moved
+inc_inotify_watches() before the mark insertion without adding the
+corresponding rollback.
 
-Add bounds validation for each payload type to ensure the full payload
-fits within meta_size before processing.
+Add the missing dec_inotify_watches() call in the error path.
 
-Fixes: b4c625c67362 ("md/r5cache: r5cache recovery: part 1")
+Fixes: 1cce1eea0aff ("inotify: Convert to using per-namespace limits")
 Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://lore.kernel.org/linux-raid/SYBPR01MB78815E78D829BB86CD7C8015AF5FA@SYBPR01MB7881.ausprd01.prod.outlook.com/
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Chia-Ming Chang <chiamingc@synology.com>
+Signed-off-by: robbieko <robbieko@synology.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://patch.msgid.link/20260224093442.3076294-1-chiamingc@synology.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5-cache.c |   48 ++++++++++++++++++++++++++++++++---------------
- 1 file changed, 33 insertions(+), 15 deletions(-)
+ fs/notify/inotify/inotify_user.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/raid5-cache.c
-+++ b/drivers/md/raid5-cache.c
-@@ -2010,15 +2010,27 @@ r5l_recovery_verify_data_checksum_for_mb
- 		return -ENOMEM;
- 
- 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
-+		sector_t payload_len;
-+
- 		payload = (void *)mb + mb_offset;
- 		payload_flush = (void *)mb + mb_offset;
- 
- 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) {
-+			payload_len = sizeof(struct r5l_payload_data_parity) +
-+				(sector_t)sizeof(__le32) *
-+				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+				goto mismatch;
- 			if (r5l_recovery_verify_data_checksum(
- 				    log, ctx, page, log_offset,
- 				    payload->checksum[0]) < 0)
- 				goto mismatch;
- 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_PARITY) {
-+			payload_len = sizeof(struct r5l_payload_data_parity) +
-+				(sector_t)sizeof(__le32) *
-+				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+				goto mismatch;
- 			if (r5l_recovery_verify_data_checksum(
- 				    log, ctx, page, log_offset,
- 				    payload->checksum[0]) < 0)
-@@ -2031,22 +2043,18 @@ r5l_recovery_verify_data_checksum_for_mb
- 				    payload->checksum[1]) < 0)
- 				goto mismatch;
- 		} else if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
--			/* nothing to do for R5LOG_PAYLOAD_FLUSH here */
-+			payload_len = sizeof(struct r5l_payload_flush) +
-+				(sector_t)le32_to_cpu(payload_flush->size);
-+			if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+				goto mismatch;
- 		} else /* not R5LOG_PAYLOAD_DATA/PARITY/FLUSH */
- 			goto mismatch;
- 
--		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
--			mb_offset += sizeof(struct r5l_payload_flush) +
--				le32_to_cpu(payload_flush->size);
--		} else {
--			/* DATA or PARITY payload */
-+		if (le16_to_cpu(payload->header.type) != R5LOG_PAYLOAD_FLUSH) {
- 			log_offset = r5l_ring_add(log, log_offset,
- 						  le32_to_cpu(payload->size));
--			mb_offset += sizeof(struct r5l_payload_data_parity) +
--				sizeof(__le32) *
--				(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
- 		}
--
-+		mb_offset += payload_len;
+--- a/fs/notify/inotify/inotify_user.c
++++ b/fs/notify/inotify/inotify_user.c
+@@ -622,6 +622,7 @@ static int inotify_new_watch(struct fsno
+ 	if (ret) {
+ 		/* we failed to get on the inode, get off the idr */
+ 		inotify_remove_from_idr(group, tmp_i_mark);
++		dec_inotify_watches(group->inotify_data.ucounts);
+ 		goto out_err;
  	}
  
- 	put_page(page);
-@@ -2097,6 +2105,7 @@ r5c_recovery_analyze_meta_block(struct r
- 	log_offset = r5l_ring_add(log, ctx->pos, BLOCK_SECTORS);
- 
- 	while (mb_offset < le32_to_cpu(mb->meta_size)) {
-+		sector_t payload_len;
- 		int dd;
- 
- 		payload = (void *)mb + mb_offset;
-@@ -2105,6 +2114,12 @@ r5c_recovery_analyze_meta_block(struct r
- 		if (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_FLUSH) {
- 			int i, count;
- 
-+			payload_len = sizeof(struct r5l_payload_flush) +
-+				(sector_t)le32_to_cpu(payload_flush->size);
-+			if (mb_offset + payload_len >
-+			    le32_to_cpu(mb->meta_size))
-+				return -EINVAL;
-+
- 			count = le32_to_cpu(payload_flush->size) / sizeof(__le64);
- 			for (i = 0; i < count; ++i) {
- 				stripe_sect = le64_to_cpu(payload_flush->flush_stripes[i]);
-@@ -2118,12 +2133,17 @@ r5c_recovery_analyze_meta_block(struct r
- 				}
- 			}
- 
--			mb_offset += sizeof(struct r5l_payload_flush) +
--				le32_to_cpu(payload_flush->size);
-+			mb_offset += payload_len;
- 			continue;
- 		}
- 
- 		/* DATA or PARITY payload */
-+		payload_len = sizeof(struct r5l_payload_data_parity) +
-+			(sector_t)sizeof(__le32) *
-+			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+		if (mb_offset + payload_len > le32_to_cpu(mb->meta_size))
-+			return -EINVAL;
-+
- 		stripe_sect = (le16_to_cpu(payload->header.type) == R5LOG_PAYLOAD_DATA) ?
- 			raid5_compute_sector(
- 				conf, le64_to_cpu(payload->location), 0, &dd,
-@@ -2188,9 +2208,7 @@ r5c_recovery_analyze_meta_block(struct r
- 		log_offset = r5l_ring_add(log, log_offset,
- 					  le32_to_cpu(payload->size));
- 
--		mb_offset += sizeof(struct r5l_payload_data_parity) +
--			sizeof(__le32) *
--			(le32_to_cpu(payload->size) >> (PAGE_SHIFT - 9));
-+		mb_offset += payload_len;
- 	}
- 
- 	return 0;
 
 
 
