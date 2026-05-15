@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wB9uIHhSB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248723-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:06:00 +0200
+	id 4I1dG6xVB2oHzAIAu9opvQ
+	(envelope-from <stable+bounces-248344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264855546AE
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:05:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02266554D62
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8736331F665E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06BB031CBBB0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9584B3EFFBF;
-	Fri, 15 May 2026 16:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08FF2798F3;
+	Fri, 15 May 2026 16:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpLQnzNr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pva3U/v+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CFE3EFFD9;
-	Fri, 15 May 2026 16:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D253B9D84;
+	Fri, 15 May 2026 16:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862464; cv=none; b=LHxndiuawdl2VT6ZCChEqgTg0r1TTAO9/kdNS2ByM1nRFD8JGmh4H7/PbRmNSd02eZoCho9z+Hp9jhsA6NSh5Eub5SXRL7LJAhndL096AqTxkVMxw9YUlGMC243LUnRb9yRg2u7JL4hj7g9HOvCR4WYyQzsQvNCXnYebInV+UrY=
+	t=1778861493; cv=none; b=YHkoRitI1j6y2OXWhqUu9L2xkX8pAbOveT1LjjDa2eGDceovVsogw3dPuo+XeciX8GavJ9jR4Mz3VM4Ouya8KcskZJgeMqmSe3YEu0lVjSfYjRx7H/hXjF6JNuLrvgJ1mmjTfmTTg1930z5jEPw4B6vS1NA2t15/bjZigQUKvkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862464; c=relaxed/simple;
-	bh=GV69Wxv6tTRH72kgwWYDeInNt8e6/gXCFJSBmUgQGYE=;
+	s=arc-20240116; t=1778861493; c=relaxed/simple;
+	bh=7PTKJdzKpF9/22g0Z7eznewFSQ8GxfB5WoNQlwIcGfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipkl5CylSa25JQyG86UEOC2dpjLhnCUrX4nNN2ctPhmt5SDzijpPXvVYmxIo0T0LyR6a9sSMEJPo7XemszSHDSGE3Wm8X5Aawt7Kg8QJd1P9PeZ/UmekYRH46kpVlvA2D3JQwVXQNukkCUSup7rXIBMkft5bRBCianMB05dTr2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpLQnzNr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FDFC2BCB0;
-	Fri, 15 May 2026 16:27:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NIIxE+7OJvTvmFFGgJyVz4AgBaM76njD9iygvLiHLt0b26vE9NSHK3WACA+Ny8gNoLGUufkBnGRAEk8KT8FVoj36MB7wyUpjZhupn7DhJtxtuIbnl2VFMvK96tZ6iYA2KniWaW/3je0UFyz2BrO8hYKMsmk5jOowmuFcjNDRWaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pva3U/v+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1AEC2BCB0;
+	Fri, 15 May 2026 16:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862464;
-	bh=GV69Wxv6tTRH72kgwWYDeInNt8e6/gXCFJSBmUgQGYE=;
+	s=korg; t=1778861493;
+	bh=7PTKJdzKpF9/22g0Z7eznewFSQ8GxfB5WoNQlwIcGfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZpLQnzNrE5WZenQMw/S4pU4y3nPkWF0um4/osS02zMe4PMbcgj44xDQRDliYUJeQ2
-	 4wySU/08xNMTP0sQPwhwOyii3UuthzxNrcsP8qPWv/P1aVLvrd0S/Hye7ESxvNUuR8
-	 8VUhkrOxLxGYA59JmcPH6/xj9QiPtPLNV1lY7GTA=
+	b=Pva3U/v+/xrlPB5i7ZRm/OP4eqG9yo+g4GpP/TCt6PZprk+eeqRGPqPr0TbfcWHbs
+	 DqXnon9O8f8rYb1EpAUZU/+f0MXVkPXyFMLg61RONJLw+c6cZUuxt0Vk2DZWLUGXR3
+	 VOs15zG+N3DLCsbG0sh2DlScy1to/d6OeDrBnUUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 041/201] regulator: rk808: fix OF node reference imbalance
-Date: Fri, 15 May 2026 17:47:39 +0200
-Message-ID: <20260515154659.423392844@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	"John B. Moore" <jbmoore61@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 351/474] drm/amdgpu/gfx9: drop unnecessary 64-bit fence flag check in KIQ
+Date: Fri, 15 May 2026 17:47:40 +0200
+Message-ID: <20260515154722.611684352@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 264855546AE
+X-Rspamd-Queue-Id: 02266554D62
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248723-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248344-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,msgid.link:url,collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: John B. Moore <jbmoore61@gmail.com>
 
-commit 65290b24d8a5f0b8cd065201e653db824c4a4da6 upstream.
+commit 7bbfb2559bcec39d1a4e1182d931a2046112c352 upstream.
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+Remove the BUG_ON(flags & AMDGPU_FENCE_FLAG_64BIT) assertion from
+gfx_v9_0_ring_emit_fence_kiq().  The KIQ hardware supports 64-bit
+fence writes; the 32-bit writeback address constraint is an
+upper-layer convention, not a hardware limitation.  The check serves
+no purpose and should not be present.
 
-Fix this by using the intended helper for reusing OF nodes.
+Found by code inspection while investigating related BUG_ON
+assertions in the GFX and compute ring emission paths.
 
-Fixes: 647e57351f8e ("regulator: rk808: reduce 'struct rk808' usage")
-Cc: stable@vger.kernel.org	# 6.2
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260408073055.5183-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: John B. Moore <jbmoore61@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1b1101a46a426bb4328116bb5273c326a2780389)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/rk808-regulator.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/regulator/rk808-regulator.c
-+++ b/drivers/regulator/rk808-regulator.c
-@@ -2114,8 +2114,7 @@ static int rk808_regulator_probe(struct
- 	struct regmap *regmap;
- 	int ret, i, nregulators;
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -5388,9 +5388,6 @@ static void gfx_v9_0_ring_emit_fence_kiq
+ {
+ 	struct amdgpu_device *adev = ring->adev;
  
--	pdev->dev.of_node = pdev->dev.parent->of_node;
--	pdev->dev.of_node_reused = true;
-+	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
- 
- 	regmap = dev_get_regmap(pdev->dev.parent, NULL);
- 	if (!regmap)
+-	/* we only allocate 32bit for each seq wb address */
+-	BUG_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
+-
+ 	/* write fence seq to the "addr" */
+ 	amdgpu_ring_write(ring, PACKET3(PACKET3_WRITE_DATA, 3));
+ 	amdgpu_ring_write(ring, (WRITE_DATA_ENGINE_SEL(0) |
 
 
 
