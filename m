@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKmUC9FMB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:41:53 +0200
+	id eA8JAcBNB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:45:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24EE553C05
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:41:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DECA553DB8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 10DDA3113E6D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 206693269CB8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01103BFE4C;
-	Fri, 15 May 2026 16:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAFA3F6C56;
+	Fri, 15 May 2026 16:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6ErRj/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8AagCuK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B8B30569C;
-	Fri, 15 May 2026 16:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523383F44F4;
+	Fri, 15 May 2026 16:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862575; cv=none; b=pXq4rUC3kUblcFTkp7i5/k7D67+KotFiOzYbpCvNRhYhDnwa1EPbOdiB9F8llCvls9N+xqco3sYNt66P8o1eGzjpDx0FB3oSiRrRCWDLaHgk9UKtX642riUA1n4qI11B2KxazlmUSRB9Bmn2noczQHuyqg+EM+ViHoANT1lCseU=
+	t=1778861655; cv=none; b=fJM8SGMmqrlRzc04YjzFUvFGcDJ+MYk4Ity+eV1DyaJTHycTD4MBWImUcWHNa1mDIGW+EuEXZEUu27VFpCN6DuTjAC564gxRnGwDq9R5W3xzwbuadWFIvWHYuy0U8U/BRGeSkJ2YISk2p7/j6gPdMaFlnav0+zsVPw90+Hd04jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862575; c=relaxed/simple;
-	bh=1D1s2m3sfhTJyJbhrhx/SCRzwrAnVbyYLOiMlFLQwwY=;
+	s=arc-20240116; t=1778861655; c=relaxed/simple;
+	bh=jx7sv5EUY3KzO3X2BYxNwxH44iLeQLqjcEZe7O5t6JA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQ9thXHF1q5TFtg1JDCvSyYWBcxuCQPi2Z8/ofpDL3fVuLNTBPxpvsj1BJHM8WkSkcgwvu+r2EbwHymGDXHrUv5WnuYbFgYScDeQZpqODp7bbKqlfxNLPmzQvKRzG5SIquI5CwXM2pPHaCMyI1Y0HvydE0AAkFX4E9xTSiWrwc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6ErRj/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04F9C2BCB0;
-	Fri, 15 May 2026 16:29:34 +0000 (UTC)
+	 MIME-Version; b=eZfx4clPAjZhR7UM6Gy2A9A0GGgCQkuAp+XP04Y0atn6sxsJ365DTQizCQO6+luGCx0zOS2aEaKHgqjBVMQ+lvKRCe7V59GI2/5M5tsNPHC34XvLkbCqyV+u6+Pc1zi8IxtNeY98+4Mx68ypadppVTxneh/5KFBXesQtEg/+QIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8AagCuK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8A1C2BCB0;
+	Fri, 15 May 2026 16:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862575;
-	bh=1D1s2m3sfhTJyJbhrhx/SCRzwrAnVbyYLOiMlFLQwwY=;
+	s=korg; t=1778861655;
+	bh=jx7sv5EUY3KzO3X2BYxNwxH44iLeQLqjcEZe7O5t6JA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c6ErRj/h1Ht6noQ+l6WX2CEj1uIZKN+YiUeu+m9X0n2yOjpAPvnSMbaK/SGkhYBW3
-	 LmAH7ej1euWYPvc1L6gCmq8lKBm8VGTET8HoyyyuhDs08hiqKsuxB3X60eczyvvaNf
-	 a0n/G27AaP9jgjISaLB1TZRKrz54v9chekIfk+uQ=
+	b=T8AagCuKwrGBr7K8Hx2bDSMZjy05H2+6E0bpOIuMCE4GUMhZ6lEcCDZy++U5Py84F
+	 WHt8jtPNQDzo2gqgs597M56bZDi1OfhyXmLtlipl64zpOwID3Dj37GJfvt/IABr2IB
+	 yNFJ7B0pF9Vds+1EjrIrzB1Wt0nvhqko7a6TeGiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 102/201] spi: rspi: fix controller deregistration
+	Russell King <linux@armlinux.org.uk>,
+	Sam Edwards <CFSworks@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 411/474] net: stmmac: Prevent NULL deref when RX memory exhausted
 Date: Fri, 15 May 2026 17:48:40 +0200
-Message-ID: <20260515154700.751086371@linuxfoundation.org>
+Message-ID: <20260515154723.948125021@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +65,154 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E24EE553C05
+X-Rspamd-Queue-Id: 5DECA553DB8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,armlinux.org.uk,gmail.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-248406-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248766-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sam Edwards <cfsworks@gmail.com>
 
-commit 9944fa6726afb1e6eb7e2212764e7da0c97f2dcc upstream.
+[ Upstream commit 0bb05e6adfa99a2ea1fee1125cc0953409f83ed8 ]
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+The CPU receives frames from the MAC through conventional DMA: the CPU
+allocates buffers for the MAC, then the MAC fills them and returns
+ownership to the CPU. For each hardware RX queue, the CPU and MAC
+coordinate through a shared ring array of DMA descriptors: one
+descriptor per DMA buffer. Each descriptor includes the buffer's
+physical address and a status flag ("OWN") indicating which side owns
+the buffer: OWN=0 for CPU, OWN=1 for MAC. The CPU is only allowed to set
+the flag and the MAC is only allowed to clear it, and both must move
+through the ring in sequence: thus the ring is used for both
+"submissions" and "completions."
 
-Fixes: 9e03d05eee4c ("spi: rcar: Use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.14
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-11-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+In the stmmac driver, stmmac_rx() bookmarks its position in the ring
+with the `cur_rx` index. The main receive loop in that function checks
+for rx_descs[cur_rx].own=0, gives the corresponding buffer to the
+network stack (NULLing the pointer), and increments `cur_rx` modulo the
+ring size. After the loop exits, stmmac_rx_refill(), which bookmarks its
+position with `dirty_rx`, allocates fresh buffers and rearms the
+descriptors (setting OWN=1). If it fails any allocation, it simply stops
+early (leaving OWN=0) and will retry where it left off when next called.
+
+This means descriptors have a three-stage lifecycle (terms my own):
+- `empty` (OWN=1, buffer valid)
+- `full` (OWN=0, buffer valid and populated)
+- `dirty` (OWN=0, buffer NULL)
+
+But because stmmac_rx() only checks OWN, it confuses `full`/`dirty`. In
+the past (see 'Fixes:'), there was a bug where the loop could cycle
+`cur_rx` all the way back to the first descriptor it dirtied, resulting
+in a NULL dereference when mistaken for `full`. The aforementioned
+commit resolved that *specific* failure by capping the loop's iteration
+limit at `dma_rx_size - 1`, but this is only a partial fix: if the
+previous stmmac_rx_refill() didn't complete, then there are leftover
+`dirty` descriptors that the loop might encounter without needing to
+cycle fully around. The current code therefore panics (see 'Closes:')
+when stmmac_rx_refill() is memory-starved long enough for `cur_rx` to
+catch up to `dirty_rx`.
+
+Fix this by explicitly checking, before advancing `cur_rx`, if the next
+entry is dirty; exit the loop if so. This prevents processing of the
+final, used descriptor until stmmac_rx_refill() succeeds, but
+fully prevents the `cur_rx == dirty_rx` ambiguity as the previous bugfix
+intended: so remove the clamp as well. Since stmmac_rx_zc() is a
+copy-paste-and-tweak of stmmac_rx() and the code structure is identical,
+any fix to stmmac_rx() will also need a corresponding fix for
+stmmac_rx_zc(). Therefore, apply the same check there.
+
+In stmmac_rx() (not stmmac_rx_zc()), a related bug remains: after the
+MAC sets OWN=0 on the final descriptor, it will be unable to send any
+further DMA-complete IRQs until it's given more `empty` descriptors.
+Currently, the driver simply *hopes* that the next stmmac_rx_refill()
+succeeds, risking an indefinite stall of the receive process if not. But
+this is not a regression, so it can be addressed in a future change.
+
+Fixes: b6cb4541853c7 ("net: stmmac: avoid rx queue overrun")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221010
+Cc: stable@vger.kernel.org
+Suggested-by: Russell King <linux@armlinux.org.uk>
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+Link: https://patch.msgid.link/20260422044503.5349-1-CFSworks@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-rspi.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -1171,8 +1171,14 @@ static void rspi_remove(struct platform_
- {
- 	struct rspi_data *rspi = platform_get_drvdata(pdev);
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5143,9 +5143,12 @@ read_again:
+ 			break;
  
-+	spi_controller_get(rspi->ctlr);
+ 		/* Prefetch the next RX descriptor */
+-		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
+-						priv->dma_conf.dma_rx_size);
+-		next_entry = rx_q->cur_rx;
++		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
++					       priv->dma_conf.dma_rx_size);
++		if (unlikely(next_entry == rx_q->dirty_rx))
++			break;
 +
-+	spi_unregister_controller(rspi->ctlr);
++		rx_q->cur_rx = next_entry;
+ 
+ 		if (priv->extend_desc)
+ 			np = (struct dma_desc *)(rx_q->dma_erx + next_entry);
+@@ -5283,7 +5286,6 @@ static int stmmac_rx(struct stmmac_priv
+ 
+ 	dma_dir = page_pool_get_dma_dir(rx_q->page_pool);
+ 	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
+-	limit = min(priv->dma_conf.dma_rx_size - 1, (unsigned int)limit);
+ 
+ 	if (netif_msg_rx_status(priv)) {
+ 		void *rx_head;
+@@ -5339,9 +5341,12 @@ read_again:
+ 		if (unlikely(status & dma_own))
+ 			break;
+ 
+-		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
+-						priv->dma_conf.dma_rx_size);
+-		next_entry = rx_q->cur_rx;
++		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
++					       priv->dma_conf.dma_rx_size);
++		if (unlikely(next_entry == rx_q->dirty_rx))
++			break;
 +
- 	rspi_release_dma(rspi->ctlr);
- 	pm_runtime_disable(&pdev->dev);
-+
-+	spi_controller_put(rspi->ctlr);
- }
++		rx_q->cur_rx = next_entry;
  
- static const struct spi_ops rspi_ops = {
-@@ -1376,9 +1382,9 @@ static int rspi_probe(struct platform_de
- 	if (ret < 0)
- 		dev_warn(&pdev->dev, "DMA not available, using PIO\n");
- 
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret < 0) {
--		dev_err(&pdev->dev, "devm_spi_register_controller error.\n");
-+		dev_err(&pdev->dev, "failed to register controller\n");
- 		goto error3;
- 	}
- 
+ 		if (priv->extend_desc)
+ 			np = (struct dma_desc *)(rx_q->dma_erx + next_entry);
 
 
 
