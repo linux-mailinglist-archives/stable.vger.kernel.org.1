@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-247388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HZdCLy0BmqKnAIAu9opvQ
-	(envelope-from <stable+bounces-247388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:53:00 +0200
+	id +BDfIe21BmrrnAIAu9opvQ
+	(envelope-from <stable+bounces-247390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:58:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53EB549C48
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:52:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 069CB549CF4
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:58:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 101C33030D0C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 05:52:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5565E301C6F8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 05:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C386349AEC;
-	Fri, 15 May 2026 05:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B63536405F;
+	Fri, 15 May 2026 05:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+SiDZEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhVZXAd+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FF92FDC30
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 05:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB04315785
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 05:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778824377; cv=none; b=PNXtCZOI7LNH0uYJhotKw2PHleqOiq0dvD3ViMc9Wu43QfO8Gr7TsC0yrs3A/tYyKRUuMawKEt+BvtAUVeFKhkUs+YRQ090y8ahbBYM7HaWLJ0MNzZtHiYP/cCI/JqPiy9cNDOgAMna7w6iIU5B8g6ELtv3UDjoxa3/IpPhqfD0=
+	t=1778824418; cv=none; b=IfQELsGP12p+4co0q//zA7JJP6zMpuskUnsz9tsjc7WYpBpIzNxwXjYmU5FZuMmapuO4uV6ufLAWdS5lGSjALt5kAC7Uh5IfCzq5abc0RWQ24X+wmn47FgTI76NrfiUAktYD06QdH6BC4teHT4VhkJMpEO3S7s2ZDMUGiQKUWds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778824377; c=relaxed/simple;
-	bh=RogzvZHvYUFesFZYFaHQNOt1QhkNP28GSCSuQyiQf1g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=I4p6dCW8MR3153zGACOxswV+S3tgdOKuhTbuiC71pwmTfqEGVkowX+G5V3hMSyrhxhfrBuoMvNbTr3koxzoxDauL7FXNITPZalV0aaGasHMjJWu7ux1HTwy3Y6H1TnyqAVfG7S3lAFlNMPJLemqGePLPybn2G5ibvEBpgj0Mrh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+SiDZEe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D213C2BCB0;
-	Fri, 15 May 2026 05:52:56 +0000 (UTC)
+	s=arc-20240116; t=1778824418; c=relaxed/simple;
+	bh=ljVZZcOctrv2JgghPzguVPrl2mMWsvlKzb3BWHVkNUY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qFuIpQcnzM8qaErPMT8KV5LrkMrObADTDPfIgmavw94jtZZOua5t9mPAttqFfMx0Uxd6/WcZZk6iPE/2S9cNeSv73/VdwB+vrqV1B4VayHk+Jmgn4TRRHH0nC6Oyg7T+liBGloaBaJr6z/IYwL9guyLNyoLA6eSfW0K1sUhrYM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhVZXAd+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CAFC2BCB0;
+	Fri, 15 May 2026 05:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778824376;
-	bh=RogzvZHvYUFesFZYFaHQNOt1QhkNP28GSCSuQyiQf1g=;
+	s=korg; t=1778824417;
+	bh=ljVZZcOctrv2JgghPzguVPrl2mMWsvlKzb3BWHVkNUY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=s+SiDZEe3slTW2stlFhSIHycEGPOzFUXmxXYm17hruDi4DCsa1f44IHTA5eNp/GLO
-	 I2buSHkPR2F42KEO/Z3D0dAmVsocVjt5QvWVI0Ercu/0+BkkL6QDtihqj1CUiy3x8h
-	 IlTRFIstn1Vo+9/OFnwM09xIJQU7iGG279IozKB4=
-Subject: FAILED: patch "[PATCH] media: videobuf2: Set vma_flags in vb2_dma_sg_mmap" failed to apply to 5.10-stable tree
-To: j@jannau.net,hverkuil+cisco@kernel.org,m.szyprowski@samsung.com
+	b=fhVZXAd+fud3sdJ+oQat7DUjpSVcxQe6FVXRvCfZDadgK3H1tkoChrIjz7x4swJp/
+	 yKxTrwLElObiL4e13xdn2wQdvVokGL9QCO9neMTE9ZIYI/Pu0Ggh7flbXl2jLx80vb
+	 wdqK0bou7ZKeBnzSg8EZoLz4h/4n6sMDLimxTF3w=
+Subject: FAILED: patch "[PATCH] media: saa7164: add ioremap return checks and cleanups" failed to apply to 5.10-stable tree
+To: 1742789905@qq.com,hverkuil+cisco@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 May 2026 07:52:53 +0200
-Message-ID: <2026051553-suggest-greasily-d14d@gregkh>
+Date: Fri, 15 May 2026 07:53:42 +0200
+Message-ID: <2026051542-lying-nylon-a4d8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,37 +54,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B53EB549C48
+X-Rspamd-Queue-Id: 069CB549CF4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247388-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247390-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[qq.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable,cisco];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[jannau.net:email,linuxfoundation.org:dkim,gregkh:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samsung.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 
@@ -97,10 +97,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7254b31a13aaa0c2c0f9ffbc335b718656117ff4
+git cherry-pick -x d51c60a498e83c9a79884c8e420f97e3885c9583
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051553-suggest-greasily-d14d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051542-lying-nylon-a4d8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,98 +112,109 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7254b31a13aaa0c2c0f9ffbc335b718656117ff4 Mon Sep 17 00:00:00 2001
-From: Janne Grunau <j@jannau.net>
-Date: Sun, 15 Feb 2026 18:42:59 +0100
-Subject: [PATCH] media: videobuf2: Set vma_flags in vb2_dma_sg_mmap
+From d51c60a498e83c9a79884c8e420f97e3885c9583 Mon Sep 17 00:00:00 2001
+From: Wang Jun <1742789905@qq.com>
+Date: Mon, 16 Mar 2026 20:24:01 +0800
+Subject: [PATCH] media: saa7164: add ioremap return checks and cleanups
 
-vb2_dma_contig sets VMA flags VM_DONTEXPAND and VM_DONTDUMP and I do not
-see a reason why vb2_dma_sg should behave differently. This avoids
-hitting `WARN_ON(!(vma->vm_flags & VM_DONTEXPAND));` in
-drm_gem_mmap_obj() during mmap() of an imported dma-buf from the out of
-tree Apple ISP camera capture driver which uses vb2_dma_sg_memops.
+Add checks for ioremap return values in saa7164_dev_setup(). If
+ioremap for BAR0 or BAR2 fails, release the already allocated PCI
+memory regions, remove the device from the global list, decrement
+the device count, and return -ENODEV.
 
-gst-launch-1.0 v4l2src ! gtk4paintablesink
+This prevents potential null pointer dereferences and ensures proper
+cleanup on memory mapping failures.
 
-[   38.201528] ------------[ cut here ]------------
-[   38.202135] WARNING: CPU: 7 PID: 2362 at drivers/gpu/drm/drm_gem.c:1144 drm_gem_mmap_obj+0x1f8/0x210
-[   38.203278] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer
-snd_seq snd_seq_device uinput nf_conntrack_netbios_ns
-nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
-nft_reject_inet nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat
-nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables qrtr bnep
-nls_ascii i2c_dev loop fuse dm_multipath nfnetlink brcmfmac_wcc
-hid_magicmouse hci_bcm4377 brcmfmac brcmutil bluetooth ecdh_generic
-cfg80211 ecc btrfs xor xor_neon rfkill hid_apple raid6_pq joydev
-aop_als apple_nvmem_spmi industrialio snd_soc_aop apple_z2
-snd_soc_cs42l84 tps6598x snd_soc_tas2764 macsmc_reboot spi_nor
-macsmc_hwmon rtc_macsmc gpio_macsmc macsmc_power regmap_spmi
-macsmc_input dockchannel_hid panel_summit appledrm nvme_apple dwc3
-snd_soc_macaudio drm_client_lib nvme_core phy_apple_atc hwmon
-apple_sart apple_dockchannel macsmc apple_rtkit_helper
-spmi_apple_controller aop apple_wdt mfd_core nvmem_apple_efuses
-pinctrl_apple_gpio apple_isp apple_dcp videobuf2_dma_sg mux_core
-spi_apple
-[   38.203300]  videobuf2_memops i2c_pasemi_platform snd_soc_apple_mca videobuf2_v4l2 videodev clk_apple_nco videobuf2_common snd_pcm_dmaengine adpdrm asahi apple_admac adpdrm_mipi drm_dma_helper pwm_apple i2c_pasemi_core drm_display_helper mc cec apple_dart ofpart apple_soc_cpufreq leds_pwm phram
-[   38.217677] CPU: 7 UID: 1000 PID: 2362 Comm: gst-launch-1.0 Tainted: G        W           6.17.6+ #asahi-dev PREEMPT(full)
-[   38.219040] Tainted: [W]=WARN
-[   38.219398] Hardware name: Apple MacBook Pro (13-inch, M2, 2022) (DT)
-[   38.220213] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   38.221088] pc : drm_gem_mmap_obj+0x1f8/0x210
-[   38.221643] lr : drm_gem_mmap_obj+0x78/0x210
-[   38.222178] sp : ffffc0008dc678e0
-[   38.222579] x29: ffffc0008dc678e0 x28: 0000000000042a97 x27: ffff8000b701b480
-[   38.223465] x26: 00000000000000fb x25: ffffc0008dc67d20 x24: ffffc0008dc67968
-[   38.224402] x23: ffff8000e3ca5600 x22: ffff8000265b7800 x21: ffff80003000c0c0
-[   38.225279] x20: 0000000000000000 x19: ffff8000b68c5200 x18: ffffc0008dc67968
-[   38.226151] x17: 0000000000000000 x16: 0000000000000000 x15: ffffc000810a30a8
-[   38.227042] x14: 00007fff637effff x13: 00005555de91ffff x12: 00007fff63293fff
-[   38.227942] x11: 0000000000000000 x10: ffff8000184ecf08 x9 : ffffc0007a1900c8
-[   38.228824] x8 : ffffc0008dc67968 x7 : 0000000000000012 x6 : ffffc0015cf1c000
-[   38.229703] x5 : ffffc0008dc676a0 x4 : ffffc00081a27dc0 x3 : 0000000000000038
-[   38.230607] x2 : 0000000000000003 x1 : 0000000000000003 x0 : 00000000100000fb
-[   38.231488] Call trace:
-[   38.231806]  drm_gem_mmap_obj+0x1f8/0x210 (P)
-[   38.232342]  drm_gem_mmap+0x140/0x260
-[   38.232813]  __mmap_region+0x488/0x9a0
-[   38.233277]  mmap_region+0xd0/0x148
-[   38.233703]  do_mmap+0x350/0x5c0
-[   38.234148]  vm_mmap_pgoff+0x14c/0x200
-[   38.234612]  ksys_mmap_pgoff+0x150/0x208
-[   38.235107]  __arm64_sys_mmap+0x34/0x50
-[   38.235611]  invoke_syscall+0x50/0x120
-[   38.236075]  el0_svc_common.constprop.0+0x48/0xf0
-[   38.236680]  do_el0_svc+0x24/0x38
-[   38.237113]  el0_svc+0x38/0x168
-[   38.237507]  el0t_64_sync_handler+0xa0/0xe8
-[   38.238034]  el0t_64_sync+0x198/0x1a0
-[   38.238491] ---[ end trace 0000000000000000 ]---
-
-There were discussions in [1] at the end of 2023 that mmap() on imported
-dma-bufs should not be supported but as of v6.17 drm_gem_shmem_mmap() in
-drm_gem_shmem_helper.c still supports it.
-This might affect all gpu or accel drivers using drm_gem_shmem_mmap() or
-the wrapper drm_gem_shmem_object_mmap().
-
-[1] https://lore.kernel.org/dri-devel/bc7f7844-0aa3-4802-b203-69d58e8be2fa@linux.intel.com/
-
+Fixes: 443c1228d505 ("V4L/DVB (12923): SAA7164: Add support for the NXP SAA7164 silicon")
 Cc: stable@vger.kernel.org
-Fixes: 5ba3f757f059 ("[media] v4l: videobuf2: add DMA scatter/gather allocator")
-Signed-off-by: Janne Grunau <j@jannau.net>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Wang Jun <1742789905@qq.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-dma-sg.c b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-index 982021d547e5..b1d0695cda26 100644
---- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-+++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-@@ -345,6 +345,7 @@ static int vb2_dma_sg_mmap(void *buf_priv, struct vm_area_struct *vma)
- 		return err;
+diff --git a/drivers/media/pci/saa7164/saa7164-core.c b/drivers/media/pci/saa7164/saa7164-core.c
+index 74406d5ea0a5..6bcde506adf5 100644
+--- a/drivers/media/pci/saa7164/saa7164-core.c
++++ b/drivers/media/pci/saa7164/saa7164-core.c
+@@ -888,6 +888,15 @@ static int get_resources(struct saa7164_dev *dev)
+ 	return -EBUSY;
+ }
+ 
++static void release_resources(struct saa7164_dev *dev)
++{
++	release_mem_region(pci_resource_start(dev->pci, 0),
++			   pci_resource_len(dev->pci, 0));
++
++	release_mem_region(pci_resource_start(dev->pci, 2),
++			   pci_resource_len(dev->pci, 2));
++}
++
+ static int saa7164_port_init(struct saa7164_dev *dev, int portnr)
+ {
+ 	struct saa7164_port *port = NULL;
+@@ -947,9 +956,9 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+ 
+ 	snprintf(dev->name, sizeof(dev->name), "saa7164[%d]", dev->nr);
+ 
+-	mutex_lock(&devlist);
+-	list_add_tail(&dev->devlist, &saa7164_devlist);
+-	mutex_unlock(&devlist);
++	scoped_guard(mutex, &devlist) {
++		list_add_tail(&dev->devlist, &saa7164_devlist);
++	}
+ 
+ 	/* board config */
+ 	dev->board = UNSET;
+@@ -996,11 +1005,17 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
  	}
  
-+	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
- 	/*
- 	 * Use common vm_area operations to track buffer refcount.
- 	 */
+ 	/* PCI/e allocations */
+-	dev->lmmio = ioremap(pci_resource_start(dev->pci, 0),
+-			     pci_resource_len(dev->pci, 0));
++	dev->lmmio = pci_ioremap_bar(dev->pci, 0);
++	if (!dev->lmmio) {
++		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 0\n");
++		goto err_ioremap_bar0;
++	}
+ 
+-	dev->lmmio2 = ioremap(pci_resource_start(dev->pci, 2),
+-			     pci_resource_len(dev->pci, 2));
++	dev->lmmio2 = pci_ioremap_bar(dev->pci, 2);
++	if (!dev->lmmio2) {
++		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 2\n");
++		goto err_ioremap_bar2;
++	}
+ 
+ 	dev->bmmio = (u8 __iomem *)dev->lmmio;
+ 	dev->bmmio2 = (u8 __iomem *)dev->lmmio2;
+@@ -1019,17 +1034,25 @@ static int saa7164_dev_setup(struct saa7164_dev *dev)
+ 	saa7164_pci_quirks(dev);
+ 
+ 	return 0;
++
++err_ioremap_bar2:
++	iounmap(dev->lmmio);
++err_ioremap_bar0:
++	release_resources(dev);
++
++	scoped_guard(mutex, &devlist) {
++		list_del(&dev->devlist);
++	}
++	saa7164_devcount--;
++
++	return -ENODEV;
+ }
+ 
+ static void saa7164_dev_unregister(struct saa7164_dev *dev)
+ {
+ 	dprintk(1, "%s()\n", __func__);
+ 
+-	release_mem_region(pci_resource_start(dev->pci, 0),
+-		pci_resource_len(dev->pci, 0));
+-
+-	release_mem_region(pci_resource_start(dev->pci, 2),
+-		pci_resource_len(dev->pci, 2));
++	release_resources(dev);
+ 
+ 	if (!atomic_dec_and_test(&dev->refcount))
+ 		return;
 
 
