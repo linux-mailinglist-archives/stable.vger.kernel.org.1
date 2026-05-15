@@ -1,99 +1,99 @@
-Return-Path: <stable+bounces-247411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DI+LTfKBmrynwIAu9opvQ
-	(envelope-from <stable+bounces-247411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:24:39 +0200
+	id cDh5H4jIBmoCoAIAu9opvQ
+	(envelope-from <stable+bounces-247412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:17:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0E654A83E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:24:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D3A54A70E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:17:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85FE2300D699
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:17:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 389ED3033318
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F653E3DAF;
-	Fri, 15 May 2026 07:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0583E5562;
+	Fri, 15 May 2026 07:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Gooi8TGv";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DGpcQHMr";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Gooi8TGv";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DGpcQHMr"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="IsU5XMTZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="UBFXgsnj";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="IsU5XMTZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="UBFXgsnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683903E51E9
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 07:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D8F37C0FC
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 07:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778829421; cv=none; b=usfNqrO+ufQY8KNdevo1CZ900K9xufS4kfYl+K/FkOCqRAPfBUWWExGa7OvK3Z1B0dUkgMl0NMOplzd9T07ef+Z2yialXGkryZym1MhOJC3XmCVmgEOnnCxDm6v7rMuIZ8HfuYS8+TRqgrXrUbMxQRnoK5upWcClOQEIV2Fs3/I=
+	t=1778829434; cv=none; b=TqJwA8c7zODJ0w15lDxOCs9mV92vCmdynJT8HocITW+UX2IvV9y7vXvFWveCUTTBBB9xnHRhz+CrIq/dttU8I28tmqY/9wdZETEmgKD9ZcBtjSsIms43XOUfllmIZ9nzGf+t+Njus8UeRnARFWXbVpoe5hxcfjhsfstc9EYmCfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778829421; c=relaxed/simple;
-	bh=iLTwaT03TDpWrTjwXQdRf6sHBYGpi92xy8ThFcD+vhM=;
+	s=arc-20240116; t=1778829434; c=relaxed/simple;
+	bh=ckUig2D74bojw03zvIoJQk6EAU9LTEM4taBj1MLjYTo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=anVV3XvbDgwgM9DfIvdeVwse3koAkX9qQRjoBmqMhAnPX5Nhe0Lwqysn9rVbmypcYLoOVduQnb1/z5GzRt9WPwOzB/X+k2tcr1nT1KLsUkUHMnPeUQuHnxIYeS0AWp74RC8OLBqn7KX1AJdym5Cm5OdXZDVkUT8fZ5oP+5B0ea0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Gooi8TGv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DGpcQHMr; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Gooi8TGv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DGpcQHMr; arc=none smtp.client-ip=195.135.223.131
+	 In-Reply-To:Content-Type; b=mYqoS40w9hKoYtVWT+s+ANG0+RXKgQ1q9g+k+k8KAS5DtPXEabTVq0N9NVgOFS5qYPzUes7ZewgV2/EpVjyoFqWP8ys16Lf+c+UwHDyzV1MAYJNknvvQqXpZO4qdWR8f7Rt/2m95rsMYxJwSAEziGLiRUNqx+MKK8MR/vJMdU7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=IsU5XMTZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UBFXgsnj; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=IsU5XMTZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UBFXgsnj; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7A89A67556;
-	Fri, 15 May 2026 07:16:56 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4A77D67D2B;
+	Fri, 15 May 2026 07:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778829416; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1778829430; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6MUWdahX70SzCzK+wvsew1PcXDlF5iH3w90M7v7khfg=;
-	b=Gooi8TGvVccH0C3VF0qgFgK7P7QfhGS8je3VIKONmToOygU8Y/jMho5AwGF53BQwq+LEg9
-	aL/G0u+gKMCEX4M2K6lPGShDRRiq/yOhzRoHv8dmoTm/h7E/tZxgb8rGgqpkZsQUzefkxM
-	Vprx7J5oQKlh3UixGpbjXcuqmREtf4Y=
+	bh=eTon/q/xB3IR/FNMJ14/zjzqxak7kXyzc3j90ZrKwDs=;
+	b=IsU5XMTZIFYhWPbCIvEXXe1XNWRz8w82NJqFkqvnANjHeMKkNKbPXh1ZuMtuhj8SaljWhR
+	DjafHjUoaf+g/RjQmFu0Z9DjzPB5ItukXdSojk8efQMBhgbx9Xff0/1inSWE5zyKjbmuMA
+	VAkWjiW/t4GjxY8OFfXDndqqbqAYFII=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778829416;
+	s=susede2_ed25519; t=1778829430;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6MUWdahX70SzCzK+wvsew1PcXDlF5iH3w90M7v7khfg=;
-	b=DGpcQHMrafk1zvlKgso3fVR1ked6pEjRD5i1i+MMyJBplyQ7+ZkUBYFYV60YNJNK16HrXn
-	EqLF07v5RHMBY5BA==
+	bh=eTon/q/xB3IR/FNMJ14/zjzqxak7kXyzc3j90ZrKwDs=;
+	b=UBFXgsnjjrCRZz5yyYw0xB/K554YJWav1iiUKjhsCtey5KmZVQqhLRWPmfd2V1ZQLdHb2z
+	bh/ZqqRSyU/bB0DQ==
 Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Gooi8TGv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DGpcQHMr
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IsU5XMTZ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UBFXgsnj
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778829416; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1778829430; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6MUWdahX70SzCzK+wvsew1PcXDlF5iH3w90M7v7khfg=;
-	b=Gooi8TGvVccH0C3VF0qgFgK7P7QfhGS8je3VIKONmToOygU8Y/jMho5AwGF53BQwq+LEg9
-	aL/G0u+gKMCEX4M2K6lPGShDRRiq/yOhzRoHv8dmoTm/h7E/tZxgb8rGgqpkZsQUzefkxM
-	Vprx7J5oQKlh3UixGpbjXcuqmREtf4Y=
+	bh=eTon/q/xB3IR/FNMJ14/zjzqxak7kXyzc3j90ZrKwDs=;
+	b=IsU5XMTZIFYhWPbCIvEXXe1XNWRz8w82NJqFkqvnANjHeMKkNKbPXh1ZuMtuhj8SaljWhR
+	DjafHjUoaf+g/RjQmFu0Z9DjzPB5ItukXdSojk8efQMBhgbx9Xff0/1inSWE5zyKjbmuMA
+	VAkWjiW/t4GjxY8OFfXDndqqbqAYFII=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778829416;
+	s=susede2_ed25519; t=1778829430;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6MUWdahX70SzCzK+wvsew1PcXDlF5iH3w90M7v7khfg=;
-	b=DGpcQHMrafk1zvlKgso3fVR1ked6pEjRD5i1i+MMyJBplyQ7+ZkUBYFYV60YNJNK16HrXn
-	EqLF07v5RHMBY5BA==
+	bh=eTon/q/xB3IR/FNMJ14/zjzqxak7kXyzc3j90ZrKwDs=;
+	b=UBFXgsnjjrCRZz5yyYw0xB/K554YJWav1iiUKjhsCtey5KmZVQqhLRWPmfd2V1ZQLdHb2z
+	bh/ZqqRSyU/bB0DQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 08595593A9;
-	Fri, 15 May 2026 07:16:56 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B256F593A9;
+	Fri, 15 May 2026 07:17:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id t4LWAGjIBmp1aAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 15 May 2026 07:16:56 +0000
-Message-ID: <94d1e9cc-e4a3-435e-9013-aae467a3a0a4@suse.de>
-Date: Fri, 15 May 2026 09:16:55 +0200
+	id O0JbKnXIBmqFaAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 15 May 2026 07:17:09 +0000
+Message-ID: <d58e1df5-60b0-4047-a596-c9739167abfe@suse.de>
+Date: Fri, 15 May 2026 09:17:09 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,7 +101,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/14] fbdev: efifb: fix memory leak in efifb_probe()
+Subject: Re: [PATCH 13/14] fbdev: vesafb: fix memory leak in vesafb_probe()
 To: Abdun Nihaal <nihaal@cse.iitm.ac.in>, Helge Deller <deller@gmx.de>,
  Javier Martinez Canillas <javierm@redhat.com>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -116,7 +116,7 @@ To: Abdun Nihaal <nihaal@cse.iitm.ac.in>, Helge Deller <deller@gmx.de>,
 Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20260514-fbdev-v1-0-b3a2474fa720@cse.iitm.ac.in>
- <20260514-fbdev-v1-12-b3a2474fa720@cse.iitm.ac.in>
+ <20260514-fbdev-v1-13-b3a2474fa720@cse.iitm.ac.in>
 Content-Language: en-US
 From: Thomas Zimmermann <tzimmermann@suse.de>
 Autocrypt: addr=tzimmermann@suse.de; keydata=
@@ -143,23 +143,23 @@ Autocrypt: addr=tzimmermann@suse.de; keydata=
  SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
  Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
  4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260514-fbdev-v1-12-b3a2474fa720@cse.iitm.ac.in>
+In-Reply-To: <20260514-fbdev-v1-13-b3a2474fa720@cse.iitm.ac.in>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
 X-Spam-Flag: NO
 X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: 3E0E654A83E
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 96D3A54A70E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247411-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247412-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_TO(0.00)[cse.iitm.ac.in,gmx.de,redhat.com,kernel.crashing.org,linux-foundation.org,linutronix.de,rainbow-software.org,gmail.com,linux-sh.org,wp.pl,ti.com,gentoo.org,denx.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -172,48 +172,44 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:email,suse.de:mid,suse.de:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iitm.ac.in:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:email,suse.de:mid,suse.de:dkim,iitm.ac.in:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Hi
+
 
 Am 14.05.26 um 10:24 schrieb Abdun Nihaal:
 > Since commit 73ce73c30ba9 ("fbdev: Transfer video= option strings to
 > caller; clarify ownership") the string returned from fb_get_options()
-> is expected to be freed by the caller, but the string is not freed in
-> efifb_probe(). Fix that by freeing the option string after setup.
+> is expected to be freed by the caller. But the string is not freed in
+> vesafb_probe(). Fix that by freeing the option string after setup.
 >
 > Fixes: 73ce73c30ba9 ("fbdev: Transfer video= option strings to caller; clarify ownership")
-
-Right, the commit message even mentions the (pre-existing) leak. There 
-might be other drivers with a similar issue.
-
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
 Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
 > ---
->   drivers/video/fbdev/efifb.c | 1 +
+>   drivers/video/fbdev/vesafb.c | 1 +
 >   1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
-> index 47ebc0107209..ad8dec7807c3 100644
-> --- a/drivers/video/fbdev/efifb.c
-> +++ b/drivers/video/fbdev/efifb.c
-> @@ -377,6 +377,7 @@ static int efifb_probe(struct platform_device *dev)
->   	if (fb_get_options("efifb", &option))
->   		return -ENODEV;
->   	efifb_setup(si, option);
+> diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
+> index f84f4db244bf..f1902056bd73 100644
+> --- a/drivers/video/fbdev/vesafb.c
+> +++ b/drivers/video/fbdev/vesafb.c
+> @@ -269,6 +269,7 @@ static int vesafb_probe(struct platform_device *dev)
+>   	/* ignore error return of fb_get_options */
+>   	fb_get_options("vesafb", &option);
+>   	vesafb_setup(option);
 > +	kfree(option);
 >   
->   	/* We don't get linelength from UGA Draw Protocol, only from
->   	 * EFI Graphics Protocol.  So if it's not in DMI, and it's not
+>   	if (si->orig_video_isVGA != VIDEO_TYPE_VLFB)
+>   		return -ENODEV;
 >
 
 -- 
