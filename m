@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-247953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEibK/NEB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-247953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:19 +0200
+	id AA3bK7JPB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:54:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B98552B8B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4895055423D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D02A6322F30D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4F219308FF8E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CF63FF1D8;
-	Fri, 15 May 2026 15:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20D04D990C;
+	Fri, 15 May 2026 16:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Atys5SUz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efAzfOeA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679B43FF1DA;
-	Fri, 15 May 2026 15:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E6B4D98F1;
+	Fri, 15 May 2026 16:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860498; cv=none; b=W2qNxt27QWloTRUAUWT9BB1e0fEfywCaA9n+QVtlYkoQ3Kdq+R+zHO87GXxhbvdgOa05/KuadCdz8gnNPIjegHgzKHkPH+MkkMWm+1Sn5gF7WL7AZi3yOZmh6zm4sflV5zdocJm5gdV76tzbk2ZOil683IVMUNoAQj6wlX0PcPo=
+	t=1778862606; cv=none; b=aY+NrMhaP+buhFLcpDYv8LLKkZhCxtUPU916sVI+HuhNraKtMmjC8X0PnI1g5OD6tn9okzuMiFS3kGfDts7zp0I1HagT+E/2LqmwmFnKJ9Oaa65899d4FwLHPeSCa/f/P6aIzZDT19AMSYEi5U69xXYZHGaokBeHjMaiCDcAMTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860498; c=relaxed/simple;
-	bh=RwZ8RGrqhJD7L/74fyVxLha6I8JTJK8JID16o9zgWhI=;
+	s=arc-20240116; t=1778862606; c=relaxed/simple;
+	bh=tYixHNIh9pMwJO40X9nzzWV9jd6InBCDuKfbw7iNVgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kh1+4+761TAIVAmiIIqVC4KAMiDxnNnCOPfumUClSILvPv8s8HBibKoQpYQx0DnaL/h35iBUOERBDYCo6ytEBftTpN5HVVeAV0P9myU2j3ANOyU6+vvQ+silmpfMejKZjhntzI3km6XE9mfBbYNMeFsJVtKwWpaT1jtzSrzPbXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Atys5SUz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C261EC2BCB0;
-	Fri, 15 May 2026 15:54:57 +0000 (UTC)
+	 MIME-Version; b=S3iXAKVhLMVu/W2P63itdoPSzSHcu57MRwpOPyQ0Ze0HBc8gc0VgKNUlRirxJAYofgOPzITom2FwfrBnfcLjeDAmT0myV7MQ66g9jbeaolXtA/MjhuwTLH4HYBk3podhRC34PdPqeg7v0MMpq/YzNupUu+cHVSGQ9SnGY0WYgaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efAzfOeA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AD3C2BCB0;
+	Fri, 15 May 2026 16:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860498;
-	bh=RwZ8RGrqhJD7L/74fyVxLha6I8JTJK8JID16o9zgWhI=;
+	s=korg; t=1778862606;
+	bh=tYixHNIh9pMwJO40X9nzzWV9jd6InBCDuKfbw7iNVgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Atys5SUzfZUK+bDccCa0RjojGV65WDXHUINL5gZV2uDN1nHTHwEqnYeawWvRCXRf2
-	 haAuQCPVf11BvdrSNS0idYFNAzeLEyjJ38wnge4xS86FmkRcfJvfL1wOuUlftux/iy
-	 P3lwU5rEWOmHzXwV1ZW+YRPnhPGtyEYtvYu6txrY=
+	b=efAzfOeA3mDckP0bxHy13hUGPN7zV1qV8ApgpfTc9zJLzBV5GJCj8JfCHX601LcoP
+	 ssJDDSQdpaqGDqESST9SObWnrStdZV3tBqlhMRWGP/yO4WNG6FdT809F4zXp9dA5ro
+	 4AUA1rhQ3qC9vs3huH9VEngJ3rBi4WyZmWC75qqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/144] ALSA: misc: Use guard() for spin locks
+	Grant Likely <grant.likely@secretlab.ca>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 113/201] spi: mpc52xx: fix use-after-free on registration failure
 Date: Fri, 15 May 2026 17:48:51 +0200
-Message-ID: <20260515154655.930507718@linuxfoundation.org>
+Message-ID: <20260515154701.000658379@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 32B98552B8B
+X-Rspamd-Queue-Id: 4895055423D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247953-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248778-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,81 +89,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sashiko.dev:url]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit b8e1684163ae52db90f428965bd9aaff7205c02e ]
+commit f62c060272b9d7423b1650b844e8e4e7b8f9f925 upstream.
 
-Clean up the code using guard() for spin locks.
+Make sure to disable and free the interrupts in case controller
+registration fails to avoid a potential use-after-free and resource
+leak.
 
-Merely code refactoring, and no behavior change.
+This issue was flagged by Sashiko when reviewing a controller
+deregistration fix.
 
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250829151335.7342-20-tiwai@suse.de
-Stable-dep-of: 5337213381df ("ALSA: core: Serialize deferred fasync state checks")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 42bbb70980f3 ("powerpc/5200: Add mpc5200-spi (non-PSC) device driver")
+Cc: stable@vger.kernel.org	# 2.6.33
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Link: https://sashiko.dev/#/patchset/20260414134319.978196-1-johan%40kernel.org?part=3
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260421125800.1537361-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/misc.c |   25 ++++++++++---------------
- 1 file changed, 10 insertions(+), 15 deletions(-)
+ drivers/spi/spi-mpc52xx.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/core/misc.c
-+++ b/sound/core/misc.c
-@@ -131,35 +131,30 @@ int snd_fasync_helper(int fd, struct fil
- 		INIT_LIST_HEAD(&fasync->list);
- 	}
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -498,6 +498,9 @@ static int mpc52xx_spi_probe(struct plat
  
--	spin_lock_irq(&snd_fasync_lock);
--	if (*fasyncp) {
--		kfree(fasync);
--		fasync = *fasyncp;
--	} else {
--		if (!fasync) {
--			spin_unlock_irq(&snd_fasync_lock);
--			return 0;
-+	scoped_guard(spinlock_irq, &snd_fasync_lock) {
-+		if (*fasyncp) {
-+			kfree(fasync);
-+			fasync = *fasyncp;
-+		} else {
-+			if (!fasync)
-+				return 0;
-+			*fasyncp = fasync;
- 		}
--		*fasyncp = fasync;
-+		fasync->on = on;
- 	}
--	fasync->on = on;
--	spin_unlock_irq(&snd_fasync_lock);
- 	return fasync_helper(fd, file, on, &fasync->fasync);
- }
- EXPORT_SYMBOL_GPL(snd_fasync_helper);
- 
- void snd_kill_fasync(struct snd_fasync *fasync, int signal, int poll)
- {
--	unsigned long flags;
--
- 	if (!fasync || !fasync->on)
- 		return;
--	spin_lock_irqsave(&snd_fasync_lock, flags);
-+	guard(spinlock_irqsave)(&snd_fasync_lock);
- 	fasync->signal = signal;
- 	fasync->poll = poll;
- 	list_move(&fasync->list, &snd_fasync_list);
- 	schedule_work(&snd_fasync_work);
--	spin_unlock_irqrestore(&snd_fasync_lock, flags);
- }
- EXPORT_SYMBOL_GPL(snd_kill_fasync);
- 
+  err_register:
+ 	dev_err(&ms->host->dev, "initialization failed\n");
++	free_irq(ms->irq0, ms);
++	free_irq(ms->irq1, ms);
++	cancel_work_sync(&ms->work);
+  err_gpio:
+ 	while (i-- > 0)
+ 		gpiod_put(ms->gpio_cs[i]);
 
 
 
