@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-248843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJdBMBdaB2qzzwIAu9opvQ
-	(envelope-from <stable+bounces-248843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:31 +0200
+	id oAbIE5JLB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572455555AA
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1EF553913
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9343431F1F16
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 109EF301D830
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9225F318EDA;
-	Fri, 15 May 2026 16:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB8932ABC0;
+	Fri, 15 May 2026 16:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KO/RxS60"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRnXS3SN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51930E56A;
-	Fri, 15 May 2026 16:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1391E56A;
+	Fri, 15 May 2026 16:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862770; cv=none; b=LmeSWzD32LRVv18iktN7yK//15grMBbx/1eTtQU2/Rqv6E31P5Z0OPOR3LIM2GxvvMXEaIJm7mKoqlnd+1F2Baw81jFuCJWbhj5/cLup3Fcd4OLLIbXMMVJA20FARRVt+bjsR86AuI1iAQCP+2spPF8fKPV+BSdyihmoPvU8G2g=
+	t=1778862773; cv=none; b=U/U4ERfIvjZKYf4bJ6Nz375ZtneOgPNJcQurKXEwpkjxyuOsHPtqHjwEvAVPcZvhp/nPZYDs9/hM+Mip0bNcBXNJbaazwuLlggYqmUfGQyM8rH4Q5jfBZIFGVwwnqZMzaRLhljfj7WMbqJG+aZw329WWLTyTyW7zXvyFE6dRKKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862770; c=relaxed/simple;
-	bh=i8BVy6L+JJ6X53PbYFmQ2JZ3ryZ+T5U/PLCzw9gH2a4=;
+	s=arc-20240116; t=1778862773; c=relaxed/simple;
+	bh=VTZ1mWtD7EOi+tDORE6fQmTXMiPgzg0xhPxHfrWkfRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EekHEr64r2Y+DdwAb2D0/SmobySSf9HgFzsrMNT3MOV8LPWjVemwwypv7VxEKHIbKdi0i1vXWLGj+/Vr/tAf1h7VaPyvr+sNAQnXbeQOc16GctEknocMg/FF8nVhJMwFcZwaeuq9ek8v1QFdvgTcyyQLUUZVnVtTxkeOqAo6EbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KO/RxS60; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDC1C2BCB0;
-	Fri, 15 May 2026 16:32:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nSi/e5bViwxnKMxKhULe6eqKyjYpziKTgjGmyoQdnmqPLgE8+gTvf79w4raBJCfsQQmgbZdPojxrAT9zXOIOvSoz9OW/zM6f50ilxyQpYewcIodZwj6ima4tUTkMo80N03PgP8KEAoKJopvTP+17rwynJLqaqptnDVGEF+5Pxtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRnXS3SN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CF3C2BCB0;
+	Fri, 15 May 2026 16:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862770;
-	bh=i8BVy6L+JJ6X53PbYFmQ2JZ3ryZ+T5U/PLCzw9gH2a4=;
+	s=korg; t=1778862772;
+	bh=VTZ1mWtD7EOi+tDORE6fQmTXMiPgzg0xhPxHfrWkfRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KO/RxS60OczDj/5m4IUxU2StFGd5yNNDv1IUpOjgBZ19DlWXOrLvWCeADCemjAnQ0
-	 tVGpADdSzUwJaUEWZSWbl6LQ5TsNtqq2OEAPFx52IbYpp5zso4NHNDNoR+CIovGfMU
-	 jVsCaIDVhj9IJxcaKCq6/NXAYF4oPrzmEMMqvFZI=
+	b=NRnXS3SNwRwuuUxPUSLe/InY7SnPTlZwrAeUa+MF0HawBgoY2Hn460QxMV3It2L2L
+	 ITe+biqYdvtVv0B26Bf6nEYNGuuYKrdu5gZpo1Izg2lrE4JrWuf8c85yL6j8mLCloz
+	 ZHtx4Vaoxhph2A4AkegJeMLIiWy2RD9FNrtIGkbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
-	"Ramalingeswara Reddy, Kanala" <Kanala.RamalingeswaraReddy@amd.com>
-Subject: [PATCH 7.0 134/201] drm/amdgpu: Use SMUIO 15.0.0 offsets for TSC upper and lower count.
-Date: Fri, 15 May 2026 17:49:12 +0200
-Message-ID: <20260515154701.468516174@linuxfoundation.org>
+	Chenglei Xie <Chenglei.Xie@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 135/201] drm/amdgpu: gate VM CPU HDP flush on reset lock
+Date: Fri, 15 May 2026 17:49:13 +0200
+Message-ID: <20260515154701.491741955@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
 References: <20260515154658.538039039@linuxfoundation.org>
@@ -63,106 +63,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 572455555AA
+X-Rspamd-Queue-Id: 4E1EF553913
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248843-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248844-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
+From: Chenglei Xie <Chenglei.Xie@amd.com>
 
-commit 574b3b14f7d1b329fc6e67b79328f0e6f4d4b3d4 upstream.
+commit ddda81c4d7e71e41b1be91d921fd85747eddbd12 upstream.
 
-Define and use regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0 and
-regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0 for TSC upper and lower count.
+During GPU reset, the application could still run CPU page table updates. Each commit called
+amdgpu_device_flush_hdp(), which on SR-IOV sends work through the KIQ ring.
+That can advance sync_seq while the GPU is being reset,
+leaving fence writeback out of sync and causing amdgpu_fence_emit_polling()
+to time out on later KIQ use.
 
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
-Signed-off-by: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
+Fix:
+amdgpu_vm_cpu_commit():
+  Reset will flush HDP anyway, the HDP flush in amdgpu_vm_cpu_commit() can be skipped
+  when a reset is ongoging.
+  Take reset_domain->sem with down_read_trylock() before amdgpu_device_flush_hdp().
+  If the reset path holds the write lock, skip the HDP flush so no HDP-related HW
+  access (including KIQ) runs during reset; state is re-established after reset.
+
+Signed-off-by: Chenglei Xie <Chenglei.Xie@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |   31 ++++++++++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm_cpu.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -64,6 +64,11 @@
- #define regPC_CONFIG_CNTL_1		0x194d
- #define regPC_CONFIG_CNTL_1_BASE_IDX	1
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_cpu.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_cpu.c
+@@ -21,6 +21,8 @@
+  */
  
-+#define regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0               0x0030
-+#define regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0_BASE_IDX      1
-+#define regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0               0x0031
-+#define regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0_BASE_IDX      1
+ #include "amdgpu_vm.h"
++#include "amdgpu.h"
++#include "amdgpu_reset.h"
+ #include "amdgpu_object.h"
+ #include "amdgpu_trace.h"
+ 
+@@ -108,11 +110,19 @@ static int amdgpu_vm_cpu_update(struct a
+ static int amdgpu_vm_cpu_commit(struct amdgpu_vm_update_params *p,
+ 				struct dma_fence **fence)
+ {
++	struct amdgpu_device *adev = p->adev;
 +
- #define regCP_GFX_MQD_CONTROL_DEFAULT                                             0x00000100
- #define regCP_GFX_HQD_VMID_DEFAULT                                                0x00000000
- #define regCP_GFX_HQD_QUEUE_PRIORITY_DEFAULT                                      0x00000000
-@@ -5187,11 +5192,27 @@ static uint64_t gfx_v11_0_get_gpu_clock_
- 		amdgpu_gfx_off_ctrl(adev, true);
- 	} else {
- 		preempt_disable();
--		clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
--		clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
--		clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
--		if (clock_counter_hi_pre != clock_counter_hi_after)
--			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
-+		if (amdgpu_ip_version(adev, SMUIO_HWIP, 0) < IP_VERSION(15, 0, 0)) {
-+			clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_UPPER);
-+			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_LOWER);
-+			clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_UPPER);
-+			if (clock_counter_hi_pre != clock_counter_hi_after)
-+				clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+						regGOLDEN_TSC_COUNT_LOWER);
-+		} else {
-+			clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0);
-+			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0);
-+			clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0);
-+			if (clock_counter_hi_pre != clock_counter_hi_after)
-+				clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+						regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0);
-+		}
- 		preempt_enable();
- 	}
- 	clock = clock_counter_lo | (clock_counter_hi_after << 32ULL);
+ 	if (p->needs_flush)
+ 		atomic64_inc(&p->vm->tlb_seq);
+ 
+ 	mb();
+-	amdgpu_device_flush_hdp(p->adev, NULL);
++	/* A reset flushed the HDP anyway, so that here can be skipped when a reset is ongoing */
++	if (!down_read_trylock(&adev->reset_domain->sem))
++		return 0;
++
++	amdgpu_device_flush_hdp(adev, NULL);
++	up_read(&adev->reset_domain->sem);
++
+ 	return 0;
+ }
+ 
 
 
 
