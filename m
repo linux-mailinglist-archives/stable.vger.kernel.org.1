@@ -1,181 +1,185 @@
-Return-Path: <stable+bounces-248295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248415-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDYQB6pJB2rqwgIAu9opvQ
-	(envelope-from <stable+bounces-248295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:28:26 +0200
+	id INN5ON9MB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248415-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:42:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00865533EF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:28:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A38553C29
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AAD2531F7455
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 027F2325D249
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E65F3FD964;
-	Fri, 15 May 2026 16:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9032F3F86FF;
+	Fri, 15 May 2026 16:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EUS4j/wi"
+	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="IqmTzATq"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802663E0090
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 16:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199513BB116
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 16:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861367; cv=none; b=Cd3Pt0b/AfbAYhTrvflocpfbcRUK64pn8Xqo608fpFhXrKhlSzK62CLAbwphEBtfpiNdwDnzj651xGcLDXh0hlCmhxEEDg0z92wEcfGKQw4QZ+yWXobrmL6L6tfXdGeqvo1GWZ90nY9PMuCqgZVdjFr72ooB/NrF9BcwH1JxqXg=
+	t=1778861678; cv=none; b=KIUtDDK5Phzm6dxQGhXYGfWJf9DnshyXAddAoRNRdu8PpIOy9enPl7RQckQf+xLAWdgdyIzG5PYWgP2EcOwg/BUVR/hb1dYMpF4De62LY1+kuOQcOzhOgysaIbLT4sgf3tKbwIM0sdn6zSf7o2r5AIfN9DZFU0Q2v0QHEuvXXns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861367; c=relaxed/simple;
-	bh=/qwfmphsvoMYhGUVfe4Y35OnOwPvpkGV3OVuXBLUD48=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k1CcNaCFkS8yXEPS67a8dK4rqqUKIeNHvWCx05tRvRJLD1md9afNNU0f0BF0ymj/X9pzzXXL4QYIG3V9/dBnY5CwvOs7iiTL+87T/vn48BzxSJAtOhikxAHMXJJ2z6ac0S5/ZpTckAuc39xkyCXp3+F95ckzapyFTbN/B0FyNQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EUS4j/wi; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778861367; x=1810397367;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=/qwfmphsvoMYhGUVfe4Y35OnOwPvpkGV3OVuXBLUD48=;
-  b=EUS4j/wiVygLyIMW8XOD7Loo/sE7B21R1nCFlPGpsgJ5yTG00UXpn3uJ
-   tAFnjNAuU9vN9ziK5Tobgg2szy2hGKqLfukYJ+kQDOwj8m2pYwEUZm1i3
-   8wia8jiLP1kGaFtbBDmcUcXtNgnN2CfcslQM+8Rg++Yl9JBlITVEEWpj1
-   4L0d0Ea/ixRyk9xJ2w4n94FxzrTH89wpbAiU+8WYV6a0m2+jxLPg5xNI+
-   mSTwzMNtJkSPH9Uu9Uq89bP5bLNKpJh9m/NhgOXvimNyC7mZ5i0393Fpr
-   cIJAlorGrgBPTM/TtfmZqDYA+Zko4LFcAhhVZRINsY0s3fBfdRvaJibsb
-   w==;
-X-CSE-ConnectionGUID: OKp5voomQzSI68+hDpEuZA==
-X-CSE-MsgGUID: 8qtq7pyoQ9G/t9iX0g0v6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79783064"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="79783064"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:09:26 -0700
-X-CSE-ConnectionGUID: HHwsv6PwShGo2GoWEIuBTA==
-X-CSE-MsgGUID: aCDb2Ul7SeaA8eYakYAP2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="237737079"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.71])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:09:24 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/xe/display: fix oops in suspend/shutdown without display
-Date: Fri, 15 May 2026 19:09:20 +0300
-Message-ID: <20260515160920.1082842-1-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1778861678; c=relaxed/simple;
+	bh=YkkXsOGp3WBkYNynTiJLLkR5cJ0ZLNsgfo6RAAXRzi0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CzRZZxcuMyhz4oeXMI5qKeem7uvPoxqBznBen6F0+4ynKeigjIuiemOcxcvSADVH2DQ1PaPqqYS5rgt1ZJYyJRsYLZweW0LQax2PKwisHdkRUM22gop4PMBmrK4xHNzXWpnpEhed4vWdoFZGZ604XePQMCTbq+lmAkAxAuv7OW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=IqmTzATq; arc=none smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7dcdd1b492eso1496009a34.1
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 09:14:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=minyard.net; s=google; t=1778861676; x=1779466476; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/I+oE/4M7ThZPHkfUNgTGXJUQ5bMmCeqi2xI7cTgVrQ=;
+        b=IqmTzATqySXODeHcEmJdA/ABY2xijE57lpe4gqF4NjJQkiSb/10OU4mvpT2t9K85Nv
+         7ztQrvKp0GLJI9WtPvI9utsdOlKtawmwE21zwGjaGYby8lk0h7IXUG10957qm6+ZxkNS
+         NvYr9k/W2rtrLT1sgHVIuiO12siL5nPshXT+6jpvBn1gxFDTn0l0vp20sGRq0Puq8pmZ
+         voyhNDgPEeyTqLmqXUNdNwWZhJGLTI42tc4ZQd0QBSXuD3z/a8itGhcwnNoxgrBCjyuT
+         vfIl/jgNF9vRBBLk/pZzrg3QyiM2RBAGx4HyxX3brnrz/c9jusIusNAhKihEjBbK4Q2d
+         tAlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778861676; x=1779466476;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/I+oE/4M7ThZPHkfUNgTGXJUQ5bMmCeqi2xI7cTgVrQ=;
+        b=c4JIk7MVlm7uVU04R0MTPR/AlfR5Ptn2iThzntlJKVz68rapyF7KdsY5lja8GHalZ0
+         myrTr92FIQfchPEl/fwfb0LEmUhCrCxUrxwMC77UwvjC8nHjYwrSaak3qXnS3itYdNd7
+         j0rTxZP/FgNyBfJlddhVnz59P2rbMaMP5d+xKpo62dmKc1TAd5cWklL8JPI56F7rwwL1
+         EnJZZwkbUacFkoVDScDQBHqHrwXZbBhPVcUbilDuaPNhfk3iTX3R0fydysrx5sDJAfNg
+         O1yqMt4tPB8CVwfE9XuI5b0oE9F9AJkQbu4NWw+saoSHCAgjNjZjVjLGB/yETiAuRfji
+         2vyw==
+X-Gm-Message-State: AOJu0YxgKrfmpkeB8vaWD4gpQ/bEQibGanfBl4g+bQ4X7mZZfHf+7zDI
+	xT9Lx4imvMTj0iktN2GQEQxGJbKa9uEaGDZ+0I4VBTyugUUFAM9cY/6wuR3nylCPf2AaNGS8RaS
+	jbm81
+X-Gm-Gg: Acq92OGEeJz6Eu9KCWFu5dEgr4Z4SI9G6NW8k/cMC+cywTwUVUhe39PRS58gsipaIQN
+	7mL/JmiG1t/IiC4LvIN1W5/opbvu325CRWluUgnMMjCWx+P0+In4HvubJTaqm6fVDn1xItSxmAs
+	44ZFEeBNQRALA9YSlBZFh2QVZpmcSUiRHOiT34U9L2ZKrG1FYP0xB9fS6irdXq9g9oro1x5bwxS
+	x9NBXSY+1L7i47Tvm/Th3/exTlUrONxhg1jIA2xKdoQAMmF8Qe+hvIIhnOV10l1Oj52Fgo8ys5n
+	p3RUBOpCWVGFwuGB/ugWwsGbMazRQhm5clM4hQoVMkl7Sf/2UYEZY0YrDhtIJuN2TAchD1Psc5t
+	lc6LJhMDRV2ty1qIcxEK+Ggy37KSGxdrnj1wiUALZjD6Ac+Iy6PLvfj9i5NMFBzuMUVlYYBKSDZ
+	F/+fc4vNpm0ulpe6C0G+fH4NKpEkS0iTD8UMB5raq50p5t4AQA6VAt+nAZ0ZvjVuyIGWvZdDejg
+	N6g
+X-Received: by 2002:a05:6830:631b:b0:7d7:dcbb:280b with SMTP id 46e09a7af769-7e49a881a10mr2879544a34.1.1778861676028;
+        Fri, 15 May 2026 09:14:36 -0700 (PDT)
+Received: from localhost ([2001:470:b8f6:1b:5de0:f9c5:a427:bb0])
+        by smtp.gmail.com with UTF8SMTPSA id 46e09a7af769-7e55bc111d6sm1676291a34.19.2026.05.15.09.14.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 May 2026 09:14:35 -0700 (PDT)
+From: Corey Minyard <corey@minyard.net>
+To: stable@vger.kernel.org
+Cc: Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.1.y 1/2] ipmi:ssif: Remove unnecessary indention
+Date: Fri, 15 May 2026 11:14:27 -0500
+Message-ID: <20260515161428.2163036-1-corey@minyard.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026051541-deflate-babbling-1b5b@gregkh>
+References: <2026051541-deflate-babbling-1b5b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B00865533EF
+X-Rspamd-Queue-Id: 88A38553C29
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248295-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	HAS_ORG_HEADER(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[jani.nikula@intel.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-248415-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[minyard.net:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[minyard.net:email,minyard.net:mid,minyard.net:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-The xe driver keeps track of whether to probe display, and whether
-display hardware is there, using xe->info.probe_display. It gets set to
-false if there's no display after intel_display_device_probe(). However,
-the display may also be disabled via fuses, detected at a later time in
-intel_display_device_info_runtime_init().
+A section was in {} that didn't need to be, move the variable
+definition to the top and set th eindentino properly.
 
-In this case, the xe driver does for_each_intel_crtc() on uninitialized
-mode config in xe_display_flush_cleanup_work(), leading to a NULL
-pointer dereference, and generally calls display code with display info
-cleared.
-
-Check for intel_display_device_present() after
-intel_display_device_info_runtime_init(), and reset
-xe->info.probe_display as necessary. Also do unset_display_features()
-for completeness, although display runtime init has already done
-that. This will need to be unified across all cases later.
-
-Move intel_display_device_info_runtime_init() call slightly earlier,
-similar to i915, to avoid a bunch of unnecessary setup for no display
-cases.
-
-Note #1: The xe driver has no business doing low level display plumbing
-like for_each_intel_crtc() to begin with. It all needs to happen in
-display code.
-
-Note #2: The actual bug is present already in commit 44e694958b95
-("drm/xe/display: Implement display support"), but the oops was likely
-introduced later at commit ddf6492e0e50 ("drm/xe/display: Make display
-suspend/resume work on discrete").
-
-Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7904
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/6150
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
+(cherry picked from commit 91eb7ec7261254b6875909df767185838598e21e)
 ---
- drivers/gpu/drm/xe/display/xe_display.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
-index 053abd6f6514..5f25932730f4 100644
---- a/drivers/gpu/drm/xe/display/xe_display.c
-+++ b/drivers/gpu/drm/xe/display/xe_display.c
-@@ -104,6 +104,15 @@ int xe_display_init_early(struct xe_device *xe)
+diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
+index 248459f97c67..7c5a9c83afe2 100644
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1653,6 +1653,7 @@ static int ssif_probe(struct i2c_client *client)
+ 	int               len = 0;
+ 	int               i;
+ 	u8		  slave_addr = 0;
++	unsigned int      thread_num;
+ 	struct ssif_addr_info *addr_info = NULL;
  
- 	intel_display_driver_early_probe(display);
+ 	mutex_lock(&ssif_infos_mutex);
+@@ -1861,22 +1862,17 @@ static int ssif_probe(struct i2c_client *client)
+ 	ssif_info->handlers.request_events = request_events;
+ 	ssif_info->handlers.set_need_watch = ssif_set_need_watch;
  
-+	intel_display_device_info_runtime_init(display);
-+
-+	/* Display may have been disabled at runtime init */
-+	if (!intel_display_device_present(display)) {
-+		xe->info.probe_display = false;
-+		unset_display_features(xe);
-+		return 0;
-+	}
-+
- 	/* Early display init.. */
- 	intel_opregion_setup(display);
- 
-@@ -117,8 +126,6 @@ int xe_display_init_early(struct xe_device *xe)
- 
- 	intel_bw_init_hw(display);
- 
--	intel_display_device_info_runtime_init(display);
+-	{
+-		unsigned int thread_num;
 -
- 	err = intel_display_driver_probe_noirq(display);
- 	if (err)
- 		goto err_opregion;
+-		thread_num = ((i2c_adapter_id(ssif_info->client->adapter)
+-			       << 8) |
+-			      ssif_info->client->addr);
+-		init_completion(&ssif_info->wake_thread);
+-		ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
+-					       "kssif%4.4x", thread_num);
+-		if (IS_ERR(ssif_info->thread)) {
+-			rv = PTR_ERR(ssif_info->thread);
+-			dev_notice(&ssif_info->client->dev,
+-				   "Could not start kernel thread: error %d\n",
+-				   rv);
+-			goto out;
+-		}
++	thread_num = ((i2c_adapter_id(ssif_info->client->adapter) << 8) |
++		      ssif_info->client->addr);
++	init_completion(&ssif_info->wake_thread);
++	ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
++					"kssif%4.4x", thread_num);
++	if (IS_ERR(ssif_info->thread)) {
++		rv = PTR_ERR(ssif_info->thread);
++		dev_notice(&ssif_info->client->dev,
++			   "Could not start kernel thread: error %d\n",
++			   rv);
++		goto out;
+ 	}
+ 
+ 	dev_set_drvdata(&ssif_info->client->dev, ssif_info);
 -- 
-2.47.3
+2.43.0
 
 
