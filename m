@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-248444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248616-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLgtFnZWB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:23:02 +0200
+	id GG/LFgpQB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248616-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FFD554EAB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:23:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1288E554310
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF3F230E80A4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:18:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0B55233A04CF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF303F927B;
-	Fri, 15 May 2026 16:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F853FD959;
+	Fri, 15 May 2026 16:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+BIcRvW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzdzXHoX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D76739734B;
-	Fri, 15 May 2026 16:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A0F3E00A3;
+	Fri, 15 May 2026 16:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861748; cv=none; b=MjxijIsxNsqVxLPKnZzeDU2y+aHghtS3lEA3EEumLY5amMUK+bb2hNNrOPTlblKXPPR4HVtos6kun8oemuBeL2X7OMK1UGcR4PPvs623rCuVzaZ6ppGEbApH6iN99nZDVarsSte/xEBSX27PV3gHdel+Q1iNi2uPmoeKIikrnx8=
+	t=1778862188; cv=none; b=CYe/KhkkbL7hPloZnlMmmjWQ75PvBZ+zSjz1GU88Jsehulnat/cLDD8gOy6igtoPaGlD4o6ZbkrlvKRqdiK+MZms0TsnhK7KlACRzFrDUQ8es5/34JIE/f4MZQiwim3QjCRkWt827n4Yl5X6zYk9A4mIFU9EcedU4htu5pNZvTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861748; c=relaxed/simple;
-	bh=0MHDFAamYLudCQg9B9vP5UF0wk7ckX8qcQ5xThuAdBI=;
+	s=arc-20240116; t=1778862188; c=relaxed/simple;
+	bh=OSgglE8rJE/TvQXRO+YU4zuBwkkYm4QqRimD9HTj4mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xtk5jNL0gCR0qsigE/j3mJQC8DWOAmQOcnrIKEitaoWhYLLvQBN7jmtUmW/YBxDNLTPwIbbC2xomtWcvH/rx0ny2zfSk5p5SOCWwjY97eUrjg6GjZYsuP+1ZWmKZOAMvcq+eloXSmkrGjCA0B4TNt6FUN5aLL7tSfF4TUKVUmWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+BIcRvW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28D1C2BCFA;
-	Fri, 15 May 2026 16:15:47 +0000 (UTC)
+	 MIME-Version; b=TQ7LxJlBqyRywI4l34KxRFwsv29DX9Mp9wF9q80mQ/9cXL3VNnxG5wqrIih2fR5LkpmIuSsEFyliGa7tmeErEMsEjL5xmkVhWTlFFjcy/9KLHBevTuG8WpZUZ9P0B9HeOjvWnSWYzAl1ZajlPa7Tob/c6Bcygdqahq3kBJz/jlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzdzXHoX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4816DC2BCB3;
+	Fri, 15 May 2026 16:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861748;
-	bh=0MHDFAamYLudCQg9B9vP5UF0wk7ckX8qcQ5xThuAdBI=;
+	s=korg; t=1778862188;
+	bh=OSgglE8rJE/TvQXRO+YU4zuBwkkYm4QqRimD9HTj4mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H+BIcRvWWCXo8dl4OdQw/8wcjgJ0gXotChlFn1xeaNbYoHH8AQ1c+lsjnGpCGiX/U
-	 NGOi3vS4CoL0597mVhreBocmawCAQw5A0hH/yIhvU+t9kIsdRPTK+74IpcZXrKGD8K
-	 8c+laNRmzuGwL7ee1G/olO2QNoD04AGgvnIQVawc=
+	b=VzdzXHoXyZQKsgNDzg5mfg2WC2MdY83iY4BH228W6vNVM4pFgiApu98MNkD9F1Vbt
+	 M+yrZTnsfSjJv28xsBrzRi1TFGUxqwwm6zVXWH5eEw1Xj46IEiAeE8X5tTbPjPyGJY
+	 65nUD9eUaqwoZ83c2zixH/SmvF3oAaVqehUdT9Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	David Howells <dhowells@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.6 448/474] rxrpc: Also unshare DATA/RESPONSE packets when paged frags are present
-Date: Fri, 15 May 2026 17:49:17 +0200
-Message-ID: <20260515154724.784448172@linuxfoundation.org>
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 141/188] batman-adv: bla: only purge non-released claims
+Date: Fri, 15 May 2026 17:49:18 +0200
+Message-ID: <20260515154700.383878863@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,99 +63,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C4FFD554EAB
+X-Rspamd-Queue-Id: 1288E554310
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,redhat.com,linux-foundation.org,uniontech.com];
-	TAGGED_FROM(0.00)[bounces-248444-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-248616-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,narfation.org:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit aa54b1d27fe0c2b78e664a34fd0fdf7cd1960d71 upstream.
+commit cf6b604011591865ae39ac82de8978c1120d17af upstream.
 
-The DATA-packet handler in rxrpc_input_call_event() and the RESPONSE
-handler in rxrpc_verify_response() copy the skb to a linear one before
-calling into the security ops only when skb_cloned() is true.  An skb
-that is not cloned but still carries externally-owned paged fragments
-(e.g. SKBFL_SHARED_FRAG set by splice() into a UDP socket via
-__ip_append_data, or a chained skb_has_frag_list()) falls through to
-the in-place decryption path, which binds the frag pages directly into
-the AEAD/skcipher SGL via skb_to_sgvec().
+When batadv_bla_purge_claims() goes through the list of claims, it is only
+traversing the hash list with an rcu_read_lock(). Due to a potential
+parallel batadv_claim_put(), it can happen that it encounters a claim which
+was actually in the process of being released+freed by
+batadv_claim_release(). In this case, backbone_gw is set to NULL before the
+delayed RCU kfree is started. Calling batadv_bla_claim_get_backbone_gw() is
+then no longer allowed because it would cause a NULL-ptr derefence.
 
-Extend the gate to also unshare when skb_has_frag_list() or
-skb_has_shared_frag() is true.  This catches the splice-loopback vector
-and other externally-shared frag sources while preserving the
-zero-copy fast path for skbs whose frags are kernel-private (e.g. NIC
-page_pool RX, GRO).  The OOM/trace handling already in place is reused.
+To avoid this, only claims with a valid reference counter must be purged.
+All others are already taken care of.
 
-Fixes: d0d5c0cd1e71 ("rxrpc: Use skb_unshare() rather than skb_cow_data()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/call_event.c |    4 +++-
- net/rxrpc/conn_event.c |    3 ++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ net/batman-adv/bridge_loop_avoidance.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/rxrpc/call_event.c
-+++ b/net/rxrpc/call_event.c
-@@ -461,7 +461,9 @@ bool rxrpc_input_call_event(struct rxrpc
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -1289,6 +1289,13 @@ static void batadv_bla_purge_claims(stru
  
- 		if (sp->hdr.type == RXRPC_PACKET_TYPE_DATA &&
- 		    sp->hdr.securityIndex != 0 &&
--		    skb_cloned(skb)) {
-+		    (skb_cloned(skb) ||
-+		     skb_has_frag_list(skb) ||
-+		     skb_has_shared_frag(skb))) {
- 			/* Unshare the packet so that it can be modified by
- 			 * in-place decryption.
- 			 */
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -231,7 +231,8 @@ static int rxrpc_verify_response(struct
- {
- 	int ret;
- 
--	if (skb_cloned(skb)) {
-+	if (skb_cloned(skb) || skb_has_frag_list(skb) ||
-+	    skb_has_shared_frag(skb)) {
- 		/* Copy the packet if shared so that we can do in-place
- 		 * decryption.
- 		 */
+ 		rcu_read_lock();
+ 		hlist_for_each_entry_rcu(claim, head, hash_entry) {
++			/* only purge claims not currently in the process of being released.
++			 * Such claims could otherwise have a NULL-ptr backbone_gw set because
++			 * they already went through batadv_claim_release()
++			 */
++			if (!kref_get_unless_zero(&claim->refcount))
++				continue;
++
+ 			backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
+ 			if (now)
+ 				goto purge_now;
+@@ -1314,6 +1321,7 @@ purge_now:
+ 					      claim->addr, claim->vid);
+ skip:
+ 			batadv_backbone_gw_put(backbone_gw);
++			batadv_claim_put(claim);
+ 		}
+ 		rcu_read_unlock();
+ 	}
 
 
 
