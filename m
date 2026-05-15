@@ -1,272 +1,251 @@
-Return-Path: <stable+bounces-248922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0O4jE06MB2rB8AIAu9opvQ
-	(envelope-from <stable+bounces-248922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:12:46 +0200
+	id kGP6B4yRB2pU9AIAu9opvQ
+	(envelope-from <stable+bounces-248923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:35:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE279557ADB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:12:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3CB558322
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FEB83027942
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:11:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 449933017240
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FBE3EC2D1;
-	Fri, 15 May 2026 21:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5422E3A6B68;
+	Fri, 15 May 2026 21:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sCEFE8El"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d8wM2uxr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8272D7DE9
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 21:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778879514; cv=pass; b=roe1okeFJ/G9NSJ7m+oGiLUt8J3FTAkzecD4HPt2xmMI9eRJpuKFyG+Rxokb2uc0vMFzguAD77zpkUqOWB/4EPwMub6OWAVDPlHWEMCF4qFsgDAySe39Ih4s+1exbeffBbcUcJk5+ENOT6l7ADD2SkNHYan87pxffaOqLxDeHOM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778879514; c=relaxed/simple;
-	bh=3TjuOpB2lyamMgV8Ic10Si9R+GxCvn+A/B0vEzNJ99I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AoaYShZRpdYSp5GA9xPhEPN9v2WRuY2vgZCrnVO2VTxIf7B8JGera/bZx/4kFD3TPCPdrq79YkUKNee8afM9rinJFUdZ5t3tL5PnmiuwwSSVWl9SpFJhG9OI8rVOvX+S6APR+f8LlO56tocJ0ySDLs+rh5EpywwSqhPXaD4xT9A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sCEFE8El; arc=pass smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so3568175e9.2
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 14:11:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778879511; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Kabdi/1O5XNemNkfMpmoAKg0rlX245oxHkBc+kMbHWfQIrZeUumqHrslNquz3uHA6r
-         dQXoOuSZqNLJ8BEICknuUBhaDZOiLdqDy1AO0jdF6bBoGxEoPEB52FJpKKw2brjkQxzw
-         DiqXtwmYfFjzIjksROE5H2H7KtYduyc7AbIQOh2fXPjg+xq48iTSbn+biuYBh4Nr+TVR
-         WvOIjqGn/DXqMIdYSxwQlCc/BUw22cdkdebdoznxXoJsuHo5ca8IUIDlC6Cz/un6UI7k
-         411snRgOc5ZNQef06rfmNi/DX0o+Aoo+IuTJC301lHfcPNvwFXYe7ww5chjzF82qK7Um
-         A4jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9dlhdpYH17+Qki5zJW4Mxe8q+cYkrVb0hBea1Jft3jA=;
-        fh=dY5KWm+KJ04VZ9X86oMOD6F8lrYAQmlpSAYDqTAxA7E=;
-        b=A1zh/QtaC8R0Tj/YxbKefBHQrXB8xH9T0p7p9jNzGz9JW5LOIvrxkZVmcoZziKra5g
-         XnVJYyio3w8q0VsWjexKoDzUCCqOZhc681QNgJXi6wkByr58Ifm1QnRoT8ABjM/crQXT
-         L+NzRNponpnwZs5Cc4mL10tcYbJOBiVQKz/lAsZsYYTxilFpurGEO2JXipoeBf+ZjbZV
-         IFe4Yh91sN8Ft99+obuCVV4cAMGuyTGDx1k4/i2ftaouu0BFQiTtuR4PBQN6IDZLF19g
-         j8QbdYLH7jLsSQK4zAtjFlSNp8zhAFdCDl1ETnEACXlg8K8+cY3hpyqKkkX4c2hF5NFa
-         g/Rw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778879511; x=1779484311; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9dlhdpYH17+Qki5zJW4Mxe8q+cYkrVb0hBea1Jft3jA=;
-        b=sCEFE8ElbYl2akXHyhtm0CW5fesPTj8Q7rNDAnUAULDe+J9T4FMJw85RPALN40OSar
-         u0aqp5KmgNgg/ZsYd5WpOGgMdoMo0+qOC8kdb8WvEaSBoeFpWCXi2WLsxhjdmgND3Aaa
-         AOeRlbLh8S/jkiZ5A1UUDJWiVQA5DoqlYsgXa9lIox3FXjDShuiuJPBv6EKfxHu1hyNL
-         bs4+yavZI8EYEzDhabegxuhLgDK6W1SPLnQIKG6okejYxiDy14Dh07d5rRk8yON688sg
-         fr8Cs0nfN5yVPaf5xLRfWz3wsGn2SrYd4RmAXJkD5B/ar3Phw2v8jmUkaW7qUL/1XWPs
-         Fv0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778879511; x=1779484311;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9dlhdpYH17+Qki5zJW4Mxe8q+cYkrVb0hBea1Jft3jA=;
-        b=b3cyG0dy7GHRnW0/Eh/mAtttFS8Zsfp1FXmm3Y175cVq5AK1c038yxBPsw8IsQ7iWY
-         lpR4F1hFd27+VYFXTMrBBF4DQejmQyskGcTSgyg3zGs0u3860Tl5uhYjwtbk73K5LBXN
-         /NFoiJiMezlaDoX1tp0kqYFgdGhHhckdqipcaUwcFcPUitzxR+K9G9otD+7btedAhF9v
-         Gc8rStIwU+ybnB2a1HBRV4sk5yNoEkuF1mHwbNR5DUnM2OasxeJSPVwYlKOTtIGGkz0U
-         EJiktxTwOXiWkcGY6QGeUTFTfudrUcZbxKbMgq0zVksL1onPR7zsufB8C8gcoeIy5uFC
-         0lww==
-X-Forwarded-Encrypted: i=1; AFNElJ8nxYMeyDtqBtG2g1YGD0w4qu5/VdQMwCQWHxujMQ1xfkuFRfz2p06DXnrfvuciXHhji8gIoY4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEFsdNBj7vC6MuUV6ISFZNfUoRxJcBB5TRoicXVY4wmfobzENJ
-	vEDw+zj8D94ikbouXlR9CLdvOTS18sq0sX9v4COWzgZKkwXsxf5/vlG+o+3RZw1UuklL9rzB8GL
-	G0wdP8Oy9XootYe1i82iO02aLw+2kaGk=
-X-Gm-Gg: Acq92OEDliq5IIjKcC7rFi9dfw8dWI07CXMTI9uszc7KLCFc5vO/cx5VMiXVqLzzn4I
-	/IRSN0s4ZiabnlL9Ztf+T9ClgODSXFS2RalUbbiht6IZSTZi1YJ88wXTG1V6xguw7/5K6Owa2fH
-	iKuTimwLuRnqisL2Q5+mLYWHAU0mh1hO2A/8dvmy3CIN+Q4ZSQXStrLKVghnUv9vwKmiuMqu1Rg
-	5FX9dVfxw8STwPUz5MWhhWT4aoDq+Cbed26qH9aTtGx800P744aolAMSWxgu8RUSaZXqXJ7Iytd
-	6DoVyU7Jzi1YKous
-X-Received: by 2002:a05:600c:c087:b0:48d:c0a:3813 with SMTP id
- 5b1f17b1804b1-48fe60de6a7mr66320875e9.3.1778879511207; Fri, 15 May 2026
- 14:11:51 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175EE1DA62E
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 21:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778880905; cv=none; b=fsYQ6w6zAYSPPWD4jpqmASmKpRYuryjUO4ViRfk3pufh8WdiXwIBeVaw3MbnO2xbA4QSYN0zvB6WfYa1kyMBopIAcPLs9/IFwaiTzpHDv1k4QtVm7JzCax2U1rnfIlu/hpN9fDHUc7iJAM2yfYAkPFelsqg8ZqpYO+KreX0kYiU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778880905; c=relaxed/simple;
+	bh=PLjQy/hmvUV31qv3Zu1DnatoCJjW0kwn2iMITiBzHXg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eNgEDlpVkalWOrV520kN0h7REdGE2nKakYx9aegucA07qNLTCUePjhy23dG9xvJBakwAUMF0Dtz4MacpDJM/2co9ICACCsYE2DjqK0ug+nUPNYGDDRsFDqF8ncX0OLA5t4IyjNS7YGczsvLzDNA5X51hTW3AMDgyU810FDsEsl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d8wM2uxr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA3CC2BCB0;
+	Fri, 15 May 2026 21:35:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778880904;
+	bh=PLjQy/hmvUV31qv3Zu1DnatoCJjW0kwn2iMITiBzHXg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=d8wM2uxrix3QwdQh99PmISL6HYVZaA+YBjjlzn9dW+TY6Wpwni30XXq0M6kNONyWs
+	 Jtu7FEkYiOClikK1kPEbkz4H9FGgEo97I2QK+5QaxGy9jsfeYN1vkg3fnsYuDT/iWB
+	 NaOr2lje0rwusOcN0iSrX5jz1feBku15x5BuTediwor6vyyTXhlxRbol75m4l+G+Ug
+	 0/w988vYkywVxGL/vGqLpTzxmIkMzDe6fjAPtdQqjvvFsmALJocZjsDXKnxT9vU87A
+	 sNiLjdqEjmDEnx9MqkuuzYGHa61he7h0Nfum0WMwABOWz4QYcAz+o2j8P5XoJuKG7+
+	 IstNHX0SQbPQQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Piyush Sachdeva <s.piyush1024@gmail.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Piyush Sachdeva <psachdeva@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y] smb: client: Use FullSessionKey for AES-256 encryption key derivation
+Date: Fri, 15 May 2026 17:35:02 -0400
+Message-ID: <20260515213502.3509663-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051201-matching-contently-a8c4@gregkh>
+References: <2026051201-matching-contently-a8c4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260515045541.1171335-1-joannelkoong@gmail.com>
- <20260515045541.1171335-4-joannelkoong@gmail.com> <5c010e24-b4f7-481a-97e8-00da0aec6f3c@bsbernd.com>
-In-Reply-To: <5c010e24-b4f7-481a-97e8-00da0aec6f3c@bsbernd.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 15 May 2026 14:11:39 -0700
-X-Gm-Features: AVHnY4L72wtPYsCQW0YZXK928lTcN9ns6pnXhedctWR6HgruyXhZFORt2QwcYKw
-Message-ID: <CAJnrk1bY-2_6biL2dzsu8CLW_daYfpBM=sGxGRXOxj5qvOTFGw@mail.gmail.com>
-Subject: Re: [PATCH v1 3/3] fuse: fix moving cancelled entry to
- ent_in_userspace list
-To: Bernd Schubert <bernd@bsbernd.com>
-Cc: miklos@szeredi.hu, fuse-devel@lists.linux.dev, ali@ddn.com, 
-	horst@birthelmer.de, Heechan Kang <gganji11@naver.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: BE279557ADB
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8E3CB558322
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248922-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[szeredi.hu,lists.linux.dev,ddn.com,birthelmer.de,naver.com,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248923-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Fri, May 15, 2026 at 4:10=E2=80=AFAM Bernd Schubert <bernd@bsbernd.com> =
-wrote:
->
->
-> On 5/15/26 06:55, Joanne Koong wrote:
-> > fuse_uring_cancel() moves entries that are available (these have no req=
-s
-> > attached) to the ent_in_userspace list. ent_list_request_expired()
-> > checks the first entry on ent_in_userspace and dereferences
-> > ent->fuse_req unconditionally, which will crash on a cancelled entry
-> > that was moved to this list.
-> >
-> > Fix this by freeing the entry and dropping queue_refs directly in
-> > fuse_uring_cancel(). This is safe because cancel is the cancel handler
-> > itself - after io_uring_cmd_done(), no more cancels will be dispatched
-> > for this command, and teardown serializes with cancel via queue->lock.
-> >
-> > Since cancel now decrements queue_refs, fuse_uring_abort() must no
-> > longer gate fuse_uring_abort_end_requests() on queue_refs > 0, as
-> > cancelled entries may have already dropped queue_refs while requests ar=
-e
-> > still queued. Remove the gate so abort always flushes requests and stop=
-s
-> > queues.
-> >
-> > Reported-by: Heechan Kang <gganji11@naver.com>
-> > Fixes: 4fea593e625c ("fuse: optimize over-io-uring request expiration c=
-heck")
-> > Cc: stable@vger.kernel.org
-> > Co-developed-by: Jian Huang Li <ali@ddn.com>
-> > Co-developed-by: Horst Birthelmer <horst@birthelmer.de>
-> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> > ---
-> >  fs/fuse/dev_uring.c   | 6 ++++--
-> >  fs/fuse/dev_uring_i.h | 6 +++---
-> >  2 files changed, 7 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
-> > index d9108b5b5db8..f4ba64a1796a 100644
-> > --- a/fs/fuse/dev_uring.c
-> > +++ b/fs/fuse/dev_uring.c
-> > @@ -511,8 +511,7 @@ static void fuse_uring_cancel(struct io_uring_cmd *=
-cmd,
-> >       queue =3D ent->queue;
-> >       spin_lock(&queue->lock);
-> >       if (ent->state =3D=3D FRRS_AVAILABLE) {
-> > -             ent->state =3D FRRS_USERSPACE;
-> > -             list_move_tail(&ent->list, &queue->ent_in_userspace);
-> > +             list_del_init(&ent->list);
-> >               need_cmd_done =3D true;
-> >               ent->cmd =3D NULL;
-> >       }
-> > @@ -521,6 +520,9 @@ static void fuse_uring_cancel(struct io_uring_cmd *=
-cmd,
-> >       if (need_cmd_done) {
-> >               /* no queue lock to avoid lock order issues */
-> >               io_uring_cmd_done(cmd, -ENOTCONN, issue_flags);
-> > +             kfree(ent);
-> > +             if (atomic_dec_and_test(&queue->ring->queue_refs))
-> > +                     wake_up_all(&queue->ring->stop_waitq);
-> >       }
-> >  }
->
-> Hmm, ok, I had done that via fuse_uring_entry_teardown(), but this way
-> is also fine.
->
-> While thinking about it over night, I wonder if we should abort the
-> connection here. Calls for fuse_uring_cancel() / IO_URING_F_CANCEL
-> happen when
->
-> a) The daemon dies - that is what I had written the function for
-> b) When one calls
->
-> With reduced rings queues we would actually need to have per queue refs
-> and if a single queue reaches 0, it would need to re-calculate the
-> queue. In general this gets complex and from my point of view, if
-> fuse-server wants to re-initialize queues, fuse-server should:
->
-> a) wake up the ring thread with an eventfd (libfuse already has that)
-> b) we need a reconfig SQE (like FUSE_IO_URING_CMD_RECONFIG) that
-> requests to re-configure things
->
-> Right now that is all not supported, from my point of view we should
-> call fuse_abort_conn() when we call into fuse_uring_cancel()
->
+From: Piyush Sachdeva <s.piyush1024@gmail.com>
 
-From what I see, I don't think it's safe to call the abort in
-fuse_uring_cancel() since the cancel runs in the io_uring submitter's
-task context and the uring lock is held when it gets called. The abort
-logic can trigger calls to io_uring_cmd_done(cmd, -ENOTCONN,
-IO_URING_F_UNLOCKED) (through fuse_uring_stop_queues() ->
-fuse_uring_entry_teardown()) which will lead to a deadlock in trying
-to acquire the lock that's already held. I like the idea of keeping
-things simple with just aborting, but I think in actuality it might
-lead to more trouble.
+[ Upstream commit 5be7a0cef3229fb3b63a07c0d289daf752545424 ]
 
-Thanks,
-Joanne
->
-> Thanks,
-> Bernd
->
-> >
-> > diff --git a/fs/fuse/dev_uring_i.h b/fs/fuse/dev_uring_i.h
-> > index 368f4d0790eb..22ec67e39ee0 100644
-> > --- a/fs/fuse/dev_uring_i.h
-> > +++ b/fs/fuse/dev_uring_i.h
-> > @@ -150,10 +150,10 @@ static inline void fuse_uring_abort(struct fuse_c=
-han *fch)
-> >       if (ring =3D=3D NULL)
-> >               return;
-> >
-> > -     if (atomic_read(&ring->queue_refs) > 0) {
-> > -             fuse_uring_abort_end_requests(ring);
-> > +     fuse_uring_abort_end_requests(ring);
-> > +
-> > +     if (atomic_read(&ring->queue_refs) > 0)
-> >               fuse_uring_stop_queues(ring);
-> > -     }
-> >  }
-> >
-> >  static inline void fuse_uring_wait_stopped_queues(struct fuse_chan *fc=
-h)
->
+When Kerberos authentication is used with AES-256 encryption (AES-256-CCM
+or AES-256-GCM), the SMB3 encryption and decryption keys must be derived
+using the full session key (Session.FullSessionKey) rather than just the
+first 16 bytes (Session.SessionKey).
+
+Per MS-SMB2 section 3.2.5.3.1, when Connection.Dialect is "3.1.1" and
+Connection.CipherId is AES-256-CCM or AES-256-GCM, Session.FullSessionKey
+must be set to the full cryptographic key from the GSS authentication
+context. The encryption and decryption key derivation (SMBC2SCipherKey,
+SMBS2CCipherKey) must use this FullSessionKey as the KDF input. The
+signing key derivation continues to use Session.SessionKey (first 16
+bytes) in all cases.
+
+Previously, generate_key() hardcoded SMB2_NTLMV2_SESSKEY_SIZE (16) as the
+HMAC-SHA256 key input length for all derivations. When Kerberos with
+AES-256 provides a 32-byte session key, the KDF for encryption/decryption
+was using only the first 16 bytes, producing keys that did not match the
+server's, causing mount failures with sec=krb5 and require_gcm_256=1.
+
+Add a full_key_size parameter to generate_key() and pass the appropriate
+size from generate_smb3signingkey():
+ - Signing: always SMB2_NTLMV2_SESSKEY_SIZE (16 bytes)
+ - Encryption/Decryption: ses->auth_key.len when AES-256, otherwise 16
+
+Also fix cifs_dump_full_key() to report the actual session key length for
+AES-256 instead of hardcoded CIFS_SESS_KEY_SIZE, so that userspace tools
+like Wireshark receive the correct key for decryption.
+
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
+Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/client/ioctl.c         |  2 +-
+ fs/smb/client/smb2transport.c | 32 +++++++++++++++++++++++++-------
+ 2 files changed, 26 insertions(+), 8 deletions(-)
+
+diff --git a/fs/smb/client/ioctl.c b/fs/smb/client/ioctl.c
+index 0a9935ce05a5a..1a6ce837e26af 100644
+--- a/fs/smb/client/ioctl.c
++++ b/fs/smb/client/ioctl.c
+@@ -297,7 +297,7 @@ static int cifs_dump_full_key(struct cifs_tcon *tcon, struct smb3_full_key_debug
+ 		break;
+ 	case SMB2_ENCRYPTION_AES256_CCM:
+ 	case SMB2_ENCRYPTION_AES256_GCM:
+-		out.session_key_length = CIFS_SESS_KEY_SIZE;
++		out.session_key_length = ses->auth_key.len;
+ 		out.server_in_key_length = out.server_out_key_length = SMB3_GCM256_CRYPTKEY_SIZE;
+ 		break;
+ 	default:
+diff --git a/fs/smb/client/smb2transport.c b/fs/smb/client/smb2transport.c
+index 211305d43f8d4..db98ced541baa 100644
+--- a/fs/smb/client/smb2transport.c
++++ b/fs/smb/client/smb2transport.c
+@@ -259,7 +259,8 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
+ }
+ 
+ static int generate_key(struct cifs_ses *ses, struct kvec label,
+-			struct kvec context, __u8 *key, unsigned int key_size)
++			struct kvec context, __u8 *key, unsigned int key_size,
++			unsigned int full_key_size)
+ {
+ 	unsigned char zero = 0x0;
+ 	__u8 i[4] = {0, 0, 0, 1};
+@@ -280,7 +281,7 @@ static int generate_key(struct cifs_ses *ses, struct kvec label,
+ 	}
+ 
+ 	hmac_sha256_init_usingrawkey(&hmac_ctx, ses->auth_key.response,
+-				     SMB2_NTLMV2_SESSKEY_SIZE);
++				     full_key_size);
+ 	hmac_sha256_update(&hmac_ctx, i, 4);
+ 	hmac_sha256_update(&hmac_ctx, label.iov_base, label.iov_len);
+ 	hmac_sha256_update(&hmac_ctx, &zero, 1);
+@@ -314,6 +315,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 			struct TCP_Server_Info *server,
+ 			const struct derivation_triplet *ptriplet)
+ {
++	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
+ 	int rc;
+ 	bool is_binding = false;
+ 	int chan_index = 0;
+@@ -348,17 +350,31 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 		rc = generate_key(ses, ptriplet->signing.label,
+ 				  ptriplet->signing.context,
+ 				  ses->chans[chan_index].signkey,
+-				  SMB3_SIGN_KEY_SIZE);
++				  SMB3_SIGN_KEY_SIZE,
++				  SMB2_NTLMV2_SESSKEY_SIZE);
+ 		if (rc)
+ 			return rc;
+ 	} else {
+ 		rc = generate_key(ses, ptriplet->signing.label,
+ 				  ptriplet->signing.context,
+ 				  ses->smb3signingkey,
+-				  SMB3_SIGN_KEY_SIZE);
++				  SMB3_SIGN_KEY_SIZE,
++				  SMB2_NTLMV2_SESSKEY_SIZE);
+ 		if (rc)
+ 			return rc;
+ 
++		/*
++		 * Per MS-SMB2 3.2.5.3.1, signing key always uses Session.SessionKey
++		 * (first 16 bytes). Encryption/decryption keys use
++		 * Session.FullSessionKey when dialect is 3.1.1 and cipher is
++		 * AES-256-CCM or AES-256-GCM, otherwise Session.SessionKey.
++		 */
++
++		if (server->dialect == SMB311_PROT_ID &&
++		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
++		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
++			full_key_size = ses->auth_key.len;
++
+ 		/* safe to access primary channel, since it will never go away */
+ 		spin_lock(&ses->chan_lock);
+ 		memcpy(ses->chans[chan_index].signkey, ses->smb3signingkey,
+@@ -368,13 +384,15 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 		rc = generate_key(ses, ptriplet->encryption.label,
+ 				  ptriplet->encryption.context,
+ 				  ses->smb3encryptionkey,
+-				  SMB3_ENC_DEC_KEY_SIZE);
++				  SMB3_ENC_DEC_KEY_SIZE,
++				  full_key_size);
+ 		if (rc)
+ 			return rc;
+ 		rc = generate_key(ses, ptriplet->decryption.label,
+ 				  ptriplet->decryption.context,
+ 				  ses->smb3decryptionkey,
+-				  SMB3_ENC_DEC_KEY_SIZE);
++				  SMB3_ENC_DEC_KEY_SIZE,
++				  full_key_size);
+ 		if (rc)
+ 			return rc;
+ 	}
+@@ -389,7 +407,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 			&ses->Suid);
+ 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
+ 	cifs_dbg(VFS, "Session Key   %*ph\n",
+-		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
++		 (int)ses->auth_key.len, ses->auth_key.response);
+ 	cifs_dbg(VFS, "Signing Key   %*ph\n",
+ 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
+ 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
+-- 
+2.53.0
+
 
