@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAaAKSZWB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:42 +0200
+	id 6MJrFlxNB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:44:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600B2554E53
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD0F553D3E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:44:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 070E530D9E53
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:16:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 519993032F86
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FFA3FBB5B;
-	Fri, 15 May 2026 16:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A4A3FD94D;
+	Fri, 15 May 2026 16:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DL57lbr9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKExXmnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2943F58FF;
-	Fri, 15 May 2026 16:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47C33FD947;
+	Fri, 15 May 2026 16:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861652; cv=none; b=IrKgXN4jaXzbCwHvvDiZW5ck98/vqZAEAtG39Z72IqQRHyIebMRJ3HHmzsAO2WyXg/XY3asNd5tJeh+MfaCNX9jUQOIcAz8PJymRLiqR33vPvjapSyWZ9NW5egVKskkP4pinQ78NLsFs1wGaHGzfZ2vjiJScOgOAkosKAmxoOrQ=
+	t=1778862087; cv=none; b=A23ajd/8YSX0pusOoXqMwcwHwK1sXe0tfkZSViht4HopjUG9fQIBmq8+SOEjlcCq4ytmPP1XORfbd+i3UfZ+SVhmRY8yklea2gR13EuEQarjHVyUJsWW7+7UM1GqR1tXvJH+CZuU9CmyVJ6quOgcpp/oPHUbFIHbRhyXIlNIctU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861652; c=relaxed/simple;
-	bh=+bw2W09CFEqfdic3PLrVcUfGmdC89B6CQOqYIGTt5Oo=;
+	s=arc-20240116; t=1778862087; c=relaxed/simple;
+	bh=G7FULhrOrH98BpC1Xc9MTm1Qbf0VXyHu4/d6fxXQ/U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oslOd8sfyDIi6eNAvEeZkPmf5anNzm8UMTnVyaEG6Ea/eAVXDfRvovpm/9SHxUgg1wFF4o04oTCvtzLoik8fpr+dDcVHpjJhGP2VI54+eZ/ZdSbn+073m4D2Jnav7XdFeaSurJEjIyK25y1bNw8fXc9G/Q62XGUFMRXlBlzQNjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DL57lbr9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56026C2BCB0;
-	Fri, 15 May 2026 16:14:12 +0000 (UTC)
+	 MIME-Version; b=T7qOt+GlXgMZgLUK4zEO1ErsAgE8z5pqr8bRx8IdvCvjO837wbFwWu6kRD9d7hf1/ylooORwPG6CeqzjXEFOIn81qNZcwOMfRNYIX6NWcEM/FjY5IIiGHxOfkXpWNwYqXHY6PXzsC9nZ9t/i8NH6+pVGS1/jsSrdElh5/kj7lyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKExXmnj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDC6C2BCB0;
+	Fri, 15 May 2026 16:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861652;
-	bh=+bw2W09CFEqfdic3PLrVcUfGmdC89B6CQOqYIGTt5Oo=;
+	s=korg; t=1778862087;
+	bh=G7FULhrOrH98BpC1Xc9MTm1Qbf0VXyHu4/d6fxXQ/U0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DL57lbr9qbb2csWXwYtD0TJPv/z87ZxZV7clx2g+5kjPcr7o1dYS0ib2e8mAEN6nX
-	 HO2edbf20EkROBF3bTIdLg8Wop1trDCtrSscs8npOuqLpveCCvJu52ALX1fI27ACw1
-	 nPCJ377nxTHdVdXEREME2vs7Dh1rB1kzPUmvHUF0=
+	b=FKExXmnjCe4sdDrjlpnje3lx7d5R3jN36AufiiKzcClFj+wxtvA1VVGsZOKDKduZR
+	 qsk1mobdMGKsLUR99FWa0GBQcOY4JNpQN+HPKzT8ZWU6zs6RWzoS7H8KGc7FB5L3OS
+	 E5UjdT0YDYG9fm5kYbCE+rcex/X/UquWcXBei4A8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 410/474] net: stmmac: rename STMMAC_GET_ENTRY() -> STMMAC_NEXT_ENTRY()
+	Alex Deucher <alexander.deucher@amd.com>,
+	Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
+	"Ramalingeswara Reddy, Kanala" <Kanala.RamalingeswaraReddy@amd.com>
+Subject: [PATCH 6.18 102/188] drm/amdgpu: Use SMUIO 15.0.0 offsets for TSC upper and lower count.
 Date: Fri, 15 May 2026 17:48:39 +0200
-Message-ID: <20260515154723.926589057@linuxfoundation.org>
+Message-ID: <20260515154659.541833852@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,215 +64,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 600B2554E53
+X-Rspamd-Queue-Id: EFD0F553D3E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248405-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248577-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,armlinux.org.uk:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+From: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
 
-[ Upstream commit 6b4286e0550814cdc4b897f881ec1fa8b0313227 ]
+commit 574b3b14f7d1b329fc6e67b79328f0e6f4d4b3d4 upstream.
 
-STMMAC_GET_ENTRY() doesn't describe what this macro is doing - it is
-incrementing the provided index for the circular array of descriptors.
-Replace "GET" with "NEXT" as this better describes the action here.
+Define and use regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0 and
+regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0 for TSC upper and lower count.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/E1w2vba-0000000DbWo-1oL5@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 0bb05e6adfa9 ("net: stmmac: Prevent NULL deref when RX memory exhausted")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
+Signed-off-by: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/chain_mode.c  |    2 -
- drivers/net/ethernet/stmicro/stmmac/common.h      |    2 -
- drivers/net/ethernet/stmicro/stmmac/ring_mode.c   |    2 -
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   26 +++++++++++-----------
- 4 files changed, 16 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |   31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/chain_mode.c
-@@ -47,7 +47,7 @@ static int jumbo_frm(struct stmmac_tx_qu
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -64,6 +64,11 @@
+ #define regPC_CONFIG_CNTL_1		0x194d
+ #define regPC_CONFIG_CNTL_1_BASE_IDX	1
  
- 	while (len != 0) {
- 		tx_q->tx_skbuff[entry] = NULL;
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 		desc = tx_q->dma_tx + entry;
- 
- 		if (len > bmax) {
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -54,7 +54,7 @@
- #define DMA_MIN_RX_SIZE		64
- #define DMA_MAX_RX_SIZE		1024
- #define DMA_DEFAULT_RX_SIZE	512
--#define STMMAC_GET_ENTRY(x, size)	((x + 1) & (size - 1))
-+#define STMMAC_NEXT_ENTRY(x, size)	((x + 1) & (size - 1))
- 
- #undef FRAME_FILTER_DEBUG
- /* #define FRAME_FILTER_DEBUG */
---- a/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/ring_mode.c
-@@ -51,7 +51,7 @@ static int jumbo_frm(struct stmmac_tx_qu
- 		stmmac_prepare_tx_desc(priv, desc, 1, bmax, csum,
- 				STMMAC_RING_MODE, 0, false, skb->len);
- 		tx_q->tx_skbuff[entry] = NULL;
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 
- 		if (priv->extend_desc)
- 			desc = (struct dma_desc *)(tx_q->dma_etx + entry);
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2503,7 +2503,7 @@ static bool stmmac_xdp_xmit_zc(struct st
- 
- 		stmmac_enable_dma_transmission(priv, priv->ioaddr);
- 
--		tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
-+		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
- 		entry = tx_q->cur_tx;
++#define regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0               0x0030
++#define regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0_BASE_IDX      1
++#define regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0               0x0031
++#define regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0_BASE_IDX      1
++
+ #define regCP_GFX_MQD_CONTROL_DEFAULT                                             0x00000100
+ #define regCP_GFX_HQD_VMID_DEFAULT                                                0x00000000
+ #define regCP_GFX_HQD_QUEUE_PRIORITY_DEFAULT                                      0x00000000
+@@ -5174,11 +5179,27 @@ static uint64_t gfx_v11_0_get_gpu_clock_
+ 		amdgpu_gfx_off_ctrl(adev, true);
+ 	} else {
+ 		preempt_disable();
+-		clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
+-		clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
+-		clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
+-		if (clock_counter_hi_pre != clock_counter_hi_after)
+-			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
++		if (amdgpu_ip_version(adev, SMUIO_HWIP, 0) < IP_VERSION(15, 0, 0)) {
++			clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER);
++			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_LOWER);
++			clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER);
++			if (clock_counter_hi_pre != clock_counter_hi_after)
++				clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++						regGOLDEN_TSC_COUNT_LOWER);
++		} else {
++			clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0);
++			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0);
++			clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0);
++			if (clock_counter_hi_pre != clock_counter_hi_after)
++				clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++						regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0);
++		}
+ 		preempt_enable();
  	}
- 	u64_stats_update_begin(&txq_stats->napi_syncp);
-@@ -2659,7 +2659,7 @@ static int stmmac_tx_clean(struct stmmac
- 
- 		stmmac_release_tx_desc(priv, p, priv->mode);
- 
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 	}
- 	tx_q->dirty_tx = entry;
- 
-@@ -3973,7 +3973,7 @@ static bool stmmac_vlan_insert(struct st
- 		return false;
- 
- 	stmmac_set_tx_owner(priv, p);
--	tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
-+	tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
- 	return true;
- }
- 
-@@ -4001,7 +4001,7 @@ static void stmmac_tso_allocator(struct
- 	while (tmp_len > 0) {
- 		dma_addr_t curr_addr;
- 
--		tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx,
-+		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx,
- 						priv->dma_conf.dma_tx_size);
- 		WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]);
- 
-@@ -4133,7 +4133,7 @@ static netdev_tx_t stmmac_tso_xmit(struc
- 
- 		stmmac_set_mss(priv, mss_desc, mss);
- 		tx_q->mss = mss;
--		tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx,
-+		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx,
- 						priv->dma_conf.dma_tx_size);
- 		WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]);
- 	}
-@@ -4258,7 +4258,7 @@ static netdev_tx_t stmmac_tso_xmit(struc
- 	 * ndo_start_xmit will fill this descriptor the next time it's
- 	 * called and stmmac_tx_clean may clean up to this descriptor.
- 	 */
--	tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
-+	tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
- 
- 	if (unlikely(stmmac_tx_avail(priv, queue) <= (MAX_SKB_FRAGS + 1))) {
- 		netif_dbg(priv, hw, priv->dev, "%s: stop transmitted packets\n",
-@@ -4451,7 +4451,7 @@ static netdev_tx_t stmmac_xmit(struct sk
- 		int len = skb_frag_size(frag);
- 		bool last_segment = (i == (nfrags - 1));
- 
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 		WARN_ON(tx_q->tx_skbuff[entry]);
- 
- 		if (likely(priv->extend_desc))
-@@ -4521,7 +4521,7 @@ static netdev_tx_t stmmac_xmit(struct sk
- 	 * ndo_start_xmit will fill this descriptor the next time it's
- 	 * called and stmmac_tx_clean may clean up to this descriptor.
- 	 */
--	entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+	entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 	tx_q->cur_tx = entry;
- 
- 	if (netif_msg_pktdata(priv)) {
-@@ -4691,7 +4691,7 @@ static inline void stmmac_rx_refill(stru
- 		dma_wmb();
- 		stmmac_set_rx_owner(priv, p, use_rx_wd);
- 
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_rx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_rx_size);
- 	}
- 	rx_q->dirty_rx = entry;
- 	rx_q->rx_tail_addr = rx_q->dma_rx_phy +
-@@ -4818,7 +4818,7 @@ static int stmmac_xdp_xmit_xdpf(struct s
- 
- 	stmmac_enable_dma_transmission(priv, priv->ioaddr);
- 
--	entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_tx_size);
-+	entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_tx_size);
- 	tx_q->cur_tx = entry;
- 
- 	return STMMAC_XDP_TX;
-@@ -5048,7 +5048,7 @@ static bool stmmac_rx_refill_zc(struct s
- 		dma_wmb();
- 		stmmac_set_rx_owner(priv, rx_desc, use_rx_wd);
- 
--		entry = STMMAC_GET_ENTRY(entry, priv->dma_conf.dma_rx_size);
-+		entry = STMMAC_NEXT_ENTRY(entry, priv->dma_conf.dma_rx_size);
- 	}
- 
- 	if (rx_desc) {
-@@ -5143,7 +5143,7 @@ read_again:
- 			break;
- 
- 		/* Prefetch the next RX descriptor */
--		rx_q->cur_rx = STMMAC_GET_ENTRY(rx_q->cur_rx,
-+		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
- 						priv->dma_conf.dma_rx_size);
- 		next_entry = rx_q->cur_rx;
- 
-@@ -5339,7 +5339,7 @@ read_again:
- 		if (unlikely(status & dma_own))
- 			break;
- 
--		rx_q->cur_rx = STMMAC_GET_ENTRY(rx_q->cur_rx,
-+		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
- 						priv->dma_conf.dma_rx_size);
- 		next_entry = rx_q->cur_rx;
- 
+ 	clock = clock_counter_lo | (clock_counter_hi_after << 32ULL);
 
 
 
