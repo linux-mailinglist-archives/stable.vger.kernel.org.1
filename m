@@ -1,216 +1,169 @@
-Return-Path: <stable+bounces-247793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLwjAOstB2pSsgIAu9opvQ
-	(envelope-from <stable+bounces-247793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:03 +0200
+	id WA20ExsxB2oQswIAu9opvQ
+	(envelope-from <stable+bounces-247794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:43:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF0D551740
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 562D1551A14
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2158F303EC25
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:24:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 97263301A080
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A95385D9F;
-	Fri, 15 May 2026 14:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7973D39EF39;
+	Fri, 15 May 2026 14:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CXjxnACs";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="REXWZkSp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KmZUEdJw"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D0E2FFF8D
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 14:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32B5318EF6
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 14:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778855042; cv=none; b=ovOugjjFd4QQV9/89iHfCq8PbL7+3JXxQ+OKpI7LtH1oFAtasI+MCBR3CTleSdDcgnMVuHPu7bCCnMikI9CcdyTk3AbisehN5fEVCZN64Ly1B/X4agNbAO3kgSJ6lyXT9up4qs9+JqCauZK0QkIAYDYTy0EXZSLlzGkrvY9mjmo=
+	t=1778855472; cv=none; b=giJD2y0O3PrDqqKnbCsK4MD/QheeC6Z6lWZ8D+MKhFLM3Q/letZYqsbP9iAlUliUwFqN48aLHz5wtOlk0L8W5ssROhObFZgYKacMMD80pQBjAbrDyWAum9fenSulHTUy5H4RxoEI1mVefHhy/6t2Q8isk8/nnAqjken818DjZLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778855042; c=relaxed/simple;
-	bh=8tMd4kBQi6Hy9PmLRVOHEXCV4eeVaKBxaPfChs5q6/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KFUsKlIGi2fhm7hZFM94cWYn+JxL5SEy4CMEzyCu1KNVYgNStClCRyQ8+T5BRSJrTVp3cZ3j2qQk3PQDMd8uJVVM3U63twWUKMIoyuEsEL3bXn/FLoj+CiNBtTAWkoo5LtHiQGOPceAI/DvcnU5YqIbuHT8VuBML+UgVlFCKbQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CXjxnACs; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=REXWZkSp; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778855039;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lIVZ/gYLJQUpRzC6abUVWLp7JCDoikQOBxMDIsDaUrM=;
-	b=CXjxnACs22vjibw4orU1K+aJe1+7zoyB9xZ1nLDoq/XIwADT/+yQ0PQdhSMcNqBb4asMjE
-	Eu/DiWKS2yfmtvO9TZittt3PBTjKJS/usJ6tz49tRHLLaCCz39QiFuDSu4yshncC6jEwCe
-	1Xvu3heLzf0H+NrgOV/xKA38jc2iwIc=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-552-lEsyxxgtMg-SsaQk7JWdbQ-1; Fri, 15 May 2026 10:23:58 -0400
-X-MC-Unique: lEsyxxgtMg-SsaQk7JWdbQ-1
-X-Mimecast-MFC-AGG-ID: lEsyxxgtMg-SsaQk7JWdbQ_1778855038
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-90fb1490e2cso698012085a.2
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 07:23:58 -0700 (PDT)
+	s=arc-20240116; t=1778855472; c=relaxed/simple;
+	bh=bV1JeOldTkErlaOe7mZv8IxdkFPY30ISl0S82QP7r9Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nl5yrE0JRxdpGq8FHlse7cndbbHjvLI5FYnK+6BDj96vCabji25DFDIJ5xPKxXGAJWn3xYaQ4/8o2wsIQeNCkksx1vu7fw6BrrYIG0KUNdx2fI0rS65uXFbeViLjPSicUv4oKDMjoon1ZpiVeDG6EhfBB6hZUpL9SeNV7z1rPUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KmZUEdJw; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48e82c23840so51492635e9.3
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 07:31:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778855038; x=1779459838; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lIVZ/gYLJQUpRzC6abUVWLp7JCDoikQOBxMDIsDaUrM=;
-        b=REXWZkSp8NzTTY3L7F6URJWjOmBciYmL9mbWzmZbzx8MK9wnk11PbVhLGAVEYtrAS6
-         u0hkulSv3sN5thUg2lnrIh0R3Rzrcv4kSmS8Gomiwqq1EPFxMsk38IbEKHtODhn6s5V4
-         089akn0ygQdiBK6VVUQyIkx3kDdAY8xY4nJ6/TVSaiIjR5w90TZun6mQHXCOE1IWUq9K
-         0FwCs1TphftXAnxyIrDI1N4MjcVoJSbw/Jx4/zxYY3t5U162Gs7Xa20fPJXOGTvmWQSr
-         umKLxC8U2beGm/ynG/4mchBHRnDN6Yz+StWQj5g7asn2yqVgplDzn/sGUzGXEX1apWdu
-         Bo6g==
+        d=gmail.com; s=20251104; t=1778855469; x=1779460269; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8oRruk2hRCiEL2H/Lc0ikHTSfdx/PqADfnZnuck3Ni8=;
+        b=KmZUEdJwyJ4RTk7ScnujzA+IuLqyja3NISvYqPL7OFT1l/ASWiwyBA/N9S0oz2p1i0
+         nq2Q+JBwTm8auLpQ8DFMxtKHih38pT0UnRsLecoODflPnXFHtqagKbWJ4Gv8Cl8b2FBs
+         3QRGT955MkD9N+ORFO50oHkorrF9IFJIHJYqVolvy2rb74zwUqglrgCsIHe32ob70015
+         5YwL7LQSuHY8Zdxu61TQuijiizhALCyEuELK2MkI+E/UDcmnHtbBBBnVKTJFgdnU6r72
+         p7gLVWJU7NntvXjnPRCYBhEaR9eM38Z/Xo3bc1uu059PSgoQkK9yugNx0Mpg8720t6jU
+         ezHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778855038; x=1779459838;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lIVZ/gYLJQUpRzC6abUVWLp7JCDoikQOBxMDIsDaUrM=;
-        b=HcE+/eiXzAZtuyTRynIMCiWWdQmNelWRa4wgPfbFLVR/ZEmPN1JNM2jJibfWHHbs2H
-         FRjhnZAykTOPmJz+h+0ZiLyPCutnbD+xNukqseNcNN+Q1LD67skpOQ2jcDt/CcDhP4Zn
-         rQh5JHISU3VGGOAcDHe0cLHN0GJDm4NmZPPeLIp12LCjrqC8SyWdToWmcZ1uwdKQ/A0L
-         +5cnsgILooSQFN+MFEETNcpC0mhDHLhEjZWjq5xlss5J4RZxBBzNghkKSys4nU+GW24t
-         BgOjQZI8NX6+KiCTbLhOEXDFlnEn7g4QBhBNfgAUVdi/vdghiR8SAMWDzDmlBp+UdALD
-         0dKQ==
-X-Gm-Message-State: AOJu0Yz+UgYiOZ8xGPEbBxeB8tryHpZ3H6k0GQQ0fRv8E+8DLP0WOuBN
-	umko6o1LR96lPcROs8EmgpSomyhiajeyWs9j61TU1t3zWb9EN8+4FW/4Ux5sLWY+Hy07bmNOsZ/
-	TBLNyhW2spDKQ3yiiwBRFt5PuVw+TVBoSILxLLhFj2efx2SrNSktHjBdpfbaJbd1Q00YccmnsNi
-	+yinJwzF7MkyQ4/UoCwx4+jRPY+0ibcJce9piRADu7Aw==
-X-Gm-Gg: Acq92OFsKKmAlREkJZ/nioTqD/nIcJ+ZOTly2I9+qDWLNcHLo3W4hAkAv89ePacD9wi
-	0b9onISTMqtJaOP5SW0eWrEfiKj0RULseUFXF+V8njkq5o8smrOyg1r1wdV0HmEgICbWPAegUiY
-	EypbIumF2NZ4dg1bqItE7hU8AEBE3aIQOo5hiZNECq9J/tCaFhqVFzOpiQskTUOe3te3VdvLLPy
-	b707f8q5P3CTpLjtvvAYxTlqNdnHaOOVBpUe9KGFIuUItbVdcUwk8q8Og8AqP2TzoVj8sN9wfEW
-	M30/on3AgBCWHOFHfrxf6RN1jsoIHBtjsCvAl7C+Zzr/IFmzBn7zmdOT5lE3ixYW/GClkoziIhR
-	lyPoIXtSzQA9b3bYtlyOJqT3jc2pO1/GZ7n/zyUciIccU/zNE1s1RjJ2/IHw=
-X-Received: by 2002:a05:620a:ac0a:b0:912:61f8:cab1 with SMTP id af79cd13be357-91261f8d5b2mr222479985a.25.1778855037889;
-        Fri, 15 May 2026 07:23:57 -0700 (PDT)
-X-Received: by 2002:a05:620a:ac0a:b0:912:61f8:cab1 with SMTP id af79cd13be357-91261f8d5b2mr222472385a.25.1778855037128;
-        Fri, 15 May 2026 07:23:57 -0700 (PDT)
-Received: from leonardi-redhat ([176.206.19.176])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bd620fbcsm570309485a.42.2026.05.15.07.23.55
+        d=1e100.net; s=20251104; t=1778855469; x=1779460269;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8oRruk2hRCiEL2H/Lc0ikHTSfdx/PqADfnZnuck3Ni8=;
+        b=iCKJlLagfYs2lFxB8jKQzyKs/D45RN0Iz5oa47HtGA22GNnP374/eaQ/HsiEFYWl8N
+         HrkbbDQUHCeGGrqToOc1KVR7lToucandk+w5OrKe7MzyFidFlt4cItnpuyLa3WVfRojl
+         sLsAYm9mKdW7pIU5/OlLsEEYpw5/rL2wuxIG5CBJBSpn51LgjErgec0aLT5d48eZDXjy
+         AfiXlbBT4AU6IuH67LPnp4mw7TO6jUIn+IWA0+XFtHnjm42q2xq2tBiPquhmF1l1l1Il
+         jHKesv/rvXkv0o1i0krqXH11dey5dod3+wAZGSGartYmcPu8gj7dZQMFbXgS1Z2K6WwO
+         iVVg==
+X-Forwarded-Encrypted: i=1; AFNElJ8BGMJTirijsgkC/0Qz2ofj+JnLSc64btUXi0/eA76XIKfbFtv23wrH/oIh7Mehm1o6lw9Y5is=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7CHWgZg4dEbdsjVlh+Em4AGpGb381UhT+sNYpHJjJWCPhiLhp
+	P2f6VWUXBNwwe+mA74NjDecq9XDdlLdHzxkUpVUkGrk26/qzLY3C5UHC
+X-Gm-Gg: Acq92OHZsuHGFIYx7JAdGL/p4Td9fYmxQkn9M/F+0DmWjTpd47PlskTsxwHxGze1gpS
+	YzdT9n3sUDKhMmGvIws5kV6TOnGP/ZZBeQvVEqhZ4sfwJVqKIIko874U475O9I5bKGloQr7SAIj
+	46OZpfPWqG/M9XnysTR3cBwFdGLn7kTeCVS3AnZwV2q2qSeCXqvGmHJRsFRBr0eivjv5gaXAez4
+	/bnEkhwhttYB5EWP8hrmv5cvc/F7320dAOjOP6NrOzD1q2L0GJRXu+6si2ZmloLf7ZT31ai7hBE
+	ayKVHcNwg77N5PRdQQ4vZLXamCkO2riyeCHaPlPPg7pTAeKwxOMVDi9iPGlIL4jiTiUKp5Psb6w
+	UFKsjUPVG3KMJGmKi0GOpN87fRNJC67U8K7GwgJ6W7CRMg7W8rGjg6CAoyjBgjKYcUc7fqvN4+9
+	zeWovN2yY0TjmAd82w/iMslAZqxEFfy03YX/5+
+X-Received: by 2002:a05:600c:3b0f:b0:48f:e230:72fb with SMTP id 5b1f17b1804b1-48fe6631512mr57952455e9.32.1778855469028;
+        Fri, 15 May 2026 07:31:09 -0700 (PDT)
+Received: from builder ([2001:9e8:f130:7416:be24:11ff:fe30:5d85])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe6aff4sm15024815e9.25.2026.05.15.07.31.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 07:23:56 -0700 (PDT)
-Date: Fri, 15 May 2026 16:23:53 +0200
-From: Luigi Leonardi <leonardi@redhat.com>
-To: stable@vger.kernel.org
-Cc: Stefano Garzarella <sgarzare@redhat.com>, 
-	Eric Dumazet <edumazet@google.com>, Arseniy Krasnov <AVKrasnov@sberdevices.ru>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, virtualization@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH] vsock/virtio: fix potential unbounded skb queue
-Message-ID: <agcsQ4LlG9ZsvBGR@leonardi-redhat>
-References: <20260515-dumazet-v1-1-73468c902889@redhat.com>
+        Fri, 15 May 2026 07:31:08 -0700 (PDT)
+From: Jonas Jelonek <jelonek.jonas@gmail.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonas Jelonek <jelonek.jonas@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: pse-pd: fix sign on -ENOENT check in of_load_pse_pis()
+Date: Fri, 15 May 2026 14:31:03 +0000
+Message-ID: <20260515143103.1721888-1-jelonek.jonas@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260515-dumazet-v1-1-73468c902889@redhat.com>
-X-Rspamd-Queue-Id: 5CF0D551740
+X-Rspamd-Queue-Id: 562D1551A14
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[redhat.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247793-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247794-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[jelonekjonas@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leonardi@redhat.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sberdevices.ru:email,alibaba.com:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Fri, May 15, 2026 at 04:22:12PM +0200, Luigi Leonardi wrote:
->From: Eric Dumazet <edumazet@google.com>
->
->Upstream commit 059b7dbd20a6f0c539a45ddff1573cb8946685b5
->
->virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
->
->virtio_transport_recv_enqueue() skips coalescing for packets
->with VIRTIO_VSOCK_SEQ_EOM.
->
->If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
->a very large number of packets can be queued
->because vvs->rx_bytes stays at 0.
->
->Fix this by estimating the skb metadata size:
->
->	(Number of skbs in the queue) * SKB_TRUESIZE(0)
->
->Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
->Signed-off-by: Eric Dumazet <edumazet@google.com>
->Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
->Cc: Stefan Hajnoczi <stefanha@redhat.com>
->Cc: Stefano Garzarella <sgarzare@redhat.com>
->Cc: Michael S. Tsirkin <mst@redhat.com>
->Cc: Jason Wang <jasowang@redhat.com>
->Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
->Cc: Eugenio Pérez <eperezma@redhat.com>
->Cc: virtualization@lists.linux.dev
->Link: https://patch.msgid.link/20260430122653.554058-1-edumazet@google.com
->Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->[LL: Fixed conflict since this tree does not use buf_used added by commit
-> 45ca7e9f0730 ("vsock/virtio: fix `rx_bytes` accounting for stream sockets")]
->Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
->---
-> net/vmw_vsock/virtio_transport_common.c | 4 +++-
-> 1 file changed, 3 insertions(+), 1 deletion(-)
->
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index 4c374c36c29d..86e3051d000e 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -283,7 +283,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
-> static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
-> 					u32 len)
-> {
->-	if (vvs->rx_bytes + len > vvs->buf_alloc)
->+	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
->+
->+	if (skb_overhead + vvs->rx_bytes + len > vvs->buf_alloc)
-> 		return false;
->
-> 	vvs->rx_bytes += len;
->
->---
->base-commit: 3b9f64db049687c0d38b4b3ef2f297f0642179af
->change-id: 20260515-dumazet-07c0c855a9e2
->
->Best regards,
->--
->Luigi Leonardi <leonardi@redhat.com>
->
+of_count_phandle_with_args() returns the count on success and a negative
+errno on failure, including -ENOENT when the "pairsets" property is
+absent. The existing comparison in of_load_pse_pis() checks against
+ENOENT (positive 2) instead of -ENOENT, so the branch is taken for any
+error return: legitimate DTs that omit "pairsets" trigger a spurious
+"wrong number of pairsets" error and probe fails with -EINVAL.
 
-Forgot to add this is material for 6.6.y stable tree.
+Compare against -ENOENT so a missing "pairsets" property is correctly
+treated as "this PI has no pairsets, continue".
 
-Luigi
+Fixes: 9be9567a7c59 ("net: pse-pd: Add support for PSE PIs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+---
+ drivers/net/pse-pd/pse_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index 87aa4f4e9724..69dbdbde9d71 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -210,7 +210,7 @@ static int of_load_pse_pis(struct pse_controller_dev *pcdev)
+ 			ret = of_load_pse_pi_pairsets(node, &pi, ret);
+ 			if (ret)
+ 				goto out;
+-		} else if (ret != ENOENT) {
++		} else if (ret != -ENOENT) {
+ 			dev_err(pcdev->dev,
+ 				"error: wrong number of pairsets. Should be 1 or 2, got %d (%pOF)\n",
+ 				ret, node);
+
+base-commit: 5db89c99566fc4728cc92e941d8e1975711e24b5
+-- 
+2.51.0
 
 
