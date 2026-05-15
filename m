@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-248708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248310-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HqcCb5ZB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:02 +0200
+	id oEunIbxJB2rUwQIAu9opvQ
+	(envelope-from <stable+bounces-248310-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:28:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B845554C9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB20553418
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82C0031F1E5A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:29:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7484E308FFA1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF8E4DC54E;
-	Fri, 15 May 2026 16:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D853F86FF;
+	Fri, 15 May 2026 16:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koBLHd5E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSU8sTZO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFF339C63E;
-	Fri, 15 May 2026 16:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DA93F86E1;
+	Fri, 15 May 2026 16:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862425; cv=none; b=ThsE+CqcUuomVVeI+hjzGbMLVo9H/4VO4uVPkjWxg6X9Ikm4FhAU2/3zGl5SQg4vSgKEK8D9rl9gsnDZUAD3WxuDPaJGvRpq1jRHYy+V4PvV825G6s4I7Idd6EaJrBKDbPbgLzqS94nc5Bt7QLIAVpeZMf7E9Y/7s/kaOHw95do=
+	t=1778861405; cv=none; b=D+3zYeIU2LF9fK4jyrThb+aO67fgwVDKLtuFj4Ak4hgOgf8JpvffI2slNlWuGjOr3cbHfARKz7lEhGfzQgbMRwYLjGcGr6Y1eCAD12PfFOgJlVC8RDBIbCo5eSdLzoFAalu5pArr6MmHR4y4mFeIFWD2YKtCrURnmrg46/xqyc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862425; c=relaxed/simple;
-	bh=p5HPPC+rtgpgx0YoKUKyEwz+5ONXc/Jrj+kCxcjWZEE=;
+	s=arc-20240116; t=1778861405; c=relaxed/simple;
+	bh=X9OWU3TVvpVgqtkPLeGSB6sKA3HgZi3FD0gmCtkAJLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sX6MCc8/oFxbep779AAQ2748zgEgvYFU/t3mabg5YytYh/v+U1niTemUi4rsxCtfz5p8LABJXLt+IKXW2wUW6vCPEX5gnS3UJpmU3jTvukkTkuFNJX0mbUPDlty8mj6xv1fnvz7Gwpvc7u+qq8YpbdJi3Ss/h20zHD35CJnIebQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koBLHd5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61706C2BCB0;
-	Fri, 15 May 2026 16:27:04 +0000 (UTC)
+	 MIME-Version; b=AFen1Ua+UdI1ANce2uqk9iWQrGAjA9zVzHTXdLDUYTIl5uzNs6JYhgf5vDyJuoU2T8AEHcKSo1TXLYbra+/vWm5wE2q/u9hpUKbg3CSO0HjULB/Zcc5mxqqd1ZRjeYL7vecGIwLUh/rDnWIpt6Fg1d02GtKSdFbN7zoYnExC6p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSU8sTZO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D4CC2BCB3;
+	Fri, 15 May 2026 16:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862424;
-	bh=p5HPPC+rtgpgx0YoKUKyEwz+5ONXc/Jrj+kCxcjWZEE=;
+	s=korg; t=1778861404;
+	bh=X9OWU3TVvpVgqtkPLeGSB6sKA3HgZi3FD0gmCtkAJLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=koBLHd5EeDSDvQjsfj6ltTiX3ZrCq7orHPK1UVytJfHsV30Msrs9MCC6Wc7fm9KBJ
-	 Z0+fNZYp41YnDgrytTpc6dTUKHK8hJ+hnISeXNzyY0MjOlb1XoRH3s4UiZYzYkw8Bf
-	 ps6bwWUb093R0QrMkJENe0EFAEkS0jKWrQOsqc24=
+	b=eSU8sTZOWt0a995LfJBPA0YyOJXXUFOsNRrBessyeiMWlkx7aDxRrA1CrWYclsfou
+	 Ri9WCvyNItGz9vjwR5dR/1cskddoJAgM+2QmwzugTyW0XBlzGcpgZ1Wx/d3PEcr5Er
+	 45/tUjkwIO5b/ZC5i3V70QEHhFcMOz1kasrh6DWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 007/201] media: uvcvideo: Enable VB2_DMABUF for metadata stream
+Subject: [PATCH 6.6 316/474] media: pci: zoran: fix potential memory leak in zoran_probe()
 Date: Fri, 15 May 2026 17:47:05 +0200
-Message-ID: <20260515154658.698040005@linuxfoundation.org>
+Message-ID: <20260515154721.850523131@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 71B845554C9
+X-Rspamd-Queue-Id: 2AB20553418
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -73,80 +71,62 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248310-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248708-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable,cisco];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,ideasonboard.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-commit fbac03467e53d8d72e5099c03df26d9adae11416 upstream.
+commit 8ea21435fe36fb853706f4935d78bc11beb63fb4 upstream.
 
-The UVC driver has two video streams, one for the frames and another one
-for the metadata. Both streams share most of the codebase, but only the
-data stream declares support for DMABUF transfer mode.
+The memory allocated for codec in videocodec_attach() is not freed in
+one of the error paths, due to an incorrect goto label. Fix the label
+to free it on error.
 
-I have tried the DMABUF transfer mode with CONFIG_DMABUF_HEAPS_SYSTEM
-and the frames looked correct.
-
-This patch announces the support for DMABUF for the metadata stream.
-This is useful for apps/HALs that only want to support DMABUF.
-
+Fixes: 8f7cc5c0b0eb ("media: staging: media: zoran: introduce zoran_i2c_init")
 Cc: stable@vger.kernel.org
-Fixes: 088ead2552458 ("media: uvcvideo: Add a metadata device node")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260309-uvc-metadata-dmabuf-v1-1-fc8b87bd29c5@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_queue.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/pci/zoran/zoran_card.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_queue.c
-+++ b/drivers/media/usb/uvc/uvc_queue.c
-@@ -243,7 +243,7 @@ int uvc_queue_init(struct uvc_video_queu
- 	int ret;
- 
- 	queue->queue.type = type;
--	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR;
-+	queue->queue.io_modes = VB2_MMAP | VB2_USERPTR | VB2_DMABUF;
- 	queue->queue.drv_priv = queue;
- 	queue->queue.buf_struct_size = sizeof(struct uvc_buffer);
- 	queue->queue.mem_ops = &vb2_vmalloc_memops;
-@@ -256,7 +256,6 @@ int uvc_queue_init(struct uvc_video_queu
- 		queue->queue.ops = &uvc_meta_queue_qops;
- 		break;
- 	default:
--		queue->queue.io_modes |= VB2_DMABUF;
- 		queue->queue.ops = &uvc_queue_qops;
- 		break;
+--- a/drivers/media/pci/zoran/zoran_card.c
++++ b/drivers/media/pci/zoran/zoran_card.c
+@@ -1377,7 +1377,7 @@ static int zoran_probe(struct pci_dev *p
+ 		}
+ 		if (zr->codec->type != zr->card.video_codec) {
+ 			pci_err(pdev, "%s - wrong codec\n", __func__);
+-			goto zr_unreg_videocodec;
++			goto zr_detach_codec;
+ 		}
  	}
+ 	if (zr->card.video_vfe != 0) {
 
 
 
