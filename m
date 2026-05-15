@@ -1,133 +1,208 @@
-Return-Path: <stable+bounces-247632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247633-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIOhCnHvBmrOowIAu9opvQ
-	(envelope-from <stable+bounces-247632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:03:29 +0200
+	id COmyLvfwBmp+pAIAu9opvQ
+	(envelope-from <stable+bounces-247633-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:09:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776BB54CF4C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:03:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C1A54D133
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68D4B311385B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:29:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65A45306989A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA5138F925;
-	Fri, 15 May 2026 09:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4057343CEE4;
+	Fri, 15 May 2026 09:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ez8tBPwD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FF/EhAus"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B253C39E6F5
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 09:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B0C43CEEB
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 09:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778837345; cv=none; b=PTspB32Ww31kza/szl+I7MMx+azCPtTCRhLhjZmJYx0ljJJn15kj07c0NUcBnma9XjSTSFgnnIDN0UNaTEnyOvTZRcHn2C3HVvXSf3BBoAsDlR2ROuX6zYxlBX5sb85vrGlFzPqNqXjouhsyfuVUfBGKE2aZesPJNws2UO69tCA=
+	t=1778838475; cv=none; b=I2mGu64QBrdEpTRk0h78EK1SQCF4iI9PtoRTkkWgR5AHhAMl6o9b/pvohDBHZ2tWkrWk3DlmjZBHsUD4TNNazhHsibKRcKG8vOcClA7CRIoxBwtUjAkKX57xy6LU9Y15Yeynn3JMfGUJS1uj8sKN3gsDsRtewq7DOHw00RCvoW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778837345; c=relaxed/simple;
-	bh=oDn+fWZ992YKCmwO3OrdkyTSS35uifAJVtSnVo9X5AI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iwB6zLlS6o1np5wgEG31PWrgGFU026it35CxJGww5q4V+FFtZIDH+8nawCPy2zC+VWyDYUCiUNtslHFBvBZ3cUFwLlLVmEM73YAj9wbJUR1+KOmwA0hFoBLnjfT1rW5iQ/Ea4qPQ7f6o0U1Lz5nula0rSOWt6bJ32S9nEs3rKVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ez8tBPwD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1C5C2BCB0;
-	Fri, 15 May 2026 09:29:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778837345;
-	bh=oDn+fWZ992YKCmwO3OrdkyTSS35uifAJVtSnVo9X5AI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ez8tBPwDhezzoOwGHRVdHCdgnNKXHl61rRaPm22YlaLYf2/QUI0VnTudReqQd3eKx
-	 CjoL0pIJIYi9qSoXywzVMC9xN2QafKdxSrNIkfejTjlJ6YkUqswTSD+DHs2QmteNh4
-	 1/aEPK38wpXhTzVDOenOAltzZcMtENkyyghE4weM=
-Date: Fri, 15 May 2026 11:29:09 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Siwei Zhang <oss@fourdim.xyz>
-Cc: stable@vger.kernel.org,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: Re: [PATCH 6.12.y] Bluetooth: L2CAP: Fix null-ptr-deref in
- l2cap_sock_get_sndtimeo_cb()
-Message-ID: <2026051556-union-footsore-3414@gregkh>
-References: <2026051216-harsh-pretender-53e0@gregkh>
- <20260513130248.2192409-1-oss@fourdim.xyz>
+	s=arc-20240116; t=1778838475; c=relaxed/simple;
+	bh=YsVsPmo72PQUOPJu8nLHlVsqbrOYIiU0ZJsMqkQT5cw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UqB7uoRMdou6ei7yTUrjbfirMsYCM/QC4VeubCb7lmZM84a5laCmBCAQA+dH9Ewkfxr+QBVFUPRaBGMBT0XYeYFB4GoT3bLwfxnVhsMAZPeS/843JSzt003vdquJ/Trq5RKCfOGrlTmy/40AAMu4snsHdLalBi0Vbk/FDHHBZXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FF/EhAus; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48984d29fe3so96005205e9.0
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 02:47:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778838472; x=1779443272; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r/e37VgLdpUmdJ/sT4E0Yd2dWN5tYEQahe7Aa4DMknc=;
+        b=FF/EhAusbfNX+WLjmvp0pNGZzXUwJi/D/svXJaGzag5n9QC/6Btq65WszrmpgHP3Ci
+         0Vi7bpinZTPoleXlWpLIa12LBLyAfu1Ggj4Q1jjExiXCZP58GlsRr9F/v2J+HXHagQ0I
+         x5E+lvjZ9gCa4fL2AHs2SzXBvC+2K7JSsVOWQvTZSeakONRdhuH1SdyEshCzRVb5Onxq
+         3DNCbnpl3HE/cE6Uv8AHRnYGrShOcCTt/eukhNqtjm6lBzUdKeFOa83M0szbx1fxG1R7
+         +T9A3PwzNzEecAcaQHOZu4YYYvJ+Twkstu+M7Kj6Mh71sHKMrsPSCqIOBoxqfebv55XZ
+         7RUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778838472; x=1779443272;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=r/e37VgLdpUmdJ/sT4E0Yd2dWN5tYEQahe7Aa4DMknc=;
+        b=eg841li6CsR1+iFRjfE+dMGtL9T76VgpuDxz6prABAImAHijH6ZM6RVIH2TfwWJSBm
+         qqBJWJBlUiN6CCu3nxilZRCdS27waMmXcLT3LoP92cWX0S32kVn1ZdzYtqiaZ4SmDEqZ
+         wwyMCNVcWnpMrBB94ZfTjK+fs3uCVdfxkooofpj3jKt4wgXURmPNmIxTmfRzEiHhf7ro
+         cs7O7ZHz2iG/IRzszq0JR3WaOM3RbYC5GNQ9cs5VeKZyNYqaa66AVMOFCSr624uIj+wT
+         JBJxKGY+9CfZy0ZUh4F/wlc54GpAV0Cd0VAD0GevbpqnJDHstvlbg9MgOm8okoKqjEU6
+         WfTw==
+X-Forwarded-Encrypted: i=1; AFNElJ9ByFvpVZupypkdxR1FoXo0oSeYxNPiWcOiTK2iAtGBMvajxMzhJT7MKSmpcUSxdFIjeLmzEY0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyC8DQVN8Kq6DYyvUF7rxXiUNisgHGFI6nEtziWCzXkOEMmL9z1
+	1yNXRIdR8qeZ3qc7yXak+CNYESbPkgiSFuD69amaMhjJvK5xXdVSh8KU
+X-Gm-Gg: Acq92OGbjqbdE+u3YcRpkfB9Fi9iMNc1Ge6Krp2MtgTK7lfjFKdmSTIZr580RAoe3Tv
+	xJkT68TMorW8WaIDfCN1d2znHgjqw+LK/ODQPdf0+TVRMPaVyhe3dwHa5v67cVkj9lCaeUSLaew
+	BraPxiD9crucjYrRW7EewMK3mMl2ZQYFS3TUZ4ZWKGgfAUc8i93O9h2cDxso8ZUhtrb93VHKQTq
+	rFtsRos2hcsS6vosWI05UeQHAYbKg+GbVg+6MSYKyXxNV/IFUlXXn82KPmZ1b9HmB1QnfS4VbK7
+	6nSRHgb0SlpWzn4ilTOCZefiFwzaScBFrZ9M7HqYTif7X7bjlIM9L/RsN5vpdIKDIUC1hOi9w2L
+	MZ3ju5iyECD0kMvehNcWhcuv7nV10NqgykZnc8nKuAC/tn0JA9JVUQQrg2USLVns5YCxwDILSPp
+	oB8J4f8oX36Q9Y93ycrbgYAijuNbe8gjw8yfLlCSHacRirazo9YYGEEZbD/FwJ
+X-Received: by 2002:a05:600c:a4f:b0:48f:e230:2a24 with SMTP id 5b1f17b1804b1-48fe66204e8mr41076455e9.31.1778838471669;
+        Fri, 15 May 2026 02:47:51 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe5cab882sm54024555e9.13.2026.05.15.02.47.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2026 02:47:51 -0700 (PDT)
+Date: Fri, 15 May 2026 10:47:49 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Pavel Machek <pavel@nabladev.com>
+Cc: Claudiu Beznea <claudiu.beznea@kernel.org>,
+ yoshihiro.shimoda.uh@renesas.com, vkoul@kernel.org,
+ neil.armstrong@linaro.org, geert+renesas@glider.be, magnus.damm@gmail.com,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, linux-renesas-soc@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, Claudiu Beznea
+ <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org, Nobuhiro
+ Iwamatsu <iwamatsu@nigauri.org>
+Subject: Re: [PATCH] phy: renesas: rcar-gen3-usb2: Avoid long delay in
+ atomic context
+Message-ID: <20260515104749.24135f22@pumpkin>
+In-Reply-To: <agY8NAyCcHkhBvBv@duo.ucw.cz>
+References: <20260514111300.2152386-1-claudiu.beznea@kernel.org>
+	<agY8NAyCcHkhBvBv@duo.ucw.cz>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513130248.2192409-1-oss@fourdim.xyz>
-X-Rspamd-Queue-Id: 776BB54CF4C
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 57C1A54D133
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247632-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-247633-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,renesas.com,linaro.org,glider.be,gmail.com,bp.renesas.com,vger.kernel.org,lists.infradead.org,nigauri.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Wed, May 13, 2026 at 09:02:37AM -0400, Siwei Zhang wrote:
-> Add the same NULL guard already present in
-> l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
+On Thu, 14 May 2026 23:18:44 +0200
+Pavel Machek <pavel@nabladev.com> wrote:
+
+> Hi!
 > 
-> Fixes: 8d836d71e222 ("Bluetooth: Access sk_sndtimeo indirectly in l2cap_core.c")
-> Cc: stable@kernel.org
-> Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-> Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-> ---
->  net/bluetooth/l2cap_sock.c | 3 +++
->  1 file changed, 3 insertions(+)
+> > From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > 
+> > The OTG PHY initialization sequence needs to wait for 20 ms at a specific
+> > step, as described in commit 72c0339c115b ("phy: renesas:
+> > rcar-gen3-usb2: follow the hardware manual procedure").
+> > 
+> > Commit 55a387ebb921 ("phy: renesas: rcar-gen3-usb2: Lock around hardware
+> > registers and driver data") tried to address various problems in the
+> > rcar-gen3-usb2 driver and converted the mutex protecting HW register
+> > accesses to a spin lock, leaving, however, a long delay in the critical
+> > section protected by the spin lock. This may become a problem,
+> > especially on RT kernels.
+> > 
+> > To address this, release the spin lock before sleeping for 20 ms as
+> > required by the HW manual and reacquire it afterwards. To avoid other
+> > threads entering the critical section and configuring the HW while the
+> > software is waiting for the OTG initialization to complete, introduce the
+> > otg_initializing variable alongside the otg_init_done completion. Any
+> > other thread trying to configure the HW while the OTG PHY initialization
+> > is in progress waits for the completion instead of immediately returning
+> > errors to PHY users. The IRQs were also disabled while waiting for the OTG
+> > PHY initialization to complete, as the interrupt handler may also apply HW
+> > settings.  
 > 
-> diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-> index 1960d35b3be0..adee617517bb 100644
-> --- a/net/bluetooth/l2cap_sock.c
-> +++ b/net/bluetooth/l2cap_sock.c
-> @@ -1725,6 +1725,9 @@ static long l2cap_sock_get_sndtimeo_cb(struct l2cap_chan *chan)
->  {
->  	struct sock *sk = chan->data;
->  
-> +	if (!sk)
-> +		return 0;
-> +
->  	return sk->sk_sndtimeo;
->  }
->  
-> -- 
-> 2.54.0
+> Just... there has to be a better way.
 > 
+> > +++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+> > +static int rcar_gen3_phy_wait_otg_init(struct rcar_gen3_chan *channel,
+> > +				       unsigned long *flags)
+> > +{
+> > +	unsigned long timeout = msecs_to_jiffies(25);
+> > +	unsigned long ret = 1;
+> > +
+> > +	lockdep_assert_held(&channel->lock);
+> > +
+> > +	/*
+> > +	 * The OTG can be initialized only once and needs to release the lock
+> > +	 * and wait for 20 ms due to hardware constraints. Wait for the OTG PHY
+> > +	 * initialization to complete if another PHY executes configuration
+> > +	 * code while the OTG PHY is waiting. This avoids returning failures to
+> > +	 * PHY users.
+> > +	 */
+> > +	if (READ_ONCE(channel->otg_initializing)) {
+> > +		spin_unlock_irqrestore(&channel->lock, *flags);  
+> 
+> This is not nice, passing flags between functions like this is a red flag.
+
+It would be better to just inline the code.
+And I'd guess you need to redo the initial tests after re-acquiring the lock?
+Or even need to do a state change/reference count before releasing the
+lock to stop other threads 'doing anything nasty'.
+
+-- David
+
+> 
+> You are only accessing otg_initializing under the spinlock. That means
+> that READ_ONCE is reduntant.
+> 
+> But AFAICT spinlock is only held over this function to protect
+> channel->otg_initializing access. I suspect correct answer here is
+> getting rid of spinlock over this function, and using
+> test_bit(BIT_INITIALIZING, ...) or something similar.
+> 
+> Best regards,
+> 								Pavel
 > 
 
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
 
