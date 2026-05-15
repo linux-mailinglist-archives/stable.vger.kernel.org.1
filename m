@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDrxKd5WB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:24:46 +0200
+	id ePENAaJKB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5902F554F91
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:24:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C62A7553620
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 80628322ED48
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F1DD531F8FD4
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06D43EFFD8;
-	Fri, 15 May 2026 16:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F713FD965;
+	Fri, 15 May 2026 16:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8BA57q/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKkD/tdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C857355049;
-	Fri, 15 May 2026 16:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D4C3F6C49;
+	Fri, 15 May 2026 16:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861871; cv=none; b=JtGYbyOjK1HvgfGGZu7LfsUzNR7S4Ap5SAQ+bBOpMqwvQlSQXKrguuydrwEP7dRZw1kA7U5h/s8HKoXsHEKMxM4oevifFWC40uFk6wRHjWLmltokx3/qVQJ+ywqm36xoJ8LDTKJeLnNJKfLMNyzAI4KpkqYZMKyPdx9aiWOcIW0=
+	t=1778861402; cv=none; b=aujQWzedyQmpR8/Dw4KQXohqIuq+rXPnYT7GbIM9xfMulllSxzOQb/IHwBop43YWCkpc12a9o3dxSYu5zc2DZZnkrQEAs60iCYIk1VmIsQANS0H2OelK4ODv2JxpuLHS37/MaPslFHDHzEqym8qNb4wYZOIAzJ8SUIGuMZAJ0PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861871; c=relaxed/simple;
-	bh=3isiY8IXmzc1jzHU80f9aXVLWrFq1Map4NVQqzRmd4A=;
+	s=arc-20240116; t=1778861402; c=relaxed/simple;
+	bh=VnD3iHZ0Rx0TR6+ubrL/S5jZOKNcGVdejT5i3Nk0wbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NnMj5AzlkI1BSLAlb/PhYViCa41VFCdKFQ5e33e5qG3tnOzxU0P2iwyoAT+0p9w9XEOK6D4+0bMDLzjk5ox5kN5w4k8V6Fhpwb8DPAHfnVmVpgFLZw/B62E2gwTTnBPaJQnBVVoA77RRZpGI7lxvrldfQz2djdNYuIstro5HBHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8BA57q/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29ABC2BCB0;
-	Fri, 15 May 2026 16:17:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OUN5/MAsRKomuZgve0u1Q5WLKHUrM5fPtUc8gUsgM3ujGANVbdo/KqHMcTZbyxqfkHsI9nPBlKba7sGDWSPIx+58e30QgU9y+Aw48JPDvmV6k1TA+L/QcSIHX7JOz6ZwhWxHuAW+E0ZYHtmpFVhodLZ4KdqUU/GJNtYQPsp+Qjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKkD/tdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D80C2BCB3;
+	Fri, 15 May 2026 16:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861871;
-	bh=3isiY8IXmzc1jzHU80f9aXVLWrFq1Map4NVQqzRmd4A=;
+	s=korg; t=1778861402;
+	bh=VnD3iHZ0Rx0TR6+ubrL/S5jZOKNcGVdejT5i3Nk0wbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8BA57q/cGYW0xFlbbSmJPLkfmERxzcmIJgWXVZ+p8irFxkANozkc7MY3REQVg/7K
-	 R88iUOAXHyYlhpEjrgYCj1lowDOKj3pVXfU6X9THziqysCCQJigSF+JnDMa2m/MO2s
-	 q9Jv3i66Xz3iUQmHUEnwkj3ry8sn2eKDsNwlDoNs=
+	b=JKkD/tdlDVQ9qmVh6u6QuYJi+oSNQmC+akW4hIoQk6bVag/gYv44UsPdQGEzIMZtb
+	 yf1hyohlBjL+R9H2QhQ8AxYO1vCzXLREGg4KOyDGvCfzA1xWxJtW1mZLmtI91RbK8s
+	 aA19HS0sz4NA9IS89kNBbF5hf8C2HPL2vhafxBFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.18 006/188] HID: pidff: Fix integer overflow in pidff_rescale
-Date: Fri, 15 May 2026 17:47:03 +0200
-Message-ID: <20260515154657.448924056@linuxfoundation.org>
+	"Artem S. Tashkinov" <aros@gmx.com>,
+	Krishna Chomal <krishna.chomal108@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.6 315/474] platform/x86: hp-wmi: Ignore backlight and FnLock events
+Date: Fri, 15 May 2026 17:47:04 +0200
+Message-ID: <20260515154721.828510460@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,27 +65,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5902F554F91
+X-Rspamd-Queue-Id: C62A7553620
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248493-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248309-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.com,gmail.com,linux.intel.com];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -92,60 +93,51 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Krishna Chomal <krishna.chomal108@gmail.com>
 
-commit 48d1677779ad6816978ad4a4f7588aec5ec960fe upstream.
+commit e8c597368b8500a824c639bfb5ed0044068c6870 upstream.
 
-Rescaling values close to the max (U16_MAX) temporarily creates values
-that exceed the s32 range. This caused value overflow in case when, for
-example, a periodic effect phase was higer than 180 degrees. In turn,
-rescale function could return values outised of the logical range of the
-HID field.
+On HP OmniBook 7 the keyboard backlight and FnLock keys are handled
+directly by the firmware. However, they still trigger WMI events which
+results in "Unknown key code" warnings in dmesg.
 
-Fix by using 64 bit signed integer to store the value during calculation
-but still return only 32 bit integer.
+Add these key codes to the keymap with KE_IGNORE to silence the warnings
+since no software action is needed.
 
-Closes: https://github.com/JacKeTUs/universal-pidff/issues/116
-Fixes: 224ee88fe395 ("Input: add force feedback driver for PID devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Tested-by: Artem S. Tashkinov <aros@gmx.com>
+Reported-by: Artem S. Tashkinov <aros@gmx.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221181
+Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
+Link: https://patch.msgid.link/20260403080155.169653-1-krishna.chomal108@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/platform/x86/hp/hp-wmi.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -11,6 +11,7 @@
- #include "hid-pidff.h"
- #include <linux/hid.h>
- #include <linux/input.h>
-+#include <linux/math64.h>
- #include <linux/minmax.h>
- #include <linux/slab.h>
- #include <linux/usb.h>
-@@ -325,8 +326,10 @@ static s32 pidff_clamp(s32 i, struct hid
-  */
- static int pidff_rescale(int i, int max, struct hid_field *field)
- {
--	return i * (field->logical_maximum - field->logical_minimum) / max +
--	       field->logical_minimum;
-+	/* 64 bits needed for big values during rescale */
-+	s64 result = field->logical_maximum - field->logical_minimum;
-+
-+	return div_s64(result * i, max) + field->logical_minimum;
- }
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -238,6 +238,11 @@ static const struct key_entry hp_wmi_key
+ 	{ KE_KEY, 0x21a9,  { KEY_TOUCHPAD_OFF } },
+ 	{ KE_KEY, 0x121a9, { KEY_TOUCHPAD_ON } },
+ 	{ KE_KEY, 0x231b,  { KEY_HELP } },
++	{ KE_IGNORE, 0x21ab, }, /* FnLock on */
++	{ KE_IGNORE, 0x121ab, }, /* FnLock off */
++	{ KE_IGNORE, 0x30021aa, }, /* kbd backlight: level 2 -> off */
++	{ KE_IGNORE, 0x33221aa, }, /* kbd backlight: off -> level 1 */
++	{ KE_IGNORE, 0x36421aa, }, /* kbd backlight: level 1 -> level 2*/
+ 	{ KE_END, 0 }
+ };
  
- /*
 
 
 
