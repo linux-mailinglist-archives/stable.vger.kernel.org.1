@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-248278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDS3FTpLB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:35:06 +0200
+	id +Bn5EoxKB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC0E553831
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:35:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0735D5535AF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CFF483053D1A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8A50331F5C7F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD043F6C2B;
-	Fri, 15 May 2026 16:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F3F3FD94C;
+	Fri, 15 May 2026 16:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TD4w9Mky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfzdJsjv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE313C819C;
-	Fri, 15 May 2026 16:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78DA3F44E7;
+	Fri, 15 May 2026 16:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861324; cv=none; b=EhzylWxXYULafPhNfbSIBci7cSl179jRcl5kRANfqHSdEzWIPdNJyO1Plb9MWe6uSCCi3c8cOmNCrXH9M1Og+OayNLaAKnGmQkBsXrxsFxzNeu6g4Xr0un86JPi1itSs9DIiWQjywpnHffiMVIuNyU6FibFKln3Jwtp87POwc7o=
+	t=1778861340; cv=none; b=MnBnO+/G/ehdNNjQCy3uVUpLfwengXnlimjL5/MtCZgX50CI5pGuk4t2q6HwUC8vCRN682NZ4/sgsgSfTeh7tF7Zw8a1I7nqb9ucu/gBLnbHTan7pSevZaMjzmzW+3G6QcVCTh+j4qLWCF2acoeBhcghNzV94qBv07VLBwuFD4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861324; c=relaxed/simple;
-	bh=B3sRrbkMClVJ13U0OE77qNDalMW+kXlVb2dsbnIqd9w=;
+	s=arc-20240116; t=1778861340; c=relaxed/simple;
+	bh=6hwQeqddc/rFrGRSBP4vC8Q+A5k8dYeiJcxRGPX1v6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfN2nQbAbNSnyMupmfWovfzYbyZnvcXATFbC8DSdImQIcqAREfG2kubmsZK+qwHJ3UbGfsTLb3hd3/snSElW2NClWYBqDxua0W66XVXNziC1weGehg+m274GLugeU+X/REqBLq3+fe7ZTh1+w49gZETMZuE0p8g+q+XsA0URzw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TD4w9Mky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660F7C2BCB0;
-	Fri, 15 May 2026 16:08:44 +0000 (UTC)
+	 MIME-Version; b=u5uZEyVp3sZvqmu7klGkU63eNIV3H+gjuITUQjT6ser5SstmnONldMZ/yKFJS69Mq9qtQPSiOgRZ9UkfIqQvJLejjIDRtS1jB+bWVt+6+jw5N4gLOilJ3507GyaOLOOLN+TT4i+OZtwxTNnHdj+vJgknKWy3gvO86djlGzxpIco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfzdJsjv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF3FC2BCB0;
+	Fri, 15 May 2026 16:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861324;
-	bh=B3sRrbkMClVJ13U0OE77qNDalMW+kXlVb2dsbnIqd9w=;
+	s=korg; t=1778861340;
+	bh=6hwQeqddc/rFrGRSBP4vC8Q+A5k8dYeiJcxRGPX1v6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TD4w9MkyaGEb7Bowy4QfqmuLVh+l7bEHLx9nHOCtbe2GR6FoRItBOHZS27wgTCvT/
-	 mvvuz6qttL5LsoOEZx/mXJE9kTw8OW/x/BvUWn8S+SvIhvUNomRjbQW6ZRIla2lYBd
-	 cju2EB0uh8giCgGefFRw0rZChBcQKSQJNO8Egw8w=
+	b=CfzdJsjvjgTQwL+wAZPG6Q3NBjHfjh7ahcTxW0EkL9tejXMJr9lKHEV9aNtCW5V9p
+	 cyZQ4n+UbOXVGH6rcGC4Q01oHrcG7DFy/p1A/B5DRF/AyWQrSieEaJB8bJ98pXf1ix
+	 xV/8w4wBLIiS7F66b/aUQieoyNJhY+o+3blHhnOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stable@vger.kernel.org,
 	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 248/474] ASoC: qcom: q6apm-lpass-dai: Fix multiple graph opens
-Date: Fri, 15 May 2026 17:45:57 +0200
-Message-ID: <20260515154720.364540868@linuxfoundation.org>
+Subject: [PATCH 6.6 249/474] ASoC: qcom: q6apm: remove child devices when apm is removed
+Date: Fri, 15 May 2026 17:45:58 +0200
+Message-ID: <20260515154720.386632837@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CCC0E553831
+X-Rspamd-Queue-Id: 0735D5535AF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248278-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248284-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
@@ -101,35 +101,36 @@ X-Rspamd-Action: no action
 
 From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 69acc488aaf39d0ddf6c3cf0e47c1873d39919a2 upstream.
+commit 4a0e1bcc98f7281d1605768bd2fe71eacc34f9b7 upstream.
 
-As prepare can be called mulitple times, this can result in multiple
-graph opens for playback path.
+looks like q6apm driver does not remove the child driver q6apm-dai and
+q6apm-bedais when the this driver is removed.
 
-This will result in a memory leaks, fix this by adding a check before
-opening.
+Fix this by depopulating them in remove callback.
 
-Fixes: be1fae62cf25 ("ASoC: q6apm-lpass-dai: close graph on prepare errors")
+With this change when the dsp is shutdown all the devices associated with
+q6apm will now be removed.
+
+Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
 Cc: Stable@vger.kernel.org
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260402081118.348071-5-srinivas.kandagatla@oss.qualcomm.com
+Link: https://patch.msgid.link/20260402081118.348071-3-srinivas.kandagatla@oss.qualcomm.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-lpass-dais.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/qcom/qdsp6/q6apm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-@@ -175,7 +175,7 @@ static int q6apm_lpass_dai_prepare(struc
- 	 * It is recommend to load DSP with source graph first and then sink
- 	 * graph, so sequence for playback and capture will be different
- 	 */
--	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK && dai_data->graph[dai->id] == NULL) {
- 		graph = q6apm_graph_open(dai->dev, NULL, dai->dev, graph_id);
- 		if (IS_ERR(graph)) {
- 			dev_err(dai->dev, "Failed to open graph (%d)\n", graph_id);
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -781,6 +781,7 @@ static int apm_probe(gpr_device_t *gdev)
+ 
+ static void apm_remove(gpr_device_t *gdev)
+ {
++	of_platform_depopulate(&gdev->dev);
+ 	snd_soc_unregister_component(&gdev->dev);
+ }
+ 
 
 
 
