@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJNzNqhLB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:56 +0200
+	id uP2mKvhWB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D10E553984
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E82A554FB7
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85881308B5BA
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D82F334C768
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044A03F86F7;
-	Fri, 15 May 2026 16:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001603FBB55;
+	Fri, 15 May 2026 16:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhkkaYhK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2o3Sr+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA8A39B971;
-	Fri, 15 May 2026 16:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B043F9295;
+	Fri, 15 May 2026 16:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861480; cv=none; b=Wm9aFhxYL0a8Gw/MlU1dIfKrLTaStwqq/RjayRncaGBJubB0/6NgLFHUtDFMvvJc3daczmOGnT+CmkrUDkhTbqmfZxxRdq+xaKajCm1Yhqfn7tdVF7MnuUHeibdaC7v7R9N0q0zzTqkJQLzChyqxCH0AeXbqxYTFgif21OIuhHQ=
+	t=1778861918; cv=none; b=Uhp9yksXU+xqzz2yhZVwZEO2Sww0i4prgmIk7C9/ytkeVXfQ3mkesbuU7KCkNN1QmRpWDvq9Q8ZD3ylELUEmKokxWRJfMDKMDUbwPiODyzMJjMSSn/kax2xKQkidcr2ep2MvPizfXW17oL8y9/8mAh+CYtBJkqPfSuhTs6Q/uZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861480; c=relaxed/simple;
-	bh=1WFI8OngB56zhSpxK0ZF+h53zGc+YLqZhqjEMPdbv3k=;
+	s=arc-20240116; t=1778861918; c=relaxed/simple;
+	bh=0t7CvUlohKO91UwjGwwHRGXU5jWx7yBqLZhKcjUqSK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eJcPnXerOyaXRo9Fw9rwj4tQIyBE1gs9PUNQyY9qq61Om4U7nsVtEdVdzZ5hpSK+L1vjJE/0c7YSHffQ3Y87yeprcjMpTeiEFzzrOkCnQBgvvbrt9dl6O0z0haw4YsOTdvmU7XS7RwTDuOYlbqdQ/wASiJbPFaNjnSbIeFuiO70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhkkaYhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 453C1C2BCB0;
-	Fri, 15 May 2026 16:11:20 +0000 (UTC)
+	 MIME-Version; b=X2+diEiJxK5ZRNU6D4auX/k3mqze5N/Wr81ZpjmyxnRhON70laqbbQ4gPQwWyNQVRA8SrKNsjE3wVMJDh+Ry2OFDSkUVxKcnZQL+AuioQ0c6JoP/hgSXUd1ND/payYTHJ/M/9CbTCPD2Ac7t2LaUlqhG8IElPN9vV1fP+8j98CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2o3Sr+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497B2C2BCB0;
+	Fri, 15 May 2026 16:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861480;
-	bh=1WFI8OngB56zhSpxK0ZF+h53zGc+YLqZhqjEMPdbv3k=;
+	s=korg; t=1778861918;
+	bh=0t7CvUlohKO91UwjGwwHRGXU5jWx7yBqLZhKcjUqSK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhkkaYhKQ8j+GGfR1us4Ev93jV/7kMWmgTZjuotMwhACQ4S3xNFoVCWshQ7ktfCcr
-	 VbSavJ4VFWXJoEzr3ChCn7TcMKU6kF/RubEAJzfO6t2Ql6GWTTc0tcIIORhe4Mq2Nj
-	 gTvef8o/NG8Co4oeTtMoaTqDIfU9QIJeu37aS9/w=
+	b=Q2o3Sr+9YicQlzrCoDVaLGeg+aG0SS7HaMPcFsrLkKSXm2M4ZtL4HcEvd+qQL4Riw
+	 cX3ZnnoXY39Zxnp1VVvCCQdjw6gqm6fAI9rge2gp13PYQqw9dXvKMOAASn+T17ZCk5
+	 EMwjH1bAHrfGRAcvrCKxcJYyQriHlHD1QQhI7r54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 346/474] drm/amdgpu/vcn3: Prevent OOB reads when parsing dec msg
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 038/188] spi: meson-spicc: fix controller deregistration
 Date: Fri, 15 May 2026 17:47:35 +0200
-Message-ID: <20260515154722.503409588@linuxfoundation.org>
+Message-ID: <20260515154658.136484523@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9D10E553984
+X-Rspamd-Queue-Id: 5E82A554FB7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248339-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248512-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Cheng <benjamin.cheng@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit b193019860d61e92da395eae2011f2f6716b182f upstream.
+commit 77953c76bec9af4191f8692a10225dd816208718 upstream.
 
-Check bounds against the end of the BO whenever we access the msg.
+Make sure to deregister the controller before disabling it to allow SPI
+device drivers to do I/O during deregistration.
 
-Signed-off-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: 454fa271bc4e ("spi: Add Meson SPICC driver")
+Cc: stable@vger.kernel.org	# 4.13
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260409120419.388546-18-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/spi/spi-meson-spicc.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-@@ -1789,7 +1789,7 @@ static int vcn_v3_0_dec_msg(struct amdgp
- {
- 	struct ttm_operation_ctx ctx = { false, false };
- 	struct amdgpu_bo_va_mapping *map;
--	uint32_t *msg, num_buffers;
-+	uint32_t *msg, num_buffers, len_dw;
- 	struct amdgpu_bo *bo;
- 	uint64_t start, end;
- 	unsigned int i;
-@@ -1810,6 +1810,11 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 		return -EINVAL;
- 	}
- 
-+	if (end - addr < 16) {
-+		DRM_ERROR("VCN messages must be at least 4 DWORDs!\n");
-+		return -EINVAL;
-+	}
-+
- 	bo->flags |= AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
- 	amdgpu_bo_placement_from_domain(bo, bo->allowed_domains);
- 	r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
-@@ -1826,8 +1831,8 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 
- 	msg = ptr + addr - start;
- 
--	/* Check length */
- 	if (msg[1] > end - addr) {
-+		DRM_ERROR("VCN message header does not fit in BO!\n");
- 		r = -EINVAL;
- 		goto out;
- 	}
-@@ -1835,7 +1840,16 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 	if (msg[3] != RDECODE_MSG_CREATE)
- 		goto out;
- 
-+	len_dw = msg[1] / 4;
- 	num_buffers = msg[2];
-+
-+	/* Verify that all indices fit within the claimed length. Each index is 4 DWORDs */
-+	if (num_buffers > len_dw || 6 + num_buffers * 4 > len_dw) {
-+		DRM_ERROR("VCN message has too many buffers!\n");
-+		r = -EINVAL;
-+		goto out;
-+	}
-+
- 	for (i = 0, msg = &msg[6]; i < num_buffers; ++i, msg += 4) {
- 		uint32_t offset, size, *create;
- 
-@@ -1845,14 +1859,15 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 		offset = msg[1];
- 		size = msg[2];
- 
--		if (offset + size > end) {
-+		if (size < 4 || offset + size > end - addr) {
-+			DRM_ERROR("VCN message buffer exceeds BO bounds!\n");
- 			r = -EINVAL;
- 			goto out;
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -1082,7 +1082,7 @@ static int meson_spicc_probe(struct plat
  		}
+ 	}
  
- 		create = ptr + addr + offset - start;
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi registration failed\n");
+ 		goto out_host;
+@@ -1100,8 +1100,14 @@ static void meson_spicc_remove(struct pl
+ {
+ 	struct meson_spicc_device *spicc = platform_get_drvdata(pdev);
  
--		/* H246, HEVC and VP9 can run on any instance */
-+		/* H264, HEVC and VP9 can run on any instance */
- 		if (create[0] == 0x7 || create[0] == 0x10 || create[0] == 0x11)
- 			continue;
++	spi_controller_get(spicc->host);
++
++	spi_unregister_controller(spicc->host);
++
+ 	/* Disable SPI */
+ 	writel(0, spicc->base + SPICC_CONREG);
++
++	spi_controller_put(spicc->host);
+ }
  
+ static const struct meson_spicc_data meson_spicc_gx_data = {
 
 
 
