@@ -1,217 +1,190 @@
-Return-Path: <stable+bounces-248898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEcBDxRtB2rY2gIAu9opvQ
-	(envelope-from <stable+bounces-248898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:59:32 +0200
+	id BUYDBahvB2qw3QIAu9opvQ
+	(envelope-from <stable+bounces-248899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:10:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3495568BB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:59:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF445569A1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:10:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C1980300A754
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 97C453004688
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3E937BE73;
-	Fri, 15 May 2026 18:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EDA388393;
+	Fri, 15 May 2026 19:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="ev1owZ1Q"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="pTq1qJad"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415FC35E1A9
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 18:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72475386C3E;
+	Fri, 15 May 2026 19:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778871547; cv=none; b=mj5Dmz1/YHxivCJpNdcGe24MOTDyw6rQB2zPiz9KFDtBC/qFdgY8xi5IDh1tGIZ7//Rt+gH2st4VrVJGWCNZBu+cP+DhkdUkh8ThVCnROTLue5aVR98980m62rChjlXfYA9GFjaJN5ExV08o3/eLWC5tW/f05oG3nP/bQlPquXA=
+	t=1778872223; cv=none; b=qQq8rk8UuZpaz0yTxVH1amYvxpVYtOqzpZ4h5I4zEuQXowuAS2nDoqWAz2bwYEa4BNltw9hPoX47ze1dqTtzJjjqm2y0RPajpVNXTi0FFPRqM9JaxGzCfTE+l5nIsqg//ZZXxvPkBuSx6ctbetrDd7GGXJlgX+9MSOIRRn2JuMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778871547; c=relaxed/simple;
-	bh=ZQc6/LVrFY/wvECGQ+Gm52PdBMKcw6XRlValtWu4kIs=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=LSsx1F6O5Z6KVCiaFkFZxwIVGEMz+pTOqUnUD2RRAecNz7C10BJsTy8dLEM0bqLmZW+ZUFrKMfzHqdbGFTebFLjp3/ZEakphnThP7xFqaO37ELHdHu8vAVSuejufuz5t7Gcb3a0+MVyopIPPSo7vy7SH5bEW38LTsAETEJykFSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=ev1owZ1Q; arc=none smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-132830d8281so332563c88.1
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 11:59:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1778871545; x=1779476345; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g6hrFMrDy+BJLIoRJUZB0FlD9oy0qN9LKUwt5l1EzyA=;
-        b=ev1owZ1QJBH3qaEb6GKC3nD8Bje8VtcVGQ6cJRlF9ip5SLzeOrc3Soa827W3hOlR5N
-         Un9b2AEwaSk6sSn1rcPZw7h9RtZxi940xrm07vxSmtH1cRbwszhkgtycqizmTRJ6V8mB
-         McAVWeS50ISrG17plL0pdR9b4sNSn0we/iKFFiM0jFdOtGhLGvTlyN9Jr2jERZAlyB6E
-         9Ygmj5Aeg1tpbqOJw0l/PN0l+gRCf9Uex3ITXN0J38DY6BuNeaXcsiKXakH/DbiGv09G
-         FDvP36h4N3iC/MH6VbhZF4F7pzCuVI1IGVhHTX6Y/nRT4cEANp2fKLSBnhBHPSpIR7tW
-         /s2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778871545; x=1779476345;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=g6hrFMrDy+BJLIoRJUZB0FlD9oy0qN9LKUwt5l1EzyA=;
-        b=OoBEozPa+KX6s+jKzEt3zhg9GfKAXgIbz75aH80EmFyYt9qgI9Aj9o9+9+7Yvar2Uj
-         XBoi98XgTcL0g2TNSofbIv9Wy3hsWJjsEIkBB4ME4kOlJHdGDDK2iW2RcPrNSti02Ik6
-         YMo0P8XOVH1u4TtL1Rd1HtYpu/UGNGGbkKG21Vu5/ihLIYT4gp9r/rrQbAMMbsUuHkEb
-         HCuj0T/qpzdb7RQ+uGV143ZrIODtBYPeJqRDaNVIa1bL3rMW4XzBFtf4FN1Ym2EbR1do
-         SvvYLvodYoq60yqRnyz4YM3jpIM4lwP4O1WY9Y81AtvuNcgqX88wzFRVsJrkmwCSFrgc
-         Tpnw==
-X-Forwarded-Encrypted: i=1; AFNElJ9cIOoWa9vjkkgj86uTQS5XRaCIqfWwl64z/r6ShjiaHkh10vTu7q7WV5rItnnIvJI8Ym3JDTs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yym/rVg3zFSwLnGVoKHuXZ+YFgr4gwDqFRMMeWPspKeQQxm8YGQ
-	mb8m/23l2PavqcYywN+pQIRWr4Mg0lPz73dhM+WOQ56lrDvjvYS1O1iC132rfuR8U94=
-X-Gm-Gg: Acq92OFUvSUPsNwWLtsGhYrvxGVp4j9I+Tws9I9E3i1qC2XPlw3MGpAbIk/JjeND4i8
-	BxRa5B85N2vamKzCvkv24K+yMeNkstBgRQGPWdH47CfGuFO8g8YZE0Fe/p2Ocz0MTtqeD4yf8H8
-	sLPgqxNhnnO1grxoeNeEc+aH5kkMPX5emUmsCQFCyX10MludzlXx4JaSnL+kjy+wuzpZDI0VkyP
-	Z3EpBvpYpzj9HU6Gl0qIP/8JUa67QfTmA22++IfZfOCX295WpKoYUEuJR94/Aj2YY8cg3xc/diS
-	2yzNK81A1yQdvg9UNmlZaHezG7ade/bsPDSZ3Zciyr2Fifw7SN7+2meMQlW060mK3Ibg+mE44Ga
-	R/4Vf35H6vLp3uoHo792F6bswuYFHAWCyp4v7Dmz2unPIBJmusIWaxEERYkeYBgaUeIdNfNuX0K
-	hyRdfGmeOIrk61YMCv
-X-Received: by 2002:a05:7022:301:b0:12d:c730:c7f with SMTP id a92af1059eb24-13505538487mr2407277c88.33.1778871545171;
-        Fri, 15 May 2026 11:59:05 -0700 (PDT)
-Received: from 330cfa3079ca ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cc3490bcsm9474736c88.15.2026.05.15.11.59.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 11:59:04 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1778872223; c=relaxed/simple;
+	bh=VeBwgf0HuoXPAtMey51z72jtJ7roDxmiJrwuB5KEgBc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ijGHrx5lfTPzuW8aKyueBzwJ4KkqIRktyHrSBayZE6IMOvnn5BTpG2aHnilHANvo/ZhREnb+FVknlGDhliI3f4uQeiVn1wtF731r4jRe76gstkJtcGRRgCWDiMwfUFXfnfrQIk2gaVi3nhTa4tWsBZscJ7Dv9GfkXzRWww+YaXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=pTq1qJad; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1778872131;
+	bh=23iRe8TdU0dLdEkgOluldeT0N1Pm7wPKRMbxXwth4Ps=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=pTq1qJad9ptiGLogYFJq1zOTZkJrIRo1LBVYfCfkQ4zErzfPbkWFfu4O7rzmO5780
+	 Y1ZkxU0UMX5jVn3uhw/UO2HE2X+JSAmv8uEI/J+kvGiiAIkdfT+8uOrafGK/rJqD3Y
+	 RPYVLMUKxt+hHR4nPnH/++s3GNU8M9suUnD4KJ4Y=
+X-QQ-mid: zesmtpip3t1778872125t78dfdabc
+X-QQ-Originating-IP: 5QvCL6rLhQgrKSHgBdosjsdGRVXzocSlEWUrW2oEN4g=
+Received: from localhost.localdomain ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 16 May 2026 03:08:42 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 14452000538527073916
+EX-QQ-RecipientCnt: 21
+From: Wentao Guan <guanwentao@uniontech.com>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: Re: [PATCH 6.12 000/144] 6.12.90-rc1 review
+Date: Sat, 16 May 2026 03:07:14 +0800
+Message-Id: <20260515190713.620177-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-6.1.y: (build) error: Bad exit status
- from
- /var/tmp/rpm-tmp.5En1GC (%install) in ...
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Fri, 15 May 2026 18:59:04 -0000
-Message-ID: <177887154397.1081.10051963817255281518@330cfa3079ca>
-X-Rspamd-Queue-Id: 8A3495568BB
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: MsNslY5/mgXA1TuN2/H9QciPnYfirYutGohW6eGDHrU58rmDZ8JHVMEx
+	WbMpwZWMy1bLRkK/xzTv3h6gV/aP6UD+oWfs+hZCBtB2LnODYEwaEAtfg8sOPEI+wu4xXGz
+	uTRLCBB8/IbpKJycer2vF7xr9B7nV+QK+AsSvcoagWLBS7QjhOelc4fXunei6IFHlo7S9oC
+	LfpQ8dmXiju2hpdTUxagoY1+cYVHkj2bh0/vropgZhpQMZYv4naJhhSeZfhk6Jfn5xWhIiZ
+	DQ9ek0Zw5mn/OPMwluhrMUvaa4ztUeyRGZYt14Gf4gtSeg9rQaukbFf5r3c0TJ9RPWNfYZB
+	k5RDy1Epm14p4whLhyEyNmjzntq0PKN4J/WYP0kw2pUch5r3vV8ixfF6QsFuJYjkhJnzx/s
+	DjAwL/fFtvaWv7DYyCR9WuIG0xiiosuUgcNXl/eE2B92Fj6agNKaC0nKhP6qYKZcHRPLbZT
+	7a0dU/9Er56KGBkr/qp9kdSkvZ6AhfKGX+T5bPFKztv6zd6rWOOFAqZJ+5O705N2bIO2yrL
+	IR6Qu2phM/euNre4yFgZ0C3IPNp81nQ/0NNyvtNOCyZupufdCmg1kBC0kAJbdX/0TJMYgvR
+	/QeR8NoobPv+R4Jzbp4c2hdj0EXs6OS6nAV9vn5l2uRhJ2BrxonYxAUAx75NNm9fwR0OJqi
+	Z9TKpWhGbr7odDjw0FQrGotSQoMEjqw2d/efswD4yszO7FJP57EIglpxWRl4Z7VA/Vf55Wz
+	Uf26xqi5IJObAbn+vHGOhBhkzdg4wjovmCS42ktYusc7p4p1qfSyUI+m4jtEuAgKZ9np8+r
+	DfMdfAxmOIs7P0ONwURbWqQT3kf4VLuB9hTM+nazXE3wILksfjzQ4Wb3V/7s1MXROGQ38jJ
+	fjed1JqLRKrZ4IcS8BGDAgNOYoEgyFvT3INzKLvfchJbYtrVwZvKSBBlW5G2UUwErROYf+n
+	jDCmLgfHwfKUYScYlNTuItD+qz9gb4fh2N7mi36/iHqV+VE/s4VL91Bo4FYA3wJrtYaqeIm
+	rCyrhtmbnEqAF/7zvNrGaq+V8NXCnLEtwwGWBBY1ecXFwpB8+5JXHZBt92M5JIQQJXhnD+B
+	ACdXsPMKUmPIDZ1G3MVkD6/TcihptaaVHsItBGJ7WEr
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: 0EF445569A1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248899-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248898-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernelci.org:+];
-	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernelci.org:email,kernelci.org:url,kernelci.org:dkim,linux.dev:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,suse.com:email,infradead.org:email,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim]
 X-Rspamd-Action: no action
 
+Build failed, you can drop the commit to build ok, same as 6.18.30-rc1:
+git revert 14d9ce90cf4855d638ecbcdb0c208a144d6f991b..
+Revert "sched_ext: Use HK_TYPE_DOMAIN_BOOT to detect isolcpus= domain isolation"
 
+Tested-by: Wentao Guan <guanwentao@uniontech.com>
 
+BRs
+Wentao Guan
 
+defconfigs:
+https://gist.github.com/opsiff/a840ae9e3d6857f5b7bacb9cdc49f8e9
 
-Hello,
+Log:
+In file included from kernel/sched/build_policy.c:63:
+kernel/sched/ext.c: In function ‘scx_ops_enable’:
+kernel/sched/ext.c:5524:34: error: ‘HK_TYPE_DOMAIN_BOOT’ undeclared (first use in this function); did you mean ‘HK_TYPE_DOMAIN’?
+ 5524 |         if (housekeeping_enabled(HK_TYPE_DOMAIN_BOOT)) {
+      |                                  ^~~~~~~~~~~~~~~~~~~
+      |                                  HK_TYPE_DOMAIN
 
-New build issue found on stable-rc/linux-6.1.y:
+missed HK_TYPE_DOMAIN_BOOT is introduced in this commit:
 
----
- error: Bad exit status from /var/tmp/rpm-tmp.5En1GC (%install) in binrpm-pkg (/tmp/kci/linux/scripts/Makefile.package:71) [logspec:kbuild,kbuild.other]
----
+commit 4fca0e550d506e1c95504c2d9247bc92bf621bf6
+Author: Frederic Weisbecker <frederic@kernel.org>
+Date:   Mon May 26 13:06:21 2025 +0200
 
-- dashboard: https://d.kernelci.org/i/maestro:f9bd75e9ff6070e79c87ed0de2375ebeb2fa9ec3
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  0264b4b2bffa15c601db4f4c69f96a326685d4df
+    sched/isolation: Save boot defined domain flags
 
+    HK_TYPE_DOMAIN will soon integrate not only boot defined isolcpus= CPUs
+    but also cpuset isolated partitions.
 
-Please include the KernelCI tag when submitting a fix:
+    Housekeeping still needs a way to record what was initially passed
+    to isolcpus= in order to keep these CPUs isolated after a cpuset
+    isolated partition is modified or destroyed while containing some of
+    them.
 
-Reported-by: kernelci.org bot <bot@kernelci.org>
+    Create a new HK_TYPE_DOMAIN_BOOT to keep track of those.
 
-
-Log excerpt:
-=====================================================
-# /tmp/kci/artifacts/fragments/0.config -> /tmp/kci/artifacts/build/0.config
-# /tmp/kci/artifacts/fragments/1.config -> /tmp/kci/artifacts/build/1.config
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- x86_64_defconfig
-scripts/kconfig/merge_config.sh -m -O /tmp/kci/artifacts/build /tmp/kci/artifacts/build/.config /tmp/kci/artifacts/build/0.config /tmp/kci/artifacts/build/1.config
-Using /tmp/kci/artifacts/build/.config as base
-Merging /tmp/kci/artifacts/build/0.config
-Value of CONFIG_ENA_ETHERNET is redefined by fragment /tmp/kci/artifacts/build/0.config:
-Previous value: # CONFIG_ENA_ETHERNET is not set
-New value: CONFIG_ENA_ETHERNET=y
-Value of CONFIG_BLK_DEV_NVME is redefined by fragment /tmp/kci/artifacts/build/0.config:
-Previous value: # CONFIG_BLK_DEV_NVME is not set
-New value: CONFIG_BLK_DEV_NVME=y
-Value of CONFIG_XFS_FS is redefined by fragment /tmp/kci/artifacts/build/0.config:
-Previous value: # CONFIG_XFS_FS is not set
-New value: CONFIG_XFS_FS=y
-Merging /tmp/kci/artifacts/build/1.config
-#
-# merged configuration written to /tmp/kci/artifacts/build/.config (needs make)
-#
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- olddefconfig
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu-
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- bzImage
-rm -rf /tmp/kci/artifacts/build/modinstall
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build INSTALL_MOD_STRIP=1 INSTALL_MOD_PATH=/tmp/kci/artifacts/build/modinstall ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- modules_install
-tar --sort=name --owner=tuxmake:1000 --group=tuxmake:1000 --mtime=@1778868267 --clamp-mtime -caf /tmp/kci/artifacts/build/modules.tar.xz -C /tmp/kci/artifacts/build/modinstall lib
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- binrpm-pkg
-Building target platforms: x86_64-linux
-Building for target x86_64-linux
-warning: line 22: It's not recommended to have unversioned Obsoletes: Obsoletes: kernel-headers
-Executing(%mkbuilddir): /bin/sh -e /var/tmp/rpm-tmp.k61NlG
-Executing(%install): /bin/sh -e /var/tmp/rpm-tmp.5En1GC
-+ umask 022
-+ cd ./kernel-6.1.174_rc1-build
-+ /usr/bin/rm -rf ./kernel-6.1.174_rc1-build/BUILDROOT
-+ /usr/bin/mkdir -p ./kernel-6.1.174_rc1-build
-+ /usr/bin/mkdir ./kernel-6.1.174_rc1-build/BUILDROOT
-+ mkdir -p ./kernel-6.1.174_rc1-build/BUILDROOT/boot
-+ make -f /tmp/kci/linux/Makefile -s image_name
-/tmp/kci/linux/Makefile:747: include/config/auto.conf: No such file or directory
-+ cp ./kernel-6.1.174_rc1-build/BUILDROOT/boot/vmlinuz-6.1.174-rc1
-cp: missing destination file operand after './kernel-6.1.174_rc1-build/BUILDROOT/boot/vmlinuz-6.1.174-rc1'
-Try 'cp --help' for more information.
-error: Bad exit status from /var/tmp/rpm-tmp.5En1GC (%install)
-RPM build warnings:
-RPM build errors:
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## x86_64_defconfig+aws-ec2 on (x86_64):
-- compiler: gcc-14
-- config: None
-- dashboard: https://d.kernelci.org/build/maestro:6a074de40ed99f002e8f6e44
-
-
-#kernelci issue maestro:f9bd75e9ff6070e79c87ed0de2375ebeb2fa9ec3
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+    Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+    Reviewed-by: Phil Auld <pauld@redhat.com>
+    Reviewed-by: Waiman Long <longman@redhat.com>
+    Cc: Ingo Molnar <mingo@redhat.com>
+    Cc: Marco Crivellari <marco.crivellari@suse.com>
+    Cc: Michal Hocko <mhocko@suse.com>
+    Cc: Peter Zijlstra <peterz@infradead.org>
+    Cc: Tejun Heo <tj@kernel.org>
+    Cc: Thomas Gleixner <tglx@linutronix.de>
+    Cc: Vlastimil Babka <vbabka@suse.cz>
+    Cc: Waiman Long <longman@redhat.com>
 
