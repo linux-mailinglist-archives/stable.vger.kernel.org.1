@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJLrHhdPB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:51:35 +0200
+	id oDsEDPRVB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:20:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5865540AD
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:51:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A9F554DF6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C16D3112864
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 015F831ED18E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F0F3BB11C;
-	Fri, 15 May 2026 16:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604823FD94E;
+	Fri, 15 May 2026 16:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbslMVJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0e+TAkjB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437F82949E0;
-	Fri, 15 May 2026 16:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248463FD948;
+	Fri, 15 May 2026 16:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862033; cv=none; b=PZJK0kAqDiPLZ/ZL5K8vQkP0S9eZeW3jzVfhNvZj/GyMQ6zL9iOTnfMYTutQThllu/1/9MeR+Frz0JZvZKXQV99kGPYFYz8St6p2YVboFNqqdfVBV4CIk8xVLiGGmv3r+/MPRmnAietDZ5DE7V/mc/uJKQJ7WS4yLfbxAGXo8NY=
+	t=1778861556; cv=none; b=O7AlgvSHGai6WHmWFIZtxCnjNtHiK7jNVx5pU83jY2MWqzuA51QOWwao0FLH3h99h3rvuOJ8Xwan0axZyKc6Xk/btC3XsyXGVGJmwHPzOCdFuGLpj2W0UEoNALnTA0lZ92aLAEBIf77XWwUbrYjfSK8L/B4YVM/nfIK06GNbrZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862033; c=relaxed/simple;
-	bh=Zk4iE3Ul+za5lUsMBTZNbrLRNopKD5ESWMGRHtJGC2o=;
+	s=arc-20240116; t=1778861556; c=relaxed/simple;
+	bh=rc1B/pFxHjHg9SzSfc5f1v390DEliK4l4ZSqABewzzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqlKPE2U990bXNOUoReVuQzCsAEaENqZnKDd00FGvmqkfJ9DM5uPfCO09eheZW7QMwLOK0XIfCpVgWVEmDe1OSJDlANdOQh5rzUYXRYKK0mJ9KB3WyyrIsFWexZsjbxN8EARyvD0A30kVqwfrjUM2/Ng0IPyRpDTR7QEifq+N5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbslMVJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF496C2BCB0;
-	Fri, 15 May 2026 16:20:32 +0000 (UTC)
+	 MIME-Version; b=tCv6CwkFiels6T7MYX0rGSzYfImCwNi/mkOtMpb8yU2Cy6d/ULzF0Zvax4UUbx6vbLnpMdXZ4p67hoIFyABhwRadJ7CnPfYBZZtROpBT6YAJs7t2v1geAk4yLUxAJ3oHNKXLU1H2z6cTBiUxAT10pCShELEMT3HIBApZX5pGiMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0e+TAkjB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC78C2BCC9;
+	Fri, 15 May 2026 16:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862033;
-	bh=Zk4iE3Ul+za5lUsMBTZNbrLRNopKD5ESWMGRHtJGC2o=;
+	s=korg; t=1778861556;
+	bh=rc1B/pFxHjHg9SzSfc5f1v390DEliK4l4ZSqABewzzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VbslMVJ7a41nbzi/bI3LTSpa/PEVp2IhGLzSdZ++Ga9LLXw3Sxv8jHVNIKQOZ1Lh+
-	 a8MUXUor0CmCQ1Z5sLUh7/NYbQrp43a8FYzDaA/uqPNOIlQwVDGGFYuIv2Csa3lh/A
-	 L3tDKA7cQGZZmBUWML1zge5LMXmaJTuQQAgrJGPs=
+	b=0e+TAkjBh0H1JfAX4vYRqJI5ScLoOKByWMrJy0ud5C0BqGoRKDETB30G+k1eRbUVQ
+	 2BDVVrTA9aZYalvZq6r9V1rGb/yKZuphvDujpHpjN2SCK8OHDXLYIPXEfV8r3iudPO
+	 YG+PO22NXOyy8cvm8/IA0UtkGXxpqXRLVNo1CeEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Palcu <laurentiu.palcu@intel.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 065/188] spi: dln2: fix controller deregistration
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Deren Wu <deren.wu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 373/474] wifi: mt76: connac: introduce helper for mt7925 chipset
 Date: Fri, 15 May 2026 17:48:02 +0200
-Message-ID: <20260515154658.725370750@linuxfoundation.org>
+Message-ID: <20260515154723.098476614@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +65,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0E5865540AD
+X-Rspamd-Queue-Id: 85A9F554DF6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248368-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248556-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nbd.name:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Deren Wu <deren.wu@mediatek.com>
 
-commit c353020fbfa8514ee91a6de2d88de4e5edca5803 upstream.
+[ Upstream commit 525209262f9c2999f6f5fa0c40b4519cd6acfa2e ]
 
-Make sure to deregister the controller before disabling it to allow
-SPI device drivers to do I/O during deregistration.
+Introduce is_mt7925() helper for new chipset. mt7925 runs the same
+firmware download and mmio map flow as mt7921.
 
-Fixes: 3d8c0d749da3 ("spi: add support for DLN-2 USB-SPI adapter")
-Cc: stable@vger.kernel.org	# 4.0
-Cc: Laurentiu Palcu <laurentiu.palcu@intel.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-12-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This is a preliminary patch to support mt7925 driver.
+
+Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Stable-dep-of: 56154fef47d1 ("wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-dln2.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac.h     |    6 ++++++
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |    4 ++--
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c |    3 ++-
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h |    2 +-
+ 4 files changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/spi/spi-dln2.c
-+++ b/drivers/spi/spi-dln2.c
-@@ -761,7 +761,7 @@ static int dln2_spi_probe(struct platfor
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -172,6 +172,11 @@ struct mt76_connac_tx_free {
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to register host\n");
- 		goto exit_register;
-@@ -786,10 +786,16 @@ static void dln2_spi_remove(struct platf
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
+ extern const struct wiphy_wowlan_support mt76_connac_wowlan_support;
  
-+	spi_controller_get(host);
++static inline bool is_mt7925(struct mt76_dev *dev)
++{
++	return mt76_chip(dev) == 0x7925;
++}
 +
-+	spi_unregister_controller(host);
-+
- 	pm_runtime_disable(&pdev->dev);
+ static inline bool is_mt7922(struct mt76_dev *dev)
+ {
+ 	return mt76_chip(dev) == 0x7922;
+@@ -245,6 +250,7 @@ static inline bool is_mt76_fw_txp(struct
+ 	switch (mt76_chip(dev)) {
+ 	case 0x7961:
+ 	case 0x7922:
++	case 0x7925:
+ 	case 0x7663:
+ 	case 0x7622:
+ 		return false;
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -170,7 +170,7 @@ void mt76_connac_write_hw_txp(struct mt7
  
- 	if (dln2_spi_enable(dln2, false) < 0)
- 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
-+
-+	spi_controller_put(host);
- }
+ 	txp->msdu_id[0] = cpu_to_le16(id | MT_MSDU_ID_VALID);
  
- #ifdef CONFIG_PM_SLEEP
+-	if (is_mt7663(dev) || is_mt7921(dev))
++	if (is_mt7663(dev) || is_mt7921(dev) || is_mt7925(dev))
+ 		last_mask = MT_TXD_LEN_LAST;
+ 	else
+ 		last_mask = MT_TXD_LEN_AMSDU_LAST |
+@@ -214,7 +214,7 @@ mt76_connac_txp_skb_unmap_hw(struct mt76
+ 	u32 last_mask;
+ 	int i;
+ 
+-	if (is_mt7663(dev) || is_mt7921(dev))
++	if (is_mt7663(dev) || is_mt7921(dev) || is_mt7925(dev))
+ 		last_mask = MT_TXD_LEN_LAST;
+ 	else
+ 		last_mask = MT_TXD_LEN_MSDU_LAST;
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -66,6 +66,7 @@ int mt76_connac_mcu_init_download(struct
+ 
+ 	if ((!is_connac_v1(dev) && addr == MCU_PATCH_ADDRESS) ||
+ 	    (is_mt7921(dev) && addr == 0x900000) ||
++	    (is_mt7925(dev) && addr == 0x900000) ||
+ 	    (is_mt7996(dev) && addr == 0x900000))
+ 		cmd = MCU_CMD(PATCH_START_REQ);
+ 	else
+@@ -3080,7 +3081,7 @@ static u32 mt76_connac2_get_data_mode(st
+ {
+ 	u32 mode = DL_MODE_NEED_RSP;
+ 
+-	if (!is_mt7921(dev) || info == PATCH_SEC_NOT_SUPPORT)
++	if ((!is_mt7921(dev) && !is_mt7925(dev)) || info == PATCH_SEC_NOT_SUPPORT)
+ 		return mode;
+ 
+ 	switch (FIELD_GET(PATCH_SEC_ENC_TYPE_MASK, info)) {
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1739,7 +1739,7 @@ mt76_connac_mcu_gen_dl_mode(struct mt76_
+ 
+ 	ret |= feature_set & FW_FEATURE_SET_ENCRYPT ?
+ 	       DL_MODE_ENCRYPT | DL_MODE_RESET_SEC_IV : 0;
+-	if (is_mt7921(dev))
++	if (is_mt7921(dev) || is_mt7925(dev))
+ 		ret |= feature_set & FW_FEATURE_ENCRY_MODE ?
+ 		       DL_CONFIG_ENCRY_MODE_SEL : 0;
+ 	ret |= FIELD_PREP(DL_MODE_KEY_IDX,
 
 
 
