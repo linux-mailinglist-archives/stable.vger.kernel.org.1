@@ -1,253 +1,173 @@
-Return-Path: <stable+bounces-247301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247302-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iANUKilyBmqyjwIAu9opvQ
-	(envelope-from <stable+bounces-247301-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 03:08:57 +0200
+	id cNlyNCJ2BmoUkAIAu9opvQ
+	(envelope-from <stable+bounces-247302-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 03:25:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D2C54843C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 03:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E6B54862B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 03:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65DFC30570D3
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 01:08:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F17E73075C71
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 01:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFDD367F2E;
-	Fri, 15 May 2026 01:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E7F367F44;
+	Fri, 15 May 2026 01:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1MwaPxK"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="L34BCyCg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CFC28686
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 01:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778807308; cv=pass; b=bGjE0eIOhFIEFpzrovkjTa+QDL+xZ9WAz/9WkceddpFBIkH9dK0XuysAv1TkW04jRuVVM4GuOY5nNZ1Wbc4J//mTDMqk3Xr1J2EWv8tOGPPOIsTUAl8lk0N6IwEvEpMMuXCVAJHA0/7AW8jJ24v2GU3t/0Y+eM/as7uYWmrRoTs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778807308; c=relaxed/simple;
-	bh=Tjy+wLAt76/SgLvXzCA18dCPcMxTTSJKx0uzseG+k/4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uCux4aop6e0JkLmFSDpQUTK19256nhZ/FJxKH5eFkj0QemNtSfS0HCOJSGwW2c8wqXPmn5yaqXpx+NtriWBH9cjM+E4MCnjRtgFoobN1VYll7ooT57s3vBa9tl2b+H99JlGt9VF8xF5CPG1QciTX3nGkld9yTIhq3jAJFCi4qk8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1MwaPxK; arc=pass smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d4c383f2fcso6990934a34.0
-        for <stable@vger.kernel.org>; Thu, 14 May 2026 18:08:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778807304; cv=none;
-        d=google.com; s=arc-20240605;
-        b=f8tD3RCh2eiCnX38f2kMInx5armTiboPu5pgMI6Zl/V2LZFNykWKaiFgwdN6s9Rc5E
-         hfiTK6dZXQkxexPeekaogWArxorxS2gk9Oz+YyRTo4GEDgrapsHVg6J3NGT8mWS6ICtl
-         Vbtecly3uw2G9RI9emPO0Rgeh6OC/HuySHi2AxV6ahVkhQuWrmkbf9wwScNNQOaVagj2
-         rK14j1j/fdyyB8TRDXEplNL2R+GkfrRCpbSqIFljzY9pNHBHjCZigQHn21EQLIZtKf36
-         ExK9Me/w2W84rDdShvIC0YrmWpqUaqwrQCi6WDhGrkvZeEUO+yY1WygbaZHwi4oLnex/
-         7IUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4uAqE+q2UzPII5vnt4wx5yy+f2NRVPMEBmYSwydEl30=;
-        fh=reRn+pdYIl0Cw8jdM7BR2gkSgfuNGx1aDVXEeJdGNvk=;
-        b=hHqwO51i15XugZT2EpssuK0k1DQz4hGhusvBhiRtLWVYtTw8/YfRQLgOltcuHxCk5Q
-         JVXJDnaYj6cVvTAn3NcdUhyHw31RQXXDx/ICD9MjF3UMekM2XrzLLbLZq/k0/jGaJDUt
-         gf3Ws4d7ACUv5mHAL3KAoflPlzrQQ3XB6Vz+H8VKAZGaTqZAW7m9ZHQpWwZGzjASpGX8
-         tTC2VWK7jv9INTl7+VZNIqWfTmBYqZOEdC3qjB5NHj5nj7VH7UF39CNur8u4mVkvAyDV
-         ZkyRH1JIz7BIt/HaWd1vpzgueL2AwhRSqu+3Vy/csuHNY4dG4ap5Gw52C42ZdEEHcmJj
-         u8KQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778807304; x=1779412104; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4uAqE+q2UzPII5vnt4wx5yy+f2NRVPMEBmYSwydEl30=;
-        b=i1MwaPxKlJBj6YnS33rrgrCoAF74MxK+bSVTgeZN5u86Iqj+xrX0paCiEVEqmSBk19
-         uT1MRbVCdWh95NSkLnJS6lkPbDwBMZFSrfuguUrvJASsjkd+jDSCT/0WPaefPDXgZ9NQ
-         oqJxyiNqaYwmoPKHH8o95KlkGklmKHLfGokGEukZFZRu9ik+0+lY2HKrvfigWhz/HvGl
-         8qWzQXPYQ+IFjjTCT0Dx0v4tMRbnO2OlXZUcepqMfmjB+1zPnU7A3hzpsS6TbWPsYQIo
-         QEA9KIAuZcz69lzZpEXsy2gF4Vk2EcPDZGxrY4EXS6/9kTb+Twit2qyvyrrmZ5FBSpJ8
-         rv4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778807304; x=1779412104;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4uAqE+q2UzPII5vnt4wx5yy+f2NRVPMEBmYSwydEl30=;
-        b=HTnKUhtPnt4vX++Xp6sGKDEJ26QNzyg2lvitg0NvNCo6VBphObe2IJ92vZZfssCHwk
-         sWNAZQre6+9Y3fUStJHmgSgK1dGiM3Fa93kmKC5kXjQWBKtHstdiQ1csZ/9DmoV/MgO3
-         6yEMeMOP0I4CYwPpg9No+Se29cM81z3hMudAxV52tx/CQ9K7vXfli0piFjgPQ5QcnJRz
-         e31pffQvRRNpgPHjqVdSXtDv+2KrwlvUzIr+tQsXiRqKIvU3n12V3ORj0RjAdgjv3fNw
-         +nDdhsk6oATrxPjawpAEQSeamt4pb1XHyvVZgq9865+PhHGG23+U/OvU98sc5iVRGnga
-         Qkhg==
-X-Forwarded-Encrypted: i=1; AFNElJ+IX4V2CQ+O5PJ7I3yQS2yEt3Zyxb6DLf9tOFJZoKtqGUCZ5hK49P/p8s6d03nYUeabvp/7TlI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzAPOKUVQtKa0A2asZNFwibltIui/l8lVztBuoCsXIy3go7zjV
-	MPb+XS1sDYEid01My2EQhMY6vsHRteICy4I4C3gcqyVhmrOvxY66o8n95jQ12t8FcZ/FK1sUllA
-	ehvU/cj3h1S32hwk4z1Ex5XuakC8FX3o=
-X-Gm-Gg: Acq92OHjrPqQZWEEoyU1Ib5wcwbE6e2e5khvnbZ+7928qhZnEUYj3cpLMJ0Q4HdlWL7
-	cGsE8wAux7qKGgXSIcL9pAzgi4n7Oyd27aHrSsFC1CNCio7Ah8mz1vLGvzS3MBO6XHKx4lxUrLO
-	8pypwL6sh34nU8naaDvK7ifgvYeQkkzoicwN47m+aFLQfDrl9D8Cf5mdLphELwjUxGmPfEWyD7Q
-	2X4ZqSQTXqNMFhUT+rHFJvoEaZ5NIxh6xCok85jSsE19G9D/XkE43LPjzY1L6IgTsPd9fiP43gn
-	btQQR3JUtv8AAtKvWViyKv7kbbwssdNUW+QPTp8i3KcVj0Ad6Q==
-X-Received: by 2002:a05:6820:2982:b0:67e:160c:36ba with SMTP id
- 006d021491bc7-69c9bfb1664mr1186419eaf.48.1778807304424; Thu, 14 May 2026
- 18:08:24 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDB628686;
+	Fri, 15 May 2026 01:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778807987; cv=none; b=gv6Gbl1fr1KoGR+qAwCDQEmBAdvBLwvaM2cp65BhJCThJfx3VYElWU76ILRIJ5wVBaFa//8+jNbp9dfWBIWwk9Jv9alxbSKu33Urs+ZBNgHKmdFqbN7n1rVoclGGVHztZRdfmr7jv/1jngYjLghhpTQb3e8jMpr0RK0kpn8DPog=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778807987; c=relaxed/simple;
+	bh=IV1YjVnZO0A0BXTgH5RkBMrjUe/NzIC0eDsOKRCaplE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rXHSuYEra8l0xjfo2PR1Ah+h3pOBDKKJKtczeLxvvyeUrlrrYOuHsoHEUzdelnvVfmF+W5URgXo4vmfsF+2oGrOSEObH//hl+Qx5JMA7q27msOI3kytZ9jaETH949VgCUhYCrzowF6GCcGX8VFKWqqbtSFUMTQ7PG6LwCXjb7Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=L34BCyCg; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1778807938;
+	bh=wXNDb671mkQycOn5zCXtPX0cD41zbYQ/ko4VDJZidzw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=L34BCyCgJoWGM0qEI7QLfx0ti8fwk++/CYY+qtxxgLRaxKhzli9V6oJZG256rMUXe
+	 n8GcNQLpBy+CZiMCtpF32YamKpEwDggCCrrFjD8n2kgiOktpZ9t8t/6XCZXXXbXLm6
+	 LdoL2jwNlIxffcQSfM0uGJDIbFJTQsbq/o+h26pk=
+X-QQ-mid: zesmtpsz2t1778807933t02cdfc2e
+X-QQ-Originating-IP: Znx+6d1twP+5XtQQ7/grxvMpT0C3W1xT6fEArJ5OkjI=
+Received: from PEN202512010004 ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 15 May 2026 09:18:50 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 17137598037907104835
+EX-QQ-RecipientCnt: 11
+From: Xu Rao <raoxu@uniontech.com>
+To: mchehab@kernel.org
+Cc: hverkuil+cisco@kernel.org,
+	laurent.pinchart@ideasonboard.com,
+	hansg@kernel.org,
+	ribalda@chromium.org,
+	brad@nextdimension.cc,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	raoxu@uniontech.com,
+	stable@vger.kernel.org,
+	syzbot+f3f24bbe63f3f6db9f44@syzkaller.appspotmail.com
+Subject: [PATCH] media: dvb-usb-v2: abort probe on power-on failure
+Date: Fri, 15 May 2026 09:18:48 +0800
+Message-ID: <CC965F0EF2A96052+20260515011848.2670161-1-raoxu@uniontech.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260513-kfarnung-ath11k-srng-clear-pointer-state-v1-1-bc700dd8b333@gmail.com>
- <ddd1601d-2eef-4a52-af16-594223449c8c@oss.qualcomm.com>
-In-Reply-To: <ddd1601d-2eef-4a52-af16-594223449c8c@oss.qualcomm.com>
-From: Kyle Farnung <kfarnung@gmail.com>
-Date: Thu, 14 May 2026 18:08:12 -0700
-X-Gm-Features: AVHnY4Lvlc5Ig89TV5C-ke-68Gt-iwIwGCcyok9295LT1kww5dL6ntxLMQaGick
-Message-ID: <CAOPSVF3RgoV0e2EGbpy8t36mPKnn95_KWGt4_xSL7B9m6pv_RQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ath11k: clear shared SRNG pointer state on restart
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>, linux-wireless@vger.kernel.org, 
-	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	santiagorr@riseup.net, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 27D2C54843C
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: Mutteg8H72qDco6sBqedFrQLV0fPeNg76CeZvN0GtKSZc8akJXdgT4nG
+	mlvl+zYm0LrVXI7hTXQZDGxY6uxk0Sl+QY51G3UtVQUqeckHj3HgnQt2HzQ8Et6LLYixsDy
+	Jwa7FHdsFf73ZQd/2bE/DaxlcdrOs8xvlIrySttgKgrFl8RKiiqVf2G1nAI6WbK7A0juTfQ
+	s+e0trWBe6lrldvVK5HFEkX71Whf9ta52Uf/lcw3O+3vMM8BPKf9HITcpz3rmQvvoj0JCzj
+	1z7KR/o63POzfDXcRh/99qPkkWs40NL/ilxzZxQ7cGyd0fDU6fv1EWBk5Gib/uVrdRYjMGK
+	HBUzV0pXFgzgyDsOARmMnykAfMfhyx9gSsnQ/bPkilndduFiQZVx7Y+WFxtl02p/FZ7O41L
+	bz1/Fi88gu5te2yOU31mOHyany0plBCDAV3eWfP3QN6Wd/x4hqlfpIHMqu0Sbl99phsTrke
+	e7CYB4UEVN1wyq5197H36L38UEFwouRgPYiN9pkidh8Rs0y/csO5eMpr5Zto22rGKKqbLbU
+	Wjj9FWOp4BHs986cWzjkJWJQRPPmdgh+ZaoUdBpQjA5HpULchtnG9eNAvYoJZCsMU2N5Ew8
+	vf1Ywz7CyQdTPPBBKsTiYhnp7ATDztZHYo3Zxv5jfA4XwJQAtGaWygefLTFHNbW9OZKaZna
+	EZTC4wvbTTsqkYwRihEemIpMgx2LmupOsQ7R2ZYqgKOSGwOZkGHDaYDlNLkDf+QIGUnyil5
+	UhoiO0lTczvqCuvEhTKgUfyzsjuKIntCA6yXekmhY1OfCQE/QuAmvDtMLsRKdahczYGPh+Y
+	9UrlZk4304pKdiprAX6poqlQ7A8WNwSpcM43zZH5IdlhUys0K0UtHutSvvJjbbgonLQPf/J
+	KBAepwNp1G83R3/lpJiJIgOpB5ianLuFHHbZvpuDNdBcDCQfF5CcJCjzJ6a5KCrYBs85RNd
+	6oid43bTPAmuWAeAGrN7ZxLdiCWTEdS4EsLEkxbWMPmwGrzIE9xePpOnB1l/RoKGoZwE8MH
+	ZWDArTnIa7dxKmmxBJnMdBvAMl50Y=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: 27E6B54862B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_NEQ_ENVFROM(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247301-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247302-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kfarnung@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,mail.gmail.com:mid]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco,f3f24bbe63f3f6db9f44];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim,appspotmail.com:email,syzkaller.appspot.com:url]
 X-Rspamd-Action: no action
 
-On Thu, May 14, 2026 at 8:16=E2=80=AFAM Jeff Johnson
-<jeff.johnson@oss.qualcomm.com> wrote:
->
-> On 5/13/2026 9:52 PM, Kyle Farnung via B4 Relay wrote:
-> > From: Kyle Farnung <kfarnung@gmail.com>
-> >
-> > LMAC rings reuse the shared rdp/wrp pointer buffers without going
-> > through the normal SRNG hw-init path that zeros non-LMAC ring
-> > pointers. After restart, ath11k_hal_srng_clear() can therefore hand
-> > stale hp/tp state from the previous firmware instance back to the new
-> > one.
-> >
-> > Clear the shared pointer buffers while keeping the allocations in
-> > place so restart still avoids reallocating SRNG DMA memory, but starts
-> > with fresh ring-pointer state.
-> >
-> > Fixes: 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and r=
-e-initialize again")
-> > Cc: stable@vger.kernel.org
-> > Link: https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=3Do9wV=
-cFMc6f-yhmSBcZqQ@mail.gmail.com/
->
-> I'm going to change this to a Closes: tag in my pending branch
+dvb_usbv2_init() powers the device on before registering the I2C adapter
+and DVB resources, but it ignores failures from the power control
+callback.
 
-Thanks, that all makes sense.
+For CE6230, the power control callback selects interface 1 alternate
+setting 1 with usb_set_interface(). A malformed device may not provide
+that alternate setting, causing the initial power-on request to fail.
+Probe nevertheless continues and may publish the I2C adapter before
+failing later during adapter/frontend initialization.
 
-I'm still running the fix locally and haven't seen the issue again after 9
-suspend/resume cycles.
+The later failure path then synchronously unregisters the I2C adapter
+while USB probe locks are still held. Userspace may already have opened
+the newly published i2c-dev node, holding an adapter reference and making
+i2c_del_adapter() wait indefinitely in the probe path.
 
->
-> > Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
-> > ---
-> > This patch is the result of investigating suspend/resume failures on a
-> > Lenovo ThinkPad P14s Gen 5 AMD with ath11k.
-> >
-> > I originally proposed extending the existing ath11k PM quirk for this
-> > platform, but after discussion in [1] and bisection the issue appears t=
-o
-> > be a regression introduced by [2]. There is also a parallel report in [=
-3]
-> > that appears consistent with the same root cause. This patch keeps the
-> > intended no-reallocation behavior from that change, but clears the
-> > preserved shared SRNG pointer state so restart begins from a clean stat=
-e.
-> >
-> > Testing so far has been limited to local suspend/resume cycling on the
-> > affected system. The issue was originally reproduced on v7.0.4, and the
-> > patch was also built and tested on top of ath-current with repeated
-> > suspend/resume cycles on a Lenovo ThinkPad P14s Gen 5 AMD.
-> >
-> > [1] https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=3Do9wVcF=
-Mc6f-yhmSBcZqQ@mail.gmail.com/
-> > [2] 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and re-i=
-nitialize again")
-> > [3] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1132343
-> > ---
-> >  drivers/net/wireless/ath/ath11k/hal.c | 13 ++++++++++---
-> >  1 file changed, 10 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wirele=
-ss/ath/ath11k/hal.c
-> > index e821e5a62c1c0..0c0aeb803018e 100644
-> > --- a/drivers/net/wireless/ath/ath11k/hal.c
-> > +++ b/drivers/net/wireless/ath/ath11k/hal.c
-> > @@ -1387,14 +1387,21 @@ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
-> >
-> >  void ath11k_hal_srng_clear(struct ath11k_base *ab)
-> >  {
-> > -     /* No need to memset rdp and wrp memory since each individual
-> > -      * segment would get cleared in ath11k_hal_srng_src_hw_init()
-> > -      * and ath11k_hal_srng_dst_hw_init().
-> > +     /* Preserve the shared pointer buffers, but clear the previous
->
-> Since you are touching it I'm going to change this from the obsolete
-> networking block comment style to the universal block comment style with
-> /* on a line by itself
->
-> > +      * firmware instance's hp/tp state before handing them back to FW=
-.
-> > +      * LMAC rings reuse this shared memory without going through the
-> > +      * normal SRNG hw-init path that zeros non-LMAC ring pointers.
-> >        */
-> >       memset(ab->hal.srng_list, 0,
-> >              sizeof(ab->hal.srng_list));
-> >       memset(ab->hal.shadow_reg_addr, 0,
-> >              sizeof(ab->hal.shadow_reg_addr));
-> > +     if (ab->hal.rdp.vaddr)
-> > +             memset(ab->hal.rdp.vaddr, 0,
-> > +                    sizeof(*ab->hal.rdp.vaddr) * HAL_SRNG_RING_ID_MAX)=
-;
-> > +     if (ab->hal.wrp.vaddr)
-> > +             memset(ab->hal.wrp.vaddr, 0,
-> > +                    sizeof(*ab->hal.wrp.vaddr) * HAL_SRNG_NUM_LMAC_RIN=
-GS);
-> >       ab->hal.avail_blk_resource =3D 0;
-> >       ab->hal.current_blk_index =3D 0;
-> >       ab->hal.num_shadow_reg_configured =3D 0;
-> >
-> > ---
-> > base-commit: 54a5b38e4396530e5b2f12b54d3844e860ab6784
-> > change-id: 20260513-kfarnung-ath11k-srng-clear-pointer-state-91d8ab07e5=
-e2
-> >
-> > Best regards,
->
+Abort initialization as soon as the initial power-on step fails. This
+keeps malformed devices from exposing partially initialized I2C/DVB
+resources.
+
+Fixes: c79b339f9292 ("[media] dvb_usb_v2: copy current dvb_usb as a starting point")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+f3f24bbe63f3f6db9f44@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/683a9833.a70a0220.1a6ae.000a.GAE@google.com/
+Tested-by: syzbot+f3f24bbe63f3f6db9f44@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=f3f24bbe63f3f6db9f44
+Signed-off-by: Xu Rao <raoxu@uniontech.com>
+---
+ drivers/media/usb/dvb-usb-v2/dvb_usb_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c b/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c
+index bd86d250433d..5635394e5b7d 100644
+--- a/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c
++++ b/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c
+@@ -852,7 +852,9 @@ static int dvb_usbv2_init(struct dvb_usb_device *d)
+ 	int ret;
+ 	dev_dbg(&d->udev->dev, "%s:\n", __func__);
+
+-	dvb_usbv2_device_power_ctrl(d, 1);
++	ret = dvb_usbv2_device_power_ctrl(d, 1);
++	if (ret < 0)
++		goto err;
+
+ 	if (d->props->read_config) {
+ 		ret = d->props->read_config(d);
+--
+2.43.0
 
