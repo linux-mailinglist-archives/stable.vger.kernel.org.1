@@ -1,70 +1,53 @@
-Return-Path: <stable+bounces-247302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNlyNCJ2BmoUkAIAu9opvQ
-	(envelope-from <stable+bounces-247302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 03:25:54 +0200
+	id YB2+KIN2BmoUkAIAu9opvQ
+	(envelope-from <stable+bounces-247303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 03:27:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E6B54862B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 03:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2A5548665
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 03:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F17E73075C71
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 01:19:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9DCA308B782
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 01:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E7F367F44;
-	Fri, 15 May 2026 01:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E492D367F45;
+	Fri, 15 May 2026 01:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="L34BCyCg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUTpASeC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDB628686;
-	Fri, 15 May 2026 01:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A736E1DE8BE;
+	Fri, 15 May 2026 01:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778807987; cv=none; b=gv6Gbl1fr1KoGR+qAwCDQEmBAdvBLwvaM2cp65BhJCThJfx3VYElWU76ILRIJ5wVBaFa//8+jNbp9dfWBIWwk9Jv9alxbSKu33Urs+ZBNgHKmdFqbN7n1rVoclGGVHztZRdfmr7jv/1jngYjLghhpTQb3e8jMpr0RK0kpn8DPog=
+	t=1778808061; cv=none; b=G2lZKXujiC47kpaOWE4vdtEqfuiC1Kd030l8W23BwLIO7X3EU5n1baMKctxvyWBOswUHNiFmIYeG5vjznM6wYnqQHn9tdPrqXgRbUEwuOtrckWMZWB/7ynRHHlRhsKpF0suVWK4u7pR5x+OcQ6AMHgDGEchxAuPCOX08MqYu3oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778807987; c=relaxed/simple;
-	bh=IV1YjVnZO0A0BXTgH5RkBMrjUe/NzIC0eDsOKRCaplE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rXHSuYEra8l0xjfo2PR1Ah+h3pOBDKKJKtczeLxvvyeUrlrrYOuHsoHEUzdelnvVfmF+W5URgXo4vmfsF+2oGrOSEObH//hl+Qx5JMA7q27msOI3kytZ9jaETH949VgCUhYCrzowF6GCcGX8VFKWqqbtSFUMTQ7PG6LwCXjb7Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=L34BCyCg; arc=none smtp.client-ip=54.206.34.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1778807938;
-	bh=wXNDb671mkQycOn5zCXtPX0cD41zbYQ/ko4VDJZidzw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=L34BCyCgJoWGM0qEI7QLfx0ti8fwk++/CYY+qtxxgLRaxKhzli9V6oJZG256rMUXe
-	 n8GcNQLpBy+CZiMCtpF32YamKpEwDggCCrrFjD8n2kgiOktpZ9t8t/6XCZXXXbXLm6
-	 LdoL2jwNlIxffcQSfM0uGJDIbFJTQsbq/o+h26pk=
-X-QQ-mid: zesmtpsz2t1778807933t02cdfc2e
-X-QQ-Originating-IP: Znx+6d1twP+5XtQQ7/grxvMpT0C3W1xT6fEArJ5OkjI=
-Received: from PEN202512010004 ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 15 May 2026 09:18:50 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 17137598037907104835
-EX-QQ-RecipientCnt: 11
-From: Xu Rao <raoxu@uniontech.com>
-To: mchehab@kernel.org
-Cc: hverkuil+cisco@kernel.org,
-	laurent.pinchart@ideasonboard.com,
-	hansg@kernel.org,
-	ribalda@chromium.org,
-	brad@nextdimension.cc,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	raoxu@uniontech.com,
-	stable@vger.kernel.org,
-	syzbot+f3f24bbe63f3f6db9f44@syzkaller.appspotmail.com
-Subject: [PATCH] media: dvb-usb-v2: abort probe on power-on failure
-Date: Fri, 15 May 2026 09:18:48 +0800
-Message-ID: <CC965F0EF2A96052+20260515011848.2670161-1-raoxu@uniontech.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1778808061; c=relaxed/simple;
+	bh=vixR+NcNe3DosSISesGP9v3e0AqCPZv9q5Th9ASWfC4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=P5peLzr5vJBjU86d41LPTpUHC5J/FZ1j3anQmnPzRjsRrj/uRhFsu5ydqWjNlMREa3XCbw/dvcPJrpRchlySPvzSXJ6hcKgG3qLW9IPbY+7fXdaazelLd/duGjCmozcMvARcxBbblOYe9az1NU4LkHIiuORY0J1GSvGn7kfQv8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUTpASeC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482E9C2BCB3;
+	Fri, 15 May 2026 01:21:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778808061;
+	bh=vixR+NcNe3DosSISesGP9v3e0AqCPZv9q5Th9ASWfC4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=GUTpASeCy85j9QmtLDbNJvg+Zwp/jHaV34/QCK54QsoOTcfTrTIiW7cyCh40dIrMT
+	 YgbxW2rynyDWCoYMqFw20PyNM9f9SHrm4QKGZQVBkKLggv1mt9zv/o66JHlCMWuX55
+	 j57xsJvPWF7Qp3byv8e529tQggybbZGETCIvQa56Qsw1cONuf158P6I8PcUax5bmPB
+	 vq/xsnLESvZ4hXTr5BSfXt8BPaAj6ivlfLDIaLLLiqyhk8rQfF6gttHqnlcO5AGVj0
+	 seNLX1vOKxJ82PKbHLc2gusXa42aE/NeTtLSAu9xodVa+B5irRgHl7TKrBolbzydwz
+	 eji8huSr2UOhw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CE739E4DB5;
+	Fri, 15 May 2026 01:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,102 +55,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: Mutteg8H72qDco6sBqedFrQLV0fPeNg76CeZvN0GtKSZc8akJXdgT4nG
-	mlvl+zYm0LrVXI7hTXQZDGxY6uxk0Sl+QY51G3UtVQUqeckHj3HgnQt2HzQ8Et6LLYixsDy
-	Jwa7FHdsFf73ZQd/2bE/DaxlcdrOs8xvlIrySttgKgrFl8RKiiqVf2G1nAI6WbK7A0juTfQ
-	s+e0trWBe6lrldvVK5HFEkX71Whf9ta52Uf/lcw3O+3vMM8BPKf9HITcpz3rmQvvoj0JCzj
-	1z7KR/o63POzfDXcRh/99qPkkWs40NL/ilxzZxQ7cGyd0fDU6fv1EWBk5Gib/uVrdRYjMGK
-	HBUzV0pXFgzgyDsOARmMnykAfMfhyx9gSsnQ/bPkilndduFiQZVx7Y+WFxtl02p/FZ7O41L
-	bz1/Fi88gu5te2yOU31mOHyany0plBCDAV3eWfP3QN6Wd/x4hqlfpIHMqu0Sbl99phsTrke
-	e7CYB4UEVN1wyq5197H36L38UEFwouRgPYiN9pkidh8Rs0y/csO5eMpr5Zto22rGKKqbLbU
-	Wjj9FWOp4BHs986cWzjkJWJQRPPmdgh+ZaoUdBpQjA5HpULchtnG9eNAvYoJZCsMU2N5Ew8
-	vf1Ywz7CyQdTPPBBKsTiYhnp7ATDztZHYo3Zxv5jfA4XwJQAtGaWygefLTFHNbW9OZKaZna
-	EZTC4wvbTTsqkYwRihEemIpMgx2LmupOsQ7R2ZYqgKOSGwOZkGHDaYDlNLkDf+QIGUnyil5
-	UhoiO0lTczvqCuvEhTKgUfyzsjuKIntCA6yXekmhY1OfCQE/QuAmvDtMLsRKdahczYGPh+Y
-	9UrlZk4304pKdiprAX6poqlQ7A8WNwSpcM43zZH5IdlhUys0K0UtHutSvvJjbbgonLQPf/J
-	KBAepwNp1G83R3/lpJiJIgOpB5ianLuFHHbZvpuDNdBcDCQfF5CcJCjzJ6a5KCrYBs85RNd
-	6oid43bTPAmuWAeAGrN7ZxLdiCWTEdS4EsLEkxbWMPmwGrzIE9xePpOnB1l/RoKGoZwE8MH
-	ZWDArTnIa7dxKmmxBJnMdBvAMl50Y=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: 27E6B54862B
+Subject: Re: [PATCH net] octeontx2-pf: fix double free in rvu_rep_rsrc_init()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177880800580.150313.8207368814594738900.git-patchwork-notify@kernel.org>
+Date: Fri, 15 May 2026 01:20:05 +0000
+References: <20260513151320.213260-1-dawei.feng@seu.edu.cn>
+In-Reply-To: <20260513151320.213260-1-dawei.feng@seu.edu.cn>
+To: Dawei Feng <dawei.feng@seu.edu.cn>
+Cc: sgoutham@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
+ hkelam@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn,
+ stable@vger.kernel.org, zilin@seu.edu.cn
+X-Rspamd-Queue-Id: 3F2A5548665
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[raoxu@uniontech.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-247302-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247303-lists,stable=lfdr.de,netdevbpf];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco,f3f24bbe63f3f6db9f44];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim,appspotmail.com:email,syzkaller.appspot.com:url]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NO_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-dvb_usbv2_init() powers the device on before registering the I2C adapter
-and DVB resources, but it ignores failures from the power control
-callback.
+Hello:
 
-For CE6230, the power control callback selects interface 1 alternate
-setting 1 with usb_set_interface(). A malformed device may not provide
-that alternate setting, causing the initial power-on request to fail.
-Probe nevertheless continues and may publish the I2C adapter before
-failing later during adapter/frontend initialization.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-The later failure path then synchronously unregisters the I2C adapter
-while USB probe locks are still held. Userspace may already have opened
-the newly published i2c-dev node, holding an adapter reference and making
-i2c_del_adapter() wait indefinitely in the probe path.
+On Wed, 13 May 2026 23:13:20 +0800 you wrote:
+> rvu_rep_rsrc_init() allocates queue memory before calling
+> otx2_init_hw_resources(). When hardware resource setup fails,
+> otx2_init_hw_resources() already unwinds the partially initialized
+> SQ, CQ, and aura state before returning an error. The representor
+> error path then calls otx2_free_hw_resources() again and can free
+> the same resources a second time.
+> 
+> [...]
 
-Abort initialization as soon as the initial power-on step fails. This
-keeps malformed devices from exposing partially initialized I2C/DVB
-resources.
+Here is the summary with links:
+  - [net] octeontx2-pf: fix double free in rvu_rep_rsrc_init()
+    https://git.kernel.org/netdev/net/c/e8fb3de2a8ef
 
-Fixes: c79b339f9292 ("[media] dvb_usb_v2: copy current dvb_usb as a starting point")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+f3f24bbe63f3f6db9f44@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/683a9833.a70a0220.1a6ae.000a.GAE@google.com/
-Tested-by: syzbot+f3f24bbe63f3f6db9f44@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=f3f24bbe63f3f6db9f44
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
----
- drivers/media/usb/dvb-usb-v2/dvb_usb_core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-diff --git a/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c b/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c
-index bd86d250433d..5635394e5b7d 100644
---- a/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c
-+++ b/drivers/media/usb/dvb-usb-v2/dvb_usb_core.c
-@@ -852,7 +852,9 @@ static int dvb_usbv2_init(struct dvb_usb_device *d)
- 	int ret;
- 	dev_dbg(&d->udev->dev, "%s:\n", __func__);
 
--	dvb_usbv2_device_power_ctrl(d, 1);
-+	ret = dvb_usbv2_device_power_ctrl(d, 1);
-+	if (ret < 0)
-+		goto err;
-
- 	if (d->props->read_config) {
- 		ret = d->props->read_config(d);
---
-2.43.0
 
