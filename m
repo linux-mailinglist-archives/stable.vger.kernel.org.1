@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-248027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248029-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAVSKKtGB2p6wAIAu9opvQ
-	(envelope-from <stable+bounces-248027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:15:39 +0200
+	id MAFNJ7dGB2r6wAIAu9opvQ
+	(envelope-from <stable+bounces-248029-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:15:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C25552E3E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB6C552E6A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:15:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B20232A5FCE
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:58:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 968A232A8693
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C762F305671;
-	Fri, 15 May 2026 15:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4561305689;
+	Fri, 15 May 2026 15:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLM6RlpY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZJUwKT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE7A211A14;
-	Fri, 15 May 2026 15:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D793FF1BE;
+	Fri, 15 May 2026 15:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860681; cv=none; b=FydzxuWDxSDkmBrkEzjKr4m3yjlU/NQowh0Z2cCKZarys1SyAipPzgUXWCGDFbwJjVlQShee1o1LOvH/ocLlwl3E3I8O6SqmSULKIEIeVvFXHs2Of1JlZQjxqiZGWEFmlt+VeVmz7jFbfZQ9CLTzz5hDWlSPAFj/GMirzpGqeOs=
+	t=1778860686; cv=none; b=G1QVfcDAeZ4fxWeowo5BYNy+ygEpB1axEmvhD2l/5rTUPHkvMG3z+kMUBKzrJBrujTuyxb2c2l+ZyZ62sT96e+a5a86jGcguPaY+raoPaNJZY3OqREypQLsDPyQMzF7PYssIP+jD0YATd2mOv5c3lENCjjxSAfmUQg7fUHEvHtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860681; c=relaxed/simple;
-	bh=QR/UOZ4j/AOOiFujy8sJxOBaS5yRq2l4Z7fwTkMx34c=;
+	s=arc-20240116; t=1778860686; c=relaxed/simple;
+	bh=YogRWmp5DyaJmzWM7jVI+rdnR44qYZcQkNrMFpMN4yA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=craJUUYlnJIj1QKWgv3kJpIg731y7oQ6Pv7TAkL7pW7FGx3JcN7Ql2Y6Qb9lv/iZ5GprD2i7Z15cpJweXNFPPNieLyAOWj4h+3u7rQCMUqf6hpdtfyDmpsvwow/mt37IWxkp3ZDLuznMeUDgV2ixkxa55Ce4YH4h2e5o/a3dPUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLM6RlpY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36B1C2BCB0;
-	Fri, 15 May 2026 15:58:00 +0000 (UTC)
+	 MIME-Version; b=MOmlLtLXQL5NChQBICjSwY635DsSLJRbK4oCwIzocCWX6CmrXD43DbJhfRo0PHm9T6fOoxcYXmWOF9hhRiAzma/V4de6qAM8BsN/9g8DyhHSNwvShJ+rdIV1w7uhUdsBhgM5+P4IoBTci6BIHcJIRxSzjdwlMZPVKt83b2TsiRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZJUwKT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A50FC2BCB0;
+	Fri, 15 May 2026 15:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860681;
-	bh=QR/UOZ4j/AOOiFujy8sJxOBaS5yRq2l4Z7fwTkMx34c=;
+	s=korg; t=1778860686;
+	bh=YogRWmp5DyaJmzWM7jVI+rdnR44qYZcQkNrMFpMN4yA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLM6RlpYq45sM/eIEkAkl3gDU8/3uUQOeu9oPK8hVyps7vBO7nXBuNvhakYaoULhO
-	 CSbu1JkvbZpEF+/x7d94Dw/1UxDnJ3whVvp6X6eFpV41XLPK8MmAO1xVuHemGF/4Pc
-	 fxUopR8o/e8J0l+v1eUlqyPTF5UfnykkYIXZxUFQ=
+	b=nZJUwKT3zI83gj+5fB6hpDSPh6IjXN/SWngvlqNSMTsMX9Ofud1vmqNKHcjIW6oYp
+	 89ogky3uctIock4rkiH0C1p861TAhWgx0LtC6c0rlnuVoaraBYyEBQhIR3ry0VRwJQ
+	 lvuttnbUTGke0Yxjt3WGnp2cVxDpiCKmJHQqKB8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 039/474] media: i2c: imx219: Check return value of devm_gpiod_get_optional() in imx219_probe()
-Date: Fri, 15 May 2026 17:42:28 +0200
-Message-ID: <20260515154715.895252895@linuxfoundation.org>
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 040/474] net: qrtr: ns: Fix use-after-free in driver remove()
+Date: Fri, 15 May 2026 17:42:29 +0200
+Message-ID: <20260515154715.916866275@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -66,79 +63,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 13C25552E3E
+X-Rspamd-Queue-Id: 1EB6C552E6A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248027-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248029-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,ideasonboard.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,raspberrypi.com:email]
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit 943b1f27a3eead21b22e2531a5432ea5910b60eb upstream.
+commit 7809fea20c9404bfcfa6112ec08d1fe1d3520beb upstream.
 
-The devm_gpiod_get_optional() function may return an error pointer
-(ERR_PTR) in case of a genuine failure during GPIO acquisition,
-not just NULL which indicates the legitimate absence of an optional
-GPIO.
+In the remove callback, if a packet arrives after destroy_workqueue() is
+called, but before sock_release(), the qrtr_ns_data_ready() callback will
+try to queue the work, causing use-after-free issue.
 
-Add an IS_ERR() check after the function call to catch such errors and
-propagate them to the probe function, ensuring the driver fails to load
-safely rather than proceeding with an invalid pointer.
+Fix this issue by saving the default 'sk_data_ready' callback during
+qrtr_ns_init() and use it to replace the qrtr_ns_data_ready() callback at
+the start of remove(). This ensures that even if a packet arrives after
+destroy_workqueue(), the work struct will not be dereferenced.
 
-Fixes: 1283b3b8f82b ("media: i2c: Add driver for Sony IMX219 sensor")
+Note that it is also required to ensure that the RX threads are completed
+before destroying the workqueue, because the threads could be using the
+qrtr_ns_data_ready() callback.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-5-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx219.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/qrtr/ns.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/media/i2c/imx219.c
-+++ b/drivers/media/i2c/imx219.c
-@@ -1274,6 +1274,9 @@ static int imx219_probe(struct i2c_clien
- 	/* Request optional enable pin */
- 	imx219->reset_gpio = devm_gpiod_get_optional(dev, "reset",
- 						     GPIOD_OUT_HIGH);
-+	if (IS_ERR(imx219->reset_gpio))
-+		return dev_err_probe(dev, PTR_ERR(imx219->reset_gpio),
-+				     "failed to get reset gpio\n");
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -24,6 +24,7 @@ static struct {
+ 	struct list_head lookups;
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct work;
++	void (*saved_data_ready)(struct sock *sk);
+ 	int local_node;
+ } qrtr_ns;
  
- 	/*
- 	 * The sensor must be powered for imx219_identify_module()
+@@ -706,6 +707,7 @@ int qrtr_ns_init(void)
+ 		goto err_sock;
+ 	}
+ 
++	qrtr_ns.saved_data_ready = qrtr_ns.sock->sk->sk_data_ready;
+ 	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns_data_ready;
+ 
+ 	sq.sq_port = QRTR_PORT_CTRL;
+@@ -746,6 +748,10 @@ int qrtr_ns_init(void)
+ 	return 0;
+ 
+ err_wq:
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ err_sock:
+ 	sock_release(qrtr_ns.sock);
+@@ -755,7 +761,12 @@ EXPORT_SYMBOL_GPL(qrtr_ns_init);
+ 
+ void qrtr_ns_remove(void)
+ {
++	write_lock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++	qrtr_ns.sock->sk->sk_data_ready = qrtr_ns.saved_data_ready;
++	write_unlock_bh(&qrtr_ns.sock->sk->sk_callback_lock);
++
+ 	cancel_work_sync(&qrtr_ns.work);
++	synchronize_net();
+ 	destroy_workqueue(qrtr_ns.workqueue);
+ 
+ 	/* sock_release() expects the two references that were put during
 
 
 
