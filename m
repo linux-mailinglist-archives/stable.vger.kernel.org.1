@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-248239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248240-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iI/xBVlJB2rUwQIAu9opvQ
-	(envelope-from <stable+bounces-248239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:27:05 +0200
+	id mJKWKk9KB2pXwwIAu9opvQ
+	(envelope-from <stable+bounces-248240-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C3055335D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:27:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D17E553519
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 782963048B0F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:11:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4081C30856CD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E003F9294;
-	Fri, 15 May 2026 16:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6923E00A4;
+	Fri, 15 May 2026 16:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lerDe4ME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4IPW1tT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69E93E0081;
-	Fri, 15 May 2026 16:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AD735AC09;
+	Fri, 15 May 2026 16:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861226; cv=none; b=p4PbKEXLWzhxc0UqcCiomzGqhTS8uMGlIw4E6LAoHhdf0Qvsu46dYP7MVAjeZr5eM2EDMa2BAhOJmWwOHwqJbcovxb7Vkf7it6st5xXjNRUoQ38Hdy2wFFF6qlU7FTsBE7PZJ3aCGRqMGt1hzEE33n/fMbhG8jJSrn7jZTRQDNE=
+	t=1778861229; cv=none; b=TNmTpMsZP4AZO/QZ40HZ7sF1dwZCY+im0ZwatfKs54YPum+t8DgB7XQM1cxipK81bSYy47HuSZckCDeoq4xds9eSbCdqCePED6z9jQbT+pM/HkkcJUaIHIH3BxMYvtvynh8qe+Cwl4pnsw6cJntvWDrzMFvuh8wl/SHYNC6aOUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861226; c=relaxed/simple;
-	bh=ibEDBS9xz68cohX03o7QEcpuEa0ekUd/lrtfacWLfM8=;
+	s=arc-20240116; t=1778861229; c=relaxed/simple;
+	bh=8RIQewIbG2OfN9Yng/wmkY8+3ZpJvxhGoIMYEW0D69w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiggPrkFqaM5wEG2zh9D/eoZb337PsWXZWj+N/yEE99sris4yu9ytaWhbiL64dijX1lE0sNkFYqO0GIDGbmBzPc1w8DAFnxcnZs3jVKL/YoQQCTv6jrapsMLEvti+eX3rO0+TCxlwoy+JH3kbv5kQVWtg/DgYk70zzE06u9vJaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lerDe4ME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC26C2BCB0;
-	Fri, 15 May 2026 16:07:06 +0000 (UTC)
+	 MIME-Version; b=op+UtniDiaPSaKLWLXr/Xh2f0MGI/97zxD4ay848x00JBnUFqZv8XKHoujCWx/yI/JTcmM6SyUJ0fAjcFnGkaxX5Y0I88inhLm5HIpRyy0fIQJdeEHYevizmENxnySsoqj+9lWYrKXNNij9FOv1y3yQ4McsOuSk/xWzx1o3Kzng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4IPW1tT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE7AC2BCB0;
+	Fri, 15 May 2026 16:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861226;
-	bh=ibEDBS9xz68cohX03o7QEcpuEa0ekUd/lrtfacWLfM8=;
+	s=korg; t=1778861229;
+	bh=8RIQewIbG2OfN9Yng/wmkY8+3ZpJvxhGoIMYEW0D69w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lerDe4MEK3n2nArbqfXMCtFTkKVtF3+GWX8GCG2BF+JlRKr7dEYKW9H7AZ0uxXv8v
-	 zQkXL+Wokt7x7/RGQhQ+RmTGATdFQoHOpfoZjvTcdKNcBHqjNnfMoyBA/g4R8eGIkV
-	 al9nc55x/a0u/CdTH/Imlv9LP9jCkp89oezFA07s=
+	b=f4IPW1tTmKRtC4JU9lnB4AS6AJGTeGectV6GEcxhTiS3MiHyiK0mVtf6Dr9s7aeY5
+	 TPtxIgpcHeZCy06DV6s58BpG4uXTFufEUlaZBS9guCC3fLysB0t2u+zvZpLUjvUzTz
+	 jTHsL0lIGRdt/7hzOQR+JeYM89cMge855i1cRpaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Windsor <dwindsor@gmail.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
 	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.6 205/474] selinux: dont reserve xattr slot when we wont fill it
-Date: Fri, 15 May 2026 17:45:14 +0200
-Message-ID: <20260515154719.448813120@linuxfoundation.org>
+Subject: [PATCH 6.6 206/474] selinux: shrink critical section in sel_write_load()
+Date: Fri, 15 May 2026 17:45:15 +0200
+Message-ID: <20260515154719.470054822@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -63,78 +63,114 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C9C3055335D
+X-Rspamd-Queue-Id: 6D17E553519
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248239-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paul-moore.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248240-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,paul-moore.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,paul-moore.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,paul-moore.com:email]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Windsor <dwindsor@gmail.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-commit 1e5a8eed7821e7a43a31b4c1b3675a91be6bc6f6 upstream.
+commit 868f31e4061eca8c3cd607d79d954d5e54f204aa upstream.
 
-Move lsm_get_xattr_slot() below the SBLABEL_MNT check so we don't leave
-a NULL-named slot in the array when returning -EOPNOTSUPP; filesystem
-initxattrs() callbacks stop iterating at the first NULL ->name, silently
-dropping xattrs installed by later LSMs.
+Currently sel_write_load() takes the policy mutex earlier than
+necessary. Move the taking of the mutex later. This avoids
+holding it unnecessarily across the vmalloc() and copy_from_user()
+of the policy data.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: David Windsor <dwindsor@gmail.com>
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/hooks.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ security/selinux/selinuxfs.c |   18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -2903,7 +2903,7 @@ static int selinux_inode_init_security(s
- {
- 	const struct task_security_struct *tsec = selinux_cred(current_cred());
- 	struct superblock_security_struct *sbsec;
--	struct xattr *xattr = lsm_get_xattr_slot(xattrs, xattr_count);
-+	struct xattr *xattr;
- 	u32 newsid, clen;
- 	int rc;
- 	char *context;
-@@ -2930,6 +2930,7 @@ static int selinux_inode_init_security(s
- 	    !(sbsec->flags & SBLABEL_MNT))
- 		return -EOPNOTSUPP;
+--- a/security/selinux/selinuxfs.c
++++ b/security/selinux/selinuxfs.c
+@@ -594,34 +594,31 @@ static ssize_t sel_write_load(struct fil
+ 	if (!count)
+ 		return -EINVAL;
  
-+	xattr = lsm_get_xattr_slot(xattrs, xattr_count);
- 	if (xattr) {
- 		rc = security_sid_to_context_force(newsid,
- 						   &context, &clen);
+-	mutex_lock(&selinux_state.policy_mutex);
+-
+ 	length = avc_has_perm(current_sid(), SECINITSID_SECURITY,
+ 			      SECCLASS_SECURITY, SECURITY__LOAD_POLICY, NULL);
+ 	if (length)
+-		goto out;
++		return length;
+ 
+ 	data = vmalloc(count);
+-	if (!data) {
+-		length = -ENOMEM;
+-		goto out;
+-	}
++	if (!data)
++		return -ENOMEM;
+ 	if (copy_from_user(data, buf, count) != 0) {
+ 		length = -EFAULT;
+ 		goto out;
+ 	}
+ 
++	mutex_lock(&selinux_state.policy_mutex);
+ 	length = security_load_policy(data, count, &load_state);
+ 	if (length) {
+ 		pr_warn_ratelimited("SELinux: failed to load policy\n");
+-		goto out;
++		goto out_unlock;
+ 	}
+ 	fsi = file_inode(file)->i_sb->s_fs_info;
+ 	length = sel_make_policy_nodes(fsi, load_state.policy);
+ 	if (length) {
+ 		pr_warn_ratelimited("SELinux: failed to initialize selinuxfs\n");
+ 		selinux_policy_cancel(&load_state);
+-		goto out;
++		goto out_unlock;
+ 	}
+ 
+ 	selinux_policy_commit(&load_state);
+@@ -631,8 +628,9 @@ static ssize_t sel_write_load(struct fil
+ 		from_kuid(&init_user_ns, audit_get_loginuid(current)),
+ 		audit_get_sessionid(current));
+ 
+-out:
++out_unlock:
+ 	mutex_unlock(&selinux_state.policy_mutex);
++out:
+ 	vfree(data);
+ 	return length;
+ }
 
 
 
