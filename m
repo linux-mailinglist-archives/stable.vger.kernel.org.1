@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qE9IM/pZB2qzzwIAu9opvQ
-	(envelope-from <stable+bounces-248720-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:02 +0200
+	id kFSlICZFB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:09:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D4955555C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2435B552BD3
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E95D32D4783
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9554C3074A34
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C013E7BC7;
-	Fri, 15 May 2026 16:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA943FF1DD;
+	Fri, 15 May 2026 15:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+NSRDR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFm3U4y4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373353E008D;
-	Fri, 15 May 2026 16:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C713FF1A0;
+	Fri, 15 May 2026 15:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862456; cv=none; b=vDtmvJsBrTHQ7bumULozkcCTVVPPiyLnI5cQK0XkcAS/e0uqvUDr089h6q6ZU0RGpmfPYA3DQRhj5NEPVPibFbGXv2TcsvdwyZYL5LBYWlaI+5kgH6esavSPQt/k6ns24nhAiqw1BTGMB0Eoc8QxbALMGxfr8ASNrXtd25so72k=
+	t=1778860338; cv=none; b=gxBxCHlso5856kgJ6znT9roExpVt8wLw60IPwrGPKdJ8eu4hzK1g4oorDB8Bp03TCRttRBBdaE7Hbvvp3UaskeTtFf7voA+Vtq4STLrCuQT6ZppvOCOLuVL7inMoRvGYR7d87D+jyjKCe6Ygq/IsJ8Pe9VQdjElkOWu/2/IbvzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862456; c=relaxed/simple;
-	bh=ZG4Fc4x0iVi2SrKDdCgOIG8dQQy2YE7GuAKxFYQy6QE=;
+	s=arc-20240116; t=1778860338; c=relaxed/simple;
+	bh=C4seZeqEzntBZJ3O2n4wONJRgbINizpbW575sNJ4pUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DR+YX12sHREkshvM3GznhnYcMOqnmTXkCFAvfcLSAJNh+ABVFBdzPkxCFv/KE7OuKUqXr+dAbdormSvMPx+Arg3PSM7fNxzBdO5Gb41vgHXQowEzXh0GSZ9sTlOzA3td8f8fNu0XDtCh2JgiVoemjXZoXRCmv8aDGFpyQulC/Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+NSRDR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09B1C2BCB0;
-	Fri, 15 May 2026 16:27:35 +0000 (UTC)
+	 MIME-Version; b=Ju8/io1eAlTwsfrkOOVewnsImRrB06OKo2g1ZxikJOkrFfEjPRY5JBaAFYNjmrFQXC/WMzsk5ISl3aLo5VeJTK/qbXNJfHEp/V+z4vHiPJ2PMinbeStFZGqKrDicX4RZPRU3ej+20c6VNVa5FT/au0KB2kKVWteNFUox2gS8Ix4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFm3U4y4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53FEC2BCB0;
+	Fri, 15 May 2026 15:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862456;
-	bh=ZG4Fc4x0iVi2SrKDdCgOIG8dQQy2YE7GuAKxFYQy6QE=;
+	s=korg; t=1778860338;
+	bh=C4seZeqEzntBZJ3O2n4wONJRgbINizpbW575sNJ4pUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P+NSRDR9ovYsGkxZ8oNuqn4aZj8gqH7IDlbVZiqccb0tqQig0GJJ5cd1s+zUEToM8
-	 ZeMRP4tFvCyxIylaFFAzqLQ6CIcpECfPilth4dbKpLMfzZM4IX1p0FXSDOQlKFjV8N
-	 LH7Eja2wcAdW/ovtyH6MIGMe3V16p4k1ibDnlJPI=
+	b=XFm3U4y4sLMJ9PDm4rhRkeUzs8CVaRSqTXld9VSrWmMWtcneqc+LVpd5nmuz9Mt8a
+	 TalHsh0gX97f73cL9mw2ijnBuW3Um1fSt3rhtVyyaWCk/4Tr/h/7p4jUUt9L4s/Vsm
+	 H0cC6L9fiqfy4bvfUhQsRqP0hh2aKI1zQCHcASyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Jun <1742789905@qq.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 056/201] media: saa7164: add ioremap return checks and cleanups
-Date: Fri, 15 May 2026 17:47:54 +0200
-Message-ID: <20260515154659.748727854@linuxfoundation.org>
+	Steven King <sfking@fdwdc.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 049/144] spi: coldfire-qspi: fix controller deregistration
+Date: Fri, 15 May 2026 17:47:55 +0200
+Message-ID: <20260515154654.675588014@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +64,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 38D4955555C
+X-Rspamd-Queue-Id: 2435B552BD3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248720-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247891-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qq.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,fdwdc.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jun <1742789905@qq.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit d51c60a498e83c9a79884c8e420f97e3885c9583 upstream.
+commit e7c510e192ff2a1264d999575eea39a506424264 upstream.
 
-Add checks for ioremap return values in saa7164_dev_setup(). If
-ioremap for BAR0 or BAR2 fails, release the already allocated PCI
-memory regions, remove the device from the global list, decrement
-the device count, and return -ENODEV.
+Make sure to deregister the controller before disabling underlying
+resources like clocks (via runtime pm) during driver unbind.
 
-This prevents potential null pointer dereferences and ensures proper
-cleanup on memory mapping failures.
-
-Fixes: 443c1228d505 ("V4L/DVB (12923): SAA7164: Add support for the NXP SAA7164 silicon")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wang Jun <1742789905@qq.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 34b8c6617366 ("spi: Add Freescale/Motorola Coldfire QSPI driver")
+Cc: stable@vger.kernel.org	# 2.6.34
+Cc: Steven King <sfking@fdwdc.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260409120419.388546-11-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/saa7164/saa7164-core.c |   47 +++++++++++++++++++++++--------
- 1 file changed, 35 insertions(+), 12 deletions(-)
+ drivers/spi/spi-coldfire-qspi.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/media/pci/saa7164/saa7164-core.c
-+++ b/drivers/media/pci/saa7164/saa7164-core.c
-@@ -888,6 +888,15 @@ static int get_resources(struct saa7164_
- 	return -EBUSY;
- }
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -410,9 +410,9 @@ static int mcfqspi_probe(struct platform
+ 	platform_set_drvdata(pdev, host);
+ 	pm_runtime_enable(&pdev->dev);
  
-+static void release_resources(struct saa7164_dev *dev)
-+{
-+	release_mem_region(pci_resource_start(dev->pci, 0),
-+			   pci_resource_len(dev->pci, 0));
-+
-+	release_mem_region(pci_resource_start(dev->pci, 2),
-+			   pci_resource_len(dev->pci, 2));
-+}
-+
- static int saa7164_port_init(struct saa7164_dev *dev, int portnr)
- {
- 	struct saa7164_port *port = NULL;
-@@ -947,9 +956,9 @@ static int saa7164_dev_setup(struct saa7
- 
- 	snprintf(dev->name, sizeof(dev->name), "saa7164[%d]", dev->nr);
- 
--	mutex_lock(&devlist);
--	list_add_tail(&dev->devlist, &saa7164_devlist);
--	mutex_unlock(&devlist);
-+	scoped_guard(mutex, &devlist) {
-+		list_add_tail(&dev->devlist, &saa7164_devlist);
-+	}
- 
- 	/* board config */
- 	dev->board = UNSET;
-@@ -996,11 +1005,17 @@ static int saa7164_dev_setup(struct saa7
+-	status = devm_spi_register_controller(&pdev->dev, host);
++	status = spi_register_controller(host);
+ 	if (status) {
+-		dev_dbg(&pdev->dev, "devm_spi_register_controller failed\n");
++		dev_dbg(&pdev->dev, "failed to register controller\n");
+ 		goto fail1;
  	}
  
- 	/* PCI/e allocations */
--	dev->lmmio = ioremap(pci_resource_start(dev->pci, 0),
--			     pci_resource_len(dev->pci, 0));
-+	dev->lmmio = pci_ioremap_bar(dev->pci, 0);
-+	if (!dev->lmmio) {
-+		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 0\n");
-+		goto err_ioremap_bar0;
-+	}
+@@ -436,11 +436,17 @@ static void mcfqspi_remove(struct platfo
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct mcfqspi *mcfqspi = spi_controller_get_devdata(host);
  
--	dev->lmmio2 = ioremap(pci_resource_start(dev->pci, 2),
--			     pci_resource_len(dev->pci, 2));
-+	dev->lmmio2 = pci_ioremap_bar(dev->pci, 2);
-+	if (!dev->lmmio2) {
-+		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 2\n");
-+		goto err_ioremap_bar2;
-+	}
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	pm_runtime_disable(&pdev->dev);
+ 	/* disable the hardware (set the baud rate to 0) */
+ 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
  
- 	dev->bmmio = (u8 __iomem *)dev->lmmio;
- 	dev->bmmio2 = (u8 __iomem *)dev->lmmio2;
-@@ -1019,17 +1034,25 @@ static int saa7164_dev_setup(struct saa7
- 	saa7164_pci_quirks(dev);
- 
- 	return 0;
+ 	mcfqspi_cs_teardown(mcfqspi);
 +
-+err_ioremap_bar2:
-+	iounmap(dev->lmmio);
-+err_ioremap_bar0:
-+	release_resources(dev);
-+
-+	scoped_guard(mutex, &devlist) {
-+		list_del(&dev->devlist);
-+	}
-+	saa7164_devcount--;
-+
-+	return -ENODEV;
++	spi_controller_put(host);
  }
  
- static void saa7164_dev_unregister(struct saa7164_dev *dev)
- {
- 	dprintk(1, "%s()\n", __func__);
- 
--	release_mem_region(pci_resource_start(dev->pci, 0),
--		pci_resource_len(dev->pci, 0));
--
--	release_mem_region(pci_resource_start(dev->pci, 2),
--		pci_resource_len(dev->pci, 2));
-+	release_resources(dev);
- 
- 	if (!atomic_dec_and_test(&dev->refcount))
- 		return;
+ #ifdef CONFIG_PM_SLEEP
 
 
 
