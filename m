@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-248869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPl9ATxRB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248869-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:00:44 +0200
+	id yIGbHxlOB2rAxgIAu9opvQ
+	(envelope-from <stable+bounces-248651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DA055451A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2923F553EBF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 105C531C0588
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 80AF03067416
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6812E3B4EAF;
-	Fri, 15 May 2026 16:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC713FF1A2;
+	Fri, 15 May 2026 16:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTuRK3/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcF7uDuc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C5D2798F3;
-	Fri, 15 May 2026 16:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88572609EE;
+	Fri, 15 May 2026 16:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862839; cv=none; b=Cqqs6CWV4/p1680EGXwk7YgQfAPUdBCQE5gyTDcs2OWaigoKcFpahBjrog7sNsrQmJAUSh5KcKCCOW4MYZhKWIXqdDZ4rHPI8ClHEi1Iv/kPQzaMTF791O7JQ/um3pdSrOMGCdg/sNXXI1/zxLntZ+JQfbmJH6d5yAwUX7645y0=
+	t=1778862279; cv=none; b=tQaD1Vzoxmuqjiomp6xqF1s9Pkex3+EgrCXZrxOHvlByw7K/9LpxvFx9GLpkFDjUVRD7LVFCOtWOr9MzsspptSS3nrTFBMOtkJet0+tN3Pgi+4jp+/V2rSerKryMdrBzCkf3OXGxtqpKO7A0dyZDi9EYDZLRVB69J99qoIhA/Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862839; c=relaxed/simple;
-	bh=6qoqdgHoag8d5pVaKI1fiS4tykHjmmRbpkihtiWnqqU=;
+	s=arc-20240116; t=1778862279; c=relaxed/simple;
+	bh=KWgGCbdTP9P4srN16/aJ2mT44ggwHFXW8j049yQgFtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MBv6R6XKnJmsILhj3HVMOA3YTBz9fdDz+dW/URdeuQcq9PWEyTLJUS3XpASO91XcJNlpCNjw1I1EFLMfjUrCugNIhryQnpI0z3KglXs+kOJJbQjMi6FM7HjDurRU1YSsQgiUJq/huL7PX6Xnu5wnv8nqlKo9xlto5og6glAtx/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTuRK3/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B04C2BCB0;
-	Fri, 15 May 2026 16:33:58 +0000 (UTC)
+	 MIME-Version; b=K3q0IeTQjubrn3duJzO5ELT0q3CtKwc7UaVVKKMEZK5nJRxAjbeztZ0OLyRV49/lSD4wxMXkTXIgIr0Vib9YL5xIn8YqxVPrY64sU2fWDxnzJz45A4QvI/EJegGbu8YxEJidukJxRcG0i5zmxzYBUIXBYR6luiSthkJQk/zlYTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcF7uDuc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE88C2BCC7;
+	Fri, 15 May 2026 16:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862838;
-	bh=6qoqdgHoag8d5pVaKI1fiS4tykHjmmRbpkihtiWnqqU=;
+	s=korg; t=1778862279;
+	bh=KWgGCbdTP9P4srN16/aJ2mT44ggwHFXW8j049yQgFtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sTuRK3/ttH5YDF9reZXgj4YwaK+I9XI2uIw+ZdlmOhXRyuo7XwwPzMM9esgdWITkA
-	 bewZsVXKjVUICbf4beR4/GojQ9uup4z3NHhoqpdMmnTJcD1FOcDuFiT660J5ad9zet
-	 3fCK86/RDKqwKSlqM45kxicEJwhIXYBvN3gUKeO8=
+	b=FcF7uDucXxq1uMlu8lNXwo6eikOQrfUzaMiMSHd4hHH6pfbi9C4h+2WI9cG+cZy1d
+	 ceNb6sk1Gp0UeW7t8VjCYRy8cGUCuA0zCqlYQKz9rf9npQRgQKWZ3fHPbw2CVHpq2B
+	 FM/TQuj3DFNBZj+IN+QIq2dEjROam/AvtkcEMvCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 176/201] batman-adv: stop caching unowned originator pointers in BAT IV
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 177/188] tracing: fprobe: use rhltable for fprobe_ip_table
 Date: Fri, 15 May 2026 17:49:54 +0200
-Message-ID: <20260515154702.391204894@linuxfoundation.org>
+Message-ID: <20260515154701.179659773@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 97DA055451A
+X-Rspamd-Queue-Id: 2923F553EBF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,200 +75,346 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-248869-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-248651-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,narfation.org:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,chinatelecom.cn:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-commit f03e8583532941b07761c5429de7d50766fa3110 upstream.
+[ Upstream commit 0de4c70d04a46a3c266547dd4275ce25f623796a ]
 
-BAT IV keeps the last-hop neighbor address in each neigh_node, but some
-paths also cache an originator pointer derived from a temporary lookup.
-That pointer is not owned by the neigh_node and may no longer refer to a
-live originator entry after purge handling runs.
+For now, all the kernel functions who are hooked by the fprobe will be
+added to the hash table "fprobe_ip_table". The key of it is the function
+address, and the value of it is "struct fprobe_hlist_node".
 
-Stop storing the auxiliary originator pointer in the BAT IV neighbor
-state. When BAT IV needs the neighbor originator data, resolve it from
-the stored neighbor address and drop the reference again after use.
+The budget of the hash table is FPROBE_IP_TABLE_SIZE, which is 256. And
+this means the overhead of the hash table lookup will grow linearly if
+the count of the functions in the fprobe more than 256. When we try to
+hook all the kernel functions, the overhead will be huge.
 
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-[sven: avoid bonding logic for outgoing OGM]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Therefore, replace the hash table with rhltable to reduce the overhead.
+
+Link: https://lore.kernel.org/all/20250819031825.55653-1-dongml2@chinatelecom.cn/
+
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Stable-dep-of: 845947aca681 ("tracing/fprobe: Remove fprobe from hash in failure path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_iv_ogm.c |   83 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 59 insertions(+), 24 deletions(-)
+ include/linux/fprobe.h |    3 
+ kernel/trace/fprobe.c  |  157 ++++++++++++++++++++++++++++---------------------
+ 2 files changed, 93 insertions(+), 67 deletions(-)
 
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -173,19 +173,12 @@ free_orig_node_hash:
- static struct batadv_neigh_node *
- batadv_iv_ogm_neigh_new(struct batadv_hard_iface *hard_iface,
- 			const u8 *neigh_addr,
--			struct batadv_orig_node *orig_node,
--			struct batadv_orig_node *orig_neigh)
-+			struct batadv_orig_node *orig_node)
+--- a/include/linux/fprobe.h
++++ b/include/linux/fprobe.h
+@@ -7,6 +7,7 @@
+ #include <linux/ftrace.h>
+ #include <linux/rcupdate.h>
+ #include <linux/refcount.h>
++#include <linux/rhashtable.h>
+ #include <linux/slab.h>
+ 
+ struct fprobe;
+@@ -26,7 +27,7 @@ typedef void (*fprobe_exit_cb)(struct fp
+  * @fp: The fprobe which owns this.
+  */
+ struct fprobe_hlist_node {
+-	struct hlist_node	hlist;
++	struct rhlist_head	hlist;
+ 	unsigned long		addr;
+ 	struct fprobe		*fp;
+ };
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -11,6 +11,7 @@
+ #include <linux/kprobes.h>
+ #include <linux/list.h>
+ #include <linux/mutex.h>
++#include <linux/rhashtable.h>
+ #include <linux/slab.h>
+ #include <linux/sort.h>
+ 
+@@ -42,60 +43,67 @@
+  *  - RCU hlist traversal under disabling preempt
+  */
+ static struct hlist_head fprobe_table[FPROBE_TABLE_SIZE];
+-static struct hlist_head fprobe_ip_table[FPROBE_IP_TABLE_SIZE];
++static struct rhltable fprobe_ip_table;
+ static DEFINE_MUTEX(fprobe_mutex);
+ 
+-/*
+- * Find first fprobe in the hlist. It will be iterated twice in the entry
+- * probe, once for correcting the total required size, the second time is
+- * calling back the user handlers.
+- * Thus the hlist in the fprobe_table must be sorted and new probe needs to
+- * be added *before* the first fprobe.
+- */
+-static struct fprobe_hlist_node *find_first_fprobe_node(unsigned long ip)
++static u32 fprobe_node_hashfn(const void *data, u32 len, u32 seed)
  {
- 	struct batadv_neigh_node *neigh_node;
+-	struct fprobe_hlist_node *node;
+-	struct hlist_head *head;
++	return hash_ptr(*(unsigned long **)data, 32);
++}
  
- 	neigh_node = batadv_neigh_node_get_or_create(orig_node,
- 						     hard_iface, neigh_addr);
--	if (!neigh_node)
--		goto out;
--
--	neigh_node->orig_node = orig_neigh;
--
--out:
- 	return neigh_node;
- }
- 
-@@ -907,6 +900,31 @@ static u8 batadv_iv_orig_ifinfo_sum(stru
- }
- 
- /**
-+ * batadv_iv_ogm_neigh_ifinfo_sum() - Get bcast_own sum for a last-hop neighbor
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @neigh_node: last-hop neighbor of an originator
-+ *
-+ * Return: Number of replied (rebroadcasted) OGMs for the originator currently
-+ * announced by the neighbor. Returns 0 if the neighbor's originator entry is
-+ * not available anymore.
-+ */
-+static u8 batadv_iv_ogm_neigh_ifinfo_sum(struct batadv_priv *bat_priv,
-+					 const struct batadv_neigh_node *neigh_node)
+-	head = &fprobe_ip_table[hash_ptr((void *)ip, FPROBE_IP_HASH_BITS)];
+-	hlist_for_each_entry_rcu(node, head, hlist,
+-				 lockdep_is_held(&fprobe_mutex)) {
+-		if (node->addr == ip)
+-			return node;
+-	}
+-	return NULL;
++static int fprobe_node_cmp(struct rhashtable_compare_arg *arg,
++			   const void *ptr)
 +{
-+	struct batadv_orig_node *orig_neigh;
-+	u8 sum;
++	unsigned long key = *(unsigned long *)arg->key;
++	const struct fprobe_hlist_node *n = ptr;
 +
-+	orig_neigh = batadv_orig_hash_find(bat_priv, neigh_node->addr);
-+	if (!orig_neigh)
-+		return 0;
++	return n->addr != key;
+ }
+-NOKPROBE_SYMBOL(find_first_fprobe_node);
+ 
+-/* Node insertion and deletion requires the fprobe_mutex */
+-static void insert_fprobe_node(struct fprobe_hlist_node *node)
++static u32 fprobe_node_obj_hashfn(const void *data, u32 len, u32 seed)
+ {
+-	unsigned long ip = node->addr;
+-	struct fprobe_hlist_node *next;
+-	struct hlist_head *head;
++	const struct fprobe_hlist_node *n = data;
 +
-+	sum = batadv_iv_orig_ifinfo_sum(orig_neigh, neigh_node->if_incoming);
-+	batadv_orig_node_put(orig_neigh);
-+
-+	return sum;
++	return hash_ptr((void *)n->addr, 32);
 +}
 +
-+/**
-  * batadv_iv_ogm_orig_update() - use OGM to update corresponding data in an
-  *  originator
-  * @bat_priv: the bat priv with all the mesh interface information
-@@ -975,17 +993,9 @@ batadv_iv_ogm_orig_update(struct batadv_
- 	}
++static const struct rhashtable_params fprobe_rht_params = {
++	.head_offset		= offsetof(struct fprobe_hlist_node, hlist),
++	.key_offset		= offsetof(struct fprobe_hlist_node, addr),
++	.key_len		= sizeof_field(struct fprobe_hlist_node, addr),
++	.hashfn			= fprobe_node_hashfn,
++	.obj_hashfn		= fprobe_node_obj_hashfn,
++	.obj_cmpfn		= fprobe_node_cmp,
++	.automatic_shrinking	= true,
++};
  
- 	if (!neigh_node) {
--		struct batadv_orig_node *orig_tmp;
++/* Node insertion and deletion requires the fprobe_mutex */
++static int insert_fprobe_node(struct fprobe_hlist_node *node)
++{
+ 	lockdep_assert_held(&fprobe_mutex);
+ 
+-	next = find_first_fprobe_node(ip);
+-	if (next) {
+-		hlist_add_before_rcu(&node->hlist, &next->hlist);
+-		return;
+-	}
+-	head = &fprobe_ip_table[hash_ptr((void *)ip, FPROBE_IP_HASH_BITS)];
+-	hlist_add_head_rcu(&node->hlist, head);
++	return rhltable_insert(&fprobe_ip_table, &node->hlist, fprobe_rht_params);
+ }
+ 
+ /* Return true if there are synonims */
+ static bool delete_fprobe_node(struct fprobe_hlist_node *node)
+ {
+ 	lockdep_assert_held(&fprobe_mutex);
++	bool ret;
+ 
+ 	/* Avoid double deleting */
+ 	if (READ_ONCE(node->fp) != NULL) {
+ 		WRITE_ONCE(node->fp, NULL);
+-		hlist_del_rcu(&node->hlist);
++		rhltable_remove(&fprobe_ip_table, &node->hlist,
++				fprobe_rht_params);
+ 	}
+-	return !!find_first_fprobe_node(node->addr);
++
++	rcu_read_lock();
++	ret = !!rhltable_lookup(&fprobe_ip_table, &node->addr,
++				fprobe_rht_params);
++	rcu_read_unlock();
++
++	return ret;
+ }
+ 
+ /* Check existence of the fprobe */
+@@ -247,9 +255,10 @@ static inline int __fprobe_kprobe_handle
+ static int fprobe_entry(struct ftrace_graph_ent *trace, struct fgraph_ops *gops,
+ 			struct ftrace_regs *fregs)
+ {
+-	struct fprobe_hlist_node *node, *first;
+ 	unsigned long *fgraph_data = NULL;
+ 	unsigned long func = trace->func;
++	struct fprobe_hlist_node *node;
++	struct rhlist_head *head, *pos;
+ 	unsigned long ret_ip;
+ 	int reserved_words;
+ 	struct fprobe *fp;
+@@ -258,14 +267,11 @@ static int fprobe_entry(struct ftrace_gr
+ 	if (WARN_ON_ONCE(!fregs))
+ 		return 0;
+ 
+-	first = node = find_first_fprobe_node(func);
+-	if (unlikely(!first))
+-		return 0;
 -
--		orig_tmp = batadv_iv_ogm_orig_get(bat_priv, ethhdr->h_source);
--		if (!orig_tmp)
--			goto unlock;
--
- 		neigh_node = batadv_iv_ogm_neigh_new(if_incoming,
- 						     ethhdr->h_source,
--						     orig_node, orig_tmp);
--
--		batadv_orig_node_put(orig_tmp);
-+						     orig_node);
- 		if (!neigh_node)
- 			goto unlock;
- 	} else {
-@@ -1037,10 +1047,9 @@ batadv_iv_ogm_orig_update(struct batadv_
++	head = rhltable_lookup(&fprobe_ip_table, &func, fprobe_rht_params);
+ 	reserved_words = 0;
+-	hlist_for_each_entry_from_rcu(node, hlist) {
++	rhl_for_each_entry_rcu(node, pos, head, hlist) {
+ 		if (node->addr != func)
+-			break;
++			continue;
+ 		fp = READ_ONCE(node->fp);
+ 		if (!fp || !fp->exit_handler)
+ 			continue;
+@@ -276,13 +282,12 @@ static int fprobe_entry(struct ftrace_gr
+ 		reserved_words +=
+ 			FPROBE_HEADER_SIZE_IN_LONG + SIZE_IN_LONG(fp->entry_data_size);
+ 	}
+-	node = first;
+ 	if (reserved_words) {
+ 		fgraph_data = fgraph_reserve_data(gops->idx, reserved_words * sizeof(long));
+ 		if (unlikely(!fgraph_data)) {
+-			hlist_for_each_entry_from_rcu(node, hlist) {
++			rhl_for_each_entry_rcu(node, pos, head, hlist) {
+ 				if (node->addr != func)
+-					break;
++					continue;
+ 				fp = READ_ONCE(node->fp);
+ 				if (fp && !fprobe_disabled(fp))
+ 					fp->nmissed++;
+@@ -297,12 +302,12 @@ static int fprobe_entry(struct ftrace_gr
  	 */
- 	if (router_ifinfo &&
- 	    neigh_ifinfo->bat_iv.tq_avg == router_ifinfo->bat_iv.tq_avg) {
--		sum_orig = batadv_iv_orig_ifinfo_sum(router->orig_node,
--						     router->if_incoming);
--		sum_neigh = batadv_iv_orig_ifinfo_sum(neigh_node->orig_node,
--						      neigh_node->if_incoming);
-+		sum_orig = batadv_iv_ogm_neigh_ifinfo_sum(bat_priv, router);
-+		sum_neigh = batadv_iv_ogm_neigh_ifinfo_sum(bat_priv,
-+							   neigh_node);
- 		if (sum_orig >= sum_neigh)
- 			goto out;
- 	}
-@@ -1106,7 +1115,6 @@ static bool batadv_iv_ogm_calc_tq(struct
- 	if (!neigh_node)
- 		neigh_node = batadv_iv_ogm_neigh_new(if_incoming,
- 						     orig_neigh_node->orig,
--						     orig_neigh_node,
- 						     orig_neigh_node);
+ 	ret_ip = ftrace_regs_get_return_address(fregs);
+ 	used = 0;
+-	hlist_for_each_entry_from_rcu(node, hlist) {
++	rhl_for_each_entry_rcu(node, pos, head, hlist) {
+ 		int data_size;
+ 		void *data;
  
- 	if (!neigh_node)
-@@ -1303,6 +1311,32 @@ out:
+ 		if (node->addr != func)
+-			break;
++			continue;
+ 		fp = READ_ONCE(node->fp);
+ 		if (!fp || fprobe_disabled(fp))
+ 			continue;
+@@ -447,25 +452,21 @@ static int fprobe_addr_list_add(struct f
+ 	return 0;
  }
  
- /**
-+ * batadv_orig_to_direct_router() - get direct next hop neighbor to an orig address
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @orig_addr: the originator MAC address to search the best next hop router for
-+ * @if_outgoing: the interface where the OGM should be sent to
-+ *
-+ * Return: A neighbor node which is the best router towards the given originator
-+ * address. Bonding candidates are ignored.
-+ */
-+static struct batadv_neigh_node *
-+batadv_orig_to_direct_router(struct batadv_priv *bat_priv, u8 *orig_addr,
-+			     struct batadv_hard_iface *if_outgoing)
-+{
-+	struct batadv_neigh_node *neigh_node;
-+	struct batadv_orig_node *orig_node;
-+
-+	orig_node = batadv_orig_hash_find(bat_priv, orig_addr);
-+	if (!orig_node)
-+		return NULL;
-+
-+	neigh_node = batadv_orig_router_get(orig_node, if_outgoing);
-+	batadv_orig_node_put(orig_node);
-+
-+	return neigh_node;
-+}
-+
-+/**
-  * batadv_iv_ogm_process_per_outif() - process a batman iv OGM for an outgoing
-  *  interface
-  * @skb: the skb containing the OGM
-@@ -1372,8 +1406,9 @@ batadv_iv_ogm_process_per_outif(const st
+-static void fprobe_remove_node_in_module(struct module *mod, struct hlist_head *head,
+-					struct fprobe_addr_list *alist)
++static void fprobe_remove_node_in_module(struct module *mod, struct fprobe_hlist_node *node,
++					 struct fprobe_addr_list *alist)
+ {
+-	struct fprobe_hlist_node *node;
+ 	int ret = 0;
  
- 	router = batadv_orig_router_get(orig_node, if_outgoing);
- 	if (router) {
--		router_router = batadv_orig_router_get(router->orig_node,
--						       if_outgoing);
-+		router_router = batadv_orig_to_direct_router(bat_priv,
-+							     router->addr,
-+							     if_outgoing);
- 		router_ifinfo = batadv_neigh_ifinfo_get(router, if_outgoing);
+-	hlist_for_each_entry_rcu(node, head, hlist,
+-				 lockdep_is_held(&fprobe_mutex)) {
+-		if (!within_module(node->addr, mod))
+-			continue;
+-		if (delete_fprobe_node(node))
+-			continue;
+-		/*
+-		 * If failed to update alist, just continue to update hlist.
+-		 * Therefore, at list user handler will not hit anymore.
+-		 */
+-		if (!ret)
+-			ret = fprobe_addr_list_add(alist, node->addr);
+-	}
++	if (!within_module(node->addr, mod))
++		return;
++	if (delete_fprobe_node(node))
++		return;
++	/*
++	 * If failed to update alist, just continue to update hlist.
++	 * Therefore, at list user handler will not hit anymore.
++	 */
++	if (!ret)
++		ret = fprobe_addr_list_add(alist, node->addr);
+ }
+ 
+ /* Handle module unloading to manage fprobe_ip_table. */
+@@ -473,8 +474,9 @@ static int fprobe_module_callback(struct
+ 				  unsigned long val, void *data)
+ {
+ 	struct fprobe_addr_list alist = {.size = FPROBE_IPS_BATCH_INIT};
++	struct fprobe_hlist_node *node;
++	struct rhashtable_iter iter;
+ 	struct module *mod = data;
+-	int i;
+ 
+ 	if (val != MODULE_STATE_GOING)
+ 		return NOTIFY_DONE;
+@@ -485,8 +487,16 @@ static int fprobe_module_callback(struct
+ 		return NOTIFY_DONE;
+ 
+ 	mutex_lock(&fprobe_mutex);
+-	for (i = 0; i < FPROBE_IP_TABLE_SIZE; i++)
+-		fprobe_remove_node_in_module(mod, &fprobe_ip_table[i], &alist);
++	rhltable_walk_enter(&fprobe_ip_table, &iter);
++	do {
++		rhashtable_walk_start(&iter);
++
++		while ((node = rhashtable_walk_next(&iter)) && !IS_ERR(node))
++			fprobe_remove_node_in_module(mod, node, &alist);
++
++		rhashtable_walk_stop(&iter);
++	} while (node == ERR_PTR(-EAGAIN));
++	rhashtable_walk_exit(&iter);
+ 
+ 	if (alist.index > 0)
+ 		ftrace_set_filter_ips(&fprobe_graph_ops.ops,
+@@ -728,8 +738,16 @@ int register_fprobe_ips(struct fprobe *f
+ 	ret = fprobe_graph_add_ips(addrs, num);
+ 	if (!ret) {
+ 		add_fprobe_hash(fp);
+-		for (i = 0; i < hlist_array->size; i++)
+-			insert_fprobe_node(&hlist_array->array[i]);
++		for (i = 0; i < hlist_array->size; i++) {
++			ret = insert_fprobe_node(&hlist_array->array[i]);
++			if (ret)
++				break;
++		}
++		/* fallback on insert error */
++		if (ret) {
++			for (i--; i >= 0; i--)
++				delete_fprobe_node(&hlist_array->array[i]);
++		}
  	}
  
+ 	if (ret)
+@@ -824,3 +842,10 @@ out:
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(unregister_fprobe);
++
++static int __init fprobe_initcall(void)
++{
++	rhltable_init(&fprobe_ip_table, &fprobe_rht_params);
++	return 0;
++}
++late_initcall(fprobe_initcall);
 
 
 
