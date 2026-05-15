@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJVGL5JYB2pmzgIAu9opvQ
-	(envelope-from <stable+bounces-248626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:32:02 +0200
+	id IJLiENpUB2pIygIAu9opvQ
+	(envelope-from <stable+bounces-248814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 436395552E2
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C161B554B62
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F21AA33050E0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4F423599898
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5BB63B4EAF;
-	Fri, 15 May 2026 16:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E763F9277;
+	Fri, 15 May 2026 16:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvzOdAIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCK2StZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D4E2609EE;
-	Fri, 15 May 2026 16:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20B83F9270;
+	Fri, 15 May 2026 16:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862214; cv=none; b=asNT9IIamq1TjNXqIiPIxjEcY29CENLOf3zPO7si7R5FXvtL/b0VTApci63Z1uMFPTWCq7VLKylrdDCaK3uNQoAF0/gnEXTT933CiwoTjRxx4qrgvoLfTo54dHh/IkcbbZ8EY9IYdPQH+XmuW9ym2ukBURA66tBF9yHscciOTlM=
+	t=1778862699; cv=none; b=lSLYpz8O42z9zaPs64IfQi96aR25oJ1t+CUuteV3Idy24wYy8U4BBodXQfuEc6TTci8gTD9+VbPYt7gQQIokl1rd24R1SQ4IHJvNNK8zUvkUgQLJ9RwKr5KsGOI/j+6TFvW4AzLGHUmqzBl3cpfj9r3/u8Pt0jQHqY0Ygim1bjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862214; c=relaxed/simple;
-	bh=knIRYJ42Su7RJeYyetp9/YIJMSRcNpckCB3TDkm9Vp0=;
+	s=arc-20240116; t=1778862699; c=relaxed/simple;
+	bh=02+SIdtzs+wADiMShP1u0jIRPggpWSAyTTNdZ8c6cy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHlzKI27RmZc1mmwq8AFDYRuqVKNmae3hUVb+OD5YivJLRhTVjAlsXRwzXEu3i+++1RV0ENil9WqZEO4t4bU4tdfpBDRqu97ithsGhnqSr6ZwvMH9tD1WJjK6W8dP6mdZoA1W8kxl09znQ66iD/pvWbmQdOXCE+fKdUGQO5aJDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvzOdAIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE07C2BCB0;
-	Fri, 15 May 2026 16:23:34 +0000 (UTC)
+	 MIME-Version; b=P0MeIQVPaISmJQf7p1uWivY0X/uKRJgtop0JMKbVqIJvLWeglmyKmygmebmgAM3jYUZwHt5aiFLCVHz2WiDJ7I6J4fs5PeJhFipFxESwRP8x79Qc6Qu/Y+ktnsvSEveXJWMAWntWG0ANfAukl2pDqB6OpPFQmbvYb/AtDmeZ2fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCK2StZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C52C2BCB3;
+	Fri, 15 May 2026 16:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862214;
-	bh=knIRYJ42Su7RJeYyetp9/YIJMSRcNpckCB3TDkm9Vp0=;
+	s=korg; t=1778862699;
+	bh=02+SIdtzs+wADiMShP1u0jIRPggpWSAyTTNdZ8c6cy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HvzOdAITounhaewQs1kX9VPUyahu1YV08iJA4o1M2x5JiNV6Ibafef770UDn/KMb6
-	 0ewhW0DXGu0U0sQt60VobsNiQjMdY+Fm7DTikdtCnX+Dni34OP0W/opRosH8laaaBI
-	 +P/OL71XPE3zWebahJbTjHfk+CYoX9YOtDGXY3b8=
+	b=NCK2StZicV5HwE1r3gPjd0WhKbiV+xJ7w+cE2w9JJIfVY3MZj8qCgMvOF/rM4AvqQ
+	 xZ23dHoCaj3SGi8YDRy3t+mTpWvHQfkJLJZqIBVI6jt6ClqjY6FmLjS0oepEO05UzA
+	 6Wj23FqEUa5hvtkGdkuN6cYwIpRKOGW8dQHgJW+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	stable <stable@kernel.org>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.18 150/188] usb: typec: tcpm: reset internal port states on soft reset AMS
+	Matthew Brost <matthew.brost@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 7.0 149/201] drm/xe: Fix bo leak in xe_dma_buf_init_obj() on allocation failure
 Date: Fri, 15 May 2026 17:49:27 +0200
-Message-ID: <20260515154700.578800049@linuxfoundation.org>
+Message-ID: <20260515154701.799329699@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 436395552E2
+X-Rspamd-Queue-Id: C161B554B62
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -76,110 +75,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248626-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248814-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-commit 2909f0d4994fb4306bf116df5ccee797791fce2c upstream.
+commit 93a528f67ce5095bcab46a69839eca97f43dd352 upstream.
 
-Reset internal port states (such as vdm_sm_running and
-explicit_contract) on soft reset AMS as the port needs to negotiate a
-new contract. The consequence of leaving the states in as-is cond are as
-follows:
-  * port is in SRC power role and an explicit contract is negotiated
-    with the port partner (in sink role)
-  * port partner sends a Soft Reset AMS while VDM State Machine is
-    running
-  * port accepts the Soft Reset request and the port advertises src caps
-  * port partner sends a Request message but since the explicit_contract
-    and vdm_sm_running are true from previous negotiation, the port ends
-    up sending Soft Reset instead of Accept msg.
+When drm_gpuvm_resv_object_alloc() fails, the pre-allocated storage bo
+is not freed. Add xe_bo_free(storage) before returning the error.
 
-Stub Log:
-[  203.653942] AMS DISCOVER_IDENTITY start
-[  203.653947] PD TX, header: 0x176f
-[  203.655901] PD TX complete, status: 0
-[  203.657470] PD RX, header: 0x124f [1]
-[  203.657477] Rx VDM cmd 0xff008081 type 2 cmd 1 len 1
-[  203.657482] AMS DISCOVER_IDENTITY finished
-[  203.657484] cc:=4
-[  204.155698] PD RX, header: 0x144f [1]
-[  204.155718] Rx VDM cmd 0xeeee8001 type 0 cmd 1 len 1
-[  204.155741] PD TX, header: 0x196f
-[  204.157622] PD TX complete, status: 0
-[  204.160060] PD RX, header: 0x4d [1]
-[  204.160066] state change SRC_READY -> SOFT_RESET [rev2 SOFT_RESET_AMS]
-[  204.160076] PD TX, header: 0x163
-[  204.162486] PD TX complete, status: 0
-[  204.162832] AMS SOFT_RESET_AMS finished
-[  204.162840] cc:=4
-[  204.162891] AMS POWER_NEGOTIATION start
-[  204.162896] state change SOFT_RESET -> AMS_START [rev2 POWER_NEGOTIATION]
-[  204.162908] state change AMS_START -> SRC_SEND_CAPABILITIES [rev2 POWER_NEGOTIATION]
-[  204.162913] PD TX, header: 0x1361
-[  204.165529] PD TX complete, status: 0
-[  204.165571] pending state change SRC_SEND_CAPABILITIES -> SRC_SEND_CAPABILITIES_TIMEOUT @ 60 ms [rev2 POWER_NEGOTIATION]
-[  204.166996] PD RX, header: 0x1242 [1]
-[  204.167009] state change SRC_SEND_CAPABILITIES -> SRC_SOFT_RESET_WAIT_SNK_TX [rev2 POWER_NEGOTIATION]
-[  204.167019] AMS POWER_NEGOTIATION finished
-[  204.167020] cc:=4
-[  204.167083] AMS SOFT_RESET_AMS start
-[  204.167086] state change SRC_SOFT_RESET_WAIT_SNK_TX -> SOFT_RESET_SEND [rev2 SOFT_RESET_AMS]
-[  204.167092] PD TX, header: 0x16d
-[  204.168824] PD TX complete, status: 0
-[  204.168854] pending state change SOFT_RESET_SEND -> HARD_RESET_SEND @ 60 ms [rev2 SOFT_RESET_AMS]
-[  204.171876] PD RX, header: 0x43 [1]
-[  204.171879] AMS SOFT_RESET_AMS finished
+xe_dma_buf_init_obj() calls xe_bo_init_locked(), which frees the bo on
+error. Therefore, xe_dma_buf_init_obj() must also free the bo on its own
+error paths. Otherwise, since xe_gem_prime_import() cannot distinguish
+whether the failure originated from xe_dma_buf_init_obj() or from
+xe_bo_init_locked(), it cannot safely decide whether the bo should be
+freed.
 
-This causes COMMON.PROC.PD.11.2 check failure for
-TEST.PD.VDM.SRC.2_Rev2Src test on the PD compliance tester.
+Add comments documenting the ownership semantics: on success, ownership
+of storage is transferred to the returned drm_gem_object; on failure,
+storage is freed before returning.
 
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Fixes: 8d3a0578ad1a ("usb: typec: tcpm: Respond Wait if VDM state machine is running")
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260414-fix-soft-reset-v1-1-01d7cb9764e2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v2: Add comments to explain the free logic.
+
+Fixes: eb289a5f6cc6 ("drm/xe: Convert xe_dma_buf.c for exhaustive eviction")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4.6
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260408175255.3402838-4-shuicheng.lin@intel.com
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+(cherry picked from commit 78a6c5f899f22338bbf48b44fb8950409c5a69b9)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/xe/xe_dma_buf.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -5526,6 +5526,8 @@ static void run_state_machine(struct tcp
- 		usb_power_delivery_unregister_capabilities(port->partner_source_caps);
- 		port->partner_source_caps = NULL;
- 		tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
-+		port->vdm_sm_running = false;
-+		port->explicit_contract = false;
- 		tcpm_ams_finish(port);
- 		if (port->pwr_role == TYPEC_SOURCE) {
- 			port->upcoming_state = SRC_SEND_CAPABILITIES;
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -238,6 +238,13 @@ struct dma_buf *xe_gem_prime_export(stru
+ 	return buf;
+ }
+ 
++/*
++ * Takes ownership of @storage: on success it is transferred to the returned
++ * drm_gem_object; on failure it is freed before returning the error.
++ * This matches the contract of xe_bo_init_locked() which frees @storage on
++ * its error paths, so callers need not (and must not) free @storage after
++ * this call.
++ */
+ static struct drm_gem_object *
+ xe_dma_buf_init_obj(struct drm_device *dev, struct xe_bo *storage,
+ 		    struct dma_buf *dma_buf)
+@@ -251,8 +258,10 @@ xe_dma_buf_init_obj(struct drm_device *d
+ 	int ret = 0;
+ 
+ 	dummy_obj = drm_gpuvm_resv_object_alloc(&xe->drm);
+-	if (!dummy_obj)
++	if (!dummy_obj) {
++		xe_bo_free(storage);
+ 		return ERR_PTR(-ENOMEM);
++	}
+ 
+ 	dummy_obj->resv = resv;
+ 	xe_validation_guard(&ctx, &xe->val, &exec, (struct xe_val_flags) {}, ret) {
+@@ -261,6 +270,7 @@ xe_dma_buf_init_obj(struct drm_device *d
+ 		if (ret)
+ 			break;
+ 
++		/* xe_bo_init_locked() frees storage on error */
+ 		bo = xe_bo_init_locked(xe, storage, NULL, resv, NULL, dma_buf->size,
+ 				       0, /* Will require 1way or 2way for vm_bind */
+ 				       ttm_bo_type_sg, XE_BO_FLAG_SYSTEM, &exec);
 
 
 
