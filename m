@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJE8LahPB2o9yAIAu9opvQ
-	(envelope-from <stable+bounces-248481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:54:00 +0200
+	id 0AqpA31VB2oHzAIAu9opvQ
+	(envelope-from <stable+bounces-248303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:18:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E68555421E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:54:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8457D554C90
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C1C513081CF0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0AFF1307F8CD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408AC3EFFBF;
-	Fri, 15 May 2026 16:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3328E3FD976;
+	Fri, 15 May 2026 16:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHYG2b5s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2jROBE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043EC3B4EAF;
-	Fri, 15 May 2026 16:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD143F86E1;
+	Fri, 15 May 2026 16:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861840; cv=none; b=rexuLyCX4fJum80Xn9/yq14vVoL0nwFp83IKBFP/D/IWh8lUTIKHopW7F+baNAxcnPqt0iDXiBjbTGg4ZXEEXeyrxRIqMz2ZE53VrBJ+O5x2ZW47V3InbS/vzjWISCCHWXChk9mqADm/GwD+XzotKwZ2jFt47ntiU6rpqgN0f8o=
+	t=1778861387; cv=none; b=kVZbwfO9RggmChM6eEmUARLvFdrJJj4I31yYFQeYwWaOqw92Pw+sAKPqMO09YivDABjX0J3LgQSzSUpjQSikhdSGbKMtJvNCXh22jtNo/+EFLzQrEWk+xDgoWO2kRohlRkcWS+Qb64jgTIx8XjgFT1RWc+ukzbc87XV8f8ojTlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861840; c=relaxed/simple;
-	bh=hXiQJptjOfQckX4sa83RGJGooapz7GczEm40j1Mx5vE=;
+	s=arc-20240116; t=1778861387; c=relaxed/simple;
+	bh=Wjyj/ze//pucDjZ4XBl0MUYJMrJFek5Gji513WjfnwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxGHznvyEtFDxPzIJ7r18/D1J+QQebfR5iH5e/uLwfzFa5aeY6D0jBWj+pKnVtpy83rcZmEaUhysYIoItgGLnx0pvypNnXdFX4j3bL5MDtLpDXRuyqTv8pYVOzxfvwYUK7yefTEI8TEEmiYeZ1uu6GIF/X+o0QE7JiXqZJWdqko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHYG2b5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBA7C2BCB0;
-	Fri, 15 May 2026 16:17:19 +0000 (UTC)
+	 MIME-Version; b=m9DG4RrSWejE8BEfi6crN8AeVabgwtRDPkX2OQELx4DfVXDYIRIwGMmhT+fTXF0UEbaEvz2u8wwwH6M1zbJsh3YINucWZ9fHgebtV/Hsow5KHzN3pVrO/wXWQO24hh5q5WJqWn4sOMjq5wAllpaaYkQmJFNm9mCYfZm9xj7e05c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2jROBE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81429C2BCB0;
+	Fri, 15 May 2026 16:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861839;
-	bh=hXiQJptjOfQckX4sa83RGJGooapz7GczEm40j1Mx5vE=;
+	s=korg; t=1778861386;
+	bh=Wjyj/ze//pucDjZ4XBl0MUYJMrJFek5Gji513WjfnwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHYG2b5sPGrJzX/m76w065jDTkO64XzawDdANCdrKdU2jc2UAYpk5G1DixblyYuYr
-	 DS1BC5GN0WkRopvuVwlKrzoKCpmuoTUDcJs1DJYuK1JQnXcvVHW6Zi49fDbg0aqgoK
-	 f0iD32djSBJtcxac4o0YynHHR/PJ9UXZBaZF1sX8=
+	b=w2jROBE7QgIgCxHfVKtzjqoUyemV39JHLEcaDB9oJsr5Zj/qZxBe02B+1QOH8hspm
+	 IelFqXao4an9G3brKp855PF3bwT9ePJwurJvMsvicGgI5OPCqe+Szp2og6vT0OSWNN
+	 ch4J9+QBF2u7oLFycghxL3Kbg6FxBDpE3eYWA+pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyu Jin <xingyuj@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.18 001/188] HID: playstation: Clamp num_touch_reports
+	Wenyou Yang <wenyou.yang@atmel.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 309/474] regulator: act8945a: fix OF node reference imbalance
 Date: Fri, 15 May 2026 17:46:58 +0200
-Message-ID: <20260515154657.342987963@linuxfoundation.org>
+Message-ID: <20260515154721.693006354@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2E68555421E
+X-Rspamd-Queue-Id: 8457D554C90
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248481-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248303-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,59 +91,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,atmel.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T.J. Mercier <tjmercier@google.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit cac61b58a3b6340c52afa06bb15eac033158db2f upstream.
+commit 0d15ce31375ccef4162f960b34547a821b7619d2 upstream.
 
-A device would never lie about the number of touch reports would it?
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-If it does the loop in dualshock4_parse_report will read off the end of
-the touch_reports array, up to about 2 KiB for the maximum number of 256
-loop iteraions. The data that is read is emitted via evdev if the
-DS4_TOUCH_POINT_INACTIVE bit happens to be set. Protect against this by
-clamping the num_touch_reports value provided by the device to the
-maximum size of the touch_reports array.
+Fix this by using the intended helper for reusing OF nodes.
 
-Fixes: 752038248808 ("HID: playstation: add DualShock4 touchpad support.")
-Cc: stable@vger.kernel.org
-Reported-by: Xingyu Jin <xingyuj@google.com>
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 38c09961048b ("regulator: act8945a: add regulator driver for ACT8945A")
+Cc: stable@vger.kernel.org	# 4.6
+Cc: Wenyou Yang <wenyou.yang@atmel.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260408073055.5183-7-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-playstation.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/regulator/act8945a-regulator.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/hid-playstation.c
-+++ b/drivers/hid/hid-playstation.c
-@@ -2378,7 +2378,8 @@ static int dualshock4_parse_report(struc
- 			(struct dualshock4_input_report_usb *)data;
+--- a/drivers/regulator/act8945a-regulator.c
++++ b/drivers/regulator/act8945a-regulator.c
+@@ -302,8 +302,9 @@ static int act8945a_pmic_probe(struct pl
+ 		num_regulators = ARRAY_SIZE(act8945a_regulators);
+ 	}
  
- 		ds4_report = &usb->common;
--		num_touch_reports = usb->num_touch_reports;
-+		num_touch_reports = min_t(u8, usb->num_touch_reports,
-+					  ARRAY_SIZE(usb->touch_reports));
- 		touch_reports = usb->touch_reports;
- 	} else if (hdev->bus == BUS_BLUETOOTH && report->id == DS4_INPUT_REPORT_BT &&
- 		   size == DS4_INPUT_REPORT_BT_SIZE) {
-@@ -2392,7 +2393,8 @@ static int dualshock4_parse_report(struc
- 		}
- 
- 		ds4_report = &bt->common;
--		num_touch_reports = bt->num_touch_reports;
-+		num_touch_reports = min_t(u8, bt->num_touch_reports,
-+					  ARRAY_SIZE(bt->touch_reports));
- 		touch_reports = bt->touch_reports;
- 	} else if (hdev->bus == BUS_BLUETOOTH &&
- 		   report->id == DS4_INPUT_REPORT_BT_MINIMAL &&
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
++
+ 	config.dev = &pdev->dev;
+-	config.dev->of_node = pdev->dev.parent->of_node;
+ 	config.driver_data = act8945a;
+ 	for (i = 0; i < num_regulators; i++) {
+ 		rdev = devm_regulator_register(&pdev->dev, &regulators[i],
 
 
 
