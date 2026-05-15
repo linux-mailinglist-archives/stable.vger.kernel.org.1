@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248502-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCcGNgxMB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248369-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:36 +0200
+	id ADbdLaRXB2pVzQIAu9opvQ
+	(envelope-from <stable+bounces-248502-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:28:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF6F553A50
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCB85550DA
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 58614315FEC4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 740783441BE6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BC43FD950;
-	Fri, 15 May 2026 16:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEEC3F927E;
+	Fri, 15 May 2026 16:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5WzxlDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pnu5xreI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42DD3FD949;
-	Fri, 15 May 2026 16:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6C33F9272;
+	Fri, 15 May 2026 16:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861558; cv=none; b=Wf3aahYzFF2fDfodH9Eu+/pJnh4m7uFfJAF7CBqrWvZvaOJ+Oj/QF4LI6BXVzoMIjaBW6+Sf5Jj9BdwOt12KU2Ck9yNcRwd7ptHuVwWKG/jQt1gPHXirIzubRSVVjHTGa2Z6wUvElulCRAZxDCbuIpFtjdlcufSu40d8OZWE//8=
+	t=1778861895; cv=none; b=QxkaP3Ex2aMOZQi0FXv0E97Nq3fbLXkaSGnLZql8Np3+FQqKNb1L4tFnZnr8mV/WYLArKsLQeI1nKNeNj8MNEHX/FCUgk2cj8t0rzymtAoF7k5oW2A5BlhRkdm7rYtYCTEdce6qyvrgaTXqA5odmgEgzne5h5t0yMzy02FhmHP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861558; c=relaxed/simple;
-	bh=hz1BZOeBydhyjIywsSqrFol7mgiT9Hn3cYD1gH5nkYk=;
+	s=arc-20240116; t=1778861895; c=relaxed/simple;
+	bh=6T4kRg2ocfyC0YjvOjSHuCbOaP6UuXuckBKOJUCoyDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwRDChseDbgOiHxvAfhkSwAbuxS3g6Rl7BFUkevDAncOsBR6cQQqoVgmWe8Ku9ajsO48yNYZr3tXJwFK+8YXgu7dVYHRe83ojXOjURayF+Frx+69Q6xgv+U1DgMpynv4vAscWdrQh0yvtssAxe4JyOvGsxAkE1SFnblF+X+JBpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5WzxlDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1EFC2BCB0;
-	Fri, 15 May 2026 16:12:38 +0000 (UTC)
+	 MIME-Version; b=Bthl/VAMCLCu7REMpwvoTAowNl0izYjFQ7qHUP1Hsqh9Ryzqry6TbdPGnSg2dfS4iO2OWvoFdHU2sV9JUvyl+HQbpDAZ/AOLkK4UqsOrScdGAClti1+f7znChNMIo0955fmQyoE5muiY8ht1NPMmLRiNH9YlDlvP2RISrLHCqv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pnu5xreI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99C8C2BCB3;
+	Fri, 15 May 2026 16:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861558;
-	bh=hz1BZOeBydhyjIywsSqrFol7mgiT9Hn3cYD1gH5nkYk=;
+	s=korg; t=1778861895;
+	bh=6T4kRg2ocfyC0YjvOjSHuCbOaP6UuXuckBKOJUCoyDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5WzxlDw/L9VMGNqwfl18E9DExkLIXSfW9trZ8Tjn4HIJ0zqYp2D4arn0nETXXJh0
-	 MB/BaEwjY1L+KTJeVTQxVrykEqAAwLMjBejEXVqc6+TZmiVgZ4IfFqlbO30V5GM2uw
-	 mkGUI9fj8crs1wEbOXx+VdPVTTlRhHWd4JI8ClSE=
+	b=Pnu5xreIDLwHlJk6s+OFDe1zwMktc2Z8OuQ8GRaveeweFXOWfymBwHLccdIHocJNK
+	 bDzy1/Zjs1esZ27l8CqbXXUBskTurMcjGINx2Zus4AePS7+7ciX2rnGD5pPy876MPI
+	 I50nlUAr3/TL6ZRUXuN9KkJworUUkHcQYDiqSyP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harini Katakam <harinik@xilinx.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 338/474] spi: cadence: fix controller deregistration
+Subject: [PATCH 6.18 030/188] regulator: rk808: fix OF node reference imbalance
 Date: Fri, 15 May 2026 17:47:27 +0200
-Message-ID: <20260515154722.327419876@linuxfoundation.org>
+Message-ID: <20260515154657.961075693@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +65,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6DF6F553A50
+X-Rspamd-Queue-Id: 1CCB85550DA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248502-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248369-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,xilinx.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email,collabora.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 666fa7e9ca98e71c880086ca24147ae843f1ed6e upstream.
+commit 65290b24d8a5f0b8cd065201e653db824c4a4da6 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-Fixes: c474b3866546 ("spi: Add driver for Cadence SPI controller")
-Cc: stable@vger.kernel.org	# 3.16
-Cc: Harini Katakam <harinik@xilinx.com>
+Fix this by using the intended helper for reusing OF nodes.
+
+Fixes: 647e57351f8e ("regulator: rk808: reduce 'struct rk808' usage")
+Cc: stable@vger.kernel.org	# 6.2
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-2-johan@kernel.org
+Link: https://patch.msgid.link/20260408073055.5183-3-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/regulator/rk808-regulator.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -686,6 +686,10 @@ static void cdns_spi_remove(struct platf
- 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
- 	struct cdns_spi *xspi = spi_controller_get_devdata(ctlr);
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -1875,8 +1875,7 @@ static int rk808_regulator_probe(struct
+ 	struct regmap *regmap;
+ 	int ret, i, nregulators;
  
-+	spi_controller_get(ctlr);
-+
-+	spi_unregister_controller(ctlr);
-+
- 	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
+-	pdev->dev.of_node = pdev->dev.parent->of_node;
+-	pdev->dev.of_node_reused = true;
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
  
- 	if (!spi_controller_is_target(ctlr)) {
-@@ -693,7 +697,7 @@ static void cdns_spi_remove(struct platf
- 		pm_runtime_set_suspended(&pdev->dev);
- 	}
- 
--	spi_unregister_controller(ctlr);
-+	spi_controller_put(ctlr);
- }
- 
- /**
+ 	regmap = dev_get_regmap(pdev->dev.parent, NULL);
+ 	if (!regmap)
 
 
 
