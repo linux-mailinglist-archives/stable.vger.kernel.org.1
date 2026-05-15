@@ -1,145 +1,204 @@
-Return-Path: <stable+bounces-247650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBaQDnH7Bmp1qQIAu9opvQ
-	(envelope-from <stable+bounces-247650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:54:41 +0200
+	id QAEFAKb6BmoKqQIAu9opvQ
+	(envelope-from <stable+bounces-247651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:51:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D60254DD23
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:54:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F380254DB84
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 467D231E4818
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:27:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E78583066B51
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91203D16EE;
-	Fri, 15 May 2026 10:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243E33D0BF9;
+	Fri, 15 May 2026 10:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="m41ViD7k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gS/aLJdf"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B133D0BFF;
-	Fri, 15 May 2026 10:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44023C3422;
+	Fri, 15 May 2026 10:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778840840; cv=none; b=e9C4FrUW7bdfhop3bpeiIy5i3qyydZ+L8Ty5sy2EIJSuCFKUxqodwQvJGWUZojw7pASIJD5rWuZxuIq60l1v1fzy7C+RMcIJkWXXIjkE4xnWzQ1B1taSNMh76NmwI8pwXtA67QBFxwqT160J+ny0Z8KcH3rSrPP5lz3qRNLtUeo=
+	t=1778840937; cv=none; b=Z1z/CS213QJzqp5py1oDKDnXzzo3cEuOBZrsdDO1X68llnLWomGy8isV4sad4fK8amX4U9WZqjDwBnXivAmPPfgPVyyM+y9via3cYmT3hzp6sXaZP2JYacFDydXaYsIDuID5cgvJnmai3PU5+UOtX7wwUquxZVp6MrRdXSCgfN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778840840; c=relaxed/simple;
-	bh=c468QXYz5itwD5TKpkIk1ARB0vs+NdzRfjROrTmrJsQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l2h2sTWJTWnFMraXfBWpQ1dtiqErNGj9BttAkhotXcXE7ql+t/qvFIBAwM1e9y3i39/JRZSZDmb+nlivhqQaKc4UsKqBNpLvwxFyw174DMcdVDwH5dyX3Mh6j3aAlgCL4JFqrdkzZaOlF89ELTebk9RCrWT2VSQv8ecmLwHJu/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=m41ViD7k; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=9G1ALRqYKbjNfcTKGMoNtfKv7WmzEN5J93MbDdOhgmw=; 
-	b=m41ViD7kr8cluaR9ueZnWAEOxUXBwKRYxMXsLBYLjCenZ5yadDrvmt5jXda4wrXgPCqNkURH7Bj
-	oYP9zv/5JRSwr5rKOpBKU5zKgUmyb5d5i3NwmtujeBPi/RgGE6YxRh4Z32YM6S6xfXJjdUEP6eyUs
-	WEeq1uN8hhn2HZkbOfC5XpJk3ZfO3JvgkO/TqAoYAsbU0DJyLcKamlg8O+vxk1czZzuAhZuDo93gy
-	ol9O/ki29wJRLVjNx7ywDV9DiOHslWtga0d04GPjpI13x7OH/OLugYbHAYQtpIMR5xgC/v+T4m27Y
-	JeG13Jn4sVzzga36F01/zVd6q0UbNT8eohWg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1wNpl3-00EOev-0G;
-	Fri, 15 May 2026 18:27:06 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 15 May 2026 18:27:05 +0800
-Date: Fri, 15 May 2026 18:27:05 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-crypto@vger.kernel.org, Eric Biggers <ebiggers@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org, Ilya Dryomov <idryomov@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>, ceph-devel@vger.kernel.org,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] crypto: krb5 - filter out async aead implementations
- at alloc
-Message-ID: <agb0-eaQSBTRu7RB@gondor.apana.org.au>
-References: <20260502132506.1936358-1-michael.bommarito@gmail.com>
- <20260510232455.2245650-1-michael.bommarito@gmail.com>
+	s=arc-20240116; t=1778840937; c=relaxed/simple;
+	bh=y2KsAyUCMOwgJGzqhlQw13mkwi83vxy6o+v19R/wxaY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mB1ns5e+YcJfSmhS19XiJdHJuYDOFXlmhPLH2vYa/B54zjrbSd5UOqpD/NPVUhU7m/6+BTHb6OLcs0sCDwiNxbr+4q21czXLdUDZDY4PCTQZPx/i7DaRG7E7oI+8K30vjH+Y4Lecc/imeoQ1nxi2ZbwVK3YnDB3T2X6DuIra1hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gS/aLJdf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7A914C2BCB0;
+	Fri, 15 May 2026 10:28:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778840937;
+	bh=y2KsAyUCMOwgJGzqhlQw13mkwi83vxy6o+v19R/wxaY=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=gS/aLJdfXJ9Ef1Ag85wiXok+2pEsfwv2c4tM8G0d07KrSSbyRkFEGC5/7OVJMoaTR
+	 WvNhLK4/N0yTfRGG4Fv2S8tdoYcwbUKjiQFirJFOERrTtVzDjazuDMomAov4yZebuN
+	 5P86aUqIoIzVfMub3R/3CLxhl9CO9NDazYxFa74g/BIHAHE0EaHEV1sNm42peUdgl6
+	 rNheoqtnQCBnUdiOwBX9Q9NgdUthLdbzOxkRFo1h98bGAfuLIxRIK0lPE3dpOFrP3g
+	 KkJHmLWtx14Wx7TA3lN0FIwN5rid8AjknNJG+Zo2F2im8kpECspIFjO+qCmja0OLRB
+	 WL54IRc1vs+Zw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69BB6CD4F25;
+	Fri, 15 May 2026 10:28:57 +0000 (UTC)
+From: Joshua Crofts via B4 Relay <devnull+joshua.crofts1.gmail.com@kernel.org>
+Date: Fri, 15 May 2026 12:28:23 +0200
+Subject: [PATCH v2] iio: magnetometer: ak8975: fix potential kernel stack
+ memory leak
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260510232455.2245650-1-michael.bommarito@gmail.com>
-X-Rspamd-Queue-Id: 8D60254DD23
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260515-magnetometer-kernel-mem-leak-v2-1-320e1ad4843d@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAEb1BmoC/43NQQ6CMBCF4auYWTuGViDFlfcwLEY6wATampYQD
+ eHuVk7g8nuL/22QOAonuJ02iLxKkuAz9PkE3Uh+YBSbDbrQdVGpEh0NnpfgeOGIE0fPMzp2ODN
+ NaI0hU1ltqC4gJ16Re3kf+UebPUpaQvwcb6v6rX+GV4UKr9WzNLZump76++BI5ksXHLT7vn8BC
+ 3Pz5MgAAAA=
+X-Change-ID: 20260514-magnetometer-kernel-mem-leak-d88a85d28a60
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Gregor Boirie <gregor.boirie@parrot.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org, 
+ Joshua Crofts <joshua.crofts1@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778840936; l=2859;
+ i=joshua.crofts1@gmail.com; s=20260422; h=from:subject:message-id;
+ bh=DGUZ8ICq5s3dP8tVuyORKa78JXv6M2/K7bYZ13VS8lM=;
+ b=WIr5H10DW5ZEdrIL5D81+NvLroUVPHffahavXKKec3pqdz7IrlycqW8IFlmV2j3w92IeXyTtW
+ p2SU1eYxSOnD73S1Qwzt9d5kOmNpdg+UNzB/8ADA9aqgGJo302QQfn2
+X-Developer-Key: i=joshua.crofts1@gmail.com; a=ed25519;
+ pk=Xd+UVoRPiiI0K3LHQ2XIcXmO0jvVuFTv9eTx3lgBphI=
+X-Endpoint-Received: by B4 Relay for joshua.crofts1@gmail.com/20260422 with
+ auth_id=746
+X-Original-From: Joshua Crofts <joshua.crofts1@gmail.com>
+Reply-To: joshua.crofts1@gmail.com
+X-Rspamd-Queue-Id: F380254DB84
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[redhat.com,davemloft.net,vger.kernel.org,kernel.org,auristor.com,lists.infradead.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-247650-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247651-lists,stable=lfdr.de,joshua.crofts1.gmail.com];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_TO(0.00)[kernel.org,baylibre.com,analog.com,parrot.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[]
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_REPLYTO(0.00)[joshua.crofts1@gmail.com]
 X-Rspamd-Action: no action
 
-On Sun, May 10, 2026 at 07:24:55PM -0400, Michael Bommarito wrote:
-> krb5_aead_encrypt(), krb5_aead_decrypt() in rfc3961_simplified.c and
-> rfc8009_encrypt(), rfc8009_decrypt() in rfc8009_aes2.c set a NULL
-> completion callback and treat any negative return from
-> crypto_aead_{encrypt,decrypt}() as terminal, falling through to
-> kfree_sensitive(buffer).  When the encrypt_name resolves to an
-> async AEAD instance the request returns -EINPROGRESS, the buffer
-> is freed while the backend's worker still holds a pointer, and the
-> worker dereferences the freed slab on completion.
-> 
-> KASAN report under UML+SLUB with a synthetic async aead backend
-> bound to krb5->encrypt_name:
-> 
->   BUG: KASAN: slab-use-after-free in t5_stub_complete+0x7d/0xc7
-> 
-> The helpers were written synchronously, so filter the async
-> instances out at allocation time instead of plumbing
-> crypto_wait_req() through every call site.
-> 
-> Reachable via net/rxrpc/rxgk.c, fs/afs/cm_security.c and
-> net/ceph/crypto.c on systems with an async AEAD provider bound to
-> the krb5 enctype name.
-> 
-> Fixes: 00244da40f78 ("crypto/krb5: Implement the Kerberos5 rfc3961 encrypt and decrypt functions")
-> Fixes: 6c3c0e86c2ac ("crypto/krb5: Implement the AES enctypes from rfc8009")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
-> Assisted-by: Claude:claude-opus-4-7
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> ---
->  crypto/krb5/krb5_api.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+From: Joshua Crofts <joshua.crofts1@gmail.com>
 
-Patch applied.  Thanks.
+Currently in the AK8975 driver there are four instances where potential
+uninitialized kernel stack memory leaks can occur. If
+i2c_smbus_read_i2c_block_data_or_emulated() returns a value less than
+the size of the buffer, uninitialized bytes are retained in the buffer
+and later the buffer is passed on to IIO buffers, potentially leaking
+memory to userspace.
+
+Fix this by adding checks whether the return value of the function is
+equal to the size of the buffer and subsequently if the value is
+lesser than zero to distinguish from a returned error code.
+
+Fixes: bc11ca4a0b84 ("iio:magnetometer:ak8975: triggered buffer support")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260513-ak8975-fix-v1-1-104ea605dd54%40gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Joshua Crofts <joshua.crofts1@gmail.com>
+---
+Changes in v2:
+- Added 2 additional checks
+- Removed nested if statements
+- Link to v1: https://lore.kernel.org/r/20260514-magnetometer-kernel-mem-leak-v1-1-35b48d699faf@gmail.com
+---
+ drivers/iio/magnetometer/ak8975.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+index b648b0afa5733fd7a54bdf2b8f92f00e924c074b..e085c5a6583dfe40c653abf4936594a5acd08f51 100644
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -495,6 +495,10 @@ static int ak8975_who_i_am(struct i2c_client *client,
+ 		dev_err(&client->dev, "Error reading WIA\n");
+ 		return ret;
+ 	}
++	if (ret != sizeof(wia_val)) {
++		dev_err(&client->dev, "Error reading WIA\n");
++		return -EIO;
++	}
+ 
+ 	if (wia_val[0] != AK8975_DEVICE_ID)
+ 		return -ENODEV;
+@@ -619,6 +623,10 @@ static int ak8975_setup(struct i2c_client *client)
+ 		dev_err(&client->dev, "Not able to read asa data\n");
+ 		return ret;
+ 	}
++	if (ret != sizeof(data->asa)) {
++		dev_err(&client->dev, "Error reading asa data\n");
++		return -EIO;
++	}
+ 
+ 	/* After reading fuse ROM data set power-down mode */
+ 	ret = ak8975_set_mode(data, POWER_DOWN);
+@@ -758,6 +766,10 @@ static int ak8975_read_axis(struct iio_dev *indio_dev, int index, int *val)
+ 			sizeof(rval), (u8*)&rval);
+ 	if (ret < 0)
+ 		goto exit;
++	if (ret != sizeof(rval)) {
++		ret = -EIO;
++		goto exit;
++	}
+ 
+ 	/* Read out ST2 for release lock on measurement data. */
+ 	ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
+@@ -873,6 +885,8 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
+ 							(u8 *)fval);
+ 	if (ret < 0)
+ 		goto unlock;
++	if (ret != sizeof(fval))
++		goto unlock;
+ 
+ 	mutex_unlock(&data->lock);
+ 
+
+---
+base-commit: 86138b484d6367a57312f69af4ec958806c2673c
+change-id: 20260514-magnetometer-kernel-mem-leak-d88a85d28a60
+
+Best regards,
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Joshua Crofts <joshua.crofts1@gmail.com>
+
+
 
