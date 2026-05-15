@@ -1,301 +1,228 @@
-Return-Path: <stable+bounces-247781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIQnIdknB2ppsQIAu9opvQ
-	(envelope-from <stable+bounces-247781-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:04:09 +0200
+	id OPiVDAcpB2ppsQIAu9opvQ
+	(envelope-from <stable+bounces-247782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:09:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE00550F64
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE72D551070
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D68430D1CDB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:55:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FC59300B449
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBCD47ECD6;
-	Fri, 15 May 2026 13:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6C947ECD6;
+	Fri, 15 May 2026 13:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bGdWIDPm"
+	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="bGMhN37H"
 X-Original-To: stable@vger.kernel.org
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013000.outbound.protection.outlook.com [40.93.196.0])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6D1480963
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 13:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778853315; cv=fail; b=Xl26HliyniNvWdnqYmh30TRN11vYFpAzNhYj9T5KF/1OUApYSdyqEpSUtgwBfgPxYaCaj95SNjghw5xOU+21AJ/0KXUgy8oLld5I0NCovm8rDDhqWcPEvBUdwICVn/NAHNY0QvqYHFIFglSIWOBdUb/GSAOoWmzWpsZS+ZFcqiI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778853315; c=relaxed/simple;
-	bh=bZZTEh0cf37DbPXIwA9d5tCnSOcaiARqWYOqnn40pmw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TpiObMopWMlWho7QT9FytPbRzlpY3F3SQsJoCNobALRYc10yJXc5Dk//uOIKeWXBfS8tUpWu7l3n18J4o1oXNsuGhXaWWwkwAIzgBQVtxCYDZGBbQXMzdSMxQQstah/okdn/RCxsMVqA1O9EecpWKZZgsVP6IYmeMkCp226WZo4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bGdWIDPm; arc=fail smtp.client-ip=40.93.196.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zL+ev0NyV/zACwPau/nvhFNiWfAkf3CGUz5dxzYpdZOiu3+SDXZ+MfuoH1+7+4lqxmAwlsCvHXnMbTIDnXwEBwXaD0dzpAWRGgeke1Dv27dRE1vtxJh5SSCMO7wcrJfTJbot9SY8iJsSehTtMAzmAgc84bjWPHq1cFrPe9hoiBUGB5wNKgevO/bM2SSUWkbFNQm4F5pJmh0fIARP5RaZsGtc39TQhr8zJ7CecSbffCqbRQ2peSEhRQxSy+8CUSufO/tW4gwTT0hVnrhTu5UUAbQgBpzILAlxXRUxd9US0rTe2vqxluebfRkRHYMYon9m4mmbeSqxTRq8ACbZqqtWwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Dpu+jlCilEyhoB+rJ3lZDVsaHZ1m0bOiiK+3HNPk4hA=;
- b=kiGvaEfBPzQylc7T9sQ0yqxIxgpHp/WV9JlMp/adiyCd0mhOK3hrukoZhU+msFTHPJI44rxgZWJfsTNMcvKhNdOLCjtqRfs7qPwkTr/Bg9u5Ud8jToR9oTNRwWWxKNGkJzEDHBn6zI7ZTJbVGxbsGxJdQqAdpR1ValVKIsJ9x5w6fC0XtBA+GutRm8bHmgaY6k8o4epDfvtGAAaB1rilerZuPKTNLCdInO9oo7V9mHpY89pH0RpFd6FGDmunqWj6jUtARjazo3I3VmgPH6Z3oGIWBlz7ZGB1b/vyGx5LlILKPK440RBO+RUG7V5fg1yEly9nBm+4mdJ2Cw8vcsS8IQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Dpu+jlCilEyhoB+rJ3lZDVsaHZ1m0bOiiK+3HNPk4hA=;
- b=bGdWIDPm2HZ5D1ibZTV+aetBgpR+aEzVm2ZF49gcORWXjQRFnExJz2j699znK94FKxqRByiTx78g9/V56xMx5VLnLJmp1ZBHZEAhJs6KAN0psuQ4xS7k1oQV7Fa32iITxCeQV3IlPkgCqT4XjIhgC67GAmDmZZlXAk0Xr8ERpyIbIVewrh/qY6Mra1u/wLAk4X4sbgRlAYCbVwx77+ANpxIaeSREOrdc4xQ6PGgk4+m5ndMjMKgBO8Ko68RXnB/mqf7mxxYjjWqEDhFZenR9YryXVxk9Icz6jJL9muvDQQnX8sc4Am9LbufpvdZ9lX52p1+4I9kypQgRJxOysTSbHw==
-Received: from IA1P220CA0004.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:461::10)
- by IA1PR12MB6649.namprd12.prod.outlook.com (2603:10b6:208:3a2::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Fri, 15 May
- 2026 13:55:06 +0000
-Received: from BN2PEPF000055DF.namprd21.prod.outlook.com
- (2603:10b6:208:461:cafe::59) by IA1P220CA0004.outlook.office365.com
- (2603:10b6:208:461::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.20 via Frontend Transport; Fri, 15
- May 2026 13:55:05 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN2PEPF000055DF.mail.protection.outlook.com (10.167.245.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.71.0 via Frontend Transport; Fri, 15 May 2026 13:55:04 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 15 May
- 2026 06:54:45 -0700
-Received: from fedora.mtl.com (10.126.230.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 15 May
- 2026 06:54:41 -0700
-From: Petr Machata <petrm@nvidia.com>
-To: Sasha Levin <sashal@kernel.org>
-CC: Petr Machata <petrm@nvidia.com>, <stable@vger.kernel.org>, Wojtek Wasko
-	<wwasko@nvidia.com>, Mahesh Bandewar <maheshb@google.com>, Shuah Khan
-	<shuah@kernel.org>, Richard Cochran <richardcochran@gmail.com>, Yong Wang
-	<yongwang@nvidia.com>
-Subject: [PATCH 6.1.y] Revert "selftest/ptp: update ptp selftest to exercise the gettimex options"
-Date: Fri, 15 May 2026 15:53:53 +0200
-Message-ID: <2e4d2f2b9efa7b0b32476947f63506cfe9568d1d.1778851656.git.petrm@nvidia.com>
-X-Mailer: git-send-email 2.53.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C8A44A701
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 13:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778853548; cv=none; b=BsW3fv4eSqr4QjQOXSN3hWuOIo4GpG5z/jW96gm7KuDYcepIQJyw1SCYmHpJa5KjMws+08enI2ghpCSyTbkofHHAT583hFFPXZdxfxFyPJ1wdbPu8XeVGW+Ro+1uHa42wjt6C5yVYa2zg64LWJIMcCic+6ORs2Oi0nQEz0KcPKg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778853548; c=relaxed/simple;
+	bh=LiVStk9IrBaVC6lHIxPrtEMMsBrtamXgF0QJoUb7bKY=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=nfHVrrSeNpnq8Qe562Npx94DBJVmZkRH7BEtCR261SPRkb4TwGL3D3ToxR2lyJfN0Ai8xnj1WfDRrjQz1gWbPbgrs7OH/akzEnEom1k7jIEdsnGLPAhLCeOFl/1AVleM2Q7dychRvxYNJxvoczq+j8GNCoUhmVpFyMmuZ0/YATs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=bGMhN37H; arc=none smtp.client-ip=74.125.82.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12c8f9846c8so13727938c88.0
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 06:59:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci.org; s=google; t=1778853546; x=1779458346; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xXHXhSImgI91lYfMBYexAtHONRbePuXV1eIJjGQADrI=;
+        b=bGMhN37HcalRm2OxKAJa1Ac63XLEOI4lbUuLTptelyZaAsHQub8z+32/CYZo/6OvJo
+         NbvU2Njjn67cJlpx/tHbJ6sI8A3Qufon6EXYWQe33AcXNz1aDmS3Oxp7IqXFgbbR0AKu
+         Qk42A2us9UsNWA++jnGr9hBckY2vbYTrAV6QhSJhU6Ch+VMSH3W6IFUE3cbyMWGmWqMb
+         +aBtEQg1V5fucmfpjbh4JU+KJsykb0XnuOf/9O44Di7Z1ZJj0IUT0LMu+v24JNcXbWtQ
+         LrdiSVUvZb3JLs1jIzG82CPvdzISGzfcKhIVgQ28MJKRHPvqInfS+gIX38t3tisrU4tO
+         /kFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778853546; x=1779458346;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xXHXhSImgI91lYfMBYexAtHONRbePuXV1eIJjGQADrI=;
+        b=eyGh6bG0NrYpUy10Bn3v/P5vyH8J8HmBSnQheMIeVDhb84Lm+EADX1BE1eONZ4So6J
+         xt0cV/LjziG5dQ10jrjy2xWcv4n/PGwZt3QFWZQJmp8woKb8APteh7Sa0Z6u3CwChkJm
+         D2ehq5KSjkOxpDJyeZqrCaHmX6m23N4UYAzQNemUqsxwwn/6SlO0ZwCHKrIzptF4ajiv
+         BLP1FYexJyaLnVCgOdO3EWMzdQWqtHp8OK4CoJnHBKW8BazGWOLcB4Y6vaWEkLBsURiK
+         j/mfdbNO56uzjc1hZb2ogAj3RvlGuwqO+og/PSnus+9I7Z4EU0LqDcVzO6/sxxBmf5FN
+         12KA==
+X-Forwarded-Encrypted: i=1; AFNElJ99k5TUMCk3dm7TyEuCWGifWS3BPCG0YqEa+++w2cIBjBFENruVEBbA9ugiiznyXtPh+YpsNdE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX8gf38EIi//MXwQpu10T1ZcCb7JHSSp+b83PhtaTAizUj3Bh6
+	2sWDm9YKIh9MPFLb+olT7R6/nPU+/OTvYK9h0mRwfM/8Apb9RCOP5jydd2FJZQKPEERRTvyPiSe
+	doYmU
+X-Gm-Gg: Acq92OF7jpPlwC9kX22hBuz3SUY4U6sTy/PSo3gSBi2SdRADu7LjNFrkudQPiXS7sAH
+	sZZZ4RsWpBgIkO1R561fjCpYEbrfIDTVckLR4M5eRMOMJq5Y5cK4wRoLiunTbj7GFLXBi71aZDd
+	9RtlC21Smr0JrXrrGj0fhP/xWrb/REynOhrsd1y0AVgT1LNO+l2YL1OyEO+M6/w/z0fVZmvp8Jg
+	JkSauHQkV3R2PWQ0ppokKpxqvVB9fOh79qlM0VGnqgxxg1jbmfx4pMdX9zOVVDACwirTP1qNO0k
+	BYlrjZcjEOCqfOMigkLhudgnIy1Kk3gnL7gjEJHd2tXV8fKdE9aNSxoTQaJLP8GuvccXuJyBc8A
+	lo7u9f0Q9FTihQLZ0chFDpqynQt6KVIJ/QX8v9J8PHDNLQVJM+C0m2QUrn7XdjUT08Pg8XWs+6K
+	l6slHeQOtsjqxs1nbM
+X-Received: by 2002:a05:7301:600c:b0:2dd:6937:79d5 with SMTP id 5a478bee46e88-303982b788dmr1878168eec.8.1778853545790;
+        Fri, 15 May 2026 06:59:05 -0700 (PDT)
+Received: from 330cfa3079ca ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30293e2e6a9sm7000097eec.2.2026.05.15.06.59.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2026 06:59:05 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000055DF:EE_|IA1PR12MB6649:EE_
-X-MS-Office365-Filtering-Correlation-Id: baad0ee0-f4d6-4425-0eaa-08deb2899138
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|82310400026|376014|3023799003|56012099003|18002099003|11063799003;
-X-Microsoft-Antispam-Message-Info:
-	mHvUbLVLVBPYAbLn5PRUwK5FNjXUbtxPxnsoHxFYO5KfVeeYSQgt1xDFK0alDt8TUh+diO7u6CLdt0z9mjd7eZzI5lhfwqqy3ndw8pAGdwFnqt93EYl1RpifdDYjKNz+o7px4LEiujPClxDRFKpxypQx4zmapzua/tP5C5u+c3Gc6jK3GtpW+y8BXX7T0Xi5p48pGIcDDIAgzkQ0lOZ+yE5A59693zKlZNDePX3Jznh02euLjLXIQZ6P0CENys01iC/zQMBmw+k+4ohyjts7lM/3C+sHZ2Ob6u67rU1tAgyIpSpixnI0xkWW4x9RIZyOo+pmG9HLM2YK4pdyJJpbIwlg9YpBMcLzusuTwGus08bad9Js33kc4GcLvTm/Wh6UBwMBru6Pz3EHU+EKZHSZ1PdW6tlci/UmHDjCDUeQMS20Exf/gyv1tZGi1LztiT/KOcHciVm4e67ePHTzhf3g/7CKTtSnj6aPYyLw95pqfz6e1smI8jvdEqV2l/0FynBTc0KCe0C1BJQuJ3XN8ZUdguUxE+WYYOVKjcv0Box/kNChS3lQc4EJ5W7YpMf8Cwe04GN2AekikG6Qha+KozpKOgwQokIY9GlK/df83XhWRUVLKJKtuYC/S6g2N8Hd0irwwYU9xYd5TLRYr1YOYe8q/XeLV+8ZH7ZUalixtmvOisD7HjwrCBvajdSGeBYB7GmG
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(82310400026)(376014)(3023799003)(56012099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Wa2AVQ1xmb0HaqE/2R2YViGtSCFe3h5PHH6ozJ9JECvmXDdD/Tvqo7Mi4jdZ5ciwu1Edt4dMtrVHHdCqzBFhcuyyU5rP/A+7OchIykksrivlrcnlvMOEq53Lj0p1PcusPY+GvE7tXh5kaVzWb5ZAv8kZrlGGBzGaQo2TYIGssO+G2r7cb+ekX1w65kHa2yc2quV4kNs6JMapoC91iO61qBcVJF6ElJuPBsY8v8oqA2vW3zO7KKYATpzY+1GoeM2keEHbO7FjltoSxLbqLF06t+wdkutwJVvIzDCkMpJaB5whIPF7JvoaN4VqDxfKaht7w4hFlFdXbJajxkfevtOod3/5GX4c55XKtatbgTT8Zzh0QQi1d9BYf9VDwlNg2bpgXUqLsdh9Gv5grAYvDKx+e8XH9m1sKJcR6UWvhKblrlytv9RRk9tnxk6n0DbIpQ59
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 13:55:04.8018
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: baad0ee0-f4d6-4425-0eaa-08deb2899138
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000055DF.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6649
-X-Rspamd-Queue-Id: DAE00550F64
+Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable/linux-5.10.y: (build) error: Bad exit status from
+ /var/tmp/rpm-tmp.6DCee3 (%install) in ...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Fri, 15 May 2026 13:59:04 -0000
+Message-ID: <177885354449.985.4460906655747959512@330cfa3079ca>
+X-Rspamd-Queue-Id: BE72D551070
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[nvidia.com,vger.kernel.org,google.com,kernel.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247781-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,nvidia.com:mid,Nvidia.com:dkim];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[petrm@nvidia.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernelci.org:+];
+	TAGGED_FROM(0.00)[bounces-247782-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[8]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernelci.org:email,kernelci.org:url,kernelci.org:dkim]
 X-Rspamd-Action: no action
 
-This reverts commit 06954f715deb0ed053f8bf85547370db6870225d, which is
-commit 3d07b691ee707c00afaf365440975e81bb96cd9b upstream.
 
-The cited commit allows testptp to set a configurable clock_id. That is
-done via a PTP_SYS_OFFSET_EXTENDED ioctl call, whose argument is struct
-ptp_sys_offset_extended, where the clock_id is set. However, this Linux
-version does not support the ptp_sys_offset_extended.clockid field, and
-the test case cannot be built against this tree's own UAPI headers.
 
-The reverted commit was introduced to resolve a missing dependency of
-commit c6dc458227a3 ("testptp: Add option to open PHC in readonly mode"),
-which is 76868642e427 upstream. My suspicion is that the only conflict
-between the two is the getopt string, and there is otherwise no direct
-dependency between the two.
 
-This patch therefore reverts the cited commit, with hand-resolving the
-getopt string to include 'r' (as introduced by c6dc458227a3), but not
-'y' (introduced by 06954f715deb).
 
-Reported-by: Yong Wang <yongwang@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
----
+Hello,
 
-Note: the issue appears to exist in 6.6, 6.12 and 6.18 as well.
-      Depending on your preference, I can prepare separate
-      patches for those branches as well. Let me know.
+New build issue found on stable/linux-5.10.y:
 
 ---
- tools/testing/selftests/ptp/testptp.c | 62 +++------------------------
- 1 file changed, 5 insertions(+), 57 deletions(-)
+ error: Bad exit status from /var/tmp/rpm-tmp.6DCee3 (%install) in binrpm-pkg (/tmp/kci/linux/scripts/Makefile.package:68) [logspec:kbuild,kbuild.other]
+---
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index 532fb6a5d059..7030bae8e5e0 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -147,7 +147,6 @@ static void usage(char *progname)
- 		" -T val     set the ptp clock time to 'val' seconds\n"
- 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
- 		" -X         get a ptp clock cross timestamp\n"
--		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
- 		" -z         test combinations of rising/falling external time stamp flags\n",
- 		progname, PTP_MAX_SAMPLES);
- }
-@@ -192,7 +191,6 @@ int main(int argc, char *argv[])
- 	int readonly = 0;
- 	int settime = 0;
- 	int channel = -1;
--	clockid_t ext_clockid = CLOCK_REALTIME;
- 
- 	int64_t t1, t2, tp;
- 	int64_t interval, offset;
-@@ -202,7 +200,7 @@ int main(int argc, char *argv[])
- 
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -285,21 +283,6 @@ int main(int argc, char *argv[])
- 		case 'X':
- 			getcross = 1;
- 			break;
--		case 'y':
--			if (!strcasecmp(optarg, "realtime"))
--				ext_clockid = CLOCK_REALTIME;
--			else if (!strcasecmp(optarg, "monotonic"))
--				ext_clockid = CLOCK_MONOTONIC;
--			else if (!strcasecmp(optarg, "monotonic-raw"))
--				ext_clockid = CLOCK_MONOTONIC_RAW;
--			else {
--				fprintf(stderr,
--					"type needs to be realtime, monotonic or monotonic-raw; was given %s\n",
--					optarg);
--				return -1;
--			}
--			break;
--
- 		case 'z':
- 			flagtest = 1;
- 			break;
-@@ -590,7 +573,6 @@ int main(int argc, char *argv[])
- 		}
- 
- 		soe->n_samples = getextended;
--		soe->clockid = ext_clockid;
- 
- 		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
- 			perror("PTP_SYS_OFFSET_EXTENDED");
-@@ -599,46 +581,12 @@ int main(int argc, char *argv[])
- 			       getextended);
- 
- 			for (i = 0; i < getextended; i++) {
--				switch (ext_clockid) {
--				case CLOCK_REALTIME:
--					printf("sample #%2d: real time before: %lld.%09u\n",
--					       i, soe->ts[i][0].sec,
--					       soe->ts[i][0].nsec);
--					break;
--				case CLOCK_MONOTONIC:
--					printf("sample #%2d: monotonic time before: %lld.%09u\n",
--					       i, soe->ts[i][0].sec,
--					       soe->ts[i][0].nsec);
--					break;
--				case CLOCK_MONOTONIC_RAW:
--					printf("sample #%2d: monotonic-raw time before: %lld.%09u\n",
--					       i, soe->ts[i][0].sec,
--					       soe->ts[i][0].nsec);
--					break;
--				default:
--					break;
--				}
-+				printf("sample #%2d: system time before: %lld.%09u\n",
-+				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
- 				printf("            phc time: %lld.%09u\n",
- 				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
--				switch (ext_clockid) {
--				case CLOCK_REALTIME:
--					printf("            real time after: %lld.%09u\n",
--					       soe->ts[i][2].sec,
--					       soe->ts[i][2].nsec);
--					break;
--				case CLOCK_MONOTONIC:
--					printf("            monotonic time after: %lld.%09u\n",
--					       soe->ts[i][2].sec,
--					       soe->ts[i][2].nsec);
--					break;
--				case CLOCK_MONOTONIC_RAW:
--					printf("            monotonic-raw time after: %lld.%09u\n",
--					       soe->ts[i][2].sec,
--					       soe->ts[i][2].nsec);
--					break;
--				default:
--					break;
--				}
-+				printf("            system time after: %lld.%09u\n",
-+				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
- 			}
- 		}
- 
--- 
-2.53.0
+- dashboard: https://d.kernelci.org/i/maestro:c56368a1d421442daeca87c776f7e6dc0632cd43
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+- commit HEAD:  6b2498787ec6803cf0d0a983321796babe5392d4
+- tags: v5.10.256
 
+Please include the KernelCI tag when submitting a fix:
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+
+Log excerpt:
+=====================================================
+# /tmp/kci/artifacts/fragments/0.config -> /tmp/kci/artifacts/build/0.config
+# /tmp/kci/artifacts/fragments/1.config -> /tmp/kci/artifacts/build/1.config
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- defconfig
+scripts/kconfig/merge_config.sh -m -O /tmp/kci/artifacts/build /tmp/kci/artifacts/build/.config /tmp/kci/artifacts/build/0.config /tmp/kci/artifacts/build/1.config
+Using /tmp/kci/artifacts/build/.config as base
+Merging /tmp/kci/artifacts/build/0.config
+Value of CONFIG_ENA_ETHERNET is redefined by fragment /tmp/kci/artifacts/build/0.config:
+Previous value: # CONFIG_ENA_ETHERNET is not set
+New value: CONFIG_ENA_ETHERNET=y
+Value of CONFIG_NVME_CORE is redefined by fragment /tmp/kci/artifacts/build/0.config:
+Previous value: CONFIG_NVME_CORE=m
+New value: CONFIG_NVME_CORE=y
+Value of CONFIG_BLK_DEV_NVME is redefined by fragment /tmp/kci/artifacts/build/0.config:
+Previous value: CONFIG_BLK_DEV_NVME=m
+New value: CONFIG_BLK_DEV_NVME=y
+Value of CONFIG_XFS_FS is redefined by fragment /tmp/kci/artifacts/build/0.config:
+Previous value: # CONFIG_XFS_FS is not set
+New value: CONFIG_XFS_FS=y
+Value of CONFIG_DEBUG_INFO is redefined by fragment /tmp/kci/artifacts/build/0.config:
+Previous value: CONFIG_DEBUG_INFO=y
+New value: CONFIG_DEBUG_INFO=n
+Merging /tmp/kci/artifacts/build/1.config
+#
+# merged configuration written to /tmp/kci/artifacts/build/.config (needs make)
+#
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- olddefconfig
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf-
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- Image.gz
+rm -rf /tmp/kci/artifacts/build/modinstall
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build INSTALL_MOD_STRIP=1 INSTALL_MOD_PATH=/tmp/kci/artifacts/build/modinstall ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- modules_install
+tar --sort=name --owner=tuxmake:1000 --group=tuxmake:1000 --mtime=@1778852605 --clamp-mtime -caf /tmp/kci/artifacts/build/modules.tar.xz -C /tmp/kci/artifacts/build/modinstall lib
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build INSTALL_DTBS_PATH=/tmp/kci/artifacts/build/dtbsinstall/dtbs ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- dtbs
+rm -rf /tmp/kci/artifacts/build/dtbsinstall
+mkdir -p /tmp/kci/artifacts/build/dtbsinstall/dtbs
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build INSTALL_DTBS_PATH=/tmp/kci/artifacts/build/dtbsinstall/dtbs ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- dtbs_install
+tar --sort=name --owner=tuxmake:1000 --group=tuxmake:1000 --mtime=@1778852605 --clamp-mtime -caf /tmp/kci/artifacts/build/dtbs.tar.xz -C /tmp/kci/artifacts/build/dtbsinstall dtbs
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- binrpm-pkg
+Building target platforms: aarch64
+Building for target aarch64
+warning: line 19: It's not recommended to have unversioned Obsoletes: Obsoletes: kernel-headers
+Executing(%mkbuilddir): /bin/sh -e /var/tmp/rpm-tmp.yznZfg
+Executing(%install): /bin/sh -e /var/tmp/rpm-tmp.6DCee3
++ umask 022
++ cd ./kernel-5.10.256-build
++ /usr/bin/rm -rf ./kernel-5.10.256-build/BUILDROOT
++ /usr/bin/mkdir -p ./kernel-5.10.256-build
++ /usr/bin/mkdir ./kernel-5.10.256-build/BUILDROOT
++ mkdir -p ./kernel-5.10.256-build/BUILDROOT/boot
++ make -f /tmp/kci/linux/Makefile -s image_name
+/tmp/kci/linux/Makefile:656: include/config/auto.conf: No such file or directory
++ cp ./kernel-5.10.256-build/BUILDROOT/boot/vmlinuz-5.10.256
+cp: missing destination file operand after './kernel-5.10.256-build/BUILDROOT/boot/vmlinuz-5.10.256'
+Try 'cp --help' for more information.
+error: Bad exit status from /var/tmp/rpm-tmp.6DCee3 (%install)
+RPM build warnings:
+RPM build errors:
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## defconfig+aws-ec2 on (arm64):
+- compiler: gcc-14
+- config: None
+- dashboard: https://d.kernelci.org/build/maestro:6a0721030ed99f002e8dee10
+
+
+#kernelci issue maestro:c56368a1d421442daeca87c776f7e6dc0632cd43
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
