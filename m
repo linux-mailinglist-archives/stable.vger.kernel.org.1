@@ -1,162 +1,169 @@
-Return-Path: <stable+bounces-247641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YLVZBBzzBmqtpQIAu9opvQ
-	(envelope-from <stable+bounces-247641-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:19:08 +0200
+	id OBl1G/H5BmpUpwIAu9opvQ
+	(envelope-from <stable+bounces-247642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:48:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2A754D323
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:19:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF7154DA77
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:48:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ED5C73036C9E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:13:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 47DC6302C0FF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7345144CAE2;
-	Fri, 15 May 2026 10:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C8D39B4A6;
+	Fri, 15 May 2026 10:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="oC9PAanA"
+	dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b="e1+K4Lwp";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZC2QXTRw"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C3B44BCAE;
-	Fri, 15 May 2026 10:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7558F346AF8
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 10:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778839975; cv=none; b=jWroysKt12hU++L3h3M+rmdedI41KWkQc+IJ9EsFLT3sBWlvpr4DpwvQ5q69XaYD2cOCaz3SCHRbWDjSC3Vp7912gUGUD0P5rJxzpcOJjGChWhG8Y57mVnqtWI6WZzVxfe6dYZtuR21DTXYfn437LTlmNnun+hfT0+SK6JJ5DX8=
+	t=1778840178; cv=none; b=ApkgFbXXxQNQ5i3/jqPNa2JrQM0Yt4I2e/U7MRh/HTQsIjXN3WcHrazQzPZLZL8bLDWwChCO9291eL4wPPLFEb057x1P+yN9Yq4P+K0tSkalib6SErV4Pcv+XC4OJucnSdyC6fHDbOjRQTQJdmuRe6qbMk86ydqRA8NwoZsCRNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778839975; c=relaxed/simple;
-	bh=+uuolMEzk01MqROiPWoLaqFCK9H047b1HfjEJPLE0a4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G6a52Bp40d9RpWvvFrepgJoqHM9SvwLd/XedBUijvcXbNHF38S5yXqqhfMCtS6YCKywddCMIX6EY4PZI6rpoEdfS5legt6pfxOkJ0Fz7D+4NPbcklOVjUCnYGTjnLp4X3dDy3fK1KKNbpsYrj5pK9IPrfmIMBrqVnpNtvYQGAhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=oC9PAanA; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=307ZaWD6IWPu+vWKv98hkfU29hz3L1LQMmI008hUEKU=; 
-	b=oC9PAanAWj6k35PG7BSaA+Idnz/ku+8/0objh/1fjmJyyWghehgD8dyzJVeUYVdKdzzB8+YZ0Dq
-	ZUer+jkt28abXSSHsjxdPsB0N1sZeGGF9rnSgbsA9+WnOOkF/sv60hB8tXauUree1BVwJPpnop91s
-	08BhVVs9rTESBgdnVsTlDLpvSTwQnjPWG/J/YL0iUZ8QUvZmARtLPtfupUk3HqbMVWTj7o6FFvNln
-	Eo+chwpms7oxbrHiFxS3WvChINcRxXtBKHbZaSkGUWbwhHGIe0okLeCNkWsuz/L1I/Dh8w7lL+F5q
-	DC1qlQZ8K1Qf1FUZz3rZbkT+gEPFHTuLZBww==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1wNpXA-00EOFJ-0z;
-	Fri, 15 May 2026 18:12:45 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 15 May 2026 18:12:44 +0800
-Date: Fri, 15 May 2026 18:12:44 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, Taeyang Lee <0wn@theori.io>,
-	Brian Pak <bpak@theori.io>, Juno Im <juno@theori.io>,
-	Jungwon Lim <setuid0@theori.io>, Tim Becker <tjbecker@theori.io>,
-	Demi Marie Obenour <demiobenour@gmail.com>,
-	Feng Ning <feng@innora.ai>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] crypto: af_alg - Remove zero-copy support from
- skcipher and aead
-Message-ID: <agbxnDKpD7o1uFOq@gondor.apana.org.au>
-References: <20260504092442.GA2486@quark>
- <20260504225328.25356-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1778840178; c=relaxed/simple;
+	bh=OBSPvXaRrxrfrhsTs64tbVj8zcTZcTiu3rvbp295l6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lhDYoHl4b5E245Ai966H/o6mnINZiJl+LgCkDkU0yFen/D5nxbt6ar4Z0vuCFk35SsOiKfrEaX+x9aqAJ3EE4gJrnJpd1Uhhl+uwhroaIdF3zUspEzCZn6Mfpwq1tNy9TM4uAjg+Rd163e8kHh4G9HZSotqomLCYJ2YYZZ0szOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz; spf=pass smtp.mailfrom=fourdim.xyz; dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b=e1+K4Lwp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZC2QXTRw; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fourdim.xyz
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.phl.internal (Postfix) with ESMTP id 9DED1EC0012;
+	Fri, 15 May 2026 06:16:15 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Fri, 15 May 2026 06:16:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fourdim.xyz; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1778840175; x=
+	1778926575; bh=eUTO1sFEDceL9NhbMHZwWw3LJofuPGNfLgpavY59mn4=; b=e
+	1+K4LwpX7oovMakAQT8iZE/d0fb0A+kwxEVqJs5zc22P7B9BFev+JCy9zdK3NUsd
+	I2qpYKVTHd99DsfEf5AqIwb+9m/WXIBfqsSjt6t8tYIrP6AQMbg97Cqg4wMlDG6u
+	L0cIrFeczpis5TVkcn6lmZNy2kUaNKuSSOrVhnUWxpgkLsofYHgc53HCwIVM0UEA
+	+pfg/hrm7MGLl6HPK8XR7/pHSQWy6mFwDT/sEemXlWhREtYhsvFckPiNcne/RUNd
+	BaWMdBmSkoeoMINmzjlHRf2ubLTXRBSt1iAecPqMZiidYj6CxqBiTnE0xkH5Gkfc
+	Id/ABW7SgdHP7KIZECalg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm3; t=1778840175; x=1778926575; bh=e
+	UTO1sFEDceL9NhbMHZwWw3LJofuPGNfLgpavY59mn4=; b=ZC2QXTRwIgFLkTzIJ
+	8VBE+fjndkz14FsKDadhPH8sA+v4419LdnOhbmCo5F3SOfvSRFyFxGn2vZFPpVd0
+	TesrgVy69NCFRqwqyu4H6sbwWEQONUOlFffJf7/IAPdNPQJggANftg43sD3MV+j7
+	GDcAkc/k+L9QnyRrpcGtzXnk0Xer1SCFs5S/XmCUuRGuUfLmdl+4DhQvmWf0AQKU
+	FBIxhOVzM8DZN6Q8bEgN/BZQvIgqdG5yduFBiPbYmFBshMtKqZ0uiTr5foioDGMj
+	n7732GiQU8i/mffa6ErzWPqM2inop9J52xiTM/PlNqYDnC83oanDG5yJVOoWorlc
+	AbbvA==
+X-ME-Sender: <xms:b_IGauJ-CbyC3-PUy2zGxqA76QVTDi-kn5399Yzmxl7VPQRO405ElA>
+    <xme:b_IGatkJND6542Norxg1GOO1DPA38GEJbybdZTDQOp4wFaAc0NuoCFFecVEkgxXOU
+    atmcJq3H53OA9VaYuyf3TNa01-4xcDvIDzuapEJWQ_BXHw8hMn0Xps>
+X-ME-Received: <xmr:b_IGasEvi7MWnAD6csPhyuLIsEDhVFltHOPnQ3Kt_Te6AJjjoX8CTu7r-4lZvdVHuGH4iL4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufedtudefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegfrh
+    hlucfvnfffucdljedtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddt
+    necuhfhrohhmpefuihifvghiucgkhhgrnhhguceoohhsshesfhhouhhrughimhdrgiihii
+    eqnecuggftrfgrthhtvghrnhepkedtleeiteevueetudevjeefheejueevffejteffvdeh
+    lefftdffleegleduvdfhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepohhsshesfhhouhhrughimhdrgiihiidpnhgspghrtghpthhtohepfedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepohhsshesfhhouhhrughimhdrgiihiidprhgtphht
+    thhopehluhhiiidrvhhonhdruggvnhhtiiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:b_IGatE-4cs-JACCPkdIWZ8VBDsZwZ_mk3WCPZOcnH5Bqn1KkbPNXQ>
+    <xmx:b_IGapMAZb5d2AT87TejkuIKnSvIRffB9uMrGlpEke0qrUV-cxS6AQ>
+    <xmx:b_IGasHRmtsiJzkl0ctSybtswxgqRIxozsYuPiRLT3KuLo9X4I-hbw>
+    <xmx:b_IGagO_HcNTuqYY_41IlZL0R46MflVxdTI-BZw23LzeMTEeS7OTOQ>
+    <xmx:b_IGasU8oVI7CfxoMXcLALK4pk19kGyj_y_lSCF9ajnV2Ohv2JuTzKgT>
+Feedback-ID: if72e4b10:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 15 May 2026 06:16:15 -0400 (EDT)
+From: Siwei Zhang <oss@fourdim.xyz>
+To: stable@vger.kernel.org
+Cc: Siwei Zhang <oss@fourdim.xyz>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6.y] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_get_sndtimeo_cb()
+Date: Fri, 15 May 2026 06:16:05 -0400
+Message-ID: <20260515101618.3691622-1-oss@fourdim.xyz>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <2026051216-wilt-civic-8fb6@gregkh>
+References: <2026051216-wilt-civic-8fb6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260504225328.25356-1-ebiggers@kernel.org>
-X-Rspamd-Queue-Id: 9E2A754D323
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6CF7154DA77
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
-	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[fourdim.xyz,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[fourdim.xyz:s=fm2,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,theori.io,gmail.com,innora.ai];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
-	TAGGED_FROM(0.00)[bounces-247641-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[fourdim.xyz:+,messagingengine.com:+];
+	TAGGED_FROM(0.00)[bounces-247642-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[oss@fourdim.xyz,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-On Mon, May 04, 2026 at 03:53:28PM -0700, Eric Biggers wrote:
-> The zero-copy support is one of the riskiest aspects of AF_ALG.  It
-> allows userspace to request cryptographic operations directly on
-> pagecache pages of files like the 'su' binary.  It also allows userspace
-> to concurrently modify the memory which is being operated on, a recipe
-> for TOCTOU vulnerabilities.
-> 
-> While zero-copy support is more valuable in other areas of the kernel
-> like the frequently used networking and file I/O code, it has far less
-> value in AF_ALG, which is a niche UAPI.  AF_ALG primarily just exists
-> for backwards compatibility with a small set of userspace programs such
-> as 'iwd' that haven't yet been fixed to use userspace crypto code.
-> 
-> Originally AF_ALG was intended to be used to access hardware crypto
-> accelerators.  However, it isn't an efficient interface for that anyway,
-> and it turned out to be rarely used in this way in practice.
-> 
-> Thus, the risks of the zero-copy support in AF_ALG vastly outweigh its
-> benefits.  Let's just remove it.
-> 
-> This commit removes it from the "skcipher" and "aead" algorithm types.
-> "hash" will be handled separately.
-> 
-> This is a soft break, not a hard break.  Even after this commit, it
-> still works to use splice() or sendfile() to transfer data to an AF_ALG
-> request socket from a pipe or any file, respectively.  What changes is
-> just that the kernel now makes an internal, stable copy of the data
-> before doing the crypto operation.  So performance is slightly reduced,
-> but the UAPI isn't broken.  And, very importantly, it's much safer.
-> 
-> Tested with libkcapi/test.sh.  All its test cases still pass.  I also
-> verified that this would have prevented the copy.fail exploit as well.
-> I also used a custom test program to verify that sendfile() still works.
-> 
-> Fixes: 8ff590903d5f ("crypto: algif_skcipher - User-space interface for skcipher operations")
-> Fixes: 400c40cf78da ("crypto: algif - add AEAD support")
-> Reported-by: Taeyang Lee <0wn@theori.io>
-> Link: https://copy.fail/
-> Reported-by: Feng Ning <feng@innora.ai>
-> Closes: https://lore.kernel.org/r/afYcc-tZFwvZZo76@ans-MacBook-Pro.local
-> Reviewed-by: Demi Marie Obenour <demiobenour@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> ---
-> 
-> v3: improved explanation
-> v2: added tags
-> 
->  Documentation/crypto/userspace-if.rst | 31 ++----------
->  crypto/af_alg.c                       | 73 +++++++++------------------
->  crypto/algif_aead.c                   |  8 +--
->  3 files changed, 33 insertions(+), 79 deletions(-)
+commit 78a88d43dab8d23aeef934ed8ce34d40e6b3d613 upstream.
 
-Patch applied.  Thanks.
+Adjusted as stable does not have READ_ONCE around
+sk->sk_sndtimeo.
+
+Add the same NULL guard already present in
+l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
+
+Fixes: 8d836d71e222 ("Bluetooth: Access sk_sndtimeo indirectly in l2cap_core.c")
+Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+---
+ net/bluetooth/l2cap_sock.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 1960d35b3be0..adee617517bb 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1725,6 +1725,9 @@ static long l2cap_sock_get_sndtimeo_cb(struct l2cap_chan *chan)
+ {
+ 	struct sock *sk = chan->data;
+ 
++	if (!sk)
++		return 0;
++
+ 	return sk->sk_sndtimeo;
+ }
+ 
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.54.0
+
 
