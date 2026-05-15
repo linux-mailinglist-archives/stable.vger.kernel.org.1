@@ -1,106 +1,104 @@
-Return-Path: <stable+bounces-247579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2L/0E43bBmoxogIAu9opvQ
-	(envelope-from <stable+bounces-247579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:38:37 +0200
+	id wGtLAUfiBmrVogIAu9opvQ
+	(envelope-from <stable+bounces-247581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:07:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0A054B7CC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:38:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572F754C046
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:07:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CE92930388AF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:35:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC73C3121EB1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D7B40B6D8;
-	Fri, 15 May 2026 08:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFA93FBEB1;
+	Fri, 15 May 2026 08:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qB0sftSx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lM/p8cHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB78440B6C3
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 08:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC47383C6F
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 08:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778834136; cv=none; b=nkQIB2+Eu2KMq5qwvHyyRcFScFqyCI6buTOJaCatotjvurCw6QxqA/71hBYnfHh0XrszPWH0VIcN8+olF1yffrX6ESVZL7IV/Z8wsLeDAjyOIVrKVdIZWZXb5a7QKMa1niCg1LZlE4oa+a3pdHeOhPPKP/7rhR5DHKfHagJfbSM=
+	t=1778834316; cv=none; b=N9VZylOIQ8T3MxHIzYyqv3RRw+zlaf90B5FwA7U4fTKCNVSleOGb7Fhih/3QzR5AS7uKgT7oznrj5kuWpV15VrawssXly7OonrELVfC7cQpSU7yYJ6OcsL8v41nIqyZOkkkpI5PxUxguVwhDNIcGQvrhcIae6QOtxOEtTatIqFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778834136; c=relaxed/simple;
-	bh=mh5JmvzBXu1n2UaQuzNmg/44cD8lxKkYHv72O4nzSzc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=H39FSOdxZetKTPwOyXKCo4QacEHKNyQtgVMtN2TiY1rrVIlBL+Nr+m2Z18LcsI1uoeb2yshAwAoSEyQzHQoCI83qZE07u0lYfZwz4KzBcN/267Kgr9Zer/PjZv01OqYigt2mHfQ9Vs7FF+JexnBCRPlHR/UYj6x10hDGNh/xI4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qB0sftSx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B569C2BCB8;
-	Fri, 15 May 2026 08:35:35 +0000 (UTC)
+	s=arc-20240116; t=1778834316; c=relaxed/simple;
+	bh=63xtiK7EwBdX60PCU+W1CkNAxNOlI/GmUf6VxSGPBB4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=C2NTa4wb2WEjgDGQ0khce0mWtdzXDlb63c7CQJiSw5uSyCZ8z5yB5WoV7MxN6J89P8aRjABclStq7Oye9DKRxJRap9Vvesa0mtHrAp14BHpmXBKKfBClirnYKWQw2IAExhC/fs3pG2XSH+eByB1Y4dgdTWKTg25kra3RACwAsk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lM/p8cHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697AAC2BCB0;
+	Fri, 15 May 2026 08:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778834135;
-	bh=mh5JmvzBXu1n2UaQuzNmg/44cD8lxKkYHv72O4nzSzc=;
+	s=korg; t=1778834315;
+	bh=63xtiK7EwBdX60PCU+W1CkNAxNOlI/GmUf6VxSGPBB4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qB0sftSxgE5TrDvpWBelzPoYEJ4Jub94n177DGqZVwjze9RISNEU4M6Ec9o8AjP9k
-	 DSYeesLCua4HTPktl8UukhIhtb+Q4L8wYObbebhnCDQx0QKV5MuURtbJoWsxphq38S
-	 xjUHmNtH316dFUCFjUpeI0v3D51qCaLhJqQ2j6tk=
-Subject: FAILED: patch "[PATCH] drm/v3d: Reject empty multisync extension to prevent infinite" failed to apply to 6.1-stable tree
-To: ashutoshdesai993@gmail.com,mcanal@igalia.com
+	b=lM/p8cHgByiwRvTiTvWQFGtGmZNadKcNZEA12DqILOl49bCEtHe+Vdu00iItxfQWr
+	 wDdA8P7IcGYFRNEw7pCuaigw4LBdjCwYaUFaGTl1kI7dGnIBRVR8Uk5E8Kg48YGtqD
+	 4mOeFdpA3dxD/eRwRXg71DfVlOeEzgRcI2kaYOk4=
+Subject: FAILED: patch "[PATCH] drm/udl: Increase GET_URB_TIMEOUT" failed to apply to 6.6-stable tree
+To: oushixiong@kylinos.cn,stable@vger.kernel.org,tzimmermann@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 May 2026 10:35:31 +0200
-Message-ID: <2026051531-unclog-sharpie-0d91@gregkh>
+Date: Fri, 15 May 2026 10:38:31 +0200
+Message-ID: <2026051531-frustrate-cozily-40dd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0D0A054B7CC
+X-Rspamd-Queue-Id: 572F754C046
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247579-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247581-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com,igalia.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,gregkh:email,linuxfoundation.org:dkim,igalia.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x fb44d589bf3148e13452185a6e772a7efbf2d684
+git cherry-pick -x ac2c996675755c725a0065dbe3e2ebffded9080b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051531-unclog-sharpie-0d91@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051531-frustrate-cozily-40dd@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,56 +110,71 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fb44d589bf3148e13452185a6e772a7efbf2d684 Mon Sep 17 00:00:00 2001
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
-Date: Wed, 15 Apr 2026 05:00:00 +0000
-Subject: [PATCH] drm/v3d: Reject empty multisync extension to prevent infinite
- loop
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From ac2c996675755c725a0065dbe3e2ebffded9080b Mon Sep 17 00:00:00 2001
+From: Shixiong Ou <oushixiong@kylinos.cn>
+Date: Fri, 24 Apr 2026 20:44:27 +0800
+Subject: [PATCH] drm/udl: Increase GET_URB_TIMEOUT
 
-v3d_get_extensions() walks a userspace-provided singly-linked list of
-ioctl extensions without any bound on the chain length. A local user
-can craft a self-referential extension (ext->next == &ext) with zero
-in_sync_count and out_sync_count, which bypasses the existing duplicate-
-extension guard:
+[WHY]
+A situation has occurred where udl_handle_damage() executed successfully
+and the kernel log appears normal, but the display fails to show any output.
+This is because the call to udl_get_urb() in udl_crtc_helper_atomic_enable()
+failed without generating any error message.
 
-    if (se->in_sync_count || se->out_sync_count)
-            return -EINVAL;
+[HOW]
+1. Increase timeout of getting urb.
+2. Add error messages when calling udl_get_urb() failed in
+udl_crtc_helper_atomic_enable().
 
-The guard never fires because v3d_get_multisync_post_deps() returns
-immediately when count is zero, leaving both fields at zero on every
-iteration. The result is an infinite loop in kernel context, blocking
-the calling thread and pegging a CPU core indefinitely.
+Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 5320918b9a87 ("drm/udl: initial UDL driver (v4)")
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: <stable@vger.kernel.org> # v3.4+
+Link: https://patch.msgid.link/20260424124427.657-1-oushixiong1025@163.com
 
-Fix this by rejecting a multisync extension where both in_sync_count
-and out_sync_count are zero in v3d_get_multisync_submit_deps(). An
-empty multisync carries no synchronization information and serves no
-useful purpose, so returning -EINVAL for such an extension is the
-correct defense against this attack vector.
-
-Fixes: e4165ae8304e ("drm/v3d: add multiple syncobjs support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
-Link: https://patch.msgid.link/20260415050000.3816128-1-ashutoshdesai993@gmail.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-
-diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
-index 18f2bf1fe89f..fc74351efad5 100644
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -393,6 +393,11 @@ v3d_get_multisync_submit_deps(struct drm_file *file_priv,
- 	if (multisync.pad)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/udl/udl_main.c b/drivers/gpu/drm/udl/udl_main.c
+index 08a0e9480d70..17950fe3a0ec 100644
+--- a/drivers/gpu/drm/udl/udl_main.c
++++ b/drivers/gpu/drm/udl/udl_main.c
+@@ -285,13 +285,12 @@ static struct urb *udl_get_urb_locked(struct udl_device *udl, long timeout)
+ 	return unode->urb;
+ }
  
-+	if (!multisync.in_sync_count && !multisync.out_sync_count) {
-+		drm_dbg(&v3d->drm, "Empty multisync extension\n");
-+		return -EINVAL;
+-#define GET_URB_TIMEOUT	HZ
+ struct urb *udl_get_urb(struct udl_device *udl)
+ {
+ 	struct urb *urb;
+ 
+ 	spin_lock_irq(&udl->urbs.lock);
+-	urb = udl_get_urb_locked(udl, GET_URB_TIMEOUT);
++	urb = udl_get_urb_locked(udl, HZ * 2);
+ 	spin_unlock_irq(&udl->urbs.lock);
+ 	return urb;
+ }
+diff --git a/drivers/gpu/drm/udl/udl_modeset.c b/drivers/gpu/drm/udl/udl_modeset.c
+index 231e829bd709..1ca073a4ecb2 100644
+--- a/drivers/gpu/drm/udl/udl_modeset.c
++++ b/drivers/gpu/drm/udl/udl_modeset.c
+@@ -21,6 +21,7 @@
+ #include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_gem_shmem_helper.h>
+ #include <drm/drm_modeset_helper_vtables.h>
++#include <drm/drm_print.h>
+ #include <drm/drm_probe_helper.h>
+ #include <drm/drm_vblank.h>
+ 
+@@ -342,8 +343,10 @@ static void udl_crtc_helper_atomic_enable(struct drm_crtc *crtc, struct drm_atom
+ 		return;
+ 
+ 	urb = udl_get_urb(udl);
+-	if (!urb)
++	if (!urb) {
++		drm_err_ratelimited(dev, "get urb failed when enabling crtc\n");
+ 		goto out;
 +	}
-+
- 	ret = v3d_get_multisync_post_deps(file_priv, se, multisync.out_sync_count,
- 					  multisync.out_syncs);
- 	if (ret)
+ 
+ 	buf = (char *)urb->transfer_buffer;
+ 	buf = udl_vidreg_lock(buf);
 
 
