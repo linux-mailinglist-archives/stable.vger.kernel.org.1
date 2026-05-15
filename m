@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLftON1KB2q5wwIAu9opvQ
-	(envelope-from <stable+bounces-248250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:33 +0200
+	id ECpyIWFKB2rqwgIAu9opvQ
+	(envelope-from <stable+bounces-248251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FF7553734
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2790C553546
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 811B23072B39
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:11:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 84BAD310257A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCC13E00A6;
-	Fri, 15 May 2026 16:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3EC3FBB4A;
+	Fri, 15 May 2026 16:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qN//Y6aG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kH1w5YOA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0773C0607;
-	Fri, 15 May 2026 16:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AC03C0607;
+	Fri, 15 May 2026 16:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861255; cv=none; b=Ju0xUQWGSca90NLbeiDEAfFoNUcF5XkZnEBJThFaMj0u5VeGTbk17v+TfKYQ1ZvZP+qkE4UC93d2UbU2DqGmxoUL4R2JWlbT5BZzfgPrpf1uOzmeRtwWIUXG51SCYfgxVxbODCyiNjMd7JomlnH/RsI39mB/5Q2mvJjYB0GfKSE=
+	t=1778861257; cv=none; b=NC5DGBMfK3V//IEmCQvCBWkO6FYrqZq/5akf6sEIQ3+dIt1WaK+ger2s2mGzxv5Y1lI2iN8vYW46YhP1W3/+X/AJsEsI5WWVXNye1iRxtDeIdAXq+rTe4hSOMxiZoJjZ1Z8ogL7LydR4Vpey8n7tF8gSgrFuGwCoshNgxpVBoA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861255; c=relaxed/simple;
-	bh=Qxe+P0M7yUv7Z0+NB9a1YoSEzFjWjyz8bPCpyZjedaw=;
+	s=arc-20240116; t=1778861257; c=relaxed/simple;
+	bh=FYMGpxhtA7hh9VfsfocrU7DV4e3ffJJ3wNRlCOxAPrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SsCRfdLvv0ml1LWJ8gZOlkjLiaIXEuI2Bs+jVjGpJISVIDPBjZ3w4VFy1Ii8EqPvTcLtWd05JgE7HD80X/JHVRtu/F4B4G5G0lRKImME5vnvoruE+q7FRyxAvSXijXXwxMpzwvR1yIilIPf8by4AiSzHl4dDKBgj3EnWY/xdYLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qN//Y6aG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB619C2BCB0;
-	Fri, 15 May 2026 16:07:34 +0000 (UTC)
+	 MIME-Version; b=NKQmnRucO9qbNA9U5AMnPTwpAcx6gkDhdHeFM+Vg+jN/1mmxzxLlTlmX7guNGKEfBhtF2J+5QF75ssO5LlCAinjnDdhzxklolVt6iY6V+9qKfOz3PB2rmPI4SP+PLNbgHPpruk9FUS+33y3hvwaS+gch9VvM8GNXrBczSK7Oy4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kH1w5YOA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CD1C2BCB0;
+	Fri, 15 May 2026 16:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861255;
-	bh=Qxe+P0M7yUv7Z0+NB9a1YoSEzFjWjyz8bPCpyZjedaw=;
+	s=korg; t=1778861257;
+	bh=FYMGpxhtA7hh9VfsfocrU7DV4e3ffJJ3wNRlCOxAPrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qN//Y6aGFwHZJidlWDOV0+ixb41kMUlrris1HqoJVsIlsmRm2FG5mlmVvKvpNb6Q1
-	 ucbI/5sorcxyoIQfLkIrp8UuCY1zqYs7hgj7EzJBEH24noR7XaVrLW0Tw4xC3SiCv1
-	 93hdmQINqmwIwhBYlEAWoK2KdPo4WjnoiJSung2w=
+	b=kH1w5YOAkAhGJHYmn+2SAeRXBj1B6fJ1+MZaTLWLUcP0Ip8XBHWQvT1Cu7DYW/uIk
+	 Sol96BVxZsJXodznd+lVunV27JW0CeCI5nV9AAhXgQcz4XJq7iapvSZTCpMdVw0jYE
+	 SAgfQOKS9dYTnEEaGya+UXXDljPb0xNUXOC+DWjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@linux.win>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Yiming Qian <yimingqian591@gmail.com>
-Subject: [PATCH 6.6 259/474] lib/crypto: mpi: Fix integer underflow in mpi_read_raw_from_sgl()
-Date: Fri, 15 May 2026 17:46:08 +0200
-Message-ID: <20260515154720.603715597@linuxfoundation.org>
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	David Gow <davidgow@google.com>,
+	David Howells <dhowells@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 260/474] lib/scatterlist: fix length calculations in extract_kvec_to_sg
+Date: Fri, 15 May 2026 17:46:09 +0200
+Message-ID: <20260515154720.625101676@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -66,107 +67,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 64FF7553734
+X-Rspamd-Queue-Id: 2790C553546
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wunner.de,linux.win,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-248250-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248251-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,wunner.de:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,linux-foundation.org:email,suse.com:email,c--e.de:email]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 8c2f1288250a90a4b5cabed5d888d7e3aeed4035 upstream.
+commit 07b7d66e65d9cfe6b9c2c34aa22cfcaac37a5c45 upstream.
 
-Yiming reports an integer underflow in mpi_read_raw_from_sgl() when
-subtracting "lzeros" from the unsigned "nbytes".
+Patch series "Fix bugs in extract_iter_to_sg()", v3.
 
-For this to happen, the scatterlist "sgl" needs to occupy more bytes
-than the "nbytes" parameter and the first "nbytes + 1" bytes of the
-scatterlist must be zero.  Under these conditions, the while loop
-iterating over the scatterlist will count more zeroes than "nbytes",
-subtract the number of zeroes from "nbytes" and cause the underflow.
+Fix bugs in the kvec and user variants of extract_iter_to_sg.  This series
+is growing due to useful remarks made by sashiko.dev.
 
-When commit 2d4d1eea540b ("lib/mpi: Add mpi sgl helpers") originally
-introduced the bug, it couldn't be triggered because all callers of
-mpi_read_raw_from_sgl() passed a scatterlist whose length was equal to
-"nbytes".
+The main bugs are:
+- The length for an sglist entry when extracting from
+  a kvec can exceed the number of bytes in the page. This
+  is obviously not intended.
+- When extracting a user buffer the sglist is temporarily
+  used as a scratch buffer for extracted page pointers.
+  If the sglist already contains some elements this scratch
+  buffer could overlap with existing entries in the sglist.
 
-However since commit 63ba4d67594a ("KEYS: asymmetric: Use new crypto
-interface without scatterlists"), the underflow can now actually be
-triggered.  When invoking a KEYCTL_PKEY_ENCRYPT system call with a
-larger "out_len" than "in_len" and filling the "in" buffer with zeroes,
-crypto_akcipher_sync_prep() will create an all-zero scatterlist used for
-both the "src" and "dst" member of struct akcipher_request and thereby
-fulfil the conditions to trigger the bug:
+The series adds test cases to the kunit_iov_iter test that demonstrate all
+of these bugs.  Additionally, there is a memory leak fix for the test
+itself.
 
-  sys_keyctl()
-    keyctl_pkey_e_d_s()
-      asymmetric_key_eds_op()
-        software_key_eds_op()
-          crypto_akcipher_sync_encrypt()
-            crypto_akcipher_sync_prep()
-              crypto_akcipher_encrypt()
-                rsa_enc()
-                  mpi_read_raw_from_sgl()
+The bugs were orignally introduced into kernel v6.3 where the function
+lived in fs/netfs/iterator.c.  It was later moved to lib/scatterlist.c in
+v6.5.  Thus the actual fix is only marked for backports to v6.5+.
 
-To the user this will be visible as a DoS as the kernel spins forever,
-causing soft lockup splats as a side effect.
 
-Fix it.
+This patch (of 5):
 
-Reported-by: Yiming Qian <yimingqian591@gmail.com> # off-list
-Fixes: 2d4d1eea540b ("lib/mpi: Add mpi sgl helpers")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org # v4.4+
-Reviewed-by: Ignat Korchagin <ignat@linux.win>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/r/59eca92ff4f87e2081777f1423a0efaaadcfdb39.1776003111.git.lukas@wunner.de
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+When extracting from a kvec to a scatterlist, do not cross page
+boundaries.  The required length was already calculated but not used as
+intended.
+
+Adjust the copied length if the loop runs out of sglist entries without
+extracting everything.
+
+While there, return immediately from extract_iter_to_sg if there are no
+sglist entries at all.
+
+A subsequent commit will add kunit test cases that demonstrate that the
+patch is necessary.
+
+Link: https://lkml.kernel.org/r/20260326214905.818170-1-lk@c--e.de
+Link: https://lkml.kernel.org/r/20260326214905.818170-2-lk@c--e.de
+Fixes: 018584697533 ("netfs: Add a function to extract an iterator into a scatterlist")
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: David Gow <davidgow@google.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: <stable@vger.kernel.org>	[v6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/crypto/mpi/mpicoder.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/scatterlist.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/lib/crypto/mpi/mpicoder.c
-+++ b/lib/crypto/mpi/mpicoder.c
-@@ -453,7 +453,7 @@ MPI mpi_read_raw_from_sgl(struct scatter
- 	lzeros = 0;
- 	len = 0;
- 	while (nbytes > 0) {
--		while (len && !*buff) {
-+		while (len && !*buff && lzeros < nbytes) {
- 			lzeros++;
- 			len--;
- 			buff++;
+--- a/lib/scatterlist.c
++++ b/lib/scatterlist.c
+@@ -1241,7 +1241,7 @@ static ssize_t extract_kvec_to_sg(struct
+ 			else
+ 				page = virt_to_page((void *)kaddr);
+ 
+-			sg_set_page(sg, page, len, off);
++			sg_set_page(sg, page, seg, off);
+ 			sgtable->nents++;
+ 			sg++;
+ 			sg_max--;
+@@ -1250,6 +1250,7 @@ static ssize_t extract_kvec_to_sg(struct
+ 			kaddr += PAGE_SIZE;
+ 			off = 0;
+ 		} while (len > 0 && sg_max > 0);
++		ret -= len;
+ 
+ 		if (maxsize <= 0 || sg_max == 0)
+ 			break;
+@@ -1342,7 +1343,7 @@ ssize_t extract_iter_to_sg(struct iov_it
+ 			   struct sg_table *sgtable, unsigned int sg_max,
+ 			   iov_iter_extraction_t extraction_flags)
+ {
+-	if (maxsize == 0)
++	if (maxsize == 0 || sg_max == 0)
+ 		return 0;
+ 
+ 	switch (iov_iter_type(iter)) {
 
 
 
