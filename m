@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8C5nJItZB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:36:11 +0200
+	id OPBJC3REB2oCvAIAu9opvQ
+	(envelope-from <stable+bounces-247899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:06:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4A955545D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:36:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FA9552AB7
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E20603450634
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B6241303567D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2283B3FD974;
-	Fri, 15 May 2026 16:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A553FF1DE;
+	Fri, 15 May 2026 15:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muzYMBQa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02N8MqLn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81643FD955;
-	Fri, 15 May 2026 16:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376133FF1D1;
+	Fri, 15 May 2026 15:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862479; cv=none; b=Y+FhQLEXxLHrsnxB7lwTkLfFrWzv06CxKzw6JFwEChhOl4UFdHQivyCswgtyJywAvQkW4FmdFFH8pNX7jzpvMbn5ZUINiyzhNmWqZyFvRg1uTsw5XPoWCNtx2OlEqKdJn7u5Cbee6XZM5bzOHGgUh6EyAtXPwoGIOUlQeujQB10=
+	t=1778860359; cv=none; b=cA4e2Kg6yRcdrid3sila2FIeFK7cqLfygapsIMeI/RVugaY8quVWUhKMZ8OGpXVI1+kZIfvYlF2CXKIk1k3obFxibMvNtxdSM5dgRLwaMwEg5EkZ2Vg+AcB7fmIKbh8bohODYivoOqO7jk5RJztqDU729dOTG5RTbTV4MBcNO04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862479; c=relaxed/simple;
-	bh=BbyqNTbWh971uYCwjJTrKPO3/5OmfOz0va4UHEgaxB4=;
+	s=arc-20240116; t=1778860359; c=relaxed/simple;
+	bh=BTXJJ8gm6QXvsRIXmWfAwi3LrEacgbhnZoNn2t7ihMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qdalyg9S89OnyHWRLghe6erpuQO01kYN5rISvYh+8aiuv3SBFUxVPgtWwBLgZqa8alw0OjYuzXGEvSoI8X8fOqpoDUYnk6REPl5vIW5b3icWXrETi8jEdiNxa3UqtQU0sJyMNpmyYRhs9o2wwAqE6SIwHJ8cdaQGQ390gE9ZePo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muzYMBQa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CFAC2BCB0;
-	Fri, 15 May 2026 16:27:59 +0000 (UTC)
+	 MIME-Version; b=Ib6XvAlFy1C4y3P/aOOrHR4VKSaDBZqHlTZX4WB4GJfxssRw7ZG1XjJ3U49AQSZ2Aff6oniBLpA+DCoW3Da/MqOqbZbEI13NIlKYoGgfMCRmZO28z5iN7Gq+C26++CNBgZLdCITp41DWyldufJeKbJMvZf79/4Kdfj7KLEZYy84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02N8MqLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821CDC2BCB0;
+	Fri, 15 May 2026 15:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862479;
-	bh=BbyqNTbWh971uYCwjJTrKPO3/5OmfOz0va4UHEgaxB4=;
+	s=korg; t=1778860358;
+	bh=BTXJJ8gm6QXvsRIXmWfAwi3LrEacgbhnZoNn2t7ihMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=muzYMBQabweM09PntjfSm6yTofA3cD9HFDoyeqKGlMCor8dtp9n0rBosrkfjk7FDs
-	 sIEaWJvK5yimIR/Abv0kMXspQmsnhoQS6+wCnEXEqY8CzkHz9JD+mmR/j/LcJ4DdPU
-	 V6OR1r4v1GmdORYQ8uVuIf5IkBXkL6Q0H5+tCtLY=
+	b=02N8MqLnokcH6C3EoGqkQWPYKOyMGiGR8PNGIvw9NdDtDK6iFYrZzCJvoV7/aAnJE
+	 gUhD3rqe7MuJnI/8QqTyCZJHSw+L8pxxgLcB7nIc7NtHkB2iBgNDdp4lGCEb7xT/Pa
+	 SxxBGk9tATQNAY3h9OUtaW3eJxLwAw2YSXjiL8+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregor Herburger <gregor.herburger@linutronix.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Rasmus Villemoes <ravi@prevas.dk>
-Subject: [PATCH 7.0 064/201] arm64: dts: broadcom: bcm2712-d-rpi-5-b: update uart10 interrupt
+	Mason Yang <masonccyang@mxic.com.tw>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 056/144] spi: mxic: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:02 +0200
-Message-ID: <20260515154659.921066785@linuxfoundation.org>
+Message-ID: <20260515154654.847792343@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0B4A955545D
+X-Rspamd-Queue-Id: 28FA9552AB7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248729-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247899-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,40 +91,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,broadcom.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mxic.com.tw:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregor Herburger <gregor.herburger@linutronix.de>
+From: Johan Hovold <johan@kernel.org>
 
-commit 18d4a06e10051681de074a9250e54afc1f3ee312 upstream.
+commit adbc595e272052181d40ec307a4c5ba98571b0fe upstream.
 
-On the -d revision of bcm2712 the uart interrupt is on 120. Update it
-accordingly.
+Make sure to deregister the controller before disabling underlying
+resources like clocks (via runtime pm) during driver unbind.
 
-Signed-off-by: Gregor Herburger <gregor.herburger@linutronix.de>
-Link: https://lore.kernel.org/r/20260226-raspi-dts-updates-v1-6-60832d20ff04@linutronix.de
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Rasmus Villemoes <ravi@prevas.dk>
+Fixes: b942d80b0a39 ("spi: Add MXIC controller driver")
+Cc: stable@vger.kernel.org	# 5.0: cc53711b2191
+Cc: stable@vger.kernel.org	# 5.0
+Cc: Mason Yang <masonccyang@mxic.com.tw>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260414134319.978196-6-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/broadcom/bcm2712-d-rpi-5-b.dts |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-mxic.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/broadcom/bcm2712-d-rpi-5-b.dts
-+++ b/arch/arm64/boot/dts/broadcom/bcm2712-d-rpi-5-b.dts
-@@ -45,3 +45,7 @@
- 	compatible = "brcm,bcm2712d0-aon-pinctrl";
- 	reg = <0x7d510700 0x1c>;
- };
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -823,9 +823,10 @@ static void mxic_spi_remove(struct platf
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct mxic_spi *mxic = spi_controller_get_devdata(host);
+ 
++	spi_unregister_controller(host);
 +
-+&uart10 {
-+	interrupts = <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>;
-+};
+ 	pm_runtime_disable(&pdev->dev);
+ 	mxic_spi_mem_ecc_remove(mxic);
+-	spi_unregister_controller(host);
+ }
+ 
+ static const struct of_device_id mxic_spi_of_ids[] = {
 
 
 
