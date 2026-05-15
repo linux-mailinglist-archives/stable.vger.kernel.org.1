@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-247880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248523-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +KxxLx9CB2oCvAIAu9opvQ
-	(envelope-from <stable+bounces-247880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:56:15 +0200
+	id uMOZErVOB2p3xwIAu9opvQ
+	(envelope-from <stable+bounces-248523-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF925527D4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:56:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8AF553FEF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6EA3301C900
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:51:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 27BE03352390
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84593FF1DD;
-	Fri, 15 May 2026 15:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71084963D9;
+	Fri, 15 May 2026 16:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cmMK4Zn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBjWpjHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC843FF1A2;
-	Fri, 15 May 2026 15:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D114963A1;
+	Fri, 15 May 2026 16:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860309; cv=none; b=Q7x8Xxc+hasQPENaF6mM8SXlI+1R3wcvqSErFrRQxp3nXwcZ3yJpcfvNES7dDET9xfUcLJ3PoaC1C0Apcz0WbF9UJ5eQrR5Um0uwqz+hQ/xL2DnaQzVRMBPSgR1hS7caVPDoAZntyxAb+ugBEKmydmeuXfUrzTOktnVG2G30dCo=
+	t=1778861947; cv=none; b=f6eqbXbw+sw5A/Fvyvt++HHz5hhTb5TmyxkUtdTVbRwLdYgKhEqDRwraRlr6pSVWWhNiux3nT0VkoQAiOgP/0MgQAQE82IXpmGeBQXt2C3LJWYnJptzywEVONPPrwx1hZ6kREut7OF2X3tBBm9WOWDhF7dtZlc3yMEUCiPlHRTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860309; c=relaxed/simple;
-	bh=H0p1tl7BWPhvAWMk2SUR8/HttONNCuexizpKCPTasCg=;
+	s=arc-20240116; t=1778861947; c=relaxed/simple;
+	bh=Sklpkppusjp3+jC+HVFvTdDsUoKhd4Jbc6tzoOy/3Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XaDIsMvwiSMv07tffWTbBJjs47ZGd5/g352ZxbveNlUytpcgHoxoAzMbAEtzbS/1kQXEe0JYiBM+r+oJYlUmCAXUp6gMnUIzpww66Mz0U4jSVRv0+/0Bd9/QP/FfhRISOctttdw09ck14IBCPksf36dMrZGgXpkyfWQS9g4qgRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cmMK4Zn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FD9C2BCB0;
-	Fri, 15 May 2026 15:51:49 +0000 (UTC)
+	 MIME-Version; b=S2uCBlnalRV/XWjrXWHvNP/HvTjD4JXUhGY154vg7NZh6Vy6i9dUEBvRSkyJEReul/4S20BpqaGnAUedq5LJSzG1F4x+oMugBWpRH5CzhngH2z8PW7HvfjVNhfAZZ0gSJIN3dMHdnO7+KYF0H3UgG58nfYBXUVhezYw4OhV+kkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBjWpjHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDC9C2BCB0;
+	Fri, 15 May 2026 16:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860309;
-	bh=H0p1tl7BWPhvAWMk2SUR8/HttONNCuexizpKCPTasCg=;
+	s=korg; t=1778861947;
+	bh=Sklpkppusjp3+jC+HVFvTdDsUoKhd4Jbc6tzoOy/3Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cmMK4ZnK1rapt3vYr/Qf0FYYC2pHtQs5WWkd0KwaC6wj0Sw5AEaTwV5EzhfQUFc5
-	 y4NKw4lt34JTWcdC4TSCJaGUwEtDp7DlSFprM4jLaIUiaIpPMDbo7iZJtce0yW/JT8
-	 0MgcD4xvwejxoxW/VI3kzoWYxoD0ycJo0XS+diMk=
+	b=sBjWpjHSURfL2+WONFZN/lI8LC736JLy/eHqoJqM+ZbA+KI5/KJbycIsCDwkQyJpp
+	 byBMtfgLQAG+4ahB2RzDo0KXJhMdEIC3xEfRcIWHR30jDDvm7HLS/HnWnBjQCzfxzM
+	 VDca0MtvZL/0YslD6iBpFh6DZTKgntFlhcN1EhK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Palcu <laurentiu.palcu@intel.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 039/144] spi: dln2: fix controller deregistration
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 048/188] media: pci: zoran: fix potential memory leak in zoran_probe()
 Date: Fri, 15 May 2026 17:47:45 +0200
-Message-ID: <20260515154654.428315468@linuxfoundation.org>
+Message-ID: <20260515154658.357666036@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +63,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3AF925527D4
+X-Rspamd-Queue-Id: CA8AF553FEF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248523-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247880-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iitm.ac.in:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-commit c353020fbfa8514ee91a6de2d88de4e5edca5803 upstream.
+commit 8ea21435fe36fb853706f4935d78bc11beb63fb4 upstream.
 
-Make sure to deregister the controller before disabling it to allow
-SPI device drivers to do I/O during deregistration.
+The memory allocated for codec in videocodec_attach() is not freed in
+one of the error paths, due to an incorrect goto label. Fix the label
+to free it on error.
 
-Fixes: 3d8c0d749da3 ("spi: add support for DLN-2 USB-SPI adapter")
-Cc: stable@vger.kernel.org	# 4.0
-Cc: Laurentiu Palcu <laurentiu.palcu@intel.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-12-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8f7cc5c0b0eb ("media: staging: media: zoran: introduce zoran_i2c_init")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-dln2.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/pci/zoran/zoran_card.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-dln2.c
-+++ b/drivers/spi/spi-dln2.c
-@@ -761,7 +761,7 @@ static int dln2_spi_probe(struct platfor
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to register host\n");
- 		goto exit_register;
-@@ -786,10 +786,16 @@ static void dln2_spi_remove(struct platf
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	pm_runtime_disable(&pdev->dev);
- 
- 	if (dln2_spi_enable(dln2, false) < 0)
- 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
-+
-+	spi_controller_put(host);
- }
- 
- #ifdef CONFIG_PM_SLEEP
+--- a/drivers/media/pci/zoran/zoran_card.c
++++ b/drivers/media/pci/zoran/zoran_card.c
+@@ -1373,7 +1373,7 @@ static int zoran_probe(struct pci_dev *p
+ 		}
+ 		if (zr->codec->type != zr->card.video_codec) {
+ 			pci_err(pdev, "%s - wrong codec\n", __func__);
+-			goto zr_unreg_videocodec;
++			goto zr_detach_codec;
+ 		}
+ 	}
+ 	if (zr->card.video_vfe != 0) {
 
 
 
