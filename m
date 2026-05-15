@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-248862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCfxH8RLB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:37:24 +0200
+	id WONCJyZRB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:00:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861E95539C4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:37:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 490CD5544FD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1522730216D1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A9332307A14C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCA63D0927;
-	Fri, 15 May 2026 16:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5F93D16FC;
+	Fri, 15 May 2026 16:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHR+Xmyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKArUMic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B823CF67B;
-	Fri, 15 May 2026 16:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E113D16EA;
+	Fri, 15 May 2026 16:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862820; cv=none; b=r9QB2K9ycmLRXqVGzEgGICPlPOpBCdeVaHwl30HuY+rlva1nkUOZj/1gmu3RdBbNDgyHbNwxrPy666JpajlhInaXkxGc/AlqR6/4Npq/hJ/JFzXcUQ6nVrJP325YYYry0yIb2kQb/uBTvtFumC3tg3tOn0YaH+kJvF7teJPx6dA=
+	t=1778862823; cv=none; b=JEgCEzQ/pj6ULSeDQxmSYV6h5lisi5yrsvz5oFlu2zxxxtB70viiGhirimKjKXgmxu1B9uRmLCPyUV980ObrPcPAeirxjH92hBB2g3k+ANfzpNRCg9pdydP6hRdf/94I6wl6/VxyotAKoboXYxFq3RTmdSmrd2ae8Ms3xj+c8LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862820; c=relaxed/simple;
-	bh=QzSC6jDMlA0HgAfcVHjprVkmQVhtFKNZL0ZgmwAEcs8=;
+	s=arc-20240116; t=1778862823; c=relaxed/simple;
+	bh=6J/9X/jMoO1pukP35BFVawR1rpN2cdwJUTPjnnQCF+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIA9HewKUsvW0lvgtlbghwIN3SHtDSEDOGybN4A/uQpHx3mCcqX1bOnZH2GbUrsWPLzSSfOSlRyzGJYubCBqcNH8Z33v8aGc9R4CzTAF4o7AtPV5RW/N09sJmriYXvQll9VhAE3Ad3gQNzNrFvDKD41yvqm7iZaqvt72OiErbHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHR+Xmyo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A4CC2BCB3;
-	Fri, 15 May 2026 16:33:40 +0000 (UTC)
+	 MIME-Version; b=s7Z2NSlMyNisavKQXzSBVG3pHZ+Sc39qV7IwZD1u3CmpudUeuYtRnMZeSUKjyYQOrkCA4nTXLlsr6Q1qWuH8qa9faXqV/D0trygMVngvcj7xlHmGbY4kvrZhX/zV5I3gVtj4w6F8GOT9nwdBFFgqXoCmlREL1sKqBkiP2/XjQB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKArUMic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0356BC2BCC7;
+	Fri, 15 May 2026 16:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862820;
-	bh=QzSC6jDMlA0HgAfcVHjprVkmQVhtFKNZL0ZgmwAEcs8=;
+	s=korg; t=1778862823;
+	bh=6J/9X/jMoO1pukP35BFVawR1rpN2cdwJUTPjnnQCF+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHR+XmyoMncgD6/Q+2cr0NyVVhW0Z7OWssq4qu61EenKk8Pk1VSIku2QBovLSgsP2
-	 ypJZA+G3HWopXpEfTTy/FZ1r4W0NFd68fY6jaqylvErtuQMxrtEX3Pp4lWCcwj+Yrp
-	 WTzcyTNY7DEQigM7oN2Wg3KZd0t6CfehMZr2epAk=
+	b=fKArUMic4/2Om3D0Q4iNyFNXItky4GH38bf7T67f5ebX2avJ89EgVicxxkGjwLht9
+	 Hrvp1WfBv2MWq0KoG5ZydVAAL1YS4pZitGllnXlN4a5HkI/i/+sKExL3BF1q+Itkk7
+	 +0hKOhagjyeVcJsOsjPPrsSmFCRdKXZxw27Nw1bY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Stefano Garzarella <sgarzare@redhat.com>,
-	Norbert Szetei <norbert@doyensec.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Arseniy Krasnov <avkrasnov@rulkc.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Luigi Leonardi <leonardi@redhat.com>
-Subject: [PATCH 7.0 195/201] vsock: fix buffer size clamping order
-Date: Fri, 15 May 2026 17:50:13 +0200
-Message-ID: <20260515154702.804818445@linuxfoundation.org>
+Subject: [PATCH 7.0 196/201] vsock/virtio: fix length and offset in tap skb for split packets
+Date: Fri, 15 May 2026 17:50:14 +0200
+Message-ID: <20260515154702.827622724@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
 References: <20260515154658.538039039@linuxfoundation.org>
@@ -65,13 +67,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 861E95539C4
+X-Rspamd-Queue-Id: 490CD5544FD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248862-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248863-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,63 +90,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,doyensec.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,meta.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,rulkc.org:email]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert Szetei <norbert@doyensec.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit d114bfdc9b76bf93b881e195b7ec957c14227bab upstream.
+commit 5f344d809e015fba3709e5219428c00b8ac5d7df upstream.
 
-In vsock_update_buffer_size(), the buffer size was being clamped to the
-maximum first, and then to the minimum. If a user sets a minimum buffer
-size larger than the maximum, the minimum check overrides the maximum
-check, inverting the constraint.
+virtio_transport_build_skb() builds a new skb to be delivered to the
+vsockmon tap device. To build the new skb, it uses the original skb
+data length as payload length, but as the comment notes, the original
+packet stored in the skb may have been split in multiple packets, so we
+need to use the length in the header, which is correctly updated before
+the packet is delivered to the tap, and the offset for the data.
 
-This breaks the intended socket memory boundaries by allowing the
-vsk->buffer_size to grow beyond the configured vsk->buffer_max_size.
+This was also similar to what we did before commit 71dc9ec9ac7d
+("virtio/vsock: replace virtio_vsock_pkt with sk_buff") where we probably
+missed something during the skb conversion.
 
-Fix this by checking the minimum first, and then the maximum. This
-ensures the buffer size never exceeds the buffer_max_size.
+Also update the comment above, which was left stale by the skb
+conversion and still mentioned a buffer pointer that no longer exists.
 
-Fixes: b9f2b0ffde0c ("vsock: handle buffer_size sockopts in the core")
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/180118C5-8BCF-4A63-A305-4EE53A34AB9C@doyensec.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Reviewed-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+Link: https://patch.msgid.link/20260508164411.261440-2-sgarzare@redhat.com
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Cc: Luigi Leonardi <leonardi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1951,12 +1951,12 @@ static void vsock_update_buffer_size(str
- 				     const struct vsock_transport *transport,
- 				     u64 val)
- {
--	if (val > vsk->buffer_max_size)
--		val = vsk->buffer_max_size;
--
- 	if (val < vsk->buffer_min_size)
- 		val = vsk->buffer_min_size;
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -169,12 +169,12 @@ static struct sk_buff *virtio_transport_
+ 	struct sk_buff *skb;
+ 	size_t payload_len;
  
-+	if (val > vsk->buffer_max_size)
-+		val = vsk->buffer_max_size;
-+
- 	if (val != vsk->buffer_size &&
- 	    transport && transport->notify_buffer_size)
- 		transport->notify_buffer_size(vsk, &val);
+-	/* A packet could be split to fit the RX buffer, so we can retrieve
+-	 * the payload length from the header and the buffer pointer taking
+-	 * care of the offset in the original packet.
++	/* A packet could be split to fit the RX buffer, so we use
++	 * the payload length from the header, which has been updated
++	 * by the sender to reflect the fragment size.
+ 	 */
+ 	pkt_hdr = virtio_vsock_hdr(pkt);
+-	payload_len = pkt->len;
++	payload_len = le32_to_cpu(pkt_hdr->len);
+ 
+ 	skb = alloc_skb(sizeof(*hdr) + sizeof(*pkt_hdr) + payload_len,
+ 			GFP_ATOMIC);
+@@ -222,7 +222,8 @@ static struct sk_buff *virtio_transport_
+ 
+ 			virtio_transport_copy_nonlinear_skb(pkt, data, payload_len);
+ 		} else {
+-			skb_put_data(skb, pkt->data, payload_len);
++			skb_put_data(skb, pkt->data + VIRTIO_VSOCK_SKB_CB(pkt)->offset,
++				     payload_len);
+ 		}
+ 	}
+ 
 
 
 
