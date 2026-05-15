@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGzRD7VRB2qmyQIAu9opvQ
-	(envelope-from <stable+bounces-248702-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:02:45 +0200
+	id 0P68ABRQB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C321A5545B0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:02:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF16554341
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9DB003176B5D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:28:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8BE5308E534
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB1A4C0433;
-	Fri, 15 May 2026 16:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E443F928D;
+	Fri, 15 May 2026 16:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKIKZwfL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7n01s5B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600783FD95B;
-	Fri, 15 May 2026 16:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3CC3FBB55;
+	Fri, 15 May 2026 16:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862409; cv=none; b=VPbp+EtUotkDSnrc/kXxlcpOobUUiONdwZ19Ik1grcxgrvtCfMu322RhWXKzhJ/MMukexXhKp483MZt5FGPXY5ZjjC7RuY2H/nMgLgSNPcpAxPlyL34rbno5IM7zeHIqheqpH5bXos90XqAAMJ8TeePTgxUIo9RlZBED1VpKcSk=
+	t=1778861916; cv=none; b=s/hB4VipPwW7EJ8UnkHztkxHGHu4NjwfET4I+CIkxERAAXRHKEf+WqCscmUChXAdO9hLMQc3ObzHCetVT914xPpxeOXeX76lTe9RIOCEkIRl8cEOobdOHvKWwu6RP7IcOg120L+pAGAghPv76hbP9brC+TZpnc8TeeCcj1PUH+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862409; c=relaxed/simple;
-	bh=kJEMRW47mo9xQ3BJ8qLcwJqDDi95qGy0I8vcWfkCUh0=;
+	s=arc-20240116; t=1778861916; c=relaxed/simple;
+	bh=LRptmQ1SRm136kPFDVeEcfe96vov2128wJySPVCwwyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W3memdDp9+uKkp0V7ltQNqss+kjVZ/KjK8kg5fuXD2mZ64n36TVm3OB4XXmknKPNyIB8x1xW1EBJl9jMqt61mtSb4dRe3XQTVKvff8D0xgDnB3PrNGlgCmAhtd1vSR8KnenIqDHw67+LtdtEbjxAsJQGFjYXAUpy23zI+F5o8XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKIKZwfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A843C2BCB0;
-	Fri, 15 May 2026 16:26:48 +0000 (UTC)
+	 MIME-Version; b=PzuLI5qXS3ImZQNUghlgNdrYM7XDuXdcx4fgA/RYIW+712IlH3AxQGKPgNlULoEoJfcbaC0VylvZg6tYe+aiyi3lcRW4+Z/018Tgnm5gYPw5DWDuApKMFjQnrFfVgIgFxkR/hnZcPssswmxTiZRtUFGGQvRm7XvUBd0x3F4Sm5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7n01s5B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DC8C2BCB0;
+	Fri, 15 May 2026 16:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862408;
-	bh=kJEMRW47mo9xQ3BJ8qLcwJqDDi95qGy0I8vcWfkCUh0=;
+	s=korg; t=1778861916;
+	bh=LRptmQ1SRm136kPFDVeEcfe96vov2128wJySPVCwwyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKIKZwfLf9+Ifkv6llVqSOGBjMBkAhqqgpV6jW0XEsV610PEzMumrwWgHvJsBaFJN
-	 j5XPw/WEQOy/NzV9ZCSK3x5xsO9RbHbLpnCXgZ0Uy29nUQsdIpclkdCRV5gBW2W0if
-	 PN7i/O1uhWrCeMqen7hGSLHYHE6mfmOwPyFSjVBo=
+	b=w7n01s5BXp1YtdSAlAuBXkYFjJwKnNHK4/DtmGaJFI5qcsPHCFD6OjPI1/CpExHye
+	 +QliSTGr4QwaBHSEfKzBCr6Y50AcEVaGihU2r2Bs5zlO9lDIva8b0lK1Vlx4F+g9P5
+	 0vbKUK4kTcV04ajTBbR8PtxeYNjcftuNUHCqDtyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 036/201] media: rc: xbox_remote: heed DMA restrictions
+	Hauke Mehrtens <hauke@hauke-m.de>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 037/188] spi: lantiq-ssc: fix controller deregistration
 Date: Fri, 15 May 2026 17:47:34 +0200
-Message-ID: <20260515154659.317022289@linuxfoundation.org>
+Message-ID: <20260515154658.113703800@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +64,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C321A5545B0
+X-Rspamd-Queue-Id: 7FF16554341
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248702-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248511-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,mess.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,hauke-m.de:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit e280d1e5e3f2595bbb43fe6e1bce00c59a43c0ff upstream.
+commit b99206710d032c16b7f8b75e4bc18414d8e4b9f4 upstream.
 
-The buffer for IO must not be part of the device structure
-because that violates the DMA coherency rules.
+Make sure to deregister the controller before releasing underlying
+resources like clocks during driver unbind.
 
-Fixes: 02d32bdad3123 ("media: rc: add driver for Xbox DVD Movie Playback Kit")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 17f84b793c01 ("spi: lantiq-ssc: add support for Lantiq SSC SPI controller")
+Cc: stable@vger.kernel.org	# 4.11
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260409120419.388546-17-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/xbox_remote.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/spi/spi-lantiq-ssc.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/media/rc/xbox_remote.c
-+++ b/drivers/media/rc/xbox_remote.c
-@@ -55,7 +55,7 @@ struct xbox_remote {
- 	struct usb_interface *interface;
+--- a/drivers/spi/spi-lantiq-ssc.c
++++ b/drivers/spi/spi-lantiq-ssc.c
+@@ -995,7 +995,7 @@ static int lantiq_ssc_probe(struct platf
+ 		"Lantiq SSC SPI controller (Rev %i, TXFS %u, RXFS %u, DMA %u)\n",
+ 		revision, spi->tx_fifo_size, spi->rx_fifo_size, supports_dma);
  
- 	struct urb *irq_urb;
--	unsigned char inbuf[DATA_BUFSIZE] __aligned(sizeof(u16));
-+	u8 *inbuf;
+-	err = devm_spi_register_controller(dev, host);
++	err = spi_register_controller(host);
+ 	if (err) {
+ 		dev_err(dev, "failed to register spi host\n");
+ 		goto err_wq_destroy;
+@@ -1017,6 +1017,10 @@ static void lantiq_ssc_remove(struct pla
+ {
+ 	struct lantiq_ssc_spi *spi = platform_get_drvdata(pdev);
  
- 	char rc_name[NAME_BUFSIZE];
- 	char rc_phys[NAME_BUFSIZE];
-@@ -218,6 +218,10 @@ static int xbox_remote_probe(struct usb_
- 	if (!xbox_remote || !rc_dev)
- 		goto exit_free_dev_rdev;
- 
-+	xbox_remote->inbuf = kzalloc(DATA_BUFSIZE, GFP_KERNEL);
-+	if (!xbox_remote->inbuf)
-+		goto exit_free_inbuf;
++	spi_controller_get(spi->host);
 +
- 	/* Allocate URB buffer */
- 	xbox_remote->irq_urb = usb_alloc_urb(0, GFP_KERNEL);
- 	if (!xbox_remote->irq_urb)
-@@ -262,6 +266,8 @@ exit_kill_urbs:
- 	usb_kill_urb(xbox_remote->irq_urb);
- exit_free_buffers:
- 	usb_free_urb(xbox_remote->irq_urb);
-+exit_free_inbuf:
-+	kfree(xbox_remote->inbuf);
- exit_free_dev_rdev:
- 	rc_free_device(rc_dev);
- 	kfree(xbox_remote);
-@@ -286,6 +292,7 @@ static void xbox_remote_disconnect(struc
- 	usb_kill_urb(xbox_remote->irq_urb);
- 	rc_unregister_device(xbox_remote->rdev);
- 	usb_free_urb(xbox_remote->irq_urb);
-+	kfree(xbox_remote->inbuf);
- 	kfree(xbox_remote);
++	spi_unregister_controller(spi->host);
++
+ 	lantiq_ssc_writel(spi, 0, LTQ_SPI_IRNEN);
+ 	lantiq_ssc_writel(spi, 0, LTQ_SPI_CLC);
+ 	rx_fifo_flush(spi);
+@@ -1025,6 +1029,8 @@ static void lantiq_ssc_remove(struct pla
+ 
+ 	destroy_workqueue(spi->wq);
+ 	clk_put(spi->fpi_clk);
++
++	spi_controller_put(spi->host);
  }
  
+ static struct platform_driver lantiq_ssc_driver = {
 
 
 
