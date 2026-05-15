@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-248624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJpdFZFYB2oozgIAu9opvQ
-	(envelope-from <stable+bounces-248624-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:32:01 +0200
+	id SC/CIFpFB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:10:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF32C5552D9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B71552C23
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE1C1317355E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F5AD3247F83
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083613E0089;
-	Fri, 15 May 2026 16:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409B73FF1DD;
+	Fri, 15 May 2026 15:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnsUPFIQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWgc/0qQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03473FD96F;
-	Fri, 15 May 2026 16:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0368C3FF1D8;
+	Fri, 15 May 2026 15:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862209; cv=none; b=RAtEcH9+hHkh+ltrPKpFdf1RRvCR6VPclSlnu3e5R5gzxMGQibjLpVFlD5iRauULaHFfj9itbqfdLUsd37Qlo3neAP3C32f51spVELLPRIk13rUoRo0I2Y3f5M7ViKh4IJFlP4tb9Bg1ZuADKpZgzL5TtwdbAvJS2Vugq6dRi5I=
+	t=1778860573; cv=none; b=PDonjLTm13OcZCon/ZrRu5HjeIIiu/uWNJDNqNuNrb3Dr5YGun2De4a9975BmxE0CYTotIdE36IzD2jK2b/gS9ajz1lUJNVyhTRdNeM+GJbxuu45bsS7JnG/NI99E3jJZAsSMJs1NiGgsAyTOUxXaKGfQG759XB3KZAFv3/p0Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862209; c=relaxed/simple;
-	bh=yREiQ5kl4oZfXf73C8iKxWxNUsVTthVHHeU7wfBcDtg=;
+	s=arc-20240116; t=1778860573; c=relaxed/simple;
+	bh=037JBb0AIpZsIR84vnMOybji4OlCfKCFqvhOqQNpca0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBjuuSrpnJXeVWM6I2LZ3mBRr2hk1jxE25B17xF6JEyUtItOTh50x8gUSTVbqrmzLff8zjVUFplZgVmO594AjN8WQFnd9qhpo8tCvCsqRlAuJKhhss/kbDXBV/kpUoQsqhbUfjexEeoPidAASF/vnf5ubFMxPy21wbf3uvsM/bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnsUPFIQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139D9C2BCB0;
-	Fri, 15 May 2026 16:23:28 +0000 (UTC)
+	 MIME-Version; b=LMjoQEd1xQRZl0Weqsel7Lcb8TxD6fMLtWD+pha0KGtD/Ommt48r2GCYJmUAT+BGeEc4OJk71OcmTb71ko18K4Tylkz6xhvpK+uzV3ls5l6hjw1cyl6yA1FMPD4hpAIfs5Pjz/w13DdBJTTIM04+PNmO0hjTg6K9BxJCJ5Vj78w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWgc/0qQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51125C2BCB3;
+	Fri, 15 May 2026 15:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862209;
-	bh=yREiQ5kl4oZfXf73C8iKxWxNUsVTthVHHeU7wfBcDtg=;
+	s=korg; t=1778860572;
+	bh=037JBb0AIpZsIR84vnMOybji4OlCfKCFqvhOqQNpca0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnsUPFIQims29nAr9KZ4Fd8gAKJxLBRqmnpOcj54LPdPm/pOI0Kz9EkqA3rH1XI/r
-	 qajjaXRIS+4KdQQyfOFxxt+P0EyFY6ihQoEbx0j5ONTOTm8avivREB8iXa53TBBY6J
-	 TLxRwHit958Uj+E/BWUkK/0KP4MVNZjaV+fcZfLc=
+	b=hWgc/0qQ3pqQiP5OqWQ+em88qkU3GP/PCrriSpCZoz4Jr0AhFR/oIAPnei1zqmt+7
+	 afGpq7uCvg/Ga39dON/xEJH6wY3zcaI07yYB5aXTh1db+WhdP/SFddocZ7RhRPVQYK
+	 gGbaNwSYAC07jRIdzt+/vXizDVswsn6epLAfMrNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liew Rui Yan <aethernet65535@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 148/188] mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
-Date: Fri, 15 May 2026 17:49:25 +0200
-Message-ID: <20260515154700.532052071@linuxfoundation.org>
+	Yiqi Sun <sunyiqixm@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Arseniy Krasnov <avkrasnov@rulkc.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>
+Subject: [PATCH 6.12 140/144] vsock/virtio: fix empty payload in tap skb for non-linear buffers
+Date: Fri, 15 May 2026 17:49:26 +0200
+Message-ID: <20260515154656.771522592@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,257 +68,133 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BF32C5552D9
+X-Rspamd-Queue-Id: 11B71552C23
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248624-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,meta.com,rulkc.org];
+	TAGGED_FROM(0.00)[bounces-247984-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,meta.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit b98b7ff6025ae82570d4915e083f0cbd8d48b3cf upstream.
+commit 3a3e3d90cbc79600544536723911657730759af3 upstream.
 
-DAMON_LRU_SORT updates 'enabled' and 'kdamond_pid' parameter values, which
-represents the running status of its kdamond, when the user explicitly
-requests start/stop of the kdamond.  The kdamond can, however, be stopped
-in events other than the explicit user request in the following three
-events.
+For non-linear skbs, virtio_transport_build_skb() goes through
+virtio_transport_copy_nonlinear_skb() to copy the original payload
+in the new skb to be delivered to the vsockmon tap device.
+This manually initializes an iov_iter but does not set iov_iter.count.
+Since the iov_iter is zero-initialized, the copy length is zero and no
+payload is actually copied to the monitor interface, leaving data
+un-initialized.
 
-1. ctx->regions_score_histogram allocation failure at beginning of the
-   execution,
-2. damon_commit_ctx() failure due to invalid user input, and
-3. damon_commit_ctx() failure due to its internal allocation failures.
+Fix this by removing the linear vs non-linear split and using
+skb_copy_datagram_iter() with iov_iter_kvec() for all cases, as
+vhost-vsock already does. This handles both linear and non-linear skbs,
+properly initializes the iov_iter, and removes the now unused
+virtio_transport_copy_nonlinear_skb().
 
-Hence, if the kdamond is stopped by the above three events, the values of
-the status parameters can be stale.  Users could show the stale values and
-be confused.  This is already bad, but the real consequence is worse.
-DAMON_LRU_SORT avoids unnecessary damon_start() and damon_stop() calls
-based on the 'enabled' parameter value.  And the update of 'enabled'
-parameter value depends on the damon_start() and damon_stop() call
-results.  Hence, once the kdamond has stopped by the unintentional events,
-the user cannot restart the kdamond before the system reboot.  For
-example, the issue can be reproduced via below steps.
+While touching this code, let's also check the return value of
+skb_copy_datagram_iter(), even though it's unlikely to fail.
 
-    # cd /sys/module/damon_lru_sort/parameters
-    #
-    # # start DAMON_LRU_SORT
-    # echo Y > enabled
-    # ps -ef | grep kdamond
-    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
-    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
-    #
-    # # commit wrong input to stop kdamond withou explicit stop request
-    # echo 3 > addr_unit
-    # echo Y > commit_inputs
-    bash: echo: write error: Invalid argument
-    #
-    # # confirm kdamond is stopped
-    # ps -ef | grep kdamond
-    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
-    #
-    # # users casn now show stable status
-    # cat enabled
-    Y
-    # cat kdamond_pid
-    806
-    #
-    # # even after fixing the wrong parameter,
-    # # kdamond cannot be restarted.
-    # echo 1 > addr_unit
-    # echo Y > enabled
-    # ps -ef | grep kdamond
-    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
-
-The problem will only rarely happen in real and common setups for the
-following reasons.  The allocation failures are unlikely in such setups
-since those allocations are arguably too small to fail.  Also sane users
-on real production environments may not commit wrong input parameters.
-But once it happens, the consequence is quite bad.  And the bug is a bug.
-
-The issue stems from the fact that there are multiple events that can
-change the status, and following all the events is challenging.
-Dynamically detect and use the fresh status for the parameters when those
-are requested.
-
-Link: https://lore.kernel.org/20260419161003.79176-3-sj@kernel.org
-Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
-Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.0.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4b0bf10eb077 ("vsock/virtio: non-linear skb handling for tap")
+Reported-by: Yiqi Sun <sunyiqixm@gmail.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Reviewed-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+Link: https://patch.msgid.link/20260508164411.261440-3-sgarzare@redhat.com
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Luigi Leonardi <leonardi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/lru_sort.c |   83 ++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 55 insertions(+), 28 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c |   40 +++++++++-----------------------
+ 1 file changed, 12 insertions(+), 28 deletions(-)
 
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -118,15 +118,6 @@ module_param(monitor_region_end, ulong,
-  */
- static unsigned long addr_unit __read_mostly = 1;
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -140,27 +140,6 @@ static void virtio_transport_init_hdr(st
+ 	hdr->fwd_cnt	= cpu_to_le32(0);
+ }
  
--/*
-- * PID of the DAMON thread
-- *
-- * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
-- * Else, -1.
-- */
--static int kdamond_pid __read_mostly = -1;
--module_param(kdamond_pid, int, 0400);
+-static void virtio_transport_copy_nonlinear_skb(const struct sk_buff *skb,
+-						void *dst,
+-						size_t len)
+-{
+-	struct iov_iter iov_iter = { 0 };
+-	struct kvec kvec;
+-	size_t to_copy;
 -
- static struct damos_stat damon_lru_sort_hot_stat;
- DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_lru_sort_hot_stat,
- 		lru_sort_tried_hot_regions, lru_sorted_hot_regions,
-@@ -288,12 +279,8 @@ static int damon_lru_sort_turn(bool on)
+-	kvec.iov_base = dst;
+-	kvec.iov_len = len;
+-
+-	iov_iter.iter_type = ITER_KVEC;
+-	iov_iter.kvec = &kvec;
+-	iov_iter.nr_segs = 1;
+-
+-	to_copy = min_t(size_t, len, skb->len);
+-
+-	skb_copy_datagram_iter(skb, VIRTIO_VSOCK_SKB_CB(skb)->offset,
+-			       &iov_iter, to_copy);
+-}
+-
+ /* Packet capture */
+ static struct sk_buff *virtio_transport_build_skb(void *opaque)
  {
- 	int err;
+@@ -218,13 +197,18 @@ static struct sk_buff *virtio_transport_
+ 	skb_put_data(skb, pkt_hdr, sizeof(*pkt_hdr));
  
--	if (!on) {
--		err = damon_stop(&ctx, 1);
--		if (!err)
--			kdamond_pid = -1;
--		return err;
--	}
-+	if (!on)
-+		return damon_stop(&ctx, 1);
- 
- 	err = damon_lru_sort_apply_parameters();
- 	if (err)
-@@ -302,7 +289,6 @@ static int damon_lru_sort_turn(bool on)
- 	err = damon_start(&ctx, 1, true);
- 	if (err)
- 		return err;
--	kdamond_pid = ctx->kdamond->pid;
- 	return damon_call(ctx, &call_control);
- }
- 
-@@ -330,42 +316,83 @@ module_param_cb(addr_unit, &addr_unit_pa
- MODULE_PARM_DESC(addr_unit,
- 	"Scale factor for DAMON_LRU_SORT to ops address conversion (default: 1)");
- 
-+static bool damon_lru_sort_enabled(void)
-+{
-+	if (!ctx)
-+		return false;
-+	return damon_is_running(ctx);
-+}
+ 	if (payload_len) {
+-		if (skb_is_nonlinear(pkt)) {
+-			void *data = skb_put(skb, payload_len);
+-
+-			virtio_transport_copy_nonlinear_skb(pkt, data, payload_len);
+-		} else {
+-			skb_put_data(skb, pkt->data + VIRTIO_VSOCK_SKB_CB(pkt)->offset,
+-				     payload_len);
++		struct iov_iter iov_iter;
++		struct kvec kvec;
++		void *data = skb_put(skb, payload_len);
 +
- static int damon_lru_sort_enabled_store(const char *val,
- 		const struct kernel_param *kp)
- {
--	bool is_enabled = enabled;
--	bool enable;
- 	int err;
- 
--	err = kstrtobool(val, &enable);
-+	err = kstrtobool(val, &enabled);
- 	if (err)
- 		return err;
- 
--	if (is_enabled == enable)
-+	if (damon_lru_sort_enabled() == enabled)
- 		return 0;
- 
- 	/* Called before init function.  The function will handle this. */
- 	if (!damon_initialized())
--		goto set_param_out;
-+		return 0;
- 
--	err = damon_lru_sort_turn(enable);
--	if (err)
--		return err;
-+	return damon_lru_sort_turn(enabled);
-+}
- 
--set_param_out:
--	enabled = enable;
--	return err;
-+static int damon_lru_sort_enabled_load(char *buffer,
-+		const struct kernel_param *kp)
-+{
-+	return sprintf(buffer, "%c\n", damon_lru_sort_enabled() ? 'Y' : 'N');
- }
- 
- static const struct kernel_param_ops enabled_param_ops = {
- 	.set = damon_lru_sort_enabled_store,
--	.get = param_get_bool,
-+	.get = damon_lru_sort_enabled_load,
- };
- 
- module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
- MODULE_PARM_DESC(enabled,
- 	"Enable or disable DAMON_LRU_SORT (default: disabled)");
- 
-+static int damon_lru_sort_kdamond_pid_store(const char *val,
-+		const struct kernel_param *kp)
-+{
-+	/*
-+	 * kdamond_pid is read-only, but kernel command line could write it.
-+	 * Do nothing here.
-+	 */
-+	return 0;
-+}
++		kvec.iov_base = data;
++		kvec.iov_len = payload_len;
++		iov_iter_kvec(&iov_iter, ITER_DEST, &kvec, 1, payload_len);
 +
-+static int damon_lru_sort_kdamond_pid_load(char *buffer,
-+		const struct kernel_param *kp)
-+{
-+	int kdamond_pid = -1;
-+
-+	if (ctx) {
-+		kdamond_pid = damon_kdamond_pid(ctx);
-+		if (kdamond_pid < 0)
-+			kdamond_pid = -1;
-+	}
-+	return sprintf(buffer, "%d\n", kdamond_pid);
-+}
-+
-+static const struct kernel_param_ops kdamond_pid_param_ops = {
-+	.set = damon_lru_sort_kdamond_pid_store,
-+	.get = damon_lru_sort_kdamond_pid_load,
-+};
-+
-+/*
-+ * PID of the DAMON thread
-+ *
-+ * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
-+ * Else, -1.
-+ */
-+module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
-+
- static int __init damon_lru_sort_init(void)
- {
- 	int err;
++		if (skb_copy_datagram_iter(pkt, VIRTIO_VSOCK_SKB_CB(pkt)->offset,
++					   &iov_iter, payload_len)) {
++			kfree_skb(skb);
++			return NULL;
+ 		}
+ 	}
+ 
 
 
 
