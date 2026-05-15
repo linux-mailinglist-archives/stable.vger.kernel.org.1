@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-248919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4O5bKs+JB2ol7gIAu9opvQ
-	(envelope-from <stable+bounces-248919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:02:07 +0200
+	id QG4pMsuJB2ol7gIAu9opvQ
+	(envelope-from <stable+bounces-248918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:02:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 532B55579CD
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 206DE5579C6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E27E3014560
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:00:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE4FF3011BE9
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C6323A9BD;
-	Fri, 15 May 2026 21:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A903E9F8D;
+	Fri, 15 May 2026 21:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="DtNr+YMB"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="UMRk2HAp"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6285637DAA6
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 21:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7266305691
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 21:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778878837; cv=none; b=DDiEAfi54cp9XqXmdjvbClJQcJjOXPcQ5nWGbK4uLfo9WpE6gMK8eK/DqjeQJHbjMMUJWHwn8XV/KbX5i0e75KCxS47PoR9wEQvCQx9uZcJQoGwJTv/c9aM6ShKVJDp5hv2BUGFSuSoehFRFqJfPi0oHSJFnmvWYo4A59WLiZVs=
+	t=1778878835; cv=none; b=DKo/QBcvrblPIq4KFwwsNsHtZQW9Qnq5f/E2BNC45b3xOppzCacB9S19KOIbu7SjauAKLpWKXv+IbQGkxhRmlTKjfhgV1GMJd3WyKBbz+ityNLYH7g4oOsQl1JugfVlG9at/Aeev60Rcwg/5hEtUmP3vLxqcyLmb1jYH54hd324=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778878837; c=relaxed/simple;
-	bh=4Cwojfce9g9YRKPe6DhhN81RQGIu+6NtVZRI3nR2m2g=;
+	s=arc-20240116; t=1778878835; c=relaxed/simple;
+	bh=DNrcjPDZp1vTRLO4V9Aw/mVVXk5GfYHbt9Axc/SCGP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IM7Eh0Nxe2jdCGkM5i/OSlW0PjdoFS9rpuHGEJp7F7dVuvTJ29C5Zqp8ctChnxUIxjh4bZhYUvNElKbKh6yqv6idwRSIle1c7GMDiwmGPxu/clogG1vEW16ZHRSubY5j5Ux+xF0MuU3T2GGXLqrdnQik+EI7d2/IzKJiOutnGi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=DtNr+YMB; arc=none smtp.client-ip=213.97.179.56
+	 MIME-Version; b=uKr8Ot8d2uMqRHZI6WeSbkW5/JZvHjCYmRjTPQaxSg0JgHY+8UD0tDt4yKpjrmEP36fX+DGYyYDrlYbrRVPGRByDDnSUgH1UEIpKgTjQNKCJqlqzLl3s8atLkbHjvgJACZ5TxIxBBh9HNkUwbPG4M4ai7KiNqhG+Nw6BQ+18eVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=UMRk2HAp; arc=none smtp.client-ip=213.97.179.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -40,16 +40,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=Y373WFhAPvWVM4O0id+UhH61O7+pokehyjTTWHGmuQg=; b=DtNr+YMBv1kTyfGteij3xNlw3W
-	Co1WKexely1V/w/ilAXljp0wzZPpgmbOlAVqE52EQPB6qvNIbqKkqn6KjdAfyAWeBy2fhayh4+n4g
-	aWwr5BDao/fXzqavGQzJegX5B8NV1Y2hw2biyjwaECNTIXCAYJ/0IXw7A5gosKratB8AJCMHsamlb
-	rOBLGRLcg1D/uD0RS0SgcqVIXVWQFV1+3edur+XyRkmd+o6C18syMQ6I2ZaGXEqmwZboCdi6Fs3xI
-	mqcYTCG9M+PBQfSWDk83uujICjBi8Q3pE8B8JtqoBro6P+Yg2F0DG+vaAawY4hECkwmD0J17skC0a
-	CDMciobQ==;
+	bh=EQkctFu1PhrSPsr6U1V8TCCdZXIpbzTTOSLQysxZDdw=; b=UMRk2HApvV9LdhqX26hvTDLpb9
+	/xZ9VI6DcdES+CDXHP2yY2BlrZFgBpFQleNIVhMjr/IIuczrLljMyPrtE6XFqC2F3icGdDGoHsaBs
+	WcwrZeugscz4Pc6P1bE8JG8wJL2syoRtRvImPwf7nrDn6cZdfHIHX2JjwJH04GAH/HGWn9sL8U79U
+	JTBRzh08+PAxVy4ow0NWzbxm5NOZh4rPZUvGTFHKSZc376ksRvq/RWvgvsYByIh0nOOP6QE7+EIva
+	Eum4xawlDC1JWNH1UITygtHKzfbKEdlHXW5kVY6Lk5ZNYv/BPXa7MqNTihSmmgDkLXtl9JJR/Uzjz
+	hB7dUJkg==;
 Received: from [187.90.172.56] (helo=localhost)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wNzdt-000gyS-Sl; Fri, 15 May 2026 23:00:22 +0200
+	id 1wNzdx-000gyk-KZ; Fri, 15 May 2026 23:00:26 +0200
 From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org
@@ -66,9 +66,9 @@ Cc: Vijendar.Mukunda@amd.com,
 	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
 	Mario Limonciello <mario.limonciello@amd.com>,
 	Melissa Wen <mwen@igalia.com>
-Subject: [PATCH 7.0.y / 6.18.y] ASoC: amd: acp: Add DMI quirk for Valve Steam Deck OLED
-Date: Fri, 15 May 2026 17:49:57 -0300
-Message-ID: <20260515205733.196362-3-gpiccoli@igalia.com>
+Subject: [PATCH 6.12.y] ASoC: amd: acp: Add DMI quirk for Valve Steam Deck OLED
+Date: Fri, 15 May 2026 17:49:58 -0300
+Message-ID: <20260515205733.196362-4-gpiccoli@igalia.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260515205733.196362-2-gpiccoli@igalia.com>
 References: <20260515205733.196362-2-gpiccoli@igalia.com>
@@ -79,7 +79,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 532B55579CD
+X-Rspamd-Queue-Id: 206DE5579C6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.14 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -94,7 +94,7 @@ X-Spamd-Result: default: False [1.14 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[amd.com,gmail.com,perex.cz,suse.com,vger.kernel.org,igalia.com,kernel.org,collabora.com];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248919-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248918-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[15];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -107,8 +107,8 @@ X-Spamd-Result: default: False [1.14 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_SPAM(0.00)[0.606];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,igalia.com:mid,collabora.com:email,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	NEURAL_SPAM(0.00)[0.630];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,igalia.com:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,collabora.com:email]
 X-Rspamd-Action: no action
 
 commit b0f6f4ac7d5d04fe2adcdd63ed1cd1ad505b8958 upstream.
@@ -162,6 +162,7 @@ Tested-by: Melissa Wen <mwen@igalia.com>
 Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 Link: https://patch.msgid.link/20260423183505.116445-1-gpiccoli@igalia.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
+[gpiccoli: git auto-merge due to simple context changes.]
 Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 ---
  sound/soc/amd/acp/acp-legacy-mach.c |  2 +-
@@ -171,11 +172,11 @@ Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
  4 files changed, 25 insertions(+), 5 deletions(-)
 
 diff --git a/sound/soc/amd/acp/acp-legacy-mach.c b/sound/soc/amd/acp/acp-legacy-mach.c
-index a7a551366a40..235d6cc83fa9 100644
+index d104f7e8fdcd..4221fc0f081b 100644
 --- a/sound/soc/amd/acp/acp-legacy-mach.c
 +++ b/sound/soc/amd/acp/acp-legacy-mach.c
 @@ -174,7 +174,7 @@ static int acp_asoc_probe(struct platform_device *pdev)
- 		acp_card_drvdata->acp_rev = mach->mach_params.subsystem_rev;
+ 		acp_card_drvdata->platform =  *((int *)dev->platform_data);
  
  	dmi_id = dmi_first_match(acp_quirk_table);
 -	if (dmi_id && dmi_id->driver_data)
@@ -184,7 +185,7 @@ index a7a551366a40..235d6cc83fa9 100644
  
  	ret = acp_legacy_dai_links_create(card);
 diff --git a/sound/soc/amd/acp/acp-mach-common.c b/sound/soc/amd/acp/acp-mach-common.c
-index 09f6c9a2c041..ef784cca13f2 100644
+index e9ff4815c12c..6c0a92d76b54 100644
 --- a/sound/soc/amd/acp/acp-mach-common.c
 +++ b/sound/soc/amd/acp/acp-mach-common.c
 @@ -20,6 +20,7 @@
@@ -220,7 +221,7 @@ index 09f6c9a2c041..ef784cca13f2 100644
  	},
  	{}
  };
-@@ -1401,6 +1408,7 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
+@@ -1385,6 +1392,7 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
  	struct snd_soc_dai_link *links;
  	struct device *dev = card->dev;
  	struct acp_card_drvdata *drv_data = card->drvdata;
@@ -228,7 +229,7 @@ index 09f6c9a2c041..ef784cca13f2 100644
  	int i = 0, num_links = 0;
  
  	if (drv_data->hs_cpu_id)
-@@ -1572,6 +1580,9 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
+@@ -1562,6 +1570,9 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
  			links[i].codecs = &snd_soc_dummy_dlc;
  			links[i].num_codecs = 1;
  		}
@@ -238,8 +239,8 @@ index 09f6c9a2c041..ef784cca13f2 100644
  		i++;
  	}
  
-@@ -1587,6 +1598,11 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
- 		links[i].capture_only = 1;
+@@ -1577,6 +1588,11 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
+ 		links[i].dpcm_capture = 1;
  		links[i].nonatomic = true;
  		links[i].no_pcm = 1;
 +
@@ -251,10 +252,10 @@ index 09f6c9a2c041..ef784cca13f2 100644
  
  	card->dai_link = links;
 diff --git a/sound/soc/amd/acp/acp-mach.h b/sound/soc/amd/acp/acp-mach.h
-index f94c30c20f20..7177d3fd9619 100644
+index 93d9e3886b7e..4b255cbde9ff 100644
 --- a/sound/soc/amd/acp/acp-mach.h
 +++ b/sound/soc/amd/acp/acp-mach.h
-@@ -26,6 +26,10 @@
+@@ -24,6 +24,10 @@
  
  #define acp_get_drvdata(card) ((struct acp_card_drvdata *)(card)->drvdata)
  
@@ -266,10 +267,10 @@ index f94c30c20f20..7177d3fd9619 100644
  	HEADSET_BE_ID = 0,
  	AMP_BE_ID,
 diff --git a/sound/soc/amd/acp/acp-sof-mach.c b/sound/soc/amd/acp/acp-sof-mach.c
-index 6215e31ecedd..36ecef7013b9 100644
+index f36750167fa2..4c069a34fbe1 100644
 --- a/sound/soc/amd/acp/acp-sof-mach.c
 +++ b/sound/soc/amd/acp/acp-sof-mach.c
-@@ -110,7 +110,7 @@ static int acp_sof_probe(struct platform_device *pdev)
+@@ -113,7 +113,7 @@ static int acp_sof_probe(struct platform_device *pdev)
  
  	acp_card_drvdata = card->drvdata;
  	dmi_id = dmi_first_match(acp_quirk_table);
@@ -277,7 +278,7 @@ index 6215e31ecedd..36ecef7013b9 100644
 +	if (dmi_id && dmi_id->driver_data == (void *)QUIRK_TDM_MODE_ENABLE)
  		acp_card_drvdata->tdm_mode = dmi_id->driver_data;
  
- 	acp_card_drvdata->acp_rev = mach->mach_params.subsystem_rev;
+ 	ret = acp_sofdsp_dai_links_create(card);
 -- 
 2.50.1
 
