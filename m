@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAl9H5tPB2o9yAIAu9opvQ
-	(envelope-from <stable+bounces-248764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:47 +0200
+	id 4BofLCVWB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F1D554200
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3215C554E4B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A08A30A499E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 994753142165
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF663FBB7C;
-	Fri, 15 May 2026 16:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754DA4963A0;
+	Fri, 15 May 2026 16:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwmBiqOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDagb5YZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E89355049;
-	Fri, 15 May 2026 16:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390B0494A0E;
+	Fri, 15 May 2026 16:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862570; cv=none; b=vCk+EAiLK7jqTcRNTiZCoZmwL6ceTg5h/3kJ3xmMXck4JnuGorqqukbsEUYwyW8KNk9dwnY5Ae5DcFad9xAkii2g/SlxpG9sFa9rFg+wUzqM6qbhOn/YNas/wgmPML+njBgNb9jsBX4Why4XWLjOaDreD6Xw0+ENHEW1DuBAIvE=
+	t=1778861650; cv=none; b=McGyy3MxclPkia+tTeB157/FGxSu/vXBhNxnTHuhAFNcKHYtAeAcfXcOKnVLZGg2+HCQsvvVgFa+xU87nzxoUcOIAcBo5qWhqaovc1BuJRjPPwbiG9P8Bg2C5vyOONcjCzaceaOcy8iiMKPt4x9GaDL/iSmvdG4ZypRRhlPTqQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862570; c=relaxed/simple;
-	bh=0FS610BWkRv/vH7qG7FG+bXXotVV+3hsi9AyrjHGI+Q=;
+	s=arc-20240116; t=1778861650; c=relaxed/simple;
+	bh=B7G0vOi4bQoBfo6ez7hT1sVe3p3Ef51L95HJApK2OW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwSPSR2565dWgnNisg0hMkiTWrJR4RVGw8ikpsrElWXifrFh/n9WFYIbF8xab3fKLkhrPTAmHBONsmh42rbKd1nqUktuaVyAS5ybtZk70kQQY9CWWHODPfyyiBJY7DiMyj2PUGiutL6bwkonOU340WxmBp35CQeSOvcYh1FeuWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwmBiqOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DB3C2BCB0;
-	Fri, 15 May 2026 16:29:29 +0000 (UTC)
+	 MIME-Version; b=hn0Y6tCDro9XPVNFgQwLX60K+CwogT+j87vukY0Jhj1HP1lyTFVGTxY/buZ7cxt2WzcuRP36BBX5W7rEp/3IjwqrMpOzwRd71zUAXsvBbaTRfHnN5LQIMvrmPNVD4ejA4UiBpyKKK3li0pEVgV97FNyFio8ELMTGgHt8PT8Y1ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDagb5YZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE503C2BCB0;
+	Fri, 15 May 2026 16:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862570;
-	bh=0FS610BWkRv/vH7qG7FG+bXXotVV+3hsi9AyrjHGI+Q=;
+	s=korg; t=1778861650;
+	bh=B7G0vOi4bQoBfo6ez7hT1sVe3p3Ef51L95HJApK2OW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwmBiqOfab0hs9vpnYnsDDnTqC/LI0yKDjp2QWKOSHmUYfefCfvyVEBtqwVaHjKj1
-	 Kxvj6sYCav2Ji2phIqkxgiiOvaSAJ+12DM3eo1brkXlf/LuUJPf5u5JuSDukfKFbTg
-	 Z63lcnAJPrDw6GPLPNaKKmbkwFqyIe2XlMBaJ+iE=
+	b=TDagb5YZ6ei7FqV7uK8RnggqdX3QSzxrG9v714gxXGOzTY1r0TMliBKCs7Bmv3eDP
+	 vEOqbwW0lnikhGsiFaFMyiCepTvUtY3iJMNcMFrL/FR0qeUD2M5CVgZHa9KvJoGTaU
+	 X+V3kcPPT3Zxnb0/TOpIy8msHrYgljR43mF403F4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purna Chandra Mandal <purna.mandal@microchip.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 100/201] spi: pic32-sqi: fix controller deregistration
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Furong Xu <0x1207@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 409/474] net: stmmac: avoid shadowing global buf_sz
 Date: Fri, 15 May 2026 17:48:38 +0200
-Message-ID: <20260515154700.704412324@linuxfoundation.org>
+Message-ID: <20260515154723.902983506@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +65,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 54F1D554200
+X-Rspamd-Queue-Id: 3215C554E4B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248764-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248404-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,armlinux.org.uk,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,armlinux.org.uk:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 
-commit 420df79d1a618951eb0eb4331df95c9f4f763b8b upstream.
+[ Upstream commit 876cfb20e8892143c0c967b3657074f9131f9b5f ]
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+stmmac_rx() declares a local variable named "buf_sz" but there is also
+a global variable for a module parameter which is called the same. To
+avoid confusion, rename the local variable.
 
-Fixes: 3270ac230f66 ("spi: pic32-sqi: add SPI driver for PIC32 SQI controller.")
-Cc: stable@vger.kernel.org	# 4.7
-Cc: Purna Chandra Mandal <purna.mandal@microchip.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-8-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Furong Xu <0x1207@gmail.com>
+Link: https://patch.msgid.link/E1tpswi-005U6C-Py@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 0bb05e6adfa9 ("net: stmmac: Prevent NULL deref when RX memory exhausted")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-pic32-sqi.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-pic32-sqi.c
-+++ b/drivers/spi/spi-pic32-sqi.c
-@@ -642,7 +642,7 @@ static int pic32_sqi_probe(struct platfo
- 	host->prepare_transfer_hardware	= pic32_sqi_prepare_hardware;
- 	host->unprepare_transfer_hardware	= pic32_sqi_unprepare_hardware;
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5279,10 +5279,10 @@ static int stmmac_rx(struct stmmac_priv
+ 	struct sk_buff *skb = NULL;
+ 	struct stmmac_xdp_buff ctx;
+ 	int xdp_status = 0;
+-	int buf_sz;
++	int bufsz;
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&host->dev, "failed registering spi host\n");
- 		free_irq(sqi->irq, sqi);
-@@ -665,9 +665,15 @@ static void pic32_sqi_remove(struct plat
- {
- 	struct pic32_sqi *sqi = platform_get_drvdata(pdev);
+ 	dma_dir = page_pool_get_dma_dir(rx_q->page_pool);
+-	buf_sz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
++	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
+ 	limit = min(priv->dma_conf.dma_rx_size - 1, (unsigned int)limit);
  
-+	spi_controller_get(sqi->host);
-+
-+	spi_unregister_controller(sqi->host);
-+
- 	/* release resources */
- 	free_irq(sqi->irq, sqi);
- 	ring_desc_ring_free(sqi);
-+
-+	spi_controller_put(sqi->host);
- }
+ 	if (netif_msg_rx_status(priv)) {
+@@ -5397,7 +5397,7 @@ read_again:
+ 			dma_sync_single_for_cpu(priv->device, buf->addr,
+ 						buf1_len, dma_dir);
  
- static const struct of_device_id pic32_sqi_of_ids[] = {
+-			xdp_init_buff(&ctx.xdp, buf_sz, &rx_q->xdp_rxq);
++			xdp_init_buff(&ctx.xdp, bufsz, &rx_q->xdp_rxq);
+ 			xdp_prepare_buff(&ctx.xdp, page_address(buf->page),
+ 					 buf->page_offset, buf1_len, true);
+ 
 
 
 
