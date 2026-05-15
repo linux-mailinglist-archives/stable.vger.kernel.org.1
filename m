@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COOdCMZJB2rqwgIAu9opvQ
-	(envelope-from <stable+bounces-248315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:28:54 +0200
+	id oEi9E75SB2pIygIAu9opvQ
+	(envelope-from <stable+bounces-248674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:07:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CBD553437
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:28:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02E655474E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0BE3A3141A40
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E3D831BC64B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D96D48BD5C;
-	Fri, 15 May 2026 16:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8E53CAA39;
+	Fri, 15 May 2026 16:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nfhfz58W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZZ+pbZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898084ADD94;
-	Fri, 15 May 2026 16:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E71D3FF1BD;
+	Fri, 15 May 2026 16:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861418; cv=none; b=BnCNK8qQMKqpv20ZdxqCnnXTmSHjzR4UGBSjl/gNmEIyHugDwIUgxSVdNi8BidxopqJ0XDciXLfciRQB4XGlpwaIq8yrkOvM2ioheBHjE8JrYIhiSghdDAgru6tk5URygOs5oQXoan6lhyQ6g22zy6Sq7GzTNQMM6IxuCYcaIsg=
+	t=1778862340; cv=none; b=lk8a3KPCREJv8PJ0XiY+lzZJMSYMrOcoo2Volo2D9ikqyzJ9QZ9/mwryCSLsxlVVCC/u0Gdno7/EU3l9ShozWqwWW8cV2gfh/FimMNVR6cOsrWvOmiZlGfXsrQzaaIeWWl8HI55gdVBFwT6or6Sj7LsZEo6gvumvU6Oqe2xIJZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861418; c=relaxed/simple;
-	bh=gUuGs6HnFHX/kLImbzUpOSINzbvEhWIfyl6d/JQ3Hj8=;
+	s=arc-20240116; t=1778862340; c=relaxed/simple;
+	bh=Mr9jYFF7SpQNTy9YThp5D1fbZNkSQEL+aJy6nuXei2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAkUFGWuPlyY+0Afh7f6wmK5buSaykND55sS5kGLK0axOW5dAu0ol84OPsEpI0ewUWWhtPzZfZk5yzCuZkF6IZEkHrVEzEmf6I1JF5KpeNWQNUnavX0r/EnWiNehApyg5ORAgVwyBLKFa8vm9/6+O1kukiWcWewX49X23bFdm1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nfhfz58W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC958C2BCB0;
-	Fri, 15 May 2026 16:10:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AeVqftHr70j3VNnV//MfJYQeCradncp/4buq+mwv9CeiCKNVdfxh9dmrsujpF8CqdqvaCj9R/7ud+fMCzREXcHKle5iNDH/cbk8O2Sya+3XDycI+w7QHmSSVQE8MRQubdGdGUWqsVnhlKfbN5JUPMzDpqIEXMje+TtXSD1B2K9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZZ+pbZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24329C2BCF5;
+	Fri, 15 May 2026 16:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861418;
-	bh=gUuGs6HnFHX/kLImbzUpOSINzbvEhWIfyl6d/JQ3Hj8=;
+	s=korg; t=1778862340;
+	bh=Mr9jYFF7SpQNTy9YThp5D1fbZNkSQEL+aJy6nuXei2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nfhfz58Wd/xwhRwmKV38U26ONt/UmvYyD1duF0ZPPzkjBAnKTV0cBZ7OfmgMwCONM
-	 HVXoMFctIiZ5tDRVvr+MB6faS1IX7tO4Xf0j7Ao9g4/GrS/eQncoxdqb5nfJEt4euM
-	 J/j0tU0XwrYIZjldhlF15k1fM6u0A6sLZjuHlBLA=
+	b=lZZ+pbZxufJhwh2NxIepERgMZIHdU4VF/bheWQDWXPev93v41jQpaoYoEutJYkTVH
+	 otBsf8eG7VL+KdlhQxSJG0CbWH2jzlyVdz5RndCLMlySVHOMTCE611iW98fFCR7KER
+	 snHbjnxY4BMWW3hDFyndshXU/G/zgmpNlsTTCLrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Fend <matthias.fend@emfend.at>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <barnabas.pocze+renesas@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 320/474] media: i2c: ov08d10: fix image vertical start setting
-Date: Fri, 15 May 2026 17:47:09 +0200
-Message-ID: <20260515154721.935637201@linuxfoundation.org>
+Subject: [PATCH 7.0 012/201] media: rzv2h-ivc: Fix FM_STOP register write
+Date: Fri, 15 May 2026 17:47:10 +0200
+Message-ID: <20260515154658.802363217@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C4CBD553437
+X-Rspamd-Queue-Id: E02E655474E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248315-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248674-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas,cisco];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[emfend.at:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ideasonboard.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Fend <matthias.fend@emfend.at>
+From: Barnabás Pőcze <barnabas.pocze+renesas@ideasonboard.com>
 
-commit 5d150fa0f16096d736bd24d13e04495da5116fab upstream.
+commit 562d2e0a672075292e92538dad61664e89b34d30 upstream.
 
-The current settings for the "image vertical start" register appear to be
-incorrect. While this only results in an incorrect start line for native
-modes, this faulty setting causes actual problems in binning mode. At least
-on an i.MX8MP test system, only corrupted frames could be received.
-To correct this, the recommended settings from the reference register sets
-are used for all modes. Since this shifts the start by one line, the Bayer
-pattern also changes, which has also been corrected.
+Bit 20 should be written in this register to stop frame processing.
+So fix that, as well as the poll condition.
 
-Fixes: 7be91e02ed57 ("media: i2c: Add ov08d10 camera sensor driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Barnabás Pőcze <barnabas.pocze+renesas@ideasonboard.com>
+Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov08d10.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c |    5 +++--
+ drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h       |    1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/ov08d10.c
-+++ b/drivers/media/i2c/ov08d10.c
-@@ -217,7 +217,7 @@ static const struct ov08d10_reg lane_2_m
- 	{0x9a, 0x30},
- 	{0xa8, 0x02},
- 	{0xfd, 0x02},
--	{0xa1, 0x01},
-+	{0xa1, 0x00},
- 	{0xa2, 0x09},
- 	{0xa3, 0x9c},
- 	{0xa5, 0x00},
-@@ -335,7 +335,7 @@ static const struct ov08d10_reg lane_2_m
- 	{0x9a, 0x30},
- 	{0xa8, 0x02},
- 	{0xfd, 0x02},
--	{0xa1, 0x09},
-+	{0xa1, 0x08},
- 	{0xa2, 0x09},
- 	{0xa3, 0x90},
- 	{0xa5, 0x08},
-@@ -467,7 +467,7 @@ static const struct ov08d10_reg lane_2_m
- 	{0xaa, 0xd0},
- 	{0xab, 0x06},
- 	{0xac, 0x68},
--	{0xa1, 0x09},
-+	{0xa1, 0x04},
- 	{0xa2, 0x04},
- 	{0xa3, 0xc8},
- 	{0xa5, 0x04},
-@@ -615,8 +615,8 @@ static const struct ov08d10_lane_cfg lan
- static u32 ov08d10_get_format_code(struct ov08d10 *ov08d10)
- {
- 	static const u32 codes[2][2] = {
--		{ MEDIA_BUS_FMT_SGRBG10_1X10, MEDIA_BUS_FMT_SRGGB10_1X10},
--		{ MEDIA_BUS_FMT_SBGGR10_1X10, MEDIA_BUS_FMT_SGBRG10_1X10},
-+		{ MEDIA_BUS_FMT_SBGGR10_1X10, MEDIA_BUS_FMT_SGBRG10_1X10 },
-+		{ MEDIA_BUS_FMT_SGRBG10_1X10, MEDIA_BUS_FMT_SRGGB10_1X10 },
- 	};
+--- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
++++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+@@ -300,9 +300,10 @@ static void rzv2h_ivc_stop_streaming(str
+ 	struct rzv2h_ivc *ivc = vb2_get_drv_priv(q);
+ 	u32 val = 0;
  
- 	return codes[ov08d10->vflip->val][ov08d10->hflip->val];
+-	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_FM_STOP, 0x1);
++	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_FM_STOP, RZV2H_IVC_REG_FM_STOP_FSTOP);
+ 	readl_poll_timeout(ivc->base + RZV2H_IVC_REG_FM_STOP,
+-			   val, !val, 10 * USEC_PER_MSEC, 250 * USEC_PER_MSEC);
++			   val, !(val & RZV2H_IVC_REG_FM_STOP_FSTOP),
++			   10 * USEC_PER_MSEC, 250 * USEC_PER_MSEC);
+ 
+ 	rzv2h_ivc_return_buffers(ivc, VB2_BUF_STATE_ERROR);
+ 	video_device_pipeline_stop(&ivc->vdev.dev);
+--- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h
++++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc.h
+@@ -46,6 +46,7 @@
+ #define RZV2H_IVC_REG_FM_MCON				0x0104
+ #define RZV2H_IVC_REG_FM_FRCON				0x0108
+ #define RZV2H_IVC_REG_FM_STOP				0x010c
++#define RZV2H_IVC_REG_FM_STOP_FSTOP			BIT(20)
+ #define RZV2H_IVC_REG_FM_INT_EN				0x0120
+ #define RZV2H_IVC_VVAL_IFPE				BIT(0)
+ #define RZV2H_IVC_REG_FM_INT_STA			0x0124
 
 
 
