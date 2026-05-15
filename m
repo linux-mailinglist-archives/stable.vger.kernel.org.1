@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-247892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248536-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLevIopCB2oCvAIAu9opvQ
-	(envelope-from <stable+bounces-247892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:58:02 +0200
+	id yBuyHthOB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248536-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04882552852
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:58:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F909554039
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7A8E3086B06
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EAC26310C5A1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE59176238;
-	Fri, 15 May 2026 15:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D05333FD978;
+	Fri, 15 May 2026 16:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7+6OzUQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvSG7W5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55463FF1CD;
-	Fri, 15 May 2026 15:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940893FD962;
+	Fri, 15 May 2026 16:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860340; cv=none; b=BdhaezWtW5kAsockuojHROln2KpUfC1xqOGShLcdXVRc9YrDF+RdezNrzxNdGuWfGiiHy/jSCS61fMZ7ddydNBlAvAuvUKhmqJwJbFLeaxT5LRQk3XJz/JffMU7UlyV1tUFmm2t4SGICU5LIlcRDmE9xBikzOuA7WqjW7973NSc=
+	t=1778861981; cv=none; b=IZxDdkS8bDBrU8HasUbq/3HNWP0Mk734lUX/73GsLF+KZcBpuHKhYqGIhgDOH0fr8KRmklWWF6mWSPyi7FgN/237/ZYpB//YLEcoJfc8VkwvNulPgVPlNEnLqCtd110vgoi5QLxvwAC71AoCMYm7eJJDUVbGs84PckFuGjP9X1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860340; c=relaxed/simple;
-	bh=j8QEHKxbJAzgkYv4iUYU6yK61Cg4z8/UDAehdbJ8xuo=;
+	s=arc-20240116; t=1778861981; c=relaxed/simple;
+	bh=5DUej0zZNoOm7jA4CT66c2I4d5PnwQO6ENk9mBQd6i0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wgq9BdW2F1ToJafaazEeqOLU6x5BlXP1iTjK3oOtMl2yhVmFBm24uq/DdPNCKqkaCiq3HdgnomS42Kxlfz9CSTfAUIZL4qed/cJb26OfOXMKf+JAU6gXX6+t/N5iy1B+3zmTNrN43yG9yJCn0d5GqpQft/cWPjCBjZ4oX9WnJa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7+6OzUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3C2C2BCB0;
-	Fri, 15 May 2026 15:52:20 +0000 (UTC)
+	 MIME-Version; b=reXopS1D7E5wNmeZBJoHTaL6bhJ3IY3sbu5jTIMwSbD4kHdEBSlMDsfZe3WacHNbKUGGOyc2pf6XBzdf+/4CxEr5cEdI5l13899knMHLP4TbbXz46ERpk9l+XGDV5X3J3eDzKLurqSBeocpfZWymUCI3QoTG+OWu+U4BCPQlaSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvSG7W5M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31E9C2BCB3;
+	Fri, 15 May 2026 16:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860340;
-	bh=j8QEHKxbJAzgkYv4iUYU6yK61Cg4z8/UDAehdbJ8xuo=;
+	s=korg; t=1778861981;
+	bh=5DUej0zZNoOm7jA4CT66c2I4d5PnwQO6ENk9mBQd6i0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7+6OzUQtZefiAx/IDnzQ4+nyxQZYZbIZzF8b/nA/HNbudNufEuTfNA7DurM2XTJF
-	 Cn1ek9giE4YWDvqvSUVvVYsFiLN3Ts92hEdBUJd51BZc3x1Qc5kOJC3Es1Qr2NnIQZ
-	 PaJJHt5U0ig8dUkc7tN8z4dOjhAwRCcd7IWQljPo=
+	b=JvSG7W5M9tZHQtxdSnnBcudfA2v7qe51lUnHr/w6oOmZYgcd+Fcc6leXafeFxnxH7
+	 sKpWfuqjEOaLgKjR8fYg6Hg5tyMarileJeKQ+WX8c2LQg0HTyeMjTNg/LVEhafXihK
+	 uk91+W8RnawBdP97leXKhg9rhhZYOtIvkKgYoJ4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 050/144] spi: npcm-pspi: fix controller deregistration
-Date: Fri, 15 May 2026 17:47:56 +0200
-Message-ID: <20260515154654.700571665@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 060/188] media: venus: fix QCOM_MDT_LOADER dependency
+Date: Fri, 15 May 2026 17:47:57 +0200
+Message-ID: <20260515154658.619122859@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +66,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 04882552852
+X-Rspamd-Queue-Id: 1F909554039
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247892-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-248536-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arndb.de:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit ebd81199e00e107980bf8c4d2c747ae50158f797 upstream.
+commit aa23c94cc433b145d1ce93820ecdfe16d8940e28 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+When build-testined with CONFIG_QCOM_MDT_LOADER=m and VIDEO_QCOM_VENUS=y,
+the kernel fails to link:
 
-Fixes: 2a22f1b30cee ("spi: npcm: add NPCM PSPI controller driver")
-Cc: stable@vger.kernel.org	# 5.0
-Cc: Tomer Maimon <tmaimon77@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-5-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+x86_64-linux-ld: drivers/media/platform/qcom/venus/firmware.o: in function `venus_boot':
+firmware.c:(.text+0x1e3): undefined reference to `qcom_mdt_get_size'
+firmware.c:(.text+0x25a): undefined reference to `qcom_mdt_load'
+firmware.c:(.text+0x272): undefined reference to `qcom_mdt_load_no_init'
+
+The problem is the conditional 'select' statement. Change this to
+make the driver built-in here regardless of CONFIG_ARCH_QCOM,
+same as for the similar IRIS driver.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Fixes: 0399b696f7f4 ("media: venus: fix compile-test build on non-qcom ARM platform")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-npcm-pspi.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-npcm-pspi.c
-+++ b/drivers/spi/spi-npcm-pspi.c
-@@ -414,7 +414,7 @@ static int npcm_pspi_probe(struct platfo
- 	/* set to default clock rate */
- 	npcm_pspi_set_baudrate(priv, NPCM_PSPI_DEFAULT_CLK);
- 
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret)
- 		goto out_disable_clk;
- 
-@@ -435,8 +435,14 @@ static void npcm_pspi_remove(struct plat
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct npcm_pspi *priv = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	npcm_pspi_reset_hw(priv);
- 	clk_disable_unprepare(priv->clk);
-+
-+	spi_controller_put(host);
- }
- 
- static const struct of_device_id npcm_pspi_match[] = {
+--- a/drivers/media/platform/qcom/venus/Kconfig
++++ b/drivers/media/platform/qcom/venus/Kconfig
+@@ -4,7 +4,7 @@ config VIDEO_QCOM_VENUS
+ 	depends on VIDEO_DEV && QCOM_SMEM
+ 	depends on (ARCH_QCOM && ARM64 && IOMMU_API) || COMPILE_TEST
+ 	select OF_DYNAMIC if ARCH_QCOM
+-	select QCOM_MDT_LOADER if ARCH_QCOM
++	select QCOM_MDT_LOADER
+ 	select QCOM_SCM
+ 	select VIDEOBUF2_DMA_CONTIG
+ 	select V4L2_MEM2MEM_DEV
 
 
 
