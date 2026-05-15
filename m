@@ -1,331 +1,301 @@
-Return-Path: <stable+bounces-247780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNj/BNkmB2oEsQIAu9opvQ
-	(envelope-from <stable+bounces-247780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:59:53 +0200
+	id sIQnIdknB2ppsQIAu9opvQ
+	(envelope-from <stable+bounces-247781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:04:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73224550E7A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:59:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE00550F64
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C6CA3014422
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:50:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D68430D1CDB
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B5347ECF3;
-	Fri, 15 May 2026 13:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBCD47ECD6;
+	Fri, 15 May 2026 13:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=auristor.com header.i=jaltman@auristor.com header.b="VNe4a24T"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bGdWIDPm"
 X-Original-To: stable@vger.kernel.org
-Received: from monticello.secure-endpoints.com (monticello.secure-endpoints.com [208.125.0.237])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013000.outbound.protection.outlook.com [40.93.196.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4DC3D25C2
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 13:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.125.0.237
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778853015; cv=none; b=KAUev56NoG4XSEgt+R1Gj7fQaxQ0K9eCH9dQ8VCz/vmalEyk1Em1MAOcjMMfCdVkO6RNn1+JwkOHxVu0J4CTznmzGLcuXejOtNrYLwtK6x1HCEzgbxnOMSOA7mIYS5PjgoLhxb4iHL3x5RSG8IV4witMpTvxg5PJAkbRZNL7GEY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778853015; c=relaxed/simple;
-	bh=ZEg2d9eqFNuGRVB6U6xKsWX37Xu3/zlduxhhY8iE/iU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qgHGosaWaI1Pub2D1T2Mq4hUJqbke/C0B3oOUr1k8zV+uui90JgEFIlCltTgNPuH0ltajHdbzTSjch56L4GCQtyp51TuPcQr6xENCRq/EibXP5nucGqBHtvkQ8L1lbIGTizxT4TFYm+Xpm5UZ56BELLBcu0Sw7qrw8KwYB///Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auristor.com; spf=pass smtp.mailfrom=auristor.com; dkim=pass (1024-bit key) header.d=auristor.com header.i=jaltman@auristor.com header.b=VNe4a24T; arc=none smtp.client-ip=208.125.0.237
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auristor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auristor.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=auristor.com; s=MDaemon; r=y; l=12907; t=1778852964;
-	x=1779457764; i=jaltman@auristor.com; q=dns/txt; h=Message-ID:
-	Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	Content-Language:From:Organization:Disposition-Notification-To:
-	In-Reply-To:Content-Type; z=Received:=20from=20[IPV6=3A2603=3A70
-	02=3A100=3A8400=3A1127=3A8b22=3A4c38=3A4ad1]=20by=20auristor.com
-	=20(IPv6=3A2001=3A470=3A1f07=3Af77=3Affff=3A=3A312)=20(MDaemon=2
-	0PRO=20v26.0.2)=20=0D=0A=09with=20ESMTPSA=20id=20md5001005278633
-	.msg=3B=20Fri,=2015=20May=202026=2009=3A49=3A22=20-0400|Message-
-	ID:=20<140786c6-e788-4860-95fc-7dbaf30eb51f@auristor.com>|Date:=
-	20Fri,=2015=20May=202026=2009=3A49=3A58=20-0400|MIME-Version:=20
-	1.0|User-Agent:=20Mozilla=20Thunderbird|Subject:=20Re=3A=20[PATC
-	H]=20rxrpc=3A=20Fix=20read+write=20past=20skb_headlen=20in=20sof
-	t-ACK=20parser|To:=20Michael=20Bommarito=20<michael.bommarito@gm
-	ail.com>,=0D=0A=20David=20Howells=20<dhowells@redhat.com>,=20Mar
-	c=20Dionne=20<marc.dionne@auristor.com>,=0D=0A=20"David=20S=20.=
-	20Miller"=20<davem@davemloft.net>,=20Eric=20Dumazet=0D=0A=20<edu
-	mazet@google.com>,=20Jakub=20Kicinski=20<kuba@kernel.org>,=0D=0A
-	=20Paolo=20Abeni=20<pabeni@redhat.com>|Cc:=20Simon=20Horman=20<h
-	orms@kernel.org>,=20linux-afs@lists.infradead.org,=0D=0A=20netde
-	v@vger.kernel.org,=20linux-kernel@vger.kernel.org,=20stable@vger
-	.kernel.org|References:=20<20260513180907.2061972-1-michael.bomm
-	arito@gmail.com>|Content-Language:=20en-US|From:=20Jeffrey=20E=2
-	0Altman=20<jaltman@auristor.com>|Organization:=20AuriStor,=20Inc
-	.|Disposition-Notification-To:=20Jeffrey=20E=20Altman=20<jaltman
-	@auristor.com>|In-Reply-To:=20<20260513180907.2061972-1-michael.
-	bommarito@gmail.com>|Content-Type:=20multipart/signed=3B=20proto
-	col=3D"application/pkcs7-signature"=3B=20micalg=3Dsha-256=3B=20b
-	oundary=3D"------------ms020308080609080203090606"; bh=ZEg2d9eqF
-	NuGRVB6U6xKsWX37Xu3/zlduxhhY8iE/iU=; b=VNe4a24TcllwObSJ3O5r0xGj3
-	ok494nJsY32BSjjhMHMT6Spp9/2oYmHcpbF7eG+upR7exvrYKQOJ9URbmCQsuWY9
-	6VB3/W8exdnnpC/bv1FsoNrdiZQqOsxAH0cY3dSgVrLERFNLokGcZIEpi/aNKhOZ
-	O2xNYwjQNPEX+OmO5s=
-X-MDAV-Result: clean
-X-MDAV-Processed: monticello.secure-endpoints.com, Fri, 15 May 2026 09:49:24 -0400
-Received: from [IPV6:2603:7002:100:8400:1127:8b22:4c38:4ad1] by auristor.com (IPv6:2001:470:1f07:f77:ffff::312) (MDaemon PRO v26.0.2) 
-	with ESMTPSA id md5001005278633.msg; Fri, 15 May 2026 09:49:22 -0400
-X-Spam-Processed: monticello.secure-endpoints.com, Fri, 15 May 2026 09:49:22 -0400
-	(not processed: message from trusted or authenticated source)
-X-MDRemoteIP: 2603:7002:100:8400:1127:8b22:4c38:4ad1
-X-MDHelo: [IPV6:2603:7002:100:8400:1127:8b22:4c38:4ad1]
-X-MDArrival-Date: Fri, 15 May 2026 09:49:22 -0400
-X-MDOrigin-Country: US, NA
-X-Authenticated-Sender: jaltman@auristor.com
-X-Return-Path: prvs=1595c475f5=jaltman@auristor.com
-X-Envelope-From: jaltman@auristor.com
-X-MDaemon-Deliver-To: stable@vger.kernel.org
-Message-ID: <140786c6-e788-4860-95fc-7dbaf30eb51f@auristor.com>
-Date: Fri, 15 May 2026 09:49:58 -0400
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6D1480963
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 13:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778853315; cv=fail; b=Xl26HliyniNvWdnqYmh30TRN11vYFpAzNhYj9T5KF/1OUApYSdyqEpSUtgwBfgPxYaCaj95SNjghw5xOU+21AJ/0KXUgy8oLld5I0NCovm8rDDhqWcPEvBUdwICVn/NAHNY0QvqYHFIFglSIWOBdUb/GSAOoWmzWpsZS+ZFcqiI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778853315; c=relaxed/simple;
+	bh=bZZTEh0cf37DbPXIwA9d5tCnSOcaiARqWYOqnn40pmw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TpiObMopWMlWho7QT9FytPbRzlpY3F3SQsJoCNobALRYc10yJXc5Dk//uOIKeWXBfS8tUpWu7l3n18J4o1oXNsuGhXaWWwkwAIzgBQVtxCYDZGBbQXMzdSMxQQstah/okdn/RCxsMVqA1O9EecpWKZZgsVP6IYmeMkCp226WZo4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bGdWIDPm; arc=fail smtp.client-ip=40.93.196.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zL+ev0NyV/zACwPau/nvhFNiWfAkf3CGUz5dxzYpdZOiu3+SDXZ+MfuoH1+7+4lqxmAwlsCvHXnMbTIDnXwEBwXaD0dzpAWRGgeke1Dv27dRE1vtxJh5SSCMO7wcrJfTJbot9SY8iJsSehTtMAzmAgc84bjWPHq1cFrPe9hoiBUGB5wNKgevO/bM2SSUWkbFNQm4F5pJmh0fIARP5RaZsGtc39TQhr8zJ7CecSbffCqbRQ2peSEhRQxSy+8CUSufO/tW4gwTT0hVnrhTu5UUAbQgBpzILAlxXRUxd9US0rTe2vqxluebfRkRHYMYon9m4mmbeSqxTRq8ACbZqqtWwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dpu+jlCilEyhoB+rJ3lZDVsaHZ1m0bOiiK+3HNPk4hA=;
+ b=kiGvaEfBPzQylc7T9sQ0yqxIxgpHp/WV9JlMp/adiyCd0mhOK3hrukoZhU+msFTHPJI44rxgZWJfsTNMcvKhNdOLCjtqRfs7qPwkTr/Bg9u5Ud8jToR9oTNRwWWxKNGkJzEDHBn6zI7ZTJbVGxbsGxJdQqAdpR1ValVKIsJ9x5w6fC0XtBA+GutRm8bHmgaY6k8o4epDfvtGAAaB1rilerZuPKTNLCdInO9oo7V9mHpY89pH0RpFd6FGDmunqWj6jUtARjazo3I3VmgPH6Z3oGIWBlz7ZGB1b/vyGx5LlILKPK440RBO+RUG7V5fg1yEly9nBm+4mdJ2Cw8vcsS8IQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dpu+jlCilEyhoB+rJ3lZDVsaHZ1m0bOiiK+3HNPk4hA=;
+ b=bGdWIDPm2HZ5D1ibZTV+aetBgpR+aEzVm2ZF49gcORWXjQRFnExJz2j699znK94FKxqRByiTx78g9/V56xMx5VLnLJmp1ZBHZEAhJs6KAN0psuQ4xS7k1oQV7Fa32iITxCeQV3IlPkgCqT4XjIhgC67GAmDmZZlXAk0Xr8ERpyIbIVewrh/qY6Mra1u/wLAk4X4sbgRlAYCbVwx77+ANpxIaeSREOrdc4xQ6PGgk4+m5ndMjMKgBO8Ko68RXnB/mqf7mxxYjjWqEDhFZenR9YryXVxk9Icz6jJL9muvDQQnX8sc4Am9LbufpvdZ9lX52p1+4I9kypQgRJxOysTSbHw==
+Received: from IA1P220CA0004.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:461::10)
+ by IA1PR12MB6649.namprd12.prod.outlook.com (2603:10b6:208:3a2::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Fri, 15 May
+ 2026 13:55:06 +0000
+Received: from BN2PEPF000055DF.namprd21.prod.outlook.com
+ (2603:10b6:208:461:cafe::59) by IA1P220CA0004.outlook.office365.com
+ (2603:10b6:208:461::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.20 via Frontend Transport; Fri, 15
+ May 2026 13:55:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN2PEPF000055DF.mail.protection.outlook.com (10.167.245.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.71.0 via Frontend Transport; Fri, 15 May 2026 13:55:04 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 15 May
+ 2026 06:54:45 -0700
+Received: from fedora.mtl.com (10.126.230.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 15 May
+ 2026 06:54:41 -0700
+From: Petr Machata <petrm@nvidia.com>
+To: Sasha Levin <sashal@kernel.org>
+CC: Petr Machata <petrm@nvidia.com>, <stable@vger.kernel.org>, Wojtek Wasko
+	<wwasko@nvidia.com>, Mahesh Bandewar <maheshb@google.com>, Shuah Khan
+	<shuah@kernel.org>, Richard Cochran <richardcochran@gmail.com>, Yong Wang
+	<yongwang@nvidia.com>
+Subject: [PATCH 6.1.y] Revert "selftest/ptp: update ptp selftest to exercise the gettimex options"
+Date: Fri, 15 May 2026 15:53:53 +0200
+Message-ID: <2e4d2f2b9efa7b0b32476947f63506cfe9568d1d.1778851656.git.petrm@nvidia.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rxrpc: Fix read+write past skb_headlen in soft-ACK parser
-To: Michael Bommarito <michael.bommarito@gmail.com>,
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260513180907.2061972-1-michael.bommarito@gmail.com>
-Content-Language: en-US
-From: Jeffrey E Altman <jaltman@auristor.com>
-Organization: AuriStor, Inc.
-Disposition-Notification-To: Jeffrey E Altman <jaltman@auristor.com>
-In-Reply-To: <20260513180907.2061972-1-michael.bommarito@gmail.com>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256; boundary="------------ms020308080609080203090606"
-X-MDCFSigsAdded: auristor.com
-X-Rspamd-Queue-Id: 73224550E7A
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055DF:EE_|IA1PR12MB6649:EE_
+X-MS-Office365-Filtering-Correlation-Id: baad0ee0-f4d6-4425-0eaa-08deb2899138
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|82310400026|376014|3023799003|56012099003|18002099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	mHvUbLVLVBPYAbLn5PRUwK5FNjXUbtxPxnsoHxFYO5KfVeeYSQgt1xDFK0alDt8TUh+diO7u6CLdt0z9mjd7eZzI5lhfwqqy3ndw8pAGdwFnqt93EYl1RpifdDYjKNz+o7px4LEiujPClxDRFKpxypQx4zmapzua/tP5C5u+c3Gc6jK3GtpW+y8BXX7T0Xi5p48pGIcDDIAgzkQ0lOZ+yE5A59693zKlZNDePX3Jznh02euLjLXIQZ6P0CENys01iC/zQMBmw+k+4ohyjts7lM/3C+sHZ2Ob6u67rU1tAgyIpSpixnI0xkWW4x9RIZyOo+pmG9HLM2YK4pdyJJpbIwlg9YpBMcLzusuTwGus08bad9Js33kc4GcLvTm/Wh6UBwMBru6Pz3EHU+EKZHSZ1PdW6tlci/UmHDjCDUeQMS20Exf/gyv1tZGi1LztiT/KOcHciVm4e67ePHTzhf3g/7CKTtSnj6aPYyLw95pqfz6e1smI8jvdEqV2l/0FynBTc0KCe0C1BJQuJ3XN8ZUdguUxE+WYYOVKjcv0Box/kNChS3lQc4EJ5W7YpMf8Cwe04GN2AekikG6Qha+KozpKOgwQokIY9GlK/df83XhWRUVLKJKtuYC/S6g2N8Hd0irwwYU9xYd5TLRYr1YOYe8q/XeLV+8ZH7ZUalixtmvOisD7HjwrCBvajdSGeBYB7GmG
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(82310400026)(376014)(3023799003)(56012099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Wa2AVQ1xmb0HaqE/2R2YViGtSCFe3h5PHH6ozJ9JECvmXDdD/Tvqo7Mi4jdZ5ciwu1Edt4dMtrVHHdCqzBFhcuyyU5rP/A+7OchIykksrivlrcnlvMOEq53Lj0p1PcusPY+GvE7tXh5kaVzWb5ZAv8kZrlGGBzGaQo2TYIGssO+G2r7cb+ekX1w65kHa2yc2quV4kNs6JMapoC91iO61qBcVJF6ElJuPBsY8v8oqA2vW3zO7KKYATpzY+1GoeM2keEHbO7FjltoSxLbqLF06t+wdkutwJVvIzDCkMpJaB5whIPF7JvoaN4VqDxfKaht7w4hFlFdXbJajxkfevtOod3/5GX4c55XKtatbgTT8Zzh0QQi1d9BYf9VDwlNg2bpgXUqLsdh9Gv5grAYvDKx+e8XH9m1sKJcR6UWvhKblrlytv9RRk9tnxk6n0DbIpQ59
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 13:55:04.8018
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: baad0ee0-f4d6-4425-0eaa-08deb2899138
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000055DF.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6649
+X-Rspamd-Queue-Id: DAE00550F64
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	HEADER_FORGED_MDN(2.00)[];
-	SIGNED_SMIME(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[auristor.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[auristor.com:s=MDaemon];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	HAS_X_AS(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[nvidia.com,vger.kernel.org,google.com,kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,redhat.com,auristor.com,davemloft.net,google.com,kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	HAS_ORG_HEADER(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[auristor.com:+];
-	HAS_ATTACHMENT(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[jaltman@auristor.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247780-lists,stable=lfdr.de];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-247781-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,nvidia.com:mid,Nvidia.com:dkim];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,auristor.com:mid,auristor.com:dkim]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[petrm@nvidia.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Action: no action
 
---------------ms020308080609080203090606
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+This reverts commit 06954f715deb0ed053f8bf85547370db6870225d, which is
+commit 3d07b691ee707c00afaf365440975e81bb96cd9b upstream.
 
-T24gNS8xMy8yMDI2IDI6MDkgUE0sIE1pY2hhZWwgQm9tbWFyaXRvIHdyb3RlOg0KPiByeHJw
-Y19pbnB1dF9zb2Z0X2Fja3MoKSBidWlsZHMgYSByYXcgYHU4ICphY2tzID0gc2tiLT5kYXRh
-ICsgLi4uYA0KPiBwb2ludGVyIGFuZCB3YWxrcyBpdCBmb3IgYHNwLT5hY2subnJfYWNrc2Ag
-aXRlcmF0aW9ucywgcGVyZm9ybWluZyBhDQo+IHJlYWQtbW9kaWZ5LXdyaXRlIChzaGlmdHJf
-YWR2X3JvdHIpIG9uIGVhY2ggYnl0ZS4NCj4NCj4gVGhlIGNhbGxlciByeHJwY19pbnB1dF9h
-Y2soKSBvbmx5IHZhbGlkYXRlcyB0aGF0IHRoZSBieXRlcyBleGlzdA0KPiBzb21ld2hlcmUg
-aW4gdGhlIHNrYiAoYG9mZnNldCA+IHNrYi0+bGVuIC0gbnJfYWNrc2ApIGFuZCBiZXN0LWVm
-Zm9ydA0KPiBsaW5lYXJpc2VzIHRoZSBoZWFkIHdpdGggc2tiX2NvbmRlbnNlKCkuICBza2Jf
-Y29uZGVuc2UoKSByZXR1cm5zDQo+IHdpdGhvdXQgcHVsbGluZyB3aGVuIHRoZSBza2IgaXMg
-Y2xvbmVkLCB3aGVuIHBhZ2VkIGRhdGEgZXhjZWVkcyB0aGUNCj4gbGluZWFyLWhlYWQgdGFp
-bHJvb20sIG9yIHdoZW4gZnJhZ3MgYXJlIHVucmVhZGFibGUuICBPbiBhIG5vbmxpbmVhcg0K
-PiBza2IgdGhhdCBzdXJ2aXZlcyB0aGUgY29uZGVuc2Ugc3RlcCAoY2xvbmVkIGJ5IEFGX1BB
-Q0tFVCBjYXB0dXJlLA0KPiBmcmFnX2xpc3Qtc3R5bGUgYWZ0ZXIgSVAtZnJhZ21lbnQgcmVh
-c3NlbWJseSwgb3IgcGFnZWQtZnJhZyByZWNlaXZlDQo+IG9uIHJlYWwgTklDcyksIHNrYi0+
-ZGF0YSBjb3ZlcnMgb25seSB0aGUgbGluZWFyIGhlYWQuICBUaGUgcGFyc2VyDQo+IHRoZW4g
-d2Fsa3MgcGFzdCBza2JfaGVhZGxlbihza2IpIGludG8gc2tiIHRhaWxyb29tLCBza2Jfc2hh
-cmVkX2luZm8sDQo+IG9yIHRoZSBuZXh0IHNsYWIgb2JqZWN0LCBkb2luZyBpbi1wbGFjZSAx
-LWJ5dGUgc2hpZnRzIG9uIHVwIHRvIDI1NQ0KPiBhdHRhY2tlci1jb250cm9sbGVkIG9mZnNl
-dHMgcGVyIEFDSyBwYWNrZXQuDQo+DQo+IFNpYmxpbmcgcGFyc2VycyBpbiB0aGUgc2FtZSBm
-aWxlIGFscmVhZHkgdXNlIHRoZSBzYWZlIHBhdHRlcm46DQo+IHJ4cnBjX2V4dHJhY3RfaGVh
-ZGVyKCksIHJ4cnBjX2V4dHJhY3RfYWJvcnQoKSwgcnhycGNfaW5wdXRfc3BsaXRfanVtYm8o
-KSwNCj4gYW5kIHRoZSByeHJwY19pbnB1dF9hY2tfdHJhaWxlcigpIGNhbGwgc2l0ZSBhbGwg
-dXNlIHNrYl9jb3B5X2JpdHMoKQ0KPiB3aXRoIGV4cGxpY2l0IGxlbmd0aCBjaGVja3MuICBU
-aGUgc29mdC1BQ0sgY2FsbCBwYXRoIGlzIHRoZSBsb25lDQo+IGRpcmVjdC1kZXJlZiBzaXRl
-Lg0KPg0KPiBBZGQgYW4gZXhwbGljaXQgcHNrYl9tYXlfcHVsbCgpIGNoZWNrIGJlZm9yZSBp
-bnZva2luZyB0aGUgcGFyc2VyIHNvDQo+IHRoYXQgdGhlIGxpbmVhciBoZWFkIGlzIGd1YXJh
-bnRlZWQgdG8gY292ZXIgdGhlIFNBQ0sgYml0bWFwLiAgT24NCj4gYWxsb2NhdGlvbiBmYWls
-dXJlIHJldHVybiByeHJwY19wcm90b19hYm9ydCgpIHdpdGggdGhlIHNhbWUNCj4gZXByb3Rv
-X2Fja3Jfc2hvcnRfc2FjayBkaXNwb3NpdGlvbiB0aGUgZXhpc3RpbmcgbGVuZ3RoIGNoZWNr
-IHVzZXMuDQo+IHNrYl9jb25kZW5zZSgpIGlzIHJldGFpbmVkIG9uIHRoZSBwYXRoOyBpdHMg
-dHJ1ZXNpemUtYWNjb3VudGluZyBzaWRlDQo+IGVmZmVjdCBpcyBpbmRlcGVuZGVudCBvZiB0
-aGUgbGluZWFyaXNhdGlvbiBndWFyYW50ZWUgdGhhdA0KPiBwc2tiX21heV9wdWxsKCkgbm93
-IHByb3ZpZGVzLg0KPg0KPiBUaGUgYnVnIHNoYXBlIHdhcyByZXByb2R1Y2VkIHVuZGVyIFVN
-TCtLQVNBTiBpbiB0d28gY29tcGxlbWVudGFyeQ0KPiBoYXJuZXNzZXM6DQo+DQo+ICgxKSBB
-IGttb2QgdGhhdCBsaWZ0cyB0aGUgcGFyc2VyJ3MgaW5uZXIgc2hpZnQgbG9vcCB2ZXJiYXRp
-bSBhbmQNCj4gICAgICBleGVyY2lzZXMgaXQgYWdhaW5zdCBhIGttYWxsb2MoNDcpIGJ1ZmZl
-ci4gIEtBU0FOIHJlcG9ydHMgYQ0KPiAgICAgIHNsYWItb3V0LW9mLWJvdW5kcyByZWFkIG9u
-IHRoZSBmaXJzdCBieXRlIHBhc3QgdGhlIGFsbG9jYXRpb246DQo+DQo+ICAgICAgICBCVUc6
-IEtBU0FOOiBzbGFiLW91dC1vZi1ib3VuZHMgaW4gcnVuX3J4cnBjX3NvZnRfYWNrc19sb29w
-KzB4NTIvMHg3NA0KPiAgICAgICAgUmVhZCBvZiBzaXplIDEgYXQgYWRkciA2M2E3MDMyZiBi
-eSB0YXNrIGluc21vZC8zNw0KPiAgICAgICAgIHdoaWNoIGJlbG9uZ3MgdG8gdGhlIGNhY2hl
-IGttYWxsb2MtNjQgb2Ygc2l6ZSA2NA0KPiAgICAgICAgIGFsbG9jYXRlZCA0Ny1ieXRlIHJl
-Z2lvbiBbNjNhNzAzMDAsIDYzYTcwMzJmKQ0KPg0KPiAoMikgQSBzZWNvbmQga21vZCB1c2Vz
-IHRoZSBpbi1rZXJuZWwgcnhycGMgQVBJIHRvIGFsbG9jYXRlIGEgcmVhbA0KPiAgICAgIHJ4
-cnBjX2NhbGwsIGJ1aWxkcyBhIG5vbmxpbmVhciBob3N0aWxlIEFDSyBza2IgKGxpbmVhciBo
-ZWFkPTQ2LA0KPiAgICAgIHBhZ2VkIGZyYWc9NzksIHNrYi0+Y2xvbmVkPTEsIG5yX2Fja3M9
-NjApIGFuZCBkcml2ZXMgdGhlDQo+ICAgICAgdXBzdHJlYW0gcnhycGNfaW5wdXRfY2FsbF9w
-YWNrZXQoKSAtPiByeHJwY19pbnB1dF9hY2soKSAtPg0KPiAgICAgIHJ4cnBjX2lucHV0X3Nv
-ZnRfYWNrcygpIGNoYWluIGRpcmVjdGx5LiAgU2l4dHkgMHhBQSBzZW50aW5lbA0KPiAgICAg
-IGJ5dGVzIHBsYWNlZCBpbiB0aGUgbGluZWFyLWhlYWQgdGFpbHJvb20gYXJlIGFsbCByaWdo
-dC1zaGlmdGVkDQo+ICAgICAgdG8gMHg1NSBieSB0aGUgdW5tb2RpZmllZCB1cHN0cmVhbSBy
-eHJwY19pbnB1dF9zb2Z0X2Fja3MoKSBvbg0KPiAgICAgIGEgc3RvY2sga2VybmVsLiAgT24g
-dGhlIHBhdGNoZWQga2VybmVsLCB6ZXJvIG9mIHNpeHR5IHNoaWZ0IC0tDQo+ICAgICAgcHNr
-Yl9tYXlfcHVsbCBhYm9ydHMgdGhlIGNhbGwgYmVmb3JlIHRoZSBwYXJzZXIgcnVucy4NCj4N
-Cj4gTm90ZTogdGhlIHJlYWwtcGF0aCBkZW1vbnN0cmF0aW9uIGRvZXMgTk9UIHByb2R1Y2Ug
-YSBsaXRlcmFsDQo+IEtBU0FOIHNsYWItb3V0LW9mLWJvdW5kcyBzcGxhdCwgYmVjYXVzZSB0
-aGUgb24td2lyZSBuQWNrcyBmaWVsZA0KPiBpcyBhIHU4IChtYXggMjU1KSBhbmQgdGhlIE9P
-QiBzaGlmdCBzdGF5cyB3aXRoaW4gdGhlIHNhbWUga21hbGxvYw0KPiBzbGFiIG9iamVjdCB0
-aGF0IGhvbGRzIHNrYl9zaGFyZWRfaW5mby4gIFBlci1ieXRlIGNvcnJ1cHRpb24gb2YNCj4g
-c2tiX3NoYXJlZF9pbmZvIGFuZCB0aGUgbGluZWFyLWhlYWQgdGFpbHJvb20gaXMgdGhlIGFj
-dHVhbA0KPiBwcm9kdWN0aW9uIGVmZmVjdC4NCj4NCj4gQSByZWdyZXNzaW9uIGNoZWNrIG9u
-IGEgZnVsbHktbGluZWFyIEFDSyBza2IgY29uZmlybXMgcHNrYl9tYXlfcHVsbA0KPiBpcyBh
-IG5vLW9wIG9uIHRoYXQgcGF0aDsgdGhlIHBhcnNlciBjb250aW51ZXMgdG8gcmVhZCBpbi1i
-b3VuZHMuDQo+DQo+IEZpeGVzOiBkNTdhM2ExNTE2NjAgKCJyeHJwYzogU2F2ZSBsYXN0IEFD
-SydzIFNBQ0sgdGFibGUgcmF0aGVyIHRoYW4gbWFya2luZyB0eGJ1ZnMiKQ0KPiBDYzogc3Rh
-YmxlQHZnZXIua2VybmVsLm9yZw0KPiBSZXBvcnRlZCB2aWEgaW50ZXJuYWwgc291cmNlLWF1
-ZGl0IHBpcGVsaW5lIG9uIDIwMjYtMDQtMjEuDQo+IEFzc2lzdGVkLWJ5OiBDbGF1ZGU6Y2xh
-dWRlLW9wdXMtNC03DQo+IFNpZ25lZC1vZmYtYnk6IE1pY2hhZWwgQm9tbWFyaXRvIDxtaWNo
-YWVsLmJvbW1hcml0b0BnbWFpbC5jb20+DQo+IC0tLQ0KPiAgIG5ldC9yeHJwYy9pbnB1dC5j
-IHwgMiArKw0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKykNCj4NCj4gZGlm
-ZiAtLWdpdCBhL25ldC9yeHJwYy9pbnB1dC5jIGIvbmV0L3J4cnBjL2lucHV0LmMNCj4gaW5k
-ZXggMjRhY2ViMTgzYzJjLi41MmFjZTBmOThkMDYgMTAwNjQ0DQo+IC0tLSBhL25ldC9yeHJw
-Yy9pbnB1dC5jDQo+ICsrKyBiL25ldC9yeHJwYy9pbnB1dC5jDQo+IEBAIC0xMTczLDYgKzEx
-NzMsOCBAQCBzdGF0aWMgdm9pZCByeHJwY19pbnB1dF9hY2soc3RydWN0IHJ4cnBjX2NhbGwg
-KmNhbGwsIHN0cnVjdCBza19idWZmICpza2IpDQo+ICAgCWlmIChucl9hY2tzID4gMCkgew0K
-PiAgIAkJaWYgKG9mZnNldCA+IChpbnQpc2tiLT5sZW4gLSBucl9hY2tzKQ0KPiAgIAkJCXJl
-dHVybiByeHJwY19wcm90b19hYm9ydChjYWxsLCAwLCByeHJwY19lcHJvdG9fYWNrcl9zaG9y
-dF9zYWNrKTsNCj4gKwkJaWYgKCFwc2tiX21heV9wdWxsKHNrYiwgb2Zmc2V0ICsgbnJfYWNr
-cykpDQo+ICsJCQlyZXR1cm4gcnhycGNfcHJvdG9fYWJvcnQoY2FsbCwgMCwgcnhycGNfZXBy
-b3RvX2Fja3Jfc2hvcnRfc2Fjayk7DQo+ICAgCQlyeHJwY19pbnB1dF9zb2Z0X2Fja3MoY2Fs
-bCwgJnN1bW1hcnksIHNrYik7DQo+ICAgCX0NCj4gICANCg0KQWJvcnRpbmcgdGhlIGNhbGwg
-YmVjYXVzZSBza2JfY29uZGVuc2UoKSB3YXMgdW5hYmxlIHRvIGNvbnNvbGlkYXRlIHRoZSAN
-CnJ4IGFjayBwYWNrZXQgZGF0YSBpcyBhbiB1bmZyaWVuZGx5IHRoaW5nIHRvIGRvLg0KDQpB
-cyBzdWdnZXN0ZWQgYnkgdGhlIGNvbW1pdCBtZXNzYWdlLCBjb3B5aW5nIHRoZSBkYXRhIGJl
-Zm9yZSBwcm9jZXNzaW5nIA0Kd291bGQgYmUgYSBmcmllbmRsaWVyIHNvbHV0aW9uIHRvIHRo
-ZSBpZGVudGlmaWVkIHByb2JsZW0uDQoNCkplZmZyZXkgQWx0bWFuDQoNCg0KDQo=
+The cited commit allows testptp to set a configurable clock_id. That is
+done via a PTP_SYS_OFFSET_EXTENDED ioctl call, whose argument is struct
+ptp_sys_offset_extended, where the clock_id is set. However, this Linux
+version does not support the ptp_sys_offset_extended.clockid field, and
+the test case cannot be built against this tree's own UAPI headers.
 
---------------ms020308080609080203090606
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+The reverted commit was introduced to resolve a missing dependency of
+commit c6dc458227a3 ("testptp: Add option to open PHC in readonly mode"),
+which is 76868642e427 upstream. My suspicion is that the only conflict
+between the two is the getopt string, and there is otherwise no direct
+dependency between the two.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCC
-DTAwggY0MIIEHKADAgECAhBAAZimBAJ19t4m6OTgn3OxMA0GCSqGSIb3DQEBCwUAMDoxCzAJ
-BgNVBAYTAlVTMRIwEAYDVQQKEwlJZGVuVHJ1c3QxFzAVBgNVBAMTDlRydXN0SUQgQ0EgQTE0
-MB4XDTI1MDgxNDAwMzg1N1oXDTI3MTEwMTAwMzc1N1owgcwxKDAmBgNVBAUTH0EwMTQxMEMw
-MDAwMDE5OEE2MDQwMjY3MDAxMEYyNjIxGTAXBgNVBGETEE5UUlVTK05ZLTM1ODIyMzcxFTAT
-BgNVBAoTDEF1cmlTdG9yIEluYzEZMBcGA1UEAxMQSmVmZnJleSBFIEFsdG1hbjEPMA0GA1UE
-BBMGQWx0bWFuMRAwDgYDVQQqEwdKZWZmcmV5MSMwIQYJKoZIhvcNAQkBFhRqYWx0bWFuQGF1
-cmlzdG9yLmNvbTELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
-AQDKtXD1tqgXxlJvgI10FM0ZvyWukq2IeXgVhbgOk4k4PbRk1TvrGB04QatXac9soW7yHv6R
-hoovQ+URaXBEpBYxOE8Tsx+XfKZNkGbWj9bEdWgi8HPb33rf8eKFuhjx1QEv/YtD7lGIp7Rh
-KWC5kBfvyut8o3XJmJF0hCR1m663wsttrn89dwZczLU4JUjbTF0ukM0DbDk55ItDB4dXnW/u
-RfhrVuemMvbDily+etLCWsuJjtrjRBCQ805eYRHq5LonX3oNLdXituSHXLKvq+uChgFN/veD
-HKpeBnBWmoNtOQnV8fsq5NCz/WswIACeZj+xGmZsWx7fyuzee78ZePfBAgMBAAGjggGhMIIB
-nTAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIE8DCBhAYIKwYBBQUHAQEEeDB2MDAGCCsG
-AQUFBzABhiRodHRwOi8vY29tbWVyY2lhbC5vY3NwLmlkZW50cnVzdC5jb20wQgYIKwYBBQUH
-MAKGNmh0dHA6Ly92YWxpZGF0aW9uLmlkZW50cnVzdC5jb20vY2VydHMvdHJ1c3RpZGNhYTE0
-LnA3YzAfBgNVHSMEGDAWgBTC1ESZoHHPSFa+DI5oOFynt/dFvDAjBgNVHSAEHDAaMAkGB2eB
-DAEFAwIwDQYLYIZIAYb5LwAGAgEwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL3ZhbGlkYXRp
-b24uaWRlbnRydXN0LmNvbS9jcmwvdHJ1c3RpZGNhYTE0LmNybDAfBgNVHREEGDAWgRRqYWx0
-bWFuQGF1cmlzdG9yLmNvbTAdBgNVHQ4EFgQUY4JHedU4owyskKPvw4gOjSyBJZUwKQYDVR0l
-BCIwIAYIKwYBBQUHAwIGCCsGAQUFBwMEBgorBgEEAYI3CgMMMA0GCSqGSIb3DQEBCwUAA4IC
-AQCeOjCscMFctL6UG8WBsFMIOHc7MpbrX7EIvO34SGVKhrbqS1RTIBQiVVWnQ4VI6qVw/n9d
-adUv4o1/F23s0uXE8/lGJAGn51kkw1xHU+0PGODOTWvAQOiPhSmaXG5xM4BgleroGggumd8f
-HRSKFK7DIdWcMMNbS6LpMAOUfXYzNBvcHbAcjJMHQ7N8pNXdEQDB9c6yIw4paVD6XDE5VFhL
-df6749jGqSWXpyTMjXzrPMaDyxKiNOtsUrdT/fh8+Xx84nGpwiV9PA9/cGSAPcAc/qMBgPb4
-Qj9met/RUvCHPWr68Zlirgx48W/7TTZFhXKZg3U+zCj4ASOfLJ6WT4PPoM+eLHbB402WNMFk
-QDmWBH4bMqUcbQWxarMxdQ/jHKTsJIkvg+rTCbWbDm7hgJbnPEZrJEghy69Opa9+F1HB90AQ
-mb41N1PLZytu8pCGBJufyqjzNU0eyWkHJCwHDLFhoCENk/vujFCmsJUSh7a6ZMPSXf3PR4TP
-Kkcgs9JBT0dyPGHEfC/Lp9ZHTGSO6zswK1BddBufYi3xqHNBO/s7ft6gpNvht7oKUhVcjM7E
-mQCA6t2ok44PNfeG8rJZxiDv04IruCbzLFwkPczWS5uCIuP3PWCfVtMnUPDamMVWAr4Ui/s6
-fy3TZbPUAPDjFRi7zpkFIKHlCS/HIHNR6Gr1lzCCBvQwggTcoAMCAQICEEABif/SaQvad8Lp
-1U2SCE0wDQYJKoZIhvcNAQELBQAwSjELMAkGA1UEBhMCVVMxEjAQBgNVBAoTCUlkZW5UcnVz
-dDEnMCUGA1UEAxMeSWRlblRydXN0IENvbW1lcmNpYWwgUm9vdCBDQSAxMB4XDTIzMDgxNjE5
-Mjg0NloXDTMzMDgxMjE5Mjg0NVowOjELMAkGA1UEBhMCVVMxEjAQBgNVBAoTCUlkZW5UcnVz
-dDEXMBUGA1UEAxMOVHJ1c3RJRCBDQSBBMTQwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIK
-AoICAQDoqfW8senk2X/L7Viky0ZgZYnwlxqsE/vDQWARa1i7gZ0wRJ7ZOWIbjYDccsGFBhCb
-8VLx1dershozyPcOizZ1LxAhstZhpz8KvKc4bHhu1+6ZJftmrDyAELLRu1gkPS0BvongGBin
-xoTNo0XwafmS67jFRtYHe2VQSLvy0t9xRUsgdEeYgCUAnKO5eRVQMmBBNhnsTFtO5FzNmNKn
-uw/TDcBbOpGrQ1FSCuOZTHw3njDtZGqiRXSruX3MCpV190CefwryeGLXCsawSz2wMQZkqtjY
-V9Au73Zrqg1yDVj9KGKoRnJ8cUcg1Inxs/+Bo3xcM43y2h10yDrSWFTfvPSQhUJwYKHCYJSV
-QLFbeH9vxFJeLlewivaKQMGEg8PpnjevzDu8PVVzr9gkWcLubhztussqdAPF+dvyXIYJb/7l
-6idZkS4NeHAsrAtcv+UF+SGzSS5F28s376Kx35LUaJeOW4hQOjSj/118F9cyYAd2WlgGdBda
-K2PSvH7aANZQfyEhNNMzk2GP83pHXXeXy+09LkTcIlgXr2rrXepxP+WBp+Ihu4Jh5uZWQkpG
-UUNqKSjxIpUJ6sDIIgGIqSY/uBFSp2ff+4OLLS3Z+XQ9gBu1Szd3kQ8PrGXAI5DXayXjM9Yp
-psHld3OojXhoOsLdCji+be0mAgvbNa6AaSJcT7RF3QIDAQABo4IB5DCCAeAwEgYDVR0TAQH/
-BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwgYkGCCsGAQUFBwEBBH0wezAwBggrBgEFBQcw
-AYYkaHR0cDovL2NvbW1lcmNpYWwub2NzcC5pZGVudHJ1c3QuY29tMEcGCCsGAQUFBzAChjto
-dHRwOi8vdmFsaWRhdGlvbi5pZGVudHJ1c3QuY29tL3Jvb3RzL2NvbW1lcmNpYWxyb290Y2Ex
-LnA3YzAfBgNVHSMEGDAWgBTtRBnA0/AGi+6ke75C5yZUyI42djBfBgNVHSAEWDBWMFQGBFUd
-IAAwTDBKBggrBgEFBQcCARY+aHR0cHM6Ly9zZWN1cmUuaWRlbnRydXN0LmNvbS9jZXJ0aWZp
-Y2F0ZXMvcG9saWN5L3RzL2luZGV4Lmh0bWwwSgYDVR0fBEMwQTA/oD2gO4Y5aHR0cDovL3Zh
-bGlkYXRpb24uaWRlbnRydXN0LmNvbS9jcmwvY29tbWVyY2lhbHJvb3RjYTEuY3JsMB0GA1Ud
-DgQWBBTC1ESZoHHPSFa+DI5oOFynt/dFvDBBBgNVHSUEOjA4BggrBgEFBQcDAgYIKwYBBQUH
-AwQGCisGAQQBgjcKAwwGCisGAQQBgjcUAgIGCisGAQQBgjcKAwQwDQYJKoZIhvcNAQELBQAD
-ggIBAJXyFF1baV3jUq5o3Q5FIysADRg5knGSFzcliSyYTBd5YZ4FYFZSDxrQ25J87EFzq8q9
-a1lQxNwcj2R3IFNfx5QWU6EApuGwiOgX9igx3EAJuOa8JnSoLUI5zKflmNqTVHSz3b94UQy/
-MF+s8+OwbM8+FscUY0CxXRlOEETsW6MFXfliOSIEnQFmm5NraqzYHecXC8DJF6yTxbu1+101
-T66oqkp9+EAvU+SXgSIcHDpNxAmbm6XcSQFwEZLOLSctCVeZzLsvCE1Ozr5hvEAstYh07Qm/
-FtuZ+M540l2qSydFaI4yD7uH6/SsjQAARQXYzezBauwR8YOTS7PUDWejFUpHzPy4q2JdYdU2
-jYTst4G7gW0+y6EQyXIiSEEaKePUrnIiRImK6ySZXDTB7A+td6giMATY61GcJUS9kdCHZ4br
-FJiLBg9az11c15e5SbS2bCNAMOIK6NwakjsWmh2jX+C6LJX37ehqQT0GVekYT4nGMBH89MiQ
-1kFnIQcIWTagA/QqFHMhHFlUH5mWyby/6alKXu0ZeODdBRR/Tn39K6awTCVSbQH8P+KbF5kM
-ky9b7IFzJI/fwxr/ZVoEKCj0aoicm2TTsXgqRUI7MgiLU6hE5ersxFh5yM2IBc8za+kvkB7S
-eXPhzloFqmayuM2QfrqjsX1F0CopS11iOE4QVaJmMYIEATCCA/0CAQEwTjA6MQswCQYDVQQG
-EwJVUzESMBAGA1UEChMJSWRlblRydXN0MRcwFQYDVQQDEw5UcnVzdElEIENBIEExNAIQQAGY
-pgQCdfbeJujk4J9zsTANBglghkgBZQMEAgEFAKCCAoQwGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjYwNTE1MTM0OTU4WjAvBgkqhkiG9w0BCQQxIgQgaQcG
-/3nUJCeHXdzgKT/kySKQre3HzkQthlwImAp0l1owXQYJKwYBBAGCNxAEMVAwTjA6MQswCQYD
-VQQGEwJVUzESMBAGA1UEChMJSWRlblRydXN0MRcwFQYDVQQDEw5UcnVzdElEIENBIEExNAIQ
-QAGYpgQCdfbeJujk4J9zsTBfBgsqhkiG9w0BCRACCzFQoE4wOjELMAkGA1UEBhMCVVMxEjAQ
-BgNVBAoTCUlkZW5UcnVzdDEXMBUGA1UEAxMOVHJ1c3RJRCBDQSBBMTQCEEABmKYEAnX23ibo
-5OCfc7EwggFXBgkqhkiG9w0BCQ8xggFIMIIBRDALBglghkgBZQMEASowCwYJYIZIAWUDBAEC
-MAoGCCqGSIb3DQMHMA0GCCqGSIb3DQMCAgEFMA0GCCqGSIb3DQMCAgEFMAcGBSsOAwIHMA0G
-CCqGSIb3DQMCAgEFMAcGBSsOAwIaMAsGCWCGSAFlAwQCATALBglghkgBZQMEAgIwCwYJYIZI
-AWUDBAIDMAsGCWCGSAFlAwQCBDALBglghkgBZQMEAgcwCwYJYIZIAWUDBAIIMAsGCWCGSAFl
-AwQCCTALBglghkgBZQMEAgowCwYJKoZIhvcNAQEBMAsGCSuBBRCGSD8AAjAIBgYrgQQBCwAw
-CAYGK4EEAQsBMAgGBiuBBAELAjAIBgYrgQQBCwMwCwYJK4EFEIZIPwADMAgGBiuBBAEOADAI
-BgYrgQQBDgEwCAYGK4EEAQ4CMAgGBiuBBAEOAzANBgkqhkiG9w0BAQEFAASCAQDBBJ0mwKr5
-kxlBGyXWEVk1+HZJ8F8cGK28bGUs9cuYXwId0xZ1yTaM7X9FOUPkc2oz/49KzAEUGmjHMMnR
-n5kXdgkOnMK/mEj0BEq08beJ5y/gTbBA76U2RYejBnXodl5LGn3lEqThtMJ9/ujbddjVri2l
-lwixTgv3KW10qgb7XH1CjqLQEkwJxWGXVQ0+a4fPZILw5b0I7KlYRlBV9lz9n3TO0aFxSTz8
-WdRbSiK/cmpL6NNwOPw4ch1AJD7uguaaDraZoc/EBTxyQjGiFpbrWR7ZvZLxa7IsGo5hV31m
-2V6pQ9tah8NZ/xVe1hi35uTcAmkDpD1drNqMmhk+x1r0AAAAAAAA
---------------ms020308080609080203090606--
+This patch therefore reverts the cited commit, with hand-resolving the
+getopt string to include 'r' (as introduced by c6dc458227a3), but not
+'y' (introduced by 06954f715deb).
+
+Reported-by: Yong Wang <yongwang@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+---
+
+Note: the issue appears to exist in 6.6, 6.12 and 6.18 as well.
+      Depending on your preference, I can prepare separate
+      patches for those branches as well. Let me know.
+
+---
+ tools/testing/selftests/ptp/testptp.c | 62 +++------------------------
+ 1 file changed, 5 insertions(+), 57 deletions(-)
+
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index 532fb6a5d059..7030bae8e5e0 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -147,7 +147,6 @@ static void usage(char *progname)
+ 		" -T val     set the ptp clock time to 'val' seconds\n"
+ 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
+ 		" -X         get a ptp clock cross timestamp\n"
+-		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
+ 		" -z         test combinations of rising/falling external time stamp flags\n",
+ 		progname, PTP_MAX_SAMPLES);
+ }
+@@ -192,7 +191,6 @@ int main(int argc, char *argv[])
+ 	int readonly = 0;
+ 	int settime = 0;
+ 	int channel = -1;
+-	clockid_t ext_clockid = CLOCK_REALTIME;
+ 
+ 	int64_t t1, t2, tp;
+ 	int64_t interval, offset;
+@@ -202,7 +200,7 @@ int main(int argc, char *argv[])
+ 
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -285,21 +283,6 @@ int main(int argc, char *argv[])
+ 		case 'X':
+ 			getcross = 1;
+ 			break;
+-		case 'y':
+-			if (!strcasecmp(optarg, "realtime"))
+-				ext_clockid = CLOCK_REALTIME;
+-			else if (!strcasecmp(optarg, "monotonic"))
+-				ext_clockid = CLOCK_MONOTONIC;
+-			else if (!strcasecmp(optarg, "monotonic-raw"))
+-				ext_clockid = CLOCK_MONOTONIC_RAW;
+-			else {
+-				fprintf(stderr,
+-					"type needs to be realtime, monotonic or monotonic-raw; was given %s\n",
+-					optarg);
+-				return -1;
+-			}
+-			break;
+-
+ 		case 'z':
+ 			flagtest = 1;
+ 			break;
+@@ -590,7 +573,6 @@ int main(int argc, char *argv[])
+ 		}
+ 
+ 		soe->n_samples = getextended;
+-		soe->clockid = ext_clockid;
+ 
+ 		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
+ 			perror("PTP_SYS_OFFSET_EXTENDED");
+@@ -599,46 +581,12 @@ int main(int argc, char *argv[])
+ 			       getextended);
+ 
+ 			for (i = 0; i < getextended; i++) {
+-				switch (ext_clockid) {
+-				case CLOCK_REALTIME:
+-					printf("sample #%2d: real time before: %lld.%09u\n",
+-					       i, soe->ts[i][0].sec,
+-					       soe->ts[i][0].nsec);
+-					break;
+-				case CLOCK_MONOTONIC:
+-					printf("sample #%2d: monotonic time before: %lld.%09u\n",
+-					       i, soe->ts[i][0].sec,
+-					       soe->ts[i][0].nsec);
+-					break;
+-				case CLOCK_MONOTONIC_RAW:
+-					printf("sample #%2d: monotonic-raw time before: %lld.%09u\n",
+-					       i, soe->ts[i][0].sec,
+-					       soe->ts[i][0].nsec);
+-					break;
+-				default:
+-					break;
+-				}
++				printf("sample #%2d: system time before: %lld.%09u\n",
++				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
+ 				printf("            phc time: %lld.%09u\n",
+ 				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
+-				switch (ext_clockid) {
+-				case CLOCK_REALTIME:
+-					printf("            real time after: %lld.%09u\n",
+-					       soe->ts[i][2].sec,
+-					       soe->ts[i][2].nsec);
+-					break;
+-				case CLOCK_MONOTONIC:
+-					printf("            monotonic time after: %lld.%09u\n",
+-					       soe->ts[i][2].sec,
+-					       soe->ts[i][2].nsec);
+-					break;
+-				case CLOCK_MONOTONIC_RAW:
+-					printf("            monotonic-raw time after: %lld.%09u\n",
+-					       soe->ts[i][2].sec,
+-					       soe->ts[i][2].nsec);
+-					break;
+-				default:
+-					break;
+-				}
++				printf("            system time after: %lld.%09u\n",
++				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
+ 			}
+ 		}
+ 
+-- 
+2.53.0
 
 
