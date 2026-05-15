@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-247732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247734-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKaUCjQSB2rgrQIAu9opvQ
-	(envelope-from <stable+bounces-247732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:31:48 +0200
+	id QBalBAkTB2rgrQIAu9opvQ
+	(envelope-from <stable+bounces-247734-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:35:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00BD54F9AB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:31:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B4C054FA8B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C81531399ED
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:12:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 22659314CE21
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A41F47F2D3;
-	Fri, 15 May 2026 12:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526EA47A0DB;
+	Fri, 15 May 2026 12:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C48BC3qt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mBKI0WdU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C6147ECCE
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBD047ECEE
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778847149; cv=none; b=ihoAh2PsSKMHrx4RQyhEBI7JlQA4rzME9Reeq5a9SlAXzSwA0ycwyahb1Bgw9/7hBN3IUrkCIJlnyWCnhRLnYlTfPxkG5Pp657tJe/5oD23S8WZg6IZ/Dm9ojQZcCWTOX1mGn4eyZzsU4rUyK4NUTNCcjkciKvr3Xz0vsphJPBs=
+	t=1778847150; cv=none; b=YR8ALQMorCPoaMIZfl+peVuad3Qy+bgbYKp8zCixtNXCI3eMexLPXh+P0uuYd+qEfmo1AxEPG5G/I96DpCPo0zRsXQQZTjy6qzLtfp2axAGdabsIQau4Idxtl3/JUKEbg0PstSMvHyuIh2hlfB5KVKJoin6jx80AoLc3HI2DtmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778847149; c=relaxed/simple;
-	bh=nHcMBK6wG0TOu22YqkQZEX4prF+OO2NceKdzMNQ1dEA=;
+	s=arc-20240116; t=1778847150; c=relaxed/simple;
+	bh=2R3vKeNVW74nHrBVufrdcdbAaqqXsE5GSwxXB5EcMe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHkFtTtJOCh0BCCY28ybXMd6QeobABDznlWvZmyVm6I8s74QNkNxt6eXePTKU2MMplr9NLcqxqPggC30eRBkfzDTopzBJv2qEY34KjaXRyY90xIifSTcLCWA5hH9Q4scRYteGlTRhBhVFJ5AktKp8ctyt0UiPJHAvZzgmZNuCbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C48BC3qt; arc=none smtp.client-ip=209.85.160.172
+	 MIME-Version; b=AcozTBkRTSQ1uMYoMOhwdxRegWmftT+08hYV3F9OMhC5l4sHOCvFhi0fgWqH1jWaXo8GXVE+JHagYOYNeVfjA9nwpdLeD95hpIGhu4akO+c1GVxatvhRskfZQwAAfZVSSUCZD1+1iRp0uKkixKpaa9hK6ubaThRd6DatsEyfjUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mBKI0WdU; arc=none smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50d6b9bca48so110417201cf.2
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 05:12:27 -0700 (PDT)
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-50fbd79350dso83838481cf.3
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 05:12:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778847146; x=1779451946; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778847148; x=1779451948; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rUcmngTs7ey+uIUzuqkXpKib26TeG2lJPiT+fn8FBYQ=;
-        b=C48BC3qtQ/OEIcT6iVMy8ZntDBUF4J7uQIHsgV7vRP7+l7C039gUMXoe2zxXsxTfPB
-         efexjD9gl7Akx9q8z6Savg0ii+7yBfoyczswGzXDfjR1Ec2GAyTpYRKux4TRubgPSi8R
-         4IYjUPqXDm50QzDc2Q9pORCCvrqcaewyuphXPuOAZWjINFskWsiyMLqga7r9K56152wT
-         0Uj+uM1gQRVy6ozQYHgZzFzm3SKKeBvntzIyzxdydXJz6wRiWngnvD9cqa6XwwD9RIRI
-         v3j+xjCLdEZD718L/uvZ6kwEqls2Jt0zqDAAeiIOkNtS4CLiTm9y/gSxxRTgL3F86dOG
-         43HA==
+        bh=amCrfYz+XZIkhe1QNRlSts2vKTBkBvty+ZpNysynPNw=;
+        b=mBKI0WdUBvoFb/OCKDjYLq67HP0ZPOpVe51UHLstAoW4bb4W3AQJIkXzrREm6wI96r
+         Y0vZDKVVcFQC1NqOALdKla57kQJeV6rUqGiau/sz4pe+MdWv6fmO7UVjZNSPt8OVdIyO
+         QB7iIXtG5vwb6LFGFpf4X1v1eFDWHUHXwDBWZLPw7nTvH0wsN0MlAjKnZhf66gkH7au2
+         AdagbL6qjCj+Dz6HzKXGkBrfsR5P7/3/QIT6MmbTFPSE/tXDsquKM+tigbXI+7T6ZdAL
+         5i6LvsTyTALE5iGWo9+t3Nt7/LpUo/aNbLyZd0Wj5LnldHvtlgbmnfDY4/g8LfLhbPcL
+         l5Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778847146; x=1779451946;
+        d=1e100.net; s=20251104; t=1778847148; x=1779451948;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rUcmngTs7ey+uIUzuqkXpKib26TeG2lJPiT+fn8FBYQ=;
-        b=DRGkrb+STlrAoFJaPo4uyaaCKfZe07nzJb0EWEl3gBQxdET/UJF1hTTOGxaSxGxuCV
-         1WrzIOV0T68+Wnelwkug1CB+PzxXhIS2kcO9VxWA7APEE8LDdAfPkz1wynIwjsrKoUjc
-         ZkMa25HLySnsrbTQfJg4/Ec8zN1VbbgtRqITDoZpIOVEAbVIGf1mciLFc5/tnoGZ9X6d
-         PDA93NAmzP6VzQy2n4mnIhNK3NMGbSpiqLhN+/+O1bVpeX0ecUB4hct5yNgQUrLwrpqk
-         z/G8lUxBm3ewKcv8Dlg7S05i00HAXvqHJ2ySVc6OD1cXqgQ1JWOvffSlD1ozTGslKvwa
-         0VKw==
-X-Forwarded-Encrypted: i=1; AFNElJ/X3UGIiUmlbVXcPYAd3Rw1nxD41TuDvHasgg0GCiSGwxdSWmjCRDnqa4lQaNIUiOASbTKLNuk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnNWddzlB/TvJXxLNsG7dvq6IxhrdSIiqDVKFdFRKn/uvX9jU4
-	tL5JYJuDDiUcKD1s1GA+yDJAssK/jRwSnvQrTLd3XJidW8wVOBzZpe1+
-X-Gm-Gg: Acq92OGMeCquSM+hJ6MmyZK/UzESVXsn0+mo82UpsdRtD+/tvSQK7E6cF8EiDiItPf5
-	s/1VcDUAJ8W9AysiGlAl3a38114eAJ8NZ9uwb8hTWos/XKNbwROGaoGeba5NfKXpu8+CSUmpeB/
-	YV0SZF3aHHN7rGB1PDKYJY+J/r/q3iufyRvZv3BVTYuFBNURmYi3dRRGM9vB3dAHZ6usJfEmMDq
-	tCbnJMM9D4PTds1sEJlnj4jh5oCGEGASx7RSBEqMJkSLcgnC4gcQAt2CDY8GC5Ak4nDfYvsm2pC
-	rsXzHzCLXzKG2kdfkJOPDdcmgiWu82mHHMQJKYFP7/poCQl0OrsH3PH8uo+A3lDVw8ofcQPFv0t
-	C9hvENxZ2+aHAwUNrscreWD4sM4r7/4b05sIOlVktn/vPgUOvIC0ybvfDADP03r9CezDP4+2gXx
-	tOhZvuXZmON9zFHJ18xBXzy2BKIQX8v8ydPZIEECu2wafMs1uKUMjjR+Y9cCQjrhz0HKjESNiyd
-	+XoPHtIiOA6xKMrC2cDt1TjDE19qqg2zJWOuPvTE9w=
-X-Received: by 2002:a05:622a:1e89:b0:509:30b0:8323 with SMTP id d75a77b69052e-5165a0a4269mr49097671cf.31.1778847146567;
-        Fri, 15 May 2026 05:12:26 -0700 (PDT)
+        bh=amCrfYz+XZIkhe1QNRlSts2vKTBkBvty+ZpNysynPNw=;
+        b=Y6Q8Ied+3iAuuAvFvfZDApjdyStzhzsb2sstQfyLb8zDKyPloE74ASLNNDmpfSMCr2
+         chpXgao6rgk2mkE+E3jLa1x+uAV1NcEZIcRrBMIqnimcX4glw1mlVTf4iZySFnC7ArlD
+         KifZpQUVTxXMWtMPM4tqmKOkkPB8zCNXxsWUpzyymz25/rk/gxp+XX4aN/oVZ/bnWboc
+         21hNEL2PXx08Of5KIV1OJdXopbIxmsrMU1mSmatXj3Qgrt9zzpmCXTqtsaBuqJaW99nS
+         YYNbvav4Q9xoaggsjqbyeTnDk4SQmoDFyA1yl7p7xJlyUmFZlOtntVpknVqlRWg8q4xo
+         UwWA==
+X-Forwarded-Encrypted: i=1; AFNElJ+eLnaoJE4XY/vrUd4DJ14UYEuSi2LGwODJtku9yhmH7lEUyUa9SIFbaViOghf901Un5Rpj2ew=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIVEUbODht2KykY2U9MwFSwy+vdOSmRrC+t8QXI4oz8yvNOpv2
+	l+MnY9k8EhzBU3iyVEhDCh/9vwjZdN2tvgBytU6NNuRYd6m7gzKQFkw3
+X-Gm-Gg: Acq92OE4hNORt0CM+xMBGyLbHt8bfHJI8JtlLrQwH3qUEGwhkvzrH8kZkzw+aKcQtbI
+	01srgebodrA2RGO4a51c5Qm2RuthtBMtaDj4/KXdY60R9eCLWy43Et7Avu6YyE53r7Z5nGxJOd9
+	wp0uBaC0LooM3HGCBa6OV6t6ZwG6Y1HoSYAWfm0iRcNiptJNiu2HCCIU1astCIfaDflb60HRB9r
+	x+16cGVZ3y3khly6/AWswHt5+160K/j8nNen9BF0x0lbyqaqk5oUDEV0DSrLP8fq0LQOplzRppu
+	4a0zZZsd4di+l6qdwq3ihPidROHEu3TGo4DRAUVoRNffadcsKFlD2cPyXJnulT+uONVQTf92C+f
+	QGqLHshBeNmVWOS2dG3LDz90L9JSh55+8G0tmTn/4N5p26IGWg14JxH5kVVJRmmm8UpXVa3Gw8k
+	f4/XMXfffd9GcWVm6mPS/a30Jt8HumfpAlYkUlAGCJEbtrVKdTIxgs/oJzAG1eX0yg88wGSO21v
+	tGFGC7k6+XtuNbuamy0S6ocMTd7+y11pKUu+Nz2sDo=
+X-Received: by 2002:a05:622a:1f16:b0:50f:bc57:d69 with SMTP id d75a77b69052e-51659ed0e67mr48506521cf.0.1778847147439;
+        Fri, 15 May 2026 05:12:27 -0700 (PDT)
 Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516456888f6sm45534491cf.3.2026.05.15.05.12.25
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516456888f6sm45534491cf.3.2026.05.15.05.12.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 05:12:26 -0700 (PDT)
+        Fri, 15 May 2026 05:12:27 -0700 (PDT)
 From: Michael Bommarito <michael.bommarito@gmail.com>
 To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Cc: Johannes Berg <johannes.berg@intel.com>,
@@ -84,9 +84,9 @@ Cc: Johannes Berg <johannes.berg@intel.com>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 2/4] wifi: iwlwifi: mvm: clamp set_freqs iteration to n_nd_channels
-Date: Fri, 15 May 2026 08:10:58 -0400
-Message-ID: <20260515121100.649334-3-michael.bommarito@gmail.com>
+Subject: [PATCH 3/4] wifi: iwlwifi: mld: include matches tail in match-info length check
+Date: Fri, 15 May 2026 08:10:59 -0400
+Message-ID: <20260515121100.649334-4-michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260515121100.649334-1-michael.bommarito@gmail.com>
 References: <20260515121100.649334-1-michael.bommarito@gmail.com>
@@ -97,13 +97,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D00BD54F9AB
+X-Rspamd-Queue-Id: 6B4C054FA8B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247732-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247734-lists,stable=lfdr.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -124,93 +124,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-iwl_mvm_query_set_freqs() iterates over bit positions
-0 .. SCAN_OFFLOAD_MATCHING_CHANNELS_LEN * 8 - 1 (= 0..55 on the v2
-path, 0..39 on the v1 path) and, for each set bit, performs:
+iwl_mld_netdetect_match_info_handler() validates the firmware
+notification length against sizeof(*notif) (the fixed-header
+size of struct iwl_scan_offload_match_info, 24 bytes) but then
+immediately memcpys NETDETECT_QUERY_BUF_LEN bytes from
+notif->matches:
 
-	match->channels[n_channels++] =
-		mvm->nd_channels[i]->center_freq;
+	if (IWL_FW_CHECK(mld, len < sizeof(*notif),
+			 "Invalid scan offload match notif of length: %d\n",
+			 len))
+		return true;
+	...
+	if (results->matched_profiles)
+		memcpy(results->matches, notif->matches,
+		       NETDETECT_QUERY_BUF_LEN);
 
-without constraining i against mvm->n_nd_channels. The pointer
-table mvm->nd_channels is kmemdup()ed at suspend time with
-exactly mvm->n_nd_channels entries (whatever the userspace
-NL80211_CMD_SET_WOWLAN request supplied as
-nd_config->n_channels; typical real-world values are 5..50).
-If the firmware response contains any matching_channels[] bit
-set at a position >= mvm->n_nd_channels, the indexed load reads
-a u8* slot past the end of the pointer-table allocation, then
-the immediate ->center_freq dereferences that wild pointer.
+NETDETECT_QUERY_BUF_LEN is
 
-The pre-existing caller guard
+	(sizeof(struct iwl_scan_offload_profile_match) *
+	 IWL_SCAN_MAX_PROFILES_V2)
+	= 18 * 8 = 144 bytes
 
-	if (mvm->n_nd_channels < n_channels)
-		continue;
-
-compares the bitmap's popcount to the table length, not the bit
-positions to the table length. A bitmap with three set bits at
-positions {50, 51, 52} has popcount 3 and passes the guard
-unconditionally, then walks 50+ entries off the end of
-mvm->nd_channels.
+so a firmware-emitted notif sized at exactly sizeof(*notif)
+(24 bytes) satisfies the guard yet the memcpy reads 144 bytes
+past the slab-allocated notification buffer.
 
 Reproduced under UML+KASAN via a KUnit harness that lifts the
-iteration logic. With nd_channels allocated as 5 entries and
-matching_channels bits set at positions 7 (immediate redzone)
-and 50 (far OOB), the kernel panics on the wild deref:
+length-validation + memcpy logic into a self-contained test.
+KASAN reports
 
-  Kernel panic - not syncing: Segfault with no mm
-  RIP: 0033:set_freqs_buggy.constprop.0+0xc1/0x15e
+  BUG: KASAN: slab-out-of-bounds in mld_match_info_buggy.constprop.0
+  Read of size 144 at addr ...
 
-(The selector 0x0033 in the RIP line is UML's user-mode segment;
-under UML, in-kernel code runs in ring 3 on the host. The trap
-is a kernel-context page fault on the wild-pointer deref.)
-
-Building drivers/net/wireless/intel/iwlwifi/mvm/d3.o under
+Building drivers/net/wireless/intel/iwlwifi/mld/d3.o under
 x86_64 allmodconfig with the fix applied yields no new warnings.
 
-Clamp the iteration upper bound to min(matching-bits-width,
-mvm->n_nd_channels) so high-position bits, however the firmware
-emitted them, cannot index past the pointer table. Mirror the
-fix for the v1 fallback arm.
+This is the same bug shape as the previously fixed sibling
+commit 744fabc338e8 ("wifi: iwlwifi: mvm: fix potential
+out-of-bounds read in iwl_mvm_nd_match_info_handler()") applied
+to the mvm peer function. The mld driver was added in February
+2025 and inherited the same length-check miss; apply the same
+correction shape.
 
 Cc: stable@vger.kernel.org
-Fixes: 8ed4e659f34c ("iwlwifi: mvm: add channel information to the netdetect notifications")
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
 Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 Assisted-by: Claude:claude-opus-4-7
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/d3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index c17ac62feec3..b04d8dd26cd0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2514,16 +2514,20 @@ static void iwl_mvm_query_set_freqs(struct iwl_mvm *mvm,
- 		       IWL_UCODE_TLV_API_SCAN_OFFLOAD_CHANS)) {
- 		struct iwl_scan_offload_profile_match *matches =
- 			 (void *)results->matches;
-+		int max = min_t(int, SCAN_OFFLOAD_MATCHING_CHANNELS_LEN * 8,
-+				mvm->n_nd_channels);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+index ef98efc8fb1b..e89ec531cb06 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
+@@ -1128,7 +1128,7 @@ iwl_mld_netdetect_match_info_handler(struct iwl_mld *mld,
+ 			 mld->netdetect))
+ 		return true;
  
--		for (i = 0; i < SCAN_OFFLOAD_MATCHING_CHANNELS_LEN * 8; i++)
-+		for (i = 0; i < max; i++)
- 			if (matches[idx].matching_channels[i / 8] & (BIT(i % 8)))
- 				match->channels[n_channels++] =
- 					mvm->nd_channels[i]->center_freq;
- 	} else {
- 		struct iwl_scan_offload_profile_match_v1 *matches =
- 			 (void *)results->matches;
-+		int max = min_t(int, SCAN_OFFLOAD_MATCHING_CHANNELS_LEN_V1 * 8,
-+				mvm->n_nd_channels);
- 
--		for (i = 0; i < SCAN_OFFLOAD_MATCHING_CHANNELS_LEN_V1 * 8; i++)
-+		for (i = 0; i < max; i++)
- 			if (matches[idx].matching_channels[i / 8] & (BIT(i % 8)))
- 				match->channels[n_channels++] =
- 					mvm->nd_channels[i]->center_freq;
+-	if (IWL_FW_CHECK(mld, len < sizeof(*notif),
++	if (IWL_FW_CHECK(mld, len < sizeof(*notif) + NETDETECT_QUERY_BUF_LEN,
+ 			 "Invalid scan offload match notif of length: %d\n",
+ 			 len))
+ 		return true;
 -- 
 2.53.0
 
