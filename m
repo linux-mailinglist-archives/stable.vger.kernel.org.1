@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-248661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248852-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Cc0IJZSB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:06:30 +0200
+	id AKJnFKJLB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248852-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D4C5546D5
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:06:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E937553958
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F5EE35DF8FE
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:26:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7DE3E302F672
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713693F8717;
-	Fri, 15 May 2026 16:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC9E3B7B98;
+	Fri, 15 May 2026 16:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8oL8XqY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2dhpakh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346F43EFFC9;
-	Fri, 15 May 2026 16:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B2924A06A;
+	Fri, 15 May 2026 16:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862306; cv=none; b=AvoawuhWOHQTxx9GOZ4b9PbaeLXUosqgmsGsStNDICP0HNC2ryxVmqkHZIWQz8hM8YLc5zYYgf2FiD/RbuwAyjcExDimAq8khHRU6cL5dCIQr8m/o8T6si2hTgfsDYKA+ok/m6iknjc8HwzJbL0LtyVnCrZb2NC4M9wr03XnW8E=
+	t=1778862794; cv=none; b=V4+VrxgoC2I2X8fkUc30b6pVNQRcGkZOWBCAYSieF/+I/qUNn4KR+/RC5Eywjpny4U//x6EsZslRdSUomqGMYD+MBIBChR6VRA3IW9JtSjLsZUVUQ7mxUWIXq3Z1Kgv7/piIsAgU8SlMGsdOWiO/uyM4v0dSvGd25guVAWyZrqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862306; c=relaxed/simple;
-	bh=lLR1KO0Opl2ETMZg1ytmx0b2Td6AAR1RFx8exFgTT78=;
+	s=arc-20240116; t=1778862794; c=relaxed/simple;
+	bh=JG0TDXUD9Hxh5I9r+u52SwtdXIUahfpfHYJ4FccvueQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K31KRFLawIIxuItD3MT/eJRR8la5cmAWKIuk0pSc+xbJJ3byLbvxXP4tAG1TJTxR4MV0TSPao8kKmWf3O5fkFmrruJLCBjW36SAHE5U+YAI2zm6vG+HfPJFlomhXK7mTz0+9AYersYIV9/mfcqI2zJDoz//nlRNlV4/H37eK/rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8oL8XqY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F0CC2BCB3;
-	Fri, 15 May 2026 16:25:05 +0000 (UTC)
+	 MIME-Version; b=gDXap3ChBz8OarMgt5mWGMIW0IW3vInOndcC1n+JcN9FK49bNRR8VDydtFp4QASihNhpRreE2Hd2Yr4VtNoXpFZDqAe6LSxItIvvfUFW31WAlmq6R5b7RzftLQCEUVKlKpUWB9LkZhoLapCS1DbqrmRo2fUfU85cDMK6Umi9/KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2dhpakh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B3CC2BCB0;
+	Fri, 15 May 2026 16:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862306;
-	bh=lLR1KO0Opl2ETMZg1ytmx0b2Td6AAR1RFx8exFgTT78=;
+	s=korg; t=1778862794;
+	bh=JG0TDXUD9Hxh5I9r+u52SwtdXIUahfpfHYJ4FccvueQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8oL8XqYD2SCASqCp0ZZ64SQX71OL7lklK7/Lj1DW/PQOgn2vyZztkPJKqIuR7jdt
-	 6DRkHuFsLIv0evwj0IqyUeR4AAOsar4RNf4FKG5B9JrQoGxMQu1iMitE3JMN6DvkLr
-	 i/zKAhmtpM49eypT2H4w8YAAcsPOgAafcPX4y7hQ=
+	b=k2dhpakh0mmmVot6C4D1HjakqBH4egGTPhAsjWIUoyfZTim0ItZ59p2cNKixBPDN8
+	 PmBJ01/vllldAiBzJqDuRTl7A6KA21quCsf/8XJwMrExam/CJnjk8GSHUKKk6g5iMI
+	 vGIpq4Q4KtdTaiCY0XyptNTHp5mtm9eXu9B7NBeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 186/188] vsock/virtio: fix accept queue count leak on transport mismatch
-Date: Fri, 15 May 2026 17:50:03 +0200
-Message-ID: <20260515154701.374191224@linuxfoundation.org>
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 186/201] EDAC/versalnet: Refactor memory controller initialization and cleanup
+Date: Fri, 15 May 2026 17:50:04 +0200
+Message-ID: <20260515154702.608381524@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,91 +64,285 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E9D4C5546D5
+X-Rspamd-Queue-Id: 5E937553958
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,meta.com,redhat.com];
-	TAGGED_FROM(0.00)[bounces-248661-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-248852-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,meta.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alien8.de:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
 
-commit 52bcb57a4e8a0865a76c587c2451906342ae1b2d upstream.
+[ Upstream commit 62a9fc50e8d947601ea3484e732b1a65a0a54b96 ]
 
-virtio_transport_recv_listen() calls sk_acceptq_added() before
-vsock_assign_transport(). If vsock_assign_transport() fails or
-selects a different transport, the error path returns without
-calling sk_acceptq_removed(), permanently incrementing
-sk_ack_backlog.
+Simplify the initialization and cleanup flow for Versal Net DDRMC
+controllers in the EDAC driver by carving out the single controller init
+into a separate function which allows for a much better and more
+readable error handling and unwinding.
 
-After approximately backlog+1 such failures, sk_acceptq_is_full()
-returns true, causing the listener to reject all new connections.
+  [ bp:
+	- do the kzalloc allocations first
+	- "publish" the structures only after they've been initialized
+	  properly so that you don't need to unwind unnecessarily when
+	  it fails later
+	- remove_versalnet() is now trivial
+   ]
 
-Fix by moving sk_acceptq_added() to after the transport validation,
-matching the pattern used by vmci_transport and hyperv_transport.
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20260413131409.19022-1-phx0fer@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Cc: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/20251104093932.3838876-1-shubhrajyoti.datta@amd.com
+Stable-dep-of: 8cf5dd235eff ("EDAC/versalnet: Fix device name memory leak")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/virtio_transport_common.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/edac/versalnet_edac.c |  174 +++++++++++++++++++++++-------------------
+ 1 file changed, 97 insertions(+), 77 deletions(-)
 
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1530,8 +1530,6 @@ virtio_transport_recv_listen(struct sock
- 		return -ENOMEM;
- 	}
+--- a/drivers/edac/versalnet_edac.c
++++ b/drivers/edac/versalnet_edac.c
+@@ -70,6 +70,8 @@
+ #define XDDR5_BUS_WIDTH_32		1
+ #define XDDR5_BUS_WIDTH_16		2
  
--	sk_acceptq_added(sk);
++#define MC_NAME_LEN			32
++
+ /**
+  * struct ecc_error_info - ECC error log information.
+  * @burstpos:		Burst position.
+@@ -760,7 +762,17 @@ static void versal_edac_release(struct d
+ 	kfree(dev);
+ }
+ 
+-static int init_versalnet(struct mc_priv *priv, struct platform_device *pdev)
++static void remove_one_mc(struct mc_priv *priv, int i)
++{
++	struct mem_ctl_info *mci;
++
++	mci = priv->mci[i];
++	device_unregister(mci->pdev);
++	edac_mc_del_mc(mci->pdev);
++	edac_mc_free(mci);
++}
++
++static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i)
+ {
+ 	u32 num_chans, rank, dwidth, config;
+ 	struct edac_mc_layer layers[2];
+@@ -768,102 +780,110 @@ static int init_versalnet(struct mc_priv
+ 	struct device *dev;
+ 	enum dev_type dt;
+ 	char *name;
+-	int rc, i;
++	int rc;
+ 
+-	for (i = 0; i < NUM_CONTROLLERS; i++) {
+-		config = priv->adec[CONF + i * ADEC_NUM];
+-		num_chans = FIELD_GET(MC5_NUM_CHANS_MASK, config);
+-		rank = 1 << FIELD_GET(MC5_RANK_MASK, config);
+-		dwidth = FIELD_GET(MC5_BUS_WIDTH_MASK, config);
 -
- 	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
+-		switch (dwidth) {
+-		case XDDR5_BUS_WIDTH_16:
+-			dt = DEV_X16;
+-			break;
+-		case XDDR5_BUS_WIDTH_32:
+-			dt = DEV_X32;
+-			break;
+-		case XDDR5_BUS_WIDTH_64:
+-			dt = DEV_X64;
+-			break;
+-		default:
+-			dt = DEV_UNKNOWN;
+-		}
++	config = priv->adec[CONF + i * ADEC_NUM];
++	num_chans = FIELD_GET(MC5_NUM_CHANS_MASK, config);
++	rank = 1 << FIELD_GET(MC5_RANK_MASK, config);
++	dwidth = FIELD_GET(MC5_BUS_WIDTH_MASK, config);
++
++	switch (dwidth) {
++	case XDDR5_BUS_WIDTH_16:
++		dt = DEV_X16;
++		break;
++	case XDDR5_BUS_WIDTH_32:
++		dt = DEV_X32;
++		break;
++	case XDDR5_BUS_WIDTH_64:
++		dt = DEV_X64;
++		break;
++	default:
++		dt = DEV_UNKNOWN;
++	}
  
- 	child->sk_state = TCP_ESTABLISHED;
-@@ -1553,6 +1551,7 @@ virtio_transport_recv_listen(struct sock
- 		return ret;
+-		if (dt == DEV_UNKNOWN)
+-			continue;
++	if (dt == DEV_UNKNOWN)
++		return 0;
+ 
+-		/* Find the first enabled device and register that one. */
+-		layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
+-		layers[0].size = rank;
+-		layers[0].is_virt_csrow = true;
+-		layers[1].type = EDAC_MC_LAYER_CHANNEL;
+-		layers[1].size = num_chans;
+-		layers[1].is_virt_csrow = false;
+-
+-		rc = -ENOMEM;
+-		mci = edac_mc_alloc(i, ARRAY_SIZE(layers), layers,
+-				    sizeof(struct mc_priv));
+-		if (!mci) {
+-			edac_printk(KERN_ERR, EDAC_MC, "Failed memory allocation for MC%d\n", i);
+-			goto err_alloc;
+-		}
++	/* Find the first enabled device and register that one. */
++	layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
++	layers[0].size = rank;
++	layers[0].is_virt_csrow = true;
++	layers[1].type = EDAC_MC_LAYER_CHANNEL;
++	layers[1].size = num_chans;
++	layers[1].is_virt_csrow = false;
+ 
+-		priv->mci[i] = mci;
+-		priv->dwidth = dt;
++	rc = -ENOMEM;
++	name = kzalloc(MC_NAME_LEN, GFP_KERNEL);
++	if (!name)
++		return rc;
+ 
+-		dev = kzalloc_obj(*dev);
+-		dev->release = versal_edac_release;
+-		name = kmalloc(32, GFP_KERNEL);
+-		sprintf(name, "versal-net-ddrmc5-edac-%d", i);
+-		dev->init_name = name;
+-		rc = device_register(dev);
+-		if (rc)
+-			goto err_alloc;
++	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
++	if (!dev)
++		goto err_name_free;
+ 
+-		mci->pdev = dev;
++	mci = edac_mc_alloc(i, ARRAY_SIZE(layers), layers, sizeof(struct mc_priv));
++	if (!mci) {
++		edac_printk(KERN_ERR, EDAC_MC, "Failed memory allocation for MC%d\n", i);
++		goto err_dev_free;
++	}
+ 
+-		platform_set_drvdata(pdev, priv);
++	sprintf(name, "versal-net-ddrmc5-edac-%d", i);
+ 
+-		mc_init(mci, dev);
+-		rc = edac_mc_add_mc(mci);
+-		if (rc) {
+-			edac_printk(KERN_ERR, EDAC_MC, "Failed to register MC%d with EDAC core\n", i);
+-			goto err_alloc;
+-		}
+-	}
+-	return 0;
++	dev->init_name = name;
++	dev->release = versal_edac_release;
+ 
+-err_alloc:
+-	while (i--) {
+-		mci = priv->mci[i];
+-		if (!mci)
+-			continue;
+-
+-		if (mci->pdev) {
+-			device_unregister(mci->pdev);
+-			edac_mc_del_mc(mci->pdev);
+-		}
++	rc = device_register(dev);
++	if (rc)
++		goto err_mc_free;
+ 
+-		edac_mc_free(mci);
++	mci->pdev = dev;
++	mc_init(mci, dev);
++
++	rc = edac_mc_add_mc(mci);
++	if (rc) {
++		edac_printk(KERN_ERR, EDAC_MC, "Failed to register MC%d with EDAC core\n", i);
++		goto err_unreg;
  	}
  
-+	sk_acceptq_added(sk);
- 	if (virtio_transport_space_update(child, skb))
- 		child->sk_write_space(child);
++	priv->mci[i] = mci;
++	priv->dwidth = dt;
++
++	platform_set_drvdata(pdev, priv);
++
++	return 0;
++
++err_unreg:
++	device_unregister(mci->pdev);
++err_mc_free:
++	edac_mc_free(mci);
++err_dev_free:
++	kfree(dev);
++err_name_free:
++	kfree(name);
++
+ 	return rc;
+ }
  
+-static void remove_versalnet(struct mc_priv *priv)
++static int init_versalnet(struct mc_priv *priv, struct platform_device *pdev)
+ {
+-	struct mem_ctl_info *mci;
+-	int i;
++	int rc, i;
+ 
+ 	for (i = 0; i < NUM_CONTROLLERS; i++) {
+-		device_unregister(priv->mci[i]->pdev);
+-		mci = edac_mc_del_mc(priv->mci[i]->pdev);
+-		if (!mci)
+-			return;
++		rc = init_one_mc(priv, pdev, i);
++		if (rc) {
++			while (i--)
++				remove_one_mc(priv, i);
+ 
+-		edac_mc_free(mci);
++			return rc;
++		}
+ 	}
++	return 0;
++}
++
++static void remove_versalnet(struct mc_priv *priv)
++{
++	for (int i = 0; i < NUM_CONTROLLERS; i++)
++		remove_one_mc(priv, i);
+ }
+ 
+ static int mc_probe(struct platform_device *pdev)
 
 
 
