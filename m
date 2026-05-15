@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-248430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247958-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCm1IvJWB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:06 +0200
+	id OMtpH15FB2ocwAIAu9opvQ
+	(envelope-from <stable+bounces-247958-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:10:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26296554FA7
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E055552C2C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:10:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 558ED32D21DD
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:17:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6A66A30714C6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD264BC006;
-	Fri, 15 May 2026 16:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C663FF1D8;
+	Fri, 15 May 2026 15:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJyn8mqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izNrSiEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318704B8DEF;
-	Fri, 15 May 2026 16:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448113FF1AC;
+	Fri, 15 May 2026 15:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861712; cv=none; b=BEvC9KFQ/ZfyLqHITj3RgK5iF7WJoSs2BGPMbWg+k6FPxZPiYUwFWpHYLThrxIU78EMAexbgbQw271E93TWSulH83nizaQpOVpWZGVii4RiYNEUap1Wf/QB9NG/4E5YnZMBKnApLDDqdR13b8UQsn2nnYPird5H8cyQbcoTTvvw=
+	t=1778860511; cv=none; b=iSHi9qzvK0IDWSr64XkJmdC4YUfSA5ixH+1mP5q73BFki26hFcr6C2Z+GY0QpWppAe7ucnxAKPUh+hCpzrPyPAJwJOfTRdnKSaSBOZWB15MGdk4U+Nq0UItZnN5W05zl4snOrvDLTV3O1L/B3GYi5MPUZW2zsjucgPsoK+5dok0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861712; c=relaxed/simple;
-	bh=TPJOYNNBHTm7ejohGH+3lH2NChK0yj40ddHRRp82ntc=;
+	s=arc-20240116; t=1778860511; c=relaxed/simple;
+	bh=udOZkQFsLId99vgDkfqxMsYFKMKWrXP6ECdLRCEmmUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPLc3sfaw+wAzH+t0DPWAcMNk7wkXJULzQ3Xh3DIt/L1kKuRUiiFj7S6kOt7G3fYS1ITLnQPv+hfdpI5oNgDZGN/O4GneLQtkVyBTu7Pa+7J4PcoWe3A17ynCOINQs7wBFu6hoWh3xT5n2Ch/WSWniLBmtzBez/voQZYHB69XDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJyn8mqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3F5C2BCB0;
-	Fri, 15 May 2026 16:15:11 +0000 (UTC)
+	 MIME-Version; b=XY7gvjBw0pFMUuonNgFrWev7PEv+dmgXYQqkTpX6JR8c1AyKm0L/yUioruof4QFOXG+rOGuOjf0HDtKjcHx8eRiL7KCbrrQZAJnFr6Z4qvTpmnonUBzfZhPQ4DwiO6p5x0Bd2ziLDD26JjpuoERbzp1LMgTtjR0BCYeoggS5wT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izNrSiEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE43EC2BCB0;
+	Fri, 15 May 2026 15:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861711;
-	bh=TPJOYNNBHTm7ejohGH+3lH2NChK0yj40ddHRRp82ntc=;
+	s=korg; t=1778860511;
+	bh=udOZkQFsLId99vgDkfqxMsYFKMKWrXP6ECdLRCEmmUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJyn8mqKxKXjk+1Edo1HeGSPl0InUIVlXBcJTLLF6Cl8daxn6nU3VTb4FUuJWsN6+
-	 cJkyPAgZh/iiLlFeTKLbTELX4lO9GGcdd34g9Z/MElP9n9zKkaAyr1q0jzbDpwMwTX
-	 EWTWX04N5SyhmJ1JzDrZitmZQxSdRa4bO9Hp+3co=
+	b=izNrSiEMR3N+p7FfRer13eiYkFS3QOYD+9hk0eZDvmawQUMc9p1IHU/IIIihVLEpW
+	 d0wRVj/cqarJPGrACB8vg73MOrO1tYQ+RTJ3tmCOf8i/nVYfeEEs94Te7WhNszt+ra
+	 tEhzhMyztRA1pQbiTwiUyJhxSdV63UwpeMJrtjjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 435/474] spi: tegra114: fix controller deregistration
+Subject: [PATCH 6.12 118/144] block: reorganize struct blk_zone_wplug
 Date: Fri, 15 May 2026 17:49:04 +0200
-Message-ID: <20260515154724.490780988@linuxfoundation.org>
+Message-ID: <20260515154656.234769848@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +70,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 26296554FA7
+X-Rspamd-Queue-Id: 2E055552C2C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248430-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247958-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,acm.org:email,oracle.com:email,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernel.dk:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 9c9c27ff2058142d8f800de3186d6864184958de ]
+[ Upstream commit ca1a897fb266c4b23b5ecb99fe787ed18559057d ]
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Reorganize the fields of struct blk_zone_wplug to remove a hole after
+the wp_offset field and avoid having the bio_work structure split
+between 2 cache lines.
 
-Fixes: 5c8096439600 ("spi: tegra114: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-22-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_controller/host API calls to spi_master/master equivalents ]
+No functional changes.
+
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: b7d4ffb51037 ("block: fix zone write plug removal")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra114.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ block/blk-zoned.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -1416,7 +1416,7 @@ static int tegra_spi_probe(struct platfo
- 	}
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -41,6 +41,11 @@ static const char *const zone_cond_name[
+ /*
+  * Per-zone write plug.
+  * @node: hlist_node structure for managing the plug using a hash table.
++ * @bio_list: The list of BIOs that are currently plugged.
++ * @bio_work: Work struct to handle issuing of plugged BIOs
++ * @rcu_head: RCU head to free zone write plugs with an RCU grace period.
++ * @disk: The gendisk the plug belongs to.
++ * @lock: Spinlock to atomically manipulate the plug.
+  * @ref: Zone write plug reference counter. A zone write plug reference is
+  *       always at least 1 when the plug is hashed in the disk plug hash table.
+  *       The reference is incremented whenever a new BIO needing plugging is
+@@ -50,27 +55,22 @@ static const char *const zone_cond_name[
+  *       reference is dropped whenever the zone of the zone write plug is reset,
+  *       finished and when the zone becomes full (last write BIO to the zone
+  *       completes).
+- * @lock: Spinlock to atomically manipulate the plug.
+  * @flags: Flags indicating the plug state.
+  * @zone_no: The number of the zone the plug is managing.
+  * @wp_offset: The zone write pointer location relative to the start of the zone
+  *             as a number of 512B sectors.
+- * @bio_list: The list of BIOs that are currently plugged.
+- * @bio_work: Work struct to handle issuing of plugged BIOs
+- * @rcu_head: RCU head to free zone write plugs with an RCU grace period.
+- * @disk: The gendisk the plug belongs to.
+  */
+ struct blk_zone_wplug {
+ 	struct hlist_node	node;
+-	refcount_t		ref;
+-	spinlock_t		lock;
+-	unsigned int		flags;
+-	unsigned int		zone_no;
+-	unsigned int		wp_offset;
+ 	struct bio_list		bio_list;
+ 	struct work_struct	bio_work;
+ 	struct rcu_head		rcu_head;
+ 	struct gendisk		*disk;
++	spinlock_t		lock;
++	refcount_t		ref;
++	unsigned int		flags;
++	unsigned int		zone_no;
++	unsigned int		wp_offset;
+ };
  
- 	master->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
- 		goto exit_free_irq;
-@@ -1442,6 +1442,10 @@ static void tegra_spi_remove(struct plat
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct tegra_spi_data	*tspi = spi_master_get_devdata(master);
- 
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	free_irq(tspi->irq, tspi);
- 
- 	if (tspi->tx_dma_chan)
-@@ -1453,6 +1457,8 @@ static void tegra_spi_remove(struct plat
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_spi_runtime_suspend(&pdev->dev);
-+
-+	spi_master_put(master);
- }
- 
- #ifdef CONFIG_PM_SLEEP
+ static inline unsigned int disk_zone_wplugs_hash_size(struct gendisk *disk)
 
 
 
