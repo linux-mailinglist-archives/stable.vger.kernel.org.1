@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNdPAoxNB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:45:00 +0200
+	id oFvfM7hMB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:41:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7205553D8A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80638553BDC
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A4C13042964
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:23:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4411E3133A76
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB86230DD1D;
-	Fri, 15 May 2026 16:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D41328616;
+	Fri, 15 May 2026 16:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4VXiZN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDmhNDbw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8805A33B6E8;
-	Fri, 15 May 2026 16:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848F73B7B8B;
+	Fri, 15 May 2026 16:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862126; cv=none; b=JbvS6Xwe/0Qd2AHl3EDkVzPyhhuuBY6VBJy+Mh0FwgNToIDsdlfMH2hfaELyzyffvW3bcq5oBdjC7WZW3Yhs+vSKUeWZfL85YM1WdOvGCSRbfU9Ui6wsrkAZwp0KTEB+pSYpPi3WNnXWuGOj49W028/ptzVrBs4qRj3itpE/5YI=
+	t=1778862622; cv=none; b=auhZmVn8BE5LubpgHJe7rCLQUg/9o+icLYMmXf5WBvF8G6qEU/IEOoXU2SKeampdkHooGdmOo2Mz+3v+S7PNbJe+Zrg1UTp7JHBHH+1ecZbqCBvs/eZw1nC+Tti8Q7a063CVnBNMWa9jpj6rR3wSEOc6WuI5vn0Q3MPRAFLpEig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862126; c=relaxed/simple;
-	bh=k7q4EDaaLndEOnbJpBPCxJhZt0Tly1YOWkoD7EqzCuc=;
+	s=arc-20240116; t=1778862622; c=relaxed/simple;
+	bh=iBXDVD4CmOkHa7IuSkPlmdjtPGpZrcUY9sPCwflISeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXjN0yJEcLB9AU2TwE3eMfkogYmoZRoSLToF3rTGy9vflUzrBEN7sRv1kUtjBqma62h9YC/nkcXPkLrifhom6ih681lY7oxNcs3U+OqhkISslGT+5B3buw8u0LsZsHl0Nefq/b6ZRRgF3ZTT5CDkr7fy2DB+jni1bvVguRIgNB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4VXiZN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A03C2BCB0;
-	Fri, 15 May 2026 16:22:05 +0000 (UTC)
+	 MIME-Version; b=SiHESF8YXTOaPk/u5n6vqiESMM+ccfWl66D++/I1AroPnO3qtfcQnhfqdoYCChnnwvtl6RvjFKE5HRC2y9PuRBogmgVGhoBWoxAC2pNRgqPvlW6J3kQsjZ/z7Azbu7UorYNj+yrzh2EltxP/DjBhS7EllNadIM+S/yCMtKigOTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDmhNDbw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD9DC2BD04;
+	Fri, 15 May 2026 16:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862126;
-	bh=k7q4EDaaLndEOnbJpBPCxJhZt0Tly1YOWkoD7EqzCuc=;
+	s=korg; t=1778862622;
+	bh=iBXDVD4CmOkHa7IuSkPlmdjtPGpZrcUY9sPCwflISeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4VXiZN9Tus1HBeh5JmTlJyHS+g2etDMMtSZKBFLAhqQb/u4o9XQBm40SAH5wVvfa
-	 /0q6r3ErOOA3pp4c4rAnbO6zhIMqeQE76XQmI6yQhIeHCdbCbOHYTMa0a/vL7/52ff
-	 mvm99EsNWg3PNpHvzSNMavBzVqgZVOvG8TFupgWc=
+	b=uDmhNDbwFRokN2ki7QpwtgPyojWWmD+t6EGxPqgmiRV3fAyVN+wX4y2HwHsOT2WyS
+	 ikPHQZRTlMmQAw37CGL0TZ+Ev5M8/sAHf6mOgk97ZI84/ShK5+PZONjn1X3XaLaKw3
+	 39MOAFvpJPslPQb1dB9AAESdpcQX7tvbPGgiBUJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.18 119/188] drm/xe/bo: Fix bo leak on unaligned size validation in xe_bo_init_locked()
+	Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 118/201] spi: cadence: fix unclocked access on unbind
 Date: Fri, 15 May 2026 17:48:56 +0200
-Message-ID: <20260515154659.913087014@linuxfoundation.org>
+Message-ID: <20260515154701.113263465@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A7205553D8A
+X-Rspamd-Queue-Id: 80638553BDC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248592-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248784-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,50 +92,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,xilinx.com:email,sashiko.dev:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 09a8f3c1c11977a6e10c167f26dd298790b31c32 upstream.
+commit 5b1689a41f02955c5361944f748a4812a6ff9307 upstream.
 
-When type is ttm_bo_type_device and aligned_size != size, the function
-returns an error without freeing a caller-provided bo, violating the
-documented contract that bo is freed on failure.
+Make sure that the controller is runtime resumed before disabling it
+during driver unbind to avoid unclocked register access and unbalanced
+clock disable.
 
-Add xe_bo_free(bo) before returning the error.
+Also restore the autosuspend setting.
 
-Fixes: 4e03b584143e ("drm/xe/uapi: Reject bo creation of unaligned size")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4.6
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260408175255.3402838-2-shuicheng.lin@intel.com
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-(cherry picked from commit 601c2aa087b6f21014300a3f107a08ee4dde7bdf)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+This issue was flagged by Sashiko when reviewing a controller
+deregistration fix.
+
+Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
+Link: https://sashiko.dev/#/patchset/20260414134319.978196-1-johan%40kernel.org?part=1
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260421123615.1533617-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -2134,8 +2134,10 @@ struct xe_bo *xe_bo_init_locked(struct x
- 		alignment = SZ_4K >> PAGE_SHIFT;
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -776,16 +776,23 @@ static void cdns_spi_remove(struct platf
+ {
+ 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+ 	struct cdns_spi *xspi = spi_controller_get_devdata(ctlr);
++	int ret = 0;
++
++	if (!spi_controller_is_target(ctlr))
++		ret = pm_runtime_get_sync(&pdev->dev);
+ 
+ 	spi_controller_get(ctlr);
+ 
+ 	spi_unregister_controller(ctlr);
+ 
+-	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
++	if (ret >= 0)
++		cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
+ 
+ 	if (!spi_controller_is_target(ctlr)) {
+ 		pm_runtime_disable(&pdev->dev);
+ 		pm_runtime_set_suspended(&pdev->dev);
++		pm_runtime_put_noidle(&pdev->dev);
++		pm_runtime_dont_use_autosuspend(&pdev->dev);
  	}
  
--	if (type == ttm_bo_type_device && aligned_size != size)
-+	if (type == ttm_bo_type_device && aligned_size != size) {
-+		xe_bo_free(bo);
- 		return ERR_PTR(-EINVAL);
-+	}
- 
- 	if (!bo) {
- 		bo = xe_bo_alloc();
+ 	spi_controller_put(ctlr);
 
 
 
