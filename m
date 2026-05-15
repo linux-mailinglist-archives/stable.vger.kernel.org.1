@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-248459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Gb6A89NB2rAxgIAu9opvQ
-	(envelope-from <stable+bounces-248459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:07 +0200
+	id KIh5K1xLB2q5wwIAu9opvQ
+	(envelope-from <stable+bounces-248818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:35:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A51A553DE9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE8C55388B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4AB4933012B9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:19:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E31533028D32
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A524A3FD96B;
-	Fri, 15 May 2026 16:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3503F928F;
+	Fri, 15 May 2026 16:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tj2eTept"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkkQLn92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682293C9896;
-	Fri, 15 May 2026 16:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704E2326939;
+	Fri, 15 May 2026 16:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861788; cv=none; b=awY5XZKQ+hEW3vXP0Gx8L9ey8U4yb7aUd0kQpDoBUhPCQfajM+tmR4cbBkGTK9rLA+EuacOfAyiSUavmNdbOij3Hln+AtsPiW7PFxF3mf/7biR8xDFhZOIkeOtK8yq2sttIYeSQJCbT7xLL+P2S48Wj6xJ27WrxA3u+OxYeyt08=
+	t=1778862710; cv=none; b=fXQE8xE0Mh3O0GPeMdPNIUL31Uj6TEekAHAP81VuP5KOl2ruKrzPVpy0eUiaeZiUsw3CjlKS9DkctYP0W77PppaREzNHpx5Kd5h53qRI3GEvF4zBx8jXe7DoDd8M6uxLW246/bUsCDc/nAMTlwamKOlxZ1S8HFT7ff8O03YYXF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861788; c=relaxed/simple;
-	bh=yvFNxlUL9RruHtBAwNoCRx4vUxkJ20R/clW81oLvCsQ=;
+	s=arc-20240116; t=1778862710; c=relaxed/simple;
+	bh=j6MhsQxdIWn96rWO5Caaj3r1ZYu96iI9TOLyLuw4L3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YbFsGSCgqvsz0GGJ3xNwCOM629jB/Ti9KIOvHwUz2QcfqqopNUdIrfbyMt9zowfzYsKk96SMebv1gyvMe/6wwiJgdslDZeIeuehOZ3mCchEfinwGGYmju3WdOWyDVOqA8gT17gHlI2HEauDrH7QIsYY6ON6WAwTloy6LPVIxiAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tj2eTept; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F370EC2BCC7;
-	Fri, 15 May 2026 16:16:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dioPrdGiRXgxD2LkdKOwlYHNLwZv8XEGZ2Ikq66nSBRUkjly7pekH0ZNSHxwp3549hW96StJf6AEAqQFxQw852aDF3O78V/v6I2IHzjqPcEs5rthQ7k5iJ5xth/w2vG4d/AFi003nMwcB/Ytw53ebZJm1Y/zTsy0iGFHua4+JYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkkQLn92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06032C2BCB0;
+	Fri, 15 May 2026 16:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861788;
-	bh=yvFNxlUL9RruHtBAwNoCRx4vUxkJ20R/clW81oLvCsQ=;
+	s=korg; t=1778862710;
+	bh=j6MhsQxdIWn96rWO5Caaj3r1ZYu96iI9TOLyLuw4L3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tj2eTeptC2PHhgIFL3QZk0bZmLXk39C5qjy68zbOoC0X369+985jRIDLSWlg0TsRF
-	 ksMy5BOJ6VYX7IQFqg4pfuUSHiFXBLqZ+y8CR0rCRUxb8yjOh8DAwogRCsTkbd/+Rs
-	 5W2WOjYNhQgz6QumDDuRf1TC081racjpZ9aZsel8=
+	b=SkkQLn92r7xyG+T4qPCFhdTjztNbN8725BFJi8Px+bo5L4jcK5+1jCpeItrPKNueT
+	 wn7pkif5RsMlefrnUv5fnZLr1XJ445f9j1xgVEqt6Ovsp4oT+7EGbAmBhOo+JeYo8g
+	 Tmw5RxtNpQcR7XY/KAJJ30D8QYbTE5o3Q1y4rLAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 462/474] ceph: only d_add() negative dentries when they are unhashed
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Mathew Alwin <alwin.mathew@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Jia Yao <jia.yao@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 7.0 153/201] drm/xe/uapi: Reject coh_none PAT index for CPU cached memory in madvise
 Date: Fri, 15 May 2026 17:49:31 +0200
-Message-ID: <20260515154725.099115605@linuxfoundation.org>
+Message-ID: <20260515154701.886380147@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,148 +68,170 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9A51A553DE9
+X-Rspamd-Queue-Id: BBE8C55388B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248818-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-248459-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Jia Yao <jia.yao@intel.com>
 
-[ Upstream commit 803447f93d75ab6e40c85e6d12b5630d281d70d6 ]
+commit 4e5591c2fc1b30f4ea5e2eab4c3a695acc404e39 upstream.
 
-Ceph can call d_add(dentry, NULL) on a negative dentry that is already
-present in the primary dcache hash.
+Add validation in xe_vm_madvise_ioctl() to reject PAT indices with
+XE_COH_NONE coherency mode when applied to CPU cached memory.
 
-In the current VFS that is not safe.  d_add() goes through __d_add()
-to __d_rehash(), which unconditionally reinserts dentry->d_hash into
-the hlist_bl bucket.  If the dentry is already hashed, reinserting the
-same node can corrupt the bucket, including creating a self-loop.
-Once that happens, __d_lookup() can spin forever in the hlist_bl walk,
-typically looping only on the d_name.hash mismatch check and
-eventually triggering RCU stall reports like this one:
+Using coh_none with CPU cached buffers is a security issue. When the
+kernel clears pages before reallocation, the clear operation stays in
+CPU cache (dirty). GPU with coh_none can bypass CPU caches and read
+stale sensitive data directly from DRAM, potentially leaking data from
+previously freed pages of other processes.
 
- rcu: INFO: rcu_sched self-detected stall on CPU
- rcu:         87-....: (2100 ticks this GP) idle=3a4c/1/0x4000000000000000 softirq=25003319/25003319 fqs=829
- rcu:         (t=2101 jiffies g=79058445 q=698988 ncpus=192)
- CPU: 87 UID: 2952868916 PID: 3933303 Comm: php-cgi8.3 Not tainted 6.18.17-i1-amd #950 NONE
- Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.6 09/22/2023
- RIP: 0010:__d_lookup+0x46/0xb0
- Code: c1 e8 07 48 8d 04 c2 48 8b 00 49 89 fc 49 89 f5 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0f eb 2d 0f 1f 44 00 00 48 8b 1b 48 85 db <74> 20 39 6b 18 75 f3 48 8d 7b 78 e8 ba 85 d0 00 4c 39 63 10 74 1f
- RSP: 0018:ff745a70c8253898 EFLAGS: 00000282
- RAX: ff26e470054cb208 RBX: ff26e470054cb208 RCX: 000000006e958966
- RDX: ff26e48267340000 RSI: ff745a70c82539b0 RDI: ff26e458f74655c0
- RBP: 000000006e958966 R08: 0000000000000180 R09: 9cd08d909b919a89
- R10: ff26e458f74655c0 R11: 0000000000000000 R12: ff26e458f74655c0
- R13: ff745a70c82539b0 R14: d0d0d0d0d0d0d0d0 R15: 2f2f2f2f2f2f2f2f
- FS:  00007f5770896980(0000) GS:ff26e482c5d88000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f5764de50c0 CR3: 000000a72abb5001 CR4: 0000000000771ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  lookup_fast+0x9f/0x100
-  walk_component+0x1f/0x150
-  link_path_walk+0x20e/0x3d0
-  path_lookupat+0x68/0x180
-  filename_lookup+0xdc/0x1e0
-  vfs_statx+0x6c/0x140
-  vfs_fstatat+0x67/0xa0
-  __do_sys_newfstatat+0x24/0x60
-  do_syscall_64+0x6a/0x230
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This aligns with the existing validation in vm_bind path
+(xe_vm_bind_ioctl_validate_bo).
 
-This is reachable with reused cached negative dentries.  A Ceph lookup
-or atomic_open can be handed a negative dentry that is already hashed,
-and fs/ceph/dir.c then hits one of two paths that incorrectly assume
-"negative" also means "unhashed":
+v2(Matthew brost)
+- Add fixes
+- Move one debug print to better place
 
-  - ceph_finish_lookup():
-      MDS reply is -ENOENT with no trace
-      -> d_add(dentry, NULL)
+v3(Matthew Auld)
+- Should be drm/xe/uapi
+- More Cc
 
-  - ceph_lookup():
-      local ENOENT fast path for a complete directory with shared caps
-      -> d_add(dentry, NULL)
+v4(Shuicheng Lin)
+- Fix kmem leak issues by the way
 
-Both paths can therefore re-add an already-hashed negative dentry.
+v5
+- Remove kmem leak because it has been merged by another patch
 
-Ceph already uses the correct pattern elsewhere: ceph_fill_trace() only
-calls d_add(dn, NULL) for a negative null-dentry reply when d_unhashed(dn)
-is true.
+v6
+- Remove the fix which is not related to current fix
 
-Fix both fs/ceph/dir.c sites the same way: only call d_add() for a
-negative dentry when it is actually unhashed.  If the negative dentry
-is already hashed, leave it in place and reuse it as-is.
+v7
+- No change
 
-This preserves the existing behavior for unhashed dentries while
-avoiding d_hash list corruption for reused hashed negatives.
+v8
+- Rebase
 
-Cc: stable@vger.kernel.org
-Fixes: 2817b000b02c ("ceph: directory operations")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-[ kept existing dout() debug call instead of upstream's doutc() form when adding the d_unhashed() guard around d_add() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v9
+- Limit the restrictions to iGPU
+
+v10
+- No change
+
+Fixes: ada7486c5668 ("drm/xe: Implement madvise ioctl for xe")
+Cc: <stable@vger.kernel.org> # v6.18+
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Mathew Alwin <alwin.mathew@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Jia Yao <jia.yao@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Acked-by: Michal Mrozek <michal.mrozek@intel.com>
+Acked-by: José Roberto de Souza <jose.souza@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patch.msgid.link/20260417055917.2027459-2-jia.yao@intel.com
+(cherry picked from commit 016ccdb674b8c899940b3944952c96a6a490d10a)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/dir.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_vm_madvise.c |   47 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
---- a/fs/ceph/dir.c
-+++ b/fs/ceph/dir.c
-@@ -745,7 +745,8 @@ struct dentry *ceph_finish_lookup(struct
- 				d_drop(dentry);
- 				err = -ENOENT;
- 			} else {
--				d_add(dentry, NULL);
-+				if (d_unhashed(dentry))
-+					d_add(dentry, NULL);
- 			}
- 		}
- 	}
-@@ -813,7 +814,8 @@ static struct dentry *ceph_lookup(struct
- 			__ceph_touch_fmode(ci, mdsc, CEPH_FILE_MODE_RD);
- 			spin_unlock(&ci->i_ceph_lock);
- 			dout(" dir %p complete, -ENOENT\n", dir);
--			d_add(dentry, NULL);
-+			if (d_unhashed(dentry))
-+				d_add(dentry, NULL);
- 			di->lease_shared_gen = atomic_read(&ci->i_shared_gen);
- 			return NULL;
- 		}
+--- a/drivers/gpu/drm/xe/xe_vm_madvise.c
++++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
+@@ -357,6 +357,45 @@ static void xe_madvise_details_fini(stru
+ 	drm_pagemap_put(details->dpagemap);
+ }
+ 
++static bool check_pat_args_are_sane(struct xe_device *xe,
++				    struct xe_vmas_in_madvise_range *madvise_range,
++				    u16 pat_index)
++{
++	u16 coh_mode = xe_pat_index_get_coh_mode(xe, pat_index);
++	int i;
++
++	/*
++	 * Using coh_none with CPU cached buffers is not allowed on iGPU.
++	 * On iGPU the GPU shares the LLC with the CPU, so with coh_none
++	 * the GPU bypasses CPU caches and reads directly from DRAM,
++	 * potentially seeing stale sensitive data from previously freed
++	 * pages. On dGPU this restriction does not apply, because the
++	 * platform does not provide a non-coherent system memory access
++	 * path that would violate the DMA coherency contract.
++	 */
++	if (coh_mode != XE_COH_NONE || IS_DGFX(xe))
++		return true;
++
++	for (i = 0; i < madvise_range->num_vmas; i++) {
++		struct xe_vma *vma = madvise_range->vmas[i];
++		struct xe_bo *bo = xe_vma_bo(vma);
++
++		if (bo) {
++			/* BO with WB caching + COH_NONE is not allowed */
++			if (XE_IOCTL_DBG(xe, bo->cpu_caching == DRM_XE_GEM_CPU_CACHING_WB))
++				return false;
++			/* Imported dma-buf without caching info, assume cached */
++			if (XE_IOCTL_DBG(xe, !bo->cpu_caching))
++				return false;
++		} else if (XE_IOCTL_DBG(xe, xe_vma_is_cpu_addr_mirror(vma) ||
++					    xe_vma_is_userptr(vma)))
++			/* System memory (userptr/SVM) is always CPU cached */
++			return false;
++	}
++
++	return true;
++}
++
+ static bool check_bo_args_are_sane(struct xe_vm *vm, struct xe_vma **vmas,
+ 				   int num_vmas, u32 atomic_val)
+ {
+@@ -454,6 +493,14 @@ int xe_vm_madvise_ioctl(struct drm_devic
+ 	if (err || !madvise_range.num_vmas)
+ 		goto madv_fini;
+ 
++	if (args->type == DRM_XE_MEM_RANGE_ATTR_PAT) {
++		if (!check_pat_args_are_sane(xe, &madvise_range,
++					     args->pat_index.val)) {
++			err = -EINVAL;
++			goto free_vmas;
++		}
++	}
++
+ 	if (madvise_range.has_bo_vmas) {
+ 		if (args->type == DRM_XE_MEM_RANGE_ATTR_ATOMIC) {
+ 			if (!check_bo_args_are_sane(vm, madvise_range.vmas,
 
 
 
