@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-248441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLtMD7FOB2p3xwIAu9opvQ
-	(envelope-from <stable+bounces-248441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:53 +0200
+	id sBd+GahRB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:02:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D11553FD4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3F85545A2
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D276931BF65D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:18:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3CCB316D662
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FC03C4B72;
-	Fri, 15 May 2026 16:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982E53F44CC;
+	Fri, 15 May 2026 16:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq2pkwTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1YBUhUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA473E929C;
-	Fri, 15 May 2026 16:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546753FD94F;
+	Fri, 15 May 2026 16:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861740; cv=none; b=nQIY9c7xlDKzdOROxZqwG4R/I5M5zYMc9Ci7UJRm+hA0HyEClGyA/ckpSkIxC45of6IgD2NdVcGiZ8svXH+6bc9UNggC0au/ViRzjCMT1ZNSXnv0OkSHX/U8cSrQAWu5zEdpuN+opJrmlvqlFOVY/Fy7GB1kgOMW+dDWcFJWKh8=
+	t=1778862178; cv=none; b=nSnF1jFBLwtzNj7qUU+Kqza3njM3CZXRY3ojrj9j3hNNaOgA1hrSDR5nwo4UZHV0OEXvmq97jYdgGaJ/HEvkm/4Tb0yajaKPq8nNkJaek1Vr+68n76qwNWyfsvYAjFgrvFEm26I0a2LIFEvqgpwp/RoeLrMIcW2IcNbXDFUdU/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861740; c=relaxed/simple;
-	bh=E1zItTB9UUXC1djE6GrXgCU5Cq+PGIm4N/lVL668HMA=;
+	s=arc-20240116; t=1778862178; c=relaxed/simple;
+	bh=dFDaohPD85a3DfsYS/KhKOawT5jfE5PS7LkV2lxznUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TqoCfxb7Xk1X0vqUJXVENsnjkchzbI93WP0rByuhcahjZ1kBlUOdIg1UEaoVZsfbh1mbfOT2lHllRToSw9cpiSJx+d8BbqXkH9Vc0r5FVuLz8DJxDtM8NigDYXkr77rvde0nCkaeM2DQBL6XxGcDTbgxi/KtuSv+o49CbDgU6x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq2pkwTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8847C2BCB0;
-	Fri, 15 May 2026 16:15:39 +0000 (UTC)
+	 MIME-Version; b=g/F6MbYzAEVHGWqU7Vy5q3rG738DcN6Cjuw0uhoaRTnU4aVGTv2qX3OqXjfS9/yOqtupR21XpmnIgZV60bjU7H+owOE4Y8U1kAy5Hxdc7k9TqNrmBj7IcrrTj/i/ZRE8Y9fwBVIeY8EwvTCmc1oB5h9yg5ye3+9xPmqbXSWQj/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1YBUhUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85CFC2BCB0;
+	Fri, 15 May 2026 16:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861740;
-	bh=E1zItTB9UUXC1djE6GrXgCU5Cq+PGIm4N/lVL668HMA=;
+	s=korg; t=1778862178;
+	bh=dFDaohPD85a3DfsYS/KhKOawT5jfE5PS7LkV2lxznUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lq2pkwTkV4BuYuvwUG2d/IujZx4ecaQZ37aR8XztwPkRkwIyYOVXl5yKBQtuhh8yb
-	 /kcVqLwtZjGDc+Z5TW9/tUblxdUC7X0QJSKN2wKZDYoVvaCoHJzy+VJc2kdS5GjACX
-	 vnuv6XmOPJwdix4wv2n7yAH3YnB8HkxoiNgwwpxc=
+	b=V1YBUhUr0mohPzw2mwFPxKpLoU3nUcS1Ad8MpGLWzrzG7+Fz/ekahYPHmeEXOeo+S
+	 EJ5ExFZVazsFce1Gep/Zvh9ImcuXKexlscZJlNZE2peM856tMkQHGIUnhB8XrPif5o
+	 //81ZnEVqDm8+SpZLLCI8VkkPquGHaAiWThbogMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable@kernel.org,
-	Siwei Zhang <oss@fourdim.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 445/474] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_get_sndtimeo_cb()
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxing Yin <tr0jan@lzu.edu.cn>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 137/188] batman-adv: reject new tp_meter sessions during teardown
 Date: Fri, 15 May 2026 17:49:14 +0200
-Message-ID: <20260515154724.717336500@linuxfoundation.org>
+Message-ID: <20260515154700.300185205@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +70,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B6D11553FD4
+X-Rspamd-Queue-Id: BC3F85545A2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248612-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248441-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siwei Zhang <oss@fourdim.xyz>
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-commit 78a88d43dab8d23aeef934ed8ce34d40e6b3d613 upstream.
+commit 3243543592425beec83d453793e9d27caa0d8e66 upstream.
 
-Add the same NULL guard already present in
-l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
+Prevent tp_meter from starting new sender or receiver sessions after
+mesh_state has left BATADV_MESH_ACTIVE.
 
-Fixes: 8d836d71e222 ("Bluetooth: Access sk_sndtimeo indirectly in l2cap_core.c")
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Cc: stable@kernel.org
-Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_sock.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/batman-adv/tp_meter.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1731,6 +1731,9 @@ static long l2cap_sock_get_sndtimeo_cb(s
- {
- 	struct sock *sk = chan->data;
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -947,6 +947,13 @@ void batadv_tp_start(struct batadv_priv
  
-+	if (!sk)
-+		return 0;
+ 	/* look for an already existing test towards this node */
+ 	spin_lock_bh(&bat_priv->tp_list_lock);
++	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE) {
++		spin_unlock_bh(&bat_priv->tp_list_lock);
++		batadv_tp_batctl_error_notify(BATADV_TP_REASON_DST_UNREACHABLE,
++					      dst, bat_priv, session_cookie);
++		return;
++	}
 +
- 	return sk->sk_sndtimeo;
+ 	tp_vars = batadv_tp_list_find(bat_priv, dst);
+ 	if (tp_vars) {
+ 		spin_unlock_bh(&bat_priv->tp_list_lock);
+@@ -1329,9 +1336,12 @@ static struct batadv_tp_vars *
+ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 		    const struct batadv_icmp_tp_packet *icmp)
+ {
+-	struct batadv_tp_vars *tp_vars;
++	struct batadv_tp_vars *tp_vars = NULL;
+ 
+ 	spin_lock_bh(&bat_priv->tp_list_lock);
++	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
++		goto out_unlock;
++
+ 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+ 					      icmp->session);
+ 	if (tp_vars)
+@@ -1464,6 +1474,9 @@ void batadv_tp_meter_recv(struct batadv_
+ {
+ 	struct batadv_icmp_tp_packet *icmp;
+ 
++	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
++		goto out;
++
+ 	icmp = (struct batadv_icmp_tp_packet *)skb->data;
+ 
+ 	switch (icmp->subtype) {
+@@ -1478,6 +1491,8 @@ void batadv_tp_meter_recv(struct batadv_
+ 			   "Received unknown TP Metric packet type %u\n",
+ 			   icmp->subtype);
+ 	}
++
++out:
+ 	consume_skb(skb);
  }
  
 
