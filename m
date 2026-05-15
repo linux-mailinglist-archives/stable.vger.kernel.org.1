@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-248400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LZ/IW5MB2opxQIAu9opvQ
-	(envelope-from <stable+bounces-248400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:40:14 +0200
+	id OBxVAVJXB2pVzQIAu9opvQ
+	(envelope-from <stable+bounces-248573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3C6553B4F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3ED555048
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 84481318C3BE
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:15:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D85E7337E914
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680643F9284;
-	Fri, 15 May 2026 16:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE1C3FBB42;
+	Fri, 15 May 2026 16:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GGo5hil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuJKQ2jJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A93D3B9D91;
-	Fri, 15 May 2026 16:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A154E3E7BC0;
+	Fri, 15 May 2026 16:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861640; cv=none; b=KPaSkiOd0uobPljseJ3JsTQLayBXBxtca3eFjvcMRjXJKQMQiuuqVaTooWsoFHMEB2y/yRYK4lkZlAibo6q1IANXk+TSb8XfFjVTllnt21jJ4r42gH3jcIYsx0Efgg2xTPrSFdZpKMmv7e+muGO3DeTnhNGou0LtvSjSZpZf2K4=
+	t=1778862077; cv=none; b=pZw1dRI29GimIUvqfxVOXB7uDzniy+tUoMxCGZKyqWQVkmzaBYcflfEl/f/yo3BVSBnQk7E0oVS9GKuFOh3jT0m3IckZY0ecvqOXQnYeyQCyYPSMmO7Nammg4i0TSyjJUcqTW/Dq+H3rD623wANd24Wjh4YiEFHTxA+AQkcIogY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861640; c=relaxed/simple;
-	bh=/lcsMkZ9hYznA72voWHdZ0LxjTYeXhgYhRtfaedoWfg=;
+	s=arc-20240116; t=1778862077; c=relaxed/simple;
+	bh=1tBme09asz1jHym2B6PeUAHe0NNol1xgraM4+CUqRdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=is+8AcZDT76QuLrPftgmAlxOD0+WEqkDOKojw4mBQENg4U5iKIaIgDDwNuqDaVxs9fqwq2TrfrCSwIBusqhiNS+RZIUt/JigLpRHcJixU/9Qi7FWEY5X02kqMS1TTvv1kcdPqqfQd9mh9kQxFHQ+D4CBGOMJlA3Zqp6XQYLnng8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GGo5hil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F87DC2BCB0;
-	Fri, 15 May 2026 16:13:59 +0000 (UTC)
+	 MIME-Version; b=Cbe7AVqEUS8U/+qmxl4KOPU8QMbnGNP7lm8LVCLADGwWms2ISAGSQRF5LrAKRoXu7lLxuH+JKjm+QJ58aSPW8WTUTag1cNNCl+GOWqgxqQuNWeLpHnsy/Bgxu+brwM7Qhol7ZbHzJj4fAsnVGxaYGplLHGn7+hRRv/0oSNhR5pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuJKQ2jJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB46C2BCB0;
+	Fri, 15 May 2026 16:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861639;
-	bh=/lcsMkZ9hYznA72voWHdZ0LxjTYeXhgYhRtfaedoWfg=;
+	s=korg; t=1778862077;
+	bh=1tBme09asz1jHym2B6PeUAHe0NNol1xgraM4+CUqRdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1GGo5hilUEpUMx0QtnNyicHcTM6WTPMX+aXib2Wb3/stKw9sd9vzh5266bk17pY4+
-	 2ohTTIkcGP6FzHM80zOBNQdPJKHIQY8zMl7rY3DA9UiBW7NVkF3MwT7eOrxmvMmz0z
-	 Fw/l82Po7B+++yBDqvNOT1o2mybOmyvZhgPl0Gvc=
+	b=EuJKQ2jJ3buP8NYsvi57jAxR70NBD3TOlISoz2NrPQZOy5wLewWEhBP1l6PpmSWpk
+	 WR/aqUMCIc7XBT/Qgv05QVcUTlmr1YQZqIgvWJBgH2VnVK8RUqQ5MZ0BT/wx5DzWsK
+	 SNQSSD0y3N2hZp6JU8F877GjHrtgjqrnaGXEsJUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 406/474] erofs: fix unsigned underflow in z_erofs_lz4_handle_overlap()
+	Marek Vasut <marex@nabladev.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>
+Subject: [PATCH 6.18 098/188] drm/imx: parallel-display: Prefer bus format set via legacy "interface-pix-fmt" DT property
 Date: Fri, 15 May 2026 17:48:35 +0200
-Message-ID: <20260515154723.836467849@linuxfoundation.org>
+Message-ID: <20260515154659.456009104@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1F3C6553B4F
+X-Rspamd-Queue-Id: 4D3ED555048
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -76,80 +74,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.alibaba.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-248400-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-248573-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email,outlook.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,nabladev.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Marek Vasut <marex@nabladev.com>
 
-[ Upstream commit 21e161de2dc660b1bb70ef5b156ab8e6e1cca3ab ]
+commit cdf26e1462c220629bb79d487263b66f8b679eab upstream.
 
-Some crafted images can have illegal (!partial_decoding &&
-m_llen < m_plen) extents, and the LZ4 inplace decompression path
-can be wrongly hit, but it cannot handle (outpages < inpages)
-properly: "outpages - inpages" wraps to a large value and
-the subsequent rq->out[] access reads past the decompressed_pages
-array.
+Prefer bus format set via legacy "interface-pix-fmt" DT property
+over panel bus format. This is necessary to retain support for
+DTs which configure the IPUv3 parallel output as 24bit DPI, but
+connect 18bit DPI panels to it with hardware swizzling.
 
-However, such crafted cases can correctly result in a corruption
-report in the normal LZ4 non-inplace path.
+This used to work up to Linux 6.12, but stopped working in 6.13,
+reinstate the behavior to support old DTs.
 
-Let's add an additional check to fix this for backporting.
-
-Reproducible image (base64-encoded gzipped blob):
-
-H4sIAJGR12kCA+3SPUoDQRgG4MkmkkZk8QRbRFIIi9hbpEjrHQI5ghfwCN5BLCzTGtLbBI+g
-dilSJo1CnIm7GEXFxhT6PDDwfrs73/ywIQD/1ePD4r7Ou6ETsrq4mu7XcWfj++Pb58nJU/9i
-PNtbjhan04/9GtX4qVYc814WDqt6FaX5s+ZwXXeq52lndT6IuVvlblytLMvh4Gzwaf90nsvz
-2DF/21+20T/ldgp5s1jXRaN4t/8izsy/OUB6e/Qa79r+JwAAAAAAAL52vQVuGQAAAP6+my1w
-ywAAAAAAAADwu14ATsEYtgBQAAA=
-
-$ mount -t erofs -o cache_strategy=disabled foo.erofs /mnt
-$ dd if=/mnt/data of=/dev/null bs=4096 count=1
-
-Fixes: 598162d05080 ("erofs: support decompress big pcluster for lz4 backend")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-[ inverted condition to early-out `goto docopy` form and used `ctx->inpages`/`ctx->outpages` instead of `rq->` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5f6e56d3319d ("drm/imx: parallel-display: switch to drm_panel_bridge")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Link: https://patch.msgid.link/20260110171510.692666-1-marex@nabladev.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/decompressor.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -133,6 +133,7 @@ static void *z_erofs_lz4_handle_overlap(
- 	if (rq->inplace_io) {
- 		omargin = PAGE_ALIGN(ctx->oend) - ctx->oend;
- 		if (rq->partial_decoding || !may_inplace ||
-+		    ctx->outpages < ctx->inpages ||
- 		    omargin < LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize))
- 			goto docopy;
+--- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
++++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+@@ -110,8 +110,7 @@ imx_pd_bridge_atomic_get_input_bus_fmts(
+ 		output_fmt = imxpd->bus_format ? : MEDIA_BUS_FMT_RGB888_1X24;
+ 
+ 	/* Now make sure the requested output format is supported. */
+-	if ((imxpd->bus_format && imxpd->bus_format != output_fmt) ||
+-	    !imx_pd_format_supported(output_fmt)) {
++	if (!imx_pd_format_supported(output_fmt)) {
+ 		*num_input_fmts = 0;
+ 		return NULL;
+ 	}
+@@ -121,7 +120,17 @@ imx_pd_bridge_atomic_get_input_bus_fmts(
+ 	if (!input_fmts)
+ 		return NULL;
+ 
+-	input_fmts[0] = output_fmt;
++	/*
++	 * Prefer bus format set via legacy "interface-pix-fmt" DT property
++	 * over panel bus format. This is necessary to retain support for
++	 * DTs which configure the IPUv3 parallel output as 24bit, but
++	 * connect 18bit DPI panels to it with hardware swizzling.
++	 */
++	if (imxpd->bus_format && imxpd->bus_format != output_fmt)
++		input_fmts[0] = imxpd->bus_format;
++	else
++		input_fmts[0] = output_fmt;
++
+ 	return input_fmts;
+ }
  
 
 
