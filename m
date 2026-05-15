@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Gg5DO9WB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248505-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:03 +0200
+	id kEY7OfRKB2q5wwIAu9opvQ
+	(envelope-from <stable+bounces-248375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D9F554F9A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC20C553765
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 05328334A888
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 46C74311652F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC33C3F9285;
-	Fri, 15 May 2026 16:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12353F44D5;
+	Fri, 15 May 2026 16:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtVU0XsG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIJrVqxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F50B3F44CD;
-	Fri, 15 May 2026 16:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8498A3F871C;
+	Fri, 15 May 2026 16:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861900; cv=none; b=MFveeUBxaCuhYfOUyda9JFJTLzl7chFZxWOmLzkuelJqb8jxQ/arrPgJFJPU19YTO90LJI4l+/RNglTSCVTN47cUP7zPzD58zcBlqAh3v3E3wgM7+cjjSYUx4gU6wgfJ5EvRrN5qQ2VfOuDuDtdKwNVCTxQpkOeA+LBmPM9csRo=
+	t=1778861574; cv=none; b=Y5j7aiBRTC2+lP0QwLqtW4czHE714LySiKF8oVtZIuLbtoQcHvx17+refJ9WYYnMl8FbK5BELYKae9u5tOnYUhA3t/VIkQU+I8oCwlTv0ROycTvdkMOL4HGdfAiiudId3ufGdWMB8n/Hzghz6SQqsr3dqd4lHDBOM4m0GyvsIRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861900; c=relaxed/simple;
-	bh=sgT9qKrqTh1+gEwTPmw7eFTHSYosgDbcs7JVD3AKK7s=;
+	s=arc-20240116; t=1778861574; c=relaxed/simple;
+	bh=vJ9yP/Ta0Dyg5aag/dEiu5GO0AJswFVJDPtgNVpwnd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reefPtLSXphV2MY+HzYJ+nq5Ws3xPuLc0uniKzELpyrX8wIwdWbsJRqhe7Fi2N/Xdquvppz+0cB6UCG0yb/l2nUfF63C7+ezG9G/oIamgBa+zGsiLb1aPLTKPxFeRV3pfeH4L2cPe7LlaKftHbmF07QHgELT/MnkEh3eNn5NJzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtVU0XsG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E922FC2BCB0;
-	Fri, 15 May 2026 16:18:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qkysFLLIHtd1J5wJ4yQTIk5BdtlfnxGHQcQrbOiLPZYZxNkVGyFbjNq4UM4cfShEBrL3JulnaS5nOplwufavNxpmbRc039cIdTHEkOPewIkZsOIIWhSYJgJS0ec5c/qZTO5Nd57ZHk9+0InX9+3lnW1xmNzFjr6oBkRWNtJZ0Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIJrVqxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7A1C2BCB0;
+	Fri, 15 May 2026 16:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861900;
-	bh=sgT9qKrqTh1+gEwTPmw7eFTHSYosgDbcs7JVD3AKK7s=;
+	s=korg; t=1778861574;
+	bh=vJ9yP/Ta0Dyg5aag/dEiu5GO0AJswFVJDPtgNVpwnd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wtVU0XsG4peSXOG7sMQcx96THgWGjR4vaRQIq5HZQNZAaSF14YI81xiwm5c4lyjc1
-	 oquXhx5PuX3pIb3FQ5qA4HR7VLzSvRj5AuTcgVL/t/89xOWm1kRzOs1qZbNywLq56I
-	 uL1Be+p0lWcnbygMIpkryqspjdF5Gy8fxb/c5D4A=
+	b=wIJrVqxBSw0nd0x5RYaFvTvbp8Sbb7bBxRoMldKd6eMaS1su+x+640AuLxDH5RE0q
+	 gJ4U2WYLIPnMZew89MDHHIjre618RgoshcbktmmVGh5jYi6Xj4cLZo+fpEgQIj7LJ4
+	 SnXFP2ijn69FfU16HqNWEDmW+4vm9BmN8Rj//KpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.18 032/188] media: intel/ipu6: fix error pointer dereference
+	Amir Shetaia <Amir.Shetaia@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 340/474] drm/amdkfd: Clear VRAM on allocation to prevent stale data exposure
 Date: Fri, 15 May 2026 17:47:29 +0200
-Message-ID: <20260515154658.004801934@linuxfoundation.org>
+Message-ID: <20260515154722.371750394@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C4D9F554F9A
+X-Rspamd-Queue-Id: AC20C553765
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248505-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248375-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Amir Shetaia <Amir.Shetaia@amd.com>
 
-commit 8dd088b8b106f7b119664f965b691785998edcfb upstream.
+commit ad52d61d82181dbdb7f05826de38352d5e550cc2 upstream.
 
-In a error path isp->psys is confirmed to be an error pointer not NULL so
-this condition is true and the error pointer is dereferenced. So isp-psys
-should be set to NULL before going to out_ipu6_bus_del_devices.
+KFD VRAM allocations set AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE
+but not AMDGPU_GEM_CREATE_VRAM_CLEARED, leaving freshly allocated
+VRAM with stale data from prior use observable by compute kernels.
 
-Detected by Smatch:
-drivers/media/pci/intel/ipu6/ipu6.c:690 ipu6_pci_probe() error:
-'isp->psys' dereferencing possible ERR_PTR()
+The GEM ioctl path already sets VRAM_CLEARED for all userspace
+allocations via amdgpu_gem_create_ioctl() and
+amdgpu_mode_dumb_create(). The KFD path was missing this flag,
+allowing stale page table remnants to leak into user buffers.
 
-Fixes: 25fedc021985a ("media: intel/ipu6: add Intel IPU6 PCI device driver")
+This causes crashes in RCCL P2P transport where non-zero data in
+ptrExchange/head/tail fields corrupts the protocol handshake.
+
+Signed-off-by: Amir Shetaia <Amir.Shetaia@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-[Sakari Ailus: Fix commit message.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/media/pci/intel/ipu6/ipu6.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6.c
-@@ -686,7 +686,7 @@ out_free_irq:
- out_ipu6_rpm_put:
- 	pm_runtime_put_sync(&isp->psys->auxdev.dev);
- out_ipu6_bus_del_devices:
--	if (isp->psys) {
-+	if (!IS_ERR_OR_NULL(isp->psys)) {
- 		ipu6_cpd_free_pkg_dir(isp->psys);
- 		ipu6_buttress_unmap_fw_image(isp->psys, &isp->psys->fw_sgt);
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1665,7 +1665,8 @@ int amdgpu_amdkfd_gpuvm_alloc_memory_of_
+ 			alloc_domain = AMDGPU_GEM_DOMAIN_GTT;
+ 			alloc_flags = 0;
+ 		} else {
+-			alloc_flags = AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE;
++			alloc_flags = AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE |
++				AMDGPU_GEM_CREATE_VRAM_CLEARED;
+ 			alloc_flags |= (flags & KFD_IOC_ALLOC_MEM_FLAGS_PUBLIC) ?
+ 			AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED : 0;
+ 		}
 
 
 
