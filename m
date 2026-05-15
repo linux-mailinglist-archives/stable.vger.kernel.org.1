@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-248833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EYOIvRSB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:08:04 +0200
+	id KMjOIn9LB2q5wwIAu9opvQ
+	(envelope-from <stable+bounces-248835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0621D5547D6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:08:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F745538E7
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 195A531EF731
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 29751302BD2B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F0C3F9260;
-	Fri, 15 May 2026 16:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD0C3F926B;
+	Fri, 15 May 2026 16:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oo+D1zh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dukNXGpB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CC42949E0;
-	Fri, 15 May 2026 16:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59ED30569C;
+	Fri, 15 May 2026 16:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862747; cv=none; b=O0GeuWbHS9b1n0yUWmb3Au5nfv/aY11PvNiCIDerLlD4jldsOd41ATfUUSuyEbp0Oqb/vIxTKiTplvHtHm015NaDVUG2IF35DyxSLA/+7eSsFVaVX0iGUTzpvrNuKLayoFoG0uqKOaWkLM7dHCTgZbHOiOiVpbgr8imgaxy1CYc=
+	t=1778862749; cv=none; b=txNnNugkjASyhND3D+Y4b9r1asqllqKA1kb9kPMFteJwCFDaHRPpKls+WEDI8BikmAXixawURO6OWyu2aGvMOLr+p26xvwbNsR7Sss34Fg9gKajBBo3sy0xACraqw6jcym5BfDRyN9a+41zERWGU3ATnrxwT/V06dPg/Z6g9By0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862747; c=relaxed/simple;
-	bh=/pz5Gb89TMFY/nu2z9kfQrlEiMwmNIpOTS6cvT6gKXk=;
+	s=arc-20240116; t=1778862749; c=relaxed/simple;
+	bh=r2vt8OaBbTeXyXohC3Oj5kB9W8BNorq2d4uDaEfefqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WhM70hGdfRS07eESsxP+qYsARbl9ODuLK/gcR+UOc+wN9g77QouhkqRmpZ8BHj5iDJUIkY10RLpTgclUAUTm8gjDAqwcmD3GSzNPL2ltk7qgKDmJInWdLpPK6jRbwobPzip84PdzDZ1Ovoefp1VZTM/x98gk7m4LLlSwDmLrFIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oo+D1zh2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1475C2BCB3;
-	Fri, 15 May 2026 16:32:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q12FL8w3iVG5wFgcdfHx2YU4LawvIcNuGOqE+vuxeWtkkmxXJOvvaHmYMbAVUm/+0dKGbKYnC7XWnTUbxhY88i66VkUQ9b7qNoM1OhbQgRQAgo6gig8ql69Bhu4OxrbMNJhM9nZrKrKyUe+vCyYXJ7ulS78SV8CuxDm5+la4cjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dukNXGpB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECA2C2BCC7;
+	Fri, 15 May 2026 16:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862747;
-	bh=/pz5Gb89TMFY/nu2z9kfQrlEiMwmNIpOTS6cvT6gKXk=;
+	s=korg; t=1778862749;
+	bh=r2vt8OaBbTeXyXohC3Oj5kB9W8BNorq2d4uDaEfefqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oo+D1zh2uZM0vEiGsElFOBcQcPsE+IEomIZRZkbjmpB1gFN7P4YL/GKogDM2q2gtb
-	 tmEVi4RkoGaYq5tHuIVnfa/i5LzWXMWQHi+AJ+kEH6gyWnbQHDHzGSi/Oc8Ur3saOd
-	 WPyOKCBPCDhWwoESk3zigxW+Z51mU9k8kNgKdGHU=
+	b=dukNXGpBFDJMb0ZfHZbpSyn5xlIByIWRMGj15MzrRZnx8NiAIY6DAmAnZ6wXY3glD
+	 YiwGo/R/Ez5YsUAVwLIXh30OnigcfvnFh83SmoZfnMQ72jcf3TDtzRZY6f+EQtaLc6
+	 ySqqSUgD2t/o8RG9CPjF+rkEWHcFc6ACfgQTvFI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Kent Russell <kent.russell@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 166/201] drm/amdgpu/pm: add missing revision check for CI
-Date: Fri, 15 May 2026 17:49:44 +0200
-Message-ID: <20260515154702.173081342@linuxfoundation.org>
+Subject: [PATCH 7.0 167/201] drm/amdgpu/pm: align Hawaii mclk workaround with radeon
+Date: Fri, 15 May 2026 17:49:45 +0200
+Message-ID: <20260515154702.194630636@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
 References: <20260515154658.538039039@linuxfoundation.org>
@@ -65,18 +65,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0621D5547D6
+X-Rspamd-Queue-Id: 94F745538E7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248833-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248835-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -93,8 +93,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email,gitlab.freedesktop.org:url]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
@@ -103,37 +103,39 @@ X-Rspamd-Action: no action
 
 From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 2a561b361b7681509710f3cfc3d95d54c87ac69f upstream.
+commit 1987c79b4fe5789dfa14423e78b5c25f6acf3e9d upstream.
 
-The ci_populate_all_memory_levels() workaround only
-applies to revision 0 SKUs.
+Align the hawaii mclk workaround with radeon and windows.
 
 Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
 Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
 Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
 Reviewed-by: Kent Russell <kent.russell@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1db15ba8f72f400bbad8ae0ce24fafc43429d4bd)
+(cherry picked from commit 9649528b637f668c5af9f2b83ca4ad8576ae2121)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 --- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
 +++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1326,8 +1326,9 @@ static int ci_populate_all_memory_levels
- 
- 	dev_id = adev->pdev->device;
- 
--	if ((dpm_table->mclk_table.count >= 2)
--		&& ((dev_id == 0x67B0) ||  (dev_id == 0x67B1))) {
-+	if ((dpm_table->mclk_table.count >= 2) &&
-+	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
-+	    (adev->pdev->revision == 0)) {
- 		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
- 				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
- 		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
+@@ -1329,10 +1329,10 @@ static int ci_populate_all_memory_levels
+ 	if ((dpm_table->mclk_table.count >= 2) &&
+ 	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
+ 	    (adev->pdev->revision == 0)) {
+-		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
+-				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
+-		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
+-				smu_data->smc_state_table.MemoryLevel[0].MinMvdd;
++		smu_data->smc_state_table.MemoryLevel[1].MinVddc =
++				smu_data->smc_state_table.MemoryLevel[0].MinVddc;
++		smu_data->smc_state_table.MemoryLevel[1].MinVddcPhases =
++				smu_data->smc_state_table.MemoryLevel[0].MinVddcPhases;
+ 	}
+ 	smu_data->smc_state_table.MemoryLevel[0].ActivityLevel = 0x1F;
+ 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.MemoryLevel[0].ActivityLevel);
 
 
 
