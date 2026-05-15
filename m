@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EEAuCTBKB2rUwQIAu9opvQ
-	(envelope-from <stable+bounces-248385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:30:40 +0200
+	id 2FNsA01EB2oCvAIAu9opvQ
+	(envelope-from <stable+bounces-247916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96EB5534CD
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:30:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2F2552A88
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 75DCC3119DC8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5335C30411AA
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1867A3B635B;
-	Fri, 15 May 2026 16:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE4D37472A;
+	Fri, 15 May 2026 15:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvAfb4b0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR+1atYJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D068B3A961B;
-	Fri, 15 May 2026 16:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4C430566D;
+	Fri, 15 May 2026 15:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861600; cv=none; b=dny2/ij6EPg2ChPF8WoxoSrjxzhRdJZ81f44oEQ4XzJjPNNtESl/0SV8vBa33VLR9Q7NILfDlVsLlNixk8PhxVuV73pj2zPZrgKh6jzH+ilLcwXDplorc7ccLNBVbnX4EOmJCWYdBzy7toRgqi5Tb15lxiuB7IBHnD6sTHigeWw=
+	t=1778860402; cv=none; b=MaeIzhfwnhsDeAT3wY7BxidCOV1mReNoPHB+xRKIr1uszMpuxI6d+shcpBacKRW+rhVbBZSwMORYjtkNqjwyXdE5l1mbWo66nYktVa2eLwJ8Anf1NsanwSSVISWG/KNnYSRXLj3M23L/LUP2N479LAsgNpJAaMhpm9QX9xBAJps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861600; c=relaxed/simple;
-	bh=qRx1Myc65XmuaIqFkw3Sc5fHKzm2axDy9dvG/KlABdM=;
+	s=arc-20240116; t=1778860402; c=relaxed/simple;
+	bh=eg3sz2mFz3VLYDV/0v3CpMJRccQ1QgJoT928kQZutNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSsFR/JeBqUSQGtp0lpfp+hkl18wTP1ZwA8UM/iLEpL/bYvCGWP/x8zhlK9efy+kl5RTf8aqBcklbr4PUA4pBCW/MMjJwy5tnuwO3mXugL+wQiaETg7yHgGfoSn+Y2taWmRbGpdIX2jlxmMOhPJfTgd5Bos0c8hrlkTbkCZ/CxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvAfb4b0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67901C2BCB0;
-	Fri, 15 May 2026 16:13:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=McVtctdmNEYwYVxBm9riv8AFKaneNf4IUrXMjxwbeswZcjyFjoQWYL7WeTOGkqmB7EByfsdl1kHy54wZU5eYJOUdhl56LdLbFfn53roGvig9X1d33Wj9O/iUTGCHQ5cmYrGFJ5Vtl0VcZkUnCZClAJdlIwg7ssGPDug0YOhkZuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR+1atYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CDBC2BCB3;
+	Fri, 15 May 2026 15:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861600;
-	bh=qRx1Myc65XmuaIqFkw3Sc5fHKzm2axDy9dvG/KlABdM=;
+	s=korg; t=1778860402;
+	bh=eg3sz2mFz3VLYDV/0v3CpMJRccQ1QgJoT928kQZutNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EvAfb4b0E6qPndQA6LTondi3Q0GpIC8AO4eHSQI0rKkQcT2UImiWmIcsPgi5C5iQR
-	 fWpesgo3BSl54xT4ctSQCRnQNcRdD7WNk99sXYkwZ4lqP+9MW6MdC3hUrV3iIkGKMe
-	 A8+FksUNBi4yl3JtNNs+j2Dli+0MNTPbinjH+Vcw=
+	b=fR+1atYJZiVNcbK3P1K2GWpE/S3AF0UKJ/CI5CJD9aSKr9+VC1r1H9bexRNZD6Gg8
+	 f9Wm/9Gy0AYHZtLk85fmbH8POO2xPoyvqdSo30LJzkzWxt1GCcaQ6O1zE8VfToe2PP
+	 gxBEmOzNCX9T0cg/Fkold8CKygz6nl8fM2yeeBts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 392/474] net: qrtr: ns: Limit the total number of nodes
-Date: Fri, 15 May 2026 17:48:21 +0200
-Message-ID: <20260515154723.524991597@linuxfoundation.org>
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 076/144] drm/amdgpu/vcn3: Prevent OOB reads when parsing dec msg
+Date: Fri, 15 May 2026 17:48:22 +0200
+Message-ID: <20260515154655.294146721@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +64,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B96EB5534CD
+X-Rspamd-Queue-Id: 0F2F2552A88
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-247916-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248385-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Benjamin Cheng <benjamin.cheng@amd.com>
 
-[ Upstream commit 27d5e84e810b0849d08b9aec68e48570461ce313 ]
+commit b193019860d61e92da395eae2011f2f6716b182f upstream.
 
-Currently, the nameserver doesn't limit the number of nodes it handles.
-This can be an attack vector if a malicious client starts registering
-random nodes, leading to memory exhaustion.
+Check bounds against the end of the BO whenever we access the msg.
 
-Hence, limit the maximum number of nodes to 64. Note that, limit of 64 is
-chosen based on the current platform requirements. If requirement changes
-in the future, this limit can be increased.
-
+Signed-off-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-4-00a8a5ff2b51@oss.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ dropped comment/define changes for missing QRTR_NS_MAX_SERVERS/LOOKUPS prereqs and kept plain kzalloc instead of kzalloc_obj ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -82,6 +82,13 @@ struct qrtr_node {
-  */
- #define QRTR_NS_MAX_LOOKUPS 64
- 
-+/* Max nodes limit is chosen based on the current platform requirements.
-+ * If the requirement changes in the future, this value can be increased.
-+ */
-+#define QRTR_NS_MAX_NODES   64
-+
-+static u8 node_count;
-+
- static struct qrtr_node *node_get(unsigned int node_id)
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+@@ -1843,7 +1843,7 @@ static int vcn_v3_0_dec_msg(struct amdgp
  {
- 	struct qrtr_node *node;
-@@ -90,6 +97,11 @@ static struct qrtr_node *node_get(unsign
- 	if (node)
- 		return node;
- 
-+	if (node_count >= QRTR_NS_MAX_NODES) {
-+		pr_err_ratelimited("QRTR clients exceed max node limit!\n");
-+		return NULL;
-+	}
-+
- 	/* If node didn't exist, allocate and insert it to the tree */
- 	node = kzalloc(sizeof(*node), GFP_KERNEL);
- 	if (!node)
-@@ -103,6 +115,8 @@ static struct qrtr_node *node_get(unsign
- 		return NULL;
+ 	struct ttm_operation_ctx ctx = { false, false };
+ 	struct amdgpu_bo_va_mapping *map;
+-	uint32_t *msg, num_buffers;
++	uint32_t *msg, num_buffers, len_dw;
+ 	struct amdgpu_bo *bo;
+ 	uint64_t start, end;
+ 	unsigned int i;
+@@ -1864,6 +1864,11 @@ static int vcn_v3_0_dec_msg(struct amdgp
+ 		return -EINVAL;
  	}
  
-+	node_count++;
++	if (end - addr < 16) {
++		DRM_ERROR("VCN messages must be at least 4 DWORDs!\n");
++		return -EINVAL;
++	}
 +
- 	return node;
- }
+ 	bo->flags |= AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
+ 	amdgpu_bo_placement_from_domain(bo, bo->allowed_domains);
+ 	r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
+@@ -1880,8 +1885,8 @@ static int vcn_v3_0_dec_msg(struct amdgp
  
-@@ -406,6 +420,7 @@ static int ctrl_cmd_bye(struct sockaddr_
- delete_node:
- 	xa_erase(&nodes, from->sq_node);
- 	kfree(node);
-+	node_count--;
+ 	msg = ptr + addr - start;
  
- 	return ret;
- }
+-	/* Check length */
+ 	if (msg[1] > end - addr) {
++		DRM_ERROR("VCN message header does not fit in BO!\n");
+ 		r = -EINVAL;
+ 		goto out;
+ 	}
+@@ -1889,7 +1894,16 @@ static int vcn_v3_0_dec_msg(struct amdgp
+ 	if (msg[3] != RDECODE_MSG_CREATE)
+ 		goto out;
+ 
++	len_dw = msg[1] / 4;
+ 	num_buffers = msg[2];
++
++	/* Verify that all indices fit within the claimed length. Each index is 4 DWORDs */
++	if (num_buffers > len_dw || 6 + num_buffers * 4 > len_dw) {
++		DRM_ERROR("VCN message has too many buffers!\n");
++		r = -EINVAL;
++		goto out;
++	}
++
+ 	for (i = 0, msg = &msg[6]; i < num_buffers; ++i, msg += 4) {
+ 		uint32_t offset, size, *create;
+ 
+@@ -1899,14 +1913,15 @@ static int vcn_v3_0_dec_msg(struct amdgp
+ 		offset = msg[1];
+ 		size = msg[2];
+ 
+-		if (offset + size > end) {
++		if (size < 4 || offset + size > end - addr) {
++			DRM_ERROR("VCN message buffer exceeds BO bounds!\n");
+ 			r = -EINVAL;
+ 			goto out;
+ 		}
+ 
+ 		create = ptr + addr + offset - start;
+ 
+-		/* H246, HEVC and VP9 can run on any instance */
++		/* H264, HEVC and VP9 can run on any instance */
+ 		if (create[0] == 0x7 || create[0] == 0x10 || create[0] == 0x11)
+ 			continue;
+ 
 
 
 
