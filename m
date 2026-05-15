@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-248808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AHZJtNUB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:03 +0200
+	id 2N5pEaNWB2pVzQIAu9opvQ
+	(envelope-from <stable+bounces-248450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:23:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C39D554B36
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64A9554F15
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F4983169E86
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E643430F2940
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF4C3D6CB9;
-	Fri, 15 May 2026 16:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B814C77D3;
+	Fri, 15 May 2026 16:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbL3XjRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7Am80nI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514493EFFB8;
-	Fri, 15 May 2026 16:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409A03FBB53;
+	Fri, 15 May 2026 16:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862684; cv=none; b=e9eS4YdY2LdiFSToqBs/Oai2vLp1Iw+RBVTCG8IsWW6dIdBFwERjHOdP4zYkVye/HmIahBU1cx5xFhQmR6Zly85sPzeo6CFu18tDnq8KYud/46viz66yI+jhR26EG/8P2d8cYrovWtRV5CmNznc/YT+ERuJ1PCVhhkkhKR0fF+s=
+	t=1778861765; cv=none; b=oZrLfUIYEL89130CJnaWfdjfBPOJKKe9mltf0UBZ6lNGC5SkMjXC0yRQe2d9h8YZY+5rEuGamXA6AzWJY0G5uN3rvT4OynqCm5vTYOwYEJA8UjJkXtCPkobzezRV+FcFM5wpcwdRRs7Iv2t6Ojo3dPNZ0XNaOI54mUYHXrR46LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862684; c=relaxed/simple;
-	bh=bZGZfngjR124pi1T4mYk8JWXN7131gKCCxxg2j8OdSA=;
+	s=arc-20240116; t=1778861765; c=relaxed/simple;
+	bh=fnfGsauvpqQD1/PqwjE84FGuhDOOAGpCYN2TtKfW4x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOd0KDuxB+CcVtt6K3cIhsz363VVC1GQRywCI5fEKi1N9ONmxPJjnsovpswE0/wyzC4UgW5baoARwRsmfohh5IMOrHcQjOfQCit/QrdcRlNfsFaJ81qUgrJZYUdT6kvpjkt1o4H3SMGRim3kA0182X8X+ruVhsXGj15FkwuzX8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbL3XjRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1A0C2BCB0;
-	Fri, 15 May 2026 16:31:23 +0000 (UTC)
+	 MIME-Version; b=FUHAqVg+Im7XIHP9DBOVhXd97ebemmoZgUmdf/QnKBFniy6lg8YoMqv43PgwWVgOchS0HIuFKd+JXUcTa6TEsherRruQwHMaYu2hHPNk3YhaKM0rA6I1SmHeofzAZcthhRafNMlbE/gnRvgfAjV6xtdto5WD8qkWbnopqdYCNp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7Am80nI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D6DC2BCB0;
+	Fri, 15 May 2026 16:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862684;
-	bh=bZGZfngjR124pi1T4mYk8JWXN7131gKCCxxg2j8OdSA=;
+	s=korg; t=1778861765;
+	bh=fnfGsauvpqQD1/PqwjE84FGuhDOOAGpCYN2TtKfW4x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbL3XjRqE0npDpWJR74vXRp34zB+g77dIk7CvfkaOGR/x0i0Xb2gzX6lzRb3XKtri
-	 4roZLvbIhAgmODa2SkXv8nSwGHwHVD9y+Kd3B26pU5FmlJqabTlg2LcrYENepAq0Rw
-	 MNG9/fVEmjFtetCDD7HXembFhZ19fxzneDHnNYso=
+	b=A7Am80nIlqi/4U2iu4/2tJXKwjUCt3noX3KJVcaRmjcbDJfoWTuQ5oT5DKRDu63dT
+	 so576SGGr/dEpx4yluMO4xX7QxEYyveUFugrgkY8RzOLiQqhJ6I+De3h6QYbRTCedo
+	 35pfeLKAxs0XmFYDHYMKEFPrivH1/wIjf9gFHLUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>
-Subject: [PATCH 7.0 144/201] drm/gem: Fix inconsistent plane dimension calculation in drm_gem_fb_init_with_funcs()
+	munan Huang <munanevil@gmail.com>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.6 453/474] ksmbd: fix use-after-free in __ksmbd_close_fd() via durable scavenger
 Date: Fri, 15 May 2026 17:49:22 +0200
-Message-ID: <20260515154701.687059466@linuxfoundation.org>
+Message-ID: <20260515154724.894928968@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +66,170 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6C39D554B36
+X-Rspamd-Queue-Id: B64A9554F15
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248808-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kylinos.cn,kernel.org,microsoft.com,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-248450-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,foxmail.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 3d4c2268bd7243c3780fe32bf24ff876da272acf upstream.
+commit 235e32320a470fcd3998fb3774f2290a0eb302a1 upstream.
 
-drm_gem_fb_init_with_funcs() computes sub-sampled plane dimensions
-using plain integer division:
+When a durable file handle survives session disconnect (TCP close without
+SMB2_LOGOFF), session_fd_check() sets fp->conn = NULL to preserve the
+handle for later reconnection. However, it did not clean up the byte-range
+locks on fp->lock_list.
 
-  unsigned int width  = mode_cmd->width  / (i ? info->hsub : 1);
-  unsigned int height = mode_cmd->height / (i ? info->vsub : 1);
+Later, when the durable scavenger thread times out and calls
+__ksmbd_close_fd(NULL, fp), the lock cleanup loop did:
 
-However, the ioctl-level framebuffer_check() in drm_framebuffer.c uses
-drm_format_info_plane_width/height() which round up dimensions via
-DIV_ROUND_UP(). This inconsistency corrupts the subsequent GEM object
-size check for certain pixel format and dimension combinations.
+    spin_lock(&fp->conn->llist_lock);
 
-For example, with NV12 (vsub=2) and a 1-pixel-tall framebuffer the
-GEM size validation path sees height=0 instead of height=1. The
-expression (height - 1) then wraps to UINT_MAX as an unsigned int,
-causing min_size to overflow and wrap back to a small value. A tiny
-GEM object therefore passes the size guard, yet when the GPU accesses
-the chroma plane it will read or write memory beyond the object's
-bounds.
+This caused a slab use-after-free because fp->conn was NULL and the
+original connection object had already been freed by
+ksmbd_tcp_disconnect().
 
-Fix by replacing the open-coded divisions with drm_format_info_plane_width()
-and drm_format_info_plane_height(), which use DIV_ROUND_UP() and match
-the calculation already used in framebuffer_check().
+The root cause is asymmetric cleanup: lock entries (smb_lock->clist) were
+left dangling on the freed conn->lock_list while fp->conn was nulled out.
 
-Fixes: 4c3dbb2c312c ("drm: Add GEM backed framebuffer library")
-Cc: stable@vger.kernel.org # v4.14+
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20260420013637.457751-1-ashutoshdesai993@gmail.com
+To fix this issue properly, we need to handle the lifetime of
+smb_lock->clist across three paths:
+ - Safely skip clist deletion when list is empty and fp->conn is NULL.
+ - Remove the lock from the old connection's lock_list in
+   session_fd_check()
+ - Re-add the lock to the new connection's lock_list in
+   ksmbd_reopen_durable_fd().
+
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Co-developed-by: munan Huang <munanevil@gmail.com>
+Signed-off-by: munan Huang <munanevil@gmail.com>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Minor context conflict resolved. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem_framebuffer_helper.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/vfs_cache.c |   40 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-+++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
-@@ -172,8 +172,8 @@ int drm_gem_fb_init_with_funcs(struct dr
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -356,9 +356,11 @@ static void __ksmbd_close_fd(struct ksmb
+ 	 * there are not accesses to fp->lock_list.
+ 	 */
+ 	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
+-		spin_lock(&fp->conn->llist_lock);
+-		list_del(&smb_lock->clist);
+-		spin_unlock(&fp->conn->llist_lock);
++		if (!list_empty(&smb_lock->clist) && fp->conn) {
++			spin_lock(&fp->conn->llist_lock);
++			list_del(&smb_lock->clist);
++			spin_unlock(&fp->conn->llist_lock);
++		}
+ 
+ 		list_del(&smb_lock->flist);
+ 		locks_free_lock(smb_lock->fl);
+@@ -755,6 +757,7 @@ static bool session_fd_check(struct ksmb
+ 	struct ksmbd_inode *ci;
+ 	struct oplock_info *op;
+ 	struct ksmbd_conn *conn;
++	struct ksmbd_lock *smb_lock, *tmp_lock;
+ 
+ 	if (!is_reconnectable(fp))
+ 		return false;
+@@ -771,6 +774,12 @@ static bool session_fd_check(struct ksmb
+ 	}
+ 	up_write(&ci->m_lock);
+ 
++	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
++		spin_lock(&fp->conn->llist_lock);
++		list_del_init(&smb_lock->clist);
++		spin_unlock(&fp->conn->llist_lock);
++	}
++
+ 	fp->conn = NULL;
+ 	fp->tcon = NULL;
+ 	fp->volatile_id = KSMBD_NO_FID;
+@@ -844,6 +853,9 @@ int ksmbd_reopen_durable_fd(struct ksmbd
+ {
+ 	struct ksmbd_inode *ci;
+ 	struct oplock_info *op;
++	struct ksmbd_conn *conn = work->conn;
++	struct ksmbd_lock *smb_lock;
++	unsigned int old_f_state;
+ 
+ 	if (!fp->is_durable || fp->conn || fp->tcon) {
+ 		pr_err("Invalid durable fd [%p:%p]\n", fp->conn, fp->tcon);
+@@ -855,9 +867,23 @@ int ksmbd_reopen_durable_fd(struct ksmbd
+ 		return -EBADF;
  	}
  
- 	for (i = 0; i < info->num_planes; i++) {
--		unsigned int width = mode_cmd->width / (i ? info->hsub : 1);
--		unsigned int height = mode_cmd->height / (i ? info->vsub : 1);
-+		unsigned int width = drm_format_info_plane_width(info, mode_cmd->width, i);
-+		unsigned int height = drm_format_info_plane_height(info, mode_cmd->height, i);
- 		unsigned int min_size;
+-	fp->conn = work->conn;
++	old_f_state = fp->f_state;
++	fp->f_state = FP_NEW;
++	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
++	if (!has_file_id(fp->volatile_id)) {
++		fp->f_state = old_f_state;
++		return -EBADF;
++	}
++
++	fp->conn = conn;
+ 	fp->tcon = work->tcon;
  
- 		objs[i] = drm_gem_object_lookup(file, mode_cmd->handles[i]);
++	list_for_each_entry(smb_lock, &fp->lock_list, flist) {
++		spin_lock(&conn->llist_lock);
++		list_add_tail(&smb_lock->clist, &conn->lock_list);
++		spin_unlock(&conn->llist_lock);
++	}
++
+ 	ci = fp->f_ci;
+ 	down_write(&ci->m_lock);
+ 	list_for_each_entry_rcu(op, &ci->m_op_list, op_entry) {
+@@ -868,12 +894,6 @@ int ksmbd_reopen_durable_fd(struct ksmbd
+ 	}
+ 	up_write(&ci->m_lock);
+ 
+-	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
+-	if (!has_file_id(fp->volatile_id)) {
+-		fp->conn = NULL;
+-		fp->tcon = NULL;
+-		return -EBADF;
+-	}
+ 	return 0;
+ }
+ 
 
 
 
