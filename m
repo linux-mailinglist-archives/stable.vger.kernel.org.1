@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNTROhNMB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248195-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:43 +0200
+	id zMWgAKpLB2qnxAIAu9opvQ
+	(envelope-from <stable+bounces-248154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30CC553A6E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E25553994
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 216543196200
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:08:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 53ACD30E0C9C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E77E3FD96B;
-	Fri, 15 May 2026 16:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49A93E0091;
+	Fri, 15 May 2026 16:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgHHwlQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaAezCRh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC3F3FD965;
-	Fri, 15 May 2026 16:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976DE2EAB82;
+	Fri, 15 May 2026 16:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861117; cv=none; b=YjhYvreflhErX29aLqJFQ1SxKelGV9aV80J24eLUsSfItADFP7jCLSmqDC7lVHuw39v1zg3J9PwTad4Q6+fi1zPJF3qlZEoajIfUc/BTkNzR22CZv571A3Ov84eTHcoCD6yCMPaNBydWK9r8AM1P8PBSSs1hKEzqKVpDU1REjd8=
+	t=1778861009; cv=none; b=gd0yteDUh9lyQiW/RHacBk31fhNCILuqRR7niYX1Te48xBSgYcoTOTBci5r4uc2sBpCmJot0GthQaFHTzPiczRf+TktX9YYgwk231C7UsP3ndvPfN+rc1qDecrO5nm6ezARVZ1eA++GOlrMFVyYjkZF6ONoNb4W0fuXG33SulGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861117; c=relaxed/simple;
-	bh=9DUedQb6aDjnRrx58knWGf7NoIOO/cI5uReMozDeSCo=;
+	s=arc-20240116; t=1778861009; c=relaxed/simple;
+	bh=tKcL84HENbE8rivM7MoORaJDf0kh7dd1wP2jNAEG5KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W2FtkGm8wObjDcEJF0yy3Ifw8szxCEmrhpsExUMfmSrJf4ncf/FchPtu9aNBVU4/f5/dCna3VXlQ6w95YzqKwlbrUf4NIMolk8abJEuKE8INs3vMx7y2TCG/s/5jk5YTl7ZbQVXwgO3RkknIuyhk+4vaZcPEJI9+ZYJyY6Q9P9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgHHwlQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8BEC2BCB0;
-	Fri, 15 May 2026 16:05:16 +0000 (UTC)
+	 MIME-Version; b=t0Lg43ze8QdZO0nw+UW4yQJ7zG5xkFAcfiMU2hgGisOTUiNkK+4LzjGOa3za899lX31pgWKyU6phTDXGzFTYBlo2fulN7GXiZuYnyhRn0r2c/7wol5/Ru7ST/AVVuv8hQiZedpclrIBoGa5tvW9u1YuwiTeFGz2Oszd7S4j8aac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaAezCRh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4EFC2BCB3;
+	Fri, 15 May 2026 16:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861117;
-	bh=9DUedQb6aDjnRrx58knWGf7NoIOO/cI5uReMozDeSCo=;
+	s=korg; t=1778861009;
+	bh=tKcL84HENbE8rivM7MoORaJDf0kh7dd1wP2jNAEG5KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgHHwlQqhwXHS3N7pqY8vmxFk+BhaEqBoQs++j5qRcTgSD1NfRPcTZz8xjNbjOvwe
-	 bSi8mP+XCGN3WU50FCUGCNxUZErpVtdgS2TtkkzwkUSHZLID9LpVZi97zjUsBGWFQr
-	 DDfLlPpT1oN/iOgWyap2NPp96vo2N+T5bCY514C4=
+	b=oaAezCRhFM3WpGqjMepPG7NwQ4s/TkeNvkrPL/iga26sifsSADeoVzjpNP912q2m2
+	 UbptwQ0eC4fYbHd9MmE6iGyppisiUdoo0XM9rSCMVtfUcRGB6n3VWarx08S9xes9qk
+	 0E8REg5ui9E/5iGMtj4x8+15DLiokhiZHPW9hkdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srikanth Aithal <sraithal@amd.com>,
-	Ankit Soni <Ankit.Soni@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/474] iommu/amd: serialize sequence allocation under concurrent TLB invalidations
-Date: Fri, 15 May 2026 17:44:33 +0200
-Message-ID: <20260515154718.573403214@linuxfoundation.org>
+Subject: [PATCH 6.6 165/474] net: Fix icmp host relookup triggering ip_rt_bug
+Date: Fri, 15 May 2026 17:44:34 +0200
+Message-ID: <20260515154718.594402653@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -67,13 +67,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B30CC553A6E
+X-Rspamd-Queue-Id: A8E25553994
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248195-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248154-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,128 +90,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qemu.org:url]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Soni <Ankit.Soni@amd.com>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-commit 9e249c48412828e807afddc21527eb734dc9bd3d upstream.
+[ Upstream commit c44daa7e3c73229f7ac74985acb8c7fb909c4e0a ]
 
-With concurrent TLB invalidations, completion wait randomly gets timed out
-because cmd_sem_val was incremented outside the IOMMU spinlock, allowing
-CMD_COMPL_WAIT commands to be queued out of sequence and breaking the
-ordering assumption in wait_on_sem().
-Move the cmd_sem_val increment under iommu->lock so completion sequence
-allocation is serialized with command queuing.
-And remove the unnecessary return.
+arp link failure may trigger ip_rt_bug while xfrm enabled, call trace is:
 
-Fixes: d2a0cac10597 ("iommu/amd: move wait_on_sem() out of spinlock")
+WARNING: CPU: 0 PID: 0 at net/ipv4/route.c:1241 ip_rt_bug+0x14/0x20
+Modules linked in:
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.0-rc6-00077-g2e1b3cc9d7f7
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+RIP: 0010:ip_rt_bug+0x14/0x20
+Call Trace:
+ <IRQ>
+ ip_send_skb+0x14/0x40
+ __icmp_send+0x42d/0x6a0
+ ipv4_link_failure+0xe2/0x1d0
+ arp_error_report+0x3c/0x50
+ neigh_invalidate+0x8d/0x100
+ neigh_timer_handler+0x2e1/0x330
+ call_timer_fn+0x21/0x120
+ __run_timer_base.part.0+0x1c9/0x270
+ run_timer_softirq+0x4c/0x80
+ handle_softirqs+0xac/0x280
+ irq_exit_rcu+0x62/0x80
+ sysvec_apic_timer_interrupt+0x77/0x90
 
-Tested-by: Srikanth Aithal <sraithal@amd.com>
-Reported-by: Srikanth Aithal <sraithal@amd.com>
-Signed-off-by: Ankit Soni <Ankit.Soni@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-[Salvatore Bonaccorso: Backport to v6.12.y where f32fe7cb0198
-("iommu/amd: Add support to remap/unmap IOMMU buffers for kdump") is not
-present]
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
+The script below reproduces this scenario:
+ip xfrm policy add src 0.0.0.0/0 dst 0.0.0.0/0 \
+	dir out priority 0 ptype main flag localok icmp
+ip l a veth1 type veth
+ip a a 192.168.141.111/24 dev veth0
+ip l s veth0 up
+ping 192.168.141.155 -c 1
+
+icmp_route_lookup() create input routes for locally generated packets
+while xfrm relookup ICMP traffic.Then it will set input route
+(dst->out = ip_rt_bug) to skb for DESTUNREACH.
+
+For ICMP err triggered by locally generated packets, dst->dev of output
+route is loopback. Generally, xfrm relookup verification is not required
+on loopback interfaces (net.ipv4.conf.lo.disable_xfrm = 1).
+
+Skip icmp relookup for locally generated packets to fix it.
+
+Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241127040850.1513135-1-dongchenchen2@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/amd_iommu_types.h |  2 +-
- drivers/iommu/amd/init.c            |  2 +-
- drivers/iommu/amd/iommu.c           | 18 ++++++++++++------
- 3 files changed, 14 insertions(+), 8 deletions(-)
+ net/ipv4/icmp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index d872054b874fa..2571a782b7b61 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -765,7 +765,7 @@ struct amd_iommu {
- 
- 	u32 flags;
- 	volatile u64 *cmd_sem;
--	atomic64_t cmd_sem_val;
-+	u64 cmd_sem_val;
- 
- #ifdef CONFIG_AMD_IOMMU_DEBUGFS
- 	/* DebugFS Info */
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 6261bc7304e97..e5fee1aae587b 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -1805,7 +1805,7 @@ static int __init init_iommu_one(struct amd_iommu *iommu, struct ivhd_header *h,
- 	iommu->pci_seg = pci_seg;
- 
- 	raw_spin_lock_init(&iommu->lock);
--	atomic64_set(&iommu->cmd_sem_val, 0);
-+	iommu->cmd_sem_val = 0;
- 
- 	/* Add IOMMU to internal data structures */
- 	list_add_tail(&iommu->list, &amd_iommu_list);
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 6d0d28050052a..48cf9e9e15976 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -1195,6 +1195,12 @@ static int iommu_queue_command(struct amd_iommu *iommu, struct iommu_cmd *cmd)
- 	return iommu_queue_command_sync(iommu, cmd, true);
- }
- 
-+static u64 get_cmdsem_val(struct amd_iommu *iommu)
-+{
-+	lockdep_assert_held(&iommu->lock);
-+	return ++iommu->cmd_sem_val;
-+}
-+
- /*
-  * This function queues a completion wait command into the command
-  * buffer of an IOMMU
-@@ -1209,11 +1215,11 @@ static int iommu_completion_wait(struct amd_iommu *iommu)
- 	if (!iommu->need_sync)
- 		return 0;
- 
--	data = atomic64_inc_return(&iommu->cmd_sem_val);
--	build_completion_wait(&cmd, iommu, data);
--
- 	raw_spin_lock_irqsave(&iommu->lock, flags);
- 
-+	data = get_cmdsem_val(iommu);
-+	build_completion_wait(&cmd, iommu, data);
-+
- 	ret = __iommu_queue_command_sync(iommu, &cmd, false);
- 	raw_spin_unlock_irqrestore(&iommu->lock, flags);
- 
-@@ -2877,10 +2883,11 @@ static void iommu_flush_irt_and_complete(struct amd_iommu *iommu, u16 devid)
- 		return;
- 
- 	build_inv_irt(&cmd, devid);
--	data = atomic64_inc_return(&iommu->cmd_sem_val);
--	build_completion_wait(&cmd2, iommu, data);
- 
- 	raw_spin_lock_irqsave(&iommu->lock, flags);
-+	data = get_cmdsem_val(iommu);
-+	build_completion_wait(&cmd2, iommu, data);
-+
- 	ret = __iommu_queue_command_sync(iommu, &cmd, true);
- 	if (ret)
- 		goto out_err;
-@@ -2894,7 +2901,6 @@ static void iommu_flush_irt_and_complete(struct amd_iommu *iommu, u16 devid)
- 
- out_err:
- 	raw_spin_unlock_irqrestore(&iommu->lock, flags);
--	return;
- }
- 
- static void set_dte_irq_entry(struct amd_iommu *iommu, u16 devid,
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 29c73b05b1e1a..3fcf11f83d87b 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -518,6 +518,9 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+ 	if (!IS_ERR(rt)) {
+ 		if (rt != rt2)
+ 			return rt;
++		if (inet_addr_type_dev_table(net, route_lookup_dev,
++					     fl4->daddr) == RTN_LOCAL)
++			return rt;
+ 	} else if (PTR_ERR(rt) == -EPERM) {
+ 		rt = NULL;
+ 	} else
 -- 
 2.53.0
 
