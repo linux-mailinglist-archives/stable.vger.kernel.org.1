@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCfZB8hSB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:07:20 +0200
+	id 0NsYBFJpB2qZ2AIAu9opvQ
+	(envelope-from <stable+bounces-247859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:43:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A977554772
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8C25566F4
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5420433EF6D5
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8B60313FFC3
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930513F9289;
-	Fri, 15 May 2026 16:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7ED63FF1D8;
+	Fri, 15 May 2026 15:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyiy/tEX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jW2zIsy4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495093CD8C1;
-	Fri, 15 May 2026 16:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738FA3FF1CD;
+	Fri, 15 May 2026 15:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862348; cv=none; b=YBMj/xcuerGxP1gc3zdEyOG0RqwBFa+FiC3AG/J2Ceg3HOTsCYfEgTcipSVxUmzyrnugEp4DfyxF8F1mbqGkp6QjSeGVwEzJEokgUhtlHu6NJGBp2l3xYA10j4YdmkiF5lrbzyP9kGCgQvh3lAXl+Qj9wgCeWwo+leIcawn8G3A=
+	t=1778860255; cv=none; b=Vhd39t9i1/39SHZkCt4KfA/X61sQR/Z0eOOqZ4Xdj7EiletkBI3vehJF4UZomDxjXB1qbVoo+cSn0C0eiEqrpFX4PzoGHG87HBpQQGO2vOk//virM3DGXaxMidoBmcLzFoGbFE261val7P2OWQOaCv1x9oC9sJsschEnEqOMCY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862348; c=relaxed/simple;
-	bh=B8ov53LBO3gmmOJENPQh0hwbe5VaNanFnYGSfnbC5Do=;
+	s=arc-20240116; t=1778860255; c=relaxed/simple;
+	bh=hUSOUCMKxmn9+L+WSGXvkHUODeqIR9Qk2Nz6qVDCve0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JhwspWhp82UEtYNaQJT9wuzgaN24ja0rEOkEL8aKzD5wLOidpf/+jIS5IOFeAvmjEbE5U/nxU2ckwm8GB4svIbA6A3aRJPAo5oiLJsNTbJgWAotPtn+W4/ZL3J9Fnm9+nR+3m6n7gWynwI6wMejXPp3WXqDNLU3Me+8VGQ13GQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyiy/tEX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F1FC2BCB0;
-	Fri, 15 May 2026 16:25:47 +0000 (UTC)
+	 MIME-Version; b=K9pOc4hAiRlz0PNROwhmGC5c/umy4mHVrHguLrZefy5oqk6uhsVZQdP5Jbyq8dSs+AWSkXTufafCIrhAMqSAxorjY0/EAUynwkJEuqccD3NyOA2D4tUD7xnLr/IInnkrEX70giKAdHOhUTc8jjBS8UN+DY1tlMuDXZWkL9sFJL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jW2zIsy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D3BC2BCB0;
+	Fri, 15 May 2026 15:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862348;
-	bh=B8ov53LBO3gmmOJENPQh0hwbe5VaNanFnYGSfnbC5Do=;
+	s=korg; t=1778860255;
+	bh=hUSOUCMKxmn9+L+WSGXvkHUODeqIR9Qk2Nz6qVDCve0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hyiy/tEX18uLM/S7XuCxc7CXomHp4p8oYIafu8ijl8+P3RMA8qwn6PTBfd+zJxT4F
-	 b5y5xwhoq9fDzdPg+kNurIuwhvmLJu867hfOg1rbLPygwH277PDKZGkACSLuSZOTgy
-	 uw5orOaN/pxbl8IqOMj7+wc4JpemWHR3QFpZcyZM=
+	b=jW2zIsy4qTFR9EfM2BfuUj5rtp/+4fRIhm/O87drSAmjqQMl6SujaWJFWVVvEpKkk
+	 lXkD34AZ+U4IgAD4otH5VVfpgmqjrvB7gcRaRD+zS/fG455azDj/Q0kz/Iq8+a9uiC
+	 Ll/vJ1maWj4aE4MN+Opz24kDDQK5uLuLZp6IE1lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <barnabas.pocze@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 015/201] media: mali-c55: Fix Iridix bypass macros
+Subject: [PATCH 6.12 007/144] media: chips-media: wave5: add missing spinlock protection for handle_dynamic_resolution_change()
 Date: Fri, 15 May 2026 17:47:13 +0200
-Message-ID: <20260515154658.866104458@linuxfoundation.org>
+Message-ID: <20260515154653.652721537@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8A977554772
+X-Rspamd-Queue-Id: 6C8C25566F4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[northwestern.edu:email];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-247859-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	RCVD_COUNT_THREE(0.00)[4];
+	GREYLIST(0.00)[pass,body];
+	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248679-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_SPAM(0.00)[0.983];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Scally <dan.scally@ideasonboard.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-commit db7faf488ecf846c46884310ff1bf28daf2ad39a upstream.
+commit cb8bdd3ffca280d014311ab395651d33f58a8708 upstream.
 
-The Mali C55 Iridix block has a digital gain function and tone mapping
-function, whose enablement is controlled by two different bits
-in the BYPASS_3 register.
+Add spin_lock_irqsave()/spin_unlock_irqrestore() around the
+handle_dynamic_resolution_change() call in initialize_sequence() to fix
+the missing lock protection.
 
-Unfortunately, the "Gain" and "Tonemap" bypass bit definitions are the
-wrong way around. Swap them.
+initialize_sequence() calls handle_dynamic_resolution_change() without
+holding inst->state_spinlock. However, handle_dynamic_resolution_change()
+has lockdep_assert_held(&inst->state_spinlock) indicating that callers
+must hold this lock.
 
+Other callers of handle_dynamic_resolution_change() properly acquire the
+spinlock:
+- wave5_vpu_dec_finish_decode()
+- wave5_vpu_dec_device_run()
+
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Fixes: 9707a6254a8a6b ("media: chips-media: wave5: Add the v4l2 layer")
 Cc: stable@vger.kernel.org
-Fixes: d5f281f3dd29 ("media: mali-c55: Add Mali-C55 ISP driver")
-Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
-Reviewed-by: Barnabás Pőcze <barnabas.pocze@ideasonboard.com>
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/arm/mali-c55/mali-c55-registers.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/media/platform/arm/mali-c55/mali-c55-registers.h
-+++ b/drivers/media/platform/arm/mali-c55/mali-c55-registers.h
-@@ -128,8 +128,8 @@ enum mali_c55_interrupts {
- #define MALI_C55_REG_BYPASS_3_SENSOR_OFFSET_PRE_SH	BIT(1)
- #define MALI_C55_REG_BYPASS_3_MESH_SHADING		BIT(3)
- #define MALI_C55_REG_BYPASS_3_WHITE_BALANCE		BIT(4)
--#define MALI_C55_REG_BYPASS_3_IRIDIX			BIT(5)
--#define MALI_C55_REG_BYPASS_3_IRIDIX_GAIN		BIT(6)
-+#define MALI_C55_REG_BYPASS_3_IRIDIX_GAIN		BIT(5)
-+#define MALI_C55_REG_BYPASS_3_IRIDIX			BIT(6)
- #define MALI_C55_REG_BYPASS_4				0x18ec0
- #define MALI_C55_REG_BYPASS_4_DEMOSAIC_RGB		BIT(1)
- #define MALI_C55_REG_BYPASS_4_PF_CORRECTION		BIT(3)
+--- a/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
+@@ -1625,6 +1625,7 @@ static int initialize_sequence(struct vp
+ {
+ 	struct dec_initial_info initial_info;
+ 	int ret = 0;
++	unsigned long flags;
+ 
+ 	memset(&initial_info, 0, sizeof(struct dec_initial_info));
+ 
+@@ -1646,7 +1647,9 @@ static int initialize_sequence(struct vp
+ 		return ret;
+ 	}
+ 
++	spin_lock_irqsave(&inst->state_spinlock, flags);
+ 	handle_dynamic_resolution_change(inst);
++	spin_unlock_irqrestore(&inst->state_spinlock, flags);
+ 
+ 	return 0;
+ }
 
 
 
