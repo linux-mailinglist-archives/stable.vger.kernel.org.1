@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248370-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MqLI+FQB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:13 +0200
+	id sBI1DfhVB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248370-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:20:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CD455449D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C58D3554E08
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1053F3134D7A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F0EC31EEAC8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428923F9277;
-	Fri, 15 May 2026 16:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A12E3FD952;
+	Fri, 15 May 2026 16:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CY83a/P2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpE0rJ3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BC93F9271;
-	Fri, 15 May 2026 16:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CA33F86EC;
+	Fri, 15 May 2026 16:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862062; cv=none; b=jLFFpG6IsdA7pn0D7UEaQNUbtL26js8FA1lP0jHfMakqmcRKfMpjmQGnBa2krfra+4M3FIzT3VtR74wtXDoN8OlhOGSssF90NwnJJ4cmZYRBCptoGAUbzaFF2iDToLcg7J3bcHuvjyqUuWRIYp5cdN7+uPHjwE/Bta7wEF+8rVo=
+	t=1778861561; cv=none; b=VGDtGg45hHwLxVzNc9tMBldZx3bbdK8eapHW6h2CCMHWMrO1F5ghe6L1KqyvuwVrRlv60gEMGhDXn1ADkEYHeEeOB2x4s6qW2bkVbMCvIuN9a9M3mNUdpfOsNCKwhDKfDBo8PM+ruczAJOyW1LMAmlAt5zcbvw7Lmyqmoy9NPb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862062; c=relaxed/simple;
-	bh=MT02EWYv4a99G9Nw3Cxw17yrJwK3MVjlsx0PlZVHCG8=;
+	s=arc-20240116; t=1778861561; c=relaxed/simple;
+	bh=NEtCztPyN+Uq6GVVxLUQlXuln/NZlDuQjXK6lguaZKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXMDNuui8g0r72oKoMPXsgwdR/D/kZ7B0sO9q5B493qiLUEjB1u2dx5JUF6gvgHsryWVPv7a+8a587b2AOEOD9VIV8GbLZxWlGvgzFv9Gi5NJvlr/sHyDS9WjFaU2N2tFql1rh6myx1ks10fjWLASCfh/aSbExyEY7/ZhPm5O3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CY83a/P2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D286C2BCC9;
-	Fri, 15 May 2026 16:21:01 +0000 (UTC)
+	 MIME-Version; b=KO87futfUoaigP0L5gAHONJmP4yKcTBxhBNTWca3tgxpAmQLd9ctNfcDP12HKH2WtZXwG+QfI++8FojKhO4t1c1htFcSDSYSW7nasy3xMKFDYZCCx4ZOFqVEiUeDT65/V+U7CJTMpk212YumtUAD71+kxC8uGJ8wlEIg89OIFrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpE0rJ3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF89C2BCC7;
+	Fri, 15 May 2026 16:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862061;
-	bh=MT02EWYv4a99G9Nw3Cxw17yrJwK3MVjlsx0PlZVHCG8=;
+	s=korg; t=1778861561;
+	bh=NEtCztPyN+Uq6GVVxLUQlXuln/NZlDuQjXK6lguaZKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CY83a/P2HbSyVu4rv6Ct4rrcEYP7UzpuU2+lJP5+yykEvT6TDqwVV47UicacHnrfR
-	 5ZpO1oHvtvPyza/CpeC2L6lY3g8Z72MjaW5pLwsuS0+Iu/HwanB0fskFn5EH3gt18B
-	 sQImu1H+2fU7vEULwdT8UucC8ZIcull60IBLHY/M=
+	b=VpE0rJ3eDwDbLzkqfw96+Ws+XmPgyAx831RIirpIX3XK8HNCxAhPHDutMHIjuytzs
+	 wqor3fbzQ0DX/4BEaHekIQ9iF8UGZwi7U9niEXHsnRVwC/lbsUzpo6RbIZgPGJtu2e
+	 8RvJb+aVGXG1YbzGlKeSN2/iHuXZFnK14X0T8QP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 066/188] spi: s3c64xx: fix controller deregistration
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 374/474] wifi: mt76: mt792x: describe USB WFSYS reset with a descriptor
 Date: Fri, 15 May 2026 17:48:03 +0200
-Message-ID: <20260515154658.747635649@linuxfoundation.org>
+Message-ID: <20260515154723.120831548@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 08CD455449D
+X-Rspamd-Queue-Id: C58D3554E08
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248567-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248370-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,54 +89,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nbd.name:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sean Wang <sean.wang@mediatek.com>
 
-commit c1446b61e472da24d1547525193467b4bea4a7cb upstream.
+[ Upstream commit e6f48512c1ceebcd1ce6bb83df3b3d56a261507d ]
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+Prepare mt792xu_wfsys_reset() for chips that share the same USB WFSYS
+reset flow but use different register definitions.
 
-Fixes: 91800f0e9005 ("spi/s3c64xx: Use managed registration")
-Cc: stable@vger.kernel.org	# 3.13: 76fbad410c0f
-Cc: stable@vger.kernel.org	# 3.13
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-12-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This is a pure refactor of the current mt7921u path and keeps the reset
+sequence unchanged.
+
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20260311002825.15502-1-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Stable-dep-of: 56154fef47d1 ("wifi: mt76: mt792x: fix mt7925u USB WFSYS reset handling")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-s3c64xx.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt792x_usb.c |   40 +++++++++++++++++++-----
+ 1 file changed, 32 insertions(+), 8 deletions(-)
 
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1370,7 +1370,7 @@ static int s3c64xx_spi_probe(struct plat
- 	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
- 	       sdd->regs + S3C64XX_SPI_INT_EN);
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+@@ -208,6 +208,24 @@ static void mt792xu_epctl_rst_opt(struct
+ 	mt792xu_uhw_wr(&dev->mt76, MT_SSUSB_EPCTL_CSR_EP_RST_OPT, val);
+ }
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "cannot register SPI host: %d\n", ret);
- 		goto err_pm_put;
-@@ -1400,6 +1400,8 @@ static void s3c64xx_spi_remove(struct pl
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 
-+	spi_unregister_controller(host);
++struct mt792xu_wfsys_desc {
++	u32 rst_reg;
++	u32 done_reg;
++	u32 done_mask;
++	u32 done_val;
++	u32 delay_ms;
++	bool need_status_sel;
++};
 +
- 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
++static const struct mt792xu_wfsys_desc mt7921_wfsys_desc = {
++	.rst_reg = MT_CBTOP_RGU_WF_SUBSYS_RST,
++	.done_reg = MT_UDMA_CONN_INFRA_STATUS,
++	.done_mask = MT_UDMA_CONN_WFSYS_INIT_DONE,
++	.done_val = MT_UDMA_CONN_WFSYS_INIT_DONE,
++	.delay_ms = 0,
++	.need_status_sel = true,
++};
++
+ int mt792xu_dma_init(struct mt792x_dev *dev, bool resume)
+ {
+ 	int err;
+@@ -238,25 +256,31 @@ EXPORT_SYMBOL_GPL(mt792xu_dma_init);
  
- 	pm_runtime_put_noidle(&pdev->dev);
+ int mt792xu_wfsys_reset(struct mt792x_dev *dev)
+ {
++	const struct mt792xu_wfsys_desc *desc = &mt7921_wfsys_desc;
+ 	u32 val;
+ 	int i;
+ 
+ 	mt792xu_epctl_rst_opt(dev, false);
+ 
+-	val = mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
++	val = mt792xu_uhw_rr(&dev->mt76, desc->rst_reg);
+ 	val |= MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+-	mt792xu_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
++	mt792xu_uhw_wr(&dev->mt76, desc->rst_reg, val);
+ 
+-	usleep_range(10, 20);
++	if (desc->delay_ms)
++		msleep(desc->delay_ms);
++	else
++		usleep_range(10, 20);
+ 
+-	val = mt792xu_uhw_rr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST);
++	val = mt792xu_uhw_rr(&dev->mt76, desc->rst_reg);
+ 	val &= ~MT_CBTOP_RGU_WF_SUBSYS_RST_WF_WHOLE_PATH;
+-	mt792xu_uhw_wr(&dev->mt76, MT_CBTOP_RGU_WF_SUBSYS_RST, val);
++	mt792xu_uhw_wr(&dev->mt76, desc->rst_reg, val);
++
++	if (desc->need_status_sel)
++		mt792xu_uhw_wr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS_SEL, 0);
+ 
+-	mt792xu_uhw_wr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS_SEL, 0);
+ 	for (i = 0; i < MT792x_WFSYS_INIT_RETRY_COUNT; i++) {
+-		val = mt792xu_uhw_rr(&dev->mt76, MT_UDMA_CONN_INFRA_STATUS);
+-		if (val & MT_UDMA_CONN_WFSYS_INIT_DONE)
++		val = mt792xu_uhw_rr(&dev->mt76, desc->done_reg);
++		if ((val & desc->done_mask) == desc->done_val)
+ 			break;
+ 
+ 		msleep(100);
 
 
 
