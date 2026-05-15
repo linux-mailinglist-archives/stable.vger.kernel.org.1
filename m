@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJQjFJ5KB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248762-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:30 +0200
+	id OD71FjtNB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:43:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6408C553600
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D38FE553CEC
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 597F13004CA6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D9B13218ECE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A89B4C77D3;
-	Fri, 15 May 2026 16:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93D63F44CB;
+	Fri, 15 May 2026 16:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2XnX6Vx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2uuSkCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0BA39734B;
-	Fri, 15 May 2026 16:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7E93EFFA0;
+	Fri, 15 May 2026 16:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862565; cv=none; b=nHQfFh2L7kWymgLyyMWDRDJ968VGG0RP6CXiE2gx3xX11qTqfgD/VrG7QB0hOMmGqpBs4DF3wsSp7coW6kZVdO5K253OwtzOBItM6ZcBIirU94OCkobexk/u7SDnPqaFMTZhDFxV3aBKJwChrGkyviOK2lmLSKLY6U/PcDd/mpo=
+	t=1778861642; cv=none; b=nsVKcAWiBjUe2kAz163PipF4fBoiX69CRW1LCgQdd6qlhMjABk/r2arxF1Sdv90lZKPzF5Ur77Cbi5Fh9Q9ebOp85EsNixxBou9ATZps4cKpW5reRWu4/IQXXgRNcSofs+qNot76aQIO/ondmWMUyl6Xo4HPHK4agi+QsvaObbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862565; c=relaxed/simple;
-	bh=8GHkuWxvbcEsZuRjQz/jxRZ7mQ8C304BVEWvIb2akZk=;
+	s=arc-20240116; t=1778861642; c=relaxed/simple;
+	bh=/m0BUMJiVHeL3UoTlnoguMbxULDWdxHNFuRCfihuKOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVPaLuX4YZDi6hRPM1zwvyI52ItzVvne1GPN3JQ7pSMgoNmDJ5syBzqFJGo0iPT7Vc3geuIL9wjYFXziolWwIp1ujpg+erYy1imgSdBMcc5B2VSq11FttDbFq6u45GAQGAuQN1M/APpxuKfJRuv0j2qFP4Mw4l2H/IjtQVuNuTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2XnX6Vx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD260C2BCB0;
-	Fri, 15 May 2026 16:29:24 +0000 (UTC)
+	 MIME-Version; b=UI+g+TSYUzt2x5reQaYUrxFIgoEBXn5sxmRTfWVThBHrI9xrVbbN2NvonXlX/IQVLmtQ+fqfPRQ0P1+XBtMLvFxyXr8TItqJ/nN4fqm37hGU3DAWrkgJ1tuEcde8ZnstM9bI2NSfdzoPfCwUP/Lbbsyi4qylHcSuvjd8EOOlIbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2uuSkCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128CEC2BCB0;
+	Fri, 15 May 2026 16:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862565;
-	bh=8GHkuWxvbcEsZuRjQz/jxRZ7mQ8C304BVEWvIb2akZk=;
+	s=korg; t=1778861642;
+	bh=/m0BUMJiVHeL3UoTlnoguMbxULDWdxHNFuRCfihuKOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2XnX6VxphPXzEhXOyMwE6d1nE3nf21xpDNrnMDE1j7QFjUq5cQGl0PSxgI3IRmI2
-	 S4wGVJePBwrbYd2YvjMCPh+fRbau49ed+uFZ/rl3DyVGjP4N0mOdT4LeNfFIAbA3Ji
-	 OlxcW9pfCtQ/+91rb5e8mEEOiV05RYgZi/PYK28Y=
+	b=p2uuSkCxSNuWe1SWSMH1PfVno/S7vksh2tu3eOjnU/kFp6mcLE56+MYM6Zr69PeXr
+	 arIwaLlZYzQ2FdJO8r3gydnYxWCLF6TqM9s9uIVA4Z2W3HEPxQ/SO11s1gXVQ/7q3l
+	 daPsR6gldHgFXYhkqnYBE0XEACfmS7FCF+gAn/lE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 098/201] spi: npcm-pspi: fix controller deregistration
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 407/474] printk: add print_hex_dump_devel()
 Date: Fri, 15 May 2026 17:48:36 +0200
-Message-ID: <20260515154700.657004185@linuxfoundation.org>
+Message-ID: <20260515154723.858757665@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +65,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6408C553600
+X-Rspamd-Queue-Id: D38FE553CEC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248762-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248401-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit ebd81199e00e107980bf8c4d2c747ae50158f797 upstream.
+[ Upstream commit d134feeb5df33fbf77f482f52a366a44642dba09 ]
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Add print_hex_dump_devel() as the hex dump equivalent of pr_devel(),
+which emits output only when DEBUG is enabled, but keeps call sites
+compiled otherwise.
 
-Fixes: 2a22f1b30cee ("spi: npcm: add NPCM PSPI controller driver")
-Cc: stable@vger.kernel.org	# 5.0
-Cc: Tomer Maimon <tmaimon77@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-5-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 177730a273b1 ("crypto: caam - guard HMAC key hex dumps in hash_digest_key")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-npcm-pspi.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/linux/printk.h |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/spi/spi-npcm-pspi.c
-+++ b/drivers/spi/spi-npcm-pspi.c
-@@ -413,7 +413,7 @@ static int npcm_pspi_probe(struct platfo
- 	/* set to default clock rate */
- 	npcm_pspi_set_baudrate(priv, NPCM_PSPI_DEFAULT_CLK);
- 
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret)
- 		goto out_disable_clk;
- 
-@@ -434,8 +434,14 @@ static void npcm_pspi_remove(struct plat
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct npcm_pspi *priv = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	npcm_pspi_reset_hw(priv);
- 	clk_disable_unprepare(priv->clk);
-+
-+	spi_controller_put(host);
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -745,6 +745,19 @@ static inline void print_hex_dump_debug(
  }
+ #endif
  
- static const struct of_device_id npcm_pspi_match[] = {
++#if defined(DEBUG)
++#define print_hex_dump_devel(prefix_str, prefix_type, rowsize,		\
++			     groupsize, buf, len, ascii)		\
++	print_hex_dump(KERN_DEBUG, prefix_str, prefix_type, rowsize,	\
++		       groupsize, buf, len, ascii)
++#else
++static inline void print_hex_dump_devel(const char *prefix_str, int prefix_type,
++					int rowsize, int groupsize,
++					const void *buf, size_t len, bool ascii)
++{
++}
++#endif
++
+ /**
+  * print_hex_dump_bytes - shorthand form of print_hex_dump() with default params
+  * @prefix_str: string to prefix each line with;
 
 
 
