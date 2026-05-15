@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-248494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ESqNE1OB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:48:13 +0200
+	id 0HqcCb5ZB2orzwIAu9opvQ
+	(envelope-from <stable+bounces-248708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1C5553F26
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:48:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B845554C9
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BEB9E332222B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 82C0031F1E5A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694693F44FD;
-	Fri, 15 May 2026 16:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF8E4DC54E;
+	Fri, 15 May 2026 16:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emLqNWom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koBLHd5E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE5B3E0087;
-	Fri, 15 May 2026 16:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFF339C63E;
+	Fri, 15 May 2026 16:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861874; cv=none; b=GKl9k+NaHBXXJaI8vOwkxXM1SDvACPBGPbFwt+BnsO2aDGt2i8cyQ7g82UuqCBTww1q39L5RJIJhkwDaJCPY101D2gNj7uCLtLu8rXXrW8o0PmLbnavgrn+L6LVmii39Qn+FL74h0WNLciAhF1qKiX9/+cEG39SCDr+b0ScWkqo=
+	t=1778862425; cv=none; b=ThsE+CqcUuomVVeI+hjzGbMLVo9H/4VO4uVPkjWxg6X9Ikm4FhAU2/3zGl5SQg4vSgKEK8D9rl9gsnDZUAD3WxuDPaJGvRpq1jRHYy+V4PvV825G6s4I7Idd6EaJrBKDbPbgLzqS94nc5Bt7QLIAVpeZMf7E9Y/7s/kaOHw95do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861874; c=relaxed/simple;
-	bh=dFIpGIwqYDBw36xmNrE6LYFlKG5EXFu6+0mVEgaUtLA=;
+	s=arc-20240116; t=1778862425; c=relaxed/simple;
+	bh=p5HPPC+rtgpgx0YoKUKyEwz+5ONXc/Jrj+kCxcjWZEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKixLCzY7KYgBr8g5VBkYyY7E+srp4m2IGV8molxvk5W1WJrkl9aG4HB+wIfqs2e6Oey8YINHXfEzQsyANjgqPxpo+zVjnKonmhnWDg8JoVhHd+ratVB1yB4Zng7tai13g4YYlacmuPXI7bEq+yj+wbvxbonoC8MaSPMZXFRSSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emLqNWom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D001C2BCB0;
-	Fri, 15 May 2026 16:17:53 +0000 (UTC)
+	 MIME-Version; b=sX6MCc8/oFxbep779AAQ2748zgEgvYFU/t3mabg5YytYh/v+U1niTemUi4rsxCtfz5p8LABJXLt+IKXW2wUW6vCPEX5gnS3UJpmU3jTvukkTkuFNJX0mbUPDlty8mj6xv1fnvz7Gwpvc7u+qq8YpbdJi3Ss/h20zHD35CJnIebQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koBLHd5E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61706C2BCB0;
+	Fri, 15 May 2026 16:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861874;
-	bh=dFIpGIwqYDBw36xmNrE6LYFlKG5EXFu6+0mVEgaUtLA=;
+	s=korg; t=1778862424;
+	bh=p5HPPC+rtgpgx0YoKUKyEwz+5ONXc/Jrj+kCxcjWZEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=emLqNWomaY+hyl5dn2IMRegsbYON2hsdTUITxBCfAwdjd5LsqSP47hgX5R3c7r1l/
-	 iy2CpmYe1raAf0VHQdz5oRdEBm1atXbFzSq6CJtN56piOOsIsWjDadefQ/NF8UoQKC
-	 BMU3KbRx8QzrBSgsu02DVu1yfhg508Xrk/WOvL3s=
+	b=koBLHd5EeDSDvQjsfj6ltTiX3ZrCq7orHPK1UVytJfHsV30Msrs9MCC6Wc7fm9KBJ
+	 Z0+fNZYp41YnDgrytTpc6dTUKHK8hJ+hnISeXNzyY0MjOlb1XoRH3s4UiZYzYkw8Bf
+	 ps6bwWUb093R0QrMkJENe0EFAEkS0jKWrQOsqc24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans de Goede <johannes.goede@oss.qualcomm.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 007/188] media: uvcvideo: Enable VB2_DMABUF for metadata stream
-Date: Fri, 15 May 2026 17:47:04 +0200
-Message-ID: <20260515154657.469631727@linuxfoundation.org>
+Subject: [PATCH 7.0 007/201] media: uvcvideo: Enable VB2_DMABUF for metadata stream
+Date: Fri, 15 May 2026 17:47:05 +0200
+Message-ID: <20260515154658.698040005@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6E1C5553F26
+X-Rspamd-Queue-Id: 71B845554C9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -73,12 +73,12 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248494-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248708-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -94,10 +94,10 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,qualcomm.com:email,msgid.link:url,chromium.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,ideasonboard.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
