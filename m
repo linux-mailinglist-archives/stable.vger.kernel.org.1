@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMjOIn9LB2q5wwIAu9opvQ
-	(envelope-from <stable+bounces-248835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:15 +0200
+	id sBjmGVNQB2qayAIAu9opvQ
+	(envelope-from <stable+bounces-248641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:56:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F745538E7
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4E45543D1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 29751302BD2B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A0AFB313A127
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD0C3F926B;
-	Fri, 15 May 2026 16:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73543F86FF;
+	Fri, 15 May 2026 16:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dukNXGpB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtVdAUBI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59ED30569C;
-	Fri, 15 May 2026 16:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A73239734B;
+	Fri, 15 May 2026 16:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862749; cv=none; b=txNnNugkjASyhND3D+Y4b9r1asqllqKA1kb9kPMFteJwCFDaHRPpKls+WEDI8BikmAXixawURO6OWyu2aGvMOLr+p26xvwbNsR7Sss34Fg9gKajBBo3sy0xACraqw6jcym5BfDRyN9a+41zERWGU3ATnrxwT/V06dPg/Z6g9By0=
+	t=1778862253; cv=none; b=ZnMXQIGT+1jzVmQMqzLUhWlaLKbQ2LnYB+juWoNVmrlC1zpQWLnSDvrBRcLSmSdPiO/xR2Pc+TSbobxGQ+nvHh7cd7kzRWdv9WO4Vkj6qJMD6TJE3FqWQHV43ESjXhjvLLVYwlCVoUuqmhvH1TiMLQkg8gPTSAKe62sudbjalvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862749; c=relaxed/simple;
-	bh=r2vt8OaBbTeXyXohC3Oj5kB9W8BNorq2d4uDaEfefqo=;
+	s=arc-20240116; t=1778862253; c=relaxed/simple;
+	bh=AKUCLvlLGby2rI+ddhOn9+G3uxooUPIPwTzdNHg+DHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q12FL8w3iVG5wFgcdfHx2YU4LawvIcNuGOqE+vuxeWtkkmxXJOvvaHmYMbAVUm/+0dKGbKYnC7XWnTUbxhY88i66VkUQ9b7qNoM1OhbQgRQAgo6gig8ql69Bhu4OxrbMNJhM9nZrKrKyUe+vCyYXJ7ulS78SV8CuxDm5+la4cjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dukNXGpB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECA2C2BCC7;
-	Fri, 15 May 2026 16:32:29 +0000 (UTC)
+	 MIME-Version; b=i5tF8VdRMyVpAQ/ayQRY4f4nCDLYQKyQFIC6IBiy160pzJIuUnc+pdIk8byVSTzWpkj2ALyant8ek9nCPOR9L0rXAA7HVnS8CKC0kIx2qrHbFXno8MrorlDzIJcC+8OrrFbARmBI4fToZHoOshCTmSZgKL7g8LzUksSoL83OyoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtVdAUBI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC82EC2BCB0;
+	Fri, 15 May 2026 16:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862749;
-	bh=r2vt8OaBbTeXyXohC3Oj5kB9W8BNorq2d4uDaEfefqo=;
+	s=korg; t=1778862253;
+	bh=AKUCLvlLGby2rI+ddhOn9+G3uxooUPIPwTzdNHg+DHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dukNXGpBFDJMb0ZfHZbpSyn5xlIByIWRMGj15MzrRZnx8NiAIY6DAmAnZ6wXY3glD
-	 YiwGo/R/Ez5YsUAVwLIXh30OnigcfvnFh83SmoZfnMQ72jcf3TDtzRZY6f+EQtaLc6
-	 ySqqSUgD2t/o8RG9CPjF+rkEWHcFc6ACfgQTvFI4=
+	b=QtVdAUBIxVitEe1a6w8nu49o/rJPrxYczrEzrh2Za0vRRUQ2CHBQwBmKnHMAoDXSQ
+	 w00NPjWsYAODZWqh5mot6ODy2rbXc6YHmwkJu1kqBPZ9TDz5Ime2mTWz4t2l5vdvdt
+	 mNH1zsn1mDQ7u7vKprH+ndTP1k+LXbF31arAMqiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 167/201] drm/amdgpu/pm: align Hawaii mclk workaround with radeon
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	David Carlier <devnexen@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 168/188] Bluetooth: hci_conn: fix potential UAF in create_big_sync
 Date: Fri, 15 May 2026 17:49:45 +0200
-Message-ID: <20260515154702.194630636@linuxfoundation.org>
+Message-ID: <20260515154700.980212081@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 94F745538E7
+X-Rspamd-Queue-Id: DE4E45543D1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248835-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248641-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email,gitlab.freedesktop.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit 1987c79b4fe5789dfa14423e78b5c25f6acf3e9d upstream.
+[ Upstream commit 0beddb0c380bed5f5b8e61ddbe14635bb73d0b41 ]
 
-Align the hawaii mclk workaround with radeon and windows.
+Add hci_conn_valid() check in create_big_sync() to detect stale
+connections before proceeding with BIG creation. Handle the
+resulting -ECANCELED in create_big_complete() and re-validate the
+connection under hci_dev_lock() before dereferencing, matching the
+pattern used by create_le_conn_complete() and create_pa_complete().
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9649528b637f668c5af9f2b83ca4ad8576ae2121)
+Keep the hci_conn object alive across the async boundary by taking
+a reference via hci_conn_get() when queueing create_big_sync(), and
+dropping it in the completion callback. The refcount and the lock
+are complementary: the refcount keeps the object allocated, while
+hci_dev_lock() serializes hci_conn_hash_del()'s list_del_rcu() on
+hdev->conn_hash, as required by hci_conn_del().
+
+hci_conn_put() is called outside hci_dev_unlock() so the final put
+(which resolves to kfree() via bt_link_release) does not run under
+hdev->lock, though the release path would be safe either way.
+
+Without this, create_big_complete() would unconditionally
+dereference the conn pointer on error, causing a use-after-free
+via hci_connect_cfm() and hci_conn_del().
+
+Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
 Cc: stable@vger.kernel.org
+Co-developed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ kept stable's `qos->bcast.out.phy == 0x02` context line instead of upstream's renamed `qos->bcast.out.phys == BIT(1)` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/bluetooth/hci_conn.c |   19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1329,10 +1329,10 @@ static int ci_populate_all_memory_levels
- 	if ((dpm_table->mclk_table.count >= 2) &&
- 	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
- 	    (adev->pdev->revision == 0)) {
--		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
--				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
--		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
--				smu_data->smc_state_table.MemoryLevel[0].MinMvdd;
-+		smu_data->smc_state_table.MemoryLevel[1].MinVddc =
-+				smu_data->smc_state_table.MemoryLevel[0].MinVddc;
-+		smu_data->smc_state_table.MemoryLevel[1].MinVddcPhases =
-+				smu_data->smc_state_table.MemoryLevel[0].MinVddcPhases;
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -2113,6 +2113,9 @@ static int create_big_sync(struct hci_de
+ 	u32 flags = 0;
+ 	int err;
+ 
++	if (!hci_conn_valid(hdev, conn))
++		return -ECANCELED;
++
+ 	if (qos->bcast.out.phy == 0x02)
+ 		flags |= MGMT_ADV_FLAG_SEC_2M;
+ 
+@@ -2188,11 +2191,24 @@ static void create_big_complete(struct h
+ 
+ 	bt_dev_dbg(hdev, "conn %p", conn);
+ 
++	if (err == -ECANCELED)
++		goto done;
++
++	hci_dev_lock(hdev);
++
++	if (!hci_conn_valid(hdev, conn))
++		goto unlock;
++
+ 	if (err) {
+ 		bt_dev_err(hdev, "Unable to create BIG: %d", err);
+ 		hci_connect_cfm(conn, err);
+ 		hci_conn_del(conn);
  	}
- 	smu_data->smc_state_table.MemoryLevel[0].ActivityLevel = 0x1F;
- 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.MemoryLevel[0].ActivityLevel);
++
++unlock:
++	hci_dev_unlock(hdev);
++done:
++	hci_conn_put(conn);
+ }
+ 
+ struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst, __u8 sid,
+@@ -2309,10 +2325,11 @@ struct hci_conn *hci_connect_bis(struct
+ 				 BT_BOUND, &data);
+ 
+ 	/* Queue start periodic advertising and create BIG */
+-	err = hci_cmd_sync_queue(hdev, create_big_sync, conn,
++	err = hci_cmd_sync_queue(hdev, create_big_sync, hci_conn_get(conn),
+ 				 create_big_complete);
+ 	if (err < 0) {
+ 		hci_conn_drop(conn);
++		hci_conn_put(conn);
+ 		return ERR_PTR(err);
+ 	}
+ 
 
 
 
