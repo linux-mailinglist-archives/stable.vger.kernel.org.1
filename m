@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-248357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHbiHuJKB2q5wwIAu9opvQ
-	(envelope-from <stable+bounces-248357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:38 +0200
+	id yKtfE91TB2pIygIAu9opvQ
+	(envelope-from <stable+bounces-248719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:11:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D08D553744
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1EF6554958
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C629312A729
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81501313104C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81EC3F44DA;
-	Fri, 15 May 2026 16:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C2E3E00AD;
+	Fri, 15 May 2026 16:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiL6rN9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Do67/je8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEA43C9896;
-	Fri, 15 May 2026 16:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C313E008D;
+	Fri, 15 May 2026 16:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861527; cv=none; b=XyugemGhxbQaobt9JO9vMJsBwTx5G0FF0r7X00TBrDz/NBMbH5OpIvSFPSDenNrI5hBYWi9LvyPnItXRW0x1yucryp1+zxTuPaViru/X9AgKSTqq3jH5b4kjKE6pYiFNRoIl8cuc5vdFrvJTAFQFscGdfF5Rk1GcsX+V2cHZAOM=
+	t=1778862453; cv=none; b=GyW7TGzDScSmIpPvGpboE8XP3War81cAwKK2qCTGbo3QCBTRnZeNfOdS2Vs974Tt6faBq2sVQ1EQDeLSO3GWKi6GPJMcYZ/c7XJ+CiyVvnd4WjtwPe2K3Uy26V5qLyGZq+WXPH6RE9mMe07JteQ5dG62wMUHH1dVzBey4tnhgig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861527; c=relaxed/simple;
-	bh=NUmct7xirwCntrqYIRuY4Ikf32eNe5EEkxEXApFjpaY=;
+	s=arc-20240116; t=1778862453; c=relaxed/simple;
+	bh=6Mi4F1z53ZP/fA1p/EV1gtauExl3BaiJvpT9c0eW7QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ob8DckrKIpITkRXv8IvYBDi4VJkzU5IyftOkzvRulUfQ/Nhe/W7OwXa9OaqUXeqPIPBK1dOtfXvqmA5BsqX15q6AxYnFszQbKx0Isfl8yKiSYsnnXihDfHr6UhZCtfEXoej6xS/xCgh//S2uu/BnQ5nKCrTX+0FHQ/6w4Gi384s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiL6rN9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABF9C2BCB0;
-	Fri, 15 May 2026 16:12:06 +0000 (UTC)
+	 MIME-Version; b=b+5tWFfzR4No2CF8iCbbDu/2pNtHMYp3lKIsF8dJC65huIaMwu8zq56aCcxsHaafCgA7OSXG1VKO/1OJcACeytOtZqUh9nibm2SVVcL0YBVWg0f4g2tpLeBsL862sYEhvu3rN+pG4epDG9hxE/SEozJw1k3nxAurpDVohWVUzYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Do67/je8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BFCC2BCB0;
+	Fri, 15 May 2026 16:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861527;
-	bh=NUmct7xirwCntrqYIRuY4Ikf32eNe5EEkxEXApFjpaY=;
+	s=korg; t=1778862453;
+	bh=6Mi4F1z53ZP/fA1p/EV1gtauExl3BaiJvpT9c0eW7QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiL6rN9v4UhcQLjbCA47wm9NuYQIRmC/d3+UGcYAstsDaG7RsbTJSrp+EE/RtAxlA
-	 4vLCiu3zRsRPkJwH9RvEe1qxRER3zQa5TDJDnjJKTu/RlQKKA/FiPlK5b7/lSQsIEU
-	 ER6nQEW2VNpr/XTPkv5MWpKK6zguyiNYTL5MKud0=
+	b=Do67/je81+d2wCBI+BIGAqGSp6oZlXSlUxeeUaJ3LuKXyXGdLobavlX4UkA6ALEBX
+	 v67JtrKaA2mR58b/+ARH9bgrXSHceQxwQ4bQP/OHqwfroi6CjPhaUStfjrGq2uOc/w
+	 kdr1yPjcFMBnOpjSMwk5M+F38yZ5TK+heyxJBrpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Leite Ladessa <igor-ladessa@hotmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 363/474] smb: common: change the data type of num_aces to le16
-Date: Fri, 15 May 2026 17:47:52 +0200
-Message-ID: <20260515154722.873416518@linuxfoundation.org>
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>
+Subject: [PATCH 7.0 055/201] media: ipu-bridge: Add upside-down sensor DMI quirk for Dell XPS 13 9340 and XPS 14 9440
+Date: Fri, 15 May 2026 17:47:53 +0200
+Message-ID: <20260515154659.727754885@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,330 +65,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1D08D553744
+X-Rspamd-Queue-Id: C1EF6554958
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-248357-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248719-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oss.qualcomm.com,linux.intel.com,kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,huawei];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-[ Upstream commit 62e7dd0a39c2d0d7ff03274c36df971f1b3d2d0d ]
+commit 2c10400e4a233200046d023ab2377bc56fd48dea upstream.
 
-2.4.5 in [MS-DTYP].pdf describe the data type of num_aces as le16.
+The Dell XPS 13 9340 and XPS 14 9440 have an upside-down mounted OV02C10
+sensor, just like the XPS 13 9350 and XPS 16 9640 models.
 
-AceCount (2 bytes): An unsigned 16-bit integer that specifies the count
-of the number of ACE records in the ACL.
+Extend the existing DMI matches for handling these laptops with DMI
+matches for these 2 models
 
-Change it to le16 and add reserved field to smb_acl struct.
-
-Reported-by: Igor Leite Ladessa <igor-ladessa@hotmail.com>
-Tested-by: Igor Leite Ladessa <igor-ladessa@hotmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: d07b26f39246 ("ksmbd: require minimum ACE size in smb_check_perm_dacl()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Heimir Thor Sverrisson <heimir.sverrisson@gmail.com> # XPS 14 9440
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2440581 # XPS 13 9340
+Fixes: d5ebe3f7d13d ("media: ov02c10: Fix default vertical flip")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsacl.c |   26 +++++++++++++-------------
- fs/smb/common/smbacl.h  |    3 ++-
- fs/smb/server/smbacl.c  |   31 ++++++++++++++++---------------
- fs/smb/server/smbacl.h  |    2 +-
- 4 files changed, 32 insertions(+), 30 deletions(-)
+ drivers/media/pci/intel/ipu-bridge.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -763,7 +763,7 @@ static void parse_dacl(struct smb_acl *p
- 		       struct cifs_fattr *fattr, bool mode_from_special_sid)
- {
- 	int i;
--	int num_aces = 0;
-+	u16 num_aces = 0;
- 	int acl_size;
- 	char *acl_base;
- 	struct smb_ace **ppace;
-@@ -786,7 +786,7 @@ static void parse_dacl(struct smb_acl *p
- 
- 	cifs_dbg(NOISY, "DACL revision %d size %d num aces %d\n",
- 		 le16_to_cpu(pdacl->revision), le16_to_cpu(pdacl->size),
--		 le32_to_cpu(pdacl->num_aces));
-+		 le16_to_cpu(pdacl->num_aces));
- 
- 	/* reset rwx permissions for user/group/other.
- 	   Also, if num_aces is 0 i.e. DACL has no ACEs,
-@@ -796,7 +796,7 @@ static void parse_dacl(struct smb_acl *p
- 	acl_base = (char *)pdacl;
- 	acl_size = sizeof(struct smb_acl);
- 
--	num_aces = le32_to_cpu(pdacl->num_aces);
-+	num_aces = le16_to_cpu(pdacl->num_aces);
- 	if (num_aces > 0) {
- 		umode_t denied_mode = 0;
- 
-@@ -957,12 +957,12 @@ unsigned int setup_special_user_owner_AC
- static void populate_new_aces(char *nacl_base,
- 		struct smb_sid *pownersid,
- 		struct smb_sid *pgrpsid,
--		__u64 *pnmode, u32 *pnum_aces, u16 *pnsize,
-+		__u64 *pnmode, u16 *pnum_aces, u16 *pnsize,
- 		bool modefromsid,
- 		bool posix)
- {
- 	__u64 nmode;
--	u32 num_aces = 0;
-+	u16 num_aces = 0;
- 	u16 nsize = 0;
- 	__u64 user_mode;
- 	__u64 group_mode;
-@@ -1070,7 +1070,7 @@ static __u16 replace_sids_and_copy_aces(
- 	u16 size = 0;
- 	struct smb_ace *pntace = NULL;
- 	char *acl_base = NULL;
--	u32 src_num_aces = 0;
-+	u16 src_num_aces = 0;
- 	u16 nsize = 0;
- 	struct smb_ace *pnntace = NULL;
- 	char *nacl_base = NULL;
-@@ -1078,7 +1078,7 @@ static __u16 replace_sids_and_copy_aces(
- 
- 	acl_base = (char *)pdacl;
- 	size = sizeof(struct smb_acl);
--	src_num_aces = le32_to_cpu(pdacl->num_aces);
-+	src_num_aces = le16_to_cpu(pdacl->num_aces);
- 
- 	nacl_base = (char *)pndacl;
- 	nsize = sizeof(struct smb_acl);
-@@ -1110,11 +1110,11 @@ static int set_chmod_dacl(struct smb_acl
- 	u16 size = 0;
- 	struct smb_ace *pntace = NULL;
- 	char *acl_base = NULL;
--	u32 src_num_aces = 0;
-+	u16 src_num_aces = 0;
- 	u16 nsize = 0;
- 	struct smb_ace *pnntace = NULL;
- 	char *nacl_base = NULL;
--	u32 num_aces = 0;
-+	u16 num_aces = 0;
- 	bool new_aces_set = false;
- 
- 	/* Assuming that pndacl and pnmode are never NULL */
-@@ -1132,7 +1132,7 @@ static int set_chmod_dacl(struct smb_acl
- 
- 	acl_base = (char *)pdacl;
- 	size = sizeof(struct smb_acl);
--	src_num_aces = le32_to_cpu(pdacl->num_aces);
-+	src_num_aces = le16_to_cpu(pdacl->num_aces);
- 
- 	/* Retain old ACEs which we can retain */
- 	for (i = 0; i < src_num_aces; ++i) {
-@@ -1178,7 +1178,7 @@ next_ace:
- 	}
- 
- finalize_dacl:
--	pndacl->num_aces = cpu_to_le32(num_aces);
-+	pndacl->num_aces = cpu_to_le16(num_aces);
- 	pndacl->size = cpu_to_le16(nsize);
- 
- 	return 0;
-@@ -1335,7 +1335,7 @@ static int build_sec_desc(struct smb_nts
- 			dacloffset ? dacl_ptr->revision : cpu_to_le16(ACL_REVISION);
- 
- 		ndacl_ptr->size = cpu_to_le16(0);
--		ndacl_ptr->num_aces = cpu_to_le32(0);
-+		ndacl_ptr->num_aces = cpu_to_le16(0);
- 
- 		rc = set_chmod_dacl(dacl_ptr, ndacl_ptr, owner_sid_ptr, group_sid_ptr,
- 				    pnmode, mode_from_sid, posix);
-@@ -1699,7 +1699,7 @@ id_mode_to_cifs_acl(struct inode *inode,
- 			dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
- 			if (mode_from_sid)
- 				nsecdesclen +=
--					le32_to_cpu(dacl_ptr->num_aces) * sizeof(struct smb_ace);
-+					le16_to_cpu(dacl_ptr->num_aces) * sizeof(struct smb_ace);
- 			else /* cifsacl */
- 				nsecdesclen += le16_to_cpu(dacl_ptr->size);
- 		}
---- a/fs/smb/common/smbacl.h
-+++ b/fs/smb/common/smbacl.h
-@@ -107,7 +107,8 @@ struct smb_sid {
- struct smb_acl {
- 	__le16 revision; /* revision level */
- 	__le16 size;
--	__le32 num_aces;
-+	__le16 num_aces;
-+	__le16 reserved;
- } __attribute__((packed));
- 
- struct smb_ace {
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -338,7 +338,7 @@ void posix_state_to_acl(struct posix_acl
- 	pace->e_perm = state->other.allow;
- }
- 
--int init_acl_state(struct posix_acl_state *state, int cnt)
-+int init_acl_state(struct posix_acl_state *state, u16 cnt)
- {
- 	int alloc;
- 
-@@ -373,7 +373,7 @@ static void parse_dacl(struct mnt_idmap
- 		       struct smb_fattr *fattr)
- {
- 	int i, ret;
--	int num_aces = 0;
-+	u16 num_aces = 0;
- 	unsigned int acl_size;
- 	char *acl_base;
- 	struct smb_ace **ppace;
-@@ -394,12 +394,12 @@ static void parse_dacl(struct mnt_idmap
- 
- 	ksmbd_debug(SMB, "DACL revision %d size %d num aces %d\n",
- 		    le16_to_cpu(pdacl->revision), le16_to_cpu(pdacl->size),
--		    le32_to_cpu(pdacl->num_aces));
-+		    le16_to_cpu(pdacl->num_aces));
- 
- 	acl_base = (char *)pdacl;
- 	acl_size = sizeof(struct smb_acl);
- 
--	num_aces = le32_to_cpu(pdacl->num_aces);
-+	num_aces = le16_to_cpu(pdacl->num_aces);
- 	if (num_aces <= 0)
- 		return;
- 
-@@ -589,7 +589,7 @@ static void parse_dacl(struct mnt_idmap
- 
- static void set_posix_acl_entries_dacl(struct mnt_idmap *idmap,
- 				       struct smb_ace *pndace,
--				       struct smb_fattr *fattr, u32 *num_aces,
-+				       struct smb_fattr *fattr, u16 *num_aces,
- 				       u16 *size, u32 nt_aces_num)
- {
- 	struct posix_acl_entry *pace;
-@@ -717,7 +717,7 @@ static void set_ntacl_dacl(struct mnt_id
- 			   struct smb_fattr *fattr)
- {
- 	struct smb_ace *ntace, *pndace;
--	int nt_num_aces = le32_to_cpu(nt_dacl->num_aces), num_aces = 0;
-+	u16 nt_num_aces = le16_to_cpu(nt_dacl->num_aces), num_aces = 0;
- 	unsigned short size = 0;
- 	int i;
- 
-@@ -745,7 +745,7 @@ static void set_ntacl_dacl(struct mnt_id
- 
- 	set_posix_acl_entries_dacl(idmap, pndace, fattr,
- 				   &num_aces, &size, nt_num_aces);
--	pndacl->num_aces = cpu_to_le32(num_aces);
-+	pndacl->num_aces = cpu_to_le16(num_aces);
- 	pndacl->size = cpu_to_le16(le16_to_cpu(pndacl->size) + size);
- }
- 
-@@ -753,7 +753,7 @@ static void set_mode_dacl(struct mnt_idm
- 			  struct smb_acl *pndacl, struct smb_fattr *fattr)
- {
- 	struct smb_ace *pace, *pndace;
--	u32 num_aces = 0;
-+	u16 num_aces = 0;
- 	u16 size = 0, ace_size = 0;
- 	uid_t uid;
- 	const struct smb_sid *sid;
-@@ -809,7 +809,7 @@ static void set_mode_dacl(struct mnt_idm
- 				 fattr->cf_mode, 0007);
- 
- out:
--	pndacl->num_aces = cpu_to_le32(num_aces);
-+	pndacl->num_aces = cpu_to_le16(num_aces);
- 	pndacl->size = cpu_to_le16(le16_to_cpu(pndacl->size) + size);
- }
- 
-@@ -1039,8 +1039,9 @@ int smb_inherit_dacl(struct ksmbd_conn *
- 	struct smb_sid owner_sid, group_sid;
- 	struct dentry *parent = path->dentry->d_parent;
- 	struct mnt_idmap *idmap = mnt_idmap(path->mnt);
--	int inherited_flags = 0, flags = 0, i, ace_cnt = 0, nt_size = 0, pdacl_size;
--	int rc = 0, num_aces, dacloffset, pntsd_type, pntsd_size, acl_len, aces_size;
-+	int inherited_flags = 0, flags = 0, i, nt_size = 0, pdacl_size;
-+	int rc = 0, dacloffset, pntsd_type, pntsd_size, acl_len, aces_size;
-+	u16 num_aces, ace_cnt = 0;
- 	char *aces_base;
- 	bool is_dir = S_ISDIR(d_inode(path->dentry)->i_mode);
- 
-@@ -1056,7 +1057,7 @@ int smb_inherit_dacl(struct ksmbd_conn *
- 
- 	parent_pdacl = (struct smb_acl *)((char *)parent_pntsd + dacloffset);
- 	acl_len = pntsd_size - dacloffset;
--	num_aces = le32_to_cpu(parent_pdacl->num_aces);
-+	num_aces = le16_to_cpu(parent_pdacl->num_aces);
- 	pntsd_type = le16_to_cpu(parent_pntsd->type);
- 	pdacl_size = le16_to_cpu(parent_pdacl->size);
- 
-@@ -1215,7 +1216,7 @@ pass:
- 			pdacl = (struct smb_acl *)((char *)pntsd + le32_to_cpu(pntsd->dacloffset));
- 			pdacl->revision = cpu_to_le16(2);
- 			pdacl->size = cpu_to_le16(sizeof(struct smb_acl) + nt_size);
--			pdacl->num_aces = cpu_to_le32(ace_cnt);
-+			pdacl->num_aces = cpu_to_le16(ace_cnt);
- 			pace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 			memcpy(pace, aces_base, nt_size);
- 			pntsd_size += sizeof(struct smb_acl) + nt_size;
-@@ -1296,7 +1297,7 @@ int smb_check_perm_dacl(struct ksmbd_con
- 
- 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 		aces_size = acl_size - sizeof(struct smb_acl);
--		for (i = 0; i < le32_to_cpu(pdacl->num_aces); i++) {
-+		for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
- 			if (offsetof(struct smb_ace, access_req) > aces_size)
- 				break;
- 			ace_size = le16_to_cpu(ace->size);
-@@ -1317,7 +1318,7 @@ int smb_check_perm_dacl(struct ksmbd_con
- 
- 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 	aces_size = acl_size - sizeof(struct smb_acl);
--	for (i = 0; i < le32_to_cpu(pdacl->num_aces); i++) {
-+	for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
- 		if (offsetof(struct smb_ace, access_req) > aces_size)
- 			break;
- 		ace_size = le16_to_cpu(ace->size);
---- a/fs/smb/server/smbacl.h
-+++ b/fs/smb/server/smbacl.h
-@@ -86,7 +86,7 @@ int parse_sec_desc(struct mnt_idmap *idm
- int build_sec_desc(struct mnt_idmap *idmap, struct smb_ntsd *pntsd,
- 		   struct smb_ntsd *ppntsd, int ppntsd_size, int addition_info,
- 		   __u32 *secdesclen, struct smb_fattr *fattr);
--int init_acl_state(struct posix_acl_state *state, int cnt);
-+int init_acl_state(struct posix_acl_state *state, u16 cnt);
- void free_acl_state(struct posix_acl_state *state);
- void posix_state_to_acl(struct posix_acl_state *state,
- 			struct posix_acl_entry *pace);
+--- a/drivers/media/pci/intel/ipu-bridge.c
++++ b/drivers/media/pci/intel/ipu-bridge.c
+@@ -107,10 +107,24 @@ static const struct dmi_system_id upside
+ 	{
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 13 9340"),
++		},
++		.driver_data = "OVTI02C1",
++	},
++	{
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+ 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 13 9350"),
+ 		},
+ 		.driver_data = "OVTI02C1",
+ 	},
++	{
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 14 9440"),
++		},
++		.driver_data = "OVTI02C1",
++	},
+ 	{
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
 
 
 
