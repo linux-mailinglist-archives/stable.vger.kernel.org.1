@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248809-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGHMFjFPB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:01 +0200
+	id SBDhNJJaB2orzwIAu9opvQ
+	(envelope-from <stable+bounces-248809-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:40:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23C85540E0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B23555676
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC054335AEFC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:19:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CBB23169EBD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1400D4C9576;
-	Fri, 15 May 2026 16:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BC23F44CB;
+	Fri, 15 May 2026 16:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBxv+eqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSRg1o5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDB83FBB52;
-	Fri, 15 May 2026 16:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08BA3E00BB;
+	Fri, 15 May 2026 16:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861767; cv=none; b=OrufMceG6XO1w9allH2vItAHXSuxfG326Q9Ic1jKbNoN0KYBia/ayuqErkeRDbgtz6AtUMJm0R4EPw43xdEKk1MS8ai6jmFlZ+7boU93CvjQgDyvON8dnAcEhr0wwsO5mTk0Vhs9do6gQ8YkjQ4ps0/mK1+q1HLVrh7F0wbEU2o=
+	t=1778862687; cv=none; b=iZeyUxt+T5mNGxvuA9XHuLrkEGBqfIbfq9jInrC0MbgfWrouUeJHuq+GhE9+DK4stOZczZn5yttfx1TyBFIeDFbbmwxD2cRyrxEXujdk5tXaUjTePGRo/ZLbJEMwCvrtOnljF5AX0DpPNLfmuuFea5XuZc6TqGQdraiovL5h3ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861767; c=relaxed/simple;
-	bh=KYsMZrw7VO82muuQ7/X+YY8LuGZF4+MssERDOAi1XRI=;
+	s=arc-20240116; t=1778862687; c=relaxed/simple;
+	bh=bapABjObCYKQsOgTZvKv10MBPPlHbLyfyYo5Y3fEQto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HPOSeNm8ClVUyCB5JsUm2dmRTtEio8Eg5NqYRp73SXxtRmBLvfirYlbGVrJL/Eznbj/Kepm4/S44Zhb7DLPffcmNtckArbOoTgRYn742TuwapmWu24KRUC01vNu6S9MSAvY5OS+wZDiDEYPvaA2WiX4vRDqZmsoXSehdFBWh86c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBxv+eqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62018C2BCB0;
-	Fri, 15 May 2026 16:16:07 +0000 (UTC)
+	 MIME-Version; b=V60j+1sjatU7YLCOEGU3rS6tyos6bEYbdLcFdr3S0Gt0iV+blHnFJQYc65ZcMjG7EFHaErpud5RvNjGckNlC16Wd12tSUS2XHXZI2ggkmcM20rKm/l30GIzmHNVgG/hI1nQTKNc2hlJgNA4jw0Elp4Wt++Iw2rEmja4A0yR5KmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSRg1o5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E69C2BCB0;
+	Fri, 15 May 2026 16:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861767;
-	bh=KYsMZrw7VO82muuQ7/X+YY8LuGZF4+MssERDOAi1XRI=;
+	s=korg; t=1778862686;
+	bh=bapABjObCYKQsOgTZvKv10MBPPlHbLyfyYo5Y3fEQto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBxv+eqCOj+K6ebZbtD5CEI5Jln/IAqmRADswqwLQC6gOFoYJ3Y9ClUbnKD7wtHnb
-	 ZhGO1gh1ST8mM7lRIUQdwMrDVdd4mgcJRUAUxAdGtZy3PSF1Jq7qt+LXTKllC3wV2K
-	 8carDEQWGjipQAqKHw1NaB4HGzEpgp1Ml2kXWomo=
+	b=JSRg1o5YNZAXcraRXiDaUYsfpbQy8LoAp4KV2YhvPiQsYCCZB8FGJiHN7DqxrtilI
+	 jo2MHaPGrysn7xuvPMaM1bzvlEsw1+202eRvJ6G97eWEIvOcLzQB2r6sYcSd1CDcL3
+	 o2n0YAw9uZyyPga1qFyfLA0ClkRnQ/NUr0PGLlCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>,
-	Pratyush Yadav <pratyush@kernel.org>
-Subject: [PATCH 6.6 454/474] mtd: spi-nor: sst: Factor out common write operation to `sst_nor_write_data()`
+	soopyc <cassie@soopy.moe>,
+	Sasha Finkelstein <k@chaosmail.tech>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Aditya Garg <gargaditya08@live.com>
+Subject: [PATCH 7.0 145/201] drm/appletbdrm: Use kvzalloc for big allocations
 Date: Fri, 15 May 2026 17:49:23 +0200
-Message-ID: <20260515154724.918180107@linuxfoundation.org>
+Message-ID: <20260515154701.708607738@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B23C85540E0
+X-Rspamd-Queue-Id: 45B23555676
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.64 / 15.00];
-	R_DKIM_REJECT(1.00)[linuxfoundation.org:s=korg];
-	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:subspace.kernel.org:reject}];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[linuxfoundation.org : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248451-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,soopy.moe,chaosmail.tech,suse.de,live.com];
+	TAGGED_FROM(0.00)[bounces-248809-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:-];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_SPAM(0.00)[0.346];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,live.com:email,chaosmail.tech:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bence Csókás <csokas.bence@prolan.hu>
+From: Sasha Finkelstein <k@chaosmail.tech>
 
-commit 18bcb4aa54eab75dce41e5c176a1c2bff94f0f79 upstream.
+commit aaaa684bab1f6d9ecfc49db328facb1771fd0eb2 upstream.
 
-Writing to the Flash in `sst_nor_write()` is a 3-step process:
-first an optional one-byte write to get 2-byte-aligned, then the
-bulk of the data is written out in vendor-specific 2-byte writes.
-Finally, if there's a byte left over, another one-byte write.
-This was implemented 3 times in the body of `sst_nor_write()`.
-To reduce code duplication, factor out these sub-steps to their
-own function.
+This driver is attached to a ~2000x80 screen, which is a lot more than
+a single page. This causes out of memory errors in some rare cases.
 
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-[pratyush@kernel.org: fixup whitespace, use %zu instead of %i in WARN()]
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Link: https://lore.kernel.org/r/20240710091401.1282824-1-csokas.bence@prolan.hu
+Reported-by: soopyc <cassie@soopy.moe>
+Closes: https://github.com/t2linux/fedora/issues/51
+Signed-off-by: Sasha Finkelstein <k@chaosmail.tech>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Aditya Garg <gargaditya08@live.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 0670c2f56e45 ("drm/tiny: add driver for Apple Touch Bars in x86 Macs")
+Cc: <stable@vger.kernel.org> # v6.15+
+Link: https://patch.msgid.link/20260420-x86-tb-vmalloc-v1-1-7757ff657223@chaosmail.tech
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/sst.c |   39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/tiny/appletbdrm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/spi-nor/sst.c
-+++ b/drivers/mtd/spi-nor/sst.c
-@@ -123,6 +123,21 @@ static const struct flash_info sst_nor_p
- 		.fixups = &sst26vf_nor_fixups },
- };
+--- a/drivers/gpu/drm/tiny/appletbdrm.c
++++ b/drivers/gpu/drm/tiny/appletbdrm.c
+@@ -353,7 +353,7 @@ static int appletbdrm_primary_plane_help
+ 		       frames_size +
+ 		       sizeof(struct appletbdrm_fb_request_footer), 16);
  
-+static int sst_nor_write_data(struct spi_nor *nor, loff_t to, size_t len,
-+			      const u_char *buf)
-+{
-+	u8 op = (len == 1) ? SPINOR_OP_BP : SPINOR_OP_AAI_WP;
-+	int ret;
-+
-+	nor->program_opcode = op;
-+	ret = spi_nor_write_data(nor, to, 1, buf);
-+	if (ret < 0)
-+		return ret;
-+	WARN(ret != len, "While writing %zu byte written %i bytes\n", len, ret);
-+
-+	return spi_nor_wait_till_ready(nor);
-+}
-+
- static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
- 			 size_t *retlen, const u_char *buf)
+-	appletbdrm_state->request = kzalloc(request_size, GFP_KERNEL);
++	appletbdrm_state->request = kvzalloc(request_size, GFP_KERNEL);
+ 
+ 	if (!appletbdrm_state->request)
+ 		return -ENOMEM;
+@@ -543,7 +543,7 @@ static void appletbdrm_primary_plane_des
  {
-@@ -144,16 +159,10 @@ static int sst_nor_write(struct mtd_info
+ 	struct appletbdrm_plane_state *appletbdrm_state = to_appletbdrm_plane_state(state);
  
- 	/* Start write from odd address. */
- 	if (to % 2) {
--		nor->program_opcode = SPINOR_OP_BP;
--
- 		/* write one byte. */
--		ret = spi_nor_write_data(nor, to, 1, buf);
-+		ret = sst_nor_write_data(nor, to, 1, buf);
- 		if (ret < 0)
- 			goto out;
--		WARN(ret != 1, "While writing 1 byte written %i bytes\n", ret);
--		ret = spi_nor_wait_till_ready(nor);
--		if (ret)
--			goto out;
+-	kfree(appletbdrm_state->request);
++	kvfree(appletbdrm_state->request);
+ 	kfree(appletbdrm_state->response);
  
- 		to++;
- 		actual++;
-@@ -161,16 +170,11 @@ static int sst_nor_write(struct mtd_info
- 
- 	/* Write out most of the data here. */
- 	for (; actual < len - 1; actual += 2) {
--		nor->program_opcode = SPINOR_OP_AAI_WP;
--
- 		/* write two bytes. */
--		ret = spi_nor_write_data(nor, to, 2, buf + actual);
-+		ret = sst_nor_write_data(nor, to, 2, buf + actual);
- 		if (ret < 0)
- 			goto out;
--		WARN(ret != 2, "While writing 2 bytes written %i bytes\n", ret);
--		ret = spi_nor_wait_till_ready(nor);
--		if (ret)
--			goto out;
-+
- 		to += 2;
- 		nor->sst_write_second = true;
- 	}
-@@ -190,14 +194,9 @@ static int sst_nor_write(struct mtd_info
- 		if (ret)
- 			goto out;
- 
--		nor->program_opcode = SPINOR_OP_BP;
--		ret = spi_nor_write_data(nor, to, 1, buf + actual);
-+		ret = sst_nor_write_data(nor, to, 1, buf + actual);
- 		if (ret < 0)
- 			goto out;
--		WARN(ret != 1, "While writing 1 byte written %i bytes\n", ret);
--		ret = spi_nor_wait_till_ready(nor);
--		if (ret)
--			goto out;
- 
- 		actual += 1;
- 
+ 	__drm_gem_destroy_shadow_plane_state(&appletbdrm_state->base);
 
 
 
