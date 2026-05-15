@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBXaH+lXB2oozgIAu9opvQ
-	(envelope-from <stable+bounces-248549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:13 +0200
+	id 6B/pCS1aB2orzwIAu9opvQ
+	(envelope-from <stable+bounces-248741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A8255517F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC0F5555E0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 976D131217C6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D70C33AFB53
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785033E0085;
-	Fri, 15 May 2026 16:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF634BCADB;
+	Fri, 15 May 2026 16:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiaYzVgN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ND79NdKw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3942B30DD1D;
-	Fri, 15 May 2026 16:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B364BCACA;
+	Fri, 15 May 2026 16:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862015; cv=none; b=qCWdvthC6ZirC3ewC1RaO1xyves8wbeuj7l7mnXno9a01U4AU+13soa1tILZrPlOtkbz89GU0wH24XPGvEuSqpQVv9XyheZmDOrCOVRlvd/QBM4u1AVrqzdrzsxfXi3/FaVRnGSxT9iLwbVgEt6zf/U6/EaVjwMBmpLSNY+RcMg=
+	t=1778862511; cv=none; b=bzI2gi2R7lPeHOhdm8HOXicpeJoZD3qqTINNY1eraoRhVDt1SodWAesnsYt3MgfrAmiw8SSTb1IyQq+g1tq24V97KzHI3B5MQ8IrLwbp/AGe7gm1yOULG4peHNC4KMmq+19Gev14mW6ZzJ3eTPwJc1M/ABh1uHrnMf97IiAho8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862015; c=relaxed/simple;
-	bh=BPoeQQcL0kq2dQY8eT5RxdQ66V7cphsQTYu3r/i1Jtc=;
+	s=arc-20240116; t=1778862511; c=relaxed/simple;
+	bh=yB2P4og3bowYBgDIYfVbDfFM6fdTEbErbQwq6axeks0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNfadbeefwCAh+iehLkSLy47C2Oail8gYHVLYDnPjL9ILOwpTpqFmD0UR8nvfurDUB7oFe/iQfDrIflm9vqbI0HJEV6T/8tPTzcUEauTCRZ/3RIZlybYO/swBtlzXVFiEw32sSOufcrZyZ1pEaL4VMNlPVhnhiebM16dotWmQKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiaYzVgN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F4BC2BCB0;
-	Fri, 15 May 2026 16:20:14 +0000 (UTC)
+	 MIME-Version; b=ZQnhorUcXO2w6TkTaUCuMkikAiEy2yhdRP5Uhw/r/TnMlbeiGHQFQw3mX0y4MZNPKRzRMOowXAfxT2Myp/aPH6lKrCU993SNscF80tDrLq5vEoxVRPCeCRvemcIZcvnovAAGyHupKbylCcXyYGKjUmnA2SlvmyzZOJ6Ma8sPozo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ND79NdKw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E450C2BCB3;
+	Fri, 15 May 2026 16:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862015;
-	bh=BPoeQQcL0kq2dQY8eT5RxdQ66V7cphsQTYu3r/i1Jtc=;
+	s=korg; t=1778862510;
+	bh=yB2P4og3bowYBgDIYfVbDfFM6fdTEbErbQwq6axeks0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xiaYzVgNq+Fsy2Wp/kpyHW2L/eJEancjjasBKUxhrB1u46Yy2xtEVriRw22AMLy2L
-	 PiQs2uIUMZtVyICLSKEkuh262U919e1M2D5nrla6YRnin7rVbePHH3DWDH82he+7JD
-	 q/ee6qKf31dBRdY3e+ZTntnfSz5aLVtbfGV+SamI=
+	b=ND79NdKwDlMX5sGScvraWVXDiZQqTLc9NeL8YAtJLa/+5MbnAfTmJYorSu7z2uSJB
+	 VeYFHRfUv3nItZcJGPCSkmAkgg81QS1DkFaHv/Gkz8fB5/z2E8dTCXQG6U48EFbVFl
+	 qb3SK0AIRmcJdyspT0+PyjRncI/aVJkuJLnz961w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven King <sfking@fdwdc.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 076/188] spi: coldfire-qspi: fix controller deregistration
+	Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 075/201] media: qcom: camss: Fix csid IRQ offset for sa8775p
 Date: Fri, 15 May 2026 17:48:13 +0200
-Message-ID: <20260515154658.967906825@linuxfoundation.org>
+Message-ID: <20260515154700.159403585@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +65,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D4A8255517F
+X-Rspamd-Queue-Id: BCC0F5555E0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248549-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248741-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,fdwdc.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,qualcomm.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
 
-commit e7c510e192ff2a1264d999575eea39a506424264 upstream.
+commit dd1b373941079cc102cc18bc68884e18245f5912 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks (via runtime pm) during driver unbind.
+Fix BUF_DONE_IRQ_STATUS_RDI_OFFSET calculation for csid lite on
+sa8775p platform. The offset should be 0 for csid lite on sa8775p,
 
-Fixes: 34b8c6617366 ("spi: Add Freescale/Motorola Coldfire QSPI driver")
-Cc: stable@vger.kernel.org	# 2.6.34
-Cc: Steven King <sfking@fdwdc.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-11-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Fixes: ed03e99de0fa ("media: qcom: camss: Add support for CSID 690")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-coldfire-qspi.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/camss/camss-csid-gen3.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-coldfire-qspi.c
-+++ b/drivers/spi/spi-coldfire-qspi.c
-@@ -410,9 +410,9 @@ static int mcfqspi_probe(struct platform
- 	platform_set_drvdata(pdev, host);
- 	pm_runtime_enable(&pdev->dev);
- 
--	status = devm_spi_register_controller(&pdev->dev, host);
-+	status = spi_register_controller(host);
- 	if (status) {
--		dev_dbg(&pdev->dev, "devm_spi_register_controller failed\n");
-+		dev_dbg(&pdev->dev, "failed to register controller\n");
- 		goto fail1;
- 	}
- 
-@@ -436,11 +436,17 @@ static void mcfqspi_remove(struct platfo
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct mcfqspi *mcfqspi = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	pm_runtime_disable(&pdev->dev);
- 	/* disable the hardware (set the baud rate to 0) */
- 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
- 
- 	mcfqspi_cs_teardown(mcfqspi);
-+
-+	spi_controller_put(host);
- }
- 
- #ifdef CONFIG_PM_SLEEP
+--- a/drivers/media/platform/qcom/camss/camss-csid-gen3.c
++++ b/drivers/media/platform/qcom/camss/camss-csid-gen3.c
+@@ -48,9 +48,9 @@
+ #define IS_CSID_690(csid)	((csid->camss->res->version == CAMSS_8775P) \
+ 				 || (csid->camss->res->version == CAMSS_8300))
+ #define CSID_BUF_DONE_IRQ_STATUS	0x8C
+-#define BUF_DONE_IRQ_STATUS_RDI_OFFSET  (csid_is_lite(csid) ?\
+-						1 : (IS_CSID_690(csid) ?\
+-						13 : 14))
++#define BUF_DONE_IRQ_STATUS_RDI_OFFSET  (csid_is_lite(csid) ? \
++						((IS_CSID_690(csid) ? 0 : 1)) : \
++						((IS_CSID_690(csid) ? 13 : 14)))
+ #define CSID_BUF_DONE_IRQ_MASK		0x90
+ #define CSID_BUF_DONE_IRQ_CLEAR		0x94
+ #define CSID_BUF_DONE_IRQ_SET		0x98
 
 
 
