@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-247770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cL8MI+scB2rnrgIAu9opvQ
-	(envelope-from <stable+bounces-247770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:17:31 +0200
+	id AHMjMiQcB2r+rwIAu9opvQ
+	(envelope-from <stable+bounces-247773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:14:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0841D550543
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:17:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4865504DB
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 31EDB3008507
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:07:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4E18F304A9A5
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD1E35CB7C;
-	Fri, 15 May 2026 13:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF25379EF9;
+	Fri, 15 May 2026 13:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt8oTguB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7Vht7xj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72E1357D1A;
-	Fri, 15 May 2026 13:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DE8379C3A;
+	Fri, 15 May 2026 13:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778850364; cv=none; b=h+fHmCqdyY9wJdHlfoedUfpJz4ryevN3gtQDMNI8RxHTeYviwcrMoVl7/wvFI0k8WxEX/K4bWJ9eTIjRTTWOk01uwKiOsl/hyQVL2rtULM88wdv6rYcC7Cuqn2UBRErqU6QIaBd9Cp3OCMVZmFskqFn93Emsj1zbk7SBsyHzFr4=
+	t=1778850374; cv=none; b=DY7h+ovcC4pvupVBCPErkIUTxyk+exJ1tUFpSgmlT2FDWG8tg9RQIHLKEvTtKGUU6QG/zXOd6WqYBGn6WzxFNK6knqXSENLLdqEJ7SF4kx8w+pOK9Dn/1Rkm8f5OR8GC4WC+qdSi5+zXq8WE2nuPlmYsP8ZXtuqvJbwQE40tb5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778850364; c=relaxed/simple;
-	bh=9p2lb8E9svM+DnAF2C3XGdn5PUJlt6ZdZRf+tD8/M1E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXGjUq1Vof0Z0xRmn5sdYkd/cpylFWoD+f1RSHpKGHjKsEitx25bxZ4X2PbximNkNPFjlJF7ghkmxpCJKEPJNMicTZVuN4PSMzK5LM0KDJnJ2dgXcHSGYw2Urz3VDc7HUzn6bdPF3Kvd4yw6dfocK9bOx1NaSZKGsrfMaBbogFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt8oTguB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45234C2BCB0;
-	Fri, 15 May 2026 13:06:04 +0000 (UTC)
+	s=arc-20240116; t=1778850374; c=relaxed/simple;
+	bh=J7upUiZCyinuO0nKK3XNs6NdKIpwgZ1ZDcOPOmjcgCI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ohg/8GTpEg4U81w455NdU23HLb0g0ZXvSXcj6PO73zgwL3wv0PmctgTFvGvNQEl/c79O4A0oqQJUBkTBojYv/pYkJVsCMFQcRuIQd3wCB0VFIRRdupkv/S+srm0PHATxuvslNwkCrCFN0eKIDi2zP6HMzBQDDjFvJaQ3TfPFr60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7Vht7xj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F72C2BCB0;
+	Fri, 15 May 2026 13:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778850364;
-	bh=9p2lb8E9svM+DnAF2C3XGdn5PUJlt6ZdZRf+tD8/M1E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qt8oTguB93lT4v514dvdUmqLRK+0QcfbWz+8IIgNEzJ1S7tuE79eCs+udz7IPS0/U
-	 5RyJDUaIqMhE9uBYvvYXwExa9qqZXGhTJsQd131s8RY+HEVGi0Cm+Z1ujEh77q26DE
-	 s44hpbJu544wtayX8p7MJJSsil5liP3fLqyAZ4Ac=
+	s=korg; t=1778850373;
+	bh=J7upUiZCyinuO0nKK3XNs6NdKIpwgZ1ZDcOPOmjcgCI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=g7Vht7xjN90Uh5sVf8X2PwKg9Rs29YgCLwRSwfI1fvc5rwluPpUZD3DMcVJQtPjCM
+	 1aMIcGx5IEvl34AaQ0IdQV03LNspnJbW8hTjt0s+94+DjEvjSzVC2ucPIl4c5UAsqv
+	 SyLca+Y5Q1s+r+PF089YhiSHL75eTobTbscfz+No=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -49,12 +48,10 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.18.31
-Date: Fri, 15 May 2026 15:06:04 +0200
-Message-ID: <2026051503-snugly-prominent-f351@gregkh>
+Subject: Linux 7.0.8
+Date: Fri, 15 May 2026 15:06:07 +0200
+Message-ID: <2026051508-corset-rundown-5e61@gregkh>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <2026051503-cactus-obsessed-a6af@gregkh>
-References: <2026051503-cactus-obsessed-a6af@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +59,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0841D550543
+X-Rspamd-Queue-Id: 6C4865504DB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -70,7 +67,7 @@ X-Spamd-Result: default: False [2.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,102 +76,46 @@ X-Spamd-Result: default: False [2.84 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247770-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247773-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.964];
+	NEURAL_HAM(-0.00)[-0.976];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-diff --git a/Makefile b/Makefile
-index f4706ffa9b1a..89c614db5240 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 18
--SUBLEVEL = 30
-+SUBLEVEL = 31
- EXTRAVERSION =
- NAME = Baby Opossum Posse
- 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 2a540a9065de..5dea369fcfc9 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1003,6 +1003,9 @@ struct task_struct {
- 	unsigned			sched_rt_mutex:1;
- #endif
- 
-+	/* Save user-dumpable when mm goes away */
-+	unsigned			user_dumpable:1;
-+
- 	/* Bit to tell TOMOYO we're in execve(): */
- 	unsigned			in_execve:1;
- 	unsigned			in_iowait:1;
-diff --git a/kernel/exit.c b/kernel/exit.c
-index c97db291c5d1..c832946823f4 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -572,6 +572,7 @@ static void exit_mm(void)
- 	 */
- 	smp_mb__after_spinlock();
- 	local_irq_disable();
-+	current->user_dumpable = (get_dumpable(mm) == SUID_DUMP_USER);
- 	current->mm = NULL;
- 	membarrier_update_current_mm(NULL);
- 	enter_lazy_tlb(mm, current);
-diff --git a/kernel/ptrace.c b/kernel/ptrace.c
-index 75a84efad40f..22b8be2fc43d 100644
---- a/kernel/ptrace.c
-+++ b/kernel/ptrace.c
-@@ -272,11 +272,24 @@ static bool ptrace_has_cap(struct user_namespace *ns, unsigned int mode)
- 	return ns_capable(ns, CAP_SYS_PTRACE);
- }
- 
-+static bool task_still_dumpable(struct task_struct *task, unsigned int mode)
-+{
-+	struct mm_struct *mm = task->mm;
-+	if (mm) {
-+		if (get_dumpable(mm) == SUID_DUMP_USER)
-+			return true;
-+		return ptrace_has_cap(mm->user_ns, mode);
-+	}
-+
-+	if (task->user_dumpable)
-+		return true;
-+	return ptrace_has_cap(&init_user_ns, mode);
-+}
-+
- /* Returns 0 on success, -errno on denial. */
- static int __ptrace_may_access(struct task_struct *task, unsigned int mode)
- {
- 	const struct cred *cred = current_cred(), *tcred;
--	struct mm_struct *mm;
- 	kuid_t caller_uid;
- 	kgid_t caller_gid;
- 
-@@ -337,11 +350,8 @@ static int __ptrace_may_access(struct task_struct *task, unsigned int mode)
- 	 * Pairs with a write barrier in commit_creds().
- 	 */
- 	smp_rmb();
--	mm = task->mm;
--	if (mm &&
--	    ((get_dumpable(mm) != SUID_DUMP_USER) &&
--	     !ptrace_has_cap(mm->user_ns, mode)))
--	    return -EPERM;
-+	if (!task_still_dumpable(task, mode))
-+		return -EPERM;
- 
- 	return security_ptrace_access_check(task, mode);
- }
+I'm announcing the release of the 7.0.8 kernel.
+
+All users of the 7.0 kernel series must upgrade.
+
+The updated 7.0.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-7.0.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile              |    2 +-
+ include/linux/sched.h |    3 +++
+ kernel/exit.c         |    1 +
+ kernel/ptrace.c       |   22 ++++++++++++++++------
+ 4 files changed, 21 insertions(+), 7 deletions(-)
+
+Greg Kroah-Hartman (1):
+      Linux 7.0.8
+
+Linus Torvalds (1):
+      ptrace: slightly saner 'get_dumpable()' logic
+
 
