@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNRQNolFB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-247898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:10:49 +0200
+	id uJLrHhdPB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:51:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CB7552C64
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:10:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5865540AD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C43833034B32
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C16D3112864
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20D93FF1D5;
-	Fri, 15 May 2026 15:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F0F3BB11C;
+	Fri, 15 May 2026 16:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGzhsFCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbslMVJ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953B43FF1A0;
-	Fri, 15 May 2026 15:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437F82949E0;
+	Fri, 15 May 2026 16:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860356; cv=none; b=mcDszS9X8v2Py0U1c8ZSkQBMEWj79Ot/L8Gta9qnax2EqRoz92LunnV+oKYKeDw8LZlBZazLLAo1RJa251FUQrwfOAO159rEISvEBTHLgy+X0P2a3iLfQberZc962TnXvebbX2Or6rlRyhiW1QYbwjt1CvntJvylFu1x2v9kAPs=
+	t=1778862033; cv=none; b=PZJK0kAqDiPLZ/ZL5K8vQkP0S9eZeW3jzVfhNvZj/GyMQ6zL9iOTnfMYTutQThllu/1/9MeR+Frz0JZvZKXQV99kGPYFYz8St6p2YVboFNqqdfVBV4CIk8xVLiGGmv3r+/MPRmnAietDZ5DE7V/mc/uJKQJ7WS4yLfbxAGXo8NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860356; c=relaxed/simple;
-	bh=fN8/zJG+CiZfecpkuZhaaf17JLY2zhqJmxMAZGIj4p0=;
+	s=arc-20240116; t=1778862033; c=relaxed/simple;
+	bh=Zk4iE3Ul+za5lUsMBTZNbrLRNopKD5ESWMGRHtJGC2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwA1SXAallTTF/uubSsLcCZV7Y9r67nFhXyW7vtpZyBBGE8bIre/fFoDbEv7QgWr+p/xC+cw6RsZgizOGxqUHgyiX0rm+hb5GBR6MJVovJWl062PlEMdkmzPrHMR3HnLwTjSbkk4Z/rqMCBeH3/f2nKCasSk+Qu9EYZps/GrPPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGzhsFCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11C7C2BCB0;
-	Fri, 15 May 2026 15:52:35 +0000 (UTC)
+	 MIME-Version; b=FqlKPE2U990bXNOUoReVuQzCsAEaENqZnKDd00FGvmqkfJ9DM5uPfCO09eheZW7QMwLOK0XIfCpVgWVEmDe1OSJDlANdOQh5rzUYXRYKK0mJ9KB3WyyrIsFWexZsjbxN8EARyvD0A30kVqwfrjUM2/Ng0IPyRpDTR7QEifq+N5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbslMVJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF496C2BCB0;
+	Fri, 15 May 2026 16:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860356;
-	bh=fN8/zJG+CiZfecpkuZhaaf17JLY2zhqJmxMAZGIj4p0=;
+	s=korg; t=1778862033;
+	bh=Zk4iE3Ul+za5lUsMBTZNbrLRNopKD5ESWMGRHtJGC2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGzhsFCUvuOIfHsMT2dhDduxRwYX0qpUZCo8vmqvlVnhJ/v89/0YcfRAr76LRpblN
-	 bdaujMfgEIC+DKlRhGck9AnwjsFyfAsBQy2xa3arAaTi+7J1vObQ46mcdRaeEbVxje
-	 zfH5K/O2GCvhE7ai4K/kFxtPwnH1v18OuCD55r5k=
+	b=VbslMVJ7a41nbzi/bI3LTSpa/PEVp2IhGLzSdZ++Ga9LLXw3Sxv8jHVNIKQOZ1Lh+
+	 a8MUXUor0CmCQ1Z5sLUh7/NYbQrp43a8FYzDaA/uqPNOIlQwVDGGFYuIv2Csa3lh/A
+	 L3tDKA7cQGZZmBUWML1zge5LMXmaJTuQQAgrJGPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	Laurentiu Palcu <laurentiu.palcu@intel.com>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 055/144] spi: imx: fix runtime pm leak on probe deferral
-Date: Fri, 15 May 2026 17:48:01 +0200
-Message-ID: <20260515154654.823924587@linuxfoundation.org>
+Subject: [PATCH 6.18 065/188] spi: dln2: fix controller deregistration
+Date: Fri, 15 May 2026 17:48:02 +0200
+Message-ID: <20260515154658.725370750@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E0CB7552C64
+X-Rspamd-Queue-Id: 0E5865540AD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247898-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248556-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,43 +91,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit a1d50a37d3b1df84f536a982f692371039df4a48 upstream.
+commit c353020fbfa8514ee91a6de2d88de4e5edca5803 upstream.
 
-Make sure to balance the runtime PM usage count before returning on
-probe failure (e.g. probe deferral) so that the controller can be
-suspended when a driver is later bound.
+Make sure to deregister the controller before disabling it to allow
+SPI device drivers to do I/O during deregistration.
 
-Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
-Cc: stable@vger.kernel.org	# 5.10
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Fixes: 3d8c0d749da3 ("spi: add support for DLN-2 USB-SPI adapter")
+Cc: stable@vger.kernel.org	# 4.0
+Cc: Laurentiu Palcu <laurentiu.palcu@intel.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260421125632.1537235-1-johan@kernel.org
+Link: https://patch.msgid.link/20260409120419.388546-12-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-imx.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-dln2.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1876,6 +1876,7 @@ out_register_controller:
- out_runtime_pm_put:
- 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
- 	pm_runtime_disable(spi_imx->dev);
-+	pm_runtime_put_noidle(spi_imx->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
+--- a/drivers/spi/spi-dln2.c
++++ b/drivers/spi/spi-dln2.c
+@@ -761,7 +761,7 @@ static int dln2_spi_probe(struct platfor
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
  
- 	clk_disable_unprepare(spi_imx->clk_ipg);
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to register host\n");
+ 		goto exit_register;
+@@ -786,10 +786,16 @@ static void dln2_spi_remove(struct platf
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	if (dln2_spi_enable(dln2, false) < 0)
+ 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
++
++	spi_controller_put(host);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
 
 
 
