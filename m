@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-248431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAFjLJZOB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:26 +0200
+	id WMVaD3daB2orzwIAu9opvQ
+	(envelope-from <stable+bounces-248794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:40:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A46553F97
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FC155565A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1752832D22C1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:17:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A91BD34639A6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CA44B8DEF;
-	Fri, 15 May 2026 16:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC1C3C4B72;
+	Fri, 15 May 2026 16:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RADr6r8V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzoFzW+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670403FD95B;
-	Fri, 15 May 2026 16:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF713FF1BD;
+	Fri, 15 May 2026 16:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861714; cv=none; b=hj63DH56xVy3ymItjeCGZPiHWB2Za9TYgMcqBs+pIvyXzyZyjYRy9wV/nM0QK6nCgT/5QmwOidVAhTvs3J5wNK9HZiLaFvoq6Od6fWHfgunpm0078CWw8R+1785DPOSPYo07YZtM2YFzJjy20V04W7TqgHDnvRFhGCIDrobkhr4=
+	t=1778862648; cv=none; b=fqo2PtSo2bEkvttZaRYA6FF3ynA+zlJftMc+htuU4qLs2PCYMAri5ogGJzcY8hut011yaTlpx6BoXz1AeafTmL31LX5sm1OGwHlhV4vBTEcCiUkySw8rlwDuNIyO7RixmKYBHnRP/uNcb6I/n4PqTQAGRnspTGHQARPUE9TpsA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861714; c=relaxed/simple;
-	bh=/rAq7ag/ODTGmuR1P8OpGQHj6m/o8ICKb45sqKiiqrY=;
+	s=arc-20240116; t=1778862648; c=relaxed/simple;
+	bh=nMGUe84rbxfJtwvo6Af3RyFhIKQjFrPrwB4j1+PgDXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBXbIYNmgJjBPKdfQv3A5UQkRsNlceTRqZ6Hn2OpQ5KR5Yz6AIGcehlEpNIzVEdb+f6l7fXkMZWkQ+aqaleMEauClkG5Q2whsKkQlxw3ct1wNR657fDkuiIJAwjdVqVgBmwz8eZyBfu/ikSKmH8UjDlxcdq9nD/fGBCEnaWculs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RADr6r8V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09C1C2BCB0;
-	Fri, 15 May 2026 16:15:13 +0000 (UTC)
+	 MIME-Version; b=J8g0uRRq/F8mKyLzrJ9lPzhucXM8tX1wcoS4qbw6551voit3E8Y+6SExXR3VKLZtI9QtfW+/bbJOi9Rr3NSApkg8aGPtexc9LSInhd8fuS4vNrJLNvjWpeVpw+NAnzOc37S92IAJSug1FW76AKPo91iZ3F/3jMg1ZgqI3QgwNIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzoFzW+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F1BC2BCB0;
+	Fri, 15 May 2026 16:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861714;
-	bh=/rAq7ag/ODTGmuR1P8OpGQHj6m/o8ICKb45sqKiiqrY=;
+	s=korg; t=1778862648;
+	bh=nMGUe84rbxfJtwvo6Af3RyFhIKQjFrPrwB4j1+PgDXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RADr6r8VJc+62vHRuQ+Ty/+KWhQ5d/nTEbJFao9QT0ypToEjyb7bwmTDrTvA4ptaF
-	 oHdC95XSXNWRLRod2Pcxb1rYDaUplMx6vxxVIq01ZelCkwex1N7j0lzB+WdnmmwGuH
-	 rWD9mZO0A1kbm4OLjAnURjJ57RsYHIXeNft9KB5M=
+	b=YzoFzW+FHTNa/Ii/MScDzWBMp4X+BpiFVdrLOG5/jFSqKh4dDT0URRDpmGKZvlVcz
+	 PyuazvjA5KQGHF78NIl+sRhaEDWvKJoIKcoTnxk0KecIiyCUbAH63C8WRsSIJVkOt/
+	 ZasBhGOMxgNubLZc+r7Ya+qI3luZHzFSFHCOR6vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 436/474] spi: tegra20-sflash: fix controller deregistration
+	Anna Maniscalco <anna.maniscalco2000@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>
+Subject: [PATCH 7.0 127/201] drm/msm: always recover the gpu
 Date: Fri, 15 May 2026 17:49:05 +0200
-Message-ID: <20260515154724.513956464@linuxfoundation.org>
+Message-ID: <20260515154701.316407497@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +63,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 24A46553F97
+X-Rspamd-Queue-Id: 97FC155565A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248431-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248794-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Anna Maniscalco <anna.maniscalco2000@gmail.com>
 
-[ Upstream commit ad7310e983327f939dd6c4e801eab13238992572 ]
+commit 01a0d6cd7032e9993feea19fadb03ef9d5b488f2 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Previously, in case there was no more work to do, recover worker
+wouldn't trigger recovery and would instead rely on the gpu going to
+sleep and then resuming when more work is submitted.
 
-Fixes: f12f7318c44a ("spi: tegra20-sflash: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-23-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ translated spi_controller/host API to legacy spi_master/master naming and dropped devm-managed registration ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Recover_worker will first increment the fence of the hung ring so, if
+there's only one job submitted to a ring and that causes an hang, it
+will early out.
+
+There's no guarantee that the gpu will suspend and resume before more
+work is submitted and if the gpu is in a hung state it will stay in that
+state and probably trigger a timeout again.
+
+Just stop checking and always recover the gpu.
+
+Signed-off-by: Anna Maniscalco <anna.maniscalco2000@gmail.com>
+Cc: stable@vger.kernel.org
+Patchwork: https://patchwork.freedesktop.org/patch/704066/
+Message-ID: <20260210-recovery_suspend_fix-v1-1-00ed9013da04@gmail.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra20-sflash.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/msm_gpu.c |   42 ++++++++++++++++++++----------------------
+ 1 file changed, 20 insertions(+), 22 deletions(-)
 
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -506,7 +506,7 @@ static int tegra_sflash_probe(struct pla
- 	pm_runtime_put(&pdev->dev);
+--- a/drivers/gpu/drm/msm/msm_gpu.c
++++ b/drivers/gpu/drm/msm/msm_gpu.c
+@@ -546,32 +546,30 @@ static void recover_worker(struct kthrea
+ 		msm_update_fence(ring->fctx, fence);
+ 	}
  
- 	master->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
- 		goto exit_pm_disable;
-@@ -529,11 +529,17 @@ static void tegra_sflash_remove(struct p
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct tegra_sflash_data	*tsd = spi_master_get_devdata(master);
+-	if (msm_gpu_active(gpu)) {
+-		/* retire completed submits, plus the one that hung: */
+-		retire_submits(gpu);
++	/* retire completed submits, plus the one that hung: */
++	retire_submits(gpu);
  
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	free_irq(tsd->irq, tsd);
+-		gpu->funcs->recover(gpu);
++	gpu->funcs->recover(gpu);
  
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_sflash_runtime_suspend(&pdev->dev);
-+
-+	spi_master_put(master);
- }
+-		/*
+-		 * Replay all remaining submits starting with highest priority
+-		 * ring
+-		 */
+-		for (i = 0; i < gpu->nr_rings; i++) {
+-			struct msm_ringbuffer *ring = gpu->rb[i];
+-			unsigned long flags;
++	/*
++	 * Replay all remaining submits starting with highest priority
++	 * ring
++	 */
++	for (i = 0; i < gpu->nr_rings; i++) {
++		struct msm_ringbuffer *ring = gpu->rb[i];
++		unsigned long flags;
  
- #ifdef CONFIG_PM_SLEEP
+-			spin_lock_irqsave(&ring->submit_lock, flags);
+-			list_for_each_entry(submit, &ring->submits, node) {
+-				/*
+-				 * If the submit uses an unusable vm make sure
+-				 * we don't actually run it
+-				 */
+-				if (to_msm_vm(submit->vm)->unusable)
+-					submit->nr_cmds = 0;
+-				gpu->funcs->submit(gpu, submit);
+-			}
+-			spin_unlock_irqrestore(&ring->submit_lock, flags);
++		spin_lock_irqsave(&ring->submit_lock, flags);
++		list_for_each_entry(submit, &ring->submits, node) {
++			/*
++			 * If the submit uses an unusable vm make sure
++			 * we don't actually run it
++			 */
++			if (to_msm_vm(submit->vm)->unusable)
++				submit->nr_cmds = 0;
++			gpu->funcs->submit(gpu, submit);
+ 		}
++		spin_unlock_irqrestore(&ring->submit_lock, flags);
+ 	}
+ 
+ 	pm_runtime_put(&gpu->pdev->dev);
 
 
 
