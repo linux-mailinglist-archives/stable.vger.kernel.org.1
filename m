@@ -1,203 +1,165 @@
-Return-Path: <stable+bounces-247729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JmtKpMTB2ourgIAu9opvQ
-	(envelope-from <stable+bounces-247729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:37:39 +0200
+	id sK1+ALURB2rgrQIAu9opvQ
+	(envelope-from <stable+bounces-247730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:29:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F48054FB21
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:37:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B0654F8EA
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:29:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 737DA30D3AE7
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:06:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E579430AF710
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B5E47A0C7;
-	Fri, 15 May 2026 12:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CE63EFD1C;
+	Fri, 15 May 2026 12:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gsvmY9SH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKEYygvh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1E945BD57
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778846800; cv=pass; b=ChGMS/+GhokoSLq7NZAONM+51wI+rEoxFJktWlQJyPbfDUr6ysxcJ87jthFcrGoqwo9gFyZrcnaVcHCplgcMwkNaA5kfvc+yjvPA6JA0vKhRQ9OH7QHusT/Qu7PUHAHgl1FKhZbohW9igEMO3XU6qWSOY/uQbJSxVUU+6DpwjQo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778846800; c=relaxed/simple;
-	bh=+UBsqowdXjrxyXaGO8gZjA/lfuCfrMGbalFkQPi3Dsc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ttjvjk9oRd8OLJ4dsv/IBWA97kT5NLfRonDCe6fC39aFRCpkppH0fMmtuWy2A6TCsOQJmRRYV4eYRTiIMQDi8c9c/UoROjuWk0TrHWSlmwJuV3PRKWaHkKKF2PfP/pst4GgQC4rOeyAQM57tOQc9t8SToLf4+Nlc0i8usr/907k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gsvmY9SH; arc=pass smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso79487595e9.2
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 05:06:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778846797; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iLwAUozphjOji+t5HCWg87y/+0mjlMIkC7eBHdUH3hUfsJPKyhO+PVtVZGzV5xoW6T
-         IMhaEoY2oJ4GaceyTy3EhG1wOpkmHhImF90KlK2q9wWZTTNYB+5uqfCUp6L/nPSE4nGb
-         EvqIqdWGn6H0DXw5WOk6pD59c5EYWjpoHZlglBfGU/aovtBkSpELdeTBbyOCp/ybilwS
-         oWUJ3l7nmb6rXbLYOSZ7koDx1v96NM3dgyaeMm+rjhZSKlEfRgOyEWYLKylfzwrpEGpn
-         mS8HTrQH5is3b4BRlWmXvt+8YjHdE3aig0WITy5TRislL9SSQY8rTZspbhgCiOVhHrCN
-         2k+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=/SUkniN/IDzm6P77YkiurnQsEpxZspfg+vEHC7oOaB0=;
-        fh=Y1PMsya/RzwjClfr8apQB+SpXBkH3DHa8HsUoPtYTwo=;
-        b=Wwh5XUPuOmvSYzu+Lz/V783uHtWPi6ArBHzq89wOVaBU8vxGFmZEYSCNKYzX+BPyhq
-         uBvTdJTSvn2el2QN6MafRcdbT6MadA6w2wDEyJEoJXskWGWxhgEdXY9H1mgTTuWA6689
-         50AxV5PQnUbG2xrkxb/PzN5h7fg16oSD7ekiDHT4sUT6D3IpwXfdctE9kI1FH09HTeIv
-         Awse3TRKgOk3YtsAz2EMz+Zitxc3oQBumQhTCppcGjkgjgUGct0AGsu7D9CYjNRRkJ7S
-         NI+tEngrc9NdnbPoiWf/OFTP96Drt2t/LmGOgYSmn+LOz1elN3pXoaS6aQz2UBDv4KNi
-         cmGA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778846797; x=1779451597; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/SUkniN/IDzm6P77YkiurnQsEpxZspfg+vEHC7oOaB0=;
-        b=gsvmY9SHvoLyBf9hkaWYkKqgYXGr4s0ohDNqY81+lz21ai39rcY/r5iyeYXfSCYz7g
-         WTfDXRJ9IBn7CWeo4WOPlo9J3rEOAfjX/RphgpQEakBavghxwzHmcu3FUOKEsPuFxbTr
-         H+xqZDUwVgLL2LZQHC/9/zd6T23zJCeFL1ueEw4oyhnwOja3YG++OkshKX6YrATOlVuy
-         TSUPQO92PIudP0eM7oVG1hNU3q9WfboOqVdLR16tL01RjapAto7tk0ffhjjYLffg5OtG
-         OK3tprtTUeEw2nVTeuTCAsxjc6RocOrbVouEPRiocyva2k8QN7qQcYnvRANsdLFKtPTS
-         vcrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778846797; x=1779451597;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/SUkniN/IDzm6P77YkiurnQsEpxZspfg+vEHC7oOaB0=;
-        b=WvbJP75aWeF4NDCdJ3UcRtyQ/V0leQUkUbD52EIu8YfYAhDUr/1rzN84TumROk4CJq
-         QqaVGh7pO+epHeILxlckIewGoIpgyIkQVjurm9WCENSM7XZt+Q54HKU4vqJwKkxZvpIL
-         ryWkA92N7rxAhUj4cBJFKGVYPymX0NQnehEEjR7fcHzuDqM3YtKaSU80G8t68Ca9jtgc
-         mihKKozL/ozt7eEiUUKaMwbEUUvdEOMwYK0L7Ar1gfum18TSC4y1M+0XfTbXkU3daxUN
-         uWIl4rhUKycwxvewIxxg/DynFHc+GDRQaXn8K+avKddnbyLlNw8G1kNf6bm0G4l7TIZq
-         GyQw==
-X-Forwarded-Encrypted: i=1; AFNElJ+ycMTX5plvNWrUsIiJ2D9GkKjytescV12IeUCZ6BRsHI/DA1KAAlm0zKAnvnmhHkox8ANqkqU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3BYVNNAWIt8s+s2Ati+o2CBxWhrTx8s5WQ8Hu3/4e17fjPgw7
-	eBPjC0vjdNeUzSq3fXR8EccELkHqB1BfVH9ei82ZjIeS+xvyjvse1ja37kNJ1NL+rq2L7KF6Y3u
-	8qOe68WEIQ9w6hGmUyxhwP/zvg1RciJQ=
-X-Gm-Gg: Acq92OEyK34vzZ3EmGZzDv0Dp5F/5l6ahXQdiUcBJhUP7UVGS0Lr+mGcdPot5GC5j//
-	R5ABk/G7vF9GJwX7dZ3sFLShFigKIYxQhsUgoaGldOEp2GtXAQLKEQXvH/ShxXgI8l2fgypMlS7
-	BYBMRkSKHnxXZ2GA+pzfZPHb+qigz4z7m8hURkwDaur5c73xKmXj0TvpfENQnQIF3xBz0GxezMZ
-	Z+3pJu2uIW7+BCpyfIc5Qk9+Xgx4SEoD4IUaJ+FmYUWMI0hZuOVhKpzKlihHxYTXxFIXCc7HD5K
-	8fLMpZeZzmwMXnDeQUnftQfzT5veO3a/PLa+4LGu2naAFZ0juBKITVe8M44ci/5W2NlyJMLmXeZ
-	FpP6r/Xm6LYwWw6YcUMuX32H+gRk2e1+IrtqymKcr3AfsEIISyhEN6EQWSnOtL3c/HatBX+nlXq
-	6z/fV4Ow==
-X-Received: by 2002:a05:600c:a30a:b0:48a:568f:ae8a with SMTP id
- 5b1f17b1804b1-48fe5fda35fmr40441305e9.8.1778846796773; Fri, 15 May 2026
- 05:06:36 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5659E1EFFA1
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778846814; cv=none; b=RlYl7naxVGdhamKpRKvEWM+cHjVYzCBrqWfmQYVIRX1BFeXuh1NVzQpLvmHw9XvNg1yRR3GCyH4u/SXJeTJVPeSZ2tDev6+lLxEJMfvlYS/lbsQaHeSU2DnRXhjOlMYdazTu4emMQErtAUrEd4fcOkQjYHYPhzKREOsw4OmnmI0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778846814; c=relaxed/simple;
+	bh=pLtZn02GTohiVPsWz2akwsq7yMVOSlgb2BewredJLE0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SQiDCMBsgx2g4oyx+R5D6wZ/ZoBmbeJm+vsKE3dUapVKGQ3zDqrP8B9ysik5FaSWdP1RhhUC+yA54vnzIH1hvXqXNDt/o4KTvdPuqRlZgw64mnsCV9Q5kDPsBrxq3s3xGvsbxXrv1LGYK63EQcLkjUFlN0R+3lgF7i0YOAHjzI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKEYygvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F65CC2BCB0;
+	Fri, 15 May 2026 12:06:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778846814;
+	bh=pLtZn02GTohiVPsWz2akwsq7yMVOSlgb2BewredJLE0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jKEYygvhHNFFl8DZ/NsS+sGazYDlXx6DEdZOdnFgJinX+j1Xkx3hmpfPC39xgXsQh
+	 k/gn8JmC0OMglamVw0WyfuzDzV5CNSL3piImxCq5vz9ErHU5hj9+YkCCqOG46J+KC1
+	 ZCsgG+6LKOAvFH62SEEi+LeECtaaPV/O6CutMNTMOocI+1o5YtdB40gfa6m4uyDQmF
+	 FcRtDEU5cZ6Ypv8woyWtirRkq4aVBJsqtfsNNEpQYFlCSfPAnkyfLeXF0YwuTlExXf
+	 XqyHN68Gdr8aVJM3Xwyd9pk4TtHEQjD1Thd8mr0CuqwCYBFfJUvQwxHOIbI3zZhmP4
+	 o9oxZRZREiGPQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] tracing/probes: Limit size of event probe to 3K
+Date: Fri, 15 May 2026 08:06:51 -0400
+Message-ID: <20260515120651.3074726-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051225-penny-nutcase-3d81@gregkh>
+References: <2026051225-penny-nutcase-3d81@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260515-magnetometer-kernel-mem-leak-v2-1-320e1ad4843d@gmail.com>
- <20260515125821.520fe56f@jic23-huawei>
-In-Reply-To: <20260515125821.520fe56f@jic23-huawei>
-From: Joshua Crofts <joshua.crofts1@gmail.com>
-Date: Fri, 15 May 2026 14:06:25 +0200
-X-Gm-Features: AVHnY4IumS3GgOW93qHfl-GGifMpK5rCnPEeVuFifXrJ4fA1ojTTKUpQcOsrGIo
-Message-ID: <CALoEA-xTWUpg86QVSaToroCfvjDX-H_YB1rqhzVW_v=HSeCRDg@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: magnetometer: ak8975: fix potential kernel stack
- memory leak
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Joshua Crofts via B4 Relay <devnull+joshua.crofts1.gmail.com@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Gregor Boirie <gregor.boirie@parrot.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 0F48054FB21
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 63B0654F8EA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,baylibre.com,analog.com,parrot.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-247729-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247730-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joshuacrofts1@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable,joshua.crofts1.gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,efficios.com:email,msgid.link:url,goodmis.org:email]
 X-Rspamd-Action: no action
 
-On Fri, 15 May 2026 at 13:58, Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Fri, 15 May 2026 12:28:23 +0200
-> Joshua Crofts via B4 Relay <devnull+joshua.crofts1.gmail.com@kernel.org> wrote:
->
-> > From: Joshua Crofts <joshua.crofts1@gmail.com>
-> >
-> > Currently in the AK8975 driver there are four instances where potential
-> > uninitialized kernel stack memory leaks can occur. If
-> > i2c_smbus_read_i2c_block_data_or_emulated() returns a value less than
-> > the size of the buffer, uninitialized bytes are retained in the buffer
-> > and later the buffer is passed on to IIO buffers, potentially leaking
-> > memory to userspace.
-> >
-> > Fix this by adding checks whether the return value of the function is
-> > equal to the size of the buffer and subsequently if the value is
-> > lesser than zero to distinguish from a returned error code.
-> >
-> > Fixes: bc11ca4a0b84 ("iio:magnetometer:ak8975: triggered buffer support")
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > Closes: https://sashiko.dev/#/patchset/20260513-ak8975-fix-v1-1-104ea605dd54%40gmail.com
-> > Cc: stable@vger.kernel.org
->
-> I'm doubtful about a stable marking for the patch.
->
-> Personally I've never seen an i2c response that was short (yet correct
-> enough not to trigger an error return).  There are specific devices
-> that will do this because they are not ready for instance, but not on
-> a general read.
->
-> Whilst I know in theory they can occur, has anyone else ever seen one?
->
-> I don't mind hardening against it but not something I'd rush
-> to backport or even necessarily to take as a fix.
->
-> Patch looks fine to me and the thing sashiko is moaning about is already
-> fixed on my tree.  Note this is going the slow way at least partly because
-> of all the other work on the driver!
->
-> So picked up by stable tag dropped.  Applied to the togreg branch of iio.git
+From: Steven Rostedt <rostedt@goodmis.org>
 
-Hi Jonathan,
+[ Upstream commit b2aa3b4d64e460ac606f386c24e7d8a873ce6f1a ]
 
-Wasn't really sure whether to CC stable, but added it just in case. Yes, short
-reads are pretty rare, however I do agree with the hardening angle.
+There currently isn't a max limit an event probe can be. One could make an
+event greater than PAGE_SIZE, which makes the event useless because if
+it's bigger than the max event that can be recorded into the ring buffer,
+then it will never be recorded.
 
-Thanks
+A event probe should never need to be greater than 3K, so make that the
+max size. As long as the max is less than the max that can be recorded
+onto the ring buffer, it should be fine.
 
---
-Kind regards
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 93ccae7a22274 ("tracing/kprobes: Support basic types on dynamic events")
+Link: https://patch.msgid.link/20260428122302.706610ba@gandalf.local.home
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+[ adjusted context to place MAX_PROBE_EVENT_SIZE near MAX_STRING_SIZE and appended EVENT_TOO_BIG after NEED_STRING_TYPE ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/trace/trace_probe.c | 6 ++++++
+ kernel/trace/trace_probe.h | 4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-CJD
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index d46a1033ba5b3..dee9494ed189a 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -1366,6 +1366,12 @@ static int traceprobe_parse_probe_arg_body(const char *argv, ssize_t *size,
+ 	parg->offset = *size;
+ 	*size += parg->type->size * (parg->count ?: 1);
+ 
++	if (*size > MAX_PROBE_EVENT_SIZE) {
++		ret = -E2BIG;
++		trace_probe_log_err(ctx->offset, EVENT_TOO_BIG);
++		goto fail;
++	}
++
+ 	if (parg->count) {
+ 		len = strlen(parg->type->fmttype) + 6;
+ 		parg->fmt = kmalloc(len, GFP_KERNEL);
+diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
+index c71fa9c2f3815..ce5a0935cd45c 100644
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -35,6 +35,7 @@
+ #define MAX_ARG_NAME_LEN	32
+ #define MAX_BTF_ARGS_LEN	128
+ #define MAX_STRING_SIZE		PATH_MAX
++#define MAX_PROBE_EVENT_SIZE	3072
+ 
+ /* Reserved field names */
+ #define FIELD_STRING_IP		"__probe_ip"
+@@ -546,7 +547,8 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
+ 	C(NO_BTF_FIELD,		"This field is not found."),	\
+ 	C(BAD_BTF_TID,		"Failed to get BTF type info."),\
+ 	C(BAD_TYPE4STR,		"This type does not fit for string."),\
+-	C(NEED_STRING_TYPE,	"$comm and immediate-string only accepts string type"),
++	C(NEED_STRING_TYPE,	"$comm and immediate-string only accepts string type"),\
++	C(EVENT_TOO_BIG,	"Event too big (too many fields?)"),
+ 
+ #undef C
+ #define C(a, b)		TP_ERR_##a
+-- 
+2.53.0
+
 
