@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJmTM0lUB2oqywIAu9opvQ
-	(envelope-from <stable+bounces-248761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:13:45 +0200
+	id qCr0BlJpB2oJ2QIAu9opvQ
+	(envelope-from <stable+bounces-247931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:43:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A5F7554A27
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:13:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777045566F5
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D334313830C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFCB73034DC0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD764C77BC;
-	Fri, 15 May 2026 16:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B313FF1DA;
+	Fri, 15 May 2026 15:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJ1DOS7+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsXnyyFN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C659B39734B;
-	Fri, 15 May 2026 16:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F7F3FF1CD;
+	Fri, 15 May 2026 15:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862562; cv=none; b=nYwEQyIOFHrZl5FPK1MXdu8OiCHrvB9wn/7YrpXxqrE/PJFRRo4t61kQGB5w3t2U8HC0XnY6Y4UIaJIGVk7+xlsr4MoLF4iI8w7oahY2xhL+PMAHB9Rp21KURYwq1cSFGA3lR7PLJbAoTSZwWJKUBhVoZ59UVxLVDv2A1HEEZ64=
+	t=1778860441; cv=none; b=B5SBUY6FUmk3lih057+KeJHJzRXGgLTU+KxfXVgIFwj24qH4tPi1giiwHoHmbDwvIRlDfar1QRTZ4lxKzcEX9praudHNu+E4iG97XNb6CzW6uwm3UABu72ZkwwcPudjLAaNG0272qypCB4IAhCDkqmd1sAtu+TsenmogmFqyEOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862562; c=relaxed/simple;
-	bh=FlZ+iMQW+JhOmNMtoIJ9Tf+/vq97jhIcOQm0J/CmBlI=;
+	s=arc-20240116; t=1778860441; c=relaxed/simple;
+	bh=2F7DJmaroIrMg8hdnf/o2RIpJn6WpUk3KzgCek2gvU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etiMMC6ZBGQ0W3W6KZrVCtbcWQN46q7BR3kIaP3/ZtVSEcPriWyetUivP2e252UIW//ZgAfjn34H8zEAn1SRIjl4pikeoqfriE77p3CM1nMAxkraWPePAxvpkfrYAG49woXmX7aPaIgQJS5pC/g6X/MFGn5pscpqACxWcVRAEmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJ1DOS7+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2083FC2BCB0;
-	Fri, 15 May 2026 16:29:21 +0000 (UTC)
+	 MIME-Version; b=DU3mDcRbZ+BQa90J/0faxJRL9x7coN9B4HVxMJErU1areIm7e28xJGu+B7cfLj2kKShQsSq1j8wzrkTzYDlQwEZStppRXGCjokS5Yl88SCdwSsacgmfAhCWUNZpxQMmQJt7iS5vH0RnsktBEG0ktGVjHV6XX4lVQTTvDus4dyYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsXnyyFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC727C2BCB3;
+	Fri, 15 May 2026 15:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862562;
-	bh=FlZ+iMQW+JhOmNMtoIJ9Tf+/vq97jhIcOQm0J/CmBlI=;
+	s=korg; t=1778860441;
+	bh=2F7DJmaroIrMg8hdnf/o2RIpJn6WpUk3KzgCek2gvU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJ1DOS7+nT2o//bl0sHx6u0v1fwBRYGBFU0VUzTiv+dSDLbJSlANH2r7GJbIjz5FK
-	 dlTsd4u39uwXJ7uHVsvDTzTdiv2PyGw2KUFwZng6Dz8cLUFbgPwr5wyxrjzh5xIW1y
-	 6veJuYSWF3s0rEohIDBoZYdtoXF1uyHlT/EXrCMg=
+	b=jsXnyyFNx9PRGrrriqiMSZ7BLqHJAOmEkZYqohpP9AXO89w+pv/JWLabDbPy2kG5+
+	 XfDOzWLBt4tX4PY+UBzIvp8aCZRxV3L5wHh5u8yz+5qfnlJ3JA3erUmCTHskBLDb2j
+	 j2uoJ0b+AfxrKFGIV9EEAoqH4my03NHG45Jn+7h4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven King <sfking@fdwdc.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 097/201] spi: coldfire-qspi: fix controller deregistration
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Philip Yang <philip.yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 089/144] drm/amdkfd: Make all TLB-flushes heavy-weight
 Date: Fri, 15 May 2026 17:48:35 +0200
-Message-ID: <20260515154700.635249913@linuxfoundation.org>
+Message-ID: <20260515154655.583161049@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7A5F7554A27
+X-Rspamd-Queue-Id: 777045566F5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,75 +80,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248761-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247931-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fdwdc.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Felix Kuehling <felix.kuehling@amd.com>
 
-commit e7c510e192ff2a1264d999575eea39a506424264 upstream.
+commit 9b4e3495d1bd2469bf94b74930c153c2d534ddb7 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks (via runtime pm) during driver unbind.
+With only one sequence number we cannot track the need for legacy vs
+heavy-weight flushes reliably. Always use heavy-weight.
 
-Fixes: 34b8c6617366 ("spi: Add Freescale/Motorola Coldfire QSPI driver")
-Cc: stable@vger.kernel.org	# 2.6.34
-Cc: Steven King <sfking@fdwdc.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-11-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Philip Yang <philip.yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c1a3ff1d327820cd9a52bc1056b98681fc088949)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-coldfire-qspi.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c              |    4 ++--
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |    6 +++---
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h                 |    6 +++---
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c                  |    4 ++--
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/spi/spi-coldfire-qspi.c
-+++ b/drivers/spi/spi-coldfire-qspi.c
-@@ -410,9 +410,9 @@ static int mcfqspi_probe(struct platform
- 	platform_set_drvdata(pdev, host);
- 	pm_runtime_enable(&pdev->dev);
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1346,7 +1346,7 @@ static int kfd_ioctl_map_memory_to_gpu(s
+ 		peer_pdd = kfd_process_device_data_by_id(p, devices_arr[i]);
+ 		if (WARN_ON_ONCE(!peer_pdd))
+ 			continue;
+-		kfd_flush_tlb(peer_pdd, TLB_FLUSH_LEGACY);
++		kfd_flush_tlb(peer_pdd);
+ 	}
+ 	kfree(devices_arr);
  
--	status = devm_spi_register_controller(&pdev->dev, host);
-+	status = spi_register_controller(host);
- 	if (status) {
--		dev_dbg(&pdev->dev, "devm_spi_register_controller failed\n");
-+		dev_dbg(&pdev->dev, "failed to register controller\n");
- 		goto fail1;
+@@ -1441,7 +1441,7 @@ static int kfd_ioctl_unmap_memory_from_g
+ 		if (WARN_ON_ONCE(!peer_pdd))
+ 			continue;
+ 		if (flush_tlb)
+-			kfd_flush_tlb(peer_pdd, TLB_FLUSH_HEAVYWEIGHT);
++			kfd_flush_tlb(peer_pdd);
+ 
+ 		/* Remove dma mapping after tlb flush to avoid IO_PAGE_FAULT */
+ 		err = amdgpu_amdkfd_gpuvm_dmaunmap_mem(mem, peer_pdd->drm_priv);
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -533,7 +533,7 @@ static int allocate_vmid(struct device_q
+ 			qpd->vmid,
+ 			qpd->page_table_base);
+ 	/* invalidate the VM context after pasid and vmid mapping is set up */
+-	kfd_flush_tlb(qpd_to_pdd(qpd), TLB_FLUSH_LEGACY);
++	kfd_flush_tlb(qpd_to_pdd(qpd));
+ 
+ 	if (dqm->dev->kfd2kgd->set_scratch_backing_va)
+ 		dqm->dev->kfd2kgd->set_scratch_backing_va(dqm->dev->adev,
+@@ -571,7 +571,7 @@ static void deallocate_vmid(struct devic
+ 		if (flush_texture_cache_nocpsch(q->device, qpd))
+ 			dev_err(dev, "Failed to flush TC\n");
+ 
+-	kfd_flush_tlb(qpd_to_pdd(qpd), TLB_FLUSH_LEGACY);
++	kfd_flush_tlb(qpd_to_pdd(qpd));
+ 
+ 	/* Release the vmid mapping */
+ 	set_pasid_vmid_mapping(dqm, 0, qpd->vmid);
+@@ -1242,7 +1242,7 @@ static int restore_process_queues_nocpsc
+ 				dqm->dev->adev,
+ 				qpd->vmid,
+ 				qpd->page_table_base);
+-		kfd_flush_tlb(pdd, TLB_FLUSH_LEGACY);
++		kfd_flush_tlb(pdd);
  	}
  
-@@ -436,11 +436,17 @@ static void mcfqspi_remove(struct platfo
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct mcfqspi *mcfqspi = spi_controller_get_devdata(host);
+ 	/* Take a safe reference to the mm_struct, which may otherwise
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -1507,13 +1507,13 @@ void kfd_signal_reset_event(struct kfd_n
  
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	pm_runtime_disable(&pdev->dev);
- 	/* disable the hardware (set the baud rate to 0) */
- 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
+ void kfd_signal_poison_consumed_event(struct kfd_node *dev, u32 pasid);
  
- 	mcfqspi_cs_teardown(mcfqspi);
-+
-+	spi_controller_put(host);
+-static inline void kfd_flush_tlb(struct kfd_process_device *pdd,
+-				 enum TLB_FLUSH_TYPE type)
++static inline void kfd_flush_tlb(struct kfd_process_device *pdd)
+ {
+ 	struct amdgpu_device *adev = pdd->dev->adev;
+ 	struct amdgpu_vm *vm = drm_priv_to_vm(pdd->drm_priv);
+ 
+-	amdgpu_vm_flush_compute_tlb(adev, vm, type, pdd->dev->xcc_mask);
++	amdgpu_vm_flush_compute_tlb(adev, vm, TLB_FLUSH_HEAVYWEIGHT,
++				    pdd->dev->xcc_mask);
  }
  
- #ifdef CONFIG_PM_SLEEP
+ static inline bool kfd_flush_tlb_after_unmap(struct kfd_dev *dev)
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1382,7 +1382,7 @@ svm_range_unmap_from_gpus(struct svm_ran
+ 			if (r)
+ 				break;
+ 		}
+-		kfd_flush_tlb(pdd, TLB_FLUSH_HEAVYWEIGHT);
++		kfd_flush_tlb(pdd);
+ 	}
+ 
+ 	return r;
+@@ -1516,7 +1516,7 @@ svm_range_map_to_gpus(struct svm_range *
+ 			}
+ 		}
+ 
+-		kfd_flush_tlb(pdd, TLB_FLUSH_LEGACY);
++		kfd_flush_tlb(pdd);
+ 	}
+ 
+ 	return r;
 
 
 
