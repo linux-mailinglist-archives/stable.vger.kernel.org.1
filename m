@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247961-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gF85APlWB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:13 +0200
+	id 4OheAMdFB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247961-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9AC554FB6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A110E552CF5
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 158F03308201
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:17:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C423B3033F4D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6E03E0087;
-	Fri, 15 May 2026 16:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400D43FF1DD;
+	Fri, 15 May 2026 15:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtVP1vEC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XD0ns8b6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B183BB11C;
-	Fri, 15 May 2026 16:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BBA3FF1D8;
+	Fri, 15 May 2026 15:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861719; cv=none; b=WXfdYpyzHk9303btDOJhwt2dePenIPhUhuQFpZRDwkG74hH5q/dGPydqe85EpMq3HSmYlMu5sfQx6sDAFHP+IQEjc05fKkDlenPAgH51ww1xNzfdDtiX+vkTqERhNsyPwMrXMJZg742DgWwKfkZFUp09J0UiMKC6YIZvS6Dp29k=
+	t=1778860519; cv=none; b=AMhDNQ3e348c0Dnss1JMctpYYPcEzsXoRFNadU+m8d14E8Srj1KBqJ6tjTwLNc2eJruMrYWUyYfgxiEOkGFBY/8CZ1S7+vnVjbA4WHhBIeQrzVM3EyIvueXIqvkXzmRtSNCC4LCMc4zv0RLpHG5G+DAjFicn2twg0SimJdQKopo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861719; c=relaxed/simple;
-	bh=Y3zdEfvOFu8ScWSxlVxWBebzA9LvcL0PN37c8KD9SoM=;
+	s=arc-20240116; t=1778860519; c=relaxed/simple;
+	bh=cGkDbWum4ghFoFYoHvF541bMLiyBgSMnDuW6rBL//x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zwh89Q1w5H8riwxuj3ndVLrwjCCVJBr6xonErCnM4w1pRfU7Atn6f5FnbAkEuPvOh38V3/b/6OayBA4OOi2PT33KhUpN8rkEPFVr3SL0hdCrryyKaG1RcyDt3fTq6FQP/sNbgMWRMG/ELxx3KAAGvl12k82opswt/2sZ4K9e/PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtVP1vEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277C2C2BCB0;
-	Fri, 15 May 2026 16:15:19 +0000 (UTC)
+	 MIME-Version; b=Pa85vvZIC70QwXdktvJ3uKen4S5x+Vb6fKHrgaE6jwcFMwJL0rQeJuWOt6rrJrEscLlcBtflaaDs4NDSAeBdhfdbWorGjooDr5YB9AKIdjlJLy4M9ShI3doA266SduuqGPscFwWFgFvRnSaCeI9hzk/tfDt+mw6e26uoPjFsa1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XD0ns8b6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABB0C2BCB3;
+	Fri, 15 May 2026 15:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861719;
-	bh=Y3zdEfvOFu8ScWSxlVxWBebzA9LvcL0PN37c8KD9SoM=;
+	s=korg; t=1778860518;
+	bh=cGkDbWum4ghFoFYoHvF541bMLiyBgSMnDuW6rBL//x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtVP1vECRjSXlTGHoUsq44OeY6Kx0k8Bl1DkjPUXgdx9XTMh8jSP8L6yuIiK9q894
-	 OIMhAanwBLRyXfy/XzrWOsn4VIszHJV3Mescj4Vj0QQsDWdfteSzOy/WoFA7w74M2O
-	 m/KAy7eHRvypJluxef5E0QCuCXfAQsokm+d2C+pg=
+	b=XD0ns8b67BWuR/IO+RZZ3pjptx+pyaQceFwYbjlZ72M/ErDNBe+9fl1WB5yDYdT/1
+	 TIAHaJ3Bot3juDOG20w4cWWI4SPuhFQLo5ib/x1lvYqOvFJ+wRMPJjupb/eHFETulr
+	 ulKEAgX5wAVMo8jLtGsHNYvaDIAKy3At46qeru8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Mark Brown <broonie@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 438/474] spi: uniphier: Simplify clock handling with devm_clk_get_enabled()
+Subject: [PATCH 6.12 121/144] fbcon: Avoid OOB font access if console rotation fails
 Date: Fri, 15 May 2026 17:49:07 +0200
-Message-ID: <20260515154724.560002948@linuxfoundation.org>
+Message-ID: <20260515154656.310918889@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,132 +64,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5A9AC554FB6
+X-Rspamd-Queue-Id: A110E552CF5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-247961-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmx.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248433-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,bootlin.com:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gmx.de:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit fdca270f8f87cae2eb5b619234b9dd11a863ce6b ]
+[ Upstream commit e4ef723d8975a2694cc90733a6b888a5e2841842 ]
 
-Replace devm_clk_get() followed by clk_prepare_enable() with
-devm_clk_get_enabled() for the clock. This removes the need for
-explicit clock enable and disable calls, as the managed API automatically
-handles clock disabling on device removal or probe failure.
+Clear the font buffer if the reallocation during console rotation fails
+in fbcon_rotate_font(). The putcs implementations for the rotated buffer
+will return early in this case. See [1] for an example.
 
-Remove the now-unnecessary clk_disable_unprepare() calls from the probe
-error path and the remove callback. Adjust error labels accordingly.
+Currently, fbcon_rotate_font() keeps the old buffer, which is too small
+for the rotated font. Printing to the rotated console with a high-enough
+character code will overflow the font buffer.
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Reviewed-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://patch.msgid.link/b2deeefd4ef1a4bce71116aabfcb7e81400f6d37.1775546948.git.xiaopei01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0245435f7772 ("spi: uniphier: fix controller deregistration")
+v2:
+- fix typos in commit message
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 6cc50e1c5b57 ("[PATCH] fbcon: Console Rotation - Add support to rotate font bitmap")
+Cc: stable@vger.kernel.org # v2.6.15+
+Link: https://elixir.bootlin.com/linux/v6.19/source/drivers/video/fbdev/core/fbcon_ccw.c#L144 # [1]
+Signed-off-by: Helge Deller <deller@gmx.de>
+[ renamed `par` to `ops` to match the 6.12 local pointer name ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-uniphier.c |   18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+ drivers/video/fbdev/core/fbcon_rotate.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -666,28 +666,24 @@ static int uniphier_spi_probe(struct pla
- 	}
- 	priv->base_dma_addr = res->start;
+--- a/drivers/video/fbdev/core/fbcon_rotate.c
++++ b/drivers/video/fbdev/core/fbcon_rotate.c
+@@ -46,6 +46,10 @@ static int fbcon_rotate_font(struct fb_i
+ 		info->fbops->fb_sync(info);
  
--	priv->clk = devm_clk_get(&pdev->dev, NULL);
-+	priv->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(priv->clk)) {
- 		dev_err(&pdev->dev, "failed to get clock\n");
- 		ret = PTR_ERR(priv->clk);
- 		goto out_host_put;
- 	}
+ 	if (ops->fd_size < d_cellsize * len) {
++		kfree(ops->fontbuffer);
++		ops->fontbuffer = NULL;
++		ops->fd_size = 0;
++
+ 		dst = kmalloc_array(len, d_cellsize, GFP_KERNEL);
  
--	ret = clk_prepare_enable(priv->clk);
--	if (ret)
--		goto out_host_put;
--
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
- 		ret = irq;
--		goto out_disable_clk;
-+		goto out_host_put;
- 	}
- 
- 	ret = devm_request_irq(&pdev->dev, irq, uniphier_spi_handler,
- 			       0, "uniphier-spi", priv);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to request IRQ\n");
--		goto out_disable_clk;
-+		goto out_host_put;
- 	}
- 
- 	init_completion(&priv->xfer_done);
-@@ -717,7 +713,7 @@ static int uniphier_spi_probe(struct pla
- 	if (IS_ERR_OR_NULL(host->dma_tx)) {
- 		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER) {
- 			ret = -EPROBE_DEFER;
--			goto out_disable_clk;
-+			goto out_host_put;
+ 		if (dst == NULL) {
+@@ -54,7 +58,6 @@ static int fbcon_rotate_font(struct fb_i
  		}
- 		host->dma_tx = NULL;
- 		dma_tx_burst = INT_MAX;
-@@ -767,9 +763,6 @@ out_release_dma:
- 		host->dma_tx = NULL;
+ 
+ 		ops->fd_size = d_cellsize * len;
+-		kfree(ops->fontbuffer);
+ 		ops->fontbuffer = dst;
  	}
  
--out_disable_clk:
--	clk_disable_unprepare(priv->clk);
--
- out_host_put:
- 	spi_controller_put(host);
- 	return ret;
-@@ -778,14 +771,11 @@ out_host_put:
- static void uniphier_spi_remove(struct platform_device *pdev)
- {
- 	struct spi_controller *host = platform_get_drvdata(pdev);
--	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
- 
- 	if (host->dma_tx)
- 		dma_release_channel(host->dma_tx);
- 	if (host->dma_rx)
- 		dma_release_channel(host->dma_rx);
--
--	clk_disable_unprepare(priv->clk);
- }
- 
- static const struct of_device_id uniphier_spi_match[] = {
 
 
 
