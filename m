@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-248851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGWQMh9QB2qayAIAu9opvQ
-	(envelope-from <stable+bounces-248851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:59 +0200
+	id 6Cc0IJZSB2pIygIAu9opvQ
+	(envelope-from <stable+bounces-248661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:06:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708FA55436E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D4C5546D5
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C253319F241
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F5EE35DF8FE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE8B3BAD99;
-	Fri, 15 May 2026 16:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713693F8717;
+	Fri, 15 May 2026 16:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydnmLJ8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8oL8XqY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A263B19DE;
-	Fri, 15 May 2026 16:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346F43EFFC9;
+	Fri, 15 May 2026 16:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862792; cv=none; b=TZNg4kFIC0ySpebxYW3KPlB0V9fPCjtRV6vqEr7a7404Zak0KpQDML/qp2grScJEoG9ASB/rOlKtxt6g6HH/GpSvlH0fZ9+GuT3yDhFs2EYWsq/87OArsh+94chijMWbBQ4L8oG1NjnwbUsfpmxX++6yinichVXCOmB8HfTwCJk=
+	t=1778862306; cv=none; b=AvoawuhWOHQTxx9GOZ4b9PbaeLXUosqgmsGsStNDICP0HNC2ryxVmqkHZIWQz8hM8YLc5zYYgf2FiD/RbuwAyjcExDimAq8khHRU6cL5dCIQr8m/o8T6si2hTgfsDYKA+ok/m6iknjc8HwzJbL0LtyVnCrZb2NC4M9wr03XnW8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862792; c=relaxed/simple;
-	bh=y+0g84qa5Ksnq5pK0hBLqHrgMMutDtp8hJjHBY4vXyQ=;
+	s=arc-20240116; t=1778862306; c=relaxed/simple;
+	bh=lLR1KO0Opl2ETMZg1ytmx0b2Td6AAR1RFx8exFgTT78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DUImHOC+2K5lOt4d98HWldh65n7nuw1l1TmbzyxTIHgzN8SwdBAcc4skrGupUcK/gIcJzpKf4NzcF0hr9vfTSRY6YwSXnRzmGqI1L363sNhWyaqtdWS/Jwn4EnH1Bys0rYDv8Ujtld7LIksCGYM+XdTN7eLiBprsibHAZS8ytYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydnmLJ8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94192C2BCB0;
-	Fri, 15 May 2026 16:33:11 +0000 (UTC)
+	 MIME-Version; b=K31KRFLawIIxuItD3MT/eJRR8la5cmAWKIuk0pSc+xbJJ3byLbvxXP4tAG1TJTxR4MV0TSPao8kKmWf3O5fkFmrruJLCBjW36SAHE5U+YAI2zm6vG+HfPJFlomhXK7mTz0+9AYersYIV9/mfcqI2zJDoz//nlRNlV4/H37eK/rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8oL8XqY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F0CC2BCB3;
+	Fri, 15 May 2026 16:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862792;
-	bh=y+0g84qa5Ksnq5pK0hBLqHrgMMutDtp8hJjHBY4vXyQ=;
+	s=korg; t=1778862306;
+	bh=lLR1KO0Opl2ETMZg1ytmx0b2Td6AAR1RFx8exFgTT78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydnmLJ8C6DF+M2LimAegtx7UQTu2rH9+Qmn/4Sd2dL/VTeko9lZBNw/a7rL+xIFa4
-	 FuwVulac3s5jjQ6HxxhSjx/r9qrW+4M9cEnB2etzuml9dgRD77FGG1Idt1s9sIghE7
-	 4XP9hbHxzAZvEEZfO03mizapQYecdgeqHxghTLgU=
+	b=K8oL8XqYD2SCASqCp0ZZ64SQX71OL7lklK7/Lj1DW/PQOgn2vyZztkPJKqIuR7jdt
+	 6DRkHuFsLIv0evwj0IqyUeR4AAOsar4RNf4FKG5B9JrQoGxMQu1iMitE3JMN6DvkLr
+	 i/zKAhmtpM49eypT2H4w8YAAcsPOgAafcPX4y7hQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 185/201] kho: fix error handling in kho_add_subtree()
+	Dudu Lu <phx0fer@gmail.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 186/188] vsock/virtio: fix accept queue count leak on transport mismatch
 Date: Fri, 15 May 2026 17:50:03 +0200
-Message-ID: <20260515154702.585506659@linuxfoundation.org>
+Message-ID: <20260515154701.374191224@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,115 +66,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 708FA55436E
+X-Rspamd-Queue-Id: E9D4C5546D5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248851-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,meta.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-248661-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,meta.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Dudu Lu <phx0fer@gmail.com>
 
-[ Upstream commit 9ec95329894864170a1a7685b9a11b739393131a ]
+commit 52bcb57a4e8a0865a76c587c2451906342ae1b2d upstream.
 
-Fix two error handling issues in kho_add_subtree(), where it doesn't
-handle the error path correctly.
+virtio_transport_recv_listen() calls sk_acceptq_added() before
+vsock_assign_transport(). If vsock_assign_transport() fails or
+selects a different transport, the error path returns without
+calling sk_acceptq_removed(), permanently incrementing
+sk_ack_backlog.
 
-1. If fdt_setprop() fails after the subnode has been created, the
-   subnode is not removed. This leaves an incomplete node in the FDT
-   (missing "preserved-data" or "blob-size" properties).
+After approximately backlog+1 such failures, sk_acceptq_is_full()
+returns true, causing the listener to reject all new connections.
 
-2. The fdt_setprop() return value (an FDT error code) is stored
-   directly in err and returned to the caller, which expects -errno.
+Fix by moving sk_acceptq_added() to after the transport validation,
+matching the pattern used by vmci_transport and hyperv_transport.
 
-Fix both by storing fdt_setprop() results in fdt_err, jumping to a new
-out_del_node label that removes the subnode on failure, and only setting
-err = 0 on the success path, otherwise returning -ENOMEM (instead of
-FDT_ERR_ errors that would come from fdt_setprop).
-
-No user-visible changes.  This patch fixes error handling in the KHO
-(Kexec HandOver) subsystem, which is used to preserve data across kexec
-reboots.  The fix only affects a rare failure path during kexec
-preparation — specifically when the kernel runs out of space in the
-Flattened Device Tree buffer while registering preserved memory regions.
-
-In the unlikely event that this error path was triggered, the old code
-would leave a malformed node in the device tree and return an incorrect
-error code to the calling subsystem, which could lead to confusing log
-messages or incorrect recovery decisions.  With this fix, the incomplete
-node is properly cleaned up and the appropriate errno value is propagated,
-this error code is not returned to the user.
-
-Link: https://lore.kernel.org/20260410-kho_fix_send-v2-1-1b4debf7ee08@debian.org
-Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20260413131409.19022-1-phx0fer@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Luigi Leonardi <leonardi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/liveupdate/kexec_handover.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -757,13 +757,18 @@ int kho_add_subtree(const char *name, vo
- 		goto out_pack;
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1530,8 +1530,6 @@ virtio_transport_recv_listen(struct sock
+ 		return -ENOMEM;
  	}
  
--	err = fdt_setprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME,
--			  &phys, sizeof(phys));
--	if (err < 0)
--		goto out_pack;
-+	fdt_err = fdt_setprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME,
-+			      &phys, sizeof(phys));
-+	if (fdt_err < 0)
-+		goto out_del_node;
+-	sk_acceptq_added(sk);
+-
+ 	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
  
- 	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, false));
+ 	child->sk_state = TCP_ESTABLISHED;
+@@ -1553,6 +1551,7 @@ virtio_transport_recv_listen(struct sock
+ 		return ret;
+ 	}
  
-+	err = 0;
-+	goto out_pack;
-+
-+out_del_node:
-+	fdt_del_node(root_fdt, off);
- out_pack:
- 	fdt_pack(root_fdt);
++	sk_acceptq_added(sk);
+ 	if (virtio_transport_space_update(child, skb))
+ 		child->sk_write_space(child);
  
 
 
