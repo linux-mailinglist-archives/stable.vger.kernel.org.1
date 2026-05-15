@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JNRCPxKB2rqwgIAu9opvQ
-	(envelope-from <stable+bounces-248384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:34:04 +0200
+	id 4NDdKqpZB2orzwIAu9opvQ
+	(envelope-from <stable+bounces-248749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:36:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079F9553788
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:34:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B70E5554A2
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9228130E6525
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 15CA831BEE47
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828983CF67B;
-	Fri, 15 May 2026 16:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80333F8703;
+	Fri, 15 May 2026 16:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwMGE0L+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2v6Gxz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B7020297C;
-	Fri, 15 May 2026 16:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1623E7BCC;
+	Fri, 15 May 2026 16:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861598; cv=none; b=kmIgsP1RR7JvLBg5FLWV8xjxxWb6vq5w5mc7rBW9kwqDibD0HAywTZbMTUBw6Q9qigFoo32VmV/FbbGaIMIqvlU9J1qpf8H8UXVl88KqhrAPnvDzawULLhmJ7dUf3FOKDHrip8NEhdUjuc/xAp3ofU3gg6GAb24hoO+U/cyby/0=
+	t=1778862531; cv=none; b=M3p/UCoO6SP+/umnJXtYdnZzZd+PU3FyzQ+JEMhpla0RwUoqeaYjfqxRGqxeQQDZDgNPJgpLcJtPiSvzqvP5gaXzb74ByKq7iQ7Tvf5XmOfKx7I1Mdw4mDudP5hqTAod+z3s+/hGj8doQkHH0jhPjRYEA+4JJFP1Yu+XGqNKGL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861598; c=relaxed/simple;
-	bh=5Zqly2z0475CEpwt/t9ql2ugMmPOEm/WxQ4eZQeWSqA=;
+	s=arc-20240116; t=1778862531; c=relaxed/simple;
+	bh=VluOG8gkyTo8POAhtczhTeB03+9jCcAou7+sXfMmRpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0iC2Pz23FPcLH9DMDj1XKZ8njppU2W7DPcjki4n9mC8Q51PgCr5NxM3LKD0ETQ/TTIRwsULUEV3yP5ZAFnkMFbhFTSrvQ3fD5OQsX7uqOlyYrsQBdPZ9OXfo74RRjyV6W/+JNj9rBmDQ7nMvCKRkjVJyd8420/VJkCHKtRr8so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwMGE0L+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46AFC2BCB0;
-	Fri, 15 May 2026 16:13:17 +0000 (UTC)
+	 MIME-Version; b=dTXd91SL7a/raNzbgINvxTo8d64Y2qf1lm/alQh3apyeaobZ2bgbuye7S7RSDIKAR0DFrqf+AybtAQs2e5h2H30OaD375Gl/ORnl7ChM+gbBQcJD7ji/LH8eFa4V/q3wj5dm4KorhlLF4aPFFGiYIOjHq7iWioCcpmk5+NKAtVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2v6Gxz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D22C2BCB0;
+	Fri, 15 May 2026 16:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861598;
-	bh=5Zqly2z0475CEpwt/t9ql2ugMmPOEm/WxQ4eZQeWSqA=;
+	s=korg; t=1778862531;
+	bh=VluOG8gkyTo8POAhtczhTeB03+9jCcAou7+sXfMmRpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwMGE0L+ronWzNpZsefK6IEj5JEpDA36oz/AcWdEK9qMNKd7fpxCBCbysGgB5iLu3
-	 i4PpnocxXHDC/2xc8akHNhkrPO4yEP+V9Ie5TSjkVH7iPOdv73Bg8HYMBt7iY30qnl
-	 6nc/v5r/pSXGkSvRgeo1mYpulDCavkpKZF7YUYXk=
+	b=p2v6Gxz5+b/N6UYgMHuitiCFmEs/60NoNJvDIKCQjRAaXF4av442/WbZHjd6UaVAK
+	 7/gUKdigS3SBRofFZuW/QDDuEJ37yZIpFz4JgpuUqoJevsjIf8GCHsPYrnEgZgtBa1
+	 s/JDhcB36d6LTZ4jBYPHkJDLoR4mP32GQG8dbKxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 391/474] net: qrtr: ns: Limit the maximum number of lookups
+	Matt Roper <matthew.d.roper@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>
+Subject: [PATCH 7.0 082/201] drm/xe/hdcp: Add NULL check for media_gt in intel_hdcp_gsc_check_status()
 Date: Fri, 15 May 2026 17:48:20 +0200
-Message-ID: <20260515154723.503721702@linuxfoundation.org>
+Message-ID: <20260515154700.307193818@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +65,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 079F9553788
+X-Rspamd-Queue-Id: 3B70E5554A2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248749-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248384-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Gustavo Sousa <gustavo.sousa@intel.com>
 
-[ Upstream commit 5640227d9a21c6a8be249a10677b832e7f40dc55 ]
+commit 60a1e131a811b68703da58fd805ab359b704ab03 upstream.
 
-Current code does no bound checking on the number of lookups a client can
-perform. Though the code restricts the lookups to local clients, there is
-still a possibility of a malicious local client sending a flood of
-NEW_LOOKUP messages over the same socket.
+When media GT is disabled via configfs, there is no allocation for
+media_gt, which is kept as NULL.  In such scenario,
+intel_hdcp_gsc_check_status() results in a kernel pagefault error due to
+&gt->uc.gsc being evaluated as an invalid memory address.
 
-Fix this issue by limiting the maximum number of lookups to 64 globally.
-Since the nameserver allows only atmost one local observer, this global
-lookup count will ensure that the lookups stay within the limit.
+Fix that by introducing a NULL check on media_gt and bailing out early
+if so.
 
-Note that, limit of 64 is chosen based on the current platform
-requirements. If requirement changes in the future, this limit can be
-increased.
+While at it, also drop the NULL check for gsc, since it can't be NULL if
+media_gt is not NULL.
 
-Cc: stable@vger.kernel.org
-Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-2-00a8a5ff2b51@oss.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted comment block to only mention QRTR_NS_MAX_LOOKUPS and kept kzalloc() instead of kzalloc_obj() due to missing prerequisite commits ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2:
+  - Get address for gsc only after checking that gt is not NULL.
+    (Shuicheng)
+  - Drop the NULL check for gsc. (Shuicheng)
+v3:
+  - Add "Fixes" and "Cc: <stable...>" tags. (Matt)
+
+Fixes: 4af50beb4e0f ("drm/xe: Use gsc_proxy_init_done to check proxy status")
+Cc: <stable@vger.kernel.org> # v6.10+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Link: https://patch.msgid.link/20260416-check-for-null-media_gt-in-intel_hdcp_gsc_check_status-v2-1-9adb9fd3b621@intel.com
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+(cherry picked from commit bfaf87e84ca3ca3f6e275f9ae56da47a8b55ffd1)
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/xe/display/xe_hdcp_gsc.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -22,6 +22,7 @@ static struct {
- 	struct socket *sock;
- 	struct sockaddr_qrtr bcast_sq;
- 	struct list_head lookups;
-+	u32 lookup_count;
- 	struct workqueue_struct *workqueue;
- 	struct work_struct work;
- 	void (*saved_data_ready)(struct sock *sk);
-@@ -76,6 +77,11 @@ struct qrtr_node {
-  */
- #define QRTR_NS_MAX_SERVERS 256
+--- a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
++++ b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
+@@ -37,9 +37,17 @@ static bool intel_hdcp_gsc_check_status(
+ 	struct xe_device *xe = to_xe_device(drm);
+ 	struct xe_tile *tile = xe_device_get_root_tile(xe);
+ 	struct xe_gt *gt = tile->media_gt;
+-	struct xe_gsc *gsc = &gt->uc.gsc;
++	struct xe_gsc *gsc;
  
-+/* Max lookup limit is chosen based on the current platform requirements. If the
-+ * requirement changes in the future, this value can be increased.
-+ */
-+#define QRTR_NS_MAX_LOOKUPS 64
-+
- static struct qrtr_node *node_get(unsigned int node_id)
- {
- 	struct qrtr_node *node;
-@@ -441,6 +447,7 @@ static int ctrl_cmd_del_client(struct so
- 
- 		list_del(&lookup->li);
- 		kfree(lookup);
-+		qrtr_ns.lookup_count--;
- 	}
- 
- 	/* Remove the server belonging to this port but don't broadcast
-@@ -558,6 +565,11 @@ static int ctrl_cmd_new_lookup(struct so
- 	if (from->sq_node != qrtr_ns.local_node)
- 		return -EINVAL;
- 
-+	if (qrtr_ns.lookup_count >= QRTR_NS_MAX_LOOKUPS) {
-+		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
-+		return -ENOSPC;
+-	if (!gsc || !xe_uc_fw_is_available(&gsc->fw)) {
++	if (!gt) {
++		drm_dbg_kms(&xe->drm,
++			    "not checking GSC status for HDCP2.x: media GT not present or disabled\n");
++		return false;
 +	}
 +
- 	lookup = kzalloc(sizeof(*lookup), GFP_KERNEL);
- 	if (!lookup)
- 		return -ENOMEM;
-@@ -566,6 +578,7 @@ static int ctrl_cmd_new_lookup(struct so
- 	lookup->service = service;
- 	lookup->instance = instance;
- 	list_add_tail(&lookup->li, &qrtr_ns.lookups);
-+	qrtr_ns.lookup_count++;
- 
- 	memset(&filter, 0, sizeof(filter));
- 	filter.service = service;
-@@ -606,6 +619,7 @@ static void ctrl_cmd_del_lookup(struct s
- 
- 		list_del(&lookup->li);
- 		kfree(lookup);
-+		qrtr_ns.lookup_count--;
- 	}
- }
- 
++	gsc = &gt->uc.gsc;
++
++	if (!xe_uc_fw_is_available(&gsc->fw)) {
+ 		drm_dbg_kms(&xe->drm,
+ 			    "GSC Components not ready for HDCP2.x\n");
+ 		return false;
 
 
 
