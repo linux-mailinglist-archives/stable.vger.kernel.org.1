@@ -1,241 +1,280 @@
-Return-Path: <stable+bounces-247413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247414-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLmtDWbJBmrynwIAu9opvQ
-	(envelope-from <stable+bounces-247413-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:21:10 +0200
+	id MI8BDSfLBmrynwIAu9opvQ
+	(envelope-from <stable+bounces-247414-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:28:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE65154A7A9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:21:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DAD54A911
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8FC1E30668EB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:18:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EF8D30891CE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302473783DE;
-	Fri, 15 May 2026 07:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D4B3E5562;
+	Fri, 15 May 2026 07:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GGzT5omr";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4kcGLKwk";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TOG2UlxT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="93AeYFZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkaAA7Mt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866AC3E3C6F
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 07:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E1E3E0257
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 07:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778829520; cv=none; b=TiY6pI45k5evKnyHnOaNlzEpxihoZKPCB/I6J9XpBi1J7+Onkzc5kefbRdyX2PROC4EyBy/HnuV9HmC9fzHMSEPMZn0l9Jw7ShBNmIZcHBPpJOqKzUtdOy7iTu5EqDPkLjU8+YCghm39y5dIgS09yvuNL8q9SHXuEsQN6lrjpbs=
+	t=1778829715; cv=none; b=WRgavSrdIhjyfIK6/ztx3oYBOZyDEJvU8krf3IPTMmwmpQKcf1ZGm5lgEvokf0fCgqk8F9zMdHmWC70D0ikbEYA2iTTUhPCvHr8HoVyt82hGtiqSg9GjUnTKJjL06B7RDLgU1jFj8WiGtu5NK45zRChHcSyn08fYfT0ANUUdeoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778829520; c=relaxed/simple;
-	bh=s9K4bzfEGDJPSBneSpLXyM7YwAe9heOYXevhGsB2LcQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XbRya2ggHry+OuOpJ2OeSqW12TNNZuXTKfwCXast98tLyLJpf/CFHomsZ2IJyJM6ZheEs8ZOJYMMec8wwYUTjMYgZVBKEk1CzhtEDhKA0olY4LeEf1dbascTpcXXWqbj095/4xN6ENBGfJaZkBQ3Th5ApMXpoFEkjQOFV+gqPaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GGzT5omr; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4kcGLKwk; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=TOG2UlxT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=93AeYFZP; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C7B326B686;
-	Fri, 15 May 2026 07:18:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778829517; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2urq/YBGfx2kVkjt7rdkKOU9ux8Rtb80wnctCaLJ7q8=;
-	b=GGzT5omrO3PTz+pc7AhbM5oFZkVMInpP0oVq6ScIA+uamu/5yA1RJfWJwLP3IBh7EI7nHe
-	gF4lgQx3zjGHGeYW8hqgbBzR3tjnqcVQJQycnwTtFa0zONodilyrqlhf3o5xhNxGmalO+j
-	ojzZuSsTA2ukdXy/TMH7OYNVs9daQ4Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778829517;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2urq/YBGfx2kVkjt7rdkKOU9ux8Rtb80wnctCaLJ7q8=;
-	b=4kcGLKwkngJKqj089FCs9XJKisSACa+MDcFf00yIo68BobIGpl+z7x+5UxEM1GmSnYBKLd
-	nwQFKwjg49Lu+xBg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TOG2UlxT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=93AeYFZP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778829516; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2urq/YBGfx2kVkjt7rdkKOU9ux8Rtb80wnctCaLJ7q8=;
-	b=TOG2UlxT8SVdb4QtXqodnfZi2HDkbHJAQ3SHisgK2snxDt6ifUNo35AdjoWuh1aIC/4sAu
-	pnCGDGKQkvFrgBERVTtZyGm/VQn4oVjMOLJBRcOHpINCP+/4CsToKhbqzO3Rg25sVVWLtN
-	RoZabh6p1FQnGLRouRs1vSYh4bhjtFk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778829516;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2urq/YBGfx2kVkjt7rdkKOU9ux8Rtb80wnctCaLJ7q8=;
-	b=93AeYFZPB3gSpr4aNF05IWzetyUGM1c4N6nno4KtDT5WLrpUHnGuao9GCBZcXxDz1QuLCM
-	NUuPtwe88tV02yBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B21D593A9;
-	Fri, 15 May 2026 07:18:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nrrkEMzIBmq7aQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 15 May 2026 07:18:36 +0000
-Message-ID: <fe8b3c7e-87fa-4f02-9cb8-835e0eb76dd3@suse.de>
-Date: Fri, 15 May 2026 09:18:35 +0200
+	s=arc-20240116; t=1778829715; c=relaxed/simple;
+	bh=BgZG6nsDbMCLL+xcDPQ+tPSs+jcDJ2ARLAi9qLSHLok=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kKcvL2WD0nPlpmQGD8rJUth/loJfCSJfHiCT54Xj9vIG/gfgPwYG7pFxA/Rw8+k1mpOEhl/IMu9go63KS1MhB7qXIJ5mnsfjYW55pCTbt9o4aQnVnlwNDqUQx5MdEfncNKUYYwwncJNwf5ppaUqcSa0ksBXSzFPgP+DSMx/wszs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkaAA7Mt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7BCC2BCB0;
+	Fri, 15 May 2026 07:21:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778829714;
+	bh=BgZG6nsDbMCLL+xcDPQ+tPSs+jcDJ2ARLAi9qLSHLok=;
+	h=Subject:To:Cc:From:Date:From;
+	b=nkaAA7MtAh+c0UFRAoCCKpg8+7nVZP/WWR6GctXE0E5EuDSQp/+LMSJUFG3YYDf5v
+	 KDAS0iMDue+Vnj9LbA08h0x4oKekcZfG+xJ8o+f5Q8FpqP3w2bBd97ZlW0pNro4gEc
+	 eemq7hK4yqrvgI1qjLg2krqpoj/vFeVfucygRJwA=
+Subject: FAILED: patch "[PATCH] media: staging: imx: request mbus_config in csi_start" failed to apply to 6.1-stable tree
+To: m.tretter@pengutronix.de,Frank.Li@nxp.com,hverkuil+cisco@kernel.org,p.zabel@pengutronix.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 15 May 2026 09:21:58 +0200
+Message-ID: <2026051558-revoke-unstylish-4b5c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/14] fbdev: metronomefb: fix potential memory leak in
- metronomefb_probe()
-To: Abdun Nihaal <nihaal@cse.iitm.ac.in>, Helge Deller <deller@gmx.de>,
- Javier Martinez Canillas <javierm@redhat.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Sebastian Siewior <bigeasy@linutronix.de>,
- Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
- Ondrej Zary <linux@rainbow-software.org>, Antonino Daplas
- <adaplas@gmail.com>, Paul Mundt <lethal@linux-sh.org>,
- Krzysztof Helt <krzysztof.h1@wp.pl>, Tomi Valkeinen <tomi.valkeinen@ti.com>,
- Michal Januszewski <spock@gentoo.org>, Heiko Schocher <hs@denx.de>,
- Peter Jones <pjones@redhat.com>
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260514-fbdev-v1-0-b3a2474fa720@cse.iitm.ac.in>
- <20260514-fbdev-v1-3-b3a2474fa720@cse.iitm.ac.in>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260514-fbdev-v1-3-b3a2474fa720@cse.iitm.ac.in>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
-X-Rspamd-Queue-Id: BE65154A7A9
+X-Rspamd-Queue-Id: 84DAD54A911
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247413-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247414-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[cse.iitm.ac.in,gmx.de,redhat.com,kernel.crashing.org,linux-foundation.org,linutronix.de,rainbow-software.org,gmail.com,linux-sh.org,wp.pl,ti.com,gentoo.org,denx.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.984];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iitm.ac.in:email,suse.com:url,suse.de:email,suse.de:mid,suse.de:dkim]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,nxp.com:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email]
 X-Rspamd-Action: no action
 
 
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Am 14.05.26 um 10:24 schrieb Abdun Nihaal:
-> The memory allocated for pagerefs in fb_deferred_io_init() is not freed
-> on the error path. Fix it by calling fb_deferred_io_cleanup().
->
-> Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9df2aaa64890c0b6226057eb6fcb6352bd2df432
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051558-revoke-unstylish-4b5c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-> ---
->   drivers/video/fbdev/metronomefb.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/video/fbdev/metronomefb.c b/drivers/video/fbdev/metronomefb.c
-> index 6f0942c6e5f1..83c614963a0a 100644
-> --- a/drivers/video/fbdev/metronomefb.c
-> +++ b/drivers/video/fbdev/metronomefb.c
-> @@ -645,12 +645,14 @@ static int metronomefb_probe(struct platform_device *dev)
->   	info->flags = FBINFO_VIRTFB;
->   
->   	info->fbdefio = &metronomefb_defio;
-> -	fb_deferred_io_init(info);
-> +	retval = fb_deferred_io_init(info);
-> +	if (retval)
-> +		goto err_free_irq;
->   
->   	retval = fb_alloc_cmap(&info->cmap, 8, 0);
->   	if (retval < 0) {
->   		dev_err(&dev->dev, "Failed to allocate colormap\n");
-> -		goto err_free_irq;
-> +		goto err_fbdefio;
->   	}
->   
->   	/* set cmap */
-> @@ -673,6 +675,8 @@ static int metronomefb_probe(struct platform_device *dev)
->   
->   err_cmap:
->   	fb_dealloc_cmap(&info->cmap);
-> +err_fbdefio:
-> +	fb_deferred_io_cleanup(info);
->   err_free_irq:
->   	board->cleanup(par);
->   err_csum_table:
->
+Possible dependencies:
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
 
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9df2aaa64890c0b6226057eb6fcb6352bd2df432 Mon Sep 17 00:00:00 2001
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Fri, 7 Nov 2025 11:34:33 +0100
+Subject: [PATCH] media: staging: imx: request mbus_config in csi_start
+
+Request the upstream mbus_config in csi_start, which starts the stream,
+instead of caching it in link_validate.
+
+This allows to get rid of the mbus_cfg field in the struct csi_priv and
+avoids state in the driver.
+
+Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+
+diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
+index 725478bc2026..dc594b286f73 100644
+--- a/drivers/staging/media/imx/imx-media-csi.c
++++ b/drivers/staging/media/imx/imx-media-csi.c
+@@ -97,9 +97,6 @@ struct csi_priv {
+ 	/* the mipi virtual channel number at link validate */
+ 	int vc_num;
+ 
+-	/* media bus config of the upstream subdevice CSI is receiving from */
+-	struct v4l2_mbus_config mbus_cfg;
+-
+ 	spinlock_t irqlock; /* protect eof_irq handler */
+ 	struct timer_list eof_timeout_timer;
+ 	int eof_irq;
+@@ -403,7 +400,8 @@ static void csi_idmac_unsetup_vb2_buf(struct csi_priv *priv,
+ }
+ 
+ /* init the SMFC IDMAC channel */
+-static int csi_idmac_setup_channel(struct csi_priv *priv)
++static int csi_idmac_setup_channel(struct csi_priv *priv,
++				   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct imx_media_video_dev *vdev = priv->vdev;
+ 	const struct imx_media_pixfmt *incc;
+@@ -432,7 +430,7 @@ static int csi_idmac_setup_channel(struct csi_priv *priv)
+ 	image.phys0 = phys[0];
+ 	image.phys1 = phys[1];
+ 
+-	passthrough = requires_passthrough(&priv->mbus_cfg, infmt, incc);
++	passthrough = requires_passthrough(mbus_cfg, infmt, incc);
+ 	passthrough_cycles = 1;
+ 
+ 	/*
+@@ -572,11 +570,12 @@ static void csi_idmac_unsetup(struct csi_priv *priv,
+ 	csi_idmac_unsetup_vb2_buf(priv, state);
+ }
+ 
+-static int csi_idmac_setup(struct csi_priv *priv)
++static int csi_idmac_setup(struct csi_priv *priv,
++			   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	int ret;
+ 
+-	ret = csi_idmac_setup_channel(priv);
++	ret = csi_idmac_setup_channel(priv, mbus_cfg);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -595,7 +594,8 @@ static int csi_idmac_setup(struct csi_priv *priv)
+ 	return 0;
+ }
+ 
+-static int csi_idmac_start(struct csi_priv *priv)
++static int csi_idmac_start(struct csi_priv *priv,
++			   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct imx_media_video_dev *vdev = priv->vdev;
+ 	int ret;
+@@ -619,7 +619,7 @@ static int csi_idmac_start(struct csi_priv *priv)
+ 	priv->last_eof = false;
+ 	priv->nfb4eof = false;
+ 
+-	ret = csi_idmac_setup(priv);
++	ret = csi_idmac_setup(priv, mbus_cfg);
+ 	if (ret) {
+ 		v4l2_err(&priv->sd, "csi_idmac_setup failed: %d\n", ret);
+ 		goto out_free_dma_buf;
+@@ -701,7 +701,8 @@ static void csi_idmac_stop(struct csi_priv *priv)
+ }
+ 
+ /* Update the CSI whole sensor and active windows */
+-static int csi_setup(struct csi_priv *priv)
++static int csi_setup(struct csi_priv *priv,
++		     struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct v4l2_mbus_framefmt *infmt, *outfmt;
+ 	const struct imx_media_pixfmt *incc;
+@@ -719,7 +720,7 @@ static int csi_setup(struct csi_priv *priv)
+ 	 * if cycles is set, we need to handle this over multiple cycles as
+ 	 * generic/bayer data
+ 	 */
+-	if (is_parallel_bus(&priv->mbus_cfg) && incc->cycles) {
++	if (is_parallel_bus(mbus_cfg) && incc->cycles) {
+ 		if_fmt.width *= incc->cycles;
+ 		crop.width *= incc->cycles;
+ 	}
+@@ -730,7 +731,7 @@ static int csi_setup(struct csi_priv *priv)
+ 			     priv->crop.width == 2 * priv->compose.width,
+ 			     priv->crop.height == 2 * priv->compose.height);
+ 
+-	ipu_csi_init_interface(priv->csi, &priv->mbus_cfg, &if_fmt, outfmt);
++	ipu_csi_init_interface(priv->csi, mbus_cfg, &if_fmt, outfmt);
+ 
+ 	ipu_csi_set_dest(priv->csi, priv->dest);
+ 
+@@ -745,9 +746,17 @@ static int csi_setup(struct csi_priv *priv)
+ 
+ static int csi_start(struct csi_priv *priv)
+ {
++	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
+ 	struct v4l2_fract *input_fi, *output_fi;
+ 	int ret;
+ 
++	ret = csi_get_upstream_mbus_config(priv, &mbus_cfg);
++	if (ret) {
++		v4l2_err(&priv->sd,
++			 "failed to get upstream media bus configuration\n");
++		return ret;
++	}
++
+ 	input_fi = &priv->frame_interval[CSI_SINK_PAD];
+ 	output_fi = &priv->frame_interval[priv->active_output_pad];
+ 
+@@ -758,7 +767,7 @@ static int csi_start(struct csi_priv *priv)
+ 		return ret;
+ 
+ 	/* Skip first few frames from a BT.656 source */
+-	if (priv->mbus_cfg.type == V4L2_MBUS_BT656) {
++	if (mbus_cfg.type == V4L2_MBUS_BT656) {
+ 		u32 delay_usec, bad_frames = 20;
+ 
+ 		delay_usec = DIV_ROUND_UP_ULL((u64)USEC_PER_SEC *
+@@ -769,12 +778,12 @@ static int csi_start(struct csi_priv *priv)
+ 	}
+ 
+ 	if (priv->dest == IPU_CSI_DEST_IDMAC) {
+-		ret = csi_idmac_start(priv);
++		ret = csi_idmac_start(priv, &mbus_cfg);
+ 		if (ret)
+ 			goto stop_upstream;
+ 	}
+ 
+-	ret = csi_setup(priv);
++	ret = csi_setup(priv, &mbus_cfg);
+ 	if (ret)
+ 		goto idmac_stop;
+ 
+@@ -1138,7 +1147,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
+ 
+ 	mutex_lock(&priv->lock);
+ 
+-	priv->mbus_cfg = mbus_cfg;
+ 	is_csi2 = !is_parallel_bus(&mbus_cfg);
+ 	if (is_csi2) {
+ 		/*
 
 
