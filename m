@@ -1,138 +1,179 @@
-Return-Path: <stable+bounces-247972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDh1KcVFB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-247972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:49 +0200
+	id UAtZGdlFB2p6wAIAu9opvQ
+	(envelope-from <stable+bounces-247992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:12:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5337C552CED
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08021552D14
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3B7FA304FC54
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:55:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6761130A5A67
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BEA3FF1DD;
-	Fri, 15 May 2026 15:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD34C305668;
+	Fri, 15 May 2026 15:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gtIatV/+"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gkztiXQV";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qV6DWCis";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gkztiXQV";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qV6DWCis"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485173FF1D8
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 15:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DFE282F1A
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 15:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860543; cv=none; b=shSBoPOxnjjkRjtR82sg/WdUPGzEX+H7KiTKvoPjknG8p09dHiHOJGvpESN5fBKLkywfavYI6PUwxm5aezjWXDmBxLHxG5YayW/gnz55WEwxtvkfm3LXtP/ociNCyvY9ueVI0TrmaJpNbxlP58iXOW83d++o2/BRCFJCORMg/jQ=
+	t=1778860592; cv=none; b=daYVSiMOXgHrfJkChK51MSfeJ7yE2saaL5XCc4inmK7747BxCSth6+tDo3fkeQc6T6AuOR/95+/bRRMzZlG0mMR9ZKuYLcvy0Vxv/4MZ8tZEMFxuL0XjVPaqCxY6Tnui6af5jSKrL1avxyxGtlE0Ad7ZaRW14Dx3jbfgv+BLhDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860543; c=relaxed/simple;
-	bh=rTcoDDk84QPE+2EFN0buvH8efefAu5SDcl8NblmwY2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1MXVY/sS4QRZ40LrCsegwm5DsTRSo/p7QonjJz4zFGD1o4zLFOX7W2bjqWkL45Px9cGGYYXufj3Jf0KIUL6y+IkrP3Hghvcatrgl5ZyfMTMNVhXnQhupGmPiyTmgbBCCMdT6t71IstDP9E6VzPX5kipakeE2ILaIDmAi9HNEpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gtIatV/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4C9C2BCB0;
-	Fri, 15 May 2026 15:55:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778860543;
-	bh=rTcoDDk84QPE+2EFN0buvH8efefAu5SDcl8NblmwY2g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gtIatV/+Yo7qoD2T/kA9DRUARdbRMBP9SvYma+BAiUzGHHLOgd6kqv/3ycLhUyfCO
-	 hpmLlj5ryTGYaBK9hPOmd7WpjqSOfIcicUAC84qbom5XXI0VijJf0FjdxWtmZD/pnn
-	 KZ/YbrizOjhSJ9H610joYwVF2F8yl8Wo3ajQy3GgmyjzFK+kKHU+NmjFmPFM6Hceig
-	 6TcIwOFwnhjvH/r9jqC9+pcoB9DPmEMiPnUK8rWKMEAgs/JPe1jwzsu40hCKTytTNL
-	 D9nqzu326z1x6FU5YfZiIeSV4qXhNP5pbD96ylpbmmD5MvJZ7SZHYgjJBaOZ21hVE9
-	 fflIbyeq+B49g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Carlier <devnexen@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] eventfs: Use list_add_tail_rcu() for SRCU-protected children list
-Date: Fri, 15 May 2026 11:55:40 -0400
-Message-ID: <20260515155540.3359697-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051233-jiffy-shore-14d3@gregkh>
-References: <2026051233-jiffy-shore-14d3@gregkh>
+	s=arc-20240116; t=1778860592; c=relaxed/simple;
+	bh=8SS1Kg4HK2HevIcZaqZN3jqxojjTXs8rty1063NfZr0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pG0t1ninoDgFP/r9T0kEIak9HYbxGfSIjXkYwCXV1OllXD+27LPnnMXFAiNgUPp+leJz8DccPl1QTSyVVltoXlRDJcteDSEIWNOFylvxGHe68v45zx9fX9pnAhnTwhdg0sN2R6AygY3clco4vNYtssnHCiiSPK7PD3qEi/LzeoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gkztiXQV; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qV6DWCis; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gkztiXQV; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qV6DWCis; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6B8E55C679;
+	Fri, 15 May 2026 15:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778860589; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dUFKn2VoT1ja+cbnyoL9DDuCZbGDuNFrzrCQsUj6gMg=;
+	b=gkztiXQVN1xdvQAA4onS1EnlgUUiJ+MBPAAR6dWrIfnsX1kfdvbPJ0F12rE4sRqV1XaYfo
+	PbAb6rT7PsUbTT4yBzUbHuRYvy95i2Ped1gypLjN8bH/hTehtI0SUpbouidiMNKiwBH/5O
+	0BbhyToYu1CTrAvyG75rMTA+3gMTodE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778860589;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dUFKn2VoT1ja+cbnyoL9DDuCZbGDuNFrzrCQsUj6gMg=;
+	b=qV6DWCisd9LCAjEYrwEgr8sKiSuQXJQQiVssYKnVpV+JAPgOFc+mh/FW+NSO6gGeu/N7O4
+	2mgJ0KGZcxUQ9jCg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gkztiXQV;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qV6DWCis
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778860589; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dUFKn2VoT1ja+cbnyoL9DDuCZbGDuNFrzrCQsUj6gMg=;
+	b=gkztiXQVN1xdvQAA4onS1EnlgUUiJ+MBPAAR6dWrIfnsX1kfdvbPJ0F12rE4sRqV1XaYfo
+	PbAb6rT7PsUbTT4yBzUbHuRYvy95i2Ped1gypLjN8bH/hTehtI0SUpbouidiMNKiwBH/5O
+	0BbhyToYu1CTrAvyG75rMTA+3gMTodE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778860589;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dUFKn2VoT1ja+cbnyoL9DDuCZbGDuNFrzrCQsUj6gMg=;
+	b=qV6DWCisd9LCAjEYrwEgr8sKiSuQXJQQiVssYKnVpV+JAPgOFc+mh/FW+NSO6gGeu/N7O4
+	2mgJ0KGZcxUQ9jCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1D482593A9;
+	Fri, 15 May 2026 15:56:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 0NftBS1CB2q5fQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 15 May 2026 15:56:29 +0000
+Date: Fri, 15 May 2026 17:56:28 +0200
+Message-ID: <878q9ksm37.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: "Stefan Binding (Opensource)" <sbinding@opensource.cirrus.com>,
+	=?ISO-8859-1?Q?=27C=E1ssio?= Gabriel' <cassiogabrielcontato@gmail.com>,
+	'David Rhodes' <david.rhodes@cirrus.com>,	'Richard Fitzgerald'
+ <rf@opensource.cirrus.com>,	'Takashi Iwai' <tiwai@suse.com>,	'Vitaly
+ Rodionov' <vitalyr@opensource.cirrus.com>,	'Jaroslav Kysela'
+ <perex@perex.cz>,	linux-sound@vger.kernel.org,
+	patches@opensource.cirrus.com,	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] ALSA: hda/cs35l41: Fix firmware load work teardown
+In-Reply-To: <agdAlJek88n6K53H@opensource.cirrus.com>
+References: <20260511-alsa-hda-cs35l41-fw-work-teardown-v1-1-1184e9bc4f25@gmail.com>
+	<agbxffucE1h67TRI@opensource.cirrus.com>
+	<002f01dce47c$a7859760$f690c620$@opensource.cirrus.com>
+	<agdAlJek88n6K53H@opensource.cirrus.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5337C552CED
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 08021552D14
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com,goodmis.org,kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[opensource.cirrus.com,gmail.com,cirrus.com,suse.com,perex.cz,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-247992-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247972-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cirrus.com:email,suse.de:mid,suse.de:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: David Carlier <devnexen@gmail.com>
+On Fri, 15 May 2026 17:49:40 +0200,
+Charles Keepax wrote:
+> 
+> On Fri, May 15, 2026 at 04:08:14PM +0100, Stefan Binding (Opensource) wrote:
+> > > -----Original Message-----
+> > > 
+> > > @Stefan, could you also please have a look.
+> > 
+> > I think this is fine to do, and I did some tests to make sure it doesnt
+> > break anything.
+> > Reviewed-by: Stefan Binding <sbinding@opensource.cirrus.com>
+> 
+> If Stefan is happy so I am :-)
 
-[ Upstream commit f67950b2887fa10df50c4317a1fe98a65bc6875b ]
+OK, let's take it and see whether everything works.
 
-Commit d2603279c7d6 ("eventfs: Use list_del_rcu() for SRCU protected
-list variable") converted the removal side to pair with the
-list_for_each_entry_srcu() walker in eventfs_iterate(). The insertion
-in eventfs_create_dir() was left as a plain list_add_tail(), which on
-weakly-ordered architectures can expose a new entry to the SRCU reader
-before its list pointers and fields are observable.
+As this doesn't look like a particularly urgent fix, I apply to
+for-next branch for 7.2.
 
-Use list_add_tail_rcu() so the publication pairs with the existing
-list_del_rcu() and list_for_each_entry_srcu().
 
-Fixes: 43aa6f97c2d0 ("eventfs: Get rid of dentry pointers without refcounts")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260418152251.199343-1-devnexen@gmail.com
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-[ adapted scoped_guard(mutex, &eventfs_mutex) block to explicit mutex_lock()/mutex_unlock() pair ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/tracefs/event_inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+thanks,
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 0d2bc92b760f3..02d56ed6ad20e 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -732,7 +732,7 @@ struct eventfs_inode *eventfs_create_dir(const char *name, struct eventfs_inode
- 
- 	mutex_lock(&eventfs_mutex);
- 	if (!parent->is_freed)
--		list_add_tail(&ei->list, &parent->children);
-+		list_add_tail_rcu(&ei->list, &parent->children);
- 	mutex_unlock(&eventfs_mutex);
- 
- 	/* Was the parent freed? */
--- 
-2.53.0
-
+Takashi
 
