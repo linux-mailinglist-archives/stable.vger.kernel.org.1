@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-248811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAuLA9ZUB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:06 +0200
+	id 2MUzM+VLB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-247983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:37:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E40F554B4C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC7B5539DE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:37:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2A0731676DF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 194593246911
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA803F6C39;
-	Fri, 15 May 2026 16:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CF62EAB82;
+	Fri, 15 May 2026 15:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbwUq/BC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Elppxxvt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2179F3F44E4;
-	Fri, 15 May 2026 16:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDB53FF1DD;
+	Fri, 15 May 2026 15:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862692; cv=none; b=S6tg6xrTRSSx9CY7XMV2oSfg6DtHFLtxyTKN57RGZ/SBkCMxnWVzPUDbBaOETO+4eOAARVADPdb3zhiJvS+DytFRhQjnsVe6sHkOo7zgWZz4wEZ2nX1H4wYg7XK64C8xmmh44azPFTn01TYTBv9gGtCn3Y5CuTEYkx5c7K+7zWg=
+	t=1778860570; cv=none; b=fLNwvtioGkReGQwPvglWL7394jFozOGU4RkmtUO7dLxckOM0KX9EvXtUdaXfWiJQYgHDthhZiuIyotU16TFoiVWfMc5/c5bjx9ZMl4bkraQPncmkZMa/sYeSAYwG2+rHtKjkaxbfIk8RHdaxJ72SQFFYBjl/B8yOH+xP8kw/hnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862692; c=relaxed/simple;
-	bh=4CFEq1RwosnZv4zJrcn5N77lxpDguNW9+R+e1GwimXk=;
+	s=arc-20240116; t=1778860570; c=relaxed/simple;
+	bh=P3ACb67MwP7Kaq63IkghA9vJ/2Z3q2qOQzBP60+Ybt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sfaJJohpUAmRc+iAsVE93Ie1ZYnThDUIrdD5flXElYHlYTRcqAKjnYF6rQJqxpBNPDJAq5nqgNp9ZJNSkLxgPabhwAI332rmO1xjM0pgaxblAe4c4iTtP+XkfzI/sNEKCbv5GK00g/mx87cyuhvfkOTgJnkD6aIqNJRPpJSUy6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbwUq/BC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1733C2BCC7;
-	Fri, 15 May 2026 16:31:31 +0000 (UTC)
+	 MIME-Version; b=Gfm/lR7NdTEcuoRGAINLUtqjD+7uEWx5Mrg1bm46Z6fXR0xao/7kWIfIFnnI4ixPUFEmGyW2KBNfAmMB4HAiQT5C3TZhs4XP1hNHred5BKdi3NMDbpj5wR3FwJmG+i1WaYGc1MhtIvQlZ5izW4TR5+nNjay0IUvmiYZ5M+EMSJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Elppxxvt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C316BC2BCB0;
+	Fri, 15 May 2026 15:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862692;
-	bh=4CFEq1RwosnZv4zJrcn5N77lxpDguNW9+R+e1GwimXk=;
+	s=korg; t=1778860570;
+	bh=P3ACb67MwP7Kaq63IkghA9vJ/2Z3q2qOQzBP60+Ybt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kbwUq/BCp1ihBMuwXK26TfoF6zmMcdrCOGyi3IOZxV5uYvDHKE0xxBr1LzMU1fmO9
-	 QAbYsnkfR6qa6D4yzmXYXgxKZsbKidm875GX38AaWsGkB5qHdGwdoZUtJdgwT086fV
-	 ol3ZEWn9oHPJSsEtQgtSmAFt0CHpD4qiTivMRXqw=
+	b=ElppxxvtigMgF4llAuUu+/rwa91Vb39L+Na9vxq5T8rOPQ6CXM2v+SA+w3cRDODTR
+	 +vTTwTpiO4H7Qm5s+ICZ+h+00NcOpCyXofsD0LyH3gB6xyh+y70ygjmDjNXoijFji5
+	 v10vbYxPx42ioBhA+ZJkn6AskBpBCA6p2aYWwltw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Shubhankar Milind Sardeshpande <Shubhankar.MilindSardeshpande@amd.com>
-Subject: [PATCH 7.0 147/201] drm/amdgpu: Avoid reset in AMDGPU unload path for APUs with GFX V11 and higher.
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Arseniy Krasnov <avkrasnov@rulkc.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>
+Subject: [PATCH 6.12 139/144] vsock/virtio: fix length and offset in tap skb for split packets
 Date: Fri, 15 May 2026 17:49:25 +0200
-Message-ID: <20260515154701.754293621@linuxfoundation.org>
+Message-ID: <20260515154656.748129069@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +67,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6E40F554B4C
+X-Rspamd-Queue-Id: 4EC7B5539DE
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247983-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248811-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,rulkc.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,meta.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shubhankar Milind Sardeshpande <Shubhankar.MilindSardeshpande@amd.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-commit 47776ac1e3f4a2aefcf7fe7c7e4a11151b676222 upstream.
+commit 5f344d809e015fba3709e5219428c00b8ac5d7df upstream.
 
-GFX V11 has GC block as default off IP.
-Every time AMDGPU driver sends a request to PMFW
-to unload MP1, PMFW will put GC in reset and
-power down the voltage.Hence, skipping reset
-for APUs with GFX V11 or later to avoid reset
-related failures.
+virtio_transport_build_skb() builds a new skb to be delivered to the
+vsockmon tap device. To build the new skb, it uses the original skb
+data length as payload length, but as the comment notes, the original
+packet stored in the skb may have been split in multiple packets, so we
+need to use the length in the header, which is correctly updated before
+the packet is delivered to the tap, and the offset for the data.
 
-Fixes: 34355e61835e ("drm/amdgpu: Fix GFX hang on SteamDeck when amdgpu is reloaded")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Shubhankar Milind Sardeshpande <Shubhankar.MilindSardeshpande@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d0a8cadffc818f51d05bc234d8da1af228bc59a3)
-Cc: stable@vger.kernel.org
+This was also similar to what we did before commit 71dc9ec9ac7d
+("virtio/vsock: replace virtio_vsock_pkt with sk_buff") where we probably
+missed something during the skb conversion.
+
+Also update the comment above, which was left stale by the skb
+conversion and still mentioned a buffer pointer that no longer exists.
+
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Reviewed-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+Link: https://patch.msgid.link/20260508164411.261440-2-sgarzare@redhat.com
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Luigi Leonardi <leonardi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/vmw_vsock/virtio_transport_common.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3539,8 +3539,12 @@ static int amdgpu_device_ip_fini_early(s
- 	 * that checks whether the PSP is running. A solution for those issues
- 	 * in the APU is to trigger a GPU reset, but this should be done during
- 	 * the unload phase to avoid adding boot latency and screen flicker.
-+	 * GFX V11 has GC block as default off IP. Every time AMDGPU driver sends
-+	 * a request to PMFW to unload MP1, PMFW will put GC in reset and power down
-+	 * the voltage. Hence, skipping reset for APUs with GFX V11 or later.
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -170,12 +170,12 @@ static struct sk_buff *virtio_transport_
+ 	struct sk_buff *skb;
+ 	size_t payload_len;
+ 
+-	/* A packet could be split to fit the RX buffer, so we can retrieve
+-	 * the payload length from the header and the buffer pointer taking
+-	 * care of the offset in the original packet.
++	/* A packet could be split to fit the RX buffer, so we use
++	 * the payload length from the header, which has been updated
++	 * by the sender to reflect the fragment size.
  	 */
--	if ((adev->flags & AMD_IS_APU) && !adev->gmc.is_app_apu) {
-+	if ((adev->flags & AMD_IS_APU) && !adev->gmc.is_app_apu &&
-+		amdgpu_ip_version(adev, GC_HWIP, 0) < IP_VERSION(11, 0, 0)) {
- 		r = amdgpu_asic_reset(adev);
- 		if (r)
- 			dev_err(adev->dev, "asic reset on %s failed\n", __func__);
+ 	pkt_hdr = virtio_vsock_hdr(pkt);
+-	payload_len = pkt->len;
++	payload_len = le32_to_cpu(pkt_hdr->len);
+ 
+ 	skb = alloc_skb(sizeof(*hdr) + sizeof(*pkt_hdr) + payload_len,
+ 			GFP_ATOMIC);
+@@ -223,7 +223,8 @@ static struct sk_buff *virtio_transport_
+ 
+ 			virtio_transport_copy_nonlinear_skb(pkt, data, payload_len);
+ 		} else {
+-			skb_put_data(skb, pkt->data, payload_len);
++			skb_put_data(skb, pkt->data + VIRTIO_VSOCK_SKB_CB(pkt)->offset,
++				     payload_len);
+ 		}
+ 	}
+ 
 
 
 
