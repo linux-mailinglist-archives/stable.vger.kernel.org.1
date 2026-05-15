@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-248164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248175-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HurGl5UB2oqywIAu9opvQ
-	(envelope-from <stable+bounces-248164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:14:06 +0200
+	id 4LqNMY5IB2rUwQIAu9opvQ
+	(envelope-from <stable+bounces-248175-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:23:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE12554A77
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C44B553259
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 744E030AC2B8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:04:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE1EF3126105
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB583E0096;
-	Fri, 15 May 2026 16:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825373E0083;
+	Fri, 15 May 2026 16:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mbe1Iv4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ijp6RgYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAC830568A;
-	Fri, 15 May 2026 16:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466392EAB82;
+	Fri, 15 May 2026 16:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861035; cv=none; b=H/uH9BC/Teo4cHaZaAdpj0tigeQw2mVXyKxNcO2TJWXu9jWMoIGNawxXn4X7/gIDgL8KNwKSrpzBboDkefpcJnSaI4Xn5B30lfwlKADQxDXyEXzRthl2mvxquWZGtmePldAHmmx7c4SWF8zXblmoheAoPKBaa4+gvKjBYJZT4gg=
+	t=1778861065; cv=none; b=O4pdSw9karj5QXiJvG5h5EKYBuqfdVCYblGn/A2WpjPjFvsSFjV+p7TvhQoCgv8nmo23LVW0NPPggAhB1PFVLcadfn2MxdfYClitrvmQNXitX3Ro33czPxW4kh75mXNW4Q8IXBvuqRTjVlsY2WTi2iATKZdg3HnpTiixv/nwhko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861035; c=relaxed/simple;
-	bh=bSijuh4BowO1bp3Exmq/lsLFuiq3+KZBNdb5j7JGnOo=;
+	s=arc-20240116; t=1778861065; c=relaxed/simple;
+	bh=YxU40DjLlder0NQTZyAeVQ4Ut2lmg4ED/u4759l8lUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HiTm101hQkyXPjsssaYpk7rcVIuH3jaXrwhusb3UrNz3KckEjixyA5boqanXCzs07r+46jN9umrXySDv0LaSkJ/uJfTxh4RZt7PLAM3uopaWHvfdG9I0xhotmU/e6SnmZP7KkrBEhw/YjnIa0BGcdJkUxF6dBZ05gVgxnirop4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mbe1Iv4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CF5C2BCB0;
-	Fri, 15 May 2026 16:03:54 +0000 (UTC)
+	 MIME-Version; b=U4h5M2p0wcxUWgIWQUG6KqrKtPw6dWLv2sE/wUh8kuoOV72z5xbQULjaIFhrnyqn36btuhh54XtA1M5Tk/xRipltB1lmTgNMI4vuAKLYk1Alm5+NFsfFE2ud4H1y6KW6rhNfeYJMG8K90JMwrq6E5F4ha2aRj4UpZWajarP5Q7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ijp6RgYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC11AC2BCB0;
+	Fri, 15 May 2026 16:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861035;
-	bh=bSijuh4BowO1bp3Exmq/lsLFuiq3+KZBNdb5j7JGnOo=;
+	s=korg; t=1778861065;
+	bh=YxU40DjLlder0NQTZyAeVQ4Ut2lmg4ED/u4759l8lUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mbe1Iv4MyEcDFd0DA9wB77KhuhIzKjbdFgudOIwk8+rhNh3YlKX9mASoi5vDDvdHZ
-	 Go67V5Z6sU+Ffcp+z/YzpVFa8SCb4qDN0vIVrbBgI6mEjlgIyLMrdcFRT0GsvhM/Gn
-	 uo6+b87OkGrxHN4s46fmfavzY7rg5FIquIbdoVIs=
+	b=Ijp6RgYiH9NigC+d/yfqaPTfR1wNSVWVIWQggCgEhNp9eOxtfFRSBjpkILEHPkXfg
+	 sEaGasfE45Etbt/bx3dWynXZyz9FyX5piSnkUVMjjADRY7na+xD59rEm/JA701wVc/
+	 mHsXHsoKhYa3jaYUmIHZm1M/K5nP4QWMz7jhbQ3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/474] x86/shstk: Prevent deadlock during shstk sigreturn
-Date: Fri, 15 May 2026 17:44:26 +0200
-Message-ID: <20260515154718.422478475@linuxfoundation.org>
+Subject: [PATCH 6.6 158/474] spi: meson-spicc: Fix double-put in remove path
+Date: Fri, 15 May 2026 17:44:27 +0200
+Message-ID: <20260515154718.444319397@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -63,170 +66,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0AE12554A77
+X-Rspamd-Queue-Id: 4C44B553259
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248164-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248175-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,163.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 9874b2917b9fbc30956fee209d3c4aa47201c64e ]
+[ Upstream commit 63542bb402b7013171c9f621c28b609eda4dbf1f ]
 
-During sigreturn the shadow stack signal frame is popped. The kernel does
-this by reading the shadow stack using normal read accesses. When it can't
-assume the memory is shadow stack, it takes extra steps to makes sure it is
-reading actual shadow stack memory and not other normal readable memory. It
-does this by holding the mmap read lock while doing the access and checking
-the flags of the VMA.
+meson_spicc_probe() registers the controller with
+devm_spi_register_controller(), so teardown already drops the
+controller reference via devm cleanup.
 
-Unfortunately that is not safe. If the read of the shadow stack sigframe
-hits a page fault, the fault handler will try to recursively grab another
-mmap read lock. This normally works ok, but if a writer on another CPU is
-also waiting, the second read lock could fail and cause a deadlock.
+Calling spi_controller_put() again in meson_spicc_remove()
+causes a double-put.
 
-Fix this by doing the read of the userspace memory via gup. Embed it in the
-get_shstk_data() helper.
-
-Currently there is a check that skips the lookup work when the SSP can be
-assumed to be on a shadow stack. While reorganizing the function, remove
-the optimization to make the tricky code flows more common, such that
-issues like this cannot escape detection for so long.
-
-[Due to missing per-vma MM sequence counter, use a simpler GUP based
-solution for the backport]
-Cc: <stable@vger.kernel.org> # Depends on https://lore.kernel.org/all/20260504205924.536382-1-rick.p.edgecombe@intel.com/
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ In v6.6, commit 68bf3288c7eb ("spi: meson-spicc: switch to use modern name")
+has not been applied, so the driver still uses the legacy spicc->master field
+and spi_master_put() API. The line to remove is spi_master_put(spicc->master)
+rather than spi_controller_put(spicc->host) as in the upstream patch.
+They are functionally identical. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/shstk.c | 46 ++++++++++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 17 deletions(-)
+ drivers/spi/spi-meson-spicc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index d259d7d5b962f..ba93c4e6a2319 100644
---- a/arch/x86/kernel/shstk.c
-+++ b/arch/x86/kernel/shstk.c
-@@ -18,6 +18,7 @@
- #include <linux/sizes.h>
- #include <linux/user.h>
- #include <linux/syscalls.h>
-+#include <linux/highmem.h>
- #include <asm/msr.h>
- #include <asm/fpu/xstate.h>
- #include <asm/fpu/types.h>
-@@ -262,11 +263,29 @@ static int put_shstk_data(u64 __user *addr, u64 data)
- 	return 0;
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 43d134f4b42b1..de8cf91658fd5 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -918,8 +918,6 @@ static void meson_spicc_remove(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(spicc->core);
+ 	clk_disable_unprepare(spicc->pclk);
+-
+-	spi_master_put(spicc->master);
  }
  
-+/* Copy from aligned address in userspace without risk of page fault. */
-+static int shstk_copy_user_gup(unsigned long *ldata, unsigned long __user *addr)
-+{
-+	struct page *page;
-+	void *kaddr;
-+
-+	mmap_assert_locked(current->mm);
-+	if (get_user_pages((unsigned long)addr, 1, 0, &page) != 1)
-+		return -EFAULT;
-+
-+	kaddr = kmap_local_page(page);
-+	*ldata = *(unsigned long *)(kaddr + offset_in_page(addr));
-+	kunmap_local(kaddr);
-+	put_page(page);
-+
-+	return 0;
-+}
-+
- static int get_shstk_data(unsigned long *data, unsigned long __user *addr)
- {
- 	unsigned long ldata;
- 
--	if (unlikely(get_user(ldata, addr)))
-+	if (shstk_copy_user_gup(&ldata, addr))
- 		return -EFAULT;
- 
- 	if (!(ldata & SHSTK_DATA_BIT))
-@@ -296,7 +315,6 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- {
- 	struct vm_area_struct *vma;
- 	unsigned long token_addr;
--	bool need_to_check_vma;
- 	int err = 1;
- 
- 	/*
-@@ -308,26 +326,21 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- 	if (!IS_ALIGNED(*ssp, 8))
- 		return -EINVAL;
- 
--	need_to_check_vma = PAGE_ALIGN(*ssp) == *ssp;
--
--	if (need_to_check_vma)
--		if (mmap_read_lock_killable(current->mm))
--			return -EINTR;
-+	if (mmap_read_lock_killable(current->mm))
-+		return -EINTR;
- 
- 	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
- 	if (unlikely(err))
- 		goto out_err;
- 
--	if (need_to_check_vma) {
--		vma = find_vma(current->mm, *ssp);
--		if (!vma || !(vma->vm_flags & VM_SHADOW_STACK)) {
--			err = -EFAULT;
--			goto out_err;
--		}
--
--		mmap_read_unlock(current->mm);
-+	vma = find_vma(current->mm, *ssp);
-+	if (!vma || !(vma->vm_flags & VM_SHADOW_STACK)) {
-+		err = -EFAULT;
-+		goto out_err;
- 	}
- 
-+	mmap_read_unlock(current->mm);
-+
- 	/* Restore SSP aligned? */
- 	if (unlikely(!IS_ALIGNED(token_addr, 8)))
- 		return -EINVAL;
-@@ -340,8 +353,7 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- 
- 	return 0;
- out_err:
--	if (need_to_check_vma)
--		mmap_read_unlock(current->mm);
-+	mmap_read_unlock(current->mm);
- 	return err;
- }
- 
+ static const struct meson_spicc_data meson_spicc_gx_data = {
 -- 
 2.53.0
 
