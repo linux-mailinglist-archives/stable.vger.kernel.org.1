@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-247582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIUrCPjdBmp4ogIAu9opvQ
-	(envelope-from <stable+bounces-247582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:48:56 +0200
+	id eH4oGBPdBmoxogIAu9opvQ
+	(envelope-from <stable+bounces-247585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:45:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7456B54BB19
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:48:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F340254BA4A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C04ED30DEAB2
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:38:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E3343067DE0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67FD401A3B;
-	Fri, 15 May 2026 08:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC8D426EDF;
+	Fri, 15 May 2026 08:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvUAHa47"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1SFXGuU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EA03B4EB3
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 08:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32374426ECB
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 08:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778834318; cv=none; b=Gssfb5Vlq7+CUd+via77qjzmUFeCAmgrpO8NugHfO4kjatu/dWegxlHgfr3ubQLisFiAUA2VAaomd+dZLZ4YpymECleRfEh9SQpsfWh3iozFJDETAMOPM5We/MaaTPHPS8JwgA2TpodXszbYnxwkXp53WRoSbZfi9o22vQXPwMI=
+	t=1778834351; cv=none; b=fME92mm94B6vNUvb6opzwFEFaAoyem/uBevctGeYGTaJofwVcoA8lIwJZyzVxXrIocXZh1DP/NBQyeUdtoKkmOedo3y8yn211cyonD0/0tEyPtsf7CZJo43WExb8zKQO38XjyujX8YVQw5ry8kZUmkhNPLjtCK2JY04X5HS8U7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778834318; c=relaxed/simple;
-	bh=l7kOkP8AuUEIQkBeB3ty2HNITmNnGl7Y0r6YidHjxas=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ND5nSufgomTdg6z182X4tzeA6xgRqyqZxXGx03pmTXoLQ/aTMfGc9wpbpYR2PUk8jsE9bBF7ZwAeEzzjPOXyd8zPoWJcZmN4JajxExuFAALwVGc1FY99bVPgeaGbnn5R3Ah2LoidkSapeK+FFaC1UUK2pANRGaUS5uOe3vhaBRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvUAHa47; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36838C2BCB0;
-	Fri, 15 May 2026 08:38:38 +0000 (UTC)
+	s=arc-20240116; t=1778834351; c=relaxed/simple;
+	bh=EdHSCWHcl2A9xezgsNkBJF1WA1m0Jxacc2jBHU5Krr8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KvYtQamzebEjI/fWPahwaR9wlA05dvJWqPoMELV6gCdyd+akHLP0mM3l8xMhukkNrj3VqDPR5e25w2sg6HwkB62FEMN1ZCZdX0LYHvTNB3bvh8b5o+IGcFxQ1W8o225/muSyfGFyzBw3M89HTqchT4c9B/i3Hf2vMJhESWE5qgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1SFXGuU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A82C2BCC7;
+	Fri, 15 May 2026 08:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778834318;
-	bh=l7kOkP8AuUEIQkBeB3ty2HNITmNnGl7Y0r6YidHjxas=;
+	s=korg; t=1778834350;
+	bh=EdHSCWHcl2A9xezgsNkBJF1WA1m0Jxacc2jBHU5Krr8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZvUAHa47GLTw2j7I5mGztFGjuqx/ySIab2G45PcCrQjriylCIxiqND91djzcVX5pd
-	 37Tk2KFBTYn6YLZ6L61YhfC7leljqg7dYR2C3vF2FXyOIWYcdjFhWbT1pgbQvaKJW7
-	 yTqfdpnLANeqHx86z+0dqjjX9P7u93PJD6Sz5doQ=
-Subject: FAILED: patch "[PATCH] drm/udl: Increase GET_URB_TIMEOUT" failed to apply to 5.15-stable tree
-To: oushixiong@kylinos.cn,stable@vger.kernel.org,tzimmermann@suse.de
+	b=l1SFXGuUdf3Rf7+4PGlwvmvqHlW3BflmxHqx2u9kSrx8ef+FnYyDpQMrkHNP+51rh
+	 QiodMbbXFVeIL0XNobV9sdA2UIjbYfYe/evKAFvNO0nIvMCG3vvp7SMEz448S0lzBf
+	 gY0KDE3NBcTTna7K2MUI0RokWxX+MrYVerhbBl7c=
+Subject: FAILED: patch "[PATCH] drm/xe/uapi: Reject coh_none PAT index for CPU_ADDR_MIRROR" failed to apply to 7.0-stable tree
+To: jia.yao@intel.com,alwin.mathew@intel.com,matthew.auld@intel.com,matthew.brost@intel.com,michal.mrozek@intel.com,rodrigo.vivi@intel.com,shuicheng.lin@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 May 2026 10:38:32 +0200
-Message-ID: <2026051532-divisibly-poise-2b9c@gregkh>
+Date: Fri, 15 May 2026 10:39:14 +0200
+Message-ID: <2026051514-backstab-kindly-3994@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,52 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7456B54BB19
+X-Rspamd-Queue-Id: F340254BA4A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247582-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247585-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-0.998];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,linuxfoundation.org:dkim,gregkh:email,suse.de:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:email,msgid.link:url,intel.com:email,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 7.0-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
 git checkout FETCH_HEAD
-git cherry-pick -x ac2c996675755c725a0065dbe3e2ebffded9080b
+git cherry-pick -x 662f9ddc8077792129440d05cbef2f944a07777a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051532-divisibly-poise-2b9c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051514-backstab-kindly-3994@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,71 +111,71 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ac2c996675755c725a0065dbe3e2ebffded9080b Mon Sep 17 00:00:00 2001
-From: Shixiong Ou <oushixiong@kylinos.cn>
-Date: Fri, 24 Apr 2026 20:44:27 +0800
-Subject: [PATCH] drm/udl: Increase GET_URB_TIMEOUT
+From 662f9ddc8077792129440d05cbef2f944a07777a Mon Sep 17 00:00:00 2001
+From: Jia Yao <jia.yao@intel.com>
+Date: Fri, 17 Apr 2026 05:59:17 +0000
+Subject: [PATCH] drm/xe/uapi: Reject coh_none PAT index for CPU_ADDR_MIRROR
 
-[WHY]
-A situation has occurred where udl_handle_damage() executed successfully
-and the kernel log appears normal, but the display fails to show any output.
-This is because the call to udl_get_urb() in udl_crtc_helper_atomic_enable()
-failed without generating any error message.
+Add validation in xe_vm_bind_ioctl() to reject PAT indices
+with XE_COH_NONE coherency mode when used with
+DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR.
 
-[HOW]
-1. Increase timeout of getting urb.
-2. Add error messages when calling udl_get_urb() failed in
-udl_crtc_helper_atomic_enable().
+CPU address mirror mappings use system memory that is CPU
+cached, which makes them incompatible with COH_NONE PAT
+indices. Allowing COH_NONE with CPU cached buffers is a
+security risk, as the GPU may bypass CPU caches and read
+stale sensitive data from DRAM.
 
-Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 5320918b9a87 ("drm/udl: initial UDL driver (v4)")
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: <stable@vger.kernel.org> # v3.4+
-Link: https://patch.msgid.link/20260424124427.657-1-oushixiong1025@163.com
+Although CPU_ADDR_MIRROR does not create an immediate
+mapping, the backing system memory is still CPU cached.
+Apply the same PAT coherency restrictions as
+DRM_XE_VM_BIND_OP_MAP_USERPTR.
 
-diff --git a/drivers/gpu/drm/udl/udl_main.c b/drivers/gpu/drm/udl/udl_main.c
-index 08a0e9480d70..17950fe3a0ec 100644
---- a/drivers/gpu/drm/udl/udl_main.c
-+++ b/drivers/gpu/drm/udl/udl_main.c
-@@ -285,13 +285,12 @@ static struct urb *udl_get_urb_locked(struct udl_device *udl, long timeout)
- 	return unode->urb;
- }
- 
--#define GET_URB_TIMEOUT	HZ
- struct urb *udl_get_urb(struct udl_device *udl)
- {
- 	struct urb *urb;
- 
- 	spin_lock_irq(&udl->urbs.lock);
--	urb = udl_get_urb_locked(udl, GET_URB_TIMEOUT);
-+	urb = udl_get_urb_locked(udl, HZ * 2);
- 	spin_unlock_irq(&udl->urbs.lock);
- 	return urb;
- }
-diff --git a/drivers/gpu/drm/udl/udl_modeset.c b/drivers/gpu/drm/udl/udl_modeset.c
-index 231e829bd709..1ca073a4ecb2 100644
---- a/drivers/gpu/drm/udl/udl_modeset.c
-+++ b/drivers/gpu/drm/udl/udl_modeset.c
-@@ -21,6 +21,7 @@
- #include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_gem_shmem_helper.h>
- #include <drm/drm_modeset_helper_vtables.h>
-+#include <drm/drm_print.h>
- #include <drm/drm_probe_helper.h>
- #include <drm/drm_vblank.h>
- 
-@@ -342,8 +343,10 @@ static void udl_crtc_helper_atomic_enable(struct drm_crtc *crtc, struct drm_atom
- 		return;
- 
- 	urb = udl_get_urb(udl);
--	if (!urb)
-+	if (!urb) {
-+		drm_err_ratelimited(dev, "get urb failed when enabling crtc\n");
- 		goto out;
-+	}
- 
- 	buf = (char *)urb->transfer_buffer;
- 	buf = udl_vidreg_lock(buf);
+v2:
+- Correct fix tag
+
+v6:
+- No change
+
+v7:
+- Correct fix tag
+
+v8:
+- Rebase
+
+v9:
+- Limit the restrictions to iGPU
+
+v10:
+- Just add the iGPU logic but keep dGPU logic
+
+Fixes: b43e864af0d4 ("drm/xe/uapi: Add DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR")
+Cc: <stable@vger.kernel.org> # v6.15+
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Mathew Alwin <alwin.mathew@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Jia Yao <jia.yao@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Acked-by: Michal Mrozek <michal.mrozek@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patch.msgid.link/20260417055917.2027459-3-jia.yao@intel.com
+(cherry picked from commit 4d58d7535e826a3175527b6174502f0db319d7f6)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 1720205c09ca..a717a2b8dea3 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -3658,6 +3658,8 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
+ 				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
+ 		    XE_IOCTL_DBG(xe, coh_mode == XE_COH_NONE &&
+ 				 op == DRM_XE_VM_BIND_OP_MAP_USERPTR) ||
++		    XE_IOCTL_DBG(xe, !IS_DGFX(xe) && coh_mode == XE_COH_NONE &&
++				 is_cpu_addr_mirror) ||
+ 		    XE_IOCTL_DBG(xe, xe_device_is_l2_flush_optimized(xe) &&
+ 				 (op == DRM_XE_VM_BIND_OP_MAP_USERPTR ||
+ 				  is_cpu_addr_mirror) &&
 
 
