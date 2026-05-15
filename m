@@ -1,204 +1,202 @@
-Return-Path: <stable+bounces-247651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAEFAKb6BmoKqQIAu9opvQ
-	(envelope-from <stable+bounces-247651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:51:18 +0200
+	id oIj6Du78BmoeqgIAu9opvQ
+	(envelope-from <stable+bounces-247652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:01:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F380254DB84
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:51:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1403654DF15
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E78583066B51
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:29:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6833231086AB
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243E33D0BF9;
-	Fri, 15 May 2026 10:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40123AC0E4;
+	Fri, 15 May 2026 10:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gS/aLJdf"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="iIjdiexk";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ri+b1213"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44023C3422;
-	Fri, 15 May 2026 10:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6F03033E1
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 10:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778840937; cv=none; b=Z1z/CS213QJzqp5py1oDKDnXzzo3cEuOBZrsdDO1X68llnLWomGy8isV4sad4fK8amX4U9WZqjDwBnXivAmPPfgPVyyM+y9via3cYmT3hzp6sXaZP2JYacFDydXaYsIDuID5cgvJnmai3PU5+UOtX7wwUquxZVp6MrRdXSCgfN4=
+	t=1778841055; cv=none; b=MNbTfO3IR1ItiH5iiHpjYYHUJ1vckr6FFRqdThdAonW3MqMp9Krfg6Tb8vs76XzHgHdHxCUJXF8jzxzhyCDJu1uxCQACDLZjYJmJHciFTYx1oW+cP3MVqOwu2d4L4FTtND0OKejjnq533++p9iDlKxJFdYtW+DvHLdPsddHzYmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778840937; c=relaxed/simple;
-	bh=y2KsAyUCMOwgJGzqhlQw13mkwi83vxy6o+v19R/wxaY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mB1ns5e+YcJfSmhS19XiJdHJuYDOFXlmhPLH2vYa/B54zjrbSd5UOqpD/NPVUhU7m/6+BTHb6OLcs0sCDwiNxbr+4q21czXLdUDZDY4PCTQZPx/i7DaRG7E7oI+8K30vjH+Y4Lecc/imeoQ1nxi2ZbwVK3YnDB3T2X6DuIra1hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gS/aLJdf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7A914C2BCB0;
-	Fri, 15 May 2026 10:28:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778840937;
-	bh=y2KsAyUCMOwgJGzqhlQw13mkwi83vxy6o+v19R/wxaY=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=gS/aLJdfXJ9Ef1Ag85wiXok+2pEsfwv2c4tM8G0d07KrSSbyRkFEGC5/7OVJMoaTR
-	 WvNhLK4/N0yTfRGG4Fv2S8tdoYcwbUKjiQFirJFOERrTtVzDjazuDMomAov4yZebuN
-	 5P86aUqIoIzVfMub3R/3CLxhl9CO9NDazYxFa74g/BIHAHE0EaHEV1sNm42peUdgl6
-	 rNheoqtnQCBnUdiOwBX9Q9NgdUthLdbzOxkRFo1h98bGAfuLIxRIK0lPE3dpOFrP3g
-	 KkJHmLWtx14Wx7TA3lN0FIwN5rid8AjknNJG+Zo2F2im8kpECspIFjO+qCmja0OLRB
-	 WL54IRc1vs+Zw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69BB6CD4F25;
-	Fri, 15 May 2026 10:28:57 +0000 (UTC)
-From: Joshua Crofts via B4 Relay <devnull+joshua.crofts1.gmail.com@kernel.org>
-Date: Fri, 15 May 2026 12:28:23 +0200
-Subject: [PATCH v2] iio: magnetometer: ak8975: fix potential kernel stack
- memory leak
+	s=arc-20240116; t=1778841055; c=relaxed/simple;
+	bh=U3MR9U/zF81nffphZj13Vc5HRal0yX7ZT/1oDHJK3eI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dEou57SdUO9KaOxwSVXo4QsdQqFzd9JsBoznbF8xX6LwPtp6utuRXrvNOg3NUjFwBPO/VK3y8osBqnlKpvo9UFP8edsP4RXS5z6aE8quDGtSmSpbg2t3Cyx9SbiL1H8htJopFIG00Ohz+Jahyxw+g7IYVdwWVLBcsOgGTsIdgpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=iIjdiexk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ri+b1213; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 0EF46EC01AC;
+	Fri, 15 May 2026 06:30:53 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 15 May 2026 06:30:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1778841053; x=1778927453; bh=GD2M/WMAgN
+	HLH2hjbnkqutnbwxQPJpegUKTom8KmYts=; b=iIjdiexkPpxg9S/xYHwKBltjoo
+	HumaWYXLsWppPXaMoQRElxCQSDmD8+vseMNdwXhQN0O73Z/W70HWBrMWDcnc3aOl
+	n+dcU4tLW2ya0VUtU6uJbjJ5C6ZfHNQJGEYfy5tEkxhIOjoDkhruKx8I9ivsuzEE
+	CjrckprbmSeC4ioMMC1+Ohb21ul6n6QIUU+eUDaL4VUC7cBnWxjdg9hFOVpfxmA9
+	fmieqZPuNoBlSiPbpTvCkNIpBPLcDW29yijfCUbQMXL51sOhFTVVc0NkF3CMeiBT
+	tFmavZTpP3smgqPiU4Yo9tWPYlufqTthDkwU01PCcrhnRaX9v8GTLgpKe/cw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1778841053; x=1778927453; bh=GD2M/WMAgNHLH2hjbnkqutnbwxQPJpegUKT
+	om8KmYts=; b=Ri+b1213bwn+3zoqoZNokgyxuhC57fA6tykifBNWsz6x9gxcIdo
+	ruks+XW73jmDTjGDgM1APSZA2wdAokbW0Vg32qaU93OvA8XRp/nbDUpOiDfR9xmw
+	DNL2iHIhGHDaJ90DRJLBCThoRtJIPIl8D5D+PGjQXSyVIAXhX3ToCMJ+beg9lmx/
+	CI5GYc2b/PmnknZvjR1EWag6lSOCrKbpMjgxA4tJROIrDZS+YIPWyeynqFklq8UD
+	hWw1jyV3tyQFSNxDgaA0e2XaDxGO5fBWqb4x46i9WiLkn347T0zGlh75zg2pzxxR
+	KxVxQTEl4Q3C0t7z16Ts44xp14b/fx5O5Ng==
+X-ME-Sender: <xms:3PUGauRWsVlBmSRJu0pAOA1H98nNgLNe_UbiOvgjD3hML8Yo5lTWVw>
+    <xme:3PUGatFGsDqnJPw1qxqFPpK_7CLdR1jokVsNEHEcpWyrqgA1Yp9WAEmsLVrovM7T3
+    zR70BGq69pKX0taRppbE0F7I9v4N61xNT025w_mIgdHYv-L>
+X-ME-Received: <xmr:3PUGajG8z0nE_8LAjHWXZPXayxone4ewUP6NCb8wKv0aGy0YEYReWmIG8etPmpnuP-oiUwnLQJ5Mu3V3I0OR7sPBBg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufedtudeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepjeetueehte
+    ekuefhleehkeffffeiffeftedtieegkedviefggfefueffkefgueffnecuffhomhgrihhn
+    pehmshhgihgurdhlihhnkhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepiedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshgrshhhrghlsehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehrrghfrggvlhdrjhdrfiihshhotghkihesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:3PUGarRF45oO586UhUhyHHykLejRE58gl4MCFGbPJ4ULWKt1iRF42A>
+    <xmx:3PUGakLcXIuBg9wgAPikMnq8kPUoISL0Aqk-6wD4_3MZCAUf8EOvHw>
+    <xmx:3PUGamYYEww1rjBTi7EOY8BAUg2YbFbMBd7mH3FXsAZGpXSNP-LOCg>
+    <xmx:3PUGam_jWCnoZh2mcCdMXkO_emjB5oxGWVvPs4hINRZR77TrCTa9FQ>
+    <xmx:3fUGaofEOIFrIxQIMNdGSiOHBzi-z59NuDW_Fjw5giTJi3N7RndJfLm9>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 15 May 2026 06:30:52 -0400 (EDT)
+Date: Fri, 15 May 2026 12:30:57 +0200
+From: Greg KH <greg@kroah.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH 6.6.y] thermal: core: Free thermal zone ID later during
+ removal
+Message-ID: <2026051552-handcuff-immovably-7bf0@gregkh>
+References: <2026051204-dazzling-those-ecf3@gregkh>
+ <20260514192609.1258270-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260515-magnetometer-kernel-mem-leak-v2-1-320e1ad4843d@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAEb1BmoC/43NQQ6CMBCF4auYWTuGViDFlfcwLEY6wATampYQD
- eHuVk7g8nuL/22QOAonuJ02iLxKkuAz9PkE3Uh+YBSbDbrQdVGpEh0NnpfgeOGIE0fPMzp2ODN
- NaI0hU1ltqC4gJ16Re3kf+UebPUpaQvwcb6v6rX+GV4UKr9WzNLZump76++BI5ksXHLT7vn8BC
- 3Pz5MgAAAA=
-X-Change-ID: 20260514-magnetometer-kernel-mem-leak-d88a85d28a60
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Gregor Boirie <gregor.boirie@parrot.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org, 
- Joshua Crofts <joshua.crofts1@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778840936; l=2859;
- i=joshua.crofts1@gmail.com; s=20260422; h=from:subject:message-id;
- bh=DGUZ8ICq5s3dP8tVuyORKa78JXv6M2/K7bYZ13VS8lM=;
- b=WIr5H10DW5ZEdrIL5D81+NvLroUVPHffahavXKKec3pqdz7IrlycqW8IFlmV2j3w92IeXyTtW
- p2SU1eYxSOnD73S1Qwzt9d5kOmNpdg+UNzB/8ADA9aqgGJo302QQfn2
-X-Developer-Key: i=joshua.crofts1@gmail.com; a=ed25519;
- pk=Xd+UVoRPiiI0K3LHQ2XIcXmO0jvVuFTv9eTx3lgBphI=
-X-Endpoint-Received: by B4 Relay for joshua.crofts1@gmail.com/20260422 with
- auth_id=746
-X-Original-From: Joshua Crofts <joshua.crofts1@gmail.com>
-Reply-To: joshua.crofts1@gmail.com
-X-Rspamd-Queue-Id: F380254DB84
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260514192609.1258270-1-sashal@kernel.org>
+X-Rspamd-Queue-Id: 1403654DF15
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm3,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247651-lists,stable=lfdr.de,joshua.crofts1.gmail.com];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-247652-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,baylibre.com,analog.com,parrot.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_REPLYTO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_REPLYTO(0.00)[joshua.crofts1@gmail.com]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-From: Joshua Crofts <joshua.crofts1@gmail.com>
+On Thu, May 14, 2026 at 03:26:09PM -0400, Sasha Levin wrote:
+> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> 
+> [ Upstream commit daae9c18feec74566e023fc88cfb0ce26e39d868 ]
+> 
+> The thermal zone removal ordering is different from the thermal zone
+> registration rollback path ordering and the former is arguably
+> problematic because freeing a thermal zone ID prematurely may cause
+> it to be used during the registration of another thermal zone which
+> may fail as a result.
+> 
+> Prevent that from occurring by changing the thermal zone removal
+> ordering to reflect the thermal zone registration rollback path
+> ordering.
+> 
+> Also more the ida_destroy() call from thermal_zone_device_unregister()
+> to thermal_release() for consistency.
+> 
+> Fixes: b31ef8285b19 ("thermal core: convert ID allocation to IDA")
+> Cc: All applicable <stable@vger.kernel.org>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Link: https://patch.msgid.link/5063934.GXAFRqVoOG@rafael.j.wysocki
+> [ Context ]
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/thermal/thermal_core.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+> index 660a8d6f35673..f8f18c3ebdda4 100644
+> --- a/drivers/thermal/thermal_core.c
+> +++ b/drivers/thermal/thermal_core.c
+> @@ -804,6 +804,7 @@ static void thermal_release(struct device *dev)
+>  		     sizeof("thermal_zone") - 1)) {
+>  		tz = to_thermal_zone(dev);
+>  		thermal_zone_destroy_device_groups(tz);
+> +		ida_destroy(&tz->ida);
+>  		mutex_destroy(&tz->lock);
+>  		complete(&tz->removal);
+>  	} else if (!strncmp(dev_name(dev), "cooling_device",
+> @@ -1481,8 +1482,6 @@ void thermal_zone_device_unregister(struct thermal_zone_device *tz)
+>  	thermal_set_governor(tz, NULL);
+>  
+>  	thermal_remove_hwmon_sysfs(tz);
+> -	ida_free(&thermal_tz_ida, tz->id);
+> -	ida_destroy(&tz->ida);
+>  
+>  	device_del(&tz->device);
+>  	put_device(&tz->device);
+> @@ -1490,6 +1489,9 @@ void thermal_zone_device_unregister(struct thermal_zone_device *tz)
+>  	thermal_notify_tz_delete(tz_id);
+>  
+>  	wait_for_completion(&tz->removal);
+> +
+> +	ida_free(&thermal_tz_ida, tz->id);
+> +
+>  	kfree(tz->tzp);
+>  	kfree(tz);
+>  }
+> -- 
+> 2.53.0
+> 
+> 
 
-Currently in the AK8975 driver there are four instances where potential
-uninitialized kernel stack memory leaks can occur. If
-i2c_smbus_read_i2c_block_data_or_emulated() returns a value less than
-the size of the buffer, uninitialized bytes are retained in the buffer
-and later the buffer is passed on to IIO buffers, potentially leaking
-memory to userspace.
-
-Fix this by adding checks whether the return value of the function is
-equal to the size of the buffer and subsequently if the value is
-lesser than zero to distinguish from a returned error code.
-
-Fixes: bc11ca4a0b84 ("iio:magnetometer:ak8975: triggered buffer support")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260513-ak8975-fix-v1-1-104ea605dd54%40gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Crofts <joshua.crofts1@gmail.com>
----
-Changes in v2:
-- Added 2 additional checks
-- Removed nested if statements
-- Link to v1: https://lore.kernel.org/r/20260514-magnetometer-kernel-mem-leak-v1-1-35b48d699faf@gmail.com
----
- drivers/iio/magnetometer/ak8975.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index b648b0afa5733fd7a54bdf2b8f92f00e924c074b..e085c5a6583dfe40c653abf4936594a5acd08f51 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -495,6 +495,10 @@ static int ak8975_who_i_am(struct i2c_client *client,
- 		dev_err(&client->dev, "Error reading WIA\n");
- 		return ret;
- 	}
-+	if (ret != sizeof(wia_val)) {
-+		dev_err(&client->dev, "Error reading WIA\n");
-+		return -EIO;
-+	}
- 
- 	if (wia_val[0] != AK8975_DEVICE_ID)
- 		return -ENODEV;
-@@ -619,6 +623,10 @@ static int ak8975_setup(struct i2c_client *client)
- 		dev_err(&client->dev, "Not able to read asa data\n");
- 		return ret;
- 	}
-+	if (ret != sizeof(data->asa)) {
-+		dev_err(&client->dev, "Error reading asa data\n");
-+		return -EIO;
-+	}
- 
- 	/* After reading fuse ROM data set power-down mode */
- 	ret = ak8975_set_mode(data, POWER_DOWN);
-@@ -758,6 +766,10 @@ static int ak8975_read_axis(struct iio_dev *indio_dev, int index, int *val)
- 			sizeof(rval), (u8*)&rval);
- 	if (ret < 0)
- 		goto exit;
-+	if (ret != sizeof(rval)) {
-+		ret = -EIO;
-+		goto exit;
-+	}
- 
- 	/* Read out ST2 for release lock on measurement data. */
- 	ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
-@@ -873,6 +885,8 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
- 							(u8 *)fval);
- 	if (ret < 0)
- 		goto unlock;
-+	if (ret != sizeof(fval))
-+		goto unlock;
- 
- 	mutex_unlock(&data->lock);
- 
-
----
-base-commit: 86138b484d6367a57312f69af4ec958806c2673c
-change-id: 20260514-magnetometer-kernel-mem-leak-d88a85d28a60
-
-Best regards,
--- 
-Joshua Crofts <joshua.crofts1@gmail.com>
-
-
+Does not apply at all :(
 
