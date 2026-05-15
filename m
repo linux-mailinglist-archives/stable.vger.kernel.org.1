@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-248621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GE+CKhRQB2qayAIAu9opvQ
-	(envelope-from <stable+bounces-248621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:48 +0200
+	id GLQQFNFNB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41193554348
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1537553DF6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 165C131324B8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DC6983058413
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164583CB2D5;
-	Fri, 15 May 2026 16:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78DA83FBB6E;
+	Fri, 15 May 2026 16:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kK78ZvXi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF3zKv3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC59F3F8713;
-	Fri, 15 May 2026 16:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB1F3B635B;
+	Fri, 15 May 2026 16:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862201; cv=none; b=ax2C5w4InpIY/qDgeWFAGLBEDVn1ue1aUIIBjW/IUNOkxeabDH6eHjqP2Km3IsatZX/skW7n+jhy8nSlOrJXjI/yHZQxsN16VdOA82w80JwQSSjIrBTLMIMSVvbtq8EOscvXdY3001OorRmWZjppZdPSU8jwkze7CExd0XUc2Dk=
+	t=1778862207; cv=none; b=F59wMZheuRRA2I61GzWDPIGOUTyQcWnfdUYAyjvUHRHYmXRY6RwiEYC8Rq+ssyJwiC2G+QqfKxjElKlb0knHMg+JJYv2Zcy9LSPZKiCPy1AAIhDfAU2KK88ISZMD5qrmenkN3UX8+n7A72VARrQDbJ3qQoBjhnuvvmM6Ott7Z7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862201; c=relaxed/simple;
-	bh=pNiYf46NeCM0keVmYXm+u879sMZulyeinSiaMOfghi0=;
+	s=arc-20240116; t=1778862207; c=relaxed/simple;
+	bh=K440mouuK+4+OX2jhMw10pSgZ3/nIYshWhnRmGQFgWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhEWLJlIP1JhBvutnUSPOyinrO4UjGbCnQXlw0za+X9hx9yRRtWetWsvo1XCT0ab+nhA/9gzC3J26RVvKrjJtI/1YZhN+AER/3rKRMefH0YuN3mqehBiWCsW6ybHky1A7WwM9IdAGGArsxvYzxfWdZYy7qC9azhLWyKnlLaucjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kK78ZvXi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629EBC2BCB0;
-	Fri, 15 May 2026 16:23:21 +0000 (UTC)
+	 MIME-Version; b=W1QGCgt+9LKGZ300F+j0Vuv6oE9Tl3ieHetfyvjpoDL591muPnG6S59JRmsoDRNrsibz0Hp5qUR//X12AtcFDSsZjE7UOmHrKywgxOYtHI22X3DdDV2knyc22FczqtZtsQmUYVEbNJ/o+Qy4nRXmfsC94JBcVt5HMwhWOM77aLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF3zKv3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDB4C2BCB0;
+	Fri, 15 May 2026 16:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862201;
-	bh=pNiYf46NeCM0keVmYXm+u879sMZulyeinSiaMOfghi0=;
+	s=korg; t=1778862206;
+	bh=K440mouuK+4+OX2jhMw10pSgZ3/nIYshWhnRmGQFgWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kK78ZvXimdZkFZk6l9IFRhdGgdxfcY7Jj52pYgCwayES2slqnnCMS58MU3YqSEi+P
-	 V5gZnXd2RaVB1VNXFxf1R26vCTDqdvkABpPNUbGnpb6NPcGKPE6qFNupY5tXU9Ayhe
-	 t4EkZw8RXh5KrwSD9SmB7ohqwCHGjnmnNUvQlP2o=
+	b=JF3zKv3EvOwbsstBrDBQKa4U5j9IY0yWa3V2olbqpZ45QGPxHbEbWM319fOuWCB3u
+	 VUffDaJYF/MLqoqQ800t74RIujJ4laBIEY4K6haaoWkIsVcBDbLqknhFROHA0gDJES
+	 ukr2Qijsn/opSFTJXa5gdhwjAIBODOBSyjiFfnuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianglai Li <lixianglai@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 146/188] LoongArch: KVM: Compile switch.S directly into the kernel
-Date: Fri, 15 May 2026 17:49:23 +0200
-Message-ID: <20260515154700.490807166@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 147/188] mm/damon/core: implement damon_kdamond_pid()
+Date: Fri, 15 May 2026 17:49:24 +0200
+Message-ID: <20260515154700.511457931@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
 References: <20260515154657.309489048@linuxfoundation.org>
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 41193554348
+X-Rspamd-Queue-Id: F1537553DF6
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248621-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248623-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,273 +90,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,loongson.cn:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email]
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xianglai Li <lixianglai@loongson.cn>
+From: SeongJae Park <sj@kernel.org>
 
-commit 5203012fa6045aac4b69d4e7c212e16dcf38ef10 upstream.
+commit 4262c53236977de3ceaa3bf2aefdf772c9b874dd upstream.
 
-If we directly compile the switch.S file into the kernel, the address of
-the kvm_exc_entry function will definitely be within the DMW memory area.
-Therefore, we will no longer need to perform a copy relocation of the
-kvm_exc_entry.
+Patch series "mm/damon: hide kdamond and kdamond_lock from API callers".
 
-So this patch compiles switch.S directly into the kernel, and then remove
-the copy relocation execution logic for the kvm_exc_entry function.
+'kdamond' and 'kdamond_lock' fields initially exposed to DAMON API callers
+for flexible synchronization and use cases.  As DAMON API became somewhat
+complicated compared to the early days, Keeping those exposed could only
+encourage the API callers to invent more creative but complicated and
+difficult-to-debug use cases.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fortunately DAMON API callers didn't invent that many creative use cases.
+There exist only two use cases of 'kdamond' and 'kdamond_lock'.  Finding
+whether the kdamond is actively running, and getting the pid of the
+kdamond.  For the first use case, a dedicated API function, namely
+'damon_is_running()' is provided, and all DAMON API callers are using the
+function for the use case.  Hence only the second use case is where the
+fields are directly being used by DAMON API callers.
+
+To prevent future invention of complicated and erroneous use cases of the
+fields, hide the fields from the API callers.  For that, provide new
+dedicated DAMON API functions for the remaining use case, namely
+damon_kdamond_pid(), migrate DAMON API callers to use the new function,
+and mark the fields as private fields.
+
+
+This patch (of 5):
+
+'kdamond' and 'kdamond_lock' are directly being used by DAMON API callers
+for getting the pid of the corresponding kdamond.  To discourage invention
+of creative but complicated and erroneous new usages of the fields that
+require careful synchronization, implement a new API function that can
+simply be used without the manual synchronizations.
+
+Link: https://lkml.kernel.org/r/20260115152047.68415-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20260115152047.68415-2-sj@kernel.org
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/Kbuild                       |    2 -
- arch/loongarch/include/asm/asm-prototypes.h |   20 ++++++++++++++++
- arch/loongarch/include/asm/kvm_host.h       |    3 --
- arch/loongarch/kvm/Makefile                 |    3 +-
- arch/loongarch/kvm/main.c                   |   35 ++--------------------------
- arch/loongarch/kvm/switch.S                 |   20 ++++++++++++----
- 6 files changed, 41 insertions(+), 42 deletions(-)
+ include/linux/damon.h |    1 +
+ mm/damon/core.c       |   17 +++++++++++++++++
+ 2 files changed, 18 insertions(+)
 
---- a/arch/loongarch/Kbuild
-+++ b/arch/loongarch/Kbuild
-@@ -3,7 +3,7 @@ obj-y += mm/
- obj-y += net/
- obj-y += vdso/
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -949,6 +949,7 @@ bool damon_initialized(void);
+ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
+ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
+ bool damon_is_running(struct damon_ctx *ctx);
++int damon_kdamond_pid(struct damon_ctx *ctx);
  
--obj-$(CONFIG_KVM) += kvm/
-+obj-$(subst m,y,$(CONFIG_KVM)) += kvm/
+ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control);
+ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control);
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1437,6 +1437,23 @@ bool damon_is_running(struct damon_ctx *
+ }
  
- # for cleaning
- subdir- += boot
---- a/arch/loongarch/include/asm/asm-prototypes.h
-+++ b/arch/loongarch/include/asm/asm-prototypes.h
-@@ -20,3 +20,23 @@ asmlinkage void noinstr __no_stack_prote
- 								    struct pt_regs *regs,
- 								    int (*fn)(void *),
- 								    void *fn_arg);
+ /**
++ * damon_kdamond_pid() - Return pid of a given DAMON context's worker thread.
++ * @ctx:	The DAMON context of the question.
++ *
++ * Return: pid if @ctx is running, negative error code otherwise.
++ */
++int damon_kdamond_pid(struct damon_ctx *ctx)
++{
++	int pid = -EINVAL;
 +
-+struct kvm_run;
-+struct kvm_vcpu;
-+struct loongarch_fpu;
++	mutex_lock(&ctx->kdamond_lock);
++	if (ctx->kdamond)
++		pid = ctx->kdamond->pid;
++	mutex_unlock(&ctx->kdamond_lock);
++	return pid;
++}
 +
-+void kvm_exc_entry(void);
-+int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
-+
-+void kvm_save_fpu(struct loongarch_fpu *fpu);
-+void kvm_restore_fpu(struct loongarch_fpu *fpu);
-+
-+#ifdef CONFIG_CPU_HAS_LSX
-+void kvm_save_lsx(struct loongarch_fpu *fpu);
-+void kvm_restore_lsx(struct loongarch_fpu *fpu);
-+#endif
-+
-+#ifdef CONFIG_CPU_HAS_LASX
-+void kvm_save_lasx(struct loongarch_fpu *fpu);
-+void kvm_restore_lasx(struct loongarch_fpu *fpu);
-+#endif
---- a/arch/loongarch/include/asm/kvm_host.h
-+++ b/arch/loongarch/include/asm/kvm_host.h
-@@ -85,7 +85,6 @@ struct kvm_context {
- struct kvm_world_switch {
- 	int (*exc_entry)(void);
- 	int (*enter_guest)(struct kvm_run *run, struct kvm_vcpu *vcpu);
--	unsigned long page_order;
- };
- 
- #define MAX_PGTABLE_LEVELS	4
-@@ -339,8 +338,6 @@ void kvm_exc_entry(void);
- int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
- 
- extern unsigned long vpid_mask;
--extern const unsigned long kvm_exception_size;
--extern const unsigned long kvm_enter_guest_size;
- extern struct kvm_world_switch *kvm_loongarch_ops;
- 
- #define SW_GCSR		(1 << 0)
---- a/arch/loongarch/kvm/Makefile
-+++ b/arch/loongarch/kvm/Makefile
-@@ -7,11 +7,12 @@ include $(srctree)/virt/kvm/Makefile.kvm
- 
- obj-$(CONFIG_KVM) += kvm.o
- 
-+obj-y += switch.o
-+
- kvm-y += exit.o
- kvm-y += interrupt.o
- kvm-y += main.o
- kvm-y += mmu.o
--kvm-y += switch.o
- kvm-y += timer.o
- kvm-y += tlb.o
- kvm-y += vcpu.o
---- a/arch/loongarch/kvm/main.c
-+++ b/arch/loongarch/kvm/main.c
-@@ -340,8 +340,7 @@ void kvm_arch_disable_virtualization_cpu
- 
- static int kvm_loongarch_env_init(void)
- {
--	int cpu, order, ret;
--	void *addr;
-+	int cpu, ret;
- 	struct kvm_context *context;
- 
- 	vmcs = alloc_percpu(struct kvm_context);
-@@ -357,30 +356,8 @@ static int kvm_loongarch_env_init(void)
- 		return -ENOMEM;
- 	}
- 
--	/*
--	 * PGD register is shared between root kernel and kvm hypervisor.
--	 * So world switch entry should be in DMW area rather than TLB area
--	 * to avoid page fault reenter.
--	 *
--	 * In future if hardware pagetable walking is supported, we won't
--	 * need to copy world switch code to DMW area.
--	 */
--	order = get_order(kvm_exception_size + kvm_enter_guest_size);
--	addr = (void *)__get_free_pages(GFP_KERNEL, order);
--	if (!addr) {
--		free_percpu(vmcs);
--		vmcs = NULL;
--		kfree(kvm_loongarch_ops);
--		kvm_loongarch_ops = NULL;
--		return -ENOMEM;
--	}
--
--	memcpy(addr, kvm_exc_entry, kvm_exception_size);
--	memcpy(addr + kvm_exception_size, kvm_enter_guest, kvm_enter_guest_size);
--	flush_icache_range((unsigned long)addr, (unsigned long)addr + kvm_exception_size + kvm_enter_guest_size);
--	kvm_loongarch_ops->exc_entry = addr;
--	kvm_loongarch_ops->enter_guest = addr + kvm_exception_size;
--	kvm_loongarch_ops->page_order = order;
-+	kvm_loongarch_ops->exc_entry = (void *)kvm_exc_entry;
-+	kvm_loongarch_ops->enter_guest = (void *)kvm_enter_guest;
- 
- 	vpid_mask = read_csr_gstat();
- 	vpid_mask = (vpid_mask & CSR_GSTAT_GIDBIT) >> CSR_GSTAT_GIDBIT_SHIFT;
-@@ -414,16 +391,10 @@ static int kvm_loongarch_env_init(void)
- 
- static void kvm_loongarch_env_exit(void)
- {
--	unsigned long addr;
--
- 	if (vmcs)
- 		free_percpu(vmcs);
- 
- 	if (kvm_loongarch_ops) {
--		if (kvm_loongarch_ops->exc_entry) {
--			addr = (unsigned long)kvm_loongarch_ops->exc_entry;
--			free_pages(addr, kvm_loongarch_ops->page_order);
--		}
- 		kfree(kvm_loongarch_ops);
- 	}
- 
---- a/arch/loongarch/kvm/switch.S
-+++ b/arch/loongarch/kvm/switch.S
-@@ -4,9 +4,11 @@
-  */
- 
- #include <linux/linkage.h>
-+#include <linux/kvm_types.h>
- #include <asm/asm.h>
- #include <asm/asmmacro.h>
- #include <asm/loongarch.h>
-+#include <asm/page.h>
- #include <asm/regdef.h>
- #include <asm/unwind_hints.h>
- 
-@@ -100,8 +102,13 @@
- 	 *  -        is still in guest mode, such as pgd table/vmid registers etc,
- 	 *  -        will fix with hw page walk enabled in future
- 	 * load kvm_vcpu from reserved CSR KVM_VCPU_KS, and save a2 to KVM_TEMP_KS
-+	 *
-+	 * PGD register is shared between root kernel and kvm hypervisor.
-+	 * So world switch entry should be in DMW area rather than TLB area
-+	 * to avoid page fault re-enter.
- 	 */
- 	.text
-+	.p2align PAGE_SHIFT
- 	.cfi_sections	.debug_frame
- SYM_CODE_START(kvm_exc_entry)
- 	UNWIND_HINT_END_OF_STACK
-@@ -190,8 +197,8 @@ ret_to_host:
- 	kvm_restore_host_gpr    a2
- 	jr      ra
- 
--SYM_INNER_LABEL(kvm_exc_entry_end, SYM_L_LOCAL)
- SYM_CODE_END(kvm_exc_entry)
-+EXPORT_SYMBOL_GPL(kvm_exc_entry)
- 
- /*
-  * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
-@@ -215,8 +222,8 @@ SYM_FUNC_START(kvm_enter_guest)
- 	/* Save kvm_vcpu to kscratch */
- 	csrwr	a1, KVM_VCPU_KS
- 	kvm_switch_to_guest
--SYM_INNER_LABEL(kvm_enter_guest_end, SYM_L_LOCAL)
- SYM_FUNC_END(kvm_enter_guest)
-+EXPORT_SYMBOL_GPL(kvm_enter_guest)
- 
- SYM_FUNC_START(kvm_save_fpu)
- 	fpu_save_csr	a0 t1
-@@ -224,6 +231,7 @@ SYM_FUNC_START(kvm_save_fpu)
- 	fpu_save_cc	a0 t1 t2
- 	jr              ra
- SYM_FUNC_END(kvm_save_fpu)
-+EXPORT_SYMBOL_GPL(kvm_save_fpu)
- 
- SYM_FUNC_START(kvm_restore_fpu)
- 	fpu_restore_double a0 t1
-@@ -231,6 +239,7 @@ SYM_FUNC_START(kvm_restore_fpu)
- 	fpu_restore_cc	   a0 t1 t2
- 	jr                 ra
- SYM_FUNC_END(kvm_restore_fpu)
-+EXPORT_SYMBOL_GPL(kvm_restore_fpu)
- 
- #ifdef CONFIG_CPU_HAS_LSX
- SYM_FUNC_START(kvm_save_lsx)
-@@ -239,6 +248,7 @@ SYM_FUNC_START(kvm_save_lsx)
- 	lsx_save_data   a0 t1
- 	jr              ra
- SYM_FUNC_END(kvm_save_lsx)
-+EXPORT_SYMBOL_GPL(kvm_save_lsx)
- 
- SYM_FUNC_START(kvm_restore_lsx)
- 	lsx_restore_data a0 t1
-@@ -246,6 +256,7 @@ SYM_FUNC_START(kvm_restore_lsx)
- 	fpu_restore_csr  a0 t1 t2
- 	jr               ra
- SYM_FUNC_END(kvm_restore_lsx)
-+EXPORT_SYMBOL_GPL(kvm_restore_lsx)
- #endif
- 
- #ifdef CONFIG_CPU_HAS_LASX
-@@ -255,6 +266,7 @@ SYM_FUNC_START(kvm_save_lasx)
- 	lasx_save_data  a0 t1
- 	jr              ra
- SYM_FUNC_END(kvm_save_lasx)
-+EXPORT_SYMBOL_GPL(kvm_save_lasx)
- 
- SYM_FUNC_START(kvm_restore_lasx)
- 	lasx_restore_data a0 t1
-@@ -262,10 +274,8 @@ SYM_FUNC_START(kvm_restore_lasx)
- 	fpu_restore_csr   a0 t1 t2
- 	jr                ra
- SYM_FUNC_END(kvm_restore_lasx)
-+EXPORT_SYMBOL_GPL(kvm_restore_lasx)
- #endif
--	.section ".rodata"
--SYM_DATA(kvm_exception_size, .quad kvm_exc_entry_end - kvm_exc_entry)
--SYM_DATA(kvm_enter_guest_size, .quad kvm_enter_guest_end - kvm_enter_guest)
- 
- #ifdef CONFIG_CPU_HAS_LBT
- STACK_FRAME_NON_STANDARD kvm_restore_fpu
++/**
+  * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
+  * @ctx:	DAMON context to call the function for.
+  * @control:	Control variable of the call request.
 
 
 
