@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-248654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLdTFa9QB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:58:23 +0200
+	id +KxDDWRVB2oHzAIAu9opvQ
+	(envelope-from <stable+bounces-248873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:18:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63F4554459
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:58:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8D4554C64
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C345E33C3E8D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:25:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BA0335C69C6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468AB477E23;
-	Fri, 15 May 2026 16:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7440D330675;
+	Fri, 15 May 2026 16:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjYicyW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7gZWmBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12DC2C11DF;
-	Fri, 15 May 2026 16:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3855930569C;
+	Fri, 15 May 2026 16:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862288; cv=none; b=SE2uOOe6sAEBHCe6n8+adIUgNlrRCNpFnKhVhO8diVlWkMRtblEq7sh8VTCgoemw1oN1VRdLdezqerFe1HAEatKQ1AkqF8iSgketZwvfvPTMimc30hrTeOhwGR4z+aMMxr1ibAsvYNvj+3sXYdWmKzBKOu2TSO2DfswTQPuvhpo=
+	t=1778862849; cv=none; b=SMb3Lh6eQQMs7IP1S6SqstgNxXXfeXE8+TCaNCbtY2vz0qhhDZ2cEV3SLicT4Ww8v5tpfZ7vfW00DpgB5skLnjgG35EJCRi+NJsNRqNhJZ1FyhUhlHP0S3a28D0SMHlaPBJjxEzEIyryzARlfJ5Trfi0IHCwPEBN8qhkHKsnz0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862288; c=relaxed/simple;
-	bh=QG8S89/xGMJW6NbUuWuLDRXc9xV3qtCsQjNzPpaLFfc=;
+	s=arc-20240116; t=1778862849; c=relaxed/simple;
+	bh=9B37TAfNIwbXS/NphVfElra9DI3K+h6NxFLjl+/8jPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpc1HTXYk5wztvyFM6VHW8DrVXIhat8eAbeNNF3Db1pAsuorG/qB1SL8SPkWNHGirk66TS6XGRW8bn18DoVcnuapR2rsL4b9iO/OdEuYwjdYcA9cLtxpj1aufk9CVs5bFhsO2gvm9VVQWF7J+Ys0+MNlEFbs2OqlAvlzCmpMAlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjYicyW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AC5C2BCFB;
-	Fri, 15 May 2026 16:24:47 +0000 (UTC)
+	 MIME-Version; b=aToDDtzVonBaRWrHJ10vxMt7rFoEDB4IHb4W8zlh5ubG+iC4VJQrQVOaYtivFxTjhsKor3Loi3kbHFehEQKOV+u6xFvYqM4ILYLyJBocPZO/Os01HEOWkqNjkyJu0qb97EVl6430YR4pgOPkD+Xsr5lS84jJbFKxbE3IY2DDuSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7gZWmBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3065C2BCB0;
+	Fri, 15 May 2026 16:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862287;
-	bh=QG8S89/xGMJW6NbUuWuLDRXc9xV3qtCsQjNzPpaLFfc=;
+	s=korg; t=1778862849;
+	bh=9B37TAfNIwbXS/NphVfElra9DI3K+h6NxFLjl+/8jPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FjYicyW4SHtl+NU81NLnvtlxYIWQru/uq5m//GK+NPier0kWelAWa3OD90YT6EBiW
-	 1wV/MOxEOKAZjNTlwguCV0a0iOR9JF6gIp2HSlepyBC8XFqFA65o9E4nqdCaW1ReAW
-	 +VsShueFVVSvyMBVNn07Eh4aNlJLoq5weLoT6WCc=
+	b=v7gZWmBWskRFnWgaO5N5m82DwSHUKbXwEM/fAU9vtWDPoMS6eI4/eYx9gvccuJ+J/
+	 KyNAPz2S3Pi9DtppCkkcTXo/lNLPNxVnI9TA5Kli4y3NrIcmeicdE6fiXgknPfvwpQ
+	 NnSGiMDKNSdflvlWNM0c1D+prZoQzYtc1cntUT2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 180/188] tracing/fprobe: Remove fprobe from hash in failure path
-Date: Fri, 15 May 2026 17:49:57 +0200
-Message-ID: <20260515154701.244152974@linuxfoundation.org>
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 7.0 180/201] batman-adv: bla: put backbone reference on failed claim hash insert
+Date: Fri, 15 May 2026 17:49:58 +0200
+Message-ID: <20260515154702.475521066@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C63F4554459
+X-Rspamd-Queue-Id: 9F8D4554C64
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248654-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248873-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,193 +90,41 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,narfation.org:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 845947aca6814f5723ed65e556eb5ee09493f05b ]
+commit ba9d20ee9076dac32c371116bacbe72480eb356c upstream.
 
-When register_fprobe_ips() fails, it tries to remove a list of
-fprobe_hash_node from fprobe_ip_table, but it missed to remove
-fprobe itself from fprobe_table. Moreover, when removing
-the fprobe_hash_node which is added to rhltable once, it must
-use kfree_rcu() after removing from rhltable.
+When batadv_bla_add_claim() fails to insert a new claim into the hash, it
+leaked a reference to the backbone_gw for which the claim was intended.
+Call batadv_backbone_gw_put() on the error path to release the reference
+and avoid leaking the backbone_gw object.
 
-To fix these issues, this reuses unregister_fprobe() internal
-code to rollback the half-way registered fprobe.
-
-Link: https://lore.kernel.org/all/177669366417.132053.17874946321744910456.stgit@mhiramat.tok.corp.google.com/
-
-Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 3db0decf1185 ("batman-adv: Fix non-atomic bla_claim::backbone_gw access")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/fprobe.c |   90 ++++++++++++++++++++++++++------------------------
- 1 file changed, 47 insertions(+), 43 deletions(-)
+ net/batman-adv/bridge_loop_avoidance.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -78,20 +78,27 @@ static const struct rhashtable_params fp
- };
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -723,6 +723,7 @@ static void batadv_bla_add_claim(struct
  
- /* Node insertion and deletion requires the fprobe_mutex */
--static int insert_fprobe_node(struct fprobe_hlist_node *node)
-+static int insert_fprobe_node(struct fprobe_hlist_node *node, struct fprobe *fp)
- {
-+	int ret;
-+
- 	lockdep_assert_held(&fprobe_mutex);
- 
--	return rhltable_insert(&fprobe_ip_table, &node->hlist, fprobe_rht_params);
-+	ret = rhltable_insert(&fprobe_ip_table, &node->hlist, fprobe_rht_params);
-+	/* Set the fprobe pointer if insertion was successful. */
-+	if (!ret)
-+		WRITE_ONCE(node->fp, fp);
-+	return ret;
- }
- 
- /* Return true if there are synonims */
- static bool delete_fprobe_node(struct fprobe_hlist_node *node)
- {
--	lockdep_assert_held(&fprobe_mutex);
- 	bool ret;
- 
--	/* Avoid double deleting */
-+	lockdep_assert_held(&fprobe_mutex);
-+
-+	/* Avoid double deleting and non-inserted nodes */
- 	if (READ_ONCE(node->fp) != NULL) {
- 		WRITE_ONCE(node->fp, NULL);
- 		rhltable_remove(&fprobe_ip_table, &node->hlist,
-@@ -748,7 +755,6 @@ static int fprobe_init(struct fprobe *fp
- 	fp->hlist_array = hlist_array;
- 	hlist_array->fp = fp;
- 	for (i = 0; i < num; i++) {
--		hlist_array->array[i].fp = fp;
- 		addr = ftrace_location(addrs[i]);
- 		if (!addr) {
- 			fprobe_fail_cleanup(fp);
-@@ -812,6 +818,8 @@ int register_fprobe(struct fprobe *fp, c
- }
- EXPORT_SYMBOL_GPL(register_fprobe);
- 
-+static int unregister_fprobe_nolock(struct fprobe *fp);
-+
- /**
-  * register_fprobe_ips() - Register fprobe to ftrace by address.
-  * @fp: A fprobe data structure to be registered.
-@@ -838,28 +846,25 @@ int register_fprobe_ips(struct fprobe *f
- 	if (ret)
- 		return ret;
- 
--	hlist_array = fp->hlist_array;
- 	if (fprobe_is_ftrace(fp))
- 		ret = fprobe_ftrace_add_ips(addrs, num);
- 	else
- 		ret = fprobe_graph_add_ips(addrs, num);
--
--	if (!ret) {
--		add_fprobe_hash(fp);
--		for (i = 0; i < hlist_array->size; i++) {
--			ret = insert_fprobe_node(&hlist_array->array[i]);
--			if (ret)
--				break;
--		}
--		/* fallback on insert error */
--		if (ret) {
--			for (i--; i >= 0; i--)
--				delete_fprobe_node(&hlist_array->array[i]);
--		}
-+	if (ret) {
-+		fprobe_fail_cleanup(fp);
-+		return ret;
- 	}
- 
--	if (ret)
--		fprobe_fail_cleanup(fp);
-+	hlist_array = fp->hlist_array;
-+	ret = add_fprobe_hash(fp);
-+	for (i = 0; i < hlist_array->size && !ret; i++)
-+		ret = insert_fprobe_node(&hlist_array->array[i], fp);
-+
-+	if (ret) {
-+		unregister_fprobe_nolock(fp);
-+		/* In error case, wait for clean up safely. */
-+		synchronize_rcu();
-+	}
- 
- 	return ret;
- }
-@@ -903,27 +908,12 @@ bool fprobe_is_registered(struct fprobe
- 	return true;
- }
- 
--/**
-- * unregister_fprobe() - Unregister fprobe.
-- * @fp: A fprobe data structure to be unregistered.
-- *
-- * Unregister fprobe (and remove ftrace hooks from the function entries).
-- *
-- * Return 0 if @fp is unregistered successfully, -errno if not.
-- */
--int unregister_fprobe(struct fprobe *fp)
-+static int unregister_fprobe_nolock(struct fprobe *fp)
- {
--	struct fprobe_hlist *hlist_array;
-+	struct fprobe_hlist *hlist_array = fp->hlist_array;
- 	unsigned long *addrs = NULL;
--	int ret = 0, i, count;
-+	int i, count;
- 
--	mutex_lock(&fprobe_mutex);
--	if (!fp || !fprobe_registered(fp)) {
--		ret = -EINVAL;
--		goto out;
--	}
--
--	hlist_array = fp->hlist_array;
- 	addrs = kcalloc(hlist_array->size, sizeof(unsigned long), GFP_KERNEL);
- 	/*
- 	 * This will remove fprobe_hash_node from the hash table even if
-@@ -949,12 +939,26 @@ int unregister_fprobe(struct fprobe *fp)
- 
- 	kfree_rcu(hlist_array, rcu);
- 	fp->hlist_array = NULL;
-+	kfree(addrs);
- 
--out:
--	mutex_unlock(&fprobe_mutex);
-+	return 0;
-+}
- 
--	kfree(addrs);
--	return ret;
-+/**
-+ * unregister_fprobe() - Unregister fprobe.
-+ * @fp: A fprobe data structure to be unregistered.
-+ *
-+ * Unregister fprobe (and remove ftrace hooks from the function entries).
-+ *
-+ * Return 0 if @fp is unregistered successfully, -errno if not.
-+ */
-+int unregister_fprobe(struct fprobe *fp)
-+{
-+	guard(mutex)(&fprobe_mutex);
-+	if (!fp || !fprobe_registered(fp))
-+		return -EINVAL;
-+
-+	return unregister_fprobe_nolock(fp);
- }
- EXPORT_SYMBOL_GPL(unregister_fprobe);
- 
+ 		if (unlikely(hash_added != 0)) {
+ 			/* only local changes happened. */
++			batadv_backbone_gw_put(backbone_gw);
+ 			kfree(claim);
+ 			return;
+ 		}
 
 
 
