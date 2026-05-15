@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEU0HVxUB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:14:04 +0200
+	id IM1kEulNB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF572554A69
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF100553E3D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC4BD3339845
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 997523274BD7
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0524CA266;
-	Fri, 15 May 2026 16:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722AF30DD1D;
+	Fri, 15 May 2026 16:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIF/gdVN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t81MLhnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7B83E0089;
-	Fri, 15 May 2026 16:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3477E3F86E5;
+	Fri, 15 May 2026 16:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862591; cv=none; b=L8AiEb3hrc0EvC20nMraBiia1VRHFVw9sdtEmQyvRZ/fyRtcu/DjaU+tKZizQo0lxxS/QBw7jYn7M8eraTkwOFkcxXefrTNVYP7INdVC+kwEcH6TwTraWQkdk0ZDkTn1EXHmmB0KzgPlmJtW/rDW4Awcqcqwu+urPEgTK7hDYPg=
+	t=1778861668; cv=none; b=tZXLUF95vFkGFEh9pfTWz/SG/eiCKnZuD5wH06TmI6gqj17L+NavYTg13PCrA+EUpBWMq5RftegGhMsK0jCSawZnx577qHQC+V3xDjNLmt4P3LvwJ/0d9IuKPVQZ4ZgrYehiPgU+RNoj2bJhr+96I5AB0egREiA0buNzX8Fqnts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862591; c=relaxed/simple;
-	bh=FvwA3mAkrMohEOvKV0pf3LIFcQrofwMUp2VOzt7TtzM=;
+	s=arc-20240116; t=1778861668; c=relaxed/simple;
+	bh=Qa9/9M6jlQR87nX9m3ZPcFHN2Piw3KU+R188zlBS/Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRkB6tHLvbR6QpMagS/W0oDAbVXMIb5lVzBRp5oocGMne9lHHevClpi1lW8x0W7GY2uY2Q7iSpTs6L27QBrXpB96rsc09t2vsNcUGSvsDjG92Q1D+Jn83P4AhJTwJp5LRy6X7RWYRkkZtDl38w9haEYgwrE/dvvmLqTnETLNADQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIF/gdVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A59DC2BCB0;
-	Fri, 15 May 2026 16:29:50 +0000 (UTC)
+	 MIME-Version; b=bR28eO4BVmRFibD3SpknfLDJl3H1vDzcBemcOIiWhj6Rz1z6bpRV5mS8qnC5BSDhPeE5rUA5XUUcL6qduPwleX2TYWmhx2FrmrUOq1Y168EiJ8K7QT49CYfqp3GIr7K2w9L05uspaSLqtdxDYtsqxpyw9GxiPpy+m2yKXa1OqXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t81MLhnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C95C2BCB0;
+	Fri, 15 May 2026 16:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862591;
-	bh=FvwA3mAkrMohEOvKV0pf3LIFcQrofwMUp2VOzt7TtzM=;
+	s=korg; t=1778861668;
+	bh=Qa9/9M6jlQR87nX9m3ZPcFHN2Piw3KU+R188zlBS/Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EIF/gdVNqAlKB+bj/ANWsQ3griBe11R+kuo6BfqO5lGiMUbp/Bc0bQnzhj76Yuz77
-	 C9NOctOcxdoLZ2/EvO3ukMWuEj9ZQqwHS4/pod05cxBcR8vj7cPRmASt9Z3agBsO8r
-	 ufeS10wK2Msvr/OQmaIIJVYCYaqfbesMkW37+8nc=
+	b=t81MLhnIHsB2A4+3sUaEzXtNCFEvzF3pgLO6vEZ337wWddGJA5xAXtaIzYOAbgUEW
+	 GsNxpYuUgCc1PbtVhE56kxtC4H5HJNJXOudYa2KlLDlKtH2+I7vQ+9rxSn3U/HU52j
+	 FVu250n1zAu81x+cW3yF2jVNT3m9GF1rzG8zK0eI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 107/201] spi: octeon: fix controller deregistration
+	Mark Lentczner <mark@glyphic.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 416/474] ALSA: seq: Notify client and port info changes
 Date: Fri, 15 May 2026 17:48:45 +0200
-Message-ID: <20260515154700.867723210@linuxfoundation.org>
+Message-ID: <20260515154724.060302565@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DF572554A69
+X-Rspamd-Queue-Id: BF100553E3D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248772-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248411-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,58 +92,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,glyphic.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 3c49a4d8799bee423a80f392ba95b26af8e9ab91 upstream.
+[ Upstream commit b8e49e24cdba27a0810a0988e810e2c68f2033cb ]
 
-Make sure to deregister the controller before disabling it to avoid
-hanging or leaking resources associated with the queue when the queue is
-non-empty.
+It was supposed to be notified when a sequencer client info and a port
+info has changed (via SNDRV_SEQ_EVENT_CLIENT_CHANGE and
+SNDRV_SEQ_EVENT_PORT_CHANGE event, respectively), and there are
+already helper functions.  But those aren't really sent from the
+driver so far, except for the recent support of UMP, simply due to the
+lack of implementations.
 
-Fixes: 22ad2d8df77d ("spi: octeon: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-9-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This patch adds the missing notifications at updating the client and
+the port info.  The formerly added notification for UMP is dropped
+because it's handled now in the port info side.
+
+Reported-by: Mark Lentczner <mark@glyphic.com>
+Link: https://lore.kernel.org/CAPnksqRok7xGa4bxq9WWimVV=28-7_j628OmrWLS=S0=hzaTHQ@mail.gmail.com
+Link: https://patch.msgid.link/20241128074734.32165-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 92429ca999db ("ALSA: seq: Fix UMP group 16 filtering")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cavium-octeon.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/core/seq/seq_clientmgr.c  |    7 +++++++
+ sound/core/seq/seq_ump_client.c |    2 --
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-cavium-octeon.c
-+++ b/drivers/spi/spi-cavium-octeon.c
-@@ -54,7 +54,7 @@ static int octeon_spi_probe(struct platf
- 	host->bits_per_word_mask = SPI_BPW_MASK(8);
- 	host->max_speed_hz = OCTEON_SPI_MAX_CLOCK_HZ;
- 
--	err = devm_spi_register_controller(&pdev->dev, host);
-+	err = spi_register_controller(host);
- 	if (err) {
- 		dev_err(&pdev->dev, "register host failed: %d\n", err);
- 		goto fail;
-@@ -73,8 +73,14 @@ static void octeon_spi_remove(struct pla
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct octeon_spi *p = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
+--- a/sound/core/seq/seq_clientmgr.c
++++ b/sound/core/seq/seq_clientmgr.c
+@@ -1334,6 +1334,10 @@ static int snd_seq_ioctl_set_client_info
+ 		client->midi_version = client_info->midi_version;
+ 	memcpy(client->event_filter, client_info->event_filter, 32);
+ 	client->group_filter = client_info->group_filter;
 +
-+	spi_unregister_controller(host);
++	/* notify the change */
++	snd_seq_system_client_ev_client_change(client->number);
 +
- 	/* Clear the CSENA* and put everything in a known state. */
- 	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
-+
-+	spi_controller_put(host);
+ 	return 0;
  }
  
- static const struct of_device_id octeon_spi_match[] = {
+@@ -1457,6 +1461,9 @@ static int snd_seq_ioctl_set_port_info(s
+ 	if (port) {
+ 		snd_seq_set_port_info(port, info);
+ 		snd_seq_port_unlock(port);
++		/* notify the change */
++		snd_seq_system_client_ev_port_change(info->addr.client,
++						     info->addr.port);
+ 	}
+ 	return 0;
+ }
+--- a/sound/core/seq/seq_ump_client.c
++++ b/sound/core/seq/seq_ump_client.c
+@@ -273,8 +273,6 @@ static void update_port_infos(struct seq
+ 						new);
+ 		if (err < 0)
+ 			continue;
+-		/* notify to system port */
+-		snd_seq_system_client_ev_port_change(client->seq_client, i);
+ 	}
+ }
+ 
 
 
 
