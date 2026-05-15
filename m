@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJupEZpLB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:42 +0200
+	id eDHGJp5YB2pmzgIAu9opvQ
+	(envelope-from <stable+bounces-248689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:32:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B27553940
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38037555317
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9BBB2314B54A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1FA7430BA953
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DF83F9278;
-	Fri, 15 May 2026 16:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A7E3E00BB;
+	Fri, 15 May 2026 16:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZzVWQEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Py992S5+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D72C3B4EAF;
-	Fri, 15 May 2026 16:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE0B3B9D91;
+	Fri, 15 May 2026 16:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861455; cv=none; b=huJYY1BDSpHgpvVqIDydVJEZZs8WxU8BADDA+FGeQZQ9GwWOQThiR9qa1NgEraP+YHIZ2pbkDvNDw1HKVK9VGKOpNCOEjrTUK1LZCR2WbVEqzQdflPXZWQbIHyMH9LtWSOAD4xGhSK7KwyY3U3XNz3C8u4oiDj0HfMFEV53rUVM=
+	t=1778862375; cv=none; b=ZNyGkaeyKt7LjUa7IEohXmYeqHPA0DrdCVnHUqdbdQuid/QAQN89yKROGYhwfq2xSB2PuqPn1BeaSDg/7Ymp3Qc7i4R5RkTgQH4fBKScMzRZQTkwkW9NW0Ab4IBwBNTcEU4PqnCVwluCywAXqVa9/tUboKNMmM+kj35LFvidzRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861455; c=relaxed/simple;
-	bh=86Jtcb0hXiE6ufyuTEh0u3F/K4ogldepEYlN1878yoE=;
+	s=arc-20240116; t=1778862375; c=relaxed/simple;
+	bh=GYodvWxzyDzZ9WoR3pJYxFLuaKUpnRLioaqQGZO+q7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxbZ/2R1a8TBKHhS6Z85+at8H54v50L6Z7gqN81XsIrFjrm1G2lM/ZI/3DB31K6jlgj4xmVldPsOBGbBb+ayRmA82ChvBSuf/iC+wjWcoAPJUVZtWtMUj5RYVj/S689DxEc88JYG43FbdURj6dbvD0/ZOyWDBGlMEN3gfkqHwL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZzVWQEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAA4C2BCB0;
-	Fri, 15 May 2026 16:10:54 +0000 (UTC)
+	 MIME-Version; b=fFEqnco4/2WnU1+oVYFAuOKd4q4rjEWHvcOAebgsfijSa6o9VMlDCNbgK6hI3hC1REcTcFjhZ1m0wAIYh7Ay3aBezCSxdlz9WveYk2vP1SPZnhOdYsiJisq/zduNerGQ9qjnbTd/JCtYPv0H8YjVztpgV3HxYxBykaCMORRsnMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Py992S5+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BD6C2BCB0;
+	Fri, 15 May 2026 16:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861455;
-	bh=86Jtcb0hXiE6ufyuTEh0u3F/K4ogldepEYlN1878yoE=;
+	s=korg; t=1778862375;
+	bh=GYodvWxzyDzZ9WoR3pJYxFLuaKUpnRLioaqQGZO+q7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZzVWQEM0o4Y9yQBmy9bKhGHYv2qqa81dW12paKqECVDkipIb9rt/rOtgmjlt1f4B
-	 BfNOLUW7OvwZBzKt/rziiqGBlsikIvdAnRnuhaENYbOPlnG55wl+HBKTKu5or/KilP
-	 CWTUWd4yeSx4Khf/44ipkkEtpCNMG2pLTjOHn2Qc=
+	b=Py992S5+7Q2UiAUTTo+YHZV0injfeulzEOGWqvXJ4rTL81as6dhIoIlHgBgYi3j3L
+	 1f/5EF/dE6lAcjSAapmnXefrTu8a24iqQdF8+KrVyimZw6fDobbYLyHIzZB8zxw0fj
+	 ETLwP3fu1o5jkkBiDBY69aHo95T5x6TAxuUofiIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Bresticker <abrestic@chromium.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 333/474] spi: img-spfi: fix controller deregistration
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 024/201] media: chips-media: wave5: add missing spinlock protection for handle_dynamic_resolution_change()
 Date: Fri, 15 May 2026 17:47:22 +0200
-Message-ID: <20260515154722.219470610@linuxfoundation.org>
+Message-ID: <20260515154659.057441353@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +64,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D4B27553940
+X-Rspamd-Queue-Id: 38037555317
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[northwestern.edu:email];
+	SUSPICIOUS_RECIPS(1.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-248689-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248329-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	RCVD_COUNT_THREE(0.00)[4];
+	GREYLIST(0.00)[pass,meta];
 	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_SPAM(0.00)[0.963];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email]
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[northwestern.edu:email,collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-commit fc3a83b0d9c16b941c9028f5a8db9541dce4ddf2 upstream.
+commit cb8bdd3ffca280d014311ab395651d33f58a8708 upstream.
 
-Make sure to deregister the controller before disabling and releasing
-underlying resources like clocks and DMA during driver unbind.
+Add spin_lock_irqsave()/spin_unlock_irqrestore() around the
+handle_dynamic_resolution_change() call in initialize_sequence() to fix
+the missing lock protection.
 
-Fixes: deba25800a12 ("spi: Add driver for IMG SPFI controller")
-Cc: stable@vger.kernel.org	# 3.19
-Cc: Andrew Bresticker <abrestic@chromium.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-16-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+initialize_sequence() calls handle_dynamic_resolution_change() without
+holding inst->state_spinlock. However, handle_dynamic_resolution_change()
+has lockdep_assert_held(&inst->state_spinlock) indicating that callers
+must hold this lock.
+
+Other callers of handle_dynamic_resolution_change() properly acquire the
+spinlock:
+- wave5_vpu_dec_finish_decode()
+- wave5_vpu_dec_device_run()
+
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Fixes: 9707a6254a8a6b ("media: chips-media: wave5: Add the v4l2 layer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-img-spfi.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/spi/spi-img-spfi.c
-+++ b/drivers/spi/spi-img-spfi.c
-@@ -644,7 +644,7 @@ static int img_spfi_probe(struct platfor
- 	pm_runtime_set_active(spfi->dev);
- 	pm_runtime_enable(spfi->dev);
+--- a/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
+@@ -1593,6 +1593,7 @@ static int initialize_sequence(struct vp
+ {
+ 	struct dec_initial_info initial_info;
+ 	int ret = 0;
++	unsigned long flags;
  
--	ret = devm_spi_register_controller(spfi->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret)
- 		goto disable_pm;
+ 	memset(&initial_info, 0, sizeof(struct dec_initial_info));
  
-@@ -670,6 +670,10 @@ static void img_spfi_remove(struct platf
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct img_spfi *spfi = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	if (spfi->tx_ch)
- 		dma_release_channel(spfi->tx_ch);
- 	if (spfi->rx_ch)
-@@ -680,6 +684,8 @@ static void img_spfi_remove(struct platf
- 		clk_disable_unprepare(spfi->spfi_clk);
- 		clk_disable_unprepare(spfi->sys_clk);
+@@ -1614,7 +1615,9 @@ static int initialize_sequence(struct vp
+ 		return ret;
  	}
-+
-+	spi_controller_put(host);
- }
  
- #ifdef CONFIG_PM
++	spin_lock_irqsave(&inst->state_spinlock, flags);
+ 	handle_dynamic_resolution_change(inst);
++	spin_unlock_irqrestore(&inst->state_spinlock, flags);
+ 
+ 	return 0;
+ }
 
 
 
