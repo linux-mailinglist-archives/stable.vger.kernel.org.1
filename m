@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-248823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248606-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JUsDuhUB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:24 +0200
+	id wJaeLY5RB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248606-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:02:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BD1554B69
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2945655457E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9BE743029249
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECA8731686F0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C07246781;
-	Fri, 15 May 2026 16:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF413F927A;
+	Fri, 15 May 2026 16:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzVhleiI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zibvk6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0233B1029;
-	Fri, 15 May 2026 16:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3A63F9273;
+	Fri, 15 May 2026 16:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862723; cv=none; b=UH2rXMJlY0FNLnpCrRUHwNbFwja3y2U03GIcbUQBipZuETTmpzY3HDXwSSApLpzQJoRIAdtVfipjGaZLtl2ljqnL47dnU/zMXAc0BRv/0BfUmje+PDVx7UCbTEkqtUAecXnWYsqGc25jHQKbJd6ZMC0m5kxJ07hFAAF76I02iOA=
+	t=1778862162; cv=none; b=vFUGSGy+GAd/S7xckGueAVMHaLiqNIxW16HkqfxplpxvcaeKPgDWW1xSIbO1dOST3oGPWt7EYZuQdLlrle8uZm7J6dPfIXp/2sExC3lVkMQWB+Mpv52mkJMVLti/foC1I9vKdRQCwoniIoKpUeSUHkBEpsC/8MjfCbggmtgggn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862723; c=relaxed/simple;
-	bh=Yllzd1fTkyHMOyrJfQVMuf86EC+okVhueJUngIWc2iI=;
+	s=arc-20240116; t=1778862162; c=relaxed/simple;
+	bh=gEGm2nKx7JzVZWKHvyunE8gvT4mk6qRxWVE4RT9AQbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lmb4N5Q+tNz918QOri8C9XyNotHmY+96pUNuusXNMmlejJK2TKHB724E6h4P+wLB9Prc0Pp+9UFO5CssqaEXbKAcLjEKhn8IpiOxEoW+jkYTYa6MaDGwBZtOn+PNYRDex4csu4JSW0zC+UszdBkPL4SkD1d/RFcNuLoyUPy8shc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzVhleiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F41C2BCB0;
-	Fri, 15 May 2026 16:32:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Rrp6PyBdVWfRtQ1T+RpCTox+SyKOzw2HeOgnqKKUSTuIT4z0Vm+uYUxd+o/5jf6h9By/PBMEWIAWPFv8yw0J+SqdroEHIYwU89Gy872nAZTzitvX5Jyhs6e2bQkuyaD6BuPYTxb9dGpSQe/BJDsUFgl2XI1fx5GMx/uIaTbCyjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zibvk6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B32C2BCB0;
+	Fri, 15 May 2026 16:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862723;
-	bh=Yllzd1fTkyHMOyrJfQVMuf86EC+okVhueJUngIWc2iI=;
+	s=korg; t=1778862162;
+	bh=gEGm2nKx7JzVZWKHvyunE8gvT4mk6qRxWVE4RT9AQbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZzVhleiI6xX1vndUeDEjr1LxWLzd/bNH9H9sCN/vW/aGbAq7AU/hsZupaKsYvxe7G
-	 ap7i4DvnyhMmBsHBGN/9mpS5h8OG2e5ae6iUpSSVtX0mF9JIFzC+Vku3nLduzj6z2X
-	 jmqasFZbr1wSP9bWbtNRmVy/T+d+FQnony6eDlJ4=
+	b=0zibvk6i4FaPzD4zi5bs6fQVzDpIM8MNJ9rmbEtITiwt4sWmcO8B6XPFVq/wb2XTs
+	 3Bp3DmRa9mxU78TdwJ2ZcnHP3eykjoZk64Ew0POsDUohbcq1jQx9wpo5FJBn7Z3VfV
+	 l0Ovy1b6J8CUfR1dePE9uSlGv5Ls225hOKyYYQDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Dillon Varone <dillon.varone@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 7.0 131/201] drm/amd/display: fix math_mod() using arg1 instead of arg2
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.18 132/188] drm/amdgpu/pm: align Hawaii mclk workaround with radeon
 Date: Fri, 15 May 2026 17:49:09 +0200
-Message-ID: <20260515154701.404450024@linuxfoundation.org>
+Message-ID: <20260515154700.191751132@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A7BD1554B69
+X-Rspamd-Queue-Id: 2945655457E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248823-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-248606-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url,amd.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjing Liu <wenjing.liu@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 2b104fc31be0607c04188fadbd4a9fa5b50f3b99 upstream.
+commit 1987c79b4fe5789dfa14423e78b5c25f6acf3e9d upstream.
 
-[Why]
-math_mod() multiplied by arg1 instead of arg2, returning a wrong
-result for any non-trivial modulo operation.
+Align the hawaii mclk workaround with radeon and windows.
 
-[How]
-Replace arg1 with arg2 in the subtraction term to correctly
-implement fmod(arg1, arg2).
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9649528b637f668c5af9f2b83ca4ad8576ae2121)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2_0/dml21/src/dml2_standalone_libraries/lib_float_math.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml2_0/dml21/src/dml2_standalone_libraries/lib_float_math.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2_0/dml21/src/dml2_standalone_libraries/lib_float_math.c
-@@ -23,7 +23,7 @@ double math_mod(const double arg1, const
- 		return arg2;
- 	if (isNaN(arg2))
- 		return arg1;
--	return arg1 - arg1 * ((int)(arg1 / arg2));
-+	return arg1 - arg2 * ((int)(arg1 / arg2));
- }
- 
- double math_min2(const double arg1, const double arg2)
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -1329,10 +1329,10 @@ static int ci_populate_all_memory_levels
+ 	if ((dpm_table->mclk_table.count >= 2) &&
+ 	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
+ 	    (adev->pdev->revision == 0)) {
+-		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
+-				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
+-		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
+-				smu_data->smc_state_table.MemoryLevel[0].MinMvdd;
++		smu_data->smc_state_table.MemoryLevel[1].MinVddc =
++				smu_data->smc_state_table.MemoryLevel[0].MinVddc;
++		smu_data->smc_state_table.MemoryLevel[1].MinVddcPhases =
++				smu_data->smc_state_table.MemoryLevel[0].MinVddcPhases;
+ 	}
+ 	smu_data->smc_state_table.MemoryLevel[0].ActivityLevel = 0x1F;
+ 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.MemoryLevel[0].ActivityLevel);
 
 
 
