@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-248712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AM/4BehZB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248712-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:44 +0200
+	id IG/fDjZQB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:56:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADEB55551A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92402554393
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE4313254E50
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D8B4C3497A2A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC003C0607;
-	Fri, 15 May 2026 16:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A1B3E7BC0;
+	Fri, 15 May 2026 16:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OV1IE7Kg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBHWXtLv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C46C3F927C;
-	Fri, 15 May 2026 16:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E913F9295;
+	Fri, 15 May 2026 16:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862435; cv=none; b=TNLsflwoZ/qPD46cLjOcYymvjmyi9oANqXsNU0J/lnn9ZAOvyzcK9v8ap/eiB0HMUfYTeY8eHxFMxTtAzYxTYNqoYlUXtnwD33xUhAoy7p2yZ5zmuqYsi2fB+fmaYb6uysWBvHuzOqTi4EpROfQPeTSAPBjlWUgWYD2WATVa0HY=
+	t=1778861926; cv=none; b=BphquibfzshPdL2noGW9NOPzZ7WL4AlIQHyam7fJFNDf+pP0M7KVw5nSjhqjfzKUQsAiY+ZRTTQ+54azovoJnIkhchx4Od7W6kuyNn3rEDd9j1DvlXEA/WUvSbB0pc+n34eJPSpqc3r9BX1qw8ZcLZ/M362F0TCmgpuDyTbB+/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862435; c=relaxed/simple;
-	bh=m3YgQNgtvoeBJdZSsVjXk7d5lSFR0s5MjCoZboKa3p4=;
+	s=arc-20240116; t=1778861926; c=relaxed/simple;
+	bh=5bQqmoB+OZyPDY/S+xTB/TfBPUfMCYC/w2m3yJlg+tQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAecm1jSv3ZXWlqqjHV9x1nI4r6kdiSGL48DG0ADPVNvbzE1Oj46qthupfMnXorUclIV8iRHHaeGsb8drLsLnAGq2efvOW9O1IrBsEBjSEc5TlRiKr2XYKC+8AMixE5+NTU2rXpQEALt9OY1S5sNJ7zKnRJrlh9O8PzrcgUqKPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OV1IE7Kg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026E9C2BCB0;
-	Fri, 15 May 2026 16:27:14 +0000 (UTC)
+	 MIME-Version; b=GNh3f7EIrrvHmFK/LaS90kQtK+J+zV+hBeAZrUEjJE9My03yk9ITmuprFA2wJzR0oIqzKmmmcu2f/FAMaNSkMzzahFOH9QuIxXFyfnHfBm3r4axyeDEp9ZE93PQI7CheTmXkdngjDUyUxZqiLZZS4oRF2vzLL8YgDh/SslBCp1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBHWXtLv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0E0C2BCB3;
+	Fri, 15 May 2026 16:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862435;
-	bh=m3YgQNgtvoeBJdZSsVjXk7d5lSFR0s5MjCoZboKa3p4=;
+	s=korg; t=1778861926;
+	bh=5bQqmoB+OZyPDY/S+xTB/TfBPUfMCYC/w2m3yJlg+tQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OV1IE7KgEfnTiBmzO0/LQhdHLIg7YsWZE4dBhUxGtV/iT3ai0UFctRY4nHACw934k
-	 I+znKjzmoGMxPPXuimCamkTpxj1Tv5Kz44Y3jUpFBNgVxobuQSgbnh3/x+qWk57AAC
-	 PXW3oDvrcNGeVX7hf+bDzM6Z+2KFSBeGcAAHeWAg=
+	b=UBHWXtLvBacM2pivxXI51/9UDmoALRi61gcmLTd/kN7megiVGRZQoohrw0mBUn4nJ
+	 iRZmG8KM8SiogD2GGXZt+LN97ie2tOiUUdbMr74wXUBtFaE1nw1iWFxxQ/wWcmjltK
+	 xoJr9nhEYh11PfyEnpZ6Pn3ZVf3J1b13VaTLn1lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 040/201] regulator: bq257xx: fix OF node reference imbalance
+	Wang Jun <1742789905@qq.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 041/188] media: saa7164: add ioremap return checks and cleanups
 Date: Fri, 15 May 2026 17:47:38 +0200
-Message-ID: <20260515154659.401210690@linuxfoundation.org>
+Message-ID: <20260515154658.203176805@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +63,148 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AADEB55551A
+X-Rspamd-Queue-Id: 92402554393
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,chromium.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-248712-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,chromium.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_FROM(0.00)[bounces-248515-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qq.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Wang Jun <1742789905@qq.com>
 
-commit 7ea07bc030d8d6395524dec22ff3267441a28c0d upstream.
+commit d51c60a498e83c9a79884c8e420f97e3885c9583 upstream.
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+Add checks for ioremap return values in saa7164_dev_setup(). If
+ioremap for BAR0 or BAR2 fails, release the already allocated PCI
+memory regions, remove the device from the global list, decrement
+the device count, and return -ENODEV.
 
-Fix this by using the intended helper for reusing OF nodes.
+This prevents potential null pointer dereferences and ensures proper
+cleanup on memory mapping failures.
 
-Fixes: 981dd162b635 ("regulator: bq257xx: Add bq257xx boost regulator driver")
-Cc: stable@vger.kernel.org	# 6.18
-Cc: Chris Morgan <macromorgan@hotmail.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260408073055.5183-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 443c1228d505 ("V4L/DVB (12923): SAA7164: Add support for the NXP SAA7164 silicon")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wang Jun <1742789905@qq.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/bq257xx-regulator.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/pci/saa7164/saa7164-core.c |   47 +++++++++++++++++++++++--------
+ 1 file changed, 35 insertions(+), 12 deletions(-)
 
---- a/drivers/regulator/bq257xx-regulator.c
-+++ b/drivers/regulator/bq257xx-regulator.c
-@@ -142,8 +142,7 @@ static int bq257xx_regulator_probe(struc
- 	struct device_node *np = dev->of_node;
- 	struct regulator_config cfg = {};
+--- a/drivers/media/pci/saa7164/saa7164-core.c
++++ b/drivers/media/pci/saa7164/saa7164-core.c
+@@ -888,6 +888,15 @@ static int get_resources(struct saa7164_
+ 	return -EBUSY;
+ }
  
--	pdev->dev.of_node = pdev->dev.parent->of_node;
--	pdev->dev.of_node_reused = true;
-+	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
++static void release_resources(struct saa7164_dev *dev)
++{
++	release_mem_region(pci_resource_start(dev->pci, 0),
++			   pci_resource_len(dev->pci, 0));
++
++	release_mem_region(pci_resource_start(dev->pci, 2),
++			   pci_resource_len(dev->pci, 2));
++}
++
+ static int saa7164_port_init(struct saa7164_dev *dev, int portnr)
+ {
+ 	struct saa7164_port *port = NULL;
+@@ -947,9 +956,9 @@ static int saa7164_dev_setup(struct saa7
  
- 	pdata = devm_kzalloc(&pdev->dev, sizeof(struct bq257xx_reg_data), GFP_KERNEL);
- 	if (!pdata)
+ 	snprintf(dev->name, sizeof(dev->name), "saa7164[%d]", dev->nr);
+ 
+-	mutex_lock(&devlist);
+-	list_add_tail(&dev->devlist, &saa7164_devlist);
+-	mutex_unlock(&devlist);
++	scoped_guard(mutex, &devlist) {
++		list_add_tail(&dev->devlist, &saa7164_devlist);
++	}
+ 
+ 	/* board config */
+ 	dev->board = UNSET;
+@@ -996,11 +1005,17 @@ static int saa7164_dev_setup(struct saa7
+ 	}
+ 
+ 	/* PCI/e allocations */
+-	dev->lmmio = ioremap(pci_resource_start(dev->pci, 0),
+-			     pci_resource_len(dev->pci, 0));
++	dev->lmmio = pci_ioremap_bar(dev->pci, 0);
++	if (!dev->lmmio) {
++		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 0\n");
++		goto err_ioremap_bar0;
++	}
+ 
+-	dev->lmmio2 = ioremap(pci_resource_start(dev->pci, 2),
+-			     pci_resource_len(dev->pci, 2));
++	dev->lmmio2 = pci_ioremap_bar(dev->pci, 2);
++	if (!dev->lmmio2) {
++		dev_err(&dev->pci->dev, "Failed to remap MMIO BAR 2\n");
++		goto err_ioremap_bar2;
++	}
+ 
+ 	dev->bmmio = (u8 __iomem *)dev->lmmio;
+ 	dev->bmmio2 = (u8 __iomem *)dev->lmmio2;
+@@ -1019,17 +1034,25 @@ static int saa7164_dev_setup(struct saa7
+ 	saa7164_pci_quirks(dev);
+ 
+ 	return 0;
++
++err_ioremap_bar2:
++	iounmap(dev->lmmio);
++err_ioremap_bar0:
++	release_resources(dev);
++
++	scoped_guard(mutex, &devlist) {
++		list_del(&dev->devlist);
++	}
++	saa7164_devcount--;
++
++	return -ENODEV;
+ }
+ 
+ static void saa7164_dev_unregister(struct saa7164_dev *dev)
+ {
+ 	dprintk(1, "%s()\n", __func__);
+ 
+-	release_mem_region(pci_resource_start(dev->pci, 0),
+-		pci_resource_len(dev->pci, 0));
+-
+-	release_mem_region(pci_resource_start(dev->pci, 2),
+-		pci_resource_len(dev->pci, 2));
++	release_resources(dev);
+ 
+ 	if (!atomic_dec_and_test(&dev->refcount))
+ 		return;
 
 
 
