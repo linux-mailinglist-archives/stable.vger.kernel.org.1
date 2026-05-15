@@ -1,276 +1,174 @@
-Return-Path: <stable+bounces-247744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247745-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPF0MxcUB2ourgIAu9opvQ
-	(envelope-from <stable+bounces-247744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:39:51 +0200
+	id GI5FKDIhB2rnrgIAu9opvQ
+	(envelope-from <stable+bounces-247745-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:35:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC1E54FBBC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:39:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF1FE55085A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63A2431E883A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:18:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 208C030C8E5E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CAB47ECC3;
-	Fri, 15 May 2026 12:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E31647ECC8;
+	Fri, 15 May 2026 12:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qjH8aBH8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eaKalwPW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B429038F254
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D499D20297C;
+	Fri, 15 May 2026 12:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778847478; cv=none; b=gV6amtSDEQjNGl5jYkMq2iP9feI6tshCa1kBryeSFInOL2qAlaMWBrKa8kKuaMwlsKjPa/G+sP8oXTgEMBLVD3OSuuV1A0SS4X2w2sGzxMmGRAc1Vl6hoQSa3RJ32abDhXwUqnW3p3gL7SqeJz6H6n6GV/wCVftodURmfE9NYfI=
+	t=1778848818; cv=none; b=k0roQZ3PehjD6ykNQYHV1EUhpFNuHNWrufCzXl2V1lkFpdc/UiIYL63Nb/RZnFxZ4ohp2FX+NyqXCbewMnh+So/uo/u6gsHJQTn8630cTFps78HszZxKf4LvutDze6RMjVk9hAk0kJB9QX7UMtpXt1tUTD0QVNtgje6ERNIdgzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778847478; c=relaxed/simple;
-	bh=F3u/QH/ZhYfqyIB9F98+uK1QXh9jLK2lRsp6iEp0P04=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Lpi8x+knEuDNNm6Pti9l3q19n8UWM0cupoCznLuD9IqmdZPdrUIpa2Ns3RXNqNOUg8YAyPaDDgRpGsT4aezkP5TJ2FAzybNXImQuOv3ec3wU57eobQhY++qt09LKmqWB9tqnqTPaNbuCejlFzXw4ShUrRyqVmwYsvvkteUMWTUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rnj.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qjH8aBH8; arc=none smtp.client-ip=209.85.208.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rnj.bounces.google.com
-Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-38e936cabf2so76996011fa.1
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 05:17:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778847474; x=1779452274; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=//Plx+YvoT4buEKO1lurHogNmkZC/8PnjF1rYPj5af0=;
-        b=qjH8aBH8IpMtyZbyCmIRjkKwmyCVSXRjcynlFGqAXrDDD+jbyXjh0TqH3C+UnhaSRM
-         FM6O90drlmgClqhce7a82EELHY1WThBk6JYqjAYKEEH3dB0hK/YYfU2ctoi7nV7hMBL6
-         MTNnv8obxHrknGJ3TKZt5/TdjNyfZh+tOrceDQcEpG5eQpHsImTTlvu15IpVfGtDFCIl
-         eMhKWCHUqdWyNfZiFdeXCtScaD31dFNEJWubJxeTi8VoKFUxqbdh0uPirx6pry5+Tkec
-         Qfau5NX3sWNb8XG4PRuc+KtMv1KJhXqHXHku4IXg54rywllhFhxYWuKP/JXXbZ7v2gd4
-         VTsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778847474; x=1779452274;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=//Plx+YvoT4buEKO1lurHogNmkZC/8PnjF1rYPj5af0=;
-        b=E/1nV0QdNeawfZ1nCX/GA+a57BvO0LYboXMmjir+Jr9IPdCjOnuCfPO/zXRRkLic+i
-         eXvrUoyBNHNKhLm38bEF7fOgfWiBxgorumgPIsuG6Bv90c5DYBR4OjCymUF9bDBK0Sd6
-         eOOZuCPzEke1JAbddHvMydlOXpPI78UC64xV2ZiwScL/UI4jIoCDWOswbD6aX1QjAmXQ
-         zABPPn40GGcyh9TKp6JInDAKzIbIhyGvKFRQbPFNJaOtMLG7S+iFfOUPMCTEfbII9bJL
-         0Z7TQ7YnRpIAeDAHo2qfKidptSdRfdYse+YAvA2YfLgcTe/R7L6Rf3D9+VlsrSMeLBnB
-         HSHg==
-X-Forwarded-Encrypted: i=1; AFNElJ+RyVddQ/4GXul3nBWGGmSMF7WWe58EGllkD32ToKoYCI/ZVTIyH/KdXpWAn+uR+w8AzmRiUTg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVPzVOKSnB86/E5Bb8CrDaQYQk0KgHwMexXq+ZAIbyVhqf1nZ5
-	/inEivvIl4bPOToKiIJZUcOm/RSOmRz07Mq4nkA8HFfFdwFhzteeghjoNglDbGFqJuYotw==
-X-Received: from ljmk24.prod.google.com ([2002:a2e:a278:0:b0:393:7fb2:6b5a])
- (user=rnj job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6512:1241:b0:5aa:b6a:7a8c
- with SMTP id 2adb3069b0e04-5aa0e7755fbmr993792e87.43.1778847473713; Fri, 15
- May 2026 05:17:53 -0700 (PDT)
-Date: Fri, 15 May 2026 12:15:40 +0000
-In-Reply-To: <20260515-fortify_pm80-v1-0-2863187f6d4b@google.com>
+	s=arc-20240116; t=1778848818; c=relaxed/simple;
+	bh=TbnO/RNvXnvbRs7wSHwIve64pNueHjc4KTEnYexTAPk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XH6PgRCQ0rQfbqzcbujtiGyltmKaFpUE+E1wFNM7IAcUlN+HDFgMF3SzEgrFhTNWOMvDjgFNZzs0KrVty8svFd7NHDzXMALgleB9nxG+eW3Gdo0eztutbGOmBvmQpkPLlPWvXCUGWkpy00Qm2E+KJ04Q4svwxywEhm3y8FFIXjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eaKalwPW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9088CC2BCB8;
+	Fri, 15 May 2026 12:40:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778848818;
+	bh=TbnO/RNvXnvbRs7wSHwIve64pNueHjc4KTEnYexTAPk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eaKalwPW/SzDxjidhoDuPapIR63Kf4vyxbRS6FSa25tWMKezHIdbBjU8GBifZbd66
+	 RzPJelzUFXcBZIrWzHud97G/AuflxF0jYkpCJ0662RcIT7RYSO6NVBeOkh+40WGlZu
+	 X1jo8FoQbXnk/B2wTFEjio55V5kwVakUV7hF/HARGiNGDQvOYSrBJYKcHnhj2fcPqG
+	 f/oMJBxV9aBn/LbCHDpT0p+A7D9BuxHgk0TMYHidWYRVHIhTlJBfgUL7ru4f7UgeS9
+	 9nMrH2jxiB10cCr8nBLDXZRfr1yK9aYBXjjyAwM+SLrKGhRpEgMP9WwSbw3NESpvP+
+	 YKcGZ0gsjDtFQ==
+From: Claudiu Beznea <claudiu.beznea@kernel.org>
+To: geert+renesas@glider.be,
+	linusw@kernel.org,
+	brgl@kernel.org,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	biju.das.jz@bp.renesas.com
+Cc: claudiu.beznea@kernel.org,
+	claudiu.beznea@tuxon.dev,
+	linux-renesas-soc@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] pinctrl: renesas: rzg2l: Use -ENOTSUPP instead of -EOPNOTSUPP
+Date: Fri, 15 May 2026 15:40:07 +0300
+Message-ID: <20260515124008.2947838-2-claudiu.beznea@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260515124008.2947838-1-claudiu.beznea@kernel.org>
+References: <20260515124008.2947838-1-claudiu.beznea@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260515-fortify_pm80-v1-0-2863187f6d4b@google.com>
-X-Developer-Key: i=rnj@google.com; a=ed25519; pk=QwUkB1OONd7dk9zV4pLRQRehoWHHsLcRZD2QcswqHTc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778847470; l=7156;
- i=rnj@google.com; s=20260515; h=from:subject:message-id; bh=F3u/QH/ZhYfqyIB9F98+uK1QXh9jLK2lRsp6iEp0P04=;
- b=6fmA6McFYcRaDItPhb+fZmQtDIdYKJC3l0wEIBdMC3GU+PulntNIaqMzfJBNuLEiE+BUiOyaF LgexaHhaWuMBtF2+HgskDlz/4jUbUk6vMJzW/BTl8XBm7Mf4vn1oGfQ
-X-Mailer: b4 0.14.3
-Message-ID: <20260515-fortify_pm80-v1-2-2863187f6d4b@google.com>
-Subject: [PATCH 2/2] scsi: pm8001: Match hw_event_resp to HBA data layout
-From: Ronja Meyer <rnj@google.com>
-To: Jack Wang <jinpu.wang@cloud.ionos.com>, 
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Tom Peng <tom_peng@usish.com>, 
-	Kevin Ao <aoqingyun@usish.com>, Lindar Liu <lindar_liu@usish.com>, 
-	James Bottomley <James.Bottomley@suse.de>
-Cc: jack wang <jack_wang@usish.com>, linux-scsi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Ronja Meyer <rnj@google.com>, stable@vger.kernel.org, 
-	Igor Pylypiv <ipylypiv@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 4BC1E54FBBC
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AF1FE55085A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247744-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-247745-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rnj@google.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TO_DN_SOME(0.00)[]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Correct the hw_event_resp struct definition to match the layout of data
-sent by the HBA. Remove pointer arithmetics previously required to work
-around incorrect struct definition.
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-Looking at the struct definition before this patch:
-  struct hw_event_resp {
-           [...]
-           struct	sas_identify_frame sas_identify;
-           struct dev_to_host_fis	sata_fis;
-   } __attribute__((packed, aligned(4)));
+The pinctrl and GPIO core code make exceptions for the -ENOTSUPP error
+code. One such example is gpio_set_config_with_argument_optional(), which
+returns success when gpio_set_config_with_argument() returns -ENOTSUPP, but
+reports failure for all other error codes.
 
-Previously the memcpy() in hw_event_sata_phy_up() crossed reading
-from the sas_identify struct over into the sata_fis struct. This was
-necessary, because the hw_event_resp struct definition didn't align
-properly with what the HBA actually sent. The member sas_identify right
-before the member sata_fis was 4 bytes too long, causing the first
-4 bytes of the sata_fis to be shifted into the last 4 bytes of
-sas_identify. The code worked around this by subtracting 4 bytes from
-both the sata_fis pointer, as well as sizeof(sas_identify), when they
-were used.
+Returning -EOPNOTSUPP from the pinctrl driver on the unsupported pinctrl
+operation may lead to boot failures when pinctrl drivers implements
+struct gpio_chip::set_config, the system uses GPIO hogs, and the
+struct gpio_chip::set_config implementation returns -EOPNOTSUPP for the
+unsupported operations.
 
-FORTIFY_SOURCE detected this deliberate choice to cross struct member
-boundaries as an out-of-bounds read, even though in this case it didn't
-lead to a vulnerability. Hence the following fortify-panic was
-triggered:
+Return -ENOTSUPP for the unsupported pinctrl operation.
 
-  kernel BUG at lib/string_helpers.c:1044!
-  RIP: 0010:__fortify_panic+0x9/0x10
-  hw_event_sata_phy_up+0xea/0x120 [pm80xx]
-  process_one_iomb+0x634e/0x6360 [pm80xx]
-  process_oq+0x391/0x430 [pm80xx]
-  pm80xx_chip_isr+0x78/0x100 [pm80xx]
-  tasklet_action_common+0x16a/0x2b0
-  handle_softirqs+0xcd/0x2a0
-  __irq_exit_rcu+0x50/0x100
-  common_interrupt+0x89/0xa0
-
-Furthermore hw_event_resp was 64 bytes before this patch, which is
-4 bytes too long. Messages exchanged between the pm8001 and the host
-kernel can be a maximum of 64 bytes, as defined in iomb_size. The
-message structs defined in pm8001_hwi.h must have a size of 60 bytes,
-in order to leave space for a 4 byte header that implicitly precedes
-each message.
-
-Luckily the code interacting with hw_event_resp doesn't ever seem to
-read or write the last 4 bytes of the struct and doesn't seem to use
-the incorrect size of the struct in a copy operation. Hence it doesn't
-overflow in practice. Further the pm80xx driver was unaffected by this
-bug. While the pm80xx struct was also 64 bytes, the message size on
-pm80xx is 128 bytes. Hence it is able to fit the 68 byte header and
-message without overflowing.
-
-This is not security critical AFAICT.
-
+Fixes: 560c633d378a ("pinctrl: renesas: rzg2l: Drop oen_read and oen_write callbacks")
+Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
 Cc: stable@vger.kernel.org
-Fixes: dbf9bfe61571 ("[SCSI] pm8001: add SAS/SATA HBA driver")
-Co-developed-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Ronja Meyer <rnj@google.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 ---
- drivers/scsi/pm8001/pm8001_hwi.c | 6 +++---
- drivers/scsi/pm8001/pm8001_hwi.h | 2 +-
- drivers/scsi/pm8001/pm80xx_hwi.c | 6 +++---
- drivers/scsi/pm8001/pm80xx_hwi.h | 4 ++--
- 4 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_hwi.c b/drivers/scsi/pm8001/pm8001_hwi.c
-index fff8d877abb9..e90f2d98d8ed 100644
---- a/drivers/scsi/pm8001/pm8001_hwi.c
-+++ b/drivers/scsi/pm8001/pm8001_hwi.c
-@@ -3164,8 +3164,8 @@ hw_event_sas_phy_up(struct pm8001_hba_info *pm8001_ha, void *piomb)
- 	sas_notify_phy_event(&phy->sas_phy, PHYE_OOB_DONE, GFP_ATOMIC);
- 	spin_lock_irqsave(&phy->sas_phy.frame_rcvd_lock, flags);
- 	memcpy(phy->frame_rcvd, &pPayload->sas_identify,
--		sizeof(struct sas_identify_frame)-4);
--	phy->frame_rcvd_size = sizeof(struct sas_identify_frame) - 4;
-+		sizeof(struct sas_identify_frame_local));
-+	phy->frame_rcvd_size = sizeof(struct sas_identify_frame_local);
- 	pm8001_get_attached_sas_addr(phy, phy->sas_phy.attached_sas_addr);
- 	spin_unlock_irqrestore(&phy->sas_phy.frame_rcvd_lock, flags);
- 	if (pm8001_ha->flags == PM8001F_RUN_TIME)
-@@ -3208,7 +3208,7 @@ hw_event_sata_phy_up(struct pm8001_hba_info *pm8001_ha, void *piomb)
- 	phy->sas_phy.oob_mode = SATA_OOB_MODE;
- 	sas_notify_phy_event(&phy->sas_phy, PHYE_OOB_DONE, GFP_ATOMIC);
- 	spin_lock_irqsave(&phy->sas_phy.frame_rcvd_lock, flags);
--	memcpy(phy->frame_rcvd, ((u8 *)&pPayload->sata_fis - 4),
-+	memcpy(phy->frame_rcvd, &pPayload->sata_fis,
- 		sizeof(struct dev_to_host_fis));
- 	phy->frame_rcvd_size = sizeof(struct dev_to_host_fis);
- 	phy->identify.target_port_protocols = SAS_PROTOCOL_SATA;
-diff --git a/drivers/scsi/pm8001/pm8001_hwi.h b/drivers/scsi/pm8001/pm8001_hwi.h
-index 14b162f93eb8..2b5483989886 100644
---- a/drivers/scsi/pm8001/pm8001_hwi.h
-+++ b/drivers/scsi/pm8001/pm8001_hwi.h
-@@ -326,7 +326,7 @@ struct hw_event_resp {
- 	__le32	lr_evt_status_phyid_portid;
- 	__le32	evt_param;
- 	__le32	npip_portstate;
--	struct sas_identify_frame	sas_identify;
-+	struct	sas_identify_frame_local sas_identify;	/* _local to omit CRC field */
- 	struct dev_to_host_fis	sata_fis;
- } __attribute__((packed, aligned(4)));
- 
-diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
-index 954f307352e6..03293e9b84e6 100644
---- a/drivers/scsi/pm8001/pm80xx_hwi.c
-+++ b/drivers/scsi/pm8001/pm80xx_hwi.c
-@@ -3241,8 +3241,8 @@ hw_event_sas_phy_up(struct pm8001_hba_info *pm8001_ha, void *piomb)
- 	sas_notify_phy_event(&phy->sas_phy, PHYE_OOB_DONE, GFP_ATOMIC);
- 	spin_lock_irqsave(&phy->sas_phy.frame_rcvd_lock, flags);
- 	memcpy(phy->frame_rcvd, &pPayload->sas_identify,
--		sizeof(struct sas_identify_frame)-4);
--	phy->frame_rcvd_size = sizeof(struct sas_identify_frame) - 4;
-+		sizeof(struct sas_identify_frame_local));
-+	phy->frame_rcvd_size = sizeof(struct sas_identify_frame_local);
- 	pm8001_get_attached_sas_addr(phy, phy->sas_phy.attached_sas_addr);
- 	spin_unlock_irqrestore(&phy->sas_phy.frame_rcvd_lock, flags);
- 	if (pm8001_ha->flags == PM8001F_RUN_TIME)
-@@ -3289,7 +3289,7 @@ hw_event_sata_phy_up(struct pm8001_hba_info *pm8001_ha, void *piomb)
- 	phy->sas_phy.oob_mode = SATA_OOB_MODE;
- 	sas_notify_phy_event(&phy->sas_phy, PHYE_OOB_DONE, GFP_ATOMIC);
- 	spin_lock_irqsave(&phy->sas_phy.frame_rcvd_lock, flags);
--	memcpy(phy->frame_rcvd, ((u8 *)&pPayload->sata_fis - 4),
-+	memcpy(phy->frame_rcvd, &pPayload->sata_fis,
- 		sizeof(struct dev_to_host_fis));
- 	phy->frame_rcvd_size = sizeof(struct dev_to_host_fis);
- 	phy->identify.target_port_protocols = SAS_PROTOCOL_SATA;
-diff --git a/drivers/scsi/pm8001/pm80xx_hwi.h b/drivers/scsi/pm8001/pm80xx_hwi.h
-index d8a63b7fed6a..5ccc010a2368 100644
---- a/drivers/scsi/pm8001/pm80xx_hwi.h
-+++ b/drivers/scsi/pm8001/pm80xx_hwi.h
-@@ -351,7 +351,7 @@ struct mpi_msg_hdr {
- struct phy_start_req {
- 	__le32	tag;
- 	__le32	ase_sh_lm_slr_phyid;
--	struct sas_identify_frame_local sas_identify; /* 28 Bytes */
-+	struct	sas_identify_frame_local sas_identify;	/* _local to omit CRC field */
- 	__le32 spasti;
- 	u32	reserved[21];
- } __attribute__((packed, aligned(4)));
-@@ -427,7 +427,7 @@ struct hw_event_resp {
- 	__le32	lr_status_evt_portid;
- 	__le32	evt_param;
- 	__le32	phyid_npip_portstate;
--	struct sas_identify_frame	sas_identify;
-+	struct	sas_identify_frame_local	sas_identify;	/* _local to omit CRC field */
- 	struct dev_to_host_fis	sata_fis;
- } __attribute__((packed, aligned(4)));
- 
+Changes in v2:
+- none, this patch is new
 
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index a106e087c224..05a33655e6cc 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -1281,7 +1281,7 @@ static int rzg2l_read_oen(struct rzg2l_pinctrl *pctrl, unsigned int _pin)
+ 	int bit;
+ 
+ 	if (!pctrl->data->pin_to_oen_bit)
+-		return -EOPNOTSUPP;
++		return -ENOTSUPP;
+ 
+ 	bit = pctrl->data->pin_to_oen_bit(pctrl, _pin);
+ 	if (bit < 0)
+@@ -1323,7 +1323,7 @@ static int rzg2l_write_oen(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
+ 	u8 val;
+ 
+ 	if (!pctrl->data->pin_to_oen_bit)
+-		return -EOPNOTSUPP;
++		return -ENOTSUPP;
+ 
+ 	bit = pctrl->data->pin_to_oen_bit(pctrl, _pin);
+ 	if (bit < 0)
+@@ -1754,7 +1754,7 @@ static int rzg2l_pinctrl_pinconf_set(struct pinctrl_dev *pctldev,
+ 			break;
+ 
+ 		default:
+-			return -EOPNOTSUPP;
++			return -ENOTSUPP;
+ 		}
+ 	}
+ 
+@@ -1837,7 +1837,7 @@ static int rzg2l_pinctrl_pinconf_group_get(struct pinctrl_dev *pctldev,
+ 
+ 		/* Check config matching between to pin  */
+ 		if (i && prev_config != *config)
+-			return -EOPNOTSUPP;
++			return -ENOTSUPP;
+ 
+ 		prev_config = *config;
+ 	}
 -- 
-2.54.0.563.g4f69b47b94-goog
+2.43.0
 
 
