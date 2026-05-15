@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-247804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPtkEyk1B2qQswIAu9opvQ
-	(envelope-from <stable+bounces-247804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:00:57 +0200
+	id kOlsFNo2B2rftQIAu9opvQ
+	(envelope-from <stable+bounces-247805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:08:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2F8551CF8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:00:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CB8551E0D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B4DAB300D759
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:59:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB01F30D25E4
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FA33C1F22;
-	Fri, 15 May 2026 14:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C733B0ACE;
+	Fri, 15 May 2026 14:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="Sm4rfRwQ"
+	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="KYgsMKNu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DC33BBA1A
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 14:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F5A3C196F
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 14:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778857147; cv=none; b=Nt5wUAr4wzXdr5R6Ir6JIIK6kfpksRNwomHRI5Gu1gLezqUNxrtWUgEDz0G0zg2MsYB70u5VgWUsJUSVU2Yl4A/OgjaFiGkIp/s6+ce/kMQ0yeqn7igbei5XP2W28mcQt3jCBze0xKOCNx4t1m7wN3mucCDFJEpqmO50KHAlPoI=
+	t=1778857149; cv=none; b=t3x+QlTPw6x7kY6ZmLcH+SxcUU0N7czw4527VXOP3oSYc9pAZC6dDrK1l2mZ1QnRCz/RLfHLuTxUPuJY6wYePJLlPorDtEHWx+Cc/YZAhIm2D63x9nhDiJpnAvGJJzCsZbSeuDTNpl1frJzqiYw+bvMf4JVwYuDU5BfX24aJsfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778857147; c=relaxed/simple;
-	bh=evtqAXnRsxCNbJ54PpiZfTds7888WrqwMTuQg9AH85I=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=X0KNDE7jgFJdtrTywoxY1A1CY+xvq3pdjGD6hd/XmpYdNL8eXOg0cOgmzesYpeQ9tKQiseOTDMLDUN/XZ8NTxt10711pVSEP/cDEhGJYIH+1jCPQhDNNH+rfJu9UPHVB7HoiqewdusJ0qS9ug9mcI3wVRHAAW1jCarcG7WMcEY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=Sm4rfRwQ; arc=none smtp.client-ip=74.125.82.171
+	s=arc-20240116; t=1778857149; c=relaxed/simple;
+	bh=cfr9UtKRVlKP7tBXIGWC+VEtcs7A3AdGh+w0WbO8cWY=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=R78AlnkyrO6Gg9+tMtFJ1fWJ6zxmig5YbGcmOCsLoWMP6w2PMv3sxX9zycbhimWHTfxkcx+LemwmwdS+/d45AJS42pyKCXyvIgjMahrpiQNDGFOrohNXS7G1V2cQuxlxUPIQk1CFKZLtXBVSZ7BWDn/Je3tVO/1ciZ5r4/aPFOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=KYgsMKNu; arc=none smtp.client-ip=74.125.82.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2f7ca62a3c4so9739783eec.0
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 07:59:05 -0700 (PDT)
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2ee1054627bso797577eec.1
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 07:59:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1778857145; x=1779461945; darn=vger.kernel.org;
+        d=kernelci.org; s=google; t=1778857147; x=1779461947; darn=vger.kernel.org;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2lo5B4APz2AHxY+gOTJ1/PofXQ++VHSqNrd9RNX66MY=;
-        b=Sm4rfRwQ5Ljg+oltgEM2ouKSBVK3Y8VPy4pR0HIYL/bjI5eHkDoFyRpwmRSQAFCTmi
-         0iDZVUpfLSDQRhvAePlQe8Rf8gUjwDKG9drmBUX5rM60aGkCv4INm/y+u6RhWEM1OBfK
-         0L2DnDNlod40doKPR5z5WznENq2hek1KXWq+yW8PiarHoT0AZfdRkTTPcSYAUHzTGWSI
-         SiAN8KBtj27kRdrRWeDlGGN85m39G+WR5cLcvYl6dR8KX8XXWApvRqyxrWlwGMeUUq4e
-         aL+cHwc/cmL8JPOhUEJrUxpjx/a9VXnFT2YC+5OFAX0+s2i2vWeAhUQkbLdT5++Lw+4W
-         fqZg==
+        bh=bKf16RtzcgtsajW9OsSkYB6qGNEvy1M5bBh979QqWzA=;
+        b=KYgsMKNu8kqi0nruHzO2eNYgQEVlGEmSBgkZiw4/MKPc4WK2msxqSG5cWh9GdBDfTz
+         V2cTH3jP0ga+lafurMUCxj/38663x61tZkloM4nZCP/b8B58nM9gOAFZue2j3MQgASuf
+         pxtpfpVL0UMK34L57BxtOFWKjod85Px036b1yfPR2guUZ1nFKiXOnohhAFEQlUH1WsEW
+         bFMhv61/8QhrVCMcCR22WRSTfotan6wqF8uS4gvA9OlmUFySgev5w9dQIYqA9IEr+ANt
+         dKE/+Z/mAQD1Rq4B6eDTpeKzrMb4svRUydlmKeHzF5J/r92hwp3EM7Rk2Ahx/JH41aAm
+         RJjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778857145; x=1779461945;
+        d=1e100.net; s=20251104; t=1778857147; x=1779461947;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=2lo5B4APz2AHxY+gOTJ1/PofXQ++VHSqNrd9RNX66MY=;
-        b=NOyRHIQrtt/J+licCUQa3AwIeefzi3JJj0/3qskwY0YdoBl1UtzKy0hfNDtUm89Cj5
-         rTGGiMW4vN9MYFR23bGAFLofZihr1Ty85rJdX5C2UqFVhUmr5bfmrI7bEGunL6G4NsOw
-         jMtzcQsAxEscoMKfcOqVos+1Ivl3FkzsjEZn7BYdE/vvKdG4owhFcMdUzJ0Mw6/YUCmr
-         9/0E8+TdC3j7FnHmsL+euACpmnckDB5P5YbuvdoKs69Gul0i6rEJwe+VbWBK18lR+47P
-         AXXGg72GISwCtLfvoqFrd3YZODFRT8yoEcBs+rPxZYklbzDFxOBOyGJ3t52edjPsCoDn
-         aC9g==
-X-Forwarded-Encrypted: i=1; AFNElJ8nn9ov/Z1Glw6Yeukl0V+SHNndFEZmd0j3LDCRl+jt1XHRLfRTmm9yH/orfjMsK51kL1WFlSQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNGzQFA2QPc+71eb1kMHmCl2i/nvYE7APpxUDpJCP9gsV7+czJ
-	AmFVbUZq9cyPOrncQNXcJD8mxB28WtPBo+CJOd8nNTHN5ovur0/z5dy6uIOrdTXZPzZPkD168/b
-	2vxMU
-X-Gm-Gg: Acq92OF5xXjRcASlJevCExXn9+4YNw7w2Oq7AmYhkchry+PaWBNFvmO/SmW6h0P4KCV
-	mmVzvn9hmUpGtRJmD3GKnRIqS96crQgSsTBEZqhLr8hJRCRWNyF05THt6v3VruZi3Fk0XWT9Zi4
-	sIqZllry36BVvaEL+t1kSi6sjGmWAlayQfxkElkv3LsDS/PViiXekCYIj+O82BH7dOjAWRjHsSz
-	fTa0z0b1JmxhRYmnrioa1IjhGuY2bk+QThQEQgpWk8hcbjhWVl0gdGhBeCGnpOaPWN3UX+ueRvc
-	mokTVIWwWUhwxQo8aAm0jASJPMcCLL5R8ht1wxFG4Vn8YrFM7G60l29scFu2xOQ27mHGmw5eQs/
-	MzCX4Lx04oCGLVObb3fKNyL73TZs/XOizRHteHwh9vzlv3HafQGRGMQVhzn3MyViEPncs6zCUfK
-	8Rn2wMmbydr4b4u3Z/vV7nZyNMAK0=
-X-Received: by 2002:a05:7301:7c12:b0:2ed:e14:7f57 with SMTP id 5a478bee46e88-303986c651cmr2487416eec.33.1778857145212;
-        Fri, 15 May 2026 07:59:05 -0700 (PDT)
+        bh=bKf16RtzcgtsajW9OsSkYB6qGNEvy1M5bBh979QqWzA=;
+        b=CJ92cg+esvLhEmoQA34YLoSua5JK1XOFKFJtCCY6dg1noYc6+502wAWzAS0+1LVYuM
+         LmsaQUNt6ytvDNt1Km2JH2RwpmCxU1SY+7eCEYsFPG5X3rUmJcrNCI+dBjx0nTA9lWLW
+         uRYYyqTgvUd/IXouRoohd5HChl4Xxb0CHaX9sxYCjYAYSvaBAAy/YfGORcV75RSQqCEr
+         WRe4SRZrDhj9d9MgKZJMMGcJowza8wc4cwR/H5uyf3Cn7yrvTSna1P/lrYpyY9pqtTOL
+         Ne0TmFukPgZ3dMdR11Q3CuBXsxO27YGlFXYQeHMEXMdv6IoonWWiIJJZWNbqC86Wwutk
+         ySwA==
+X-Forwarded-Encrypted: i=1; AFNElJ84RqRy464UUKmn137WNUGgVzO2d0OVc/1cGJVzx9FGLjEro5LOJc9TfZRyHPU6YUxefYmP2zY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgTHSIPDz0JiOH+E/S9DaqzB5vIb2T6FWqjOvDnLY8/3F2rzuV
+	YDSy2E39OXQ4MkVx6gVtmh/W7FwCrC1/w2shvQjiq6W1KQpmGJ2MvFOuMzrdJh9ECLScp5Kp0Oe
+	5S2WH
+X-Gm-Gg: Acq92OHBQaEo+hFH0N68VjwcCs/6TjJwMQS2O/IVcwfJYRu01frmxvimbo4Oc4UJR6e
+	C69nU8aqxSqRSlTcn4ZdGIvEMw5X19Txsh83Gldvi4ESKD607BMjf2XqxSHxwrSkam+ZVT+iZLu
+	Bw94vxG1Hf6vV5cYG7Gv1Gxz7AdJw+SbLQzk3KOsQNZKWNmHbtvLroLj/bnW+PLxAALUxZkX0Bs
+	PJKhXn4mK/E6yMfBXFu35eidqk7CYcdLRiNYRCAfkKjszOR78UljgOtwWuHmRTkVCXljaqzngR2
+	RcexqtIWvH9huRx0q1zXma/Z9GTtySwEMFDMBCnYHVj1+x1bGeEaFv5ZeWsgAdsCWop8uqptGsU
+	3G9LRUm6twa7mvKvgrAerZGecJVcWJIUixq+tW0+kFbvbYxOHcvSWPDUHtdOz+U5QWqPRLaVOBQ
+	zvMbPfwVimAn8Gwhc4
+X-Received: by 2002:a05:7301:290e:b0:2c1:7480:ff9b with SMTP id 5a478bee46e88-3026294ea33mr4307250eec.18.1778857147019;
+        Fri, 15 May 2026 07:59:07 -0700 (PDT)
 Received: from 330cfa3079ca ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302944ffb85sm7346817eec.7.2026.05.15.07.59.04
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302946f2149sm7040286eec.11.2026.05.15.07.59.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 07:59:04 -0700 (PDT)
+        Fri, 15 May 2026 07:59:05 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -85,45 +85,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Subject: [REGRESSION] stable/linux-6.1.y: (build) error: Bad exit status from
- /var/tmp/rpm-tmp.PzvaZN (%install) in ...
+ /var/tmp/rpm-tmp.DxAF8s (%install) in ...
 From: KernelCI bot <bot@kernelci.org>
 To: kernelci-results@groups.io
 Cc: gus@collabora.com, stable@vger.kernel.org
 Reply-To: kernelci@lists.linux.dev
-Date: Fri, 15 May 2026 14:59:04 -0000
-Message-ID: <177885714386.1005.3592687596689940189@330cfa3079ca>
-X-Rspamd-Queue-Id: 5F2F8551CF8
+Date: Fri, 15 May 2026 14:59:05 -0000
+Message-ID: <177885714543.1005.4969775176895380037@330cfa3079ca>
+X-Rspamd-Queue-Id: A1CB8551E0D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
 	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247804-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247805-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernelci.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
 	RCVD_COUNT_FIVE(0.00)[5];
+	DBL_PROHIBIT(0.00)[0.149.215.96:email];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
 	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email,kernelci.org:email,kernelci.org:url,kernelci.org:dkim,lists.linux.dev:replyto]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,lists.linux.dev:replyto,kernelci.org:email,kernelci.org:url,kernelci.org:dkim,0.97.168.0:email]
 X-Rspamd-Action: no action
 
 
@@ -135,10 +136,10 @@ Hello,
 New build issue found on stable/linux-6.1.y:
 
 ---
- error: Bad exit status from /var/tmp/rpm-tmp.PzvaZN (%install) in binrpm-pkg (/tmp/kci/linux/scripts/Makefile.package:71) [logspec:kbuild,kbuild.other]
+ error: Bad exit status from /var/tmp/rpm-tmp.DxAF8s (%install) in binrpm-pkg (/tmp/kci/linux/scripts/Makefile.package:71) [logspec:kbuild,kbuild.other]
 ---
 
-- dashboard: https://d.kernelci.org/i/maestro:7b9d2a5a8b3db9e6e6f4ee69b25555ee33826321
+- dashboard: https://d.kernelci.org/i/maestro:20822d6152b8beaeba1f175e293525bbf8793539
 - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
 - commit HEAD:  c27210688955656e93e26cffab0a82bbca4e5d2b
 - tags: v6.1.173
@@ -152,35 +153,55 @@ Log excerpt:
 =====================================================
 # /tmp/kci/artifacts/fragments/0.config -> /tmp/kci/artifacts/build/0.config
 # /tmp/kci/artifacts/fragments/1.config -> /tmp/kci/artifacts/build/1.config
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- x86_64_defconfig
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- defconfig
 scripts/kconfig/merge_config.sh -m -O /tmp/kci/artifacts/build /tmp/kci/artifacts/build/.config /tmp/kci/artifacts/build/0.config /tmp/kci/artifacts/build/1.config
 Using /tmp/kci/artifacts/build/.config as base
 Merging /tmp/kci/artifacts/build/0.config
 Value of CONFIG_ENA_ETHERNET is redefined by fragment /tmp/kci/artifacts/build/0.config:
 Previous value: # CONFIG_ENA_ETHERNET is not set
 New value: CONFIG_ENA_ETHERNET=y
+Value of CONFIG_NVME_CORE is redefined by fragment /tmp/kci/artifacts/build/0.config:
+Previous value: CONFIG_NVME_CORE=m
+New value: CONFIG_NVME_CORE=y
 Value of CONFIG_BLK_DEV_NVME is redefined by fragment /tmp/kci/artifacts/build/0.config:
-Previous value: # CONFIG_BLK_DEV_NVME is not set
+Previous value: CONFIG_BLK_DEV_NVME=m
 New value: CONFIG_BLK_DEV_NVME=y
 Value of CONFIG_XFS_FS is redefined by fragment /tmp/kci/artifacts/build/0.config:
 Previous value: # CONFIG_XFS_FS is not set
 New value: CONFIG_XFS_FS=y
+Value of CONFIG_DEBUG_INFO is redefined by fragment /tmp/kci/artifacts/build/0.config:
+Previous value: CONFIG_DEBUG_INFO=y
+New value: CONFIG_DEBUG_INFO=n
 Merging /tmp/kci/artifacts/build/1.config
 #
 # merged configuration written to /tmp/kci/artifacts/build/.config (needs make)
 #
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- olddefconfig
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu-
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- bzImage
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- olddefconfig
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf-
+/tmp/kci/linux/arch/arm64/boot/dts/qcom/msm8996.dtsi:2954.36-2962.5: Warning (clocks_property): /soc/clock-controller@6400000: Missing property '#clock-cells' in node /soc/mailbox@9820000 or bad phandle (referred from clocks[2])
+/tmp/kci/linux/arch/arm64/boot/dts/qcom/msm8996.dtsi:2954.36-2962.5: Warning (clocks_property): /soc/clock-controller@6400000: Missing property '#clock-cells' in node /soc/mailbox@9820000 or bad phandle (referred from clocks[2])
+/tmp/kci/linux/arch/arm64/boot/dts/qcom/msm8996.dtsi:2954.36-2962.5: Warning (clocks_property): /soc/clock-controller@6400000: Missing property '#clock-cells' in node /soc/mailbox@9820000 or bad phandle (referred from clocks[2])
+/tmp/kci/linux/arch/arm64/boot/dts/qcom/msm8996.dtsi:2954.36-2962.5: Warning (clocks_property): /soc/clock-controller@6400000: Missing property '#clock-cells' in node /soc/mailbox@9820000 or bad phandle (referred from clocks[2])
+/tmp/kci/linux/arch/arm64/boot/dts/qcom/msm8996.dtsi:2954.36-2962.5: Warning (clocks_property): /soc/clock-controller@6400000: Missing property '#clock-cells' in node /soc/mailbox@9820000 or bad phandle (referred from clocks[2])
+/tmp/kci/linux/arch/arm64/boot/dts/qcom/msm8996.dtsi:2954.36-2962.5: Warning (clocks_property): /soc/clock-controller@6400000: Missing property '#clock-cells' in node /soc/mailbox@9820000 or bad phandle (referred from clocks[2])
+/tmp/kci/linux/arch/arm64/boot/dts/qcom/msm8996.dtsi:2954.36-2962.5: Warning (clocks_property): /soc/clock-controller@6400000: Missing property '#clock-cells' in node /soc/mailbox@9820000 or bad phandle (referred from clocks[2])
+/tmp/kci/linux/arch/arm64/boot/dts/qcom/msm8996.dtsi:2954.36-2962.5: Warning (clocks_property): /soc/clock-controller@6400000: Missing property '#clock-cells' in node /soc/mailbox@9820000 or bad phandle (referred from clocks[2])
+/tmp/kci/linux/arch/arm64/boot/dts/qcom/msm8996.dtsi:2954.36-2962.5: Warning (clocks_property): /soc/clock-controller@6400000: Missing property '#clock-cells' in node /soc/mailbox@9820000 or bad phandle (referred from clocks[2])
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- Image.gz
 rm -rf /tmp/kci/artifacts/build/modinstall
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build INSTALL_MOD_STRIP=1 INSTALL_MOD_PATH=/tmp/kci/artifacts/build/modinstall ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- modules_install
-tar --sort=name --owner=tuxmake:1000 --group=tuxmake:1000 --mtime=@1778855984 --clamp-mtime -caf /tmp/kci/artifacts/build/modules.tar.xz -C /tmp/kci/artifacts/build/modinstall lib
-make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=x86_64 SRCARCH=x86 CROSS_COMPILE=x86_64-linux-gnu- binrpm-pkg
-Building target platforms: x86_64-linux
-Building for target x86_64-linux
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build INSTALL_MOD_STRIP=1 INSTALL_MOD_PATH=/tmp/kci/artifacts/build/modinstall ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- modules_install
+tar --sort=name --owner=tuxmake:1000 --group=tuxmake:1000 --mtime=@1778854053 --clamp-mtime -caf /tmp/kci/artifacts/build/modules.tar.xz -C /tmp/kci/artifacts/build/modinstall lib
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build INSTALL_DTBS_PATH=/tmp/kci/artifacts/build/dtbsinstall/dtbs ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- dtbs
+rm -rf /tmp/kci/artifacts/build/dtbsinstall
+mkdir -p /tmp/kci/artifacts/build/dtbsinstall/dtbs
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build INSTALL_DTBS_PATH=/tmp/kci/artifacts/build/dtbsinstall/dtbs ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- dtbs_install
+tar --sort=name --owner=tuxmake:1000 --group=tuxmake:1000 --mtime=@1778854053 --clamp-mtime -caf /tmp/kci/artifacts/build/dtbs.tar.xz -C /tmp/kci/artifacts/build/dtbsinstall dtbs
+make --silent --keep-going --jobs=8 O=/tmp/kci/artifacts/build ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabihf- binrpm-pkg
+Building target platforms: aarch64-linux
+Building for target aarch64-linux
 warning: line 22: It's not recommended to have unversioned Obsoletes: Obsoletes: kernel-headers
-Executing(%mkbuilddir): /bin/sh -e /var/tmp/rpm-tmp.Wrgehz
-Executing(%install): /bin/sh -e /var/tmp/rpm-tmp.PzvaZN
+Executing(%mkbuilddir): /bin/sh -e /var/tmp/rpm-tmp.qpCPto
+Executing(%install): /bin/sh -e /var/tmp/rpm-tmp.DxAF8s
 + umask 022
 + cd ./kernel-6.1.173-build
 + /usr/bin/rm -rf ./kernel-6.1.173-build/BUILDROOT
@@ -192,7 +213,7 @@ Executing(%install): /bin/sh -e /var/tmp/rpm-tmp.PzvaZN
 + cp ./kernel-6.1.173-build/BUILDROOT/boot/vmlinuz-6.1.173
 cp: missing destination file operand after './kernel-6.1.173-build/BUILDROOT/boot/vmlinuz-6.1.173'
 Try 'cp --help' for more information.
-error: Bad exit status from /var/tmp/rpm-tmp.PzvaZN (%install)
+error: Bad exit status from /var/tmp/rpm-tmp.DxAF8s (%install)
 RPM build warnings:
 RPM build errors:
 
@@ -201,13 +222,13 @@ RPM build errors:
 
 # Builds where the incident occurred:
 
-## x86_64_defconfig+aws-ec2 on (x86_64):
+## defconfig+aws-ec2 on (arm64):
 - compiler: gcc-14
 - config: None
-- dashboard: https://d.kernelci.org/build/maestro:6a0722f30ed99f002e8df8a4
+- dashboard: https://d.kernelci.org/build/maestro:6a0722970ed99f002e8df7af
 
 
-#kernelci issue maestro:7b9d2a5a8b3db9e6e6f4ee69b25555ee33826321
+#kernelci issue maestro:20822d6152b8beaeba1f175e293525bbf8793539
 
 --
 This is an experimental report format. Please send feedback in!
