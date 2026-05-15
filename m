@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMI4BjFPB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248709-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:01 +0200
+	id YA+eC9RPB2o9yAIAu9opvQ
+	(envelope-from <stable+bounces-248496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:54:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24A15540E1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C5C55429F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 167D130C5980
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB49D340F418
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BFB4DD6EE;
-	Fri, 15 May 2026 16:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B915B3E0083;
+	Fri, 15 May 2026 16:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Tn1R1q/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrnxXAm1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E314DD6F3;
-	Fri, 15 May 2026 16:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7D83BB11C;
+	Fri, 15 May 2026 16:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862427; cv=none; b=fUPJ9vUltYEa7K+ngrpIlK94wmXNqW5bCxQvbCpxHqQbrbLIr7ZB7xYe09JIgEqubtvs40FPlsEZiEafxkg6EH2KrYnhSLMCRb3S8RgLnOQco4f7sZYSdTxi/HrDA2hqaMAv86RHIk+SKy/n/J0okpxwGU9mYPOMKJhx8vtGYEM=
+	t=1778861879; cv=none; b=nouccAJE9k0dWeYCFrIecAW6gHmxH60EZ4fAn0stIyFP9fF0ZlIrONTmekhTH+3mAR4D5lIWOYJ3UHOU/sX4ZXGvFkNUeYYH41SW2U3ID6dAiM5it6TmOVybrh3aKc/LIfg47OfORKwFBJa4fg1PakOwVchsmAig5qDHEdAa+a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862427; c=relaxed/simple;
-	bh=uJ3jJWiyIA/AWlPsZOkHdBd4fpK0CeYXaqeeZN+YSZw=;
+	s=arc-20240116; t=1778861879; c=relaxed/simple;
+	bh=TtQhzETxuY8PDTFGlcU69wlKzxy4SfxyojBO32Xx718=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqDRndqayC4mEOcxEIljgLnViOZI18Q950pzDNyfUCwHbRMtWBCit5piuJUMHMu8/t6DfVPyBYouPuApSuiHc7sf56vJelz0xxf9TDD0EsKkE58+UcT1IphNpxgM9XBwhw3WBkMKsZUqXc2IydXoamd5+MpOVZmMtneQLHOmahA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Tn1R1q/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2FCC2BCB0;
-	Fri, 15 May 2026 16:27:06 +0000 (UTC)
+	 MIME-Version; b=aEIqXCYBofle2tdy+14yfGEv1wwk8dKp6Xqd+zTf/aso5KtMMUQOV+QXBEyn/iyTnBgGBHUeOQ6W/FEzqYk8B7LSCB8DVyRyY2YeTlY+OVHyKjRiK6l+Xa0gxfF+DrrzcpbKFwraVSE73cQ+lpB59tLz6cmIjwbupGA0l0IEKwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrnxXAm1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE157C2BCB0;
+	Fri, 15 May 2026 16:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862427;
-	bh=uJ3jJWiyIA/AWlPsZOkHdBd4fpK0CeYXaqeeZN+YSZw=;
+	s=korg; t=1778861879;
+	bh=TtQhzETxuY8PDTFGlcU69wlKzxy4SfxyojBO32Xx718=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Tn1R1q/8t9NFmvpyA0sSiNySExC5DZJOBlE3vicX9bN1oTMYFZUNw3zLbW0edu+W
-	 LRfTKkxxTjyxUm6tPew0byg49VLjLpGKcfaA0WQSB87FPYG2nxeuQt0ClehhhkUSaw
-	 TBkjiIpvQxxx6g8Lbf/Tlikw/OnAEkAPnfNq3f6M=
+	b=DrnxXAm1EEBstUxIMv6saC9NWeC91AEGfLkdgWwTXzjFsQmLudhjE5dOXPj6vKbbb
+	 86MU0myoFQ/VVU10r0MxG5vQx8WiMa7ghXPUgDlngcAttCC5gyhVABxIWTuJKazAV2
+	 aUAp/0PKcc9tgeJinTHLFnVm3JYTO6ZNU/gc3xyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 7.0 008/201] drm/msm/hdmi: Fix wrong CTRL1 register used in writing info frames
+	Guoniu Zhou <guoniu.zhou@nxp.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 009/188] media: nxp: imx8-isi: Reduce minimum queued buffers from 2 to 0
 Date: Fri, 15 May 2026 17:47:06 +0200
-Message-ID: <20260515154658.718568888@linuxfoundation.org>
+Message-ID: <20260515154657.511931556@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B24A15540E1
+X-Rspamd-Queue-Id: A0C5C55429F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248496-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248709-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,patchwork.freedesktop.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ideasonboard.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Guoniu Zhou <guoniu.zhou@nxp.com>
 
-commit 8c6c93b7db42d15c6e8c2540a648d32986a04b1a upstream.
+commit 2f38622d0f85f317be9e6b131da6cd511db94fd2 upstream.
 
-Commit 384d2b03d0a1 ("drm/msm/hdmi: make use of the drm_connector_hdmi
-framework") changed the unconditional register writes in few places to
-updates: read, apply mask, write.  The new code reads
-REG_HDMI_INFOFRAME_CTRL1 register, applies fields/mask for
-HDMI_INFOFRAME_CTRL0 register and finally writes to
-HDMI_INFOFRAME_CTRL0.  This difference between CTRL1 and CTRL0 looks
-unintended and may result in wrong data being written to HDMI bridge
-registers.
+Fix a hang issue when capturing a single frame with applications like cam
+in libcamera. It would hang waiting for the driver to complete the buffer,
+but streaming never starts because min_queued_buffers was set to 2.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 384d2b03d0a1 ("drm/msm/hdmi: make use of the drm_connector_hdmi framework")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/711156/
-Link: https://lore.kernel.org/r/20260311191620.245394-2-krzysztof.kozlowski@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+The ISI module uses a ping-pong buffer mechanism that requires two buffers
+to be programmed at all times. However, when fewer than 2 user buffers are
+available, the driver use internal discard buffers to fill the remaining
+slot(s). Reduce minimum queued buffers from 2 to 0 allows streaming to
+start without any queued buffers.
+
+Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://patch.msgid.link/20260312-isi_min_buffers-v2-1-d5ea1c79ad81@nxp.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/hdmi/hdmi_bridge.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/msm/hdmi/hdmi_bridge.c
-+++ b/drivers/gpu/drm/msm/hdmi/hdmi_bridge.c
-@@ -153,7 +153,7 @@ static int msm_hdmi_bridge_write_avi_inf
- 	for (i = 0; i < ARRAY_SIZE(buf); i++)
- 		hdmi_write(hdmi, REG_HDMI_AVI_INFO(i), buf[i]);
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+@@ -1410,7 +1410,7 @@ int mxc_isi_video_register(struct mxc_is
+ 	q->mem_ops = &vb2_dma_contig_memops;
+ 	q->buf_struct_size = sizeof(struct mxc_isi_buffer);
+ 	q->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
+-	q->min_queued_buffers = 2;
++	q->min_queued_buffers = 0;
+ 	q->lock = &video->lock;
+ 	q->dev = pipe->isi->dev;
  
--	val = hdmi_read(hdmi, REG_HDMI_INFOFRAME_CTRL1);
-+	val = hdmi_read(hdmi, REG_HDMI_INFOFRAME_CTRL0);
- 	val |= HDMI_INFOFRAME_CTRL0_AVI_SEND |
- 		HDMI_INFOFRAME_CTRL0_AVI_CONT;
- 	hdmi_write(hdmi, REG_HDMI_INFOFRAME_CTRL0, val);
-@@ -193,7 +193,7 @@ static int msm_hdmi_bridge_write_audio_i
- 		   buffer[9] << 16 |
- 		   buffer[10] << 24);
- 
--	val = hdmi_read(hdmi, REG_HDMI_INFOFRAME_CTRL1);
-+	val = hdmi_read(hdmi, REG_HDMI_INFOFRAME_CTRL0);
- 	val |= HDMI_INFOFRAME_CTRL0_AUDIO_INFO_SEND |
- 		HDMI_INFOFRAME_CTRL0_AUDIO_INFO_CONT |
- 		HDMI_INFOFRAME_CTRL0_AUDIO_INFO_SOURCE |
 
 
 
