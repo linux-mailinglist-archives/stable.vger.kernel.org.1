@@ -1,59 +1,68 @@
-Return-Path: <stable+bounces-248599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBzNKWJRB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:01:22 +0200
+	id q7vUKuhZB2qzzwIAu9opvQ
+	(envelope-from <stable+bounces-248792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A209554541
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:01:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 473E255551C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 380C332DDB76
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:23:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B883A31DA592
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF35B3CFF61;
-	Fri, 15 May 2026 16:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6768C3D0BF6;
+	Fri, 15 May 2026 16:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HevzPQvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDBYh1fh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AB32C11DF;
-	Fri, 15 May 2026 16:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FA73C76A0;
+	Fri, 15 May 2026 16:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862144; cv=none; b=p5F7ZnBs4fNvpUz59z6x1NeVlOKS6uwh9oyVLOucKkMiUXwXhtVMtNzEaEbx5QDpKadFe710EZwTNOxelRS7ZXvuysk0tEVzLQ0r5QSBOY+UDWq4XuiHYe/xdIOwNChaWeJHfaRgXkVAY2rGNtPXHsfv7zQXRtreFKFO6gjKOHM=
+	t=1778862643; cv=none; b=FGKIU9BZcqJsPtx5abBJde8vmwXQXV8pqjCXW2o+DFv8NV+IhnP/S6Pzs3JeGB87AuxDUcrgtCnMXcnTpmur6iE+J1X5jQvCGbBadEMnNPKR7VyZzHW6z3LeW22zKV9MXtL9iSCBYsX8oEds9pBOYpWJ36hqGUMejruxfTb0uFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862144; c=relaxed/simple;
-	bh=TJ1yLVys4AyWgQPYhGdaAQF0p78qXvt3gPzsZUgzfo0=;
+	s=arc-20240116; t=1778862643; c=relaxed/simple;
+	bh=+ZZGAd8xq5dJos/S8ljuweU88EvlFDAZzQDRg9v66W4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cUVwpyAwm46gM+A4R9WJhxXcLMbcCqX3Akj7N+9u5iBw8r5NCb0MMm/iVQhgqq987ajzbrzXGIvEClAMxAM9W7xfaP8ACjlK7Mr5KwrN3Ia5MSW5cunMdUXK5o3uJRvFgP6TMzUopeVXxZNBEMKRhp8C8AN4fTEPpZ34LncxZ44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HevzPQvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166C8C2BCB0;
-	Fri, 15 May 2026 16:22:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c0kzK/P3Hjt4HVjJhQvflLW+Ra94SJ2UyG0C4YzudoqMLFGSnwtH8/scWdXsqHeWaNHl7+RqlMYb+yNnlRUovUtGBaXzpL8BUUtwvqM+0w3dMMi4rRxIDzoa7bvI+0cyGGx/5TXBwO5oxxk+HbnwJREyFRxtQs3Vns7DTWn4Mvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDBYh1fh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C28CC2BCB0;
+	Fri, 15 May 2026 16:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862144;
-	bh=TJ1yLVys4AyWgQPYhGdaAQF0p78qXvt3gPzsZUgzfo0=;
+	s=korg; t=1778862643;
+	bh=+ZZGAd8xq5dJos/S8ljuweU88EvlFDAZzQDRg9v66W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HevzPQvqaZcJ4q2BA82ZuhMGyMXmHJCnD91eTt7qOnLE1m8wVYyBax8gzNc2BlNDp
-	 926+9oxMvtSU7MHfjVlM2tiNNxEM0LZnAWDQZ6UgkOaDGMC/hRSH79IqYcXHmZh5XB
-	 BD2XzCpoK2B3u9vmeDJfBpzhSLjYkTZUoIveCd2M=
+	b=fDBYh1fhsbD4wFnRq3LDav49qPBqMeiB2UOMVGdVnOYF3eLpZ3wfxzrVbNa4BUeRB
+	 pZgbngl1TywSrvnP01EsykQS8dMI2bIv5ZQeO3vyxXK0+qzqQ1JJJP/NdLmShPwLPT
+	 4FZfPKDqlDGN29d2IBZ0eHlF/wSZvo/Liypwo23s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	"John B. Moore" <jbmoore61@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 126/188] drm/amdgpu/gfx9: drop unnecessary 64-bit fence flag check in KIQ
+	Simon Ser <contact@emersion.fr>,
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Daniel Stone <daniels@collabora.com>,
+	Melissa Wen <mwen@igalia.com>,
+	Sebastian Wick <sebastian.wick@redhat.com>,
+	Uma Shankar <uma.shankar@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Subject: [PATCH 7.0 125/201] drm/colorop: Fix blob property reference tracking in state lifecycle
 Date: Fri, 15 May 2026 17:49:03 +0200
-Message-ID: <20260515154700.062204079@linuxfoundation.org>
+Message-ID: <20260515154701.270677968@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +74,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1A209554541
+X-Rspamd-Queue-Id: 473E255551C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248599-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248792-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John B. Moore <jbmoore61@gmail.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-commit 7bbfb2559bcec39d1a4e1182d931a2046112c352 upstream.
+commit 235b333e2878d791cee09e1e72f44611a9400114 upstream.
 
-Remove the BUG_ON(flags & AMDGPU_FENCE_FLAG_64BIT) assertion from
-gfx_v9_0_ring_emit_fence_kiq().  The KIQ hardware supports 64-bit
-fence writes; the 32-bit writeback address constraint is an
-upper-layer convention, not a hardware limitation.  The check serves
-no purpose and should not be present.
+The colorop state blob property handling had memory leaks during state
+duplication, destruction, and reset operations. The implementation
+failed to follow the established pattern from drm_crtc's handling of
+DEGAMMA/GAMMA blob properties.
 
-Found by code inspection while investigating related BUG_ON
-assertions in the GFX and compute ring emission paths.
+Issues fixed:
+- drm_colorop_atomic_destroy_state() was freeing state memory without
+  releasing the blob reference, causing a leak
+- drm_colorop_reset() was directly freeing old state with kfree()
+  instead of properly destroying it, leaking blob references
+- drm_colorop_cleanup() had duplicate blob cleanup code
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: John B. Moore <jbmoore61@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1b1101a46a426bb4328116bb5273c326a2780389)
-Cc: stable@vger.kernel.org
+Changes:
+- Add __drm_atomic_helper_colorop_destroy_state() helper to properly
+  release blob references before freeing state memory
+- Update drm_colorop_atomic_destroy_state() to call the helper
+- Fix drm_colorop_reset() to use drm_colorop_atomic_destroy_state()
+  for proper cleanup of old state
+- Simplify drm_colorop_cleanup() to use the common destruction path
+
+This matches the well-tested pattern used by drm_crtc since 2016 and
+ensures proper reference counting throughout the state lifecycle.
+
+Co-developed by Claude Sonnet 4.5.
+
+Fixes: cfc27680ee20 ("drm/colorop: Introduce new drm_colorop mode object")
+Cc: Simon Ser <contact@emersion.fr>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Daniel Stone <daniels@collabora.com>
+Cc: Melissa Wen <mwen@igalia.com>
+Cc: Sebastian Wick <sebastian.wick@redhat.com>
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Cc: <stable@vger.kernel.org> #v6.19+
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Link: https://patch.msgid.link/20260312204145.829714-1-harry.wentland@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/drm_colorop.c |   26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -5640,9 +5640,6 @@ static void gfx_v9_0_ring_emit_fence_kiq
- {
- 	struct amdgpu_device *adev = ring->adev;
+--- a/drivers/gpu/drm/drm_colorop.c
++++ b/drivers/gpu/drm/drm_colorop.c
+@@ -169,12 +169,8 @@ void drm_colorop_cleanup(struct drm_colo
+ 	list_del(&colorop->head);
+ 	config->num_colorop--;
  
--	/* we only allocate 32bit for each seq wb address */
--	BUG_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
+-	if (colorop->state && colorop->state->data) {
+-		drm_property_blob_put(colorop->state->data);
+-		colorop->state->data = NULL;
+-	}
 -
- 	/* write fence seq to the "addr" */
- 	amdgpu_ring_write(ring, PACKET3(PACKET3_WRITE_DATA, 3));
- 	amdgpu_ring_write(ring, (WRITE_DATA_ENGINE_SEL(0) |
+-	kfree(colorop->state);
++	if (colorop->state)
++		drm_colorop_atomic_destroy_state(colorop, colorop->state);
+ }
+ EXPORT_SYMBOL(drm_colorop_cleanup);
+ 
+@@ -458,9 +454,23 @@ drm_atomic_helper_colorop_duplicate_stat
+ 	return state;
+ }
+ 
++/**
++ * __drm_atomic_helper_colorop_destroy_state - release colorop state
++ * @state: colorop state object to release
++ *
++ * Releases all resources stored in the colorop state without actually freeing
++ * the memory of the colorop state. This is useful for drivers that subclass the
++ * colorop state.
++ */
++static void __drm_atomic_helper_colorop_destroy_state(struct drm_colorop_state *state)
++{
++	drm_property_blob_put(state->data);
++}
++
+ void drm_colorop_atomic_destroy_state(struct drm_colorop *colorop,
+ 				      struct drm_colorop_state *state)
+ {
++	__drm_atomic_helper_colorop_destroy_state(state);
+ 	kfree(state);
+ }
+ 
+@@ -511,7 +521,9 @@ static void __drm_colorop_reset(struct d
+ 
+ void drm_colorop_reset(struct drm_colorop *colorop)
+ {
+-	kfree(colorop->state);
++	if (colorop->state)
++		drm_colorop_atomic_destroy_state(colorop, colorop->state);
++
+ 	colorop->state = kzalloc_obj(*colorop->state);
+ 
+ 	if (colorop->state)
 
 
 
