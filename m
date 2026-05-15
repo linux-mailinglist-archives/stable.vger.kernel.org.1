@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EscI+hXB2oozgIAu9opvQ
-	(envelope-from <stable+bounces-248637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:12 +0200
+	id EPXvCvlUB2pIygIAu9opvQ
+	(envelope-from <stable+bounces-248830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC8A555172
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81105554B80
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 50C0D3137830
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22AF33459A78
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEF03E0094;
-	Fri, 15 May 2026 16:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F35D39C63E;
+	Fri, 15 May 2026 16:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDWcLNDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGmgNicN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D9F3E7BDE;
-	Fri, 15 May 2026 16:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B962949E0;
+	Fri, 15 May 2026 16:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862243; cv=none; b=niTh75HtLGk0fPtoYsNzQdU4ZbKSeJ5nQUsdowD/WE0kh3X7pAO+zNLI5FwynI0WkdrMinFab/WTJ+w+ppcY3FhE5gbOhogyGrUwwEOphjxOAOiWn2Wv+Y880lUWnT4JTyddHwIRPqawCslzva1jZ7Vw9I/UFdU5VNlgc6bGr6k=
+	t=1778862741; cv=none; b=lcQNwEe2jf3UA0YeFH9cfWXlND+LScz07A4zdSKf+y1rnyGpkVRRGbSLSqQ+uJGJRi59YYES0NzJgoEXX2MiXnqWda/CBVlW6EOXfBg/vBcf6SkUOhnMeG4uuoBFMDWZ4nJBaC9pr+SUCAS9FxyotkoiWlDBkN3Uq5xoJGMWQss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862243; c=relaxed/simple;
-	bh=p1IqVW/mJwsLkZX2s0uhVkksFiqsPa/p8rbGQURJup0=;
+	s=arc-20240116; t=1778862741; c=relaxed/simple;
+	bh=VNubr+fRAB1Syn/V0cxhBlwMClNUWK7zCUOkFCGRR4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VptgyrIG5mrHntN+MZ5LsF6llYI5xaIm7TyEk8zF2ZB0QuqvCAbyycm7Jhzwpxbl1f8wcHUucweXq0YDUjOMO+BHrvK/PTFf07aQFxzNyoPA5/M+66Tg4af7niYoNVkbpTK/SgezMtE98cUL/Ue14nPRO1lrBg72Yx42cLsRSvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDWcLNDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2540C2BCC9;
-	Fri, 15 May 2026 16:24:02 +0000 (UTC)
+	 MIME-Version; b=cEm8yNavauvBq4lERTO/KAXsOExhE8oaRosykcFOFk9Yu3wh4zj8Bh3LjrTkhxuG/hya6RdewYkSI1D1Z2ghI3tOKMCYQDw7u3st6Qj13mLL+pU4BSbUDSkxoan4wRs/A3zQGC+vH4rml039EmkoqL6HPO4o4DNPcIV+LiqDC6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGmgNicN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA61C2BCB0;
+	Fri, 15 May 2026 16:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862243;
-	bh=p1IqVW/mJwsLkZX2s0uhVkksFiqsPa/p8rbGQURJup0=;
+	s=korg; t=1778862741;
+	bh=VNubr+fRAB1Syn/V0cxhBlwMClNUWK7zCUOkFCGRR4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dDWcLNDe04EAUbnYYQWOxIkUObdhOmdAZW4yIIgcU5grC267qDxfb9ztuF7vwyvwT
-	 Xx8wGPuiBhZuIXts1iXSIHCFaEf8SJrI7XMLw8iBBBI43gC0b/8MKNHDhxROQRkiVJ
-	 wSPRF9SCNElWKLjbDk7qZk/Jc+Ibly/HFylXgrjw=
+	b=FGmgNicNDIA5qIsLmNblQdi7UiQZAqQm//P6ktaiFWe0Lk4Ek2yaUKf/jQfqYcCWI
+	 iKlBtBMT+hXTBkxzNelVXpn/OIJambhgX4X3efexMCJPEwWFfkuo/96PYDOU7X2SSp
+	 5ItZX+O2gSCBjUQvfWj9IX5U61WkWqROMbMka5qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 164/188] spi: tegra20-sflash: fix controller deregistration
-Date: Fri, 15 May 2026 17:49:41 +0200
-Message-ID: <20260515154700.889642450@linuxfoundation.org>
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Philip Yang <philip.yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 164/201] drm/amdkfd: Make all TLB-flushes heavy-weight
+Date: Fri, 15 May 2026 17:49:42 +0200
+Message-ID: <20260515154702.127482650@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +64,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0EC8A555172
+X-Rspamd-Queue-Id: 81105554B80
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248637-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248830-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Felix Kuehling <felix.kuehling@amd.com>
 
-[ Upstream commit ad7310e983327f939dd6c4e801eab13238992572 ]
+commit 9b4e3495d1bd2469bf94b74930c153c2d534ddb7 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+With only one sequence number we cannot track the need for legacy vs
+heavy-weight flushes reliably. Always use heavy-weight.
 
-Fixes: f12f7318c44a ("spi: tegra20-sflash: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-23-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ kept the redundant `host->dev.of_node = pdev->dev.of_node;` line above the registration call ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Philip Yang <philip.yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c1a3ff1d327820cd9a52bc1056b98681fc088949)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra20-sflash.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c              |    4 ++--
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |    6 +++---
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h                 |    6 +++---
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c                  |    4 ++--
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -506,7 +506,7 @@ static int tegra_sflash_probe(struct pla
- 	pm_runtime_put(&pdev->dev);
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1360,7 +1360,7 @@ static int kfd_ioctl_map_memory_to_gpu(s
+ 		peer_pdd = kfd_process_device_data_by_id(p, devices_arr[i]);
+ 		if (WARN_ON_ONCE(!peer_pdd))
+ 			continue;
+-		kfd_flush_tlb(peer_pdd, TLB_FLUSH_LEGACY);
++		kfd_flush_tlb(peer_pdd);
+ 	}
+ 	kfree(devices_arr);
  
- 	host->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to host err %d\n", ret);
- 		goto exit_pm_disable;
-@@ -529,11 +529,17 @@ static void tegra_sflash_remove(struct p
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct tegra_sflash_data	*tsd = spi_controller_get_devdata(host);
+@@ -1455,7 +1455,7 @@ static int kfd_ioctl_unmap_memory_from_g
+ 		if (WARN_ON_ONCE(!peer_pdd))
+ 			continue;
+ 		if (flush_tlb)
+-			kfd_flush_tlb(peer_pdd, TLB_FLUSH_HEAVYWEIGHT);
++			kfd_flush_tlb(peer_pdd);
  
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	free_irq(tsd->irq, tsd);
+ 		/* Remove dma mapping after tlb flush to avoid IO_PAGE_FAULT */
+ 		err = amdgpu_amdkfd_gpuvm_dmaunmap_mem(mem, peer_pdd->drm_priv);
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -572,7 +572,7 @@ static int allocate_vmid(struct device_q
+ 			qpd->vmid,
+ 			qpd->page_table_base);
+ 	/* invalidate the VM context after pasid and vmid mapping is set up */
+-	kfd_flush_tlb(qpd_to_pdd(qpd), TLB_FLUSH_LEGACY);
++	kfd_flush_tlb(qpd_to_pdd(qpd));
  
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_sflash_runtime_suspend(&pdev->dev);
-+
-+	spi_controller_put(host);
+ 	if (dqm->dev->kfd2kgd->set_scratch_backing_va)
+ 		dqm->dev->kfd2kgd->set_scratch_backing_va(dqm->dev->adev,
+@@ -610,7 +610,7 @@ static void deallocate_vmid(struct devic
+ 		if (flush_texture_cache_nocpsch(q->device, qpd))
+ 			dev_err(dev, "Failed to flush TC\n");
+ 
+-	kfd_flush_tlb(qpd_to_pdd(qpd), TLB_FLUSH_LEGACY);
++	kfd_flush_tlb(qpd_to_pdd(qpd));
+ 
+ 	/* Release the vmid mapping */
+ 	set_pasid_vmid_mapping(dqm, 0, qpd->vmid);
+@@ -1284,7 +1284,7 @@ static int restore_process_queues_nocpsc
+ 				dqm->dev->adev,
+ 				qpd->vmid,
+ 				qpd->page_table_base);
+-		kfd_flush_tlb(pdd, TLB_FLUSH_LEGACY);
++		kfd_flush_tlb(pdd);
+ 	}
+ 
+ 	/* Take a safe reference to the mm_struct, which may otherwise
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -1554,13 +1554,13 @@ void kfd_signal_reset_event(struct kfd_n
+ void kfd_signal_poison_consumed_event(struct kfd_node *dev, u32 pasid);
+ void kfd_signal_process_terminate_event(struct kfd_process *p);
+ 
+-static inline void kfd_flush_tlb(struct kfd_process_device *pdd,
+-				 enum TLB_FLUSH_TYPE type)
++static inline void kfd_flush_tlb(struct kfd_process_device *pdd)
+ {
+ 	struct amdgpu_device *adev = pdd->dev->adev;
+ 	struct amdgpu_vm *vm = drm_priv_to_vm(pdd->drm_priv);
+ 
+-	amdgpu_vm_flush_compute_tlb(adev, vm, type, pdd->dev->xcc_mask);
++	amdgpu_vm_flush_compute_tlb(adev, vm, TLB_FLUSH_HEAVYWEIGHT,
++				    pdd->dev->xcc_mask);
  }
  
- #ifdef CONFIG_PM_SLEEP
+ static inline bool kfd_flush_tlb_after_unmap(struct kfd_dev *dev)
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1415,7 +1415,7 @@ svm_range_unmap_from_gpus(struct svm_ran
+ 			if (r)
+ 				break;
+ 		}
+-		kfd_flush_tlb(pdd, TLB_FLUSH_HEAVYWEIGHT);
++		kfd_flush_tlb(pdd);
+ 	}
+ 
+ 	return r;
+@@ -1557,7 +1557,7 @@ svm_range_map_to_gpus(struct svm_range *
+ 			}
+ 		}
+ 
+-		kfd_flush_tlb(pdd, TLB_FLUSH_LEGACY);
++		kfd_flush_tlb(pdd);
+ 	}
+ 
+ 	return r;
 
 
 
