@@ -1,164 +1,189 @@
-Return-Path: <stable+bounces-248883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIlfCfNVB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:20:51 +0200
+	id 0COmKWdhB2q90wIAu9opvQ
+	(envelope-from <stable+bounces-248884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:09:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE37554DEC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:20:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22476555EEF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 21920303ABDC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:05:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2B70E314A368
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C917932ABC0;
-	Fri, 15 May 2026 17:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E932D3D6471;
+	Fri, 15 May 2026 17:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d7aTIZxC"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="cbihZQJq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86691380FC7
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 17:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9B53D5246;
+	Fri, 15 May 2026 17:16:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778864721; cv=none; b=LBfLNtviyTluYuKOTpQM8z6yzni0jI2HcDOhY6/ArX4mXPijZmdqst5uYLF1k65yTm27TAmHdneU2NncIk7klVeCIGUTdDiUwxatgDhU9h7IJPjZD4gHan2WfGqDE0+pN8TteFrnnBGJu8FgH9zGGm3mkSqzk06W6k2dEfZWnZs=
+	t=1778865378; cv=none; b=VdoOh7Mhdsf/qias4qa9cB+3Mot2/QYW9bQwZF5fQB/aUOhTnQV+lIj3AWFlqwm9qw21GP2f+EKIBIR9Z58Tt7lwG9KqqcRLtz+X1yU2sUiU2O3RedXa3ZxTjfUUQe5YC6oTzZ9Yk2bXKUk2TCKTBhJlG9HX95SI7Y9TScr286g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778864721; c=relaxed/simple;
-	bh=eJ0IAC8UqcsVev9hgqWTXzo7piwrzk27IDKUsFlcXzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Duw4zkbhUJanq69ArwsyW72HYfcC0zmyNGtyZBuvz8cGDyd+f39M5qFqZS3lhYT5t4EOCpPbIoqaPgnmr0baKEBl1CPOufKPxkhXNL9m8/vIJUqTtqlgcyJKDZ4HOp2MCrY39omoEqF7SxPltDm6T2nSVRdekll72uUsmkYzajM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d7aTIZxC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8179C2BCB0;
-	Fri, 15 May 2026 17:05:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778864721;
-	bh=eJ0IAC8UqcsVev9hgqWTXzo7piwrzk27IDKUsFlcXzY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d7aTIZxCGuuXVF9+8J3hP9OJM3n4TU2pBwg1uk8SgafjyhoZQ4QuBvtRyndv5rTH7
-	 ETRDb9ke9yc52Qa/mjiQFfHbh0kB41L79v0ryyJXPePivXHtwolfd/dGAWYUWoHpiW
-	 FxFxQmdIcCqA19A3LLoCecujuNjVex0314MFfluHBDI1mWERYk0pq0B6aYEm2FjeCz
-	 qFcuzvAGLEcMXzzi01pCC9+FBoj3oyM2yAAFGpX+5QHg91wAB1v8iAjUe976lPZwfr
-	 SZenoB77ZSbnAZdJGxyObD/sC18qyGtv07GYziE984sBf05fwbzZ7qpGFhFttqcFJJ
-	 5Du4LpVG2COPA==
-Date: Fri, 15 May 2026 19:05:18 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, 
-	"Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
-Subject: Re: [PATCH 6.6.y] pwm: imx-tpm: Count the number of enabled channels
- in probe
-Message-ID: <agdSJR7uOo5vlfYX@monoceros>
-References: <2026050332-duly-bobbing-50af@gregkh>
- <20260503154403.942608-2-ukleinek@kernel.org>
- <2026051538-hamster-grimacing-cfcf@gregkh>
+	s=arc-20240116; t=1778865378; c=relaxed/simple;
+	bh=DI/6D/R5nHTuDntls6I2FBYAisir9sF9H9f3qLqPKOw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=psRtroQqosz3zMUUA4kYp8CFTwa6mJ1kxbeqLzKxAdToO7TKkD2VeiL35C0NypYLeLYmzLdeRjwsZqiklMix5A0818JfXl8Sms7h4fPHyyQecxdZcI4SBlT57BqdqxIMVPKIa8M9LBirhu5ZQF20RiRQTC27Fbz5csXh9tSCo44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=cbihZQJq; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1778865282;
+	bh=+dkHU0yum/qGskzBEdOQ2VhQjD07OM1eCJK8M6tYl6A=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=cbihZQJqL733IzgrAsovW4PHI9MfZI1TUAC2hNfZCiyc+T4hxnMZqsX1GWONENg8T
+	 xoo/PUBRHdLtMwA+EzcFICHq9fPgRhSeF/hwIJ969gcG3GqQApYwyuj1gitkE75vS2
+	 FDj/Sqi6m/oPq6ZwPa0LZ1jWJPsugugRx4Ajj0Fg=
+X-QQ-mid: zesmtpip2t1778865277ta37a6308
+X-QQ-Originating-IP: BVaw1WmTVjX6UJvjaRuQKIdWGuQDo0toGNBLtoMZANg=
+Received: from localhost.localdomain ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 16 May 2026 01:14:34 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 18348356817988327989
+EX-QQ-RecipientCnt: 21
+From: Wentao Guan <guanwentao@uniontech.com>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: Re: [PATCH 6.18 000/188] 6.18.32-rc1 review
+Date: Sat, 16 May 2026 01:13:04 +0800
+Message-Id: <20260515171303.613447-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dk2besdivozfypon"
-Content-Disposition: inline
-In-Reply-To: <2026051538-hamster-grimacing-cfcf@gregkh>
-X-Rspamd-Queue-Id: 2FE37554DEC
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: OBP6NRneNv5in6VFnSCXlgjhpdEEjRL8jryzan7LYDwX55Rkpuj/fK5f
+	iAPIzwhTxo8nJgXPdphvZwHM8m6zSSyO6sSYIvAg1MjgZcCRIS+mWRztVBprRj5DoqwV8HX
+	4p0FqvLjGZzuQ5iygLTY8mn4frNSyNUAKbLwMaEP4lykYjf6GdUPJOE9u0iqqKmwrGEo3wT
+	Kndnv499r3sSYt7DtKzbY8JdMoecONoxyWdZRgfJGWKOsyrIx3/GRNOfKMhbluO4KbubeTX
+	yRptm52UlZdrdbYxP1SgrndZSHHYRBRBCgOq0UmVpbrrkt9Bq+94k9/1cjPafsb0TEbEf4O
+	JkTDaJnysZfsWDekhi8JxSUnxadaGksthQGngfTT5TX/4uTihGXocvicI8RXYFm3Kq4Xv7w
+	ZWPZIf4PjOe8cEJeknkIzHY9OK9u8naz4u6RVFv94r2d1nZS1/3270irY+OkvwhnfPdy3zq
+	yYxIAupf3gj4nyST50L5PU0PTnG5lLBiDD4ZxVnHooSvZO46wYpGKifP6KvpbgOarygy1Fk
+	zew/iorN16jTfVscM7E+YFmyAcgPHcVB8C0Jz44S0a2Xx0nXXycyBM7SU4aHQwe7BgdIdtg
+	xzNKlzinZCvrcM4y0QTYZPSHxo3f6c9wsm5ZRHJGE5it4PMMOujiDW2gH53x4y1XfdXWqIX
+	fT97su+MtdMVxN6EbHlPAnZQiwp1g5yqEuPyLnTY5sezXQSbo0krmvBanCKQlUkcFSuWV2f
+	uKoEzVNVQpykqQ67uxCDAlF3yc30mkPn5iZMT3nlT8guI28TMHUuGdRmhT2+rgz1UTzP7Hy
+	fpVp7uKFrev7lHMfkUzWly30ELBgVMN+evPxjyNv2oLRePOCZpvXCaLKBeo/0qDkMMX58Qt
+	DgCucLdyUIak5XvnMyupGBKnC7AueRHCESTwBYP+VZb48wLt8mXMqMikx6EAAIxmt2A5CoM
+	ngQudSmvGqvtKYS4b7rYf4n4Cmf6L4gGIb1ipg+vAsTArPp/dgo9/PmtkbBpjcSZOgkSxWg
+	pIijnMKuFssHS/q6VOoRBJgP4Kt3EM6LcoaB6Q3FAHWuYu5uqsJKSIl0lAeRECiMwp5fR1l
+	Q==
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: 22476555EEF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-3.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248883-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248884-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ukleinek@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nxp.com:email,msgid.link:url]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linutronix.de:email,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim,infradead.org:email]
 X-Rspamd-Action: no action
 
+Build failed, you can drop the commit to build ok:
+git revert 0253904dd601b15da2983297d64c106a393b3aa3.
+Revert "sched_ext: Use HK_TYPE_DOMAIN_BOOT to detect isolcpus= domain isolation"
 
---dk2besdivozfypon
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 6.6.y] pwm: imx-tpm: Count the number of enabled channels
- in probe
-MIME-Version: 1.0
+Tested-by: Wentao Guan <guanwentao@uniontech.com>
 
-On Fri, May 15, 2026 at 04:51:50PM +0200, Greg KH wrote:
-> On Sun, May 03, 2026 at 05:44:04PM +0200, Uwe Kleine-K=F6nig wrote:
-> > From: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
-> >=20
-> > On a soft reset TPM PWM IP may preserve its internal state from previous
-> > runtime, therefore on a subsequent OS boot and driver probe
-> > "enable_count" value and TPM PWM IP internal channels "enabled" states
-> > may get unaligned. In consequence on a suspend/resume cycle the call "if
-> > (--tpm->enable_count =3D=3D 0)" may lead to "enable_count" overflow the
-> > system being blocked from entering suspend due to:
-> >=20
-> >    if (tpm->enable_count > 0)
-> >        return -EBUSY;
-> >=20
-> > Fix the problem by counting the enabled channels in probe function.
-> >=20
-> > Signed-off-by: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
-> > Fixes: 738a1cfec2ed ("pwm: Add i.MX TPM PWM driver support")
-> > Link: https://patch.msgid.link/20260311123309.348904-1-viorel.suman@oss=
-=2Enxp.com
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
-> > [ukleinek: backport to linux-6.6.y]
-> > Signed-off-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
-> > ---
-> >  drivers/pwm/pwm-imx-tpm.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
->=20
-> What is the git id of this commit?
+BRs
+Wentao Guan
 
-oops, sorry, I forgot to mention that
+defconfigs:
+https://gist.github.com/opsiff/a840ae9e3d6857f5b7bacb9cdc49f8e9
 
-It's 3962c24f2d14e8a7f8a23f56b7ce320523947342.
+Log:
+kernel/sched/ext.c: In function ‘scx_enable’:
+kernel/sched/ext.c:4924:34: error: ‘HK_TYPE_DOMAIN_BOOT’ undeclared (first use in this function); did you mean ‘HK_TYPE_DOMAIN’?
+ 4924 |         if (housekeeping_enabled(HK_TYPE_DOMAIN_BOOT)) {
+      |                                  ^~~~~~~~~~~~~~~~~~~
+      |                                  HK_TYPE_DOMAIN
+kernel/sched/ext.c:4924:34: note: each undeclared identifier is reported only once for each function it appears in
+  CC [M]  crypto/algif_hash.o
 
-Best regards
-Uwe
+commit 4fca0e550d506e1c95504c2d9247bc92bf621bf6
+Author: Frederic Weisbecker <frederic@kernel.org>
+Date:   Mon May 26 13:06:21 2025 +0200
 
+    sched/isolation: Save boot defined domain flags
 
+    HK_TYPE_DOMAIN will soon integrate not only boot defined isolcpus= CPUs
+    but also cpuset isolated partitions.
 
---dk2besdivozfypon
-Content-Type: application/pgp-signature; name="signature.asc"
+    Housekeeping still needs a way to record what was initially passed
+    to isolcpus= in order to keep these CPUs isolated after a cpuset
+    isolated partition is modified or destroyed while containing some of
+    them.
 
------BEGIN PGP SIGNATURE-----
+    Create a new HK_TYPE_DOMAIN_BOOT to keep track of those.
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmoHUkwACgkQj4D7WH0S
-/k7piAgAgX0YD9XQ+7TGKeutyY2bzGTMEo6KBDozexjNvlxSqJOzE/J1mPUdNJXd
-GLhTyM8vhie9M1I3vAfJo1MR5e/HPkd7aKzHykBQg85u3eV9RzZmjVEf31uB8PvJ
-PXwLUs6watnS2ye5CbF4UMULJL5TJYMSuVHq+3CdkHyMV53zzq66hIivGt+2BadW
-HytqzjRbyUCu6OnYkfniOvO4WJqwydRh5M6tY+7rKqPuro3pZDlHMWuGvKWfkv6W
-o7QPoiy6ALrBLOXO68blnPItJhZjtPlKeLoprnVuIjIKkgyr82itsB0Rze2WT3BZ
-gQ5rwMTOdZQMRSVhWZ4AGOhleMgcAQ==
-=ikZV
------END PGP SIGNATURE-----
-
---dk2besdivozfypon--
+    Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+    Reviewed-by: Phil Auld <pauld@redhat.com>
+    Reviewed-by: Waiman Long <longman@redhat.com>
+    Cc: Ingo Molnar <mingo@redhat.com>
+    Cc: Marco Crivellari <marco.crivellari@suse.com>
+    Cc: Michal Hocko <mhocko@suse.com>
+    Cc: Peter Zijlstra <peterz@infradead.org>
+    Cc: Tejun Heo <tj@kernel.org>
+    Cc: Thomas Gleixner <tglx@linutronix.de>
+    Cc: Vlastimil Babka <vbabka@suse.cz>
+    Cc: Waiman Long <longman@redhat.com>
 
