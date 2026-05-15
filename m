@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247903-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKZGNwdOB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:03 +0200
+	id sGM8FCZpB2qZ2AIAu9opvQ
+	(envelope-from <stable+bounces-247903-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:42:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83104553E78
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B56A05566C7
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5D07330ACD48
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94F3430C10AF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38EC23E7BAB;
-	Fri, 15 May 2026 16:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D93C3FF1CD;
+	Fri, 15 May 2026 15:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMyr+5ZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtrhFck+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98A33B9D91;
-	Fri, 15 May 2026 16:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DE23FF1D5;
+	Fri, 15 May 2026 15:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862383; cv=none; b=ccOHYAEuhDK84lzHZxg2U1gg77QzBhDKICeXSJcEo12NV4FVdTOPxt1MYc7tjlzvpukSz/utMw3599fGe84s4uoB0Pt1mLzg0H7Ufjvzkxsrbgp2KMbk9dPAvin3JqOcQpqWRfJUrLLPOCMQ8ao3YXJX5qgsJJsa9uNxO9hy0Ec=
+	t=1778860369; cv=none; b=UhlblNFG9sacSABNT1UsF6ecFG9oYiNj5A0AdZNG/yKzLI12O7+YAn/wVDVCt4LzQyCD9zCwzHIHPnNqaJXm0RRUignFE1NIrq9Y7X0qw+8eTuGIctGtXX57Ergm3Cg2giI2Mg2p8RqjBmNcASEB/mRiZrKMTMVzI2gu6OZUDLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862383; c=relaxed/simple;
-	bh=gSv5+V5pZ6S1kulaZmXhGh2AaZCLRQ/FIhZJUAlXLbQ=;
+	s=arc-20240116; t=1778860369; c=relaxed/simple;
+	bh=wOPqWAp4L0MNR4N4eLK0oL6p5Z9C7s1m3m2wBE/ncYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GbhO4JvPycO9QzirQe9vySwcBNsut3NQJ8RdjKW/FAp4eQ2RyzG1/Y/tJ/JzqqDUHJ9cZSNLLA+FmXEEODcMRgxKws53bS/D2VgQw3/tsNK4C0ACAILnYSXogeyJFH5CZtigMI0XLOmTLpeNHmszfnyCdUGO0A904y/C1om++2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMyr+5ZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CDBC2BCB0;
-	Fri, 15 May 2026 16:26:22 +0000 (UTC)
+	 MIME-Version; b=hGXZAOMBBpuJzxco/9YulpSemixpIf1zD5GiFYRtfZTXL3vq5wqB7Nuq+Nj3dC+nGjXEZu90wKbw6a7hba2cFC4brFzWucKR5iXo4iGJTO7PN37bkB400Ygk9aGqBbYqXXZhW3zxv16Xn/5LEeZ2C7XSjoHAzfPtgSizUAV2urw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtrhFck+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E40C2BCB0;
+	Fri, 15 May 2026 15:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862382;
-	bh=gSv5+V5pZ6S1kulaZmXhGh2AaZCLRQ/FIhZJUAlXLbQ=;
+	s=korg; t=1778860369;
+	bh=wOPqWAp4L0MNR4N4eLK0oL6p5Z9C7s1m3m2wBE/ncYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pMyr+5ZXBWa6utvQym+wUQ491ROhCLNKxWLCjCy323lCa7YEgFW7zrsAdteKZDV5k
-	 CefckdHKF6N6O2JAUWJhgKuvz+5vUwk1J+JSCqQvVFymhHHH8yW5KMcpgOvWIgnxrJ
-	 p9HrjYy6nkYqWwS6jln0MexV/fOAnFhu/rzoCZ5Q=
+	b=QtrhFck+NxsMXQ0MotphCAfFdJ984pC898KcaN1pYxg/68UE96Ad2wFwdwXrTW70E
+	 aAGPRXrj1MIeWQo6URD07p9J3M/Au/21ci92dHSYCUqfT17OSHDaDVC8YClg5xjEqx
+	 7ixX5ve7vhC2BxTlrcRQLmFWHy/1zstzOpwUn4r8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH 7.0 027/201] drm/gpusvm: Force unmapping on error in drm_gpusvm_get_pages
-Date: Fri, 15 May 2026 17:47:25 +0200
-Message-ID: <20260515154659.121115023@linuxfoundation.org>
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 020/144] media: intel/ipu6: fix error pointer dereference
+Date: Fri, 15 May 2026 17:47:26 +0200
+Message-ID: <20260515154653.964717970@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 83104553E78
+X-Rspamd-Queue-Id: B56A05566C7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248692-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247903-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,huawei];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-commit 556dba95473900073a6c03121361c11f646dc551 upstream.
+commit 8dd088b8b106f7b119664f965b691785998edcfb upstream.
 
-drm_gpusvm_get_pages() only sets the local flags prior to committing the
-pages. If an error occurs mid-mapping, has_dma_mapping will be clear,
-causing the unmap function to skip unmapping pages that were
-successfully mapped before the error. Fix this by forcibly setting
-has_dma_mapping in the error path to ensure all previously mapped pages
-are properly unmapped.
+In a error path isp->psys is confirmed to be an error pointer not NULL so
+this condition is true and the error pointer is dereferenced. So isp-psys
+should be set to NULL before going to out_ipu6_bus_del_devices.
 
-Fixes: 99624bdff867 ("drm/gpusvm: Add support for GPU Shared Virtual Memory")
+Detected by Smatch:
+drivers/media/pci/intel/ipu6/ipu6.c:690 ipu6_pci_probe() error:
+'isp->psys' dereferencing possible ERR_PTR()
+
+Fixes: 25fedc021985a ("media: intel/ipu6: add Intel IPU6 PCI device driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-Link: https://patch.msgid.link/20260130194928.3255613-2-matthew.brost@intel.com
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+[Sakari Ailus: Fix commit message.]
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gpusvm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/pci/intel/ipu6/ipu6.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_gpusvm.c
-+++ b/drivers/gpu/drm/drm_gpusvm.c
-@@ -1572,6 +1572,7 @@ set_seqno:
- 	return 0;
- 
- err_unmap:
-+	svm_pages->flags.has_dma_mapping = true;
- 	__drm_gpusvm_unmap_pages(gpusvm, svm_pages, num_dma_mapped);
- 	drm_gpusvm_notifier_unlock(gpusvm);
- err_free:
+--- a/drivers/media/pci/intel/ipu6/ipu6.c
++++ b/drivers/media/pci/intel/ipu6/ipu6.c
+@@ -685,7 +685,7 @@ out_free_irq:
+ out_ipu6_rpm_put:
+ 	pm_runtime_put_sync(&isp->psys->auxdev.dev);
+ out_ipu6_bus_del_devices:
+-	if (isp->psys) {
++	if (!IS_ERR_OR_NULL(isp->psys)) {
+ 		ipu6_cpd_free_pkg_dir(isp->psys);
+ 		ipu6_buttress_unmap_fw_image(isp->psys, &isp->psys->fw_sgt);
+ 	}
 
 
 
