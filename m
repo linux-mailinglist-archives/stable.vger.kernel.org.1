@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPysL/1MB2rJxQIAu9opvQ
-	(envelope-from <stable+bounces-248542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:42:37 +0200
+	id QJupEZpLB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62209553C52
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:42:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B27553940
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CA6263017E5D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9BBB2314B54A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C37B48C8BE;
-	Fri, 15 May 2026 16:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DF83F9278;
+	Fri, 15 May 2026 16:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stZaacLV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZzVWQEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F42C3FBB73;
-	Fri, 15 May 2026 16:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D72C3B4EAF;
+	Fri, 15 May 2026 16:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861997; cv=none; b=mQiXw0f0dBG+JABxG7NfCOG6Z1XEmWLYlXJZGJFVYmtVb6CZ0akwW24wz5R8AjzJHGkY6IsydOXrQQIdRD1DQ3VF3i0TanVsax3Dwnyecenwx9RBpBYZHqHgyJ8RBbmAEOCMOv6Z/huU8sGYJcibLexU9t3EqaCWYgF1QcnoIHw=
+	t=1778861455; cv=none; b=huJYY1BDSpHgpvVqIDydVJEZZs8WxU8BADDA+FGeQZQ9GwWOQThiR9qa1NgEraP+YHIZ2pbkDvNDw1HKVK9VGKOpNCOEjrTUK1LZCR2WbVEqzQdflPXZWQbIHyMH9LtWSOAD4xGhSK7KwyY3U3XNz3C8u4oiDj0HfMFEV53rUVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861997; c=relaxed/simple;
-	bh=u8JY4Qw9TQdgYWygVgwD1V+9n7mmlZHvJDe845d7TbU=;
+	s=arc-20240116; t=1778861455; c=relaxed/simple;
+	bh=86Jtcb0hXiE6ufyuTEh0u3F/K4ogldepEYlN1878yoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGv1xRaFagcPYkkVFSFl4p18r5KuvZrtNkKf3mV7mmEz9tXUH3nj5dHv20FFdXrmTtzeBznFgZSa0iiRU5Ws3bgmeZzZ1cLWnv7jf64YTvKCCNUvWuuKca/lgmkdhILT+FSOFPIrdp5k756VtSunDSLRkTkY1N2fkGWL7s7ftfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stZaacLV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71615C2BCB0;
-	Fri, 15 May 2026 16:19:56 +0000 (UTC)
+	 MIME-Version; b=uxbZ/2R1a8TBKHhS6Z85+at8H54v50L6Z7gqN81XsIrFjrm1G2lM/ZI/3DB31K6jlgj4xmVldPsOBGbBb+ayRmA82ChvBSuf/iC+wjWcoAPJUVZtWtMUj5RYVj/S689DxEc88JYG43FbdURj6dbvD0/ZOyWDBGlMEN3gfkqHwL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZzVWQEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAA4C2BCB0;
+	Fri, 15 May 2026 16:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861996;
-	bh=u8JY4Qw9TQdgYWygVgwD1V+9n7mmlZHvJDe845d7TbU=;
+	s=korg; t=1778861455;
+	bh=86Jtcb0hXiE6ufyuTEh0u3F/K4ogldepEYlN1878yoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stZaacLV5NlFL478wAGE0s2M9Tk+yoar/OMKUMxoRM+YNxz4mh1dm1C1EIL2Zg0mU
-	 CIC4wvVvx6ovqoFt7EipGI4Xy84APwV5SHXIQ3b9d9w07ctH6qgcD6HNWnhv2Y7pbw
-	 cPdlCtUkwykCxTitTxEDasnBPAapMgO5h9F5IMTk=
+	b=MZzVWQEM0o4Y9yQBmy9bKhGHYv2qqa81dW12paKqECVDkipIb9rt/rOtgmjlt1f4B
+	 BfNOLUW7OvwZBzKt/rziiqGBlsikIvdAnRnuhaENYbOPlnG55wl+HBKTKu5or/KilP
+	 CWTUWd4yeSx4Khf/44ipkkEtpCNMG2pLTjOHn2Qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Andrew Bresticker <abrestic@chromium.org>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 025/188] regulator: max77650: fix OF node reference imbalance
+Subject: [PATCH 6.6 333/474] spi: img-spfi: fix controller deregistration
 Date: Fri, 15 May 2026 17:47:22 +0200
-Message-ID: <20260515154657.854111056@linuxfoundation.org>
+Message-ID: <20260515154722.219470610@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 62209553C52
+X-Rspamd-Queue-Id: D4B27553940
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248542-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248329-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,47 +91,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 2edaf5f7ada0ab5c9ec1f0836bd19779a8d85262 upstream.
+commit fc3a83b0d9c16b941c9028f5a8db9541dce4ddf2 upstream.
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+Make sure to deregister the controller before disabling and releasing
+underlying resources like clocks and DMA during driver unbind.
 
-Fix this by using the intended helper for reusing OF nodes.
-
-Fixes: bcc61f1c44fd ("regulator: max77650: add regulator support")
-Cc: stable@vger.kernel.org	# 5.1
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Fixes: deba25800a12 ("spi: Add driver for IMG SPFI controller")
+Cc: stable@vger.kernel.org	# 3.19
+Cc: Andrew Bresticker <abrestic@chromium.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260408073055.5183-4-johan@kernel.org
+Link: https://patch.msgid.link/20260409120419.388546-16-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/max77650-regulator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-img-spfi.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/regulator/max77650-regulator.c
-+++ b/drivers/regulator/max77650-regulator.c
-@@ -337,7 +337,7 @@ static int max77650_regulator_probe(stru
- 	parent = dev->parent;
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -644,7 +644,7 @@ static int img_spfi_probe(struct platfor
+ 	pm_runtime_set_active(spfi->dev);
+ 	pm_runtime_enable(spfi->dev);
  
- 	if (!dev->of_node)
--		dev->of_node = parent->of_node;
-+		device_set_of_node_from_dev(dev, parent);
+-	ret = devm_spi_register_controller(spfi->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto disable_pm;
  
- 	rdescs = devm_kcalloc(dev, MAX77650_REGULATOR_NUM_REGULATORS,
- 			      sizeof(*rdescs), GFP_KERNEL);
+@@ -670,6 +670,10 @@ static void img_spfi_remove(struct platf
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct img_spfi *spfi = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	if (spfi->tx_ch)
+ 		dma_release_channel(spfi->tx_ch);
+ 	if (spfi->rx_ch)
+@@ -680,6 +684,8 @@ static void img_spfi_remove(struct platf
+ 		clk_disable_unprepare(spfi->spfi_clk);
+ 		clk_disable_unprepare(spfi->sys_clk);
+ 	}
++
++	spi_controller_put(host);
+ }
+ 
+ #ifdef CONFIG_PM
 
 
 
