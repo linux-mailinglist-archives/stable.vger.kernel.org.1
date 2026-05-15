@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-247944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qON+GO5nB2rG1wIAu9opvQ
-	(envelope-from <stable+bounces-247944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:37:34 +0200
+	id UPfkHhJQB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46CE556595
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:37:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24507554333
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52CE7316A6EA
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F309830B2A9D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10ADC175A87;
-	Fri, 15 May 2026 15:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D263F6C39;
+	Fri, 15 May 2026 16:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKPcNg+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WouS5Tm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73853FF1A2;
-	Fri, 15 May 2026 15:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A6036C5B3;
+	Fri, 15 May 2026 16:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860474; cv=none; b=CuW33ryIlus6KeJj75UDtM+t5d9KY2Wj5ssHWGqrnk1aFHH+2TUbTEQcIWIIcAfPBaQ8jPOdGPtx1mW36EPjBxo+AGZBumoM3M5ckEy4qq/V70rBP8fnv/WPVJz0khpSfie+iAiCrZU6dJnz5G0K7WQjxs/HPC0NMCjnqHtjY/E=
+	t=1778862204; cv=none; b=HOdd42ms7tKU9fJz2gS8yzS26dF0jTqgh6IRGeDZdhZWCis1p/vZYfBO2VgrFmVaPuygddedMvhhcC7y9F4uCX0zZ16ux6nB9IFF1kTbU022lsvngon9G7TxpfvRdKt16uq+7GeRm61LJDZpYWZRNlDlNxforr324avXAWMUplE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860474; c=relaxed/simple;
-	bh=e9aDpsWz5dG0aH4MU0ej6j08vswzxNgURvu5SQSRGjk=;
+	s=arc-20240116; t=1778862204; c=relaxed/simple;
+	bh=3K4Ys8WpKLZwVNalhBX0nZXZc9Nl2jigYHuEGc12984=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yf1+BXqq16u9ScwziKSmOTVmFmgVMm6LbPUl17iaTLnTEWPpPsnn1Hope3nJfmOMHKfYV1z7ztoHIhA4qcDDqwFgUHCCeKmD7p9dG4XSagN7VagCk0eLDTvDCI1e0IaKihekYyO1GLsaKzf/ULT6MiMx/9UP9Xzc06cjknjBWX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKPcNg+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D250C2BCB0;
-	Fri, 15 May 2026 15:54:34 +0000 (UTC)
+	 MIME-Version; b=NQ10OZrY1py9lYloHI1D1yDztmgD2POEKj5HGr0ULji8GO9Z+rj5urET0e1lMTs1fKDhDLSenHkHQMeyrX22Key1R+tTIglM8xVR3YI032ZZ45VEeg7HoQ3+e5P0r7JG6gpyb7ZnFFB/ECvGt3IyhcThGOKChVSe5R4KMeFXr5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WouS5Tm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBA6C2BCB0;
+	Fri, 15 May 2026 16:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860474;
-	bh=e9aDpsWz5dG0aH4MU0ej6j08vswzxNgURvu5SQSRGjk=;
+	s=korg; t=1778862204;
+	bh=3K4Ys8WpKLZwVNalhBX0nZXZc9Nl2jigYHuEGc12984=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKPcNg+9DDKIqSyQ1Ynwd1tNbFSDfH5/IHlihjR09nztDy/wvJcANvfCGw3v3qbsE
-	 DmNJxeTc/9SawOi87fCmGOjqf+q5B7gRNVfebC+ziWcUkLgNFBgt7nmW1JDkI6/M/R
-	 FK0tOuYUqYKJJ0YQg6hL+OE1bXzidOepMgL+IAQk=
+	b=WouS5Tm/I7rfncpCrzg0IoUlwJfVkVcVKLQtNzDS1QnMDfHZc8DfBerBVkF9UMeBX
+	 j4zHH0QswfYvqqvMCDbRFl3fT+Gpr4cUGLHYhk4kYRjr4zmH8YRwQ27/MMS+3SjuN1
+	 k2+E6FmED5/8kKeOIMXdX2QRyy8xD9xN13ajtP9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>
-Subject: [PATCH 6.12 101/144] sched_ext: Use HK_TYPE_DOMAIN_BOOT to detect isolcpus= domain isolation
-Date: Fri, 15 May 2026 17:48:47 +0200
-Message-ID: <20260515154655.843155146@linuxfoundation.org>
+	Mario Kleiner <mario.kleiner.de@gmail.com>,
+	Aric Cyr <aric.cyr@amd.com>,
+	Anthony Koo <anthony.koo@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Krunoslav Kovac <krunoslav.kovac@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>
+Subject: [PATCH 6.18 111/188] drm/amd/display: Change dither policy for 10 bpc output back to dithering
+Date: Fri, 15 May 2026 17:48:48 +0200
+Message-ID: <20260515154659.738215931@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +68,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C46CE556595
+X-Rspamd-Queue-Id: 24507554333
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247944-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248622-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Mario Kleiner <mario.kleiner.de@gmail.com>
 
-commit 6ae315d37924435516d697ea7dde0b799a5928e0 upstream.
+commit d65bfb1782304b03862c8c725fac608015dffd36 upstream.
 
-scx_enable() refuses to attach a BPF scheduler when isolcpus=domain is
-in effect by comparing housekeeping_cpumask(HK_TYPE_DOMAIN) against
-cpu_possible_mask.
+Commit d5df648ec830 ("drm/amd/display: Change dither policy for 10bpc to
+round") degraded display of 12 bpc color precision output to 10 bpc sinks
+by switching 10 bpc output from dithering to "truncate to 10 bpc".
 
-Since commit 27c3a5967f05 ("sched/isolation: Convert housekeeping
-cpumasks to rcu pointers"), HK_TYPE_DOMAIN's cpumask is RCU protected
-and dereferencing it requires either RCU read lock, the cpu_hotplug
-write lock, or the cpuset lock; scx_enable() holds none of these, so
-booting with isolcpus=domain and attaching any BPF scheduler triggers
-the following lockdep splat:
+I don't find the argumentation in that commit convincing, but the
+consequences highly unfortunate, especially for applications that
+require effective > 10 bpc precision output of > 10 bpc framebuffers.
 
-  =============================
-  WARNING: suspicious RCU usage
-  -----------------------------
-  kernel/sched/isolation.c:60 suspicious rcu_dereference_check() usage!
+The argument wasn't something strong like "there are hardware design
+defects or limitations which require us to work around broken dithering
+to 10 bpc", or "there are some special use cases which do require
+truncation to 10 bpc", but essentially "at some point in the past we
+used truncation in Polaris/Vega times and it looks like it got
+inadvertently changed for Navi, so let's do that again". I couldn't find
+evidence for that in the git commit logs for this. The commit message also
+acknowledges that using dithering "...makes some sense for FP16...
+...but not for ARGB2101010 surfaces..."
 
-  1 lock held by scx_flash/281:
-   #0: ffffffff8379fce0 (update_mutex){+.+.}-{4:4}, at:
-       bpf_struct_ops_link_create+0x134/0x1c0
+The problem with this is that it makes fp16 surfaces, and especially
+rgba16 fixed point surfaces, less useful. These are now well
+supported by Mesa 25.3 and later via OpenGL + EGL, Vulkan/WSI, and by
+OSS AMDVLK Vulkan/WSI/display, and also by GNOME 50 mutter under Wayland,
+and they used to provide more than 10 bpc effective precision at the
+output.
 
-  Call Trace:
-   dump_stack_lvl+0x6f/0xb0
-   lockdep_rcu_suspicious.cold+0x37/0x70
-   housekeeping_cpumask+0xcd/0xe0
-   scx_enable.isra.0+0x17/0x120
-   bpf_scx_reg+0x5e/0x80
-   bpf_struct_ops_link_create+0x151/0x1c0
-   __sys_bpf+0x1e4b/0x33c0
-   __x64_sys_bpf+0x21/0x30
-   do_syscall_64+0x117/0xf80
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Even for 8 or 10 bpc surfaces, the color pipeline behind the framebuffer,
+e.g., gamma tables, CTM, can be used for color correction and will
+benefit from an effective > 10 bpc output precision via dithering,
+retaining some precision that would get lost on the way through the
+pipeline, e.g., due to non-linear gamma functions.
 
-In addition, commit 03ff73510169 ("cpuset: Update HK_TYPE_DOMAIN cpumask
-from cpuset") made HK_TYPE_DOMAIN include cpuset isolated partitions as
-well, which means the current check also rejects BPF schedulers when a
-cpuset partition is active. That contradicts the original intent of
-commit 9f391f94a173 ("sched_ext: Disallow loading BPF scheduler if
-isolcpus= domain isolation is in effect"), which explicitly noted that
-cpuset partitions are honored through per-task cpumasks and should not
-be rejected.
+Scientific apps rely on this for > 10 bpc display precision. Truncating
+to 10 bpc, instead of dithering the pipeline internal 12 bpc precision
+down to 10 bpc, causes a serious loss of precision. This also creates the
+undesirable and slightly absurd situation that using a cheap monitor
+with only 8 bpc input and display panel will yield roughly 12 bpc
+precision via dithering from 12 -> 8 bpc, whereas investment into a
+more expensive monitor with 10 bpc input and native 10 bpc display will
+only yield 10 bpc, even if a fp16 or rgb16 framebuffer and/or a properly
+set up color pipeline (gamma tables, CTM's etc. with more than 10 bpc out
+precision) would allow effective 12 bpc precision output.
 
-Switch to housekeeping_enabled(HK_TYPE_DOMAIN_BOOT), which reads only
-the housekeeping flag bit (no RCU dereference) and reflects exactly the
-boot-time isolcpus= configuration that the error message refers to.
+Therefore this patch proposes reverting that commit and going back to
+dithering down to 10 bpc, consistent with the behaviour for 6 bpc or 8 bpc
+output.
 
-Fixes: 27c3a5967f05 ("sched/isolation: Convert housekeeping cpumasks to rcu pointers")
-Cc: stable@vger.kernel.org # v7.0+
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Successfully tested on AMD Polaris DCE 11.2 and Raven Ridge DCN 1.0 with
+a native 10 bpc capable monitor, outputting a RGBA16 unorm framebuffer and
+measuring resulting color precision with a photometer. No apparent visual
+artifacts or problems were observed, and effective precision was measured
+to be 12 bpc again, as expected.
+
+Fixes: d5df648ec830 ("drm/amd/display: Change dither policy for 10bpc to round")
+Signed-off-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+Tested-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+Cc: stable@vger.kernel.org
+Cc: Aric Cyr <aric.cyr@amd.com>
+Cc: Anthony Koo <anthony.koo@amd.com>
+Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Cc: Krunoslav Kovac <krunoslav.kovac@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -5521,8 +5521,7 @@ static int scx_ops_enable(struct sched_e
- 	static DEFINE_MUTEX(helper_mutex);
- 	struct scx_enable_cmd cmd;
- 
--	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
--			   cpu_possible_mask)) {
-+	if (housekeeping_enabled(HK_TYPE_DOMAIN_BOOT)) {
- 		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
- 		return -EINVAL;
- 	}
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -4954,7 +4954,7 @@ void resource_build_bit_depth_reduction_
+ 			option = DITHER_OPTION_SPATIAL8;
+ 			break;
+ 		case COLOR_DEPTH_101010:
+-			option = DITHER_OPTION_TRUN10;
++			option = DITHER_OPTION_SPATIAL10;
+ 			break;
+ 		default:
+ 			option = DITHER_OPTION_DISABLE;
 
 
 
