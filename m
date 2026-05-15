@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248800-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IO+yCzRXB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:12 +0200
+	id OMaRFe1ZB2qzzwIAu9opvQ
+	(envelope-from <stable+bounces-248800-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7203555021
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E65BB555542
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D4C91336CF2B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B473C31DE290
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556B83E0098;
-	Fri, 15 May 2026 16:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133743D16FC;
+	Fri, 15 May 2026 16:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3zIhfJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZc1wU3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171AB3E008C;
-	Fri, 15 May 2026 16:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC112C11DF;
+	Fri, 15 May 2026 16:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862041; cv=none; b=kSMGxFYaTTQAE7As+ztKPYrQCZ9QRppDomcMAV9nNrPZo78Kp5vPlrMAJYvqUSQz7cYYYyTtwz6rdy3JkHuNZV6TM8D8EukA1AKDWuALnZSi+UO9nDXtAyFCe7YqViljHJ8DD2P0TiloEt4s+9/g6vEheU4Wr46U0EERGQjmKSU=
+	t=1778862663; cv=none; b=LudnW2zrqCymLrYTf9egI5bpuMpfdswrZNRmSt6GoRy8OEnpbz8ZzWjXANbzBzDgTmXpMWlk/8MiqgiEvlZymlNxmxwHUoA9L21LwYCETRs8ab1BgjHJfeW765Ukz0/K62Nce9FGH5tvmS9BBe0P1NeQ0Wg7WvSY2M668pvQuic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862041; c=relaxed/simple;
-	bh=qmzqlGhieR9x5smg1Azc5gq6RVHrVVbbipaeEwRzBco=;
+	s=arc-20240116; t=1778862663; c=relaxed/simple;
+	bh=e5IVDCBiXNewWxeFVJKVkn9rDrZ/jWWdSZ7MB92+Qm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebpcX8bEsuuHveHYMhK41PvDEPJV708nZ87l4rwJV6U9uUj5SvvYtCfrl3VBOnRw0IycIaCPjHug0tJp1Lt4++Neirb/6uOgSWjJYD62yQ2W4powTpfqZrEz991mpB+qzzaXNLDqCCbUk/WC+FI94q9WwOPPjTdO+MYcYch799M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3zIhfJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35F7C2BCB0;
-	Fri, 15 May 2026 16:20:40 +0000 (UTC)
+	 MIME-Version; b=PAnuhRCp8OGbGbasLP8jEAzb0dGTgAmmcOi+lr9etqF6L5Rx0dV3UVEYJuwa47a9SwR4huWvGNe0+QakMEikpQ8UbIP9kfx1vr7ynePc225GSYSMxm+XFpQyHRqQgY0VX/16yt2x5DmaGdpjgZ0PkCc5RynjeFuAePVSBPKIgPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZc1wU3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFA2C2BCB0;
+	Fri, 15 May 2026 16:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862041;
-	bh=qmzqlGhieR9x5smg1Azc5gq6RVHrVVbbipaeEwRzBco=;
+	s=korg; t=1778862663;
+	bh=e5IVDCBiXNewWxeFVJKVkn9rDrZ/jWWdSZ7MB92+Qm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3zIhfJuUmOBKsx3TkVxk98eR6FyX+yLnuhyhkOGYurMFsYdOApX0bkugQIXqnQfa
-	 EGa4ICoMlKH8mcB5OcUKs/fCkSsUH1tl2jEzDu07VRsMNpVsogvHbqwDW6+i8oV11D
-	 dCxkCl24yzyRNoiCytrDT9FV1h1kS6cKjsGbWHVk=
+	b=rZc1wU3yN8Zc2YPD32BecHI1cPI5anuRuhGvnKufx4o1FxEB39OO0PO2E4/PqrzWH
+	 X/mFftcOh9jSK3WNljA7ZmG5qYglbBbRuGcXGuLmHPeCwc4bZHSV8OzK9ZX6uSmr97
+	 sgNFPZaRWrkor9wWkXzMh4BMzmRlqNrpI0WosVXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Leilk Liu <leilk.liu@mediatek.com>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 085/188] spi: mpfs: fix controller deregistration
+Subject: [PATCH 7.0 084/201] spi: mt65xx: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:22 +0200
-Message-ID: <20260515154659.168847929@linuxfoundation.org>
+Message-ID: <20260515154700.350465306@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B7203555021
+X-Rspamd-Queue-Id: E65BB555542
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248559-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248800-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,52 +92,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,microchip.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 573c7db8fce91a1b07dd64a260bb44b9e6d05943 upstream.
+commit 2ad30599cccc572ba2fc11010670eb6e01ea6bfc upstream.
 
 Make sure to deregister the controller before disabling underlying
-resources like interrupts during driver unbind.
+resources like clocks during driver unbind.
 
-Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
-Cc: stable@vger.kernel.org	# 6.0
-Cc: Conor Dooley <conor.dooley@microchip.com>
+Fixes: a568231f4632 ("spi: mediatek: Add spi bus for Mediatek MT8173")
+Cc: stable@vger.kernel.org	# 4.3: ace145802350
+Cc: stable@vger.kernel.org	# 4.3
+Cc: Leilk Liu <leilk.liu@mediatek.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20260409120419.388546-21-johan@kernel.org
+Link: https://patch.msgid.link/20260410081757.503099-2-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mpfs.c |    4 +++-
+ drivers/spi/spi-mt65xx.c |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-mpfs.c
-+++ b/drivers/spi/spi-mpfs.c
-@@ -575,7 +575,7 @@ static int mpfs_spi_probe(struct platfor
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -1325,7 +1325,7 @@ static int mtk_spi_probe(struct platform
  
- 	mpfs_spi_init(host, spi);
+ 	pm_runtime_enable(dev);
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
+-	ret = devm_spi_register_controller(dev, host);
 +	ret = spi_register_controller(host);
  	if (ret) {
- 		mpfs_spi_disable_ints(spi);
- 		mpfs_spi_disable(spi);
-@@ -593,6 +593,8 @@ static void mpfs_spi_remove(struct platf
- 	struct spi_controller *host  = platform_get_drvdata(pdev);
- 	struct mpfs_spi *spi = spi_controller_get_devdata(host);
+ 		pm_runtime_disable(dev);
+ 		return dev_err_probe(dev, ret, "failed to register host\n");
+@@ -1340,6 +1340,8 @@ static void mtk_spi_remove(struct platfo
+ 	struct mtk_spi *mdata = spi_controller_get_devdata(host);
+ 	int ret;
  
 +	spi_unregister_controller(host);
 +
- 	mpfs_spi_disable_ints(spi);
- 	mpfs_spi_disable(spi);
- }
+ 	cpu_latency_qos_remove_request(&mdata->qos_request);
+ 	if (mdata->use_spimem && !completion_done(&mdata->spimem_done))
+ 		complete(&mdata->spimem_done);
 
 
 
