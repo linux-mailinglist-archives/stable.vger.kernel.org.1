@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NvWALJLB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:37:06 +0200
+	id KDiYLzBDB2oCvAIAu9opvQ
+	(envelope-from <stable+bounces-247876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:00:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738CF5539AC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:37:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DEB552944
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:00:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3290E30F7931
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3CE7E300D561
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65917280035;
-	Fri, 15 May 2026 16:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F3922FF22;
+	Fri, 15 May 2026 15:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bC/t6rr4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvwvwb/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B7A3E0091;
-	Fri, 15 May 2026 16:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6DA14B08A;
+	Fri, 15 May 2026 15:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861496; cv=none; b=q+EHwa89PTQLLRqz/Cdj58TEM+lKz82j2BalxB2420FyMEAUCW7Vlgs1zcl8mS3VeV02SUQnFTr+6vRaqgdtwmds2VozpD0fcQDuBWcGT/AR4Sw36/PMaOIdr+PHrnhIldBongZFCu4eskdYmQTueXviICb3tVWlyjnjYL6Gzhk=
+	t=1778860299; cv=none; b=dXR3hOeeWya/OPPMOGR8M97MXz3tfg6kQXKxKwB4z3us3+UBljUFaUxmS1yLg1mbTMbLgfjE5rjlE5QXbvNI3tqYqABihrLiII37msK6ss0o7gr8ezb0AMbH0fluTvKd3UyGC9aoa2+NEKGOI9g8pVJXyb1C9PAaMnhBXXmohV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861496; c=relaxed/simple;
-	bh=TU6Erz1HWrZRP/NylZUwR9AtMEDrzC7Ag7ARZgerVCk=;
+	s=arc-20240116; t=1778860299; c=relaxed/simple;
+	bh=q0gF6QCMENoRzLyoHU0O6DlprjmRIK19uf9uaftOW/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mj7Y/bjc7HcpQK0Dd7jVAE+7jHPBi9zrLW0C0RJyaxgeWZpJf2bglDw7U3tfanch0LNpDxllruIcKwI2sDkIsW7+PtbsM0luFOGqWFvH/pYnMA0myBfqhZgnFSfFkysyYKoWu+623BIrLkw/Hwe9tbh8m+8S3OGMi5fQ0+QGaJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bC/t6rr4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33D3C2BCB0;
-	Fri, 15 May 2026 16:11:35 +0000 (UTC)
+	 MIME-Version; b=WURlFdWvl/KFkBTjTM6xHzXf21j8NbNTRRCM0akInLaFhpaMJfntTxYW9StInLa2dUhuIVsqZ9gdxKh+5qJWSTsAAL5mNLNsA7yrN9yNocea0TwKjooyGPyf33CS4T5lXzRk0jdkb94pPrwgMS2ok/cEfKRrLAGEpf/ZfLkbZJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvwvwb/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D513DC2BCB0;
+	Fri, 15 May 2026 15:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861496;
-	bh=TU6Erz1HWrZRP/NylZUwR9AtMEDrzC7Ag7ARZgerVCk=;
+	s=korg; t=1778860299;
+	bh=q0gF6QCMENoRzLyoHU0O6DlprjmRIK19uf9uaftOW/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bC/t6rr4fFMIdqg0P8rdI+VK3slRHrxUB547CSWB4ZAhuYOtI5wovUGSi6VHjELEP
-	 7dMhPkhzM7i5S6x3/vIwrHqNhFEWQmAUUMy1W68JWwGka2p0KVKmCsrAXyDukXJQx3
-	 Dtjsc6ITYDpjsgeP26NynpHHkoKUaRtTrpg498Bk=
+	b=uvwvwb/AXPUwe89sqaAhi5Ni+tTQTIIrPsaL/SMy5O0+st3nbBhEsNCFOx+f6uA7X
+	 wjUQZBNGwtXNxzU4eqI3CFsYBgj0us8kF1vkxTimk+aa1EitOzzg/3gvo+ai9WBG2/
+	 gjSvAZehj495ERUe2KOm9mjnWdsjg2ZWSPeE5v/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	"John B. Moore" <jbmoore61@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 352/474] drm/amdgpu/sdma4: replace BUG_ON with WARN_ON in fence emission
+	Frank Li <Frank.Li@nxp.com>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 035/144] media: staging: imx: request mbus_config in csi_start
 Date: Fri, 15 May 2026 17:47:41 +0200
-Message-ID: <20260515154722.632931573@linuxfoundation.org>
+Message-ID: <20260515154654.330282140@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +64,208 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 738CF5539AC
+X-Rspamd-Queue-Id: 10DEB552944
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248345-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247876-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John B. Moore <jbmoore61@gmail.com>
+From: Michael Tretter <m.tretter@pengutronix.de>
 
-commit 78d2e624fa073c14970aa097adcf3ea31c157a66 upstream.
+commit 9df2aaa64890c0b6226057eb6fcb6352bd2df432 upstream.
 
-sdma_v4_0_ring_emit_fence() contains two BUG_ON(addr & 0x3) assertions
-that verify fence writeback addresses are dword-aligned.  These
-assertions can be reached from unprivileged userspace via crafted
-DRM_IOCTL_AMDGPU_CS submissions, causing a fatal kernel panic in a
-scheduler worker thread.
+Request the upstream mbus_config in csi_start, which starts the stream,
+instead of caching it in link_validate.
 
-Replace both BUG_ON() calls with WARN_ON() to log the condition without
-crashing the kernel.  A misaligned fence address at this point indicates
-a driver bug, but crashing the kernel is never the correct response when
-the assertion is reachable from userspace.
+This allows to get rid of the mbus_cfg field in the struct csi_priv and
+avoids state in the driver.
 
-The CS IOCTL path is the correct place to filter invalid submissions;
-the ring emission callback is too late to do anything about it.
-
-Fixes: 2130f89ced2c ("drm/amdgpu: add SDMA v4.0 implementation (v2)")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: John B. Moore <jbmoore61@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b90250bd933afd1ba94d86d6b13821997b22b18e)
+Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
 Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/media/imx/imx-media-csi.c |   40 ++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -841,7 +841,7 @@ static void sdma_v4_0_ring_emit_fence(st
- 	/* write the fence */
- 	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_FENCE));
- 	/* zero in first two bits */
--	BUG_ON(addr & 0x3);
-+	WARN_ON(addr & 0x3);
- 	amdgpu_ring_write(ring, lower_32_bits(addr));
- 	amdgpu_ring_write(ring, upper_32_bits(addr));
- 	amdgpu_ring_write(ring, lower_32_bits(seq));
-@@ -851,7 +851,7 @@ static void sdma_v4_0_ring_emit_fence(st
- 		addr += 4;
- 		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_FENCE));
- 		/* zero in first two bits */
--		BUG_ON(addr & 0x3);
-+		WARN_ON(addr & 0x3);
- 		amdgpu_ring_write(ring, lower_32_bits(addr));
- 		amdgpu_ring_write(ring, upper_32_bits(addr));
- 		amdgpu_ring_write(ring, upper_32_bits(seq));
+--- a/drivers/staging/media/imx/imx-media-csi.c
++++ b/drivers/staging/media/imx/imx-media-csi.c
+@@ -97,9 +97,6 @@ struct csi_priv {
+ 	/* the mipi virtual channel number at link validate */
+ 	int vc_num;
+ 
+-	/* media bus config of the upstream subdevice CSI is receiving from */
+-	struct v4l2_mbus_config mbus_cfg;
+-
+ 	spinlock_t irqlock; /* protect eof_irq handler */
+ 	struct timer_list eof_timeout_timer;
+ 	int eof_irq;
+@@ -403,7 +400,8 @@ static void csi_idmac_unsetup_vb2_buf(st
+ }
+ 
+ /* init the SMFC IDMAC channel */
+-static int csi_idmac_setup_channel(struct csi_priv *priv)
++static int csi_idmac_setup_channel(struct csi_priv *priv,
++				   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct imx_media_video_dev *vdev = priv->vdev;
+ 	const struct imx_media_pixfmt *incc;
+@@ -432,7 +430,7 @@ static int csi_idmac_setup_channel(struc
+ 	image.phys0 = phys[0];
+ 	image.phys1 = phys[1];
+ 
+-	passthrough = requires_passthrough(&priv->mbus_cfg, infmt, incc);
++	passthrough = requires_passthrough(mbus_cfg, infmt, incc);
+ 	passthrough_cycles = 1;
+ 
+ 	/*
+@@ -572,11 +570,12 @@ static void csi_idmac_unsetup(struct csi
+ 	csi_idmac_unsetup_vb2_buf(priv, state);
+ }
+ 
+-static int csi_idmac_setup(struct csi_priv *priv)
++static int csi_idmac_setup(struct csi_priv *priv,
++			   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	int ret;
+ 
+-	ret = csi_idmac_setup_channel(priv);
++	ret = csi_idmac_setup_channel(priv, mbus_cfg);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -595,7 +594,8 @@ static int csi_idmac_setup(struct csi_pr
+ 	return 0;
+ }
+ 
+-static int csi_idmac_start(struct csi_priv *priv)
++static int csi_idmac_start(struct csi_priv *priv,
++			   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct imx_media_video_dev *vdev = priv->vdev;
+ 	int ret;
+@@ -619,7 +619,7 @@ static int csi_idmac_start(struct csi_pr
+ 	priv->last_eof = false;
+ 	priv->nfb4eof = false;
+ 
+-	ret = csi_idmac_setup(priv);
++	ret = csi_idmac_setup(priv, mbus_cfg);
+ 	if (ret) {
+ 		v4l2_err(&priv->sd, "csi_idmac_setup failed: %d\n", ret);
+ 		goto out_free_dma_buf;
+@@ -701,7 +701,8 @@ static void csi_idmac_stop(struct csi_pr
+ }
+ 
+ /* Update the CSI whole sensor and active windows */
+-static int csi_setup(struct csi_priv *priv)
++static int csi_setup(struct csi_priv *priv,
++		     struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct v4l2_mbus_framefmt *infmt, *outfmt;
+ 	const struct imx_media_pixfmt *incc;
+@@ -719,7 +720,7 @@ static int csi_setup(struct csi_priv *pr
+ 	 * if cycles is set, we need to handle this over multiple cycles as
+ 	 * generic/bayer data
+ 	 */
+-	if (is_parallel_bus(&priv->mbus_cfg) && incc->cycles) {
++	if (is_parallel_bus(mbus_cfg) && incc->cycles) {
+ 		if_fmt.width *= incc->cycles;
+ 		crop.width *= incc->cycles;
+ 	}
+@@ -730,7 +731,7 @@ static int csi_setup(struct csi_priv *pr
+ 			     priv->crop.width == 2 * priv->compose.width,
+ 			     priv->crop.height == 2 * priv->compose.height);
+ 
+-	ipu_csi_init_interface(priv->csi, &priv->mbus_cfg, &if_fmt, outfmt);
++	ipu_csi_init_interface(priv->csi, mbus_cfg, &if_fmt, outfmt);
+ 
+ 	ipu_csi_set_dest(priv->csi, priv->dest);
+ 
+@@ -745,9 +746,17 @@ static int csi_setup(struct csi_priv *pr
+ 
+ static int csi_start(struct csi_priv *priv)
+ {
++	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
+ 	struct v4l2_fract *input_fi, *output_fi;
+ 	int ret;
+ 
++	ret = csi_get_upstream_mbus_config(priv, &mbus_cfg);
++	if (ret) {
++		v4l2_err(&priv->sd,
++			 "failed to get upstream media bus configuration\n");
++		return ret;
++	}
++
+ 	input_fi = &priv->frame_interval[CSI_SINK_PAD];
+ 	output_fi = &priv->frame_interval[priv->active_output_pad];
+ 
+@@ -758,7 +767,7 @@ static int csi_start(struct csi_priv *pr
+ 		return ret;
+ 
+ 	/* Skip first few frames from a BT.656 source */
+-	if (priv->mbus_cfg.type == V4L2_MBUS_BT656) {
++	if (mbus_cfg.type == V4L2_MBUS_BT656) {
+ 		u32 delay_usec, bad_frames = 20;
+ 
+ 		delay_usec = DIV_ROUND_UP_ULL((u64)USEC_PER_SEC *
+@@ -769,12 +778,12 @@ static int csi_start(struct csi_priv *pr
+ 	}
+ 
+ 	if (priv->dest == IPU_CSI_DEST_IDMAC) {
+-		ret = csi_idmac_start(priv);
++		ret = csi_idmac_start(priv, &mbus_cfg);
+ 		if (ret)
+ 			goto stop_upstream;
+ 	}
+ 
+-	ret = csi_setup(priv);
++	ret = csi_setup(priv, &mbus_cfg);
+ 	if (ret)
+ 		goto idmac_stop;
+ 
+@@ -1138,7 +1147,6 @@ static int csi_link_validate(struct v4l2
+ 
+ 	mutex_lock(&priv->lock);
+ 
+-	priv->mbus_cfg = mbus_cfg;
+ 	is_csi2 = !is_parallel_bus(&mbus_cfg);
+ 	if (is_csi2) {
+ 		/*
 
 
 
