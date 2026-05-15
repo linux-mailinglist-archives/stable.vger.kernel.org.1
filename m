@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-248815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBSFAgZaB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:14 +0200
+	id WF02Ct1NB2rAxgIAu9opvQ
+	(envelope-from <stable+bounces-248627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E9B555578
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC23553E19
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0BDAC31E8049
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B87DF3040965
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC453E714A;
-	Fri, 15 May 2026 16:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669463BED47;
+	Fri, 15 May 2026 16:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h24nJXL8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nazpVwHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE7B3F9276;
-	Fri, 15 May 2026 16:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E0F2609EE;
+	Fri, 15 May 2026 16:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862702; cv=none; b=lz5sVVJPifIA7HZtVM0r/xyPJMVnTbHBBmVMfw7YJBYY1Z4DUyRvIydGCiwhpAe0tGcbS4NuReIlwQvkAQ1eeNqulqjKRB2HpJpWGu2/z1uGq33LmGfbgqkVX5Kp/qmzQeUbPblbIfY6fT4z2esSFEkLcOJyLyhhDV5ZwyGk9VE=
+	t=1778862217; cv=none; b=Aln6rk3UHYnlELli+yaA0b0XKLTIhxyIY5asi59XPMFhFVTDI1RDJVwnha90TW7uZIGKDPfMLR7+tsenGfZYzJ/i0ESZ6XkgYhvfaddDQXybIchR7Shjo4ZVuPXeOxzai1UQ5VGQazTkNuC+QSh3RGt6pR7UHW2erfdXB3GlQ1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862702; c=relaxed/simple;
-	bh=QJrO0AcwBFRWTVDo+RqRJoGXIqtxFVLQY1SnthIlLpg=;
+	s=arc-20240116; t=1778862217; c=relaxed/simple;
+	bh=wIVNI7UdeZ57oALjmUgqk7OkytDb/eFHn2egEDpiwq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHYBareHhARh7abeoX64/qrh8gp5Mn2s+9KqRCtzawuDtjWN5xIV3MOtUqOIylYlVKHB17d4lMym3+8pU+uxpjv8xTOmRJyG4jJ41DuijxfHWHPslhRM6vJWcdPNVS6zn7DXxrQtchXEVxvSOtUr0yO8Jucv7Lv9F+6ApgdlAfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h24nJXL8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96ACC2BCB0;
-	Fri, 15 May 2026 16:31:41 +0000 (UTC)
+	 MIME-Version; b=Bs/392iXFzeGjQk4BhkSh1rUg7xgX+61lkPUvnEUyFBPgfpUhSAcansIttKVzHeKvkABdoohOvXXzOy555YN/tMcJpvnwRHrjsH7yWkmleoO3P/deiu9oBQ7fFFN1G+CisoixkeOq1KfZMPp82gEy08BLLKHafnCll8wWZ5l38M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nazpVwHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32D4C2BCB0;
+	Fri, 15 May 2026 16:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862702;
-	bh=QJrO0AcwBFRWTVDo+RqRJoGXIqtxFVLQY1SnthIlLpg=;
+	s=korg; t=1778862217;
+	bh=wIVNI7UdeZ57oALjmUgqk7OkytDb/eFHn2egEDpiwq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h24nJXL8iFgPqn30r6BbrRMrheUle9x/duMavKkScss7ZacS8Av6C4NoONsdCfwm4
-	 kPk01+qgDKr9h89I/P/2XABnHhTFAb6KDvHJyx4roRTKXCi10Bir9U6+iynT3IJ+HZ
-	 +krEq0oaR+P2fc/3EyEiSyheo3R/hSrqIt0TO1P0=
+	b=nazpVwHB0rVbvtc1Ya2GygPmSCFhMOpDnmC/eisGYdjUHb5318Tb4c4S6AbW/R0wY
+	 RaeaVvrG3gyvQF6umoC9sa9QUJqPtVzzl9zpRUxwbnqfzSstaRIKEEl3fnyEkI7AUo
+	 zNHJJiek8IhJYHA7vM7uNaHapEmFB8FDDt95zwq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 7.0 150/201] drm/xe/bo: Fix bo leak on GGTT flag validation in xe_bo_init_locked()
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 151/188] mm/damon/core: disallow time-quota setting zero esz
 Date: Fri, 15 May 2026 17:49:28 +0200
-Message-ID: <20260515154701.821113916@linuxfoundation.org>
+Message-ID: <20260515154700.599905717@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 83E9B555578
+X-Rspamd-Queue-Id: EBC23553E19
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248815-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248627-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,53 +88,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 1d0adf2fd94fb0c0037c643fadd8f2cf3cffc009 upstream.
+commit 8bbde987c2b84f80da0853f739f0a920386f8b99 upstream.
 
-When XE_BO_FLAG_GGTT_ALL is set without XE_BO_FLAG_GGTT, the function
-returns an error without freeing a caller-provided bo, violating the
-documented contract that bo is freed on failure.
+When the throughput of a DAMOS scheme is very slow, DAMOS time quota can
+make the effective size quota smaller than damon_ctx->min_region_sz.  In
+the case, damos_apply_scheme() will skip applying the action, because the
+action is tried at region level, which requires >=min_region_sz size.
+That is, the quota is effectively exceeded for the quota charge window.
 
-Add xe_bo_free(bo) before returning the error.
+Because no action will be applied, the total_charged_sz and
+total_charged_ns are also not updated.  damos_set_effective_quota() will
+try to update the effective size quota before starting the next charge
+window.  However, because the total_charged_sz and total_charged_ns have
+not updated, the throughput and effective size quota are also not changed.
+Since effective size quota can only be decreased, other effective size
+quota update factors including DAMOS quota goals and size quota cannot
+make any change, either.
 
-Fixes: 5a3b0df25d6a ("drm/xe: Allow bo mapping on multiple ggtts")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4.6
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260408175255.3402838-3-shuicheng.lin@intel.com
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-(cherry picked from commit 3fbd6cf43cac7b60757f3ce3d95195d3843a902c)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+As a result, the scheme is unexpectedly deactivated until the user notices
+and mitigates the situation.  The users can mitigate this situation by
+changing the time quota online or re-install the scheme.  While the
+mitigation is somewhat straightforward, finding the situation would be
+challenging, because DAMON is not providing good observabilities for that.
+Even if such observability is provided, doing the additional monitoring
+and the mitigation is somewhat cumbersome and not aligned to the intention
+of the time quota.  The time quota was intended to help reduce the user's
+administration overhead.
+
+Fix the problem by setting time quota-modified effective size quota be at
+least min_region_sz always.
+
+The issue was discovered [1] by sashiko.
+
+Link: https://lore.kernel.org/20260407003153.79589-1-sj@kernel.org
+Link: https://lore.kernel.org/20260405192504.110014-1-sj@kernel.org [1]
+Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/damon/core.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -2154,8 +2154,10 @@ struct xe_bo *xe_bo_init_locked(struct x
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2135,7 +2135,8 @@ static unsigned long damos_quota_score(s
+ /*
+  * Called only if quota->ms, or quota->sz are set, or quota->goals is not empty
+  */
+-static void damos_set_effective_quota(struct damos_quota *quota)
++static void damos_set_effective_quota(struct damos_quota *quota,
++		struct damon_ctx *ctx)
+ {
+ 	unsigned long throughput;
+ 	unsigned long esz = ULONG_MAX;
+@@ -2161,6 +2162,7 @@ static void damos_set_effective_quota(st
+ 		else
+ 			throughput = PAGE_SIZE * 1024;
+ 		esz = min(throughput * quota->ms, esz);
++		esz = max(ctx->min_sz_region, esz);
  	}
  
- 	/* XE_BO_FLAG_GGTTx requires XE_BO_FLAG_GGTT also be set */
--	if ((flags & XE_BO_FLAG_GGTT_ALL) && !(flags & XE_BO_FLAG_GGTT))
-+	if ((flags & XE_BO_FLAG_GGTT_ALL) && !(flags & XE_BO_FLAG_GGTT)) {
-+		xe_bo_free(bo);
- 		return ERR_PTR(-EINVAL);
-+	}
+ 	if (quota->sz && quota->sz < esz)
+@@ -2197,7 +2199,7 @@ static void damos_adjust_quota(struct da
+ 	/* First charge window */
+ 	if (!quota->total_charged_sz && !quota->charged_from) {
+ 		quota->charged_from = jiffies;
+-		damos_set_effective_quota(quota);
++		damos_set_effective_quota(quota, c);
+ 	}
  
- 	if (flags & (XE_BO_FLAG_VRAM_MASK | XE_BO_FLAG_STOLEN) &&
- 	    !(flags & XE_BO_FLAG_IGNORE_MIN_PAGE_SIZE) &&
+ 	/* New charge window starts */
+@@ -2211,7 +2213,7 @@ static void damos_adjust_quota(struct da
+ 		quota->charged_sz = 0;
+ 		if (trace_damos_esz_enabled())
+ 			cached_esz = quota->esz;
+-		damos_set_effective_quota(quota);
++		damos_set_effective_quota(quota, c);
+ 		if (trace_damos_esz_enabled() && quota->esz != cached_esz)
+ 			damos_trace_esz(c, s, quota);
+ 	}
 
 
 
