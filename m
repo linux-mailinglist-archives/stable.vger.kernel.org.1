@@ -1,64 +1,93 @@
-Return-Path: <stable+bounces-247406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247407-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPGdAPbFBmpdngIAu9opvQ
-	(envelope-from <stable+bounces-247406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:06:30 +0200
+	id 8DScG3TDBmpdngIAu9opvQ
+	(envelope-from <stable+bounces-247407-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:55:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDEA54A4D3
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C426C54A2FF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 366AD3068864
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 06:50:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9957309039D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 06:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393BB39A068;
-	Fri, 15 May 2026 06:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBF63939BD;
+	Fri, 15 May 2026 06:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HCwlnCpV"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="TUDRmxeH"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99923932F2;
-	Fri, 15 May 2026 06:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277323932F2
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 06:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778827858; cv=none; b=D244a0TI7Kf8QC1JpLSxZs+yk02lEXf3USsiwxFczlSX3qOmE+m6aYlB0i6WdJHNBX6mtkknrLJHlmVhAGceA4U80BDUWeh2Cgzo9WCsH0lkAamyB0etOll3tA3SwNBUJ9IW393gAo8lsBCVF4e5ARxZrWHw3H8dNFtXEwvOBRA=
+	t=1778827863; cv=none; b=Z5gnHhYh0p1hKL5XyjZvKqa8YNOmwpHKnKvcwyW7/v+nSi1KLCJIfcbMzUVyzKHktHR++TqthgHpbABQUZTWX6DA8nFXmgLcvQe7ePgX/gKcwJ6g7CZjWzcH0dLt9RtYmOUsVOTEUkZDkSnNQjjAlVULHuf4QlM/Sl6+57aVrIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778827858; c=relaxed/simple;
-	bh=XRhCa08VVO3TJqLsrQpmWqneu7Yjwmi3yyTGBY2bW1Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k7mQfQZUe0TaRHyM+6G8ixr98DqitZpSmS/sMTMtgt+wLYAtZzbePCdwSXI9jZ6zCmHj9SZegBTnZ/tye+IXXdkmD8eXDqmJV5/xHmJ0COwA8UDfqRbeWFMwY/6qrtKmWiy93F3lw0EPDg4BDUAFP7cnWhoYKq9kqZs5rM2TAeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HCwlnCpV; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=pW
-	/tc3tkuQTH/abGF/d2gvg8c3yJSFH791/HNtDzr2k=; b=HCwlnCpV7jFc0lkYl8
-	HAbKPZLquktYu03dZuglAKwwLIjCwoIaP2z2w2kcaIGhT0IJN74+8mpSA9liuRfe
-	FWTY6ElOHSo2Xd1Ea9K99BDaCgE138aVDnQdS0eR1XvT6tH6tv3fmjuRlCdRpN69
-	7jVapihtQrwdF1Oc2DpAqd+tk=
-Received: from 163.com (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgB3g_MjwgZqrjbBDg--.3469S2;
-	Fri, 15 May 2026 14:50:22 +0800 (CST)
-From: <w15303746062@163.com>
-To: pmenzel@molgen.mpg.de,
-	marcel@holtmann.org,
-	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Cc: linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	greg@kroah.com,
-	stable@vger.kernel.org,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Subject: [PATCH v3] Bluetooth: hci_uart: fix UAF in hci_uart_tty_close()
-Date: Fri, 15 May 2026 14:50:09 +0800
-Message-Id: <20260515065009.383265-1-w15303746062@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <505b56bd-e5fd-4feb-a6e3-1d8269609277@molgen.mpg.de>
-References: <505b56bd-e5fd-4feb-a6e3-1d8269609277@molgen.mpg.de>
+	s=arc-20240116; t=1778827863; c=relaxed/simple;
+	bh=fG46zS+mEuG0ZF5WPcHOg/keWT+xuU43HV4g1r30VJI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H/2kA8YzYAGvlNOn73kRAcAX9CYHKx/ndBrvTx/O+Cv1KTsAJzJFJ7QSGgI3U6qSxMDpy4bNC7RbcZwHNXhN71/Xc6u+JNuTN18yXUkNVg5YxDsrstP+R2XnO3JQfwsXzG0UB2qt3WK26nzJU/hYWNsHqU46PS1ylRE6zxMYSmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=TUDRmxeH; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-365d8e43759so273537a91.0
+        for <stable@vger.kernel.org>; Thu, 14 May 2026 23:51:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1778827861; x=1779432661; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kj9jmbyJw9FvmITdQiF7/TYkM1yUzeyIU1nsfZGgTOo=;
+        b=TUDRmxeH0eSGcj6DuGlfeG/8VADlRnZiU/WFS9ia35zKv1+Me+CwJkxZk5DYGFolit
+         Ksq+NSNqFb2gWA8E93LpYj+abVOmp+Nci19Ol22IJJ2Tap0/zv7d7aoYKcLw/J/agzWL
+         BRTMkLIaAZ+n8MKJCxybunyKn3p1XQviFV8clQgA+n1h6FKLwV93w+q1xsvjmV/Pg2Yt
+         Y2BM3L8ozoPBDdYDxpoXTU2GpN6AXTT/50dQtMsP+EU+qhkBeIuEQ8wfrI/s17omj9MA
+         41So92641eQ/AIvXPIajyBFR3KFsdVvoShfgE+s+KG8vwCP28AVPxhtYQYVaJ9v+o6fZ
+         hGOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778827861; x=1779432661;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kj9jmbyJw9FvmITdQiF7/TYkM1yUzeyIU1nsfZGgTOo=;
+        b=WFxydM+LwsIM4IGc7/8kD01bxZKZhPgULnKzRR1aOO9B0AqCpQ2WA+0kn/24NFxYPy
+         xw7IcYA99RMuQDzrHaXa0vJjdDKwKEQtxUroI86DmluPMRlR6LtmR37HkyzA/jkuImO/
+         iUxAMM5i9COhG5XSkmESLQkobIgNWDIonbs+o6l7nXI/7lNRMDKaTHQrguskhhLKPu+O
+         VCR4zWkKK3kQ8s3opuvzN9zaN4bto/Q0meR6SaEfaUQCtPWOEOSRt7nD6JB4JxTT04nU
+         ywXirkG68kMKRSLbMijw8w/Vs8J2mltG5+qRAF8+ZTdl007Hwf2tbD1LQxc7xkFFG9VG
+         cudA==
+X-Gm-Message-State: AOJu0YyJGgeEc6DOGRxk3br4Ze4758bHvNX6/3VQS9y3DqBcAYMj003R
+	gvtZzDl9toVqfs+bWf4FJmS8UIyuDZNiv30MmOZyzk5QnW05F/XsI3LC1pd65KJgAjM=
+X-Gm-Gg: Acq92OFn7ScphicjuNGCH6z8vPf11LVmqMDRryNnX0uCafUnsYXYNZJbl3sNId3EPA6
+	2bej1eo12hlqsCDh3VvkocW7r+vWYSqqNpigQNRXDjhQadp/lN7rnhbcbVzaOY+JKTr6U4Qwz07
+	H/0VEv6sAifSkg8riP7xYmzR1mUS69nhOm39WueEJ+UI733Bdy99D9aqdiI9l5vlXntWa1+FWD7
+	cplrZLNbCiBYL0/uph/Jhh/6yVwGP0qcPpqp+nT4KgHE6JcxqChBC3QFS1wu52dwKGs69INj40s
+	nKw/mOYid64yZM0An8H+5T6y0aQA8zG1OBokCANPAbebxB1U76fLZ3MsCybJ/1+Q3/cEy04CyBx
+	4p3riCD6963IAVcS58djjcnY/U62mqNrLrmY+Hz6bZ2sJfd6jlNb7J35/9+Xgu6NCQOeXp+fCM1
+	MwpJI0/oTHBCWryes2iNYlZuRGV38n5qs5hiJTpnj2VHP+urU1gYQsG9WUJeTPU+p8
+X-Received: by 2002:a17:90b:4b8f:b0:366:5283:cddf with SMTP id 98e67ed59e1d1-3695149a001mr2017973a91.9.1778827861236;
+        Thu, 14 May 2026 23:51:01 -0700 (PDT)
+Received: from L6YN4KR4K9.bytedance.net ([61.213.176.10])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3695124601asm1734353a91.2.2026.05.14.23.50.57
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 14 May 2026 23:51:00 -0700 (PDT)
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+To: paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	cuiyunhui@bytedance.com,
+	tongtiangen@huawei.com,
+	akpm@linux-foundation.org,
+	pasha.tatashin@soleen.com,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] riscv: mm: exclude invalid THP PMDs from page table check
+Date: Fri, 15 May 2026 14:50:48 +0800
+Message-Id: <20260515065048.94564-1-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,136 +95,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgB3g_MjwgZqrjbBDg--.3469S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJw43Kr1DZFyDZF13JFWfAFb_yoW5KF4DpF
-	sxKF98AF4ktr4qkF1DZa1xAFyrKF4IgFW2k34fX3y5X3Z8tr4vk3WIkFWIgF1UArZ5Cr4S
-	vFWDX3y5W3WUZw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UQtxgUUUUU=
-X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC-w7Xu2oGwi5OOgAA3p
-X-Rspamd-Queue-Id: 7EDEA54A4D3
+X-Rspamd-Queue-Id: C426C54A2FF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [6.34 / 15.00];
-	SEM_URIBL(3.50)[xidian.edu.cn:email];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[bytedance.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247406-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[163.com:s=s110527];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	GREYLIST(0.00)[pass,body];
-	FREEMAIL_TO(0.00)[molgen.mpg.de,holtmann.org,gmail.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[163.com:+];
-	FREEMAIL_FROM(0.00)[163.com];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[163.com,none];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[cuiyunhui@bytedance.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-247407-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[bytedance.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	NEURAL_SPAM(0.00)[0.194];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Action: add header
-X-Spam: Yes
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,bytedance.com:mid,bytedance.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Action: no action
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+RISC-V THP splitting uses a temporary invalid PMD state where
+pmd_mkinvalid() clears _PAGE_PRESENT and _PAGE_PROT_NONE but leaves
+_PAGE_LEAF set so the MM code can still recognize the PMD as a THP split
+in-progress entry.
 
-A Use-After-Free (UAF) vulnerability and a subsequent kernel panic were
-observed in hci_uart_write_work() due to a race condition between the
-initialization of the HCI UART line discipline and concurrent TTY hangup.
+That temporary state no longer describes a user-accessible mapping, but
+page_table_check currently treats it as one because the RISC-V PMD
+user-accessibility test only checks whether the PMD is a leaf and has
+user permissions.
 
-This issue was triggered by our custom device emulation and fuzzing
-framework (DevGen) on the v6.18 kernel. Due to the highly timing-dependent
-nature of this race condition (requiring a precise interleaving of
-TIOCVHANGUP and protocol setup), Syzkaller failed to extract a reliable
-standalone C reproducer (reproducer is too unreliable: 0.00).
+As a result, when a PMD-sized anonymous THP is split during a COW fault,
+page_table_check can account the invalid intermediate PMD as a live PMD
+mapping, and then account the replacement PTE mappings again when the
+split installs the PTE table. This leaves stale PMD accounting behind and
+later triggers page_table_check failures such as a non-zero
+anon_map_count when the folio is freed.
 
-The crash trace is as follows:
-  ODEBUG: free active (active state 0) object: ffff88804024e870 object type: work_struct hint: hci_uart_write_work+0x0/0x940
-  WARNING: CPU: 0 PID: 338273 at lib/debugobjects.c:612 debug_print_object+0x1a2/0x2b0
-  ...
-  Call Trace:
-   <TASK>
-   debug_check_no_obj_freed+0x3ec/0x520
-   kfree+0x3f0/0x6c0
-   hci_uart_tty_close+0x127/0x2a0
-   tty_ldisc_close+0x113/0x1a0
-   tty_ldisc_kill+0x8e/0x150
-   tty_ldisc_hangup+0x3c1/0x730
-   __tty_hangup.part.0+0x3fd/0x8a0
-   tty_ioctl+0x120f/0x1690
-   __x64_sys_ioctl+0x18f/0x210
-   do_syscall_64+0xcb/0xfa0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
+Fix this by tightening pmd_user_accessible_page() so PMD page-table-check
+accounting only considers leaf PMDs that still carry either
+_PAGE_PRESENT or _PAGE_PROT_NONE. This preserves the THP split semantics
+required by the MM code while preventing page_table_check from treating
+invalid split PMDs as live user mappings.
 
-The issue arises because the workqueues (init_ready and write_work) are
-only cancelled if the HCI_UART_PROTO_READY flag is set. However, during
-the protocol initialization phase (HCI_UART_PROTO_INIT), the underlying
-protocol may schedule work. If a hangup occurs before the setup completes
-and the READY flag is set, hci_uart_tty_close() skips the cancel_work_sync()
-calls and proceeds to free the `hu` struct. When the delayed workqueue
-executes, it blindly dereferences the freed `hu` struct.
+With CONFIG_PAGE_TABLE_CHECK=y and CONFIG_PAGE_TABLE_CHECK_ENFORCED=y,
+tools/testing/selftests/mm/cow completes successfully on RISC-V after
+this change.
 
-Fix this by moving the cancel_work_sync() calls outside the
-HCI_UART_PROTO_READY check, ensuring that any pending works are
-unconditionally cancelled before the hci_uart structure is freed.
-Note that hu->init_ready and hu->write_work are initialized in
-hci_uart_tty_open(), so it is always safe to call cancel_work_sync()
-on them in hci_uart_tty_close(), even if the protocol was never
-fully attached.
-
-Fixes: 3b799254cf6f ("Bluetooth: hci_uart: Cancel init work before unregistering")
+Fixes: 3fee229a8eb9 ("riscv/mm: enable ARCH_SUPPORTS_PAGE_TABLE_CHECK")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 ---
-Changes in v3:
-- Added 'Cc: stable' tag as requested by the stable bot.
+ arch/riscv/include/asm/pgtable.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Changes in v2:
-- Added KASAN/ODEBUG crash trace.
-
- drivers/bluetooth/hci_ldisc.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index 275ea865bc29..566e1c525ee2 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -544,14 +544,18 @@ static void hci_uart_tty_close(struct tty_struct *tty)
- 	if (hdev)
- 		hci_uart_close(hdev);
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 1725f0861f6c7..88c599fda5779 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -1209,7 +1209,14 @@ static inline bool pte_user_accessible_page(pte_t pte)
  
+ static inline bool pmd_user_accessible_page(pmd_t pmd)
+ {
+-	return pmd_leaf(pmd) && pmd_user(pmd);
 +	/*
-+	 * Always cancel workqueues unconditionally before freeing the hu
-+	 * struct, as they might be active during the PROTO_INIT phase.
++	 * page_table_check() must ignore THP split invalidation entries created by
++	 * pmd_mkinvalid(). These retain _PAGE_LEAF so pmd_present()/pmd_leaf() stay
++	 * true during the split, but they no longer describe a user-accessible
++	 * mapping once both _PAGE_PRESENT and _PAGE_PROT_NONE are cleared.
 +	 */
-+	cancel_work_sync(&hu->init_ready);
-+	cancel_work_sync(&hu->write_work);
-+
- 	if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
- 		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
- 		percpu_up_write(&hu->proto_lock);
++	return (pmd_val(pmd) & (_PAGE_PRESENT | _PAGE_PROT_NONE)) &&
++		(pmd_val(pmd) & _PAGE_LEAF) && pmd_user(pmd);
+ }
  
--		cancel_work_sync(&hu->init_ready);
--		cancel_work_sync(&hu->write_work);
--
- 		if (hdev) {
- 			if (test_bit(HCI_UART_REGISTERED, &hu->flags))
- 				hci_unregister_dev(hdev);
+ static inline bool pud_user_accessible_page(pud_t pud)
 -- 
-2.34.1
+2.39.5
 
 
