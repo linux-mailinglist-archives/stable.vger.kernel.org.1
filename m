@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOzUGwJNB2rJxQIAu9opvQ
-	(envelope-from <stable+bounces-248396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:42:42 +0200
+	id bR0QL2NEB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00480553C77
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:42:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38989552AB0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EBDC321181F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:15:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0ACDC30B305E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFA63E7BD6;
-	Fri, 15 May 2026 16:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D01817C220;
+	Fri, 15 May 2026 15:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1/vojAs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujKGuuES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B101339734B;
-	Fri, 15 May 2026 16:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6423FF1DD;
+	Fri, 15 May 2026 15:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861629; cv=none; b=kL96Q+KdZIdCTguM+HBuJJEZnoqftE4VOoeAFwwCzNn219kFGJWFCgmu60Vr7/UVQ45J32bBYQgQdqDmimPV8t78c6l5YYxTcdcYKvn5m6pJd3ab8uBsYdq9WAS0MU6VY+IJTqjnc3R+Yt8xj/6H9Udz0P8raaNiCx2iJiuHLrE=
+	t=1778860430; cv=none; b=Ytsi82gXoGgQNw5mqauIG2fEt0SjSRsZbVoY/Esg2LbXOxCkYT3J2W4rBHvPIOn0SvS9O2wuHuKHFipcCCp5hgMoNo979N2xw+flVL3g8Kj0Kpyu6g2Hy5JOW7/RaVqEWZC7Oo7SbrIV0fH3/mYHlE8fCbxxqC/c7QE95qyjF+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861629; c=relaxed/simple;
-	bh=r3zuWAqiIiT/05B6sUYFx0kvJb7JZA8zkyr2H0ZIlZk=;
+	s=arc-20240116; t=1778860430; c=relaxed/simple;
+	bh=ioDL2l7FeF24FRAnKC9S3PNgbq2S5IcQ00HNwbKEFTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obk+e/SOVl5xguuBuzzp1MZFVqh2XtYeM4T0MOTE58RVtUqdcBKzUkl8aOaUxAtl3zoFn5S4zn9q3pRYDEpc284LxduYdBjbqaPMdX8b1B+FUSfPZO+mebKYcl5i0mJxk/unRFcdqpr5HbBLX5P+V0QXmUI1nUNcSiLWkIBqk4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1/vojAs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D1FC2BCB0;
-	Fri, 15 May 2026 16:13:49 +0000 (UTC)
+	 MIME-Version; b=Qrsu1smmI35FfKWa/fHAcpiXR2L0rNVZYhvvnxdJ03jdBa+ex4j4oy1r8JxZfNXmT4ZINOOnbhtcFsoI5EshvfI4MFFwM8QdujpuxENltAjmTTgk6ipax4JOon9IGRdvih86qPCn9xUZJuAOwpM/Gh5GLNFwbfqOMoOsUJt7NHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujKGuuES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64873C2BCB0;
+	Fri, 15 May 2026 15:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861629;
-	bh=r3zuWAqiIiT/05B6sUYFx0kvJb7JZA8zkyr2H0ZIlZk=;
+	s=korg; t=1778860430;
+	bh=ioDL2l7FeF24FRAnKC9S3PNgbq2S5IcQ00HNwbKEFTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1/vojAslIFVDpje4by/V8JBIDP+9V5lIsSc4yXBkxL1fgxTsaB3S3mZBXL+ozieO
-	 OKnDqdie9GNC//V9gp1Tf8CheHqK1cw6up0Ylt3975Va5INZ4+dB4tgjMeMUYT7w06
-	 UOQaxSA5Vxw8Qt/JTiuUM/C0V6RmJaZIeWncdCsg=
+	b=ujKGuuESWC8JIXWQSq+3x0wIgFHMZiOZjcKIA3PmsMwa1vafe5aYkm6FwO8QaSvCP
+	 Oe6xtDN/B9e1Z9XBkNZpPvDC61WZyBJ6Knon8LO+rBeJ5plv8gFDbNEOpJccxwhDRK
+	 fyvjarN3oUYshiVIRppcObPpxT+psLZiSjvjRvow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DaeMyung Kang <charsyam@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 402/474] ksmbd: reset rcount per connection in ksmbd_conn_wait_idle_sess_id()
-Date: Fri, 15 May 2026 17:48:31 +0200
-Message-ID: <20260515154723.747737508@linuxfoundation.org>
+	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 6.12 086/144] drm/panel: himax-hx83102: restore MODE_LPM after sending disable cmds
+Date: Fri, 15 May 2026 17:48:32 +0200
+Message-ID: <20260515154655.516990150@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,104 +64,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 00480553C77
+X-Rspamd-Queue-Id: 38989552AB0
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-248396-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-247927-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,iscas.ac.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,chromium.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaeMyung Kang <charsyam@gmail.com>
+From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
 
-[ Upstream commit def036ef87f8641c1c525d5ae17438d7a1006491 ]
+commit 2d4e80271f784aa0c7b17676e9762c7e8156be1c upstream.
 
-rcount is intended to be connection-specific: 2 for curr_conn, 1 for
-every other connection sharing the same session.  However, it is
-initialised only once before the hash iteration and is never reset.
-After the loop visits curr_conn, later sibling connections are also
-checked against rcount == 2, so a sibling with req_running == 1 is
-incorrectly treated as idle.  This makes the outcome depend on the
-hash iteration order: whether a given sibling is checked against the
-loose (< 2) or the strict (< 1) threshold is decided by whether it
-happens to be visited before or after curr_conn.
+When preparing the panel, it seems that it always expects commands to be
+transferred in LP mode. However, the disable function removes the
+MIPI_DSI_MODE_LPM flag, and no other function re-adds it.
 
-The function's contract is "wait until every connection sharing this
-session is idle" so that destroy_previous_session() can safely tear
-the session down.  The latched rcount violates that contract and
-reopens the teardown race window the wait logic was meant to close:
-destroy_previous_session() may proceed before sibling channels have
-actually quiesced, overlapping session teardown with in-flight work
-on those connections.
+As the unprepare function contains no DSI commands, re-adding the flag
+just after disabling the panel should be safe. Add the code re-adding
+the flag after the two commands for disabling the panel are sent.
 
-Recompute rcount inside the loop so each connection is compared
-against its own threshold regardless of iteration order.
+This fixes screen unblanking (after blanking once) on
+mt8188-geralt-ciri-sku1 device.
 
-This is a code-inspection fix for an iteration-order-dependent logic
-error; a targeted reproducer would require SMB3 multichannel with
-in-flight work on a sibling channel landing after curr_conn in hash
-order, which is not something that can be triggered reliably.
-
-Fixes: 76e98a158b20 ("ksmbd: fix race condition between destroy_previous_session() and smb2 operations()")
-Cc: stable@vger.kernel.org
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.11+
+Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out as separate driver")
+Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260425165751.1716569-1-zhengxingda@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/panel/panel-himax-hx83102.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -180,7 +180,7 @@ int ksmbd_conn_wait_idle_sess_id(struct
- {
- 	struct ksmbd_conn *conn;
- 	int rc, retry_count = 0, max_timeout = 120;
--	int rcount = 1, bkt;
-+	int rcount, bkt;
+--- a/drivers/gpu/drm/panel/panel-himax-hx83102.c
++++ b/drivers/gpu/drm/panel/panel-himax-hx83102.c
+@@ -479,6 +479,8 @@ static int hx83102_disable(struct drm_pa
+ 	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
+ 	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
  
- retry_idle:
- 	if (retry_count >= max_timeout)
-@@ -189,8 +189,7 @@ retry_idle:
- 	down_read(&conn_list_lock);
- 	hash_for_each(conn_list, bkt, conn, hlist) {
- 		if (conn->binding || xa_load(&conn->sessions, sess_id)) {
--			if (conn == curr_conn)
--				rcount = 2;
-+			rcount = (conn == curr_conn) ? 2 : 1;
- 			if (atomic_read(&conn->req_running) >= rcount) {
- 				rc = wait_event_timeout(conn->req_running_q,
- 					atomic_read(&conn->req_running) < rcount,
++	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
++
+ 	mipi_dsi_msleep(&dsi_ctx, 150);
+ 
+ 	return dsi_ctx.accum_err;
 
 
 
