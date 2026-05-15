@@ -1,247 +1,233 @@
-Return-Path: <stable+bounces-247721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKRRHk4QB2qbrAIAu9opvQ
-	(envelope-from <stable+bounces-247721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:23:42 +0200
+	id yFE9MCQTB2rgrQIAu9opvQ
+	(envelope-from <stable+bounces-247722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:35:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC27E54F69B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:23:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C99A754FAA0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 52C1B31BAB5D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:00:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4EC1C30AABC2
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2D947ECC8;
-	Fri, 15 May 2026 11:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0AA47ECFC;
+	Fri, 15 May 2026 11:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="blqFfinb"
+	dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b="Z79YpyUw";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JmQb/nKr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AE147DD5B
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 11:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CD447ECFA
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 11:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778846349; cv=none; b=ObVXSxnKqpzvwccEYiSSdm62U66U588w9D5D5zknJml0kKOulLfoyFxaryZP+wrkDBmp359kBnquSMwhhPJENyxVV1xV7+80ds7S+/Op8H5FMdH+KtHUSG51BHsIb87Khbqi5Wz36LvyR6kjdhw1b9tnAU9DoRz/xMY2RZszW+4=
+	t=1778846372; cv=none; b=jJxsCocAnyrsoQzt0F/NlW6VUZpg5yn9jLWqvf/K6o/3MATIwURGOj+GKvyPzTcQIQhU8RY5GWajtiweIQT66G1cTMMFfJdqazxv+c/q29XQAe4a0fpCKLWOtdJ2GgjTzLvelINcYiWDro/OHo/8h4E5hYqvU/Gsz0l5I8GUOm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778846349; c=relaxed/simple;
-	bh=0B8ApGYivAEczXCssUckYdi4GgOP9YSdqF/0SJbosk8=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=fonAjdoJcEWE71YVvSR0+C1p8As4xjFStSjKENmbFZ1HbnVkm8gEVEplFwUmMPFURp/l/F7y3Eydclrv7wS4dzuDQogbyZ4upFbrChG6E5N4A1tfCvCrxFsxXD61ct6q0GgaIu0Ewr2pP18hVO1StiRv9262HqSsu389ULR05MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=blqFfinb; arc=none smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2f7020a928eso12801314eec.1
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 04:59:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1778846347; x=1779451147; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9Oh6MEifgRnI2/pHuTh9e42ZaqzXyvmbr4tjZ0GfSCA=;
-        b=blqFfinb54iVtSzRV9yuSRaOVWfqfdISDSNoXQ+aIrbVVlG+srbUpXlsASLoitTsKH
-         SGF1EZS7V93PGev9/a+LjKDgnuVl9njqyx1z1ARptNuie5PQAoTTfD7znVIA2+K23eIa
-         4KLoHwIxV1hkNFg3STdn+YO9JIowXbLUcKbTILZDUD1PwPs17UX4EKVa3zr9ZHrLQBQ6
-         VCb2jY04zhIBw4m/d3kvQ7s2eJENISgDLdJJ5TVMXTne4BfG/tsWIVG/ut5QC7JLedMc
-         PrA3V9B99pGusW+L0jdEu+fiHwNOLPLBTWxbPhRmOCu+8rXtlpZKgmfKXsAUmafrGmax
-         MLUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778846347; x=1779451147;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9Oh6MEifgRnI2/pHuTh9e42ZaqzXyvmbr4tjZ0GfSCA=;
-        b=rG7huyFzclFSx35lpecV3QBqShDq8Ubcv0slm9N61nDlbfvH0PZEsP4pPbLJm0LPYS
-         AvhGaK7Sc1uAqQuaRV0b6HFgtXtb+Ks4TijKCec6bvWubk+ywp7UGDA9/j+Pam05L/dg
-         kz9VsEoJ+X2OnKSqg6IDWgLUF4SkDXdrHzJ/CrLRT7EMCbjKsQB9GQu8gsDE735gazoV
-         Y3hwi1ZYZ74BwlFG8Wje1IN3SsTKuVbhDB73y/jK2iLCkJoKV3PuKi/qB65USflO7ZdP
-         1Oq7asxjLSrUUZmd25VeA8L67w9st7ykPJBzAiY5zAOW+qW27XA9yNHlvFjpRRoE4OBG
-         IZSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9oDRAvzrdCh2SSQRDLHUjICyPuB0WshFzKEqIcaKoJRC7BRk1JHwRoOyFYUGcBemf36JC8xro=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu4YKeU9fNzijl+Mg06MZMZIK50dNOM3QXhY86xLUhhO60GznI
-	kz7HlJLVdVQnLyyy4f55MClLE4vWlm8gQOl+nqK6GSN91QtdaO1O7k30y8QkWf1DGfo=
-X-Gm-Gg: Acq92OGwv92ZPmB+qFA9m+6NxLVIq/3BXqaIVMcjNAIJTs6uuaXAw1PDgKGUGg6BoSY
-	BPOPaicUulE16TuAwSp8WI/5FacJeO6VpVDVzL3qKkslZ81aZ3zLzKtsPwSclq5/T5CXhwS99sP
-	AD6mMmN5TiGZvt7MaIEdmt4G2ah0jjWzKI3h8xwePxZarP4ojEVaNAHwno9pRwlR3Gvg6rZxz+1
-	2lqu3aA3x8osyHv9yH02/7Y3sJLxeSmK+sL8xf0X3tfqPYuuTmqI4D0kx7SndGEN905XVruDsp6
-	DHlIZ8y/oxVI3kFDfUghwMmazk9gMocwkhdfsu/Nhgel9UNCmVjTZstoVdYmJkgrOGKNacHrFIu
-	FLrU8ZyhhgjaTyPH1fWZWnZuUuec7aosVNQx09GHytKHP/IDeAjzcdKupK6jWVyzTeoHyVH3D3z
-	Q1LmbZmk6ikLam70a+B33g/TWQIc0=
-X-Received: by 2002:a05:7301:400a:b0:2f1:496c:94d4 with SMTP id 5a478bee46e88-3039818b081mr1615635eec.4.1778846347267;
-        Fri, 15 May 2026 04:59:07 -0700 (PDT)
-Received: from 330cfa3079ca ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302973bcc5asm6531287eec.22.2026.05.15.04.59.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 04:59:06 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1778846372; c=relaxed/simple;
+	bh=+ZN/rQClRBRBAWs65UAPjEUgJ4Y9HBy6RNfgvjCYLDk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q6oIQjRfQBz4TZ9tu60I22ArDJwwqNrjVaofcMqTgnBsmUSTYzLYzvwop8V1o/ZvdTAtnBdp5DYaIDqBCljWKn7lLLsz0iDUhx+OS8r6RnhYR49WbHqwhsJ50qk6ozHBDStZRGqY0ijiwoBHFeCmFMj+RVRNpnvQimuVeAZ9rZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com; spf=pass smtp.mailfrom=bsbernd.com; dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b=Z79YpyUw; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JmQb/nKr; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bsbernd.com
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 862A81400129;
+	Fri, 15 May 2026 07:59:30 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Fri, 15 May 2026 07:59:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1778846370;
+	 x=1778932770; bh=kTPXzdtKVtjmT4/N5aCrO3snBbC23SVWwltpL2BzCts=; b=
+	Z79YpyUwiJoT/GkWrTY+OdbCRcOtapJNxyHXXN6bgkBIHSZDvWA5nSxxo6t/kLo0
+	z3Hy3gosA5hPijHx8QbKP+Ch21gicDJnxA9w1LFN7zKbWE2lOPIit3hHMleS86Qz
+	a/n6Fj+x7tPMjqUwHoXoKdyvleP1qb91/xRqE42Ts1/ctIyxhmqwVoEAAhiG5XGD
+	iCL0SHIVy5L1+S9ZtKGruIXYWtyLDP8tRVYk1k6I79yx2KgUvmuS8CxNfFF3C1za
+	T3gS0wXeXLLR8JwnI+QZNQ6DEWVakiZV+rWYyNZv6rgPM+P96pNPKkWqsnQ9kMVv
+	CdsatwWywTnX0sHVByjzyQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778846370; x=
+	1778932770; bh=kTPXzdtKVtjmT4/N5aCrO3snBbC23SVWwltpL2BzCts=; b=J
+	mQb/nKrJlv9+NDheUT8mmgSA4BfsvwOuCfSjvxr5SBVKBwRLlkaCe82+yECp5RDa
+	K9tu+AmLI2bW3qln/325s9807pL+Cd6D/CG4va8zXn8ZiEi5fF4wonG6b719o5bI
+	nCKkYKyiP2ml5TEyUNC5jWRkFBLehxzn1DfxA6OeKLVrI0ujqxtTRQUGPA71l3cn
+	KZSqiv5LnRpLxiH3+faLq5GKO6lq3kCcxF4tAiPaJuU3/AD6VCPsCQzl31FOpHIi
+	a4MNUHghA2of8UJ2HzCHh5KP2y9sa1Wp6naMWwVIjJcIqG4VK4RUf6kj5MrVtdYR
+	Ffmn4R4XVIEDhPAViK/1A==
+X-ME-Sender: <xms:ogoHaquanBVINjx5g8vRaaFd11GRnUc28fA69FBgsULS0gYr46btoA>
+    <xme:ogoHaozsNKoFYZGNPh1V7gASpsiVvMIzKDPbZcKJhvUCU6FO9j-TfamQEFYp2ui3e
+    qx3iOFhOVlgrBSyQyc9itURUbM97JMO1FDjWoVJIHYq1XllAn8>
+X-ME-Received: <xmr:ogoHatBOlORvwUKxTjxEafJI5zuIoyZGaFkNbthI1S0cNCL-3TZbKrOtli-5k23UeghBmRrFDbBx-7-8DUq3EyssMWdIQmNNGAhwjmDavXUusfPSzw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufedtfeegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeeuvghrnhgu
+    ucfutghhuhgsvghrthcuoegsvghrnhgusegsshgsvghrnhgurdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehhfejueejleehtdehteefvdfgtdelffeuudejhfehgedufedvhfehueev
+    udeugeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsvghrnhgusegsshgsvghrnhgurdgtohhmpdhnsggprhgtphhtthhopeeipdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopehjohgrnhhnvghlkhhoohhnghesghhmrghilhdrtg
+    homhdprhgtphhtthhopehmihhklhhoshesshiivghrvgguihdrhhhupdhrtghpthhtohep
+    fhhushgvqdguvghvvghlsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheprg
+    hlihesuggunhdrtghomhdprhgtphhtthhopehhohhrshhtsegsihhrthhhvghlmhgvrhdr
+    uggvpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:ogoHameN5CiXv2JyXbS_XWMuYjjaDN_pCoRM3pKYQGBPfR6vBh6Vyg>
+    <xmx:ogoHank1V3vUR0lxdwIXU5D2jVN-nopUhR5R1JBHyKO4lvPbvWsfjA>
+    <xmx:ogoHatF-hhZXaFTKU7r9C4GmQhWY2nqzo0OjxRiRdo2l_Bg3p23imA>
+    <xmx:ogoHav6gI380AUuDQyKPxR1MHTRQkO4nN6PkkQOL7eKi1WRNv-govQ>
+    <xmx:ogoHalN50Ml0YCyEIiuGy2ycyHGPkqCrqk44glSXP8Z6G-N7mRORLQ85>
+Feedback-ID: i5c2e48a5:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 15 May 2026 07:59:29 -0400 (EDT)
+Message-ID: <a59c061c-3734-47ba-8891-fc72926458da@bsbernd.com>
+Date: Fri, 15 May 2026 13:59:28 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: 
- =?utf-8?b?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC02LjE4Lnk6IChidWlsZCkgZm9y?=
- =?utf-8?b?bWF0IOKAmCVsZOKAmSBleHBlY3RzIGFyZ3VtZW50IG9mIHR5cGUg4oCYbG9uZyBp?=
- =?utf-8?b?bnTigJksIGJ1dCBhcmd1bWVudCA1IGguLi4=?=
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Fri, 15 May 2026 11:59:06 -0000
-Message-ID: <177884634587.947.9605633365065144443@330cfa3079ca>
-X-Rspamd-Queue-Id: DC27E54F69B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/3] fuse: fix race between registration and connection
+ abortion
+To: Joanne Koong <joannelkoong@gmail.com>, miklos@szeredi.hu
+Cc: fuse-devel@lists.linux.dev, ali@ddn.com, horst@birthelmer.de,
+ stable@vger.kernel.org
+References: <20260515045541.1171335-1-joannelkoong@gmail.com>
+ <20260515045541.1171335-3-joannelkoong@gmail.com>
+From: Bernd Schubert <bernd@bsbernd.com>
+Content-Language: fr, en-US, de-DE, ru-RU
+In-Reply-To: <20260515045541.1171335-3-joannelkoong@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C99A754FAA0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-gcc-14-i386-6a06f8890ed99f002e8c2ef2/.config];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
-	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[bsbernd.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[bsbernd.com:s=fm2,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247721-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247722-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,szeredi.hu];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[bsbernd.com:+,messagingengine.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernelci.org:+];
+	FROM_NEQ_ENVFROM(0.00)[bernd@bsbernd.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,lists.linux.dev:replyto]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
 X-Rspamd-Action: no action
 
 
 
+On 5/15/26 06:55, Joanne Koong wrote:
+> This fixes this race:
+> - thread a: io_uring_enter -> register sqe ->
+>   fuse_uring_create_ring_ent -> allocate ent but doesn't grab queue_ref
+>   yet
+> - thread b: fuse_conn_destroy() -> fuse_chan_abort() ->
+>   fuse_uring_abort() is a no-op due to queue ref being 0
+> - thread a: grabs the queue_ref, queue_ref is now 1, rest of
+>   fuse_uring_do_register() logic executes
+> - thread b: fuse_chan_abort() returns, fuse_chan_wait_aborted() now runs
+>   and calls
+>   "wait_event(ring->stop_waitq, atomic_read(&ring->queue_refs) == 0);"
+> The abort/unmount thread will hang indefinitely in unkillable state as
+> nothing will decrement queue_refs or wake stop_waitq, and the ring,
+> queue, and ent are leaked.
+> 
+> Fix this by checking fch->connected under fch->lock after the created
+> ent has grabbed a ref count on the queue. This ensures that in the
+> scenario above, it is guaranteed that we either release the queue ref
+> and wake up stop_waitq (in case fuse_chan_wait_aborted() is already
+> waiting) in fuse_uring_do_register() when we detect !fch->connected, or
+> if the connection is aborted after the check, it is guaranteed that the
+> async teardown worker will be running in the background cleaning up ents
+> and decrementing the ent's ref on the queue, which will unblock the
+> eventual queue and ring teardown.
+> 
+> Fixes: 24fe962c86f5 ("fuse: {io-uring} Handle SQEs - register commands")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> ---
+>  fs/fuse/dev_uring.c | 22 ++++++++++++++++------
+>  1 file changed, 16 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
+> index cd75f61018ec..d9108b5b5db8 100644
+> --- a/fs/fuse/dev_uring.c
+> +++ b/fs/fuse/dev_uring.c
+> @@ -977,15 +977,26 @@ static bool is_ring_ready(struct fuse_ring *ring, int current_qid)
+>  /*
+>   * fuse_uring_req_fetch command handling
+>   */
+> -static void fuse_uring_do_register(struct fuse_ring_ent *ent,
+> -				   struct io_uring_cmd *cmd,
+> -				   unsigned int issue_flags)
+> +static int fuse_uring_do_register(struct fuse_ring_ent *ent,
+> +				  struct io_uring_cmd *cmd,
+> +				  unsigned int issue_flags)
+>  {
+>  	struct fuse_ring_queue *queue = ent->queue;
+>  	struct fuse_ring *ring = queue->ring;
+>  	struct fuse_chan *fch = ring->chan;
+>  	struct fuse_iqueue *fiq = &fch->iq;
+>  
+> +	spin_lock(&fch->lock);
+> +	/* abort teardown path is running or has run */
+> +	if (!fch->connected) {
+> +		spin_unlock(&fch->lock);
+> +		if (atomic_dec_and_test(&ring->queue_refs))
+> +			wake_up_all(&ring->stop_waitq);
+> +		kfree(ent);
+> +		return -ECONNABORTED;
+> +	}
+> +	spin_unlock(&fch->lock);
+> +
+>  	fuse_uring_prepare_cancel(cmd, issue_flags, ent);
+>  
+>  	spin_lock(&queue->lock);
+> @@ -1002,6 +1013,7 @@ static void fuse_uring_do_register(struct fuse_ring_ent *ent,
+>  			wake_up_all(&fch->blocked_waitq);
+>  		}
+>  	}
+> +	return 0;
+>  }
+>  
+>  /*
+> @@ -1118,9 +1130,7 @@ static int fuse_uring_register(struct io_uring_cmd *cmd,
+>  	if (IS_ERR(ent))
+>  		return PTR_ERR(ent);
+>  
+> -	fuse_uring_do_register(ent, cmd, issue_flags);
+> -
+> -	return 0;
+> +	return fuse_uring_do_register(ent, cmd, issue_flags);
+>  }
+>  
+>  /*
 
-
-Hello,
-
-New build issue found on stable-rc/linux-6.18.y:
-
----
- format ‘%ld’ expects argument of type ‘long int’, but argument 5 has type ‘size_t’ {aka ‘unsigned int’} [-Werror=format=] in drivers/hid/hid-core.o (drivers/hid/hid-core.c) [logspec:kbuild,kbuild.compiler.error]
----
-
-- dashboard: https://d.kernelci.org/i/maestro:c55fed57497d1954be35cc17f34d231894d01bd8
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  a62b7e0d3cbfc22f02ef8da41210d6921c1120cc
-
-
-Please include the KernelCI tag when submitting a fix:
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
-
-Log excerpt:
-=====================================================
-drivers/hid/hid-core.c:2049:43: error: format ‘%ld’ expects argument of type ‘long int’, but argument 5 has type ‘size_t’ {aka ‘unsigned int’} [-Werror=format=]
- 2049 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/linux/dev_printk.h:110:30: note: in definition of macro ‘dev_printk_index_wrap’
-  110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
-      |                              ^~~
-./include/linux/dev_printk.h:156:61: note: in expansion of macro ‘dev_fmt’
-  156 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
-      |                                                             ^~~~~~~
-./include/linux/dev_printk.h:215:17: note: in expansion of macro ‘dev_warn’
-  215 |                 dev_level(dev, fmt, ##__VA_ARGS__);                     \
-      |                 ^~~~~~~~~
-./include/linux/dev_printk.h:227:9: note: in expansion of macro ‘dev_level_ratelimited’
-  227 |         dev_level_ratelimited(dev_warn, dev, fmt, ##__VA_ARGS__)
-      |         ^~~~~~~~~~~~~~~~~~~~~
-./include/linux/hid.h:1302:9: note: in expansion of macro ‘dev_warn_ratelimited’
- 1302 |         dev_warn_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-      |         ^~~~~~~~~~~~~~~~~~~~
-drivers/hid/hid-core.c:2049:17: note: in expansion of macro ‘hid_warn_ratelimited’
- 2049 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-      |                 ^~~~~~~~~~~~~~~~~~~~
-drivers/hid/hid-core.c:2049:91: note: format string is defined here
- 2049 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-      |                                                                                         ~~^
-      |                                                                                           |
-      |                                                                                           long int
-      |                                                                                         %d
-drivers/hid/hid-core.c:2071:43: error: format ‘%ld’ expects argument of type ‘long int’, but argument 5 has type ‘size_t’ {aka ‘unsigned int’} [-Werror=format=]
- 2071 |                 hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/linux/dev_printk.h:110:30: note: in definition of macro ‘dev_printk_index_wrap’
-  110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
-      |                              ^~~
-./include/linux/dev_printk.h:156:61: note: in expansion of macro ‘dev_fmt’
-  156 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
-      |                                                             ^~~~~~~
-./include/linux/dev_printk.h:215:17: note: in expansion of macro ‘dev_warn’
-  215 |                 dev_level(dev, fmt, ##__VA_ARGS__);                     \
-      |                 ^~~~~~~~~
-./include/linux/dev_printk.h:227:9: note: in expansion of macro ‘dev_level_ratelimited’
-  227 |         dev_level_ratelimited(dev_warn, dev, fmt, ##__VA_ARGS__)
-      |         ^~~~~~~~~~~~~~~~~~~~~
-./include/linux/hid.h:1302:9: note: in expansion of macro ‘dev_warn_ratelimited’
- 1302 |         dev_warn_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-      |         ^~~~~~~~~~~~~~~~~~~~
-drivers/hid/hid-core.c:2071:17: note: in expansion of macro ‘hid_warn_ratelimited’
- 2071 |                 hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-      |                 ^~~~~~~~~~~~~~~~~~~~
-drivers/hid/hid-core.c:2071:92: note: format string is defined here
- 2071 |                 hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-      |                                                                                          ~~^
-      |                                                                                            |
-      |                                                                                            long int
-      |                                                                                          %d
-  CC      drivers/firmware/efi/memmap.o
-  CC      drivers/mmc/core/sdio_io.o
-  CC      drivers/gpu/drm/i915/gt/intel_gt_pm_irq.o
-  CC      drivers/platform/x86/wmi.o
-  CC      drivers/md/dm-kcopyd.o
-  CC      drivers/firmware/efi/capsule.o
-  CC      drivers/gpu/drm/amd/amdgpu/amdgpu_mca.o
-  CC      drivers/mmc/core/sdio_irq.o
-cc1: all warnings being treated as errors
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## defconfig+kcidebug+x86-board on (i386):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-x86-kcidebug-6a06f8c00ed99f002e8c2f1e/.config
-- dashboard: https://d.kernelci.org/build/maestro:6a06f8c00ed99f002e8c2f1e
-
-## i386_defconfig on (i386):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-i386-6a06f8890ed99f002e8c2ef2/.config
-- dashboard: https://d.kernelci.org/build/maestro:6a06f8890ed99f002e8c2ef2
-
-## i386_defconfig+kselftest on (i386):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-i386-kselftest-6a06f9530ed99f002e8c2fab/.config
-- dashboard: https://d.kernelci.org/build/maestro:6a06f9530ed99f002e8c2fab
-
-
-#kernelci issue maestro:c55fed57497d1954be35cc17f34d231894d01bd8
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Reviewed-by: Bernd Schubert <bernd@bsbernd.com>
 
