@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-248102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WCDuL/1TB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:12:29 +0200
+	id oNSZI+xHB2qrwQIAu9opvQ
+	(envelope-from <stable+bounces-248103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:21:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654285549A1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:12:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFF85530E1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3569E30DD904
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:01:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 17A43303332A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83233B19DE;
-	Fri, 15 May 2026 16:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0E03B1029;
+	Fri, 15 May 2026 16:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3lJAeti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIojuIUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C21C3A961B;
-	Fri, 15 May 2026 16:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3063B30DD1D;
+	Fri, 15 May 2026 16:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860877; cv=none; b=K2cc2j4T4IMkD7Z8KRPm9P4Yz9VYK3FilvCkxb8wEysr+CoYVA7PZzOqdhwRwc64FJYKkNt8BEIPwhSs1x4/bNjJIQEv1CGyy8mUTPAuP135hpqiffRd6BWHdiMLOHQWIhEhaJWuQ50Js/8lMzYTzVtv5ggMiUnlm3KNT+gpcoU=
+	t=1778860880; cv=none; b=aWsljmxpwBT19oGME43bjZ0h6EODhSjBUbt/iEUM93N8IXzIrv8fOgeYqtaoYNalqVsiG5zgmEydWDiukgIChiPe7BJ1BgNBC4YdpQKj4zBgTsd5H7WaTxeZUcRMQYniuC7hn7fSCLr4kptBcSlBTBCRKyi/SEy9HKDNTLnBECM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860877; c=relaxed/simple;
-	bh=2GcgEyWpPEr5G5aVTTBB8dO4xOOcuTGErSMWNEFUg6c=;
+	s=arc-20240116; t=1778860880; c=relaxed/simple;
+	bh=vVlNPkpmjpLc5BAtUdgogrXN5Y+oVN7FQp6rgqPkdJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzPL2FwLohqu+lBBfVUiWWIo/duoX0CG3MVERs5AKhwvsTdd1hfTF4k72q0pCm7mX0KjntYyh4Wnif4sXtqG5k/FBekPVfBnCgq1DnWeZ6sASURRcr9K9iXZU99RHppNRQZxgvbHwEQXC0pF/+BOIjmdBZFw1mPvMe/e2jkD3V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3lJAeti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189CCC2BCC7;
-	Fri, 15 May 2026 16:01:16 +0000 (UTC)
+	 MIME-Version; b=XaR97M4lxrsDGhQkdQeQ1x9OM8rFPmZeCFYDkV6u7hyu22fmmym5OligpK1A7RYxLCwqp+NYuq6MTdAmoDFuGkhumYzBiLJnT+QBwVPcP5Dqhe5PL7gqAfJuLhQDUyO+fBC6/BSBLQ81rTJle1qaRLnEe/7BXSswKl1AI19rChw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIojuIUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B336AC2BCB3;
+	Fri, 15 May 2026 16:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860877;
-	bh=2GcgEyWpPEr5G5aVTTBB8dO4xOOcuTGErSMWNEFUg6c=;
+	s=korg; t=1778860880;
+	bh=vVlNPkpmjpLc5BAtUdgogrXN5Y+oVN7FQp6rgqPkdJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n3lJAetiS2RgK4+ztxJ/Sd8tc9qgeYne9yNUUvbH/r/YPMa6Bswp1zxsr5VTZ+Jx/
-	 0jACnZLidhbpCPm1t+zPBjOolzyJfqRrJofsEyZ4mnzGp38IVHDjUyjdTk0btOKqhG
-	 dLJOBzNZ1S4jJmVAaaOumDyEtIl5HgJ52h7O1uQ0=
+	b=RIojuIUCxivXa9oZZb+Jj5J0gzMNWeKXhtgWD90UjTRgEDrRKoCYqL91TyzhsU+9R
+	 SA9jnzNVjttVlpBtkMp0R7q9at0T/fEAMEsUcHzKycFaPrDt2LxY5/GSkwr+g+E+KR
+	 vwmDGUDvHSJzyiY0/l0LDPEGlfGeiY+UsOpCBVqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ruijie Li <ruijieli51@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Dust Li <dust.li@linux.alibaba.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 071/474] net: txgbe: fix firmware version check
-Date: Fri, 15 May 2026 17:43:00 +0200
-Message-ID: <20260515154716.578186455@linuxfoundation.org>
+Subject: [PATCH 6.6 072/474] net/smc: avoid early lgr access in smc_clc_wait_msg
+Date: Fri, 15 May 2026 17:43:01 +0200
+Message-ID: <20260515154716.599899165@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -64,84 +70,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 654285549A1
+X-Rspamd-Queue-Id: 3AFF85530E1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248103-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,linux.alibaba.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248102-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Ruijie Li <ruijieli51@gmail.com>
 
-commit c263f644add3d6ad81f9d62a99284fde408f0caa upstream.
+commit 5a8db80f721deee8e916c2cfdee78decda02ce4f upstream.
 
-For the device SP, the firmware version is a 32-bit value where the
-lower 20 bits represent the base version number. And the customized
-firmware version populates the upper 12 bits with a specific
-identification number.
+A CLC decline can be received while the handshake is still in an early
+stage, before the connection has been associated with a link group.
 
-For other devices AML 25G and 40G, the upper 12 bits of the firmware
-version is always non-zero, and they have other naming conventions.
+The decline handling in smc_clc_wait_msg() updates link-group level sync
+state for first-contact declines, but that state only exists after link
+group setup has completed. Guard the link-group update accordingly and
+keep the per-socket peer diagnosis handling unchanged.
 
-Only SP devices need to check this to tell if XPCS will work properly.
-So the judgement of MAC type is added here.
+This preserves the existing sync_err handling for established link-group
+contexts and avoids touching link-group state before it is available.
 
-And the original logic compared the entire 32-bit value against 0x20010,
-which caused the outdated base firmwares bypass the version check
-without a warning. Apply a mask 0xfffff to isolate the lower 20 bits for
-an accurate base version comparison.
-
-Fixes: ab928c24e6cd ("net: txgbe: add FW version warning")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/C787AA5C07598B13+20260422071837.372731-1-jiawenwu@trustnetic.com
+Fixes: 0cfdd8f92cac ("smc: connection and link group creation")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ruijie Li <ruijieli51@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Link: https://patch.msgid.link/08c68a5c817acf198cce63d22517e232e8d60718.1776850759.git.ruijieli51@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/smc/smc_clc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -696,7 +696,8 @@ static int txgbe_probe(struct pci_dev *p
- 			 "0x%08x", etrack_id);
- 	}
- 
--	if (etrack_id < 0x20010)
-+	if (wx->mac.type == wx_mac_sp &&
-+	    ((etrack_id & 0xfffff) < 0x20010))
- 		dev_warn(&pdev->dev, "Please upgrade the firmware to 0x20010 or above.\n");
- 
- 	txgbe = devm_kzalloc(&pdev->dev, sizeof(*txgbe), GFP_KERNEL);
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -784,8 +784,8 @@ int smc_clc_wait_msg(struct smc_sock *sm
+ 		dclc = (struct smc_clc_msg_decline *)clcm;
+ 		reason_code = SMC_CLC_DECL_PEERDECL;
+ 		smc->peer_diagnosis = ntohl(dclc->peer_diagnosis);
+-		if (((struct smc_clc_msg_decline *)buf)->hdr.typev2 &
+-						SMC_FIRST_CONTACT_MASK) {
++		if ((dclc->hdr.typev2 & SMC_FIRST_CONTACT_MASK) &&
++		    smc->conn.lgr) {
+ 			smc->conn.lgr->sync_err = 1;
+ 			smc_lgr_terminate_sched(smc->conn.lgr);
+ 		}
 
 
 
