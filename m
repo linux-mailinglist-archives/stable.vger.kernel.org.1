@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-248721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248535-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEfUHFxPB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:44 +0200
+	id 2CVbFdhOB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248535-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D23555415D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DCB554038
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 95AD530C8B4F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B16B3355147
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5212C11DF;
-	Fri, 15 May 2026 16:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5963E7BC4;
+	Fri, 15 May 2026 16:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBX8KWeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZXEwkHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC3B3B19DE;
-	Fri, 15 May 2026 16:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7573B583A;
+	Fri, 15 May 2026 16:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862459; cv=none; b=ftPpdqmPGA0TdNNh+g3fQX2gPGVjWeozQ6Z+vEyLdbaXeRxH/ECcGVqQtGQeycrptrlnUshhD57R/V3jGrYoYqcKp00KOEfz0jJkcEpU2HenDEz7WUFfv1babt84v1CeqaaGF5o+6mrztr1MZ4lT2Vh3XEmS+GZL08tReMaVoAY=
+	t=1778861978; cv=none; b=fcZFzdwk6cFGrIeBT082VnpYaxvFxiUiwJgDns8NjpwUcvi6WvitMroO+wmqdJkw/W2THxsSYCPDN5FjXWMjg39+SppIMrI+e5JYeoD5CbFWR3tM/f2IEce/vEghjrygcYSM4JetktmMWuShEdUv+blzLJwVvFVNubGOAbg4jbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862459; c=relaxed/simple;
-	bh=ydAhWQjEy33gMyQjBh5w4nuQHEo7DUch1XkHe6pwC6o=;
+	s=arc-20240116; t=1778861978; c=relaxed/simple;
+	bh=obN99Lh7cmh7qHv03TGzrQz9nSpFJ+/CvBPF1px56As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxNh27p7SjtaOWEF/5Rfy3AfcnE3j6qPdoXedsEJX4BV+4jO3xHISxsXL3TMglFNcUW6CEgJwI3bPCEkOVyp4jyWs2c17yoL625kOYMqli82X5lL0Z+++pRpMD0POe/XbYiV84LlbZfRxvpDWyj1/sc8QlDYQDhX9lU0SJTNuv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBX8KWeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B46C2BCB0;
-	Fri, 15 May 2026 16:27:38 +0000 (UTC)
+	 MIME-Version; b=GrGSLViN69i/zhyLhLPtlilrKPEVSoOnRm3PTNExkgD8leM5j0K6tkCKArPW0d0fFw5NSIaChqZjvHYElOBfepCqFsEQXzZ8dKoIcb9+/43O9wTeN8MRwyVFA5YKgMqEtfg7PS+CSJecgVTwsKky/a0OaFGThgELsTGJzXZUpns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZXEwkHT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4508FC2BCB0;
+	Fri, 15 May 2026 16:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862458;
-	bh=ydAhWQjEy33gMyQjBh5w4nuQHEo7DUch1XkHe6pwC6o=;
+	s=korg; t=1778861978;
+	bh=obN99Lh7cmh7qHv03TGzrQz9nSpFJ+/CvBPF1px56As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBX8KWeYKl62ag8ZVgA7wCcfyZEfgvUa7y350KVDIiYEXFNmFK1VVhpt9CNCDbu/Y
-	 aD8Ln+RFjXgmo8mOv1b4Qgom/af7wn70Q/sJWBNp72qNpoaQVCsIK7ui+q41LfyhNm
-	 TEi0/P2c2kHa+qg9B3iX3lhOBsnq+8wRpdcZ1eHY=
+	b=YZXEwkHTEP09F2SffL1XTFh+ynm9UvUwoJyO/sY8i1ms3gBE433ZpCvoQJ1T5PTe9
+	 nv73ml+rMvjLkLCaLd4F3TAg09/a/5VqZq8/b7g3LX2T4Qizv+VUNRWRpWkVYsEYTn
+	 Kn3O9Ju0/DmFrlKllAiVAX8RkCEd8oGVf5e39Gkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunny Luo <sunny.luo@amlogic.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 057/201] spi: amlogic-spisg: fix controller deregistration
-Date: Fri, 15 May 2026 17:47:55 +0200
-Message-ID: <20260515154659.769593021@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 059/188] media: qcom: iris: increase H265D_MAX_SLICE to fix H.265 decoding on SC7280
+Date: Fri, 15 May 2026 17:47:56 +0200
+Message-ID: <20260515154658.595653923@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +67,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1D23555415D
+X-Rspamd-Queue-Id: D4DCB554038
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248721-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248535-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,amlogic.com:email]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-commit 84d31bb1f6256eea0db6cf64a3c7a53145f92bb9 upstream.
+commit 3e0b2053751657ed2924adfe3ff25b1450231e33 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Follow the commit bfe1326573ff ("venus: Fix for H265 decoding failure.")
+and increase H265D_MAX_SLICE following firmware requirements on that
+platform. Otherwise decoding of the H.265 streams fails with the
+"insufficient scratch_1 buffer size" from the firmware.
 
-Fixes: cef9991e04ae ("spi: Add Amlogic SPISG driver")
-Cc: stable@vger.kernel.org	# 6.17: b8db95529979
-Cc: stable@vger.kernel.org	# 6.17
-Cc: Sunny Luo <sunny.luo@amlogic.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+[bod: Fixed commit log withthe => with the]
+Fixes: e1f5d32608ec ("media: iris: Add internal buffer calculation for HEVC and VP9 decoders")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-amlogic-spisg.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/iris/iris_vpu_buffer.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-amlogic-spisg.c
-+++ b/drivers/spi/spi-amlogic-spisg.c
-@@ -800,7 +800,7 @@ static int aml_spisg_probe(struct platfo
- 		goto out_clk;
- 	}
- 
--	ret = devm_spi_register_controller(dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret) {
- 		dev_err(&pdev->dev, "spi controller registration failed\n");
- 		goto out_clk;
-@@ -823,6 +823,8 @@ static void aml_spisg_remove(struct plat
- {
- 	struct spisg_device *spisg = platform_get_drvdata(pdev);
- 
-+	spi_unregister_controller(spisg->controller);
-+
- 	if (!pm_runtime_suspended(&pdev->dev)) {
- 		pinctrl_pm_select_sleep_state(&spisg->pdev->dev);
- 		clk_disable_unprepare(spisg->core);
+--- a/drivers/media/platform/qcom/iris/iris_vpu_buffer.h
++++ b/drivers/media/platform/qcom/iris/iris_vpu_buffer.h
+@@ -61,7 +61,7 @@ struct iris_inst;
+ #define SIZE_DOLBY_RPU_METADATA (41 * 1024)
+ #define H264_CABAC_HDR_RATIO_HD_TOT	1
+ #define H264_CABAC_RES_RATIO_HD_TOT	3
+-#define H265D_MAX_SLICE	1200
++#define H265D_MAX_SLICE	3600
+ #define SIZE_H265D_HW_PIC_T SIZE_H264D_HW_PIC_T
+ #define H265_CABAC_HDR_RATIO_HD_TOT 2
+ #define H265_CABAC_RES_RATIO_HD_TOT 2
 
 
 
