@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-248302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248313-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oB1JK3ZNB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:44:38 +0200
+	id 8B5TDMRJB2rUwQIAu9opvQ
+	(envelope-from <stable+bounces-248313-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:28:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6B2553D67
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:44:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2CF1553430
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:28:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF592311F939
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9CEB63095ADF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FC93FD967;
-	Fri, 15 May 2026 16:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451343F8706;
+	Fri, 15 May 2026 16:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kc/KucDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxqOhxMv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6427A3E0096;
-	Fri, 15 May 2026 16:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0818F20297C;
+	Fri, 15 May 2026 16:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861384; cv=none; b=r8pebAkEOI7vj8wRocY4O3OyBoZOHmcXbLmDHt6Z9z715L8NptlOSLwO1ENyh4426lgBIirbStNa7AGEJYg3o2vzd2dLVq9fbuwNlcNJ92G1uVSvXGaCymymLbc+Ax2Nq2rQJAUinE5EsClfqPJ22eE3wnaXYLbuvJKOOGu4gPY=
+	t=1778861413; cv=none; b=eUpdKS87dAhmfpPdAh4dbrlZsQqp/55RVDBfO52FZX4Yk6eEeprmTxvrFGWRu0t+GIC2FQCkXfRTTk6q50qajqnXPqkK1cWgOwstPtVGG3VqZW71yG1jKTq7U/rZrqVzgc7puEEifJfNWTxaAXMI1Ez6VYnazpPpEFXliMSAx6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861384; c=relaxed/simple;
-	bh=LW94ct7gAWwmMRA1IHTFf1LCpeRo+VqZBOFfdqQpyhQ=;
+	s=arc-20240116; t=1778861413; c=relaxed/simple;
+	bh=Q4gfd8/8a/PFoQTmhcskWfx91tpyQLdqnZAvA0JW+Ig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLwMxbUbfPsGGstklyJjneqCIux+lYP55KVLYzs0aPNWYL/onIjp0ZJ1Zn1Ul0hcBwOzyprmPiByZKkhLTfrMe9EeKlNlzf5Pp949NlPq/3noh+xofoAlIXrSIlNI3naBau2fLadM49vYRZ7GTax3SrWeuYuWyjarNl3Fsw7VZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kc/KucDT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC78C2BCB0;
-	Fri, 15 May 2026 16:09:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X8JEMqrcM+5n3lvpYN2fmYqQsr3qhzm/1pA1VSpyYmTYSQOL/DaI4GHmgK7wG2Tc7NJRtqXwVjtwfxzjgetK9WaCnjuX1EGSf98vArmtI9RD+UfK067ghUFj54fSpcMgEjU7NuJ0bINJ5u2xShvfJKXoQ/7feRav2IcpERMybqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxqOhxMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCA8C2BCB0;
+	Fri, 15 May 2026 16:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861384;
-	bh=LW94ct7gAWwmMRA1IHTFf1LCpeRo+VqZBOFfdqQpyhQ=;
+	s=korg; t=1778861412;
+	bh=Q4gfd8/8a/PFoQTmhcskWfx91tpyQLdqnZAvA0JW+Ig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kc/KucDThnZNgtXk8HaCHk2TM3cGmrPFFvTdJsyDFhhk5A+dSW059btuA3kLYjgrN
-	 rVj/zGZe5U4F9zwDMDqc/WEJkxMFOrV09+207vY//GYtiQEn/rbP+rjCR+4LsyRBfg
-	 KNOuCoeePY3/xWEH7i1fgFGkar9+llYncUj5Dt3M=
+	b=CxqOhxMvGRJkc+/tWdgakueWknNI1IoCT7HxYLwgQKWtOBS3zbBYapjQMSt5KPMri
+	 5fgbJoW6y60QEltgrtrypLT9NN9CnDFUWY0PCjbGuYsGaY516MRY9i1RqCYpGfnfFI
+	 6qmhfzHnoShP6V2s7Pyi1KNIyCUCPETNGHCEaANc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 291/474] f2fs: fix node_cnt race between extent node destroy and writeback
-Date: Fri, 15 May 2026 17:46:40 +0200
-Message-ID: <20260515154721.297353178@linuxfoundation.org>
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 292/474] KVM: arm64: vgic: Fix IIDR revision field extracted from wrong value
+Date: Fri, 15 May 2026 17:46:41 +0200
+Message-ID: <20260515154721.318546558@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -63,130 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2C6B2553D67
+X-Rspamd-Queue-Id: D2CF1553430
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248302-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248313-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,xiaomi.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit ed78aeebef05212ef7dca93bd931e4eff67c113f upstream.
+commit a0e6ae45af17e8b27958830595799c702ffbab8d upstream.
 
-f2fs_destroy_extent_node() does not set FI_NO_EXTENT before clearing
-extent nodes. When called from f2fs_drop_inode() with I_SYNC set,
-concurrent kworker writeback can insert new extent nodes into the same
-extent tree, racing with the destroy and triggering f2fs_bug_on() in
-__destroy_extent_node(). The scenario is as follows:
+The uaccess write handlers for GICD_IIDR in both GICv2 and GICv3
+extract the revision field from 'reg' (the current IIDR value read back
+from the emulated distributor) instead of 'val' (the value userspace is
+trying to write). This means userspace can never actually change the
+implementation revision — the extracted value is always the current one.
 
-drop inode                            writeback
- - iput
-  - f2fs_drop_inode  // I_SYNC set
-   - f2fs_destroy_extent_node
-    - __destroy_extent_node
-     - while (node_cnt) {
-        write_lock(&et->lock)
-        __free_extent_tree
-        write_unlock(&et->lock)
-                                       - __writeback_single_inode
-                                        - f2fs_outplace_write_data
-                                         - f2fs_update_read_extent_cache
-                                          - __update_extent_tree_range
-                                           // FI_NO_EXTENT not set,
-                                           // insert new extent node
-       } // node_cnt == 0, exit while
-     - f2fs_bug_on(node_cnt)  // node_cnt > 0
+Fix the FIELD_GET to use 'val' so that userspace can select a different
+revision for migration compatibility.
 
-Additionally, __update_extent_tree_range() only checks FI_NO_EXTENT for
-EX_READ type, leaving EX_BLOCK_AGE updates completely unprotected.
-
-This patch set FI_NO_EXTENT under et->lock in __destroy_extent_node(),
-consistent with other callers (__update_extent_tree_range and
-__drop_extent_tree) and check FI_NO_EXTENT for both EX_READ and
-EX_BLOCK_AGE tree.
-
-Fixes: 3fc5d5a182f6 ("f2fs: fix to shrink read extent node in batches")
+Fixes: 49a1a2c70a7f ("KVM: arm64: vgic-v3: Advertise GICR_CTLR.{IR, CES} as a new GICD_IIDR revision")
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://patch.msgid.link/20260407210949.2076251-2-dwmw2@infradead.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/extent_cache.c |   17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ arch/arm64/kvm/vgic/vgic-mmio-v2.c |    2 +-
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -87,9 +87,10 @@ static bool __may_extent_tree(struct ino
- 	if (!__init_may_extent_tree(inode, type))
- 		return false;
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v2.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
+@@ -91,7 +91,7 @@ static int vgic_mmio_uaccess_write_v2_mi
+ 		 * migration from old kernels to new kernels with legacy
+ 		 * userspace.
+ 		 */
+-		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, reg);
++		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
+ 		switch (reg) {
+ 		case KVM_VGIC_IMP_REV_2:
+ 		case KVM_VGIC_IMP_REV_3:
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+@@ -167,7 +167,7 @@ static int vgic_mmio_uaccess_write_v3_mi
+ 		if ((reg ^ val) & ~GICD_IIDR_REVISION_MASK)
+ 			return -EINVAL;
  
-+	if (is_inode_flag_set(inode, FI_NO_EXTENT))
-+		return false;
-+
- 	if (type == EX_READ) {
--		if (is_inode_flag_set(inode, FI_NO_EXTENT))
--			return false;
- 		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
- 				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
- 			return false;
-@@ -602,6 +603,8 @@ static unsigned int __destroy_extent_nod
- 
- 	while (atomic_read(&et->node_cnt)) {
- 		write_lock(&et->lock);
-+		if (!is_inode_flag_set(inode, FI_NO_EXTENT))
-+			set_inode_flag(inode, FI_NO_EXTENT);
- 		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
- 		write_unlock(&et->lock);
- 	}
-@@ -637,12 +640,12 @@ static void __update_extent_tree_range(s
- 
- 	write_lock(&et->lock);
- 
--	if (type == EX_READ) {
--		if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
--			write_unlock(&et->lock);
--			return;
--		}
-+	if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
-+		write_unlock(&et->lock);
-+		return;
-+	}
- 
-+	if (type == EX_READ) {
- 		prev = et->largest;
- 		dei.len = 0;
- 
+-		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, reg);
++		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
+ 		switch (reg) {
+ 		case KVM_VGIC_IMP_REV_2:
+ 		case KVM_VGIC_IMP_REV_3:
 
 
 
