@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NTVImlMB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:40:09 +0200
+	id GJmTM0lUB2oqywIAu9opvQ
+	(envelope-from <stable+bounces-248761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:13:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03557553B3A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:40:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5F7554A27
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2211C327FAA1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:15:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D334313830C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D2F3F927D;
-	Fri, 15 May 2026 16:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD764C77BC;
+	Fri, 15 May 2026 16:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK5K/eZQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJ1DOS7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682303EFFA0;
-	Fri, 15 May 2026 16:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C659B39734B;
+	Fri, 15 May 2026 16:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861637; cv=none; b=pdvXOb/So5A1IBYrK2xmyL6lha9VDsZ+Ex2UsHV+uQrMEAzYYq2UpqJtRqOkrddmNqfUZkKxwECDi0CZOvha0PWQYW2S4dUn5sBFmFnZ0zOMXdQy2mJGhxZzFdA0ddE1zOhcTfGSMrYQ++19oYQCGQ6OQGZtEDscCckA/mLBBo4=
+	t=1778862562; cv=none; b=nYwEQyIOFHrZl5FPK1MXdu8OiCHrvB9wn/7YrpXxqrE/PJFRRo4t61kQGB5w3t2U8HC0XnY6Y4UIaJIGVk7+xlsr4MoLF4iI8w7oahY2xhL+PMAHB9Rp21KURYwq1cSFGA3lR7PLJbAoTSZwWJKUBhVoZ59UVxLVDv2A1HEEZ64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861637; c=relaxed/simple;
-	bh=H7s0Dys9bGxRKqjncZBEqsfiKyqR1DKJhZZQ6SfPbeI=;
+	s=arc-20240116; t=1778862562; c=relaxed/simple;
+	bh=FlZ+iMQW+JhOmNMtoIJ9Tf+/vq97jhIcOQm0J/CmBlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tc+E9aE6f8hH5Zzq/seXlCe1oW9+ke/ze13hOGmSjY6ig2nJ0Qsl0PCoMrTZCUL9g7Lb4q3VtzAfzFXmKCOVnlHb30bLKHM6feA79KdHAs6zNmnKTmWU5kPNyAIkSS3rAiOfucJnsZmau7thrCgH7shjhX1sIz/M8P0h6IJ2wsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK5K/eZQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AEDC2BCB0;
-	Fri, 15 May 2026 16:13:56 +0000 (UTC)
+	 MIME-Version; b=etiMMC6ZBGQ0W3W6KZrVCtbcWQN46q7BR3kIaP3/ZtVSEcPriWyetUivP2e252UIW//ZgAfjn34H8zEAn1SRIjl4pikeoqfriE77p3CM1nMAxkraWPePAxvpkfrYAG49woXmX7aPaIgQJS5pC/g6X/MFGn5pscpqACxWcVRAEmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJ1DOS7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2083FC2BCB0;
+	Fri, 15 May 2026 16:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861637;
-	bh=H7s0Dys9bGxRKqjncZBEqsfiKyqR1DKJhZZQ6SfPbeI=;
+	s=korg; t=1778862562;
+	bh=FlZ+iMQW+JhOmNMtoIJ9Tf+/vq97jhIcOQm0J/CmBlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xK5K/eZQ5w9CgvhWIn3Q/pGlOp/P50zpmR3+cbWlUVT74gY0QzT3sajXLHegoXwmQ
-	 Xo/5+q5iN4TF5fu5kzFiTjQWFX+tPFrqQkTwXIWn6tKpDvD0YYvcctc6UlfSsbhZ1w
-	 ZI1qWZkAvfP6iHlFqSy+V3CYyEAjhUZs48F/aQl8=
+	b=BJ1DOS7+nT2o//bl0sHx6u0v1fwBRYGBFU0VUzTiv+dSDLbJSlANH2r7GJbIjz5FK
+	 dlTsd4u39uwXJ7uHVsvDTzTdiv2PyGw2KUFwZng6Dz8cLUFbgPwr5wyxrjzh5xIW1y
+	 6veJuYSWF3s0rEohIDBoZYdtoXF1uyHlT/EXrCMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 405/474] crypto: nx - fix bounce buffer leaks in nx842_crypto_{alloc,free}_ctx
-Date: Fri, 15 May 2026 17:48:34 +0200
-Message-ID: <20260515154723.814757052@linuxfoundation.org>
+	Steven King <sfking@fdwdc.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 097/201] spi: coldfire-qspi: fix controller deregistration
+Date: Fri, 15 May 2026 17:48:35 +0200
+Message-ID: <20260515154700.635249913@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 03557553B3A
+X-Rspamd-Queue-Id: 7A5F7554A27
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248399-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248761-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,57 +91,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email,linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fdwdc.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit adb3faf2db1a66d0f015b44ac909a32dfc7f2f9c ]
+commit e7c510e192ff2a1264d999575eea39a506424264 upstream.
 
-The bounce buffers are allocated with __get_free_pages() using
-BOUNCE_BUFFER_ORDER (order 2 = 4 pages), but both the allocation error
-path and nx842_crypto_free_ctx() release the buffers with free_page().
-Use free_pages() with the matching order instead.
+Make sure to deregister the controller before disabling underlying
+resources like clocks (via runtime pm) during driver unbind.
 
-Fixes: ed70b479c2c0 ("crypto: nx - add hardware 842 crypto comp alg")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 34b8c6617366 ("spi: Add Freescale/Motorola Coldfire QSPI driver")
+Cc: stable@vger.kernel.org	# 2.6.34
+Cc: Steven King <sfking@fdwdc.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260409120419.388546-11-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/nx/nx-842.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-coldfire-qspi.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/nx/nx-842.c
-+++ b/drivers/crypto/nx/nx-842.c
-@@ -116,8 +116,8 @@ void *nx842_crypto_alloc_ctx(struct nx84
- 	ctx->dbounce = (u8 *)__get_free_pages(GFP_KERNEL, BOUNCE_BUFFER_ORDER);
- 	if (!ctx->wmem || !ctx->sbounce || !ctx->dbounce) {
- 		kfree(ctx->wmem);
--		free_page((unsigned long)ctx->sbounce);
--		free_page((unsigned long)ctx->dbounce);
-+		free_pages((unsigned long)ctx->sbounce, BOUNCE_BUFFER_ORDER);
-+		free_pages((unsigned long)ctx->dbounce, BOUNCE_BUFFER_ORDER);
- 		kfree(ctx);
- 		return ERR_PTR(-ENOMEM);
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -410,9 +410,9 @@ static int mcfqspi_probe(struct platform
+ 	platform_set_drvdata(pdev, host);
+ 	pm_runtime_enable(&pdev->dev);
+ 
+-	status = devm_spi_register_controller(&pdev->dev, host);
++	status = spi_register_controller(host);
+ 	if (status) {
+-		dev_dbg(&pdev->dev, "devm_spi_register_controller failed\n");
++		dev_dbg(&pdev->dev, "failed to register controller\n");
+ 		goto fail1;
  	}
-@@ -131,8 +131,8 @@ void nx842_crypto_free_ctx(void *p)
- 	struct nx842_crypto_ctx *ctx = p;
  
- 	kfree(ctx->wmem);
--	free_page((unsigned long)ctx->sbounce);
--	free_page((unsigned long)ctx->dbounce);
-+	free_pages((unsigned long)ctx->sbounce, BOUNCE_BUFFER_ORDER);
-+	free_pages((unsigned long)ctx->dbounce, BOUNCE_BUFFER_ORDER);
+@@ -436,11 +436,17 @@ static void mcfqspi_remove(struct platfo
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct mcfqspi *mcfqspi = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	pm_runtime_disable(&pdev->dev);
+ 	/* disable the hardware (set the baud rate to 0) */
+ 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
+ 
+ 	mcfqspi_cs_teardown(mcfqspi);
++
++	spi_controller_put(host);
  }
- EXPORT_SYMBOL_GPL(nx842_crypto_free_ctx);
  
+ #ifdef CONFIG_PM_SLEEP
 
 
 
