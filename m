@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-247658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNU9DIsAB2qVqgIAu9opvQ
-	(envelope-from <stable+bounces-247658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:16:27 +0200
+	id cDyuHVcDB2qVqgIAu9opvQ
+	(envelope-from <stable+bounces-247659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:28:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244CC54E3C5
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:16:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69D954E716
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 08EF7307F0D3
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:00:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30026306F1A1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F7F477E2B;
-	Fri, 15 May 2026 11:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD623426ECB;
+	Fri, 15 May 2026 11:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="PranfsGW"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="Viw9us5C"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126DD477E2A
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 11:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3062844CAE4
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 11:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778842814; cv=none; b=LYPrftMwsagCOC1DSC7rViQ/yMxUlDn+l3ePlZVozJYyLxgPtJCr6NXNW6qExwnXxMLM9wltLRdEW0eYMgtJjov7c2bRb3EFhdVETUkRjXiYMQcBmxUM4sN7pM2V+DxlwWKqjmpVxKfE8F29KW8G+gN+6tq6/4B7fLObfj3IwjM=
+	t=1778843035; cv=none; b=SrAs+8qkA1XSyKARI2AHlrGohZtD4/0l+s0WQlGMCIjzqjEx8y7IAl8NRX4uMy23QMNj6bPhNGIkdI/PB2D551HjJnUESd44a92LjoSJcgVo0eAD1VgZj1dFamhamufxbxDTIOTcECKIeeGMOv9S2RFxhLFgyRvDCZlUQV1i8M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778842814; c=relaxed/simple;
-	bh=f+Wm++RV+40x4CyfFc0/ziuFmhVocDHCKWQFCyrFOjU=;
+	s=arc-20240116; t=1778843035; c=relaxed/simple;
+	bh=24uUEiZQ5P0J0yZKysaWdbHbwOGdnJIhBovnKMIK2BE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4hy/dpPg7yKx+IsGDDkQHtLhhcyiasNiw0dpmn0wlmmxoUHDQnU4PPdu/rzdDymqp9Igrzr7VxgvPIJUv8sRpEgyF1INWXqupmOCU1akF7ch4FMdufARpDDHHnxCLs/xDt/EyUoG2vPJk/vjfZPXKdlYtzfLX8Mzsh+CM7D8yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=PranfsGW; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version; b=GDRS0/6KztEU2DcDL7UL7cIOBeUvAfBUIMCF7NjN0/MkC0cHPJihGaTAZdQuh69CEzhhyK5/aqL36ELtBI7Hm7gXAqJpFw7gk4l0AODVJB5ldoS0Af0wAAGLflvApqvsWZuzASS9BMfUBsr9BtZS48a2BxhnYbBd6u5QkXK2XSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=Viw9us5C; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id B67FA217E2;
-	Fri, 15 May 2026 11:00:09 +0000 (UTC)
+Received: by dvalin.narfation.org (Postfix) id 0E1A021550;
+	Fri, 15 May 2026 11:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1778842809;
+	s=20121; t=1778843032;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bsF852jQIz+Kf1JTnBz7No+eSX67E8tdvQMEZ8w5ETY=;
-	b=PranfsGWNaepbe7dY7U+HpHwjxKZ664BGMIosgsKTsRI1XxlFN8EXj2J7fSgoAF6rJyg5A
-	3zjFgZH0DiRVdLGuOe0rEl6a6bATqqyK9Ivn531Onwotd99Ua8oLBtUoXVLMmP1QaJ3STN
-	GQFABRVThZ/Er1MpUYULz/H00wBr9D0=
+	bh=23YDwNu6NfextoT5rqC5n/QZrxP7yrp9TrFljfbHtA8=;
+	b=Viw9us5CSIP15nw5bDEbzgMhavtXolTzjEg2cwmRoh2NiimiMS0YoEwMuHZzevxPW6nz9w
+	ABv/LWtw8kv/721l8VH+TPjtiF6EEIurOISf/NIKzPDPgDiqh9Olt3Hglj+P2O2JK0aHHq
+	rOFbomCMo2dRCx91COxO4AbxnN9ZCkc=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Jiexun Wang <wangjiexun2025@gmail.com>,
@@ -57,12 +57,12 @@ Cc: Jiexun Wang <wangjiexun2025@gmail.com>,
 	Luxing Yin <tr0jan@lzu.edu.cn>,
 	Ren Wei <n05ec@lzu.edu.cn>,
 	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 5.15.y] batman-adv: stop tp_meter sessions during mesh teardown
-Date: Fri, 15 May 2026 13:00:04 +0200
-Message-ID: <20260515110004.228468-1-sven@narfation.org>
+Subject: [PATCH 6.1.y] batman-adv: stop tp_meter sessions during mesh teardown
+Date: Fri, 15 May 2026 13:03:20 +0200
+Message-ID: <20260515110320.287143-1-sven@narfation.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026051554-unenvied-idly-8137@gregkh>
-References: <2026051554-unenvied-idly-8137@gregkh>
+In-Reply-To: <2026051554-unbutton-gatherer-c472@gregkh>
+References: <2026051554-unbutton-gatherer-c472@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,7 +70,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 244CC54E3C5
+X-Rspamd-Queue-Id: C69D954E716
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
 	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -87,8 +87,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247658-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-247659-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
@@ -98,7 +98,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lzu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email]
 X-Rspamd-Action: no action
 
 From: Jiexun Wang <wangjiexun2025@gmail.com>
@@ -136,7 +136,7 @@ Signed-off-by: Sven Eckelmann <sven@narfation.org>
  4 files changed, 82 insertions(+), 18 deletions(-)
 
 diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
-index 5207cd8d6ad8..04a4638034d2 100644
+index e8a449915566..18b32c39ed4b 100644
 --- a/net/batman-adv/main.c
 +++ b/net/batman-adv/main.c
 @@ -262,6 +262,7 @@ void batadv_mesh_free(struct net_device *soft_iface)
@@ -148,7 +148,7 @@ index 5207cd8d6ad8..04a4638034d2 100644
  	batadv_gw_node_free(bat_priv);
  
 diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 56b9fe97b3b4..4c8c5e4216e5 100644
+index 7f3dd3c393e0..8f7786d33f5f 100644
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
 @@ -12,6 +12,7 @@
@@ -156,9 +156,9 @@ index 56b9fe97b3b4..4c8c5e4216e5 100644
  #include <linux/cache.h>
  #include <linux/compiler.h>
 +#include <linux/completion.h>
+ #include <linux/container_of.h>
  #include <linux/err.h>
  #include <linux/etherdevice.h>
- #include <linux/gfp.h>
 @@ -365,23 +366,38 @@ static void batadv_tp_vars_put(struct batadv_tp_vars *tp_vars)
  }
  
@@ -316,7 +316,7 @@ index f0046d366eac..4e97cd10cd02 100644
  
  #endif /* _NET_BATMAN_ADV_TP_METER_H_ */
 diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index e659623b7a33..1876bdd85c1c 100644
+index 6f30afaabfdf..f5a57c5f7ffa 100644
 --- a/net/batman-adv/types.h
 +++ b/net/batman-adv/types.h
 @@ -14,6 +14,7 @@
