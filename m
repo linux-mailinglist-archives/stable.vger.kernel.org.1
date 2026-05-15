@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-248372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBVaHSFKB2rqwgIAu9opvQ
-	(envelope-from <stable+bounces-248372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:30:25 +0200
+	id OK96FnlNB2rJxQIAu9opvQ
+	(envelope-from <stable+bounces-248583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:44:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3595534B6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F28553D74
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E99AA30E0939
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2FCD5303AEE1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B193F86EC;
-	Fri, 15 May 2026 16:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549303FD978;
+	Fri, 15 May 2026 16:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXrTzUgf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry4E8Nd4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946823F86FB;
-	Fri, 15 May 2026 16:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1855A3CB2D5;
+	Fri, 15 May 2026 16:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861566; cv=none; b=Gabwd0bUHnR914h9Ij4lEhVaSH/mxdnmhnhPqGAiUwbGTIL6okZDDlRcIGBgJNduy7ySoayyU4bnPU15LI/xmJirZC8gHtjEoyhoHpOTTmVTD+QrjbpShhfdwMaHbcpD0/NXuKWvnz4JNvEsLpSBvPUzWFzAerXFYIhdUSom0xA=
+	t=1778862103; cv=none; b=Zw22vG8HbUc91iUHqeTS4Za+t2ESzjj2b8dgOqySMF4XJzMTsTKaD/+uw1uwEi6Vv/nGpgamHsfxkcRPW1JEq60FgiPWueAQsVGY4oV/g3BdxtlVZEh3zZKx/6wUC1MNMemM3Y41buVdJBXanHtwy9nDc36pgOhOPuwmiejX8k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861566; c=relaxed/simple;
-	bh=j2gY0Ruea5mMrl8GYAeMtNFXtT+fMgETABs7jwgLf5g=;
+	s=arc-20240116; t=1778862103; c=relaxed/simple;
+	bh=2/Mu6HYyl/J3MLcmft2szwh91mx6WIwsiZl6bjLHhVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLt9XZvw/mxrAVyEHD9t53ySYpNVZDJI9hauS9NDBwF5Gj0EiDSyydnnHrG8WvMSrNqY873Pfpfenle3jvejy8xRM4eXrTOnqPeGynA9p7yGXiUlel7q6ul7Ni5p932s4UPA0qULfWvsSV0GpnBiouSzrVDjL6w3tB/0N97ywNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXrTzUgf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03558C2BCB0;
-	Fri, 15 May 2026 16:12:45 +0000 (UTC)
+	 MIME-Version; b=ZJqRCd7WOzxFgWf4GVuphRQF8XiuiboRal4sy8ZCDfRRrf7NnspswpGzifzeMtPkGTawOkAgXzmXsb3IkPV8VVgsjBkDCXhPjo58YbEg94CzxEy3YYQ3l1bNQLodxpD6Cr+oZVYecq0JWSHZNRr9L5dNmaHD5pnwFcyihcVCiNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry4E8Nd4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24CAC2BCB0;
+	Fri, 15 May 2026 16:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861566;
-	bh=j2gY0Ruea5mMrl8GYAeMtNFXtT+fMgETABs7jwgLf5g=;
+	s=korg; t=1778862103;
+	bh=2/Mu6HYyl/J3MLcmft2szwh91mx6WIwsiZl6bjLHhVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VXrTzUgfqb9ThbXj+VDyd3JR9R2qEXbqBKJEzdizsfLzwj8BhVoWShkLKwzk9JQmm
-	 SouSYwYjIGqeRc/rwdxinUsry2a+7H1oYLsS+H9iR4hBUdQO+lG8UyIHtRS073+xRo
-	 T/scKAGHKO0lJQ6nD5xeX6fchBIeQ4+WkdpXM2lY=
+	b=ry4E8Nd4lRr2p7CqELPFeUvELu1d89QVXp5bglb8Lt3hse7Ss5rbL4WGVyoOovsz2
+	 puer1P/e5QxkK7Y2QafGJJDxCp+atL7Z45u/WIsbbbiQc2r+qG5B00hjjioGT0DgEj
+	 NzBuZSGBBfTl/4tZ1ErNCZ+amxs8Fw4GqrciyxsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Hodges <git@danielhodges.dev>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 376/474] PCI: epf-mhi: Return 0, not remaining timeout, when eDMA ops complete
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 068/188] spi: omap2-mcspi: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:05 +0200
-Message-ID: <20260515154723.165615347@linuxfoundation.org>
+Message-ID: <20260515154658.792260479@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E3595534B6
+X-Rspamd-Queue-Id: 16F28553D74
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -76,80 +74,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248372-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248583-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Hodges <git@danielhodges.dev>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 36bfc3642b19a98f1302aed4437c331df9b481f0 ]
+commit fb45f95c377e4a4bdece2c5e17643b459c9c13e7 upstream.
 
-pci_epf_mhi_edma_read() and pci_epf_mhi_edma_write() start DMA
-operations and wait for completion with a timeout.
+Make sure to deregister the controller before releasing underlying
+resources like DMA during driver unbind.
 
-On successful completion, they previously returned the remaining
-timeout, which callers may treat as an error.  In particular,
-mhi_ep_ring_add_element(), which calls pci_epf_mhi_edma_write() via
-mhi_cntrl->write_sync(), interprets any non-zero return value as
-failure.
-
-Return 0 on success instead of the remaining timeout to prevent
-mhi_ep_ring_add_element() from treating successful completion as an
-error.
-
-Fixes: 7b99aaaddabb ("PCI: epf-mhi: Add eDMA support")
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-[mani: changed commit log as per https://lore.kernel.org/linux-pci/20260227191510.GA3904799@bhelgaas]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260206200529.10784-1-git@danielhodges.dev
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ccdc7bf92573 ("SPI: omap2_mcspi driver")
+Cc: stable@vger.kernel.org	# 2.6.23
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-6-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-mhi.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-omap2-mcspi.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-@@ -331,6 +331,8 @@ static int pci_epf_mhi_edma_read(struct
- 		dev_err(dev, "DMA transfer timeout\n");
- 		dmaengine_terminate_sync(chan);
- 		ret = -ETIMEDOUT;
-+	} else {
-+		ret = 0;
- 	}
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1585,7 +1585,7 @@ static int omap2_mcspi_probe(struct plat
+ 	if (status < 0)
+ 		goto disable_pm;
  
- err_unmap:
-@@ -402,6 +404,8 @@ static int pci_epf_mhi_edma_write(struct
- 		dev_err(dev, "DMA transfer timeout\n");
- 		dmaengine_terminate_sync(chan);
- 		ret = -ETIMEDOUT;
-+	} else {
-+		ret = 0;
- 	}
+-	status = devm_spi_register_controller(&pdev->dev, ctlr);
++	status = spi_register_controller(ctlr);
+ 	if (status < 0)
+ 		goto disable_pm;
  
- err_unmap:
+@@ -1606,11 +1606,17 @@ static void omap2_mcspi_remove(struct pl
+ 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+ 	struct omap2_mcspi *mcspi = spi_controller_get_devdata(ctlr);
+ 
++	spi_controller_get(ctlr);
++
++	spi_unregister_controller(ctlr);
++
+ 	omap2_mcspi_release_dma(ctlr);
+ 
+ 	pm_runtime_dont_use_autosuspend(mcspi->dev);
+ 	pm_runtime_put_sync(mcspi->dev);
+ 	pm_runtime_disable(&pdev->dev);
++
++	spi_controller_put(ctlr);
+ }
+ 
+ /* work with hotplug and coldplug */
 
 
 
