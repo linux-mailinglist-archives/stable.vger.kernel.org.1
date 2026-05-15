@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iG2oIAFGB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-247978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:12:49 +0200
+	id +JGFIohYB2pmzgIAu9opvQ
+	(envelope-from <stable+bounces-248618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:31:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23639552D5A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:12:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F435552B4
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 32FD03096CFF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:56:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F34E2316E6DD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0835322FF22;
-	Fri, 15 May 2026 15:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228183FD95B;
+	Fri, 15 May 2026 16:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJhHbpNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJJHydZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECAA3FF1DD;
-	Fri, 15 May 2026 15:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D922D3F8713;
+	Fri, 15 May 2026 16:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860557; cv=none; b=CDGOpkIf2jysraylfsK/H61WAWqbOFNzGA7SjINLdLqOlNInvwLJ5gp8BgtBE9PhTCzvtsl4jaucRt0k0QkFmfarDJtLoLWJ8hToY9/IlY+aCf/OEz9Lb+ukqfIYS610tF17BfLiKg+bxvyRJ1+rBaDfp50dZ2GVHTVI4DnDEQw=
+	t=1778862193; cv=none; b=U2g6Dd4i3JtYqxshdiTzgBg/X1V/Pp83Bbk3kyqwEjwlZdLQLUgKb78WVklcAnDinuAyj/WFXdj0rTIT2XNNaUkd34ODUgcNnMG9ZhaGB5KnbnA7onVqJZlUlJaHEmrAK8L5XtO8JgjMjsaKwD5eYFVa5KnZNYVES/f8QShTKaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860557; c=relaxed/simple;
-	bh=8z0K9qK4J4m5YocgvbNNlKvyLYb8PCo+Ynqf54Kq0jE=;
+	s=arc-20240116; t=1778862193; c=relaxed/simple;
+	bh=uor7hN7arLU+QOgVqSJvr7F+bB1L9byvj5d4uL3Jtk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5rb2RTCguhhuim9uv38+lv2EBA7Z6GAQ8uEfP8xaSunYB6mU3M4QSsLZ3wTXEZ08rymxB9bFSGxBJhiZbjC+eQ6nfPbamRFmCm0IZJjBbeSSPeGQK61kKSeOnWeS3BBc4t9hQUFbTpIvnbHpe2yQTg9Vt8qzxSac8TsWUcTPJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJhHbpNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07847C2BCB0;
-	Fri, 15 May 2026 15:55:56 +0000 (UTC)
+	 MIME-Version; b=agvTwDFkeR+86Pfbfs43s0aCNv40l6+QLeRAEtFhacsRSW/fuHbjLzWQ57++KDoNUmK77yoeysi3dxl3o+8Kxctw5VkaX2T1O1kvXzXlWaho7SGhoSFe6J7nKJa2glFaolVwAaETF/uAKL6/jbA46CGQU5qwfb7r85+QK9f7Ykw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJJHydZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E42CC2BCB0;
+	Fri, 15 May 2026 16:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860557;
-	bh=8z0K9qK4J4m5YocgvbNNlKvyLYb8PCo+Ynqf54Kq0jE=;
+	s=korg; t=1778862193;
+	bh=uor7hN7arLU+QOgVqSJvr7F+bB1L9byvj5d4uL3Jtk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJhHbpNIvWCgc+e5l8KyahE/0D0S9cKSAaVnl1cWSsMru6q/aA/CLbjYh6gD/38p0
-	 6AJ2g1GbO4a2RR8uDUrUWipcQfN41Xt2jjCyrpTp2XwzCwxFWsdqU+hVC1BhxRUgHf
-	 IDoBAy+MoIhmW8ZMjjCu6o6wVWi+PcYj5mPXMWWk=
+	b=uJJHydZ1Cmuux6NtiLEFlDGJpeWeLrEnpiafNDNy2AzBOPA+wXGtXf+hdjc0jN7oO
+	 5ctFPSFtgDhbOWgZoI4RNKxWGHjyXpdoSbIfudb2YvpmG8ECxeiKpA7oI6izgvxU4w
+	 /VG4+YvYshSWRh97czrlnae4IUD2+A24XD7IKPKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yochai Eisenrich <echelonh@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 134/144] btrfs: fix btrfs_ioctl_space_info() slot_count TOCTOU which can lead to info-leak
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>
+Subject: [PATCH 6.18 143/188] sched_ext: Use HK_TYPE_DOMAIN_BOOT to detect isolcpus= domain isolation
 Date: Fri, 15 May 2026 17:49:20 +0200
-Message-ID: <20260515154656.625953734@linuxfoundation.org>
+Message-ID: <20260515154700.426346174@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +64,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 23639552D5A
+X-Rspamd-Queue-Id: 09F435552B4
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247978-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248618-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sweet.security:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yochai Eisenrich <yochaie@sweet.security>
+From: Andrea Righi <arighi@nvidia.com>
 
-[ Upstream commit 973e57c726c1f8e77259d1c8e519519f1e9aea77 ]
+commit 6ae315d37924435516d697ea7dde0b799a5928e0 upstream.
 
-btrfs_ioctl_space_info() has a TOCTOU race between two passes over the
-block group RAID type lists. The first pass counts entries to determine
-the allocation size, then the second pass fills the buffer. The
-groups_sem rwlock is released between passes, allowing concurrent block
-group removal to reduce the entry count.
+scx_enable() refuses to attach a BPF scheduler when isolcpus=domain is
+in effect by comparing housekeeping_cpumask(HK_TYPE_DOMAIN) against
+cpu_possible_mask.
 
-When the second pass fills fewer entries than the first pass counted,
-copy_to_user() copies the full alloc_size bytes including trailing
-uninitialized kmalloc bytes to userspace.
+Since commit 27c3a5967f05 ("sched/isolation: Convert housekeeping
+cpumasks to rcu pointers"), HK_TYPE_DOMAIN's cpumask is RCU protected
+and dereferencing it requires either RCU read lock, the cpu_hotplug
+write lock, or the cpuset lock; scx_enable() holds none of these, so
+booting with isolcpus=domain and attaching any BPF scheduler triggers
+the following lockdep splat:
 
-Fix by copying only total_spaces entries (the actually-filled count from
-the second pass) instead of alloc_size bytes, and switch to kzalloc so
-any future copy size mismatch cannot leak heap data.
+  =============================
+  WARNING: suspicious RCU usage
+  -----------------------------
+  kernel/sched/isolation.c:60 suspicious rcu_dereference_check() usage!
 
-Fixes: 7fde62bffb57 ("Btrfs: buffer results in the space_info ioctl")
-CC: stable@vger.kernel.org # 3.0
-Signed-off-by: Yochai Eisenrich <echelonh@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adapted upstream's `return -EFAULT;` to stable's `ret = -EFAULT;` fall-through to existing `out:` cleanup label ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  1 lock held by scx_flash/281:
+   #0: ffffffff8379fce0 (update_mutex){+.+.}-{4:4}, at:
+       bpf_struct_ops_link_create+0x134/0x1c0
+
+  Call Trace:
+   dump_stack_lvl+0x6f/0xb0
+   lockdep_rcu_suspicious.cold+0x37/0x70
+   housekeeping_cpumask+0xcd/0xe0
+   scx_enable.isra.0+0x17/0x120
+   bpf_scx_reg+0x5e/0x80
+   bpf_struct_ops_link_create+0x151/0x1c0
+   __sys_bpf+0x1e4b/0x33c0
+   __x64_sys_bpf+0x21/0x30
+   do_syscall_64+0x117/0xf80
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+In addition, commit 03ff73510169 ("cpuset: Update HK_TYPE_DOMAIN cpumask
+from cpuset") made HK_TYPE_DOMAIN include cpuset isolated partitions as
+well, which means the current check also rejects BPF schedulers when a
+cpuset partition is active. That contradicts the original intent of
+commit 9f391f94a173 ("sched_ext: Disallow loading BPF scheduler if
+isolcpus= domain isolation is in effect"), which explicitly noted that
+cpuset partitions are honored through per-task cpumasks and should not
+be rejected.
+
+Switch to housekeeping_enabled(HK_TYPE_DOMAIN_BOOT), which reads only
+the housekeeping flag bit (no RCU dereference) and reflects exactly the
+boot-time isolcpus= configuration that the error message refers to.
+
+Fixes: 27c3a5967f05 ("sched/isolation: Convert housekeeping cpumasks to rcu pointers")
+Cc: stable@vger.kernel.org # v7.0+
+Signed-off-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ioctl.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/sched/ext.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -3113,7 +3113,7 @@ static long btrfs_ioctl_space_info(struc
- 		return -ENOMEM;
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4906,8 +4906,7 @@ static int scx_enable(struct sched_ext_o
+ 	static DEFINE_MUTEX(helper_mutex);
+ 	struct scx_enable_cmd cmd;
  
- 	space_args.total_spaces = 0;
--	dest = kmalloc(alloc_size, GFP_KERNEL);
-+	dest = kzalloc(alloc_size, GFP_KERNEL);
- 	if (!dest)
- 		return -ENOMEM;
- 	dest_orig = dest;
-@@ -3169,7 +3169,8 @@ static long btrfs_ioctl_space_info(struc
- 	user_dest = (struct btrfs_ioctl_space_info __user *)
- 		(arg + sizeof(struct btrfs_ioctl_space_args));
- 
--	if (copy_to_user(user_dest, dest_orig, alloc_size))
-+	if (copy_to_user(user_dest, dest_orig,
-+		 space_args.total_spaces * sizeof(*dest_orig)))
- 		ret = -EFAULT;
- 
- 	kfree(dest_orig);
+-	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
+-			   cpu_possible_mask)) {
++	if (housekeeping_enabled(HK_TYPE_DOMAIN_BOOT)) {
+ 		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
+ 		return -EINVAL;
+ 	}
 
 
 
