@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-248072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AC5QIqtGB2p6wAIAu9opvQ
-	(envelope-from <stable+bounces-248072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:15:39 +0200
+	id +DVUCr5HB2qrwQIAu9opvQ
+	(envelope-from <stable+bounces-248074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:20:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E8E552E3C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:15:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E0A5530A2
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:20:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 58A8E308E413
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:59:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E6CB3307F8BF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061D22DEA64;
-	Fri, 15 May 2026 15:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BCC43FF1DD;
+	Fri, 15 May 2026 16:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJTby/k4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atVX0aCO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD82817C220;
-	Fri, 15 May 2026 15:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F370630569A;
+	Fri, 15 May 2026 16:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860797; cv=none; b=fJeE/FAeTvyKJYuQ1bl3u193qwtK20Mbyiz4jW6CBZKojsNUIdTeMUMnqTITdkjO1HtWbqchiKVTLrAgZj6y/CfNu0nEWHWOY4Q6EWZF/0bpE5zPWMOFMjBtHKL9OarMvYIbIpb6hWSvJ6DSNSkDkuJBptUhjHTHL6kbtY6IbQA=
+	t=1778860803; cv=none; b=OZYJ/uH66ymIblhhWv1MaxV9G2OlzTD41+b/lY8JCgdd8Yj5M1Npea8QOyLEVylesw6JC3iVi2LxPbVIzXdDWuVfKE38pb9zNDYoCzC5gLExXqKcl1b5+LLNTTjSY/r5eQlQaHWCtO9EMe4AtHgGq47Rnft3p+iRcwHTO36IJg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860797; c=relaxed/simple;
-	bh=fcEm6mKRfgBCSZrC92C4Qjfy64KKRgHYkb6tjaPPVDI=;
+	s=arc-20240116; t=1778860803; c=relaxed/simple;
+	bh=zrREpSnPOSBz510rN+bfyehzlBJwHUszH/tuNS3P4yY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGGvzQUAfn6YAN5vRdH18P0XMAwLuoy0jxXOzefiHO+mjuJvGrSOXfhZu58BaM/8spRTfW0tZeIZBUjLJ5dng/VgPtQa+EY1+zppUrV2YdxnqW089wv4U4b1Xf8JT6Pv94FB9N7wB7V1mpDCw2EuacXfOojuAF7fKUuWWB11TGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJTby/k4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5240DC2BCB0;
-	Fri, 15 May 2026 15:59:57 +0000 (UTC)
+	 MIME-Version; b=JvcDcJVXaGAXZ85C/dNngNhmWHXDp4i2wMYuceZ0QfwSaTgeyiyAOhpIY60rqefDwg6uSvaCEE/EubhkOb4dakKkH1lUPqwzZ1NdTb9lIFYStr03wIzeeLwHGIGkqQLRRQcP8W4uHbWjyKVX5rMjQ+PFEXH8MRNHgitOt6yDgaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atVX0aCO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C43C2BCB3;
+	Fri, 15 May 2026 16:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860797;
-	bh=fcEm6mKRfgBCSZrC92C4Qjfy64KKRgHYkb6tjaPPVDI=;
+	s=korg; t=1778860802;
+	bh=zrREpSnPOSBz510rN+bfyehzlBJwHUszH/tuNS3P4yY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJTby/k4lH0Zzi+7U78Ww9DZF+oJXEcjP3S1QIjTFFle0Uze77qYA+9SkmbLinPWs
-	 THTtTKoEhWYrFeA7Jcl2ljLVfj1OIzHw+62lv58phRsf8T2sDFVtxdp45ggww+2EfA
-	 I9PGj/lQYuNIjEqeHOsNExZlXDgBxICTBLxtDQUI=
+	b=atVX0aCOkzavk2HpQDB2Q0hAj7N6/ppdHIrppbf4L5bc5Wt3Q30d6OEC3UKVL7FIR
+	 cxQZCgnQ20rpe6vf5/CyE7Ip/uP6Z3UKki2wIYYzg73NEPmacHhH3kk2PyNx5or+bA
+	 ifdgapaz47ZaA1l5EZJxdU5o7qZWjRwW3PuktvWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Bin Liu <b-liu@ti.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 084/474] mmc: block: use single block write in retry
-Date: Fri, 15 May 2026 17:43:13 +0200
-Message-ID: <20260515154716.856059375@linuxfoundation.org>
+Subject: [PATCH 6.6 085/474] mmc: sdhci-of-dwcmshc: Disable clock before DLL configuration
+Date: Fri, 15 May 2026 17:43:14 +0200
+Message-ID: <20260515154716.877679896@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F2E8E552E3C
+X-Rspamd-Queue-Id: 07E0A5530A2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,112 +80,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248072-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248074-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,ti.com:email,ti.com:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernel.dk:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,linaro.org:email,rock-chips.com:email]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bin Liu <b-liu@ti.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-commit c7c6d4f5103864f73ee3a78bfd6da241f84197dd upstream.
+commit 6546a49bbe656981d99a389195560999058c89c4 upstream.
 
-Due to errata i2493[0], multi-block write would still fail in retries.
+According to the ASIC design recommendations, the clock must be
+disabled before operating the DLL to prevent glitches that could
+affect the internal digital logic. In extreme cases, failing to
+do so may cause the controller to malfunction completely.
 
-With i2493, the MMC interface has the potential of write failures when
-issuing multi-block writes operating in HS200 mode with excessive IO
-supply noise.
+Adds a step to disable the clock before DLL configuration and
+re-enables it at the end.
 
-While the errata provides guidance in hardware design and layout to
-minimize the IO supply noise, in theory the write failure cannot be
-resolved in hardware. The software solution to ensure the data integrity
-is to add minimum 5us delay between block writes. Single-block write is
-the practical way to introduce the delay.
-
-This patch reuses recovery_mode flag, and switches to single-block
-write in retry when multi-block write fails. It covers both CQE and
-non-CQE cases.
-
-[0] https://www.ti.com/lit/pdf/sprz582
+Fixes: 08f3dff799d4 ("mmc: sdhci-of-dwcmshc: add rockchip platform support")
 Cc: stable@vger.kernel.org
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bin Liu <b-liu@ti.com>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/block.c |   12 ++++++++++--
- drivers/mmc/core/queue.h |    3 +++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-of-dwcmshc.c |   19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1378,6 +1378,9 @@ static void mmc_blk_data_prep(struct mmc
- 		    rq_data_dir(req) == WRITE &&
- 		    (md->flags & MMC_BLK_REL_WR);
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -243,12 +243,15 @@ static void dwcmshc_rk3568_set_clock(str
+ 	extra &= ~BIT(0);
+ 	sdhci_writel(host, extra, reg);
  
-+	if (mqrq->flags & MQRQ_XFER_SINGLE_BLOCK)
-+		recovery_mode = 1;
++	/* Disable clock while config DLL */
++	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
 +
- 	memset(brq, 0, sizeof(struct mmc_blk_request));
+ 	if (clock <= 52000000) {
+ 		if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
+ 		    host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
+ 			dev_err(mmc_dev(host->mmc),
+ 				"Can't reduce the clock below 52MHz in HS200/HS400 mode");
+-			return;
++			goto enable_clk;
+ 		}
  
- 	mmc_crypto_prepare_req(mqrq);
-@@ -1517,10 +1520,13 @@ static void mmc_blk_cqe_complete_rq(stru
- 		err = 0;
+ 		/*
+@@ -268,7 +271,7 @@ static void dwcmshc_rk3568_set_clock(str
+ 			DLL_STRBIN_DELAY_NUM_SEL |
+ 			DLL_STRBIN_DELAY_NUM_DEFAULT << DLL_STRBIN_DELAY_NUM_OFFSET;
+ 		sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
+-		return;
++		goto enable_clk;
+ 	}
  
+ 	/* Reset DLL */
+@@ -295,7 +298,7 @@ static void dwcmshc_rk3568_set_clock(str
+ 				 500 * USEC_PER_MSEC);
  	if (err) {
--		if (mqrq->retries++ < MMC_CQE_RETRIES)
-+		if (mqrq->retries++ < MMC_CQE_RETRIES) {
-+			if (rq_data_dir(req) == WRITE)
-+				mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
- 			blk_mq_requeue_request(req, true);
--		else
-+		} else {
- 			blk_mq_end_request(req, BLK_STS_IOERR);
-+		}
- 	} else if (mrq->data) {
- 		if (blk_update_request(req, BLK_STS_OK, mrq->data->bytes_xfered))
- 			blk_mq_requeue_request(req, true);
-@@ -2058,6 +2064,8 @@ static void mmc_blk_mq_complete_rq(struc
- 	} else if (!blk_rq_bytes(req)) {
- 		__blk_mq_end_request(req, BLK_STS_IOERR);
- 	} else if (mqrq->retries++ < MMC_MAX_RETRIES) {
-+		if (rq_data_dir(req) == WRITE)
-+			mqrq->flags |= MQRQ_XFER_SINGLE_BLOCK;
- 		blk_mq_requeue_request(req, true);
- 	} else {
- 		if (mmc_card_removed(mq->card))
---- a/drivers/mmc/core/queue.h
-+++ b/drivers/mmc/core/queue.h
-@@ -61,6 +61,8 @@ enum mmc_drv_op {
- 	MMC_DRV_OP_GET_EXT_CSD,
- };
+ 		dev_err(mmc_dev(host->mmc), "DLL lock timeout!\n");
+-		return;
++		goto enable_clk;
+ 	}
  
-+#define	MQRQ_XFER_SINGLE_BLOCK		BIT(0)
+ 	extra = 0x1 << 16 | /* tune clock stop en */
+@@ -328,6 +331,16 @@ static void dwcmshc_rk3568_set_clock(str
+ 		DLL_STRBIN_TAPNUM_DEFAULT |
+ 		DLL_STRBIN_TAPNUM_FROM_SW;
+ 	sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
 +
- struct mmc_queue_req {
- 	struct mmc_blk_request	brq;
- 	struct scatterlist	*sg;
-@@ -69,6 +71,7 @@ struct mmc_queue_req {
- 	void			*drv_op_data;
- 	unsigned int		ioc_count;
- 	int			retries;
-+	u32			flags;
- };
++enable_clk:
++	/*
++	 * The sdclk frequency select bits in SDHCI_CLOCK_CONTROL are not functional
++	 * on Rockchip's SDHCI implementation. Instead, the clock frequency is fully
++	 * controlled via external clk provider by calling clk_set_rate(). Consequently,
++	 * passing 0 to sdhci_enable_clk() only re-enables the already-configured clock,
++	 * which matches the hardware's actual behavior.
++	 */
++	sdhci_enable_clk(host, 0);
+ }
  
- struct mmc_queue {
+ static void rk35xx_sdhci_reset(struct sdhci_host *host, u8 mask)
 
 
 
