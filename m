@@ -1,188 +1,227 @@
-Return-Path: <stable+bounces-248902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248903-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPt7O811B2pL4QIAu9opvQ
-	(envelope-from <stable+bounces-248902-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:36:45 +0200
+	id aKHzAo55B2oJ5AIAu9opvQ
+	(envelope-from <stable+bounces-248903-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:52:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC61556F30
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:36:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFC4557224
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 35DA130606B9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 51CC830419C8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB1B413D67;
-	Fri, 15 May 2026 19:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4428D384CF3;
+	Fri, 15 May 2026 19:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="0VoWPyXr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qkPUbcm8"
 X-Original-To: stable@vger.kernel.org
-Received: from ixit.cz (ixit.cz [185.100.197.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB20413D61;
-	Fri, 15 May 2026 19:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61953806BE;
+	Fri, 15 May 2026 19:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778873335; cv=none; b=ske7Lr3oYzS5G+xMJdbOs8m6u7Y6mS1vu9xdybCjUpbrTgdRavYHWhiYxm/QS0tCEzYJ5qPsyossFRAOWu6KiOoXqIWEjK/3brO3nTaqWV94/Ptwd3EY9bx1pI+U5hjYEh2m3ya4qB+csmpIbYTUo73xOdTJ6OqbCrFzDSUnnWw=
+	t=1778874007; cv=none; b=Ap704TyjAeD3egosiQZInkzfSgA/Jr8dlPiuwHDhfeg7VT6UDoV2RY9nnDQg5hrISxN84Z8voGXRYaEPcvr2J2noyK8L1nn1+ChTavsh55TdnloYHkmPMdgZlxRVBtyaWy9cczTDygsgPlWUI6l6aDDVtwetSbsMryUt3wG7HH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778873335; c=relaxed/simple;
-	bh=w2f3ChhxMh++6hMqqVCOdUz1fuyi6OQYr/0d4UjTDQo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GenHmmj4Vw7GSYjcLRCAy6nubCGSrJcyBpX0xW9IU3Q9j8VD1nIcUeuUg3PFs+fTJyK/4KSoVnh3cHuWKkfeXduxpDiza3avXZNvO+rpEc9kpAVHSUteQIEhjM9V4j9u5uSl/3d078QsmrruNXnPihYIsyICt02WdEYjxDIpvBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=0VoWPyXr; arc=none smtp.client-ip=185.100.197.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
-Received: from [10.0.0.200] (unknown [10.88.125.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 2760E5341512;
-	Fri, 15 May 2026 21:28:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1778873324;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UGN7OPUNLPy+4nGfmDZ8SvvzbakzohHHAfIWGxDkA8M=;
-	b=0VoWPyXrxsa6MKmmP9LMQOzUBiOdq4uoSDhWNw00dKiZtJPq9fwVl2clR/WuREUaci6yL3
-	tVVmfWkKHhWItsLHlbO8J64r0rBkz890BfMCzakYirmqzgDC6MiBWQfau3mKtITtSkfsV9
-	3BrdFGWan0Law2+t/PlglddbW67zUZs=
-Message-ID: <366cef36-d3cb-485f-a71a-dea347e8531b@ixit.cz>
-Date: Fri, 15 May 2026 21:28:43 +0200
+	s=arc-20240116; t=1778874007; c=relaxed/simple;
+	bh=3yyQkYdxChwarAweftCvJrPicHgtEMSdTY4CgyHFHQ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NjJenMvGfmhFKd10u7hiXCBAhLsm2X33vd4Pa+NNq+e1i89eDpTaGuqNXkXt5mxLQw4Wmw3O/5huaGHiA1dGxtxDthP/EJb7zEbrghdcww2G6ReEe1fGKiZh4i1U9X2W0TEZbfw1CO1jtmTTN2QAaiK5MB/OFu3b2eYc7Z9SXAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qkPUbcm8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4EBC2BCB3;
+	Fri, 15 May 2026 19:40:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778874006;
+	bh=3yyQkYdxChwarAweftCvJrPicHgtEMSdTY4CgyHFHQ0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qkPUbcm8VX6YlsCEuEPuJrnYm9SbKuyFOtePI+sU8nRJRhOpok/mJB1eLpXLAQdEt
+	 jJog4xlA8nxDF0OlC+YML7KHZVAFB2QwcTEE671syL5xPhEP7O6nYh7WWjely9B9zf
+	 +c4a9GATU5oaP8k+gzAh0wGrpYnB/CcpNydmOhX353a97eP7o16Fvv+kpD0Y33v32y
+	 c5fZskya4WtVGUOF9KVfzXFDlYWgSpzupIsgr5CIbUNsRgKGrLD6PfOyXL6ldxTIb9
+	 8w1Uo91Bfhrexx54X2rzou0gZODnS86I+a+tiD6nfpaQLfsWH16/RsNljP3ESb5yjX
+	 WLuPE3BOIQMKA==
+Date: Sat, 16 May 2026 04:40:01 +0900
+From: Nathan Chancellor <nathan@kernel.org>
+To: Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] Disable -Wattribute-alias for clang-23 and newer
+Message-ID: <20260515194001.GA3434682@ax162>
+References: <20260515-syscall-disable-attribute-alias-for-clang-v1-1-9a9d95d41df6@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "nfc: nxp-nci: remove interrupt trigger type"
-To: Carl Lee <carl.lee@amd.com>
-Cc: oe-linux-nfc@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, brgl@kernel.org, Sasha Levin <sashal@kernel.org>,
- Ian Ray <ian.ray@gehealthcare.com>,
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Jakub Kicinski <kuba@kernel.org>
-References: <20260511082611.12721-1-bartosz.golaszewski@oss.qualcomm.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260511082611.12721-1-bartosz.golaszewski@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8FC61556F30
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260515-syscall-disable-attribute-alias-for-clang-v1-1-9a9d95d41df6@kernel.org>
+X-Rspamd-Queue-Id: EAFC4557224
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ixit.cz,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[ixit.cz:s=dkim];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248902-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248903-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ixit.cz:+];
+	FREEMAIL_TO(0.00)[google.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@ixit.cz,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,lkml];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ixit.cz:mid,ixit.cz:dkim,qualcomm.com:email]
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-Hello Carl,
-
-do you see any better solution than just reverting it? In case no, I'll accept 
-the revert.
-
-David
-
-On 11/05/2026 10:26, Bartosz Golaszewski wrote:
-> This commit causes an infinite interrupt storm on Lenovo T14s (at least
-> the AMD Ryzen 7 variant) which requires blacklisting of this driver.
-> Neither firmware updates nor the proposed solution[1] seem to help. This
-> reverts the change due to an unfixed regression. The problem is present
-> since v6.19.6 stable kernel.
+On Fri, May 15, 2026 at 07:35:18PM +0900, Nathan Chancellor wrote:
+> Clang recently added support for -Wattribute-alias [1], which results in
+> the same warnings that necessitated commit bee20031772a ("disable
+> -Wattribute-alias warning for SYSCALL_DEFINEx()") for GCC.
 > 
-> [1] https://lore.kernel.org/all/20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com/
+>   kernel/time/itimer.c:325:1: error: alias and aliasee have different types 'long (unsigned int)' and 'long (typeof (__builtin_choose_expr((__builtin_types_compatible_p(typeof ((unsigned int)0), typeof (0LL)) || __builtin_types_compatible_p(typeof ((unsigned int)0), typeof (0ULL))), 0LL, 0L)))' (aka 'long (long)') [-Werror,-Wattribute-alias]
+>     325 | SYSCALL_DEFINE1(alarm, unsigned int, seconds)
+>         | ^
+>   include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
+>     225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+>         |                                    ^
+>   include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
+>     236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+>         |         ^
+>   include/linux/syscalls.h:251:18: note: expanded from macro '__SYSCALL_DEFINEx'
+>     251 |                 __attribute__((alias(__stringify(__se_sys##name))));    \
+>         |                                ^
+>   kernel/time/itimer.c:325:1: note: aliasee is declared here
+>   include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
+>     225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
+>         |                                    ^
+>   include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
+>     236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
+>         |         ^
+>   include/linux/syscalls.h:255:18: note: expanded from macro '__SYSCALL_DEFINEx'
+>     255 |         asmlinkage long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__))  \
+>         |                         ^
+>   <scratch space>:16:1: note: expanded from here
+>      16 | __se_sys_alarm
+>         | ^
 > 
-> Cc: stable@vger.kernel.org # v6.19, v7.0
-> Fixes: 941270962861 ("nfc: nxp-nci: remove interrupt trigger type")
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> Disable the warnings in the same way for clang-23 and newer.
+> 
+> Cc: stable@vger.kernel.org
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2163
+> Link: https://github.com/llvm/llvm-project/commit/40da6920a0d71d49dfa2392b09153600b0759f5e [1]
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 > ---
->   drivers/nfc/nxp-nci/i2c.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> I plan to take this via my clang-fixes tree for 7.1.
+> ---
+>  arch/riscv/include/asm/syscall_wrapper.h | 2 ++
+>  include/linux/compat.h                   | 2 ++
+>  include/linux/compiler-clang.h           | 6 ++++++
+>  include/linux/syscalls.h                 | 2 ++
+>  4 files changed, 12 insertions(+)
 > 
-> diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
-> index b3d34433bd14..e99e1f381028 100644
-> --- a/drivers/nfc/nxp-nci/i2c.c
-> +++ b/drivers/nfc/nxp-nci/i2c.c
-> @@ -305,7 +305,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
->   
->   	r = request_threaded_irq(client->irq, NULL,
->   				 nxp_nci_i2c_irq_thread_fn,
-> -				 IRQF_ONESHOT,
-> +				 IRQF_TRIGGER_RISING | IRQF_ONESHOT,
->   				 NXP_NCI_I2C_DRIVER_NAME, phy);
->   	if (r < 0)
->   		nfc_err(&client->dev, "Unable to register IRQ handler\n");
+> diff --git a/arch/riscv/include/asm/syscall_wrapper.h b/arch/riscv/include/asm/syscall_wrapper.h
+> index ac80216549ff..366a5354caa5 100644
+> --- a/arch/riscv/include/asm/syscall_wrapper.h
+> +++ b/arch/riscv/include/asm/syscall_wrapper.h
+> @@ -32,6 +32,8 @@ asmlinkage long __riscv_sys_ni_syscall(const struct pt_regs *);
+>  	__diag_push();									\
+>  	__diag_ignore(GCC, 8, "-Wattribute-alias",					\
+>  			"Type aliasing is used to sanitize syscall arguments");		\
+> +	__diag_ignore(clang, 23, "-Wattribute-alias",					\
+> +			"Type aliasing is used to sanitize syscall arguments");		\
+>  	static long __se_##prefix##name(ulong, ulong, ulong, ulong, ulong, ulong, 	\
+>  					ulong)						\
+>  			__attribute__((alias(__stringify(___se_##prefix##name))));	\
+> diff --git a/include/linux/compat.h b/include/linux/compat.h
+> index 56cebaff0c91..a1ce6d559db9 100644
+> --- a/include/linux/compat.h
+> +++ b/include/linux/compat.h
+> @@ -72,6 +72,8 @@
+>  	__diag_push();								\
+>  	__diag_ignore(GCC, 8, "-Wattribute-alias",				\
+>  		      "Type aliasing is used to sanitize syscall arguments");\
+> +	__diag_ignore(clang, 23, "-Wattribute-alias",				\
+> +		      "Type aliasing is used to sanitize syscall arguments");\
+>  	asmlinkage long compat_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))	\
+>  		__attribute__((alias(__stringify(__se_compat_sys##name))));	\
+>  	ALLOW_ERROR_INJECTION(compat_sys##name, ERRNO);				\
+> diff --git a/include/linux/compiler-clang.h b/include/linux/compiler-clang.h
+> index e1123dd28486..527e4e136020 100644
+> --- a/include/linux/compiler-clang.h
+> +++ b/include/linux/compiler-clang.h
+> @@ -131,6 +131,12 @@
+>  #define __diag_str(s)		__diag_str1(s)
+>  #define __diag(s)		_Pragma(__diag_str(clang diagnostic s))
+>  
+> +#if CONFIG_CLANG_VERSION >= 230000
+> +#define __diag_clang_23(s)	__diag(s)
+> +#else
+> +#define __diag_clang_23(s)
+> +#endif
+> +
+>  #define __diag_clang_13(s)	__diag(s)
+>  
+>  #define __diag_ignore_all(option, comment) \
+> diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+> index f5639d5ac331..97e3411b49d2 100644
+> --- a/include/linux/syscalls.h
+> +++ b/include/linux/syscalls.h
+> @@ -247,6 +247,8 @@ static inline int is_syscall_trace_event(struct trace_event_call *tp_event)
+>  	__diag_push();							\
+>  	__diag_ignore(GCC, 8, "-Wattribute-alias",			\
+>  		      "Type aliasing is used to sanitize syscall arguments");\
+> +	__diag_ignore(clang, 23, "-Wattribute-alias",			\
+> +		      "Type aliasing is used to sanitize syscall arguments");\
+>  	asmlinkage long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))	\
+>  		__attribute__((alias(__stringify(__se_sys##name))));	\
+>  	ALLOW_ERROR_INJECTION(sys##name, ERRNO);			\
+
+The kbuild test robot pointed out that I need
+
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index e8fd77593b68..369966598a2c 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -711,6 +711,10 @@ struct ftrace_likely_data {
+ #define __diag_GCC(version, severity, string)
+ #endif
+ 
++#ifndef __diag_clang
++#define __diag_clang(version, severity, string)
++#endif
++
+ #define __diag_push()	__diag(push)
+ #define __diag_pop()	__diag(pop)
+ 
+--
+
+for this to build properly with GCC, which I will fold in.
 
 -- 
-David Heidelberg
-
+Cheers,
+Nathan
 
