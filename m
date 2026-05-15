@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-248785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HL9JWdaB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:39:51 +0200
+	id SI6AF1FYB2pmzgIAu9opvQ
+	(envelope-from <stable+bounces-248594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:30:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0337555649
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D12D355523C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFBB93146013
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE93732EB7DF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2963CBE77;
-	Fri, 15 May 2026 16:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88B23E0097;
+	Fri, 15 May 2026 16:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mp5NQhRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkMwutn/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A66344D8C;
-	Fri, 15 May 2026 16:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A934336CDFD;
+	Fri, 15 May 2026 16:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862625; cv=none; b=LVEqEVmTrGOpDWvtU2/0KoRXKSFBjzuuBwFl4TE+DZrwtl8hILDWZ3RpZwZxg3xci7jCKcV4lLaVsfsvIdsx3LYDCwfjdKVunx2Ak77DSqSLqffXGGtvKc3kTlA3KvAVIb4S3Es0/rtmC1F52/aWyGGNCCr6zjanYAp3PhOzljE=
+	t=1778862131; cv=none; b=H9v0Jqd83ko8XGBEjaLiDcit1N2wV/kWlfMH/Ct4t4K0Dw+IbOi7e3et/QUmqVqssTkwmDo52CVIAB4VMDlCUGgQMepRbLVnop7mTvuYsOGDJQ9V4x1wm48miElghJmnYEuLHqETY+cYsg2nCB5GSl2LtMF4PHyic9J8aJ+tuTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862625; c=relaxed/simple;
-	bh=rajBEbBnqXsNbh8BJNr+becq5dNaFzWmtnsP03wEiuQ=;
+	s=arc-20240116; t=1778862131; c=relaxed/simple;
+	bh=sAv8A67sGUXhuVjorm+m0j7b4usgzAd0lkP9v1QcjG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbGmVSP77cQp8wo5Us+7+hoCA6vYZdTShYRzTcEFLglImfW/95G1kXCP6xef9y8sqtDTnhnY0KHcc9g627guJm5YjCNSDLuf9mTcbvVwrT6+1CMlNJF+/CP6/8pIDZwxPjd4cte9v10CCyfB8X2Vi4h0EH/1SwHcLq3RO4EiXfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mp5NQhRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700B3C2BCF5;
-	Fri, 15 May 2026 16:30:24 +0000 (UTC)
+	 MIME-Version; b=Rppq15lZQEje21Kytu9/smgxRJvckAmrjiNrpL2Jt1hq9AxiSPvC11yJKH9gRETv2iP6jNlEeYilQX6GDe8soNPNbpF8WFrQlk+9S5XqLSQIZ/vJypFKWf9t0HVK069wvYw6/EXqvrNUSvVIwprwaJVUB/x2u278scas/beAb5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkMwutn/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCE0C2BCB0;
+	Fri, 15 May 2026 16:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862624;
-	bh=rajBEbBnqXsNbh8BJNr+becq5dNaFzWmtnsP03wEiuQ=;
+	s=korg; t=1778862131;
+	bh=sAv8A67sGUXhuVjorm+m0j7b4usgzAd0lkP9v1QcjG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mp5NQhRpJ+WPH/mKW1V+HgO1/PkUn8emLu0yRRWIEwIGwn2fnHfRXFTwWKynyt+dM
-	 s535pvFNQ048RPV2D/0LqpxgsJ/xHV/sCnkuw6Jn+rLkfI2pYcPRIJaNhouaLSrhJA
-	 C+Ji6pRBuLEYa63ycKIu6Ny2jYeIeCsj0xAnKLrI=
+	b=OkMwutn/0/MQphItrg9Bfk1ms9wVO43knBW5nNgwRhyj1PeOuPdO3gResnHGFSlpn
+	 WnqiCcyB2nfzyUYd+lNIzqn3Kr2TYZp9ETRzGKKbq3nI0kOltkPYFTW3+UvImGRB6p
+	 ubnSLCIePqrTE0t9v2UMKD2fmsGXVb2MPKGXqeDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 119/201] spi: cadence: fix clock imbalance on probe failure
-Date: Fri, 15 May 2026 17:48:57 +0200
-Message-ID: <20260515154701.135622485@linuxfoundation.org>
+	David Francis <David.Francis@amd.com>,
+	Puttimet Thammasaeng <pwn8official@gmail.com>,
+	Vitaly Prosyak <Vitaly.Prosyak@amd.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Christian Koenig <Christian.Koenig@amd.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Dave Airlie <airlied@gmail.com>
+Subject: [PATCH 6.18 121/188] drm: Set old handle to NULL before prime swap in change_handle
+Date: Fri, 15 May 2026 17:48:58 +0200
+Message-ID: <20260515154659.955129627@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +68,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E0337555649
+X-Rspamd-Queue-Id: D12D355523C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -75,80 +79,119 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,ffwll.ch,redhat.com];
+	TAGGED_FROM(0.00)[bounces-248594-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248785-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xilinx.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Francis, David <David.Francis@amd.com>
 
-commit ecea4f0e9db2fb6ab4a68a59c5aba0d8f59a9566 upstream.
+commit 5e28b7b94408897e41c63477aabc9e1db439bc8c upstream.
 
-Make sure that the controller is active before disabling clocks on probe
-failure to avoid unbalanced clock disable.
+There was a potential race condition in change_handle. The ioctl
+briefly had a single object with two idr entries; a concurrent
+gem_close could delete the object and remove one of the handles
+while leaving the other one dangling, which could subsequently
+be dereferenced for a use-after-free.
 
-Also drop the usage count before returning (so that the controller can
-be suspended after a probe deferral) and restore the autosuspend
-setting.
+To fix this, do the same dance that gem_close itself does.
+(f6cd7daecff5 drm: Release driver references to handle before making it available again)
+First idr_replace the old handle to NULL. Later, if the prime
+operations are successful, actually close it.
 
-Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
-Cc: stable@vger.kernel.org	# 4.7
-Cc: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260421123615.1533617-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+create_tail required a similar dance to avoid a similar problem.
+(bd46cece51a3 drm/gem: Fix race in drm_gem_handle_create_tail())
+It idr_allocs the new handle with NULL, then swaps in the correct
+object later to avoid races. We don't need to do that here, since
+the only operations that could race are drm_prime, and
+change_handle holds the prime lock for the entire duration.
+
+v2: cleanups of error paths
+
+Signed-off-by: David Francis <David.Francis@amd.com>
+Co-authored-by: Dave Airlie <airlied@gmail.com>
+Reported-by: Puttimet Thammasaeng <pwn8official@gmail.com>
+Tested-by: Vitaly Prosyak <Vitaly.Prosyak@amd.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: stable@vger.kernel.org
+Cc: Christian Koenig <Christian.Koenig@amd.com>
+Fixes: 53096728b8910 ("drm: Add DRM prime interface to reassign GEM handle")
+Signed-off-by: Dave Airlie <airlied@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_gem.c |   25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -741,7 +741,6 @@ static int cdns_spi_probe(struct platfor
- 		/* Set to default valid value */
- 		ctlr->max_speed_hz = xspi->clk_rate / 4;
- 		xspi->speed_hz = ctlr->max_speed_hz;
--		pm_runtime_put_autosuspend(&pdev->dev);
- 	} else {
- 		ctlr->mode_bits |= SPI_NO_CS;
- 		ctlr->target_abort = cdns_target_abort;
-@@ -752,12 +751,17 @@ static int cdns_spi_probe(struct platfor
- 		goto clk_dis_all;
- 	}
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -969,7 +969,7 @@ int drm_gem_change_handle_ioctl(struct d
+ 				struct drm_file *file_priv)
+ {
+ 	struct drm_gem_change_handle *args = data;
+-	struct drm_gem_object *obj;
++	struct drm_gem_object *obj, *idrobj;
+ 	int handle, ret;
  
-+	if (!spi_controller_is_target(ctlr))
-+		pm_runtime_put_autosuspend(&pdev->dev);
+ 	if (!drm_core_check_feature(dev, DRIVER_GEM))
+@@ -992,8 +992,29 @@ int drm_gem_change_handle_ioctl(struct d
+ 	mutex_lock(&file_priv->prime.lock);
+ 
+ 	spin_lock(&file_priv->table_lock);
 +
- 	return ret;
++       /* When create_tail allocs an obj idr, it needs to first alloc as NULL,
++	* then later replace with the correct object. This is not necessary
++	* here, because the only operations that could race are drm_prime
++	* bookkeeping, and we hold the prime lock.
++	*/
+ 	ret = idr_alloc(&file_priv->object_idr, obj, handle, handle + 1,
+ 			GFP_NOWAIT);
++
++       if (ret < 0) {
++	       spin_unlock(&file_priv->table_lock);
++	       goto out_unlock;
++       }
++
++       idrobj = idr_replace(&file_priv->object_idr, NULL, handle);
++       if (idrobj != obj) {
++	       idr_replace(&file_priv->object_idr, idrobj, handle);
++	       idr_remove(&file_priv->object_idr, args->new_handle);
++	       spin_unlock(&file_priv->table_lock);
++	       ret = -ENOENT;
++	       goto out_unlock;
++       }
++
+ 	spin_unlock(&file_priv->table_lock);
  
- clk_dis_all:
- 	if (!spi_controller_is_target(ctlr)) {
- 		pm_runtime_disable(&pdev->dev);
- 		pm_runtime_set_suspended(&pdev->dev);
-+		pm_runtime_put_noidle(&pdev->dev);
-+		pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	}
- remove_ctlr:
- 	spi_controller_put(ctlr);
+ 	if (ret < 0)
+@@ -1005,6 +1026,8 @@ int drm_gem_change_handle_ioctl(struct d
+ 		if (ret < 0) {
+ 			spin_lock(&file_priv->table_lock);
+ 			idr_remove(&file_priv->object_idr, handle);
++			idrobj = idr_replace(&file_priv->object_idr, obj, handle);
++			WARN_ON(idrobj != NULL);
+ 			spin_unlock(&file_priv->table_lock);
+ 			goto out_unlock;
+ 		}
 
 
 
