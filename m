@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-247910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248744-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNA9F6pFB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-247910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:22 +0200
+	id 0CFaE69SB2pIygIAu9opvQ
+	(envelope-from <stable+bounces-248744-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:06:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60717552CB1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05241554722
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B2BE6303648F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 35E1031BB05F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9293FF1DE;
-	Fri, 15 May 2026 15:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF3E4C0418;
+	Fri, 15 May 2026 16:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzdHWLBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdcKOez/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DE43FF1CD;
-	Fri, 15 May 2026 15:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47F04C040C;
+	Fri, 15 May 2026 16:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860387; cv=none; b=Qou/0A1pqnKxbHocCkRFD/f9CcHakz+4tRXOEM/IHEgbjeWnwnV3lEOvx57lN+gqQHagmXPEYmNoxg41wsZ2SGW6uUvBczPLimDZcHOMtBGZ/6xo9bauuuZKYB7zTP/FcRDQu42n54HwyUQsXwwj4/PDE5kbR/cHRBV5ydDGYm0=
+	t=1778862518; cv=none; b=gjhXYPsiqJ+DjGyM6+wZW7l0eQhEuIM4z7Pp5Ecq0RvcB3Hq89szxpu83qmkUcam8hHl6e5FcS5iEtaTlsooJztckGB7lGgFpu3qQQPrYKl0pPzmpVyCru1tES29Qnzut2m3dsMn3RR6oDhFPpfXmz2lf4/6AF4mGc8evo+vB2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860387; c=relaxed/simple;
-	bh=Gi1OYat2Ild6KkIMWPLQvKL5KL+xMS//Mk5OjdUdux4=;
+	s=arc-20240116; t=1778862518; c=relaxed/simple;
+	bh=JNTg0PJBNkUIBinN9yb81e0GyYohAkI5FIJo8yXk+bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSzG+fQsx6G3Tl7gp/iYIpIQ7BXwIq3BdvWi7TrU6Pv7PTepoOwVa6aduxavo3G9RnUfxe3yDXoeKyYCLJf9RKkn0RbF6OWmoCOpiVeI9WLjF9VcPRC/SljjmPuau2JOverl1pSESRoq/hzQloIFaHgx5qkHa3dmM5bow+aOlUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzdHWLBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91215C2BCB0;
-	Fri, 15 May 2026 15:53:06 +0000 (UTC)
+	 MIME-Version; b=WydZb/PLa7x51pqn3dZpFQfqVXRsjk+RyocySAA60lQbxgVavcfzDJIwrLXBpgyrY5BvIudOZIs9vkzkhkR/OYXyu3pK1MDRL0+6zW4+2JdTw80ZyjRFo0I5AXLNje54dwPZdCWv4jVOmkaYNQ2Og0Wr5k6vV/cWUk48LzLsZi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdcKOez/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5F7C2BCB0;
+	Fri, 15 May 2026 16:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860386;
-	bh=Gi1OYat2Ild6KkIMWPLQvKL5KL+xMS//Mk5OjdUdux4=;
+	s=korg; t=1778862518;
+	bh=JNTg0PJBNkUIBinN9yb81e0GyYohAkI5FIJo8yXk+bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jzdHWLBV0aYvbTxOkUUIVLW5Wkybitj7f+iZlD0zXcUBJXS1kyh/K59ycos7by4rY
-	 xtHipdgUkHEc6oFqmA2zwA+i9LpeK0TazWURTy/wa6nxfglbeRKLfc6+Xk/AwzE3ZJ
-	 VY71A1YC7XIEPdrhYawP0+yt47Vmxa7O0fR5nuCM=
+	b=DdcKOez/Y+uvW38UdsvU+6Xfi93KloLqacSIBGsGmZCwXsUCaey2Vsf+nsq670p94
+	 DP6wU/+1xEWvpZCgz2Z1mfOS94JVqcxg2KYpdI09TNjH05VPcYxEPKvUESLs7Vihm1
+	 crVoPirDJc94L2epYz2bdhCT0nGAe4SuzKGI2dAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 070/144] drm/amd/pm: fix incorrect FeatureCtrlMask setting on smu v14.0.x
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 078/201] media: iris: Fix dma_free_attrs() size in iris_hfi_queues_init()
 Date: Fri, 15 May 2026 17:48:16 +0200
-Message-ID: <20260515154655.163730514@linuxfoundation.org>
+Message-ID: <20260515154700.222225596@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +65,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 60717552CB1
+X-Rspamd-Queue-Id: 05241554722
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247910-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248744-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 504f0098ebd074ac8c0ce3471795d79f68e3d265 upstream.
+commit 4a49ae56b0e4268d48fd96babe0cc68596bc301a upstream.
 
-OverDriveTable.FanMinimumPwm and FeatureCtrlMask.PP_OD_FEATURE_FAN_LEGACY_BIT
-have a hard dependency.
-Invalid handling of this dependency leads to disabled thermal monitoring
-and temperature boundary validation.
+The core->iface_q_table_vaddr buffer is alloc'd with size queue_size
+but freed with sizeof(*q_tbl_hdr) which is different.
 
-v2: squash in typo fix (Yang)
+Change the dma_free_attrs() size.
 
-Fixes: 9710b84e2a6a ("drm/amd/pm: add overdrive support on smu v14.0.2/3")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Fixes: d7378f84e94e ("media: iris: introduce iris core state management with shared queues")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/media/platform/qcom/iris/iris_hfi_queue.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-@@ -2424,6 +2424,7 @@ static int smu_v14_0_2_od_restore_table_
- 		}
- 		od_table->OverDriveTable.FanMode = FAN_MODE_AUTO;
- 		od_table->OverDriveTable.FeatureCtrlMask |= BIT(PP_OD_FEATURE_FAN_CURVE_BIT);
-+		od_table->OverDriveTable.FeatureCtrlMask &= ~BIT(PP_OD_FEATURE_FAN_LEGACY_BIT);
- 		break;
- 	case PP_OD_EDIT_ACOUSTIC_LIMIT:
- 		od_table->OverDriveTable.AcousticLimitRpmThreshold =
-@@ -2447,7 +2448,8 @@ static int smu_v14_0_2_od_restore_table_
- 		od_table->OverDriveTable.FanMinimumPwm =
- 					boot_overdrive_table->OverDriveTable.FanMinimumPwm;
- 		od_table->OverDriveTable.FanMode = FAN_MODE_AUTO;
--		od_table->OverDriveTable.FeatureCtrlMask |= BIT(PP_OD_FEATURE_FAN_CURVE_BIT);
-+		od_table->OverDriveTable.FeatureCtrlMask |= BIT(PP_OD_FEATURE_FAN_LEGACY_BIT);
-+		od_table->OverDriveTable.FeatureCtrlMask &= ~BIT(PP_OD_FEATURE_FAN_CURVE_BIT);
- 		break;
- 	default:
- 		dev_info(adev->dev, "Invalid table index: %ld\n", input);
-@@ -2617,6 +2619,7 @@ static int smu_v14_0_2_od_edit_dpm_table
- 		od_table->OverDriveTable.FanLinearPwmPoints[input[0]] = input[2];
- 		od_table->OverDriveTable.FanMode = FAN_MODE_MANUAL_LINEAR;
- 		od_table->OverDriveTable.FeatureCtrlMask |= BIT(PP_OD_FEATURE_FAN_CURVE_BIT);
-+		od_table->OverDriveTable.FeatureCtrlMask &= ~BIT(PP_OD_FEATURE_FAN_LEGACY_BIT);
- 		break;
- 
- 	case PP_OD_EDIT_ACOUSTIC_LIMIT:
-@@ -2686,7 +2689,7 @@ static int smu_v14_0_2_od_edit_dpm_table
- 		break;
- 
- 	case PP_OD_EDIT_FAN_MINIMUM_PWM:
--		if (!smu_v14_0_2_is_od_feature_supported(smu, PP_OD_FEATURE_FAN_CURVE_BIT)) {
-+		if (!smu_v14_0_2_is_od_feature_supported(smu, PP_OD_FEATURE_FAN_LEGACY_BIT)) {
- 			dev_warn(adev->dev, "Fan curve setting not supported!\n");
- 			return -ENOTSUPP;
- 		}
-@@ -2704,7 +2707,8 @@ static int smu_v14_0_2_od_edit_dpm_table
- 
- 		od_table->OverDriveTable.FanMinimumPwm = input[0];
- 		od_table->OverDriveTable.FanMode = FAN_MODE_AUTO;
--		od_table->OverDriveTable.FeatureCtrlMask |= BIT(PP_OD_FEATURE_FAN_CURVE_BIT);
-+		od_table->OverDriveTable.FeatureCtrlMask |= BIT(PP_OD_FEATURE_FAN_LEGACY_BIT);
-+		od_table->OverDriveTable.FeatureCtrlMask &= ~BIT(PP_OD_FEATURE_FAN_CURVE_BIT);
- 		break;
- 
- 	case PP_OD_RESTORE_DEFAULT_TABLE:
+--- a/drivers/media/platform/qcom/iris/iris_hfi_queue.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_queue.c
+@@ -263,7 +263,7 @@ int iris_hfi_queues_init(struct iris_cor
+ 					  GFP_KERNEL, DMA_ATTR_WRITE_COMBINE);
+ 	if (!core->sfr_vaddr) {
+ 		dev_err(core->dev, "sfr alloc and map failed\n");
+-		dma_free_attrs(core->dev, sizeof(*q_tbl_hdr), core->iface_q_table_vaddr,
++		dma_free_attrs(core->dev, queue_size, core->iface_q_table_vaddr,
+ 			       core->iface_q_table_daddr, DMA_ATTR_WRITE_COMBINE);
+ 		return -ENOMEM;
+ 	}
 
 
 
