@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-248094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBD1J/ZTB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:12:22 +0200
+	id +EJBM/FGB2r6wAIAu9opvQ
+	(envelope-from <stable+bounces-248096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:16:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE7155497D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:12:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E9A552ED8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 71B7D30953E1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:01:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1C21130DB243
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F493C0A13;
-	Fri, 15 May 2026 16:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA4E39B971;
+	Fri, 15 May 2026 16:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6s2nOFs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIIS0+ou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79DC3B27EA;
-	Fri, 15 May 2026 16:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD323B1029;
+	Fri, 15 May 2026 16:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860857; cv=none; b=pkWMxAbcsOatve9mZsfCbYnzVOSSa/IGwkDtj/Y/3poIn02UfcSu5v2hZETJuY8oPxwAapLonQPHUlPb+iTGmJB5AEyY1V8RAWKNJuqadZJlr00MC2EwXD/2Zkd3gRi9cS3V2W3xmNzVJLAJEanS0A6gwYbwAGucsjWg51hGDLk=
+	t=1778860862; cv=none; b=MIYIpULv20tmKeDleivVwsjTD3CsvFc/sKrFYWxoJn/rI2jvJYt9MVAyQGUa6qcyYmYRnBZ1SMPY8QhlNhoYLpz1Fo95MZghrcxF11i1f67/U2TpKvwo4B8HkbPdJVeWmmz/o688pzSZZTKVqqT3qIShmnJ33IvtA4VFnEm+G/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860857; c=relaxed/simple;
-	bh=i5NEPIYx4QOvlw4HNa65Ekg/gT4B4sCs+oyyIWdd9Mc=;
+	s=arc-20240116; t=1778860862; c=relaxed/simple;
+	bh=Qaa9T1+gBDry2uRnocoU4xOg3wsHVA8F9Isn68lQNps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hD7VQtHJQWyTO9KTYsrlinWMp7Q0uu9V00wNpcG+OYICJkrqYE/zwg+Q+RZNawJfAaw1oNw8OOFBcGwrFYjYhZVLnEYMnw9bTj6DMoQMfd4OzNHeoRbT9Ys1NgB8b3LWSqri9r2Awailmn+dhGx6uBfr3ZjcLezkXVxMluWqPa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6s2nOFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E454C2BCB0;
-	Fri, 15 May 2026 16:00:56 +0000 (UTC)
+	 MIME-Version; b=E86sjUvJ8ebXmcylKkCBXH1qN3VWJzom1rXIvM/S54ZLLKJwNzUWprEbrV6V4pwH/md4eFvBIAAyaFxx1Pdnsx2Qjg/pma3s8mZaMCPpAjMO7zhbnF0y7/nLypFRFZ5EqSJPXFE3GG4i+GON9NK7xhEVPwIxSf7kZZ1LQJZMbbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIIS0+ou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6489C2BCB3;
+	Fri, 15 May 2026 16:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860856;
-	bh=i5NEPIYx4QOvlw4HNa65Ekg/gT4B4sCs+oyyIWdd9Mc=;
+	s=korg; t=1778860862;
+	bh=Qaa9T1+gBDry2uRnocoU4xOg3wsHVA8F9Isn68lQNps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6s2nOFsIwDXL6B6Yq0JAbxNNFJ+5bBKr1G+m4FE8BHREO4uh4ArM+FvDW5rl6I2l
-	 nLL6pqFWz03c5RD409SqZCW9ZQhMRXbx5kF6LlM58a6sj2l1Abks8KprA/VDTrODy9
-	 32jqPIYZVoBt+Jcs1NX0+/Ktbrx2FviQTO/oL+t4=
+	b=MIIS0+oueY22w193gsklkFtcxBowJNlosGt85o1DxStI6bB46Man6ZxDwZwYbNGUY
+	 naUioFgsvGpu5zoGJOZ7ZGVNmL6brc0nY97M/EVBbUQTl7+HgF1FAGoiH32MUDxk7F
+	 v1h1g6yG2SV/dWDbEUXbSKT5WfYSxay8zvIJVnd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Yosry Ahmed <yosry@kernel.org>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 104/474] KVM: nSVM: Clear EVENTINJ fields in vmcb12 on nested #VMEXIT
-Date: Fri, 15 May 2026 17:43:33 +0200
-Message-ID: <20260515154717.287439822@linuxfoundation.org>
+Subject: [PATCH 6.6 105/474] KVM: nSVM: Clear tracking of L1->L2 NMI and soft IRQ on nested #VMEXIT
+Date: Fri, 15 May 2026 17:43:34 +0200
+Message-ID: <20260515154717.308473622@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1CE7155497D
+X-Rspamd-Queue-Id: 60E9A552ED8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248094-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248096-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,8 +90,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
@@ -100,39 +100,35 @@ X-Rspamd-Action: no action
 
 From: Yosry Ahmed <yosry@kernel.org>
 
-commit 69b721a86d0dcb026f6db7d111dcde7550442d2e upstream.
+commit 8998e1d012f3f45d0456f16706682cef04c3c436 upstream.
 
-According to the APM, from the reference of the VMRUN instruction:
+KVM clears tracking of L1->L2 injected NMIs (i.e. nmi_l1_to_l2) and soft
+IRQs (i.e. soft_int_injected) on a synthesized #VMEXIT(INVALID) due to
+failed VMRUN. However, they are not explicitly cleared in other
+synthesized #VMEXITs.
 
-  Upon #VMEXIT, the processor performs the following actions in order to
-  return to the host execution context:
+soft_int_injected is always cleared after the first VMRUN of L2 when
+completing interrupts, as any re-injection is then tracked by KVM
+(instead of purely in vmcb02).
 
-  ...
+nmi_l1_to_l2 is not cleared after the first VMRUN if NMI injection
+failed, as KVM still needs to keep track that the NMI originated from L1
+to avoid blocking NMIs for L1. It is only cleared when the NMI injection
+succeeds.
 
-  clear EVENTINJ field in VMCB
+KVM could synthesize a #VMEXIT to L1 before successfully injecting the
+NMI into L2 (e.g. due to a #NPF on L2's NMI handler in L1's NPTs). In
+this case, nmi_l1_to_l2 will remain true, and KVM may not correctly mask
+NMIs and intercept IRET when injecting an NMI into L1.
 
-KVM already syncs EVENTINJ fields from vmcb02 to cached vmcb12 on every
-L2->L0  #VMEXIT. Since these fields are zeroed by the CPU on #VMEXIT, they
-will mostly be zeroed in vmcb12 on nested #VMEXIT by nested_svm_vmexit().
+Clear both nmi_l1_to_l2 and soft_int_injected in nested_svm_vmexit(), i.e.
+for all #VMEXITs except those that occur due to failed consistency checks,
+as those happen before nmi_l1_to_l2 or soft_int_injected are set.
 
-However, this is not the case when:
-
-  1. Consistency checks fail, as nested_svm_vmexit() is not called.
-  2. Entering guest mode fails before L2 runs (e.g. due to failed load of
-     CR3).
-
-(2) was broken by commit 2d8a42be0e2b ("KVM: nSVM: synchronize VMCB
-controls updated by the processor on every vmexit"), as prior to that
-nested_svm_vmexit() always zeroed EVENTINJ fields.
-
-Explicitly clear the fields in all nested #VMEXIT code paths.
-
-Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
-Fixes: 2d8a42be0e2b ("KVM: nSVM: synchronize VMCB controls updated by the processor on every vmexit")
+Fixes: 159fc6fa3b7d ("KVM: nSVM: Transparently handle L1 -> L2 NMI re-injection")
 Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-Link: https://patch.msgid.link/20260303003421.2185681-12-yosry@kernel.org
-[sean: massage changelog formatting]
+Link: https://patch.msgid.link/20260303003421.2185681-13-yosry@kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -141,27 +137,26 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -884,6 +884,8 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
- 		vmcb12->control.exit_code_hi = -1u;
- 		vmcb12->control.exit_info_1  = 0;
- 		vmcb12->control.exit_info_2  = 0;
-+		vmcb12->control.event_inj = 0;
-+		vmcb12->control.event_inj_err = 0;
- 		svm_set_gif(svm, false);
- 		goto out;
- 	}
-@@ -1025,9 +1027,9 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 	if (guest_can_use(vcpu, X86_FEATURE_NRIPS))
- 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
+@@ -913,8 +913,6 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
  
-+	vmcb12->control.event_inj	  = 0;
-+	vmcb12->control.event_inj_err	  = 0;
- 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
--	vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
--	vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
+ out_exit_err:
+ 	svm->nested.nested_run_pending = 0;
+-	svm->nmi_l1_to_l2 = false;
+-	svm->soft_int_injected = false;
  
- 	if (!kvm_pause_in_guest(vcpu->kvm)) {
- 		vmcb01->control.pause_filter_count = vmcb02->control.pause_filter_count;
+ 	svm->vmcb->control.exit_code    = SVM_EXIT_ERR;
+ 	svm->vmcb->control.exit_code_hi = -1u;
+@@ -1154,6 +1152,10 @@ int nested_svm_vmexit(struct vcpu_svm *s
+ 	if (unlikely(vmcb01->save.rflags & X86_EFLAGS_TF))
+ 		kvm_queue_exception(&(svm->vcpu), DB_VECTOR);
+ 
++	/* Drop tracking for L1->L2 injected NMIs and soft IRQs */
++	svm->nmi_l1_to_l2 = false;
++	svm->soft_int_injected = false;
++
+ 	/*
+ 	 * Un-inhibit the AVIC right away, so that other vCPUs can start
+ 	 * to benefit from it right away.
 
 
 
