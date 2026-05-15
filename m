@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MO/qIt1XB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:01 +0200
+	id yC/MJw5QB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DD4555155
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41618554317
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3FEC633A90B3
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7831430DE6B3
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7823FF1D8;
-	Fri, 15 May 2026 16:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684793B4EA3;
+	Fri, 15 May 2026 16:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noCLzGRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xh+HfUda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03C83B9D91;
-	Fri, 15 May 2026 16:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9242798F3;
+	Fri, 15 May 2026 16:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862237; cv=none; b=jtCcOrR0V7dh3Bu5o1pRa8c+g143fbEu9BWZ66pDT7o87P/DFyFiql0r2EMksY34wKoHDOaYLoDA2tVXZ3iN+UUS7R7rUKxbX+rPi1TxI9lUe5y79P+iC3lBqQof5y1H0t7tXGADgTCkEj9fX6W8NPfPt1G8uLLLb2HlCP21mnQ=
+	t=1778862734; cv=none; b=B+Y9+qcDuLNIim4Z6RTgvoywdYyqVU/hR4GY+jFrEnVewWz+/EHM29YciqGYUNRy9xp6J8bx3r9Bto2rcGOzWPv3LXtLBLztSAjV5asTApB2DLJrg9Zwc3rsbr/xeRXuXVWMvnAbkE8Kxvebn3zx8wR/J0ntTzTqztR2bUjoLQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862237; c=relaxed/simple;
-	bh=2vYF8xhTKxhXBGNbFgsnNM1DLRNIR8jHFC2QPq1EepU=;
+	s=arc-20240116; t=1778862734; c=relaxed/simple;
+	bh=8V1opyRP86ewd8j42MlQc1ioJFkNece4VmvCS8Acktc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6kYBTQdIdc2BigtjmVU7kMrK7Bz0YzeAX/mHOm2B3Yk/UROnypHjXFOCOiXGhZ3gTS/v22vsD7N/4uUVKQjDJU6wgFSgh6/UhQ7MSrJSfs/jS48p50D05Ei61Lu+D0vdTyxQee2iYJWM/7KFvrKcGdHvq/W3HUxxn+h7zMpTKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noCLzGRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BCAC2BCB3;
-	Fri, 15 May 2026 16:23:57 +0000 (UTC)
+	 MIME-Version; b=qWfc+z3Ds52sJR1CNF/TuwxswKT4Y85jW8Kxmg6DmEPGRANCQrZGTplLNIr4K43Bpxtttq2wFHOKaIT8qSB9B2w1fAWMmOOEHiFnZESUzTX3IC1pXUGNWZCCSj+JFBc8ldVkjpcAocWKJkliyxTOexvsnu7eHKSwZdB7Fw7/YdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xh+HfUda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A81C2BCB0;
+	Fri, 15 May 2026 16:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862237;
-	bh=2vYF8xhTKxhXBGNbFgsnNM1DLRNIR8jHFC2QPq1EepU=;
+	s=korg; t=1778862734;
+	bh=8V1opyRP86ewd8j42MlQc1ioJFkNece4VmvCS8Acktc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=noCLzGRjrfZpU1QhZj/vfZa27q7giO8L6n5dngZy1PnYaclAY8tS97nqBmpibDNj+
-	 4CRDQhs18rnAIdsMHGn1PsmkBYFvZR67hvYc8RkXPOR0AmRg6/KFOQCMZ1cN+sYuns
-	 dj6O6tPpjWhCjMkQVNUl0RzSe4UQdKaFEnVf4Hrg=
+	b=Xh+HfUdaJacbi2kHZYAmIlZJmQZUmMgyxYcjeOPkS+Nw0OctR3W+u3Mq7BiJz58HU
+	 Y4gAtuZE8FcmwTVLaaxjeoscIJyk8YjuQ8qFxp8Ul+JVQGk3rLjNeEQWMWc2EzOWZA
+	 YTtP3Fa2ueRA/Et6+NPKkaba9Y9/XF9Uw8Jv1Uuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 162/188] spi: uniphier: Simplify clock handling with devm_clk_get_enabled()
+	"Kory Maincent (TI)" <kory.maincent@bootlin.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 7.0 161/201] drm/bridge: tda998x: Use __be32 for audio port OF property pointer
 Date: Fri, 15 May 2026 17:49:39 +0200
-Message-ID: <20260515154700.843693872@linuxfoundation.org>
+Message-ID: <20260515154702.063289780@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,132 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 06DD4555155
+X-Rspamd-Queue-Id: 41618554317
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248827-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248635-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable,kernel];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,kylinos.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,armlinux.org.uk:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Kory Maincent (TI) <kory.maincent@bootlin.com>
 
-[ Upstream commit fdca270f8f87cae2eb5b619234b9dd11a863ce6b ]
+commit 2a46a9356ba7b1bdd741c8b41e5374edcd960557 upstream.
 
-Replace devm_clk_get() followed by clk_prepare_enable() with
-devm_clk_get_enabled() for the clock. This removes the need for
-explicit clock enable and disable calls, as the managed API automatically
-handles clock disabling on device removal or probe failure.
+of_get_property() returns a pointer to big-endian (__be32) data, but
+port_data in tda998x_get_audio_ports() was declared as const u32 *,
+causing a sparse endianness type mismatch warning. Fix the declaration
+to use const __be32 *.
 
-Remove the now-unnecessary clk_disable_unprepare() calls from the probe
-error path and the remove callback. Adjust error labels accordingly.
-
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Reviewed-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://patch.msgid.link/b2deeefd4ef1a4bce71116aabfcb7e81400f6d37.1775546948.git.xiaopei01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0245435f7772 ("spi: uniphier: fix controller deregistration")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7e567624dc5a4 ("drm/i2c: tda998x: Register ASoC hdmi-codec and add audio DT binding")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kory Maincent (TI) <kory.maincent@bootlin.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20260428090457.121894-1-kory.maincent@bootlin.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-uniphier.c |   18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/bridge/tda998x_drv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -666,28 +666,24 @@ static int uniphier_spi_probe(struct pla
- 	}
- 	priv->base_dma_addr = res->start;
- 
--	priv->clk = devm_clk_get(&pdev->dev, NULL);
-+	priv->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(priv->clk)) {
- 		dev_err(&pdev->dev, "failed to get clock\n");
- 		ret = PTR_ERR(priv->clk);
- 		goto out_host_put;
- 	}
- 
--	ret = clk_prepare_enable(priv->clk);
--	if (ret)
--		goto out_host_put;
--
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
- 		ret = irq;
--		goto out_disable_clk;
-+		goto out_host_put;
- 	}
- 
- 	ret = devm_request_irq(&pdev->dev, irq, uniphier_spi_handler,
- 			       0, "uniphier-spi", priv);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to request IRQ\n");
--		goto out_disable_clk;
-+		goto out_host_put;
- 	}
- 
- 	init_completion(&priv->xfer_done);
-@@ -717,7 +713,7 @@ static int uniphier_spi_probe(struct pla
- 	if (IS_ERR_OR_NULL(host->dma_tx)) {
- 		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER) {
- 			ret = -EPROBE_DEFER;
--			goto out_disable_clk;
-+			goto out_host_put;
- 		}
- 		host->dma_tx = NULL;
- 		dma_tx_burst = INT_MAX;
-@@ -767,9 +763,6 @@ out_release_dma:
- 		host->dma_tx = NULL;
- 	}
- 
--out_disable_clk:
--	clk_disable_unprepare(priv->clk);
--
- out_host_put:
- 	spi_controller_put(host);
- 	return ret;
-@@ -778,14 +771,11 @@ out_host_put:
- static void uniphier_spi_remove(struct platform_device *pdev)
+--- a/drivers/gpu/drm/bridge/tda998x_drv.c
++++ b/drivers/gpu/drm/bridge/tda998x_drv.c
+@@ -1697,7 +1697,7 @@ static const struct drm_bridge_funcs tda
+ static int tda998x_get_audio_ports(struct tda998x_priv *priv,
+ 				   struct device_node *np)
  {
- 	struct spi_controller *host = platform_get_drvdata(pdev);
--	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+-	const u32 *port_data;
++	const __be32 *port_data;
+ 	u32 size;
+ 	int i;
  
- 	if (host->dma_tx)
- 		dma_release_channel(host->dma_tx);
- 	if (host->dma_rx)
- 		dma_release_channel(host->dma_rx);
--
--	clk_disable_unprepare(priv->clk);
- }
- 
- static const struct of_device_id uniphier_spi_match[] = {
 
 
 
