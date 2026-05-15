@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-247551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ME1CBJHcBmoxogIAu9opvQ
-	(envelope-from <stable+bounces-247551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:42:57 +0200
+	id 6MNnKMnbBmoxogIAu9opvQ
+	(envelope-from <stable+bounces-247552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:39:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8931354B983
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:42:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC4154B82B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2C1030EF017
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:32:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05D313082B30
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A00E3E4C6E;
-	Fri, 15 May 2026 08:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B996240245C;
+	Fri, 15 May 2026 08:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFLJu7Zd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qT95YR9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9DE1A2C04
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 08:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C383402450
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 08:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778833949; cv=none; b=Bfm404DrfjG4xEANjitPdbRk1VCt0g2aMihcSaokacpv4iSjiaRhEyHTvmjD/97gok3VAgwfuUWfRKqUIVjxehMHOHilxCXAgCZSapMiUNG6+KYr5ALetVN5mlpHJ3CAep47rZtT10xedxRXukZUUFXFIBGv6l2ZOYhWhNALqSQ=
+	t=1778833957; cv=none; b=AGOcRIaZjG1SRReaCCOSe0jgUzg1sMhDzJ7rCA7rOq/nGK7yjkSxv+QSnyoIbLdUY45t2d7WEceNX8JD45Ma2uHtXkRY9SKtn6p2zqRzjL/IisxF6nJCr1KLixJlhrbOh9kV5He8eqk3PSPXfY4p8eXC8aiW1UQIKymigEBPiBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778833949; c=relaxed/simple;
-	bh=CxHXH2gxGf9J+nUXwIZaDj0ZN1cgZiH0JU+C6nsBST8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eWtG9vsPO6RYf2/ds4CuP9Qvj59ZTUEutnOpyNznP5HfZD4xwjOGY5zNEJq+TZHxol0LEkfixgiTHcQ8XvDvbzUd/yQ91iQ7lJSLXwLQiLvPQew7X/nRMYC9L7/bUfVybd+AXCqTIgJm/MKEvUPtPPiH4NgiruwNjVcYhwAwdZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFLJu7Zd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3218C2BCB0;
-	Fri, 15 May 2026 08:32:28 +0000 (UTC)
+	s=arc-20240116; t=1778833957; c=relaxed/simple;
+	bh=l4nJhBQEriH37jSl/1UAfBzAh5HC1vK8AEv1as57p34=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nhIX/FxKOhVY/Zhywd7eMXpVytkaYH2NixUhyByuiW/IICVT9W9ZAJ2l2gYjqIu8kQ+8vWqE3hIe4wFAJYSk39abWWjoq4b6BmudNMIGqKczjT8MUNHi4Az+eUm8JctVO5Idy9qGOJGy2uL8oV43FfOjy9eu/zJ43PJU8mpW2ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qT95YR9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92A8C2BCB0;
+	Fri, 15 May 2026 08:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778833949;
-	bh=CxHXH2gxGf9J+nUXwIZaDj0ZN1cgZiH0JU+C6nsBST8=;
+	s=korg; t=1778833957;
+	bh=l4nJhBQEriH37jSl/1UAfBzAh5HC1vK8AEv1as57p34=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uFLJu7ZdC9hbA+RB8DGaLlZu5fopGEbDjszQYr1+rzrXfqTClGPNtl01dbR9psNYK
-	 3jvNeTs+do0qzkisARvXL41iTHjPFg/dW+tNxNoL0IdNQGaaT2icCvFPWZrq+2MMdq
-	 ZFgcFiyjBkmyD+GYrsbj70oyN0PriIZ+42zg0+wU=
-Subject: FAILED: patch "[PATCH] spi: mpc52xx: fix controller deregistration" failed to apply to 5.10-stable tree
-To: johan@kernel.org,broonie@kernel.org,grant.likely@secretlab.ca,l.fu@pengutronix.de
+	b=qT95YR9xFYv9lhFQNCwzN6oAO8fTpkDoMrJYbmSyozzqJnVCATOePl1Zj3qOQVdLu
+	 QIqFrW/ABwp7JPvTrFawTvjRqC4HCRRPeg5h817H7yYKf9MrdgwXfth/RaweI0h30J
+	 fo9drUnS8glG5uR24E2oL0v9SQQjG7N9CXTQN0xw=
+Subject: FAILED: patch "[PATCH] spi: axiado: fix runtime pm imbalance on probe failure" failed to apply to 7.0-stable tree
+To: johan@kernel.org,broonie@kernel.org,vmoravcevic@axiado.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 May 2026 10:32:20 +0200
-Message-ID: <2026051520-capsize-radiator-d2cd@gregkh>
+Date: Fri, 15 May 2026 10:32:41 +0200
+Message-ID: <2026051541-scotch-province-f205@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,52 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8931354B983
+X-Rspamd-Queue-Id: 3BC4154B82B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247551-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247552-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
+	NEURAL_HAM(-0.00)[-0.996];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,secretlab.ca:email]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,axiado.com:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 7.0-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0f997fdae819a8c2cc83bd4ff7d935ad76c727c9
+git cherry-pick -x cde1a784e4d55068d8dd7ee9bf4794898a2ac410
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051520-capsize-radiator-d2cd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051541-scotch-province-f205@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,43 +111,74 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0f997fdae819a8c2cc83bd4ff7d935ad76c727c9 Mon Sep 17 00:00:00 2001
+From cde1a784e4d55068d8dd7ee9bf4794898a2ac410 Mon Sep 17 00:00:00 2001
 From: Johan Hovold <johan@kernel.org>
-Date: Tue, 14 Apr 2026 15:43:14 +0200
-Subject: [PATCH] spi: mpc52xx: fix controller deregistration
+Date: Tue, 21 Apr 2026 16:39:23 +0200
+Subject: [PATCH] spi: axiado: fix runtime pm imbalance on probe failure
 
-Make sure to deregister the controller before disabling and releasing
-underlying resources like interrupts and gpios during driver unbind.
+Make sure that the controller is active before disabling clocks on late
+probe failure and on driver unbind to avoid a clock disable imbalance.
 
-Fixes: 42bbb70980f3 ("powerpc/5200: Add mpc5200-spi (non-PSC) device driver")
-Fixes: b8d4e2ce60b6 ("mpc52xx_spi: add gpio chipselect")
-Cc: stable@vger.kernel.org	# 2.6.33
-Cc: Grant Likely <grant.likely@secretlab.ca>
-Cc: Luotao Fu <l.fu@pengutronix.de>
+Also make sure that the usage count is balanced on probe failure (e.g.
+probe deferral) so that the controller can be suspended when a driver is
+later bound.
+
+Note that the runtime PM state can only be set when runtime PM is
+disabled.
+
+Fixes: e75a6b00ad79 ("spi: axiado: Add driver for Axiado SPI DB controller")
+Cc: stable@vger.kernel.org	# 7.0
+Cc: Vladimir Moravcevic <vmoravcevic@axiado.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-4-johan@kernel.org
+Link: https://patch.msgid.link/20260421143925.1551781-2-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index 05bbd3795e7d..823b49f8ece2 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -517,6 +517,8 @@ static void mpc52xx_spi_remove(struct platform_device *op)
- 	struct mpc52xx_spi *ms = spi_controller_get_devdata(host);
- 	int i;
+diff --git a/drivers/spi/spi-axiado.c b/drivers/spi/spi-axiado.c
+index dc55c55ae63c..6449b376a3a8 100644
+--- a/drivers/spi/spi-axiado.c
++++ b/drivers/spi/spi-axiado.c
+@@ -842,8 +842,6 @@ static int ax_spi_probe(struct platform_device *pdev)
  
-+	spi_unregister_controller(host);
+ 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
+ 
+-	pm_runtime_put_autosuspend(&pdev->dev);
+-
+ 	ctlr->mem_ops = &ax_spi_mem_ops;
+ 
+ 	ret = spi_register_controller(ctlr);
+@@ -852,11 +850,16 @@ static int ax_spi_probe(struct platform_device *pdev)
+ 		goto clk_dis_all;
+ 	}
+ 
++	pm_runtime_put_autosuspend(&pdev->dev);
 +
- 	cancel_work_sync(&ms->work);
- 	free_irq(ms->irq0, ms);
- 	free_irq(ms->irq1, ms);
-@@ -525,7 +527,6 @@ static void mpc52xx_spi_remove(struct platform_device *op)
- 		gpiod_put(ms->gpio_cs[i]);
+ 	return ret;
  
- 	kfree(ms->gpio_cs);
--	spi_unregister_controller(host);
- 	iounmap(ms->regs);
- 	spi_controller_put(host);
- }
+ clk_dis_all:
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
++
+ 	clk_disable_unprepare(xspi->ref_clk);
+ clk_dis_apb:
+ 	clk_disable_unprepare(xspi->pclk);
+@@ -877,10 +880,14 @@ static void ax_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+ 	struct ax_spi *xspi = spi_controller_get_devdata(ctlr);
+ 
++	pm_runtime_get_sync(&pdev->dev);
++
+ 	spi_unregister_controller(ctlr);
+ 
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 
+ 	clk_disable_unprepare(xspi->ref_clk);
+ 	clk_disable_unprepare(xspi->pclk);
 
 
