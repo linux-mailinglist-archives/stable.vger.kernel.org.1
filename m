@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-248848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKnIOgJRB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:46 +0200
+	id uBmkBx5SB2qnyQIAu9opvQ
+	(envelope-from <stable+bounces-248650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:04:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9296E5544D6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A91CC554644
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:04:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B925C3042E36
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B662318751B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C9A3AD51C;
-	Fri, 15 May 2026 16:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD653BB12D;
+	Fri, 15 May 2026 16:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPFfa7+I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5r5/DF6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A5F35FF73;
-	Fri, 15 May 2026 16:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1183FF1A2;
+	Fri, 15 May 2026 16:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862784; cv=none; b=p/xwzvCocz2Qqm80lynfGsdR5EeDZ1CCMMcRJzpiB+7BqIBI/TgQwfxxXmD7ef6VrjG4Nh7jq4ASBIs5SYeAP7hkbhxkrie9EmCcqEd00Sw4EWerFBD4TPJTMWjVSuPTbQRV/BSkrrAnmJCswXZg0cAznqOW7hp8TlIddvsELT0=
+	t=1778862277; cv=none; b=UKSvhMLzby/968wuOBkyyiwyKPXMGeWB+pRyJ7FFJNcaPxvYeQGZIVOFUfGgYFxWQNYaNIFOzVdp9MUaZgoBXQ1lJ0OaR4VwrDZtMOj6B91B1eBhqLGsh8+OebO58IKZzBEwcMnoq9G3esxOY2NhzV432fNKB1ZXQ8++wibMs4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862784; c=relaxed/simple;
-	bh=PZLDtTSPIGOPb3Ej6ZCwa+d52tMTG8EhYHiAkGsqBd0=;
+	s=arc-20240116; t=1778862277; c=relaxed/simple;
+	bh=oxNpqvadmMGaU3HTQ45fkAezed/FoZyQRBD5+mypTro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MY9qCRpdrU1mV8AOybpyD6l1qVMRuOv4te7Ec9U6q2eXJyOfxL6XN308x+Tjb0YUSAs/Go4MvjnjqrQApyV1RXbCzZiMrgPFyeqEIYRR+601Zl3vyZDEEGYwB/csce2OhTLRAXOCLbZWZ3Gt6BODuAXgzFjpSB+PMPNI3lmhvbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPFfa7+I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7BAC2BCB0;
-	Fri, 15 May 2026 16:33:03 +0000 (UTC)
+	 MIME-Version; b=S5a0nzFZBAHDf3pPybnhgkPvJPLatGwvujeYU8wiIWLWxb6HjposxKPZg3YAdluoTAZUDnRBkTzHiVBf99R7zk/NSBuP8RZihg+uo2ZRpywYAJOEDmu7yRG/dhxQkAekS2gRku2yHHdW2rTPS6anzg1vdsQUm3X+mpQ5uPrLQ9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5r5/DF6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D878DC2BCB0;
+	Fri, 15 May 2026 16:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862784;
-	bh=PZLDtTSPIGOPb3Ej6ZCwa+d52tMTG8EhYHiAkGsqBd0=;
+	s=korg; t=1778862277;
+	bh=oxNpqvadmMGaU3HTQ45fkAezed/FoZyQRBD5+mypTro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aPFfa7+IKVKHN7YWnPu2TxvNkSFedD5bPCRw/S4r5P93SrRiwWsaPpRXpWoh06YU7
-	 knGGOAOkwvyM24AERm0ZdpWmB+IssxlAONbFiK1f2JDvXuFK0f7F7++UP3V8HFpOtQ
-	 VnClljjv9g9oCXBbo+c6l3XY7+3jP6Bw9YKxqFZ8=
+	b=S5r5/DF6jNPY9uVOjJ7/etmj90K6AD77L+tgwV+SiNjahflFRDSMGPnGESQ75HZB+
+	 99Gf1sgYnb74nOMIAIxkTWJWk50rY9iognaLAHURkapnN8BVLdwW8PWlTAjyn+zOP6
+	 5ceeB2MMqUyAzL7lPq5A+YJ2PAnN1Nj8HNu1qwbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxing Yin <tr0jan@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 174/201] batman-adv: reject new tp_meter sessions during teardown
-Date: Fri, 15 May 2026 17:49:52 +0200
-Message-ID: <20260515154702.348094718@linuxfoundation.org>
+	Yochai Eisenrich <echelonh@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 176/188] btrfs: fix btrfs_ioctl_space_info() slot_count TOCTOU which can lead to info-leak
+Date: Fri, 15 May 2026 17:49:53 +0200
+Message-ID: <20260515154701.157990058@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,27 +64,27 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9296E5544D6
+X-Rspamd-Queue-Id: A91CC554644
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248848-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
+	TAGGED_FROM(0.00)[bounces-248650-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -99,85 +93,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,narfation.org:email,lzu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Yochai Eisenrich <yochaie@sweet.security>
 
-commit 3243543592425beec83d453793e9d27caa0d8e66 upstream.
+[ Upstream commit 973e57c726c1f8e77259d1c8e519519f1e9aea77 ]
 
-Prevent tp_meter from starting new sender or receiver sessions after
-mesh_state has left BATADV_MESH_ACTIVE.
+btrfs_ioctl_space_info() has a TOCTOU race between two passes over the
+block group RAID type lists. The first pass counts entries to determine
+the allocation size, then the second pass fills the buffer. The
+groups_sem rwlock is released between passes, allowing concurrent block
+group removal to reduce the entry count.
 
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+When the second pass fills fewer entries than the first pass counted,
+copy_to_user() copies the full alloc_size bytes including trailing
+uninitialized kmalloc bytes to userspace.
+
+Fix by copying only total_spaces entries (the actually-filled count from
+the second pass) instead of alloc_size bytes, and switch to kzalloc so
+any future copy size mismatch cannot leak heap data.
+
+Fixes: 7fde62bffb57 ("Btrfs: buffer results in the space_info ioctl")
+CC: stable@vger.kernel.org # 3.0
+Signed-off-by: Yochai Eisenrich <echelonh@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ adapted upstream's `return -EFAULT;` to stable's `ret = -EFAULT;` fall-through to existing `out:` cleanup label ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ fs/btrfs/ioctl.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -947,6 +947,13 @@ void batadv_tp_start(struct batadv_priv
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3025,7 +3025,7 @@ static long btrfs_ioctl_space_info(struc
+ 		return -ENOMEM;
  
- 	/* look for an already existing test towards this node */
- 	spin_lock_bh(&bat_priv->tp_list_lock);
-+	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE) {
-+		spin_unlock_bh(&bat_priv->tp_list_lock);
-+		batadv_tp_batctl_error_notify(BATADV_TP_REASON_DST_UNREACHABLE,
-+					      dst, bat_priv, session_cookie);
-+		return;
-+	}
-+
- 	tp_vars = batadv_tp_list_find(bat_priv, dst);
- 	if (tp_vars) {
- 		spin_unlock_bh(&bat_priv->tp_list_lock);
-@@ -1329,9 +1336,12 @@ static struct batadv_tp_vars *
- batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 		    const struct batadv_icmp_tp_packet *icmp)
- {
--	struct batadv_tp_vars *tp_vars;
-+	struct batadv_tp_vars *tp_vars = NULL;
+ 	space_args.total_spaces = 0;
+-	dest = kmalloc(alloc_size, GFP_KERNEL);
++	dest = kzalloc(alloc_size, GFP_KERNEL);
+ 	if (!dest)
+ 		return -ENOMEM;
+ 	dest_orig = dest;
+@@ -3081,7 +3081,8 @@ static long btrfs_ioctl_space_info(struc
+ 	user_dest = (struct btrfs_ioctl_space_info __user *)
+ 		(arg + sizeof(struct btrfs_ioctl_space_args));
  
- 	spin_lock_bh(&bat_priv->tp_list_lock);
-+	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
-+		goto out_unlock;
-+
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
- 					      icmp->session);
- 	if (tp_vars)
-@@ -1464,6 +1474,9 @@ void batadv_tp_meter_recv(struct batadv_
- {
- 	struct batadv_icmp_tp_packet *icmp;
+-	if (copy_to_user(user_dest, dest_orig, alloc_size))
++	if (copy_to_user(user_dest, dest_orig,
++		 space_args.total_spaces * sizeof(*dest_orig)))
+ 		ret = -EFAULT;
  
-+	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
-+		goto out;
-+
- 	icmp = (struct batadv_icmp_tp_packet *)skb->data;
- 
- 	switch (icmp->subtype) {
-@@ -1478,6 +1491,8 @@ void batadv_tp_meter_recv(struct batadv_
- 			   "Received unknown TP Metric packet type %u\n",
- 			   icmp->subtype);
- 	}
-+
-+out:
- 	consume_skb(skb);
- }
- 
+ 	kfree(dest_orig);
 
 
 
