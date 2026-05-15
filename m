@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-248488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JjvJD5OB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:58 +0200
+	id 0BCCMydXB2pVzQIAu9opvQ
+	(envelope-from <stable+bounces-248544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D35B553F02
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AAF6555007
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 468BB331E01E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7BD51336912C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11DD3E00B6;
-	Fri, 15 May 2026 16:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E224D3F8703;
+	Fri, 15 May 2026 16:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdEYkGWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ni5jmm/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E34526CE11;
-	Fri, 15 May 2026 16:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A309B3E0094;
+	Fri, 15 May 2026 16:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861858; cv=none; b=Nl2evKthuT7M0lku6TuP+1OMJzCLTYIkJzb/dNqLt05uamX3wqetXNA7vbJY4K82Eshm70xSedwrjzt1Dt2QXPuwM86lH5E9XDeqTwxxFlQstCjP47PphZNJnVApxzMVUwd9ZFkr1TojOdys6mcn9BDID3KEYyI6VfU6ABd8s9Y=
+	t=1778862002; cv=none; b=PlLLlJbNGAhwoIkxSjaICoHzXeR8CvWa/X7d5GXXR6D/x1DtPh/OAiMt6Xk1Ggjr+5cdr8C4JTkqeYArHI/GktESvw4bI4chfaeue9XBpnpUdzUBMBlAUV5vSaR1wK82NDY577l4yjR449vCptqoSQe834ozzexKDD/Bp0G+dP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861858; c=relaxed/simple;
-	bh=Ouy3gQiDQJsBDF7TR2IDogjnFPIRsrjC1S48zYlGBPg=;
+	s=arc-20240116; t=1778862002; c=relaxed/simple;
+	bh=S6QoCc9UpZTTJYOurtPSMQbG6jysaGtKLaLEH5wTdGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cE1zlVgz9K0OABVzIJoNPco5tP9eeRmuxpVdgH8lbtX+xJ8foURPnAxeOb3Yn0K43AcZSCHpZmOvfVPavw7XZnYUFCZ1RVpG/YC1avKKerw2/u58dD96GNm1DdGKfQFLKlKqhrEd+pZVyreY8xghbcre1mn7+xadddq6i0icuOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdEYkGWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E621BC2BCB0;
-	Fri, 15 May 2026 16:17:37 +0000 (UTC)
+	 MIME-Version; b=SOsY2OreISuzN5QGJ4ome0SYmWXVsGGa+S5341hbRxYpcafSo4RktM1GyHIx+yUu2pTTRQX7h76Z+CFIzDDg82PTGuS14vdU7fsd6u1lnDMMpwUoeJZ8WAcxjmJG+J7NtgeQxVkjCF+gH/WkvWlTL5N0TwIFfLW43hmJYvL06vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ni5jmm/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEC5C2BCB0;
+	Fri, 15 May 2026 16:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861858;
-	bh=Ouy3gQiDQJsBDF7TR2IDogjnFPIRsrjC1S48zYlGBPg=;
+	s=korg; t=1778862002;
+	bh=S6QoCc9UpZTTJYOurtPSMQbG6jysaGtKLaLEH5wTdGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rdEYkGWFA+Z3XKPi7l3VYxDp3IQImTvduTslj/RiEkBgaxjEhgLqQo8eLNpPAMd/2
-	 4DJFJl3db5BQXFtxVWRGXAuwN5vsvj4xxAKTKD7Cc2gsZr7GJZB4S/HOhGZG0NTIG+
-	 rnWv0kuXGpYExocvO3HRG4sAnyXDFSoymaS3jDG0=
+	b=ni5jmm/yxqvxQghxYlfVnk99dMs3OlfG9TuETKG4ssPL9jKuKZ8ZkqZoHCqPSfEhq
+	 A9nrqLJFCOgrig6uuP/XMSQQbrEs0fuv1S1vAp7q2spNAzejx8xemZ1JAW/JxHBaGG
+	 gt8avFRsLmFEdyUa43kFslZafVfZoYTzySbatgFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ziyi Guo <n7l8m4@u.northwestern.edu>,
 	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 016/188] media: chips-media: wave5: add missing spinlock protection for send_eos_event()
-Date: Fri, 15 May 2026 17:47:13 +0200
-Message-ID: <20260515154657.659557242@linuxfoundation.org>
+Subject: [PATCH 6.18 017/188] media: chips-media: wave5: add missing spinlock protection for handle_dynamic_resolution_change()
+Date: Fri, 15 May 2026 17:47:14 +0200
+Message-ID: <20260515154657.680953216@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
 References: <20260515154657.309489048@linuxfoundation.org>
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1D35B553F02
+X-Rspamd-Queue-Id: 4AAF6555007
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [5.34 / 15.00];
 	SEM_URIBL(3.50)[northwestern.edu:email];
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [5.34 / 15.00];
 	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248488-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248544-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -84,7 +84,7 @@ X-Spamd-Result: default: False [5.34 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_SPAM(0.00)[0.964];
+	NEURAL_SPAM(0.00)[0.963];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -96,7 +96,7 @@ X-Spamd-Result: default: False [5.34 / 15.00];
 	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[northwestern.edu:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,collabora.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,collabora.com:email,northwestern.edu:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
@@ -105,21 +105,21 @@ X-Rspamd-Action: no action
 
 From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-commit f48050436746be75227fbc90066a8658cbe94d17 upstream.
+commit cb8bdd3ffca280d014311ab395651d33f58a8708 upstream.
 
-Add spin_lock_irqsave()/spin_unlock_irqrestore() around send_eos_event()
-calls in the VB2 buffer queue and streamoff callbacks to fix the missing
-lock protection.
+Add spin_lock_irqsave()/spin_unlock_irqrestore() around the
+handle_dynamic_resolution_change() call in initialize_sequence() to fix
+the missing lock protection.
 
-wave5_vpu_dec_buf_queue_dst() and streamoff_output() call send_eos_event()
-without holding inst->state_spinlock. However, send_eos_event() has
-lockdep_assert_held(&inst->state_spinlock) indicating that callers must
-hold this lock.
+initialize_sequence() calls handle_dynamic_resolution_change() without
+holding inst->state_spinlock. However, handle_dynamic_resolution_change()
+has lockdep_assert_held(&inst->state_spinlock) indicating that callers
+must hold this lock.
 
-Other callers of send_eos_event() properly acquire the spinlock:
-- wave5_vpu_dec_finish_decode() acquires lock at line 431
-- wave5_vpu_dec_encoder_cmd() acquires lock at line 821
-- wave5_vpu_dec_device_run() acquires lock at line 1592
+Other callers of handle_dynamic_resolution_change() properly acquire the
+spinlock:
+- wave5_vpu_dec_finish_decode()
+- wave5_vpu_dec_device_run()
 
 Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
 Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
@@ -129,44 +129,29 @@ Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
 --- a/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
 +++ b/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
-@@ -1265,13 +1265,17 @@ static void wave5_vpu_dec_buf_queue_dst(
+@@ -1544,6 +1544,7 @@ static int initialize_sequence(struct vp
+ {
+ 	struct dec_initial_info initial_info;
+ 	int ret = 0;
++	unsigned long flags;
  
- 	if (vb2_is_streaming(vb->vb2_queue) && v4l2_m2m_dst_buf_is_last(m2m_ctx)) {
- 		unsigned int i;
-+		unsigned long flags;
+ 	memset(&initial_info, 0, sizeof(struct dec_initial_info));
  
- 		for (i = 0; i < vb->num_planes; i++)
- 			vb2_set_plane_payload(vb, i, 0);
+@@ -1565,7 +1566,9 @@ static int initialize_sequence(struct vp
+ 		return ret;
+ 	}
  
- 		vbuf->field = V4L2_FIELD_NONE;
++	spin_lock_irqsave(&inst->state_spinlock, flags);
+ 	handle_dynamic_resolution_change(inst);
++	spin_unlock_irqrestore(&inst->state_spinlock, flags);
  
-+		spin_lock_irqsave(&inst->state_spinlock, flags);
- 		send_eos_event(inst);
-+		spin_unlock_irqrestore(&inst->state_spinlock, flags);
-+
- 		v4l2_m2m_last_buffer_done(m2m_ctx, vbuf);
- 	} else {
- 		v4l2_m2m_buf_queue(m2m_ctx, vbuf);
-@@ -1415,8 +1419,13 @@ static int streamoff_output(struct vb2_q
- 	inst->codec_info->dec_info.stream_rd_ptr = new_rd_ptr;
- 	inst->codec_info->dec_info.stream_wr_ptr = new_rd_ptr;
- 
--	if (v4l2_m2m_has_stopped(m2m_ctx))
-+	if (v4l2_m2m_has_stopped(m2m_ctx)) {
-+		unsigned long flags;
-+
-+		spin_lock_irqsave(&inst->state_spinlock, flags);
- 		send_eos_event(inst);
-+		spin_unlock_irqrestore(&inst->state_spinlock, flags);
-+	}
- 
- 	/* streamoff on output cancels any draining operation */
- 	inst->eos = false;
+ 	return 0;
+ }
 
 
 
