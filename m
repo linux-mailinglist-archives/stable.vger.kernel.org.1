@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-248117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8L3uDepEB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-248117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:10 +0200
+	id WMkWNrpEB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-248119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:07:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E631552B76
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6BD552B42
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 319313099510
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:02:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 43BEE309C701
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574203E0082;
-	Fri, 15 May 2026 16:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8793E0092;
+	Fri, 15 May 2026 16:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAyRwKOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUTyE3Bk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C993FF1AD;
-	Fri, 15 May 2026 16:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD333E0089;
+	Fri, 15 May 2026 16:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860916; cv=none; b=OD7WxwOQhiF8UaiE1o6FWrDV7mfORJZFKVpIAx4FhNferm9u+IbHpG/mXBQGvwPeSKELuucgnEtzfFtgGhyk4K1982Xlkst7hL31F9uYKRy7fwTCVA4wiM/YuCoN8fUcPPXUyw/wDNMOm2xMYazmETA6qcgZiLqsv9CFRH42z00=
+	t=1778860921; cv=none; b=EFvcQiOPP2yDkj8yFmlbRPpfkVKsgumiDf4lEjwDfdeWpF3dut20u1GWWEkReDCtT6Sw9mrb5WMKlm+mrmTcDqN7zJaiU+pAcGlSAmpnT8v4sWvZtqf8N+8+R7zNzSENLrx6EcdNc6BSDxaRAG+9upKQOGCsJwG1JASa6tGWM+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860916; c=relaxed/simple;
-	bh=2I2mFwUsOCkUut5C1saf/1V9EsNdqRx5m/8IfnJ9MN8=;
+	s=arc-20240116; t=1778860921; c=relaxed/simple;
+	bh=gHDPfEqpCX3dhZn5l7pqjluiHXLtxQl1kfxxCPk5GrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYVUW+gKx2UenMYyLi2DCTRgVEsrQLTbLq5on36FnmIaEaFBb2xU8JkIyVeMYYg6tbMOcHyLIyCDhrFJuwVSSClhZeZoTglsQ28vFHjoQ/itCL2wjLU5PAjvvl+dk/YCxRopL1SSL6XG+f7zE+IA0NrGIIfXDhP2mZR9JKoAH8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAyRwKOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50F2C2BCB0;
-	Fri, 15 May 2026 16:01:55 +0000 (UTC)
+	 MIME-Version; b=OmSwa5F9IDIQcuhvarPW5ODvHksd2ZBEGRJLoMqtDpIVOXkyYU2osn7jkJ+ciYjYwUhFhBJoTFeWWzUTxv/P3Z2v36sqP/O/lvEpBeJ/grgfbEj1tko+jCQ6hAsanX0Q4eoOVbRxehxXouL+gA5WAF6ywu1cvPnAoiQZ2gbLKDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUTyE3Bk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DA9C2BCB0;
+	Fri, 15 May 2026 16:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860916;
-	bh=2I2mFwUsOCkUut5C1saf/1V9EsNdqRx5m/8IfnJ9MN8=;
+	s=korg; t=1778860921;
+	bh=gHDPfEqpCX3dhZn5l7pqjluiHXLtxQl1kfxxCPk5GrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAyRwKOfxQZTrseiFBYWTMX8hns7Oi4MolNsXJQJMR7djMdikbFNJsgfNIzdV3e47
-	 HUeW1YPJGvG5SUXnFEfZ3mNaGiJOQqYT55++3hJpWr+Pk4EZ6IRdd47YiqQBg1ZzzY
-	 VvyJf62jvtkdYtLvFNC1amyGE30QZHjbO5CaNIJY=
+	b=IUTyE3BksVUPupS/xpH+AGBP+Vs7bPYBHDZNNlu3mUkLFzUlmpL9U+2HOlB8P3I8p
+	 evrW0eSkDFLaEqNAx6/s0WdFcyOsC6xchsdVzDBYeUztOnP2KWvQr2YAlNYLJu1Cg+
+	 wCiKY+yxsb5z+MqOvd5SL3SWdExW9Fw03mTOK5qM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Warthog9 Hawley <warthog9@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 6.6 129/474] ktest: Fix the month in the name of the failure directory
-Date: Fri, 15 May 2026 17:43:58 +0200
-Message-ID: <20260515154717.824240037@linuxfoundation.org>
+	Tobias Gaertner <tob.gaertner@me.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.6 130/474] ntfs3: add buffer boundary checks to run_unpack()
+Date: Fri, 15 May 2026 17:43:59 +0200
+Message-ID: <20260515154717.845495189@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -63,78 +63,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2E631552B76
+X-Rspamd-Queue-Id: DE6BD552B42
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248119-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,paragon-software.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248117-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,goodmis.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,paragon-software.com:email]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Tobias Gaertner <tob.gaertner@me.com>
 
-commit 768059ede35f197575a38b10797b52402d9d4d2f upstream.
+commit b62567bca47408e6739dee75f02a2113548af875 upstream.
 
-The Perl localtime() function returns the month starting at 0 not 1. This
-caused the date produced to create the directory for saving files of a
-failed run to have the month off by one.
+run_unpack() checks `run_buf < run_last` at the top of the while loop
+but then reads size_size and offset_size bytes via run_unpack_s64()
+without verifying they fit within the remaining buffer.  A crafted NTFS
+image with truncated run data in an MFT attribute triggers an OOB heap
+read of up to 15 bytes when the filesystem is mounted.
 
-  machine-test-useconfig-fail-20260314073628
+Add boundary checks before each run_unpack_s64() call to ensure the
+declared field size does not exceed the remaining buffer.
 
-The above happened in April, not March. The correct name should have been:
+Found by fuzzing with a source-patched harness (LibAFL + QEMU).
 
-  machine-test-useconfig-fail-20260414073628
-
-This was somewhat confusing.
-
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
 Cc: stable@vger.kernel.org
-Cc: John 'Warthog9' Hawley <warthog9@kernel.org>
-Link: https://patch.msgid.link/20260420142426.33ad0293@fedora
-Fixes: 7faafbd69639b ("ktest: Add open and close console and start stop monitor")
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Tobias Gaertner <tob.gaertner@me.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/ktest.pl |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/run.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -1777,7 +1777,7 @@ sub save_logs {
-     my ($result, $basedir) = @_;
-     my @t = localtime;
-     my $date = sprintf "%04d%02d%02d%02d%02d%02d",
--	1900+$t[5],$t[4],$t[3],$t[2],$t[1],$t[0];
-+	1900+$t[5],$t[4]+1,$t[3],$t[2],$t[1],$t[0];
+--- a/fs/ntfs3/run.c
++++ b/fs/ntfs3/run.c
+@@ -963,6 +963,9 @@ int run_unpack(struct runs_tree *run, st
+ 		if (size_size > 8)
+ 			return -EINVAL;
  
-     my $type = $build_type;
-     if ($type =~ /useconfig/) {
++		if (run_buf + size_size > run_last)
++			return -EINVAL;
++
+ 		len = run_unpack_s64(run_buf, size_size, 0);
+ 		/* Skip size_size. */
+ 		run_buf += size_size;
+@@ -975,6 +978,9 @@ int run_unpack(struct runs_tree *run, st
+ 		else if (offset_size <= 8) {
+ 			s64 dlcn;
+ 
++			if (run_buf + offset_size > run_last)
++				return -EINVAL;
++
+ 			/* Initial value of dlcn is -1 or 0. */
+ 			dlcn = (run_buf[offset_size - 1] & 0x80) ? (s64)-1 : 0;
+ 			dlcn = run_unpack_s64(run_buf, offset_size, dlcn);
 
 
 
