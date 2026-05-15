@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-247448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIXsOdDOBmqAoAIAu9opvQ
-	(envelope-from <stable+bounces-247448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:44:16 +0200
+	id aLeKBbrNBmpjoAIAu9opvQ
+	(envelope-from <stable+bounces-247449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:39:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6806B54AC84
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:44:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFD054AB60
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EF2D3035D47
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:39:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 97D243015723
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A5237C901;
-	Fri, 15 May 2026 07:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090513E9F97;
+	Fri, 15 May 2026 07:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UP8IOzMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGN3YwdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC722241139
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 07:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163BE3F0748
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 07:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778830758; cv=none; b=CcuXhBsM1sVEeXYdt9hdUeRGwZAV2FLP1bCFTIPeXTPqnENeaiHsYXKk6XzeYwejD4HIm4tOxrYjPjuZ3TBOMxlcmxRhfgffEib4PzWhyjkwNHANF/RqtMLdearn4hFktMoxZf+HRCpCqamZRXwDSAdOxaRmrfGrseaqcDZm1UQ=
+	t=1778830765; cv=none; b=liWN6AuJkkl4YIlyw0iLRrnZOg7XtRslEQvBIcrkN0aOlgf04cy9HkDa8lxosSiaAQJv+p+9iHMBbnROO3gZ3LNF+6BlOikRZpisqQsgg/OO6X9xXCAhW0yIq0xs3uHwH/eNYepMRmR85tY0m7qofEko3/4yz4ni9ksCmt5ep24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778830758; c=relaxed/simple;
-	bh=1m5oFvQF2JQlrEOub99GOXv9/R1L32AC8rL2dGwTXoQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WflKLhzOtMrlEs6IlvkmNTnNRVBjJ49MZlEbFZutop9KQEPRgWn2bvAk7lr/poGAY9xIX90oTPM4xHP0OnuRzE60dCkEKWT8oztSMhTMrjkPqldAHTzskAiWieokqLHpVE/nMtAfEuCBcIFSiV8llXGC/Y79QkIV0KdJzc66ATA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UP8IOzMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F69C2BCB0;
-	Fri, 15 May 2026 07:39:18 +0000 (UTC)
+	s=arc-20240116; t=1778830765; c=relaxed/simple;
+	bh=rq0+JCuDP/rQbn+ToSP3V1Role4MztSkoMfR6rDOeoU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sdChpefPRcuwHbW69VH8KBpMn9AeJYJ+ZUbItInPbRtHEkLyGxBv7zB+dqnboKPNn66wtwETtd9rvyw7sr//cTJS5NJU1xIEngLVaxAkLEPVhA046FZ6n31iMWWo7h/2W3uB185nZReAJe3Id2orl9N+2lyGqFL5WmtXPByUnjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGN3YwdT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B2AC2BCB0;
+	Fri, 15 May 2026 07:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778830758;
-	bh=1m5oFvQF2JQlrEOub99GOXv9/R1L32AC8rL2dGwTXoQ=;
+	s=korg; t=1778830764;
+	bh=rq0+JCuDP/rQbn+ToSP3V1Role4MztSkoMfR6rDOeoU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UP8IOzMyIfc+b4yDJhlVLeBiaPU62tJUJdU7X166c4ymirQkacDiQAzE/nVJAVmY5
-	 jxrqidwHTo0if5LSOyFY4O5QSkQ6WZ55PbPIi39nL4Ug3TzBS9rlXdBF7pnSzxHOlx
-	 dUfODzr0U/dkpmlO8fQhzEFkmolk0EVXq3ohcd9k=
-Subject: FAILED: patch "[PATCH] spi: fsl-espi: fix controller deregistration" failed to apply to 6.1-stable tree
-To: johan@kernel.org,broonie@kernel.org,hkallweit1@gmail.com
+	b=oGN3YwdT66YPd/NkQ8LUYE9AXIanWkAJ1sil0S3MONZksJ/rfCJ8kifZh/L5GlacD
+	 YJqIA6+zfgnXoqzTSnIlv56JUxnT+u2yt6LaA7NkFll0H4AT78mzcr32JXHazr6qyv
+	 PNBemRDvyH6JPyL6+8IqymXoMuVpE/xC+WyP6Bsk=
+Subject: FAILED: patch "[PATCH] spi: omap2-mcspi: fix controller deregistration" failed to apply to 5.15-stable tree
+To: johan@kernel.org,broonie@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 May 2026 09:39:12 +0200
-Message-ID: <2026051512-arguably-underhand-cbf3@gregkh>
+Date: Fri, 15 May 2026 09:39:25 +0200
+Message-ID: <2026051525-return-guts-2dc8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,53 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6806B54AC84
+X-Rspamd-Queue-Id: DBFD054AB60
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247449-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247448-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.996];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x e506a700a7ad229f5c8f01f4b8350119cccb4158
+git cherry-pick -x fb45f95c377e4a4bdece2c5e17643b459c9c13e7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051512-arguably-underhand-cbf3@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051525-return-guts-2dc8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,50 +111,50 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e506a700a7ad229f5c8f01f4b8350119cccb4158 Mon Sep 17 00:00:00 2001
+From fb45f95c377e4a4bdece2c5e17643b459c9c13e7 Mon Sep 17 00:00:00 2001
 From: Johan Hovold <johan@kernel.org>
-Date: Thu, 9 Apr 2026 14:04:12 +0200
-Subject: [PATCH] spi: fsl-espi: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:35 +0200
+Subject: [PATCH] spi: omap2-mcspi: fix controller deregistration
 
-Make sure to deregister the controller before disabling runtime PM
-(which can leave the controller disabled) to allow SPI device drivers to
-do I/O during deregistration.
+Make sure to deregister the controller before releasing underlying
+resources like DMA during driver unbind.
 
-Fixes: e9abb4db8d10 ("spi: fsl-espi: add runtime PM")
-Cc: stable@vger.kernel.org	# 4.3
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Fixes: ccdc7bf92573 ("SPI: omap2_mcspi driver")
+Cc: stable@vger.kernel.org	# 2.6.23
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-14-johan@kernel.org
+Link: https://patch.msgid.link/20260410081757.503099-6-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 56270f8fdc17..45b9974ae911 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -718,7 +718,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
- 	pm_runtime_enable(dev);
- 	pm_runtime_get_sync(dev);
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index a3468e47e77d..56b30ff58771 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1592,7 +1592,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	if (status < 0)
+ 		goto disable_pm;
  
--	ret = devm_spi_register_controller(dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret < 0)
- 		goto err_pm;
+-	status = devm_spi_register_controller(&pdev->dev, ctlr);
++	status = spi_register_controller(ctlr);
+ 	if (status < 0)
+ 		goto disable_pm;
  
-@@ -782,7 +782,15 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
+@@ -1613,11 +1613,17 @@ static void omap2_mcspi_remove(struct platform_device *pdev)
+ 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+ 	struct omap2_mcspi *mcspi = spi_controller_get_devdata(ctlr);
  
- static void of_fsl_espi_remove(struct platform_device *dev)
- {
-+	struct spi_controller *host = platform_get_drvdata(dev);
++	spi_controller_get(ctlr);
 +
-+	spi_controller_get(host);
++	spi_unregister_controller(ctlr);
 +
-+	spi_unregister_controller(host);
+ 	omap2_mcspi_release_dma(ctlr);
+ 
+ 	pm_runtime_dont_use_autosuspend(mcspi->dev);
+ 	pm_runtime_put_sync(mcspi->dev);
+ 	pm_runtime_disable(&pdev->dev);
 +
- 	pm_runtime_disable(&dev->dev);
-+
-+	spi_controller_put(host);
++	spi_controller_put(ctlr);
  }
  
- #ifdef CONFIG_PM_SLEEP
+ /* work with hotplug and coldplug */
 
 
