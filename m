@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-247741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBzxOsAUB2rgrQIAu9opvQ
-	(envelope-from <stable+bounces-247741-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:42:40 +0200
+	id aGaUEMQTB2rgrQIAu9opvQ
+	(envelope-from <stable+bounces-247739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:38:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A5554FC82
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:42:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A486054FB46
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A15473268229
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:16:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4F89830DDD3A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0780847F2D1;
-	Fri, 15 May 2026 12:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35C347D948;
+	Fri, 15 May 2026 12:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RVOMHEDv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lhlyflm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EF747F2E5
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6F947ECD0
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778847333; cv=none; b=bwlweEsSo6VZRyMY41GnyYuKa0qDRnY2D88wD9TDOpsJXC1ptvOp/SiylRcnDvcAkZloebFFdddoUfHGL8jsOBYeAqkG0Kjv6q8VLVIm2i6jUU3klpKNK+AMkc9MNn2mQNiaPLSIf7i6ucPbXi05J1BA0jm/6s5lXimujrG92N0=
+	t=1778847331; cv=none; b=oA3iCqDKsMaIaZ23QvKeIDQ1WdR7GSd08XKoFoaTDk9Ue2iNlBdhcIVvEAA/YcWQ5enu6KVd1U0lWDeD46wxw4NeNDYjrNZPrYvekRIrENEZB8pOCpzL226AgPdvquvevsmThBRFKFKx5gc79152wWKIDRq1945YMSZ6UBMwQNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778847333; c=relaxed/simple;
-	bh=U/0vKkm8ojQXIsp3AEDb0qA59xW7mYTF51Zng5h7xSQ=;
+	s=arc-20240116; t=1778847331; c=relaxed/simple;
+	bh=UtaIFRI3aWnYM0U65Zw5vkrDA/YM4S6SIsKkmWeOOLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zok3e2y4Ak55FqrvkJmIIhUZSCvnczS0tbsNRzRx5C1oKKlFJq/uqjGC6CHeAyonb3afWRsGmoYN8W5mgSUH/Thm49QKG5olZRzjIfNIoeZ3iHuiSUMb+YBFy1Dqa2a1eaiJf0AS3tsiVOxLzIqSvByZ5zCVF80a58fxpV3chHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RVOMHEDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37AEC2BCB8;
-	Fri, 15 May 2026 12:15:31 +0000 (UTC)
+	 MIME-Version; b=LZj6oj1WBPHUHyaW9njAvXXtwm1KHZGigWnkpFrsKLyiX1/qBDd8P4Gmx6aeOCxG6e3HvH/cNRkCAFHB3qcPora1HDEq/CyukWp2P5G7Tu+j74mAnhu1ldNgY9gwinMNufN2vSkNQwovrzM5Tot+PPcHXw+e5zLFEeRgFfY8OZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lhlyflm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29C2C2BCB7;
+	Fri, 15 May 2026 12:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778847332;
-	bh=U/0vKkm8ojQXIsp3AEDb0qA59xW7mYTF51Zng5h7xSQ=;
+	s=k20201202; t=1778847330;
+	bh=UtaIFRI3aWnYM0U65Zw5vkrDA/YM4S6SIsKkmWeOOLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVOMHEDvI+4W0V7pGXvV0osef6vDKDafc6tIG1oz3ouDjLHsCqDPci2VMjUe3MBiB
-	 A4+jXfv7UmaS2qAiI1WSG66WC62naVWp1S1BCODdwmRxxurqDWra3fnZWEbqi3PFI3
-	 ILzgMGcXRTnrt3q+AR5LAoGfxxMJbZLr/w1A5re3//ZFOsKtBVyGTiDTe1qgl5mAXD
-	 Un2aJFb9FFfC6/f0RLqbM+zlTbBoXm1iA3bN8oOTZk0Pgc635YByd24uksABuVvvjD
-	 IR3YAePvp4XHamWjEsqwlpvgDiGKybnnbSxR1QsCgzko5TmYAj4eztoTvSiDDQGOg9
-	 S3n72lG+1jilg==
+	b=Lhlyflm4mgbMTnn+vnn2wy4iWRTkuIiLZfsJ9dQ/pMDmYBM0+A+MNedrid/YFlbre
+	 DBsNqwtc/K1U05g702sHJtQMvwRn6Hqy9ncVQ90zLiQ2X5wSpcapAWIsr92yrG+qj+
+	 ITmlqTHLDoN3BIXs9E7v0VPWmEOj2/s9HfSqsLrt9YdL9SvCf7GmeCvmDs5XgGDEsU
+	 fD3yMkuIHLKEInNXCLqsfVIroYUou71UzIDE9WpRp9xgjYSrzY0+RDNo2ZA3sL1qaP
+	 s7GnKt2tuaTnFZ7PkDsMH9cAVLl0kxIPziLwsgUthjMxEqEY1ZKFtDp7HeIVS/jcMN
+	 puJzA7bEhnHxg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Masayuki Ohtake <masa-korg@dsn.okisemi.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] spi: topcliff-pch: fix controller deregistration
-Date: Fri, 15 May 2026 08:15:25 -0400
-Message-ID: <20260515121525.3130058-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] btrfs: remove fs_info argument from btrfs_sysfs_add_space_info_type()
+Date: Fri, 15 May 2026 08:15:27 -0400
+Message-ID: <20260515121528.3130102-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260515121525.3130058-1-sashal@kernel.org>
-References: <2026051240-sleep-zen-7409@gregkh>
- <20260515121525.3130058-1-sashal@kernel.org>
+In-Reply-To: <2026051235-rockband-barrel-a707@gregkh>
+References: <2026051235-rockband-barrel-a707@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 72A5554FC82
+X-Rspamd-Queue-Id: A486054FB46
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -72,11 +71,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247741-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247739-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -90,54 +89,85 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-From: Johan Hovold <johan@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 5d6f477d6fc0767c57c5e1e6f55a1662820eef87 ]
+[ Upstream commit 771af6ff72e0ed0eb8bf97e5ae4fa5094e0c5d1d ]
 
-Make sure to deregister the controller before disabling and releasing
-underlying resources like interrupts and DMA during driver unbind.
+We don't need it since we can grab fs_info from the given space_info.
+So remove the fs_info argument.
 
-Fixes: e8b17b5b3f30 ("spi/topcliff: Add topcliff platform controller hub (PCH) spi bus driver")
-Cc: stable@vger.kernel.org	# 2.6.37
-Cc: Masayuki Ohtake <masa-korg@dsn.okisemi.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-8-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_controller_*(data->host) calls to spi_master_*(data->master) ]
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: a7449edf9614 ("btrfs: fix double free in create_space_info_sub_group() error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-topcliff-pch.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/btrfs/space-info.c | 4 ++--
+ fs/btrfs/sysfs.c      | 5 ++---
+ fs/btrfs/sysfs.h      | 3 +--
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 9641de3fef177..fa60828808d84 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1427,6 +1427,10 @@ static void pch_spi_pd_remove(struct platform_device *plat_dev)
- 	dev_dbg(&plat_dev->dev, "%s:[ch%d] irq=%d\n",
- 		__func__, plat_dev->id, board_dat->pdev->irq);
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 7da0e739762af..d059bf5eaa098 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -265,7 +265,7 @@ static int create_space_info_sub_group(struct btrfs_space_info *parent, u64 flag
+ 	sub_group->parent = parent;
+ 	sub_group->subgroup_id = id;
  
-+	spi_master_get(data->master);
-+
-+	spi_unregister_master(data->master);
-+
- 	if (use_dma)
- 		pch_free_dma_buf(board_dat, data);
- 
-@@ -1454,7 +1458,8 @@ static void pch_spi_pd_remove(struct platform_device *plat_dev)
+-	ret = btrfs_sysfs_add_space_info_type(fs_info, sub_group);
++	ret = btrfs_sysfs_add_space_info_type(sub_group);
+ 	if (ret) {
+ 		kfree(sub_group);
+ 		parent->sub_group[index] = NULL;
+@@ -294,7 +294,7 @@ static int create_space_info(struct btrfs_fs_info *info, u64 flags)
+ 			goto out_free;
  	}
  
- 	pci_iounmap(board_dat->pdev, data->io_remap_addr);
--	spi_unregister_master(data->master);
-+
-+	spi_master_put(data->master);
- }
- #ifdef CONFIG_PM
- static int pch_spi_pd_suspend(struct platform_device *pd_dev,
+-	ret = btrfs_sysfs_add_space_info_type(info, space_info);
++	ret = btrfs_sysfs_add_space_info_type(space_info);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/fs/btrfs/sysfs.c b/fs/btrfs/sysfs.c
+index ea13e3eee7d90..8f195e769ecf0 100644
+--- a/fs/btrfs/sysfs.c
++++ b/fs/btrfs/sysfs.c
+@@ -1825,13 +1825,12 @@ static const char *alloc_name(struct btrfs_space_info *space_info)
+  * Create a sysfs entry for a space info type at path
+  * /sys/fs/btrfs/UUID/allocation/TYPE
+  */
+-int btrfs_sysfs_add_space_info_type(struct btrfs_fs_info *fs_info,
+-				    struct btrfs_space_info *space_info)
++int btrfs_sysfs_add_space_info_type(struct btrfs_space_info *space_info)
+ {
+ 	int ret;
+ 
+ 	ret = kobject_init_and_add(&space_info->kobj, &space_info_ktype,
+-				   fs_info->space_info_kobj, "%s",
++				   space_info->fs_info->space_info_kobj, "%s",
+ 				   alloc_name(space_info));
+ 	if (ret) {
+ 		kobject_put(&space_info->kobj);
+diff --git a/fs/btrfs/sysfs.h b/fs/btrfs/sysfs.h
+index e6a284c59809c..ec834a4af2e5d 100644
+--- a/fs/btrfs/sysfs.h
++++ b/fs/btrfs/sysfs.h
+@@ -36,8 +36,7 @@ void __cold btrfs_exit_sysfs(void);
+ int btrfs_sysfs_add_mounted(struct btrfs_fs_info *fs_info);
+ void btrfs_sysfs_remove_mounted(struct btrfs_fs_info *fs_info);
+ void btrfs_sysfs_add_block_group_type(struct btrfs_block_group *cache);
+-int btrfs_sysfs_add_space_info_type(struct btrfs_fs_info *fs_info,
+-				    struct btrfs_space_info *space_info);
++int btrfs_sysfs_add_space_info_type(struct btrfs_space_info *space_info);
+ void btrfs_sysfs_remove_space_info(struct btrfs_space_info *space_info);
+ void btrfs_sysfs_update_devid(struct btrfs_device *device);
+ 
 -- 
 2.53.0
 
