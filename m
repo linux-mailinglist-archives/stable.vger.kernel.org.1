@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HG0MAdFB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-247884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:39 +0200
+	id eMneAtNTB2oqywIAu9opvQ
+	(envelope-from <stable+bounces-248715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:11:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9411F552BA7
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89705554930
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:11:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC71B306FD3E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B09E1312D5C6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9983FF1D5;
-	Fri, 15 May 2026 15:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85893F9297;
+	Fri, 15 May 2026 16:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpTvaTqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EliuyFg1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000503FF1A0;
-	Fri, 15 May 2026 15:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC563F927B;
+	Fri, 15 May 2026 16:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860320; cv=none; b=pRD+b/FEVm6Hu2W8lgwiiGsT75GMtUt0xI1fOi3YDGsH2VGox2hdrVtN2+ezpzTo1e+DrUGJXdaGJyDQ+JvtUc0x1H1A6N/ProSRXu5Ff3lJM6srm93/G4KciKv52w8e2HPcKMd/bbdVI8c0VwlwwthV4w+AQkCiJWhSEqwLcTs=
+	t=1778862443; cv=none; b=LPgMsfuPqYq4DDUSkIwwtmhkDm2lS6s0IdNnuj1tKR43pZ7oRV86AsBdk1bZmcZwmX27wZzleVoT8K+TsS0Je3z1eGHDGcssZKhMGbftJsII021UG7INchSDw00oCNOxWR5TKYNcDEPv4weRepscqZKnXfsrhbo6uTVOj2yM4Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860320; c=relaxed/simple;
-	bh=yibTLfO+8VequM+jpc2sKJle4DfgR3i9eEXT+eYNQIw=;
+	s=arc-20240116; t=1778862443; c=relaxed/simple;
+	bh=qAEcn+T07j6w5GBKqPPiV/VSBrOYR8J2B/VQn4J4Yrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFed/nhhcbsjicdE7TgR37BpRl05ALM+bVkNObtAxFlBoTcNjXi/OEcc18VUKP3IbFLP2991fY8SRR0iuqYx1JsrcMhuBSBwgL5bfi7MG53Mvgv2os20CZoUIACaaqYZfvwBkoD1z6jrVzw1D3EgokRK+dYk3S+/vgmmnFQf53o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpTvaTqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E517C2BCB0;
-	Fri, 15 May 2026 15:51:59 +0000 (UTC)
+	 MIME-Version; b=YMpEshY3budP5tm3LUOqViStOryptkxlwASCMjtVFH75quV8cuOJ+s1xzvPQgGyxfE0xEACBePh8VnOmIm//KoY32SHN5Z4xF5/mex23FOf1gcGP265oDiphRV6GIZEFKz6fXn0u0kw3F+7EOwi4S8jlyMx8LUqy7h5mbWiYEns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EliuyFg1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8C3C2BCB0;
+	Fri, 15 May 2026 16:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860319;
-	bh=yibTLfO+8VequM+jpc2sKJle4DfgR3i9eEXT+eYNQIw=;
+	s=korg; t=1778862443;
+	bh=qAEcn+T07j6w5GBKqPPiV/VSBrOYR8J2B/VQn4J4Yrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpTvaTqX7w80BgbxIoizOk2tRBzehk5Es7eoGa/k4eMDPDeeRp0cKPsP5kWqk6IzG
-	 lif/dbDbJ39Tv74KyI6H5AM4Mli5VcDbej9C5edzUoeeXrfnNN+XtyZ4XwMIg2/gps
-	 ah+j6H6FxaYFTI51u2n0Ins804mYDIPihFWcKdnw=
+	b=EliuyFg1tqJuqA+LynxzPDU4tofGuBFuJzSWxPS/Rg5We7zZ1bGi7uO3931XTCDP3
+	 47rp+difInWLUqlwQRd15eLfkKMjfoCPUaGTOY66g786jS+ZSjoyQfDAKBQl+hQ42C
+	 MtAcYETxxvZSqRTGTM37UXT/jLQ4Lnpofm4SQi0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purna Chandra Mandal <purna.mandal@microchip.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 043/144] spi: pic32: fix controller deregistration
+Subject: [PATCH 7.0 051/201] spi: meson-spicc: fix controller deregistration
 Date: Fri, 15 May 2026 17:47:49 +0200
-Message-ID: <20260515154654.526538170@linuxfoundation.org>
+Message-ID: <20260515154659.640560131@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9411F552BA7
+X-Rspamd-Queue-Id: 89705554930
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247884-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248715-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,62 +91,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,microchip.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 6b627bfe0c44e064aba464839e430dc1ca2b0bb8 upstream.
+commit 77953c76bec9af4191f8692a10225dd816208718 upstream.
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+Make sure to deregister the controller before disabling it to allow SPI
+device drivers to do I/O during deregistration.
 
-Fixes: 1bcb9f8ceb67 ("spi: spi-pic32: Add PIC32 SPI master driver")
-Cc: stable@vger.kernel.org	# 4.7
-Cc: Purna Chandra Mandal <purna.mandal@microchip.com>
+Fixes: 454fa271bc4e ("spi: Add Meson SPICC driver")
+Cc: stable@vger.kernel.org	# 4.13
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-7-johan@kernel.org
+Link: https://patch.msgid.link/20260409120419.388546-18-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-pic32.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/spi/spi-meson-spicc.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-pic32.c
-+++ b/drivers/spi/spi-pic32.c
-@@ -821,7 +821,7 @@ static int pic32_spi_probe(struct platfo
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -1081,7 +1081,7 @@ static int meson_spicc_probe(struct plat
+ 		}
  	}
  
- 	/* register host */
 -	ret = devm_spi_register_controller(&pdev->dev, host);
 +	ret = spi_register_controller(host);
  	if (ret) {
- 		dev_err(&host->dev, "failed registering spi host\n");
- 		goto err_bailout;
-@@ -840,11 +840,16 @@ err_host:
- 
- static void pic32_spi_remove(struct platform_device *pdev)
+ 		dev_err(&pdev->dev, "spi registration failed\n");
+ 		goto out_host;
+@@ -1099,8 +1099,14 @@ static void meson_spicc_remove(struct pl
  {
--	struct pic32_spi *pic32s;
-+	struct pic32_spi *pic32s = platform_get_drvdata(pdev);
-+
-+	spi_controller_get(pic32s->host);
-+
-+	spi_unregister_controller(pic32s->host);
+ 	struct meson_spicc_device *spicc = platform_get_drvdata(pdev);
  
--	pic32s = platform_get_drvdata(pdev);
- 	pic32_spi_disable(pic32s);
- 	pic32_spi_dma_unprep(pic32s);
++	spi_controller_get(spicc->host);
 +
-+	spi_controller_put(pic32s->host);
++	spi_unregister_controller(spicc->host);
++
+ 	/* Disable SPI */
+ 	writel(0, spicc->base + SPICC_CONREG);
++
++	spi_controller_put(spicc->host);
  }
  
- static const struct of_device_id pic32_spi_of_match[] = {
+ static const struct meson_spicc_data meson_spicc_gx_data = {
 
 
 
