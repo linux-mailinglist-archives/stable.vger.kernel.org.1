@@ -1,158 +1,166 @@
-Return-Path: <stable+bounces-248895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLIIBWJnB2rG1wIAu9opvQ
-	(envelope-from <stable+bounces-248895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:35:14 +0200
+	id TuidH+RrB2rY2gIAu9opvQ
+	(envelope-from <stable+bounces-248896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:54:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE166556503
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:35:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C70F055683E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AABA8300908A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:35:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E0CA53008780
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0815C3F9A13;
-	Fri, 15 May 2026 18:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F307322C88;
+	Fri, 15 May 2026 18:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oldschoolsolutions.biz header.i=jens.glathe@oldschoolsolutions.biz header.b="mIM1Lzbh"
-X-Original-To: Stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jo0Mkj7K"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7493EEAED;
-	Fri, 15 May 2026 18:35:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977023E2AC9
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 18:54:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778870105; cv=none; b=qVUwRNc9nS876Rr0zoH9GOdva6Zt4cU24so0RTy0itdmItdiQsP7IAynlwJMLJpajbNwBNePs4EyLe7bPjZzIfdyyfJIa9zRX9EQBeGsPywBGRvzwk80unCsYRwVJTU1TdzApcph6V46x6xDFawJnYxnYG704/XDQCe7Po6/A20=
+	t=1778871264; cv=none; b=qytv4cK+ix8ez9TzbmQG+a794KHbG+vWa2eBiZhoizM8rDNhhE/cwLei+Ybu3l0w8ltUGh5TohouH8IzZZ7nfsyS/i1URX6Xd6kzppn7VnKiSsykjL7QipSo4/mlN1bV2oZ3CDZXd/5rrQ84bzp7MqprKR9r8/ZeLcf/DLEY28M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778870105; c=relaxed/simple;
-	bh=0va+p57QfeIXjAOCoOZbtm/d1y10zNtarNsxeosxD7U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UnQhf1MLWpua5co03Iwk0tU6tJm8JH7gcJm45Es/Vx9LZ6H5bjNPeLh4kytTv4TwlttfBT3anNH6i4ZsK553Nv1So8zMLwm4rlTsyn/QPrYXLmev8CCCpG+nPsbu42Gb+0bOUp03X3eBKTX/tia6JtKPKz4loiuWId+/klz/tdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oldschoolsolutions.biz; spf=pass smtp.mailfrom=oldschoolsolutions.biz; dkim=pass (2048-bit key) header.d=oldschoolsolutions.biz header.i=jens.glathe@oldschoolsolutions.biz header.b=mIM1Lzbh; arc=none smtp.client-ip=212.227.126.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oldschoolsolutions.biz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oldschoolsolutions.biz
+	s=arc-20240116; t=1778871264; c=relaxed/simple;
+	bh=nTcZX/DWGU1CpcE+FjZGPqCuDNvpnbdaHyvbqNur18Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=R5hdH9KGeSwgz1UM7nZjLgp6SxnrACLDktSSM0ISqFUl72N1534bXVBwyhmHlj/qgAdBwv3pUdFvANp9OEAsaAdSOLF1e9ZWHmWKSJTWcfttPIQDhDMA3AR1hws8udfAMFdaMzByBFQSCU4PAhRL30Lu5uXOF3cTubUeJjy1/4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jo0Mkj7K; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4891ca4ce02so2605e9.1
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 11:54:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=oldschoolsolutions.biz; s=s1-ionos; t=1778870073; x=1779474873;
-	i=jens.glathe@oldschoolsolutions.biz;
-	bh=0va+p57QfeIXjAOCoOZbtm/d1y10zNtarNsxeosxD7U=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=mIM1LzbheHBVKLVsN4FU+HULpLilpS15vhAiucwLX8EJj5xA/CJ3ECEEnUOnEW45
-	 /gQk5slWBeqHdVymTpcvdje+bIRmmU9mP8JmcbNXbGLojD58jEY616c+B8A4zreaB
-	 YJ6fY5LaU2bpZV3EbEzuelleGMt+5xsTryhsQ8fMmUMY/r4TDCtps5tAPvV0FqT80
-	 9vXKwMcsXtTuvQyDoaupAjWS1pibqMqSF0ZTvDo97ERgUt2rtkXrtD6h8zEHEMuyt
-	 RQBZf8bgSt0BlvqHXKgaH61BOQ7MhY7/t0HXNmPkicMPo9VVBbdgREPrapfP/mZ9+
-	 ji06os4GbNjiBSA/9w==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue009
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MlNgz-1x6sxI20mT-00mYUF; Fri, 15
- May 2026 20:34:33 +0200
-Message-ID: <10e69eef-c510-46bf-be0c-ef09caf2556f@oldschoolsolutions.biz>
-Date: Fri, 15 May 2026 20:34:31 +0200
+        d=google.com; s=20251104; t=1778871261; x=1779476061; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KiBl3jpGU5FWBix5rYt2GNJNkBPFFyXVwut06neuXAY=;
+        b=jo0Mkj7KkFhvaRKJZsQ/2qv3namBH+FycN0TSk7T5xo36peYIfSN6doPhGFmgBjhZ7
+         q8fuqO1x40AyKyfqyoLNUnaK0dh1ZVGPelqc16qnuLZAwNtMD9wrjv3M9rccuQoM8IOG
+         W0m0rGdci0xq2iiC+f+F/GlqwneUsgSFXrBDsn3Kh7UpJtHeXSePIP/HY2GNJWZLScxL
+         iYE2I6k0qAvR2MX4xbBY4Pf8vNXdZYfPfjXEAeeYRDnzMxrhWsrRVu1T6RaruyMVtbVF
+         z0NEDEq49fFLPoQtejnOvTBpalicUwI4G11Rq/PQiQQqaE1JiCefkrOsVXOW0WQMqTQE
+         7HgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778871261; x=1779476061;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KiBl3jpGU5FWBix5rYt2GNJNkBPFFyXVwut06neuXAY=;
+        b=o24Q0hBCpo6noluTAQym6/ivVvAL8NlyclGpiJQaOhB1uuir9Y1rjd8jCJQdM2OSbX
+         yusBk06ju4PpHoDZyfniwUr3gK+n0xFU7rhkq8HnbeNJGgwJgOPPIxHImUJiahW0ZYMI
+         bpmU2VxOcGzrjdluTjb6ypYWqpnXrrMYwVKWpHAHXfq97sUI4qnmyatt/cFZESpIlpGj
+         zdykSdsXJVwDqG05cA5FX/a7lRKP21G2O1aI5U4P4MJVcM6aDznv5Do2o4U0nIZ7TMwU
+         pDY5ruKt6MEj/NfLeW0FLKFp8Y1l8nztG3n3gkOcagPydR8r65+cB9kbUxLlJmuAQaBU
+         X47Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+rNUVS5SdkXuOqOftx1hJ33hzMdB4U6z6PXCyJS9g1hzk4IKZrPWNheZyBwlNKc/cc4FO8WTE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDfB1fIsqt2dbdj2+75pia0FjsvDwNO65RTGYnn0WfOhiaKF0/
+	/Gh3jdl6FORk8ENiokWEygefuNLuJvl6/UPxKe1BvYd9ckgRQS4srrLjKWnVMcCOlA==
+X-Gm-Gg: Acq92OFNFHFdoPziCf5LdVMNknSoP7MKzlZqJU1sKuSACey3CkhJbMxxHnLC6jq8wvm
+	YfdvkMw9BVNyRPWgZxqVr72lkeNWMy1TcHQ0ArBbgOVHqNtWIhVKA2FOJLZxVE9lAJguhTTqLjN
+	yHtQj4UJ2TJoNaigl78EsQdg3qSgnFGdym6ypzI1J7HMEQBvFSRxA8mtl43xE9lWeyfLM4J9Eik
+	BzieFq6Ic0X704qQJIQAlfXhwiDt9KA/5flZbLoUnqP8K04NV2/fTnkUQj/EEQfa9KDG9BVk6c8
+	pBeL8+pONp96TMUV9kzS9/8tpbOBAWHU+LT7vi2R7HEd6YwM2jqnYUAtesVMULLzSksBK9FNPyU
+	xdLKEfHNzfUeGBFaRo28yckFFqwd4u/26uXum9VPFW72hqA6UPyHmmi2/49ddHf57OchIgOaPsh
+	+pUKpjeqkoO+bKaKghVBr14zOX3vMN3qMgD13KPNIbtP8QSd859aHU73wbcKdwfw==
+X-Received: by 2002:a7b:c04a:0:b0:475:d905:9f12 with SMTP id 5b1f17b1804b1-48ff45eae11mr102345e9.4.1778871260631;
+        Fri, 15 May 2026 11:54:20 -0700 (PDT)
+Received: from localhost ([2a00:79e0:288a:8:7481:4dac:8e80:6e9b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c8344asm129308605e9.1.2026.05.15.11.54.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2026 11:54:19 -0700 (PDT)
+From: Jann Horn <jannh@google.com>
+Subject: [PATCH 0/3] af_unix: unix_stream_data_wait() fix and improvements
+Date: Fri, 15 May 2026 20:54:07 +0200
+Message-Id: <20260515-unix-recv-wait-v1-0-76adb5f063d5@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH] ASoC: qcom: q6apm-dai: Allocate an extra page for PCM
- buffers
-To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
- broonie@kernel.org
-Cc: linux-sound@vger.kernel.org, lgirdwood@gmail.com, perex@perex.cz,
- tiwai@suse.com, johan@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
- konrad.dybcio@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, val@packett.cool, mailingradian@gmail.com,
- Stable@vger.kernel.org
-References: <20260514090607.2435484-1-srinivas.kandagatla@oss.qualcomm.com>
-Content-Language: en-US
-From: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
-In-Reply-To: <20260514090607.2435484-1-srinivas.kandagatla@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:LQgE1aRYJDyiRMjIh4hSFhNG0UsI9fb+tTKKPb8hZHiqweyeWds
- I2KzkiwkZLpjfWzNS6wj16syAuERJnNzD5Jh59o/cAuGCD494/cY4M9W49+CBMdzhxBZqph
- M38HGFNhI+HAecZr2YqQW6DpMGwrK/wSX79FJSxZZzsCqh/zqf7b8txckUarENnkW8L0J36
- WHBwThHwVV5VYDo61Ibnw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:hSxGGJLq7zg=;/BvLIbT9seQ+Xg74L4gxNoU3+pe
- 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
- 050PWG6bovCPgafZIesDz7l3wZdPc=
-X-Rspamd-Queue-Id: AE166556503
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAM9rB2oC/x3MPQqAMAxA4atIZgOtf6BXEYcao2ap0motFO9uc
+ fyG9xJ4dsIehiKB4yBeDpuhywJoN3ZjlCUbKlV1qtUt3lYiOqaAj5ELlZ5r09NsiBrI0el4lfg
+ Px+l9Px4OcH1gAAAA
+X-Change-ID: 20260515-unix-recv-wait-01b3a9cbacc4
+To: Kuniyuki Iwashima <kuniyu@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: Hannes Frederic Sowa <hannes@stressinduktion.org>, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jann Horn <jannh@google.com>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778871255; l=1034;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=nTcZX/DWGU1CpcE+FjZGPqCuDNvpnbdaHyvbqNur18Y=;
+ b=UsLE2KYnnrdM7SxVwkNi2ZDes5jTJ8hfwmzSuFDCf54yFtoKJo/06pcoJXES5NiN1y6cVF0zA
+ ujNAtJfgTh5A4K86sU70s5RMfNjarjTs8I5KOnWGxHkgYEv26P4nrK0
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+X-Rspamd-Queue-Id: C70F055683E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[oldschoolsolutions.biz,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[oldschoolsolutions.biz:s=s1-ionos];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248895-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,perex.cz,suse.com,kernel.org,oss.qualcomm.com,packett.cool];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	TAGGED_FROM(0.00)[bounces-248896-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jens.glathe@oldschoolsolutions.biz,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[oldschoolsolutions.biz:+];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oldschoolsolutions.biz:email,oldschoolsolutions.biz:mid,oldschoolsolutions.biz:dkim]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jannh@google.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-n 5/14/26 11:06, Srinivas Kandagatla wrote:
-> Fixes: 8ea6e25c8536 ("ASoC: qcom: q6apm: Add support for early buffer ma=
-pping on DSP")
+Patch 1 fixes a race condition that can lead to a UAF read in
+unix_stream_data_wait(). This is a read-only UAF that doesn't have
+particularly interesting security consequences, but should still be
+fixed. This is a minimal fix, intended to be easy to backport.
 
-Hi Srini, thank you for the patch. I booted with this patch on one of=20
-the sc8280xp boxes, and on x1. Working well.
+Patch 2 cleans up and simplifies this code a bit more (at the cost of
+taking the iolock during false wakeups).
 
-Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+Since patch 2 probably increases the impact of false wakeups,
+patch 3 is a performance optimization to reduce false wakeups.
 
-with best regards
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+Jann Horn (3):
+      af_unix: Fix UAF read of tail->len in unix_stream_data_wait()
+      af_unix: Simplify unix_stream_data_wait()
+      af_unix: prevent spurious reader wakeups by writer
 
-Jens Glathe
+ net/unix/af_unix.c | 66 +++++++++++++++++++-----------------------------------
+ 1 file changed, 23 insertions(+), 43 deletions(-)
+---
+base-commit: 70eda68668d1476b459b64e69b8f36659fa9dfa8
+change-id: 20260515-unix-recv-wait-01b3a9cbacc4
+
+--  
+Jann Horn <jannh@google.com>
 
 
