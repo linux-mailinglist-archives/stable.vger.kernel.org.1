@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IARAKL1NB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248452-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:45:49 +0200
+	id eL5OAtRUB2oHzAIAu9opvQ
+	(envelope-from <stable+bounces-248810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF50553DB0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:45:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8982B554B39
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3DBC632FC99A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:19:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9D06358F5C7
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6E33FD964;
-	Fri, 15 May 2026 16:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8013F44FD;
+	Fri, 15 May 2026 16:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Di5DsgMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1jjuY3P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6187C3F44CE;
-	Fri, 15 May 2026 16:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB403E714A;
+	Fri, 15 May 2026 16:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861770; cv=none; b=D9/yq38PFtSX0s6EBb0252/tg3RsG+X7yvv3ujWrGu0Apx1vzFbF+JG2JAIZ5RY1a4h7PUrANBYEic4YBKQRRL4RfxGCYbF9wpb9cR6ZMbVW2XnFJdVQdj9+zl6zJEhtIrkU/bw/T9ojfzRzlu32u+AxAHqbxu5/LPXut/fqFmc=
+	t=1778862689; cv=none; b=M9icOgBsjpze3D8923X7dffG+uwzNODpTYu1RaJc8pxoC+cyzeV8qianrLNFC4P5Ki85+tWzMCSOOuAQgAtjburwvwKumKQiSxKvBE+OtVM70e+UVf4FfZxWYqGcgo8jeTUUY5q6S7mJNHXWvM8UqGDpT75CZ4rkaK/ppgsL+8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861770; c=relaxed/simple;
-	bh=JZcHzFFIhsGp6C2LfFqG74ufRq7LnmbaTLH11l48Pi4=;
+	s=arc-20240116; t=1778862689; c=relaxed/simple;
+	bh=X8lqha1+zssWZp4zxKSuP9Q/DsyvwJKl2vwgNhWGGAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q4HqfQTxLm54W+SsZ3d6LiT2VLKK3XNDRFLjrezM1/MnSwNCGchKK4T4rJ8imzCGTpSRGtkm+sMQCk79pRguZA5mDsTf6F+pDxKQfz1DN1m4PhuvLEra0K9Z0UE27TDfH++tDBOfW1pwltj/sNsz5oDIrMgcb5kR9WmEnNVt00U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Di5DsgMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5E8C2BCB0;
-	Fri, 15 May 2026 16:16:09 +0000 (UTC)
+	 MIME-Version; b=JYkXKOxHPmquhRg7LLu4D9Zq+kFyOW5SCYT7FV5r/ibWvrhG1oBEyrF/gXtTEHeFvzswLPrXbBJLwMRUQQFZBhEd+STgtMsc3b83tVq7X2lhnXrpHEIy6SdIYacuZbafEClI4GHPpVQrjE7o3u5ezVVmcqXp+vXG4Qpzsdap19I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1jjuY3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13525C2BCB0;
+	Fri, 15 May 2026 16:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861770;
-	bh=JZcHzFFIhsGp6C2LfFqG74ufRq7LnmbaTLH11l48Pi4=;
+	s=korg; t=1778862689;
+	bh=X8lqha1+zssWZp4zxKSuP9Q/DsyvwJKl2vwgNhWGGAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Di5DsgMFN+qv++3O0m3kDXCBRWxziREtRQuBhyZJVyOraOs7c+ilaUNo3leAgFHWX
-	 Hsz6VXeOSR1C8Z6Kp1TGo3FZsfNupw7xpCGSzFDdgGNa7fk3QRla5B2OqeBy6gd4gT
-	 bz7dUAn095B9+Crf2gusWaGhfh5wrhuROhEHmZ0M=
+	b=p1jjuY3PiKy/jifwlFtFoPqCVDgScoPuvffY5sNR6zZ0FM/JS1dZhuWeh2ml0T7bF
+	 aSrcpF58o06z/L/6u2BZUjzkNtT0T2V7UvYnOxcRYoEGNGLjekcrGxwvUA3s3c8Qkb
+	 nwTM3etByAmeqIgUiO2sf77k1zGvuvvaANU2V2r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanjaikumar V S <sanjaikumar.vs@dicortech.com>,
-	Hendrik Donner <hd@os-cillation.de>,
-	"Pratyush Yadav (Google)" <pratyush@kernel.org>
-Subject: [PATCH 6.6 455/474] mtd: spi-nor: sst: Fix write enable before AAI sequence
+	Amir Shetaia <Amir.Shetaia@amd.com>,
+	Alysa Liu <Alysa.Liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 146/201] drm/amdkfd: validate SVM ioctl nattr against buffer size
 Date: Fri, 15 May 2026 17:49:24 +0200
-Message-ID: <20260515154724.941617957@linuxfoundation.org>
+Message-ID: <20260515154701.731590525@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3AF50553DB0
+X-Rspamd-Queue-Id: 8982B554B39
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248452-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248810-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,70 +91,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+From: Alysa Liu <Alysa.Liu@amd.com>
 
-commit a0f64241d3566a49c0a9b33ba7ae458ae22003a9 upstream.
+commit 045e0ff208f0838a246c10204105126611b267a1 upstream.
 
-When writing to SST flash starting at an odd address, a single byte is
-first programmed using the byte program (BP) command. After this
-operation completes, the flash hardware automatically clears the Write
-Enable Latch (WEL) bit.
+Validate nattr field against the buffer size, preventing
+out-of-bounds buffer access via user-controlled attribute count.
 
-If an AAI (Auto Address Increment) word program sequence follows, it
-requires WEL to be set. Without re-enabling writes, the AAI sequence
-fails.
-
-Add spi_nor_write_enable() after the odd-address byte program when more
-data needs to be written. Use a local boolean for clarity.
-
-Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
+Reviewed-by: Amir Shetaia <Amir.Shetaia@amd.com>
+Signed-off-by: Alysa Liu <Alysa.Liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5eca8bfdfa456c3304ca77523718fe24254c172f)
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-Tested-by: Hendrik Donner <hd@os-cillation.de>
-Reviewed-by: Hendrik Donner <hd@os-cillation.de>
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/sst.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |   26 ++++++++++++++++++++++++--
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h    |    3 +++
+ 2 files changed, 27 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/spi-nor/sst.c
-+++ b/drivers/mtd/spi-nor/sst.c
-@@ -159,6 +159,8 @@ static int sst_nor_write(struct mtd_info
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -25,6 +25,7 @@
+ #include <linux/err.h>
+ #include <linux/fs.h>
+ #include <linux/file.h>
++#include <linux/overflow.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
+@@ -1695,6 +1696,16 @@ static int kfd_ioctl_smi_events(struct f
+ 	return kfd_smi_event_open(pdd->dev, &args->anon_fd);
+ }
  
- 	/* Start write from odd address. */
- 	if (to % 2) {
-+		bool needs_write_enable = (len > 1);
++static int kfd_ioctl_svm_validate(void *kdata, unsigned int usize)
++{
++	struct kfd_ioctl_svm_args *args = kdata;
++	size_t expected = struct_size(args, attrs, args->nattr);
 +
- 		/* write one byte. */
- 		ret = sst_nor_write_data(nor, to, 1, buf);
- 		if (ret < 0)
-@@ -166,6 +168,17 @@ static int sst_nor_write(struct mtd_info
++	if (expected == SIZE_MAX || usize < expected)
++		return -EINVAL;
++	return 0;
++}
++
+ #if IS_ENABLED(CONFIG_HSA_AMD_SVM)
  
- 		to++;
- 		actual++;
+ static int kfd_ioctl_set_xnack_mode(struct file *filep,
+@@ -3209,7 +3220,11 @@ static int kfd_ioctl_create_process(stru
+ 
+ #define AMDKFD_IOCTL_DEF(ioctl, _func, _flags) \
+ 	[_IOC_NR(ioctl)] = {.cmd = ioctl, .func = _func, .flags = _flags, \
+-			    .cmd_drv = 0, .name = #ioctl}
++			    .validate = NULL, .cmd_drv = 0, .name = #ioctl}
 +
-+		/*
-+		 * Byte program clears the write enable latch. If more
-+		 * data needs to be written using the AAI sequence,
-+		 * re-enable writes.
-+		 */
-+		if (needs_write_enable) {
-+			ret = spi_nor_write_enable(nor);
-+			if (ret)
-+				goto out;
-+		}
++#define AMDKFD_IOCTL_DEF_V(ioctl, _func, _validate, _flags) \
++	[_IOC_NR(ioctl)] = {.cmd = ioctl, .func = _func, .flags = _flags, \
++			    .validate = _validate, .cmd_drv = 0, .name = #ioctl}
+ 
+ /** Ioctl table */
+ static const struct amdkfd_ioctl_desc amdkfd_ioctls[] = {
+@@ -3306,7 +3321,8 @@ static const struct amdkfd_ioctl_desc am
+ 	AMDKFD_IOCTL_DEF(AMDKFD_IOC_SMI_EVENTS,
+ 			kfd_ioctl_smi_events, 0),
+ 
+-	AMDKFD_IOCTL_DEF(AMDKFD_IOC_SVM, kfd_ioctl_svm, 0),
++	AMDKFD_IOCTL_DEF_V(AMDKFD_IOC_SVM, kfd_ioctl_svm,
++			   kfd_ioctl_svm_validate, 0),
+ 
+ 	AMDKFD_IOCTL_DEF(AMDKFD_IOC_SET_XNACK_MODE,
+ 			kfd_ioctl_set_xnack_mode, 0),
+@@ -3431,6 +3447,12 @@ static long kfd_ioctl(struct file *filep
+ 		memset(kdata, 0, usize);
  	}
  
- 	/* Write out most of the data here. */
++	if (ioctl->validate) {
++		retcode = ioctl->validate(kdata, usize);
++		if (retcode)
++			goto err_i1;
++	}
++
+ 	retcode = func(filep, process, kdata);
+ 
+ 	if (cmd & IOC_OUT)
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -1047,10 +1047,13 @@ extern struct srcu_struct kfd_processes_
+ typedef int amdkfd_ioctl_t(struct file *filep, struct kfd_process *p,
+ 				void *data);
+ 
++typedef int amdkfd_ioctl_validate_t(void *kdata, unsigned int usize);
++
+ struct amdkfd_ioctl_desc {
+ 	unsigned int cmd;
+ 	int flags;
+ 	amdkfd_ioctl_t *func;
++	amdkfd_ioctl_validate_t *validate;
+ 	unsigned int cmd_drv;
+ 	const char *name;
+ };
 
 
 
