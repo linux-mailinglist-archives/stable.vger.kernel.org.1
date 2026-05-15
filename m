@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OL8eF1NPB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:35 +0200
+	id mNiwAUBaB2qzzwIAu9opvQ
+	(envelope-from <stable+bounces-248760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:39:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACBD554137
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F77D55560F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:39:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B71DA30AC296
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C69330B1F7B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBAF3FBB40;
-	Fri, 15 May 2026 16:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD2D3B4EAF;
+	Fri, 15 May 2026 16:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbaoWRVs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLV7i2Bs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A813F9299;
-	Fri, 15 May 2026 16:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E67233B6E8;
+	Fri, 15 May 2026 16:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862074; cv=none; b=KzUuUcsnEm8N/g2THF1ex/8Z21wzNR2/K9RS5MFxHCZ0ZSIIKewSHaAns94uNHwvFezFVK4zmtqJX7MvDHphxuvxOGurbuWwptrBGQzoZO+W7tcWNrUdxrHavuI67HyZ8EzDFYZwIPGZlGlQn/Q7jMQvOwggWOlegrncbqonszQ=
+	t=1778862560; cv=none; b=um2nvsnPWwgwlK07TbgjK5scgNGqiJ2Gm4O1JMYr+/RACtln6sFv+NYIoApzVrOSutiK7mCfeffl9Z36ikevyq7fvK7rvCsGR5Vk6Xe9Aoe8gPZ244ZXOg3uByURR/1kfBmYS50xcCVeZRRetMfPR2k4IpSJCFi3rDm0I/a2uHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862074; c=relaxed/simple;
-	bh=roI1bj0ec+fQ8jq1fw/PqXYNeTO4ULlCzLIWtpeff64=;
+	s=arc-20240116; t=1778862560; c=relaxed/simple;
+	bh=QZHQRlSNsvusj836FQWSDR1XG2VBUK691+tU2N80xpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhzk6cZSI4cMNy6uhKM8FQFVMWUA6Jxrn5OUMqJGBX/BwXhzNj3uhL44yMEjuYZfXe/HO6rmOuPyPOpoIBJ6sagDgCkd/L309R6iuPWST/U//XDihPc5y8AMQi4gJhBchbb9EnqFFg711q38rYVpqayC4OOtfMrB3wQGI75CylQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbaoWRVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AEAC2BCB3;
-	Fri, 15 May 2026 16:21:14 +0000 (UTC)
+	 MIME-Version; b=biGwWqbo3Qj7yn3TyjFmfFTFp54cdZ8T6+PDk73GI+3M3I8m1sAEdfGpOv/Rk+W4XpKBOTnZytvXs3J6o24c/bi3pdldqwGLAzqNg6+9IXX2O1GlF3I3ACuL1eR3ONOzMWmFbTK80N1V5FwE3KGys8Uzb6nqjNldPM30JkAliPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLV7i2Bs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C73CC2BCB0;
+	Fri, 15 May 2026 16:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862074;
-	bh=roI1bj0ec+fQ8jq1fw/PqXYNeTO4ULlCzLIWtpeff64=;
+	s=korg; t=1778862559;
+	bh=QZHQRlSNsvusj836FQWSDR1XG2VBUK691+tU2N80xpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lbaoWRVstOMyAlwPQbxCbnMR8CBKKNmd1RCVJyb2zBDheLNaJRxTp16M97DOMHawa
-	 lqIe3gznC7sMhrvvI4UmMi9pQxHX+td8W6Jt5Ns1ErZou+KIyrGOmlxscjRX/Pubz0
-	 vgk4qa7u/Fv8Otdex7AX52SwNk62l7gE/vaQM8zY=
+	b=rLV7i2Bsb/QWxuRSgq7CroqoKbFQJXf/26ikrQnMkQH84b7xmCsmkfTsfF3nGVxmo
+	 ZiWQ1yncOItm/jIut96aFrY4LmGpiHmNbXPd6DNB1DNsHuQIdp6KSQvIogLOup2KEH
+	 toQEjd6HEUO5m4aGIwROaboAhTcANXJEEwnaQ6EI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yasuaki Torimaru <yasuakitorimaru@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>
-Subject: [PATCH 6.18 097/188] drm/msm/gem: fix error handling in msm_ioctl_gem_info_get_metadata()
+	William Zhang <william.zhang@broadcom.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 096/201] spi: bcmbca-hsspi: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:34 +0200
-Message-ID: <20260515154659.433998538@linuxfoundation.org>
+Message-ID: <20260515154700.613282942@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +64,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CACBD554137
+X-Rspamd-Queue-Id: 5F77D55560F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248572-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248760-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,patchwork.freedesktop.org:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 47cbfe2608314b833ad61a65827d8fb363bc2d2d upstream.
+commit c3d97c3320b9a1ebbd6119857341be034f7b3efc upstream.
 
-msm_ioctl_gem_info_get_metadata() always returns 0 regardless of
-errors. When copy_to_user() fails or the user buffer is too small,
-the error code stored in ret is ignored because the function
-unconditionally returns 0. This causes userspace to believe the
-ioctl succeeded when it did not.
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind to allow SPI drivers to
+do I/O during deregistration.
 
-Additionally, kmemdup() can return NULL on allocation failure, but
-the return value is not checked. This leads to a NULL pointer
-dereference in the subsequent copy_to_user() call.
+Note that clocks were also disabled before the recent commit
+e532e21a246d ("spi: bcm63xx-hsspi: Simplify clock handling with
+devm_clk_get_enabled()").
 
-Add the missing NULL check for kmemdup() and return ret instead of 0.
-
-Note that the SET counterpart (msm_ioctl_gem_info_set_metadata)
-correctly returns ret.
-
-Fixes: 9902cb999e4e ("drm/msm/gem: Add metadata")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yasuaki Torimaru <yasuakitorimaru@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714478/
-Message-ID: <20260325114635.383241-1-yasuakitorimaru@gmail.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI controller")
+Cc: stable@vger.kernel.org	# 6.3: deb269e0394f
+Cc: stable@vger.kernel.org	# 6.3
+Cc: William Zhang <william.zhang@broadcom.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260409120419.388546-8-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_drv.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bcmbca-hsspi.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/msm/msm_drv.c
-+++ b/drivers/gpu/drm/msm/msm_drv.c
-@@ -536,6 +536,11 @@ static int msm_ioctl_gem_info_get_metada
- 	len = msm_obj->metadata_size;
- 	buf = kmemdup(msm_obj->metadata, len, GFP_KERNEL);
+--- a/drivers/spi/spi-bcmbca-hsspi.c
++++ b/drivers/spi/spi-bcmbca-hsspi.c
+@@ -549,7 +549,7 @@ static int bcmbca_hsspi_probe(struct pla
+ 	}
  
-+	if (!buf) {
-+		msm_gem_unlock(obj);
-+		return -ENOMEM;
-+	}
+ 	/* register and we are done */
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto out_sysgroup_disable;
+ 
+@@ -571,6 +571,8 @@ static void bcmbca_hsspi_remove(struct p
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct bcmbca_hsspi *bs = spi_controller_get_devdata(host);
+ 
++	spi_unregister_controller(host);
 +
- 	msm_gem_unlock(obj);
- 
- 	if (*metadata_size < len) {
-@@ -548,7 +553,7 @@ static int msm_ioctl_gem_info_get_metada
- 
- 	kfree(buf);
- 
--	return 0;
-+	return ret;
- }
- 
- static int msm_ioctl_gem_info(struct drm_device *dev, void *data,
+ 	/* reset the hardware and block queue progress */
+ 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
+ 	clk_disable_unprepare(bs->pll_clk);
 
 
 
