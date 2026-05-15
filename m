@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-247421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247423-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HGQEbzJBmrynwIAu9opvQ
-	(envelope-from <stable+bounces-247421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:22:36 +0200
+	id WKS1IJHLBmrynwIAu9opvQ
+	(envelope-from <stable+bounces-247423-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:30:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4856054A7C1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:22:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13BBF54A974
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:30:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 50D803001582
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:22:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9062D30B1E7A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7E43E0257;
-	Fri, 15 May 2026 07:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4533E558F;
+	Fri, 15 May 2026 07:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKGrf4ZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7XhIOkS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742D3311942
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 07:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60DF3E5562
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 07:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778829751; cv=none; b=P7hZyMwM7iuzqEN4w57SEbww+iuQGoL0zhmq/n1LYABRUYmJD2wLUoKvRFuIP5nm3FjPfjk88yqaal/2K2p9Y4BEwJqVFTwXwjFr2ugD/duwHNHplUgaQ3beSGWK0AEDcBUZtV6PWM8dvxmYFbPiaiRVAcuqorD5S1WdOhmT64M=
+	t=1778829792; cv=none; b=Nc7Tb2ZzENAs7jb+lee6pXyhuYzCbx4Tvu3GnMVI+IPGfrqqm8cZ3muUE2jtXmRTe4LtJHxOIrcJAGLLJn/bIWZ4CEuxll7dym52aWYeQx1zbams3UVgBQz3t2jTdtg112wpri+7UeYmKxvyzK0zFWdsyNkhb23buQR6TdTHwg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778829751; c=relaxed/simple;
-	bh=GCftvkkeS7+euDakwmxE0NH+B2A8idz5lxMi3tPqtyI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UkWl3P61lgMckjEppxg+zyAfnl+qKWv3/Qo1Hnbh3JkCyvnsY1z4aFe6Ud6Ws3z+8ZlwaeHWliSRT4UTr8zPwLQISEcgsIHVDzYMk0xppzQO6eFigVcxuo5tJvT4g/79WarUYncNZEV+EVidn1Eb6+36vYVKJXPns+Xg8iI9QFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKGrf4ZN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BE1C2BCB0;
-	Fri, 15 May 2026 07:22:30 +0000 (UTC)
+	s=arc-20240116; t=1778829792; c=relaxed/simple;
+	bh=Ga/5Jc8dRGElv8YJJaFNgJf93exmMCdSpUkGnrP7C1M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GyeS3CN7I+2swc+0qn9IKYBW4OxHrV8BMIpYJgyOGVLwmXBUEar2SLwZvJFlGD2WLf6dmFAiOY+GLjlyXFPKorM/sk23xWhHTn+4b8wlFGUuMIIm/Ft281LzX51V8P/HH/7g379KyBE+SRa2i7LwN857Nvo7zv5rtkV3mB355/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7XhIOkS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2522CC2BCB0;
+	Fri, 15 May 2026 07:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778829751;
-	bh=GCftvkkeS7+euDakwmxE0NH+B2A8idz5lxMi3tPqtyI=;
+	s=korg; t=1778829792;
+	bh=Ga/5Jc8dRGElv8YJJaFNgJf93exmMCdSpUkGnrP7C1M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QKGrf4ZN+iXHjx//GwFik+6PhSOMMpcgTwpTyvLCUHV3L6UzdqlzaqkV2NV9bxUHs
-	 2XLyxD7hxS2YLO/7xaObLjvKOnwcXsSRvAa18dYSXzxoVE7M6qMH6EL7/6cH9qYKvY
-	 0vxlL37MMa7BajWMKjxNcEuQYlmQW24W+3xbnRMQ=
-Subject: FAILED: patch "[PATCH] media: omap3isp: drop the use count of v4l2 pipeline" failed to apply to 5.15-stable tree
-To: lihaoxiang@isrc.iscas.ac.cn,mchehab+huawei@kernel.org,sakari.ailus@linux.intel.com
+	b=e7XhIOkSGQ7Qp+Eqdg3WmKl7HX8IhJu+W5XCDqvIwY+Gjniz5R1zazLsKNxcGns3n
+	 MS0XhvLBFh9VRbgm2M4q6EFB8b2ZCnWVHhzw9pAa8MBbLbXhmXyfNCPAYCDR9m8DUw
+	 xkotLGarodfQ6JjNMyO5TQxI7geYPT7TrD2qKUOw=
+Subject: FAILED: patch "[PATCH] media: venus: fix QCOM_MDT_LOADER dependency" failed to apply to 6.6-stable tree
+To: arnd@arndb.de,bod@kernel.org,dikshita.agarwal@oss.qualcomm.com,hverkuil+cisco@kernel.org,konrad.dybcio@oss.qualcomm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 May 2026 09:22:29 +0200
-Message-ID: <2026051529-trump-overfed-d246@gregkh>
+Date: Fri, 15 May 2026 09:23:08 +0200
+Message-ID: <2026051508-daily-deafness-933c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,53 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4856054A7C1
+X-Rspamd-Queue-Id: 13BBF54A974
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247421-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-247423-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
+	NEURAL_HAM(-0.00)[-0.988];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable,huawei];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,gregkh:email,iscas.ac.cn:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,qualcomm.com:email]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9da49bd9d4224035cff39b40d7395310abb10201
+git cherry-pick -x aa23c94cc433b145d1ce93820ecdfe16d8940e28
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051529-trump-overfed-d246@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051508-daily-deafness-933c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,31 +112,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9da49bd9d4224035cff39b40d7395310abb10201 Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Mon, 26 Jan 2026 09:44:12 +0800
-Subject: [PATCH] media: omap3isp: drop the use count of v4l2 pipeline
+From aa23c94cc433b145d1ce93820ecdfe16d8940e28 Mon Sep 17 00:00:00 2001
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 30 Mar 2026 12:08:21 +0100
+Subject: [PATCH] media: venus: fix QCOM_MDT_LOADER dependency
 
-In isp_video_open(), drop the use count of v4l2
-pipeline if vb2_queue_init() fails.
+When build-testined with CONFIG_QCOM_MDT_LOADER=m and VIDEO_QCOM_VENUS=y,
+the kernel fails to link:
 
-Fixes: 8fd390b89cc8 ("media: Split v4l2_pipeline_pm_use into v4l2_pipeline_pm_{get, put}")
+x86_64-linux-ld: drivers/media/platform/qcom/venus/firmware.o: in function `venus_boot':
+firmware.c:(.text+0x1e3): undefined reference to `qcom_mdt_get_size'
+firmware.c:(.text+0x25a): undefined reference to `qcom_mdt_load'
+firmware.c:(.text+0x272): undefined reference to `qcom_mdt_load_no_init'
+
+The problem is the conditional 'select' statement. Change this to
+make the driver built-in here regardless of CONFIG_ARCH_QCOM,
+same as for the similar IRIS driver.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Fixes: 0399b696f7f4 ("media: venus: fix compile-test build on non-qcom ARM platform")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 
-diff --git a/drivers/media/platform/ti/omap3isp/ispvideo.c b/drivers/media/platform/ti/omap3isp/ispvideo.c
-index 64e76e3576a8..b946c8087c77 100644
---- a/drivers/media/platform/ti/omap3isp/ispvideo.c
-+++ b/drivers/media/platform/ti/omap3isp/ispvideo.c
-@@ -1403,6 +1403,7 @@ static int isp_video_open(struct file *file)
- 
- 	ret = vb2_queue_init(&handle->queue);
- 	if (ret < 0) {
-+		v4l2_pipeline_pm_put(&video->video.entity);
- 		omap3isp_put(video->isp);
- 		goto done;
- 	}
+diff --git a/drivers/media/platform/qcom/venus/Kconfig b/drivers/media/platform/qcom/venus/Kconfig
+index ffb731ecd48c..63ee8c78dc6d 100644
+--- a/drivers/media/platform/qcom/venus/Kconfig
++++ b/drivers/media/platform/qcom/venus/Kconfig
+@@ -4,7 +4,7 @@ config VIDEO_QCOM_VENUS
+ 	depends on VIDEO_DEV && QCOM_SMEM
+ 	depends on (ARCH_QCOM && ARM64 && IOMMU_API) || COMPILE_TEST
+ 	select OF_DYNAMIC if ARCH_QCOM
+-	select QCOM_MDT_LOADER if ARCH_QCOM
++	select QCOM_MDT_LOADER
+ 	select QCOM_SCM
+ 	select VIDEOBUF2_DMA_CONTIG
+ 	select V4L2_MEM2MEM_DEV
 
 
