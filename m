@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-248245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +CUgIUdVB2oHzAIAu9opvQ
-	(envelope-from <stable+bounces-248245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:17:59 +0200
+	id KP4ALtFKB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1936E554BED
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC44E5536F8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12C0031DE0F1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:11:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C7A531DF06E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641433FBB48;
-	Fri, 15 May 2026 16:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A673E008D;
+	Fri, 15 May 2026 16:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kx48XYXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjpdcn1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269FE3FBB44;
-	Fri, 15 May 2026 16:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CD63F86F7;
+	Fri, 15 May 2026 16:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861242; cv=none; b=n2zvWQH8/ZgZXCvcL9c2CvCyirQGlCjTtlbVKXDqdgoBeAJCaHwH7qK6qC7VhmeKiAxoIu5umIVLFGJcud+PRbUTysbmwmsz7s0DJu0ZnESOvlnqCUv+nX0dC0HBEtUnFQ+vwc9KGmPoRlry0l1l56zl2IFHZBTD2DWU+3yZyNM=
+	t=1778861244; cv=none; b=Oy+RKgK5BEBgpaDXsqKuMX/WjcHLCHcUeNF4U2UEYSyVhavRdhczCTjfDSORDNc0lU7Fs3R0Pn97kDoyyd+wjSw1los2R2trP7JamTma8xg94Tc+olB/GINVjf+D1badIvSLUoFpLRWVYUWhyvxQjMeCjphZKIqF1ue1T6cQQoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861242; c=relaxed/simple;
-	bh=Z6RTy+ThicRnzdXIWHEJBsXkOTbaup1dhhtmXXZOhes=;
+	s=arc-20240116; t=1778861244; c=relaxed/simple;
+	bh=JU8CBn4PXW42IwnSr/jo5ZytZFh6kXH4fuK/MCJ3dHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2FFAnzNR8WxNoCK185RTl/00hqcQEkCkmEZth1gPdOIj5xcvAYX1QbbWlvZsWPgacRVEEh8WbotxZCjww36Je6rpNtOOPDMIgIHE26EyBmm37HqfzsHGd7t1zovzzQFMFo/w0rTPxuFTfiCdCguXmyt/PVmn7NQFCVgaLIsJiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kx48XYXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B151FC2BCB0;
-	Fri, 15 May 2026 16:07:21 +0000 (UTC)
+	 MIME-Version; b=DSTk+FF0ilpkv/ZKnVZmq42rBAQBtDFZCk+phJDCVflVISTnHDg8rUKdw+iqtEspljCPNg/dJ4dJ4dTRqORHzmdpjdWj5VYcXgofXUWcllzxpXoFzRZHuP0g2LxRj1A05RsyyPkF9OITSrpJvo6ulTh3DAv2XZYccn4OR1ZTxXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjpdcn1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D547C2BCB0;
+	Fri, 15 May 2026 16:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861242;
-	bh=Z6RTy+ThicRnzdXIWHEJBsXkOTbaup1dhhtmXXZOhes=;
+	s=korg; t=1778861244;
+	bh=JU8CBn4PXW42IwnSr/jo5ZytZFh6kXH4fuK/MCJ3dHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kx48XYXp/17aVH5FJzxVDo08bd809uyO2bLjLDsOCO2OMnv+0JKtXottCWDIZ8FBj
-	 b/6VcUFtajv/iRzjnL8NRVbxWzHnUH6vyA/HybHIAsg0wDD7HAzS/KeFcIXIloJyEG
-	 JrRY8kXY6fhqFDYlDjRhhD5Bllfge3AGdmey8S44=
+	b=fjpdcn1zXngEhfqFgZnsEvp1Tu4pj3HSNQSMwgmjSxkcExfwjy3A+Qxthj6u0yB2o
+	 6kmPg8mtnuVNDq7Apmh84mXqTlczj31un16P4TNL0lqob7cyLRw3jKO3DNRlv+C26m
+	 Jy3xanvXcbz4gdWENIz8QcOEJv/lfOAuQ7EzLnbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 6.6 254/474] eventfs: Hold eventfs_mutex and SRCU when remount walks events
-Date: Fri, 15 May 2026 17:46:03 +0200
-Message-ID: <20260515154720.496630198@linuxfoundation.org>
+	Eric Biggers <ebiggers@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 255/474] dm-verity-fec: correctly reject too-small FEC devices
+Date: Fri, 15 May 2026 17:46:04 +0200
+Message-ID: <20260515154720.518311180@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -63,159 +63,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1936E554BED
+X-Rspamd-Queue-Id: BC44E5536F8
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248245-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,goodmis.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248246-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 07004a8c4b572171934390148ee48c4175c77eed upstream.
+commit 2b14e0bb63cc671120e7791658f5c494fc66d072 upstream.
 
-Commit 340f0c7067a9 ("eventfs: Update all the eventfs_inodes from the
-events descriptor") had eventfs_set_attrs() recurse through ei->children
-on remount.  The walk only holds the rcu_read_lock() taken by
-tracefs_apply_options() over tracefs_inodes, which is wrong:
+Fix verity_fec_ctr() to reject too-small FEC devices by correctly
+computing the number of parity blocks as 'f->rounds * f->roots'.
+Previously it incorrectly used 'div64_u64(f->rounds * f->roots,
+v->fec->roots << SECTOR_SHIFT)' which is a much smaller value.
 
-  - list_for_each_entry over ei->children races with the list_del_rcu()
-    in eventfs_remove_rec() -- LIST_POISON1 deref, same shape as
-    d2603279c7d6.
-  - eventfs_inodes are freed via call_srcu(&eventfs_srcu, ...).
-    rcu_read_lock() does not extend an SRCU grace period, so ti->private
-    can be reclaimed under the walk.
-  - The writes to ei->attr race with eventfs_set_attr(), which holds
-    eventfs_mutex.
+Note that the units of 'rounds' are blocks, not bytes.  This matches the
+units of the value returned by dm_bufio_get_device_size(), which are
+also blocks.  A later commit will give 'rounds' a clearer name.
 
-Reproducer:
-
-  while :; do mount -o remount,uid=$((RANDOM%1000)) /sys/kernel/tracing; done &
-  while :; do
-      echo "p:kp submit_bio" > /sys/kernel/tracing/kprobe_events
-      echo > /sys/kernel/tracing/kprobe_events
-  done
-
-Wrap the events portion of tracefs_apply_options() in
-eventfs_remount_lock()/_unlock() that take eventfs_mutex and
-srcu_read_lock(&eventfs_srcu).  eventfs_set_attrs() doesn't sleep so the
-nested rcu_read_lock() is fine; lockdep_assert_held() pins the contract.
-
-Comment in tracefs_drop_inode() said "RCU cycle" -- it is SRCU.
-
-Fixes: 340f0c7067a9 ("eventfs: Update all the eventfs_inodes from the events descriptor")
+Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260418191737.10289-1-devnexen@gmail.com
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   14 ++++++++++++++
- fs/tracefs/inode.c       |    5 ++++-
- fs/tracefs/internal.h    |    3 +++
- 3 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/md/dm-verity-fec.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -310,6 +310,8 @@ static void eventfs_set_attrs(struct eve
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -688,7 +688,7 @@ int verity_fec_ctr(struct dm_verity *v)
  {
- 	struct eventfs_inode *ei_child;
+ 	struct dm_verity_fec *f = v->fec;
+ 	struct dm_target *ti = v->ti;
+-	u64 hash_blocks, fec_blocks;
++	u64 hash_blocks;
+ 	int ret;
  
-+	lockdep_assert_held(&eventfs_mutex);
-+
- 	/* Update events/<system>/<event> */
- 	if (WARN_ON_ONCE(level > 3))
- 		return;
-@@ -985,3 +987,15 @@ void eventfs_remove_events_dir(struct ev
- 	d_invalidate(dentry);
- 	dput(dentry);
- }
-+
-+int eventfs_remount_lock(void)
-+{
-+	mutex_lock(&eventfs_mutex);
-+	return srcu_read_lock(&eventfs_srcu);
-+}
-+
-+void eventfs_remount_unlock(int srcu_idx)
-+{
-+	srcu_read_unlock(&eventfs_srcu, srcu_idx);
-+	mutex_unlock(&eventfs_mutex);
-+}
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -362,6 +362,7 @@ static int tracefs_apply_options(struct
- 	struct tracefs_mount_opts *opts = &fsi->mount_opts;
- 	struct tracefs_inode *ti;
- 	bool update_uid, update_gid;
-+	int srcu_idx;
- 	umode_t tmp_mode;
+ 	if (!verity_fec_is_enabled(v)) {
+@@ -769,8 +769,7 @@ int verity_fec_ctr(struct dm_verity *v)
  
- 	/*
-@@ -386,6 +387,7 @@ static int tracefs_apply_options(struct
- 		update_uid = opts->opts & BIT(Opt_uid);
- 		update_gid = opts->opts & BIT(Opt_gid);
+ 	dm_bufio_set_sector_offset(f->bufio, f->start << (v->data_dev_block_bits - SECTOR_SHIFT));
  
-+		srcu_idx = eventfs_remount_lock();
- 		rcu_read_lock();
- 		list_for_each_entry_rcu(ti, &tracefs_inodes, list) {
- 			if (update_uid)
-@@ -398,6 +400,7 @@ static int tracefs_apply_options(struct
- 				eventfs_remount(ti, update_uid, update_gid);
- 		}
- 		rcu_read_unlock();
-+		eventfs_remount_unlock(srcu_idx);
+-	fec_blocks = div64_u64(f->rounds * f->roots, v->fec->roots << SECTOR_SHIFT);
+-	if (dm_bufio_get_device_size(f->bufio) < fec_blocks) {
++	if (dm_bufio_get_device_size(f->bufio) < f->rounds * f->roots) {
+ 		ti->error = "FEC device is too small";
+ 		return -E2BIG;
  	}
- 
- 	return 0;
-@@ -444,7 +447,7 @@ static int tracefs_drop_inode(struct ino
- 	 * This inode is being freed and cannot be used for
- 	 * eventfs. Clear the flag so that it doesn't call into
- 	 * eventfs during the remount flag updates. The eventfs_inode
--	 * gets freed after an RCU cycle, so the content will still
-+	 * gets freed after an SRCU cycle, so the content will still
- 	 * be safe if the iteration is going on now.
- 	 */
- 	ti->flags &= ~TRACEFS_EVENT_INODE;
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -76,4 +76,7 @@ struct inode *tracefs_get_inode(struct s
- void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid);
- void eventfs_d_release(struct dentry *dentry);
- 
-+int eventfs_remount_lock(void);
-+void eventfs_remount_unlock(int srcu_idx);
-+
- #endif /* _TRACEFS_INTERNAL_H */
 
 
 
