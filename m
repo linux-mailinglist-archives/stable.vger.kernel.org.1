@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-248663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248854-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAnOCm1YB2oozgIAu9opvQ
-	(envelope-from <stable+bounces-248663-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:31:25 +0200
+	id CEccDa1LB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248854-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:37:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 928B255527D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:31:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C1D55399B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6578B3192BBB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:26:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 10212302FFDE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF563F871C;
-	Fri, 15 May 2026 16:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1043CBE77;
+	Fri, 15 May 2026 16:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQsNHFGo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oqfcqq/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608B83B1029;
-	Fri, 15 May 2026 16:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0187F3B19DE;
+	Fri, 15 May 2026 16:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862311; cv=none; b=nS46ft4T2MC59ypH2JJF1JmCjzgYHJzNaFedWibDY8DFoi0l54wvZiVHMJ7pvhh6gKV9NhVL5fuTUqxeyrhO/5+vQK05ZAI4WNzHRl7ykGwp4ovJU8b0QzmdWEWTnozQbICm9/2WpiGivowACUC9hz74CuRBxC/Q/pVRZRdLuzM=
+	t=1778862800; cv=none; b=khotJyOZnskKpxz5EOZMMV6B8KAqficqy3R7nDz9ARob37RlJW4BxRiklXTMimd4ggATLzA9ty8me8FdAEWwRiT4tunJNlcQFWwNSXBKd2Qg8x9nD/sM7eGz7J6I+DNDJpPMByU1DhZP4SzVmWkIl/YLWH27FtnXgM1yCjP/8S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862311; c=relaxed/simple;
-	bh=BC+Yf31bECFZ4tgQ+MPUGVKerdMVwPz+T0p8HDlr/HA=;
+	s=arc-20240116; t=1778862800; c=relaxed/simple;
+	bh=Zqc9hN3G2QlbIBkU6izABLSH3OE/i1oHl421MmEm23o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfKEBmuPq3a/+KsJ6q3s2NegmslKrhp3EKpoCK3dwIREY8ss7kkBNVbVuusDQOmy7iHu5bwzpI+Vb06kBMiiMYvBlPk8y77LKmVnAEuvUeMQrCcB+Y1LFTHrvtRPWEVTaeONHAoJ2W4TNDG9yzEx+v7Pm3V0hewQgkyBJmMiI2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQsNHFGo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD6AC2BCB0;
-	Fri, 15 May 2026 16:25:10 +0000 (UTC)
+	 MIME-Version; b=Sehi5U66YFqwnNd2zUYlkb9l0mQWtK2dH2ulCKcsSk+7R2VYWoNAtB1UVgZhaaiTUoO6vpfrudySaDOGjAy/tdUyMEKJpVQgD11Lc5nz7XApZieZAMufe6NHGyvWaTnuDTO2gwTgG4WfCcnMaVd9g3iI0dbmSyMCCaIwxamthDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oqfcqq/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAC8C2BCC7;
+	Fri, 15 May 2026 16:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862311;
-	bh=BC+Yf31bECFZ4tgQ+MPUGVKerdMVwPz+T0p8HDlr/HA=;
+	s=korg; t=1778862799;
+	bh=Zqc9hN3G2QlbIBkU6izABLSH3OE/i1oHl421MmEm23o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQsNHFGoawjyKr1Wpi0/FBZMyYCt4u8BokQx/clyZ3ingsz1KXRHa+zjqWldVCDTK
-	 lmNvrrrGdIdPfdX7N4IQ3xLe/fu+tI+OO6ZB4zr4dZw1NE4sAdqxN2LXzbypOK1rol
-	 FvKRsBun4hW9IR1beza8yh3mHN79w7noum6cgUHs=
+	b=Oqfcqq/lpR0bfXHPlNonRb8Q0WVaoYdnWY9G4xfTqJftqoGhTyYQTiGWxHo14mI6c
+	 1G2+3TzW/IqfA0/LMZirWqa80QkQxCw2mKu2ZzezlV/PUOsnmsndGLv44ZYRwn//qB
+	 iR/tfAhOU80ejQPCkeqzQcI6IT1V6QAcr9yaTOpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SDL <sdl@nppct.ru>,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 188/188] drm/amdgpu/vcn4: Avoid overflow on msg bound check
-Date: Fri, 15 May 2026 17:50:05 +0200
-Message-ID: <20260515154701.419903446@linuxfoundation.org>
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 188/201] spi: uniphier: Simplify clock handling with devm_clk_get_enabled()
+Date: Fri, 15 May 2026 17:50:06 +0200
+Message-ID: <20260515154702.653017571@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,13 +65,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 928B255527D
+X-Rspamd-Queue-Id: 57C1D55399B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248663-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248854-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,56 +88,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,socionext.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Cheng <benjamin.cheng@amd.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-commit 65bce27ea6192320448c30267ffc17ffa094e713 upstream.
+[ Upstream commit fdca270f8f87cae2eb5b619234b9dd11a863ce6b ]
 
-As pointed out by SDL, the previous condition may be vulnerable to
-overflow.
+Replace devm_clk_get() followed by clk_prepare_enable() with
+devm_clk_get_enabled() for the clock. This removes the need for
+explicit clock enable and disable calls, as the managed API automatically
+handles clock disabling on device removal or probe failure.
 
-Fixes: 0a78f2bac142 ("drm/amdgpu/vcn4: Prevent OOB reads when parsing dec msg")
-Cc: SDL <sdl@nppct.ru>
-Signed-off-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3c5367d950140d4ec7af830b2268a5a6fdaa3885)
+Remove the now-unnecessary clk_disable_unprepare() calls from the probe
+error path and the remove callback. Adjust error labels accordingly.
+
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Reviewed-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://patch.msgid.link/b2deeefd4ef1a4bce71116aabfcb7e81400f6d37.1775546948.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0245435f7772 ("spi: uniphier: fix controller deregistration")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-uniphier.c |   18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-@@ -1888,6 +1888,7 @@ static int vcn_v4_0_dec_msg(struct amdgp
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -666,28 +666,24 @@ static int uniphier_spi_probe(struct pla
+ 	}
+ 	priv->base_dma_addr = res->start;
  
- 	for (i = 0, msg = &msg[6]; i < num_buffers; ++i, msg += 4) {
- 		uint32_t offset, size, *create;
-+		uint64_t buf_end;
+-	priv->clk = devm_clk_get(&pdev->dev, NULL);
++	priv->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(priv->clk)) {
+ 		dev_err(&pdev->dev, "failed to get clock\n");
+ 		ret = PTR_ERR(priv->clk);
+ 		goto out_host_put;
+ 	}
  
- 		if (msg[0] != RDECODE_MESSAGE_CREATE)
- 			continue;
-@@ -1895,7 +1896,8 @@ static int vcn_v4_0_dec_msg(struct amdgp
- 		offset = msg[1];
- 		size = msg[2];
+-	ret = clk_prepare_enable(priv->clk);
+-	if (ret)
+-		goto out_host_put;
+-
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+ 		ret = irq;
+-		goto out_disable_clk;
++		goto out_host_put;
+ 	}
  
--		if (size < 4 || offset + size > end - addr) {
-+		if (size < 4 || check_add_overflow(offset, size, &buf_end) ||
-+		    buf_end > end - addr) {
- 			DRM_ERROR("VCN message buffer exceeds BO bounds!\n");
- 			r = -EINVAL;
- 			goto out;
+ 	ret = devm_request_irq(&pdev->dev, irq, uniphier_spi_handler,
+ 			       0, "uniphier-spi", priv);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to request IRQ\n");
+-		goto out_disable_clk;
++		goto out_host_put;
+ 	}
+ 
+ 	init_completion(&priv->xfer_done);
+@@ -716,7 +712,7 @@ static int uniphier_spi_probe(struct pla
+ 	if (IS_ERR_OR_NULL(host->dma_tx)) {
+ 		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER) {
+ 			ret = -EPROBE_DEFER;
+-			goto out_disable_clk;
++			goto out_host_put;
+ 		}
+ 		host->dma_tx = NULL;
+ 		dma_tx_burst = INT_MAX;
+@@ -766,9 +762,6 @@ out_release_dma:
+ 		host->dma_tx = NULL;
+ 	}
+ 
+-out_disable_clk:
+-	clk_disable_unprepare(priv->clk);
+-
+ out_host_put:
+ 	spi_controller_put(host);
+ 	return ret;
+@@ -777,14 +770,11 @@ out_host_put:
+ static void uniphier_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+-	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 
+ 	if (host->dma_tx)
+ 		dma_release_channel(host->dma_tx);
+ 	if (host->dma_rx)
+ 		dma_release_channel(host->dma_rx);
+-
+-	clk_disable_unprepare(priv->clk);
+ }
+ 
+ static const struct of_device_id uniphier_spi_match[] = {
 
 
 
