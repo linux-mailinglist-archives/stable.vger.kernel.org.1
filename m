@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-248536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBuyHthOB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:32 +0200
+	id 0ArYEOVTB2oqywIAu9opvQ
+	(envelope-from <stable+bounces-248724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:12:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F909554039
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE55554969
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EAC26310C5A1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E179313351B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D05333FD978;
-	Fri, 15 May 2026 16:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314343F44CB;
+	Fri, 15 May 2026 16:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvSG7W5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPZeY79N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940893FD962;
-	Fri, 15 May 2026 16:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C273B19DE;
+	Fri, 15 May 2026 16:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861981; cv=none; b=IZxDdkS8bDBrU8HasUbq/3HNWP0Mk734lUX/73GsLF+KZcBpuHKhYqGIhgDOH0fr8KRmklWWF6mWSPyi7FgN/237/ZYpB//YLEcoJfc8VkwvNulPgVPlNEnLqCtd110vgoi5QLxvwAC71AoCMYm7eJJDUVbGs84PckFuGjP9X1Q=
+	t=1778862467; cv=none; b=bxOmcni/OLKz6KMqaZO3jpS6dJ40cEGxgo1FZwtNGyT6VhL9UUpdyMABG5XG/yeUhiUz0ffHkUHaBBgdR7vuElpJ1D8kg4mnCPJxmHid446MvaGHCRwo9CQ8lsPFkF7FArwsgr76pI3sDVUsSpte1DufEji52u+XmtfkP3HVtPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861981; c=relaxed/simple;
-	bh=5DUej0zZNoOm7jA4CT66c2I4d5PnwQO6ENk9mBQd6i0=;
+	s=arc-20240116; t=1778862467; c=relaxed/simple;
+	bh=SO1iqbXk4rhWZEsPIPV99w25JKmx2cHXTsBGF765J18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reXopS1D7E5wNmeZBJoHTaL6bhJ3IY3sbu5jTIMwSbD4kHdEBSlMDsfZe3WacHNbKUGGOyc2pf6XBzdf+/4CxEr5cEdI5l13899knMHLP4TbbXz46ERpk9l+XGDV5X3J3eDzKLurqSBeocpfZWymUCI3QoTG+OWu+U4BCPQlaSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvSG7W5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31E9C2BCB3;
-	Fri, 15 May 2026 16:19:40 +0000 (UTC)
+	 MIME-Version; b=FpvxLtkOjv5+ItpBHVFpIE+72N9W2SaYeNHsvlXAwcvS9qpq8cNQUwQpiz9T0xuI2qLwORCYeitCGnw0soXcufVkDL5oHcsY9Qtj2In2uU5na93AvHVaIezEpJ2NqE9g13TS9XCxfz9IHg1zafc/e6xyPTW+Iki3gE49qfpJyEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPZeY79N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEDDC2BCB0;
+	Fri, 15 May 2026 16:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861981;
-	bh=5DUej0zZNoOm7jA4CT66c2I4d5PnwQO6ENk9mBQd6i0=;
+	s=korg; t=1778862466;
+	bh=SO1iqbXk4rhWZEsPIPV99w25JKmx2cHXTsBGF765J18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvSG7W5M9tZHQtxdSnnBcudfA2v7qe51lUnHr/w6oOmZYgcd+Fcc6leXafeFxnxH7
-	 sKpWfuqjEOaLgKjR8fYg6Hg5tyMarileJeKQ+WX8c2LQg0HTyeMjTNg/LVEhafXihK
-	 uk91+W8RnawBdP97leXKhg9rhhZYOtIvkKgYoJ4A=
+	b=tPZeY79NwYX19IANWcsZhbOWYZPy/rc5R9titdCmX7cvH0AkCn+wAIrMjIaQD/YHq
+	 mJQDd+dEy6qJww4+OQsVYV2fbeCpCyHBwg6HrohHh7MEHbnUkDv4apYoB9Tg8T2dAz
+	 tTh5g6pwIyFqR5UjgkdVRdU4VTyycVQS6ZBmOIEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 060/188] media: venus: fix QCOM_MDT_LOADER dependency
+	Uma Shankar <uma.shankar@intel.com>,
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>
+Subject: [PATCH 7.0 059/201] drm/colorop: Preserve bypass value in duplicate_state()
 Date: Fri, 15 May 2026 17:47:57 +0200
-Message-ID: <20260515154658.619122859@linuxfoundation.org>
+Message-ID: <20260515154659.812240803@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +65,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1F909554039
+X-Rspamd-Queue-Id: CBE55554969
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248536-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248724-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arndb.de:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-commit aa23c94cc433b145d1ce93820ecdfe16d8940e28 upstream.
+commit 0d9710aeb6959ae244f255986187562fa50504b9 upstream.
 
-When build-testined with CONFIG_QCOM_MDT_LOADER=m and VIDEO_QCOM_VENUS=y,
-the kernel fails to link:
+__drm_atomic_helper_colorop_duplicate_state() unconditionally
+sets state->bypass = true after copying the existing state.
 
-x86_64-linux-ld: drivers/media/platform/qcom/venus/firmware.o: in function `venus_boot':
-firmware.c:(.text+0x1e3): undefined reference to `qcom_mdt_get_size'
-firmware.c:(.text+0x25a): undefined reference to `qcom_mdt_load'
-firmware.c:(.text+0x272): undefined reference to `qcom_mdt_load_no_init'
+This override causes the new atomic state to no longer reflect
+the currently committed hardware state. Since the bypass property
+directly controls whether the colorop is active in hardware,
+resetting it to true can inadvertently disable an active colorop
+during a subsequent commit, particularly for internal driver commits
+where userspace does not touch the property.
 
-The problem is the conditional 'select' statement. Change this to
-make the driver built-in here regardless of CONFIG_ARCH_QCOM,
-same as for the similar IRIS driver.
+Drop the unconditional assignment and preserve the duplicated
+bypass value.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-Fixes: 0399b696f7f4 ("media: venus: fix compile-test build on non-qcom ARM platform")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 8c5ea1745f4c ("drm/colorop: Add BYPASS property")
+Cc: <stable@vger.kernel.org> #v6.19+
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260310113238.3495981-2-chaitanya.kumar.borah@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_colorop.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/Kconfig
-+++ b/drivers/media/platform/qcom/venus/Kconfig
-@@ -4,7 +4,7 @@ config VIDEO_QCOM_VENUS
- 	depends on VIDEO_DEV && QCOM_SMEM
- 	depends on (ARCH_QCOM && ARM64 && IOMMU_API) || COMPILE_TEST
- 	select OF_DYNAMIC if ARCH_QCOM
--	select QCOM_MDT_LOADER if ARCH_QCOM
-+	select QCOM_MDT_LOADER
- 	select QCOM_SCM
- 	select VIDEOBUF2_DMA_CONTIG
- 	select V4L2_MEM2MEM_DEV
+--- a/drivers/gpu/drm/drm_colorop.c
++++ b/drivers/gpu/drm/drm_colorop.c
+@@ -441,8 +441,6 @@ static void __drm_atomic_helper_colorop_
+ 
+ 	if (state->data)
+ 		drm_property_blob_get(state->data);
+-
+-	state->bypass = true;
+ }
+ 
+ struct drm_colorop_state *
 
 
 
