@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-248616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GG/LFgpQB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248616-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:38 +0200
+	id AKy5DcpOB2p3xwIAu9opvQ
+	(envelope-from <stable+bounces-248445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1288E554310
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94210554017
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B55233A04CF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80F0D31C1D26
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F853FD959;
-	Fri, 15 May 2026 16:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEC63F9299;
+	Fri, 15 May 2026 16:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzdzXHoX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0V3xKab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A0F3E00A3;
-	Fri, 15 May 2026 16:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A99F3F928E;
+	Fri, 15 May 2026 16:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862188; cv=none; b=CYe/KhkkbL7hPloZnlMmmjWQ75PvBZ+zSjz1GU88Jsehulnat/cLDD8gOy6igtoPaGlD4o6ZbkrlvKRqdiK+MZms0TsnhK7KlACRzFrDUQ8es5/34JIE/f4MZQiwim3QjCRkWt827n4Yl5X6zYk9A4mIFU9EcedU4htu5pNZvTY=
+	t=1778861751; cv=none; b=RwSTDE0KFytocMasoys6eDJg96SYYeSFzG7hMKTVz8ilwhvvlDQsAtDPJHrUkPfZRCI5nASXQm+DKLOjJP30pJoj10XYG72C0mUM/oNp1NvlggxU82lMkpRiaD6hqyvYtD8fw3z2qd1EQPo5KV830tpSPzcP4AD2Alg4JcKjnU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862188; c=relaxed/simple;
-	bh=OSgglE8rJE/TvQXRO+YU4zuBwkkYm4QqRimD9HTj4mg=;
+	s=arc-20240116; t=1778861751; c=relaxed/simple;
+	bh=rZJHoS9Olc9EVLDP+cW26mB7i2CfCpW1X1V8PSOJGrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQ7LxJlBqyRywI4l34KxRFwsv29DX9Mp9wF9q80mQ/9cXL3VNnxG5wqrIih2fR5LkpmIuSsEFyliGa7tmeErEMsEjL5xmkVhWTlFFjcy/9KLHBevTuG8WpZUZ9P0B9HeOjvWnSWYzAl1ZajlPa7Tob/c6Bcygdqahq3kBJz/jlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzdzXHoX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4816DC2BCB3;
-	Fri, 15 May 2026 16:23:08 +0000 (UTC)
+	 MIME-Version; b=Bw1oiz+575VvrvvKw1s2toFrU6+5obsgmW6h1R3F8mAzYf/oDOL4vpRgg/pAXOHW0anl2ktb0wXsM0IX8bSpWAhgFxgiVkc0xL48X5bszj6VRIiTE+Q8Sf1MoilImojpt7NtvpcV1ah0aL7Fg9wEbjXaeMdQ4U+p38wDBXAg558=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0V3xKab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BDA3C2BCFC;
+	Fri, 15 May 2026 16:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862188;
-	bh=OSgglE8rJE/TvQXRO+YU4zuBwkkYm4QqRimD9HTj4mg=;
+	s=korg; t=1778861750;
+	bh=rZJHoS9Olc9EVLDP+cW26mB7i2CfCpW1X1V8PSOJGrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VzdzXHoXyZQKsgNDzg5mfg2WC2MdY83iY4BH228W6vNVM4pFgiApu98MNkD9F1Vbt
-	 M+yrZTnsfSjJv28xsBrzRi1TFGUxqwwm6zVXWH5eEw1Xj46IEiAeE8X5tTbPjPyGJY
-	 65nUD9eUaqwoZ83c2zixH/SmvF3oAaVqehUdT9Kw=
+	b=U0V3xKabD3u+utt9QmNXnJFVkD36F6rq+XLERAr7NiXayEsl3U8rdI7tnO7sCZnCz
+	 DXfmmITAujc/rnLbEiYP+ZEzWPpKbqJmAE+v3pCNjAD4Or9fgl1pUzQmDqIkMICIrt
+	 KOcUIrObD+WlpCCJZpQKI3iHIB5S+5uyj51fKado=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.18 141/188] batman-adv: bla: only purge non-released claims
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 449/474] mm/damon/core: implement damon_kdamond_pid()
 Date: Fri, 15 May 2026 17:49:18 +0200
-Message-ID: <20260515154700.383878863@linuxfoundation.org>
+Message-ID: <20260515154724.806452549@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1288E554310
+X-Rspamd-Queue-Id: 94210554017
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248616-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248445-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,61 +90,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,narfation.org:email]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: SeongJae Park <sj@kernel.org>
 
-commit cf6b604011591865ae39ac82de8978c1120d17af upstream.
+commit 4262c53236977de3ceaa3bf2aefdf772c9b874dd upstream.
 
-When batadv_bla_purge_claims() goes through the list of claims, it is only
-traversing the hash list with an rcu_read_lock(). Due to a potential
-parallel batadv_claim_put(), it can happen that it encounters a claim which
-was actually in the process of being released+freed by
-batadv_claim_release(). In this case, backbone_gw is set to NULL before the
-delayed RCU kfree is started. Calling batadv_bla_claim_get_backbone_gw() is
-then no longer allowed because it would cause a NULL-ptr derefence.
+Patch series "mm/damon: hide kdamond and kdamond_lock from API callers".
 
-To avoid this, only claims with a valid reference counter must be purged.
-All others are already taken care of.
+'kdamond' and 'kdamond_lock' fields initially exposed to DAMON API callers
+for flexible synchronization and use cases.  As DAMON API became somewhat
+complicated compared to the early days, Keeping those exposed could only
+encourage the API callers to invent more creative but complicated and
+difficult-to-debug use cases.
 
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fortunately DAMON API callers didn't invent that many creative use cases.
+There exist only two use cases of 'kdamond' and 'kdamond_lock'.  Finding
+whether the kdamond is actively running, and getting the pid of the
+kdamond.  For the first use case, a dedicated API function, namely
+'damon_is_running()' is provided, and all DAMON API callers are using the
+function for the use case.  Hence only the second use case is where the
+fields are directly being used by DAMON API callers.
+
+To prevent future invention of complicated and erroneous use cases of the
+fields, hide the fields from the API callers.  For that, provide new
+dedicated DAMON API functions for the remaining use case, namely
+damon_kdamond_pid(), migrate DAMON API callers to use the new function,
+and mark the fields as private fields.
+
+
+This patch (of 5):
+
+'kdamond' and 'kdamond_lock' are directly being used by DAMON API callers
+for getting the pid of the corresponding kdamond.  To discourage invention
+of creative but complicated and erroneous new usages of the fields that
+require careful synchronization, implement a new API function that can
+simply be used without the manual synchronizations.
+
+Link: https://lkml.kernel.org/r/20260115152047.68415-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20260115152047.68415-2-sj@kernel.org
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/linux/damon.h |    1 +
+ mm/damon/core.c       |   17 +++++++++++++++++
+ 2 files changed, 18 insertions(+)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -1289,6 +1289,13 @@ static void batadv_bla_purge_claims(stru
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -677,6 +677,7 @@ static inline unsigned int damon_max_nr_
  
- 		rcu_read_lock();
- 		hlist_for_each_entry_rcu(claim, head, hash_entry) {
-+			/* only purge claims not currently in the process of being released.
-+			 * Such claims could otherwise have a NULL-ptr backbone_gw set because
-+			 * they already went through batadv_claim_release()
-+			 */
-+			if (!kref_get_unless_zero(&claim->refcount))
-+				continue;
+ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
+ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
++int damon_kdamond_pid(struct damon_ctx *ctx);
+ 
+ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
+ 				unsigned long *start, unsigned long *end);
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -762,6 +762,23 @@ int damon_stop(struct damon_ctx **ctxs,
+ 	return err;
+ }
+ 
++/**
++ * damon_kdamond_pid() - Return pid of a given DAMON context's worker thread.
++ * @ctx:	The DAMON context of the question.
++ *
++ * Return: pid if @ctx is running, negative error code otherwise.
++ */
++int damon_kdamond_pid(struct damon_ctx *ctx)
++{
++	int pid = -EINVAL;
 +
- 			backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
- 			if (now)
- 				goto purge_now;
-@@ -1314,6 +1321,7 @@ purge_now:
- 					      claim->addr, claim->vid);
- skip:
- 			batadv_backbone_gw_put(backbone_gw);
-+			batadv_claim_put(claim);
- 		}
- 		rcu_read_unlock();
- 	}
++	mutex_lock(&ctx->kdamond_lock);
++	if (ctx->kdamond)
++		pid = ctx->kdamond->pid;
++	mutex_unlock(&ctx->kdamond_lock);
++	return pid;
++}
++
+ /*
+  * Reset the aggregated monitoring results ('nr_accesses' of each region).
+  */
 
 
 
