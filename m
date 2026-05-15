@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEM+MbJOB2p3xwIAu9opvQ
-	(envelope-from <stable+bounces-248694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:54 +0200
+	id sIxmG3lOB2p3xwIAu9opvQ
+	(envelope-from <stable+bounces-248504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:48:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CA6553FE1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD45553F4D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E3C7230AD164
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B21BD334A05E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5094F3E929C;
-	Fri, 15 May 2026 16:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427A63E7BAD;
+	Fri, 15 May 2026 16:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ogtvl12N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1lkmGDf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F073B9D91;
-	Fri, 15 May 2026 16:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F483F9279;
+	Fri, 15 May 2026 16:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862388; cv=none; b=S8a7KrHrxXGfq/WOFiEGC9wQiFJTsMo/FxRZTKj6nS8csthRtqpedmKlTsMYwfogX+v9vY7fWiVgsVdtssmWG5ScK6noYtO7uJy1CDQrLC3OdQTkK9b6ej5gbrl7zX2VJT5rz5oFd1i8eGezWcp1qOttJM8N22jrFStK7hyrJaQ=
+	t=1778861898; cv=none; b=rJmrxmlGBO8fwvdkTE3Mskx1wwmG/EjsB4Eldyfk+Y+10LcpY0E0/BbVdkcVjc4pXsjluAJnmE4FPntQCYFRJh1b7/V5nN5MJk5sLbAaygfgWWsRYALsZyyyYeGKsBGFe+ZX08ubPU2TUxUaT+/+Wg3MKA+AFWq5uqbWsQ5nd5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862388; c=relaxed/simple;
-	bh=TCEWR1NZxo6zKg/Y3yvZcWJYlhO9HtyeNvtEOruhoAY=;
+	s=arc-20240116; t=1778861898; c=relaxed/simple;
+	bh=pUuT8afjCmg1xY07sLGEkqwks9c84BO19x6N/YOCl+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LRHR5GAtKI17Lnp3tMmROgWCN+5PG/iF1dDRuWK1Do2zeg/mf44J4UIuhjQ1HxDjPphsIf7N8BIWzd4v5/MTSahh1r1H94Tu82AAeKgCs3Qg5u2SS4Ay80aKQc7Is4u2CkA+mW1QnKpD+4GmwBQV/NhP3X+YQxLNIKgpVeuFVlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ogtvl12N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE9FC2BCB0;
-	Fri, 15 May 2026 16:26:27 +0000 (UTC)
+	 MIME-Version; b=ACzhKrrF+dGtye4mHSEihhw1DqZly0KhVXywGvIs0PPbpCLHuoP4jdJVeTbgZxCjeVk/xC8g7M9702e2miXrcQnF5CqpGtpa4Qjm8XGc93OiPY61OHyBXn39y+Vg5km1ddL7CxJjbfX4qQa758gxJ5YhAVTy/O/KqgNGYBUMxl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1lkmGDf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EECC2BCB0;
+	Fri, 15 May 2026 16:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862388;
-	bh=TCEWR1NZxo6zKg/Y3yvZcWJYlhO9HtyeNvtEOruhoAY=;
+	s=korg; t=1778861897;
+	bh=pUuT8afjCmg1xY07sLGEkqwks9c84BO19x6N/YOCl+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ogtvl12N9pCI9WUlHIghxp4Y/KvojSgXkMeWMOWGNOu2Rsf1naG8F7u3t7Ad3xDL3
-	 JVaAo6sb8zS5uckSPz8Y3tUbOGz1rU+WF1cg/VIMJJFtLHeNZgViWwIN7Mk8MTJDXL
-	 L/a6qLd0D3MzkInSy9pPTco0ptbwl2yLr89c58Yw=
+	b=e1lkmGDf3U6971oLDDJ5oVJufMWerdBAsGIC0cqLlhs/nNjvODPrbt+RgWJi6Mn9c
+	 l1l81BUf75ih4ZnK1j3uf9/Qk01M8TwxRClOBvw7V0yCFiZoDa/2kqVlDYO83wVzj0
+	 ReKuzqn5q3QNExvhePmBj7iTRZEfVHl2LTMcTfnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 029/201] spi: atmel: fix controller deregistration
-Date: Fri, 15 May 2026 17:47:27 +0200
-Message-ID: <20260515154659.164878139@linuxfoundation.org>
+	Janne Grunau <j@jannau.net>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 031/188] media: videobuf2: Set vma_flags in vb2_dma_sg_mmap
+Date: Fri, 15 May 2026 17:47:28 +0200
+Message-ID: <20260515154657.983230346@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +64,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 97CA6553FE1
+X-Rspamd-Queue-Id: DCD45553F4D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248504-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248694-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[jannau.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samsung.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Janne Grunau <j@jannau.net>
 
-commit 8d4de97e83520be89d0ff40610ca633b3963a7de upstream.
+commit 7254b31a13aaa0c2c0f9ffbc335b718656117ff4 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+vb2_dma_contig sets VMA flags VM_DONTEXPAND and VM_DONTDUMP and I do not
+see a reason why vb2_dma_sg should behave differently. This avoids
+hitting `WARN_ON(!(vma->vm_flags & VM_DONTEXPAND));` in
+drm_gem_mmap_obj() during mmap() of an imported dma-buf from the out of
+tree Apple ISP camera capture driver which uses vb2_dma_sg_memops.
 
-Fixes: 754ce4f29937 ("[PATCH] SPI: atmel_spi driver")
-Cc: stable@vger.kernel.org	# 2.6.21
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-5-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+gst-launch-1.0 v4l2src ! gtk4paintablesink
+
+[   38.201528] ------------[ cut here ]------------
+[   38.202135] WARNING: CPU: 7 PID: 2362 at drivers/gpu/drm/drm_gem.c:1144 drm_gem_mmap_obj+0x1f8/0x210
+[   38.203278] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer
+snd_seq snd_seq_device uinput nf_conntrack_netbios_ns
+nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
+nft_reject_inet nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat
+nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables qrtr bnep
+nls_ascii i2c_dev loop fuse dm_multipath nfnetlink brcmfmac_wcc
+hid_magicmouse hci_bcm4377 brcmfmac brcmutil bluetooth ecdh_generic
+cfg80211 ecc btrfs xor xor_neon rfkill hid_apple raid6_pq joydev
+aop_als apple_nvmem_spmi industrialio snd_soc_aop apple_z2
+snd_soc_cs42l84 tps6598x snd_soc_tas2764 macsmc_reboot spi_nor
+macsmc_hwmon rtc_macsmc gpio_macsmc macsmc_power regmap_spmi
+macsmc_input dockchannel_hid panel_summit appledrm nvme_apple dwc3
+snd_soc_macaudio drm_client_lib nvme_core phy_apple_atc hwmon
+apple_sart apple_dockchannel macsmc apple_rtkit_helper
+spmi_apple_controller aop apple_wdt mfd_core nvmem_apple_efuses
+pinctrl_apple_gpio apple_isp apple_dcp videobuf2_dma_sg mux_core
+spi_apple
+[   38.203300]  videobuf2_memops i2c_pasemi_platform snd_soc_apple_mca videobuf2_v4l2 videodev clk_apple_nco videobuf2_common snd_pcm_dmaengine adpdrm asahi apple_admac adpdrm_mipi drm_dma_helper pwm_apple i2c_pasemi_core drm_display_helper mc cec apple_dart ofpart apple_soc_cpufreq leds_pwm phram
+[   38.217677] CPU: 7 UID: 1000 PID: 2362 Comm: gst-launch-1.0 Tainted: G        W           6.17.6+ #asahi-dev PREEMPT(full)
+[   38.219040] Tainted: [W]=WARN
+[   38.219398] Hardware name: Apple MacBook Pro (13-inch, M2, 2022) (DT)
+[   38.220213] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   38.221088] pc : drm_gem_mmap_obj+0x1f8/0x210
+[   38.221643] lr : drm_gem_mmap_obj+0x78/0x210
+[   38.222178] sp : ffffc0008dc678e0
+[   38.222579] x29: ffffc0008dc678e0 x28: 0000000000042a97 x27: ffff8000b701b480
+[   38.223465] x26: 00000000000000fb x25: ffffc0008dc67d20 x24: ffffc0008dc67968
+[   38.224402] x23: ffff8000e3ca5600 x22: ffff8000265b7800 x21: ffff80003000c0c0
+[   38.225279] x20: 0000000000000000 x19: ffff8000b68c5200 x18: ffffc0008dc67968
+[   38.226151] x17: 0000000000000000 x16: 0000000000000000 x15: ffffc000810a30a8
+[   38.227042] x14: 00007fff637effff x13: 00005555de91ffff x12: 00007fff63293fff
+[   38.227942] x11: 0000000000000000 x10: ffff8000184ecf08 x9 : ffffc0007a1900c8
+[   38.228824] x8 : ffffc0008dc67968 x7 : 0000000000000012 x6 : ffffc0015cf1c000
+[   38.229703] x5 : ffffc0008dc676a0 x4 : ffffc00081a27dc0 x3 : 0000000000000038
+[   38.230607] x2 : 0000000000000003 x1 : 0000000000000003 x0 : 00000000100000fb
+[   38.231488] Call trace:
+[   38.231806]  drm_gem_mmap_obj+0x1f8/0x210 (P)
+[   38.232342]  drm_gem_mmap+0x140/0x260
+[   38.232813]  __mmap_region+0x488/0x9a0
+[   38.233277]  mmap_region+0xd0/0x148
+[   38.233703]  do_mmap+0x350/0x5c0
+[   38.234148]  vm_mmap_pgoff+0x14c/0x200
+[   38.234612]  ksys_mmap_pgoff+0x150/0x208
+[   38.235107]  __arm64_sys_mmap+0x34/0x50
+[   38.235611]  invoke_syscall+0x50/0x120
+[   38.236075]  el0_svc_common.constprop.0+0x48/0xf0
+[   38.236680]  do_el0_svc+0x24/0x38
+[   38.237113]  el0_svc+0x38/0x168
+[   38.237507]  el0t_64_sync_handler+0xa0/0xe8
+[   38.238034]  el0t_64_sync+0x198/0x1a0
+[   38.238491] ---[ end trace 0000000000000000 ]---
+
+There were discussions in [1] at the end of 2023 that mmap() on imported
+dma-bufs should not be supported but as of v6.17 drm_gem_shmem_mmap() in
+drm_gem_shmem_helper.c still supports it.
+This might affect all gpu or accel drivers using drm_gem_shmem_mmap() or
+the wrapper drm_gem_shmem_object_mmap().
+
+[1] https://lore.kernel.org/dri-devel/bc7f7844-0aa3-4802-b203-69d58e8be2fa@linux.intel.com/
+
+Cc: stable@vger.kernel.org
+Fixes: 5ba3f757f059 ("[media] v4l: videobuf2: add DMA scatter/gather allocator")
+Signed-off-by: Janne Grunau <j@jannau.net>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-atmel.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/common/videobuf2/videobuf2-dma-sg.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1654,7 +1654,7 @@ static int atmel_spi_probe(struct platfo
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
+--- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
++++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
+@@ -345,6 +345,7 @@ static int vb2_dma_sg_mmap(void *buf_pri
+ 		return err;
+ 	}
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret)
- 		goto out_free_dma;
- 
-@@ -1688,8 +1688,12 @@ static void atmel_spi_remove(struct plat
- 	struct spi_controller	*host = platform_get_drvdata(pdev);
- 	struct atmel_spi	*as = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
- 	pm_runtime_get_sync(&pdev->dev);
- 
-+	spi_unregister_controller(host);
-+
- 	/* reset the hardware and block queue progress */
- 	if (as->use_dma) {
- 		atmel_spi_stop_dma(host);
-@@ -1716,6 +1720,8 @@ static void atmel_spi_remove(struct plat
- 
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+
-+	spi_controller_put(host);
- }
- 
- static int atmel_spi_runtime_suspend(struct device *dev)
++	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+ 	/*
+ 	 * Use common vm_area operations to track buffer refcount.
+ 	 */
 
 
 
