@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-248732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BqfII5ZB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:36:14 +0200
+	id uJ8oEftTB2oqywIAu9opvQ
+	(envelope-from <stable+bounces-248733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:12:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2201E555466
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:36:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B5F554993
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7AAFB31E9AC6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2397E30ACE30
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26003FD976;
-	Fri, 15 May 2026 16:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515673FD97C;
+	Fri, 15 May 2026 16:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOeZt3O0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQaayzrE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761043F660B;
-	Fri, 15 May 2026 16:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B643F660B;
+	Fri, 15 May 2026 16:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862487; cv=none; b=EgUojdNBspNCINuF2G0HID5NYKmEM/OPG5oROUbLWrs+rgUklCwKJRtkhdnFTr7oQtmKK2dyLZCm4IL6Y3hoBHO7DcGQztFHhoTcQP8CRX+fqZlXGwyAZFPun8ZJp6T7D+Xy145tGnW8EgrREhL6AVp+OuWNZPEUgDxZD8CFGTA=
+	t=1778862490; cv=none; b=UW5q9DWeUKOP1w9fwzX24UqwH9LbN/M/pEUrzbFsDNMCBJ1GQM43MNOcHpqU78ENMV+bprFyWZfeBcHHkBkzNyNz3TVFbe/lpWEFGfDNtTwLLWR1PYhw/evSrZ4wviTI1kCLxmkRU8p/p3st4we+/pFaEr/1+ROKD49rl0r/CIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862487; c=relaxed/simple;
-	bh=Y7kt41XSx5fWhl4TQQ6iSyWkfsUGnjrTQ5T045GkP0w=;
+	s=arc-20240116; t=1778862490; c=relaxed/simple;
+	bh=nHtO+HOR7Bv56PZOVtyB1FWQ0e5X8j4riF2hAPQJbMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIkLUYncRmkfP95sLKz7BW4J3Nmg12aCo2a8K0pJm4fnGA18c+ME22NR4hjTHEd9zE/SsMWHRe0COf7//ch2sI0vyxOe1/GfvHj7O/t46NekpIlHHxP6JWYyvAy4DpDh6cii49noCrltBaQK32HIvBI1lfD61h/pOXHdTGu6PMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOeZt3O0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C74DC2BCB0;
-	Fri, 15 May 2026 16:28:06 +0000 (UTC)
+	 MIME-Version; b=LKiWwZSrQZrExQGyHs30jdx4fhyxGsCKzyGZvOhJFxcfa2uaBSND+7OXiiLVZXkd2fPN1271cygK+29hW4bjOolBnpsWMQ1t/OM6lbfsa/kOIC8/V/Vq9t4BDn05GkrD9gz+yEZyZoCygNv+PLND43oTP1LqZzhm67Riuq0V44Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQaayzrE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C43AC2BCB0;
+	Fri, 15 May 2026 16:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862487;
-	bh=Y7kt41XSx5fWhl4TQQ6iSyWkfsUGnjrTQ5T045GkP0w=;
+	s=korg; t=1778862490;
+	bh=nHtO+HOR7Bv56PZOVtyB1FWQ0e5X8j4riF2hAPQJbMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOeZt3O0HUeekT4xYf37mS8BjTpv85ZMF77H+0HWbKCKV4PJTpRLHpKVR410O8wjp
-	 idc5lPhO5N0Bm8DQOk5SiGIln7c3tYLgU+fec21Rx2htNbhz8h+BiGz7C0PIcIgZKZ
-	 lJL/cdTclx6hJmPlyWBPuK1meRE962dMQaJ+zdCc=
+	b=hQaayzrEzZndOACCPjw8bAr33cbfPxRb27EdWXivRj4emvqRivDBq7LQnu9lgVnwO
+	 JByDjxOqa9TiEuThCvcYan5NtlWt+khELOTxyQ7GN1buk8VHnZLV+Gd6+0WxFtThvJ
+	 FHp5TLT0HlDkbGP/R5HMWBxjdUM2M5Jx/rbp7R6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 7.0 067/201] media: i2c: imx412: Assert reset GPIO during probe
-Date: Fri, 15 May 2026 17:48:05 +0200
-Message-ID: <20260515154659.986104052@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 068/201] media: staging: imx: request mbus_config in csi_start
+Date: Fri, 15 May 2026 17:48:06 +0200
+Message-ID: <20260515154700.007364693@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
 References: <20260515154658.538039039@linuxfoundation.org>
@@ -64,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2201E555466
+X-Rspamd-Queue-Id: A9B5F554993
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -72,63 +73,199 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248732-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-248733-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+From: Michael Tretter <m.tretter@pengutronix.de>
 
-commit 8467c5ff5acae28513bc1e0af535e06b41b04344 upstream.
+commit 9df2aaa64890c0b6226057eb6fcb6352bd2df432 upstream.
 
-Assert the reset GPIO before first power up. This avoids a mismatch where
-the first power up (when the reset GPIO defaults deasserted) differs from
-subsequent cycles.
+Request the upstream mbus_config in csi_start, which starts the stream,
+instead of caching it in link_validate.
 
-Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
-Fixes: 9214e86c0cc1 ("media: i2c: Add imx412 camera sensor driver")
+This allows to get rid of the mbus_cfg field in the struct csi_priv and
+avoids state in the driver.
+
+Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx412.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/media/imx/imx-media-csi.c |   40 ++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 16 deletions(-)
 
---- a/drivers/media/i2c/imx412.c
-+++ b/drivers/media/i2c/imx412.c
-@@ -925,7 +925,7 @@ static int imx412_parse_hw_config(struct
+--- a/drivers/staging/media/imx/imx-media-csi.c
++++ b/drivers/staging/media/imx/imx-media-csi.c
+@@ -97,9 +97,6 @@ struct csi_priv {
+ 	/* the mipi virtual channel number at link validate */
+ 	int vc_num;
  
- 	/* Request optional reset pin */
- 	imx412->reset_gpio = devm_gpiod_get_optional(imx412->dev, "reset",
--						     GPIOD_OUT_LOW);
-+						     GPIOD_OUT_HIGH);
- 	if (IS_ERR(imx412->reset_gpio)) {
- 		dev_err(imx412->dev, "failed to get reset gpio %pe\n",
- 			imx412->reset_gpio);
+-	/* media bus config of the upstream subdevice CSI is receiving from */
+-	struct v4l2_mbus_config mbus_cfg;
+-
+ 	spinlock_t irqlock; /* protect eof_irq handler */
+ 	struct timer_list eof_timeout_timer;
+ 	int eof_irq;
+@@ -403,7 +400,8 @@ static void csi_idmac_unsetup_vb2_buf(st
+ }
+ 
+ /* init the SMFC IDMAC channel */
+-static int csi_idmac_setup_channel(struct csi_priv *priv)
++static int csi_idmac_setup_channel(struct csi_priv *priv,
++				   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct imx_media_video_dev *vdev = priv->vdev;
+ 	const struct imx_media_pixfmt *incc;
+@@ -432,7 +430,7 @@ static int csi_idmac_setup_channel(struc
+ 	image.phys0 = phys[0];
+ 	image.phys1 = phys[1];
+ 
+-	passthrough = requires_passthrough(&priv->mbus_cfg, infmt, incc);
++	passthrough = requires_passthrough(mbus_cfg, infmt, incc);
+ 	passthrough_cycles = 1;
+ 
+ 	/*
+@@ -572,11 +570,12 @@ static void csi_idmac_unsetup(struct csi
+ 	csi_idmac_unsetup_vb2_buf(priv, state);
+ }
+ 
+-static int csi_idmac_setup(struct csi_priv *priv)
++static int csi_idmac_setup(struct csi_priv *priv,
++			   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	int ret;
+ 
+-	ret = csi_idmac_setup_channel(priv);
++	ret = csi_idmac_setup_channel(priv, mbus_cfg);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -595,7 +594,8 @@ static int csi_idmac_setup(struct csi_pr
+ 	return 0;
+ }
+ 
+-static int csi_idmac_start(struct csi_priv *priv)
++static int csi_idmac_start(struct csi_priv *priv,
++			   struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct imx_media_video_dev *vdev = priv->vdev;
+ 	int ret;
+@@ -619,7 +619,7 @@ static int csi_idmac_start(struct csi_pr
+ 	priv->last_eof = false;
+ 	priv->nfb4eof = false;
+ 
+-	ret = csi_idmac_setup(priv);
++	ret = csi_idmac_setup(priv, mbus_cfg);
+ 	if (ret) {
+ 		v4l2_err(&priv->sd, "csi_idmac_setup failed: %d\n", ret);
+ 		goto out_free_dma_buf;
+@@ -701,7 +701,8 @@ static void csi_idmac_stop(struct csi_pr
+ }
+ 
+ /* Update the CSI whole sensor and active windows */
+-static int csi_setup(struct csi_priv *priv)
++static int csi_setup(struct csi_priv *priv,
++		     struct v4l2_mbus_config *mbus_cfg)
+ {
+ 	struct v4l2_mbus_framefmt *infmt, *outfmt;
+ 	const struct imx_media_pixfmt *incc;
+@@ -719,7 +720,7 @@ static int csi_setup(struct csi_priv *pr
+ 	 * if cycles is set, we need to handle this over multiple cycles as
+ 	 * generic/bayer data
+ 	 */
+-	if (is_parallel_bus(&priv->mbus_cfg) && incc->cycles) {
++	if (is_parallel_bus(mbus_cfg) && incc->cycles) {
+ 		if_fmt.width *= incc->cycles;
+ 		crop.width *= incc->cycles;
+ 	}
+@@ -730,7 +731,7 @@ static int csi_setup(struct csi_priv *pr
+ 			     priv->crop.width == 2 * priv->compose.width,
+ 			     priv->crop.height == 2 * priv->compose.height);
+ 
+-	ipu_csi_init_interface(priv->csi, &priv->mbus_cfg, &if_fmt, outfmt);
++	ipu_csi_init_interface(priv->csi, mbus_cfg, &if_fmt, outfmt);
+ 
+ 	ipu_csi_set_dest(priv->csi, priv->dest);
+ 
+@@ -745,9 +746,17 @@ static int csi_setup(struct csi_priv *pr
+ 
+ static int csi_start(struct csi_priv *priv)
+ {
++	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
+ 	struct v4l2_fract *input_fi, *output_fi;
+ 	int ret;
+ 
++	ret = csi_get_upstream_mbus_config(priv, &mbus_cfg);
++	if (ret) {
++		v4l2_err(&priv->sd,
++			 "failed to get upstream media bus configuration\n");
++		return ret;
++	}
++
+ 	input_fi = &priv->frame_interval[CSI_SINK_PAD];
+ 	output_fi = &priv->frame_interval[priv->active_output_pad];
+ 
+@@ -758,7 +767,7 @@ static int csi_start(struct csi_priv *pr
+ 		return ret;
+ 
+ 	/* Skip first few frames from a BT.656 source */
+-	if (priv->mbus_cfg.type == V4L2_MBUS_BT656) {
++	if (mbus_cfg.type == V4L2_MBUS_BT656) {
+ 		u32 delay_usec, bad_frames = 20;
+ 
+ 		delay_usec = DIV_ROUND_UP_ULL((u64)USEC_PER_SEC *
+@@ -769,12 +778,12 @@ static int csi_start(struct csi_priv *pr
+ 	}
+ 
+ 	if (priv->dest == IPU_CSI_DEST_IDMAC) {
+-		ret = csi_idmac_start(priv);
++		ret = csi_idmac_start(priv, &mbus_cfg);
+ 		if (ret)
+ 			goto stop_upstream;
+ 	}
+ 
+-	ret = csi_setup(priv);
++	ret = csi_setup(priv, &mbus_cfg);
+ 	if (ret)
+ 		goto idmac_stop;
+ 
+@@ -1138,7 +1147,6 @@ static int csi_link_validate(struct v4l2
+ 
+ 	mutex_lock(&priv->lock);
+ 
+-	priv->mbus_cfg = mbus_cfg;
+ 	is_csi2 = !is_parallel_bus(&mbus_cfg);
+ 	if (is_csi2) {
+ 		/*
 
 
 
