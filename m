@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-248584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NbtF5RPB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:40 +0200
+	id WGmNEBJMB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB415541DC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2E1553A66
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E41D6338A7F2
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:23:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6B5FC31B4251
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC74F3F6C51;
-	Fri, 15 May 2026 16:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9813BB116;
+	Fri, 15 May 2026 16:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3quAmG9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uuv6ScaZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8BF2609EE;
-	Fri, 15 May 2026 16:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE9F3F44D5;
+	Fri, 15 May 2026 16:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862105; cv=none; b=Ex3z8CqoN4R8a89Kc5zd/Ymn3L4RUHn9nlOPQqh43jgm3x572z7YfXAcDK2aZgmMmT6Ng7O568/otJ/tGfjGqvUZIVxX/iZpOBFYORCd8IFFPoskoOcBLspYSSV5LW1S4N2Y8cHBdjNo1qasyt+J/k3f5/To7rDxI6wl5IDLJCU=
+	t=1778861569; cv=none; b=RIhP8z16bjKRCfxaA8bEmdzawdOIVk1tLfjhSJAP3TWFiwaq8pqB5eeoLxsi/qmmEj/A8d1WRJRemcOkqAU9r5sMPBUBSy+HsiDyk8mLbhOsLI9EECDKbmmaLpFyKBHVfRfQNrZmxipwK00r07fRgLQz4H0K2IMZMYEJl79Vx+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862105; c=relaxed/simple;
-	bh=fRQTdDxLx8ThgLSrAUu27d9Tu+qJ5N/ca5cXPDQpLJk=;
+	s=arc-20240116; t=1778861569; c=relaxed/simple;
+	bh=dGZuyYDv4D7JbOBYk5nxUbaSRhJbKTIgBdnKVcSznck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmvAQqSEsuqYJZlD1gjDl5ZE8EkJQ2QNlUvdBhC3ZJzKqytN8OndbWk9z8YcjjnjxHhBfEmiunCpvwQAzbpKTa5Z2RyuHpPohhlW5xgtCNqgV72qBUii348lShcxh3kmWxqSzAJ+t3ekFBZqAKzu49C5t1aKXd4WV7jVboetnYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3quAmG9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34752C2BCB0;
-	Fri, 15 May 2026 16:21:45 +0000 (UTC)
+	 MIME-Version; b=MhG4M+jUmWGJB5vcQa4rQqolAGDrp1ln6p8m4hmbTRJAgGeKQGOMl1EFMsGyxcq3m1TC+SyaIQGJP+nqtTD5orpdhQG51mSp1FOjBWeNILGRAjMeEgNpV3D9EPWrj2+DoveFNJGBISejJ883QyS2QhPogzYMZq/YYq0LCFAucuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uuv6ScaZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C920AC2BCB3;
+	Fri, 15 May 2026 16:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862105;
-	bh=fRQTdDxLx8ThgLSrAUu27d9Tu+qJ5N/ca5cXPDQpLJk=;
+	s=korg; t=1778861569;
+	bh=dGZuyYDv4D7JbOBYk5nxUbaSRhJbKTIgBdnKVcSznck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3quAmG9BfD/BUQ71wegsU5YeZ1jAF6zLef3ra3gx1eoAdFOtDFTlMyo4HLcaE56h
-	 UaUfLMB6WyHpixtctjo4OVPQpLFyTHS+6HtIFV/z5CBS0yLDxY/MV+zo5QKpPG16d4
-	 2Cn3DyCQIxjPxr9cvtNv7MEUn56yA/HPdDz644aI=
+	b=Uuv6ScaZRE89SFj2J8Ox5X6fqaoKlZQsu8/rSRcREoaP2hSswDNjw4KL09esGJ1xt
+	 V/2T7qLt+nNwa3KG4JBHmU+pnGRbN8nPL1cOjIntQPz5keTRkNPSRgW7wJCE5Wg1t8
+	 McVT8sFSAKZub06OHlgCtkZIkGX7cpL3KtyfXGEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purna Chandra Mandal <purna.mandal@microchip.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 069/188] spi: pic32: fix controller deregistration
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 377/474] thermal: core: Fix thermal zone governor cleanup issues
 Date: Fri, 15 May 2026 17:48:06 +0200
-Message-ID: <20260515154658.815848784@linuxfoundation.org>
+Message-ID: <20260515154723.188617112@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EBB415541DC
+X-Rspamd-Queue-Id: CF2E1553A66
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248584-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248373-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,64 +88,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,microchip.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-commit 6b627bfe0c44e064aba464839e430dc1ca2b0bb8 upstream.
+[ Upstream commit 41ff66baf81c6541f4f985dd7eac4494d03d9440 ]
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+If thermal_zone_device_register_with_trips() fails after adding
+a thermal governor to the thermal zone being registered, the
+governor is not removed from it as appropriate which may lead to
+a memory leak.
 
-Fixes: 1bcb9f8ceb67 ("spi: spi-pic32: Add PIC32 SPI master driver")
-Cc: stable@vger.kernel.org	# 4.7
-Cc: Purna Chandra Mandal <purna.mandal@microchip.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-7-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+In turn, thermal_zone_device_unregister() calls thermal_set_governor()
+without acquiring the thermal zone lock beforehand which may race with
+a governor update via sysfs and may lead to a use-after-free in that
+case.
+
+Address these issues by adding two thermal_set_governor() calls, one to
+thermal_release() to remove the governor from the given thermal zone,
+and one to the thermal zone registration error path to cover failures
+preceding the thermal zone device registration.
+
+Fixes: e33df1d2f3a0 ("thermal: let governors have private data for each thermal zone")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/5092923.31r3eYUQgx@rafael.j.wysocki
+[ kept the `thermal_zone_create_device_groups(tz, mask)` signature when adding the new failure-path cleanup ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-pic32.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/thermal/thermal_core.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-pic32.c
-+++ b/drivers/spi/spi-pic32.c
-@@ -821,7 +821,7 @@ static int pic32_spi_probe(struct platfo
- 	}
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -804,6 +804,7 @@ static void thermal_release(struct devic
+ 		     sizeof("thermal_zone") - 1)) {
+ 		tz = to_thermal_zone(dev);
+ 		thermal_zone_destroy_device_groups(tz);
++		thermal_set_governor(tz, NULL);
+ 		mutex_destroy(&tz->lock);
+ 		complete(&tz->removal);
+ 	} else if (!strncmp(dev_name(dev), "cooling_device",
+@@ -1325,8 +1326,10 @@ thermal_zone_device_register_with_trips(
+ 	/* sys I/F */
+ 	/* Add nodes that are always present via .groups */
+ 	result = thermal_zone_create_device_groups(tz, mask);
+-	if (result)
++	if (result) {
++		thermal_set_governor(tz, NULL);
+ 		goto remove_id;
++	}
  
- 	/* register host */
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&host->dev, "failed registering spi host\n");
- 		goto err_bailout;
-@@ -840,11 +840,16 @@ err_host:
+ 	/* A new thermal zone needs to be updated anyway. */
+ 	atomic_set(&tz->need_update, 1);
+@@ -1478,8 +1481,6 @@ void thermal_zone_device_unregister(stru
  
- static void pic32_spi_remove(struct platform_device *pdev)
- {
--	struct pic32_spi *pic32s;
-+	struct pic32_spi *pic32s = platform_get_drvdata(pdev);
-+
-+	spi_controller_get(pic32s->host);
-+
-+	spi_unregister_controller(pic32s->host);
+ 	cancel_delayed_work_sync(&tz->poll_queue);
  
--	pic32s = platform_get_drvdata(pdev);
- 	pic32_spi_disable(pic32s);
- 	pic32_spi_dma_unprep(pic32s);
-+
-+	spi_controller_put(pic32s->host);
- }
- 
- static const struct of_device_id pic32_spi_of_match[] = {
+-	thermal_set_governor(tz, NULL);
+-
+ 	thermal_remove_hwmon_sysfs(tz);
+ 	ida_free(&thermal_tz_ida, tz->id);
+ 	ida_destroy(&tz->ida);
 
 
 
