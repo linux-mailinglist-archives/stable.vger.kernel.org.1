@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-248606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJaeLY5RB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:02:06 +0200
+	id tDZkDoBpB2pA2QIAu9opvQ
+	(envelope-from <stable+bounces-247963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:44:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2945655457E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:02:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F199556713
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ECA8731686F0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC84B3069D3C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF413F927A;
-	Fri, 15 May 2026 16:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC88322FF22;
+	Fri, 15 May 2026 15:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zibvk6i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BD5pvfC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3A63F9273;
-	Fri, 15 May 2026 16:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B8017C220;
+	Fri, 15 May 2026 15:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862162; cv=none; b=vFUGSGy+GAd/S7xckGueAVMHaLiqNIxW16HkqfxplpxvcaeKPgDWW1xSIbO1dOST3oGPWt7EYZuQdLlrle8uZm7J6dPfIXp/2sExC3lVkMQWB+Mpv52mkJMVLti/foC1I9vKdRQCwoniIoKpUeSUHkBEpsC/8MjfCbggmtgggn4=
+	t=1778860524; cv=none; b=X0NqOuThuQ+OusSjHrkLwCg4plsQyxxyGP6+QE4yAAM6Zd+fBk/s7Ny9nETkO8bUEM2xx14xmv3jGQPhTG1whT12FO5r8HjpQpNnf4W5Auln7Lf2BZ2rgA0YszOqx8Xga7o87i7k6A1Z5MRvH0G8YSQPR9V6okcaULvAyZHOVPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862162; c=relaxed/simple;
-	bh=gEGm2nKx7JzVZWKHvyunE8gvT4mk6qRxWVE4RT9AQbk=;
+	s=arc-20240116; t=1778860524; c=relaxed/simple;
+	bh=70SGxOhYCbB9idvTOPwIFOsSSnurzK59gU8NPbS/vZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rrp6PyBdVWfRtQ1T+RpCTox+SyKOzw2HeOgnqKKUSTuIT4z0Vm+uYUxd+o/5jf6h9By/PBMEWIAWPFv8yw0J+SqdroEHIYwU89Gy872nAZTzitvX5Jyhs6e2bQkuyaD6BuPYTxb9dGpSQe/BJDsUFgl2XI1fx5GMx/uIaTbCyjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zibvk6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B32C2BCB0;
-	Fri, 15 May 2026 16:22:42 +0000 (UTC)
+	 MIME-Version; b=Ufwm9ADmW+6fJLRUBzC+GoyF1L7pZrGe0WuabY1Ap9H8x1OyvamKgiRzDMW9gG61fV8tFEiQH0cZiawOs+Ef+2zOInvc7Jh8tGPjgRVs/DHaImXFj3PVF8Asp1YH1nfqylJo5rp5EHYbi4nE+Xy3+STezfqqa6KLa6lV+t2OtC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BD5pvfC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C498C2BCB0;
+	Fri, 15 May 2026 15:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862162;
-	bh=gEGm2nKx7JzVZWKHvyunE8gvT4mk6qRxWVE4RT9AQbk=;
+	s=korg; t=1778860524;
+	bh=70SGxOhYCbB9idvTOPwIFOsSSnurzK59gU8NPbS/vZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zibvk6i4FaPzD4zi5bs6fQVzDpIM8MNJ9rmbEtITiwt4sWmcO8B6XPFVq/wb2XTs
-	 3Bp3DmRa9mxU78TdwJ2ZcnHP3eykjoZk64Ew0POsDUohbcq1jQx9wpo5FJBn7Z3VfV
-	 l0Ovy1b6J8CUfR1dePE9uSlGv5Ls225hOKyYYQDM=
+	b=BD5pvfC0YPsM3WRRl3m7LKDxclfrcLWsJKpAk88qfLPAqIHRXtM22TX9Ey1b/x2VX
+	 q9PI7KC1LV/CPLiKUW9wzPihkeVywyLjHqTired1xQRroLmKQe5LOzzLHXza3r9goo
+	 Mvh91cs7+v6bOney/IOkNWevX6znL0Fmd9KVH9CM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 132/188] drm/amdgpu/pm: align Hawaii mclk workaround with radeon
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 123/144] mm/damon/core: disallow time-quota setting zero esz
 Date: Fri, 15 May 2026 17:49:09 +0200
-Message-ID: <20260515154700.191751132@linuxfoundation.org>
+Message-ID: <20260515154656.359347359@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2945655457E
+X-Rspamd-Queue-Id: 9F199556713
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248606-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247963-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url,amd.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 1987c79b4fe5789dfa14423e78b5c25f6acf3e9d upstream.
+commit 8bbde987c2b84f80da0853f739f0a920386f8b99 upstream.
 
-Align the hawaii mclk workaround with radeon and windows.
+When the throughput of a DAMOS scheme is very slow, DAMOS time quota can
+make the effective size quota smaller than damon_ctx->min_region_sz.  In
+the case, damos_apply_scheme() will skip applying the action, because the
+action is tried at region level, which requires >=min_region_sz size.
+That is, the quota is effectively exceeded for the quota charge window.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9649528b637f668c5af9f2b83ca4ad8576ae2121)
-Cc: stable@vger.kernel.org
+Because no action will be applied, the total_charged_sz and
+total_charged_ns are also not updated.  damos_set_effective_quota() will
+try to update the effective size quota before starting the next charge
+window.  However, because the total_charged_sz and total_charged_ns have
+not updated, the throughput and effective size quota are also not changed.
+Since effective size quota can only be decreased, other effective size
+quota update factors including DAMOS quota goals and size quota cannot
+make any change, either.
+
+As a result, the scheme is unexpectedly deactivated until the user notices
+and mitigates the situation.  The users can mitigate this situation by
+changing the time quota online or re-install the scheme.  While the
+mitigation is somewhat straightforward, finding the situation would be
+challenging, because DAMON is not providing good observabilities for that.
+Even if such observability is provided, doing the additional monitoring
+and the mitigation is somewhat cumbersome and not aligned to the intention
+of the time quota.  The time quota was intended to help reduce the user's
+administration overhead.
+
+Fix the problem by setting time quota-modified effective size quota be at
+least min_region_sz always.
+
+The issue was discovered [1] by sashiko.
+
+Link: https://lore.kernel.org/20260407003153.79589-1-sj@kernel.org
+Link: https://lore.kernel.org/20260405192504.110014-1-sj@kernel.org [1]
+Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/damon/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1329,10 +1329,10 @@ static int ci_populate_all_memory_levels
- 	if ((dpm_table->mclk_table.count >= 2) &&
- 	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
- 	    (adev->pdev->revision == 0)) {
--		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
--				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
--		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
--				smu_data->smc_state_table.MemoryLevel[0].MinMvdd;
-+		smu_data->smc_state_table.MemoryLevel[1].MinVddc =
-+				smu_data->smc_state_table.MemoryLevel[0].MinVddc;
-+		smu_data->smc_state_table.MemoryLevel[1].MinVddcPhases =
-+				smu_data->smc_state_table.MemoryLevel[0].MinVddcPhases;
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1577,6 +1577,7 @@ static void damos_set_effective_quota(st
+ 			esz = min(throughput * quota->ms, esz);
+ 		else
+ 			esz = throughput * quota->ms;
++		esz = max(DAMON_MIN_REGION, esz);
  	}
- 	smu_data->smc_state_table.MemoryLevel[0].ActivityLevel = 0x1F;
- 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.MemoryLevel[0].ActivityLevel);
+ 
+ 	if (quota->sz && quota->sz < esz)
 
 
 
