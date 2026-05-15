@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-247889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJIAI49DB2oCvAIAu9opvQ
-	(envelope-from <stable+bounces-247889-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:02:23 +0200
+	id ADCFJ+hLB2qnxAIAu9opvQ
+	(envelope-from <stable+bounces-248359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 938625529AD
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:02:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D535539EB
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D5D3D3030FAE
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8CD3031A22E0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946103FF1DA;
-	Fri, 15 May 2026 15:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E3222FF22;
+	Fri, 15 May 2026 16:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vx+M2sxc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILR+n0XZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BEE3FF1A2;
-	Fri, 15 May 2026 15:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB59B3C819C;
+	Fri, 15 May 2026 16:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860333; cv=none; b=OZLnAZFZjBAYyfGSG82/gJY79SJs5zyAvLk5LoHYvnOhBxdaMQt3jG98DOrZIRuM+3xJqDq9FNvyLTZmlv8AG1dNALN2BNHvu2jva3MsKjeAd3QgJaSjP2z10qV7yVWM5Na01vIJFR0jakOcuPzkrmRMagSbwM/omYIw/1GCUbg=
+	t=1778861532; cv=none; b=p1wBiF+BaiqSb1JsZSEKWetptZH+lt7iqHkK/EU/+o76T1hd09a8mHZkUyGCBpREzxlN8+QlTEXmHA9ZAGSwfNcfuTaJ91pvm3Qxjpv1+TZt3u3uSJmY7zx4GCNRrB2JvoxbnX3N7eISXRyq14z3IjbXBkjzWp1nap9HSL/2l0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860333; c=relaxed/simple;
-	bh=wZeMndgOnQJDzUc4ktcVgHxBaAExXCPl42xvdSd3fW4=;
+	s=arc-20240116; t=1778861532; c=relaxed/simple;
+	bh=H2OTqDsSU4nd3yP7VR/+rLDUp4ckmdbaqQoLDiqK2GA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHnqS0Nd33DikXWNd4nzDojbaTP76gVg5qmC4rbEROyvqUK6thOXk6hEYt00tcktP3WxXIT6O99DupEQo/GCdl93qEDkSu3masOOQhXyqZ32/QClc31oLkqPobbI0muTEWMzEYb0ecUMgHzmyXCV75aPVUZVBKCHTiqNRsUcIiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vx+M2sxc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672C4C2BCB0;
-	Fri, 15 May 2026 15:52:12 +0000 (UTC)
+	 MIME-Version; b=W1dZtfDOwvdyRTRJeyriZzCo3a0HB42V1ipohXCP+1ccoYbGs3FDALAC6LoW6HxOkV2tK25d7YaUqZ3//ZF7f5TrE/m8iokJDNEUYL8AXvHLmEZWHODMdLWuGNUicStA49bGrBFc/F8rBPYUPBFA8v2BpcAFKrhWuHBzAghJnhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILR+n0XZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C99C2BCB0;
+	Fri, 15 May 2026 16:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860332;
-	bh=wZeMndgOnQJDzUc4ktcVgHxBaAExXCPl42xvdSd3fW4=;
+	s=korg; t=1778861532;
+	bh=H2OTqDsSU4nd3yP7VR/+rLDUp4ckmdbaqQoLDiqK2GA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vx+M2sxcxak7iyZcJvIl8WwZnH+iDTvMs4+kN9vTH86brfVAPQ8E5CL6y8DdWh6bi
-	 4ZdjwOA8J+FBInoS/dGxZ0ay7ajglIPwzFF3inDFx4dXgSN7s9puHHS3sZb1GMEnTm
-	 8mmK762KVA8OGznjDUlkq1A3K+zs92E84HW9sPdA=
+	b=ILR+n0XZcyrY+4CrHm9QGoQXbhoRWcx3mmq9k1xE5ViiMHXcXQooOw77BHKV2pacb
+	 rBYW+mkQHLf73uX3+NCH9XB1P/idx190m3LLtutiyKPFwZMHQN1Sv/uLeg9r5iIJFw
+	 BDjffdS7epYpmIPtkEqd4Jy29HyaOpT0w5IGFkNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 047/144] spi: fsl: fix controller deregistration
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 364/474] ksmbd: require minimum ACE size in smb_check_perm_dacl()
 Date: Fri, 15 May 2026 17:47:53 +0200
-Message-ID: <20260515154654.625666562@linuxfoundation.org>
+Message-ID: <20260515154722.895061105@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +65,141 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 938625529AD
+X-Rspamd-Queue-Id: 32D535539EB
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247889-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-248359-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 9b7abfed4c3754062d1f3ffd452e65a38667f586 upstream.
+[ Upstream commit d07b26f39246a82399661936dd0c853983cfade7 ]
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+Both ACE-walk loops in smb_check_perm_dacl() only guard against an
+under-sized remaining buffer, not against an ACE whose declared
+`ace->size` is smaller than the struct it claims to describe:
 
-Fixes: 4178b6b1b595 ("spi: fsl-(e)spi: migrate to using devm_ functions to simplify cleanup")
-Cc: stable@vger.kernel.org	# 4.3
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410064749.496888-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  if (offsetof(struct smb_ace, access_req) > aces_size)
+      break;
+  ace_size = le16_to_cpu(ace->size);
+  if (ace_size > aces_size)
+      break;
+
+The first check only requires the 4-byte ACE header to be in bounds;
+it does not require access_req (4 bytes at offset 4) to be readable.
+An attacker who has set a crafted DACL on a file they own can declare
+ace->size == 4 with aces_size == 4, pass both checks, and then
+
+  granted |= le32_to_cpu(ace->access_req);               /* upper loop */
+  compare_sids(&sid, &ace->sid);                         /* lower loop */
+
+reads access_req at offset 4 (OOB by up to 4 bytes) and ace->sid at
+offset 8 (OOB by up to CIFS_SID_BASE_SIZE + SID_MAX_SUB_AUTHORITIES
+* 4 bytes).
+
+Tighten both loops to require
+
+  ace_size >= offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE
+
+which is the smallest valid on-wire ACE layout (4-byte header +
+4-byte access_req + 8-byte sid base with zero sub-auths).  Also
+reject ACEs whose sid.num_subauth exceeds SID_MAX_SUB_AUTHORITIES
+before letting compare_sids() dereference sub_auth[] entries.
+
+parse_sec_desc() already enforces an equivalent check (lines 441-448);
+smb_check_perm_dacl() simply grew weaker validation over time.
+
+Reachability: authenticated SMB client with permission to set an ACL
+on a file.  On a subsequent CREATE against that file, the kernel
+walks the stored DACL via smb_check_perm_dacl() and triggers the
+OOB read.  Not pre-auth, and the OOB read is not reflected to the
+attacker, but KASAN reports and kernel state corruption are
+possible.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-spi.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ fs/smb/server/smbacl.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -614,7 +614,7 @@ static struct spi_controller *fsl_spi_pr
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1298,10 +1298,13 @@ int smb_check_perm_dacl(struct ksmbd_con
+ 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
+ 		aces_size = acl_size - sizeof(struct smb_acl);
+ 		for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
+-			if (offsetof(struct smb_ace, access_req) > aces_size)
++			if (offsetof(struct smb_ace, sid) +
++			    aces_size < CIFS_SID_BASE_SIZE)
+ 				break;
+ 			ace_size = le16_to_cpu(ace->size);
+-			if (ace_size > aces_size)
++			if (ace_size > aces_size ||
++			    ace_size < offsetof(struct smb_ace, sid) +
++				       CIFS_SID_BASE_SIZE)
+ 				break;
+ 			aces_size -= ace_size;
+ 			granted |= le32_to_cpu(ace->access_req);
+@@ -1319,13 +1322,19 @@ int smb_check_perm_dacl(struct ksmbd_con
+ 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
+ 	aces_size = acl_size - sizeof(struct smb_acl);
+ 	for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
+-		if (offsetof(struct smb_ace, access_req) > aces_size)
++		if (offsetof(struct smb_ace, sid) +
++		    aces_size < CIFS_SID_BASE_SIZE)
+ 			break;
+ 		ace_size = le16_to_cpu(ace->size);
+-		if (ace_size > aces_size)
++		if (ace_size > aces_size ||
++		    ace_size < offsetof(struct smb_ace, sid) +
++			       CIFS_SID_BASE_SIZE)
+ 			break;
+ 		aces_size -= ace_size;
  
- 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
- 
--	ret = devm_spi_register_controller(dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret < 0)
- 		goto err_probe;
- 
-@@ -705,7 +705,13 @@ static void of_fsl_spi_remove(struct pla
- 	struct spi_controller *host = platform_get_drvdata(ofdev);
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
++		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
++			break;
 +
-+	spi_unregister_controller(host);
-+
- 	fsl_spi_cpm_free(mpc8xxx_spi);
-+
-+	spi_controller_put(host);
- }
- 
- static struct platform_driver of_fsl_spi_driver = {
-@@ -751,7 +757,13 @@ static void plat_mpc8xxx_spi_remove(stru
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	fsl_spi_cpm_free(mpc8xxx_spi);
-+
-+	spi_controller_put(host);
- }
- 
- MODULE_ALIAS("platform:mpc8xxx_spi");
+ 		if (!compare_sids(&sid, &ace->sid) ||
+ 		    !compare_sids(&sid_unix_NFS_mode, &ace->sid)) {
+ 			found = 1;
 
 
 
