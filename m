@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-247347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJNKDO+uBmrImgIAu9opvQ
-	(envelope-from <stable+bounces-247347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:28:15 +0200
+	id EGIcEveuBmrImgIAu9opvQ
+	(envelope-from <stable+bounces-247349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:28:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328C9549891
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 827B8549899
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2C3E93017395
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 05:28:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8DCAE30173BE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 05:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5947D322B7D;
-	Fri, 15 May 2026 05:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCD5322B7D;
+	Fri, 15 May 2026 05:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEQMpEZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOnz18+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE483033FC
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 05:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640BC3033FC
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 05:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778822888; cv=none; b=PNEpv5UQDYHkdKjCtC/IrOJL2pGcJXa2qpkfShw8m3x0TG9127woqkG9F6fo5xiYpLUJxNVhc1b45/UOkSnkF3hZgIVXDDsXGn7k+upTTEBAPlyctDEGEXX+YQKeX8FLHnnEZ78p+t2OqX+F61MUsZHb7LLYhyddm5YMrvrStJ0=
+	t=1778822896; cv=none; b=M6V/tM8qtNgRY2KK4Z1S4KgkjDqQ/8c5H8xTkJQ+A9hIy9HXNpAJuaOn2Ws7KTwmldD3dzt8+TG1PaD6ejXhWPsuxzbRSO+/ulvIL80DhpzybRT5VCBcb4XvbbkqPa6gHn+usHIs1pco1oQOhK9yfdeLj3OGAvXsQxFfsZEOLrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778822888; c=relaxed/simple;
-	bh=pUh5NO7elez92LGo9Gpf6gclZWbKeOdA7+92y55v8z0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dOlTOP2GEKfJ2ONFCLqB3uUmlWw5PzYmwwHgTIQiqTXQUkvGZhGJTm1OHDBArHsFH+vY/nGPrJzmUSoXNXg9BaumWXLXfu1ad3XnxKgg4n+r47OcyjzJYAlKDnyO6JBLsp661NH+jWAEFSucKMhsqP3NNbRKKk6EPHAKtzhGi6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEQMpEZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85771C2BCB0;
-	Fri, 15 May 2026 05:28:07 +0000 (UTC)
+	s=arc-20240116; t=1778822896; c=relaxed/simple;
+	bh=PT6htD2hpSKfBwH0nCVDQb94IF110WTZuD3WqfTYABo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aRJbjgOsA403HVZ77DkWisSnY1JCY006QmWy1KzH4epDpAWmjNmFwVbjgoOzhO2WuTPRoW8B2SMRGgRMJQJJdHGo1H0mAlw48Uf66Ch6T5MQhj320ug2sEovKs8Vg85OcnDm3nWDqAkSNl1NtyNMT69QyjvieyhwT/YXpSgBTmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOnz18+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0373C2BCB0;
+	Fri, 15 May 2026 05:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778822887;
-	bh=pUh5NO7elez92LGo9Gpf6gclZWbKeOdA7+92y55v8z0=;
+	s=korg; t=1778822896;
+	bh=PT6htD2hpSKfBwH0nCVDQb94IF110WTZuD3WqfTYABo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=pEQMpEZGgEFee4Ukw+k9/kMOSxqADcTWKms3+W3ERtTwONAJeqJNOAauqY9Nisi9w
-	 WrZCeX5ETJYLhHG5gSflorUEto1+Mt5mcM21ZZhKr4H1nycwEZaeGshIBPNpDxwHJZ
-	 KqgFHl6oxaTz+GEnPx3SvKc5OtLGqsvf5TUFrApo=
-Subject: FAILED: patch "[PATCH] spi: bcm63xx: fix controller deregistration" failed to apply to 5.10-stable tree
-To: johan@kernel.org,broonie@kernel.org,florian@openwrt.org
+	b=nOnz18+x+15qjkks/uaU6p0vQD6K1V5KH0KRlgz43njlL3+0nmF7+CCHyMR7N7WbR
+	 kMQ+1b03vaiTDkeZ3VcUxLGsyd/t68BPtEvxtqkJ3efcTWzj2hvyz/C8VvtLL0tosF
+	 svArFlKCsY8slWc+gfOcTzz7rp7qGvqPlr/3vVqo=
+Subject: FAILED: patch "[PATCH] spi: atmel: fix controller deregistration" failed to apply to 5.15-stable tree
+To: johan@kernel.org,broonie@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 May 2026 07:28:04 +0200
-Message-ID: <2026051504-unfixed-backache-f3f2@gregkh>
+Date: Fri, 15 May 2026 07:28:16 +0200
+Message-ID: <2026051516-blend-preshow-eca2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 328C9549891
+X-Rspamd-Queue-Id: 827B8549899
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -66,7 +66,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247347-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247349-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -75,31 +75,31 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.995];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,openwrt.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x c39e65a4e3b8e764efed0b2f5152a1a8547b80fd
+git cherry-pick -x 8d4de97e83520be89d0ff40610ca633b3963a7de
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051504-unfixed-backache-f3f2@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051516-blend-preshow-eca2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,51 +111,54 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c39e65a4e3b8e764efed0b2f5152a1a8547b80fd Mon Sep 17 00:00:00 2001
+From 8d4de97e83520be89d0ff40610ca633b3963a7de Mon Sep 17 00:00:00 2001
 From: Johan Hovold <johan@kernel.org>
-Date: Thu, 9 Apr 2026 14:04:04 +0200
-Subject: [PATCH] spi: bcm63xx: fix controller deregistration
+Date: Thu, 9 Apr 2026 14:04:03 +0200
+Subject: [PATCH] spi: atmel: fix controller deregistration
 
 Make sure to deregister the controller before disabling underlying
 resources like clocks during driver unbind.
 
-Fixes: b42dfed83d95 ("spi: add Broadcom BCM63xx SPI controller driver")
-Cc: stable@vger.kernel.org	# 3.4
-Cc: Florian Fainelli <florian@openwrt.org>
+Fixes: 754ce4f29937 ("[PATCH] SPI: atmel_spi driver")
+Cc: stable@vger.kernel.org	# 2.6.21
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-6-johan@kernel.org
+Link: https://patch.msgid.link/20260409120419.388546-5-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 47266bb23a33..40cd7efc4b54 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -602,7 +602,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 		goto out_clk_disable;
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 445d645585bf..42db85d7ff8e 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1654,7 +1654,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
  
- 	/* register and we are done */
--	ret = devm_spi_register_controller(dev, host);
+-	ret = devm_spi_register_controller(&pdev->dev, host);
 +	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(dev, "spi register failed\n");
- 		goto out_clk_disable;
-@@ -625,11 +625,17 @@ static void bcm63xx_spi_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct bcm63xx_spi *bs = spi_controller_get_devdata(host);
+ 	if (ret)
+ 		goto out_free_dma;
+ 
+@@ -1688,8 +1688,12 @@ static void atmel_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller	*host = platform_get_drvdata(pdev);
+ 	struct atmel_spi	*as = spi_controller_get_devdata(host);
  
 +	spi_controller_get(host);
 +
+ 	pm_runtime_get_sync(&pdev->dev);
+ 
 +	spi_unregister_controller(host);
 +
- 	/* reset spi block */
- 	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
+ 	/* reset the hardware and block queue progress */
+ 	if (as->use_dma) {
+ 		atmel_spi_stop_dma(host);
+@@ -1716,6 +1720,8 @@ static void atmel_spi_remove(struct platform_device *pdev)
  
- 	/* HW shutdown */
- 	clk_disable_unprepare(bs->clk);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
 +
 +	spi_controller_put(host);
  }
  
- static int bcm63xx_spi_suspend(struct device *dev)
+ static int atmel_spi_runtime_suspend(struct device *dev)
 
 
