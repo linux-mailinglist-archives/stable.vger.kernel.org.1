@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-248890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BFSEPtkB2q90wIAu9opvQ
-	(envelope-from <stable+bounces-248890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:24:59 +0200
+	id IL2jAf5kB2qE1gIAu9opvQ
+	(envelope-from <stable+bounces-248891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:25:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95E2556218
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:24:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E22D2556238
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 20EB1300337F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:24:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3997E3005AA5
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3B63F8EA6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356C030C164;
 	Fri, 15 May 2026 18:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fJR+i2FS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tb3uBGP6"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E369030C165;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E47330C172;
 	Fri, 15 May 2026 18:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778869470; cv=none; b=tAKHGZ/fxFdqtsl1sVzWtITGvI0W6C4kAnpUX8Qe7fdwkBtvULzW996y4drQUviUesI4TywrYwGwjMoyUIEpT6oetSdw4bZ39NVT28ZHMrQR6+irPZWUBzXdmPlgGJM48UhOao7+9Eo+A+kt1wfqkRyHgjE4AYwVzWenr0J2ks4=
+	t=1778869470; cv=none; b=GZD5AdDjER0EAi29jywUkILVgJvrz5AAaNlpeV8TWtMxwdyj17CvqMYEMBChIeM66Utx54IKS2IaMBPC0UjBrPcVoXxgYW1cmmNhdy9TwDlG2jAMXOjzaJdf1yceT2QlPiJg91dzjH5F2eRCxr5Icnmj3KalUS7lYwXXERXFGzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778869470; c=relaxed/simple;
-	bh=UDLtv1sa6VPE03Wq5XDbtMstZ4jGoR2GbWUIJEV9FHY=;
+	bh=mNXewhxHiQCVS/xDwKifIZWo/oiq5zGz7/91I73Tv00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCGWoxbcnMwsBUmAWGUnJbpDINqckVlBOe1iT2iAFssbr9iuVXhErho6+aziIus9ZEQsPpPRwQLDKUapFJIM59ZflQwWiAZJrOHNN7uBK9uKd/qgOz6d8+yfSVH+ZNsE3q6CmyPLxHhWf7MfLDBUMOBgfsEEx5al7519AGnuuYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fJR+i2FS; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=Ypl2z2vwuf68q+CVFxXGJo2yHuJyw7eTOfKcC4MscuL6sQ0OwIL22D3VveIP/TmDYPtZd+fwFVfJy0ICKx8tTf6TTXGkbIHdWnWazrwQ6FWBexptFiqSpZz84hTVuTUbxuyv72UywEGt00/RDGWm9l7QY07JfNDvfasHzLw9hr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tb3uBGP6; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -39,26 +39,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1778869469; x=1810405469;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UDLtv1sa6VPE03Wq5XDbtMstZ4jGoR2GbWUIJEV9FHY=;
-  b=fJR+i2FS2adjO4Mz46cL6FYsexZ5N0CMlVt9uo3XORsCJd0/2jMz7xbV
-   Ztd0hlWBFJxYffJp8bHUeqU8MWlu3TQS40vIJMFkoxpBrfJt4lAk+Q41r
-   VcjExqUE5RNnQZInE/FCkI9oX6deJ4fkZcHmpH4369Fte+k/vf7xcFbHG
-   Th32vkiRik2zTzN5dA6wA5LjCZtPu5zVhaPkXjjOWxyEkJ9WW1PW47TVV
-   /2E2KDeKd0wMix4mVQWGX6gKBfFm1v4KMIzCuD0P3SySbV7Glv5tllfuA
-   jOo8Hh3F0Kx41+YZgUQZIvWoeRA9dVsD4qDrAhcxd5NYOgyFsvgd5vuRU
-   w==;
-X-CSE-ConnectionGUID: YUtLx5k5QOm898E4Rf0nfg==
-X-CSE-MsgGUID: dVGpQE2UQF2U5HlLbapODQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="83701133"
+  bh=mNXewhxHiQCVS/xDwKifIZWo/oiq5zGz7/91I73Tv00=;
+  b=Tb3uBGP6DSwjD1erg2QvlFtJSgpg08XpzTSDaPdKVipk2HpbSR8oQedO
+   roYVI/SP3jM2oF0MuK+iR5eCtPKHUXEtWQpdi05AG8QEnfmlZ0oxZSWEP
+   2zB/t8ecjOOGGM20w4okghCey9whJPXfeyd2rPuQbDF2+9qV2VItyGuiu
+   2avnt7uCpwHd5q2YD5bFSb84SzzWkXb2VR2gfHi+Yuz/K3FbP+CSTCgWz
+   Klfmkxa+A0HLwcE83aIPT+qdbwrtQgAyLM8ZMi7yfDaLv/o19LdLTWcLL
+   81pAHZq3Wc2S2lpiTR/iFu4nfseGu0TXPWuqgtGXJNGmNcqXZq2cUD2vQ
+   g==;
+X-CSE-ConnectionGUID: jTgPZV0yRciSzCwFwaGAfg==
+X-CSE-MsgGUID: Wzu0TxcnTLmgA2YJfW6Z6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="83701140"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="83701133"
+   d="scan'208";a="83701140"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
   by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 11:24:27 -0700
-X-CSE-ConnectionGUID: wXIYKSG0SQGd+MnpvuIQCw==
-X-CSE-MsgGUID: bTrlj8T1QdWQq2enDigtxg==
+X-CSE-ConnectionGUID: 0E/tz6ZPQ32e9roJyCBSlg==
+X-CSE-MsgGUID: ONxzxQcdRdqnqMXSo+iyJA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="238647439"
+   d="scan'208";a="238647442"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa008.jf.intel.com with ESMTP; 15 May 2026 11:24:26 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -68,17 +68,16 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+Cc: Marcin Szycik <marcin.szycik@intel.com>,
 	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
+	ivecera@redhat.com,
 	stable@vger.kernel.org,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net 02/10] ice: fix VF queue configuration with low MTU values
-Date: Fri, 15 May 2026 11:24:09 -0700
-Message-ID: <20260515182419.1597859-3-anthony.l.nguyen@intel.com>
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH net 03/10] ice: fix setting promisc mode while adding VID filter
+Date: Fri, 15 May 2026 11:24:10 -0700
+Message-ID: <20260515182419.1597859-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260515182419.1597859-1-anthony.l.nguyen@intel.com>
 References: <20260515182419.1597859-1-anthony.l.nguyen@intel.com>
@@ -89,7 +88,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D95E2556218
+X-Rspamd-Queue-Id: E22D2556238
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -98,16 +97,16 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248890-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-248891-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[anthony.l.nguyen@intel.com,stable@vger.kernel.org];
@@ -117,59 +116,57 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TAGGED_RCPT(0.00)[stable,netdev];
 	NEURAL_HAM(-0.00)[-0.998];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim,mpg.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Marcin Szycik <marcin.szycik@intel.com>
 
-The ice driver's VF queue configuration validation rejects
-databuffer_size values below 1024 bytes, which prevents VFs from
-using MTU values below 871 bytes.
+There are at least two paths through which VSI promiscuous mode can be
+independently configured via ice_fltr_set_vsi_promisc():
+- ice_vlan_rx_add_vid() (netdev op)
+- ice_service_task() -> ... -> ice_set_promisc()
 
-The iavf driver calculates databuffer_size based on the MTU using:
-  databuffer_size = ALIGN(MTU + LIBETH_RX_LL_LEN, 128)
+Both paths may try to program promiscuous mode concurrently. One such
+scenario is:
 
-where LIBETH_RX_LL_LEN = 26 (ETH_HLEN + 2*VLAN_HLEN + ETH_FCS_LEN).
+1. Add ice netdev to bond
+2. Add the bond netdev to bridge
+3. ice netdev enters allmulticast mode (IFF_ALLMULTI)
+4. Service task programs promisc mode filter
+5. Bridge -> bond calls ice_vlan_rx_add_vid()
 
-For MTU values below 871:
-  MTU 870: 870 + 26 = 896, aligned to 128 = 896 (< 1024, rejected)
-  MTU 871: 871 + 26 = 897, aligned to 128 = 1024 (>= 1024, accepted)
+Crucially, ice_vlan_rx_add_vid() fails if ice_fltr_set_vsi_promisc()
+returns any error, including -EEXIST. This causes VLAN filtering setup
+to fail on the bond interface. ice_set_promisc() already handles -EEXIST
+correctly.
 
-The 1024-byte minimum seems unnecessarily restrictive, because the hardware
-supports databuffer_size as low as 128 bytes (the alignment boundary),
-which should allow MTU values down to the standard minimum of 68 bytes.
+Fix by adding the same -EEXIST check to ice_vlan_rx_add_vid(): if the
+promisc filter is already programmed, continue without returning error.
 
-I haven't found the reason why the limit was configured in the commit
-9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message"), so
-with no more information and since it is working, change the minimum
-databuffer_size validation from 1024 to 128 bytes to allow standard low
-MTU values while still preventing invalid configurations.
-
-Fixes: 9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message")
-cc: stable@vger.kernel.org
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Fixes: 1273f89578f2 ("ice: Fix broken IFF_ALLMULTI handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marcin Szycik <marcin.szycik@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/virt/queues.c | 2 +-
+ drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/virt/queues.c b/drivers/net/ethernet/intel/ice/virt/queues.c
-index f73d5a3e83d4..31be2f76181c 100644
---- a/drivers/net/ethernet/intel/ice/virt/queues.c
-+++ b/drivers/net/ethernet/intel/ice/virt/queues.c
-@@ -840,7 +840,7 @@ int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index c52c465280f7..66642232b282 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3682,7 +3682,7 @@ int ice_vlan_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
+ 		ret = ice_fltr_set_vsi_promisc(&vsi->back->hw, vsi->idx,
+ 					       ICE_MCAST_VLAN_PROMISC_BITS,
+ 					       vid);
+-		if (ret)
++		if (ret && ret != -EEXIST)
+ 			goto finish;
+ 	}
  
- 			if (qpi->rxq.databuffer_size != 0 &&
- 			    (qpi->rxq.databuffer_size > ((16 * 1024) - 128) ||
--			     qpi->rxq.databuffer_size < 1024))
-+			     qpi->rxq.databuffer_size < 128))
- 				goto error_param;
- 
- 			ring->rx_buf_len = qpi->rxq.databuffer_size;
 -- 
 2.47.1
 
