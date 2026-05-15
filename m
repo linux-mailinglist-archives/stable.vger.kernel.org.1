@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-248186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDenFE1LB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:35:25 +0200
+	id GM9WEnpJB2rUwQIAu9opvQ
+	(envelope-from <stable+bounces-248191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:27:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0747055386C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:35:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA37F553389
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 74A813065EB4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:06:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 985393162947
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293733FBB47;
-	Fri, 15 May 2026 16:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D783EFFBB;
+	Fri, 15 May 2026 16:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXC4oZX0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYS+h6KY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD30C3E0082;
-	Fri, 15 May 2026 16:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43C43E00AD;
+	Fri, 15 May 2026 16:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861093; cv=none; b=fkcQK7057I+qo2qSqAP2dSVFaerxLlUg+eu7zJuh8/exhwTVMALC84lpCU0TS4zJ5AZLBKTS/j1LwnzmP0PoSlzzhhcX1jGTBDpJ+uwjD51hPHnwaes7szhzr+hXZnzISkZeksbsiyKjQN+efXB/anhiBMxwj33RM3GKQvHKjjQ=
+	t=1778861106; cv=none; b=kPcW1d1ORcaZ/dfTjoM5cyn+Y482LI0mcv1bn1XOIom0ScWX5x0vCQry7XTVh7MOEk5rD2PIg6WRNK4Mjdhlc73//pkGMQMpwZB3aXHtUIZlRHY3l2d/v4cgyHeCSVlcg+GYjtvvLRgGeCLnDuAIpd7NJzeyyB+FaaLg7SnMndo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861093; c=relaxed/simple;
-	bh=C141+KxdT2B10+MgbG9rIy22REMVof0XkQDGijwqUCQ=;
+	s=arc-20240116; t=1778861106; c=relaxed/simple;
+	bh=+91482usW+z7QkpnCTP8HvX052f+sTFaati/l29sy94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4MWHcEZen9FEU4ez3fP7mWBlcU2uXQlEus5bDqzZsauLKNxN8riAV9pbp7U2h+IJccXQYfbvFPqk19qOcOxeMD8LD+o7X/JaZNirFWMJ9YzAERmQAC0PY6TEiKk1Dwuwb1Guop1YfXhkKR9iL2QPkDBHwJO0n6hyNWtJhaLLOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXC4oZX0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A6CC2BCF5;
-	Fri, 15 May 2026 16:04:53 +0000 (UTC)
+	 MIME-Version; b=NPMWbKBxazt8uasx47Ft4niVVwiVf0Zxyke20N4DDG7vQ9MgXl3HIrGw2P9kRpKGJ4K7hjA+GmX1vlIOv3j6dLEqHim3sbZQ+84WeO6tvSNpk8umpGxa1XTuO+HGU4F4O/K3omCKYYI3B5MnupP1sFBnGTo1BtZu1+ziaI30rok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYS+h6KY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C36FC2BCB0;
+	Fri, 15 May 2026 16:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861093;
-	bh=C141+KxdT2B10+MgbG9rIy22REMVof0XkQDGijwqUCQ=;
+	s=korg; t=1778861106;
+	bh=+91482usW+z7QkpnCTP8HvX052f+sTFaati/l29sy94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXC4oZX0/9TYSg9Jp0/FWI8F7hDP4VqFbI+KPWTayTD4X3qY4O77THSWSl8nAfmne
-	 QUwxsBI6PNhF4ZjReM2IfrHjAigpmwHX5Qt5L4i1ru9Ss3gHe6jBgWBQPExncUzdGe
-	 SSpxY0/LAES4feFe7hSh8LzDj1gcjRPCJDLsfLC4=
+	b=ZYS+h6KY5CgZyexL2JJ95WzwJHx3xbecKcJONjIz0FoA8Oohjtxw9cULI7vbx6TpL
+	 kpj57d76mt5HExT99Icu97gENkCMGbfGIskQzUlctBKNPuhL04mPBYLnS+OeZalN5Z
+	 h8w0XseHUpZcTM8ZwyyEIZy5xTgyBr45phvyskbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
+	syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com,
+	Tejas Bharambe <tejas.bharambe@outlook.com>,
+	Theodore Tso <tytso@mit.edu>,
 	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.6 159/474] rxrpc: Fix potential UAF after skb_unshare() failure
-Date: Fri, 15 May 2026 17:44:28 +0200
-Message-ID: <20260515154718.465558156@linuxfoundation.org>
+	Jianqiang kang <jianqkang@sina.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 160/474] ext4: validate p_idx bounds in ext4_ext_correct_indexes
+Date: Fri, 15 May 2026 17:44:29 +0200
+Message-ID: <20260515154718.487213349@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -70,229 +67,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0747055386C
+X-Rspamd-Queue-Id: DA37F553389
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248186-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-248191-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,outlook.com,mit.edu,kernel.org,sina.cn];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,04c4e65cab786a2e5b7e];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,auristor.com:email,sashiko.dev:url,infradead.org:email,uniontech.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,outlook.com:email,sina.cn:email]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Tejas Bharambe <tejas.bharambe@outlook.com>
 
-[ Upstream commit 1f2740150f904bfa60e4bad74d65add3ccb5e7f8 ]
+[ Upstream commit 2acb5c12ebd860f30e4faf67e6cc8c44ddfe5fe8 ]
 
-If skb_unshare() fails to unshare a packet due to allocation failure in
-rxrpc_input_packet(), the skb pointer in the parent (rxrpc_io_thread())
-will be NULL'd out.  This will likely cause the call to
-trace_rxrpc_rx_done() to oops.
+ext4_ext_correct_indexes() walks up the extent tree correcting
+index entries when the first extent in a leaf is modified. Before
+accessing path[k].p_idx->ei_block, there is no validation that
+p_idx falls within the valid range of index entries for that
+level.
 
-Fix this by moving the unsharing down to where rxrpc_input_call_event()
-calls rxrpc_input_call_packet().  There are a number of places prior to
-that where we ignore DATA packets for a variety of reasons (such as the
-call already being complete) for which an unshare is then avoided.
+If the on-disk extent header contains a corrupted or crafted
+eh_entries value, p_idx can point past the end of the allocated
+buffer, causing a slab-out-of-bounds read.
 
-And with that, rxrpc_input_packet() doesn't need to take a pointer to the
-pointer to the packet, so change that to just a pointer.
+Fix this by validating path[k].p_idx against EXT_LAST_INDEX() at
+both access sites: before the while loop and inside it. Return
+-EFSCORRUPTED if the index pointer is out of range, consistent
+with how other bounds violations are handled in the ext4 extent
+tree code.
 
-Fixes: 2d1faf7a0ca3 ("rxrpc: Simplify skbuff accounting in receive path")
-Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-4-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Relocated the unshare/skb_copy block from rxrpc_input_call_event()'s rx_queue dequeue loop to existing `if (skb) rxrpc_input_call_packet()` site, and substituted rxrpc_skb_put_call_rx with rxrpc_skb_put_input. ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Readd rxrpc_skb_put_response_copy() or will cause a build fail with commit 24481a7f5733 ("rxrpc: Fix conn-level packet handling to unshare RESPONSE packets") ]
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Reported-by: syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=04c4e65cab786a2e5b7e
+Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
+Link: https://patch.msgid.link/JH0PR06MB66326016F9B6AD24097D232B897CA@JH0PR06MB6632.apcprd06.prod.outlook.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+[ Minor conflict resolved. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/rxrpc.h |  4 ++--
- net/rxrpc/ar-internal.h      |  1 -
- net/rxrpc/call_event.c       | 23 +++++++++++++++++++++--
- net/rxrpc/io_thread.c        | 24 ++----------------------
- net/rxrpc/skbuff.c           |  9 ---------
- 5 files changed, 25 insertions(+), 36 deletions(-)
+ fs/ext4/extents.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 539801f8ee282..f0560087637ed 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -126,8 +126,6 @@
- 	E_(rxrpc_call_poke_timer_now,		"Timer-now")
- 
- #define rxrpc_skb_traces \
--	EM(rxrpc_skb_eaten_by_unshare,		"ETN unshare  ") \
--	EM(rxrpc_skb_eaten_by_unshare_nomem,	"ETN unshar-nm") \
- 	EM(rxrpc_skb_get_conn_secured,		"GET conn-secd") \
- 	EM(rxrpc_skb_get_conn_work,		"GET conn-work") \
- 	EM(rxrpc_skb_get_last_nack,		"GET last-nack") \
-@@ -146,12 +144,14 @@
- 	EM(rxrpc_skb_put_jumbo_subpacket,	"PUT jumbo-sub") \
- 	EM(rxrpc_skb_put_last_nack,		"PUT last-nack") \
- 	EM(rxrpc_skb_put_purge,			"PUT purge    ") \
-+	EM(rxrpc_skb_put_response_copy,		"PUT resp-cpy ") \
- 	EM(rxrpc_skb_put_rotate,		"PUT rotate   ") \
- 	EM(rxrpc_skb_put_unknown,		"PUT unknown  ") \
- 	EM(rxrpc_skb_see_conn_work,		"SEE conn-work") \
- 	EM(rxrpc_skb_see_recvmsg,		"SEE recvmsg  ") \
- 	EM(rxrpc_skb_see_reject,		"SEE reject   ") \
- 	EM(rxrpc_skb_see_rotate,		"SEE rotate   ") \
-+	EM(rxrpc_skb_see_unshare_nomem,		"SEE unshar-nm") \
- 	E_(rxrpc_skb_see_version,		"SEE version  ")
- 
- #define rxrpc_local_traces \
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index f4512761f572d..1db479f3d6d3c 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -1269,7 +1269,6 @@ int rxrpc_server_keyring(struct rxrpc_sock *, sockptr_t, int);
- void rxrpc_kernel_data_consumed(struct rxrpc_call *, struct sk_buff *);
- void rxrpc_new_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_see_skb(struct sk_buff *, enum rxrpc_skb_trace);
--void rxrpc_eaten_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_get_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_free_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_purge_queue(struct sk_buff_head *);
-diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
-index 0f78544d043be..c8a4a4c979eb6 100644
---- a/net/rxrpc/call_event.c
-+++ b/net/rxrpc/call_event.c
-@@ -456,8 +456,27 @@ bool rxrpc_input_call_event(struct rxrpc_call *call, struct sk_buff *skb)
- 		resend = true;
- 	}
- 
--	if (skb)
--		rxrpc_input_call_packet(call, skb);
-+	if (skb) {
-+		struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+
-+		if (sp->hdr.securityIndex != 0 && skb_cloned(skb)) {
-+			/* Unshare the packet so that it can be modified by
-+			 * in-place decryption.
-+			 */
-+			struct sk_buff *nskb = skb_copy(skb, GFP_ATOMIC);
-+
-+			if (nskb) {
-+				rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
-+				rxrpc_input_call_packet(call, nskb);
-+				rxrpc_free_skb(nskb, rxrpc_skb_put_input);
-+			} else {
-+				/* OOM - Drop the packet. */
-+				rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
-+			}
-+		} else {
-+			rxrpc_input_call_packet(call, skb);
-+		}
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 7626cf2b07f1c..a94798e23c1af 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1743,6 +1743,13 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
+ 	err = ext4_ext_get_access(handle, inode, path + k);
+ 	if (err)
+ 		return err;
++	if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
++		EXT4_ERROR_INODE(inode,
++				 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
++				 k, path[k].p_idx,
++				 EXT_LAST_INDEX(path[k].p_hdr));
++		return -EFSCORRUPTED;
 +	}
- 
- 	rxrpc_transmit_some_data(call);
- 
-diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
-index 0491f2bbf61e0..f542eda13ff0b 100644
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -167,13 +167,12 @@ static bool rxrpc_extract_abort(struct sk_buff *skb)
- /*
-  * Process packets received on the local endpoint
-  */
--static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff **_skb)
-+static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff *skb)
- {
- 	struct rxrpc_connection *conn;
- 	struct sockaddr_rxrpc peer_srx;
- 	struct rxrpc_skb_priv *sp;
- 	struct rxrpc_peer *peer = NULL;
--	struct sk_buff *skb = *_skb;
- 	bool ret = false;
- 
- 	skb_pull(skb, sizeof(struct udphdr));
-@@ -219,25 +218,6 @@ static bool rxrpc_input_packet(struct rxrpc_local *local, struct sk_buff **_skb)
- 			return rxrpc_bad_message(skb, rxrpc_badmsg_zero_call);
- 		if (sp->hdr.seq == 0)
- 			return rxrpc_bad_message(skb, rxrpc_badmsg_zero_seq);
--
--		/* Unshare the packet so that it can be modified for in-place
--		 * decryption.
--		 */
--		if (sp->hdr.securityIndex != 0) {
--			skb = skb_unshare(skb, GFP_ATOMIC);
--			if (!skb) {
--				rxrpc_eaten_skb(*_skb, rxrpc_skb_eaten_by_unshare_nomem);
--				*_skb = NULL;
--				return just_discard;
--			}
--
--			if (skb != *_skb) {
--				rxrpc_eaten_skb(*_skb, rxrpc_skb_eaten_by_unshare);
--				*_skb = skb;
--				rxrpc_new_skb(skb, rxrpc_skb_new_unshared);
--				sp = rxrpc_skb(skb);
--			}
--		}
- 		break;
- 
- 	case RXRPC_PACKET_TYPE_CHALLENGE:
-@@ -479,7 +459,7 @@ int rxrpc_io_thread(void *data)
- 			switch (skb->mark) {
- 			case RXRPC_SKB_MARK_PACKET:
- 				skb->priority = 0;
--				if (!rxrpc_input_packet(local, &skb))
-+				if (!rxrpc_input_packet(local, skb))
- 					rxrpc_reject_packet(local, skb);
- 				trace_rxrpc_rx_done(skb->mark, skb->priority);
- 				rxrpc_free_skb(skb, rxrpc_skb_put_input);
-diff --git a/net/rxrpc/skbuff.c b/net/rxrpc/skbuff.c
-index 3bcd6ee803960..e2169d1a14b5f 100644
---- a/net/rxrpc/skbuff.c
-+++ b/net/rxrpc/skbuff.c
-@@ -46,15 +46,6 @@ void rxrpc_get_skb(struct sk_buff *skb, enum rxrpc_skb_trace why)
- 	skb_get(skb);
- }
- 
--/*
-- * Note the dropping of a ref on a socket buffer by the core.
-- */
--void rxrpc_eaten_skb(struct sk_buff *skb, enum rxrpc_skb_trace why)
--{
--	int n = atomic_inc_return(&rxrpc_n_rx_skbs);
--	trace_rxrpc_skb(skb, 0, n, why);
--}
--
- /*
-  * Note the destruction of a socket buffer.
-  */
+ 	path[k].p_idx->ei_block = border;
+ 	err = ext4_ext_dirty(handle, inode, path + k);
+ 	if (err)
+@@ -1755,6 +1762,14 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
+ 		err = ext4_ext_get_access(handle, inode, path + k);
+ 		if (err)
+ 			break;
++		if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
++			EXT4_ERROR_INODE(inode,
++					 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
++					 k, path[k].p_idx,
++					 EXT_LAST_INDEX(path[k].p_hdr));
++			err = -EFSCORRUPTED;
++			break;
++		}
+ 		path[k].p_idx->ei_block = border;
+ 		err = ext4_ext_dirty(handle, inode, path + k);
+ 		if (err)
 -- 
 2.53.0
 
