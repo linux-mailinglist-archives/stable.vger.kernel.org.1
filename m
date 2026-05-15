@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yF+zFfZKB2q5wwIAu9opvQ
-	(envelope-from <stable+bounces-248374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:58 +0200
+	id gDDpH01FB2ocwAIAu9opvQ
+	(envelope-from <stable+bounces-247905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:09:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B7A553773
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DEA552C00
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C9CF3116510
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B150C3076E65
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333BB3F8706;
-	Fri, 15 May 2026 16:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5043FF1A0;
+	Fri, 15 May 2026 15:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOHcIno6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnTFp5PU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE283F44D5;
-	Fri, 15 May 2026 16:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5308A3FF1A2;
+	Fri, 15 May 2026 15:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861572; cv=none; b=a+xy1lN+iwY8C2h4F2scPqCbrdTV2etTtCtEZi7sE9v3fO1kugWxuGHuyghQOMdHJ7oqnou6Y94fC6APMcP5G+6cqFS9OtrmL5AuPsmToi8LShM3c/qID5ArV0rA21xFthldD6fgyNqhfOhKoRjWNigr81fTXTPwjLpqhcaCTbg=
+	t=1778860374; cv=none; b=cPKdvDHj00DWYDmDjaaCjkYQyL8yV2oBGflzZNsxUdtdyc+t6uTu9IZYDl96A5DYRyUnGGIjLk5hoZj2Upy1b/B5mLThVJ4EMYNg0bC79B6QH8L9zmw+q2yDqEbpRfhYQtze//1gL5Uz52hWARpMR4AyaJj2PwT7rwW50kTYGvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861572; c=relaxed/simple;
-	bh=LwAkWvixLUjuPhV078Gs+ecJUFVKkAVyOdf48/K2Whw=;
+	s=arc-20240116; t=1778860374; c=relaxed/simple;
+	bh=s2R2qzcEwbheMrHbS3ifN96gsTX+6L1WT7bT2FK4Kmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZLJAzbnb+nHHyKfv6ukqT5hnaaJCs7fEiKAjzR2Ctls8m/1RHHr03VeZ/EGHJTxcQyEJXEs8TUhfqsiHUW69AJ0BPGQXkB+ZR/ze5jaxitl+HNP2ra030HJUeNR5AFAbHQYht7ZloZTER80+pbr2d44zmgCof6NozMCzMUATkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOHcIno6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB58C2BCB3;
-	Fri, 15 May 2026 16:12:51 +0000 (UTC)
+	 MIME-Version; b=S5MIXJ2/Ys8dr91iJQwZUpY03nbSbqfZAC4uZBqy2pLMHpNbklFhcgeA6bV4+9Q2LTTUg4jmyJ8npeU61UTTFUS9a/wJwZ/PIm15KLrMsu/TcKBNLUIZafXmPz4KN9Geh0IcUfyQg9qsPm6jfHTGQtgDy0QVgCTuuSJatlcrBYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnTFp5PU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3662C2BCB0;
+	Fri, 15 May 2026 15:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861571;
-	bh=LwAkWvixLUjuPhV078Gs+ecJUFVKkAVyOdf48/K2Whw=;
+	s=korg; t=1778860374;
+	bh=s2R2qzcEwbheMrHbS3ifN96gsTX+6L1WT7bT2FK4Kmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOHcIno6x6sUS2LtRw2sXdwTd67MPYpmF/3FDmK3P45DCOEvhSY+JrPpgJHsh6m1Y
-	 LJhXy88hDEe3iokObVOkhAJp81g0iV94yPmYkFH4m22erc1k1G7pL8kVKdlmhr4QnB
-	 xJY085GHwl2+JdLmbLS4jlSk2H9A8r/EXxPhhrMo=
+	b=UnTFp5PUarzpeD8JkD/8sgxcEyVtDkoJO9eovhbf9mru3APQSSFCT+07PVKh4O7B/
+	 j1918BFI2nf6rZo7OhG7FSLdaiCzs76st4QI1I6wQ8AHdOsLSXDOm6h9jIVORfaumq
+	 W+b3JNJBx4EHh3y1dtQ16BlW0+udr/nswD+gvsKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>,
+	Wenyou Yang <wenyou.yang@atmel.com>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 339/474] spi: cadence: fix unclocked access on unbind
+Subject: [PATCH 6.12 022/144] regulator: act8945a: fix OF node reference imbalance
 Date: Fri, 15 May 2026 17:47:28 +0200
-Message-ID: <20260515154722.348632775@linuxfoundation.org>
+Message-ID: <20260515154654.013886782@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 23B7A553773
+X-Rspamd-Queue-Id: 40DEA552C00
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248374-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247905-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,65 +92,48 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,sashiko.dev:url,xilinx.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 5b1689a41f02955c5361944f748a4812a6ff9307 upstream.
+commit 0d15ce31375ccef4162f960b34547a821b7619d2 upstream.
 
-Make sure that the controller is runtime resumed before disabling it
-during driver unbind to avoid unclocked register access and unbalanced
-clock disable.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-Also restore the autosuspend setting.
+Fix this by using the intended helper for reusing OF nodes.
 
-This issue was flagged by Sashiko when reviewing a controller
-deregistration fix.
-
-Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
-Cc: stable@vger.kernel.org	# 4.7
-Cc: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
-Link: https://sashiko.dev/#/patchset/20260414134319.978196-1-johan%40kernel.org?part=1
+Fixes: 38c09961048b ("regulator: act8945a: add regulator driver for ACT8945A")
+Cc: stable@vger.kernel.org	# 4.6
+Cc: Wenyou Yang <wenyou.yang@atmel.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260421123615.1533617-2-johan@kernel.org
+Link: https://patch.msgid.link/20260408073055.5183-7-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/regulator/act8945a-regulator.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -685,16 +685,23 @@ static void cdns_spi_remove(struct platf
- {
- 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
- 	struct cdns_spi *xspi = spi_controller_get_devdata(ctlr);
-+	int ret = 0;
-+
-+	if (!spi_controller_is_target(ctlr))
-+		ret = pm_runtime_get_sync(&pdev->dev);
- 
- 	spi_controller_get(ctlr);
- 
- 	spi_unregister_controller(ctlr);
- 
--	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
-+	if (ret >= 0)
-+		cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
- 
- 	if (!spi_controller_is_target(ctlr)) {
- 		pm_runtime_disable(&pdev->dev);
- 		pm_runtime_set_suspended(&pdev->dev);
-+		pm_runtime_put_noidle(&pdev->dev);
-+		pm_runtime_dont_use_autosuspend(&pdev->dev);
+--- a/drivers/regulator/act8945a-regulator.c
++++ b/drivers/regulator/act8945a-regulator.c
+@@ -302,8 +302,9 @@ static int act8945a_pmic_probe(struct pl
+ 		num_regulators = ARRAY_SIZE(act8945a_regulators);
  	}
  
- 	spi_controller_put(ctlr);
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
++
+ 	config.dev = &pdev->dev;
+-	config.dev->of_node = pdev->dev.parent->of_node;
+ 	config.driver_data = act8945a;
+ 	for (i = 0; i < num_regulators; i++) {
+ 		rdev = devm_regulator_register(&pdev->dev, &regulators[i],
 
 
 
