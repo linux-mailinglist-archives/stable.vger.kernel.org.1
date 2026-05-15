@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 5pb/MrxnB2ol2AIAu9opvQ
-	(envelope-from <stable+bounces-247941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:36:44 +0200
+	id aKH4FnJPB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F48556572
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:36:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE9D554188
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3909431674E2
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 99D4C304BB33
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F99E2DC334;
-	Fri, 15 May 2026 15:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B2C3F660B;
+	Fri, 15 May 2026 16:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SO4WEl1s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRcIPUpU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FD23FF1DD;
-	Fri, 15 May 2026 15:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7831E3E714A;
+	Fri, 15 May 2026 16:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860467; cv=none; b=B/oLZOXb0SZNzHWWHBbgdairM9yTKHHlZaRo0rWUwDFVzkzn6eOh3K8pM9V4vIBroutxG2cK8lpQLc/ECS0qwg3+fIgvlnduaIXpx/qwr2c3VB8uMOYNpru9WtQ94TmjFG3gTQFnG6ZgZBylg6wLfgPV2GX7xU5XgK2kREHhBv4=
+	t=1778862500; cv=none; b=CRgNziWZiLvlmUv1S04+nDQk5aIV6d2vUZUPS1ylKEKfQ4KOgLCKJk/tyO/OjA35Ml2H/ryZeQn93Xo2+JymkgiLJqQd8pC2T0nN26zyYuYfju7pa+ttnHUb6Z/OpG4Ukh5qQ1uQXRpzoevG+bTq5ZnOc4KMfI5Tp0fBtT2oW+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860467; c=relaxed/simple;
-	bh=TAT8u8GG4xnpUAHzRjiCXdmJ4jduDZo3ZQGGcrDth6E=;
+	s=arc-20240116; t=1778862500; c=relaxed/simple;
+	bh=GOXzpz1EMtQVi4wREn6uiZgtypvBeqz30jEgyo0E7a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPxqZd1yzJqCpPnP65+o1bQnrwZxu/Ib2l4Vg+63vH6L5wIfcUXwIyrlSEG6C7fSn6a73lHjrZqL3rRW5+FjmAprQvIr/+d2Fvt94+1txRpmdd1FxNPSRbPMitk2K+5PRCshya6PR51kFHGxnGQkMTAOInFAi738DZuTlZNVZdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SO4WEl1s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764BAC2BCB0;
-	Fri, 15 May 2026 15:54:26 +0000 (UTC)
+	 MIME-Version; b=KA9ap5zpqs97UR6YI+J+B2WnBJ7YcsmYRRfLO7kDQMZS91fIuuhYF004ecMsRUi9Z+nX5syoAntS/o7Zz50sdK1fuzB21SxWRXymbUWZaiSN6Ycgy/6Wx3HojL2A/tN8Sy+7SiJONqa/TEC3KW+nmNEWztUW4b5Jc0bVGoUrlUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRcIPUpU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D286C2BCB0;
+	Fri, 15 May 2026 16:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860466;
-	bh=TAT8u8GG4xnpUAHzRjiCXdmJ4jduDZo3ZQGGcrDth6E=;
+	s=korg; t=1778862500;
+	bh=GOXzpz1EMtQVi4wREn6uiZgtypvBeqz30jEgyo0E7a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SO4WEl1sqC3XWlMb86EXhbFG+zQrzesCeourObhsZ+tF54QJaomQO772DByiMAdHJ
-	 ICvawIYgeRsVaKEHtqJTKy3aEFSBAjb2F4x6slYvgrmxNvIqwA8tgnQR7JzfCTgyXX
-	 EUL7pGb7mOl36TGqNdVYqts58BDQ+7ItF+3LwLj8=
+	b=aRcIPUpU1ZCDjFINp5Rt/FSsJYyMDnWxR9y+DDI0nsM41hUlr/l7rWQRQxFZKiQBZ
+	 DCniuDCjTU3wDu+4UIWQULVGH0OJ8Brw52FhDiyxiIz8zvZ4O7xf+zEuwPhPEOe3lu
+	 CbfmoGAwt/Okcww3H6KvYTmxg2AeLWh2bqZHf3Eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harini Katakam <harinik@xilinx.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 063/144] spi: cadence: fix controller deregistration
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 7.0 071/201] media: omap3isp: drop the use count of v4l2 pipeline
 Date: Fri, 15 May 2026 17:48:09 +0200
-Message-ID: <20260515154655.007976043@linuxfoundation.org>
+Message-ID: <20260515154700.071078914@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +64,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 30F48556572
+X-Rspamd-Queue-Id: EEE9D554188
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248737-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247941-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,huawei];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,xilinx.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-commit 666fa7e9ca98e71c880086ca24147ae843f1ed6e upstream.
+commit 9da49bd9d4224035cff39b40d7395310abb10201 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+In isp_video_open(), drop the use count of v4l2
+pipeline if vb2_queue_init() fails.
 
-Fixes: c474b3866546 ("spi: Add driver for Cadence SPI controller")
-Cc: stable@vger.kernel.org	# 3.16
-Cc: Harini Katakam <harinik@xilinx.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8fd390b89cc8 ("media: Split v4l2_pipeline_pm_use into v4l2_pipeline_pm_{get, put}")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/platform/ti/omap3isp/ispvideo.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -699,6 +699,10 @@ static void cdns_spi_remove(struct platf
- 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
- 	struct cdns_spi *xspi = spi_controller_get_devdata(ctlr);
+--- a/drivers/media/platform/ti/omap3isp/ispvideo.c
++++ b/drivers/media/platform/ti/omap3isp/ispvideo.c
+@@ -1403,6 +1403,7 @@ static int isp_video_open(struct file *f
  
-+	spi_controller_get(ctlr);
-+
-+	spi_unregister_controller(ctlr);
-+
- 	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
- 
- 	if (!spi_controller_is_target(ctlr)) {
-@@ -706,7 +710,7 @@ static void cdns_spi_remove(struct platf
- 		pm_runtime_set_suspended(&pdev->dev);
+ 	ret = vb2_queue_init(&handle->queue);
+ 	if (ret < 0) {
++		v4l2_pipeline_pm_put(&video->video.entity);
+ 		omap3isp_put(video->isp);
+ 		goto done;
  	}
- 
--	spi_unregister_controller(ctlr);
-+	spi_controller_put(ctlr);
- }
- 
- /**
 
 
 
