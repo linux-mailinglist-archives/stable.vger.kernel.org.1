@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-248231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248233-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFyzHqFKB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:33 +0200
+	id SIe5JkhKB2rUwQIAu9opvQ
+	(envelope-from <stable+bounces-248233-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0093B553618
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD915534F9
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EDFA631CF98B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:10:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 327653082816
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB533F9286;
-	Fri, 15 May 2026 16:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5A73F928E;
+	Fri, 15 May 2026 16:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyZSvv7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzBrD+/3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3199C3F8713;
-	Fri, 15 May 2026 16:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB5D3F9273;
+	Fri, 15 May 2026 16:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861206; cv=none; b=tcDRR5KCVb6l+d+Vkb6uEuHlh+ulRtjY82tG6HI5jvC23VhKqPn/cYVehgLC3DWlIDQRmXLWpJ+vYlR5mJ/ZbFCedI+u9OcrnyafmQQBEr3ZqZ28R22+xThRqmxMvbZUA+v0a3rvKyr5fmxli9wCLIIrOldCG5pFldS6frSVK28=
+	t=1778861211; cv=none; b=Pw2YHu1ebETTMWa8DmsrgB7vBLxRpLt2SiS+xvdHv1qTj2q3DJdSJrpbxpivL6rqKkantSK0q4OHFyUz0TfNqkwitU1GfCazAC/0mamllrt+fdEbWgrR4T2bb1qNVMNlKJ3b92lP1281+dYoLDn1b1Pjb6m084PRZl1ZMjonqvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861206; c=relaxed/simple;
-	bh=2AFAPLE5wppAEAwUVVP6uX1stnv5RfY+XnYai2MjH+o=;
+	s=arc-20240116; t=1778861211; c=relaxed/simple;
+	bh=ZawA0ehsSpJoeh0lU2gWU/s489p0le5bi/NiksHExhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LoxwDX7nYxzSSC0GltqMXnHBi9KsgCUPbAvtMOczi1TsvbE5iHf0ORrljMsb2Q6rMq95FO0VABz1GVaZoLf0Mao9+KTTk4020nKUtWcxZ2jqMwrgWlZb2hpryjLY9yl66XVbzu2RC9Oui/ZJgG/oGhci7NFQz2qX81mHbih8nvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyZSvv7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D878C2BCB0;
-	Fri, 15 May 2026 16:06:45 +0000 (UTC)
+	 MIME-Version; b=BfPyk029CnHRa/SS6XdAKQGN2XDtfefCvkRYQLiAPCTvP9Ki26eatYDDSYcakbpxuHsdTYNhOMN5GdnBJTS4RRrHNN0SBEsVGgB4GfcYfbFTsT7IMhhLI5UbwZwwgn0RLYgLbYMKyEI3+qeN9XsoTxRj2v2hFuxW+F6TVuv2tZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzBrD+/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9230C2BCB0;
+	Fri, 15 May 2026 16:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861205;
-	bh=2AFAPLE5wppAEAwUVVP6uX1stnv5RfY+XnYai2MjH+o=;
+	s=korg; t=1778861211;
+	bh=ZawA0ehsSpJoeh0lU2gWU/s489p0le5bi/NiksHExhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyZSvv7b7O4RTCHYHJK0ZljUGXiX4vKLzRU2R8Vr1/aAVLxVhJGzhEbq2GgbWjiP7
-	 p9PYIJDWhhArcWwyUn9VwLHPwAPf4a2cHR4tVX3SyfrIxQR1ScaDuHPkS8yG9QTOh8
-	 6YVZcTZ62/KjGeCCGGY3OrnEkrC4S04UUTev/aK4=
+	b=AzBrD+/3EDTBodb7EtHbyWS6cQ3napAuH/FEZhy9VlKZQ0yYM/VXOdq4TOWCNYuGx
+	 Zr5UWyU2f610WOtw3RnSttdsRpTWFvk9UDQLy/IXOzOVLNCCCflZ2mr+NoHBbmVbUX
+	 qYWYfBVzFKOMM1IaWE7e1DVD6DvjAxaPHzbC/TWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thorsten Blum <thorsten.blum@linux.dev>,
 	Daniel Lezcano <daniel.lezcano@kernel.org>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: [PATCH 6.6 238/474] thermal/drivers/sprd: Fix temperature clamping in sprd_thm_temp_to_rawdata
-Date: Fri, 15 May 2026 17:45:47 +0200
-Message-ID: <20260515154720.152931667@linuxfoundation.org>
+Subject: [PATCH 6.6 239/474] thermal/drivers/sprd: Fix raw temperature clamping in sprd_thm_rawdata_to_temp
+Date: Fri, 15 May 2026 17:45:48 +0200
+Message-ID: <20260515154720.174174882@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0093B553618
+X-Rspamd-Queue-Id: 3AD915534F9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248231-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248233-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,msgid.link:url,alibaba.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
@@ -101,13 +101,13 @@ X-Rspamd-Action: no action
 
 From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 83c0f9a5d679a6f8d84fc49b2f62ea434ccab4b6 upstream.
+commit b3414148bbc1f9cd56217e58a558c6ac4fd1b4a6 upstream.
 
-The temperature was never clamped to SPRD_THM_TEMP_LOW or
-SPRD_THM_TEMP_HIGH because the return value of clamp() was not used. Fix
-this by assigning the clamped value to 'temp'.
+The raw temperature data was never clamped to SPRD_THM_RAW_DATA_LOW or
+SPRD_THM_RAW_DATA_HIGH because the return value of clamp() was not used.
+Fix this by assigning the clamped value to 'rawdata'.
 
-Casting SPRD_THM_TEMP_LOW and SPRD_THM_TEMP_HIGH to int is also
+Casting SPRD_THM_RAW_DATA_LOW and SPRD_THM_RAW_DATA_HIGH to u32 is also
 redundant and can be removed.
 
 Fixes: 554fdbaf19b1 ("thermal: sprd: Add Spreadtrum thermal driver support")
@@ -115,7 +115,7 @@ Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260307102422.306055-1-thorsten.blum@linux.dev
+Link: https://patch.msgid.link/20260307102422.306055-2-thorsten.blum@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
  drivers/thermal/sprd_thermal.c |    2 +-
@@ -123,12 +123,12 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/thermal/sprd_thermal.c
 +++ b/drivers/thermal/sprd_thermal.c
-@@ -192,7 +192,7 @@ static int sprd_thm_temp_to_rawdata(int
+@@ -178,7 +178,7 @@ static int sprd_thm_sensor_calibration(s
+ static int sprd_thm_rawdata_to_temp(struct sprd_thermal_sensor *sen,
+ 				    u32 rawdata)
  {
- 	u32 val;
- 
--	clamp(temp, (int)SPRD_THM_TEMP_LOW, (int)SPRD_THM_TEMP_HIGH);
-+	temp = clamp(temp, SPRD_THM_TEMP_LOW, SPRD_THM_TEMP_HIGH);
+-	clamp(rawdata, (u32)SPRD_THM_RAW_DATA_LOW, (u32)SPRD_THM_RAW_DATA_HIGH);
++	rawdata = clamp(rawdata, SPRD_THM_RAW_DATA_LOW, SPRD_THM_RAW_DATA_HIGH);
  
  	/*
  	 * According to the thermal datasheet, the formula of converting
