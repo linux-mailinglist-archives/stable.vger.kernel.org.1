@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248084-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SXfMFa1GB2r6wAIAu9opvQ
-	(envelope-from <stable+bounces-248073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:15:41 +0200
+	id QDcHE8hGB2r6wAIAu9opvQ
+	(envelope-from <stable+bounces-248084-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:16:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC86D552E4C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9812552E7A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:16:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EEF8130CF158
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:00:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E648730D1F55
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FC0282F1A;
-	Fri, 15 May 2026 16:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C7A3B0ADB;
+	Fri, 15 May 2026 16:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfiB12qa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPwUfr5g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4343FF1D8;
-	Fri, 15 May 2026 16:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585E8355049;
+	Fri, 15 May 2026 16:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860800; cv=none; b=Y02yG7WX+2XVLoMGvKCpsZPe0z/N+YvJr6kcEgAFt1YLTv1gwb6P8f+jXwFmcpehMylHm8zwwS4s33cE+rvvDn+SscWY/8sq0rpVeSZ9y20lGAh/F1ZjupJjyHE0CmYp5fKDrNDRpcz/hkvxemVy71GAkt3Qsgq89T7eO8IuuwI=
+	t=1778860831; cv=none; b=ocudoKnAZvFv7gHcUnS9BSgLeQIlD23S4ZZsI6tfZusnZUC/7P9U/hZrhP8RKbE3E6xKRLcXJ6555LgHYAjzwIVFpjfnFpLB3rVJaQwyzhk5ubLUzB8u7xGteK3kMWJTePfYb13wXnN/KSs627svKXb9nTngxTRp3VH08jvwMbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860800; c=relaxed/simple;
-	bh=yiSE3nBo3PHMFv+Q/T70B08wO/QgPBahZKV6YWITQNM=;
+	s=arc-20240116; t=1778860831; c=relaxed/simple;
+	bh=AJLbIUHO1qevL1VGFANpcj7/IYze2HKMmzDW8Fhgs4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QppDbvI6REHq4X1NM+Icizoi2kJMQ3TYDKY32j5ix8URqWZXBbGCi12ArEec7Nr6mGaYX2WqT0rZBTuvIW9/JwT9AZNfztcevQ0EyyjTcoxg++z21xcjcq8fPqCY0wI0kdbNhUBFFToAKYjF3gtzPA/LtVp0/gL9r2TtbGbpd34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfiB12qa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6587C2BCB0;
-	Fri, 15 May 2026 15:59:59 +0000 (UTC)
+	 MIME-Version; b=qsxBndhcNR3JPhDk/A+IPc4vSOEfbwhN0HoFEav0rE6jPI3/kwjQCNfjZVcJCLI4TubOGKrO+156N7iB38OutDUtPiQMtcymX2SxcZaPbWKCNFiao8NtHldX0aa4jfwqS4Im/nKwQIjxhUPRp36Ic/LvkAx7JgewPiJSYCS/u7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPwUfr5g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD82C2BCB0;
+	Fri, 15 May 2026 16:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860800;
-	bh=yiSE3nBo3PHMFv+Q/T70B08wO/QgPBahZKV6YWITQNM=;
+	s=korg; t=1778860831;
+	bh=AJLbIUHO1qevL1VGFANpcj7/IYze2HKMmzDW8Fhgs4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FfiB12qaLpRN3lwTB2zoLyp69nzR2BSLfPfmdbgAeXbyEYh3kRaR7M4XjK3nArH0h
-	 O2DWBQb4aZkIanF8pNZQgBqHepjjQLwl0ewN034cAcSdhnMYarpvhLTyRJzO72LuVN
-	 QKVFf5URABMYUzOvIXPvW6P9Efb52C2iuImh+DOg=
+	b=xPwUfr5gpTSjJxi6Bq3I6lXeG8zj5t0OLUaOO4o3Y2zhFe2Ds+c2hYs52/uRMl3Od
+	 4Il4ktZ2920RYrM3SKpardmAh2jiDDuyA81n/HHasSTg8mPISDenqS1BVh8rLkI6bV
+	 nLIlEURSHUSVUgxTmIzivVlFWqQDV2Lgtx3rWsjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 067/474] rxrpc: Fix re-decryption of RESPONSE packets
-Date: Fri, 15 May 2026 17:42:56 +0200
-Message-ID: <20260515154716.493017072@linuxfoundation.org>
+	Yiyang Chen <cyyzero16@gmail.com>,
+	Balbir Singh <bsingharora@gmail.com>,
+	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>,
+	Fan Yu <fan.yu9@zte.com.cn>,
+	Wang Yaxin <wang.yaxin@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 068/474] tools/accounting: handle truncated taskstats netlink messages
+Date: Fri, 15 May 2026 17:42:57 +0200
+Message-ID: <20260515154716.514274327@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -68,7 +67,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EC86D552E4C
+X-Rspamd-Queue-Id: B9812552E7A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -79,98 +78,207 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,uni-hamburg.de,zte.com.cn,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-248084-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248073-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,auristor.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,infradead.org:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,uni-hamburg.de:email,zte.com.cn:email]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Yiyang Chen <cyyzero16@gmail.com>
 
-commit 0422e7a4883f25101903f3e8105c0808aa5f4ce9 upstream.
+commit cc82b3dcc6a8fa259fbda12ab00d6fc00908a49e upstream.
 
-If a RESPONSE packet gets a temporary failure during processing, it may end
-up in a partially decrypted state - and then get requeued for a retry.
+procacct and getdelays use a fixed receive buffer for taskstats generic
+netlink messages.  A multi-threaded process exit can emit a single
+PID+TGID notification large enough to exceed that buffer on newer kernels.
 
-Fix this by just discarding the packet; we will send another CHALLENGE
-packet and thereby elicit a further response.  Similarly, discard an
-incoming CHALLENGE packet if we get an error whilst generating a RESPONSE;
-the server will send another CHALLENGE.
+Switch to recvmsg() so MSG_TRUNC is detected explicitly, increase the
+message buffer size, and report truncated datagrams clearly instead of
+misparsing them as fatal netlink errors.
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Closes: https://sashiko.dev/#/patchset/20260422161438.2593376-4-dhowells@redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260423200909.3049438-3-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Also print the taskstats version in debug output to make version
+mismatches easier to diagnose while inspecting taskstats traffic.
+
+Link: https://lkml.kernel.org/r/520308bb4cbbaf8dc2c7296b5f60f11e12fb30a5.1774810498.git.cyyzero16@gmail.com
+Signed-off-by: Yiyang Chen <cyyzero16@gmail.com>
+Cc: Balbir Singh <bsingharora@gmail.com>
+Cc: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
+Cc: Fan Yu <fan.yu9@zte.com.cn>
+Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/rxrpc.h |    1 -
- net/rxrpc/conn_event.c       |   14 ++------------
- 2 files changed, 2 insertions(+), 13 deletions(-)
+ tools/accounting/getdelays.c |   41 +++++++++++++++++++++++++++++++++++++----
+ tools/accounting/procacct.c  |   40 ++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 73 insertions(+), 8 deletions(-)
 
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -232,7 +232,6 @@
- 	EM(rxrpc_conn_put_unidle,		"PUT unidle  ") \
- 	EM(rxrpc_conn_put_work,			"PUT work    ") \
- 	EM(rxrpc_conn_queue_challenge,		"QUE chall   ") \
--	EM(rxrpc_conn_queue_retry_work,		"QUE retry-wk") \
- 	EM(rxrpc_conn_queue_rx_work,		"QUE rx-work ") \
- 	EM(rxrpc_conn_see_new_service_conn,	"SEE new-svc ") \
- 	EM(rxrpc_conn_see_reap_service,		"SEE reap-svc") \
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -344,7 +344,6 @@ again:
- static void rxrpc_do_process_connection(struct rxrpc_connection *conn)
- {
- 	struct sk_buff *skb;
--	int ret;
- 
- 	if (test_and_clear_bit(RXRPC_CONN_EV_CHALLENGE, &conn->events))
- 		rxrpc_secure_connection(conn);
-@@ -353,17 +352,8 @@ static void rxrpc_do_process_connection(
- 	 * connection that each one has when we've finished with it */
- 	while ((skb = skb_dequeue(&conn->rx_queue))) {
- 		rxrpc_see_skb(skb, rxrpc_skb_see_conn_work);
--		ret = rxrpc_process_event(conn, skb);
--		switch (ret) {
--		case -ENOMEM:
--		case -EAGAIN:
--			skb_queue_head(&conn->rx_queue, skb);
--			rxrpc_queue_conn(conn, rxrpc_conn_queue_retry_work);
--			break;
--		default:
--			rxrpc_free_skb(skb, rxrpc_skb_put_conn_work);
--			break;
--		}
-+		rxrpc_process_event(conn, skb);
-+		rxrpc_free_skb(skb, rxrpc_skb_put_conn_work);
+--- a/tools/accounting/getdelays.c
++++ b/tools/accounting/getdelays.c
+@@ -59,7 +59,7 @@ int print_task_context_switch_counts;
  	}
+ 
+ /* Maximum size of response requested or message sent */
+-#define MAX_MSG_SIZE	1024
++#define MAX_MSG_SIZE	2048
+ /* Maximum number of cpus expected to be specified in a cpumask */
+ #define MAX_CPUS	32
+ 
+@@ -114,6 +114,32 @@ error:
+ 	return -1;
  }
  
++static int recv_taskstats_msg(int sd, struct msgtemplate *msg)
++{
++	struct sockaddr_nl nladdr;
++	struct iovec iov = {
++		.iov_base = msg,
++		.iov_len = sizeof(*msg),
++	};
++	struct msghdr hdr = {
++		.msg_name = &nladdr,
++		.msg_namelen = sizeof(nladdr),
++		.msg_iov = &iov,
++		.msg_iovlen = 1,
++	};
++	int ret;
++
++	ret = recvmsg(sd, &hdr, 0);
++	if (ret < 0)
++		return -1;
++	if (hdr.msg_flags & MSG_TRUNC) {
++		errno = EMSGSIZE;
++		return -1;
++	}
++
++	return ret;
++}
++
+ 
+ static int send_cmd(int sd, __u16 nlmsg_type, __u32 nlmsg_pid,
+ 	     __u8 genl_cmd, __u16 nla_type,
+@@ -465,12 +491,16 @@ int main(int argc, char *argv[])
+ 	}
+ 
+ 	do {
+-		rep_len = recv(nl_sd, &msg, sizeof(msg), 0);
++		rep_len = recv_taskstats_msg(nl_sd, &msg);
+ 		PRINTF("received %d bytes\n", rep_len);
+ 
+ 		if (rep_len < 0) {
+-			fprintf(stderr, "nonfatal reply error: errno %d\n",
+-				errno);
++			if (errno == EMSGSIZE)
++				fprintf(stderr,
++					"dropped truncated taskstats netlink message, please increase MAX_MSG_SIZE\n");
++			else
++				fprintf(stderr, "nonfatal reply error: errno %d\n",
++					errno);
+ 			continue;
+ 		}
+ 		if (msg.n.nlmsg_type == NLMSG_ERROR ||
+@@ -512,6 +542,9 @@ int main(int argc, char *argv[])
+ 							printf("TGID\t%d\n", rtid);
+ 						break;
+ 					case TASKSTATS_TYPE_STATS:
++						PRINTF("version %u\n",
++						       ((struct taskstats *)
++							NLA_DATA(na))->version);
+ 						if (print_delays)
+ 							print_delayacct((struct taskstats *) NLA_DATA(na));
+ 						if (print_io_accounting)
+--- a/tools/accounting/procacct.c
++++ b/tools/accounting/procacct.c
+@@ -71,7 +71,7 @@ int print_task_context_switch_counts;
+ 	}
+ 
+ /* Maximum size of response requested or message sent */
+-#define MAX_MSG_SIZE	1024
++#define MAX_MSG_SIZE	2048
+ /* Maximum number of cpus expected to be specified in a cpumask */
+ #define MAX_CPUS	32
+ 
+@@ -121,6 +121,32 @@ error:
+ 	return -1;
+ }
+ 
++static int recv_taskstats_msg(int sd, struct msgtemplate *msg)
++{
++	struct sockaddr_nl nladdr;
++	struct iovec iov = {
++		.iov_base = msg,
++		.iov_len = sizeof(*msg),
++	};
++	struct msghdr hdr = {
++		.msg_name = &nladdr,
++		.msg_namelen = sizeof(nladdr),
++		.msg_iov = &iov,
++		.msg_iovlen = 1,
++	};
++	int ret;
++
++	ret = recvmsg(sd, &hdr, 0);
++	if (ret < 0)
++		return -1;
++	if (hdr.msg_flags & MSG_TRUNC) {
++		errno = EMSGSIZE;
++		return -1;
++	}
++
++	return ret;
++}
++
+ 
+ static int send_cmd(int sd, __u16 nlmsg_type, __u32 nlmsg_pid,
+ 	     __u8 genl_cmd, __u16 nla_type,
+@@ -239,6 +265,8 @@ void handle_aggr(int mother, struct nlat
+ 			PRINTF("TGID\t%d\n", rtid);
+ 			break;
+ 		case TASKSTATS_TYPE_STATS:
++			PRINTF("version %u\n",
++			       ((struct taskstats *)NLA_DATA(na))->version);
+ 			if (mother == TASKSTATS_TYPE_AGGR_PID)
+ 				print_procacct((struct taskstats *) NLA_DATA(na));
+ 			if (fd) {
+@@ -348,12 +376,16 @@ int main(int argc, char *argv[])
+ 	}
+ 
+ 	do {
+-		rep_len = recv(nl_sd, &msg, sizeof(msg), 0);
++		rep_len = recv_taskstats_msg(nl_sd, &msg);
+ 		PRINTF("received %d bytes\n", rep_len);
+ 
+ 		if (rep_len < 0) {
+-			fprintf(stderr, "nonfatal reply error: errno %d\n",
+-				errno);
++			if (errno == EMSGSIZE)
++				fprintf(stderr,
++					"dropped truncated taskstats netlink message, please increase MAX_MSG_SIZE\n");
++			else
++				fprintf(stderr, "nonfatal reply error: errno %d\n",
++					errno);
+ 			continue;
+ 		}
+ 		if (msg.n.nlmsg_type == NLMSG_ERROR ||
 
 
 
