@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IN0YOllaB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:39:37 +0200
+	id kA4XCRdPB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:51:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7C455562B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A06065540AC
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E144D313F2A3
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E5AD334A6C0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC5F33A9F5;
-	Fri, 15 May 2026 16:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04874C043A;
+	Fri, 15 May 2026 16:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZNQ0rxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U85NrnEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B0E326939;
-	Fri, 15 May 2026 16:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31664BCAD9;
+	Fri, 15 May 2026 16:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862619; cv=none; b=gpXaUwggeJO757vpte5MTabi9r89sMPWnIomDmfBcPJBm5IsEkuZ0F12Q3ePcEOSbf9hbTvskc+3Ft/53+SNq69n/HAPI9H3b0Ezuy0t0F9CW07+Fdmqpkcnb9r0YiEKrBuwnJn6XSvT1PuAng4vIxEE1Qi29sHMFKnLdEU+9zQ=
+	t=1778861762; cv=none; b=TfKHUm5OWc9eTnjM3pV4+2cISLRbjzEnF5qLyIMnwDIueEx+8qWMgCj7Q1PAqS8ahfUXhHpc7eSsJ8UVNWUjNyxo1wPKtwl7QiKnlaSu6OB4uU+N+J/b5YjY2lcogx+06b+wnOru+ESnYwwvkUoyUc6AUr0k92+3WzH/zNZcpSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862619; c=relaxed/simple;
-	bh=8IB3d82gOp3/ivAZiAWp9PnRI3/JnvrTQA70YiLS+nA=;
+	s=arc-20240116; t=1778861762; c=relaxed/simple;
+	bh=TJyDG1OIWqifD9naWXdvyQjlJw5vaLqv41YEctncu8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ip0GPmdt20VPbBKn7MCeJpLfbKjH07kL2VuKQZhL6o7GBAtcd9AXIiZ3Rk/Qsa2MCAvsULKlanWbokVg0uTOALfXx5gOeLcp2rGQO3g68AA26+Yf1CpVp+bVnJL2FFAwUhtvXpZgKwmjvA99vyMEpZkICriZctKecyaIySyOnyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZNQ0rxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36994C2BCB3;
-	Fri, 15 May 2026 16:30:19 +0000 (UTC)
+	 MIME-Version; b=bBc+OKtsWSPP27LprCtvwKPxkRJkGEStw4bThVUDDU2npMW2aF/yKdy/L50+smPe98hlseDMLvJm1bmlABBTxKd1mOcR0n9rbkcuFz4avur5kN8JbYa/18Vj5Jop0fdNg3v7HtB5A/OqTpmIh6RkC0gXCpV07ZRGt7AbK5hXV8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U85NrnEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18746C2BCB0;
+	Fri, 15 May 2026 16:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862619;
-	bh=8IB3d82gOp3/ivAZiAWp9PnRI3/JnvrTQA70YiLS+nA=;
+	s=korg; t=1778861762;
+	bh=TJyDG1OIWqifD9naWXdvyQjlJw5vaLqv41YEctncu8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZNQ0rxAz67Cs+Ik9bBYviftM6aV0HACQha3S+692XtZYOrppHxgI9gQK2G9OXTqY
-	 rSRjDHCEoJRxAyAYQsxAvJew5rXfv6JUgqF1h54PUv8XFqNDZtbpi4jjYDe2nSXJOm
-	 K5XxyNkNgGTkjIdk6FGpYDKgoSLl3LGr2+iIrA7I=
+	b=U85NrnEQqGn9XU/ZEIU3a1m5FqkdP0BvqxxXh/1imEAnW+C+jaFZFJellrFWVo6IG
+	 laqc1fES31ez+4EKiAuH4SUfBqjM4o4J33P10ZcD1R4tHTjOisL8VPggZPvu4tksw/
+	 jHHoybgrrElulIrjj61kJ8Bse/qBvVy40EeZ2B6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 117/201] spi: cadence-quadspi: fix controller deregistration
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 426/474] spi: sun4i: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:55 +0200
-Message-ID: <20260515154701.090409722@linuxfoundation.org>
+Message-ID: <20260515154724.284735871@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5F7C455562B
+X-Rspamd-Queue-Id: A06065540AC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -75,67 +76,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248449-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248783-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 964ee9793760e825b5c011741b4e3cfe06c87efc upstream.
+[ Upstream commit 42108a2f03e0fdeabe9d02d085bdb058baa1189f ]
 
-Make sure to deregister the controller before dropping the reference
-count that allows new operations to start to allow SPI drivers to do I/O
-during deregistration.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Fixes: 7446284023e8 ("spi: cadence-quadspi: Implement refcount to handle unbind during busy")
-Cc: stable@vger.kernel.org	# 6.17
-Cc: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Fixes: b5f6517948cc ("spi: sunxi: Add Allwinner A10 SPI controller driver")
+Cc: stable@vger.kernel.org	# 3.15
+Cc: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-3-johan@kernel.org
+Link: https://patch.msgid.link/20260410081757.503099-19-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-sun4i.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -2020,13 +2020,13 @@ static void cqspi_remove(struct platform
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -503,7 +503,7 @@ static int sun4i_spi_probe(struct platfo
+ 	pm_runtime_enable(&pdev->dev);
+ 	pm_runtime_idle(&pdev->dev);
  
- 	ddata = of_device_get_match_data(dev);
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "cannot register SPI host\n");
+ 		goto err_pm_disable;
+@@ -521,7 +521,15 @@ err_free_host:
  
-+	spi_unregister_controller(cqspi->host);
+ static void sun4i_spi_remove(struct platform_device *pdev)
+ {
++	struct spi_controller *host = platform_get_drvdata(pdev);
 +
- 	refcount_set(&cqspi->refcount, 0);
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	pm_runtime_force_suspend(&pdev->dev);
++
++	spi_controller_put(host);
+ }
  
- 	if (!refcount_dec_and_test(&cqspi->inflight_ops))
- 		cqspi_wait_idle(cqspi);
- 
--	spi_unregister_controller(cqspi->host);
--
- 	if (cqspi->rx_chan)
- 		dma_release_channel(cqspi->rx_chan);
- 
+ static const struct of_device_id sun4i_spi_match[] = {
 
 
 
