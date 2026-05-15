@@ -1,83 +1,101 @@
-Return-Path: <stable+bounces-247777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ITXCMkiB2rasAIAu9opvQ
-	(envelope-from <stable+bounces-247777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:42:33 +0200
+	id wA6wEoIlB2oEsQIAu9opvQ
+	(envelope-from <stable+bounces-247778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A830550A28
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:42:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB9F550D0B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D30E30D9762
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:33:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53E20300615C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F136A3C276B;
-	Fri, 15 May 2026 13:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8784044104A;
+	Fri, 15 May 2026 13:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dKYXsXr8"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OY+P4zWJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010069.outbound.protection.outlook.com [52.101.201.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226633A451F
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 13:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778851964; cv=none; b=cg+8nkclzLEepv5LOPSWPIzZGPZ7F5EfBklw8hp8Yzg0a/3vYDSd2prVFp3H/iAoX82MgWiofc7SwXHhbaNi54L1qMyXQpTo6vekAVPYQxpF0stlMCP99te2llRQdJ6SoPLktTNsa9yihi6eH0ql+FLF5pTqoBZj5GZlrD3pGV0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778851964; c=relaxed/simple;
-	bh=ou1StnidYf6G/yTiPb1Jyr10n23l4lsfoChEA55hU/0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ecRs0SxUwaGNA9luJbZgHgbsaphOZBXw3TUeKxeERPNMCPV4iKWBqyGVwIpRG3WSwiMiUPFebo2HVuh7KMakWS6EZ1MxtejZkrw5bX/TaBXioGRbAR1qpcEyLWKkRR7QEY2Ze9RsIVW5Sanbg2N7pk8R2q4SkBnzegqpvB/aVQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dKYXsXr8; arc=none smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2c156c4a9efso12728163eec.1
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 06:32:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778851961; x=1779456761; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=d8duf5TvyhmY/rcIc+GeiPIXbLWq3N+o607ETTSlKvE=;
-        b=dKYXsXr8ONhvtSB5m1MRU4zqzaLNRlPYwxl5ZpKPZPtfkOhbX7ki+vFrqxb+0arIl0
-         zG9OZN7EA88SuiHkilwq7e0M6FH+14e2Xvy3FBesU/JPl5cRmjFbfvADc9mMkL91jAuf
-         zQHXjqA5iS4z3rRB6LZ0cLXPp6yrw/55xuarkgs/sKED16D+d5GM9unRDi9Uv4KrTZUL
-         NKCrG2hEIJCJwtYwq6NZtaeksZ2MItLOLucY8BM/GNlehgFefqxjHJVVlTn0i9hbAliR
-         /XC0tvJreCQYxd0OdUx4lQXDtRDH2TvfTFLJkZBzbqd4stkQZh04c7CBlEEDZlCY4rV9
-         nWrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778851961; x=1779456761;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d8duf5TvyhmY/rcIc+GeiPIXbLWq3N+o607ETTSlKvE=;
-        b=P0VuyJIfLJYRZqFLOv9ECMp2BAzxwgMSS1IYXo4yngdlzpEsD2sNWrIKys4/gmVG0E
-         GFeLUiOBwHTL/A9EDuzD1VYbQE4GvZo367V94NfMM7HzJ+t05hh8mXNFOXVthzr6Woxu
-         WVnMLP3PhdYvo9efPqZ29QehznChZoXK4ZRzdKjiKnqySjoKYcv6udz0QH1hAm7oDLc5
-         g5HKeh42KFe7abfVNHgA1JkaAlwpdbSwJyrsZZdswjcHfaQ94x+oNFB6tksmaNLzpPWi
-         kqrokNNAeQqa7xypBZ9JKTJSoSTlNINFyxobCYk2WY4iVJiImYyPHZNJPpzKpisIYEWS
-         dzTQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8ch31ptV4lV9yx00Im15R4K5u1FvLjBO1U8VKtq9MrHqwOZqE4wZu6S8JNvhvULBB4Hm1Nn4Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUIAIVyHsyrQV/8h0H6MdUzSQotjbKOPNKZ0I4uLXU3SuaUf2M
-	FenukTB4vvVyrVNL5ZfUBiaIfDnGW6snEZ85hb8oPSGySwA6AOL86qMp
-X-Gm-Gg: Acq92OFxfM+TlAIqocBNhnXrHPU/y0Kl/kKtr6eFom5WqXRdd30wuCnd/S/hYnIfJlB
-	OhQGfv1hptRU1M/zZz/7tx2NiJw54hOfBwCBQu7WhHVGzOMr+5nfg1KQ+RTsr6vSsdDRbfgRv8U
-	yOc3IFn1GABGdcSAeFmtwjPYTEiqj/KXqFiREYGJOSWuxZQk9uwUh8rBNYtl1YevsEtbbzoe5N9
-	8+u+y9zlhmhz6pxhzDSrHzGKzsV3ETrdERjN3H1+CnlWSqQpOPgMiMxSNKPimteWQq3p7B4wJq2
-	P0feOZh1ytnZlacwaFU0dXub8sHAPTqZdHTUiLZnThKIaZPi9wAF+ZYNEyapNzmgfPvjrKu0VBW
-	yqljOlw30a6HkxD6TXJxRG/f13a3tk6zlRQmiDrPTjuS4DQaEzt6vQe0GJ/qmkq5OZPUEo7OZtH
-	Yk6QgT3+kUuFI+WM2UqSK5pumtNf0PiIfmZ2QDfJfyoJNxmEuAJg4227xH6c7qkHBMI87TtTFPG
-	VFMpIREMxpqitbqmo9aljo=
-X-Received: by 2002:a05:7300:641b:b0:2d9:6373:ad24 with SMTP id 5a478bee46e88-30398652478mr1931599eec.26.1778851960947;
-        Fri, 15 May 2026 06:32:40 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302973bcd0csm7114643eec.24.2026.05.15.06.32.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 06:32:40 -0700 (PDT)
-From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Fri, 15 May 2026 10:32:25 -0300
-Subject: [PATCH RESEND] ALSA: virtio: Add missing 384 kHz PCM rate mapping
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8C52D3A69;
+	Fri, 15 May 2026 13:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778852900; cv=fail; b=H5YAlGltUTHMZG8Ecy9dFOZQv9+zmGEBZg4gdaaRlsVMxgvSRDcMgpvVyNbua5P5RsFQmSUiQvto9uDFvycJA76gZluhnfM/hi7kbiWkZVg2eQA2zrmyLRPm+PnRb94PVJ7eRfgcHeJnQJ6h2gZWfGceQg3RI36b7K552FR7RSs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778852900; c=relaxed/simple;
+	bh=YcQPRBsnodOw/kdGMQemYW1d3XKLylVUoCruKqvuhN0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VOZgmQLoNr4YnUjjUtiH4e6V5IVHecq+meCwDDfX5Z7nOGYSgUE4eoP1Fntxy/MRPH25JBw/7f0OgPM8wCZdSnjvCxtHJJ1GR7Y3jBH88qYWh6umTQS/6H33WYlQ+eU8nJk/oBpFjBjgGN2XgmPG8Eaunx73ARK/BYHriI48rq8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OY+P4zWJ; arc=fail smtp.client-ip=52.101.201.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Zuanh5bwopTcN0eB6eh5AKje0jOlR9CcwkS0/inUOnqjbjsJKpxTkqQEgPIUgyqnyKPASWSePNJd4IIuqh03dFDRBC+XM5BAwD6ytomzzEnhsx9aDAlK4LjK7IZUf3SZ0gUiHNmjTtZ+rfO+L4fEjCI0lfuMwvoWZyLoA1wUZzcR6M5uu4zVypmK9o/ImKgz5J87wsqsBoL6MHRLX9mJXvzJUYrdXiCAUJqHwZyCnPdHGLuRaTKMsd3NH2v2z/x7mY2YaaRx8ceaU2Hk5cBJwmtam6G1qqP8DK44kyfTJdg1LhVC9LasWnAR1bGId4ACTZup2jwOV9RHIz3UE5REEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=boouljTFgfnq1oLM8iKohy2+cB/PolWDy0lkbdhAh7A=;
+ b=ZwGibVM0eyb3l4IaAlwwIzuG5CLorsTmAV0KSP/99Oqp4JpFCQUo3Dx/ldvWSxDdCiuMglwy529DMayCo1bms0I2gRgQkgRiIwIVb55YO12owqf3jmL4E1+8KqzaYBsrXru3fYBCrcreef50myJ3nus/+bbW5Ok58ESLVQd4VjTop56GVXgXJtq9p6fGKh3HULIVgshlfvbGiC1RNY6n6NE+PR3mE4kixULdi9q5+HWQo4l8JGORy20nceOXsL5Us9Ug9UI91NudWkgkDyWNw5EFznqaPWU9x1ImTA5YYAMXvEsbbkuXPolvWCTEJMYBJOPi6wSd/6tuRiCxatqOZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=boouljTFgfnq1oLM8iKohy2+cB/PolWDy0lkbdhAh7A=;
+ b=OY+P4zWJtf8iwNx7YUaiaZQMQpDyCQoSy8Qc5NMeN5aCktnFxeNgddXUqH3bP/vzdMX9KQOjJnoniLFN+WJwcNMP3FZ7BLoB0wGHks2tuyuT1cb644XEX47/UgGbSBA4eiEhdXr7cXqB/BzkO3aaTR7a7Hg8wj+S6vy1hjweLKM=
+Received: from DS7PR05CA0102.namprd05.prod.outlook.com (2603:10b6:8:56::22) by
+ SJ5PPFD9B14F409.namprd10.prod.outlook.com (2603:10b6:a0f:fc02::7d4) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Fri, 15 May
+ 2026 13:48:12 +0000
+Received: from CY4PEPF0000EDD2.namprd03.prod.outlook.com
+ (2603:10b6:8:56:cafe::ac) by DS7PR05CA0102.outlook.office365.com
+ (2603:10b6:8:56::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.48.9 via Frontend Transport; Fri, 15
+ May 2026 13:48:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ CY4PEPF0000EDD2.mail.protection.outlook.com (10.167.241.198) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Fri, 15 May 2026 13:48:09 +0000
+Received: from DFLE201.ent.ti.com (10.64.6.59) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 15 May
+ 2026 08:48:09 -0500
+Received: from DFLE202.ent.ti.com (10.64.6.60) by DFLE201.ent.ti.com
+ (10.64.6.59) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 15 May
+ 2026 08:48:09 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE202.ent.ti.com
+ (10.64.6.60) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
+ Transport; Fri, 15 May 2026 08:48:09 -0500
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 64FDm9Bk350374;
+	Fri, 15 May 2026 08:48:09 -0500
+From: Nishanth Menon <nm@ti.com>
+To: <ssantosh@kernel.org>, <gehariprasath@ti.com>, Siddharth Vadapalli
+	<s-vadapalli@ti.com>
+CC: Nishanth Menon <nm@ti.com>, <stable@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<srk@ti.com>
+Subject: Re: [PATCH v2] soc: ti: k3-ringacc: Fix access mode for k3_ringacc_ring_pop_tail_io/proxy
+Date: Fri, 15 May 2026 08:48:05 -0500
+Message-ID: <177885279926.149261.9133136693378554303.b4-ty@b4>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20260501124129.362192-1-s-vadapalli@ti.com>
+References: <20260501124129.362192-1-s-vadapalli@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,112 +104,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260515-alsa-virtio-384k-rate-v1-1-35ecb5df835c@gmail.com>
-To: Takashi Iwai <tiwai@suse.com>, 
- Anton Yakovlev <anton.yakovlev@opensynergy.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jaroslav Kysela <perex@perex.cz>
-Cc: virtualization@lists.linux.dev, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2404;
- i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=ou1StnidYf6G/yTiPb1Jyr10n23l4lsfoChEA55hU/0=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDFnsCqWHmmc4HlFaGTmvdaXOz8pl2o75E6fGT7wy++jn/
- 1OjcpP7OkpZGMS4GGTFFFlWJy2y3NP14Gp93AoPmDmsTCBDGLg4BWAiDzYy/E+0yGg8uf9H4MPr
- 4td580LOLazidggyb0zJYXboqzi4r4iR4dSBSPd5N084vVKzFFDNeHwmQZ3/w/L524xf5c5lX+H
- /mQsA
-X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
- fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
-X-Rspamd-Queue-Id: 7A830550A28
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD2:EE_|SJ5PPFD9B14F409:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c5b0fec-dd88-4fd8-b59b-08deb28899db
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|376014|82310400026|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	M4vIKN77Cja64SMVT1JsSUs5pCZuOpt9twhBIRaznPh9oKB42EAkoNVitkV7mAaQIi74AsJDHcenH11eEZyQf6ixTanSqVzg/5yO7w4iPFzXn9k9PdPOoa/WstpZS/UAcVBvzcGzGt3hh4Bsrfd0QLhjPkqZSYnFxjrOoY5JgJHuXra5H3ySKSz42tJ+ucBH6FWM0HW0N5dPEeJyQ+HWSH/8J+79YAwoYWRHILMEQBtOVDNHJpJvJTh337ahOES0qMhA2UCXLEaU0Dz4LeSddng2ALkD4wTGodXchIIdcFDd7kwV6ekGpGm2RBCSW1+QcO7sMhed2da04tvWpt+TK6zodjnMTX8iiWy+4xflwwY/+JmUjR10AYweH7rHgEWEWHEzOEv7lgE5cBmUapOiT53CDoUxuXPh131K2vmwNyFFJ6av+4iy6Oai7x/WBSXKiQHfTjO/1qGaubK0Ko7fyepC6ZvFoSAa6+zKmmbPCFsrzuhl1q3/QWuK/SZ4lmocUgu2Ro9ioApcua+6lVkngwvXHerNuA0QQoER2Hn4rDj3YWVBTuMDyI0vUyamWmRbeo51PMc20d0z7HydyVfFErIskdPK3QQCU5zNGoeJlPEJeh7CDpgI2fetppyPOq0PwmZSc7d95PV8txzrrQVpmh94UXI8ZA32vcXUD4aNwSgHV0Beu/f9YxCy3l+9nu/3nkkyOem+sfSzaPag/ljcERKphZb4g94YnHvBmBxXuro=
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(82310400026)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ztTNNVX7ZXASGu7MFboztD1YxgchIphMhX4xsdbDxdxI9p6Bu3AuRQJSpxQiQIXGSBuFTJ0lVX3nUsA4CXP0NGxShayIiHRlMxAqCFibTG8tX6qPV1sC79SgDQfooI8DJZShGEoU+cPH9IMLnHR73kUapTSw+ZW3/xGxWoaNXpbfoFMu5jXejqQk0gKpa0r6oBDp56BhMwcYodPDzBMQZtWepcIbQsddML3shTvPUt36qlX4Uo0URss30qwdE6V7vM4Jf4W2uXojZqdy1YkvSOGDilN7TTZGXmGnT4+EKcxD5vk9+yMmdN4BckpPgiSyba04oJ7jmolGA29xo+zqhECZGmWwdY8zsOC25pSPH7FgLFJSq1Cab/NQVsLTR2+Mltpk+hKFpNQdk2TTp+ZuFi2hN4CJtgq9AevU+Y0pg0oOdQt98otCbpl8GThb/tW6
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 13:48:09.8998
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c5b0fec-dd88-4fd8-b59b-08deb28899db
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EDD2.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFD9B14F409
+X-Rspamd-Queue-Id: DCB9F550D0B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ti.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[ti.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-247777-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247778-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:url,ti.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[nm@ti.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ti.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Action: no action
 
-The VirtIO sound UAPI defines VIRTIO_SND_PCM_RATE_384000, and ALSA
-has SNDRV_PCM_RATE_384000. However, virtio-snd's rate conversion
-tables stop at 192 kHz.
+Hi Siddharth Vadapalli,
 
-A device advertising only 384 kHz is rejected as having no supported
-PCM frame rates. A device advertising 384 kHz together with lower rates
-does not expose 384 kHz through the ALSA hardware constraints. The
-selected ALSA rate also needs a reverse mapping for SET_PARAMS.
+On Fri, 01 May 2026 18:10:54 +0530, Siddharth Vadapalli wrote:
+> k3_ringacc_ring_pop_tail_io() and k3_ringacc_ring_pop_tail_proxy()
+> incorrectly use K3_RINGACC_ACCESS_MODE_POP_HEAD instead of
+> K3_RINGACC_ACCESS_MODE_POP_TAIL. This will result in ring elements being
+> popped in the reverse order of that which the caller expects. Fix this.
 
-Add the missing 384 kHz entries to both conversion tables.
+I have applied the following to branch ti-drivers-soc-next on [1].
 
-Fixes: 29b96bf50ba9 ("ALSA: virtio: build PCM devices and substream hardware descriptors")
-Fixes: da76e9f3e43a ("ALSA: virtio: PCM substream operators")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
----
- sound/virtio/virtio_pcm.c     | 3 ++-
- sound/virtio/virtio_pcm_ops.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+I am queuing this up for the next window as things seem functional at
+this point as well and was a bug that was present for a long time, so
+I dont see this introduced in the current window.
 
-diff --git a/sound/virtio/virtio_pcm.c b/sound/virtio/virtio_pcm.c
-index eb9cc8131905..be3893de40a5 100644
---- a/sound/virtio/virtio_pcm.c
-+++ b/sound/virtio/virtio_pcm.c
-@@ -77,7 +77,8 @@ static const struct virtsnd_v2a_rate g_v2a_rate_map[] = {
- 	[VIRTIO_SND_PCM_RATE_88200] = { SNDRV_PCM_RATE_88200, 88200 },
- 	[VIRTIO_SND_PCM_RATE_96000] = { SNDRV_PCM_RATE_96000, 96000 },
- 	[VIRTIO_SND_PCM_RATE_176400] = { SNDRV_PCM_RATE_176400, 176400 },
--	[VIRTIO_SND_PCM_RATE_192000] = { SNDRV_PCM_RATE_192000, 192000 }
-+	[VIRTIO_SND_PCM_RATE_192000] = { SNDRV_PCM_RATE_192000, 192000 },
-+	[VIRTIO_SND_PCM_RATE_384000] = { SNDRV_PCM_RATE_384000, 384000 }
- };
- 
- /**
-diff --git a/sound/virtio/virtio_pcm_ops.c b/sound/virtio/virtio_pcm_ops.c
-index 6297a9c61e70..1105e7ff3523 100644
---- a/sound/virtio/virtio_pcm_ops.c
-+++ b/sound/virtio/virtio_pcm_ops.c
-@@ -90,7 +90,8 @@ static const struct virtsnd_a2v_rate g_a2v_rate_map[] = {
- 	{ 88200, VIRTIO_SND_PCM_RATE_88200 },
- 	{ 96000, VIRTIO_SND_PCM_RATE_96000 },
- 	{ 176400, VIRTIO_SND_PCM_RATE_176400 },
--	{ 192000, VIRTIO_SND_PCM_RATE_192000 }
-+	{ 192000, VIRTIO_SND_PCM_RATE_192000 },
-+	{ 384000, VIRTIO_SND_PCM_RATE_384000 }
- };
- 
- static int virtsnd_pcm_sync_stop(struct snd_pcm_substream *substream);
+Thank you!
 
----
-base-commit: fac9a31701803e4e41fdb7b5c71582c65cf47176
-change-id: 20260422-alsa-virtio-384k-rate-723fe9772fa6
+[1/1] soc: ti: k3-ringacc: Fix access mode for k3_ringacc_ring_pop_tail_io/proxy
+      commit: b920352cfd2b0fcd1249ff006618c939b64fc8f7
 
-Best regards,
---
-Cássio Gabriel <cassiogabrielcontato@gmail.com>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
 -- 
-Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+https://ti.com/opensource
 
 
