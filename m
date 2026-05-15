@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-247916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FNsA01EB2oCvAIAu9opvQ
-	(envelope-from <stable+bounces-247916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:33 +0200
+	id IO+yCzRXB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2F2552A88
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7203555021
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5335C30411AA
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D4C91336CF2B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE4D37472A;
-	Fri, 15 May 2026 15:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556B83E0098;
+	Fri, 15 May 2026 16:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR+1atYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3zIhfJu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4C430566D;
-	Fri, 15 May 2026 15:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171AB3E008C;
+	Fri, 15 May 2026 16:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860402; cv=none; b=MaeIzhfwnhsDeAT3wY7BxidCOV1mReNoPHB+xRKIr1uszMpuxI6d+shcpBacKRW+rhVbBZSwMORYjtkNqjwyXdE5l1mbWo66nYktVa2eLwJ8Anf1NsanwSSVISWG/KNnYSRXLj3M23L/LUP2N479LAsgNpJAaMhpm9QX9xBAJps=
+	t=1778862041; cv=none; b=kSMGxFYaTTQAE7As+ztKPYrQCZ9QRppDomcMAV9nNrPZo78Kp5vPlrMAJYvqUSQz7cYYYyTtwz6rdy3JkHuNZV6TM8D8EukA1AKDWuALnZSi+UO9nDXtAyFCe7YqViljHJ8DD2P0TiloEt4s+9/g6vEheU4Wr46U0EERGQjmKSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860402; c=relaxed/simple;
-	bh=eg3sz2mFz3VLYDV/0v3CpMJRccQ1QgJoT928kQZutNE=;
+	s=arc-20240116; t=1778862041; c=relaxed/simple;
+	bh=qmzqlGhieR9x5smg1Azc5gq6RVHrVVbbipaeEwRzBco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=McVtctdmNEYwYVxBm9riv8AFKaneNf4IUrXMjxwbeswZcjyFjoQWYL7WeTOGkqmB7EByfsdl1kHy54wZU5eYJOUdhl56LdLbFfn53roGvig9X1d33Wj9O/iUTGCHQ5cmYrGFJ5Vtl0VcZkUnCZClAJdlIwg7ssGPDug0YOhkZuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR+1atYJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CDBC2BCB3;
-	Fri, 15 May 2026 15:53:21 +0000 (UTC)
+	 MIME-Version; b=ebpcX8bEsuuHveHYMhK41PvDEPJV708nZ87l4rwJV6U9uUj5SvvYtCfrl3VBOnRw0IycIaCPjHug0tJp1Lt4++Neirb/6uOgSWjJYD62yQ2W4powTpfqZrEz991mpB+qzzaXNLDqCCbUk/WC+FI94q9WwOPPjTdO+MYcYch799M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3zIhfJu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35F7C2BCB0;
+	Fri, 15 May 2026 16:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860402;
-	bh=eg3sz2mFz3VLYDV/0v3CpMJRccQ1QgJoT928kQZutNE=;
+	s=korg; t=1778862041;
+	bh=qmzqlGhieR9x5smg1Azc5gq6RVHrVVbbipaeEwRzBco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fR+1atYJZiVNcbK3P1K2GWpE/S3AF0UKJ/CI5CJD9aSKr9+VC1r1H9bexRNZD6Gg8
-	 f9Wm/9Gy0AYHZtLk85fmbH8POO2xPoyvqdSo30LJzkzWxt1GCcaQ6O1zE8VfToe2PP
-	 gxBEmOzNCX9T0cg/Fkold8CKygz6nl8fM2yeeBts=
+	b=J3zIhfJuUmOBKsx3TkVxk98eR6FyX+yLnuhyhkOGYurMFsYdOApX0bkugQIXqnQfa
+	 EGa4ICoMlKH8mcB5OcUKs/fCkSsUH1tl2jEzDu07VRsMNpVsogvHbqwDW6+i8oV11D
+	 dCxkCl24yzyRNoiCytrDT9FV1h1kS6cKjsGbWHVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 076/144] drm/amdgpu/vcn3: Prevent OOB reads when parsing dec msg
+	Conor Dooley <conor.dooley@microchip.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 085/188] spi: mpfs: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:22 +0200
-Message-ID: <20260515154655.294146721@linuxfoundation.org>
+Message-ID: <20260515154659.168847929@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0F2F2552A88
+X-Rspamd-Queue-Id: B7203555021
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247916-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248559-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,microchip.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Cheng <benjamin.cheng@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit b193019860d61e92da395eae2011f2f6716b182f upstream.
+commit 573c7db8fce91a1b07dd64a260bb44b9e6d05943 upstream.
 
-Check bounds against the end of the BO whenever we access the msg.
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind.
 
-Signed-off-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20260409120419.388546-21-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/spi/spi-mpfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-@@ -1843,7 +1843,7 @@ static int vcn_v3_0_dec_msg(struct amdgp
- {
- 	struct ttm_operation_ctx ctx = { false, false };
- 	struct amdgpu_bo_va_mapping *map;
--	uint32_t *msg, num_buffers;
-+	uint32_t *msg, num_buffers, len_dw;
- 	struct amdgpu_bo *bo;
- 	uint64_t start, end;
- 	unsigned int i;
-@@ -1864,6 +1864,11 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 		return -EINVAL;
- 	}
+--- a/drivers/spi/spi-mpfs.c
++++ b/drivers/spi/spi-mpfs.c
+@@ -575,7 +575,7 @@ static int mpfs_spi_probe(struct platfor
  
-+	if (end - addr < 16) {
-+		DRM_ERROR("VCN messages must be at least 4 DWORDs!\n");
-+		return -EINVAL;
-+	}
+ 	mpfs_spi_init(host, spi);
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		mpfs_spi_disable_ints(spi);
+ 		mpfs_spi_disable(spi);
+@@ -593,6 +593,8 @@ static void mpfs_spi_remove(struct platf
+ 	struct spi_controller *host  = platform_get_drvdata(pdev);
+ 	struct mpfs_spi *spi = spi_controller_get_devdata(host);
+ 
++	spi_unregister_controller(host);
 +
- 	bo->flags |= AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
- 	amdgpu_bo_placement_from_domain(bo, bo->allowed_domains);
- 	r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
-@@ -1880,8 +1885,8 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 
- 	msg = ptr + addr - start;
- 
--	/* Check length */
- 	if (msg[1] > end - addr) {
-+		DRM_ERROR("VCN message header does not fit in BO!\n");
- 		r = -EINVAL;
- 		goto out;
- 	}
-@@ -1889,7 +1894,16 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 	if (msg[3] != RDECODE_MSG_CREATE)
- 		goto out;
- 
-+	len_dw = msg[1] / 4;
- 	num_buffers = msg[2];
-+
-+	/* Verify that all indices fit within the claimed length. Each index is 4 DWORDs */
-+	if (num_buffers > len_dw || 6 + num_buffers * 4 > len_dw) {
-+		DRM_ERROR("VCN message has too many buffers!\n");
-+		r = -EINVAL;
-+		goto out;
-+	}
-+
- 	for (i = 0, msg = &msg[6]; i < num_buffers; ++i, msg += 4) {
- 		uint32_t offset, size, *create;
- 
-@@ -1899,14 +1913,15 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 		offset = msg[1];
- 		size = msg[2];
- 
--		if (offset + size > end) {
-+		if (size < 4 || offset + size > end - addr) {
-+			DRM_ERROR("VCN message buffer exceeds BO bounds!\n");
- 			r = -EINVAL;
- 			goto out;
- 		}
- 
- 		create = ptr + addr + offset - start;
- 
--		/* H246, HEVC and VP9 can run on any instance */
-+		/* H264, HEVC and VP9 can run on any instance */
- 		if (create[0] == 0x7 || create[0] == 0x10 || create[0] == 0x11)
- 			continue;
- 
+ 	mpfs_spi_disable_ints(spi);
+ 	mpfs_spi_disable(spi);
+ }
 
 
 
