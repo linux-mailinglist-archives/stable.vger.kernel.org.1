@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-248840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIXMOq9aB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248840-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:41:03 +0200
+	id IFBFLBRSB2qnyQIAu9opvQ
+	(envelope-from <stable+bounces-248647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:04:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60ED65556A5
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:41:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CEE554636
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5AD132F0CED
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E13A735966A0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D930231E845;
-	Fri, 15 May 2026 16:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38503F9274;
+	Fri, 15 May 2026 16:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AI6Apc27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLrx0/sO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2F93FF1A2;
-	Fri, 15 May 2026 16:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B55D3BB12D;
+	Fri, 15 May 2026 16:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862762; cv=none; b=nc+t/NAL142TVvl8OeDPagQTAdhA3ujut9WjIeJfpmpB5QJ0w/CBzQITmDenF7rJze6sEmuMNg1ilT3WAhFcY8vmzwBp3uc3D2XqprMt8MkJbmn/ZXhAQxoSth+eZ/xW9puOF7948hiqgKcqWmp/oG2tgiVMp1GtQ5CYZwDYffc=
+	t=1778862269; cv=none; b=lkY7qs325Gc3ev51jry589uxlIhzEay+T1aqju3uWcyQEc+mqK+Hy8YunwAholQxYJaFHxP8knF0dobx7PXAH/OjJIRD+ddTUeomS+MpePGWK7kHNrtFPdejchqiDq2zpa9wZNYx5YHsRQAApp4gioPVDivrvdk493ZGOw9OA20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862762; c=relaxed/simple;
-	bh=fW3ZlVDnvXJIH7HGyqToQrj1gpfZMntFoOkn9CxJcfI=;
+	s=arc-20240116; t=1778862269; c=relaxed/simple;
+	bh=hgU5DjiTTjVF21hirbAIj9Vjn02LEOFXWqXYge7sQhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oE4htIGGURlWZA1MJpEKoyJZY8XHM/1W40JhLq67GWjw6zc9n+GFaGVtZzoc2+JlXj+1oz+IMCe4TSY1wf9YVNTHFUM9/B0fOFY+HR6RNzL9llioS23Jbf8/B7LgvTCai2fDeLHmAaWSGMjWygAZxNnQlV49DZCcmREoBTByBzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AI6Apc27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F53C2BCB0;
-	Fri, 15 May 2026 16:32:42 +0000 (UTC)
+	 MIME-Version; b=k39tYaFzdVgWDzm8aefeftMYDZ+a5VUAyKPZqX4uBznlvEAb4uZOgOxDW25m6bntYApEx9QrTUCHdKP+6/tPNRfE/zrV5nwI1KxFz6XJ4Y/GEmzB1p5hPT7hSuMO3XFOCjI5H2Pi+JY3yfMnP2wql0/Klb+teeZz7LOIlIRG3Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLrx0/sO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E8AC2BCC7;
+	Fri, 15 May 2026 16:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862762;
-	bh=fW3ZlVDnvXJIH7HGyqToQrj1gpfZMntFoOkn9CxJcfI=;
+	s=korg; t=1778862269;
+	bh=hgU5DjiTTjVF21hirbAIj9Vjn02LEOFXWqXYge7sQhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AI6Apc27e9+h9CLo0ToBbQkPJbLhj9wGjqhef7HGbDV8M2T1aNRdbbqvebPNq7MSw
-	 IDYfuqGG9Wz49I63iLERkulV1C9Hmlc2uIAworx6nG6BIDrfMuOSZMr3pGyHgpKIsH
-	 0RXfDzYXHPQROAOjWtl/abVZj92nCl1vi/SUt+Tc=
+	b=XLrx0/sO2cONBJxYAFf0P0OlxHDP+jFne40CeEKB/MpMJPwDEjx92gS1pXBHBkXZe
+	 8kZSAnEzH09S8L/haesrquJ5rVL89rE852HFi7yCs0luFFMCkoeTB1XtiAe1yl/ejv
+	 FrTp7UXI3tfnxpquhOd+ZlncZUh7wkUKgoGCJjt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Franz Schnyder <franz.schnyder@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 7.0 171/201] arm64: dts: ti: k3-am69-aquila-dev: Fix DP regulator enable GPIO
-Date: Fri, 15 May 2026 17:49:49 +0200
-Message-ID: <20260515154702.276297831@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Pritam Manohar Sutar <pritam.sutar@samsung.com>,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 173/188] usb: dwc3: Move GUID programming after PHY initialization
+Date: Fri, 15 May 2026 17:49:50 +0200
+Message-ID: <20260515154701.091979850@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +66,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 60ED65556A5
+X-Rspamd-Queue-Id: 06CEE554636
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248647-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248840-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ti.com:email,toradex.com:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,synopsys.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Franz Schnyder <franz.schnyder@toradex.com>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-commit 222191225e69711089ecade3b98d79757d51e907 upstream.
+[ Upstream commit aad35f9c926ec220b0742af1ada45666ae667956 ]
 
-Correct the DP regulator enable GPIO to index 21.
-The 3.3V DP regulator was not being enabled by the assigned GPIO, as it
-is routed to GPIO index 21 and not 37, which was causing instability
-with displays connected over DP or via an active DP-to-HDMI adapter.
+The Linux Version Code is currently written to the GUID register before
+PHY initialization. Certain PHY implementations (such as Synopsys eUSB
+PHY performing link_sw_reset) clear the GUID register to its default
+value during initialization, causing the kernel version information to
+be lost.
 
-Fixes: 39ac6623b1d8 ("arm64: dts: ti: Add Aquila AM69 Support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://patch.msgid.link/20260202083604.325060-2-fra.schnyder@gmail.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Move the GUID register programming to occur after PHY initialization
+completes to ensure the Linux version information persists.
+
+Fixes: fa0ea13e9f1c ("usb: dwc3: core: write LINUX_VERSION_CODE to our GUID register")
+Cc: stable <stable@kernel.org>
+Reported-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20260417063314.2359-1-selvarasu.g@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am69-aquila-dev.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am69-aquila-dev.dts b/arch/arm64/boot/dts/ti/k3-am69-aquila-dev.dts
-index f48601ae38b7..d3677c2c2547 100644
---- a/arch/arm64/boot/dts/ti/k3-am69-aquila-dev.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am69-aquila-dev.dts
-@@ -33,7 +33,7 @@ reg_3v3_dp: regulator-3v3-dp {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_gpio_21_dp>;
- 		/* Aquila GPIO_21_DP (AQUILA B57) */
--		gpio = <&main_gpio0 37 GPIO_ACTIVE_HIGH>;
-+		gpio = <&main_gpio0 21 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-min-microvolt = <3300000>;
--- 
-2.54.0
-
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1339,12 +1339,6 @@ static int dwc3_core_init(struct dwc3 *d
+ 
+ 	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
+ 
+-	/*
+-	 * Write Linux Version Code to our GUID register so it's easy to figure
+-	 * out which kernel version a bug was found.
+-	 */
+-	dwc3_writel(dwc, DWC3_GUID, LINUX_VERSION_CODE);
+-
+ 	ret = dwc3_phy_setup(dwc);
+ 	if (ret)
+ 		return ret;
+@@ -1376,6 +1370,12 @@ static int dwc3_core_init(struct dwc3 *d
+ 	if (ret)
+ 		goto err_exit_phy;
+ 
++	/*
++	 * Write Linux Version Code to our GUID register so it's easy to figure
++	 * out which kernel version a bug was found.
++	 */
++	dwc3_writel(dwc, DWC3_GUID, LINUX_VERSION_CODE);
++
+ 	dwc3_core_setup_global_control(dwc);
+ 	dwc3_core_num_eps(dwc);
+ 
 
 
 
