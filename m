@@ -1,169 +1,209 @@
-Return-Path: <stable+bounces-247646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cETiIiz3BmpUpwIAu9opvQ
-	(envelope-from <stable+bounces-247646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:36:28 +0200
+	id 4DM2JEr4BmogqAIAu9opvQ
+	(envelope-from <stable+bounces-247647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:41:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF89754D74B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 035CE54D875
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A9008308489B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:20:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C5DA93176B4D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBCC3CB8F4;
-	Fri, 15 May 2026 10:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0141B3D25BD;
+	Fri, 15 May 2026 10:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b="fRHvirMn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="uqOZ2T2f"
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="p5w5J1px"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D22B329396
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 10:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA413CF04C;
+	Fri, 15 May 2026 10:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778840408; cv=none; b=FVaezyqda38mBDoCnmhtz7I1ecQ3c73wZQEARpHd7+HzMeZJN6I1GYvUrAWtpjHSnOsaswcUguhm1blwXSiNvDfB0ljHhmRMI50y37BG0cU80WgdCrGmPcoc/Jui/a7NwyKUPXbsmqX6l6UZ6jJJwmH+FbocT/7iEk2FSvAcaP0=
+	t=1778840620; cv=none; b=T4f4XPOCccqSv9VK4J/GcxWIyeBg6XEqevXbEfIqMmqDN4HuvDKlScxLX5b8k/pIRIq3RzLtaGv/smrAodg5vo8teSGyowoDOtJRPjf1JT5/jYleLFnFer6NMqDHQcfQjHquNeFqU2StTWOjo5mM9awWXlgtzjVxohr6sp39L8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778840408; c=relaxed/simple;
-	bh=OBSPvXaRrxrfrhsTs64tbVj8zcTZcTiu3rvbp295l6M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDhEDOVfvgMYA7VlI+x/mnzCourAFERF/z/bzJuO7X7s7NWn4HDhIxapMSpeTvxewyYGXOtg4uDntd+SgruRavnb3POz1cZfbkcVEYRW94F4Aw04jxXMejPguU9MjgATTbPCMrYACxgw3K9SBAYHGiwC0mLPC5RqwUek4QMJUoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz; spf=pass smtp.mailfrom=fourdim.xyz; dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b=fRHvirMn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=uqOZ2T2f; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fourdim.xyz
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id B7C3D1400138;
-	Fri, 15 May 2026 06:20:05 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 15 May 2026 06:20:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fourdim.xyz; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1778840405; x=
-	1778926805; bh=eUTO1sFEDceL9NhbMHZwWw3LJofuPGNfLgpavY59mn4=; b=f
-	RHvirMnQP6141sQ6ATLQaZ+AGA8Y7muPoc6RQdh1lsN90a1/fPR6D6wfqn0rQVyJ
-	bDRiNfdOSsLBleyWwLpYdd7o2Z5hNNaaiHMR04uK5JS11LGCZq55U1qgLL/J9Oy7
-	MknSo8FqMr8rjkYx+e5cIe6eyniiVGeTcWDJ7jIE6ajrBwmWOzE33EerYn7s4xtV
-	i4R20evFENk11eYo1Id/pdLJyBpaNWrl+4wq6yC1icB9V1ZmN/WXhQlVreftOGEX
-	7VqYxWdaM16/M/f7ojBtpqmKqCWeIGCevevoNzmUJkKgVHHMWwSXsBSeovovhEDh
-	r2YeNHWU7yuyQqP9wAVdA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1778840405; x=1778926805; bh=e
-	UTO1sFEDceL9NhbMHZwWw3LJofuPGNfLgpavY59mn4=; b=uqOZ2T2fy/ZnKKD7P
-	tiGvp2/rv6Qo6WtRfC+VMuCmXdRPVjv6xuxqpHKIhqcJ5IBvgYLOa+eRhZ6NtQJm
-	mtTYKlX41eCgMpYn2VrBqSYi5FQasRQ2jHiANlSqnJIbon9cPgHDJMkj7JW2ydcV
-	xHEutddob9PWXNIfBvtZLy0kBrtciMzY/KyYnyQ3Vd6BXxWbzgC+FpDlJcuL6qXk
-	Uq6+gTUGJraveyMDQhafRKnP0FPUwvxlF2WOBYYkmoRRG6bjcAUhmfCs4b3lAIWO
-	oSfLLpN2vvDhzDBZpV/wIZgx0v79AaKVr4UcRtUjRDcvs8Ee3ME0jUKH1rfLgvA7
-	2BXAA==
-X-ME-Sender: <xms:VfMGag_dBzzan7E1w8JdzHECAsSguhmSoGphf7ez0Y4lthoqO60oFg>
-    <xme:VfMGagKRmh3mvtYRWGU3lG_j286ZEzrO56gBtgWyk3n7UzvKXgonPULtdQDKtmomZ
-    CAKIeTi-cSADRHfgoQgIZ_VKSIjQzBNKd7SSNNlMXlbbfVuIEZfmA>
-X-ME-Received: <xmr:VfMGajaSbReZCCDIbaLNoWhMo2RySIXhRveoLEtwYo7t8HuVMLZyC_VCa4N-v-a6xB-7uak>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufedtudegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegfrh
-    hlucfvnfffucdljedtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddt
-    necuhfhrohhmpefuihifvghiucgkhhgrnhhguceoohhsshesfhhouhhrughimhdrgiihii
-    eqnecuggftrfgrthhtvghrnhepkedtleeiteevueetudevjeefheejueevffejteffvdeh
-    lefftdffleegleduvdfhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
-    hilhhfrhhomhepohhsshesfhhouhhrughimhdrgiihiidpnhgspghrtghpthhtohepfedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepohhsshesfhhouhhrughimhdrgiihiidprhgtphht
-    thhopehluhhiiidrvhhonhdruggvnhhtiiesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:VfMGaqJIlvFcWDCxNYOOSyJJEMIaitlrhTZtNZE1OBejImTM4nY60A>
-    <xmx:VfMGapD09739iENimdfLKLw0xwzR-MAvQRDLWMNfQjRcoiAGv8purg>
-    <xmx:VfMGanoCngeS_BS2IWE0ByqkF3-40D3dueOVggYj-tl-obywirl4ug>
-    <xmx:VfMGasizy7Yz-xH5N7aNNGPrF2-1nUahV8b-JjyEty5-1MjbPyhDBA>
-    <xmx:VfMGao54gKZbvjy8eA9u-Hql2O2OUnr6rucJs05y_crfxpfHDgLJ_QOv>
-Feedback-ID: if72e4b10:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 15 May 2026 06:20:04 -0400 (EDT)
-From: Siwei Zhang <oss@fourdim.xyz>
-To: stable@vger.kernel.org
-Cc: Siwei Zhang <oss@fourdim.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15.y] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_get_sndtimeo_cb()
-Date: Fri, 15 May 2026 06:20:19 -0400
-Message-ID: <20260515102024.3694989-1-oss@fourdim.xyz>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <2026051217-footing-cement-0817@gregkh>
-References: <2026051217-footing-cement-0817@gregkh>
+	s=arc-20240116; t=1778840620; c=relaxed/simple;
+	bh=9YL70ocQPapy8m9Vwt9xSZRBqRiLTDSfWdZHGMUCyOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AP5KI9HpQYuzZGDXa/4zFa4/A45z4G8IXGQIm2r4qxDpUjTihSYzcdZCml8UTb8sxu+hAwy8qpQTy5iruRUlAxnIlUw6d4NdJkOQ42Zo580YqG3Q//3cmU32FYJNN01OpaQdugkJpB7YZibn988v1CR4OnZEHzoye0q1ro1NnI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=p5w5J1px; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=ykRodeBhF0cXfcSqXz2szUw5McJKqpEFePe6cFI1Rto=; 
+	b=p5w5J1pxzXQ6m6chUdkvsFtXcPJ8hZUpF31FPKK3GAAjkl9mRHduEy8nCxpg7bgogLSX2Vo2HB7
+	RrlMV0MuzOdtbluF9f1Uf+YqHK/QHbAB3CKGzZpBq0cukWbTO3IpGOiLjiu8o+JYPYfZ+uDIpwG+4
+	ofiKKg/MHeM+WlwJVdkRVjDUNHBhYEmJhts2oI9KqlewTJXU/ZeC8aPd7TC4kQVKWTRmg/PWFREsV
+	DvsdT3VKrO6cpQFCDf3SutjDP0EXnPSk/bGTnyF2Aumvj8s6vK2KtmT3MVUrq3Kw3PJ+nSBZhKxpQ
+	O4UgphF8lsuMkfwQWG5402xx4VzH88bcTz0g==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1wNphS-00EOY0-39;
+	Fri, 15 May 2026 18:23:24 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 15 May 2026 18:23:22 +0800
+Date: Fri, 15 May 2026 18:23:22 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Paul Louvel <paul.louvel@bootlin.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Kim Phillips <kim.phillips@freescale.com>,
+	Christophe Leroy <chleroy@kernel.org>, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Herve Codina <herve.codina@bootlin.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 00/11] crypto: talitos - fix several issues in the
+ Freescale talitos crypto driver
+Message-ID: <agb0Gry9gqmYHPdn@gondor.apana.org.au>
+References: <20260507-bootlin_test-7-1-rc1_sec_bugfix-v3-0-c98d7589b942@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CF89754D74B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260507-bootlin_test-7-1-rc1_sec_bugfix-v3-0-c98d7589b942@bootlin.com>
+X-Rspamd-Queue-Id: 035CE54D875
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[fourdim.xyz,none];
+	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
+	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[fourdim.xyz:s=fm2,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247646-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[fourdim.xyz:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[oss@fourdim.xyz,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
+	TAGGED_FROM(0.00)[bounces-247647-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-commit 78a88d43dab8d23aeef934ed8ce34d40e6b3d613 upstream.
+On Thu, May 07, 2026 at 04:41:46PM +0200, Paul Louvel wrote:
+> This series fixes several issues in the Freescale talitos crypto driver.
+> 
+> Patch 1 fixes a missing dma_sync_single_for_cpu() before reading a
+> descriptor header.
+> 
+> Patches 2-5 add support for chaining an arbitrary number of descriptors
+> in the driver for the SEC1 hardware.
+> 
+> Patches 6-8 rework the SEC1 hash implementation to build descriptor
+> chains instead of submitting one descriptor at a time via a workqueue.
+> 
+> Patches 9-10 are cleanups: rename first_desc/last_desc to
+> first_request/last_request, and remove a useless wrapper function.
+> 
+> Patch 11 fixes the same ahash request size limitation on SEC2 (64k - 1
+> bytes), by splitting ahash_done() into SEC1 and SEC2 paths so that SEC2
+> iterates through descriptors sequentially.
+> 
+> Tested on an MPC885 SoC (SEC1 Lite), and on an MPC8321EMP SoC (SEC2)
+> with CRYPTO_SELFTESTS_FULL=y.
+> For the SEC1 Lite, some tests are failing due to a timeout waiting for
+> request completion. These failed tests existed prior to this series.
+> On SEC2, there is no failed tests.
+> 
+> Signed-off-by: Paul Louvel <paul.louvel@bootlin.com>
+> ---
+> Changes in v3:
+> - Patch 1 was reading the next chained descriptor header
+>   unconditionally. Fixed it by checking if a request actually contained
+>   a chained descriptor before deferencing it.
+> - For descriptor chaining introduced in patch 2, use a next pointer
+>   embedded inside struct talitos_edesc instead of the kernel's struct
+>   list_node. This removes the necessity for a desc_chain member in
+>   struct talitos_request. A dirty hack was previously used to assign a
+>   request->desc_chain to the current request by taking edesc->prev,
+>   assuming that the descriptor was added to a list before calling
+>   talitos_submit(). Not only was this non-idiomatic, but it also broke
+>   the skcipher and aead implementations because they do not use the
+>   descriptor chaining feature at all. The descriptor chaining mechanism
+>   does not need a doubly circular linked list; this change makes the
+>   code more readable than sticking with the kernel linked list
+>   implementation.
+> - Updated the performance measurement in patch 6.
+> - Drop patch 12, which was a revert of commit 4b24ea971a93 ("crypto:
+>   talitos - Preempt overflow interrupts off-by-one fix"). This patch was
+>   primarily motivated because the SEC1 has a Fetch Register rather than
+>   a Fetch FIFO per channel. As a result, having a value of 24 in the
+>   device tree node for the channel-fifo-len property does not make
+>   sense, as the hardware does not have a Fetch FIFO. Setting this value
+>   to 1 (which should be the correct value for SoCs featuring the SEC1
+>   engine family) breaks the driver because no descriptor can be
+>   submitted due to commit 4b24ea971a93, and the patch was primarily
+>   intended to fix this issue. As this issue is too deep to be addressed
+>   in this patch series, it has been dropped.
+> - Link to v2: https://patch.msgid.link/20260505-bootlin_test-7-1-rc1_sec_bugfix-v2-0-5818064bd190@bootlin.com
+> 
+> Changes in v2:
+> - Split the first patch into smaller, logically separated patches for
+>   easier review.
+> - Added more context on testing on the cover letter.
+> - Introduce a fix to correctly read hardware descriptor header. This fix
+>   was motivated by a remark of Sashiko on the v1:
+>   https://sashiko.dev/#/patchset/20260504-bootlin_test-7-1-rc1_sec_bugfix-v1-0-c97c641976f5%40bootlin.com
+> - Separate SEC2 64k-1 ahash limitation fix into its own patch.
+> - Link to v1: https://patch.msgid.link/20260504-bootlin_test-7-1-rc1_sec_bugfix-v1-0-c97c641976f5@bootlin.com
+> 
+> To: Herbert Xu <herbert@gondor.apana.org.au>
+> To: "David S. Miller" <davem@davemloft.net>
+> To: Christophe Leroy <chleroy@kernel.org>
+> To: Paolo Abeni <pabeni@redhat.com>
+> To: David Howells <dhowells@redhat.com>
+> Cc: linux-crypto@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> 
+> ---
+> Paul Louvel (11):
+>       crypto: talitos - use dma_sync_single_for_cpu() before reading descriptor header
+>       crypto: talitos - add chaining of arbitrary number of descriptor for the SEC1
+>       crypto: talitos - move dma unmapping code in flush_channel() into a standalone dma_unmap_request() function
+>       crypto: talitos - move dma mapping code in talitos_submit() into a standalone dma_map_request() function
+>       crypto: talitos - move code in current_desc_hdr() into a standalone function
+>       crypto: talitos/hash - prepare SEC1 descriptor chaining, remove additional descriptor
+>       crypto: talitos/hash - use descriptor chaining for SEC1 instead of workqueue
+>       crypto: talitos/hash - drop workqueue mechanism for SEC1
+>       crypto: talitos/hash - rename first_desc/last_desc to first_request/last_request
+>       crypto: talitos/hash - remove useless wrapper
+>       crypto: talitos/hash - fix SEC2 64k - 1 ahash request limitation
+> 
+>  drivers/crypto/talitos.c | 549 ++++++++++++++++++++++++-----------------------
+>  drivers/crypto/talitos.h |  12 ++
+>  2 files changed, 287 insertions(+), 274 deletions(-)
+> ---
+> base-commit: db8b9f227833e729faf44a512aa1e88a625b5ad8
+> change-id: 20260504-bootlin_test-7-1-rc1_sec_bugfix-13169ed07ddc
+> 
+> Best regards,
+> --  
+> Paul Louvel <paul.louvel@bootlin.com>
 
-Adjusted as stable does not have READ_ONCE around
-sk->sk_sndtimeo.
-
-Add the same NULL guard already present in
-l2cap_sock_resume_cb() and l2cap_sock_ready_cb().
-
-Fixes: 8d836d71e222 ("Bluetooth: Access sk_sndtimeo indirectly in l2cap_core.c")
-Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
----
- net/bluetooth/l2cap_sock.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 1960d35b3be0..adee617517bb 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1725,6 +1725,9 @@ static long l2cap_sock_get_sndtimeo_cb(struct l2cap_chan *chan)
- {
- 	struct sock *sk = chan->data;
- 
-+	if (!sk)
-+		return 0;
-+
- 	return sk->sk_sndtimeo;
- }
- 
+All applied.  Thanks.
 -- 
-2.54.0
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
