@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-248128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCi3B4lHB2p6wAIAu9opvQ
-	(envelope-from <stable+bounces-248128-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:19:21 +0200
+	id 6NLAODRIB2rUwQIAu9opvQ
+	(envelope-from <stable+bounces-248130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:22:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD5455303E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:19:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6875531B9
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F92030F4E23
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:02:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A6B7230B8AEE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080883C4B72;
-	Fri, 15 May 2026 16:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9863CAA39;
+	Fri, 15 May 2026 16:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQdoHcSX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0SBN5da"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7F23B6354;
-	Fri, 15 May 2026 16:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E9A3B6354;
+	Fri, 15 May 2026 16:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860944; cv=none; b=X1EPmpARGk8fOGV8h1oMUQl9jn2GbC1jCFmoDlatlwJrX21nJOarGRYoj88XsiWwJV3uCypGrB2g2gy/NepG24RKG82LGTdwYjWYEuKzLIyWYxLFA9pqzmwtqugra7khEwHKPoydTcBxkQ2osH4LOEvbIqTVkoAR9wAAoYan9Es=
+	t=1778860950; cv=none; b=aDGQDTQv6q8JqgBWUhE2Gg9yJsykrZcGzqlRjfyqitIZA7SPkbAZ8ha4K0XB2Fho1UJFrWbKk/Ljjp7CzfgLvy28dWVwcbYAh8D3M9GJyS1B7NNEJ1ZGjF1Iikp2KxVDm1AhsbOaXTS0gwh7SjRjgDTENKNUlUS24ZG6HzQQRLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860944; c=relaxed/simple;
-	bh=tUfR3JsiChd8iDcz+sxw/a271drnOGEVm4dyi1r1aH8=;
+	s=arc-20240116; t=1778860950; c=relaxed/simple;
+	bh=Ybhdlwl17g/ibRwOrXBYWWU4/dmzPrgYjTpDEqhzco4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cf0qGOVHjVwAbaXjS8FlHX2eujKK+kC3wVwtoZtdC7hyziNQOvheSZld55FfFOOoh5qhtMXbo3stIxcYChqVdndwNpaxDYeBYwjulTOhh1v4UWrAw5phiOK1XqD1D/ZmyYdoQePHmn5k65OyoknpUn2Ch9QP5r7TloICGGhkdKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQdoHcSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54392C2BCB0;
-	Fri, 15 May 2026 16:02:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y8h5caJhJKBx4th4QF2QsRRnZW/t753Qr0A/XYbLevEvDkKCd4k1IzsLvvD4Aeg+J85iMjN9lOe4KgL4BQR7RqTDxfLOLqej4v5rWUDryGRtis7RVwh5DXl9QFObH8/udWXuRku5n9f6uXdwCyo4gRssCWlIeEqjxhQXSETtvpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0SBN5da; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E9AC2BCB0;
+	Fri, 15 May 2026 16:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860944;
-	bh=tUfR3JsiChd8iDcz+sxw/a271drnOGEVm4dyi1r1aH8=;
+	s=korg; t=1778860949;
+	bh=Ybhdlwl17g/ibRwOrXBYWWU4/dmzPrgYjTpDEqhzco4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQdoHcSXDVUV7828t+JYJWUggThffBG4BrQLZsbKNG0HIF6DvY+gdzO9249ADdWmE
-	 YJkI31mZ1NpiN7/YxB13cqk1mB7TOJITxkB/aKA1sjueA996xDn0jXwgIz2sfQHrnw
-	 0h9UzqT5m3zCMxKlmQNn3PZFqzWzdzi/10xmKaUU=
+	b=n0SBN5da+qEjpSRzNKwalul5kMpONcjgi5tNyReFcUCRrzQHK2K8nAYxKdPCdn1ZK
+	 Q9Ga72EZSRoHqBG9jDt10zAgmW7PRHTFCkJlADGt2A+U92AZ+tQDhyJy1jC8pX1U8u
+	 IWjsIJuNDbSk34eU4yYAS6cQ8SIq2fInpvV+K3e8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 139/474] ipv6: rpl: reserve mac_len headroom when recompressed SRH grows
-Date: Fri, 15 May 2026 17:44:08 +0200
-Message-ID: <20260515154718.037635099@linuxfoundation.org>
+	Arjan van de Ven <arjan@linux.intel.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.6 140/474] drm/amdgpu: fix zero-size GDS range init on RDNA4
+Date: Fri, 15 May 2026 17:44:09 +0200
+Message-ID: <20260515154718.058012234@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -62,115 +66,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8CD5455303E
+X-Rspamd-Queue-Id: 9A6875531B9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-248130-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248128-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[fenrus.org:url,lists.freedesktop.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Arjan van de Ven <arjan@linux.intel.com>
 
-commit 9e6bf146b55999a095bb14f73a843942456d1adc upstream.
+commit 095a8b0ad3c3b5cdc3850d961adb8a8f735220bb upstream.
 
-ipv6_rpl_srh_rcv() decompresses an RFC 6554 Source Routing Header, swaps
-the next segment into ipv6_hdr->daddr, recompresses, then pulls the old
-header and pushes the new one plus the IPv6 header back.  The
-recompressed header can be larger than the received one when the swap
-reduces the common-prefix length the segments share with daddr (CmprI=0,
-CmprE>0, seg[0][0] != daddr[0] gives the maximum +8 bytes).
+RDNA4 (GFX 12) hardware removes the GDS, GWS, and OA on-chip memory
+resources. The gfx_v12_0 initialisation code correctly leaves
+adev->gds.gds_size, adev->gds.gws_size, and adev->gds.oa_size at
+zero to reflect this.
 
-pskb_expand_head() was gated on segments_left == 0, so on earlier
-segments the push consumed unchecked headroom.  Once skb_push() leaves
-fewer than skb->mac_len bytes in front of data,
-skb_mac_header_rebuild()'s call to:
+amdgpu_ttm_init() unconditionally calls amdgpu_ttm_init_on_chip() for
+each of these resources regardless of size. When the size is zero,
+amdgpu_ttm_init_on_chip() forwards the call to ttm_range_man_init(),
+which calls drm_mm_init(mm, 0, 0). drm_mm_init() immediately fires
+DRM_MM_BUG_ON(start + size <= start) -- trivially true when size is
+zero -- crashing the kernel during modprobe of amdgpu on an RX 9070 XT.
 
-	skb_set_mac_header(skb, -skb->mac_len);
+Guard against this by returning 0 early from
+amdgpu_ttm_init_on_chip() when size_in_page is zero. This skips TTM
+resource manager registration for hardware resources that are absent,
+without affecting any other GPU type.
 
-will store (data - head) - mac_len into the u16 mac_header field, which
-wraps to ~65530, and the following memmove() writes mac_len bytes ~64KiB
-past skb->head.
+DRM_MM_BUG_ON() only asserts if CONFIG_DRM_DEBUG_MM is enabled in
+the kernel config.  This is apparently rarely enabled as these chips
+have been in the market for over a year and this issue was only reported
+now.
 
-A single AF_INET6/SOCK_RAW/IPV6_HDRINCL packet over lo with a two
-segment type-3 SRH (CmprI=0, CmprE=15) reaches headroom 8 after one
-pass; KASAN reports a 14-byte OOB write in ipv6_rthdr_rcv.
-
-Fix this by expanding the head whenever the remaining room is less than
-the push size plus mac_len, and request that much extra so the rebuilt
-MAC header fits afterwards.
-
-Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
-Cc: stable <stable@kernel.org>
-Reported-by: Anthropic
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026042133-gout-unvented-1bd9@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/all/bug-221376-2300@https.bugzilla.kernel.org%2F/
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221376
+Oops-Analysis: http://oops.fenrus.org/reports/bugzilla.korg/221376/report.html
+Assisted-by: GitHub Copilot:Claude Sonnet 4.6 linux-kernel-oops-x86.
+Signed-off-by: Arjan van de Ven <arjan@linux.intel.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5719ce5865279cad4fd5f01011fe037168503f2d)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -491,6 +491,7 @@ static int ipv6_rpl_srh_rcv(struct sk_bu
- 	struct net *net = dev_net(skb->dev);
- 	struct inet6_dev *idev;
- 	struct ipv6hdr *oldhdr;
-+	unsigned int chdr_len;
- 	unsigned char *buf;
- 	int accept_rpl_seg;
- 	int i, err;
-@@ -594,8 +595,10 @@ looped_back:
- 	skb_pull(skb, ((hdr->hdrlen + 1) << 3));
- 	skb_postpull_rcsum(skb, oldhdr,
- 			   sizeof(struct ipv6hdr) + ((hdr->hdrlen + 1) << 3));
--	if (unlikely(!hdr->segments_left)) {
--		if (pskb_expand_head(skb, sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3), 0,
-+	chdr_len = sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3);
-+	if (unlikely(!hdr->segments_left ||
-+		     skb_headroom(skb) < chdr_len + skb->mac_len)) {
-+		if (pskb_expand_head(skb, chdr_len + skb->mac_len, 0,
- 				     GFP_ATOMIC)) {
- 			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)), IPSTATS_MIB_OUTDISCARDS);
- 			kfree_skb(skb);
-@@ -605,7 +608,7 @@ looped_back:
- 
- 		oldhdr = ipv6_hdr(skb);
- 	}
--	skb_push(skb, ((chdr->hdrlen + 1) << 3) + sizeof(struct ipv6hdr));
-+	skb_push(skb, chdr_len);
- 	skb_reset_network_header(skb);
- 	skb_mac_header_rebuild(skb);
- 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -75,6 +75,9 @@ static int amdgpu_ttm_init_on_chip(struc
+ 				    unsigned int type,
+ 				    uint64_t size_in_page)
+ {
++	if (!size_in_page)
++		return 0;
++
+ 	return ttm_range_man_init(&adev->mman.bdev, type,
+ 				  false, size_in_page);
+ }
 
 
 
