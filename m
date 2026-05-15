@@ -1,190 +1,121 @@
-Return-Path: <stable+bounces-247636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qF2fMtHzBmohpQIAu9opvQ
-	(envelope-from <stable+bounces-247636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:22:09 +0200
+	id KCRhFlnyBmpZpQIAu9opvQ
+	(envelope-from <stable+bounces-247637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:15:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633D354D3D9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:22:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E884C54D252
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6A71309F8EE
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:58:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5CB9C300FAB8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648A741C2E9;
-	Fri, 15 May 2026 09:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A2044102A;
+	Fri, 15 May 2026 10:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="grIVFuLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUIawnuj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D233E5EE0
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 09:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652F03FAE0E;
+	Fri, 15 May 2026 10:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778839097; cv=none; b=IjuClBNBMy/wsbjAWgq29Q6Vi6IjS8zflTVae8Pv4Jby/eazWZDDiA+Kh7bXCBa0C758X5NXSsVqkKfnvZOdLopQUbISEwhMETLw1KhOXZgz+RrOe7NMJW5aGBy8+KpAk3u6YLYX17jnROCJ992WiiueQPbDN0T6EZjDtMH3XDI=
+	t=1778839787; cv=none; b=Z3a52sqYrgUu4kQnApgkowuytegBij6d18+jOaa3cwdEE8sdXiiihoLQSOLM09RCwha5RYjyc9hGSTiL8xLLMU/oM8LUtC18nuQgNzASovRv3nUtUWPpm71abkl6aOqWMnxZhBQ3GhOgbdNFmfjrsUtuRSsIj4As+fNzuZQ3xAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778839097; c=relaxed/simple;
-	bh=XthEBRlRRfWIHacRuRmSguYOPOHjuVxLd6BVX5QvrqA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TJd41A+HpG0mZbPBCU8hJvbDHvn0EEd1eJz5bIr3P0nLxF9sTh4gRnhhwPePFcIcupBj3sr7+Wj3LHrbvaOu9DIG0x/2PxrGF41Ves7nJPtRaLdYJkpQD3D/wqJNuMkpfV3Pi5TMHB/ERBVWP1IJOpTsc6usNWZUb8PVZHMfpQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=grIVFuLx; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778839095; x=1810375095;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=XthEBRlRRfWIHacRuRmSguYOPOHjuVxLd6BVX5QvrqA=;
-  b=grIVFuLxbQCvtKH/iS2KPPjo8phZnxKesspVXae9qNgAMQte8XH1P8/J
-   scltpMc9go5uw2dQ+MgAqqoGrotUF/My3A/a2Rz50ZRqVxtYEtoEBZ3ld
-   H1fbo2xOCn24UZMUoK+dlHdubtA5ykdexzP8/oxNxo9B/B+u8liIgs0yC
-   2DPxq3VZxMscC8NtIDNLek3htLoVLo7vvUCDC4KM3qyJaBN20/yr1rwRm
-   RFFMFHsUo6h/SnNw8PWf4c573XkreqkN6MUpWTOUG+T1b4qY7vpQKOoif
-   dodQlxlXSY0u9nFpRU5PoTce0sOnPliOFUfwfL8VguaK92JhBTipbGMcr
-   g==;
-X-CSE-ConnectionGUID: pmi6qqCYThSS20EHUmlDGw==
-X-CSE-MsgGUID: NP/1zWmaTmGb9OXX5xzrtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="82360383"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="82360383"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:58:15 -0700
-X-CSE-ConnectionGUID: L6OxcyNsS+WHmMRQHbaxgA==
-X-CSE-MsgGUID: 39coXZkaRLu0Kx/8gikFNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="235601810"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO jhogande-mobl3.intel.com) ([10.245.246.20])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:58:13 -0700
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	stable@vger.kernel.org,
-	Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH v2 3/4] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior line used
-Date: Fri, 15 May 2026 12:57:55 +0300
-Message-ID: <20260515095756.2799483-4-jouni.hogander@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260515095756.2799483-1-jouni.hogander@intel.com>
-References: <20260515095756.2799483-1-jouni.hogander@intel.com>
+	s=arc-20240116; t=1778839787; c=relaxed/simple;
+	bh=R9f2vsfoSywFN0uuV0X/eI9CS3kavsgTJMQlK4T4Fac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E3Aqcue1/F2iHi77C957g7S0BXFdkF6pwPz5Q6urJTyK/nKUWFXEGs0bWU+sLdeQFkI0qF7D9AlC45HppqJ3OaAAixPj0OoVYXCGpgufE8IIwVisM8BXPSkOr/LdSp2qpVr6LXSbfpZSyx/IQYibgCV5/U/4sw0ljyvJjUsBha0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUIawnuj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B0CC2BCB0;
+	Fri, 15 May 2026 10:09:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778839787;
+	bh=R9f2vsfoSywFN0uuV0X/eI9CS3kavsgTJMQlK4T4Fac=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cUIawnujPnQJG8s9kylDi4mU+GCnQX+8quj7ttifZ1iBf1TcuNprVNYqmnO/KGKCZ
+	 DFgngLghAzSb0mqLkx8MaqCWLVjYGV7CldrnKDWyC7vzxMKJtbY0ir72b0z2pMK/gj
+	 UyViZK0bmpduP9RODfuKBOqwHfBmUUpIS8GqZ8NM=
+Date: Fri, 15 May 2026 12:09:51 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Sasha Levin <sashal@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Xuerui Wang <kernel@xen0n.name>,
+	stable@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Xianglai Li <lixianglai@loongson.cn>
+Subject: Re: [PATCH for 6.12] LoongArch: KVM: Compile switch.S directly into
+ the kernel
+Message-ID: <2026051542-acclaim-grew-bd5a@gregkh>
+References: <20260513031224.2122119-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 633D354D3D9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260513031224.2122119-1-chenhuacai@loongson.cn>
+X-Rspamd-Queue-Id: E884C54D252
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247636-lists,stable=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247637-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.993];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jouni.hogander@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-There is Intel specific workaround DPCD address containing workaround for
-case where SDP is on prior line. Apply this workaround according to values
-in the offset.
+On Wed, May 13, 2026 at 11:12:24AM +0800, Huacai Chen wrote:
+> From: Xianglai Li <lixianglai@loongson.cn>
+> 
+> commit 5203012fa6045aac4b69d4e7c212e16dcf38ef10 upstream.
+> 
+> If we directly compile the switch.S file into the kernel, the address of
+> the kvm_exc_entry function will definitely be within the DMW memory area.
+> Therefore, we will no longer need to perform a copy relocation of the
+> kvm_exc_entry.
+> 
+> So this patch compiles switch.S directly into the kernel, and then remove
+> the copy relocation execution logic for the kvm_exc_entry function.
+> 
+> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>  arch/loongarch/Kbuild                       |  2 +-
+>  arch/loongarch/include/asm/asm-prototypes.h | 20 ++++++++++++
+>  arch/loongarch/include/asm/kvm_host.h       |  3 --
+>  arch/loongarch/kvm/Makefile                 |  3 +-
+>  arch/loongarch/kvm/main.c                   | 35 ++-------------------
+>  arch/loongarch/kvm/switch.S                 | 19 ++++++++---
+>  6 files changed, 40 insertions(+), 42 deletions(-)
 
-Fixes: 61e887329e33 ("drm/i915/xelpd: Handle PSR2 SDP indication in the prior scanline")
-Cc: <stable@vger.kernel.org> # v5.15+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
----
- drivers/gpu/drm/i915/display/intel_psr.c | 35 +++++++++++++++++++++---
- 1 file changed, 31 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 749057e96647..2f78d76c4ee1 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1389,9 +1389,35 @@ static bool psr2_granularity_check(struct intel_crtc_state *crtc_state,
- 	return true;
- }
- 
--static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_dp,
--							struct intel_crtc_state *crtc_state)
-+static bool apply_scanline_indication_wa(struct intel_crtc_state *crtc_state,
-+					 struct intel_connector *connector)
- {
-+	struct intel_dp *intel_dp = intel_attached_dp(connector);
-+	u8 early_scanline_support = connector->dp.psr_caps.intel_wa_dpcd &
-+		INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK;
-+
-+	if (intel_dp->edp_dpcd[0] >= DP_EDP_15)
-+		return true;
-+
-+	switch (early_scanline_support)	{
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1:
-+		crtc_state->req_psr2_sdp_prior_scanline = false;
-+		return false;
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE:
-+		return true;
-+	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE:
-+		crtc_state->req_psr2_sdp_prior_scanline = false;
-+		return true;
-+	default:
-+		MISSING_CASE(early_scanline_support);
-+		return false;
-+	}
-+}
-+
-+static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_crtc_state *crtc_state,
-+							struct intel_connector *connector)
-+{
-+	struct intel_dp *intel_dp = intel_attached_dp(connector);
- 	struct intel_display *display = to_intel_display(intel_dp);
- 	const struct drm_display_mode *adjusted_mode = &crtc_state->uapi.adjusted_mode;
- 	u32 hblank_total, hblank_ns, req_ns;
-@@ -1410,7 +1436,8 @@ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_d
- 		return false;
- 
- 	crtc_state->req_psr2_sdp_prior_scanline = true;
--	return true;
-+
-+	return apply_scanline_indication_wa(crtc_state, connector);
- }
- 
- static int intel_psr_entry_setup_frames(struct intel_dp *intel_dp,
-@@ -1691,7 +1718,7 @@ static bool intel_sel_update_config_valid(struct intel_crtc_state *crtc_state,
- 								      conn_state))
- 		goto unsupported;
- 
--	if (!_compute_psr2_sdp_prior_scanline_indication(intel_dp, crtc_state)) {
-+	if (!_compute_psr2_sdp_prior_scanline_indication(crtc_state, connector)) {
- 		drm_dbg_kms(display->drm,
- 			    "Selective update not enabled, SDP indication do not fit in hblank\n");
- 		goto unsupported;
--- 
-2.43.0
-
+Does not apply properly to the 6.12.y tree :(
 
