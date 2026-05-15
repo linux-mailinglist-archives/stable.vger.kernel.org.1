@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-247605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kP7JOA7fBmp4ogIAu9opvQ
-	(envelope-from <stable+bounces-247605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:53:34 +0200
+	id sNrQOujgBmrLogIAu9opvQ
+	(envelope-from <stable+bounces-247607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:01:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA31354BC5F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:53:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A75854BE61
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ED6DB3068736
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:43:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 234CA319B496
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6AD41B37C;
-	Fri, 15 May 2026 08:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171EE3DF00A;
+	Fri, 15 May 2026 08:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsFOlKrd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKo9ir2k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC8441B361
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 08:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFA1346FA6
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 08:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778834516; cv=none; b=WrTqPUEB1goFbrcGzd5JrEbuvbPA/kgjlydSUUlE1m6GfaNg3YwR6AGDIv8/ksQzmpv6yY/VKEJkjFKclhBAPX5ZtupGZM91q8Tp3MG6Rb4hdlbNvWrRbp940K5k3iXKIgMxT+I6pbg9+7JwCMsMENbGdFi3svC1e5/KZm1Bitk=
+	t=1778834610; cv=none; b=FcIQutE1YIsldVUBRSt6tsFoXrIKarN0JifMqfLfgPfNiT4vkRscYJZuxSEwg20TklrVQdNV+z4+YNMmtiHfUp70aCl1qQS0LIjvM0/c+NIo0959YUCQDH9Oqewd5rN0HQEphUQ30YInHgMZUW+irfeTj/JI+SGwoG2YVy/XXMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778834516; c=relaxed/simple;
-	bh=3QxF1llQARdrl8gmxxOTXmVtkyvoItpwlPvOfjg7klM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KChPmY9puoKbR2rEG8eocoVu1VKDrEMXPQb6Weeors39uBYlIMt5lheS/tMCRsGcH/akpcYPbi5REA9tRNyn+C/HDspJ4kja5HFR30KESWwJ3rtn7lHoVZvl9+LMSw4hHMdLqsBZguUEy7iigo2VQyDOyMbRCbF/tzrqvEBsAJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsFOlKrd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFB7C2BCB8;
-	Fri, 15 May 2026 08:41:55 +0000 (UTC)
+	s=arc-20240116; t=1778834610; c=relaxed/simple;
+	bh=c8igrSicxuMKClen7moOWW/gFVaQ0wll18jvoFX3Gbg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FhksjK6npJrKiPLmz4wAXfMVQiHzkKjLRxFyoZzxGD6wTKV2QB818bpy5FOo16QhvsttYZG7lUk3i4dqsQuKOf/VzL3pRBEsQm70Y73WgLfmqkWsxgNXUYfgFzDinYWoVnuwRno0Ee0sMPVIkuC8SsFFRr0GbfJQeq49S2J0cLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKo9ir2k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD28C2BCC7;
+	Fri, 15 May 2026 08:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778834516;
-	bh=3QxF1llQARdrl8gmxxOTXmVtkyvoItpwlPvOfjg7klM=;
+	s=korg; t=1778834610;
+	bh=c8igrSicxuMKClen7moOWW/gFVaQ0wll18jvoFX3Gbg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OsFOlKrd+YCQ6H4anFqI2q1hDbztG1DkUEFBOC7cT1BzjeTph/DcSb5xHYQI6zIbe
-	 +2cZg5p9XAOoKG7bW9nuwDMml+oNA4ltg/7H9VuRRga8VkQhX14f3m0V0Yf+eOLydE
-	 wMU59q5cYEUHuScGMEZP3vtaAFN8CNzE6j7jC7kk=
-Subject: FAILED: patch "[PATCH] arm64: dts: qcom: kodiak: Fix PCIe1 PHY ref clock voting" failed to apply to 6.1-stable tree
-To: krishna.chundru@oss.qualcomm.com,andersson@kernel.org,dmitry.baryshkov@oss.qualcomm.com,konrad.dybcio@oss.qualcomm.com
+	b=fKo9ir2kCclMKQy3IKyWP5w4drzFrdFTyXA+nYULdPcxiF2SWnVtxC9mR2llAh26a
+	 kgCafjINswWePp/F9fUZUE26jY2M05iSR7pGjAPCfDEBwbG+Kz5/S9Qm4aEljhQnPi
+	 S5isE4xstVY7aWMlqsLsudHGyKgCuqTjXpZPh4jk=
+Subject: FAILED: patch "[PATCH] sched_ext: Avoid UAF in scx_root_enable_workfn() init failure" failed to apply to 6.18-stable tree
+To: tj@kernel.org,sashiko-bot@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 May 2026 10:41:47 +0200
-Message-ID: <2026051547-xbox-speckled-d9e3@gregkh>
+Date: Fri, 15 May 2026 10:43:26 +0200
+Message-ID: <2026051526-vastness-flattop-e72e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,52 +54,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CA31354BC5F
+X-Rspamd-Queue-Id: 8A75854BE61
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247605-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247607-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,qualcomm.com:email,1c0e000:email]
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+]
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 30e8b6d42e8988eaaf0c2efd8c3797cb3884faea
+git cherry-pick -x 9a415cc53711f2238e0f0ca8a6bcc796c003b127
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051547-xbox-speckled-d9e3@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051526-vastness-flattop-e72e@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,46 +110,39 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 30e8b6d42e8988eaaf0c2efd8c3797cb3884faea Mon Sep 17 00:00:00 2001
-From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Date: Fri, 23 Jan 2026 17:42:27 +0530
-Subject: [PATCH] arm64: dts: qcom: kodiak: Fix PCIe1 PHY ref clock voting
+From 9a415cc53711f2238e0f0ca8a6bcc796c003b127 Mon Sep 17 00:00:00 2001
+From: Tejun Heo <tj@kernel.org>
+Date: Mon, 11 May 2026 12:05:48 -1000
+Subject: [PATCH] sched_ext: Avoid UAF in scx_root_enable_workfn() init failure
+ path
 
-GCC_PCIE_CLKREF_EN controls a repeater that provides the reference clock
-only to the PCIe0 PHY. PCIe1 PHY receives its refclk directly from the CXO
-source.
+In scx_root_enable_workfn(), put_task_struct(p) is called before scx_error()
+dereferences p->comm and p->pid. If the iterator's reference is the last
+drop, the task is freed synchronously and the deref becomes a UAF.
 
-If the PCIe1 driver in HLOS votes for or against GCC_PCIE_CLKREF_EN, it
-will inadvertently modify the refclk to PCIe0 as well. Since PCIe0 is
-managed by WPSS while PCIe1 is managed in HLOS, there is no mechanism to
-coordinate these votes. As a result, HLOS may disable this repeater
-during suspend and cut off the PCIe0 PHY refclk while PCIe0 is still
-active.
+Move put_task_struct() past scx_error().
 
-Replace the unused GCC_PCIE_CLKREF_EN clock entry with RPMH_CXO_CLK to
-reflect the actual hardware wiring and prevent unintended changes to
-PCIe0 clocking.
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/20260511214031.AF5E9C2BCB0@smtp.kernel.org/
+Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Tejun Heo <tj@kernel.org>
 
-Fixes: 92e0ee9f83b3 ("arm64: dts: qcom: sc7280: Add PCIe and PHY related nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260123-fix_pcie1_phy_clk-v1-1-38f82ea01792@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-
-diff --git a/arch/arm64/boot/dts/qcom/kodiak.dtsi b/arch/arm64/boot/dts/qcom/kodiak.dtsi
-index 6079e67ea829..ba0f7e5c89a0 100644
---- a/arch/arm64/boot/dts/qcom/kodiak.dtsi
-+++ b/arch/arm64/boot/dts/qcom/kodiak.dtsi
-@@ -2445,7 +2445,7 @@ pcie1_phy: phy@1c0e000 {
- 			reg = <0 0x01c0e000 0 0x1000>;
- 			clocks = <&gcc GCC_PCIE_1_AUX_CLK>,
- 				 <&gcc GCC_PCIE_1_CFG_AHB_CLK>,
--				 <&gcc GCC_PCIE_CLKREF_EN>,
-+				 <&rpmhcc RPMH_CXO_CLK>,
- 				 <&gcc GCC_PCIE1_PHY_RCHNG_CLK>,
- 				 <&gcc GCC_PCIE_1_PIPE_CLK>;
- 			clock-names = "aux",
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 1efd5d82b08b..9354da79e162 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -6973,10 +6973,10 @@ static void scx_root_enable_workfn(struct kthread_work *work)
+ 			if (scx_get_task_state(p) != SCX_TASK_DEAD)
+ 				scx_set_task_state(p, SCX_TASK_NONE);
+ 			task_rq_unlock(rq, p, &rf);
+-			put_task_struct(p);
+ 			scx_task_iter_stop(&sti);
+ 			scx_error(sch, "ops.init_task() failed (%d) for %s[%d]",
+ 				  ret, p->comm, p->pid);
++			put_task_struct(p);
+ 			goto err_disable_unlock_all;
+ 		}
+ 
 
 
