@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-247935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCLwLJtFB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-247935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:07 +0200
+	id 4DqQO51PB2o9yAIAu9opvQ
+	(envelope-from <stable+bounces-248765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58755552C93
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF6C2554208
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 42DAE30869B8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 090EC3113E5B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA03E305667;
-	Fri, 15 May 2026 15:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECCE2798F3;
+	Fri, 15 May 2026 16:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viNxYIkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XbAv9zK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E58717C220;
-	Fri, 15 May 2026 15:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D8930569C;
+	Fri, 15 May 2026 16:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860451; cv=none; b=fgRWiZiEh72nQPs+/UFUKnfK0XrYwtYb63JJTK3z52EXz5jUrS3KLuDr5cFmC6mSfyHeFlXOSEuRQPbRmBTUlb701x9VFBvTTB/PMEFaHjH9vSpoKwb8CfQrsbhnZI/dznbUDGO2F0WYH6LbX7e9lR4K+0iCDe54xHxh7jwx+z8=
+	t=1778862572; cv=none; b=A89WaEmxEa445ViBImjyjbAJ647gH52JExHMzJpgvx5p+POBLjHQQyzhDR85O0XQLmoSDU6EWCfGlXg1yAX+hf1/1DNGk43G56XGoJCwb5vDn7qYIRAlpV7oRIFHZIgEHchlP0Wm+s5stYRqZemZZXtMRazpw9M+7R3Nnw/LZR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860451; c=relaxed/simple;
-	bh=n0rtYuX9pxLJr4a7wUPeGPOr13tAOScFgG86z71ThAA=;
+	s=arc-20240116; t=1778862572; c=relaxed/simple;
+	bh=iudBr4CraeU3Hrh3KyQUb71fLtRVzs8oIISkh9Nmfh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etQRS3pjKGZp6By6kIs7ebZmktTVVE5KRLeUoHLpM74wlrpb0adj5m87j82QodIpfaviVrPcS3PsyUM6Kq+WUGp9HnjCWume3BaxPfgJmgZAhjH+95gvZxmioH+/W6bhcODoVRUvHuZLBiLk0bqTmnCqUQ2Onq44oRugl6Cd/4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viNxYIkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C5BC2BCB3;
-	Fri, 15 May 2026 15:54:10 +0000 (UTC)
+	 MIME-Version; b=JUe63qive1c9xLA5nw+ztK4sVexCBYC0KNj5z7MN2yFgOKAuIjvb8OjP9H2rEkiqk/BOdDEnJHVxP7YDJepPqMNGO44N6ajggvZOFriwut+ZkowxSuArwuQT6/uJeBHH9j1yZhc33qz16of8GD/qu87FJFT+OO8NBoC1V+TbCDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XbAv9zK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6D4C2BCB0;
+	Fri, 15 May 2026 16:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860451;
-	bh=n0rtYuX9pxLJr4a7wUPeGPOr13tAOScFgG86z71ThAA=;
+	s=korg; t=1778862572;
+	bh=iudBr4CraeU3Hrh3KyQUb71fLtRVzs8oIISkh9Nmfh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=viNxYIkhelScvxd5tAQTHWtxBM9cLCLiKQJepP+FnWjjPlLifAl0DjB25+Xu4fFQJ
-	 FdXihmQW/fUTZr/VSuYZt0fNuPbGalz/21XVNbFB5nbrrJO2TTv5R7j9/6324zchwG
-	 oxOWTmNmF0fEi7aOujpLHfwfxBOkYQN+HBWW28U8=
+	b=2XbAv9zK+C/aJ3xOrvfM728FMzggdfysfW2LeHtp7ocIqibxHxJdr78nGMVhGnkX/
+	 P7IkG4+Rp1OrFFgigxj1CM+j5wDXrR9hKSnEVwkwWopIgE9p6BB/6eC05lU+myasT1
+	 E5ycejX6yIupMEj5ZOgRy/JaRU9fQDGkbqhfnBmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Bryan Brattlof <bb@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.12 093/144] arm64: dts: ti: k3-am62a7-sk: Fix pin name in comment from M19 to N22
+	Lanqing Liu <lanqing.liu@spreadtrum.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 101/201] spi: sprd: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:39 +0200
-Message-ID: <20260515154655.667816662@linuxfoundation.org>
+Message-ID: <20260515154700.728347340@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 58755552C93
+X-Rspamd-Queue-Id: AF6C2554208
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -76,60 +75,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247935-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248765-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,ti.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,spreadtrum.com:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 6ee0792d83d5c690205c350825a4c30746c0e0a2 upstream.
+commit 123d17dbc5f07059752fa5e616385ca29a8f935a upstream.
 
-The pin for GPMC0_CLK.GPIO0_31 at address 0x000F407C is N22 and not M19.
-Hence, fix the pin name in the comment to avoid confusion.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Fixes: 8f023012eb4a ("arm64: dts: ti: k3-am62a: Enable UHS mode support for SD cards")
-Cc: stable@vger.kernel.org
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Reviewed-by: Bryan Brattlof <bb@ti.com>
-Link: https://patch.msgid.link/20260309045539.2070793-1-s-vadapalli@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Note that the controller is suspended before disabling and releasing
+resources since commit de082d866cce ("spi: sprd: Add the SPI irq
+function for the SPI DMA mode") which avoids issues like unclocked
+accesses but prevents SPI device drivers from doing I/O during
+deregistration.
+
+Fixes: e7d973a31c24 ("spi: sprd: Add SPI driver for Spreadtrum SC9860")
+Cc: stable@vger.kernel.org	# 4.20
+Cc: Lanqing Liu <lanqing.liu@spreadtrum.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-17-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62a7-sk.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-sprd.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
-@@ -369,7 +369,7 @@
+--- a/drivers/spi/spi-sprd.c
++++ b/drivers/spi/spi-sprd.c
+@@ -977,7 +977,7 @@ static int sprd_spi_probe(struct platfor
+ 		goto err_rpm_put;
+ 	}
  
- 	vddshv_sdio_pins_default: vddshv-sdio-default-pins {
- 		pinctrl-single,pins = <
--			AM62AX_IOPAD(0x07c, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO0_31 */
-+			AM62AX_IOPAD(0x07c, PIN_OUTPUT, 7) /* (N22) GPMC0_CLK.GPIO0_31 */
- 		>;
- 	};
- };
+-	ret = devm_spi_register_controller(&pdev->dev, sctlr);
++	ret = spi_register_controller(sctlr);
+ 	if (ret)
+ 		goto err_rpm_put;
+ 
+@@ -1008,7 +1008,9 @@ static void sprd_spi_remove(struct platf
+ 	if (ret < 0)
+ 		dev_err(ss->dev, "failed to resume SPI controller\n");
+ 
+-	spi_controller_suspend(sctlr);
++	spi_controller_get(sctlr);
++
++	spi_unregister_controller(sctlr);
+ 
+ 	if (ret >= 0) {
+ 		if (ss->dma.enable)
+@@ -1017,6 +1019,8 @@ static void sprd_spi_remove(struct platf
+ 	}
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++
++	spi_controller_put(sctlr);
+ }
+ 
+ static int __maybe_unused sprd_spi_runtime_suspend(struct device *dev)
 
 
 
