@@ -1,62 +1,68 @@
-Return-Path: <stable+bounces-248747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YL95LzNaB2qzzwIAu9opvQ
-	(envelope-from <stable+bounces-248747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:59 +0200
+	id qEL2BQZWB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398005555F0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 750CE554E26
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27F5733E42C5
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0030231F7D75
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A083EFFD6;
-	Fri, 15 May 2026 16:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2117B30569C;
+	Fri, 15 May 2026 16:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjh9iLcz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VO0hILPW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747F63E0092;
-	Fri, 15 May 2026 16:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81533F926A;
+	Fri, 15 May 2026 16:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862526; cv=none; b=AU+POM6As1FeHfT0vM+aMwGQaZlfk8NlPDKkPXffk7FToJVbK/rPGwZuHR6oO95KL7N9OtrnK4SyHUGV7S2tmmnzueaIklHp72OpdWyTfeym5txj2xv4FIU99V2o3d8hB7SQqI+vIzWyJYqFFW69jAYtgQv+HunLXj+PojcdMew=
+	t=1778861592; cv=none; b=N3ITXGRlhnxvtd42nBQ/x0HCXM/qx/xOrf1jlmBg8LB/M1ljG2RFQ+u/VIobAO4wUWblIhNPQL8tgoQ3o/SYsErsV0sEwex7gzgqMoSVO+eUJwiKiHCfUzgA3FuVbYzQpKxZnk6PJw54R7hquCwQO6c5cmpYRmKjca1l8nLdymQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862526; c=relaxed/simple;
-	bh=YZz8HD/jdTtGjcPVJfNwnvweYkVvQPvd27u5OO+ELME=;
+	s=arc-20240116; t=1778861592; c=relaxed/simple;
+	bh=YNaAZk1siA0bN+vOfe4NtSsNWxTKPnkybCt3pL6vSJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbUmbZJhYxYx3zfu9oGRZTiFt+Mf8wz/KCfcTlyqhnwMpUhBo/6tbiz+df2UlD/RDC+T9+ETU7VsPultlG+2qic6Tn8U63gcwUOoEYB4pc8RV3mTHgtvH9RW9CAb8GK2Hp33GHh1/ops5yAJWXwGPFwKVYV9VTR7LIQ7yEdgtpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjh9iLcz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEB5C2BCB0;
-	Fri, 15 May 2026 16:28:45 +0000 (UTC)
+	 MIME-Version; b=bb+NgdNtjWifrETyHN+1BKtDkOEQetIFk3UV8IWFbjBmNU57tlxuQjAaLKDWpl3ahb9VdqoOoUBGpOZbcdyb9QHr6LfdSd7jmSN9LS+cYIUQCkTVbjE4Q6K9zQJp+a9eyDrCEV6TGwiKh1ZjRtqpDreoHbqrRT810J+hk3DmwSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VO0hILPW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DCDC2BCB0;
+	Fri, 15 May 2026 16:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862526;
-	bh=YZz8HD/jdTtGjcPVJfNwnvweYkVvQPvd27u5OO+ELME=;
+	s=korg; t=1778861592;
+	bh=YNaAZk1siA0bN+vOfe4NtSsNWxTKPnkybCt3pL6vSJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjh9iLczNtDGejwyPaSltzGEsc/2wNBxBso5zfM1BW4ClDHoJijmO619W4EG2fBz9
-	 RbTjbVNXEX5FZQ6Unt57n9dXxEaqxOT09qNRkVmlXDIY/nS6gXekqc4Qow++7ttvMy
-	 STaWA409ZyisYUyeket6lOt+6gtbMiG/pjkP3r8I=
+	b=VO0hILPWQhFoQ5PGVYHW76na02i0Re28m4TyM92Lsptp+ZiPDoS8G0jkQosGEGwjs
+	 4QmdEX+OOvy2DQYjmH8HmMpuAJtMP5NvFAGn01+FD+lu8ZMuQEUG3G1f+Ak9cLOsXa
+	 mRPLDtSWtP++NZWX4vYQTmn52WmOivq/wLPj8KdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishnu Reddy <busanna.reddy@oss.qualcomm.com>,
-	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 080/201] media: iris: switch to hardware mode after firmware boot
+	stable@kernel.org,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 389/474] net: bridge: use a stable FDB dst snapshot in RCU readers
 Date: Fri, 15 May 2026 17:48:18 +0200
-Message-ID: <20260515154700.265575682@linuxfoundation.org>
+Message-ID: <20260515154723.458366956@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,257 +73,210 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 398005555F0
+X-Rspamd-Queue-Id: 750CE554E26
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248382-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,nvidia.com,blackwall.org,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248747-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-commit 95a337f92f0a602d4f935315bfbc8bf07f475e65 upstream.
+[ Upstream commit df4601653201de21b487c3e7fffd464790cab808 ]
 
-Currently the driver switches the vcodec GDSC to hardware (HW) mode
-before firmware load and boot sequence. GDSC can be powered off, keeping
-in hw mode, thereby the vcodec registers programmed in TrustZone (TZ)
-carry default (reset) values.
-Move the transition to HW mode after firmware load and boot sequence.
+Local FDB entries can be rewritten in place by `fdb_delete_local()`, which
+updates `f->dst` to another port or to `NULL` while keeping the entry
+alive. Several bridge RCU readers inspect `f->dst`, including
+`br_fdb_fillbuf()` through the `brforward_read()` sysfs path.
 
-The bug was exposed with driver configuring different stream ids to
-different devices via iommu-map. With registers carrying reset values,
-VPU would not generate desired stream-id, thereby leading to SMMU fault.
+These readers currently load `f->dst` multiple times and can therefore
+observe inconsistent values across the check and later dereference.
+In `br_fdb_fillbuf()`, this means a concurrent local-FDB update can change
+`f->dst` after the NULL check and before the `port_no` dereference,
+leading to a NULL-ptr-deref.
 
-For vpu4, when GDSC is switched to HW mode, there is a need to perform
-the reset operation. Without reset, there are occasional issues of
-register corruption observed. Hence the vpu GDSC switch also involves
-the reset.
+Fix this by taking a single `READ_ONCE()` snapshot of `f->dst` in each
+affected RCU reader and using that snapshot for the rest of the access
+sequence. Also publish the in-place `f->dst` updates in `fdb_delete_local()`
+with `WRITE_ONCE()` so the readers and writer use matching access patterns.
 
-Co-developed-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-Signed-off-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-Reviewed-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-[bod: occassional => occasional]
-Fixes: dde659d37036 ("media: iris: Introduce vpu ops for vpu4 with necessary hooks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 960b589f86c7 ("bridge: Properly check if local fdb entry can be deleted in br_fdb_change_mac_address")
+Cc: stable@kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/6570fabb85ecadb8baaf019efe856f407711c7b9.1776043229.git.zcliangcn@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ kept `*idx < cb->args[2]` instead of `*idx < ctx->fdb_idx` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/iris/iris_core.c       |    4 +++
- drivers/media/platform/qcom/iris/iris_hfi_common.c |    4 +++
- drivers/media/platform/qcom/iris/iris_vpu2.c       |    1 
- drivers/media/platform/qcom/iris/iris_vpu3x.c      |    9 ++-----
- drivers/media/platform/qcom/iris/iris_vpu4x.c      |   24 +++++++++++----------
- drivers/media/platform/qcom/iris/iris_vpu_common.c |   16 ++++++++------
- drivers/media/platform/qcom/iris/iris_vpu_common.h |    3 ++
- 7 files changed, 38 insertions(+), 23 deletions(-)
+ net/bridge/br_arp_nd_proxy.c |    8 +++++---
+ net/bridge/br_fdb.c          |   28 ++++++++++++++++++----------
+ 2 files changed, 23 insertions(+), 13 deletions(-)
 
---- a/drivers/media/platform/qcom/iris/iris_core.c
-+++ b/drivers/media/platform/qcom/iris/iris_core.c
-@@ -75,6 +75,10 @@ int iris_core_init(struct iris_core *cor
- 	if (ret)
- 		goto error_unload_fw;
+--- a/net/bridge/br_arp_nd_proxy.c
++++ b/net/bridge/br_arp_nd_proxy.c
+@@ -199,11 +199,12 @@ void br_do_proxy_suppress_arp(struct sk_
  
-+	ret = iris_vpu_switch_to_hwmode(core);
-+	if (ret)
-+		goto error_unload_fw;
-+
- 	ret = iris_hfi_core_init(core);
- 	if (ret)
- 		goto error_unload_fw;
---- a/drivers/media/platform/qcom/iris/iris_hfi_common.c
-+++ b/drivers/media/platform/qcom/iris/iris_hfi_common.c
-@@ -159,6 +159,10 @@ int iris_hfi_pm_resume(struct iris_core
- 	if (ret)
- 		goto err_suspend_hw;
+ 		f = br_fdb_find_rcu(br, n->ha, vid);
+ 		if (f) {
++			const struct net_bridge_port *dst = READ_ONCE(f->dst);
+ 			bool replied = false;
  
-+	ret = iris_vpu_switch_to_hwmode(core);
-+	if (ret)
-+		goto err_suspend_hw;
-+
- 	ret = ops->sys_interframe_powercollapse(core);
- 	if (ret)
- 		goto err_suspend_hw;
---- a/drivers/media/platform/qcom/iris/iris_vpu2.c
-+++ b/drivers/media/platform/qcom/iris/iris_vpu2.c
-@@ -44,4 +44,5 @@ const struct vpu_ops iris_vpu2_ops = {
- 	.power_off_controller = iris_vpu_power_off_controller,
- 	.power_on_controller = iris_vpu_power_on_controller,
- 	.calc_freq = iris_vpu2_calc_freq,
-+	.set_hwmode = iris_vpu_set_hwmode,
- };
---- a/drivers/media/platform/qcom/iris/iris_vpu3x.c
-+++ b/drivers/media/platform/qcom/iris/iris_vpu3x.c
-@@ -234,14 +234,8 @@ static int iris_vpu35_power_on_hw(struct
- 	if (ret)
- 		goto err_disable_hw_free_clk;
+ 			if ((p && (p->flags & BR_PROXYARP)) ||
+-			    (f->dst && (f->dst->flags & BR_PROXYARP_WIFI)) ||
+-			    br_is_neigh_suppress_enabled(f->dst, vid)) {
++			    (dst && (dst->flags & BR_PROXYARP_WIFI)) ||
++			    br_is_neigh_suppress_enabled(dst, vid)) {
+ 				if (!vid)
+ 					br_arp_send(br, p, skb->dev, sip, tip,
+ 						    sha, n->ha, sha, 0, 0);
+@@ -463,9 +464,10 @@ void br_do_suppress_nd(struct sk_buff *s
  
--	ret = dev_pm_genpd_set_hwmode(core->pmdomain_tbl->pd_devs[IRIS_HW_POWER_DOMAIN], true);
--	if (ret)
--		goto err_disable_hw_clk;
--
- 	return 0;
+ 		f = br_fdb_find_rcu(br, n->ha, vid);
+ 		if (f) {
++			const struct net_bridge_port *dst = READ_ONCE(f->dst);
+ 			bool replied = false;
  
--err_disable_hw_clk:
--	iris_disable_unprepare_clock(core, IRIS_HW_CLK);
- err_disable_hw_free_clk:
- 	iris_disable_unprepare_clock(core, IRIS_HW_FREERUN_CLK);
- err_disable_axi_clk:
-@@ -266,6 +260,7 @@ const struct vpu_ops iris_vpu3_ops = {
- 	.power_off_controller = iris_vpu_power_off_controller,
- 	.power_on_controller = iris_vpu_power_on_controller,
- 	.calc_freq = iris_vpu3x_vpu4x_calculate_frequency,
-+	.set_hwmode = iris_vpu_set_hwmode,
- };
- 
- const struct vpu_ops iris_vpu33_ops = {
-@@ -274,6 +269,7 @@ const struct vpu_ops iris_vpu33_ops = {
- 	.power_off_controller = iris_vpu33_power_off_controller,
- 	.power_on_controller = iris_vpu_power_on_controller,
- 	.calc_freq = iris_vpu3x_vpu4x_calculate_frequency,
-+	.set_hwmode = iris_vpu_set_hwmode,
- };
- 
- const struct vpu_ops iris_vpu35_ops = {
-@@ -283,4 +279,5 @@ const struct vpu_ops iris_vpu35_ops = {
- 	.power_on_controller = iris_vpu35_vpu4x_power_on_controller,
- 	.program_bootup_registers = iris_vpu35_vpu4x_program_bootup_registers,
- 	.calc_freq = iris_vpu3x_vpu4x_calculate_frequency,
-+	.set_hwmode = iris_vpu_set_hwmode,
- };
---- a/drivers/media/platform/qcom/iris/iris_vpu4x.c
-+++ b/drivers/media/platform/qcom/iris/iris_vpu4x.c
-@@ -252,21 +252,10 @@ static int iris_vpu4x_power_on_hardware(
- 		ret = iris_vpu4x_power_on_apv(core);
- 		if (ret)
- 			goto disable_hw_clocks;
--
--		iris_vpu4x_ahb_sync_reset_apv(core);
- 	}
- 
--	iris_vpu4x_ahb_sync_reset_hardware(core);
--
--	ret = iris_vpu4x_genpd_set_hwmode(core, true, efuse_value);
--	if (ret)
--		goto disable_apv_power_domain;
--
- 	return 0;
- 
--disable_apv_power_domain:
--	if (!(efuse_value & DISABLE_VIDEO_APV_BIT))
--		iris_vpu4x_power_off_apv(core);
- disable_hw_clocks:
- 	iris_vpu4x_disable_hardware_clocks(core, efuse_value);
- disable_vpp1_power_domain:
-@@ -359,6 +348,18 @@ disable_clocks_and_power:
- 	iris_disable_power_domains(core, core->pmdomain_tbl->pd_devs[IRIS_HW_POWER_DOMAIN]);
- }
- 
-+static int iris_vpu4x_set_hwmode(struct iris_core *core)
-+{
-+	u32 efuse_value = readl(core->reg_base + WRAPPER_EFUSE_MONITOR);
-+
-+	if (!(efuse_value & DISABLE_VIDEO_APV_BIT))
-+		iris_vpu4x_ahb_sync_reset_apv(core);
-+
-+	iris_vpu4x_ahb_sync_reset_hardware(core);
-+
-+	return iris_vpu4x_genpd_set_hwmode(core, true, efuse_value);
-+}
-+
- const struct vpu_ops iris_vpu4x_ops = {
- 	.power_off_hw = iris_vpu4x_power_off_hardware,
- 	.power_on_hw = iris_vpu4x_power_on_hardware,
-@@ -366,4 +367,5 @@ const struct vpu_ops iris_vpu4x_ops = {
- 	.power_on_controller = iris_vpu35_vpu4x_power_on_controller,
- 	.program_bootup_registers = iris_vpu35_vpu4x_program_bootup_registers,
- 	.calc_freq = iris_vpu3x_vpu4x_calculate_frequency,
-+	.set_hwmode = iris_vpu4x_set_hwmode,
- };
---- a/drivers/media/platform/qcom/iris/iris_vpu_common.c
-+++ b/drivers/media/platform/qcom/iris/iris_vpu_common.c
-@@ -292,14 +292,8 @@ int iris_vpu_power_on_hw(struct iris_cor
- 	if (ret && ret != -ENOENT)
- 		goto err_disable_hw_clock;
- 
--	ret = dev_pm_genpd_set_hwmode(core->pmdomain_tbl->pd_devs[IRIS_HW_POWER_DOMAIN], true);
--	if (ret)
--		goto err_disable_hw_ahb_clock;
--
- 	return 0;
- 
--err_disable_hw_ahb_clock:
--	iris_disable_unprepare_clock(core, IRIS_HW_AHB_CLK);
- err_disable_hw_clock:
- 	iris_disable_unprepare_clock(core, IRIS_HW_CLK);
- err_disable_power:
-@@ -308,6 +302,16 @@ err_disable_power:
- 	return ret;
- }
- 
-+int iris_vpu_set_hwmode(struct iris_core *core)
-+{
-+	return dev_pm_genpd_set_hwmode(core->pmdomain_tbl->pd_devs[IRIS_HW_POWER_DOMAIN], true);
-+}
-+
-+int iris_vpu_switch_to_hwmode(struct iris_core *core)
-+{
-+	return core->iris_platform_data->vpu_ops->set_hwmode(core);
-+}
-+
- int iris_vpu35_vpu4x_power_off_controller(struct iris_core *core)
+-			if (br_is_neigh_suppress_enabled(f->dst, vid)) {
++			if (br_is_neigh_suppress_enabled(dst, vid)) {
+ 				if (vid != 0)
+ 					br_nd_send(br, p, skb, n,
+ 						   skb->vlan_proto,
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -246,6 +246,7 @@ struct net_device *br_fdb_find_port(cons
+ 				    const unsigned char *addr,
+ 				    __u16 vid)
  {
- 	u32 clk_rst_tbl_size = core->iris_platform_data->clk_rst_tbl_size;
---- a/drivers/media/platform/qcom/iris/iris_vpu_common.h
-+++ b/drivers/media/platform/qcom/iris/iris_vpu_common.h
-@@ -21,6 +21,7 @@ struct vpu_ops {
- 	int (*power_on_controller)(struct iris_core *core);
- 	void (*program_bootup_registers)(struct iris_core *core);
- 	u64 (*calc_freq)(struct iris_inst *inst, size_t data_size);
-+	int (*set_hwmode)(struct iris_core *core);
- };
++	const struct net_bridge_port *dst;
+ 	struct net_bridge_fdb_entry *f;
+ 	struct net_device *dev = NULL;
+ 	struct net_bridge *br;
+@@ -258,8 +259,11 @@ struct net_device *br_fdb_find_port(cons
+ 	br = netdev_priv(br_dev);
+ 	rcu_read_lock();
+ 	f = br_fdb_find_rcu(br, addr, vid);
+-	if (f && f->dst)
+-		dev = f->dst->dev;
++	if (f) {
++		dst = READ_ONCE(f->dst);
++		if (dst)
++			dev = dst->dev;
++	}
+ 	rcu_read_unlock();
  
- int iris_vpu_boot_firmware(struct iris_core *core);
-@@ -30,6 +31,8 @@ int iris_vpu_watchdog(struct iris_core *
- int iris_vpu_prepare_pc(struct iris_core *core);
- int iris_vpu_power_on_controller(struct iris_core *core);
- int iris_vpu_power_on_hw(struct iris_core *core);
-+int iris_vpu_set_hwmode(struct iris_core *core);
-+int iris_vpu_switch_to_hwmode(struct iris_core *core);
- int iris_vpu_power_on(struct iris_core *core);
- int iris_vpu_power_off_controller(struct iris_core *core);
- void iris_vpu_power_off_hw(struct iris_core *core);
+ 	return dev;
+@@ -349,7 +353,7 @@ static void fdb_delete_local(struct net_
+ 		vg = nbp_vlan_group(op);
+ 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
+ 		    (!vid || br_vlan_find(vg, vid))) {
+-			f->dst = op;
++			WRITE_ONCE(f->dst, op);
+ 			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
+ 			return;
+ 		}
+@@ -360,7 +364,7 @@ static void fdb_delete_local(struct net_
+ 	/* Maybe bridge device has same hw addr? */
+ 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
+ 	    (!vid || (v && br_vlan_should_use(v)))) {
+-		f->dst = NULL;
++		WRITE_ONCE(f->dst, NULL);
+ 		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
+ 		return;
+ 	}
+@@ -790,6 +794,7 @@ int br_fdb_test_addr(struct net_device *
+ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
+ 		   unsigned long maxnum, unsigned long skip)
+ {
++	const struct net_bridge_port *dst;
+ 	struct net_bridge_fdb_entry *f;
+ 	struct __fdb_entry *fe = buf;
+ 	unsigned long delta;
+@@ -806,7 +811,8 @@ int br_fdb_fillbuf(struct net_bridge *br
+ 			continue;
+ 
+ 		/* ignore pseudo entry for local MAC address */
+-		if (!f->dst)
++		dst = READ_ONCE(f->dst);
++		if (!dst)
+ 			continue;
+ 
+ 		if (skip) {
+@@ -818,8 +824,8 @@ int br_fdb_fillbuf(struct net_bridge *br
+ 		memcpy(fe->mac_addr, f->key.addr.addr, ETH_ALEN);
+ 
+ 		/* due to ABI compat need to split into hi/lo */
+-		fe->port_no = f->dst->port_no;
+-		fe->port_hi = f->dst->port_no >> 8;
++		fe->port_no = dst->port_no;
++		fe->port_hi = dst->port_no >> 8;
+ 
+ 		fe->is_local = test_bit(BR_FDB_LOCAL, &f->flags);
+ 		if (!test_bit(BR_FDB_STATIC, &f->flags)) {
+@@ -940,9 +946,11 @@ int br_fdb_dump(struct sk_buff *skb,
+ 
+ 	rcu_read_lock();
+ 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
++		const struct net_bridge_port *dst = READ_ONCE(f->dst);
++
+ 		if (*idx < cb->args[2])
+ 			goto skip;
+-		if (filter_dev && (!f->dst || f->dst->dev != filter_dev)) {
++		if (filter_dev && (!dst || dst->dev != filter_dev)) {
+ 			if (filter_dev != dev)
+ 				goto skip;
+ 			/* !f->dst is a special case for bridge
+@@ -950,10 +958,10 @@ int br_fdb_dump(struct sk_buff *skb,
+ 			 * Therefore need a little more filtering
+ 			 * we only want to dump the !f->dst case
+ 			 */
+-			if (f->dst)
++			if (dst)
+ 				goto skip;
+ 		}
+-		if (!filter_dev && f->dst)
++		if (!filter_dev && dst)
+ 			goto skip;
+ 
+ 		err = fdb_fill_info(skb, br, f,
 
 
 
