@@ -1,195 +1,162 @@
-Return-Path: <stable+bounces-248910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YP+ZGhyCB2qQ5gIAu9opvQ
-	(envelope-from <stable+bounces-248910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 22:29:16 +0200
+	id sEqEIeCDB2p06gIAu9opvQ
+	(envelope-from <stable+bounces-248911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 22:36:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AF45576DB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 22:29:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0411F5577EF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 22:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5C8AD3009CFD
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:29:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0BEF2300E3FD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486E03E2757;
-	Fri, 15 May 2026 20:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DC230C176;
+	Fri, 15 May 2026 20:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Id9Gsgf4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pF3tAhKY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CF83E171E
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 20:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408F423A9BD
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 20:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778876951; cv=none; b=jD5wTxO1FNiOWI34fxxNX5SVb2PRTBtEAM9Kf/jv5aTbSjspGqlTsAkHFwBT2eJWKFtCiDlJWe9Ps8v4XlVxqm/1ZUwjKfxd41Z1X5G8a9UlEL0/4W+CCOOfw48KN9XfyD5MeKfkMR9uPcBQIStJWMwYNQ6Akt/cs+Scug95fPw=
+	t=1778877405; cv=none; b=cLYTtOqjEnjkqQAiiHH2zLUwb6V0Ozzw/p2SK1fuZ/lUwgIGyyRDdtrV04ZLdHiTL6kVC2r40pp1yfHtZS0/cSs03gbVnvEM3JRUuK5DxF59jksjOSQUfmNCY9IERi7GNvAUX3+q6PdVAo8eJ1RXQ2dwNG1yyJ1vW1nyc2tMapk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778876951; c=relaxed/simple;
-	bh=QO6Y6YhH1LVeqeFD6+YWOTp74M9wQObDTIqOFlYfkdA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n1JI9Kozy6RgwoKXQWRmGlbrdwjcnwRm0x58t9rvKpdMQ1C1wJKn7E9UngHJytgt89h/7lRs2VQnQDX5uPrGyqwD7todJeyxMSsLKzjdD4knW4fFelDURaFinenEk1xDk9JTYnNAPdbdp8OsbUQIFyrM7/1/CRyBDOqeaidhYm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Id9Gsgf4; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1778877405; c=relaxed/simple;
+	bh=AUGauvpW8ZQdtrjJ7+4XT+ajh18tzmyPgzRezBAnS+c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aU6CyNxmpNAQJpr1oxf6HP7kHDd+F9u4ZUbVBypmHR1sSNxpwxERU6+m8Q29KgNTmNRq3C4BqPZqytJpHRU8UTF1AwI/QmbU7OGrdcIeXYtnefLvmsmNWg8T/dg4Db55t4OOE01aH/rN0F4fUapzoU+Fp0EHEyVhnmNa+yEEb2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pF3tAhKY; arc=none smtp.client-ip=74.125.82.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48e56c1bf5dso945325e9.3
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 13:29:07 -0700 (PDT)
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2f03d6cf77bso299387eec.0
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 13:36:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778876946; x=1779481746; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hB4x7rO0kWraX/2vch0MYRJ2VJ/csAYjyg45Hf0A9bM=;
-        b=Id9Gsgf4xo+DkOyIjRCfrGHsdNgvHrYDSYMtsR14oMjssim8kmGWVwlxZZ3Fi0re5t
-         jTituTfduv4P1yCCC0z7vY74+XrNaFE/8nsuMYZOEZNpnyeS4/gVGmiLzuMSmPMQeR5W
-         /5JfWvsRK/f7ue0bKMyv0l2FDEVuRDs0QyKSan8pqdQfLVVxIhJXPF0Y5kR58b1WpX/r
-         MVvG0ZdbfZxe8jKJb9qLRgIPC3WuECBmK0BE2JP8b6MkH+z78JupJig+lfrmIDVg2GDI
-         tuACxCCa8HFbmvr/4pOMJudMTYKzNRbdGk3deTCHArknmqcbA3CaNJxI+fLjBKLCgU3r
-         xNIg==
+        d=gmail.com; s=20251104; t=1778877403; x=1779482203; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=z4mFFwQJHfvlMsdIT8D+sKLdk6VQRqNMYh+zPM0xL60=;
+        b=pF3tAhKYaH0fnouX4rpJs8WUulK6h3AJCwvbdbfOXTF72QL045cJu1Tcqvgq00qupl
+         3pxmgYaHPJrqpa6K+VuIagJJ9ndthJmRcyyYaBwKkbjySXgT7eUULOuJP3qycDlTkjZQ
+         Ubh7DYQHV0KgbPymtZS+KT6l4PEVRDJAplk+bEnCqt0XLKmiHxNdyAbALXDcyaPn4ry7
+         ps+uoRM14Mkw2AC2npWeMvVaCKKiZfJotj9beSFLZfm22Ic/aiXIK/hL1qQGQ1PKjFf0
+         IBaMd+Dlsb9taMVj7JyPuvX/LZyIvhQpBGQ4+52uYdmI/J2Pf091QxPrAUYVnuvedycu
+         7RJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778876946; x=1779481746;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hB4x7rO0kWraX/2vch0MYRJ2VJ/csAYjyg45Hf0A9bM=;
-        b=Lf8Hsf8DvXMDF8C8iljByd2kJ6bhQs4zM2sCSOq9nCgtPdi+VwOJd39/gNcs4mFLHZ
-         w8sUjZ+PNbAAny0UC688qlUIJgOyq79KjcY3/W0pmwRmJ9kqYnG6bh3o2Hg3Ft/35zWn
-         EYplRELgqrWDWi/mL8xMTvwtPRsaT7INLCZsYbvSP94y6b6ssPpfUP/J9NZyRpA9uBof
-         +qEO7pbPRNGIEwl/+NnA1prx9LJiUkIrt0bKXQBOb36stKweBj11ZgLf/FUwYj/ZVyOk
-         Xs+Jg+VZNEDZ8qJxKkhh0qym/K1/56WHCmYQwQM7iqBFS15ZKa1mDXNFuOSIfsLSDcCG
-         cwpg==
-X-Forwarded-Encrypted: i=1; AFNElJ+iLvoZsjNAGhhL1YQcLMjGqqNv4KJ25A98EqmUrpDi6pD6krA0UNPDHrL/djrLzmmVYqngmj8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz25uuBhcpGGzCM/Wz5MBn+ndb7U86X9r15Pqobyqlm6u1ClcbK
-	+HgXMSpOsEbooTISlD5j3nFAdx/YE26Htc1EIzF6Omw31o7ftKAk+PT4
-X-Gm-Gg: Acq92OGdwfERywm/etiXaALHGXmyMydBSgBWzwn8NviHyDeBElhRfVhhiaA6ndjTSEu
-	DcfH8VMR+22tBZapCYbBlh+fh8tdXZ3WpS+4UdcH+8HitL8VBU3ee86W3P/VBFnWOp1yQ23Wc7J
-	QTsREDX/1VoyeTxltigkChi40y7CLEws4PUC5syMvLOlK9KzhiXFDCjI92ISN/B8J6EFRUeu/Oc
-	43niNy/j80LmstA9U109EDaljifsO4ZFurJ4eOfpArKsruhnXgs7gszRJP+utJdIIQttiTg1ubn
-	zDwgi8rgZSC6Rl0yireNW30j9piKvW7C6E6u9h8+mRj1km48upZK8WMkIwVxMC3cUGtfHT6H0im
-	wqnX5qB/UeUVTocnNlSHqLmc9UXJy3twpLNXbT1iNMq8LNRjxgUzR5eC/ODTFZKUhDZnPE0cM6f
-	prDSxpLw1sG8mm6t8e2U38BvMNZOu5L2m8BUrJuUrqqZrifBw/29Q3aiHNhRwyHACxP0b5tQcdB
-	uk4fFKlObmCZ+UqFPIvOQ==
-X-Received: by 2002:a05:600c:a406:b0:48f:e230:1d12 with SMTP id 5b1f17b1804b1-48fe6329913mr66632025e9.31.1778876945902;
-        Fri, 15 May 2026 13:29:05 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0fe0f72sm18422463f8f.25.2026.05.15.13.29.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 13:29:05 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	joshua.hahnjy@gmail.com,
-	mawupeng1@huawei.com,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	David Carlier <devnexen@gmail.com>
-Subject: [PATCH] mm/hugetlb: restore subpool used_hpages on alloc_hugetlb_folio error
-Date: Fri, 15 May 2026 21:29:02 +0100
-Message-ID: <20260515202902.461539-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20251104; t=1778877403; x=1779482203;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=z4mFFwQJHfvlMsdIT8D+sKLdk6VQRqNMYh+zPM0xL60=;
+        b=Y06qN5PX2NapPgEfhrBp7VLrXRwDC75btEkwCsHYQkigk5BXx5noyRD/uvkVOoyDq1
+         XSjOSrrHgO7YE+lATBi6m1UkI0gx4PNwVyp9nRGNBheIjL/EzcF7HuPICvxqk8rFPonA
+         uze65qRbkQXUmHf+2VcCVKEr8L+u7OwrYWgjfZQZxNYODFLsLZF1YBz1FcLiChNX+4kv
+         YBM2+2TZ2CqSUmumOcNnQ3syLJ3ahn5EM5Qd41AJttPu+Op2M+mpBRkQPK6xWm8jy2g0
+         tuMNj3MRgOND/sbb6GNx0m5jH9ltAJqzja3tdxjHw1VC5smLRfkcr6beBrLGPpvtJVUq
+         jzSw==
+X-Forwarded-Encrypted: i=1; AFNElJ9ewbLS5q6xZhyRYb1+Rn7/RsEkddJVLg1yXxk/XpwGytb2lvTGyVBg+ElMB1RBCPnArGLkJwg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJJWf2B3Q+kM3sbfrPernA0pxmbUDTKHRpLB4s3v6j4bqYjHLa
+	dGpKyMNA3rByJIrL5RIWGiObH1mbAUBzQsErc7+8TYCeCtJ0n31pqref
+X-Gm-Gg: Acq92OEq+8Tpj9BatCvTLRK+z33OXm73Uhpk1+U9kkhHnxPWMDeTnAvqXERJFL72/pR
+	UTHOCQh8lGkdXLTdiQQgraIOFM+KL2XCNf/jV96on79IWdY8ompPgwScyrcxOq+LkDkvbkhCdAi
+	zl8AhL1RLk9Nu1DDSBRttY7xSpVMCQE0ulOP+wyrMRDaYu++oxz+dZ7oFpkjGAVCu5m8E2o88I7
+	bPObAtX7NOPkZXo6Tn2CkoIQnY65GkWg31JW+Q0Ro92w+9lkpaPJTCxvHT1pPmT7ii619WXm8Vs
+	Q+3ZNRt9bfKgDdIFhccpnZ6ZTsJG0NYR7/3e62Zs+1b5RNVmn6EPvFPX9YWzk+dd99sotRexfEi
+	q3SWTcnXphliuNpKdC4/W1PcFnGdERMAH2K/yZStAczAJDFBWEFbitZFbrJQQhGqIk6P1/2+HwR
+	cLJD3uKRk4zUmxSMetySt3iCijyNk6PwbD7JyEoLlgnploJmyt2Q==
+X-Received: by 2002:a05:7301:644b:b0:2f0:4268:bc42 with SMTP id 5a478bee46e88-3039869954amr2698850eec.25.1778877403273;
+        Fri, 15 May 2026 13:36:43 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30293e2ea6dsm8188616eec.4.2026.05.15.13.36.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 May 2026 13:36:42 -0700 (PDT)
+Message-ID: <74244fcd-5ff3-4886-a28d-fcaa49a91a6f@gmail.com>
+Date: Fri, 15 May 2026 13:36:35 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 15AF45576DB
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.0 000/201] 7.0.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260515154658.538039039@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0411F5577EF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.dev,suse.de,kernel.org,gmail.com,huawei.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-248911-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248910-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Commit a833a693a490 added a !gbl_chg guard around the
-hugepage_subpool_put_pages() call in alloc_hugetlb_folio()'s
-out_subpool_put path so a failed allocation wouldn't drive
-h->resv_huge_pages negative.  But hugepage_subpool_get_pages()
-increments spool->used_hpages whenever max_hpages != -1, regardless
-of whether the request was satisfied from subpool reserves or needs
-global pages.  When gbl_chg > 0 and a later step fails (cgroup
-charge, dequeue, buddy alloc), used_hpages is never put back.
+On 5/15/26 08:46, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.0.9 release.
+> There are 201 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 17 May 2026 15:46:37 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Each such failure leaks one count; eventually used_hpages reaches
-max_hpages and the subpool refuses every further allocation even
-though no pages are held.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Commit 1d3f9bb4c8af fixed the same defect in hugetlb_reserve_pages();
-apply the equivalent restore here, guarded by spool and max_hpages.
-
-Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Wupeng Ma <mawupeng1@huawei.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: <stable@vger.kernel.org>
----
- mm/hugetlb.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index cfb7cb2e9806..9614330889de 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3010,9 +3010,22 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	 * put page to subpool iff the quota of subpool's rsv_hpages is used
- 	 * during hugepage_subpool_get_pages.
- 	 */
--	if (map_chg && !gbl_chg) {
--		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
--		hugetlb_acct_memory(h, -gbl_reserve);
-+	if (map_chg) {
-+		/*
-+		 * Put used_hpages back for the global portion of the request that
-+		 * was never actually consumed; restore the subpool-reservation
-+		 * portion via hugepage_subpool_put_pages() so rsv_hpages is rebuilt.
-+		 */
-+		if (!gbl_chg) {
-+			gbl_reserve = hugepage_subpool_put_pages(spool, 1);
-+			hugetlb_acct_memory(h, -gbl_reserve);
-+		} else if (spool && spool->max_hpages != -1) {
-+			unsigned long flags;
-+
-+			spin_lock_irqsave(&spool->lock, flags);
-+			spool->used_hpages -= 1;
-+			unlock_or_release_subpool(spool, flags);
-+		}
- 	}
- 
- 
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.53.0
-
+Florian
 
