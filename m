@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMneAtNTB2oqywIAu9opvQ
-	(envelope-from <stable+bounces-248715-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:11:47 +0200
+	id EDW1GRBXB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89705554930
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:11:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6571554FD2
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B09E1312D5C6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 62953335349B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85893F9297;
-	Fri, 15 May 2026 16:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259033F44DA;
+	Fri, 15 May 2026 16:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EliuyFg1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnuJIHXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC563F927B;
-	Fri, 15 May 2026 16:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0B23F44CE;
+	Fri, 15 May 2026 16:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862443; cv=none; b=LPgMsfuPqYq4DDUSkIwwtmhkDm2lS6s0IdNnuj1tKR43pZ7oRV86AsBdk1bZmcZwmX27wZzleVoT8K+TsS0Je3z1eGHDGcssZKhMGbftJsII021UG7INchSDw00oCNOxWR5TKYNcDEPv4weRepscqZKnXfsrhbo6uTVOj2yM4Uk=
+	t=1778861957; cv=none; b=mOdxlRd6ah0RdBHe9fyy4a4Y0wH0hx/pVdAJOOiwWLUGw53v6kqEzpBGPGbu3fzvEDb1cH4jkWUU+RC0fy4xVZvC/kTQsXV4is16BPQbc5g1eklRtiFurZMNiQpY5NMHj+4hBZYeUFznXMz488e4IhPU7/GHC49cFKNThDCCVqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862443; c=relaxed/simple;
-	bh=qAEcn+T07j6w5GBKqPPiV/VSBrOYR8J2B/VQn4J4Yrs=;
+	s=arc-20240116; t=1778861957; c=relaxed/simple;
+	bh=NUQav8ldPZrS1Pa5AHchXySaTmjU5vb+8wkQr26vPd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMpEshY3budP5tm3LUOqViStOryptkxlwASCMjtVFH75quV8cuOJ+s1xzvPQgGyxfE0xEACBePh8VnOmIm//KoY32SHN5Z4xF5/mex23FOf1gcGP265oDiphRV6GIZEFKz6fXn0u0kw3F+7EOwi4S8jlyMx8LUqy7h5mbWiYEns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EliuyFg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8C3C2BCB0;
-	Fri, 15 May 2026 16:27:22 +0000 (UTC)
+	 MIME-Version; b=W3Q3euacqjU7Np6umgCCd3xhrscL9RqXjklQtSWfhUmDVakQWkopvJKzfYG8DEoWGNZ1eY3wGX+YST366R4QCbNHa9jdNzC2sQXMwFb4ln1F9oImcAsVolksRmIag/eiITGPRAIDIBoF2dpDq7gqqC3g4YZk7V7j2MKdagWg/R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnuJIHXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D36C2BCC7;
+	Fri, 15 May 2026 16:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862443;
-	bh=qAEcn+T07j6w5GBKqPPiV/VSBrOYR8J2B/VQn4J4Yrs=;
+	s=korg; t=1778861957;
+	bh=NUQav8ldPZrS1Pa5AHchXySaTmjU5vb+8wkQr26vPd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EliuyFg1tqJuqA+LynxzPDU4tofGuBFuJzSWxPS/Rg5We7zZ1bGi7uO3931XTCDP3
-	 47rp+difInWLUqlwQRd15eLfkKMjfoCPUaGTOY66g786jS+ZSjoyQfDAKBQl+hQ42C
-	 MtAcYETxxvZSqRTGTM37UXT/jLQ4Lnpofm4SQi0k=
+	b=JnuJIHXpLOf6PzLlfiCnspyXlxWTYl7fEK+7I/jedayoo1UhsMoqmpkGpsyzDjAAA
+	 3a2rB05sTuHP1elN+P0OiX2n6s5edzmUW7Hc343IATUHJ/skPXPLVDv85XsW8o+d6h
+	 LbI9FfY71LK/K/640PIKlCiYzbVfIExF2TruSvdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 051/201] spi: meson-spicc: fix controller deregistration
+	Matthias Fend <matthias.fend@emfend.at>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 052/188] media: i2c: ov08d10: fix image vertical start setting
 Date: Fri, 15 May 2026 17:47:49 +0200
-Message-ID: <20260515154659.640560131@linuxfoundation.org>
+Message-ID: <20260515154658.443910644@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +64,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 89705554930
+X-Rspamd-Queue-Id: D6571554FD2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248527-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248715-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[emfend.at:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Matthias Fend <matthias.fend@emfend.at>
 
-commit 77953c76bec9af4191f8692a10225dd816208718 upstream.
+commit 5d150fa0f16096d736bd24d13e04495da5116fab upstream.
 
-Make sure to deregister the controller before disabling it to allow SPI
-device drivers to do I/O during deregistration.
+The current settings for the "image vertical start" register appear to be
+incorrect. While this only results in an incorrect start line for native
+modes, this faulty setting causes actual problems in binning mode. At least
+on an i.MX8MP test system, only corrupted frames could be received.
+To correct this, the recommended settings from the reference register sets
+are used for all modes. Since this shifts the start by one line, the Bayer
+pattern also changes, which has also been corrected.
 
-Fixes: 454fa271bc4e ("spi: Add Meson SPICC driver")
-Cc: stable@vger.kernel.org	# 4.13
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-18-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7be91e02ed57 ("media: i2c: Add ov08d10 camera sensor driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-meson-spicc.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/i2c/ov08d10.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/spi/spi-meson-spicc.c
-+++ b/drivers/spi/spi-meson-spicc.c
-@@ -1081,7 +1081,7 @@ static int meson_spicc_probe(struct plat
- 		}
- 	}
- 
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "spi registration failed\n");
- 		goto out_host;
-@@ -1099,8 +1099,14 @@ static void meson_spicc_remove(struct pl
+--- a/drivers/media/i2c/ov08d10.c
++++ b/drivers/media/i2c/ov08d10.c
+@@ -217,7 +217,7 @@ static const struct ov08d10_reg lane_2_m
+ 	{0x9a, 0x30},
+ 	{0xa8, 0x02},
+ 	{0xfd, 0x02},
+-	{0xa1, 0x01},
++	{0xa1, 0x00},
+ 	{0xa2, 0x09},
+ 	{0xa3, 0x9c},
+ 	{0xa5, 0x00},
+@@ -335,7 +335,7 @@ static const struct ov08d10_reg lane_2_m
+ 	{0x9a, 0x30},
+ 	{0xa8, 0x02},
+ 	{0xfd, 0x02},
+-	{0xa1, 0x09},
++	{0xa1, 0x08},
+ 	{0xa2, 0x09},
+ 	{0xa3, 0x90},
+ 	{0xa5, 0x08},
+@@ -467,7 +467,7 @@ static const struct ov08d10_reg lane_2_m
+ 	{0xaa, 0xd0},
+ 	{0xab, 0x06},
+ 	{0xac, 0x68},
+-	{0xa1, 0x09},
++	{0xa1, 0x04},
+ 	{0xa2, 0x04},
+ 	{0xa3, 0xc8},
+ 	{0xa5, 0x04},
+@@ -613,8 +613,8 @@ static const struct ov08d10_lane_cfg lan
+ static u32 ov08d10_get_format_code(struct ov08d10 *ov08d10)
  {
- 	struct meson_spicc_device *spicc = platform_get_drvdata(pdev);
+ 	static const u32 codes[2][2] = {
+-		{ MEDIA_BUS_FMT_SGRBG10_1X10, MEDIA_BUS_FMT_SRGGB10_1X10},
+-		{ MEDIA_BUS_FMT_SBGGR10_1X10, MEDIA_BUS_FMT_SGBRG10_1X10},
++		{ MEDIA_BUS_FMT_SBGGR10_1X10, MEDIA_BUS_FMT_SGBRG10_1X10 },
++		{ MEDIA_BUS_FMT_SGRBG10_1X10, MEDIA_BUS_FMT_SRGGB10_1X10 },
+ 	};
  
-+	spi_controller_get(spicc->host);
-+
-+	spi_unregister_controller(spicc->host);
-+
- 	/* Disable SPI */
- 	writel(0, spicc->base + SPICC_CONREG);
-+
-+	spi_controller_put(spicc->host);
- }
- 
- static const struct meson_spicc_data meson_spicc_gx_data = {
+ 	return codes[ov08d10->vflip->val][ov08d10->hflip->val];
 
 
 
