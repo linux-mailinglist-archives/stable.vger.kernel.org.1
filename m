@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-248265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mETZIVlVB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:18:17 +0200
+	id 6MO8BQxLB2q5wwIAu9opvQ
+	(envelope-from <stable+bounces-248267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:34:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2411F554C37
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E5C5537C5
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CE6EA31F3C37
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:11:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13BEC31F3F7E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316D73C0A13;
-	Fri, 15 May 2026 16:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583A9303CB0;
+	Fri, 15 May 2026 16:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3qR57ck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpiOllY9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B26303CB0;
-	Fri, 15 May 2026 16:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1788E3E7BAD;
+	Fri, 15 May 2026 16:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861294; cv=none; b=paP6F+UCwFxASyKjncNEr9pUR+wie8rWFs/WwuUh1USnM1IjO4dn9S8Erq2Srxi42rTwegjxXwSbL8gauaRO9LHvaHQOlyCQlcYB+y+mZVCGYm8x6RPPNjaJXD2YKykSVuLVrc+qSNVF/jfcwWeTc3A/FjXRVn3IE8d8e3gnAOs=
+	t=1778861299; cv=none; b=LAb+gcIkhdlks3iYohbabHcsk43rGmh1yO8WJhvoOgjkQal/2qvSPRBHALN3cLQ9Q/zTsWCyTbqEPBd1AHxtkmQl6KKlsfev3I2Nj1mBvLPy/PGk/5Xq9FDWJ62/uhInTpNR/KieJzGEaEB6M2/4GEL/b8mEE1J7Al3wwYf4EzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861294; c=relaxed/simple;
-	bh=LNLQQ5Qn6VIaexJn5O6fqAo47uZ2Fp2N0zce9vvGs1w=;
+	s=arc-20240116; t=1778861299; c=relaxed/simple;
+	bh=txce+FZWzWpzi7ewNT3Mq45trVS2SVNqaOmoRFrJue8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnP1wEg1ms/rONmQRABMxX6c4pLkT4gEi/atoK6CAcOpj/f8mRlBztQOmQNpYMCBMHb17MvJDAbQCwNu14nD8Och27By59JmMKC98Wtayk5bMH3+YG0BLSX6y3Ki8zeeFR6Wb31tsKdQE3mXZgBP4dtYNIXrXT0A+gq+hojwSYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3qR57ck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1FEC2BCB0;
-	Fri, 15 May 2026 16:08:13 +0000 (UTC)
+	 MIME-Version; b=bv+/nGYLIYhXcLjjmuF+fRVwfuANkH7cadg/pIVvqigvMDnqfHuHzJ9Bc2dd/g3MkpuY6wqwaMr9wPnKts9ZmG1AqcVrUqiDOd1KBtwv4ywbbb0VghKQAqAeZaLC9l612mAoDM6/D9MrRZB8ufEpafk6W2Vfwb1xK1Absh67/sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpiOllY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A275DC2BCB0;
+	Fri, 15 May 2026 16:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861293;
-	bh=LNLQQ5Qn6VIaexJn5O6fqAo47uZ2Fp2N0zce9vvGs1w=;
+	s=korg; t=1778861299;
+	bh=txce+FZWzWpzi7ewNT3Mq45trVS2SVNqaOmoRFrJue8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3qR57ck35s8XZMoo7ZwVpEzOaEKYBMa7IpS9s1UPyJwplojCOqk5O84jCqXR4TtU
-	 lUuiM89vt54nSJ5lYiYwG0Ijjtc5ALTROTzQOcx3aOu3edxH4+PZKjevPwSzITBRGZ
-	 I2zlAhqXe8bUgDWWN9UJaGUjlhlUWTM5BUw1Fokc=
+	b=GpiOllY9ugPhmzx1n4Nbh+Yacl/RTl9VGUmvYBa+GPbWlqv6IsxlHbrYe7cZboayy
+	 MCcaa8LHk9jmLFlpL/KZ60aeIHE+ByRb1BwdF23ebzIJapS9XKgdyP3VRM9+NGE387
+	 G809QUnz4rSOii+Xu/RqjbF54bPeNhU1iV9yqorQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxi Qian <qjx1298677004@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 273/474] mm/damon/sysfs-schemes: protect memcg_path kfree() with damon_sysfs_lock
-Date: Fri, 15 May 2026 17:46:22 +0200
-Message-ID: <20260515154720.908473342@linuxfoundation.org>
+	Lukas Wunner <lukas@wunner.de>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCH 6.6 274/474] PCI/AER: Clear only error bits in PCIe Device Status
+Date: Fri, 15 May 2026 17:46:23 +0200
+Message-ID: <20260515154720.930799402@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -64,111 +65,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2411F554C37
+X-Rspamd-Queue-Id: 95E5C5537C5
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248265-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248267-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email,wunner.de:email]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 1e68eb96e8beb1abefd12dd22c5637795d8a877e upstream.
+commit a8aeea1bf3c80cc87983689e0118770e019bd4f3 upstream.
 
-Patch series "mm/damon/sysfs-schemes: fix use-after-free for [memcg_]path".
+Currently, pcie_clear_device_status() clears the entire PCIe Device Status
+register (PCI_EXP_DEVSTA) by writing back the value read from the register,
+which affects not only the error status bits but also other writable bits.
 
-Reads of 'memcg_path' and 'path' files in DAMON sysfs interface could race
-with their writes, results in use-after-free.  Fix those.
+According to PCIe r7.0, sec 7.5.3.5, this register contains:
 
+  - RW1C error status bits (CED, NFED, FED, URD at bits 0-3): These are the
+    four error status bits that need to be cleared.
 
-This patch (of 2):
+  - Read-only bits (AUXPD at bit 4, TRPND at bit 5): Writing to these has
+    no effect.
 
-damon_sysfs_scheme_filter->mmecg_path can be read and written by users,
-via DAMON sysfs memcg_path file.  It can also be indirectly read, for the
-parameters {on,off}line committing to DAMON.  The reads for parameters
-committing are protected by damon_sysfs_lock to avoid the sysfs files
-being destroyed while any of the parameters are being read.  But the
-user-driven direct reads and writes are not protected by any lock, while
-the write is deallocating the memcg_path-pointing buffer.  As a result,
-the readers could read the already freed buffer (user-after-free).  Note
-that the user-reads don't race when the same open file is used by the
-writer, due to kernfs's open file locking.  Nonetheless, doing the reads
-and writes with separate open files would be common.  Fix it by protecting
-both the user-direct reads and writes with damon_sysfs_lock.
+  - Emergency Power Reduction Detected (bit 6): A RW1C non-error bit
+    introduced in PCIe r5.0 (2019). This is currently the only writable
+    non-error bit in the Device Status register. Unconditionally clearing
+    this bit can interfere with other software components that rely on this
+    power management indication.
 
-Link: https://lore.kernel.org/20260423150253.111520-1-sj@kernel.org
-Link: https://lore.kernel.org/20260423150253.111520-2-sj@kernel.org
-Fixes: 4f489fe6afb3 ("mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write")
-Co-developed-by: Junxi Qian <qjx1298677004@gmail.com>
-Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.16.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+  - Reserved bits (RsvdZ): These bits are required to be written as zero.
+    Writing 1s to them (as the current implementation may do) violates the
+    specification.
+
+To prevent unintended side effects, modify pcie_clear_device_status() to
+only write 1s to the four error status bits (CED, NFED, FED, URD), leaving
+the Emergency Power Reduction Detected bit and reserved bits unaffected.
+
+Fixes: ec752f5d54d7 ("PCI/AER: Clear device status bits during ERR_FATAL and ERR_NONFATAL")
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260211124624.49656-1-xueshuai@linux.alibaba.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs-schemes.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/pci/pci.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -360,9 +360,14 @@ static ssize_t memcg_path_show(struct ko
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2426,10 +2426,9 @@ EXPORT_SYMBOL_GPL(pci_set_pcie_reset_sta
+ #ifdef CONFIG_PCIEAER
+ void pcie_clear_device_status(struct pci_dev *dev)
  {
- 	struct damon_sysfs_scheme_filter *filter = container_of(kobj,
- 			struct damon_sysfs_scheme_filter, kobj);
-+	int len;
- 
--	return sysfs_emit(buf, "%s\n",
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+	len = sysfs_emit(buf, "%s\n",
- 			filter->memcg_path ? filter->memcg_path : "");
-+	mutex_unlock(&damon_sysfs_lock);
-+	return len;
+-	u16 sta;
+-
+-	pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &sta);
+-	pcie_capability_write_word(dev, PCI_EXP_DEVSTA, sta);
++	pcie_capability_write_word(dev, PCI_EXP_DEVSTA,
++				   PCI_EXP_DEVSTA_CED | PCI_EXP_DEVSTA_NFED |
++				   PCI_EXP_DEVSTA_FED | PCI_EXP_DEVSTA_URD);
  }
- 
- static ssize_t memcg_path_store(struct kobject *kobj,
-@@ -376,8 +381,13 @@ static ssize_t memcg_path_store(struct k
- 		return -ENOMEM;
- 
- 	strscpy(path, buf, count + 1);
-+	if (!mutex_trylock(&damon_sysfs_lock)) {
-+		kfree(path);
-+		return -EBUSY;
-+	}
- 	kfree(filter->memcg_path);
- 	filter->memcg_path = path;
-+	mutex_unlock(&damon_sysfs_lock);
- 	return count;
- }
+ #endif
  
 
 
