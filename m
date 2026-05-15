@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDPsMD9PB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248710-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:15 +0200
+	id YD/XFcNJB2rqwgIAu9opvQ
+	(envelope-from <stable+bounces-248312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:28:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B95D5540FD
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D450553429
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 42B0830EE507
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 32B4530356AC
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6875A4E379F;
-	Fri, 15 May 2026 16:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996AC48AE18;
+	Fri, 15 May 2026 16:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="we5nlg9U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gv4XEjRc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4783F927A;
-	Fri, 15 May 2026 16:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C923BB116;
+	Fri, 15 May 2026 16:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862430; cv=none; b=C/jGIuvH4Nlx6ZvS7lZUXdMXvAAd6NPgpIibK6kqef+Lb/UIbwDNvHrZIdGCeNFC4KEg5PpDna4ke0pezCUKz7r1vyIHfW8dNyNQMb9i3eO83XdrhKZoX5LZbWckFaoO7lWpm1Vox/F5YI8FXUKSkSyeeA612QiqMrLUDRlyOFc=
+	t=1778861410; cv=none; b=Dh7wPjzBUjtgz9iYDgVB5VBZCaRjlkaiDB9JT1l3IVBvks75R8cSh0D1TUt1CDyB2RnSZA4FaBUBqtSn7HtWDlmd7uCLkvMCNnfZHE/PZtsKSEArzfqHW3JCmoLBgDtmjGUlHcROW2UYfiH/8qSebESg6UEhCyOOk7ZLfTt9OZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862430; c=relaxed/simple;
-	bh=Vh0ogmnOzRiOXJDmfsf26WgCOGeOcqHP0ga2pGuNt2c=;
+	s=arc-20240116; t=1778861410; c=relaxed/simple;
+	bh=4otF4xXDaXoBYADaYdbH40vRjFgDDa0v/7jy68nHnzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fiPywHpVwn6tr95ekdlWaQA3Mrr9TwhWwEFK87eGOgaTY0YawuAjBdAvS69kdAB6U3xsTZ95PxMYU4om206qtvEltTrUVp10jWAgmohHLO6un52Y1u4fnNv18IGH+qiT9rLGHxaxPxf1Jyr2io6gvv3Kehsz3YY6bE8Sda2O7eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=we5nlg9U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FD0C2BCB0;
-	Fri, 15 May 2026 16:27:09 +0000 (UTC)
+	 MIME-Version; b=K0G4lYeqiSJY/xGAqdT2EpTYTGuMro09FkHL93E2zo4rAPj5arA78CP7cONtGaOFJ9xiYbkmuy6iAFDPNsMoEy1/hKxfhiwzmqvwiIbg/6PvbkzuylQzB0MNcbI+xOsvPsjADh4wKlqOjieo8y/HxivGItOTVFQUra1deJ97iAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gv4XEjRc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCF3C2BCB0;
+	Fri, 15 May 2026 16:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862430;
-	bh=Vh0ogmnOzRiOXJDmfsf26WgCOGeOcqHP0ga2pGuNt2c=;
+	s=korg; t=1778861410;
+	bh=4otF4xXDaXoBYADaYdbH40vRjFgDDa0v/7jy68nHnzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=we5nlg9U7+UfnkOMFh4jI7AK5oxC2kqhMf5Fdz9kLizX4K3PXdo1VZAA81qszxrn/
-	 yim+zlwAEbdvqPD45CV0ef3/HmTEqiN524VeXKpeYp/gn0M1kIHmCVDW7YCow+TpeG
-	 yDBbZ3ITpX9F/RwfUgLGq9uvrUJ75d7EozvEQD4I=
+	b=Gv4XEjRcHT3UcksfquvCGgkdfLy8w+p2TucZOEn0HFqttZkSCDsRx5nuwrwWnk/Dk
+	 hORd76ZTrAL8utUGvUFFNB3Ous94GVimo1SnkMJnWesaeDYZCZd0F5tDdRiqLCiNqB
+	 DyoAPIj8U6QENUIUkm3VnqyZqNwS9uZb95nF5g+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 009/201] media: rzv2h-ivc: Avoid double job scheduling
+	Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.6 318/474] media: i2c: imx412: Assert reset GPIO during probe
 Date: Fri, 15 May 2026 17:47:07 +0200
-Message-ID: <20260515154658.739059883@linuxfoundation.org>
+Message-ID: <20260515154721.892742999@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6B95D5540FD
+X-Rspamd-Queue-Id: 0D450553429
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248710-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248312-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -89,91 +89,46 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas,cisco];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,huawei];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ideasonboard.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+From: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
 
-commit b1de0940a19c1b0001425f8069d6a82369986af7 upstream.
+commit 8467c5ff5acae28513bc1e0af535e06b41b04344 upstream.
 
-The scheduling of a new buffer transfer in the IVC driver is triggered
-by two occurrences of the "frame completed" interrupt.
+Assert the reset GPIO before first power up. This avoids a mismatch where
+the first power up (when the reset GPIO defaults deasserted) differs from
+subsequent cycles.
 
-The first interrupt occurrence identifies when all image data have been
-transferred to the ISP, the second occurrence identifies when the
-post-transfer VBLANK has completed and a new buffer can be transferred.
-
-Under heavy system load conditions the actual execution of the workqueue
-item might be delayed and two items might happen to run concurrently,
-leading to a new frame transfer being triggered while the previous one
-has not yet finished.
-
-This error condition is only visible because the driver maintains a
-status variable that counts the number of interrupts since the last
-transfer, and warns in case an IRQ happens before the counter has been
-reset.
-
-To ensure sequential execution of the worqueue items and avoid a double
-buffer transfer to run concurrently, protect the whole function body
-with the spinlock that so far was solely used to reset the counter and
-inspect the interrupt counter variable at the beginning of the buffer
-transfer function.
-
-As soon as the ongoing transfer completes, the workqueue item will be
-re-scheduled and will consume the pending buffer.
-
+Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+Fixes: 9214e86c0cc1 ("media: i2c: Add imx412 camera sensor driver")
 Cc: stable@vger.kernel.org
-Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/media/i2c/imx412.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-+++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
-@@ -149,6 +149,11 @@ static void rzv2h_ivc_transfer_buffer(st
- 					     buffers.work);
- 	struct rzv2h_ivc_buf *buf;
+--- a/drivers/media/i2c/imx412.c
++++ b/drivers/media/i2c/imx412.c
+@@ -934,7 +934,7 @@ static int imx412_parse_hw_config(struct
  
-+	guard(spinlock_irqsave)(&ivc->spinlock);
-+
-+	if (ivc->vvalid_ifp)
-+		return;
-+
- 	/* Setup buffers */
- 	scoped_guard(spinlock_irqsave, &ivc->buffers.lock) {
- 		buf = list_first_entry_or_null(&ivc->buffers.queue,
-@@ -164,9 +169,7 @@ static void rzv2h_ivc_transfer_buffer(st
- 	buf->addr = vb2_dma_contig_plane_dma_addr(&buf->vb.vb2_buf, 0);
- 	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_AXIRX_SADDL_P0, buf->addr);
- 
--	scoped_guard(spinlock_irqsave, &ivc->spinlock) {
--		ivc->vvalid_ifp = 2;
--	}
-+	ivc->vvalid_ifp = 2;
- 	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_FM_FRCON, 0x1);
- }
- 
-@@ -201,7 +204,7 @@ static void rzv2h_ivc_buf_queue(struct v
- 	}
- 
- 	scoped_guard(spinlock_irq, &ivc->spinlock) {
--		if (vb2_is_streaming(vb->vb2_queue) && !ivc->vvalid_ifp)
-+		if (vb2_is_streaming(vb->vb2_queue))
- 			queue_work(ivc->buffers.async_wq, &ivc->buffers.work);
- 	}
- }
+ 	/* Request optional reset pin */
+ 	imx412->reset_gpio = devm_gpiod_get_optional(imx412->dev, "reset",
+-						     GPIOD_OUT_LOW);
++						     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(imx412->reset_gpio)) {
+ 		dev_err(imx412->dev, "failed to get reset gpio %ld\n",
+ 			PTR_ERR(imx412->reset_gpio));
 
 
 
