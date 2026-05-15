@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-248776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMyjD85ZB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:18 +0200
+	id wG/3AClQB2qayAIAu9opvQ
+	(envelope-from <stable+bounces-248628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:56:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4D85554F7
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 755FD554375
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:56:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 69A9831D1D56
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 961F333A7A80
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067953C2782;
-	Fri, 15 May 2026 16:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E3433B6E8;
+	Fri, 15 May 2026 16:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHtWIS63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvDdee0L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99620192D8A;
-	Fri, 15 May 2026 16:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADECA20297C;
+	Fri, 15 May 2026 16:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862601; cv=none; b=KqHj00tZuT4vfa60mkhrhXrsIYZVPmNnWwDQ2fhKm8nEXm6IPn4EyRM+vJbVYmPS3a/uJmJfseI10OsuptUWxv4J3wkjTFMF4yLPHLbmAdgXGLit/LSJSdRJSaYRpu4EdxdKLo5GJxjV+bgDIlfEY4g1kJ6HjF5SET7T29FLw9c=
+	t=1778862219; cv=none; b=aO0PI5x8hLxODaD+NCEk57bKJPb7/2Y0BhzQRz+9gmODPJ5NnD3eDsRYYIHwHp/7vLWF0laDWAy050o8CWT9jSCKmmydhhQ/WUThlW9NFqz7+lUAke24AGOaL2DU1Zswwj9N3qHHgXyeWV2zJFWBucGlUxwMBFqg0kY5Y+uYOMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862601; c=relaxed/simple;
-	bh=1mAp52+GIjL38/eyEkLcsIzEb+jNa3sP7jztDCdHmlg=;
+	s=arc-20240116; t=1778862219; c=relaxed/simple;
+	bh=bEwtz9wFEKMqSHgfST8WSFTEZdsIW9YApBNZzDskF3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgXxUD210dWNOeJ0vNZZEiLmdvQ5iJmBhR94tDuFmGBhLBqP6TaDY61xbyNPNwBr+t0+Nfpe+AmYF1EuFbMdlnhh6HNhP6sj0t5acEWMxW+0uE6AVVFNVmFgVnBBFW1Dt3rfN6m9MFxpeqReLj8W7oRbzp0XQw/sdxnv3kf/HhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHtWIS63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05157C2BCB0;
-	Fri, 15 May 2026 16:30:00 +0000 (UTC)
+	 MIME-Version; b=ebQqfIqT3cH4XOb/gqJWinhGsholYroaMecsTyzVNBrZBjMm0DpBI9Bz7vDRxtOSTGGBw1G6VFrPMmREGaE8cdITQNnB2tDkUtP3F9YWwIlFdKXLmLt0//kQIB9FhYqZlX0Ro017qRlc4uyNMnLUwrKtynogu67ejHsMVRxN65Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvDdee0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46562C2BCB0;
+	Fri, 15 May 2026 16:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862601;
-	bh=1mAp52+GIjL38/eyEkLcsIzEb+jNa3sP7jztDCdHmlg=;
+	s=korg; t=1778862219;
+	bh=bEwtz9wFEKMqSHgfST8WSFTEZdsIW9YApBNZzDskF3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AHtWIS63wZUyhRTKhzQqSteVHneHyv/r+3T7ofxqzku7WoNOQng1V5gOCWJjT6p/+
-	 L7OFwM6+9/Tq6esTRIQCZ4GY8tMpHw4iGXw84tMy9pB7/+stX3fB0IVIIEiLuPimuN
-	 JP6qJz/33tOZpbOcUEFGQYl7UYfz6byt4nPv2/0s=
+	b=CvDdee0LNq+Fh6tnpUtx8fW3toBsJkFinmo0/BCGvRsBHHooIUxO84nGFe8VRPsmu
+	 r47zzsLHt/21bj8xouI2fbWsoA5h4j7X41v1PB6h0F2YoZFSs2uWV9LSmPRcDZJIrN
+	 daSuD9JfZuWzyTg3yOOwz0wi11TAR5XPS57rbaJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Russell King <rmk+kernel@arm.linux.org.uk>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 111/201] spi: orion: fix runtime pm leak on unbind
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH 6.18 112/188] drm/gem: Fix inconsistent plane dimension calculation in drm_gem_fb_init_with_funcs()
 Date: Fri, 15 May 2026 17:48:49 +0200
-Message-ID: <20260515154700.956729724@linuxfoundation.org>
+Message-ID: <20260515154659.759613648@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,19 +63,19 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BA4D85554F7
+X-Rspamd-Queue-Id: 755FD554375
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248776-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248628-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -84,58 +83,73 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.org.uk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
 
-commit 97b17dd8266d2e26d9ee3c75a0fa34ecde6944f0 upstream.
+commit 3d4c2268bd7243c3780fe32bf24ff876da272acf upstream.
 
-Make sure to balance the runtime PM usage count on driver unbind so that
-the controller can be suspended when a driver is rebound.
+drm_gem_fb_init_with_funcs() computes sub-sampled plane dimensions
+using plain integer division:
 
-Also restore the autosuspend setting.
+  unsigned int width  = mode_cmd->width  / (i ? info->hsub : 1);
+  unsigned int height = mode_cmd->height / (i ? info->vsub : 1);
 
-This issue was flagged by Sashiko when reviewing a controller
-deregistration fix.
+However, the ioctl-level framebuffer_check() in drm_framebuffer.c uses
+drm_format_info_plane_width/height() which round up dimensions via
+DIV_ROUND_UP(). This inconsistency corrupts the subsequent GEM object
+size check for certain pixel format and dimension combinations.
 
-Fixes: 5c6786945b4e ("spi: spi-orion: add runtime PM support")
-Cc: stable@vger.kernel.org	# 3.17
-Cc: Russell King <rmk+kernel@arm.linux.org.uk>
-Link: https://sashiko.dev/#/patchset/20260414134319.978196-1-johan%40kernel.org?part=6
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260421130211.1537628-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+For example, with NV12 (vsub=2) and a 1-pixel-tall framebuffer the
+GEM size validation path sees height=0 instead of height=1. The
+expression (height - 1) then wraps to UINT_MAX as an unsigned int,
+causing min_size to overflow and wrap back to a small value. A tiny
+GEM object therefore passes the size guard, yet when the GPU accesses
+the chroma plane it will read or write memory beyond the object's
+bounds.
+
+Fix by replacing the open-coded divisions with drm_format_info_plane_width()
+and drm_format_info_plane_height(), which use DIV_ROUND_UP() and match
+the calculation already used in framebuffer_check().
+
+Fixes: 4c3dbb2c312c ("drm: Add GEM backed framebuffer library")
+Cc: stable@vger.kernel.org # v4.14+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/20260420013637.457751-1-ashutoshdesai993@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-orion.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/drm_gem_framebuffer_helper.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -811,6 +811,9 @@ static void orion_spi_remove(struct plat
- 	spi_controller_put(host);
+--- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
++++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+@@ -171,8 +171,8 @@ int drm_gem_fb_init_with_funcs(struct dr
+ 	}
  
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_put_noidle(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
- }
+ 	for (i = 0; i < info->num_planes; i++) {
+-		unsigned int width = mode_cmd->width / (i ? info->hsub : 1);
+-		unsigned int height = mode_cmd->height / (i ? info->vsub : 1);
++		unsigned int width = drm_format_info_plane_width(info, mode_cmd->width, i);
++		unsigned int height = drm_format_info_plane_height(info, mode_cmd->height, i);
+ 		unsigned int min_size;
  
- MODULE_ALIAS("platform:" DRIVER_NAME);
+ 		objs[i] = drm_gem_object_lookup(file, mode_cmd->handles[i]);
 
 
 
