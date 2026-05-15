@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247990-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNrPE4BUB2pIygIAu9opvQ
-	(envelope-from <stable+bounces-248782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:14:40 +0200
+	id gDZGOvBLB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-247990-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF834554AB5
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 443EF553A0E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D70623212A24
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0ABE31946D1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983DA324B2C;
-	Fri, 15 May 2026 16:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6965C176238;
+	Fri, 15 May 2026 15:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNASKJB6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSjUIUSU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B945311956;
-	Fri, 15 May 2026 16:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF933FF1D8;
+	Fri, 15 May 2026 15:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862617; cv=none; b=XTNzpnLpg7WgEx0XsNhmsnOT4yG4TtVO7hnYpDIsULsVvgnBGNp4SszKUN5T5ePhBVGFNDtnY+Kh/LnvgAP+Pp8PiK9DfZQaJHqFnwzKCG5O0bR8l4J9g34ZEFGrFqShParY7wseRqytxFAwUWLM+myivFLlqVAfW8whn5HBxL0=
+	t=1778860588; cv=none; b=fOpSWMQPxoVAXZPdotFY57kN41SEJhgeVGSFIgngWXGu52WrOYEIGLPYP1LJpC33ehpvurkZ9cva9GLSwlDVO71RJob1RblxuEIqjfkYHx1SZ3CbTLQjgV6mdehuYBcwteRGDM8lRllk1fjl2oZLMzx7g3vzYX0fefE4Lf2O6ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862617; c=relaxed/simple;
-	bh=h+TX+ZvyDD6GpXpvS5/HUdL5nuBhFeoH/AkmHBhjbmM=;
+	s=arc-20240116; t=1778860588; c=relaxed/simple;
+	bh=o6Of8Nd9Mlc4BKUQuMnjWio6Gg2oUToVq/I8H+0bFb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olGGZ0vrNeuYALN40F7l8vOL2Q115YI2+d0zoWwcSEvd4NNxhUONtlTVyYVgOmzt3bGj/VY67TPs9uAygygAIwl/7rPKflxFbuD1PUn219TcsiCMDvWd3bkCr6pkq71uM9t0gPcD1WTP1a/6v86B+XtvuP+kQa0NNMrf5CPJkLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNASKJB6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F532C2BCB0;
-	Fri, 15 May 2026 16:30:16 +0000 (UTC)
+	 MIME-Version; b=KoyeXTGNTSuQ9uZbWgJmD1T3NEA9jfzZf6wQHok78gbbbCBDf8WAKB2pd2fPr07IbTzVuuasgyc/GOFV4xPWoQ29TvOX+Z3vQjFeqNFaNiNQvbEJc3NOfG+TdGdMKYUtjd58ovDDUAfjVuNyb5pop69Fh6lNbF1u3j060bgDSl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSjUIUSU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7544C2BCB0;
+	Fri, 15 May 2026 15:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862617;
-	bh=h+TX+ZvyDD6GpXpvS5/HUdL5nuBhFeoH/AkmHBhjbmM=;
+	s=korg; t=1778860588;
+	bh=o6Of8Nd9Mlc4BKUQuMnjWio6Gg2oUToVq/I8H+0bFb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNASKJB6YuOONe8g/EU67RYxR8y03wCR73wqwfP9RNZlsiYRA0+gvPZ5bdNeXoex9
-	 duHPZ5paLZ5U7yBFdu8Pgjic2Ar8YvKAFtUf0q+5imJoUTDFrU2js2D9b17xWMv00t
-	 FhHaOsBs4QmxxMi8T5hIZb2nQ68MxO6RN35I3uPc=
+	b=VSjUIUSU0h/vFaxPSwjb5fg8eZUntNg3/qyDO8S3+sSzNkAy9xlvmejsi3RsHltSi
+	 08SR35MpvjWiYj2JCst7MjYKfg8VgcY8IqIL6OR0IOrltDFrLewjX6iSOJFxM7lTmZ
+	 egRWIf4w/PxmRTRmzUi+NHSO/9znIPfqIs1BZy2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harini Katakam <harinik@xilinx.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 116/201] spi: cadence: fix controller deregistration
-Date: Fri, 15 May 2026 17:48:54 +0200
-Message-ID: <20260515154701.067746145@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	David Carlier <devnexen@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 109/144] Bluetooth: hci_conn: fix potential UAF in create_big_sync
+Date: Fri, 15 May 2026 17:48:55 +0200
+Message-ID: <20260515154656.020291409@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +64,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BF834554AB5
+X-Rspamd-Queue-Id: 443EF553A0E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-247990-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248782-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,xilinx.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: David Carlier <devnexen@gmail.com>
 
-commit 666fa7e9ca98e71c880086ca24147ae843f1ed6e upstream.
+[ Upstream commit 0beddb0c380bed5f5b8e61ddbe14635bb73d0b41 ]
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Add hci_conn_valid() check in create_big_sync() to detect stale
+connections before proceeding with BIG creation. Handle the
+resulting -ECANCELED in create_big_complete() and re-validate the
+connection under hci_dev_lock() before dereferencing, matching the
+pattern used by create_le_conn_complete() and create_pa_complete().
 
-Fixes: c474b3866546 ("spi: Add driver for Cadence SPI controller")
-Cc: stable@vger.kernel.org	# 3.16
-Cc: Harini Katakam <harinik@xilinx.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Keep the hci_conn object alive across the async boundary by taking
+a reference via hci_conn_get() when queueing create_big_sync(), and
+dropping it in the completion callback. The refcount and the lock
+are complementary: the refcount keeps the object allocated, while
+hci_dev_lock() serializes hci_conn_hash_del()'s list_del_rcu() on
+hdev->conn_hash, as required by hci_conn_del().
+
+hci_conn_put() is called outside hci_dev_unlock() so the final put
+(which resolves to kfree() via bt_link_release) does not run under
+hdev->lock, though the release path would be safe either way.
+
+Without this, create_big_complete() would unconditionally
+dereference the conn pointer on error, causing a use-after-free
+via hci_connect_cfm() and hci_conn_del().
+
+Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
+Cc: stable@vger.kernel.org
+Co-developed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ kept stable's `qos->bcast.out.phy == 0x02` context line instead of upstream's renamed `qos->bcast.out.phys == BIT(1)` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c |   19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -777,6 +777,10 @@ static void cdns_spi_remove(struct platf
- 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
- 	struct cdns_spi *xspi = spi_controller_get_devdata(ctlr);
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -2051,6 +2051,9 @@ static int create_big_sync(struct hci_de
+ 	u32 flags = 0;
+ 	int err;
  
-+	spi_controller_get(ctlr);
++	if (!hci_conn_valid(hdev, conn))
++		return -ECANCELED;
 +
-+	spi_unregister_controller(ctlr);
-+
- 	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
+ 	if (qos->bcast.out.phy == 0x02)
+ 		flags |= MGMT_ADV_FLAG_SEC_2M;
  
- 	if (!spi_controller_is_target(ctlr)) {
-@@ -784,7 +788,7 @@ static void cdns_spi_remove(struct platf
- 		pm_runtime_set_suspended(&pdev->dev);
+@@ -2125,11 +2128,24 @@ static void create_big_complete(struct h
+ 
+ 	bt_dev_dbg(hdev, "conn %p", conn);
+ 
++	if (err == -ECANCELED)
++		goto done;
++
++	hci_dev_lock(hdev);
++
++	if (!hci_conn_valid(hdev, conn))
++		goto unlock;
++
+ 	if (err) {
+ 		bt_dev_err(hdev, "Unable to create BIG: %d", err);
+ 		hci_connect_cfm(conn, err);
+ 		hci_conn_del(conn);
  	}
- 
--	spi_unregister_controller(ctlr);
-+	spi_controller_put(ctlr);
++
++unlock:
++	hci_dev_unlock(hdev);
++done:
++	hci_conn_put(conn);
  }
  
- /**
+ struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst,
+@@ -2230,10 +2246,11 @@ struct hci_conn *hci_connect_bis(struct
+ 				 BT_BOUND, &data);
+ 
+ 	/* Queue start periodic advertising and create BIG */
+-	err = hci_cmd_sync_queue(hdev, create_big_sync, conn,
++	err = hci_cmd_sync_queue(hdev, create_big_sync, hci_conn_get(conn),
+ 				 create_big_complete);
+ 	if (err < 0) {
+ 		hci_conn_drop(conn);
++		hci_conn_put(conn);
+ 		return ERR_PTR(err);
+ 	}
+ 
 
 
 
