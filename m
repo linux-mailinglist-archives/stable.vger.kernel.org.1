@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248837-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAw9GP9NB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248642-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:55 +0200
+	id WP1VMflQB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248837-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CDE553E61
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823215544C1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6DC8030616DE
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:25:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D0BCE31225E2
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AE93F8716;
-	Fri, 15 May 2026 16:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3023530569C;
+	Fri, 15 May 2026 16:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7F9ShkO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIko3zYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC28022FF22;
-	Fri, 15 May 2026 16:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78BE3CEBA9;
+	Fri, 15 May 2026 16:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862256; cv=none; b=k4Oj0n08XoKZUphe29Ca2wYBrliiOF/JfZfaDkQHSkVfbcIfxl1zyPAwMYm3/oZ/U2M7pWVyqb0LVUwsdzajookeT7cNOMCivVTOfOI4v3VEp50XK40s4dwHgaBTqwuYx3/J3TOqYFEYaC4rmR45un6lOf6GGuFDQlscCqrLAI0=
+	t=1778862755; cv=none; b=hMv4VU4EwZPTEBuwspUEh0xiHQYyS9p6UVQ/nZmizeC6NqfygNn+n/CFq17KsUORtclKm6P4g1431KKRRAJkLHDfXNfnaJ9py7c1IGS5IhjECnQui+z0jQF3D5JiyVms9g5nBsUHLcSp5hWv21f98Lw5A1xRMl4cvfxxgJZApUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862256; c=relaxed/simple;
-	bh=wLm++ZP4zo3t7JIbbXD3eMUvwNbv1a4PvJEAKOs3qH4=;
+	s=arc-20240116; t=1778862755; c=relaxed/simple;
+	bh=uU1x48hFvK15xDijy6K35kflJWHcdIYjvLy/77amIQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghHpthOzcnHgVRj3mb8UmTj87KpYa1W8A2n+wx4rLd7weabtJoHoez6PH3WcgrWX4F/9Yp+OjFWB25a+RSMXNh7vWK8+GQTEmzb/omvNbY16TXj7NYE5iH4xbdaH386bBuQy1ZXycOEWsOAQD+/VB8ATHVgHxHUzZm89bHhhrhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7F9ShkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E39C2BCB0;
-	Fri, 15 May 2026 16:24:15 +0000 (UTC)
+	 MIME-Version; b=WlH44j9FeYhzMOGVb7+hVpGY4Jets6qq5BvWn1PvbmzcEXEj2hTkTUUGCiELDDp0otdyN/XP6Vsdep2p/rtl6ZVtnXdcqSMH9yLp+tPR8iB8UEjVwLBmfWmwCNTlE00z1tfU3Cy30bKSoFOOqi4sfWLaL/Yl1O4lG+QeYwM129A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIko3zYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C82FC2BCB0;
+	Fri, 15 May 2026 16:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862256;
-	bh=wLm++ZP4zo3t7JIbbXD3eMUvwNbv1a4PvJEAKOs3qH4=;
+	s=korg; t=1778862754;
+	bh=uU1x48hFvK15xDijy6K35kflJWHcdIYjvLy/77amIQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7F9ShkOtWe2nNVF3IhaGlUEN40QgTe6O8toPc0C2qfq4KZeyQy8RAicwEE8ZLh9w
-	 3xm0nkvFE79BhXVHpD3Ddfmv8x6Sy6+EYd32awgTO8ZeDfmj5dMXscd91ofozOs+gS
-	 m4Nv6a2IlyEKe35Yx/7jPU6LxX1ZEQpC4KRkWTXM=
+	b=nIko3zYFG1GfKsTecbNDHFbeEaHNzM24/IGQC6oU1FAKmuW498IaZYT/bWLyJDc+x
+	 vlksR4qlc75/Bvj8sIr9tbfPeHA69CWkDuRu26FLnuoACtzYQU9qFduuKPhAY2II9t
+	 IiqSA8nc7OmoSRDpgQ6MEIHjVXBCkBQLSCgc0OWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhidao su <soolaugust@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 169/188] sched/ext: Implement cgroup_set_idle() callback
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 7.0 168/201] arm64: dts: qcom: kodiak: Fix PCIe1 PHY ref clock voting
 Date: Fri, 15 May 2026 17:49:46 +0200
-Message-ID: <20260515154701.001619963@linuxfoundation.org>
+Message-ID: <20260515154702.215795283@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,154 +65,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 04CDE553E61
+X-Rspamd-Queue-Id: 823215544C1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248642-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248837-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhidao su <suzhidao@xiaomi.com>
+From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 
-[ Upstream commit 347ed2d566dabb06c7970fff01129c4f59995ed6 ]
+commit 30e8b6d42e8988eaaf0c2efd8c3797cb3884faea upstream.
 
-Implement the missing cgroup_set_idle() callback that was marked as a
-TODO. This allows BPF schedulers to be notified when a cgroup's idle
-state changes, enabling them to adjust their scheduling behavior
-accordingly.
+GCC_PCIE_CLKREF_EN controls a repeater that provides the reference clock
+only to the PCIe0 PHY. PCIe1 PHY receives its refclk directly from the CXO
+source.
 
-The implementation follows the same pattern as other cgroup callbacks
-like cgroup_set_weight() and cgroup_set_bandwidth(). It checks if the
-BPF scheduler has implemented the callback and invokes it with the
-appropriate parameters.
+If the PCIe1 driver in HLOS votes for or against GCC_PCIE_CLKREF_EN, it
+will inadvertently modify the refclk to PCIe0 as well. Since PCIe0 is
+managed by WPSS while PCIe1 is managed in HLOS, there is no mechanism to
+coordinate these votes. As a result, HLOS may disable this repeater
+during suspend and cut off the PCIe0 PHY refclk while PCIe0 is still
+active.
 
-Fixes a spelling error in the cgroup_set_bandwidth() documentation.
+Replace the unused GCC_PCIE_CLKREF_EN clock entry with RPMH_CXO_CLK to
+reflect the actual hardware wiring and prevent unintended changes to
+PCIe0 clocking.
 
-tj: s/scx_cgroup_rwsem/scx_cgroup_ops_rwsem/ to fix build breakage.
-
-Signed-off-by: zhidao su <soolaugust@gmail.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Stable-dep-of: 80afd4c84bc8 ("sched_ext: Read scx_root under scx_cgroup_ops_rwsem in cgroup setters")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 92e0ee9f83b3 ("arm64: dts: qcom: sc7280: Add PCIe and PHY related nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260123-fix_pcie1_phy_clk-v1-1-38f82ea01792@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched/ext.h   |    1 +
- kernel/sched/ext.c          |   16 +++++++++++++++-
- kernel/sched/ext_internal.h |   13 ++++++++++++-
- 3 files changed, 28 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/kodiak.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/sched/ext.h
-+++ b/include/linux/sched/ext.h
-@@ -228,6 +228,7 @@ struct scx_task_group {
- 	u64			bw_period_us;
- 	u64			bw_quota_us;
- 	u64			bw_burst_us;
-+	bool			idle;
- #endif
- };
- 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -3118,6 +3118,7 @@ void scx_tg_init(struct task_group *tg)
- 	tg->scx.weight = CGROUP_WEIGHT_DFL;
- 	tg->scx.bw_period_us = default_bw_period_us();
- 	tg->scx.bw_quota_us = RUNTIME_INF;
-+	tg->scx.idle = false;
- }
- 
- int scx_tg_online(struct task_group *tg)
-@@ -3266,7 +3267,18 @@ void scx_group_set_weight(struct task_gr
- 
- void scx_group_set_idle(struct task_group *tg, bool idle)
- {
--	/* TODO: Implement ops->cgroup_set_idle() */
-+	struct scx_sched *sch = scx_root;
-+
-+	percpu_down_read(&scx_cgroup_ops_rwsem);
-+
-+	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_idle))
-+		SCX_CALL_OP(sch, SCX_KF_UNLOCKED, cgroup_set_idle, NULL,
-+			    tg_cgrp(tg), idle);
-+
-+	/* Update the task group's idle state */
-+	tg->scx.idle = idle;
-+
-+	percpu_up_read(&scx_cgroup_ops_rwsem);
- }
- 
- void scx_group_set_bandwidth(struct task_group *tg,
-@@ -5125,6 +5137,7 @@ static void sched_ext_ops__cgroup_move(s
- static void sched_ext_ops__cgroup_cancel_move(struct task_struct *p, struct cgroup *from, struct cgroup *to) {}
- static void sched_ext_ops__cgroup_set_weight(struct cgroup *cgrp, u32 weight) {}
- static void sched_ext_ops__cgroup_set_bandwidth(struct cgroup *cgrp, u64 period_us, u64 quota_us, u64 burst_us) {}
-+static void sched_ext_ops__cgroup_set_idle(struct cgroup *cgrp, bool idle) {}
- #endif
- static void sched_ext_ops__cpu_online(s32 cpu) {}
- static void sched_ext_ops__cpu_offline(s32 cpu) {}
-@@ -5163,6 +5176,7 @@ static struct sched_ext_ops __bpf_ops_sc
- 	.cgroup_cancel_move	= sched_ext_ops__cgroup_cancel_move,
- 	.cgroup_set_weight	= sched_ext_ops__cgroup_set_weight,
- 	.cgroup_set_bandwidth	= sched_ext_ops__cgroup_set_bandwidth,
-+	.cgroup_set_idle	= sched_ext_ops__cgroup_set_idle,
- #endif
- 	.cpu_online		= sched_ext_ops__cpu_online,
- 	.cpu_offline		= sched_ext_ops__cpu_offline,
---- a/kernel/sched/ext_internal.h
-+++ b/kernel/sched/ext_internal.h
-@@ -697,12 +697,23 @@ struct sched_ext_ops {
- 	 * 2_500_000. @cgrp is entitled to 2.5 CPUs. @burst_us can be
- 	 * interpreted in the same fashion and specifies how much @cgrp can
- 	 * burst temporarily. The specific control mechanism and thus the
--	 * interpretation of @period_us and burstiness is upto to the BPF
-+	 * interpretation of @period_us and burstiness is up to the BPF
- 	 * scheduler.
- 	 */
- 	void (*cgroup_set_bandwidth)(struct cgroup *cgrp,
- 				     u64 period_us, u64 quota_us, u64 burst_us);
- 
-+	/**
-+	 * @cgroup_set_idle: A cgroup's idle state is being changed
-+	 * @cgrp: cgroup whose idle state is being updated
-+	 * @idle: whether the cgroup is entering or exiting idle state
-+	 *
-+	 * Update @cgrp's idle state to @idle. This callback is invoked when
-+	 * a cgroup transitions between idle and non-idle states, allowing the
-+	 * BPF scheduler to adjust its behavior accordingly.
-+	 */
-+	void (*cgroup_set_idle)(struct cgroup *cgrp, bool idle);
-+
- #endif	/* CONFIG_EXT_GROUP_SCHED */
- 
- 	/*
+--- a/arch/arm64/boot/dts/qcom/kodiak.dtsi
++++ b/arch/arm64/boot/dts/qcom/kodiak.dtsi
+@@ -2445,7 +2445,7 @@
+ 			reg = <0 0x01c0e000 0 0x1000>;
+ 			clocks = <&gcc GCC_PCIE_1_AUX_CLK>,
+ 				 <&gcc GCC_PCIE_1_CFG_AHB_CLK>,
+-				 <&gcc GCC_PCIE_CLKREF_EN>,
++				 <&rpmhcc RPMH_CXO_CLK>,
+ 				 <&gcc GCC_PCIE1_PHY_RCHNG_CLK>,
+ 				 <&gcc GCC_PCIE_1_PIPE_CLK>;
+ 			clock-names = "aux",
 
 
 
