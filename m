@@ -1,191 +1,156 @@
-Return-Path: <stable+bounces-247456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KVZG0fPBmqAoAIAu9opvQ
-	(envelope-from <stable+bounces-247456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:46:15 +0200
+	id WBfKFlrOBmpjoAIAu9opvQ
+	(envelope-from <stable+bounces-247457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:42:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B8154ACB7
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:46:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C216054AC13
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BAA2930C74DE
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:39:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F33E3005165
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2903C3E4C62;
-	Fri, 15 May 2026 07:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1837F3F0A8D;
+	Fri, 15 May 2026 07:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="bmyvvfRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoUdB0pT"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CAB3EFD31
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 07:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5761EFFA1
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 07:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778830790; cv=none; b=Ysf1Zt3oxGEmCh67pfcyOcgNlDfldMKbDuxRMQtIunPNpnUFeT85w9jmoNInAnc9bALUNuKV15s4EMMOP/YL80JIergHqm7txqpDHQlibTWgqxS5T2IaLJaieFIvonGuOel1Kn66a8zfHib+LFKjGQGHTGTPtEpXiRIQtkLb5QQ=
+	t=1778830803; cv=none; b=hB0dpLUy/7lHr1FeD5aPWyQO9+vBou7IA9PI5Q+/xUz5usqzSzBG6KpEwyxWQO8MTzMJJE7NP8AMQqrqT5fJv9BRvhmf/OU2wbswBJrn7jokIlgpHFWgW831qOopc+mYDOPgApCm7Cw/5As1pbxH90xPyCZss2hGflJD2Ez6DiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778830790; c=relaxed/simple;
-	bh=COeeSQ4HBB9/BG6ve5zA6gs2cPugLa8ZnA9WEVnNDhY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Rz11oYXHdVeg1yZs5eWJfsFMUGFzVDkWdnEwCOwHzdoQY21ZTmzwa+l1Kewg7NzW1FBUlwccwIYioB6ngm1Mc6GRoMj01oFID7xEkgYZSFg7EVfi0CjE1x9ASTXzQxRYThc6RUjdf7MkiCM/fQqTcXyekpTlC+mSyyS6Jps7OBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=bmyvvfRk; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Content-Type:In-Reply-To:References:Cc
-	:To:From:Subject:MIME-Version:Date:Message-ID:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cmk16AkaDXfjXuIBv9eAftFKyKIIEP3YBYUKSqjPpk8=; b=bmyvvfRkxI1zqZYS4bd5I088oe
-	V1porSCg0M0O3EnUlyPxxCyvN0UXu74J/39tAAA+Gufbex3jIL/hg2lZIqDecqX8f6V8i6LMIlflX
-	q94EEK7hKrBM265qzxVBZ4ZhzDhitDuqaDsZTn5BFVMmsCLb2F1Z487kVfhxvjcI+j50q1fRJ31pL
-	LCyjDx+k0P1ULzk6u7zJBkVu8UkeJUWc3Vvcnnf8UEi0cuaI4oKGv+jSfDiEM1EhZgmU3gptquNhw
-	rEb308hIg9a5E0tFS44ysqTZNNjrg4jEHh/ogK2lxluFmcrVy4ORUz/oWE3ypOYY1uJZZZdU18zAg
-	1tvLw/pQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	(Exim 4.96)
-	(envelope-from <ukleinek@debian.org>)
-	id 1wNn94-004ZRE-0Y;
-	Fri, 15 May 2026 07:39:42 +0000
-Message-ID: <4cfc6feb-7344-4b52-88f4-d010c61a4266@debian.org>
-Date: Fri, 15 May 2026 09:39:38 +0200
+	s=arc-20240116; t=1778830803; c=relaxed/simple;
+	bh=wMFZJo0Q5WjoMTr2Mqvv0K2lkccZhC4G18jfdR9GW3s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cK92+zCVtw1DGWN+QpXYFmz5kV0RAG+w1/O1e4TRYG+HuZQ7iMVv/dYvDdqOquoI/TJHyneiqCcR5c+w0qqggBy0/MQ6cGhgaeDQeyuyRfzlc8xDzM3puJB0aabFs3gTWCfaueFEH/8obiUP76jy6uCkiyvloUmGV/s0EtTZJ9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoUdB0pT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23614C2BCB0;
+	Fri, 15 May 2026 07:40:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778830802;
+	bh=wMFZJo0Q5WjoMTr2Mqvv0K2lkccZhC4G18jfdR9GW3s=;
+	h=Subject:To:Cc:From:Date:From;
+	b=DoUdB0pT8VEkfj+OBx3rhVuPHa6otHJKU9+5OLwjAfSH+3cJmRC9Fwf+JQEeZKLuG
+	 AC7qVQmg+IdZfrIoCFhEA5Yi2yCDlQe9x3gL2wYRTmw4LgeH38O1jEzkRt6p1ssLsv
+	 mRkKc8W0Hxsdooz/97FtfLHKsGYBw8AuEOqh4WaA=
+Subject: FAILED: patch "[PATCH] spi: ep93xx: fix controller deregistration" failed to apply to 6.18-stable tree
+To: johan@kernel.org,broonie@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 15 May 2026 09:40:06 +0200
+Message-ID: <2026051506-pouring-elite-5a5f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.0.y] ptrace: slightly saner 'get_dumpable()' logic
-From: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@debian.org>
-To: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Qualys Security Advisory <qsa@qualys.com>, Oleg Nesterov <oleg@redhat.com>,
- Kees Cook <kees@kernel.org>
-References: <20260515073404.2974912-2-ukleinek@debian.org>
-Content-Language: en-US, de-DE
-In-Reply-To: <20260515073404.2974912-2-ukleinek@debian.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------jDa98R0v9PC3VKGu4b7CrPlI"
-X-Debian-User: ukleinek
-X-Rspamd-Queue-Id: E1B8154ACB7
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C216054AC13
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247456-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-247457-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ukleinek@debian.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualys.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,gregkh:email,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------jDa98R0v9PC3VKGu4b7CrPlI
-Content-Type: multipart/mixed; boundary="------------Eb0rolOMNS009if3yWjBskhh";
- protected-headers="v1"
-From: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@debian.org>
-To: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Qualys Security Advisory <qsa@qualys.com>, Oleg Nesterov <oleg@redhat.com>,
- Kees Cook <kees@kernel.org>
-Message-ID: <4cfc6feb-7344-4b52-88f4-d010c61a4266@debian.org>
-Subject: Re: [PATCH 7.0.y] ptrace: slightly saner 'get_dumpable()' logic
-References: <20260515073404.2974912-2-ukleinek@debian.org>
-In-Reply-To: <20260515073404.2974912-2-ukleinek@debian.org>
 
---------------Eb0rolOMNS009if3yWjBskhh
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+The patch below does not apply to the 6.18-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Hello,
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
+git checkout FETCH_HEAD
+git cherry-pick -x f4838934b695a58eda0833583cb8028e73a19529
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051506-pouring-elite-5a5f@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+
+Possible dependencies:
 
 
-On 2026-05-15 09:33, Uwe Kleine-K=C3=B6nig wrote:
-> From: Linus Torvalds <torvalds@linux-foundation.org>
 
-oops, I forgot:
+thanks,
 
-	commit 31e62c2ebbfdc3fe3dbdf5e02c92a9dc67087a3a upstream.
+greg k-h
 
-here.
+------------------ original commit in Linus's tree ------------------
 
-> The 'dumpability' of a task is fundamentally about the memory image of
-> the task - the concept comes from whether it can core dump or not - and=
+From f4838934b695a58eda0833583cb8028e73a19529 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Thu, 9 Apr 2026 14:04:11 +0200
+Subject: [PATCH] spi: ep93xx: fix controller deregistration
 
-> makes no sense when you don't have an associated mm.
->=20
-> And almost all users do in fact use it only for the case where the task=
+Make sure to deregister the controller before releasing underlying
+resources like DMA during driver unbind.
 
-> has a mm pointer.
->=20
-> But we have one odd special case: ptrace_may_access() uses 'dumpable' t=
-o
-> check various other things entirely independently of the MM (typically
-> explicitly using flags like PTRACE_MODE_READ_FSCREDS).  Including for
-> threads that no longer have a VM (and maybe never did, like most kernel=
+Fixes: 011f23a3c2f2 ("spi/ep93xx: implemented driver for Cirrus EP93xx SPI controller")
+Cc: stable@vger.kernel.org	# 2.6.35
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260409120419.388546-13-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-> threads).
->=20
-> It's not what this flag was designed for, but it is what it is.
->=20
-> The ptrace code does check that the uid/gid matches, so you do have to
-> be uid-0 to see kernel thread details, but this means that the
-> traditional "drop capabilities" model doesn't make any difference for
-> this all.
->=20
-> Make it all make a *bit* more sense by saying that if you don't have a
-> MM pointer, we'll use a cached "last dumpability" flag if the thread
-> ever had a MM (it will be zero for kernel threads since it is never
-> set), and require a proper CAP_SYS_PTRACE capability to override.
->=20
-> Reported-by: Qualys Security Advisory <qsa@qualys.com>
-> Cc: Oleg Nesterov <oleg@redhat.com>
-> Cc: Kees Cook <kees@kernel.org>
-> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <ukleinek@debian.org>
+diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+index 90d5f3ea6508..db50018050e5 100644
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -689,7 +689,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+ 	/* make sure that the hardware is disabled */
+ 	writel(0, espi->mmio + SSPCR1);
+ 
+-	error = devm_spi_register_controller(&pdev->dev, host);
++	error = spi_register_controller(host);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "failed to register SPI host\n");
+ 		goto fail_free_dma;
+@@ -713,7 +713,13 @@ static void ep93xx_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct ep93xx_spi *espi = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	ep93xx_spi_release_dma(espi);
++
++	spi_controller_put(host);
+ }
+ 
+ static const struct of_device_id ep93xx_spi_of_ids[] = {
 
---------------Eb0rolOMNS009if3yWjBskhh--
-
---------------jDa98R0v9PC3VKGu4b7CrPlI
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmoGzboACgkQj4D7WH0S
-/k7BJgf+IsGmcc1sEf17qtW31f2GqS0tGQ63fs9yXvduYv+tvIXnf+Nj0OKNAp9l
-ZtEmlIVaqET/kVijsm9A65vDsTguD9wRoKKw3JiM8y8Ec4asIPnk/Z1Ig/CjObdd
-wCJB3glaP8FtD+gNBzflHU+GBtERml7jsxQuMTQIzm2hGbIlXeEuh8YHaTL18CrA
-76hJrc+LmCF0FDdUJDxlADWClF8F9BZwrqgcnWoY86XO/1RrZH9Rvxbv6MuoA1B6
-asSEj7ynnj/aQ+QSyOU2anQYCGMKMJEVnVYUVVs6DrMdyFsq8pIsUgSV2sk6ciuj
-0JNbDQJIlNuWukluCf1Fk2rq29fy4Q==
-=IspS
------END PGP SIGNATURE-----
-
---------------jDa98R0v9PC3VKGu4b7CrPlI--
 
