@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-247908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFvjG1dFB2ocwAIAu9opvQ
-	(envelope-from <stable+bounces-247908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:09:59 +0200
+	id 6PCCA8xFB2p6wAIAu9opvQ
+	(envelope-from <stable+bounces-247919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E995552C0E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:09:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101AE552D05
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 36035307759A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D44CA30433C3
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469E917AE11;
-	Fri, 15 May 2026 15:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D410E305670;
+	Fri, 15 May 2026 15:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vg2fWuWe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzP4t1Mf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C1814B08A;
-	Fri, 15 May 2026 15:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CE930566B;
+	Fri, 15 May 2026 15:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860382; cv=none; b=aqNjULJmIn+jkw/vUX3Io8xVgH4pTKgYpF/G30XAB63YfzkmwugsaOJMN66N58S7/r/5OF84NCSqpvXmUrFZU30PXgBlJoCFuqpnS+HYbRnTwsYw2kLIf9Kuh1Kp8CXtlPTkzxI0b9JopXa3mlzrMtcnMaqgAzAAZENaX3k2P1U=
+	t=1778860410; cv=none; b=XfJK+BrByenPRWGnQDcw/BktLJbvaH5lCUYTIGunGf8wlhBlUiJa38/74mK4imOw1FkH3614X+w1BLw3pPJD60cYr6CUecbA/duGXpWOL2QjNdB5lLsG/DneF3drcz0afAn3S/R4uFMSoFIc6Km5xo9uMgzdF7QVGrBWKcydamA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860382; c=relaxed/simple;
-	bh=fsHmJpCuDMOgKkMd/uolAiHIGhIw8v1uuHyUzCP4i8k=;
+	s=arc-20240116; t=1778860410; c=relaxed/simple;
+	bh=s0U7Xx7Qt5kIS+K6XkGOW+etE1u9LT+2GNd/m96OWq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaDx4fKUmpi/TqN7QlvxaLCzrzNX/1L/etunjZHGvSvcbWb50DTBri/B+iZD8BxLXZGakhZa86c+p8PcDG5hW7VHFPLxyXwYdmBlelWJd2TICoj9GdFc4UoBqbx2zCE/WNzzhwHdFieegkWYpn3vPaCBWEp2QIrrN5zROPXjxX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vg2fWuWe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E15AC2BCB0;
-	Fri, 15 May 2026 15:53:01 +0000 (UTC)
+	 MIME-Version; b=iLnpTcty2FE689T5Sdw54DlhDz+p3jrR3y5ET072pwcId/4TXlsnvemDAKDdwVkhJBzdYv1Mpy+5UmwHVgjGzXgASVqk76CICyqsTQ/wsTUjFrO/tJEeHTUICej5b60JhJvicgwWOaJf2/fl5T7G2D3ak/FISKjB3i1FNaVn0pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzP4t1Mf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94A7C2BCB0;
+	Fri, 15 May 2026 15:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860381;
-	bh=fsHmJpCuDMOgKkMd/uolAiHIGhIw8v1uuHyUzCP4i8k=;
+	s=korg; t=1778860410;
+	bh=s0U7Xx7Qt5kIS+K6XkGOW+etE1u9LT+2GNd/m96OWq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vg2fWuWe+BDhik+odTpn6TCfWPqYi/YABF9RK7k567JGBRCXPgoq/SzvPsLaOaTso
-	 p7sv6TNCrqJ8ilGpOMA/zADQYNSLVRtdpaGLgHo3gVTts2NIT9orlJKtWmeHMhrRno
-	 +b6seO7JeERFhKjrVv0ucxOfGPPcOEkXOzULp1nk=
+	b=gzP4t1MfwdaAmWvWSHtAZ+LTELEh9hA0LaZ1UpJ5m0c/FKGmBTOgevqJJDkZz/fp2
+	 F+O6PL/KTMseJaTSxrK1i4NAw8K1reEmgBKzBvS+oHqVjoLbAo1HIBI39jnaBuIqWy
+	 e1mPCHtGdyVw+/lETB+jtk76WJOqjEgJgRk7MqzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Grant Likely <grant.likely@secretlab.ca>,
+	Luotao Fu <l.fu@pengutronix.de>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 060/144] spi: mpc52xx: fix use-after-free on registration failure
-Date: Fri, 15 May 2026 17:48:06 +0200
-Message-ID: <20260515154654.941182930@linuxfoundation.org>
+Subject: [PATCH 6.12 061/144] spi: mpc52xx: fix controller deregistration
+Date: Fri, 15 May 2026 17:48:07 +0200
+Message-ID: <20260515154654.963885636@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
 References: <20260515154653.469907118@linuxfoundation.org>
@@ -64,35 +65,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0E995552C0E
+X-Rspamd-Queue-Id: 101AE552D05
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247919-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247908-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,secretlab.ca:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,msgid.link:url,secretlab.ca:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
@@ -101,39 +102,43 @@ X-Rspamd-Action: no action
 
 From: Johan Hovold <johan@kernel.org>
 
-commit f62c060272b9d7423b1650b844e8e4e7b8f9f925 upstream.
+commit 0f997fdae819a8c2cc83bd4ff7d935ad76c727c9 upstream.
 
-Make sure to disable and free the interrupts in case controller
-registration fails to avoid a potential use-after-free and resource
-leak.
-
-This issue was flagged by Sashiko when reviewing a controller
-deregistration fix.
+Make sure to deregister the controller before disabling and releasing
+underlying resources like interrupts and gpios during driver unbind.
 
 Fixes: 42bbb70980f3 ("powerpc/5200: Add mpc5200-spi (non-PSC) device driver")
+Fixes: b8d4e2ce60b6 ("mpc52xx_spi: add gpio chipselect")
 Cc: stable@vger.kernel.org	# 2.6.33
 Cc: Grant Likely <grant.likely@secretlab.ca>
-Link: https://sashiko.dev/#/patchset/20260414134319.978196-1-johan%40kernel.org?part=3
+Cc: Luotao Fu <l.fu@pengutronix.de>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260421125800.1537361-1-johan@kernel.org
+Link: https://patch.msgid.link/20260414134319.978196-4-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mpc52xx.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-mpc52xx.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 --- a/drivers/spi/spi-mpc52xx.c
 +++ b/drivers/spi/spi-mpc52xx.c
-@@ -501,6 +501,9 @@ static int mpc52xx_spi_probe(struct plat
+@@ -523,6 +523,8 @@ static void mpc52xx_spi_remove(struct pl
+ 	struct mpc52xx_spi *ms = spi_controller_get_devdata(host);
+ 	int i;
  
-  err_register:
- 	dev_err(&ms->host->dev, "initialization failed\n");
-+	free_irq(ms->irq0, ms);
-+	free_irq(ms->irq1, ms);
-+	cancel_work_sync(&ms->work);
-  err_gpio:
- 	while (i-- > 0)
++	spi_unregister_controller(host);
++
+ 	cancel_work_sync(&ms->work);
+ 	free_irq(ms->irq0, ms);
+ 	free_irq(ms->irq1, ms);
+@@ -531,7 +533,6 @@ static void mpc52xx_spi_remove(struct pl
  		gpiod_put(ms->gpio_cs[i]);
+ 
+ 	kfree(ms->gpio_cs);
+-	spi_unregister_controller(host);
+ 	iounmap(ms->regs);
+ 	spi_controller_put(host);
+ }
 
 
 
