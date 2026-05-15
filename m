@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-248742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2ASBGqRZB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:36:36 +0200
+	id KObtHOpXB2pVzQIAu9opvQ
+	(envelope-from <stable+bounces-248551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC55555493
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:36:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1362F555187
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8A4F731B9612
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF50B30A27D2
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9AD74C0403;
-	Fri, 15 May 2026 16:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE7C3D0927;
+	Fri, 15 May 2026 16:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7Ygt4GF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q421pIGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEDE3F44DF;
-	Fri, 15 May 2026 16:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824ED2949E0;
+	Fri, 15 May 2026 16:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862513; cv=none; b=la/8EeqQ4jLWOfOTpgQ6GBpYtAGgY+3sOOwqf7hkAN94If3ORhJfjUF9Vozu6xAULAiUURPgjokqcDRAvCpaI78ETyl8MCbcYOY1+h6pe6gC/kPu3YWGWr/kpuQ2Q6JgEM6Gs27i/z67Q1E6MLpHjuITSgrT49lOlfabmJUi33k=
+	t=1778862020; cv=none; b=HsKBfkUCMlEYjuTRK92av3yn7hzQ5/EawdIdUv8A/unh1QavJdnfE4DxmOpPgnLpYoTrGYTB3kVXP0k69z90Wvm3VgkLcqbmiFRR6zru9wjFEaiJSJa5BWL2gs4+UgQqc5c5DvJrWtqVLjrzFYavWCSckYiCuBBQg4FqQckre8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862513; c=relaxed/simple;
-	bh=csRhlZ+IlV/f0+fgxlAClFIGJw6v2mRmbYVPvMWf5Po=;
+	s=arc-20240116; t=1778862020; c=relaxed/simple;
+	bh=FmcjpobUlxXLAUmj+8voD6T3tzCIsatRU7eUNQo5UA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBy2NlcLtuvt2SSScskLZu/K1AKm+GLcoGFsA6D24zwJGcOR/IDST5FShjduuDAjmg4XL70HHNehZe3u732+N+HYhNYMSxoWYjz9/ad+EQ26SpFSFVMZX3gxznR4/eaMJ9Wz+LUZhBZSazTkBcXF30e9ItB8K7p/QnLI/F6jzMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7Ygt4GF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335EBC2BCB0;
-	Fri, 15 May 2026 16:28:33 +0000 (UTC)
+	 MIME-Version; b=RCm95ldorIw/dIHVznFyguYGiaXPXAc97hSpkZkJ0EHTQm3Cu4Fyo3mCOO1ZM4yFvBBgBpIOlC7wYXnukMeit0rsWJWpcQVWUm+nZsoKg2rmiU2nhp7KvPpuLvD1g6gl1+ET9gjVY42TSiwMwHSZYadsL5tBJDNZIVcEpxIFMww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q421pIGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18276C2BCB0;
+	Fri, 15 May 2026 16:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862513;
-	bh=csRhlZ+IlV/f0+fgxlAClFIGJw6v2mRmbYVPvMWf5Po=;
+	s=korg; t=1778862020;
+	bh=FmcjpobUlxXLAUmj+8voD6T3tzCIsatRU7eUNQo5UA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7Ygt4GFB9+rqSPoWhtlhd8VRxayknSXrYhBbQyY/LpNQtvZ52CgBU+/o0iOth0Nc
-	 kSCHI4+V85h/YCVpbsdnoSDhcr1mrWahTsJ5s+ZU7BeutUBc+J5c01Zj88BgwbtNTV
-	 GcrjscK+5iyyJupBJYBlEF1hrwf1QxeHHYg1GreY=
+	b=Q421pIGxZK6vB+Oy/zudl8+b+QEjowig/Mmp74TvRbNeTGgfyp6/44T9P+nmUTkmn
+	 1PmSo8u960w0EEQwSlW4RmpzhiEFYKVawvf5pv7zKTHj4D2qBOTv8FjErz99mhaTNx
+	 whhhck6VmD4/TZUsjuS/OJsolr91/PkCPzK7qdcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 076/201] media: qcom: iris: increase H265D_MAX_SLICE to fix H.265 decoding on SC7280
-Date: Fri, 15 May 2026 17:48:14 +0200
-Message-ID: <20260515154700.179775521@linuxfoundation.org>
+	Jan Glauber <jan.glauber@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 078/188] spi: cavium-thunderx: fix controller deregistration
+Date: Fri, 15 May 2026 17:48:15 +0200
+Message-ID: <20260515154659.012586427@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +64,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DBC55555493
+X-Rspamd-Queue-Id: 1362F555187
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248742-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_FROM(0.00)[bounces-248551-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 3e0b2053751657ed2924adfe3ff25b1450231e33 upstream.
+commit dbb6b01267c0c866eaac4019cec19f414beec61d upstream.
 
-Follow the commit bfe1326573ff ("venus: Fix for H265 decoding failure.")
-and increase H265D_MAX_SLICE following firmware requirements on that
-platform. Otherwise decoding of the H.265 streams fails with the
-"insufficient scratch_1 buffer size" from the firmware.
+Make sure to deregister the controller before disabling it to avoid
+hanging or leaking resources associated with the queue when the queue
+non-empty.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-[bod: Fixed commit log withthe => with the]
-Fixes: e1f5d32608ec ("media: iris: Add internal buffer calculation for HEVC and VP9 decoders")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 7347a6c7af8d ("spi: octeon: Add ThunderX driver")
+Cc: stable@vger.kernel.org	# 4.9
+Cc: Jan Glauber <jan.glauber@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260409120419.388546-10-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/iris/iris_vpu_buffer.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-cavium-thunderx.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/iris/iris_vpu_buffer.h
-+++ b/drivers/media/platform/qcom/iris/iris_vpu_buffer.h
-@@ -67,7 +67,7 @@ struct iris_inst;
- #define SIZE_DOLBY_RPU_METADATA (41 * 1024)
- #define H264_CABAC_HDR_RATIO_HD_TOT	1
- #define H264_CABAC_RES_RATIO_HD_TOT	3
--#define H265D_MAX_SLICE	1200
-+#define H265D_MAX_SLICE	3600
- #define SIZE_H265D_HW_PIC_T SIZE_H264D_HW_PIC_T
- #define H265_CABAC_HDR_RATIO_HD_TOT 2
- #define H265_CABAC_RES_RATIO_HD_TOT 2
+--- a/drivers/spi/spi-cavium-thunderx.c
++++ b/drivers/spi/spi-cavium-thunderx.c
+@@ -71,7 +71,7 @@ static int thunderx_spi_probe(struct pci
+ 
+ 	pci_set_drvdata(pdev, host);
+ 
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto error;
+ 
+@@ -91,8 +91,14 @@ static void thunderx_spi_remove(struct p
+ 	if (!p)
+ 		return;
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	/* Put everything in a known state. */
+ 	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
++
++	spi_controller_put(host);
+ }
+ 
+ static const struct pci_device_id thunderx_spi_pci_id_table[] = {
 
 
 
