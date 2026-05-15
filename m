@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBrlI9xEB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-247934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:07:56 +0200
+	id AAl9H5tPB2o9yAIAu9opvQ
+	(envelope-from <stable+bounces-248764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07EBC552B68
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:07:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F1D554200
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2E0930BC43B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A08A30A499E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24638305697;
-	Fri, 15 May 2026 15:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF663FBB7C;
+	Fri, 15 May 2026 16:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/saTMud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwmBiqOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D887D1DC9B3;
-	Fri, 15 May 2026 15:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E89355049;
+	Fri, 15 May 2026 16:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860448; cv=none; b=VRdVsmfFqIogOUUVV0PFpzD8ykkLOBowAXCrjzlMU1ivWT3YZSBwbTEc/pnZy01MsctEKrxF/q9oN/EvMIFfyGaZjIP/BCoT7B6TYt8VI5B72kwXQda31P8XjZVSEeMVyMQrFEz62fQGM1oa3uLFqGn9ZnrpJEMfOx87yICQG7A=
+	t=1778862570; cv=none; b=vCk+EAiLK7jqTcRNTiZCoZmwL6ceTg5h/3kJ3xmMXck4JnuGorqqukbsEUYwyW8KNk9dwnY5Ae5DcFad9xAkii2g/SlxpG9sFa9rFg+wUzqM6qbhOn/YNas/wgmPML+njBgNb9jsBX4Why4XWLjOaDreD6Xw0+ENHEW1DuBAIvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860448; c=relaxed/simple;
-	bh=oE8x40Ag/yG98rE0bggtDx9C5icFTdqvP8CNYTkRFM8=;
+	s=arc-20240116; t=1778862570; c=relaxed/simple;
+	bh=0FS610BWkRv/vH7qG7FG+bXXotVV+3hsi9AyrjHGI+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QiXyfCrGBjPq0BUojatk2ArsQHhH28B48wZrbha1szSa+WaEKg8NbO1pNCQNLDkOPOSla4c/cYQLfuhNo5eS+UzaGv40rsiBQx1TwzffRvQiIKorBQcxSvIp3rtB0iLoeQPeabR8+G5F6v17GXOstDtJfuyr2Nv/Mg1BVT9ZDkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/saTMud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB3CC2BCF5;
-	Fri, 15 May 2026 15:54:08 +0000 (UTC)
+	 MIME-Version; b=WwSPSR2565dWgnNisg0hMkiTWrJR4RVGw8ikpsrElWXifrFh/n9WFYIbF8xab3fKLkhrPTAmHBONsmh42rbKd1nqUktuaVyAS5ybtZk70kQQY9CWWHODPfyyiBJY7DiMyj2PUGiutL6bwkonOU340WxmBp35CQeSOvcYh1FeuWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwmBiqOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DB3C2BCB0;
+	Fri, 15 May 2026 16:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860448;
-	bh=oE8x40Ag/yG98rE0bggtDx9C5icFTdqvP8CNYTkRFM8=;
+	s=korg; t=1778862570;
+	bh=0FS610BWkRv/vH7qG7FG+bXXotVV+3hsi9AyrjHGI+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R/saTMudKNEOfrnz7uzTKQgS8FQwepHyQZ62CVFrCC+omPf/RuPl9CTUUatju0PCo
-	 Gi1hlh0h0D3OnstPfZNDcXP8R8itqmi90zIqvSbY5e/GU55MHMKu/DUB7lVH04Sbah
-	 MBSFpySX6hyNWSfReE56FX838icce7wJ3gDVCG6I=
+	b=rwmBiqOfab0hs9vpnYnsDDnTqC/LI0yKDjp2QWKOSHmUYfefCfvyVEBtqwVaHjKj1
+	 Kxvj6sYCav2Ji2phIqkxgiiOvaSAJ+12DM3eo1brkXlf/LuUJPf5u5JuSDukfKFbTg
+	 Z63lcnAJPrDw6GPLPNaKKmbkwFqyIe2XlMBaJ+iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 092/144] drm/amdgpu/pm: align Hawaii mclk workaround with radeon
+	Purna Chandra Mandal <purna.mandal@microchip.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 100/201] spi: pic32-sqi: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:38 +0200
-Message-ID: <20260515154655.646179355@linuxfoundation.org>
+Message-ID: <20260515154700.704412324@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 07EBC552B68
+X-Rspamd-Queue-Id: 54F1D554200
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247934-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248764-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 1987c79b4fe5789dfa14423e78b5c25f6acf3e9d upstream.
+commit 420df79d1a618951eb0eb4331df95c9f4f763b8b upstream.
 
-Align the hawaii mclk workaround with radeon and windows.
+Make sure to deregister the controller before releasing underlying
+resources like DMA during driver unbind.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9649528b637f668c5af9f2b83ca4ad8576ae2121)
-Cc: stable@vger.kernel.org
+Fixes: 3270ac230f66 ("spi: pic32-sqi: add SPI driver for PIC32 SQI controller.")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: Purna Chandra Mandal <purna.mandal@microchip.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-8-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-pic32-sqi.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1329,10 +1329,10 @@ static int ci_populate_all_memory_levels
- 	if ((dpm_table->mclk_table.count >= 2) &&
- 	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
- 	    (adev->pdev->revision == 0)) {
--		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
--				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
--		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
--				smu_data->smc_state_table.MemoryLevel[0].MinMvdd;
-+		smu_data->smc_state_table.MemoryLevel[1].MinVddc =
-+				smu_data->smc_state_table.MemoryLevel[0].MinVddc;
-+		smu_data->smc_state_table.MemoryLevel[1].MinVddcPhases =
-+				smu_data->smc_state_table.MemoryLevel[0].MinVddcPhases;
- 	}
- 	smu_data->smc_state_table.MemoryLevel[0].ActivityLevel = 0x1F;
- 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.MemoryLevel[0].ActivityLevel);
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -642,7 +642,7 @@ static int pic32_sqi_probe(struct platfo
+ 	host->prepare_transfer_hardware	= pic32_sqi_prepare_hardware;
+ 	host->unprepare_transfer_hardware	= pic32_sqi_unprepare_hardware;
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&host->dev, "failed registering spi host\n");
+ 		free_irq(sqi->irq, sqi);
+@@ -665,9 +665,15 @@ static void pic32_sqi_remove(struct plat
+ {
+ 	struct pic32_sqi *sqi = platform_get_drvdata(pdev);
+ 
++	spi_controller_get(sqi->host);
++
++	spi_unregister_controller(sqi->host);
++
+ 	/* release resources */
+ 	free_irq(sqi->irq, sqi);
+ 	ring_desc_ring_free(sqi);
++
++	spi_controller_put(sqi->host);
+ }
+ 
+ static const struct of_device_id pic32_sqi_of_ids[] = {
 
 
 
