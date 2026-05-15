@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-248593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247993-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LohNYpXB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:27:38 +0200
+	id SMA8GnlFB2ocwAIAu9opvQ
+	(envelope-from <stable+bounces-247993-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:10:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD6C5550BC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:27:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB7A552C47
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:10:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03C233123D4D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:23:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0594C3191EF0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651AF3E0087;
-	Fri, 15 May 2026 16:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA9B2DAFAA;
+	Fri, 15 May 2026 15:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SScn/vSd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCn2ThjD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F30D3BB11C;
-	Fri, 15 May 2026 16:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E40305669;
+	Fri, 15 May 2026 15:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862129; cv=none; b=Wvi11vnB4vSRYI4a6FXoslOGC6GZcgz+yKE4S0F6XYhU+cK2J11+BUSmEmOUEllpN+cqzr0OzlDam9uEoK2iPPYgNtivi8hdvSiVd/XT2JFaYDjyS1hFlaeKJErLbuWmeXmvOc1v8u6H98G4044ufED6O+U5nRekFGGJXdZA6nc=
+	t=1778860593; cv=none; b=FqImy5DoHHXg5LQ3Yiy0O7m4O8dojmImMxv41u7fTR4t30UhnQwluw0yWOuKM9aP1ioSoO79X1YlPBMXEJRUVy+chnOn7giE2WkdVSQe9jmv4yXQBxditUte2/ID/4tFGkRsSnFF73xDFTVxe2FTiiwHl1b5lXdRcKfGCkk9GQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862129; c=relaxed/simple;
-	bh=OL/PTm887cmcnN5m8VFY9FpY55BUYKgp02UktFaQgiM=;
+	s=arc-20240116; t=1778860593; c=relaxed/simple;
+	bh=cZUhkxV0HCrm12lQ6c4yMe+XSo+kJlSGOb7JIGeAWhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ijkWmszD/yOCOyM2P2F7X+8JszpOb5wJn7nIa4qvkw+Kh4xfFJTopKYZFHTGnIb6jZYf8rmrUzHgub5NaDitEzzIg4c5iWMPT48r1P+2YJuZ3iqt9knkw80UJdglCxRQaFhnFLSqrkXoTs7NGckx2TXtHlYdS9oXaXWFfXz1+sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SScn/vSd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A94C2BCB0;
-	Fri, 15 May 2026 16:22:08 +0000 (UTC)
+	 MIME-Version; b=lCuF0bBHNWbHK1b+Eo6ANrwNPSJYZYrpHB1JYPUYAl/UAr1lgso/WYcfBQpeu92ifBrL/d4j6sLb22NfucwlOQoOuzha7TluEArd+DAgiaWYZbhWJPiMUlNqLfjgqk1CS17r70xWyONDJ4oripjrhdIW/xM8Kn1voQfKV7e8s9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCn2ThjD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2F7C2BCB0;
+	Fri, 15 May 2026 15:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862129;
-	bh=OL/PTm887cmcnN5m8VFY9FpY55BUYKgp02UktFaQgiM=;
+	s=korg; t=1778860593;
+	bh=cZUhkxV0HCrm12lQ6c4yMe+XSo+kJlSGOb7JIGeAWhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SScn/vSdUseNTZIMi2QrdbmGtHjXqtcWBWmw+3+Mu3r6w2u2YBDG3JSHgtTi6EqBz
-	 DApT/EkCUpT1a4toORvWDHLWTNzoCKXAKxiapwdoHAigSxl8uez71gbGCXTUKyye3r
-	 bRaRTaLiGM98OdISX+a3gKoeD/LV4aaL2Iy0/SA4=
+	b=JCn2ThjDSro6zgJVX9pGy5tPmXWaFdpWy+v+z76W8Xw0xJg1VMYFh5q/1kORpNw4C
+	 uClWOdu+diNpi8jQ6Qk4rL9iH2IiZhPeXS95AwZu7RURbZd2Uz4jP9WBn85UrxRLf5
+	 LkwAJC2VKJDwPQxOEbpS2q5AlOBPg6dLfRAv90uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Mathew Alwin <alwin.mathew@intel.com>,
-	Michal Mrozek <michal.mrozek@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Jia Yao <jia.yao@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.18 120/188] drm/xe/uapi: Reject coh_none PAT index for CPU cached memory in madvise
+	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 111/144] spi: zynq-qspi: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:57 +0200
-Message-ID: <20260515154659.933472581@linuxfoundation.org>
+Message-ID: <20260515154656.064798302@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,170 +64,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5AD6C5550BC
+X-Rspamd-Queue-Id: DCB7A552C47
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248593-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247993-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia Yao <jia.yao@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 4e5591c2fc1b30f4ea5e2eab4c3a695acc404e39 upstream.
+[ Upstream commit c9c012706c9fa8ca6d129a9161caf92ab625a3fd ]
 
-Add validation in xe_vm_madvise_ioctl() to reject PAT indices with
-XE_COH_NONE coherency mode when applied to CPU cached memory.
+Make sure to deregister the controller before disabling it during driver
+unbind.
 
-Using coh_none with CPU cached buffers is a security issue. When the
-kernel clears pages before reallocation, the clear operation stays in
-CPU cache (dirty). GPU with coh_none can bypass CPU caches and read
-stale sensitive data directly from DRAM, potentially leaking data from
-previously freed pages of other processes.
+Note that clocks were also disabled before the recent commit
+1f8fd9490e31 ("spi: zynq-qspi: Simplify clock handling with
+devm_clk_get_enabled()").
 
-This aligns with the existing validation in vm_bind path
-(xe_vm_bind_ioctl_validate_bo).
-
-v2(Matthew brost)
-- Add fixes
-- Move one debug print to better place
-
-v3(Matthew Auld)
-- Should be drm/xe/uapi
-- More Cc
-
-v4(Shuicheng Lin)
-- Fix kmem leak issues by the way
-
-v5
-- Remove kmem leak because it has been merged by another patch
-
-v6
-- Remove the fix which is not related to current fix
-
-v7
-- No change
-
-v8
-- Rebase
-
-v9
-- Limit the restrictions to iGPU
-
-v10
-- No change
-
-Fixes: ada7486c5668 ("drm/xe: Implement madvise ioctl for xe")
-Cc: <stable@vger.kernel.org> # v6.18+
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-Cc: Mathew Alwin <alwin.mathew@intel.com>
-Cc: Michal Mrozek <michal.mrozek@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Jia Yao <jia.yao@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Acked-by: Michal Mrozek <michal.mrozek@intel.com>
-Acked-by: José Roberto de Souza <jose.souza@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patch.msgid.link/20260417055917.2027459-2-jia.yao@intel.com
-(cherry picked from commit 016ccdb674b8c899940b3944952c96a6a490d10a)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
+Cc: stable@vger.kernel.org	# 5.2: 8eb2fd00f65a
+Cc: stable@vger.kernel.org	# 5.2
+Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-27-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_vm_madvise.c |   47 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ drivers/spi/spi-zynq-qspi.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_vm_madvise.c
-+++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
-@@ -299,6 +299,45 @@ static bool madvise_args_are_sane(struct
- 	return true;
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -641,7 +641,7 @@ static int zynq_qspi_probe(struct platfo
+ 
+ 	xqspi = spi_controller_get_devdata(ctlr);
+ 	xqspi->dev = dev;
+-	platform_set_drvdata(pdev, xqspi);
++	platform_set_drvdata(pdev, ctlr);
+ 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(xqspi->regs)) {
+ 		ret = PTR_ERR(xqspi->regs);
+@@ -699,9 +699,9 @@ static int zynq_qspi_probe(struct platfo
+ 	/* QSPI controller initializations */
+ 	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
++		dev_err(&pdev->dev, "failed to register controller\n");
+ 		goto remove_ctlr;
+ 	}
+ 
+@@ -725,9 +725,16 @@ remove_ctlr:
+  */
+ static void zynq_qspi_remove(struct platform_device *pdev)
+ {
+-	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
++	struct spi_controller *ctlr = platform_get_drvdata(pdev);
++	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
++
++	spi_controller_get(ctlr);
++
++	spi_unregister_controller(ctlr);
+ 
+ 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
++
++	spi_controller_put(ctlr);
  }
  
-+static bool check_pat_args_are_sane(struct xe_device *xe,
-+				    struct xe_vmas_in_madvise_range *madvise_range,
-+				    u16 pat_index)
-+{
-+	u16 coh_mode = xe_pat_index_get_coh_mode(xe, pat_index);
-+	int i;
-+
-+	/*
-+	 * Using coh_none with CPU cached buffers is not allowed on iGPU.
-+	 * On iGPU the GPU shares the LLC with the CPU, so with coh_none
-+	 * the GPU bypasses CPU caches and reads directly from DRAM,
-+	 * potentially seeing stale sensitive data from previously freed
-+	 * pages. On dGPU this restriction does not apply, because the
-+	 * platform does not provide a non-coherent system memory access
-+	 * path that would violate the DMA coherency contract.
-+	 */
-+	if (coh_mode != XE_COH_NONE || IS_DGFX(xe))
-+		return true;
-+
-+	for (i = 0; i < madvise_range->num_vmas; i++) {
-+		struct xe_vma *vma = madvise_range->vmas[i];
-+		struct xe_bo *bo = xe_vma_bo(vma);
-+
-+		if (bo) {
-+			/* BO with WB caching + COH_NONE is not allowed */
-+			if (XE_IOCTL_DBG(xe, bo->cpu_caching == DRM_XE_GEM_CPU_CACHING_WB))
-+				return false;
-+			/* Imported dma-buf without caching info, assume cached */
-+			if (XE_IOCTL_DBG(xe, !bo->cpu_caching))
-+				return false;
-+		} else if (XE_IOCTL_DBG(xe, xe_vma_is_cpu_addr_mirror(vma) ||
-+					    xe_vma_is_userptr(vma)))
-+			/* System memory (userptr/SVM) is always CPU cached */
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static bool check_bo_args_are_sane(struct xe_vm *vm, struct xe_vma **vmas,
- 				   int num_vmas, u32 atomic_val)
- {
-@@ -384,6 +423,14 @@ int xe_vm_madvise_ioctl(struct drm_devic
- 	if (err || !madvise_range.num_vmas)
- 		goto unlock_vm;
- 
-+	if (args->type == DRM_XE_MEM_RANGE_ATTR_PAT) {
-+		if (!check_pat_args_are_sane(xe, &madvise_range,
-+					     args->pat_index.val)) {
-+			err = -EINVAL;
-+			goto free_vmas;
-+		}
-+	}
-+
- 	if (madvise_range.has_bo_vmas) {
- 		if (args->type == DRM_XE_MEM_RANGE_ATTR_ATOMIC) {
- 			if (!check_bo_args_are_sane(vm, madvise_range.vmas,
+ static const struct of_device_id zynq_qspi_of_match[] = {
 
 
 
