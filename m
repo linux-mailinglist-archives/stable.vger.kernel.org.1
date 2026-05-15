@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-247890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248533-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFvyMpJDB2oCvAIAu9opvQ
-	(envelope-from <stable+bounces-247890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:02:26 +0200
+	id yIPFEc5OB2p3xwIAu9opvQ
+	(envelope-from <stable+bounces-248533-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FAF5529B4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:02:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14C1554023
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2503F3031F4F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9EB9A335479B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B820314B08A;
-	Fri, 15 May 2026 15:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1F53FD973;
+	Fri, 15 May 2026 16:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r805+GC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+nFxwaV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9833FF1D5;
-	Fri, 15 May 2026 15:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E24E3EFFA0;
+	Fri, 15 May 2026 16:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860335; cv=none; b=L5ONedKJotd2QQ2ca0e23okqOkNlNMP0BtvX54zCx9hai3tCN1iaqIiGcS2bKH+IN3K5cGV8Rk8P/YBD0B/Uxrf98RhkKAooPoeJJ3NuQzj7Gc2NeYXV5mZ6ZSB2+vxsoaCceSFBytRmFDNJ1c+5jTcNNDSMO0zyFyubfZinBuA=
+	t=1778861973; cv=none; b=XoOyqn4E/zh2J7rTB2nGwgxGjQrfHYJXGY5XhQwjlTynAdNM6c+ka5yRwPR6QqgWgJgY/TCX4RIFfzahCx455a/AK+w1JQAUomp+ZiLNRxxFi8jQhH1N9Q/wxBRzCRIEQ4of9rww6dzL88ObIZu3Nlv98cxMIFD4Mpb1VnYNm60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860335; c=relaxed/simple;
-	bh=9lCKff/vvwyp5tA0mSokY5A963Oo5YEoEg2AIPcm5YE=;
+	s=arc-20240116; t=1778861973; c=relaxed/simple;
+	bh=gdOdXciiYQgXqQpjL9wp74JwjZq3CzGTn7QOU3op4Lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FY7vVnOjRWYGGN59XCFCTO+ebzeVHFB0UYbodsxeOwjzkaMwhnfqtDf3SYL0xkzroFCWnVs7/98mKy3vAfaRMWIKdVQxTK/gMACuxqUfI4z9f7/RtloK8YZclLPY/N/Zhxw8/QYw1tIo554SXw1fEkWtKEsU+I9Rc36+4/nZXQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r805+GC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C61BC2BCB0;
-	Fri, 15 May 2026 15:52:14 +0000 (UTC)
+	 MIME-Version; b=WSayRlAQqZ81ZR5yUUMgpwHs7w4Uuvqht8Zfl7EVE/6o8etv0841DqY8EIcVd/7+qctLTfhpBNnYCKqHspa87CJYbIgCqownMYLvZH7p8nvjABXq7luXIzGrOP1TG4gs/HsCdss29hZu/PIX4KuWJeZcgXvA0mjI40NK4FMzfwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+nFxwaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E04C2BCB0;
+	Fri, 15 May 2026 16:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860335;
-	bh=9lCKff/vvwyp5tA0mSokY5A963Oo5YEoEg2AIPcm5YE=;
+	s=korg; t=1778861973;
+	bh=gdOdXciiYQgXqQpjL9wp74JwjZq3CzGTn7QOU3op4Lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r805+GC7GQ/uwIQK9Xr/XfsJRhN4fXJPQtdFxLyzNNslrCR0rYXmJstE8rbyvt9Wa
-	 L45BxhlcZhlCPd7T+thH+MKd2zSnjn3zdzz7HfjiGOF2w07czKHo6Rb2LfRT5Ia80g
-	 ekJz/RUcbnVK0f2vDPa+9mjXVXua+cVCcuslyVdU=
+	b=X+nFxwaVIuODpBjvNevtotmqfI2PPTextdth6Fs9sFikrEZn/LDvDVuBf2/GMSW3F
+	 2ui/Iv9VXntlS2+RJSu2nsd4qMIgOvhXNC6/0TPUAvXeA7wj8NpNJ6+3yGd7eOW3hI
+	 JFWI9Sc+gbrr40OMdso+htcjESrjhEQIAVsQkti8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Zhang <william.zhang@broadcom.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 048/144] spi: bcmbca-hsspi: fix controller deregistration
+	Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 057/188] media: qcom: camss: Fix csid clock configuration for sa8775p
 Date: Fri, 15 May 2026 17:47:54 +0200
-Message-ID: <20260515154654.650545635@linuxfoundation.org>
+Message-ID: <20260515154658.551745328@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +65,148 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C2FAF5529B4
+X-Rspamd-Queue-Id: D14C1554023
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247890-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248533-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
 
-commit c3d97c3320b9a1ebbd6119857341be034f7b3efc upstream.
+commit fe56c674118aa46da1a3e65aa22ca709ebd7d812 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like interrupts during driver unbind to allow SPI drivers to
-do I/O during deregistration.
+Fix the mismatch between clock list and clock rate table for CSID lite
+instances. The current implementation has 5 clocks defined but only 2
+are actually needed (vfe_lite_csid and vfe_lite_cphy_rx), while the
+clock rate table doesn't match this configuration.
 
-Note that clocks were also disabled before the recent commit
-e532e21a246d ("spi: bcm63xx-hsspi: Simplify clock handling with
-devm_clk_get_enabled()").
+Update both clock list and rate table to maintain consistency:
+- Remove unused clocks: cpas_vfe_lite, vfe_lite_ahb, vfe_lite
+- Update clock rate table to match the remaining two clocks
 
-Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI controller")
-Cc: stable@vger.kernel.org	# 6.3: deb269e0394f
-Cc: stable@vger.kernel.org	# 6.3
-Cc: William Zhang <william.zhang@broadcom.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-8-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Fixes: ed03e99de0fa ("media: qcom: camss: Add support for CSID 690")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-bcmbca-hsspi.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss.c |   40 +++++++++++-------------------
+ 1 file changed, 15 insertions(+), 25 deletions(-)
 
---- a/drivers/spi/spi-bcmbca-hsspi.c
-+++ b/drivers/spi/spi-bcmbca-hsspi.c
-@@ -550,7 +550,7 @@ static int bcmbca_hsspi_probe(struct pla
- 	}
- 
- 	/* register and we are done */
--	ret = devm_spi_register_controller(dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret)
- 		goto out_sysgroup_disable;
- 
-@@ -572,6 +572,8 @@ static void bcmbca_hsspi_remove(struct p
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct bcmbca_hsspi *bs = spi_controller_get_devdata(host);
- 
-+	spi_unregister_controller(host);
-+
- 	/* reset the hardware and block queue progress */
- 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
- 	clk_disable_unprepare(bs->pll_clk);
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -2782,12 +2782,10 @@ static const struct camss_subdev_resourc
+ 	/* CSID2 (lite) */
+ 	{
+ 		.regulators = {},
+-		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
+-			   "vfe_lite_csid", "vfe_lite_cphy_rx",
+-			   "vfe_lite"},
++		.clock = { "vfe_lite_csid", "vfe_lite_cphy_rx" },
+ 		.clock_rate = {
+-			{ 0, 0, 400000000, 400000000, 0},
+-			{ 0, 0, 400000000, 480000000, 0}
++			{ 400000000, 480000000 },
++			{ 400000000, 480000000 }
+ 		},
+ 		.reg = { "csid_lite0" },
+ 		.interrupt = { "csid_lite0" },
+@@ -2801,12 +2799,10 @@ static const struct camss_subdev_resourc
+ 	/* CSID3 (lite) */
+ 	{
+ 		.regulators = {},
+-		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
+-			   "vfe_lite_csid", "vfe_lite_cphy_rx",
+-			   "vfe_lite"},
++		.clock = { "vfe_lite_csid", "vfe_lite_cphy_rx" },
+ 		.clock_rate = {
+-			{ 0, 0, 400000000, 400000000, 0},
+-			{ 0, 0, 400000000, 480000000, 0}
++			{ 400000000, 480000000 },
++			{ 400000000, 480000000 }
+ 		},
+ 		.reg = { "csid_lite1" },
+ 		.interrupt = { "csid_lite1" },
+@@ -2820,12 +2816,10 @@ static const struct camss_subdev_resourc
+ 	/* CSID4 (lite) */
+ 	{
+ 		.regulators = {},
+-		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
+-			   "vfe_lite_csid", "vfe_lite_cphy_rx",
+-			   "vfe_lite"},
++		.clock = { "vfe_lite_csid", "vfe_lite_cphy_rx" },
+ 		.clock_rate = {
+-			{ 0, 0, 400000000, 400000000, 0},
+-			{ 0, 0, 400000000, 480000000, 0}
++			{ 400000000, 480000000 },
++			{ 400000000, 480000000 }
+ 		},
+ 		.reg = { "csid_lite2" },
+ 		.interrupt = { "csid_lite2" },
+@@ -2839,12 +2833,10 @@ static const struct camss_subdev_resourc
+ 	/* CSID5 (lite) */
+ 	{
+ 		.regulators = {},
+-		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
+-			   "vfe_lite_csid", "vfe_lite_cphy_rx",
+-			   "vfe_lite"},
++		.clock = { "vfe_lite_csid", "vfe_lite_cphy_rx" },
+ 		.clock_rate = {
+-			{ 0, 0, 400000000, 400000000, 0},
+-			{ 0, 0, 400000000, 480000000, 0}
++			{ 400000000, 480000000 },
++			{ 400000000, 480000000 }
+ 		},
+ 		.reg = { "csid_lite3" },
+ 		.interrupt = { "csid_lite3" },
+@@ -2858,12 +2850,10 @@ static const struct camss_subdev_resourc
+ 	/* CSID6 (lite) */
+ 	{
+ 		.regulators = {},
+-		.clock = { "cpas_vfe_lite", "vfe_lite_ahb",
+-			   "vfe_lite_csid", "vfe_lite_cphy_rx",
+-			   "vfe_lite"},
++		.clock = { "vfe_lite_csid", "vfe_lite_cphy_rx" },
+ 		.clock_rate = {
+-			{ 0, 0, 400000000, 400000000, 0},
+-			{ 0, 0, 400000000, 480000000, 0}
++			{ 400000000, 480000000 },
++			{ 400000000, 480000000 }
+ 		},
+ 		.reg = { "csid_lite4" },
+ 		.interrupt = { "csid_lite4" },
 
 
 
