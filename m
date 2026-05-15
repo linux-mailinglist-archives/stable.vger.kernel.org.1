@@ -1,206 +1,146 @@
-Return-Path: <stable+bounces-247318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGbqOdOOBmoVkwIAu9opvQ
-	(envelope-from <stable+bounces-247318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 05:11:15 +0200
+	id CypXEi2fBmrQlQIAu9opvQ
+	(envelope-from <stable+bounces-247319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 06:21:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED4F548EBE
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 05:11:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B965492A6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 06:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 026D130136DB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 03:11:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 271FB300A316
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 04:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF003CBE88;
-	Fri, 15 May 2026 03:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477863D4119;
+	Fri, 15 May 2026 04:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kVMH+/As"
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="h5m3za1z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EE53CB918
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 03:11:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778814668; cv=pass; b=lF5/7db28PJyOW43aZpsaGU/Q+zjzModtNp+dvrVULxl715uCqxvMATZVDXwnAJacBKDMuejj2qDcHbVbeMNIcb8GlGGaNki9xWt1b81wMd8fQc5ulb9DHVLmm/BCGuUp0ApVEhA9ldOVHbuxNHvAkNmpVwEypezfUTWNf5HoaE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778814668; c=relaxed/simple;
-	bh=WBzhUkFbzQTxwdmZ0DddBF/VYTlzYG0W/o96v8XXvVw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N+rtgRMU/w3dq4tTu9xQsCc6ty04NavwnbgI+jFiUOYQxQo200NMFsp5Zx996smIFCCgLc51TMVhQk7El2zfzrBUKhDt3r3na+bApW6L2sE7m7D29AXpkBCxl8JIYJ70aafxnB8IuXH+724aVLErhgJ2P+pbDIPfmMES80+0KYY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kVMH+/As; arc=pass smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8b6dd874471so113298376d6.0
-        for <stable@vger.kernel.org>; Thu, 14 May 2026 20:11:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778814666; cv=none;
-        d=google.com; s=arc-20240605;
-        b=K0tyZp6gm8FNfJhcSl+xWSIK17gArKt4BRHernSUcAL7LOCt7/UcWcdfge11PFMQIM
-         bjLXMBSr+DmBqdmbpWXSrKUi13uYOVWvwMFajnEty4WNS+P5jN8eknYo/jV6WkWKEGN7
-         mG/nk+S6eyBUp8shqR3b7WA56MiXt9SH+bjIJrinTYq2eN84Wvcgya+i5iPL9ll3wV1P
-         XmJvqtlZx4yZUMDs1CFdqQsYVrHV244EA/obWG1FDp5wR/p+pzcthwKDilKPNV6Y8beU
-         7sfMPT8+943A708yfVnChtG4TuCT+opbZuvAvBVfPuXEEL4Tfl2pdeEhqRaQuzRpNlbX
-         rPGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=62xjzgBMlzfzuNOo9mzyAPb6sRch5lY4yZUszwPkHOc=;
-        fh=KQ6qHXp/5pxLU8DeBf3L0pwKcohA4NhuXejd0yo2Fdc=;
-        b=D9l/wh/N/i8RA83g+0jcauIX8DqN33Fan43pu0lm78GIRvSfq92+2UIcC09u/DVaKj
-         /ac45wP+QcdBMKsQlVMGOWOlkVrHxowr0gE7ZEt9f8a1qTAkAqRJtMYafmQopdXGOtmC
-         c9DqqSJqGEdpzwe/JzvWYkWORt/k1VEQLjSxjcbV0WfduMTJH6/U/TYGM2pauCQecqMU
-         VfIZBLiYSVkalTCJDphH5fmpuPmq2xaO0eRyC/NllTHsrMNgy5zchXm96cJTrYEld07g
-         6TZxes7MMoFb64UHCu0UmCS+awaGUY4Z31HmohSH+qvXmUoSYlZgS5bZXN2U1loObRvR
-         5Zsw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778814666; x=1779419466; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=62xjzgBMlzfzuNOo9mzyAPb6sRch5lY4yZUszwPkHOc=;
-        b=kVMH+/AsQBhGT2lkoJHwaYL7po9cPQyKPqAJamHr86KqauP+gdWMOUI4CZioSmjJGH
-         WF+M/hFVauYvZ66zQ0sFkh3f0pHzXZyvIyswo0C6XSTKLhJV6r5WVrhUHixuidmm/sgl
-         yOASzEN9jmbcDLGieyABtqUhZ+6+ksyIAtmVAjjgRVa7A04nR8NqD5CDaHEBvKHoJ+0G
-         39onWagO/Y0AqE/tIwqV6U3+6jGfIafkiJzojBDYTE1xSOr3lHvCq9fEBX4iI+wf7vTi
-         pma67WIAAM5SNr+QrTGO4iDyqmnJjFkc9jnEcRKpVq2AbIAQhSubHeMy1XIGCdzvcjCV
-         STmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778814666; x=1779419466;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=62xjzgBMlzfzuNOo9mzyAPb6sRch5lY4yZUszwPkHOc=;
-        b=RdqP/gQJBh7dXv/zbG3Q9nuL/3KhIh0Qzz8IC4XxLnjjy8dKAOwN2cDtPnaw7a5NzP
-         KZ81ycYinqLBbp+10CCg9tYAzlbTSC4YbDjN0bBqygVc1KxFatymRWVCwFyAKc031gOy
-         nZo3Cu5OL8lLIcTOO0aXETDV/qqA5ShMitcTWx9Zp+DR/0fUawFUa9Fu3sSqNsWnIB7X
-         bzoN0MuaFtq+huStf2xU1P2BDFC4RP/XCp6rTVuXb46mhXIM+XLQR7JK0ttCOJ6bCTLS
-         SwG6TPuUa9YHqLmf1G6Ke5pbNN2S90Mk575IqPfisADS6tZsPezL1sIhWxofbSJoum3+
-         zkjQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8BC0PtITMgpztrqsC9iCLhqzrRATv4eq75CYZVswNFOrYLqzDUq0Lj8qQufEY+LQAXlVp7sF8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj3CZx7+SB+3Yvh7HqVu5Dmf6FPwnA+9a16/OBRPIl2fABKWjV
-	213yWUexVHS2SUcr4/EJU/MJMSd64vC6dhjrXdLbI9IrOdhpFE/vHR3ZbtCqCLRvo7zz4zEqhEG
-	KYGqUwnjvAZW1kEoomDqILOXUZrJxhxY=
-X-Gm-Gg: Acq92OHQ0q/yCImUFDknOQL/MWU9/MhqcSE1+Dq8n7qvHTjXgqMLAyvPVBydkmrKYmG
-	D0sCCwLIwOXYWUJhrIEdlR/wSEozDeZSfKWLRHAx8DxhdxCI6Brzv3dPanPiUtWgUvPwAssu4Xg
-	+tGDAbMXRLURcvN9OF3p5vi/GQfqsfwQc+2iTgkLqDkiio6eOXwmBFDnmpCy9XhrKtLl2Ymb3z1
-	cemrv2ROZhz7h5qdvRA+8cCxn4yecDF8yKVA5ALpwrKb+1npV8R3FHalDxvLzEaDdiYJdk9rM55
-	M23JNrY3jWgDTpYwKRpn8IZsyhNHSBgSH91zwXbzeVeergGp0uY2Twp4MGWZWcAF0dXLgvxGr2G
-	QxL26xIjI0hSZp50WMCva29c4j1U5lRt5jzmQ1gg4pp505T6ed81isskuyanwaENx+Ab032Mldb
-	dEgJCBVPIQCOwWjZk71XHP
-X-Received: by 2002:a05:6214:130e:b0:8ca:17c9:c8b5 with SMTP id
- 6a1803df08f44-8ca17c9cb45mr1134516d6.24.1778814666472; Thu, 14 May 2026
- 20:11:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EDA3D3CFA;
+	Fri, 15 May 2026 04:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778818853; cv=none; b=A9yg2rAYl2EfT6k9778CjM8hrUZynbi/xQuRkLFtjBssvqcU8ZeHTmDiEgFpxRNy947IJZpJQZsi2Y7Eprps/cbW0OnFM5qK3OL1WAclczVVhk/VjDSxIi+bjvTt1sKo8dWPoTLBUqKQoQuGyBenq6YbvfL0mEjRx+QzfQHp3EQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778818853; c=relaxed/simple;
+	bh=9Ca+GE5zHL3u+0IEX2+Z0VOeZdy7Fkv0nnGmh9y3hh4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H2SWQ5FP4fvAgObAWoUipPfW/51iqV9lP+eufNed56TH79T/NeYzpKAqh+gqGK3szzf6O1nHMIQm3O4q5LyhbktXnuV/qNLGThNpGZhvuOQaV4fhvsPj5jl2RZ5n1XeGldIEjI9BI+vsTzQQ592bEh3l0TbUIrSNTRywwS5LyaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=h5m3za1z; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=ZDReuVCfVZrcHmYVCMEAb8W+xlZArwf954j9YhHTfKY=; 
+	b=h5m3za1ztUh188CtdD/j9MIh+F29FStkNcn71OEplUF/eVnbFTAAVJgXo3FoAXlrFe/nbnqiYAL
+	o0t4OSHRrByMAzFgem4OSHqVl2xqV0ZUbrjqi7WI0MBe4dgo+m94/ttJ+2tbjvkkgYFX93kNsVung
+	75dbLbFnSq2a8C36hlJWfWDGy+3ZX8hTMRfp0sfOzj0XfmQjA+9hTkykMgOjTY2FgghD060tvAwhw
+	wQiDAqisdcHXb4mtsBVRGhxfxP+toc0JzyTqWbfRxhv9W3frkOvufAqhLXhXxZvFVlD8ToplHTiuB
+	0L46OW/nHaSjzJHMhry+k/Mh1rUYVQHX7mhQ==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1wNk1u-00EIoB-28;
+	Fri, 15 May 2026 12:20:07 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 15 May 2026 12:20:06 +0800
+Date: Fri, 15 May 2026 12:20:06 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Maciej Zenczykowski <maze@google.com>, Kees Cook <kees@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 2/2] ipv4: ah: harden ah_output options-copy guard
+ against ihl < 5
+Message-ID: <agae9ph6pzaQJv3E@gondor.apana.org.au>
+References: <cover.1778614451.git.michael.bommarito@gmail.com>
+ <423b9ce3b45782c09a2fd9c65ad6674a9abb7c72.1778614451.git.michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260514231825.63211-1-henrique.carvalho@suse.com> <CANT5p=r1Y3h44dE62DB+VWbGOToQv5CGBc+dR-tr14vah3SObw@mail.gmail.com>
-In-Reply-To: <CANT5p=r1Y3h44dE62DB+VWbGOToQv5CGBc+dR-tr14vah3SObw@mail.gmail.com>
-From: Steve French <smfrench@gmail.com>
-Date: Thu, 14 May 2026 22:10:54 -0500
-X-Gm-Features: AVHnY4Jm74Xa4bIG0zfrDjU9iOEiiQDh1Nj6AOK6619lzzpz8yUzY4yoRXGRRqo
-Message-ID: <CAH2r5mv4jNREvwU4P_X5b6gsGVBb83sYyWtMh-FJEcW71A_WtA@mail.gmail.com>
-Subject: Re: [PATCH] smb: client: protect tc_count increment in smb2_find_smb_sess_tcon_unlocked()
-To: Shyam Prasad N <nspmangalore@gmail.com>
-Cc: Henrique Carvalho <henrique.carvalho@suse.com>, sfrench@samba.org, pc@manguebit.org, 
-	ronniesahlberg@gmail.com, sprasad@microsoft.com, tom@talpey.com, 
-	bharathsm@microsoft.com, ematsumiya@suse.de, linux-cifs@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: EED4F548EBE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <423b9ce3b45782c09a2fd9c65ad6674a9abb7c72.1778614451.git.michael.bommarito@gmail.com>
+X-Rspamd-Queue-Id: 50B965492A6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
+	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247318-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[suse.com,samba.org,manguebit.org,gmail.com,microsoft.com,talpey.com,suse.de,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247319-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[smfrench@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,apana.org.au:email,apana.org.au:url]
 X-Rspamd-Action: no action
 
-merged into cifs-2.6.git for-next, pending more testing
+On Tue, May 12, 2026 at 04:51:15PM -0400, Michael Bommarito wrote:
+> 
+> diff --git a/net/ipv4/ah4.c b/net/ipv4/ah4.c
+> index 4366cbac3f06..8fa31bdf9792 100644
+> --- a/net/ipv4/ah4.c
+> +++ b/net/ipv4/ah4.c
+> @@ -137,7 +137,7 @@ static void ah_output_done(void *data, int err)
+>  	top_iph->tos = iph->tos;
+>  	top_iph->ttl = iph->ttl;
+>  	top_iph->frag_off = iph->frag_off;
+> -	if (top_iph->ihl != 5) {
+> +	if (top_iph->ihl > 5) {
 
-On Thu, May 14, 2026 at 8:06=E2=80=AFPM Shyam Prasad N <nspmangalore@gmail.=
-com> wrote:
->
-> On Fri, May 15, 2026 at 4:48=E2=80=AFAM Henrique Carvalho
-> <henrique.carvalho@suse.com> wrote:
-> >
-> > Commit 96c4af418586 ("cifs: Fix locking usage for tcon fields")
-> > refactored cifs code to change cifs_tcp_ses_lock for tc_lock around
-> > tc_count changes.
-> >
-> > There was missing lock around tc_count increment inside
-> > smb2_find_smb_sess_tcon_unlocked().
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 96c4af418586 ("cifs: Fix locking usage for tcon fields")
-> > Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-> > ---
-> >  fs/smb/client/smb2transport.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/fs/smb/client/smb2transport.c b/fs/smb/client/smb2transpor=
-t.c
-> > index e8eeff9e50d6..1143ee52470a 100644
-> > --- a/fs/smb/client/smb2transport.c
-> > +++ b/fs/smb/client/smb2transport.c
-> > @@ -169,7 +169,9 @@ smb2_find_smb_sess_tcon_unlocked(struct cifs_ses *s=
-es, __u32  tid)
-> >         list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
-> >                 if (tcon->tid !=3D tid)
-> >                         continue;
-> > +               spin_lock(&tcon->tc_lock);
-> >                 ++tcon->tc_count;
-> > +               spin_unlock(&tcon->tc_lock);
-> >                 trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-> >                                     netfs_trace_tcon_ref_get_find_sess_=
-tcon);
-> >                 return tcon;
-> > --
-> > 2.54.0
-> >
-> >
-> Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
->
-> --
-> Regards,
-> Shyam
->
+As I have said before, if ihl is less than 5, then it's invalid to
+access any fields from the IP header (in fact you can't even access
+ihl itself if it's that short).
 
+So if these packets are getting this far into our stack, then things
+are very wrong indeed.
 
---=20
+Now I understand that this is already happening so we have to accept
+it.  But we should try to fix each and one of these issues as other
+places in our IP stack can very much break if you bombard them with
+these bogus packets.
+
+To further that end, I suggest that you add a WARN_ON_ONCE for the
+case (top_iph->ihl < 5) and put that at the very start of the AH
+input function so that i can bail out straight away.
+
 Thanks,
-
-Steve
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
