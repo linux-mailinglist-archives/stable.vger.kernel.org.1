@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-248460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPA3IEpPB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:26 +0200
+	id +LohNYpXB2pVzQIAu9opvQ
+	(envelope-from <stable+bounces-248593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:27:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8328554121
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD6C5550BC
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C5DE30E2B1C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:19:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03C233123D4D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB2C428469;
-	Fri, 15 May 2026 16:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651AF3E0087;
+	Fri, 15 May 2026 16:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlgvESJ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SScn/vSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AD33C9896;
-	Fri, 15 May 2026 16:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F30D3BB11C;
+	Fri, 15 May 2026 16:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861791; cv=none; b=s6+dmmdP7M18/ggnIwGSO2XPr0/W/ABIZTpaEdOCTE9a66xewxGGrhxRWZBCetZEYBEe/8i+X32MfOaDQYPEApxQjjepOIPIllSCSvtOsgtumHEr1IQU+XZpEkaW6ddOVw9yEPcIESE59q7Xzr97n2IEp2r4R3/PMuRi5kRSOg0=
+	t=1778862129; cv=none; b=Wvi11vnB4vSRYI4a6FXoslOGC6GZcgz+yKE4S0F6XYhU+cK2J11+BUSmEmOUEllpN+cqzr0OzlDam9uEoK2iPPYgNtivi8hdvSiVd/XT2JFaYDjyS1hFlaeKJErLbuWmeXmvOc1v8u6H98G4044ufED6O+U5nRekFGGJXdZA6nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861791; c=relaxed/simple;
-	bh=WVrYicOAfKA5JYnAcyJYUwdaqqip5gyKPADwrtRW7eo=;
+	s=arc-20240116; t=1778862129; c=relaxed/simple;
+	bh=OL/PTm887cmcnN5m8VFY9FpY55BUYKgp02UktFaQgiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iE8iTXeb5n1PQNDPeMxbZqo7kMAWdJ3ktatnhVqBMXVATjpQny8e5NC/kW41q8oHsRqFTIg5tm2fJC9NHfGpKSzCGTpCO3VK02ytChJTa0mDIQrS36p3+HEo3TXD6ijK3Jk/pV/Auq4v8jg9QlYDm1o4pkBx0etnUBd06e2EKHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlgvESJ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC81C2BCB0;
-	Fri, 15 May 2026 16:16:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ijkWmszD/yOCOyM2P2F7X+8JszpOb5wJn7nIa4qvkw+Kh4xfFJTopKYZFHTGnIb6jZYf8rmrUzHgub5NaDitEzzIg4c5iWMPT48r1P+2YJuZ3iqt9knkw80UJdglCxRQaFhnFLSqrkXoTs7NGckx2TXtHlYdS9oXaXWFfXz1+sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SScn/vSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A94C2BCB0;
+	Fri, 15 May 2026 16:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861790;
-	bh=WVrYicOAfKA5JYnAcyJYUwdaqqip5gyKPADwrtRW7eo=;
+	s=korg; t=1778862129;
+	bh=OL/PTm887cmcnN5m8VFY9FpY55BUYKgp02UktFaQgiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlgvESJ/V7BISJp6j76Orm666YTMmQu8hikfTgNGxxvaZyneZWXdxnQto9cgmcXi5
-	 h3Ky+tMzdLAlziSHtDdjF0btSNbVPOe78W9gNdplIF/9pokgKvVAeP1nbzVUlpBNKt
-	 1ZfKGDeq974F9IHHxnt7aW1ZlKFjLoVF4Alm8Izc=
+	b=SScn/vSdUseNTZIMi2QrdbmGtHjXqtcWBWmw+3+Mu3r6w2u2YBDG3JSHgtTi6EqBz
+	 DApT/EkCUpT1a4toORvWDHLWTNzoCKXAKxiapwdoHAigSxl8uez71gbGCXTUKyye3r
+	 bRaRTaLiGM98OdISX+a3gKoeD/LV4aaL2Iy0/SA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 427/474] spi: spi-ti-qspi: Convert to platform remove callback returning void
-Date: Fri, 15 May 2026 17:48:56 +0200
-Message-ID: <20260515154724.307390435@linuxfoundation.org>
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Mathew Alwin <alwin.mathew@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Jia Yao <jia.yao@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.18 120/188] drm/xe/uapi: Reject coh_none PAT index for CPU cached memory in madvise
+Date: Fri, 15 May 2026 17:48:57 +0200
+Message-ID: <20260515154659.933472581@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +70,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E8328554121
+X-Rspamd-Queue-Id: 5AD6C5550BC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248593-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248460-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Jia Yao <jia.yao@intel.com>
 
-[ Upstream commit 2f2802d1a59d79a3d00cb429841db502c2bbc3df ]
+commit 4e5591c2fc1b30f4ea5e2eab4c3a695acc404e39 upstream.
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+Add validation in xe_vm_madvise_ioctl() to reject PAT indices with
+XE_COH_NONE coherency mode when applied to CPU cached memory.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+Using coh_none with CPU cached buffers is a security issue. When the
+kernel clears pages before reallocation, the clear operation stays in
+CPU cache (dirty). GPU with coh_none can bypass CPU caches and read
+stale sensitive data directly from DRAM, potentially leaking data from
+previously freed pages of other processes.
 
-Add an error message to the error path that returned an error before to
-replace the core's error message with more information. Apart from the
-different wording of the error message, this patch doesn't introduce a
-semantic difference.
+This aligns with the existing validation in vm_bind path
+(xe_vm_bind_ioctl_validate_bo).
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231105172649.3738556-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0c18a1bacbb1 ("spi: ti-qspi: fix controller deregistration")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2(Matthew brost)
+- Add fixes
+- Move one debug print to better place
+
+v3(Matthew Auld)
+- Should be drm/xe/uapi
+- More Cc
+
+v4(Shuicheng Lin)
+- Fix kmem leak issues by the way
+
+v5
+- Remove kmem leak because it has been merged by another patch
+
+v6
+- Remove the fix which is not related to current fix
+
+v7
+- No change
+
+v8
+- Rebase
+
+v9
+- Limit the restrictions to iGPU
+
+v10
+- No change
+
+Fixes: ada7486c5668 ("drm/xe: Implement madvise ioctl for xe")
+Cc: <stable@vger.kernel.org> # v6.18+
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Mathew Alwin <alwin.mathew@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Jia Yao <jia.yao@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Acked-by: Michal Mrozek <michal.mrozek@intel.com>
+Acked-by: José Roberto de Souza <jose.souza@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patch.msgid.link/20260417055917.2027459-2-jia.yao@intel.com
+(cherry picked from commit 016ccdb674b8c899940b3944952c96a6a490d10a)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-ti-qspi.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/xe/xe_vm_madvise.c |   47 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -907,21 +907,22 @@ free_master:
- 	return ret;
+--- a/drivers/gpu/drm/xe/xe_vm_madvise.c
++++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
+@@ -299,6 +299,45 @@ static bool madvise_args_are_sane(struct
+ 	return true;
  }
  
--static int ti_qspi_remove(struct platform_device *pdev)
-+static void ti_qspi_remove(struct platform_device *pdev)
- {
- 	struct ti_qspi *qspi = platform_get_drvdata(pdev);
- 	int rc;
- 
- 	rc = spi_master_suspend(qspi->master);
--	if (rc)
--		return rc;
-+	if (rc) {
-+		dev_alert(&pdev->dev, "spi_master_suspend() failed (%pe)\n",
-+			  ERR_PTR(rc));
-+		return;
++static bool check_pat_args_are_sane(struct xe_device *xe,
++				    struct xe_vmas_in_madvise_range *madvise_range,
++				    u16 pat_index)
++{
++	u16 coh_mode = xe_pat_index_get_coh_mode(xe, pat_index);
++	int i;
++
++	/*
++	 * Using coh_none with CPU cached buffers is not allowed on iGPU.
++	 * On iGPU the GPU shares the LLC with the CPU, so with coh_none
++	 * the GPU bypasses CPU caches and reads directly from DRAM,
++	 * potentially seeing stale sensitive data from previously freed
++	 * pages. On dGPU this restriction does not apply, because the
++	 * platform does not provide a non-coherent system memory access
++	 * path that would violate the DMA coherency contract.
++	 */
++	if (coh_mode != XE_COH_NONE || IS_DGFX(xe))
++		return true;
++
++	for (i = 0; i < madvise_range->num_vmas; i++) {
++		struct xe_vma *vma = madvise_range->vmas[i];
++		struct xe_bo *bo = xe_vma_bo(vma);
++
++		if (bo) {
++			/* BO with WB caching + COH_NONE is not allowed */
++			if (XE_IOCTL_DBG(xe, bo->cpu_caching == DRM_XE_GEM_CPU_CACHING_WB))
++				return false;
++			/* Imported dma-buf without caching info, assume cached */
++			if (XE_IOCTL_DBG(xe, !bo->cpu_caching))
++				return false;
++		} else if (XE_IOCTL_DBG(xe, xe_vma_is_cpu_addr_mirror(vma) ||
++					    xe_vma_is_userptr(vma)))
++			/* System memory (userptr/SVM) is always CPU cached */
++			return false;
 +	}
++
++	return true;
++}
++
+ static bool check_bo_args_are_sane(struct xe_vm *vm, struct xe_vma **vmas,
+ 				   int num_vmas, u32 atomic_val)
+ {
+@@ -384,6 +423,14 @@ int xe_vm_madvise_ioctl(struct drm_devic
+ 	if (err || !madvise_range.num_vmas)
+ 		goto unlock_vm;
  
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 
- 	ti_qspi_dma_cleanup(qspi);
--
--	return 0;
- }
- 
- static const struct dev_pm_ops ti_qspi_pm_ops = {
-@@ -930,7 +931,7 @@ static const struct dev_pm_ops ti_qspi_p
- 
- static struct platform_driver ti_qspi_driver = {
- 	.probe	= ti_qspi_probe,
--	.remove = ti_qspi_remove,
-+	.remove_new = ti_qspi_remove,
- 	.driver = {
- 		.name	= "ti-qspi",
- 		.pm =   &ti_qspi_pm_ops,
++	if (args->type == DRM_XE_MEM_RANGE_ATTR_PAT) {
++		if (!check_pat_args_are_sane(xe, &madvise_range,
++					     args->pat_index.val)) {
++			err = -EINVAL;
++			goto free_vmas;
++		}
++	}
++
+ 	if (madvise_range.has_bo_vmas) {
+ 		if (args->type == DRM_XE_MEM_RANGE_ATTR_ATOMIC) {
+ 			if (!check_bo_args_are_sane(vm, madvise_range.vmas,
 
 
 
