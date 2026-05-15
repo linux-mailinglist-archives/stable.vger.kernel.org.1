@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-248139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2E5eAvFHB2qrwQIAu9opvQ
-	(envelope-from <stable+bounces-248139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:21:05 +0200
+	id QDqHCPJHB2qrwQIAu9opvQ
+	(envelope-from <stable+bounces-248140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:21:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC105530F0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F345530F7
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5DBE030A6D3D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:03:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 70FED310861C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14ED3E00A2;
-	Fri, 15 May 2026 16:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DD63E0090;
+	Fri, 15 May 2026 16:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVxsN4ea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0k0HenJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8466E30569C;
-	Fri, 15 May 2026 16:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3921530569C;
+	Fri, 15 May 2026 16:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860970; cv=none; b=JAJIGVzMAgYNzoOnePcFME5y2SsjRfU7AtPmTngRIPugNaRTE5xyL58k1CPL+Qc+TphN+elWsm8Le9X3re+3j6q0K6zocwbI6CQUXciPBTYOxMUAb/VYpQH+Cg+cp6l5TSIG7y69m8FyMK3aLphxd8o8B3wojoGj2PGz3YErZKo=
+	t=1778860973; cv=none; b=qPwSjvBlFlpM+LmfJoX2h4PZeyZuJYsu90gp+ZRXxZOIuUBleKyo1okWSiLovdp8iyKiXd7k08+MjlzL9/dVaFUqo8Hsc4iM+gUQkTB4C38ZJadFjBenSIywa/zzBs3reO/6uPLrwlzyTOEfTK5q/4Y5eZiYmSEMTvVRnvZXy/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860970; c=relaxed/simple;
-	bh=Yc7CMBHGBZxR3NvOq1fdnu4PDW8nQ1jla5YZXmVFLgk=;
+	s=arc-20240116; t=1778860973; c=relaxed/simple;
+	bh=e34r+lI1mOB49XlUGKiU8IAs6mgCil1gBBhxu/Xsns0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4ARsP8z3W7dni4bcGzHSfECYMS/qNXrtik6igOpXYIa40O620kwoilWDFUKzexvg00AFHazhmXpvnHp80P5Vt7NpRBNtwjx+Yn87hKRtFtA0sDDxt0wAn4BP2eC7g2u68dNka/k6l/+OMNopZirVgUPszKUNzpqTADCAaurcok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVxsN4ea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1F3C2BCB0;
-	Fri, 15 May 2026 16:02:49 +0000 (UTC)
+	 MIME-Version; b=r0PEi+eIKcUjf5AXo06A0cRT7e5y+xuW9alpvtO0V1rDqJcDvQ/pE/EBM2N62uNMKGQW/kp+SsF6JY3UdIBAO2XUm1ABOWXcBUx5bi9Squ9N2swBDE6EQGidg0c0kKwBf+EBNB7rOFY2F5DQpdkL8SzlDkQkgtQpNr7UDxSIKyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0k0HenJY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19ADC2BCB0;
+	Fri, 15 May 2026 16:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860970;
-	bh=Yc7CMBHGBZxR3NvOq1fdnu4PDW8nQ1jla5YZXmVFLgk=;
+	s=korg; t=1778860973;
+	bh=e34r+lI1mOB49XlUGKiU8IAs6mgCil1gBBhxu/Xsns0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVxsN4eaJaLThwnc5ZzYVeBNHsoBAXIUfHAkuGNTz1QUqw7IldwqLaNslL7AlDr3H
-	 CASDD7/NDQyL3QOXcymmg/iRS7rtziwnY+TVKb8suUSaquyYN5RbvdJxe7Ie0zxer1
-	 7DOe88ZpHqNa6k8bFUD7AT7MRmtMPmMmthQvF1lw=
+	b=0k0HenJYlj8qsBchAkGTotVAJeUCgNq1M8CvCY0Jt7FFMTGVaA+X0wqFQduJYSxDN
+	 E0Qlg3DAT7xCWWiXilZOpSUmOIcK4z7q5PzfgLg8Gs9g8iN2pkQ3J1T0ShH5m5zDm3
+	 gVcP4grl3Djj0Jw4EsF343O5DdtCFglFsWgzn3/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rajat Gupta <rajgupt@qti.qualcomm.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 148/474] fbdev: udlfb: add vm_ops to dlfb_ops_mmap to prevent use-after-free
-Date: Fri, 15 May 2026 17:44:17 +0200
-Message-ID: <20260515154718.229278223@linuxfoundation.org>
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: [PATCH 6.6 149/474] ACPI: scan: Use acpi_dev_put() in object add error paths
+Date: Fri, 15 May 2026 17:44:18 +0200
+Message-ID: <20260515154718.251258845@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7EC105530F0
+X-Rspamd-Queue-Id: 63F345530F7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -74,8 +74,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248139-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qti.qualcomm.com,gmx.de];
+	TAGGED_FROM(0.00)[bounces-248140-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,rjwysocki.net];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -92,119 +92,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,gmx.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,rjwysocki.net:email]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rajat Gupta <rajgupt@qti.qualcomm.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 8de779dc40d35d39fa07387b6f921eb11df0f511 upstream.
+commit 9c0acc169ac71535477caedea8315f7041c5f07c upstream.
 
-dlfb_ops_mmap() uses remap_pfn_range() to map vmalloc framebuffer pages
-to userspace but sets no vm_ops on the VMA. This means the kernel cannot
-track active mmaps. When dlfb_realloc_framebuffer() replaces the backing
-buffer via FBIOPUT_VSCREENINFO, existing mmap PTEs are not invalidated.
-On USB disconnect, dlfb_ops_destroy() calls vfree() on the old pages
-while userspace PTEs still reference them, resulting in a use-after-free:
-the process retains read/write access to freed kernel pages.
+After acpi_init_device_object(), the lifetime of struct acpi_device is
+managed by the driver core through reference counting.
 
-Add vm_operations_struct with open/close callbacks that maintain an
-atomic mmap_count on struct dlfb_data. In dlfb_realloc_framebuffer(),
-check mmap_count and return -EBUSY if the buffer is currently mapped,
-preventing buffer replacement while userspace holds stale PTEs.
+Both acpi_add_power_resource() and acpi_add_single_object() call
+acpi_init_device_object() and then invoke acpi_device_add(). If that
+fails, their error paths call the release callback directly instead of
+dropping the device reference through acpi_dev_put().
 
-Tested with PoC using dummy_hcd + raw_gadget USB device emulation.
+This bypasses the normal device lifetime rules and frees the object
+without releasing the reference acquired by device_initialize(), which
+may lead to a refcount leak.
 
-Signed-off-by: Rajat Gupta <rajgupt@qti.qualcomm.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
+
+Fix both error paths by using acpi_dev_put() and let the release
+callback handle the final cleanup.
+
+Fixes: 781d737c7466 ("ACPI: Drop power resources driver")
+Fixes: 718fb0de8ff88 ("ACPI: fix NULL bug for HID/UID string")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260413135343.2884481-1-lgs201920130244@gmail.com
+Signed-off-by: Rafael J. Wysocki <rjw@rjwysocki.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/udlfb.c |   31 ++++++++++++++++++++++++++++++-
- include/video/udlfb.h       |    1 +
- 2 files changed, 31 insertions(+), 1 deletion(-)
+ drivers/acpi/power.c |    2 +-
+ drivers/acpi/scan.c  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/video/fbdev/udlfb.c
-+++ b/drivers/video/fbdev/udlfb.c
-@@ -321,12 +321,32 @@ static int dlfb_set_video_mode(struct dl
- 	return retval;
+--- a/drivers/acpi/power.c
++++ b/drivers/acpi/power.c
+@@ -986,7 +986,7 @@ struct acpi_device *acpi_add_power_resou
+ 	return device;
+ 
+  err:
+-	acpi_release_power_resource(&device->dev);
++	acpi_dev_put(device);
+ 	return NULL;
  }
  
-+static void dlfb_vm_open(struct vm_area_struct *vma)
-+{
-+	struct dlfb_data *dlfb = vma->vm_private_data;
-+
-+	atomic_inc(&dlfb->mmap_count);
-+}
-+
-+static void dlfb_vm_close(struct vm_area_struct *vma)
-+{
-+	struct dlfb_data *dlfb = vma->vm_private_data;
-+
-+	atomic_dec(&dlfb->mmap_count);
-+}
-+
-+static const struct vm_operations_struct dlfb_vm_ops = {
-+	.open  = dlfb_vm_open,
-+	.close = dlfb_vm_close,
-+};
-+
- static int dlfb_ops_mmap(struct fb_info *info, struct vm_area_struct *vma)
- {
- 	unsigned long start = vma->vm_start;
- 	unsigned long size = vma->vm_end - vma->vm_start;
- 	unsigned long offset = vma->vm_pgoff << PAGE_SHIFT;
- 	unsigned long page, pos;
-+	struct dlfb_data *dlfb = info->par;
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -1862,7 +1862,7 @@ static int acpi_add_single_object(struct
+ 		result = acpi_device_add(device);
  
- 	if (info->fbdefio)
- 		return fb_deferred_io_mmap(info, vma);
-@@ -356,6 +376,9 @@ static int dlfb_ops_mmap(struct fb_info
- 			size = 0;
+ 	if (result) {
+-		acpi_device_release(&device->dev);
++		acpi_dev_put(device);
+ 		return result;
  	}
  
-+	vma->vm_ops = &dlfb_vm_ops;
-+	vma->vm_private_data = dlfb;
-+	atomic_inc(&dlfb->mmap_count);
- 	return 0;
- }
- 
-@@ -1219,7 +1242,6 @@ static void dlfb_deferred_vfree(struct d
- 
- /*
-  * Assumes &info->lock held by caller
-- * Assumes no active clients have framebuffer open
-  */
- static int dlfb_realloc_framebuffer(struct dlfb_data *dlfb, struct fb_info *info, u32 new_len)
- {
-@@ -1231,6 +1253,13 @@ static int dlfb_realloc_framebuffer(stru
- 	new_len = PAGE_ALIGN(new_len);
- 
- 	if (new_len > old_len) {
-+		if (atomic_read(&dlfb->mmap_count) > 0) {
-+			dev_warn(info->dev,
-+				"refusing realloc: %d active mmaps\n",
-+				atomic_read(&dlfb->mmap_count));
-+			return -EBUSY;
-+		}
-+
- 		/*
- 		 * Alloc system memory for virtual framebuffer
- 		 */
---- a/include/video/udlfb.h
-+++ b/include/video/udlfb.h
-@@ -56,6 +56,7 @@ struct dlfb_data {
- 	spinlock_t damage_lock;
- 	struct work_struct damage_work;
- 	struct fb_ops ops;
-+	atomic_t mmap_count;
- 	/* blit-only rendering path metrics, exposed through sysfs */
- 	atomic_t bytes_rendered; /* raw pixel-bytes driver asked to render */
- 	atomic_t bytes_identical; /* saved effort with backbuffer comparison */
 
 
 
