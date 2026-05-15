@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-247822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247823-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GjjEBY6B2ottwIAu9opvQ
-	(envelope-from <stable+bounces-247822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:21:58 +0200
+	id 2E/KKyY6B2ottwIAu9opvQ
+	(envelope-from <stable+bounces-247823-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:22:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D2455213D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:21:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5139D55214C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2A624301E80D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:20:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 882E1300D376
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7147E49252A;
-	Fri, 15 May 2026 15:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E581492532;
+	Fri, 15 May 2026 15:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bwT+Vfeh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A09R2D4B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384E64921B1
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 15:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679C44921B6
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 15:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778858437; cv=none; b=tdYLNJR3oEfnNhIyioUm94BHh01Fa/NxghdGxCUEZcum/UiJeTtidbAWPXf4COY0hrWObKGUJOf0bNfovhp77UObuFh59txuSwtrSOePhoIfWjf49p6f5wQlC3qw5xyQBxbdo1NC/Tu9ncE95ARimFmSho9yDXWZrKXiAsLmo1U=
+	t=1778858454; cv=none; b=c1NSNYa1+ieMWGcud614R3tq5+ZNwPA7HSH75LHuRfolV59tlzAohbIcojxYciT65mdKeJxcw01HeM2Ekf5bc4+IIhbhV68uEp4Y3ETKUvTUtjJXt2KReGdIMyOpl4lJvYDnR1jPMMWpHs1Jf4a5Bc+SW6ooPimMuGcuKYeHeZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778858437; c=relaxed/simple;
-	bh=CHUfEvzXSkSamIz9pqGPDpnt5w4q7qfQssWK3gEiZLk=;
+	s=arc-20240116; t=1778858454; c=relaxed/simple;
+	bh=FSu1wLItKXlaAaj20YsFeoW8Km/q+ZAYlLmaiKE/Uz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TFn36uog5sCXyMPxWYgbL69pYF7+2EBiIY7mXI3tVBqjWQNhGOxKzc2jHT22KJl2wXJsTYdozT8BdGfIoDjiiKYgKc2yv6tBt4Nn+a6h3cX1iQqlscaRkg5vJqn+QuQhtx32jd0HMJaGNJ0UNhv+QxxnfL96lzxKx4U/ZiBUi3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwT+Vfeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1551C2BCB7;
-	Fri, 15 May 2026 15:20:35 +0000 (UTC)
+	 MIME-Version; b=Ed5vW7W70lUdcQld6ubjhf75cFiY1f2PlKCplF39lFBqmRftkUjZrK6Ba0DrUiavZp39xWdMb+IUCPsKAZGcmlwURWkHvU1Z6tFbwexyupOwUb3ZOY4yukv/xN0Y/HHNu9wwyy9wLABgU9Vb/A7rU8YXtPrS1YsI/p9cFObaLl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A09R2D4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936EBC2BCB0;
+	Fri, 15 May 2026 15:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778858436;
-	bh=CHUfEvzXSkSamIz9pqGPDpnt5w4q7qfQssWK3gEiZLk=;
+	s=k20201202; t=1778858454;
+	bh=FSu1wLItKXlaAaj20YsFeoW8Km/q+ZAYlLmaiKE/Uz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bwT+Vfeh0FLyP/FEAtXznKtakm2fPk5960DhAWlPkDhecqZ9jKECXrhToDB77e2B7
-	 GY8/iWllqXERb07MlWjQr48WZCjnrkix70tjh7W3d1RYrTRMgOCZrOWQzt9zN7qipF
-	 Wt7+BCvvnFrZ5Gbg0kycVXPmi5bEaLMZM2wVFfDc0NNNjs2DZ4oViHz40vBxAhnVtQ
-	 PPfbPJtobaKw4vJuJloxoP824RZhCY8VHxBN8LYQLsfBOD3X03b4PiOqwcOptxjTNg
-	 5bLZDitusFD/cNwPG7N02ZCcqAKZ7Ys3BdI4rQTJdwycz7YMmg9usgVt1LN5xx6Rgk
-	 vnBZc953iSKFg==
+	b=A09R2D4B/7wjpYJ0Cq87H0zstOK5VF+IDSwxCwE4QL33l2+GskYx5sGtWAaPrurNc
+	 j4/prcpSoYUmNY1rlI9j2C0MK4iIDbn1t8pZyD+zEraD2xvjWCBXswNHSoPDH0s9Bx
+	 oe4LED4+kIpiIz05saD1IG6Qe9j0+tf8I92pWtgJUvFxu9586jsI7bLUUktgHrH27v
+	 OjLA5XyjPFx2WZWHsy/ShkZfbiu9ZjQqX9gcbDTu26tHrHPeSpFzairMdSbt5Ro8uc
+	 FurXd56qfdFDKrBswFjY7uEXJUpdULFQE+y8d1Tw0wcW4IsPD3E7/IKzyY1RI75nrE
+	 23VdAdKOqnQgg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] pmdomain: core: Fix detach procedure for virtual devices in genpd
-Date: Fri, 15 May 2026 11:20:34 -0400
-Message-ID: <20260515152034.3277396-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] tracing/probes: Limit size of event probe to 3K
+Date: Fri, 15 May 2026 11:20:51 -0400
+Message-ID: <20260515152051.3277784-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051202-enjoyably-emcee-b24b@gregkh>
-References: <2026051202-enjoyably-emcee-b24b@gregkh>
+In-Reply-To: <2026051226-clench-could-77cf@gregkh>
+References: <2026051226-clench-could-77cf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,103 +63,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D8D2455213D
+X-Rspamd-Queue-Id: 5139D55214C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247822-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247823-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,efficios.com:email,msgid.link:url]
 X-Rspamd-Action: no action
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 26735dfdd8930d9ef1fa92e590a9bf77726efdf6 ]
+[ Upstream commit b2aa3b4d64e460ac606f386c24e7d8a873ce6f1a ]
 
-If a device is attached to a PM domain through genpd_dev_pm_attach_by_id(),
-genpd calls pm_runtime_enable() for the corresponding virtual device that
-it registers. While this avoids boilerplate code in drivers, there is no
-corresponding call to pm_runtime_disable() in genpd_dev_pm_detach().
+There currently isn't a max limit an event probe can be. One could make an
+event greater than PAGE_SIZE, which makes the event useless because if
+it's bigger than the max event that can be recorded into the ring buffer,
+then it will never be recorded.
 
-This means these virtual devices are typically detached from its genpd,
-while runtime PM remains enabled for them, which is not how things are
-designed to work. In worst cases it may lead to critical errors, like a
-NULL pointer dereference bug in genpd_runtime_suspend(), which was recently
-reported. For another case, we may end up keeping an unnecessary vote for a
-performance state for the device.
+A event probe should never need to be greater than 3K, so make that the
+max size. As long as the max is less than the max that can be recorded
+onto the ring buffer, it should be fine.
 
-To fix these problems, let's add this missing call to pm_runtime_disable()
-in genpd_dev_pm_detach().
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/all/CAMuHMdWapT40hV3c+CSBqFOW05aWcV1a6v_NiJYgoYi0i9_PDQ@mail.gmail.com/
-Fixes: 3c095f32a92b ("PM / Domains: Add support for multi PM domains per device to genpd")
 Cc: stable@vger.kernel.org
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 93ccae7a22274 ("tracing/kprobes: Support basic types on dynamic events")
+Link: https://patch.msgid.link/20260428122302.706610ba@gandalf.local.home
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+[ adjusted context for missing later-kernel infrastructure and used `goto out` instead of `goto fail` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/domain.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ kernel/trace/trace_probe.c | 6 ++++++
+ kernel/trace/trace_probe.h | 4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
-index d1dae47f3534b..5bee0a8975003 100644
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -2676,6 +2676,7 @@ static struct bus_type genpd_bus_type = {
- static void genpd_dev_pm_detach(struct device *dev, bool power_off)
- {
- 	struct generic_pm_domain *pd;
-+	bool is_virt_dev;
- 	unsigned int i;
- 	int ret = 0;
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index 38fa6cc118daf..4ff74fe2fbdc7 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -647,6 +647,12 @@ static int traceprobe_parse_probe_arg_body(const char *argv, ssize_t *size,
+ 	parg->offset = *size;
+ 	*size += parg->type->size * (parg->count ?: 1);
  
-@@ -2685,6 +2686,13 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
- 
- 	dev_dbg(dev, "removing from PM domain %s\n", pd->name);
- 
-+	/* Check if the device was created by genpd at attach. */
-+	is_virt_dev = dev->bus == &genpd_bus_type;
++	if (*size > MAX_PROBE_EVENT_SIZE) {
++		ret = -E2BIG;
++		trace_probe_log_err(offset, EVENT_TOO_BIG);
++		goto out;
++	}
 +
-+	/* Disable runtime PM if we enabled it at attach. */
-+	if (is_virt_dev)
-+		pm_runtime_disable(dev);
-+
- 	/* Drop the default performance state */
- 	if (dev_gpd_data(dev)->default_pstate) {
- 		dev_pm_genpd_set_performance_state(dev, 0);
-@@ -2710,7 +2718,7 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
- 	genpd_queue_power_off_work(pd);
+ 	ret = -ENOMEM;
+ 	if (parg->count) {
+ 		len = strlen(parg->type->fmttype) + 6;
+diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
+index b08aa3946868c..97003a41b6c13 100644
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -33,6 +33,7 @@
+ #define MAX_ARRAY_LEN		64
+ #define MAX_ARG_NAME_LEN	32
+ #define MAX_STRING_SIZE		PATH_MAX
++#define MAX_PROBE_EVENT_SIZE	3072
  
- 	/* Unregister the device if it was created by genpd. */
--	if (dev->bus == &genpd_bus_type)
-+	if (is_virt_dev)
- 		device_unregister(dev);
- }
+ /* Reserved field names */
+ #define FIELD_STRING_IP		"__probe_ip"
+@@ -455,7 +456,8 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
+ 	C(FAIL_REG_PROBE,	"Failed to register probe event"),\
+ 	C(DIFF_PROBE_TYPE,	"Probe type is different from existing probe"),\
+ 	C(DIFF_ARG_TYPE,	"Argument type or name is different from existing probe"),\
+-	C(SAME_PROBE,		"There is already the exact same probe event"),
++	C(SAME_PROBE,		"There is already the exact same probe event"),\
++	C(EVENT_TOO_BIG,	"Event too big (too many fields?)"),
  
+ #undef C
+ #define C(a, b)		TP_ERR_##a
 -- 
 2.53.0
 
