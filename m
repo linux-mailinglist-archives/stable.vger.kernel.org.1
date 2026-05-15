@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-248381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOaWAwRWB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:08 +0200
+	id YL95LzNaB2qzzwIAu9opvQ
+	(envelope-from <stable+bounces-248747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6C9554E1F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 398005555F0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBAC431F7D48
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27F5733E42C5
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D403BB68B;
-	Fri, 15 May 2026 16:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A083EFFD6;
+	Fri, 15 May 2026 16:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3bYCplD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjh9iLcz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E902720297C;
-	Fri, 15 May 2026 16:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747F63E0092;
+	Fri, 15 May 2026 16:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861590; cv=none; b=aK81DL/uSKqYeGd81sq+SDARxV1yTk/ZxG3w+yWYuBybKZMyNFntEB8w8EYqIaAYih7c7s5614DNX2ldTuO24wEXe9c0hnbZbjYPvKeVEICBM9FxNOmksApobZmT/Ljagn5YZwatZAVp7CSWSOZ7li9ujs6ggCr5BxWzYt2KYAw=
+	t=1778862526; cv=none; b=AU+POM6As1FeHfT0vM+aMwGQaZlfk8NlPDKkPXffk7FToJVbK/rPGwZuHR6oO95KL7N9OtrnK4SyHUGV7S2tmmnzueaIklHp72OpdWyTfeym5txj2xv4FIU99V2o3d8hB7SQqI+vIzWyJYqFFW69jAYtgQv+HunLXj+PojcdMew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861590; c=relaxed/simple;
-	bh=BzyfiOESfSV1cMkPNPin0+2QCTsNr3o9ffW2YgUPDnI=;
+	s=arc-20240116; t=1778862526; c=relaxed/simple;
+	bh=YZz8HD/jdTtGjcPVJfNwnvweYkVvQPvd27u5OO+ELME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldDjX9s7+WL1QxnzXyun6fUcjiq/IWyPHGEMZYG2B/j6TKzYlP0CnIGzE6/zZhEYojr2VFgHx4cvlO0jXPq90U53OWwCCCBrC3Kd5yUVBvA94mljWC20tYQGbzZtuCYlag8VF/jsjp3SkLv/lU7z2OkpTOCOMSXO7agmVImhlqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3bYCplD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E172C2BCB0;
-	Fri, 15 May 2026 16:13:09 +0000 (UTC)
+	 MIME-Version; b=kbUmbZJhYxYx3zfu9oGRZTiFt+Mf8wz/KCfcTlyqhnwMpUhBo/6tbiz+df2UlD/RDC+T9+ETU7VsPultlG+2qic6Tn8U63gcwUOoEYB4pc8RV3mTHgtvH9RW9CAb8GK2Hp33GHh1/ops5yAJWXwGPFwKVYV9VTR7LIQ7yEdgtpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjh9iLcz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEB5C2BCB0;
+	Fri, 15 May 2026 16:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861589;
-	bh=BzyfiOESfSV1cMkPNPin0+2QCTsNr3o9ffW2YgUPDnI=;
+	s=korg; t=1778862526;
+	bh=YZz8HD/jdTtGjcPVJfNwnvweYkVvQPvd27u5OO+ELME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r3bYCplDHYZZH3RWBKjpQypBNSTWiSX0RHV3d4xvhKaEKkelH7eRRPS3RsNoBNuBm
-	 JHVrjTKUoZr+qOxcml7a94sxP6lV2puOjQsLOEqZhW+VQfh0Q4WeL2xvI0U10mnnDS
-	 /d3VcfRV0UODivefQM6O88iyuB+FxjbxcdWLqb2s=
+	b=qjh9iLczNtDGejwyPaSltzGEsc/2wNBxBso5zfM1BW4ClDHoJijmO619W4EG2fBz9
+	 RbTjbVNXEX5FZQ6Unt57n9dXxEaqxOT09qNRkVmlXDIY/nS6gXekqc4Qow++7ttvMy
+	 STaWA409ZyisYUyeket6lOt+6gtbMiG/pjkP3r8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Zhaoming <yuanzm2@lenovo.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 388/474] net: mctp: fix dont require received header reserved bits to be zero
-Date: Fri, 15 May 2026 17:48:17 +0200
-Message-ID: <20260515154723.437171203@linuxfoundation.org>
+	Vishnu Reddy <busanna.reddy@oss.qualcomm.com>,
+	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 080/201] media: iris: switch to hardware mode after firmware boot
+Date: Fri, 15 May 2026 17:48:18 +0200
+Message-ID: <20260515154700.265575682@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,123 +67,257 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6D6C9554E1F
+X-Rspamd-Queue-Id: 398005555F0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-248747-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248381-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,lenovo.com:email]
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Zhaoming <yuanzm2@lenovo.com>
+From: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
 
-[ Upstream commit a663bac71a2f0b3ac6c373168ca57b2a6e6381aa ]
+commit 95a337f92f0a602d4f935315bfbc8bf07f475e65 upstream.
 
->From the MCTP Base specification (DSP0236 v1.2.1), the first byte of
-the MCTP header contains a 4 bit reserved field, and 4 bit version.
+Currently the driver switches the vcodec GDSC to hardware (HW) mode
+before firmware load and boot sequence. GDSC can be powered off, keeping
+in hw mode, thereby the vcodec registers programmed in TrustZone (TZ)
+carry default (reset) values.
+Move the transition to HW mode after firmware load and boot sequence.
 
-On our current receive path, we require those 4 reserved bits to be
-zero, but the 9500-8i card is non-conformant, and may set these
-reserved bits.
+The bug was exposed with driver configuring different stream ids to
+different devices via iommu-map. With registers carrying reset values,
+VPU would not generate desired stream-id, thereby leading to SMMU fault.
 
-DSP0236 states that the reserved bits must be written as zero, and
-ignored when read. While the device might not conform to the former,
-we should accept these message to conform to the latter.
+For vpu4, when GDSC is switched to HW mode, there is a need to perform
+the reset operation. Without reset, there are occasional issues of
+register corruption observed. Hence the vpu GDSC switch also involves
+the reset.
 
-Relax our check on the MCTP version byte to allow non-zero bits in the
-reserved field.
-
-Fixes: 889b7da23abf ("mctp: Add initial routing framework")
-Signed-off-by: Yuan Zhaoming <yuanzm2@lenovo.com>
+Co-developed-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+Signed-off-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+Reviewed-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+[bod: occassional => occasional]
+Fixes: dde659d37036 ("media: iris: Introduce vpu ops for vpu4 with necessary hooks")
 Cc: stable@vger.kernel.org
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20260417141340.5306-1-yuanzhaoming901030@126.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/mctp.h |    3 +++
- net/mctp/route.c   |    8 ++++++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/iris/iris_core.c       |    4 +++
+ drivers/media/platform/qcom/iris/iris_hfi_common.c |    4 +++
+ drivers/media/platform/qcom/iris/iris_vpu2.c       |    1 
+ drivers/media/platform/qcom/iris/iris_vpu3x.c      |    9 ++-----
+ drivers/media/platform/qcom/iris/iris_vpu4x.c      |   24 +++++++++++----------
+ drivers/media/platform/qcom/iris/iris_vpu_common.c |   16 ++++++++------
+ drivers/media/platform/qcom/iris/iris_vpu_common.h |    3 ++
+ 7 files changed, 38 insertions(+), 23 deletions(-)
 
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -26,6 +26,9 @@ struct mctp_hdr {
- #define MCTP_VER_MIN	1
- #define MCTP_VER_MAX	1
+--- a/drivers/media/platform/qcom/iris/iris_core.c
++++ b/drivers/media/platform/qcom/iris/iris_core.c
+@@ -75,6 +75,10 @@ int iris_core_init(struct iris_core *cor
+ 	if (ret)
+ 		goto error_unload_fw;
  
-+/* Definitions for ver field */
-+#define MCTP_HDR_VER_MASK	GENMASK(3, 0)
++	ret = iris_vpu_switch_to_hwmode(core);
++	if (ret)
++		goto error_unload_fw;
 +
- /* Definitions for flags_seq_tag field */
- #define MCTP_HDR_FLAG_SOM	BIT(7)
- #define MCTP_HDR_FLAG_EOM	BIT(6)
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -335,6 +335,7 @@ static int mctp_route_input(struct mctp_
- 	unsigned long f;
- 	u8 tag, flags;
- 	int rc;
-+	u8 ver;
+ 	ret = iris_hfi_core_init(core);
+ 	if (ret)
+ 		goto error_unload_fw;
+--- a/drivers/media/platform/qcom/iris/iris_hfi_common.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_common.c
+@@ -159,6 +159,10 @@ int iris_hfi_pm_resume(struct iris_core
+ 	if (ret)
+ 		goto err_suspend_hw;
  
- 	msk = NULL;
- 	rc = -EINVAL;
-@@ -357,7 +358,8 @@ static int mctp_route_input(struct mctp_
- 	mh = mctp_hdr(skb);
- 	skb_pull(skb, sizeof(struct mctp_hdr));
++	ret = iris_vpu_switch_to_hwmode(core);
++	if (ret)
++		goto err_suspend_hw;
++
+ 	ret = ops->sys_interframe_powercollapse(core);
+ 	if (ret)
+ 		goto err_suspend_hw;
+--- a/drivers/media/platform/qcom/iris/iris_vpu2.c
++++ b/drivers/media/platform/qcom/iris/iris_vpu2.c
+@@ -44,4 +44,5 @@ const struct vpu_ops iris_vpu2_ops = {
+ 	.power_off_controller = iris_vpu_power_off_controller,
+ 	.power_on_controller = iris_vpu_power_on_controller,
+ 	.calc_freq = iris_vpu2_calc_freq,
++	.set_hwmode = iris_vpu_set_hwmode,
+ };
+--- a/drivers/media/platform/qcom/iris/iris_vpu3x.c
++++ b/drivers/media/platform/qcom/iris/iris_vpu3x.c
+@@ -234,14 +234,8 @@ static int iris_vpu35_power_on_hw(struct
+ 	if (ret)
+ 		goto err_disable_hw_free_clk;
  
--	if (mh->ver != 1)
-+	ver = mh->ver & MCTP_HDR_VER_MASK;
-+	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
- 		goto out;
+-	ret = dev_pm_genpd_set_hwmode(core->pmdomain_tbl->pd_devs[IRIS_HW_POWER_DOMAIN], true);
+-	if (ret)
+-		goto err_disable_hw_clk;
+-
+ 	return 0;
  
- 	flags = mh->flags_seq_tag & (MCTP_HDR_FLAG_SOM | MCTP_HDR_FLAG_EOM);
-@@ -1124,6 +1126,7 @@ static int mctp_pkttype_receive(struct s
- 	struct mctp_skb_cb *cb;
- 	struct mctp_route *rt;
- 	struct mctp_hdr *mh;
-+	u8 ver;
+-err_disable_hw_clk:
+-	iris_disable_unprepare_clock(core, IRIS_HW_CLK);
+ err_disable_hw_free_clk:
+ 	iris_disable_unprepare_clock(core, IRIS_HW_FREERUN_CLK);
+ err_disable_axi_clk:
+@@ -266,6 +260,7 @@ const struct vpu_ops iris_vpu3_ops = {
+ 	.power_off_controller = iris_vpu_power_off_controller,
+ 	.power_on_controller = iris_vpu_power_on_controller,
+ 	.calc_freq = iris_vpu3x_vpu4x_calculate_frequency,
++	.set_hwmode = iris_vpu_set_hwmode,
+ };
  
- 	rcu_read_lock();
- 	mdev = __mctp_dev_get(dev);
-@@ -1141,7 +1144,8 @@ static int mctp_pkttype_receive(struct s
+ const struct vpu_ops iris_vpu33_ops = {
+@@ -274,6 +269,7 @@ const struct vpu_ops iris_vpu33_ops = {
+ 	.power_off_controller = iris_vpu33_power_off_controller,
+ 	.power_on_controller = iris_vpu_power_on_controller,
+ 	.calc_freq = iris_vpu3x_vpu4x_calculate_frequency,
++	.set_hwmode = iris_vpu_set_hwmode,
+ };
  
- 	/* We have enough for a header; decode and route */
- 	mh = mctp_hdr(skb);
--	if (mh->ver < MCTP_VER_MIN || mh->ver > MCTP_VER_MAX)
-+	ver = mh->ver & MCTP_HDR_VER_MASK;
-+	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
- 		goto err_drop;
+ const struct vpu_ops iris_vpu35_ops = {
+@@ -283,4 +279,5 @@ const struct vpu_ops iris_vpu35_ops = {
+ 	.power_on_controller = iris_vpu35_vpu4x_power_on_controller,
+ 	.program_bootup_registers = iris_vpu35_vpu4x_program_bootup_registers,
+ 	.calc_freq = iris_vpu3x_vpu4x_calculate_frequency,
++	.set_hwmode = iris_vpu_set_hwmode,
+ };
+--- a/drivers/media/platform/qcom/iris/iris_vpu4x.c
++++ b/drivers/media/platform/qcom/iris/iris_vpu4x.c
+@@ -252,21 +252,10 @@ static int iris_vpu4x_power_on_hardware(
+ 		ret = iris_vpu4x_power_on_apv(core);
+ 		if (ret)
+ 			goto disable_hw_clocks;
+-
+-		iris_vpu4x_ahb_sync_reset_apv(core);
+ 	}
  
- 	/* source must be valid unicast or null; drop reserved ranges and
+-	iris_vpu4x_ahb_sync_reset_hardware(core);
+-
+-	ret = iris_vpu4x_genpd_set_hwmode(core, true, efuse_value);
+-	if (ret)
+-		goto disable_apv_power_domain;
+-
+ 	return 0;
+ 
+-disable_apv_power_domain:
+-	if (!(efuse_value & DISABLE_VIDEO_APV_BIT))
+-		iris_vpu4x_power_off_apv(core);
+ disable_hw_clocks:
+ 	iris_vpu4x_disable_hardware_clocks(core, efuse_value);
+ disable_vpp1_power_domain:
+@@ -359,6 +348,18 @@ disable_clocks_and_power:
+ 	iris_disable_power_domains(core, core->pmdomain_tbl->pd_devs[IRIS_HW_POWER_DOMAIN]);
+ }
+ 
++static int iris_vpu4x_set_hwmode(struct iris_core *core)
++{
++	u32 efuse_value = readl(core->reg_base + WRAPPER_EFUSE_MONITOR);
++
++	if (!(efuse_value & DISABLE_VIDEO_APV_BIT))
++		iris_vpu4x_ahb_sync_reset_apv(core);
++
++	iris_vpu4x_ahb_sync_reset_hardware(core);
++
++	return iris_vpu4x_genpd_set_hwmode(core, true, efuse_value);
++}
++
+ const struct vpu_ops iris_vpu4x_ops = {
+ 	.power_off_hw = iris_vpu4x_power_off_hardware,
+ 	.power_on_hw = iris_vpu4x_power_on_hardware,
+@@ -366,4 +367,5 @@ const struct vpu_ops iris_vpu4x_ops = {
+ 	.power_on_controller = iris_vpu35_vpu4x_power_on_controller,
+ 	.program_bootup_registers = iris_vpu35_vpu4x_program_bootup_registers,
+ 	.calc_freq = iris_vpu3x_vpu4x_calculate_frequency,
++	.set_hwmode = iris_vpu4x_set_hwmode,
+ };
+--- a/drivers/media/platform/qcom/iris/iris_vpu_common.c
++++ b/drivers/media/platform/qcom/iris/iris_vpu_common.c
+@@ -292,14 +292,8 @@ int iris_vpu_power_on_hw(struct iris_cor
+ 	if (ret && ret != -ENOENT)
+ 		goto err_disable_hw_clock;
+ 
+-	ret = dev_pm_genpd_set_hwmode(core->pmdomain_tbl->pd_devs[IRIS_HW_POWER_DOMAIN], true);
+-	if (ret)
+-		goto err_disable_hw_ahb_clock;
+-
+ 	return 0;
+ 
+-err_disable_hw_ahb_clock:
+-	iris_disable_unprepare_clock(core, IRIS_HW_AHB_CLK);
+ err_disable_hw_clock:
+ 	iris_disable_unprepare_clock(core, IRIS_HW_CLK);
+ err_disable_power:
+@@ -308,6 +302,16 @@ err_disable_power:
+ 	return ret;
+ }
+ 
++int iris_vpu_set_hwmode(struct iris_core *core)
++{
++	return dev_pm_genpd_set_hwmode(core->pmdomain_tbl->pd_devs[IRIS_HW_POWER_DOMAIN], true);
++}
++
++int iris_vpu_switch_to_hwmode(struct iris_core *core)
++{
++	return core->iris_platform_data->vpu_ops->set_hwmode(core);
++}
++
+ int iris_vpu35_vpu4x_power_off_controller(struct iris_core *core)
+ {
+ 	u32 clk_rst_tbl_size = core->iris_platform_data->clk_rst_tbl_size;
+--- a/drivers/media/platform/qcom/iris/iris_vpu_common.h
++++ b/drivers/media/platform/qcom/iris/iris_vpu_common.h
+@@ -21,6 +21,7 @@ struct vpu_ops {
+ 	int (*power_on_controller)(struct iris_core *core);
+ 	void (*program_bootup_registers)(struct iris_core *core);
+ 	u64 (*calc_freq)(struct iris_inst *inst, size_t data_size);
++	int (*set_hwmode)(struct iris_core *core);
+ };
+ 
+ int iris_vpu_boot_firmware(struct iris_core *core);
+@@ -30,6 +31,8 @@ int iris_vpu_watchdog(struct iris_core *
+ int iris_vpu_prepare_pc(struct iris_core *core);
+ int iris_vpu_power_on_controller(struct iris_core *core);
+ int iris_vpu_power_on_hw(struct iris_core *core);
++int iris_vpu_set_hwmode(struct iris_core *core);
++int iris_vpu_switch_to_hwmode(struct iris_core *core);
+ int iris_vpu_power_on(struct iris_core *core);
+ int iris_vpu_power_off_controller(struct iris_core *core);
+ void iris_vpu_power_off_hw(struct iris_core *core);
 
 
 
