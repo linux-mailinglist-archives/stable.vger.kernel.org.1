@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Pv/G7RXB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:28:20 +0200
+	id UA+ZKnJUB2pIygIAu9opvQ
+	(envelope-from <stable+bounces-248774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:14:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047015550EA
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:28:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE023554A8F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:14:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D0C34312FD69
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65E473142E82
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EF448B38D;
-	Fri, 15 May 2026 16:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7184D2EEF;
+	Fri, 15 May 2026 16:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJ2tFCc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtgglOd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62F83FBB42;
-	Fri, 15 May 2026 16:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418163B9D96;
+	Fri, 15 May 2026 16:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862175; cv=none; b=dO3CwOQ+2yJWH+nXi/ubcsYm1nU9+4bZRUIjqPSQiDgC7j/e7/8Qt2P33BvBdZgswOqupGaxortMmOO0z0PcKb8+uGpPt54yL24+T4fzw5XePmq/xz3Vgc4NYlTLpJTH4yPBZ3pGqihlt9dw8BFYODghztbLMNAwDZjbsBDUHTY=
+	t=1778862596; cv=none; b=fBh4k3iydyuH1LssnjYJEwM2Xj2EenYpCXvtP7+jPOOEMuXWiOEMEMN9EEVh2eLVP+E8V2pPWXcjhthyHTW46Ww11k0w9pNdf/YEGA7Wq4SM64PDmSq4wV5HbA/lONEnlx9F6tB8OKTvI1PvaKKsMHc7IUSYOZAsBoR8NrblOaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862175; c=relaxed/simple;
-	bh=RAFVEUbxjhCJbMEWRreHx/A/AdPSBbQ1556TNF/QHuY=;
+	s=arc-20240116; t=1778862596; c=relaxed/simple;
+	bh=Z4UqND0/Y+pf2QSBexcu/pFD/lk08JuV1rt4ELrJzXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VOP8YBqRoNoB4rIC58OJFUFZZYZ41Yyda1Dkm8T+VhBkzqicQtW9pk4Avb1u5WuNcrudayFB2eRl72LGf6itPr9LXlJVH1zWOom/Ec9SIoFS6Xd3eVEgqlFLljVJ+YNVb1/C6OIgTbiD0IZ08Qjv+rkBkBtVCk56kwBIuhBlBk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJ2tFCc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F92C2BCB0;
-	Fri, 15 May 2026 16:22:55 +0000 (UTC)
+	 MIME-Version; b=pZX7jaJuFdokh/T3aVlL9+KPsCXL6xiOIFW44ijuRqO0RipaZhAm9Hh2b2Z/we04c8KkJOJMLUtMKP9uI1k+AtcvkjixKcd52C9ttLLHAn/0wh/m2Rs3YQdE5MUoJiB0vRm3DU3nNNhQMMF+6CNW0iqc5HQi9u3yDjN7RUbpiMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtgglOd/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1452C2BCF5;
+	Fri, 15 May 2026 16:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862175;
-	bh=RAFVEUbxjhCJbMEWRreHx/A/AdPSBbQ1556TNF/QHuY=;
+	s=korg; t=1778862596;
+	bh=Z4UqND0/Y+pf2QSBexcu/pFD/lk08JuV1rt4ELrJzXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KJ2tFCc1kstEd6WM8ek6Fc0BvzyQNg9PNKkwKUv7VQxhPN+qONa48yWhxjLMiaEXS
-	 /dXLOZLM7FDq8Vsl7PEUBCbK9X9feJp17kEkP0MG6KzRRjl2QAt5Zs2W8VWuQkbSQO
-	 V36Cgwag1m2LfzvejyHcslR8V3Pk2malHrrwNGqw=
+	b=AtgglOd/MBNCnSEup2vO2pE2oGQUC5iMjBdLaHnNUoJGPKv8u07UjoAOCR5MUSipm
+	 DnYZtzMXtxQTZ+XFbzt4N1krWytliFVaKc5kEe9NcLXbqa6SnOZH+O8b6ag/F56W7u
+	 4N7ZfJhBljEd+9OPuHaLnnm+6RlV5fnbOK05n3NA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 110/188] drm/amdgpu/vcn3: Prevent OOB reads when parsing dec msg
+	Mason Yang <masonccyang@mxic.com.tw>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 109/201] spi: mxic: fix controller deregistration
 Date: Fri, 15 May 2026 17:48:47 +0200
-Message-ID: <20260515154659.715401207@linuxfoundation.org>
+Message-ID: <20260515154700.913104466@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +63,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 047015550EA
+X-Rspamd-Queue-Id: EE023554A8F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248611-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248774-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mxic.com.tw:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Cheng <benjamin.cheng@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit b193019860d61e92da395eae2011f2f6716b182f upstream.
+commit adbc595e272052181d40ec307a4c5ba98571b0fe upstream.
 
-Check bounds against the end of the BO whenever we access the msg.
+Make sure to deregister the controller before disabling underlying
+resources like clocks (via runtime pm) during driver unbind.
 
-Signed-off-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: b942d80b0a39 ("spi: Add MXIC controller driver")
+Cc: stable@vger.kernel.org	# 5.0: cc53711b2191
+Cc: stable@vger.kernel.org	# 5.0
+Cc: Mason Yang <masonccyang@mxic.com.tw>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260414134319.978196-6-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/spi/spi-mxic.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
-@@ -1908,7 +1908,7 @@ static int vcn_v3_0_dec_msg(struct amdgp
- {
- 	struct ttm_operation_ctx ctx = { false, false };
- 	struct amdgpu_bo_va_mapping *map;
--	uint32_t *msg, num_buffers;
-+	uint32_t *msg, num_buffers, len_dw;
- 	struct amdgpu_bo *bo;
- 	uint64_t start, end;
- 	unsigned int i;
-@@ -1929,6 +1929,11 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 		return -EINVAL;
- 	}
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -832,9 +832,10 @@ static void mxic_spi_remove(struct platf
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct mxic_spi *mxic = spi_controller_get_devdata(host);
  
-+	if (end - addr < 16) {
-+		DRM_ERROR("VCN messages must be at least 4 DWORDs!\n");
-+		return -EINVAL;
-+	}
++	spi_unregister_controller(host);
 +
- 	bo->flags |= AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
- 	amdgpu_bo_placement_from_domain(bo, bo->allowed_domains);
- 	r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
-@@ -1945,8 +1950,8 @@ static int vcn_v3_0_dec_msg(struct amdgp
+ 	pm_runtime_disable(&pdev->dev);
+ 	mxic_spi_mem_ecc_remove(mxic);
+-	spi_unregister_controller(host);
+ }
  
- 	msg = ptr + addr - start;
- 
--	/* Check length */
- 	if (msg[1] > end - addr) {
-+		DRM_ERROR("VCN message header does not fit in BO!\n");
- 		r = -EINVAL;
- 		goto out;
- 	}
-@@ -1954,7 +1959,16 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 	if (msg[3] != RDECODE_MSG_CREATE)
- 		goto out;
- 
-+	len_dw = msg[1] / 4;
- 	num_buffers = msg[2];
-+
-+	/* Verify that all indices fit within the claimed length. Each index is 4 DWORDs */
-+	if (num_buffers > len_dw || 6 + num_buffers * 4 > len_dw) {
-+		DRM_ERROR("VCN message has too many buffers!\n");
-+		r = -EINVAL;
-+		goto out;
-+	}
-+
- 	for (i = 0, msg = &msg[6]; i < num_buffers; ++i, msg += 4) {
- 		uint32_t offset, size, *create;
- 
-@@ -1964,14 +1978,15 @@ static int vcn_v3_0_dec_msg(struct amdgp
- 		offset = msg[1];
- 		size = msg[2];
- 
--		if (offset + size > end) {
-+		if (size < 4 || offset + size > end - addr) {
-+			DRM_ERROR("VCN message buffer exceeds BO bounds!\n");
- 			r = -EINVAL;
- 			goto out;
- 		}
- 
- 		create = ptr + addr + offset - start;
- 
--		/* H246, HEVC and VP9 can run on any instance */
-+		/* H264, HEVC and VP9 can run on any instance */
- 		if (create[0] == 0x7 || create[0] == 0x10 || create[0] == 0x11)
- 			continue;
- 
+ static const struct of_device_id mxic_spi_of_ids[] = {
 
 
 
