@@ -1,186 +1,180 @@
-Return-Path: <stable+bounces-247383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247384-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KKIVNHCxBmpInAIAu9opvQ
-	(envelope-from <stable+bounces-247383-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:38:56 +0200
+	id oBYYIt6zBmqKnAIAu9opvQ
+	(envelope-from <stable+bounces-247384-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:49:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4710A549A00
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:38:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8C1549BC6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9FED43025A73
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 05:38:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 15715300539E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 05:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD7735F8A8;
-	Fri, 15 May 2026 05:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3D2368972;
+	Fri, 15 May 2026 05:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNWRyG/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkxGdM9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1AF35F195
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 05:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF7D366558;
+	Fri, 15 May 2026 05:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778823533; cv=none; b=R9hbJ88RGpvYpM6CfadwRZ2T7UmAo0GFOwBoAuPO+AFpUKImWq7FsYFaGTp7NdabA5fFLYs5ZzWELSmy5cfAibsVJOrZbMWG2z3coWVreDfJRYbbEwqjGwPNOa7s+D1EfPnrrw8+M4hpLHMx67IyxDKVgNsemsXBW1C3B7wb1ms=
+	t=1778823936; cv=none; b=RXU+6YkM09khJa2M4T+/+bb3WXSp52ss8IjPGHI2miL98c7+uExX2iQR/Ulhcr542qEX9n1Mlf97f1AcBPiBiug+pvOq06izAcXZ8oqF5FMwac5+nISuvDA9bVa6jctvmnnhXt77Nxe2m0XlBZULIT26KwVmaoABxyT8TuvhxV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778823533; c=relaxed/simple;
-	bh=3/HuDKB1F7gNIQxks/roKfN8/dVFZ5QEQF7ozAdegvA=;
+	s=arc-20240116; t=1778823936; c=relaxed/simple;
+	bh=Z2q1o2NUqVxfG+ho3ZuFX4Tmhr0ZS4KIYOd4M+uy7vU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rd1blONvpUP3wOhYPor5y5ZRJz0Mxt15GFgcYQK1qkeIlla1X8dh0aFFkANGxP3d0MalTr/MofZbQh1A0gecoN0HWDTckCS/D0L8uGqkAaAr2pDNx/6I1zPYfvbVEpDhC5s7nGHhU9n/VjohqFYSFSr+0CsQTSEnWZnwef3nyjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNWRyG/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638ACC2BCC7;
-	Fri, 15 May 2026 05:38:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778823533;
-	bh=3/HuDKB1F7gNIQxks/roKfN8/dVFZ5QEQF7ozAdegvA=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=jxsYf2m6uEJxHdvpPT56nA9x70vB46w+JBelbH/Ca8x6KKMop8qV+kslmByadD4enqGZ6qQTs0j477baLNnm2cAg6n8RXygptx330PGlfV7m4u9BVct0eIeMQze7lCDUOLOCw3rFYA/3nJHTQjOreExdMMV4pb/AY4ICv3T2eEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkxGdM9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35B7C2BCB0;
+	Fri, 15 May 2026 05:45:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778823936;
+	bh=Z2q1o2NUqVxfG+ho3ZuFX4Tmhr0ZS4KIYOd4M+uy7vU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PNWRyG/oN0/YA3bYBjadRk/rd5eXqHGcSIoYUyYEi9lZMYhyq8oGByJKhDRsS1q0R
-	 iWhTYM0Whc6K1L5qNaPm1hZqt0kUtQZ6Z9poTatdQRCHomv45zuqEdY3wMpQ/SsHiW
-	 6XjyHLM+GvvwKNH9kV98CIt4s7gPSi+k/mwdWeUsr9lw4dL+PLm6takBeg6WPppgFB
-	 KC0bHPKtHTONTNd+Almr7mCzrv6mTo4QccCIznslUN+I7cLr+/50FmF+YZpFv2S/SQ
-	 U45+XVtVjnl3nmAO0cGA13awuQabnNe4SgaJoQOXqQ+gRw2wrK3kjAKRUoq7wl0uLe
-	 B8vyJyIruQG4g==
-Date: Fri, 15 May 2026 08:38:46 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Breno Leitao <leitao@debian.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 7.0.y] kho: fix error handling in kho_add_subtree()
-Message-ID: <agaxZgzfomonva8O@kernel.org>
-References: <2026051212-boil-trivial-8d5e@gregkh>
- <20260514192553.1255751-1-sashal@kernel.org>
+	b=hkxGdM9M6Ds5hHY56I0WAdMTR17+c8HLF22EVAA9QoKJE+7TOqh7H+RXYQAZ6+tpo
+	 GiSaRM/yGoh8AOLBNxnoQdLk9h3ILyEF6fS1wLruVk4J1lkTKsY5fgWrI74UsX8cHy
+	 qFKKe97bReJBHlmMXXO4AT4rLnKCPJxO7K/W4MRE=
+Date: Fri, 15 May 2026 07:45:40 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: lukas@wunner.de, ignat@linux.win, jarkko@kernel.org,
+	yimingqian591@gmail.com, stable@vger.kernel.org,
+	linux-crypto@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] lib/crypto: mpi: Fix integer underflow
+ in" failed to apply to 6.1-stable tree
+Message-ID: <2026051530-lushness-attest-bcbb@gregkh>
+References: <2026051223-undercoat-reps-6626@gregkh>
+ <20260513025130.GA3110@sol>
+ <2026051334-showgirl-hurdle-22eb@gregkh>
+ <20260513170445.GA2128@quark>
+ <20260513225934.GA501859@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260514192553.1255751-1-sashal@kernel.org>
-X-Rspamd-Queue-Id: 4710A549A00
+In-Reply-To: <20260513225934.GA501859@google.com>
+X-Rspamd-Queue-Id: ED8C1549BC6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-247383-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247384-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[wunner.de,linux.win,kernel.org,gmail.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[soleen.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,copy.fail:url,gregkh:email,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-On Thu, May 14, 2026 at 03:25:53PM -0400, Sasha Levin wrote:
-> From: Breno Leitao <leitao@debian.org>
+On Wed, May 13, 2026 at 10:59:34PM +0000, Eric Biggers wrote:
+> On Wed, May 13, 2026 at 10:04:47AM -0700, Eric Biggers wrote:
+> > > > A couple issues.  First, this email wasn't sent to the subsystem's
+> > > > mailing list (linux-crypto@vger.kernel.org in this case).  That greatly
+> > > > reduces the number of people who are made aware that this didn't get
+> > > > automatically backported.
+> > > 
+> > > We never send out these FAILED emails to the mailing lists, as that
+> > > would make just even more noise.  It's always been this way, sorry.
+> > 
+> > Yes, this has been a problem for a long time, resulting in lots of
+> > missed backports including the copy.fail ones.  It's time for you to fix
+> > your process.
+> > 
+> > > > Second, the upstream commit cherry-picks to 6.1, 5.15, and 5.10 without
+> > > > conflict.  (The file being changed was renamed between 6.1 and 6.6, but
+> > > > 'git cherry-pick' handles that automatically.)
+> > > > 
+> > > > I don't know what you're doing exactly that caused it to be
+> > > > unnecessarily marked as FAILED.  But whatever it is, it's not working,
+> > > > and it is causing backports to be missed.
+> > > 
+> > > We don't use git for cherry-picking as we have a patch queue, so renames
+> > > will often times fail, like it did here.  This has always been the case
+> > > in the decades we have been running the stable kernels :)
+> > 
+> > Again, this has been a problem for a long time, and it's time for you to
+> > fix your process.  You can still have the patch queue; just use git for
+> > the actual cherry-pick.
 > 
-> [ Upstream commit 9ec95329894864170a1a7685b9a11b739393131a ]
+> Also I should mention that your own instructions for "reproducing" the
+> conflict use 'git cherry-pick':
 > 
-> Fix two error handling issues in kho_add_subtree(), where it doesn't
-> handle the error path correctly.
+>     git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+>     git checkout FETCH_HEAD
+>     git cherry-pick -x 8c2f1288250a90a4b5cabed5d888d7e3aeed4035
+>     # <resolve conflicts, build, test, etc.>
+>     git commit -s
+>     git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051223-undercoat-reps-6626@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 > 
-> 1. If fdt_setprop() fails after the subnode has been created, the
->    subnode is not removed. This leaves an incomplete node in the FDT
->    (missing "preserved-data" or "blob-size" properties).
-> 
-> 2. The fdt_setprop() return value (an FDT error code) is stored
->    directly in err and returned to the caller, which expects -errno.
-> 
-> Fix both by storing fdt_setprop() results in fdt_err, jumping to a new
-> out_del_node label that removes the subnode on failure, and only setting
-> err = 0 on the success path, otherwise returning -ENOMEM (instead of
-> FDT_ERR_ errors that would come from fdt_setprop).
-> 
-> No user-visible changes.  This patch fixes error handling in the KHO
-> (Kexec HandOver) subsystem, which is used to preserve data across kexec
-> reboots.  The fix only affects a rare failure path during kexec
-> preparation — specifically when the kernel runs out of space in the
-> Flattened Device Tree buffer while registering preserved memory regions.
-> 
-> In the unlikely event that this error path was triggered, the old code
-> would leave a malformed node in the device tree and return an incorrect
-> error code to the calling subsystem, which could lead to confusing log
-> messages or incorrect recovery decisions.  With this fix, the incomplete
-> node is properly cleaned up and the appropriate errno value is propagated,
-> this error code is not returned to the user.
-> 
-> Link: https://lore.kernel.org/20260410-kho_fix_send-v2-1-1b4debf7ee08@debian.org
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> Cc: Alexander Graf <graf@amazon.com>
-> Cc: Breno Leitao <leitao@debian.org>
-> Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> When these instructions are followed, there is no conflict.  The
+> "conflict" is purely because you didn't use 'git cherry-pick' yourself.
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Yes, that is true, we are showing how someone else can potentially
+resolve the issue.  The magic is in the line:
+	# <resolve conflicts, build, test, etc.>
 
-> ---
->  kernel/liveupdate/kexec_handover.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index cc68a3692905d..479c42e08b74a 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -757,13 +757,18 @@ int kho_add_subtree(const char *name, void *fdt)
->  		goto out_pack;
->  	}
->  
-> -	err = fdt_setprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME,
-> -			  &phys, sizeof(phys));
-> -	if (err < 0)
-> -		goto out_pack;
-> +	fdt_err = fdt_setprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME,
-> +			      &phys, sizeof(phys));
-> +	if (fdt_err < 0)
-> +		goto out_del_node;
->  
->  	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, false));
->  
-> +	err = 0;
-> +	goto out_pack;
-> +
-> +out_del_node:
-> +	fdt_del_node(root_fdt, off);
->  out_pack:
->  	fdt_pack(root_fdt);
->  
-> -- 
-> 2.53.0
-> 
+We issue FAILED emails for any number of reasons, we don't go into the
+details of why it FAILED, otherwise we would have just too much
+information here.
 
--- 
-Sincerely yours,
-Mike.
+> So just start using 'git cherry-pick', and stop asking other people to
+> do it for you when there are no conflicts, please.
+
+That does not work in our workflow at all.  Given the huge flow of
+patches, and all the different issues/errors, the odds that a simple
+rename will resolve the problem is very low.  For that I can not slow
+down the whole process for all submissions.
+
+> And please start Cc'ing the mailing lists.  Linux kernel development
+> isn't done in private email.
+
+This isn't a private list, we are cc:ing the people who signed off on
+the patch directly.  They are the "owners" of it.
+
+> I would have backported the copy.fail
+> fixes earlier, but I never received the FAILED emails (which I'm
+> guessing you sent, but only in private email to other people), so I
+> didn't know they weren't being backported...
+
+Those patches were NOT marked for stable inclusion, so they did not get
+a FAILED email at all.  We were lucky that Sasha's sweep of the tree for
+"random patches that have a Fixes: tag only that look interesting"
+actually caught them for a few branches.  And for those, we NEVER send a
+FAILED email either, as the maintainer did not explicitly ask us for
+stable inclusion, so we are not going to bother them with extra stuff.
+
+thanks,
+
+greg k-h
 
