@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMyiLj1OB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:57 +0200
+	id eCttNZ9KB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FCFD553EFB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6873553611
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 428EF331E013
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7FA3631F870C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B763F6C48;
-	Fri, 15 May 2026 16:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC333FD977;
+	Fri, 15 May 2026 16:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9ZTzcLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuHK5umP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1003C76A0;
-	Fri, 15 May 2026 16:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A243F86E1;
+	Fri, 15 May 2026 16:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861861; cv=none; b=XHtaHOZoVb8/+kGBHa8GG8+MGfKXgImmsBgHD6Q1XblKJ/nGvpKfBMXY6kxmN/BjAN9Bk6/orLdbKzo178WQiAY+1WOhO2zP73EbRG/3mmc1j7AZ4zMxyT8GReM3UZZzlKOeOO+PKpbviiK9xhbNmG1qLi33/GDEZgVIKIUBkK0=
+	t=1778861389; cv=none; b=rDQaX9v9+O9vTK6VryBGd8G1JT+7cmDaGpQGIktxx3/NUGIGGqn9fFTWH2dtU1MCMSxYCdacRQcKlYwGS4hnuI9Xqocu7d21kbVr6pRmVTfllqmiDy0AxLa67TiOsMPmATHygfZ4cMI3wELe1DrzqXEKc1D4k09TeV3JZMIo3NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861861; c=relaxed/simple;
-	bh=ZIFj9J5MbGwZchrGzDeRf0VRgmpNOY21cdWxI4pzEfI=;
+	s=arc-20240116; t=1778861389; c=relaxed/simple;
+	bh=eHHYgK7g0aEclmlPzpqyrbAKlQWuqSTOa4iJXf3BPJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5Frtg8U+8Bj3/tHKI6kQJLRGK8pYiedplFmKv1R7z8WQLQ5J0NJhwcOau+4B7jzbiFCujxEmYfvontIeltpk8RkdkzBWE63mkXYOhSgFbN8oy4iM+n6CK3Z6yQ1JbSrymHYJBssm1D/zLm6t/iymtLMv4rOMatLRpZp+WiTtAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9ZTzcLx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F845C2BCB0;
-	Fri, 15 May 2026 16:17:40 +0000 (UTC)
+	 MIME-Version; b=Ag071/Ou+nprBxnHM3myK2HhMF0dgbNrSCDghUPhQnkVT1MHgxU88rJTo3g//u66Wy1FH12WxEVbqCw38zjQd1HW0vPMCtdVy3N3moYQHNQ8Q3zrpqEuVjJ0tzRP4hEHylTlSv2dsR3V71D14mlBdeg4+TbHZh/UAXWoVVPuzOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuHK5umP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E2EC2BCB0;
+	Fri, 15 May 2026 16:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861860;
-	bh=ZIFj9J5MbGwZchrGzDeRf0VRgmpNOY21cdWxI4pzEfI=;
+	s=korg; t=1778861389;
+	bh=eHHYgK7g0aEclmlPzpqyrbAKlQWuqSTOa4iJXf3BPJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9ZTzcLxxDtEx1SekaOYWhxytGnU/rm/B858T+o0cZE8N4FRi8DYcDavW5ZN4+vj7
-	 BbICA13M7T6jukZXSNaOzs0gEE21MqC0G9iyxIri3aVVkQ3WoFnxoJ/VNXZTWbM9rr
-	 OSeN+XTQEoLcByTRBWfgWowg/GPBUEdCLXlstO3Y=
+	b=JuHK5umP6KcHF9iZq7AmdzkBuBro0SBvrIxc2tj0aYoupn4KYtkAURgUruGIhnKZx
+	 rcbmVqtG6K6ljrbJCr4XkYb45y8yAtSmMavvVRDEcQJpRdVSPpVHkyReFVShcB65Pl
+	 9ECpFqXH0ok7doVUaYDSiQL1iJqsh/bXN4q5PFqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sangyun Kim <sangyun.kim@snu.ac.kr>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.18 002/188] HID: appletb-kbd: fix UAF in inactivity-timer cleanup path
+	Marek Vasut <marek.vasut@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 310/474] regulator: bd9571mwv: fix OF node reference imbalance
 Date: Fri, 15 May 2026 17:46:59 +0200
-Message-ID: <20260515154657.364742646@linuxfoundation.org>
+Message-ID: <20260515154721.715260326@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,154 +64,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3FCFD553EFB
+X-Rspamd-Queue-Id: A6873553611
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248489-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248304-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sangyun Kim <sangyun.kim@snu.ac.kr>
+From: Johan Hovold <johan@kernel.org>
 
-commit 4db2af929279c799b5653a39eb0795c72baffca4 upstream.
+commit 8498100ee1d00422b8c5b161b3e332278b92a59a upstream.
 
-Commit 38224c472a03 ("HID: appletb-kbd: fix slab use-after-free bug in
-appletb_kbd_probe") added timer_delete_sync(&kbd->inactivity_timer) to
-both the probe close_hw error path and appletb_kbd_remove(), but the
-way it was wired in left the inactivity timer reachable during driver
-tear-down via two distinct windows.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-Window A -- put_device() before timer_delete_sync():
+Fix this by using the intended helper for reusing OF nodes.
 
-	put_device(&kbd->backlight_dev->dev);
-	timer_delete_sync(&kbd->inactivity_timer);
-
-The inactivity_timer softirq reads kbd->backlight_dev and calls
-backlight_device_set_brightness() -> mutex_lock(&ops_lock).  If a
-concurrent hid_appletb_bl unbind drops the last devm reference
-between these two calls, the backlight_device is freed and the
-mutex_lock() touches freed memory.
-
-Window B -- backlight cleanup before hid_hw_stop():
-
-	if (kbd->backlight_dev) {
-		timer_delete_sync(...);
-		put_device(...);
-	}
-	hid_hw_close(hdev);
-	hid_hw_stop(hdev);
-
-Even after Window A is closed, hid_hw_close()/hid_hw_stop() still run
-afterwards, so a late ".event" callback from the HID core (USB URB
-completion on real Apple hardware) can arrive after
-timer_delete_sync() drained the softirq but before put_device() drops
-the reference.  That callback reaches reset_inactivity_timer(), which
-calls mod_timer() and re-arms the timer.  The freshly re-armed timer
-can then fire on the about-to-be-freed backlight_device.
-
-Both windows produce the same KASAN slab-use-after-free:
-
-  BUG: KASAN: slab-use-after-free in __mutex_lock+0x1aab/0x21c0
-  Read of size 8 at addr ffff88803ee9a108 by task swapper/0/0
-  Call Trace:
-   <IRQ>
-   __mutex_lock
-   backlight_device_set_brightness
-   appletb_inactivity_timer
-   call_timer_fn
-   run_timer_softirq
-   handle_softirqs
-  Allocated by task N:
-   devm_backlight_device_register
-   appletb_bl_probe
-  Freed by task M:
-   (concurrent hid_appletb_bl unbind path)
-
-Close both windows at once by reworking the tear-down in
-appletb_kbd_remove() and in the probe close_hw error path so that
-
- 1) hid_hw_close()/hid_hw_stop() run before the backlight cleanup,
-    guaranteeing no further .event callback can fire and re-arm the
-    timer, and
- 2) inside the "if (kbd->backlight_dev)" block, timer_delete_sync()
-    runs before put_device(), so the softirq is drained before the
-    final reference is dropped.
-
-Fixes: 38224c472a03 ("HID: appletb-kbd: fix slab use-after-free bug in appletb_kbd_probe")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: e85c5a153fe2 ("regulator: Add ROHM BD9571MWV-M PMIC regulator driver")
+Cc: stable@vger.kernel.org	# 4.12
+Cc: Marek Vasut <marek.vasut@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260408073055.5183-8-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-appletb-kbd.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/regulator/bd9571mwv-regulator.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/hid-appletb-kbd.c
-+++ b/drivers/hid/hid-appletb-kbd.c
-@@ -440,13 +440,13 @@ static int appletb_kbd_probe(struct hid_
- unregister_handler:
- 	input_unregister_handler(&kbd->inp_handler);
- close_hw:
--	if (kbd->backlight_dev) {
--		put_device(&kbd->backlight_dev->dev);
--		timer_delete_sync(&kbd->inactivity_timer);
--	}
- 	hid_hw_close(hdev);
- stop_hw:
- 	hid_hw_stop(hdev);
-+	if (kbd->backlight_dev) {
-+		timer_delete_sync(&kbd->inactivity_timer);
-+		put_device(&kbd->backlight_dev->dev);
-+	}
- 	return ret;
- }
+--- a/drivers/regulator/bd9571mwv-regulator.c
++++ b/drivers/regulator/bd9571mwv-regulator.c
+@@ -288,8 +288,9 @@ static int bd9571mwv_regulator_probe(str
  
-@@ -457,13 +457,13 @@ static void appletb_kbd_remove(struct hi
- 	appletb_kbd_set_mode(kbd, APPLETB_KBD_MODE_OFF);
+ 	platform_set_drvdata(pdev, bdreg);
  
- 	input_unregister_handler(&kbd->inp_handler);
-+	hid_hw_close(hdev);
-+	hid_hw_stop(hdev);
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
 +
- 	if (kbd->backlight_dev) {
--		put_device(&kbd->backlight_dev->dev);
- 		timer_delete_sync(&kbd->inactivity_timer);
-+		put_device(&kbd->backlight_dev->dev);
- 	}
--
--	hid_hw_close(hdev);
--	hid_hw_stop(hdev);
- }
+ 	config.dev = &pdev->dev;
+-	config.dev->of_node = pdev->dev.parent->of_node;
+ 	config.driver_data = bdreg;
+ 	config.regmap = bdreg->regmap;
  
- #ifdef CONFIG_PM
 
 
 
