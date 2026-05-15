@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aD/NEr1XB2oozgIAu9opvQ
-	(envelope-from <stable+bounces-248518-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:28:29 +0200
+	id 6NvWALJLB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:37:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA74A55511A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:28:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 738CF5539AC
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47B9134AD334
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3290E30F7931
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF9F3FD950;
-	Fri, 15 May 2026 16:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65917280035;
+	Fri, 15 May 2026 16:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lliXuBbg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bC/t6rr4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F79B3FBB45;
-	Fri, 15 May 2026 16:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B7A3E0091;
+	Fri, 15 May 2026 16:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861934; cv=none; b=k1f8GZiTJvItGkC+DcCijVzT/Erv/CF4FszdwLa3Au6EPvRx6S75xHb7XgDViSBUOQ1lwwb7FdzqjRltBqFVYYkBN8CBZA3d0IjpmIFbCdZkbDtAUnhS5D2nOqVkITLmc3WJkzXsaq20Ha0kr0eB2KYwG62KdDgEbPNzROqezqE=
+	t=1778861496; cv=none; b=q+EHwa89PTQLLRqz/Cdj58TEM+lKz82j2BalxB2420FyMEAUCW7Vlgs1zcl8mS3VeV02SUQnFTr+6vRaqgdtwmds2VozpD0fcQDuBWcGT/AR4Sw36/PMaOIdr+PHrnhIldBongZFCu4eskdYmQTueXviICb3tVWlyjnjYL6Gzhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861934; c=relaxed/simple;
-	bh=GmPp6qnw+PFARAMrZYdmwVjPY6qw+pzrhlEzE72HC7M=;
+	s=arc-20240116; t=1778861496; c=relaxed/simple;
+	bh=TU6Erz1HWrZRP/NylZUwR9AtMEDrzC7Ag7ARZgerVCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TbjW9H+mVdW2etUh5meXtm9uCwU7l2xWA8GEaYsEZe9cU2LvqAXMn7e+kHd3dtgR7+cEnXOmvWj20o2JNsuDyYKBkke7a3nWDPxmPrnb1HCHoSd/WdJDBxTuBskxxNJZZ7EFLRuk3dkmso21FIp32zKEXUmRcCD212Hicvs6TzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lliXuBbg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CDAC2BCB0;
-	Fri, 15 May 2026 16:18:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mj7Y/bjc7HcpQK0Dd7jVAE+7jHPBi9zrLW0C0RJyaxgeWZpJf2bglDw7U3tfanch0LNpDxllruIcKwI2sDkIsW7+PtbsM0luFOGqWFvH/pYnMA0myBfqhZgnFSfFkysyYKoWu+623BIrLkw/Hwe9tbh8m+8S3OGMi5fQ0+QGaJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bC/t6rr4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33D3C2BCB0;
+	Fri, 15 May 2026 16:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861934;
-	bh=GmPp6qnw+PFARAMrZYdmwVjPY6qw+pzrhlEzE72HC7M=;
+	s=korg; t=1778861496;
+	bh=TU6Erz1HWrZRP/NylZUwR9AtMEDrzC7Ag7ARZgerVCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lliXuBbgzSD548jb4UQ+v2pXaKhN9wIuMcXa0sGFnao0eYy7S+1+7V6rpzfUrozpH
-	 AxS05+HBdgt5ppatIzNZkH/phJtpoaclOEcwP30fV9sqluzX6NEXpNdgmlbjvEf+U3
-	 BZ/4qCT8IYRirKEWHUhwislhGuqvnjimWogkcbT8=
+	b=bC/t6rr4fFMIdqg0P8rdI+VK3slRHrxUB547CSWB4ZAhuYOtI5wovUGSi6VHjELEP
+	 7dMhPkhzM7i5S6x3/vIwrHqNhFEWQmAUUMy1W68JWwGka2p0KVKmCsrAXyDukXJQx3
+	 Dtjsc6ITYDpjsgeP26NynpHHkoKUaRtTrpg498Bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Artem S. Tashkinov" <aros@gmx.com>,
-	Krishna Chomal <krishna.chomal108@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.18 044/188] platform/x86: hp-wmi: Ignore backlight and FnLock events
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	"John B. Moore" <jbmoore61@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 352/474] drm/amdgpu/sdma4: replace BUG_ON with WARN_ON in fence emission
 Date: Fri, 15 May 2026 17:47:41 +0200
-Message-ID: <20260515154658.271934268@linuxfoundation.org>
+Message-ID: <20260515154722.632931573@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,27 +65,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BA74A55511A
+X-Rspamd-Queue-Id: 738CF5539AC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248518-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248345-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.com,gmail.com,linux.intel.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -93,51 +92,63 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,gmx.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Chomal <krishna.chomal108@gmail.com>
+From: John B. Moore <jbmoore61@gmail.com>
 
-commit e8c597368b8500a824c639bfb5ed0044068c6870 upstream.
+commit 78d2e624fa073c14970aa097adcf3ea31c157a66 upstream.
 
-On HP OmniBook 7 the keyboard backlight and FnLock keys are handled
-directly by the firmware. However, they still trigger WMI events which
-results in "Unknown key code" warnings in dmesg.
+sdma_v4_0_ring_emit_fence() contains two BUG_ON(addr & 0x3) assertions
+that verify fence writeback addresses are dword-aligned.  These
+assertions can be reached from unprivileged userspace via crafted
+DRM_IOCTL_AMDGPU_CS submissions, causing a fatal kernel panic in a
+scheduler worker thread.
 
-Add these key codes to the keymap with KE_IGNORE to silence the warnings
-since no software action is needed.
+Replace both BUG_ON() calls with WARN_ON() to log the condition without
+crashing the kernel.  A misaligned fence address at this point indicates
+a driver bug, but crashing the kernel is never the correct response when
+the assertion is reachable from userspace.
 
-Tested-by: Artem S. Tashkinov <aros@gmx.com>
-Reported-by: Artem S. Tashkinov <aros@gmx.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221181
-Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
-Link: https://patch.msgid.link/20260403080155.169653-1-krishna.chomal108@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+The CS IOCTL path is the correct place to filter invalid submissions;
+the ring emission callback is too late to do anything about it.
+
+Fixes: 2130f89ced2c ("drm/amdgpu: add SDMA v4.0 implementation (v2)")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: John B. Moore <jbmoore61@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b90250bd933afd1ba94d86d6b13821997b22b18e)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/hp/hp-wmi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -362,6 +362,11 @@ static const struct key_entry hp_wmi_key
- 	{ KE_KEY, 0x21a9,  { KEY_TOUCHPAD_OFF } },
- 	{ KE_KEY, 0x121a9, { KEY_TOUCHPAD_ON } },
- 	{ KE_KEY, 0x231b,  { KEY_HELP } },
-+	{ KE_IGNORE, 0x21ab, }, /* FnLock on */
-+	{ KE_IGNORE, 0x121ab, }, /* FnLock off */
-+	{ KE_IGNORE, 0x30021aa, }, /* kbd backlight: level 2 -> off */
-+	{ KE_IGNORE, 0x33221aa, }, /* kbd backlight: off -> level 1 */
-+	{ KE_IGNORE, 0x36421aa, }, /* kbd backlight: level 1 -> level 2*/
- 	{ KE_END, 0 }
- };
- 
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+@@ -841,7 +841,7 @@ static void sdma_v4_0_ring_emit_fence(st
+ 	/* write the fence */
+ 	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_FENCE));
+ 	/* zero in first two bits */
+-	BUG_ON(addr & 0x3);
++	WARN_ON(addr & 0x3);
+ 	amdgpu_ring_write(ring, lower_32_bits(addr));
+ 	amdgpu_ring_write(ring, upper_32_bits(addr));
+ 	amdgpu_ring_write(ring, lower_32_bits(seq));
+@@ -851,7 +851,7 @@ static void sdma_v4_0_ring_emit_fence(st
+ 		addr += 4;
+ 		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_FENCE));
+ 		/* zero in first two bits */
+-		BUG_ON(addr & 0x3);
++		WARN_ON(addr & 0x3);
+ 		amdgpu_ring_write(ring, lower_32_bits(addr));
+ 		amdgpu_ring_write(ring, upper_32_bits(addr));
+ 		amdgpu_ring_write(ring, upper_32_bits(seq));
 
 
 
