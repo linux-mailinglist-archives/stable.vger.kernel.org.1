@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-248486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBB5LnxXB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:27:24 +0200
+	id 4AJSObBEB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:07:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36264555089
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:27:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD88552B33
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:07:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F62433F5A05
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 328703040B46
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5BC3F9270;
-	Fri, 15 May 2026 16:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A2E3FF1D5;
+	Fri, 15 May 2026 15:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCtNyXoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIXSz8EN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F73A3BB116;
-	Fri, 15 May 2026 16:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9533FF1A2;
+	Fri, 15 May 2026 15:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861853; cv=none; b=rOmSm0CKsZ+zwH1p/TJZz68DW0NcHNTwO80WDAaYz5PWu8HjYe11dypnueMPFpK8XFSK0YwQY0jFvj12mrXqrcBXBRkMvschXxgelP35l7fDpYhWnHwi/y85bP1XW5sZjJdCBAt5HPFxcNee5QylzdnbWky6i9ALzEM49ht1qzI=
+	t=1778860250; cv=none; b=UzODb/FOGlK10FMioB7rEMThw8wAPzh62kYIHUZgrYENZ3BKX082Lzm+aaH2cIzsxWk2Zwr3fjJUvZNv6ylGgg9khQK4nnQ+UBvCizACTPSHK7METcnaIe6boQRfUsxwDNxJatlQS3pBe6U+fEfFScH9XXCxBs1prYNa9WtajJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861853; c=relaxed/simple;
-	bh=HZUrSio6D2Xmh2T77b0u67QMKqeAZ4LeJxbeRSHHM8w=;
+	s=arc-20240116; t=1778860250; c=relaxed/simple;
+	bh=bdz7RA+eYRDP2ArRSJl8iifi6Mem1OaONVRZg5tsyjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=goKjbxqcHVzT6pgNWeBOFQCldoHZYcka2Rz7UscZfJx0dQRwfKxwHEj4oqf9TAkxqq/pHLFyeOREAkYzIRffFvHpOyEOzgErSAYfsrz/QeXtn75QPs89mC26eimHbHI/yij/1Lqx9HSqpC60RunlTHrgsczPpFqpyOifH+uOobE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCtNyXoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9617C2BCB0;
-	Fri, 15 May 2026 16:17:32 +0000 (UTC)
+	 MIME-Version; b=S22CFQGPHMWFT5nGiMDcfwtgPfrlUVSp++MlwwWkwZBUsANr0/5U4zcrIVt65pvEN2Cx7lQf0fyZ56oNRMUtl0DZwdyfI/jHDDksOmaqkAqcaa/GuUaAK4VlEPpaw/SNjjEuMRnjmRAeuTBoyNHomGavFG4CBEjYUOqmHsVCpqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIXSz8EN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B66C2BCB0;
+	Fri, 15 May 2026 15:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861853;
-	bh=HZUrSio6D2Xmh2T77b0u67QMKqeAZ4LeJxbeRSHHM8w=;
+	s=korg; t=1778860250;
+	bh=bdz7RA+eYRDP2ArRSJl8iifi6Mem1OaONVRZg5tsyjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fCtNyXoQ9bpUilmY/GfoNeOX68L95oqfBNZHrrbJjMmZx9hTyiuuCKguHATx4yut+
-	 kiPnsp57r9ZuDOVapp1GTjb5Vvcjc+33Vk7ygoQ+WpVP1k/O7+PBwEtDtTXAchzBcx
-	 4qfO2WvNGpsh95oaEWrjnGZI2XkQF1KYwQ+wbsvA=
+	b=hIXSz8EN5LW2TzQN8IUs8mdcj7WV8P+Z3j85cLG4FU+ODsj9YECKNfglATcqocMrO
+	 8EEF6JLoCEczdvqzJr8Nb+Ojrx0IHShDnzloBsB1Z9OwjOqTQ0bCIpgxDwC75qebel
+	 5L8J6ZSVq3h4cLglpFqJQ6sEIG5HnO8uWNqvjn9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor@kernel.org>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
 	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 014/188] media: dt-bindings: rockchip,vdec: Mark reg-names required for RK35{76,88}
+Subject: [PATCH 6.12 005/144] media: chips-media: wave5: fix a potential memory leak in wave5_vdi_init()
 Date: Fri, 15 May 2026 17:47:11 +0200
-Message-ID: <20260515154657.616323600@linuxfoundation.org>
+Message-ID: <20260515154653.603716520@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 36264555089
+X-Rspamd-Queue-Id: 8AD88552B33
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -74,82 +72,62 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-247857-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248486-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable,cisco];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,microchip.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iscas.ac.cn:email,collabora.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-commit a11db8d8b403eba1f82728f440727128e9997edd upstream.
+commit 95bd174a453f77b09ea66e1e22834680754ba501 upstream.
 
-The Rockchip Video Decoder driver expects reg-names to be mandatory for
-RK3576 and RK3588 SoCs, however the binding does not currently require
-the use of them.
+Add wave5_vdi_free_dma_memory() in the error path of
+wave5_vdi_init() to prevent a potential memory leak.
 
-As a consequence, driver would fail to probe with a hypothetical
-devicetree that doesn't provide the reg-names for these SoCs, but which
-is otherwise a perfectly valid DT from the binding perspective.
-
-Update the binding and make reg-names required for the aforementioned
-SoCs.  While this change introduces an ABI break, the expected impact on
-potential users would be minimal, if any, since the old SoCs are
-unaffected, while the video decoder support for these newer variants in
-mainline driver and devicetrees hasn't been released yet.
-
-Moreover, this is also a prerequisite for a subsequent binding update
-introducing an alternative reg-names order, according to the
-address-based listing in the vendor's datasheet.
-
-Reported-by: Conor Dooley <conor@kernel.org>
-Closes: https://lore.kernel.org/all/20260227-urologist-gratitude-7984733f2d41@spud/
-Fixes: c6ffb7e1fb90 ("media: dt-bindings: rockchip: Document RK3588 Video Decoder bindings")
-Fixes: a5c4a6526476 ("media: dt-bindings: rockchip: Add RK3576 Video Decoder bindings")
+Fixes: 45d1a2b93277 ("media: chips-media: wave5: Add vpuapi layer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/media/rockchip,vdec.yaml |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/platform/chips-media/wave5/wave5-vdi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/Documentation/devicetree/bindings/media/rockchip,vdec.yaml
-+++ b/Documentation/devicetree/bindings/media/rockchip,vdec.yaml
-@@ -126,6 +126,8 @@ allOf:
-           minItems: 5
-         reset-names:
-           minItems: 5
-+      required:
-+        - reg-names
-     else:
-       properties:
-         reg:
+--- a/drivers/media/platform/chips-media/wave5/wave5-vdi.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-vdi.c
+@@ -49,6 +49,7 @@ int wave5_vdi_init(struct device *dev)
+ 
+ 	if (!PRODUCT_CODE_W_SERIES(vpu_dev->product_code)) {
+ 		WARN_ONCE(1, "unsupported product code: 0x%x\n", vpu_dev->product_code);
++		wave5_vdi_free_dma_memory(vpu_dev, &vpu_dev->common_mem);
+ 		return -EOPNOTSUPP;
+ 	}
+ 
 
 
 
