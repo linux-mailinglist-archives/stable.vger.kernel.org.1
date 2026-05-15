@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-248825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aIrmK2pLB2q5wwIAu9opvQ
-	(envelope-from <stable+bounces-248825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:35:54 +0200
+	id oNUIDgJRB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94A95538B0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:35:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF54D5544CF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D0DDF301B070
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C440831569BD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442C13F871A;
-	Fri, 15 May 2026 16:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199AC3B9D84;
+	Fri, 15 May 2026 16:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUDpPPQF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/98wi2n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28EC3BB12D;
-	Fri, 15 May 2026 16:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C637730569C;
+	Fri, 15 May 2026 16:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862729; cv=none; b=ifcuCFCGoOP5TJl1MNSdXHoLUx8fB+hYInWuzgUwei3oZrFJz8W1oHVmvIj/Jy8BS0QLdKUWy2ZgKiUMTQ25trFt0OG80VJmV/uMf1lFa1vYGhxTMd/5EhGgOH6CUM6z8aOnZsFVNTHWL58lwvCbT4ivSW8EVEuEKIumCKNu+AE=
+	t=1778862324; cv=none; b=K9/JpNT0rkjk05RMoqb9wNm8fowE/FdPtKwP1UEF7l89kR676GFLmum9fd9IqLPqieL/sivARq+hImNoZfcGqbgYY2FbZm22i06v6WmntPa8ntT1izy1IDwcM1unNksKSOcU5MFuLJq00Z9LgLqwGcOS4Utj2ILXDtRGc1Osl88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862729; c=relaxed/simple;
-	bh=0O9HGRGMCwJQRtqEuncwgxbeutiPpHq5HOZo/j3tIgo=;
+	s=arc-20240116; t=1778862324; c=relaxed/simple;
+	bh=YK6Hi5gT53dwwsPrlVuCXumVCFKVn8LIzr5IRBNXWNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAhN5I0V+riytJkhuvhQzXiZmpm86xaaqBCcC00OoYexjWdTJ2gQu1D952Yqd2NkjWX4wszPlld7nwyjD1/24Zwj/Tp74v0I2PA/yhDv8I5h5dhFSP06VoXw6jXfCv0h8/mPzdbnLoYtVURF3rvIvo0r1er6wFSL9eLnVgsq8L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUDpPPQF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89558C2BCB0;
-	Fri, 15 May 2026 16:32:08 +0000 (UTC)
+	 MIME-Version; b=YTkkdgSy3hyhXirdG7RlsfERz+08DS98ySySHiav4qyq9b88U+ZB5d+DBgwTXARKnb+k/o7cpes95b5DgQBJvq9eaBom5tK4K2DorxOJOV33eFzp9X+ZDiWui8pbITEAurS3Zl0bqA6mUWAVPUMo5SJWkhCTJZY1ibF0D4ZQ7e4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/98wi2n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD78C2BCB0;
+	Fri, 15 May 2026 16:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862728;
-	bh=0O9HGRGMCwJQRtqEuncwgxbeutiPpHq5HOZo/j3tIgo=;
+	s=korg; t=1778862324;
+	bh=YK6Hi5gT53dwwsPrlVuCXumVCFKVn8LIzr5IRBNXWNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUDpPPQF913whnEu36FjnoceSbXZSDykQDNs3RQmkbYuYfcElYItnpioP1Y/HwDH6
-	 y8IgpQnI2rGAqblvGoMPwKi17P2CRqQYuXeoa8cu7n4ynWdPkFOSZBFhdD61Ov7Qcg
-	 Udcat9LdyZFhFfl8171NhByWKtc57o4fb98fKCQs=
+	b=y/98wi2nakjX/w9oUzlD4gLUm/QT4/XE3xnPuVKOVKT5LnRGVq2FOl9So5amGK1BN
+	 Y/YpdN3beyz1tRByCSFdA1vlKd+5JKQgsgdynwiiQfNU2flCsHLdO1tGdTXpgZmSCH
+	 gppvZQDSC6WOaebXk4yenZjOhH35wqYuy1w4kxBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 7.0 159/201] drm/panel: himax-hx83102: restore MODE_LPM after sending disable cmds
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 160/188] papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()
 Date: Fri, 15 May 2026 17:49:37 +0200
-Message-ID: <20260515154702.018291079@linuxfoundation.org>
+Message-ID: <20260515154700.798003472@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C94A95538B0
+X-Rspamd-Queue-Id: AF54D5544CF
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248825-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248668-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,54 +88,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linaro.org:email,iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,chromium.org:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 2d4e80271f784aa0c7b17676e9762c7e8156be1c upstream.
+[ Upstream commit 6d3789d347a7af5c4b0b2da3af47b8d9da607ab2 ]
 
-When preparing the panel, it seems that it always expects commands to be
-transferred in LP mode. However, the disable function removes the
-MIPI_DSI_MODE_LPM flag, and no other function re-adds it.
+Fixes a UAF for src_info as well.
 
-As the unprepare function contains no DSI commands, re-adding the flag
-just after disabling the panel should be safe. Add the code re-adding
-the flag after the two commands for disabling the panel are sent.
-
-This fixes screen unblanking (after blanking once) on
-mt8188-geralt-ciri-sku1 device.
-
-Cc: stable@vger.kernel.org # 6.11+
-Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out as separate driver")
-Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260425165751.1716569-1-zhengxingda@iscas.ac.cn
+Link: https://patch.msgid.link/20251123-work-fd-prepare-v4-33-b6efa1706cfd@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 7a4f0846ee6c ("pseries/papr-hvpipe: Fix race with interrupt handler")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-himax-hx83102.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/platforms/pseries/papr-hvpipe.c |   39 ++++++---------------------
+ 1 file changed, 9 insertions(+), 30 deletions(-)
 
---- a/drivers/gpu/drm/panel/panel-himax-hx83102.c
-+++ b/drivers/gpu/drm/panel/panel-himax-hx83102.c
-@@ -850,6 +850,8 @@ static int hx83102_disable(struct drm_pa
- 	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
- 	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
+--- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
++++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+@@ -484,10 +484,7 @@ static const struct file_operations papr
  
-+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
- 	mipi_dsi_msleep(&dsi_ctx, 150);
+ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ {
+-	struct hvpipe_source_info *src_info;
+-	struct file *file;
+-	long err;
+-	int fd;
++	struct hvpipe_source_info *src_info __free(kfree) = NULL;
  
- 	return dsi_ctx.accum_err;
+ 	spin_lock(&hvpipe_src_list_lock);
+ 	/*
+@@ -511,20 +508,13 @@ static int papr_hvpipe_dev_create_handle
+ 	src_info->tsk = current;
+ 	init_waitqueue_head(&src_info->recv_wqh);
+ 
+-	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
+-	if (fd < 0) {
+-		err = fd;
+-		goto free_buf;
+-	}
+-
+-	file = anon_inode_getfile("[papr-hvpipe]",
+-			&papr_hvpipe_handle_ops, (void *)src_info,
+-			O_RDWR);
+-	if (IS_ERR(file)) {
+-		err = PTR_ERR(file);
+-		goto free_fd;
+-	}
++	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
++		   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
++				      (void *)src_info, O_RDWR));
++	if (fdf.err)
++		return fdf.err;
+ 
++	retain_and_null_ptr(src_info);
+ 	spin_lock(&hvpipe_src_list_lock);
+ 	/*
+ 	 * If two processes are executing ioctl() for the same
+@@ -533,22 +523,11 @@ static int papr_hvpipe_dev_create_handle
+ 	 */
+ 	if (hvpipe_find_source(srcID)) {
+ 		spin_unlock(&hvpipe_src_list_lock);
+-		err = -EALREADY;
+-		goto free_file;
++		return -EALREADY;
+ 	}
+ 	list_add(&src_info->list, &hvpipe_src_list);
+ 	spin_unlock(&hvpipe_src_list_lock);
+-
+-	fd_install(fd, file);
+-	return fd;
+-
+-free_file:
+-	fput(file);
+-free_fd:
+-	put_unused_fd(fd);
+-free_buf:
+-	kfree(src_info);
+-	return err;
++	return fd_publish(fdf);
+ }
+ 
+ /*
 
 
 
