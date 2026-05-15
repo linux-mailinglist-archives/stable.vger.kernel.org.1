@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDmvNetZB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:47 +0200
+	id yGzWNV9EB2oCvAIAu9opvQ
+	(envelope-from <stable+bounces-247926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4D8555534
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E18552A9A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3F8331DBD94
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:33:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 639C23025C4A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C4A3BB11C;
-	Fri, 15 May 2026 16:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8051714B08A;
+	Fri, 15 May 2026 15:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xr3YCInf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEe1O8yp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A4324A06A;
-	Fri, 15 May 2026 16:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444303FF1D5;
+	Fri, 15 May 2026 15:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862661; cv=none; b=R7uNL+/kJivN3w4o3aPdINnAbqxF7KrW4Ui+mUgEWMYHYziL9xUL8UdQ7zCg3zP7B+WQfCM6Y3LPwIaFTNvWm/5SEhKtsVkk/1h3PesRcsRi3nUgmnibAQY/NuQO7SM3bxJ0IYWtUjQ4YCvu5pBgoSkz2aqvslcxvfS+dh1nLwY=
+	t=1778860428; cv=none; b=os4zWsaKPmNEYpweH9SA8/UsPMdh4xl5KolJAM0KUvcIboT7hKqezLec182tupOfXeJYfCCXGhmp+n1FeiQBkbCM9wwp03cMKev0z2hxV0Rzk4EzVDksuLWrMrhqSL1a3If2GNIv3cqamA0kaFBPGN8LEXMnNAWVB2Dfgy5mLjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862661; c=relaxed/simple;
-	bh=UT3F8X4fkhIHwSJiYz0Mv0m3K/NvIyc5VjpbzlPd/uk=;
+	s=arc-20240116; t=1778860428; c=relaxed/simple;
+	bh=MHmmB775ZD7Up95Osp2mCXk0+wO09Eo9NauazZny4ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pty4/+ZHrf9psIn5MKA3OacPu3CMRf573VxsVl/E7WNxN/6rvenDq3nmm6Hbqm7hZxwG7tyjykSgXBrDIEWllGzyoJLmjUmwoW+VIWtj8mQrMumMkKL+T0r8FMVUzSsQtnSRYZEKTYIY4iG+W9nmCr3AI/LhFCv5SqHLSdIN7p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xr3YCInf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D89C2BCC7;
-	Fri, 15 May 2026 16:31:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bxJEx/I9vD1SvmOf542L8Z9EuslWZL726zUsExqohAs3tWRumfQH27q+PXktYLiXome5jEstWEWlDyiWPEgMjw7Aqz2+rvMA8bkHLylzMux9tO73j57mmwO5FwzhnF2fjl7np+pO/mtI8Otdo9jCryRTqNu1eKh4V3uy12b5N4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEe1O8yp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE089C2BCB0;
+	Fri, 15 May 2026 15:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862661;
-	bh=UT3F8X4fkhIHwSJiYz0Mv0m3K/NvIyc5VjpbzlPd/uk=;
+	s=korg; t=1778860428;
+	bh=MHmmB775ZD7Up95Osp2mCXk0+wO09Eo9NauazZny4ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xr3YCInfDhASj7wMGieH1PSXskQpg1iTDpBLcCihrgoh/j6bkG4VkX0WYDBXwqAU9
-	 w1nyUkEvzHXcX/NmSIVF7l3uYlwrzGDXP1/WxE+B2WddcE2cveEpuvoPWqALvBa6p6
-	 uGktlEpyyQvYAbCQE0UYzyk+/T0iJYHj7e2ebuQw=
+	b=eEe1O8yp+FihTVLB5Z4yLTqxZPnThUoSMPpPPUzVhSg+X62e2kikY7frk1oq2g7GG
+	 R37jHG7IlDCjbXyPnVFOKeJscu2Dzq38CCTU/dN/wcP6HG5rbYQH6aj3rKny5Grbi0
+	 FDZxV5F1skqcyJHTr2eLs4O1JT2/TEuQQttVxC4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <jth@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 093/201] spi: ch341: fix devres lifetime
+	Osama Abdelkader <osama.abdelkader@gmail.com>,
+	=?UTF-8?q?Rapha=C3=ABl=20Gallais-Pou?= <rgallaispou@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 6.12 085/144] drm/exynos: remove bridge when component_add fails
 Date: Fri, 15 May 2026 17:48:31 +0200
-Message-ID: <20260515154700.547451232@linuxfoundation.org>
+Message-ID: <20260515154655.493588435@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +63,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8D4D8555534
+X-Rspamd-Queue-Id: 51E18552A9A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-247926-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248799-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
 
-commit abe572f630bc1f0e77041012ab075869036ede4f upstream.
+commit 26f6654a9a60eb4d241f42a0ec85412e8821480b upstream.
 
-USB drivers bind to USB interfaces and any device managed resources
-should have their lifetime tied to the interface rather than parent USB
-device. This avoids issues like memory leaks when drivers are unbound
-without their devices being physically disconnected (e.g. on probe
-deferral or configuration changes).
+Use devm_drm_bridge_add() so the bridge is released if probe fails after
+registration, and drop the manual drm_bridge_remove() in remove().
 
-Fix the controller and driver data lifetime so that they are released
-on driver unbind.
+Check the return value of devm_drm_bridge_add().
 
-Note that this also makes sure that the SPI controller is placed
-correctly under the USB interface in the device tree.
-
-Fixes: 8846739f52af ("spi: add ch341a usb2spi driver")
-Cc: stable@vger.kernel.org	# 6.11
-Cc: Johannes Thumshirn <jth@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260327104305.1309915-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+Fixes: 576d72fbfb45 ("drm/exynos: mic: add a bridge at probe")
+Cc: stable@vger.kernel.org
+Reviewed-by: Raphaël Gallais-Pou <rgallaispou@gmail.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20260423200622.325076-2-osama.abdelkader@gmail.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-ch341.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_mic.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/spi/spi-ch341.c
-+++ b/drivers/spi/spi-ch341.c
-@@ -152,7 +152,7 @@ static int ch341_probe(struct usb_interf
- 	if (ret)
- 		return ret;
+--- a/drivers/gpu/drm/exynos/exynos_drm_mic.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_mic.c
+@@ -424,7 +424,9 @@ static int exynos_mic_probe(struct platf
+ 	mic->bridge.funcs = &mic_bridge_funcs;
+ 	mic->bridge.of_node = dev->of_node;
  
--	ctrl = devm_spi_alloc_host(&udev->dev, sizeof(struct ch341_spi_dev));
-+	ctrl = devm_spi_alloc_host(&intf->dev, sizeof(struct ch341_spi_dev));
- 	if (!ctrl)
- 		return -ENOMEM;
+-	drm_bridge_add(&mic->bridge);
++	ret = devm_drm_bridge_add(dev, &mic->bridge);
++	if (ret)
++		goto err;
  
-@@ -163,7 +163,7 @@ static int ch341_probe(struct usb_interf
- 	ch341->read_pipe = usb_rcvbulkpipe(udev, usb_endpoint_num(in));
+ 	pm_runtime_enable(dev);
  
- 	ch341->rx_len = usb_endpoint_maxp(in);
--	ch341->rx_buf = devm_kzalloc(&udev->dev, ch341->rx_len, GFP_KERNEL);
-+	ch341->rx_buf = devm_kzalloc(&intf->dev, ch341->rx_len, GFP_KERNEL);
- 	if (!ch341->rx_buf)
- 		return -ENOMEM;
+@@ -444,12 +446,8 @@ err:
  
-@@ -171,8 +171,7 @@ static int ch341_probe(struct usb_interf
- 	if (!ch341->rx_urb)
- 		return -ENOMEM;
+ static void exynos_mic_remove(struct platform_device *pdev)
+ {
+-	struct exynos_mic *mic = platform_get_drvdata(pdev);
+-
+ 	component_del(&pdev->dev, &exynos_mic_component_ops);
+ 	pm_runtime_disable(&pdev->dev);
+-
+-	drm_bridge_remove(&mic->bridge);
+ }
  
--	ch341->tx_buf =
--		devm_kzalloc(&udev->dev, CH341_PACKET_LENGTH, GFP_KERNEL);
-+	ch341->tx_buf = devm_kzalloc(&intf->dev, CH341_PACKET_LENGTH, GFP_KERNEL);
- 	if (!ch341->tx_buf) {
- 		ret = -ENOMEM;
- 		goto err_free_urb;
+ static const struct of_device_id exynos_mic_of_match[] = {
 
 
 
