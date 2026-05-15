@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248843-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEEOKalOB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:45 +0200
+	id iJdBMBdaB2qzzwIAu9opvQ
+	(envelope-from <stable+bounces-248843-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B3D553FB3
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572455555AA
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77F30330B551
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:17:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9343431F1F16
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5762B2798F3;
-	Fri, 15 May 2026 16:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9225F318EDA;
+	Fri, 15 May 2026 16:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y64t86wg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KO/RxS60"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D4B3C4B72;
-	Fri, 15 May 2026 16:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51930E56A;
+	Fri, 15 May 2026 16:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861735; cv=none; b=uTlBeyeHUskP409BmawOeMaHVYNWvV/rW8hD+Sw+VgUYf4qnm0CIoyiQfUqczESbPM5BWBI4Hi7jCefJEB7mZLSQ313FQJZ7DT1XSaRu9IFt5Ava7VIdYaGGn9ybvyy59PWFv0Ilt7GwFPIZH/RdrJwNUHmsDBUFp9LsJjXb4y0=
+	t=1778862770; cv=none; b=LmeSWzD32LRVv18iktN7yK//15grMBbx/1eTtQU2/Rqv6E31P5Z0OPOR3LIM2GxvvMXEaIJm7mKoqlnd+1F2Baw81jFuCJWbhj5/cLup3Fcd4OLLIbXMMVJA20FARRVt+bjsR86AuI1iAQCP+2spPF8fKPV+BSdyihmoPvU8G2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861735; c=relaxed/simple;
-	bh=yVEkMIKjDKVJxU6XRLYMAUxlcB0kUyELftCRD4YAHxg=;
+	s=arc-20240116; t=1778862770; c=relaxed/simple;
+	bh=i8BVy6L+JJ6X53PbYFmQ2JZ3ryZ+T5U/PLCzw9gH2a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObtWCSn2kp9ntSp8HE++sdbqA2HNnZ5lL3LLLj6q3fedmAIHYho9gIgi/+nPsM9CmcKWhMxbBxJTyE/MhQaVN4lwBLj+C9WVErZzBxqrKkPDXAXYleB1w3cnygdrlwt4iIq6Xhj3Wwou3NsNnSazMuO9E1kNCMsW1dco+Bmhca0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y64t86wg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68B1C2BCB0;
-	Fri, 15 May 2026 16:15:34 +0000 (UTC)
+	 MIME-Version; b=EekHEr64r2Y+DdwAb2D0/SmobySSf9HgFzsrMNT3MOV8LPWjVemwwypv7VxEKHIbKdi0i1vXWLGj+/Vr/tAf1h7VaPyvr+sNAQnXbeQOc16GctEknocMg/FF8nVhJMwFcZwaeuq9ek8v1QFdvgTcyyQLUUZVnVtTxkeOqAo6EbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KO/RxS60; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDC1C2BCB0;
+	Fri, 15 May 2026 16:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861735;
-	bh=yVEkMIKjDKVJxU6XRLYMAUxlcB0kUyELftCRD4YAHxg=;
+	s=korg; t=1778862770;
+	bh=i8BVy6L+JJ6X53PbYFmQ2JZ3ryZ+T5U/PLCzw9gH2a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y64t86wgP0d/7FHlefMkA/8YvibuKc55Vvr3yHs60NGAn1WYAuJVabejBAtWq9rHG
-	 Vo2X6gvnjPMoyNh6ZXwM8e/scc+FCPkeOaCiH2vrSMXMZJ6/txK43QDL1NzDh9RUyr
-	 S6Y5zSDhi2nwTte19PNvXvub4PZieOMxtkLalYcs=
+	b=KO/RxS60OczDj/5m4IUxU2StFGd5yNNDv1IUpOjgBZ19DlWXOrLvWCeADCemjAnQ0
+	 tVGpADdSzUwJaUEWZSWbl6LQ5TsNtqq2OEAPFx52IbYpp5zso4NHNDNoR+CIovGfMU
+	 jVsCaIDVhj9IJxcaKCq6/NXAYF4oPrzmEMMqvFZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 443/474] fbcon: Avoid OOB font access if console rotation fails
+	Alex Deucher <alexander.deucher@amd.com>,
+	Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
+	"Ramalingeswara Reddy, Kanala" <Kanala.RamalingeswaraReddy@amd.com>
+Subject: [PATCH 7.0 134/201] drm/amdgpu: Use SMUIO 15.0.0 offsets for TSC upper and lower count.
 Date: Fri, 15 May 2026 17:49:12 +0200
-Message-ID: <20260515154724.672461274@linuxfoundation.org>
+Message-ID: <20260515154701.468516174@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +64,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 24B3D553FB3
+X-Rspamd-Queue-Id: 572455555AA
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248439-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmx.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248843-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,gmx.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
 
-[ Upstream commit e4ef723d8975a2694cc90733a6b888a5e2841842 ]
+commit 574b3b14f7d1b329fc6e67b79328f0e6f4d4b3d4 upstream.
 
-Clear the font buffer if the reallocation during console rotation fails
-in fbcon_rotate_font(). The putcs implementations for the rotated buffer
-will return early in this case. See [1] for an example.
+Define and use regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0 and
+regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0 for TSC upper and lower count.
 
-Currently, fbcon_rotate_font() keeps the old buffer, which is too small
-for the rotated font. Printing to the rotated console with a high-enough
-character code will overflow the font buffer.
-
-v2:
-- fix typos in commit message
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 6cc50e1c5b57 ("[PATCH] fbcon: Console Rotation - Add support to rotate font bitmap")
-Cc: stable@vger.kernel.org # v2.6.15+
-Link: https://elixir.bootlin.com/linux/v6.19/source/drivers/video/fbdev/core/fbcon_ccw.c#L144 # [1]
-Signed-off-by: Helge Deller <deller@gmx.de>
-[ renamed `par` to `ops` to match the 6.12 local pointer name ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
+Signed-off-by: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fbcon_rotate.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |   31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
---- a/drivers/video/fbdev/core/fbcon_rotate.c
-+++ b/drivers/video/fbdev/core/fbcon_rotate.c
-@@ -46,6 +46,10 @@ static int fbcon_rotate_font(struct fb_i
- 		info->fbops->fb_sync(info);
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -64,6 +64,11 @@
+ #define regPC_CONFIG_CNTL_1		0x194d
+ #define regPC_CONFIG_CNTL_1_BASE_IDX	1
  
- 	if (ops->fd_size < d_cellsize * len) {
-+		kfree(ops->fontbuffer);
-+		ops->fontbuffer = NULL;
-+		ops->fd_size = 0;
++#define regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0               0x0030
++#define regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0_BASE_IDX      1
++#define regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0               0x0031
++#define regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0_BASE_IDX      1
 +
- 		dst = kmalloc_array(len, d_cellsize, GFP_KERNEL);
- 
- 		if (dst == NULL) {
-@@ -54,7 +58,6 @@ static int fbcon_rotate_font(struct fb_i
- 		}
- 
- 		ops->fd_size = d_cellsize * len;
--		kfree(ops->fontbuffer);
- 		ops->fontbuffer = dst;
+ #define regCP_GFX_MQD_CONTROL_DEFAULT                                             0x00000100
+ #define regCP_GFX_HQD_VMID_DEFAULT                                                0x00000000
+ #define regCP_GFX_HQD_QUEUE_PRIORITY_DEFAULT                                      0x00000000
+@@ -5187,11 +5192,27 @@ static uint64_t gfx_v11_0_get_gpu_clock_
+ 		amdgpu_gfx_off_ctrl(adev, true);
+ 	} else {
+ 		preempt_disable();
+-		clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
+-		clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
+-		clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
+-		if (clock_counter_hi_pre != clock_counter_hi_after)
+-			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
++		if (amdgpu_ip_version(adev, SMUIO_HWIP, 0) < IP_VERSION(15, 0, 0)) {
++			clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER);
++			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_LOWER);
++			clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER);
++			if (clock_counter_hi_pre != clock_counter_hi_after)
++				clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++						regGOLDEN_TSC_COUNT_LOWER);
++		} else {
++			clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0);
++			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0);
++			clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0);
++			if (clock_counter_hi_pre != clock_counter_hi_after)
++				clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++						regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0);
++		}
+ 		preempt_enable();
  	}
- 
+ 	clock = clock_counter_lo | (clock_counter_hi_after << 32ULL);
 
 
 
