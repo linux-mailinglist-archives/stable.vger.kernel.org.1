@@ -1,182 +1,158 @@
-Return-Path: <stable+bounces-248894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCvUJmhlB2qE1gIAu9opvQ
-	(envelope-from <stable+bounces-248894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:26:48 +0200
+	id QLIIBWJnB2rG1wIAu9opvQ
+	(envelope-from <stable+bounces-248895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:35:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6C65562C8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE166556503
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4B7D330117E9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:25:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AABA8300908A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89C63EEACD;
-	Fri, 15 May 2026 18:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0815C3F9A13;
+	Fri, 15 May 2026 18:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PZIBoUWx"
-X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	dkim=pass (2048-bit key) header.d=oldschoolsolutions.biz header.i=jens.glathe@oldschoolsolutions.biz header.b="mIM1Lzbh"
+X-Original-To: Stable@vger.kernel.org
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144D73E16A2;
-	Fri, 15 May 2026 18:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7493EEAED;
+	Fri, 15 May 2026 18:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778869474; cv=none; b=ZyD+vVL9aMEZUymyEBp+DZSTj738HVlly7V+TfHh4X6ebqdeKfPhdiwHY1EOJD0cH5cDOVlfHnUmRSO3ehxzdBzdVl0XDu4LM9Iitgm/ykPiqMwvir0N02l0YeGs4p7fGT01TWBQymsqPGYZaKYHjDRsMum40I1cLz80bgN1AfQ=
+	t=1778870105; cv=none; b=qVUwRNc9nS876Rr0zoH9GOdva6Zt4cU24so0RTy0itdmItdiQsP7IAynlwJMLJpajbNwBNePs4EyLe7bPjZzIfdyyfJIa9zRX9EQBeGsPywBGRvzwk80unCsYRwVJTU1TdzApcph6V46x6xDFawJnYxnYG704/XDQCe7Po6/A20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778869474; c=relaxed/simple;
-	bh=BqF3ekoFBJIxN9w40qQQ+V8dAt8jGYkSVHl6tfrrPM8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRDY3ziiBm4AoFU2pmB/Iow7nXY8n21wtJMvMEZLURXID3kD5CqkjSuLgpSEmV+O7G8qbHPzRhwdKvOt3H/xA3D+AjoAwB+sRZIivdN2y24raD0rWm25saPjt1iDBygJ7ShXDLMTi6ibGdUszyrTx4KGSFII+qrRl2XaMCRhK0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PZIBoUWx; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778869473; x=1810405473;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BqF3ekoFBJIxN9w40qQQ+V8dAt8jGYkSVHl6tfrrPM8=;
-  b=PZIBoUWx8tKBpJo6Db7ogVzGyKQXaiWPfPx4drlZ3XhINTdw6q4sp10l
-   MqmLwd7dZfHrrRG0vMJWTDZGghmqlj+ycAnpM4cG2zLKj6N2bly4RoWfG
-   QEYblDLxyMNWJlYkpVjfY3bsytwnKyKodGrbmZPpE2n1qPAaK366KU/Gk
-   rbTTZsAUTIJuYLUNhtAwCClUGBjYF4TmmDZvFQVwsnkHPkHFOCObU3rK1
-   2f0C0KVL3MGoxigCXafgeOpMTbD+PYHarX+7/OdfVD2Xm+FWl1N8caKbU
-   nwuD+/XyyjC7DsH5alvFlTWOZtvmd+CPEp6phWI538bCxvr6r0IqRE/hK
-   Q==;
-X-CSE-ConnectionGUID: TB2alXqGQYKEmwK6zeXQxQ==
-X-CSE-MsgGUID: DxUFIMdfQGKBpyOWN4xrbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="83701185"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="83701185"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 11:24:27 -0700
-X-CSE-ConnectionGUID: Dn+j99agQsKV+sD6RlvQJQ==
-X-CSE-MsgGUID: +cH8+Y6nSxOn3cKL/ko18Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="238647460"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa008.jf.intel.com with ESMTP; 15 May 2026 11:24:27 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Kohei Enju <kohei@enjuk.jp>,
-	anthony.l.nguyen@intel.com,
-	dima.ruinskiy@intel.com,
-	faizal.abdul.rahim@linux.intel.com,
-	chwee.lin.choong@intel.com,
-	kohei.enju@gmail.com,
-	vladimir.oltean@nxp.com,
-	stable@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Avigail Dahan <avigailx.dahan@intel.com>
-Subject: [PATCH net 09/10] igc: fix potential skb leak in igc_fpe_xmit_smd_frame()
-Date: Fri, 15 May 2026 11:24:16 -0700
-Message-ID: <20260515182419.1597859-10-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260515182419.1597859-1-anthony.l.nguyen@intel.com>
-References: <20260515182419.1597859-1-anthony.l.nguyen@intel.com>
+	s=arc-20240116; t=1778870105; c=relaxed/simple;
+	bh=0va+p57QfeIXjAOCoOZbtm/d1y10zNtarNsxeosxD7U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UnQhf1MLWpua5co03Iwk0tU6tJm8JH7gcJm45Es/Vx9LZ6H5bjNPeLh4kytTv4TwlttfBT3anNH6i4ZsK553Nv1So8zMLwm4rlTsyn/QPrYXLmev8CCCpG+nPsbu42Gb+0bOUp03X3eBKTX/tia6JtKPKz4loiuWId+/klz/tdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oldschoolsolutions.biz; spf=pass smtp.mailfrom=oldschoolsolutions.biz; dkim=pass (2048-bit key) header.d=oldschoolsolutions.biz header.i=jens.glathe@oldschoolsolutions.biz header.b=mIM1Lzbh; arc=none smtp.client-ip=212.227.126.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oldschoolsolutions.biz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oldschoolsolutions.biz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=oldschoolsolutions.biz; s=s1-ionos; t=1778870073; x=1779474873;
+	i=jens.glathe@oldschoolsolutions.biz;
+	bh=0va+p57QfeIXjAOCoOZbtm/d1y10zNtarNsxeosxD7U=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=mIM1LzbheHBVKLVsN4FU+HULpLilpS15vhAiucwLX8EJj5xA/CJ3ECEEnUOnEW45
+	 /gQk5slWBeqHdVymTpcvdje+bIRmmU9mP8JmcbNXbGLojD58jEY616c+B8A4zreaB
+	 YJ6fY5LaU2bpZV3EbEzuelleGMt+5xsTryhsQ8fMmUMY/r4TDCtps5tAPvV0FqT80
+	 9vXKwMcsXtTuvQyDoaupAjWS1pibqMqSF0ZTvDo97ERgUt2rtkXrtD6h8zEHEMuyt
+	 RQBZf8bgSt0BlvqHXKgaH61BOQ7MhY7/t0HXNmPkicMPo9VVBbdgREPrapfP/mZ9+
+	 ji06os4GbNjiBSA/9w==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue009
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1MlNgz-1x6sxI20mT-00mYUF; Fri, 15
+ May 2026 20:34:33 +0200
+Message-ID: <10e69eef-c510-46bf-be0c-ef09caf2556f@oldschoolsolutions.biz>
+Date: Fri, 15 May 2026 20:34:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5F6C65562C8
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] ASoC: qcom: q6apm-dai: Allocate an extra page for PCM
+ buffers
+To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+ broonie@kernel.org
+Cc: linux-sound@vger.kernel.org, lgirdwood@gmail.com, perex@perex.cz,
+ tiwai@suse.com, johan@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
+ konrad.dybcio@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, val@packett.cool, mailingradian@gmail.com,
+ Stable@vger.kernel.org
+References: <20260514090607.2435484-1-srinivas.kandagatla@oss.qualcomm.com>
+Content-Language: en-US
+From: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+In-Reply-To: <20260514090607.2435484-1-srinivas.kandagatla@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:LQgE1aRYJDyiRMjIh4hSFhNG0UsI9fb+tTKKPb8hZHiqweyeWds
+ I2KzkiwkZLpjfWzNS6wj16syAuERJnNzD5Jh59o/cAuGCD494/cY4M9W49+CBMdzhxBZqph
+ M38HGFNhI+HAecZr2YqQW6DpMGwrK/wSX79FJSxZZzsCqh/zqf7b8txckUarENnkW8L0J36
+ WHBwThHwVV5VYDo61Ibnw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:hSxGGJLq7zg=;/BvLIbT9seQ+Xg74L4gxNoU3+pe
+ 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
+ 050PWG6bovCPgafZIesDz7l3wZdPc=
+X-Rspamd-Queue-Id: AE166556503
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[oldschoolsolutions.biz,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[oldschoolsolutions.biz:s=s1-ionos];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[enjuk.jp,intel.com,linux.intel.com,gmail.com,nxp.com,vger.kernel.org,kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248894-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anthony.l.nguyen@intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-248895-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,perex.cz,suse.com,kernel.org,oss.qualcomm.com,packett.cool];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-0.999];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:mid,intel.com:dkim,enjuk.jp:email]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jens.glathe@oldschoolsolutions.biz,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[oldschoolsolutions.biz:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oldschoolsolutions.biz:email,oldschoolsolutions.biz:mid,oldschoolsolutions.biz:dkim]
 X-Rspamd-Action: no action
 
-From: Kohei Enju <kohei@enjuk.jp>
+n 5/14/26 11:06, Srinivas Kandagatla wrote:
+> Fixes: 8ea6e25c8536 ("ASoC: qcom: q6apm: Add support for early buffer ma=
+pping on DSP")
 
-When igc_fpe_init_tx_descriptor() fails, no one takes care of an
-allocated skb, leaking it. [1]
-Use dev_kfree_skb_any() on failure.
+Hi Srini, thank you for the patch. I booted with this patch on one of=20
+the sc8280xp boxes, and on x1. Working well.
 
-Tested on an I226 adapter with the following command, while injecting
-faults in igc_fpe_init_tx_descriptor() to trigger the error path.
- # ethtool --set-mm $DEV verify-enabled on tx-enabled on pmac-enabled on
+Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
 
-[1]
-unreferenced object 0xffff888113c6cdc0 (size 224):
-...
-  backtrace (crc be3d3fda):
-    kmem_cache_alloc_node_noprof+0x3b1/0x410
-    __alloc_skb+0xde/0x830
-    igc_fpe_xmit_smd_frame.isra.0+0xad/0x1b0
-    igc_fpe_send_mpacket+0x37/0x90
-    ethtool_mmsv_verify_timer+0x15e/0x300
+with best regards
 
-Cc: stable@vger.kernel.org
-Fixes: 5422570c0010 ("igc: add support for frame preemption verification")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/igc/igc_tsn.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index 725ba253165c..52de2bcbadbe 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -110,10 +110,16 @@ static int igc_fpe_xmit_smd_frame(struct igc_adapter *adapter,
- 	__netif_tx_lock(nq, cpu);
- 
- 	err = igc_fpe_init_tx_descriptor(ring, skb, type);
--	igc_flush_tx_descriptors(ring);
-+	if (err)
-+		goto err_free_skb_any;
- 
-+	igc_flush_tx_descriptors(ring);
- 	__netif_tx_unlock(nq);
-+	return 0;
- 
-+err_free_skb_any:
-+	__netif_tx_unlock(nq);
-+	dev_kfree_skb_any(skb);
- 	return err;
- }
- 
--- 
-2.47.1
+Jens Glathe
 
 
