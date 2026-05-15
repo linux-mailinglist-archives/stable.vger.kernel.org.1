@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-248560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248768-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AZwGCBNB2rJxQIAu9opvQ
-	(envelope-from <stable+bounces-248560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:43:12 +0200
+	id MG+UJqhKB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248768-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043FD553CAB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:43:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C409255363A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0A3BF3021F53
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0BDA730091D4
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A423E00B6;
-	Fri, 15 May 2026 16:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C9B4C9542;
+	Fri, 15 May 2026 16:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9y8PcQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0w2YIAsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AE43E00A8;
-	Fri, 15 May 2026 16:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E862949E0;
+	Fri, 15 May 2026 16:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862043; cv=none; b=ski222RyKdIb0dSjSsOw0ZdscRH6Rg7B0b9Vwh6zk/pNQ6LrZYIa8tFNY0tmS3zkCfhbZiWOJMaz4GVcH8UmBIdX9O9k+whS335HQNwmzZthdZdeI3hR/jWZPcI9DqyjWKtvJFc0YTZX/rFM51HOreNBuZmpP1oTdqmKEQpPQnw=
+	t=1778862580; cv=none; b=lAmy2DUDiakn7Wf1JXd4epGJ84kNjD6seJGo1PdKWfz1+P8HpwnxvOHrQJbqfZvoTdPifptcOlk7/b0MVzZF2QpexxAL8cXphRqx6C8oSswkYOWhkq3SGfM7be/kiLEbsx0B2M8Mjv/OhpH0L8+vcH9wxyMfQUnFYdHtKiYHtZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862043; c=relaxed/simple;
-	bh=XqQHtz84Bf30w629F42AD5OlnVIBLTWoQ5KTPfHUqFE=;
+	s=arc-20240116; t=1778862580; c=relaxed/simple;
+	bh=vC9T8qp7gmaM1PV2PJq78nfTgp/v20XxF2h7VIC6obc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXvj1eWqRCpXJ0+BfgoHJVkT2ApEqj5kLCfryFgqgjLlnXkQPC3jBsPdz6WOPmQyDSvGODxWaTOoMbkfhvxfmxTbZd5aSDBtysCER0JlCJ84nkFS4+B+/oVl/GfhQseYb7f0OQ1d7Wk8DbqLXNRrDrCnAoZjSB2lH/6cypmB/cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9y8PcQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E59C2BCB0;
-	Fri, 15 May 2026 16:20:43 +0000 (UTC)
+	 MIME-Version; b=Kuuhi2yFJAbKI+zAnxU+1IbfxN76i7ZE2J8XCf7bPm1asdKvevMcw4chKJt5uEFhSuCOv5wUUUcoOV49H23CupmN8OZbRyIqNfToAboxXux78HaWUNFM5xae7usCAex/Lfgd55/OZk9mBGX1St3SdY/FQRzFlCGjXaUuzxhI/FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0w2YIAsk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CADC2BCB0;
+	Fri, 15 May 2026 16:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862043;
-	bh=XqQHtz84Bf30w629F42AD5OlnVIBLTWoQ5KTPfHUqFE=;
+	s=korg; t=1778862580;
+	bh=vC9T8qp7gmaM1PV2PJq78nfTgp/v20XxF2h7VIC6obc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B9y8PcQnUwsOaN7BzHkKXfrj8IFx/aA/T5DvEOQNh7NiZ+eDMSy+Tk/CxcwuFGa33
-	 T0ojco0ntxAvnauZ0BJybSAiY+oazVbmuf6VoRuFCgxZCkFNFJGcYlM5HwK3spcwMR
-	 QuplWs7McDOJ0OF6SstrmxwS3XdF2G2tJTDsSpmg=
+	b=0w2YIAskXhrnKvE8pWeuoKVHp49ycZ/hFpIVTB7OkEIsl/zkwPxMfHaoUTX1ToJ+l
+	 /g/sKS6uKYSXKKn8U4lmJDjP42/yDCo8Qjza7sIbVSxYJC+Mgl+kZVy9ANvco9oAiD
+	 RF6Fy+cfsUbQI7b42vwftDP9suZWZoZwXS+NPBqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 086/188] spi: imx: fix runtime pm leak on probe deferral
-Date: Fri, 15 May 2026 17:48:23 +0200
-Message-ID: <20260515154659.191137565@linuxfoundation.org>
+Subject: [PATCH 7.0 086/201] spi: s3c64xx: fix controller deregistration
+Date: Fri, 15 May 2026 17:48:24 +0200
+Message-ID: <20260515154700.394404266@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 043FD553CAB
+X-Rspamd-Queue-Id: C409255363A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248560-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248768-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,45 +88,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit a1d50a37d3b1df84f536a982f692371039df4a48 upstream.
+commit c1446b61e472da24d1547525193467b4bea4a7cb upstream.
 
-Make sure to balance the runtime PM usage count before returning on
-probe failure (e.g. probe deferral) so that the controller can be
-suspended when a driver is later bound.
+Make sure to deregister the controller before releasing underlying
+resources like DMA during driver unbind.
 
-Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
-Cc: stable@vger.kernel.org	# 5.10
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Fixes: 91800f0e9005 ("spi/s3c64xx: Use managed registration")
+Cc: stable@vger.kernel.org	# 3.13: 76fbad410c0f
+Cc: stable@vger.kernel.org	# 3.13
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260421125632.1537235-1-johan@kernel.org
+Link: https://patch.msgid.link/20260410081757.503099-12-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-imx.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-s3c64xx.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1948,6 +1948,7 @@ out_register_controller:
- out_runtime_pm_put:
- 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
- 	pm_runtime_disable(spi_imx->dev);
-+	pm_runtime_put_noidle(spi_imx->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1369,7 +1369,7 @@ static int s3c64xx_spi_probe(struct plat
+ 	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
+ 	       sdd->regs + S3C64XX_SPI_INT_EN);
  
- 	clk_disable_unprepare(spi_imx->clk_ipg);
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret != 0) {
+ 		dev_err(&pdev->dev, "cannot register SPI host: %d\n", ret);
+ 		goto err_pm_put;
+@@ -1399,6 +1399,8 @@ static void s3c64xx_spi_remove(struct pl
+ 
+ 	pm_runtime_get_sync(&pdev->dev);
+ 
++	spi_unregister_controller(host);
++
+ 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
+ 
+ 	pm_runtime_put_noidle(&pdev->dev);
 
 
 
