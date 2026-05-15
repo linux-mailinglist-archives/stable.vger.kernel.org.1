@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-248343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLnmAatVB2oHzAIAu9opvQ
-	(envelope-from <stable+bounces-248343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:39 +0200
+	id wB9uIHhSB2pIygIAu9opvQ
+	(envelope-from <stable+bounces-248723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:06:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D90554D54
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 264855546AE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E26DC31CA476
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8736331F665E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AC03F928A;
-	Fri, 15 May 2026 16:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9584B3EFFBF;
+	Fri, 15 May 2026 16:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Btxo112H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpLQnzNr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FE82010EE;
-	Fri, 15 May 2026 16:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CFE3EFFD9;
+	Fri, 15 May 2026 16:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861491; cv=none; b=Znr4eNkcle7VzGXp8WbiVXTZHXOTlSMqnBjUu7Rks2C/W3NX/lz4WJBT7p7HorSyT0cUIFkNLzqvnxhIkId3c4fv0SxQFAvEaXpSzthdMTUQ3Iu0hgFG6q7DZ8PYaVPH7trgcHBui15RN+0wD/dJK5QC1LkDu4ffxU4GnAmQH9g=
+	t=1778862464; cv=none; b=LHxndiuawdl2VT6ZCChEqgTg0r1TTAO9/kdNS2ByM1nRFD8JGmh4H7/PbRmNSd02eZoCho9z+Hp9jhsA6NSh5Eub5SXRL7LJAhndL096AqTxkVMxw9YUlGMC243LUnRb9yRg2u7JL4hj7g9HOvCR4WYyQzsQvNCXnYebInV+UrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861491; c=relaxed/simple;
-	bh=8UqSdEUN60tk+/Vx0onQuyPBZvY3JuwydIQWi53TqzE=;
+	s=arc-20240116; t=1778862464; c=relaxed/simple;
+	bh=GV69Wxv6tTRH72kgwWYDeInNt8e6/gXCFJSBmUgQGYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DFwFyOacGr0K1LM5DgHVsA0WZcbploiB0csq5CWf5rtEk/17jpWX/o92LGQtxFd22waubbOv0Z7lDU/4wcxjS/Q6p3djqkMyc6fmeRmO85M+GJdi6I8r3j3/7x4+cKAIaNocE5geYX4dBC7Q0M4D2l8fRWqknfULdKzWnG1twIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Btxo112H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A002C2BCB0;
-	Fri, 15 May 2026 16:11:30 +0000 (UTC)
+	 MIME-Version; b=ipkl5CylSa25JQyG86UEOC2dpjLhnCUrX4nNN2ctPhmt5SDzijpPXvVYmxIo0T0LyR6a9sSMEJPo7XemszSHDSGE3Wm8X5Aawt7Kg8QJd1P9PeZ/UmekYRH46kpVlvA2D3JQwVXQNukkCUSup7rXIBMkft5bRBCianMB05dTr2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpLQnzNr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FDFC2BCB0;
+	Fri, 15 May 2026 16:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861490;
-	bh=8UqSdEUN60tk+/Vx0onQuyPBZvY3JuwydIQWi53TqzE=;
+	s=korg; t=1778862464;
+	bh=GV69Wxv6tTRH72kgwWYDeInNt8e6/gXCFJSBmUgQGYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Btxo112Hnuguj/L2yKAZpG1eJODW/CIzRcdpvba6qacdyS9E7dHgtroJ2NpXFayS6
-	 /g1PTmnRtQhGiaAtqIkkskq/Nc6iHTcZlw8qZ4yHTal3SEo2GuOVYsme2sjplNltHR
-	 OaSAvD/HkkFU53vF2WT9mTcquTOPQWgvw/zdvu+Y=
+	b=ZpLQnzNrE5WZenQMw/S4pU4y3nPkWF0um4/osS02zMe4PMbcgj44xDQRDliYUJeQ2
+	 4wySU/08xNMTP0sQPwhwOyii3UuthzxNrcsP8qPWv/P1aVLvrd0S/Hye7ESxvNUuR8
+	 8VUhkrOxLxGYA59JmcPH6/xj9QiPtPLNV1lY7GTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 350/474] drm/amdgpu: zero-initialize GART table on allocation
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 041/201] regulator: rk808: fix OF node reference imbalance
 Date: Fri, 15 May 2026 17:47:39 +0200
-Message-ID: <20260515154722.590525504@linuxfoundation.org>
+Message-ID: <20260515154659.423392844@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +64,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 64D90554D54
+X-Rspamd-Queue-Id: 264855546AE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248343-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248723-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,msgid.link:url,collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit e6c2e6c2e1fa066968a16aca1cb66cd1bdde7741 upstream.
+commit 65290b24d8a5f0b8cd065201e653db824c4a4da6 upstream.
 
-GART TLB is flushed after unmapping but not after mapping. Since
-amdgpu_bo_create_kernel() does not zero-initialize the buffer, when a
-single PTE is written the TLB may speculatively load other uninitialized
-entries from the same cacheline. Those garbage entries can appear valid,
-and a subsequent write to another PTE in the same cacheline may cause the
-GPU to use a stale garbage PTE from the TLB.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-Fix this by calling memset_io() to zero-initialize the GART table with
-gart_pte_flags immediately after allocation.
+Fix this by using the intended helper for reusing OF nodes.
 
-Using AMDGPU_GEM_CREATE_VRAM_CLEARED, SDMA-based clear will not work
-since SDMA needs GART to be initialized to work.
-
-Suggested-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d9af8263b82b6eaa60c5718e0c6631c5037e4b24)
-Cc: stable@vger.kernel.org
+Fixes: 647e57351f8e ("regulator: rk808: reduce 'struct rk808' usage")
+Cc: stable@vger.kernel.org	# 6.2
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260408073055.5183-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/regulator/rk808-regulator.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-@@ -252,12 +252,19 @@ void amdgpu_gart_table_ram_free(struct a
-  */
- int amdgpu_gart_table_vram_alloc(struct amdgpu_device *adev)
- {
-+	int r;
-+
- 	if (adev->gart.bo != NULL)
- 		return 0;
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -2114,8 +2114,7 @@ static int rk808_regulator_probe(struct
+ 	struct regmap *regmap;
+ 	int ret, i, nregulators;
  
--	return amdgpu_bo_create_kernel(adev,  adev->gart.table_size, PAGE_SIZE,
--				       AMDGPU_GEM_DOMAIN_VRAM, &adev->gart.bo,
--				       NULL, (void *)&adev->gart.ptr);
-+	r = amdgpu_bo_create_kernel(adev,  adev->gart.table_size, PAGE_SIZE,
-+				    AMDGPU_GEM_DOMAIN_VRAM, &adev->gart.bo,
-+				    NULL, (void *)&adev->gart.ptr);
-+	if (r)
-+		return r;
-+
-+	memset_io(adev->gart.ptr, adev->gart.gart_pte_flags, adev->gart.table_size);
-+	return 0;
- }
+-	pdev->dev.of_node = pdev->dev.parent->of_node;
+-	pdev->dev.of_node_reused = true;
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
  
- /**
+ 	regmap = dev_get_regmap(pdev->dev.parent, NULL);
+ 	if (!regmap)
 
 
 
