@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-248768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MG+UJqhKB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248768-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:40 +0200
+	id EL2XNjlFB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:09:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C409255363A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C15B4552BF1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0BDA730091D4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:32:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A5AC307E081
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C9B4C9542;
-	Fri, 15 May 2026 16:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B0F305669;
+	Fri, 15 May 2026 15:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0w2YIAsk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1xKp8N4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E862949E0;
-	Fri, 15 May 2026 16:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE5B3FF1DA;
+	Fri, 15 May 2026 15:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862580; cv=none; b=lAmy2DUDiakn7Wf1JXd4epGJ84kNjD6seJGo1PdKWfz1+P8HpwnxvOHrQJbqfZvoTdPifptcOlk7/b0MVzZF2QpexxAL8cXphRqx6C8oSswkYOWhkq3SGfM7be/kiLEbsx0B2M8Mjv/OhpH0L8+vcH9wxyMfQUnFYdHtKiYHtZ0=
+	t=1778860407; cv=none; b=MhE0SfTK3R6t3MTYBJIgvuS0tMGM5OEP6cJmEoLHCKzEtAT75ohJTgP0TKuepX3L7nmex9U5/us+WTDUsKrklAmsjfIkcXE7qSb6FsG8XAYFJ/OlUmyROXoBfpOEzSbnXAXJVvkUUXvYlYZFXHoqTN8DY/Smat6vyGW5GOPksjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862580; c=relaxed/simple;
-	bh=vC9T8qp7gmaM1PV2PJq78nfTgp/v20XxF2h7VIC6obc=;
+	s=arc-20240116; t=1778860407; c=relaxed/simple;
+	bh=oznLtrLFdgdWlgwAdHjeV7CoDA/b3zeF6U6SzQbHkhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kuuhi2yFJAbKI+zAnxU+1IbfxN76i7ZE2J8XCf7bPm1asdKvevMcw4chKJt5uEFhSuCOv5wUUUcoOV49H23CupmN8OZbRyIqNfToAboxXux78HaWUNFM5xae7usCAex/Lfgd55/OZk9mBGX1St3SdY/FQRzFlCGjXaUuzxhI/FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0w2YIAsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CADC2BCB0;
-	Fri, 15 May 2026 16:29:40 +0000 (UTC)
+	 MIME-Version; b=uqzxyVfR+xlLw6Xe0O7kb5cnrMacr7PVP7ePdIuApldBWkavjD1/j4xs2aW5q2bfDqBV3HGmoIdVyKQYgtag2W5Oo0pj7XKnv58Hc2MLF9LAiDI/noMgi7i3luetSMaE3ATjrqrw8DLNJCkS+/jVKOF3JmMTQqWaF0d5e7nMcvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1xKp8N4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3513DC2BCB3;
+	Fri, 15 May 2026 15:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862580;
-	bh=vC9T8qp7gmaM1PV2PJq78nfTgp/v20XxF2h7VIC6obc=;
+	s=korg; t=1778860407;
+	bh=oznLtrLFdgdWlgwAdHjeV7CoDA/b3zeF6U6SzQbHkhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0w2YIAskXhrnKvE8pWeuoKVHp49ycZ/hFpIVTB7OkEIsl/zkwPxMfHaoUTX1ToJ+l
-	 /g/sKS6uKYSXKKn8U4lmJDjP42/yDCo8Qjza7sIbVSxYJC+Mgl+kZVy9ANvco9oAiD
-	 RF6Fy+cfsUbQI7b42vwftDP9suZWZoZwXS+NPBqY=
+	b=A1xKp8N410dul3WhdN4ouv0idIuIEqQ+dghw4eSKufztaG1PfcsPhVt+cYGcriQTV
+	 fESVwCB5yGfRenvbPhfzRfOkz/jRrp9VXXFty9ivT+6w4rxvVGlV89M4zaT44glvsT
+	 uENs7+69CUB4DsncedRZwAZ7XwWi+GTF/oNAdgdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 086/201] spi: s3c64xx: fix controller deregistration
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Subject: [PATCH 6.12 078/144] drm/gem: Fix inconsistent plane dimension calculation in drm_gem_fb_init_with_funcs()
 Date: Fri, 15 May 2026 17:48:24 +0200
-Message-ID: <20260515154700.394404266@linuxfoundation.org>
+Message-ID: <20260515154655.339654768@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C409255363A
+X-Rspamd-Queue-Id: C15B4552BF1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-247918-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248768-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
 
-commit c1446b61e472da24d1547525193467b4bea4a7cb upstream.
+commit 3d4c2268bd7243c3780fe32bf24ff876da272acf upstream.
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+drm_gem_fb_init_with_funcs() computes sub-sampled plane dimensions
+using plain integer division:
 
-Fixes: 91800f0e9005 ("spi/s3c64xx: Use managed registration")
-Cc: stable@vger.kernel.org	# 3.13: 76fbad410c0f
-Cc: stable@vger.kernel.org	# 3.13
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-12-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  unsigned int width  = mode_cmd->width  / (i ? info->hsub : 1);
+  unsigned int height = mode_cmd->height / (i ? info->vsub : 1);
+
+However, the ioctl-level framebuffer_check() in drm_framebuffer.c uses
+drm_format_info_plane_width/height() which round up dimensions via
+DIV_ROUND_UP(). This inconsistency corrupts the subsequent GEM object
+size check for certain pixel format and dimension combinations.
+
+For example, with NV12 (vsub=2) and a 1-pixel-tall framebuffer the
+GEM size validation path sees height=0 instead of height=1. The
+expression (height - 1) then wraps to UINT_MAX as an unsigned int,
+causing min_size to overflow and wrap back to a small value. A tiny
+GEM object therefore passes the size guard, yet when the GPU accesses
+the chroma plane it will read or write memory beyond the object's
+bounds.
+
+Fix by replacing the open-coded divisions with drm_format_info_plane_width()
+and drm_format_info_plane_height(), which use DIV_ROUND_UP() and match
+the calculation already used in framebuffer_check().
+
+Fixes: 4c3dbb2c312c ("drm: Add GEM backed framebuffer library")
+Cc: stable@vger.kernel.org # v4.14+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/20260420013637.457751-1-ashutoshdesai993@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-s3c64xx.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_gem_framebuffer_helper.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1369,7 +1369,7 @@ static int s3c64xx_spi_probe(struct plat
- 	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
- 	       sdd->regs + S3C64XX_SPI_INT_EN);
+--- a/drivers/gpu/drm/drm_gem_framebuffer_helper.c
++++ b/drivers/gpu/drm/drm_gem_framebuffer_helper.c
+@@ -174,8 +174,8 @@ int drm_gem_fb_init_with_funcs(struct dr
+ 	}
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "cannot register SPI host: %d\n", ret);
- 		goto err_pm_put;
-@@ -1399,6 +1399,8 @@ static void s3c64xx_spi_remove(struct pl
+ 	for (i = 0; i < info->num_planes; i++) {
+-		unsigned int width = mode_cmd->width / (i ? info->hsub : 1);
+-		unsigned int height = mode_cmd->height / (i ? info->vsub : 1);
++		unsigned int width = drm_format_info_plane_width(info, mode_cmd->width, i);
++		unsigned int height = drm_format_info_plane_height(info, mode_cmd->height, i);
+ 		unsigned int min_size;
  
- 	pm_runtime_get_sync(&pdev->dev);
- 
-+	spi_unregister_controller(host);
-+
- 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
- 
- 	pm_runtime_put_noidle(&pdev->dev);
+ 		objs[i] = drm_gem_object_lookup(file, mode_cmd->handles[i]);
 
 
 
