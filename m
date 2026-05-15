@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNUXJbNVB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:47 +0200
+	id AN2WDs9CB2oCvAIAu9opvQ
+	(envelope-from <stable+bounces-247902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:59:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFBB0554D6A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60D05528B2
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4AE3B31CDD89
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F235308BC8E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985E03E0093;
-	Fri, 15 May 2026 16:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA84717C220;
+	Fri, 15 May 2026 15:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ax89thK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OzlVWnRP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9E6303CB0;
-	Fri, 15 May 2026 16:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFE83FF1CD;
+	Fri, 15 May 2026 15:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861501; cv=none; b=E2qVwzGnb/VdrClCSDBWbZy8Ppflk6qs5DqA2V34x6KyFJViovZC6s9P6r8ilDB6pFpU3TFG6ViJC4WuwzS/CFs/Lwqj0Yl7C7HucySpbmpgRAHphaQ14PxRacwchw/9EMZe3h0XX+dsXMg1h/eOuGunUpuxqMjhqpyDeG2lfi8=
+	t=1778860366; cv=none; b=iq0i6unVl6ftTVwleebgX/Y+Z5Ekj2OfETOlfaj7vDkAVTogQBKX+WtXtsws20fncYM2SW4NfXaXbo0xhsK/oBCUfa2ofgL1f2tFp4qq1rsblbZoOgVI8YrJmxms9DBl0cbX/qpydk24PeTYx3zCZldW8qRHr/FHxmdVg+SIsgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861501; c=relaxed/simple;
-	bh=ZpxAevFmH1ll5LowV2EZnkm7Qfn74P3G2T0d5nkGNWk=;
+	s=arc-20240116; t=1778860366; c=relaxed/simple;
+	bh=BblmIHwNTW+IH7S5EcAuiHMu+SFzXWbV7ZU7Bmu3Dq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKINwzYhJmwhvP9qdClZbjP9zVqRHQiCMowi5wQDyziQ4EEFDT4funR2HL4UjOvvkrmx8FhqltxrxchEUzXfZF7EpHSRtMzCp81QEVWlwhZQzdWXqXh0phsCvJQoLIOp9bNTr1T29W/rahu/dfNqfeQbP6M5yJD3iiCVeFuq7Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ax89thK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04C6C2BCB0;
-	Fri, 15 May 2026 16:11:40 +0000 (UTC)
+	 MIME-Version; b=u+oId8qh4/QyoTgLqZ604a/CHzWv3i2/IVgZ0qjRIzGghCtAGq4vaqjionJVVEgQ9v98IYBXj7aVgJEcQwB9usJLglad5A13NX//i6+scpy7z59LMncwEmQpptPwdWTTLXMoFXvMflvzuoQpLWqNgNEUfnM2nfciFe4/57jigLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OzlVWnRP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A41C2BCB0;
+	Fri, 15 May 2026 15:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861501;
-	bh=ZpxAevFmH1ll5LowV2EZnkm7Qfn74P3G2T0d5nkGNWk=;
+	s=korg; t=1778860366;
+	bh=BblmIHwNTW+IH7S5EcAuiHMu+SFzXWbV7ZU7Bmu3Dq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ax89thKhSdqRD8p4syohYLC5BPkYVi4mpnsIgkJN6Wehab2DNdKG/iZAp1E7I0hP
-	 4jvGXdkEAkYY94sF/IJmQdB/+qAomtfsFlAb2CTO/IrlpBZnTttSQTV5tKF5knEy5m
-	 flV0kO6d1Ser0FsUP63d7Cf4aL9afA8Sv6IalhXU=
+	b=OzlVWnRP0wHZoaxLDZVO7/M7EOQttaRvOSw36uPk+1BXZPL+maGe+0bGqt3ZWeJ2k
+	 /WZLuckwxm0UXRBgYN7R0FY+dtraHYh0QsEOYX4/LZBBpOGEKWcuNA4Wb+Jm2WhdyN
+	 nyHvPhMgRXDUD5hYXEafm9f1L72tuAqp7CS5NB2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Russell King <rmk+kernel@arm.linux.org.uk>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 336/474] spi: orion: fix clock imbalance on registration failure
+	Janne Grunau <j@jannau.net>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 019/144] media: videobuf2: Set vma_flags in vb2_dma_sg_mmap
 Date: Fri, 15 May 2026 17:47:25 +0200
-Message-ID: <20260515154722.285177433@linuxfoundation.org>
+Message-ID: <20260515154653.941420381@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EFBB0554D6A
+X-Rspamd-Queue-Id: A60D05528B2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -72,80 +72,128 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248347-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247902-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.org.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samsung.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Janne Grunau <j@jannau.net>
 
-commit 443cde0dc59c5d154156ac9f27a7dadef8ebc0c2 upstream.
+commit 7254b31a13aaa0c2c0f9ffbc335b718656117ff4 upstream.
 
-Make sure that the controller is not runtime suspended before disabling
-clocks on probe failure.
+vb2_dma_contig sets VMA flags VM_DONTEXPAND and VM_DONTDUMP and I do not
+see a reason why vb2_dma_sg should behave differently. This avoids
+hitting `WARN_ON(!(vma->vm_flags & VM_DONTEXPAND));` in
+drm_gem_mmap_obj() during mmap() of an imported dma-buf from the out of
+tree Apple ISP camera capture driver which uses vb2_dma_sg_memops.
 
-Also restore the autosuspend setting.
+gst-launch-1.0 v4l2src ! gtk4paintablesink
 
-Fixes: 5c6786945b4e ("spi: spi-orion: add runtime PM support")
-Cc: stable@vger.kernel.org	# 3.17
-Cc: Russell King <rmk+kernel@arm.linux.org.uk>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260421130211.1537628-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[   38.201528] ------------[ cut here ]------------
+[   38.202135] WARNING: CPU: 7 PID: 2362 at drivers/gpu/drm/drm_gem.c:1144 drm_gem_mmap_obj+0x1f8/0x210
+[   38.203278] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer
+snd_seq snd_seq_device uinput nf_conntrack_netbios_ns
+nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
+nft_reject_inet nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat
+nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables qrtr bnep
+nls_ascii i2c_dev loop fuse dm_multipath nfnetlink brcmfmac_wcc
+hid_magicmouse hci_bcm4377 brcmfmac brcmutil bluetooth ecdh_generic
+cfg80211 ecc btrfs xor xor_neon rfkill hid_apple raid6_pq joydev
+aop_als apple_nvmem_spmi industrialio snd_soc_aop apple_z2
+snd_soc_cs42l84 tps6598x snd_soc_tas2764 macsmc_reboot spi_nor
+macsmc_hwmon rtc_macsmc gpio_macsmc macsmc_power regmap_spmi
+macsmc_input dockchannel_hid panel_summit appledrm nvme_apple dwc3
+snd_soc_macaudio drm_client_lib nvme_core phy_apple_atc hwmon
+apple_sart apple_dockchannel macsmc apple_rtkit_helper
+spmi_apple_controller aop apple_wdt mfd_core nvmem_apple_efuses
+pinctrl_apple_gpio apple_isp apple_dcp videobuf2_dma_sg mux_core
+spi_apple
+[   38.203300]  videobuf2_memops i2c_pasemi_platform snd_soc_apple_mca videobuf2_v4l2 videodev clk_apple_nco videobuf2_common snd_pcm_dmaengine adpdrm asahi apple_admac adpdrm_mipi drm_dma_helper pwm_apple i2c_pasemi_core drm_display_helper mc cec apple_dart ofpart apple_soc_cpufreq leds_pwm phram
+[   38.217677] CPU: 7 UID: 1000 PID: 2362 Comm: gst-launch-1.0 Tainted: G        W           6.17.6+ #asahi-dev PREEMPT(full)
+[   38.219040] Tainted: [W]=WARN
+[   38.219398] Hardware name: Apple MacBook Pro (13-inch, M2, 2022) (DT)
+[   38.220213] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   38.221088] pc : drm_gem_mmap_obj+0x1f8/0x210
+[   38.221643] lr : drm_gem_mmap_obj+0x78/0x210
+[   38.222178] sp : ffffc0008dc678e0
+[   38.222579] x29: ffffc0008dc678e0 x28: 0000000000042a97 x27: ffff8000b701b480
+[   38.223465] x26: 00000000000000fb x25: ffffc0008dc67d20 x24: ffffc0008dc67968
+[   38.224402] x23: ffff8000e3ca5600 x22: ffff8000265b7800 x21: ffff80003000c0c0
+[   38.225279] x20: 0000000000000000 x19: ffff8000b68c5200 x18: ffffc0008dc67968
+[   38.226151] x17: 0000000000000000 x16: 0000000000000000 x15: ffffc000810a30a8
+[   38.227042] x14: 00007fff637effff x13: 00005555de91ffff x12: 00007fff63293fff
+[   38.227942] x11: 0000000000000000 x10: ffff8000184ecf08 x9 : ffffc0007a1900c8
+[   38.228824] x8 : ffffc0008dc67968 x7 : 0000000000000012 x6 : ffffc0015cf1c000
+[   38.229703] x5 : ffffc0008dc676a0 x4 : ffffc00081a27dc0 x3 : 0000000000000038
+[   38.230607] x2 : 0000000000000003 x1 : 0000000000000003 x0 : 00000000100000fb
+[   38.231488] Call trace:
+[   38.231806]  drm_gem_mmap_obj+0x1f8/0x210 (P)
+[   38.232342]  drm_gem_mmap+0x140/0x260
+[   38.232813]  __mmap_region+0x488/0x9a0
+[   38.233277]  mmap_region+0xd0/0x148
+[   38.233703]  do_mmap+0x350/0x5c0
+[   38.234148]  vm_mmap_pgoff+0x14c/0x200
+[   38.234612]  ksys_mmap_pgoff+0x150/0x208
+[   38.235107]  __arm64_sys_mmap+0x34/0x50
+[   38.235611]  invoke_syscall+0x50/0x120
+[   38.236075]  el0_svc_common.constprop.0+0x48/0xf0
+[   38.236680]  do_el0_svc+0x24/0x38
+[   38.237113]  el0_svc+0x38/0x168
+[   38.237507]  el0t_64_sync_handler+0xa0/0xe8
+[   38.238034]  el0t_64_sync+0x198/0x1a0
+[   38.238491] ---[ end trace 0000000000000000 ]---
+
+There were discussions in [1] at the end of 2023 that mmap() on imported
+dma-bufs should not be supported but as of v6.17 drm_gem_shmem_mmap() in
+drm_gem_shmem_helper.c still supports it.
+This might affect all gpu or accel drivers using drm_gem_shmem_mmap() or
+the wrapper drm_gem_shmem_object_mmap().
+
+[1] https://lore.kernel.org/dri-devel/bc7f7844-0aa3-4802-b203-69d58e8be2fa@linux.intel.com/
+
+Cc: stable@vger.kernel.org
+Fixes: 5ba3f757f059 ("[media] v4l: videobuf2: add DMA scatter/gather allocator")
+Signed-off-by: Janne Grunau <j@jannau.net>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-orion.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/common/videobuf2/videobuf2-dma-sg.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -778,6 +778,7 @@ static int orion_spi_probe(struct platfo
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
-+	pm_runtime_get_noresume(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
+--- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
++++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
+@@ -345,6 +345,7 @@ static int vb2_dma_sg_mmap(void *buf_pri
+ 		return err;
+ 	}
  
- 	status = orion_spi_reset(spi);
-@@ -789,10 +790,15 @@ static int orion_spi_probe(struct platfo
- 	if (status < 0)
- 		goto out_rel_pm;
- 
-+	pm_runtime_put_autosuspend(&pdev->dev);
-+
- 	return status;
- 
- out_rel_pm:
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_put_noidle(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
- out_rel_axi_clk:
- 	clk_disable_unprepare(spi->axi_clk);
- out_rel_clk:
++	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+ 	/*
+ 	 * Use common vm_area operations to track buffer refcount.
+ 	 */
 
 
 
