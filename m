@@ -1,176 +1,210 @@
-Return-Path: <stable+bounces-247624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGSBL3niBmrVogIAu9opvQ
-	(envelope-from <stable+bounces-247624-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:08:09 +0200
+	id SOOHEATlBmoHowIAu9opvQ
+	(envelope-from <stable+bounces-247623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:19:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3B254C074
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:08:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A34754C42D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECEAE30844D9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:01:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 13C9B309943F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDCE428493;
-	Fri, 15 May 2026 09:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9A34279E7;
+	Fri, 15 May 2026 09:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="iy0vPfz+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A52d2FKi"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CB4426EDF;
-	Fri, 15 May 2026 09:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778835702; cv=none; b=e9PH9+WSaqsELXYny/meNkthGcppVGOCqv4htU8ZZH4E6G0lEd+A06XTHcPFi6bOOLhnmnKq5/vUxFYDpLm/siYH9WNljkc9xvS3RvBJS3GUpzEXUjAeLYaVNOeOoboTrhITbTg6zHJsHt4VbBzj9VCLBv7wsYTNEGpScHadlmk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778835702; c=relaxed/simple;
-	bh=U0fUGOJ/7aXwRqQ5rEJgc+w1bP+vhSWAaPPSUOF2Gro=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=anAxN2S8G/kMcahQtZQcLVHp/QaQvdNlB4BcUJ47IQtBoUcIjlDajRf9F7U4ojJbDIUMbgg0p5usIdfWk/agMbuIokdzhYvNuxZ+awBetRPpzcIem7iKbWXBc44Bqpzq3J8THVN3xgr+f/Aqn3evUM62jdWOAJ51mBi8eEErjnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=iy0vPfz+; arc=none smtp.client-ip=188.68.63.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay8203.netcup.net (localhost [127.0.0.1])
-	by mors-relay8203.netcup.net (Postfix) with ESMTPS id 4gH1Jm5rrQz8fZb;
-	Fri, 15 May 2026 08:56:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1778835384;
-	bh=U0fUGOJ/7aXwRqQ5rEJgc+w1bP+vhSWAaPPSUOF2Gro=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iy0vPfz+8e3q0iW+eDmKpB3ZCCt8q2vrZoBzN0LtNcjlC4dsopdyqbDPeUrsSUREQ
-	 J3pP0vC+HeXzA5AV7gwyLIBGmrh5U5zCl1R+5cJqgN0JW8Kiutr7my4WK5zbUYxdUK
-	 HHqLXAfVgKsKJOtgAv5FbsPibokEouUDkpKnc9lL2UWAPPyT0Fhao1rOuU7r4oZxWS
-	 cpzEygrDEMPBfKzhOv1Tk8rWKWh5AK7W017pNA0LAB9ok3oUqUGUxB8KQuBXrxftmr
-	 FHBFQ47K31zBIxK2EG6xTR7kLDoeidnPxsUOuegUjWNAM4V5gN+q3YZCBMTmD2Dt72
-	 K887yuRCPTA3w==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay8203.netcup.net (Postfix) with ESMTPS id 4gH1Jh4gGJz8fFH;
-	Fri, 15 May 2026 08:56:20 +0000 (UTC)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4gH1Jg5Ql5z8svF;
-	Fri, 15 May 2026 10:56:19 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id E426B6173B;
-	Fri, 15 May 2026 10:56:18 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <46427118-677e-4a5e-9ee5-affa81cd90b6@leemhuis.info>
-Date: Fri, 15 May 2026 10:56:17 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF1E3FFAD8
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 09:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778835633; cv=pass; b=VabdcBK7GMobn9dPBxJfs2VyzteRau7vwpUglvrHfmD5amUwvDt0CrYrnWkM2QOVGL/RuTmTYisgx6S/YcCVed7l1YDCFjVnAKAl6IP6JBHYMoeZ9dddDNL2Tj+P7KmfksHLSevmh8+bl7PYAe4pYFonyAfhg68azQOAzfulXME=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778835633; c=relaxed/simple;
+	bh=F/X+K7mq57LanIUzere2hvolhecmdp/IaOj+v5+0pyo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ava53oYyf+nVjQazA9+YYQv6FhyNFLXmY5fFoP5UH8cN8jAy/ET802c9Cs+Lr63AJelIheM7ZhTepc6mZ8ix68iSR1LitrmQSwRnEp4JMPx3CWMunLG/CTicmkXK9S3JGlLyR063eIf+PZiwLwYS7WwYeB8wxshU4lR/5Jz6KL4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A52d2FKi; arc=pass smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43d734223e4so407645f8f.0
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 02:00:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778835629; cv=none;
+        d=google.com; s=arc-20240605;
+        b=X2+WBYtdsvYrL1+234X4IGpvDKRnQmgnKXrTBROTRUKErq+OGoLE8R6n/L5TyMatY2
+         yjDsest8KgtIH81md6wlAuoQq3qM90tzIDWgFo9M1nEBTHghsiwVHg4cYcHghdT/DYKo
+         cI7qR1lehui6KVzb5XqEpH1Y0fPYhoB0QfzAXTHoYuKDUGQPdv3GTbL9LK7yq8jm9wfF
+         GBOt8M6I/vRkcKQqTKjk2tFXNNQ/MDO6vCHgsTIl87y1SSdSUtRLNOTclINx36lAE5ye
+         RFcO5ViwOWZO6GJULc3cyntNGV1R3cVGbHRXItJm/SXdab5W4nBDRYZ96Jua0YSzpaTS
+         cKJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=fSEW1HYxOL8S924kl6mfYFM2UkEZu01y2bHFTxrJdTs=;
+        fh=ZFdmri+DIMJOQQeEA+H4ylHw6n8prWxLqyow/hfrE0o=;
+        b=AZ5nr21OY4zn/4/hFhpTHvi8I75nYAHYYpRnes7m9TI86KHo5kwrl88NWsQVTQVo7h
+         2itP2sBRRVjzwJUbKSui6aOeBzDOeHBOS1MjgOjkHVeXB6qKFhI8Ji5T1m1uQA0i3ZjE
+         6A8MBz9gXpuMEwBaBQ6sOSfPksrzV1uneTB2Mdfk4ujEatUSLGzyAGChV3s+4nqdDWyW
+         /cQI37c9DFpl+QP9vEJfBzZv/eNMySbCoBn8IMa3qz3yBr/G0W9sn0FnhQI4ozv4jdMJ
+         s0M/1tqrHiePUzV5u/g2Fpd1sawKzxhs6+8E0V6x48EByZ+Q+/Rbx30SSiGQ+tAKTKY0
+         zRSg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778835629; x=1779440429; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fSEW1HYxOL8S924kl6mfYFM2UkEZu01y2bHFTxrJdTs=;
+        b=A52d2FKidQ+wv+Wcf6Onyqbl1WlDBNfXRttqanqgV3M6Yo/WiwrQ9nG9vx/5am4LzZ
+         2RZAGuHlkuyCcySPaK/pSGtyMi/KFhWCQQIGhVWJZeLl/qGgj/ERQinNLmiC4h1M2Ttd
+         QCPwtc3aTD4rjHoSRy9/ZTJoK2/1YKdX1+54jvHj4gxXyPnw+yjV6FoEYbEjRJg5BVqf
+         QZ6//6diwYJ3YAcBrX/1aFBLDOwY4hdiDhQXWvfALmWXrp2yRqMhO8vlD2dAdTAjK2ib
+         Hn906ioEHLFLkV1DLmUJPs/jvGfROrO/Vc0MZJaymNcVBhqIdgcmU3IcdAeeUPNKICTq
+         fGlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778835629; x=1779440429;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fSEW1HYxOL8S924kl6mfYFM2UkEZu01y2bHFTxrJdTs=;
+        b=OG9FO7XicprVYaEBs2OrtwWZ+87+EX6e1tN74zyWNVhNpadUg8dJ+199J/Wvp3OC+f
+         kyyEaS/YJh4me4fcR1j/jwO7ZcBbNJhNBtUECMvWwO9dPn0Ac0c8jVXxjIh1eYyirkdy
+         E6AgoDC3tl3BvKIFSIAusSXAOd74HQe31x/sTfeYcr69ysLiJ0WPFxTq+HqhcOX6xxHz
+         dXjmz4uYExX/DLwgxU1iLTHLqvqNyB1PpkQ4dPoVJbNeIUAqeyAT6HbC91B1gxFNCh2Y
+         Ejj1QXN7qASQR4TEGb9xkcvKQz4rYLBw4kbsgkakfGQR8Xcb3dIKOkXiAvFsH+bUfc8D
+         cIuQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8N0EKeP8mwisV6/ntiktgxk3/WSk372O51UaBNTODv0qwm2nkfDq2rMcL4h3nfMldNcmV19WQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGZHdA2Y1fIOmj3XfXBXXXX0Di37YCG4b5w2oS2ZSr1zLt6i2r
+	/7cmOUSnnf7+OGN30zSd15t29dnkYL6oJkeWGIWPqTa5wumpyGk1jQkOJXbjDSToBE9SmNg4bFz
+	zjPZKtITgrA506PNCaO0QjgzJ8oIMW0I=
+X-Gm-Gg: Acq92OEIWMLxi1dBk4Q5U+m7xqlWhatCXkQfSp6Xk+aeb1c+9p5YQQoK+0EB2UQBvuy
+	MFRDIRZHEB+lH7I1utN0W04aE6ZKy17Bnm1JEJwtiQomnHBcieY1Fqz/3hjr2NfuN3nK0IGKqda
+	F4pMFQyWlbL7xRibbiYtyyEGgvrcb+LhTkiUAJB5V1A2ljDcAhJ0t7pPduFOqHHrLv5C0r38KkM
+	RSjUyEoTJlxY+QXQGrClnYGezIrFs6xcuqQfClU8x0TQAr3HN/S6sVnDfcQZhUUfk9IIccZRvj5
+	z1AD0ektdfLOTit0F+GEqYlFOuOLuqhkoS+6dmesPM7h9uVv3wnSPdlEVaOTT63F3txDzkKECwP
+	rxkzyBlEfJ4vzmXRYMdQeqbW/1iANg6ylGbdZiX6BQTJfyz6v0f3xe6acPQwI984cduQc4XdRaP
+	+Umy3upg==
+X-Received: by 2002:a05:6000:186c:b0:45d:2efc:dc6e with SMTP id
+ ffacd0b85a97d-45e5b895b4bmr4803889f8f.20.1778835628703; Fri, 15 May 2026
+ 02:00:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Linux 7.1-rc3 regression (Bluetooth)
-To: johannes.goede@oss.qualcomm.com, Greg KH <greg@kroah.com>,
- August Wikerfors <git@augustwikerfors.se>
-Cc: linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- stable@vger.kernel.org, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Pauli Virtanen <pav@iki.fi>, Mikhail Gavrilov
- <mikhail.v.gavrilov@gmail.com>, markus.suvanto@gmail.com
-References: <f652d5d9841a9b7c100dd19ee97c86099f580724.camel@gmail.com>
- <01ffb0cc-dcf6-4e60-adf3-fbb96e0666d0@leemhuis.info>
- <51b55b97-615b-4f5e-b454-df646f4058b7@augustwikerfors.se>
- <2026051514-scorch-ecologist-5e7e@gregkh>
- <7ba6b4ee-fd2a-470e-951c-2c69961b977a@oss.qualcomm.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <7ba6b4ee-fd2a-470e-951c-2c69961b977a@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <177883537942.760505.12750404302599804352@mxe9fb.netcup.net>
-X-NC-CID: 5r8WIXO+qXAA5yv+QbtZRHwuJZtGdrpuz4IaZ8zlhF/EnCPguF0=
-X-Rspamd-Queue-Id: 3C3B254C074
+References: <20260514-magnetometer-kernel-mem-leak-v1-1-35b48d699faf@gmail.com>
+In-Reply-To: <20260514-magnetometer-kernel-mem-leak-v1-1-35b48d699faf@gmail.com>
+From: Joshua Crofts <joshua.crofts1@gmail.com>
+Date: Fri, 15 May 2026 11:00:17 +0200
+X-Gm-Features: AVHnY4Kp5BeexoywxD3HdfQW-xQ6iB-Lgl5_DxsLl3wuKsZ5H5iqQcVjeUTYCwY
+Message-ID: <CALoEA-x31YdsdCtubOw7o1GBakCBcc4ha_KvuP=W5URBHyZDtA@mail.gmail.com>
+Subject: Re: [PATCH] iio: magnetometer: ak8975: fix potential kernel stack
+ memory leak
+To: joshua.crofts1@gmail.com
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Gregor Boirie <gregor.boirie@parrot.com>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 3A34754C42D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-247623-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[kernel.org,baylibre.com,analog.com,parrot.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com,iki.fi];
-	TAGGED_FROM(0.00)[bounces-247624-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joshuacrofts1@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com]
 X-Rspamd-Action: no action
 
-On 5/15/26 09:43, johannes.goede@oss.qualcomm.com wrote:
-> On 15-May-26 07:37, Greg KH wrote:
->> On Fri, May 15, 2026 at 04:26:38AM +0200, August Wikerfors wrote:
->>> On 2026-05-11 08:30, Thorsten Leemhuis wrote:
->>>> On 5/11/26 07:17, markus.suvanto@gmail.com wrote:
->>>>> I upgrade 7.1-rc2 to 7.1-rc3. After that bluetooth  didn't start
->>>>> hci0: Failed to send wmt func ctrl (-22)
->>>>> My fix was to revert commit 634a4408c0615c523cf7531790f4f14a422b9206
->>>> Thx for your report. FWIW, there are two proposed fixed for this change
->>>> floating around:
->>>> https://lore.kernel.org/all/20260508173121.27526-1-mikhail.v.gavrilov@gmail.com/
->>>> https://lore.kernel.org/all/770d36b07311bf88210c187923f243fb9f126f04.1777058551.git.pav@iki.fi/
->>> [...]
->>> FYI the commit that caused this regression was backported to the latest
->>> stable releases (6.12.88, 6.18.30 and 7.0.7). I encountered it after
->>> [...]
->>> As a side note, it is unfortunate that there does not seem to be a
->>> process to prevent patches that are known to cause regressions from
->>> being backported to stable releases. As far as I can tell, this was
->>> added to regzbot tracking [3] a day before the culprit was queued for
->>> stable [4], so such a process could have prevented this regression in
->>> stable releases.
->> You can email stable@vger to let us know to drop a patch, or when the
->> -rcs are released, respond to the offending patch in that list.  THat's
->> why we have -rc releases!
-> 
-> That relies on someone actively intervening in the process though,
-> I wonder if it would be an idea to have some CI which checks patches
-> in stable RC releases vs regzbot tracking?
-> 
-> This assumes tegzbot tracking includes the mainline git hash of
-> commits causing the regression (if/once known).
-This is the case. And the idea to let regzbot help with preventing what
-happened here is not new and even written on a todo list. The rough plan
-was to let regzbot just export the list of mainline commit-ids with
-unresolved regressions (together with a link to regzbot's webui with
-more details) -- then all Greg would need to do is something like "curl
-example.org/unresoved_regressions.txt | grep 1f2e3d4c5b6a" in his apply
-script to notice potential problems.
+On Thu, 14 May 2026 at 13:38, Joshua Crofts via B4 Relay
+<devnull+joshua.crofts1.gmail.com@kernel.org> wrote:
+>
+> From: Joshua Crofts <joshua.crofts1@gmail.com>
+>
+> Currently in the AK8975 driver there are two instances where potential
+> uninitialized kernel stack memory leaks can occur. If
+> i2c_smbus_read_i2c_block_data_or_emulated() returns a value less than
+> the size of the buffer, uninitialized bytes are retained in the buffer
+> and later the buffer is passed on to IIO buffers, potentially leaking
+> memory to userspace.
+>
+> Fix this by adding checks whether the return value of the function is
+> equal to the size of the buffer and subsequently if the value is
+> lesser than zero to distinguish from a returned error code.
+>
+> Fixes: bc11ca4a0b84 ("iio:magnetometer:ak8975: triggered buffer support")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260513-ak8975-fix-v1-1-104ea605dd54%40gmail.com
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joshua Crofts <joshua.crofts1@gmail.com>
+> ---
+>  drivers/iio/magnetometer/ak8975.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+> index b648b0afa5733fd7a54bdf2b8f92f00e924c074b..9d23c8136291a52ca9ab928d81332aa32933fec6 100644
+> --- a/drivers/iio/magnetometer/ak8975.c
+> +++ b/drivers/iio/magnetometer/ak8975.c
+> @@ -756,8 +756,11 @@ static int ak8975_read_axis(struct iio_dev *indio_dev, int index, int *val)
+>         ret = i2c_smbus_read_i2c_block_data_or_emulated(
+>                         client, def->data_regs[index],
+>                         sizeof(rval), (u8*)&rval);
+> -       if (ret < 0)
+> +       if (ret != sizeof(rval)) {
+> +               if (ret >= 0)
+> +                       ret = -EIO;
+>                 goto exit;
+> +       }
+>
+>         /* Read out ST2 for release lock on measurement data. */
+>         ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
+> @@ -871,8 +874,11 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
+>                                                         def->data_regs[0],
+>                                                         3 * sizeof(fval[0]),
+>                                                         (u8 *)fval);
+> -       if (ret < 0)
+> +       if (ret != sizeof(fval)) {
 
-That was how I envisioned things might be good for Greg -- of course
-before implementing that I would have talked to him about it. But
-regzbot development stalled for about two years due to lack of funding;
-we are currently ramping it up again[1], but it will take some time to
-get things sorted, so this is likely not something we'll implement
-tomorrow. :-(
+Hmm, Sashiko pointed out that I am comparing a signed integer with
+an unsigned integer, which would result in type promotion and subsequent
+mangling of any potential negative values... will fix in v2.
 
-[1]
-https://kernelci.org/blog/2026/05/04/regzbot-joins-kernelci-strengthening-linux-kernel-regression-tracking/
+https://sashiko.dev/#/patchset/20260514-magnetometer-kernel-mem-leak-v1-1-35b48d699faf%40gmail.com
 
-Ciao, Thorsten
+-- 
+Kind regards
+
+CJD
 
