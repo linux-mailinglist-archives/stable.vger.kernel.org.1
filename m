@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-248581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CD+2OXlPB2o9yAIAu9opvQ
-	(envelope-from <stable+bounces-248581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:13 +0200
+	id uHD8KtdpB2oJ2QIAu9opvQ
+	(envelope-from <stable+bounces-247938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:45:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65DF55541A8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:53:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D2D556748
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F39833851AC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:23:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9DA030D1A0C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF573FF1BD;
-	Fri, 15 May 2026 16:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B00C2EAB82;
+	Fri, 15 May 2026 15:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZ97dYlm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYiUhPgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76263E0091;
-	Fri, 15 May 2026 16:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB5C3FF1DA;
+	Fri, 15 May 2026 15:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862098; cv=none; b=A4FFNMDOU4AHb0r8XBv6T4tQnhXACjBc6m7tvuhzKi8SdPf0hUglw0OF7iZKgthS/FZIg5gx4OdyIVgTmc01sw80HjB7yoFq8GXfk3Zd1oWKci9nMmBjyzYbKzyic2tXcMhme0B1jAaI9TkRaou6NsYTwipJSkreXs+JocXlT2w=
+	t=1778860459; cv=none; b=Nzg18Dyux6BrCq5feaQoS4GYYJhbC7MEX44xFRgcdhZzKo9oA+YTvyPH56zIsnjoBwWCYhRLHJp+CNiA7CS5oIu9ElM/f2qAh1SQPTH2bEDozda6+HsdFzfAHvqRKxmGC0WZyJc0PDXtUOZspCF8CH343XaOpX5XQ1QdAna5kck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862098; c=relaxed/simple;
-	bh=e6juknc3XaYzuGZfz6NU4xlhMcyHgKGZTtHSP57AseQ=;
+	s=arc-20240116; t=1778860459; c=relaxed/simple;
+	bh=45ilQlmRba/Wwnam5T5qQRKiKjywDIeMIjEqBiNgZkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPaZYx7yrob1FfhZL9I+L58vFG/AcRBHBmNy8tB2BWmkCSqbkSY2ns7z27Xsd0naswxzKtKJH+Bwfkx5Z9lSc4cB7LXtNacU57Uan/2nwLdIRuFqsIUdhBBR7DtYMtOrh6Zew/DP4oHs0lFy57FcUzCExWO5t+fgVoRqTvM070o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZ97dYlm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6C6C2BCB3;
-	Fri, 15 May 2026 16:21:37 +0000 (UTC)
+	 MIME-Version; b=iQ9V2IE8ahWIAEd8NSE3FXBVc91gx8T9ieSZQhRZVCtIKmWl6Sx55h9Osi2tcT3bL/4CXnIk0AOg8HzFTzZIX1NzD/ojoo0JCb9jVz+jtNDAIrbyNESoX6JA/2ivWOvbC8bCZPYuZUJPaP/XKtHLP26Y/avOAxORUdzj2gJa2Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYiUhPgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47A0C2BCB0;
+	Fri, 15 May 2026 15:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862097;
-	bh=e6juknc3XaYzuGZfz6NU4xlhMcyHgKGZTtHSP57AseQ=;
+	s=korg; t=1778860459;
+	bh=45ilQlmRba/Wwnam5T5qQRKiKjywDIeMIjEqBiNgZkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZ97dYlm8E1QaUflh96yKX3JAxL2shir76ySJ16um/NKxgTEQwkKamFxZu4E3Yu9A
-	 WmQK8cm8uq8U29TN21fNsRktxE+NJLBHi1CyhbED6cD9dMJOGYNkfDzWyr0II5EDQP
-	 RquoupICbX8ZP9pLWw8/MoWZe5lNIStqzu26Mbew=
+	b=UYiUhPglwt/WQDnO0I8SD2CgczgqDc2PNHzDecADEUKA/IL9czDpI3sZpeBgUyUUT
+	 dhVCx266zdzoaWZlFEyevOa7tp/qPdUKbkpY+N/2+fUF5+gzaXoM7ESp1x+hNNRu8H
+	 J8Bs7p9Jod2GKJVqks1LiG64pEn5vbYDk9AxKexQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alysa Liu <Alysa.Liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 105/188] drm/amdkfd: Add upper bound check for num_of_nodes
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxing Yin <tr0jan@lzu.edu.cn>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.12 096/144] batman-adv: reject new tp_meter sessions during teardown
 Date: Fri, 15 May 2026 17:48:42 +0200
-Message-ID: <20260515154659.608163620@linuxfoundation.org>
+Message-ID: <20260515154655.734386350@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +70,114 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 65DF55541A8
+X-Rspamd-Queue-Id: 16D2D556748
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-247938-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248581-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,narfation.org:email,lzu.edu.cn:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alysa Liu <Alysa.Liu@amd.com>
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-commit 74b73fa56a395d46745e4f245225963e9f8be7f1 upstream.
+commit 3243543592425beec83d453793e9d27caa0d8e66 upstream.
 
-drm/amdkfd: Add upper bound check for num_of_nodes
-in kfd_ioctl_get_process_apertures_new.
+Prevent tp_meter from starting new sender or receiver sessions after
+mesh_state has left BATADV_MESH_ACTIVE.
 
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alysa Liu <Alysa.Liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 98ff46a5ea090c14d2cdb4f5b993b05d74f3949f)
-Cc: stable@vger.kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c  |    3 +++
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h     |    1 +
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c |   11 +++++++++++
- 3 files changed, 15 insertions(+)
+ net/batman-adv/tp_meter.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -763,6 +763,9 @@ static int kfd_ioctl_get_process_apertur
- 		goto out_unlock;
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -947,6 +947,13 @@ void batadv_tp_start(struct batadv_priv
+ 
+ 	/* look for an already existing test towards this node */
+ 	spin_lock_bh(&bat_priv->tp_list_lock);
++	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE) {
++		spin_unlock_bh(&bat_priv->tp_list_lock);
++		batadv_tp_batctl_error_notify(BATADV_TP_REASON_DST_UNREACHABLE,
++					      dst, bat_priv, session_cookie);
++		return;
++	}
++
+ 	tp_vars = batadv_tp_list_find(bat_priv, dst);
+ 	if (tp_vars) {
+ 		spin_unlock_bh(&bat_priv->tp_list_lock);
+@@ -1329,9 +1336,12 @@ static struct batadv_tp_vars *
+ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 		    const struct batadv_icmp_tp_packet *icmp)
+ {
+-	struct batadv_tp_vars *tp_vars;
++	struct batadv_tp_vars *tp_vars = NULL;
+ 
+ 	spin_lock_bh(&bat_priv->tp_list_lock);
++	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
++		goto out_unlock;
++
+ 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
+ 					      icmp->session);
+ 	if (tp_vars)
+@@ -1464,6 +1474,9 @@ void batadv_tp_meter_recv(struct batadv_
+ {
+ 	struct batadv_icmp_tp_packet *icmp;
+ 
++	if (atomic_read(&bat_priv->mesh_state) != BATADV_MESH_ACTIVE)
++		goto out;
++
+ 	icmp = (struct batadv_icmp_tp_packet *)skb->data;
+ 
+ 	switch (icmp->subtype) {
+@@ -1478,6 +1491,8 @@ void batadv_tp_meter_recv(struct batadv_
+ 			   "Received unknown TP Metric packet type %u\n",
+ 			   icmp->subtype);
  	}
- 
-+	if (args->num_of_nodes > kfd_topology_get_num_devices())
-+		return -EINVAL;
 +
- 	/* Fill in process-aperture information for all available
- 	 * nodes, but not more than args->num_of_nodes as that is
- 	 * the amount of memory allocated by user
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -1175,6 +1175,7 @@ static inline struct kfd_node *kfd_node_
- 	return NULL;
- }
- int kfd_topology_enum_kfd_devices(uint8_t idx, struct kfd_node **kdev);
-+uint32_t kfd_topology_get_num_devices(void);
- int kfd_numa_node_to_apic_id(int numa_node_id);
- 
- /* Interrupts */
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -2295,6 +2295,17 @@ int kfd_topology_remove_device(struct kf
- 	return res;
++out:
+ 	consume_skb(skb);
  }
  
-+uint32_t kfd_topology_get_num_devices(void)
-+{
-+	uint32_t num_devices;
-+
-+	down_read(&topology_lock);
-+	num_devices = sys_props.num_devices;
-+	up_read(&topology_lock);
-+
-+	return num_devices;
-+}
-+
- /* kfd_topology_enum_kfd_devices - Enumerate through all devices in KFD
-  *	topology. If GPU device is found @idx, then valid kfd_dev pointer is
-  *	returned through @kdev
 
 
 
