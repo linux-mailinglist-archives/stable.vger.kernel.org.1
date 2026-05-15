@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-248382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247912-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEL2BQZWB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:10 +0200
+	id aJhaO/1CB2oCvAIAu9opvQ
+	(envelope-from <stable+bounces-247912-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:59:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750CE554E26
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 977395528F6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0030231F7D75
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65871308D768
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2117B30569C;
-	Fri, 15 May 2026 16:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AABA3FF1DE;
+	Fri, 15 May 2026 15:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VO0hILPW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z69t76Fp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81533F926A;
-	Fri, 15 May 2026 16:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA563FF1A2;
+	Fri, 15 May 2026 15:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861592; cv=none; b=N3ITXGRlhnxvtd42nBQ/x0HCXM/qx/xOrf1jlmBg8LB/M1ljG2RFQ+u/VIobAO4wUWblIhNPQL8tgoQ3o/SYsErsV0sEwex7gzgqMoSVO+eUJwiKiHCfUzgA3FuVbYzQpKxZnk6PJw54R7hquCwQO6c5cmpYRmKjca1l8nLdymQ=
+	t=1778860392; cv=none; b=TfTvWU5Y/NpJpy6JmoQaywbgPVPNXuMG5RiQo5FA8AjhcKKvbtsR0gWr/Rb3/Jch/ifaDCW+XPH5urarUbzs0NoYd4zPVSHVsI38cPZBW6OKAI711aGdGENPlWCt8+OYKai9UEOCArEDVv+D9HyFHPhGLs4JILI6kqsb12N2bPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861592; c=relaxed/simple;
-	bh=YNaAZk1siA0bN+vOfe4NtSsNWxTKPnkybCt3pL6vSJw=;
+	s=arc-20240116; t=1778860392; c=relaxed/simple;
+	bh=4SQztIYIAMJyF4XHPuES4N5GRHbkcYiUDsTbzdi7OS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bb+NgdNtjWifrETyHN+1BKtDkOEQetIFk3UV8IWFbjBmNU57tlxuQjAaLKDWpl3ahb9VdqoOoUBGpOZbcdyb9QHr6LfdSd7jmSN9LS+cYIUQCkTVbjE4Q6K9zQJp+a9eyDrCEV6TGwiKh1ZjRtqpDreoHbqrRT810J+hk3DmwSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VO0hILPW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DCDC2BCB0;
-	Fri, 15 May 2026 16:13:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q4Hpon5RtR+ifKFMNrBbppv9qW0Vwy4Dxu4Zl0jjy8KH9ijb1kdsOPnlRbm13HBe+dL9THzUqUolembSm0QRn18md1oXkP5XWVL+Mgwv8NO2mqiLdvP4f8qsJze4JisbB/P9OB1c2sBHjCXcfsGXyBgGbOU9IoD/9J8qxVA2pwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z69t76Fp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A942AC2BCB0;
+	Fri, 15 May 2026 15:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861592;
-	bh=YNaAZk1siA0bN+vOfe4NtSsNWxTKPnkybCt3pL6vSJw=;
+	s=korg; t=1778860392;
+	bh=4SQztIYIAMJyF4XHPuES4N5GRHbkcYiUDsTbzdi7OS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VO0hILPWQhFoQ5PGVYHW76na02i0Re28m4TyM92Lsptp+ZiPDoS8G0jkQosGEGwjs
-	 4QmdEX+OOvy2DQYjmH8HmMpuAJtMP5NvFAGn01+FD+lu8ZMuQEUG3G1f+Ak9cLOsXa
-	 mRPLDtSWtP++NZWX4vYQTmn52WmOivq/wLPj8KdA=
+	b=z69t76FpSRS4QPDQoO2cTzZx9wb60WrLJkIocCrTBQPKbL1bT+jwVAZhONi+bSOQt
+	 Nr0Thg8G+tE8BGx9j/KG1sEp0QtwdeEZODHQwL8bX5+uGMGbKITsJqid4lIylWbVCB
+	 6tH+SLoIgzqL24ce8L78BvYawg3LsE2ezk5+kYGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 389/474] net: bridge: use a stable FDB dst snapshot in RCU readers
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 072/144] drm/amdgpu: Add bounds checking to ib_{get,set}_value
 Date: Fri, 15 May 2026 17:48:18 +0200
-Message-ID: <20260515154723.458366956@linuxfoundation.org>
+Message-ID: <20260515154655.207143585@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,211 +64,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 750CE554E26
+X-Rspamd-Queue-Id: 977395528F6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248382-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,nvidia.com,blackwall.org,redhat.com];
+	TAGGED_FROM(0.00)[bounces-247912-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lzu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Benjamin Cheng <benjamin.cheng@amd.com>
 
-[ Upstream commit df4601653201de21b487c3e7fffd464790cab808 ]
+commit 66085e206431ef88ce36f53c1f53d570790ccc9e upstream.
 
-Local FDB entries can be rewritten in place by `fdb_delete_local()`, which
-updates `f->dst` to another port or to `NULL` while keeping the entry
-alive. Several bridge RCU readers inspect `f->dst`, including
-`br_fdb_fillbuf()` through the `brforward_read()` sysfs path.
+The uvd/vce/vcn code accesses the IB at predefined offsets without
+checking that the IB is large enough. Check the bounds here. The caller
+is responsible for making sure it can handle arbitrary return values.
 
-These readers currently load `f->dst` multiple times and can therefore
-observe inconsistent values across the check and later dereference.
-In `br_fdb_fillbuf()`, this means a concurrent local-FDB update can change
-`f->dst` after the NULL check and before the `port_no` dereference,
-leading to a NULL-ptr-deref.
+Also make the idx a uint32_t to prevent overflows causing the condition
+to fail.
 
-Fix this by taking a single `READ_ONCE()` snapshot of `f->dst` in each
-affected RCU reader and using that snapshot for the rest of the access
-sequence. Also publish the in-place `f->dst` updates in `fdb_delete_local()`
-with `WRITE_ONCE()` so the readers and writer use matching access patterns.
-
-Fixes: 960b589f86c7 ("bridge: Properly check if local fdb entry can be deleted in br_fdb_change_mac_address")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/6570fabb85ecadb8baaf019efe856f407711c7b9.1776043229.git.zcliangcn@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ kept `*idx < cb->args[2]` instead of `*idx < ctx->fdb_idx` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_arp_nd_proxy.c |    8 +++++---
- net/bridge/br_fdb.c          |   28 ++++++++++++++++++----------
- 2 files changed, 23 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -199,11 +199,12 @@ void br_do_proxy_suppress_arp(struct sk_
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.h
+@@ -471,15 +471,18 @@ void amdgpu_debugfs_ring_init(struct amd
  
- 		f = br_fdb_find_rcu(br, n->ha, vid);
- 		if (f) {
-+			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
+ int amdgpu_ring_init_mqd(struct amdgpu_ring *ring);
  
- 			if ((p && (p->flags & BR_PROXYARP)) ||
--			    (f->dst && (f->dst->flags & BR_PROXYARP_WIFI)) ||
--			    br_is_neigh_suppress_enabled(f->dst, vid)) {
-+			    (dst && (dst->flags & BR_PROXYARP_WIFI)) ||
-+			    br_is_neigh_suppress_enabled(dst, vid)) {
- 				if (!vid)
- 					br_arp_send(br, p, skb->dev, sip, tip,
- 						    sha, n->ha, sha, 0, 0);
-@@ -463,9 +464,10 @@ void br_do_suppress_nd(struct sk_buff *s
- 
- 		f = br_fdb_find_rcu(br, n->ha, vid);
- 		if (f) {
-+			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
- 
--			if (br_is_neigh_suppress_enabled(f->dst, vid)) {
-+			if (br_is_neigh_suppress_enabled(dst, vid)) {
- 				if (vid != 0)
- 					br_nd_send(br, p, skb, n,
- 						   skb->vlan_proto,
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -246,6 +246,7 @@ struct net_device *br_fdb_find_port(cons
- 				    const unsigned char *addr,
- 				    __u16 vid)
+-static inline u32 amdgpu_ib_get_value(struct amdgpu_ib *ib, int idx)
++static inline u32 amdgpu_ib_get_value(struct amdgpu_ib *ib, uint32_t idx)
  {
-+	const struct net_bridge_port *dst;
- 	struct net_bridge_fdb_entry *f;
- 	struct net_device *dev = NULL;
- 	struct net_bridge *br;
-@@ -258,8 +259,11 @@ struct net_device *br_fdb_find_port(cons
- 	br = netdev_priv(br_dev);
- 	rcu_read_lock();
- 	f = br_fdb_find_rcu(br, addr, vid);
--	if (f && f->dst)
--		dev = f->dst->dev;
-+	if (f) {
-+		dst = READ_ONCE(f->dst);
-+		if (dst)
-+			dev = dst->dev;
-+	}
- 	rcu_read_unlock();
+-	return ib->ptr[idx];
++	if (idx < ib->length_dw)
++		return ib->ptr[idx];
++	return 0;
+ }
  
- 	return dev;
-@@ -349,7 +353,7 @@ static void fdb_delete_local(struct net_
- 		vg = nbp_vlan_group(op);
- 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
- 		    (!vid || br_vlan_find(vg, vid))) {
--			f->dst = op;
-+			WRITE_ONCE(f->dst, op);
- 			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 			return;
- 		}
-@@ -360,7 +364,7 @@ static void fdb_delete_local(struct net_
- 	/* Maybe bridge device has same hw addr? */
- 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
- 	    (!vid || (v && br_vlan_should_use(v)))) {
--		f->dst = NULL;
-+		WRITE_ONCE(f->dst, NULL);
- 		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 		return;
- 	}
-@@ -790,6 +794,7 @@ int br_fdb_test_addr(struct net_device *
- int br_fdb_fillbuf(struct net_bridge *br, void *buf,
- 		   unsigned long maxnum, unsigned long skip)
+-static inline void amdgpu_ib_set_value(struct amdgpu_ib *ib, int idx,
++static inline void amdgpu_ib_set_value(struct amdgpu_ib *ib, uint32_t idx,
+ 				       uint32_t value)
  {
-+	const struct net_bridge_port *dst;
- 	struct net_bridge_fdb_entry *f;
- 	struct __fdb_entry *fe = buf;
- 	unsigned long delta;
-@@ -806,7 +811,8 @@ int br_fdb_fillbuf(struct net_bridge *br
- 			continue;
+-	ib->ptr[idx] = value;
++	if (idx < ib->length_dw)
++		ib->ptr[idx] = value;
+ }
  
- 		/* ignore pseudo entry for local MAC address */
--		if (!f->dst)
-+		dst = READ_ONCE(f->dst);
-+		if (!dst)
- 			continue;
- 
- 		if (skip) {
-@@ -818,8 +824,8 @@ int br_fdb_fillbuf(struct net_bridge *br
- 		memcpy(fe->mac_addr, f->key.addr.addr, ETH_ALEN);
- 
- 		/* due to ABI compat need to split into hi/lo */
--		fe->port_no = f->dst->port_no;
--		fe->port_hi = f->dst->port_no >> 8;
-+		fe->port_no = dst->port_no;
-+		fe->port_hi = dst->port_no >> 8;
- 
- 		fe->is_local = test_bit(BR_FDB_LOCAL, &f->flags);
- 		if (!test_bit(BR_FDB_STATIC, &f->flags)) {
-@@ -940,9 +946,11 @@ int br_fdb_dump(struct sk_buff *skb,
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
-+		const struct net_bridge_port *dst = READ_ONCE(f->dst);
-+
- 		if (*idx < cb->args[2])
- 			goto skip;
--		if (filter_dev && (!f->dst || f->dst->dev != filter_dev)) {
-+		if (filter_dev && (!dst || dst->dev != filter_dev)) {
- 			if (filter_dev != dev)
- 				goto skip;
- 			/* !f->dst is a special case for bridge
-@@ -950,10 +958,10 @@ int br_fdb_dump(struct sk_buff *skb,
- 			 * Therefore need a little more filtering
- 			 * we only want to dump the !f->dst case
- 			 */
--			if (f->dst)
-+			if (dst)
- 				goto skip;
- 		}
--		if (!filter_dev && f->dst)
-+		if (!filter_dev && dst)
- 			goto skip;
- 
- 		err = fdb_fill_info(skb, br, f,
+ int amdgpu_ib_get(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 
 
 
