@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-248455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LVnNDpXB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248455-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:18 +0200
+	id AKwAF+tLB2qnxAIAu9opvQ
+	(envelope-from <stable+bounces-247985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A06555031
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DAB5539F3
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09CB2336199F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:19:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87445324A5FF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619533FD971;
-	Fri, 15 May 2026 16:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AA7305675;
+	Fri, 15 May 2026 15:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxkYYwaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5Zvjigi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238F03B9D84;
-	Fri, 15 May 2026 16:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52647282F1A;
+	Fri, 15 May 2026 15:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861778; cv=none; b=u+VUzQEwLf0L42QCVMTdE6/eSrDfPidSp39kw8aDwPZget70npKSywADntHKlTYQJpGD75Es4yYm41lp9PZvw2bXHyuOPHmQuwyY++wDNAgmADciS9fext5AxAdS1g5YMs5jiuyQyL5iOBGKItSQYTJXAkUJLlBmA3JHDAoeCzQ=
+	t=1778860575; cv=none; b=IT4r6N3hThpayMuwrnG2Yq58sb8Mq4oTkKdS5Fat5TVrbZIvThWYvjQEDzwuCWPQN1LvctSRP3KXQ/ZujkONLwNCKj67okdfvza+LpY28Oqo0VzvW+6x0LzBauWY0EOZI0lZrfunwHyHGlyLMBNLqLqnzL7K4pOKLarTHc1GEBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861778; c=relaxed/simple;
-	bh=dAOgf82GdaWMTwRGTdOl/FJr+AeCT3HKRokdXpLznVE=;
+	s=arc-20240116; t=1778860575; c=relaxed/simple;
+	bh=5hJWP3YID+vi0QYbbhSs+uwcyddLNvcFV3499sbkAOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GAj5IGoUMNQFNrGn2BxU2CjGCjDNQ6pz4Shd1neYMDkIUwE5+ISjjJ0XOGi1kNYcr4hNIRWyZu1MhCg9HdYvoM0wnkmSHCy7XnlYR1o9Xt/vvaFqzO5G3zY6mZ6U+l27gjsBB/Xj18ZcqrczGM16IdmLCBmvDABZsBTRtmHtRMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxkYYwaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACECAC2BCB0;
-	Fri, 15 May 2026 16:16:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NPfbSq02IIdA9crPWe9HsA48qOCkQS9SPHrCto3V+oRphmTqZv4HQm/0vrXKyMnqbI65hIlWt4gy5v1kpVWvV6FEIDshlsDB+aVd2Cdx0Xhs/TGX9d6FkrRD84KzAFDcEHxrmImvVERSNM69aNbjZrI3jlh8qS2OC8RS5vKjJIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5Zvjigi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7092C2BCB3;
+	Fri, 15 May 2026 15:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861778;
-	bh=dAOgf82GdaWMTwRGTdOl/FJr+AeCT3HKRokdXpLznVE=;
+	s=korg; t=1778860575;
+	bh=5hJWP3YID+vi0QYbbhSs+uwcyddLNvcFV3499sbkAOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bxkYYwaIJJirL8MPgUUNN73QFCrGJZpqxvM+oTpPBXtyseGsZ6uXSZwqw2sAuSey7
-	 PwFNvZt5Hq0GlPmLZvEmeWe9XZhEN9fBGBAg3Il1QRFE+dP+lAHjT9oOPz/RpdCfqX
-	 78dMaeCtjaYwvuCquk6lxDb1MwqfRERUB83FpCXI=
+	b=J5ZvjigiopohKImvb1Y2I18Zj+2B8nWGeE4q6FNBUmNr4KoA/Pa92eI1LpNufKCnL
+	 n++aYlectq/uXhkXP0jkblkYxzkIcbiN7ca0ExpCmix4/C5+DcrkBsbMExJHU3WWfd
+	 4uED58cRBNadZ3eQKjmkVLB9uQC/jpSe5hA4NpAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.6 458/474] batman-adv: tp_meter: fix tp_num leak on kmalloc failure
+	Eric Dumazet <edumazet@google.com>,
+	Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	virtualization@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	Luigi Leonardi <leonardi@redhat.com>
+Subject: [PATCH 6.12 141/144] vsock/virtio: fix potential unbounded skb queue
 Date: Fri, 15 May 2026 17:49:27 +0200
-Message-ID: <20260515154725.008710320@linuxfoundation.org>
+Message-ID: <20260515154656.794584978@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +71,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 36A06555031
+X-Rspamd-Queue-Id: B3DAB5539F3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248455-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247985-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sberdevices.ru:email,linux.dev:email,msgid.link:url,alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit ce425dd05d0fe7594930a0fb103634f35ac47bb6 upstream.
+commit 059b7dbd20a6f0c539a45ddff1573cb8946685b5 upstream.
 
-When batadv_tp_start() or batadv_tp_init_recv() fail to allocate a new
-tp_vars object, the previously incremented bat_priv->tp_num counter is
-never decremented. This causes tp_num to drift upward on each allocation
-failure. Since only BATADV_TP_MAX_NUM sessions can be started and the count
-is never reduced for these failed allocations, it causes to an exhaustion
-of throughput meter sessions. In worst case, no new throughput meter
-session can be started until the mesh interface is removed.
+virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
 
-The error handling must decrement tp_num releasing the lock and aborting
-the creation of an throughput meter session
+virtio_transport_recv_enqueue() skips coalescing for packets
+with VIRTIO_VSOCK_SEQ_EOM.
 
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
+a very large number of packets can be queued
+because vvs->rx_bytes stays at 0.
+
+Fix this by estimating the skb metadata size:
+
+	(Number of skbs in the queue) * SKB_TRUESIZE(0)
+
+Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: "Eugenio Pérez" <eperezma@redhat.com>
+Cc: virtualization@lists.linux.dev
+Link: https://patch.msgid.link/20260430122653.554058-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Luigi Leonardi <leonardi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/vmw_vsock/virtio_transport_common.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 7f3dd3c393e0..16da48b23f57 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -969,6 +969,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -430,7 +430,9 @@ static int virtio_transport_send_pkt_inf
+ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+ 					u32 len)
+ {
+-	if (vvs->buf_used + len > vvs->buf_alloc)
++	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
++
++	if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
+ 		return false;
  
- 	tp_vars = kmalloc(sizeof(*tp_vars), GFP_ATOMIC);
- 	if (!tp_vars) {
-+		atomic_dec(&bat_priv->tp_num);
- 		spin_unlock_bh(&bat_priv->tp_list_lock);
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: %s cannot allocate list elements\n",
-@@ -1344,8 +1345,10 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 	}
- 
- 	tp_vars = kmalloc(sizeof(*tp_vars), GFP_ATOMIC);
--	if (!tp_vars)
-+	if (!tp_vars) {
-+		atomic_dec(&bat_priv->tp_num);
- 		goto out_unlock;
-+	}
- 
- 	ether_addr_copy(tp_vars->other_end, icmp->orig);
- 	tp_vars->role = BATADV_TP_RECEIVER;
--- 
-2.47.3
-
+ 	vvs->rx_bytes += len;
 
 
 
