@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-247981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248451-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NUOLXpHB2p6wAIAu9opvQ
-	(envelope-from <stable+bounces-247981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:19:06 +0200
+	id SGHMFjFPB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248451-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4ECB553007
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:19:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23C85540E0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A509830510DC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:56:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC054335AEFC
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9225217C220;
-	Fri, 15 May 2026 15:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1400D4C9576;
+	Fri, 15 May 2026 16:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ro1/Mc/X"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBxv+eqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BDF176238;
-	Fri, 15 May 2026 15:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDB83FBB52;
+	Fri, 15 May 2026 16:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860565; cv=none; b=YqJtQbbugqEB+rjaEdRavprN1AcVMLCL3H17INfDDMYpG0F+LtkITXfDjmh43fhDnmqbi0J4yXu2KUa/9hDnij4267Z08TMxM3TZeViKwT54RXEJimmiQxb3qwgSD0Jj+EheVD0BidGAEmChGEVCBizJT45auZcFvBuM35//iW0=
+	t=1778861767; cv=none; b=OrufMceG6XO1w9allH2vItAHXSuxfG326Q9Ic1jKbNoN0KYBia/ayuqErkeRDbgtz6AtUMJm0R4EPw43xdEKk1MS8ai6jmFlZ+7boU93CvjQgDyvON8dnAcEhr0wwsO5mTk0Vhs9do6gQ8YkjQ4ps0/mK1+q1HLVrh7F0wbEU2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860565; c=relaxed/simple;
-	bh=mpewDWqVBy6Cpweqoje8XGB7IpxJTE4p5QrVQ/cxpIo=;
+	s=arc-20240116; t=1778861767; c=relaxed/simple;
+	bh=KYsMZrw7VO82muuQ7/X+YY8LuGZF4+MssERDOAi1XRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2VJCkrDo6JvE/fBK5HZUcPQVfAawNHANrYn/ZxqStHtfmD+ApK6FnC672yH4CXAVt+y1hp/0Y7pDY3UKDyOfkOnv2ub0Vb3ORP9WmQ4yE+XUoy10lP9fMCYR+Knsow42VvN1It8Y+mMjOp1oIHCFFm28tRR38QQPPjXMFoxMFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ro1/Mc/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CABC2BCB0;
-	Fri, 15 May 2026 15:56:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HPOSeNm8ClVUyCB5JsUm2dmRTtEio8Eg5NqYRp73SXxtRmBLvfirYlbGVrJL/Eznbj/Kepm4/S44Zhb7DLPffcmNtckArbOoTgRYn742TuwapmWu24KRUC01vNu6S9MSAvY5OS+wZDiDEYPvaA2WiX4vRDqZmsoXSehdFBWh86c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBxv+eqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62018C2BCB0;
+	Fri, 15 May 2026 16:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860565;
-	bh=mpewDWqVBy6Cpweqoje8XGB7IpxJTE4p5QrVQ/cxpIo=;
+	s=korg; t=1778861767;
+	bh=KYsMZrw7VO82muuQ7/X+YY8LuGZF4+MssERDOAi1XRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ro1/Mc/Xi37VotGY5NL4Qi2z7b+JvEpiAIlUxiOtWSDJuh82N6cpG21BbzmNok6mW
-	 QUtpsbTAd4BxFvr2VkfjhEw0glF8MDw2EU95vlBuRbtyQ+qzbSBz3bXtOn1KaBquaj
-	 BUjzrmLy+O7qIvFjwbp+Br1TTlBZJi1T+5H+2t8M=
+	b=VBxv+eqCOj+K6ebZbtD5CEI5Jln/IAqmRADswqwLQC6gOFoYJ3Y9ClUbnKD7wtHnb
+	 ZhGO1gh1ST8mM7lRIUQdwMrDVdd4mgcJRUAUxAdGtZy3PSF1Jq7qt+LXTKllC3wV2K
+	 8carDEQWGjipQAqKHw1NaB4HGzEpgp1Ml2kXWomo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.12 137/144] batman-adv: tp_meter: fix tp_num leak on kmalloc failure
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>,
+	Pratyush Yadav <pratyush@kernel.org>
+Subject: [PATCH 6.6 454/474] mtd: spi-nor: sst: Factor out common write operation to `sst_nor_write_data()`
 Date: Fri, 15 May 2026 17:49:23 +0200
-Message-ID: <20260515154656.699540858@linuxfoundation.org>
+Message-ID: <20260515154724.918180107@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E4ECB553007
+X-Rspamd-Queue-Id: B23C85540E0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+X-Spamd-Result: default: False [1.64 / 15.00];
+	R_DKIM_REJECT(1.00)[linuxfoundation.org:s=korg];
+	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:subspace.kernel.org:reject}];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[linuxfoundation.org : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248451-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247981-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:-];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	NEURAL_SPAM(0.00)[0.346];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Bence Csókás <csokas.bence@prolan.hu>
 
-commit ce425dd05d0fe7594930a0fb103634f35ac47bb6 upstream.
+commit 18bcb4aa54eab75dce41e5c176a1c2bff94f0f79 upstream.
 
-When batadv_tp_start() or batadv_tp_init_recv() fail to allocate a new
-tp_vars object, the previously incremented bat_priv->tp_num counter is
-never decremented. This causes tp_num to drift upward on each allocation
-failure. Since only BATADV_TP_MAX_NUM sessions can be started and the count
-is never reduced for these failed allocations, it causes to an exhaustion
-of throughput meter sessions. In worst case, no new throughput meter
-session can be started until the mesh interface is removed.
+Writing to the Flash in `sst_nor_write()` is a 3-step process:
+first an optional one-byte write to get 2-byte-aligned, then the
+bulk of the data is written out in vendor-specific 2-byte writes.
+Finally, if there's a byte left over, another one-byte write.
+This was implemented 3 times in the body of `sst_nor_write()`.
+To reduce code duplication, factor out these sub-steps to their
+own function.
 
-The error handling must decrement tp_num releasing the lock and aborting
-the creation of an throughput meter session
-
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+[pratyush@kernel.org: fixup whitespace, use %zu instead of %i in WARN()]
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20240710091401.1282824-1-csokas.bence@prolan.hu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mtd/spi-nor/sst.c |   39 +++++++++++++++++++--------------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -994,6 +994,7 @@ void batadv_tp_start(struct batadv_priv
+--- a/drivers/mtd/spi-nor/sst.c
++++ b/drivers/mtd/spi-nor/sst.c
+@@ -123,6 +123,21 @@ static const struct flash_info sst_nor_p
+ 		.fixups = &sst26vf_nor_fixups },
+ };
  
- 	tp_vars = kmalloc(sizeof(*tp_vars), GFP_ATOMIC);
- 	if (!tp_vars) {
-+		atomic_dec(&bat_priv->tp_num);
- 		spin_unlock_bh(&bat_priv->tp_list_lock);
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: %s cannot allocate list elements\n",
-@@ -1366,8 +1367,10 @@ batadv_tp_init_recv(struct batadv_priv *
++static int sst_nor_write_data(struct spi_nor *nor, loff_t to, size_t len,
++			      const u_char *buf)
++{
++	u8 op = (len == 1) ? SPINOR_OP_BP : SPINOR_OP_AAI_WP;
++	int ret;
++
++	nor->program_opcode = op;
++	ret = spi_nor_write_data(nor, to, 1, buf);
++	if (ret < 0)
++		return ret;
++	WARN(ret != len, "While writing %zu byte written %i bytes\n", len, ret);
++
++	return spi_nor_wait_till_ready(nor);
++}
++
+ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 			 size_t *retlen, const u_char *buf)
+ {
+@@ -144,16 +159,10 @@ static int sst_nor_write(struct mtd_info
+ 
+ 	/* Start write from odd address. */
+ 	if (to % 2) {
+-		nor->program_opcode = SPINOR_OP_BP;
+-
+ 		/* write one byte. */
+-		ret = spi_nor_write_data(nor, to, 1, buf);
++		ret = sst_nor_write_data(nor, to, 1, buf);
+ 		if (ret < 0)
+ 			goto out;
+-		WARN(ret != 1, "While writing 1 byte written %i bytes\n", ret);
+-		ret = spi_nor_wait_till_ready(nor);
+-		if (ret)
+-			goto out;
+ 
+ 		to++;
+ 		actual++;
+@@ -161,16 +170,11 @@ static int sst_nor_write(struct mtd_info
+ 
+ 	/* Write out most of the data here. */
+ 	for (; actual < len - 1; actual += 2) {
+-		nor->program_opcode = SPINOR_OP_AAI_WP;
+-
+ 		/* write two bytes. */
+-		ret = spi_nor_write_data(nor, to, 2, buf + actual);
++		ret = sst_nor_write_data(nor, to, 2, buf + actual);
+ 		if (ret < 0)
+ 			goto out;
+-		WARN(ret != 2, "While writing 2 bytes written %i bytes\n", ret);
+-		ret = spi_nor_wait_till_ready(nor);
+-		if (ret)
+-			goto out;
++
+ 		to += 2;
+ 		nor->sst_write_second = true;
  	}
+@@ -190,14 +194,9 @@ static int sst_nor_write(struct mtd_info
+ 		if (ret)
+ 			goto out;
  
- 	tp_vars = kmalloc(sizeof(*tp_vars), GFP_ATOMIC);
--	if (!tp_vars)
-+	if (!tp_vars) {
-+		atomic_dec(&bat_priv->tp_num);
- 		goto out_unlock;
-+	}
+-		nor->program_opcode = SPINOR_OP_BP;
+-		ret = spi_nor_write_data(nor, to, 1, buf + actual);
++		ret = sst_nor_write_data(nor, to, 1, buf + actual);
+ 		if (ret < 0)
+ 			goto out;
+-		WARN(ret != 1, "While writing 1 byte written %i bytes\n", ret);
+-		ret = spi_nor_wait_till_ready(nor);
+-		if (ret)
+-			goto out;
  
- 	ether_addr_copy(tp_vars->other_end, icmp->orig);
- 	tp_vars->role = BATADV_TP_RECEIVER;
+ 		actual += 1;
+ 
 
 
 
