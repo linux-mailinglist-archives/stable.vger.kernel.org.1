@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJcUFURDB2oCvAIAu9opvQ
-	(envelope-from <stable+bounces-247878-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:01:08 +0200
+	id EPdYMZxVB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419AE55295B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:01:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40632554D19
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B5F56301F2A4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:51:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C4CA30143E6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF1B22FF22;
-	Fri, 15 May 2026 15:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C533E008C;
+	Fri, 15 May 2026 16:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMp351An"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDFlMau1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6840317C220;
-	Fri, 15 May 2026 15:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E104F3B9D84;
+	Fri, 15 May 2026 16:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860304; cv=none; b=l6jGToadUmSdE7Ygjwk6itbIKSalxliE5e3vOoDez0eG4sRHF4TI/OuYHkOruvh6k9cMOFUdYud87oU23ArWiNt1A88HguM/2gJhZQXrp560QfVOUUU4M/ne9uj8ZzD5lxksvB08d38YkiGVXkMD8W3Cx0nubuy5mAy4pa+BQnE=
+	t=1778861504; cv=none; b=B5Nv81wJqYL6cjjE6bxLdy9vyOQaDG3799BcBJWITFd+AyxyWWBaZzXH8f5VcGE+YZEtf/LP5tV8ewfQ5lc9qjK58EtXpa3ez2NRQ9TnOifzlHGE4ziT7JogWe4skIjKSiq9dK2/lZqdUE46cn1mTTaPMaPS/usSKw1XggBVsCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860304; c=relaxed/simple;
-	bh=N98viDCqjiotAej6uIOePU758pATPrKdhRygqQ3AqBE=;
+	s=arc-20240116; t=1778861504; c=relaxed/simple;
+	bh=Yg6udlmUaymaKtO04LMJ+SDXgJYhutIUgAf+YtXQnTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZtYv0yO1qMmHHi95L2ttKeS2LYoM38iEBmul9v9aDA5MBCn6uwvOCRzQ2o1HMqudIBdTwdlyJjGC8NOw7lCDjtWvPEN6rTUd/zeXLEvU1Q3GngEFUVbmqaGMzJM33LTww8H+B7b6BPUYaLzrMJWdc03CNEQVg1rha6gKRPnX+i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMp351An; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C67C2BCB0;
-	Fri, 15 May 2026 15:51:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Gr28sikSSVRFKTSfsAhbUBhK8+KwaEYDF+f5+GoBm9S3vNzKElDm1lwVcQZadTsK6yieFvWvG8JIaQMyoOG1hhxMELG5S5ad8SNO7CGumwutChT3s8llp0bjrmaxNyQqI20SYB/VN6/qDuGaFuSxQQ3sVKxxMRHqAriAkwTF6RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDFlMau1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F9EC2BCB0;
+	Fri, 15 May 2026 16:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860304;
-	bh=N98viDCqjiotAej6uIOePU758pATPrKdhRygqQ3AqBE=;
+	s=korg; t=1778861503;
+	bh=Yg6udlmUaymaKtO04LMJ+SDXgJYhutIUgAf+YtXQnTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KMp351AnsXUoPP6CDF7f+kPWm3MhJPQYYeSysD9aqS1mnJF7I6hBCAfkzrT/d8Wrt
-	 aYWYMDnGhLhDq3KVfv5KCjHf5QwY7bBvwXeLgyBxyqw8+rpXwhgyotqlr1y8QzkSbC
-	 txNZW9B/vEmfoF/ealoA08rsc9Xs5ZDeO/oIsRgY=
+	b=xDFlMau1pAUi0St9XgBbwSMaeYSCINAbK9qOcT8W4yPlooZ91Ib9qgOD7lzr/fo0j
+	 5ItGGLs2HtnDFcQoYzKwdyUIVgD1Hj7u+mDgcuMgVg0ykz2h0HLJ/HbhLCsMaB49GR
+	 gddQ/RM6Bj4MpbjLzhoofbaMXo6540ZcWpJlppv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.12 037/144] media: omap3isp: drop the use count of v4l2 pipeline
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 354/474] drm/amdgpu/pm: align Hawaii mclk workaround with radeon
 Date: Fri, 15 May 2026 17:47:43 +0200
-Message-ID: <20260515154654.378348277@linuxfoundation.org>
+Message-ID: <20260515154722.676839166@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 419AE55295B
+X-Rspamd-Queue-Id: 40632554D19
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247878-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248348-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 9da49bd9d4224035cff39b40d7395310abb10201 upstream.
+commit 1987c79b4fe5789dfa14423e78b5c25f6acf3e9d upstream.
 
-In isp_video_open(), drop the use count of v4l2
-pipeline if vb2_queue_init() fails.
+Align the hawaii mclk workaround with radeon and windows.
 
-Fixes: 8fd390b89cc8 ("media: Split v4l2_pipeline_pm_use into v4l2_pipeline_pm_{get, put}")
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/1816
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9649528b637f668c5af9f2b83ca4ad8576ae2121)
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/ti/omap3isp/ispvideo.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/media/platform/ti/omap3isp/ispvideo.c
-+++ b/drivers/media/platform/ti/omap3isp/ispvideo.c
-@@ -1324,6 +1324,7 @@ static int isp_video_open(struct file *f
- 
- 	ret = vb2_queue_init(&handle->queue);
- 	if (ret < 0) {
-+		v4l2_pipeline_pm_put(&video->video.entity);
- 		omap3isp_put(video->isp);
- 		goto done;
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -1329,10 +1329,10 @@ static int ci_populate_all_memory_levels
+ 	if ((dpm_table->mclk_table.count >= 2) &&
+ 	    ((dev_id == 0x67B0) ||  (dev_id == 0x67B1)) &&
+ 	    (adev->pdev->revision == 0)) {
+-		smu_data->smc_state_table.MemoryLevel[1].MinVddci =
+-				smu_data->smc_state_table.MemoryLevel[0].MinVddci;
+-		smu_data->smc_state_table.MemoryLevel[1].MinMvdd =
+-				smu_data->smc_state_table.MemoryLevel[0].MinMvdd;
++		smu_data->smc_state_table.MemoryLevel[1].MinVddc =
++				smu_data->smc_state_table.MemoryLevel[0].MinVddc;
++		smu_data->smc_state_table.MemoryLevel[1].MinVddcPhases =
++				smu_data->smc_state_table.MemoryLevel[0].MinVddcPhases;
  	}
+ 	smu_data->smc_state_table.MemoryLevel[0].ActivityLevel = 0x1F;
+ 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.MemoryLevel[0].ActivityLevel);
 
 
 
