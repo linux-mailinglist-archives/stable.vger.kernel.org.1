@@ -1,151 +1,209 @@
-Return-Path: <stable+bounces-247786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PurNw4qB2ppsQIAu9opvQ
-	(envelope-from <stable+bounces-247786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:34 +0200
+	id wDInEwIuB2oLsgIAu9opvQ
+	(envelope-from <stable+bounces-247787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4C8551209
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A881A551765
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5DC723004266
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:05:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2327530A674B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969A636894F;
-	Fri, 15 May 2026 14:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8580248C3FE;
+	Fri, 15 May 2026 14:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="VuNC8V61"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="T3c7MisN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7BD48164F
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 14:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA3248BD48;
+	Fri, 15 May 2026 14:06:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778853902; cv=none; b=d71xXTDxZMZzX2og8OLlsgWVvm7hpOP/D/zpBX34wEx1WarmYbhYZq4msVFRu9nE8yECJmqlN5wahyBWiOouGrcOPQaiXWUdl8hlgyULAABoWKJCnntYhgmlaWoTaHENALKwtyuUCJMVMkx+3n86dHilcoFnUT3FApQol1/MHcc=
+	t=1778853999; cv=none; b=cuE0U6YjDjmLJax7yRNc7eVrmS9x3Gs8+9nQrBAcBvOmb0gDP/7CgKnrkTP4hYaKNvALssG0rSXVF/53YPRP/16+3wB3JE6KbQgat4iqjv1atW+yaxcxvm/kXx8vGQqxAaCmFAHSx+H32724U8eHs+dvKrEFoxE8E1UV+gWrxGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778853902; c=relaxed/simple;
-	bh=JqktXW/5n+RkTw2u+eeRD19Y+s9wECY+hNjunBA2ark=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=mDVXVdYuZGYNSWn6bZvamGR8wK12mk+YYZBO1zuhM/e0cyQLiHP3EnR3+1xgsEr2L2hvVYhXjM6wqUlAQtaL61EjIDbi+yDvUV6Tw5p8gKLLs0EQEIxkN53ny9vVhIHWnqpImT+hG9rPs5CcBz1bn53TZs0vWLibaplmVcjXdkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=VuNC8V61; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7dea1272943so4942752a34.0
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 07:05:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1778853900; x=1779458700; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=qa5WkmLYfl5O5HePZG/1LY1cXG3nwQYMN7evwKBu/fU=;
-        b=VuNC8V61PpqeQ5gBwmJCxSkCqyJy9b8tNezE+f5FHkZ9h+wsmXPkJSsJwk/uc5HDX8
-         zg6BTNelN0v8ApnFAFUorZnWigE/IRQfT1tQ8DHixF6A8A+1GMSvsVwnJlrnpIC9BP+K
-         +q69pAGI3roCy8SZEwP6tXQfDBx7mASY616BLp1A0ham3FjY9yswPSdj5Z9yJX/lCvM2
-         3Fy3g4qYZHLl0Djn/U0jUBX0ajPMj4vMwErlw1NhGxvGCbjtndPAiZTBGXaFTruFelAI
-         PNX1K2ip7s9BnfbjRaLahhtKqDXO3E0hkSP15KCNawsbdSyLBvEXEn17E5ZwzZjFnh5f
-         OZ3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778853900; x=1779458700;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qa5WkmLYfl5O5HePZG/1LY1cXG3nwQYMN7evwKBu/fU=;
-        b=bf1PPvt3i9YBKjFjd7uUvKEg73cH4vO31aP2eUJAfu9EYG8Ymg/KwQ2WEUI/D+Luew
-         eVQx8datCQdvsz2Hg+ePxOF2Wo2ZngKUF28gpNjvdQF6LU2qxgGMK421OwO6n2cvPsDk
-         uNzOYgVrLU/f7rhATUe/RQI2xrC0CPc6Teyp10bVdirUTNgZxEU0F2UQLJRvJNW1Qsaw
-         gRN8/Nl3JCqSEUge6zg2XtO5NLhCiGU4s+e65wFg2h6j9e5s6ND6EtTbjLDn3FN//qmV
-         h/e1b8McW5ZWfhX5k/owtTTO+Ue7v1oJKT98kxlbbZVeee2As0CdN1SjikYiN8+HiaCm
-         CNjQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+nMJYe1DSIau5MLEobYL6hCCP7Ja8ToMlyFPW7RnXMScjdUZmMfD6Wt8kUbmw3jhwff2bWduM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCkOQsTx7t6K38/H2OVCdGQuN+EL0P0+fZYf0oIte+cqa67VGA
-	Zg7i0kzEfjD7wQReM0UbSkttQiR+SR5UUk2yMWv9IEzhp880oCV5drrCDkmPw6SgUVA=
-X-Gm-Gg: Acq92OFoN5dh7G495Wzj+ppGk9kUqLPBIkylOVqqz8pVV9G3FUrwOOBeLeKMdcIfNbs
-	x0fS8vBwVoK2tVYyjkSpdNrfZaV3nNpQYndS4oh45iCDt1WMxBF+u8IUH33PT01CyseFCixfhBW
-	ZmWzzBqsKoRUI3OHYkCRwWbMad0wm0np9xvZHMCRa5WOtf2DX2zGwgKVj1f8yJZkH29sylYGb/A
-	WA2SwFb5bkb5mhJrCqMHzoqIkLVwMdVBqQnLH66FpcDJ58NMjtkadocI4ABI4uDeRaelPz6a5xc
-	zpYd7ivuG+pH1yELG1hNrPg2cgV4fS67MhcaDyLFyEtdmbJ8LU9twDpVPaBbncD3+y7+xWKzO4I
-	SAwH5XuFidmp0ZwtgBe9WDumVvSH1mr2QyTBS4uEEFZQ0NXWdKoMNCP1FKDTnZNDro7ozHiP7St
-	cakh9eT8n7K4Mq0L2MW1dJOiySSNLwyo8vEfCfNxm31RcxNHZV8p113w/od/6ywExhFuO3T9D0s
-	nPQcDGj
-X-Received: by 2002:a05:6830:3c0e:b0:7dc:dd91:b5b1 with SMTP id 46e09a7af769-7e4ea032147mr2628097a34.5.1778853899533;
-        Fri, 15 May 2026 07:04:59 -0700 (PDT)
-Received: from [192.168.1.102] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e55bc4983asm1319072a34.26.2026.05.15.07.04.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 May 2026 07:04:58 -0700 (PDT)
-Message-ID: <96e5ee2d-a64b-408a-ba7f-e9ca25952959@kernel.dk>
-Date: Fri, 15 May 2026 08:04:57 -0600
+	s=arc-20240116; t=1778853999; c=relaxed/simple;
+	bh=k+83qw1aBVDXTHI3o0EJipdXbePWlFTgXyIEgtF1wPE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=QbRtZ5Ab9HDYJphjipO1KLlDOydt6M+H75kImV3QHK4cAyx0xsoxLrRh4Dv7Q8CI+v3TnpQ5qDr6s/VRpUj+ZsTi5SOsbHYHsEtisIrrNsdiNuVS+8pN5JQwhoNrMAZr2S4KMXOybaStiunT1Mjz8qMIkZBBz+z0j3KdSYScafI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=T3c7MisN; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=En
+	OKvtLKxGfFtXrnKl47IbY8wmgcrys1YAusjT/5P6A=; b=T3c7MisN4PwQOUSiYt
+	M8Fxmt7OnjrKyq4S6U/L3RTD5m0YyioLrKOnkFYcCzmO6iox3tsGkbP3vqq8uMBf
+	MhSV1R8hZ8+1JDZKmUsAapITjnf5JL7rJNLdifjpVG2gqai03hyEliUxeiwaAmlg
+	9XMcsTyMahQ6SXGaoCWlS4bXs=
+Received: from 163.com (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgCH1RY9KAdqHenOEg--.16120S2;
+	Fri, 15 May 2026 22:06:01 +0800 (CST)
+From: <w15303746062@163.com>
+To: luiz.dentz@gmail.com,
+	pmenzel@molgen.mpg.de,
+	marcel@holtmann.org,
+	linux-bluetooth@vger.kernel.org
+Cc: linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	greg@kroah.com,
+	stable@vger.kernel.org,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Subject: [PATCH v4] Bluetooth: hci_uart: fix UAF in hci_uart_tty_close()
+Date: Fri, 15 May 2026 22:05:48 +0800
+Message-Id: <20260515140548.393865-1-w15303746062@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CABBYNZLjreYY_BczAQr2G6L=iJjBYKksFp53CairG-6V0Cb0EA@mail.gmail.com>
+References: <CABBYNZLjreYY_BczAQr2G6L=iJjBYKksFp53CairG-6V0Cb0EA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 7.0] io_uring/wait: honour caller's time namespace
- for IORING_ENTER_ABS_TIMER
-From: Jens Axboe <axboe@kernel.dk>
-To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
- stable@vger.kernel.org
-Cc: Maoyi Xie <maoyixie.tju@gmail.com>,
- Pavel Begunkov <asml.silence@gmail.com>, Maoyi Xie <maoyi.xie@ntu.edu.sg>,
- io-uring@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260511221931.2370053-1-sashal@kernel.org>
- <20260511221931.2370053-13-sashal@kernel.org>
- <e12d01e9-8934-4150-bcb3-09ba147fc842@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <e12d01e9-8934-4150-bcb3-09ba147fc842@kernel.dk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9C4C8551209
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgCH1RY9KAdqHenOEg--.16120S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJw43Kr1DZFyDZF13JFWfAFb_yoWrXw1kpF
+	ZxKF90yF4vqFWjkFyDZa1xJFyrKr4ag3y2k34fW3y5Xas8tr4jk3WIyFWIgF1UArs3Cr1S
+	vFWDX3y5WryUZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UQAw3UUUUU=
+X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC-wl4XGoHKEm-FAAA31
+X-Rspamd-Queue-Id: A881A551765
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [6.34 / 15.00];
+	SEM_URIBL(3.50)[xidian.edu.cn:email];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,ntu.edu.sg,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247786-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247787-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_ALLOW(0.00)[163.com:s=s110527];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	GREYLIST(0.00)[pass,body];
+	FREEMAIL_TO(0.00)[gmail.com,molgen.mpg.de,holtmann.org,vger.kernel.org];
+	DKIM_TRACE(0.00)[163.com:+];
+	FREEMAIL_FROM(0.00)[163.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernel-dk.20251104.gappssmtp.com:dkim]
-X-Rspamd-Action: no action
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[163.com,none];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	NEURAL_SPAM(0.00)[0.202];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,xidian.edu.cn:email]
+X-Rspamd-Action: add header
+X-Spam: Yes
 
-On 5/12/26 9:47 AM, Jens Axboe wrote:
-> On 5/11/26 4:19 PM, Sasha Levin wrote:
->> From: Maoyi Xie <maoyixie.tju@gmail.com>
->>
->> [ Upstream commit 45d2b37a37ab98484693533496395c610a2cab96 ]
-> 
-> If you auto-pick this one, please also do the other one in the
-> series, 9cc6bac1bebf8310d2950d1411a91479e86d69a1. Makes no sense
-> to do just one of them.
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-Hello?
+A Use-After-Free (UAF) vulnerability and a subsequent kernel panic were
+observed in hci_uart_write_work() due to a race condition between the
+initialization of the HCI UART line discipline and concurrent TTY hangup.
 
+This issue was triggered by our custom device emulation and fuzzing
+framework (DevGen) on the v6.18 kernel. Due to the highly timing-dependent
+nature of this race condition (requiring a precise interleaving of
+TIOCVHANGUP and protocol setup), Syzkaller failed to extract a reliable
+standalone C reproducer (reproducer is too unreliable: 0.00).
+
+The crash trace is as follows:
+  ODEBUG: free active (active state 0) object: ffff88804024e870 object type: work_struct hint: hci_uart_write_work+0x0/0x940
+  WARNING: CPU: 0 PID: 338273 at lib/debugobjects.c:612 debug_print_object+0x1a2/0x2b0
+  ...
+  Call Trace:
+   <TASK>
+   debug_check_no_obj_freed+0x3ec/0x520
+   kfree+0x3f0/0x6c0
+   hci_uart_tty_close+0x127/0x2a0
+   tty_ldisc_close+0x113/0x1a0
+   tty_ldisc_kill+0x8e/0x150
+   tty_ldisc_hangup+0x3c1/0x730
+   __tty_hangup.part.0+0x3fd/0x8a0
+   tty_ioctl+0x120f/0x1690
+   __x64_sys_ioctl+0x18f/0x210
+   do_syscall_64+0xcb/0xfa0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+
+The issue arises because the workqueues (init_ready and write_work) are
+only flushed/cancelled if the HCI_UART_PROTO_READY flag is set. However,
+during the protocol initialization phase (HCI_UART_PROTO_INIT), the
+underlying protocol may schedule work. If a hangup occurs before the setup
+completes and the READY flag is set, hci_uart_tty_close() skips the
+teardown of these workqueues and proceeds to free the `hu` struct. When
+the scheduled work executes later, it blindly dereferences the freed `hu`
+struct.
+
+Fix this by moving the workqueue teardown outside the HCI_UART_PROTO_READY
+check. Furthermore, use disable_work_sync() instead of cancel_work_sync()
+to unconditionally disable the works. This ensures that any pending works
+are cancelled and no new submissions can occur before the hci_uart
+structure is freed. Note that hu->init_ready and hu->write_work are
+initialized in hci_uart_tty_open(), so it is always safe to call
+disable_work_sync() on them in hci_uart_tty_close(), even if the protocol
+was never fully attached.
+
+Fixes: 3b799254cf6f ("Bluetooth: hci_uart: Cancel init work before unregistering")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+---
+Changes in v4:
+- Adopted Luiz's suggestion to use disable_work_sync() instead of 
+  cancel_work_sync() to prevent new work submissions during teardown.
+
+Changes in v3:
+- Added 'Cc: stable' tag as requested by the stable bot.
+
+Changes in v2:
+- Added KASAN/ODEBUG crash trace.
+
+ drivers/bluetooth/hci_ldisc.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
+index 275ea865bc29..333c1e1503e8 100644
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -544,14 +544,20 @@ static void hci_uart_tty_close(struct tty_struct *tty)
+ 	if (hdev)
+ 		hci_uart_close(hdev);
+ 
++	/*
++	 * Disable workqueues unconditionally before freeing the hu
++	 * struct, as they might be active during the PROTO_INIT phase.
++	 * Using disable_work_sync() instead of cancel_work_sync()
++	 * ensures no new submissions can occur.
++	 */
++	disable_work_sync(&hu->init_ready);
++	disable_work_sync(&hu->write_work);
++
+ 	if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
+ 		percpu_down_write(&hu->proto_lock);
+ 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
+ 		percpu_up_write(&hu->proto_lock);
+ 
+-		cancel_work_sync(&hu->init_ready);
+-		cancel_work_sync(&hu->write_work);
+-
+ 		if (hdev) {
+ 			if (test_bit(HCI_UART_REGISTERED, &hu->flags))
+ 				hci_unregister_dev(hdev);
 -- 
-Jens Axboe
+2.34.1
 
 
