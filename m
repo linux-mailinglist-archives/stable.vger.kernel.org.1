@@ -1,343 +1,247 @@
-Return-Path: <stable+bounces-247659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDyuHVcDB2qVqgIAu9opvQ
-	(envelope-from <stable+bounces-247659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:28:23 +0200
+	id uGHAKuEFB2pNqwIAu9opvQ
+	(envelope-from <stable+bounces-247660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:39:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69D954E716
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:28:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D64D54E995
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30026306F1A1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:03:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A46E3097029
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD623426ECB;
-	Fri, 15 May 2026 11:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B0E477E40;
+	Fri, 15 May 2026 11:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="Viw9us5C"
+	dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b="RpCGOBN8";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gOoBDWyD"
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3062844CAE4
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 11:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12EE3D1AA6
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 11:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778843035; cv=none; b=SrAs+8qkA1XSyKARI2AHlrGohZtD4/0l+s0WQlGMCIjzqjEx8y7IAl8NRX4uMy23QMNj6bPhNGIkdI/PB2D551HjJnUESd44a92LjoSJcgVo0eAD1VgZj1dFamhamufxbxDTIOTcECKIeeGMOv9S2RFxhLFgyRvDCZlUQV1i8M4=
+	t=1778843410; cv=none; b=HvSlvdpyKpsAZrNHyoxi0wLXYMKe2p5cfzzUsDYSiM5LtmZnkn0F1EQy9ygeTu9AX0PDIlwGv6wBk6ZYAgYWFfuBuZn9nC3KMahYfegTzl9Kmbg888guRBS7KTA5M4nScluDur16v94TKZ8weQJL/hGbL9R7yuxbklSiTShgAT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778843035; c=relaxed/simple;
-	bh=24uUEiZQ5P0J0yZKysaWdbHbwOGdnJIhBovnKMIK2BE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDRS0/6KztEU2DcDL7UL7cIOBeUvAfBUIMCF7NjN0/MkC0cHPJihGaTAZdQuh69CEzhhyK5/aqL36ELtBI7Hm7gXAqJpFw7gk4l0AODVJB5ldoS0Af0wAAGLflvApqvsWZuzASS9BMfUBsr9BtZS48a2BxhnYbBd6u5QkXK2XSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=Viw9us5C; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id 0E1A021550;
-	Fri, 15 May 2026 11:03:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1778843032;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=23YDwNu6NfextoT5rqC5n/QZrxP7yrp9TrFljfbHtA8=;
-	b=Viw9us5CSIP15nw5bDEbzgMhavtXolTzjEg2cwmRoh2NiimiMS0YoEwMuHZzevxPW6nz9w
-	ABv/LWtw8kv/721l8VH+TPjtiF6EEIurOISf/NIKzPDPgDiqh9Olt3Hglj+P2O2JK0aHHq
-	rOFbomCMo2dRCx91COxO4AbxnN9ZCkc=
-From: Sven Eckelmann <sven@narfation.org>
-To: stable@vger.kernel.org
-Cc: Jiexun Wang <wangjiexun2025@gmail.com>,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxing Yin <tr0jan@lzu.edu.cn>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.1.y] batman-adv: stop tp_meter sessions during mesh teardown
-Date: Fri, 15 May 2026 13:03:20 +0200
-Message-ID: <20260515110320.287143-1-sven@narfation.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026051554-unbutton-gatherer-c472@gregkh>
-References: <2026051554-unbutton-gatherer-c472@gregkh>
+	s=arc-20240116; t=1778843410; c=relaxed/simple;
+	bh=BriSj4VgexAhSi/5HjSDb6eC5q7DvPArDFrMjh+7Wzo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kAodJex2dz+BOc5Ta0rGeYY3Wd+7WNbDUhrKVbZCc4V81yfOgDjavDLxgdfEkTN9hkVfcjmAQ6NmX5KEqxDDhz7YNmZuqrin5Ar+vT6GWyt3jHPOwYnGzWaKyx4gVVOh74Kz4usVltL9vRUXuNS7dqZWlR/XQqKH6raF3NqMiSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com; spf=pass smtp.mailfrom=bsbernd.com; dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b=RpCGOBN8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gOoBDWyD; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bsbernd.com
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 1710B1400130;
+	Fri, 15 May 2026 07:10:07 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Fri, 15 May 2026 07:10:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1778843407;
+	 x=1778929807; bh=68KZOoQdNrAEbxcuySuhm/3i6xsXq0Eg9oOMtXe6TxI=; b=
+	RpCGOBN8c9+2dm9ECCKorh5npwZa57Fb0vjJ4pCUJn8Ae3uuZ2Hy2HPbxON4RRYz
+	blsqCi0+i7WhPdUtxT5WehxYgiSeNuTPmAVRgVf8e/d1v5AsySU0PK9SrwjNGJMY
+	lda/3wcySsrrjsc67PZLEGFx852laQ6gVx0yPVnuurf6L9vstKyY2K9Z48USTDUm
+	eTdg2/C/7R3UDN4wa6DYg2EDbRf1Bqf7q/UnJKhvQivHxgQKo8F2UF/uLFNMPvtm
+	ZwPNWaTgfQ1vKVxWCa4n+NNZDSAbQ+THXMoZZa5gnyfatawlqpfsA6/WnqLCvhkT
+	5XCQ+rogOioEwcl8Gf6i6A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778843407; x=
+	1778929807; bh=68KZOoQdNrAEbxcuySuhm/3i6xsXq0Eg9oOMtXe6TxI=; b=g
+	OoBDWyD+M5yeksTF1BmxPLow6pKcMnC+Dm4S3l7Iq09nPphpzhV3BUlafrbTDAAk
+	Jn4D2x31+0RuNZl5PRJvjDBL/cTt9Z14qwKSpTSqCybOrFCc5zUDAXaEO74hKZ6k
+	AVLzCBpBM6IVpU6LBh4q4LQAmxoc9Y8XBMZH7OChQGplMneVfB1Kcu+QkI2n9J8s
+	Ok8H3+H/4g43ZRmMc3JcVsHzSVwgvJh5QTBxjN63bOOpyMBYVe81C5+o2zb9QJaA
+	e+yNaaHPwRYJDNKsOnbVndk3xDS84fIAO1aE/4EjkxeGAXoyQxlK5IORE1xT69hM
+	nCTR3zRqdGLSD6iRa1Flw==
+X-ME-Sender: <xms:Dv8GagdZk5hbaJNPqzUhkvVSv2hw556YGb7vL12uLzlj7VFJXpJ-bA>
+    <xme:Dv8Gai6g3AvedyzmPj8RcJeX2TNoUIvN8tp0KdlM5CLJblEAov9GvzaShTWVbo2hq
+    s-1pm_-IBMAo0Su_1Azp-aAHuTzLN4Ra9SV8ML_hfZ8AHrUV5c>
+X-ME-Received: <xmr:Dv8Gavtb9hpgLnwOFOLu6UjaPWcLWJQa7R7zBqdzcSrnM7DNuy2BcR-vqb0uWHZq_ysW9p9qI9n8da5QwfwjxDbtMAYdIwXfytw-Xwwzvayln69E7g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufedtvdegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeeuvghrnhgu
+    ucfutghhuhgsvghrthcuoegsvghrnhgusegsshgsvghrnhgurdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehhfejueejleehtdehteefvdfgtdelffeuudejhfehgedufedvhfehueev
+    udeugeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsvghrnhgusegsshgsvghrnhgurdgtohhmpdhnsggprhgtphhtthhopeejpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopehjohgrnhhnvghlkhhoohhnghesghhmrghilhdrtg
+    homhdprhgtphhtthhopehmihhklhhoshesshiivghrvgguihdrhhhupdhrtghpthhtohep
+    fhhushgvqdguvghvvghlsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheprg
+    hlihesuggunhdrtghomhdprhgtphhtthhopehhohhrshhtsegsihhrthhhvghlmhgvrhdr
+    uggvpdhrtghpthhtohepghhgrghnjhhiuddusehnrghvvghrrdgtohhmpdhrtghpthhtoh
+    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:Dv8GaqgLOpl8gh_3HIYfAa7rLBd6fnHEoYbmqdQPTAARAXB70lLGKg>
+    <xmx:Dv8GaipC6kaARNy3w8l00QPIZVCZEXnhxH-oClTYK04Uvw7HKQlW_A>
+    <xmx:Dv8GavviUKIC-Q8csu-FsUWj-v4Wx5u-wcIlh45aNxoLzQIgQHTg4w>
+    <xmx:Dv8GatbkTkVBXY5JEahHaVUjzpnlve-1KXItve-maRJ3-1s8UPcgHA>
+    <xmx:D_8GaqGE9LozfkPQvkeeRPSA0LbFon46Zp0u9xreKwpr-KD2wKJuiaku>
+Feedback-ID: i5c2e48a5:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 15 May 2026 07:10:04 -0400 (EDT)
+Message-ID: <5c010e24-b4f7-481a-97e8-00da0aec6f3c@bsbernd.com>
+Date: Fri, 15 May 2026 13:10:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C69D954E716
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 3/3] fuse: fix moving cancelled entry to
+ ent_in_userspace list
+To: Joanne Koong <joannelkoong@gmail.com>, miklos@szeredi.hu
+Cc: fuse-devel@lists.linux.dev, ali@ddn.com, horst@birthelmer.de,
+ Heechan Kang <gganji11@naver.com>, stable@vger.kernel.org
+References: <20260515045541.1171335-1-joannelkoong@gmail.com>
+ <20260515045541.1171335-4-joannelkoong@gmail.com>
+From: Bernd Schubert <bernd@bsbernd.com>
+Content-Language: fr, en-US, de-DE, ru-RU
+In-Reply-To: <20260515045541.1171335-4-joannelkoong@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2D64D54E995
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[bsbernd.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[bsbernd.com:s=fm2,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,lzu.edu.cn,narfation.org];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247659-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_CC(0.00)[lists.linux.dev,ddn.com,birthelmer.de,naver.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-247660-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,szeredi.hu];
+	DKIM_TRACE(0.00)[bsbernd.com:+,messagingengine.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[narfation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email]
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bernd@bsbernd.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bsbernd.com:mid,bsbernd.com:dkim,messagingengine.com:dkim,birthelmer.de:email,ddn.com:email,naver.com:email]
 X-Rspamd-Action: no action
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-commit 3d3cf6a7314aca4df0a6dde28ce784a2a30d0166 upstream.
 
-TP meter sessions remain linked on bat_priv->tp_list after the netlink
-request has already finished. When the mesh interface is removed,
-batadv_mesh_free() currently tears down the mesh without first draining
-these sessions.
+On 5/15/26 06:55, Joanne Koong wrote:
+> fuse_uring_cancel() moves entries that are available (these have no reqs
+> attached) to the ent_in_userspace list. ent_list_request_expired()
+> checks the first entry on ent_in_userspace and dereferences
+> ent->fuse_req unconditionally, which will crash on a cancelled entry
+> that was moved to this list.
+> 
+> Fix this by freeing the entry and dropping queue_refs directly in
+> fuse_uring_cancel(). This is safe because cancel is the cancel handler
+> itself - after io_uring_cmd_done(), no more cancels will be dispatched
+> for this command, and teardown serializes with cancel via queue->lock.
+> 
+> Since cancel now decrements queue_refs, fuse_uring_abort() must no
+> longer gate fuse_uring_abort_end_requests() on queue_refs > 0, as
+> cancelled entries may have already dropped queue_refs while requests are
+> still queued. Remove the gate so abort always flushes requests and stops
+> queues.
+> 
+> Reported-by: Heechan Kang <gganji11@naver.com>
+> Fixes: 4fea593e625c ("fuse: optimize over-io-uring request expiration check")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Jian Huang Li <ali@ddn.com>
+> Co-developed-by: Horst Birthelmer <horst@birthelmer.de>
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> ---
+>  fs/fuse/dev_uring.c   | 6 ++++--
+>  fs/fuse/dev_uring_i.h | 6 +++---
+>  2 files changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
+> index d9108b5b5db8..f4ba64a1796a 100644
+> --- a/fs/fuse/dev_uring.c
+> +++ b/fs/fuse/dev_uring.c
+> @@ -511,8 +511,7 @@ static void fuse_uring_cancel(struct io_uring_cmd *cmd,
+>  	queue = ent->queue;
+>  	spin_lock(&queue->lock);
+>  	if (ent->state == FRRS_AVAILABLE) {
+> -		ent->state = FRRS_USERSPACE;
+> -		list_move_tail(&ent->list, &queue->ent_in_userspace);
+> +		list_del_init(&ent->list);
+>  		need_cmd_done = true;
+>  		ent->cmd = NULL;
+>  	}
+> @@ -521,6 +520,9 @@ static void fuse_uring_cancel(struct io_uring_cmd *cmd,
+>  	if (need_cmd_done) {
+>  		/* no queue lock to avoid lock order issues */
+>  		io_uring_cmd_done(cmd, -ENOTCONN, issue_flags);
+> +		kfree(ent);
+> +		if (atomic_dec_and_test(&queue->ring->queue_refs))
+> +			wake_up_all(&queue->ring->stop_waitq);
+>  	}
+>  }
 
-A running sender thread or a late incoming tp_meter packet can then keep
-processing against a mesh instance which is already shutting down.
-Synchronize tp_meter with the mesh lifetime by stopping all active
-sessions from batadv_mesh_free() and waiting for sender threads to exit
-before teardown continues.
+Hmm, ok, I had done that via fuse_uring_entry_teardown(), but this way
+is also fine.
 
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
----
- net/batman-adv/main.c     |  1 +
- net/batman-adv/tp_meter.c | 94 +++++++++++++++++++++++++++++++--------
- net/batman-adv/tp_meter.h |  1 +
- net/batman-adv/types.h    |  4 ++
- 4 files changed, 82 insertions(+), 18 deletions(-)
+While thinking about it over night, I wonder if we should abort the
+connection here. Calls for fuse_uring_cancel() / IO_URING_F_CANCEL
+happen when
 
-diff --git a/net/batman-adv/main.c b/net/batman-adv/main.c
-index e8a449915566..18b32c39ed4b 100644
---- a/net/batman-adv/main.c
-+++ b/net/batman-adv/main.c
-@@ -262,6 +262,7 @@ void batadv_mesh_free(struct net_device *soft_iface)
- 	atomic_set(&bat_priv->mesh_state, BATADV_MESH_DEACTIVATING);
- 
- 	batadv_purge_outstanding_packets(bat_priv, NULL);
-+	batadv_tp_stop_all(bat_priv);
- 
- 	batadv_gw_node_free(bat_priv);
- 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 7f3dd3c393e0..8f7786d33f5f 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -12,6 +12,7 @@
- #include <linux/byteorder/generic.h>
- #include <linux/cache.h>
- #include <linux/compiler.h>
-+#include <linux/completion.h>
- #include <linux/container_of.h>
- #include <linux/err.h>
- #include <linux/etherdevice.h>
-@@ -365,23 +366,38 @@ static void batadv_tp_vars_put(struct batadv_tp_vars *tp_vars)
- }
- 
- /**
-- * batadv_tp_sender_cleanup() - cleanup sender data and drop and timer
-- * @bat_priv: the bat priv with all the soft interface information
-- * @tp_vars: the private data of the current TP meter session to cleanup
-+ * batadv_tp_list_detach() - remove tp session from mesh session list once
-+ * @tp_vars: the private data of the current TP meter session
-  */
--static void batadv_tp_sender_cleanup(struct batadv_priv *bat_priv,
--				     struct batadv_tp_vars *tp_vars)
-+static void batadv_tp_list_detach(struct batadv_tp_vars *tp_vars)
- {
--	cancel_delayed_work(&tp_vars->finish_work);
-+	bool detached = false;
- 
- 	spin_lock_bh(&tp_vars->bat_priv->tp_list_lock);
--	hlist_del_rcu(&tp_vars->list);
-+	if (!hlist_unhashed(&tp_vars->list)) {
-+		hlist_del_init_rcu(&tp_vars->list);
-+		detached = true;
-+	}
- 	spin_unlock_bh(&tp_vars->bat_priv->tp_list_lock);
- 
-+	if (!detached)
-+		return;
-+
-+	atomic_dec(&tp_vars->bat_priv->tp_num);
-+
- 	/* drop list reference */
- 	batadv_tp_vars_put(tp_vars);
-+}
- 
--	atomic_dec(&tp_vars->bat_priv->tp_num);
-+/**
-+ * batadv_tp_sender_cleanup() - cleanup sender data and drop and timer
-+ * @tp_vars: the private data of the current TP meter session to cleanup
-+ */
-+static void batadv_tp_sender_cleanup(struct batadv_tp_vars *tp_vars)
-+{
-+	cancel_delayed_work_sync(&tp_vars->finish_work);
-+
-+	batadv_tp_list_detach(tp_vars);
- 
- 	/* kill the timer and remove its reference */
- 	del_timer_sync(&tp_vars->timer);
-@@ -886,7 +902,8 @@ static int batadv_tp_send(void *arg)
- 	batadv_orig_node_put(orig_node);
- 
- 	batadv_tp_sender_end(bat_priv, tp_vars);
--	batadv_tp_sender_cleanup(bat_priv, tp_vars);
-+	batadv_tp_sender_cleanup(tp_vars);
-+	complete(&tp_vars->finished);
- 
- 	batadv_tp_vars_put(tp_vars);
- 
-@@ -918,7 +935,8 @@ static void batadv_tp_start_kthread(struct batadv_tp_vars *tp_vars)
- 		batadv_tp_vars_put(tp_vars);
- 
- 		/* cleanup of failed tp meter variables */
--		batadv_tp_sender_cleanup(bat_priv, tp_vars);
-+		batadv_tp_sender_cleanup(tp_vars);
-+		complete(&tp_vars->finished);
- 		return;
- 	}
- 
-@@ -1017,6 +1035,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 	tp_vars->start_time = jiffies;
- 
- 	init_waitqueue_head(&tp_vars->more_bytes);
-+	init_completion(&tp_vars->finished);
- 
- 	spin_lock_init(&tp_vars->unacked_lock);
- 	INIT_LIST_HEAD(&tp_vars->unacked_list);
-@@ -1119,14 +1138,7 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
- 		   "Shutting down for inactivity (more than %dms) from %pM\n",
- 		   BATADV_TP_RECV_TIMEOUT, tp_vars->other_end);
- 
--	spin_lock_bh(&tp_vars->bat_priv->tp_list_lock);
--	hlist_del_rcu(&tp_vars->list);
--	spin_unlock_bh(&tp_vars->bat_priv->tp_list_lock);
--
--	/* drop list reference */
--	batadv_tp_vars_put(tp_vars);
--
--	atomic_dec(&bat_priv->tp_num);
-+	batadv_tp_list_detach(tp_vars);
- 
- 	spin_lock_bh(&tp_vars->unacked_lock);
- 	list_for_each_entry_safe(un, safe, &tp_vars->unacked_list, list) {
-@@ -1481,6 +1493,52 @@ void batadv_tp_meter_recv(struct batadv_priv *bat_priv, struct sk_buff *skb)
- 	consume_skb(skb);
- }
- 
-+/**
-+ * batadv_tp_stop_all() - stop all currently running tp meter sessions
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ */
-+void batadv_tp_stop_all(struct batadv_priv *bat_priv)
-+{
-+	struct batadv_tp_vars *tp_vars[BATADV_TP_MAX_NUM];
-+	struct batadv_tp_vars *tp_var;
-+	size_t count = 0;
-+	size_t i;
-+
-+	spin_lock_bh(&bat_priv->tp_list_lock);
-+	hlist_for_each_entry(tp_var, &bat_priv->tp_list, list) {
-+		if (WARN_ON_ONCE(count >= BATADV_TP_MAX_NUM))
-+			break;
-+
-+		if (!kref_get_unless_zero(&tp_var->refcount))
-+			continue;
-+
-+		tp_vars[count++] = tp_var;
-+	}
-+	spin_unlock_bh(&bat_priv->tp_list_lock);
-+
-+	for (i = 0; i < count; i++) {
-+		tp_var = tp_vars[i];
-+
-+		switch (tp_var->role) {
-+		case BATADV_TP_SENDER:
-+			batadv_tp_sender_shutdown(tp_var,
-+						  BATADV_TP_REASON_CANCEL);
-+			wake_up(&tp_var->more_bytes);
-+			wait_for_completion(&tp_var->finished);
-+			break;
-+		case BATADV_TP_RECEIVER:
-+			batadv_tp_list_detach(tp_var);
-+			if (timer_shutdown_sync(&tp_var->timer))
-+				batadv_tp_vars_put(tp_var);
-+			break;
-+		}
-+
-+		batadv_tp_vars_put(tp_var);
-+	}
-+
-+	synchronize_net();
-+}
-+
- /**
-  * batadv_tp_meter_init() - initialize global tp_meter structures
-  */
-diff --git a/net/batman-adv/tp_meter.h b/net/batman-adv/tp_meter.h
-index f0046d366eac..4e97cd10cd02 100644
---- a/net/batman-adv/tp_meter.h
-+++ b/net/batman-adv/tp_meter.h
-@@ -17,6 +17,7 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 		     u32 test_length, u32 *cookie);
- void batadv_tp_stop(struct batadv_priv *bat_priv, const u8 *dst,
- 		    u8 return_value);
-+void batadv_tp_stop_all(struct batadv_priv *bat_priv);
- void batadv_tp_meter_recv(struct batadv_priv *bat_priv, struct sk_buff *skb);
- 
- #endif /* _NET_BATMAN_ADV_TP_METER_H_ */
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 6f30afaabfdf..f5a57c5f7ffa 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -14,6 +14,7 @@
- #include <linux/average.h>
- #include <linux/bitops.h>
- #include <linux/compiler.h>
-+#include <linux/completion.h>
- #include <linux/if.h>
- #include <linux/if_ether.h>
- #include <linux/kref.h>
-@@ -1396,6 +1397,9 @@ struct batadv_tp_vars {
- 	/** @finish_work: work item for the finishing procedure */
- 	struct delayed_work finish_work;
- 
-+	/** @finished: completion signaled when a sender thread exits */
-+	struct completion finished;
-+
- 	/** @test_length: test length in milliseconds */
- 	u32 test_length;
- 
--- 
-2.47.3
+a) The daemon dies - that is what I had written the function for
+b) When one calls
+
+With reduced rings queues we would actually need to have per queue refs
+and if a single queue reaches 0, it would need to re-calculate the
+queue. In general this gets complex and from my point of view, if
+fuse-server wants to re-initialize queues, fuse-server should:
+
+a) wake up the ring thread with an eventfd (libfuse already has that)
+b) we need a reconfig SQE (like FUSE_IO_URING_CMD_RECONFIG) that
+requests to re-configure things
+
+Right now that is all not supported, from my point of view we should
+call fuse_abort_conn() when we call into fuse_uring_cancel()
+
+
+Thanks,
+Bernd
+
+>  
+> diff --git a/fs/fuse/dev_uring_i.h b/fs/fuse/dev_uring_i.h
+> index 368f4d0790eb..22ec67e39ee0 100644
+> --- a/fs/fuse/dev_uring_i.h
+> +++ b/fs/fuse/dev_uring_i.h
+> @@ -150,10 +150,10 @@ static inline void fuse_uring_abort(struct fuse_chan *fch)
+>  	if (ring == NULL)
+>  		return;
+>  
+> -	if (atomic_read(&ring->queue_refs) > 0) {
+> -		fuse_uring_abort_end_requests(ring);
+> +	fuse_uring_abort_end_requests(ring);
+> +
+> +	if (atomic_read(&ring->queue_refs) > 0)
+>  		fuse_uring_stop_queues(ring);
+> -	}
+>  }
+>  
+>  static inline void fuse_uring_wait_stopped_queues(struct fuse_chan *fch)
 
 
