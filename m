@@ -1,73 +1,73 @@
-Return-Path: <stable+bounces-247645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247646-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAiCGDb7Bmp6qQIAu9opvQ
-	(envelope-from <stable+bounces-247645-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:53:42 +0200
+	id cETiIiz3BmpUpwIAu9opvQ
+	(envelope-from <stable+bounces-247646-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:36:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D5554DCD6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:53:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF89754D74B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:36:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7744C30C198D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:19:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A9008308489B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 10:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A7A3CD8C2;
-	Fri, 15 May 2026 10:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBCC3CB8F4;
+	Fri, 15 May 2026 10:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b="K4k75gnS";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SO9xh5+r"
+	dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b="fRHvirMn";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="uqOZ2T2f"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AD73AB284
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 10:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D22B329396
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 10:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778840361; cv=none; b=fzHLcAOu9MvPxx9snn9rWsW5dVyP7a5Ym5WrTbU+Q7uvDuQzol87aOyulSZqPxq7y7iyqrvRs7ASffc9l2t3NGdrwff5BlpwqS6y5BfFmhzCWZa2wkRopAFMiCrjBITFdNcxUbjZGEQos8h7luI21KXtJmNq+ocibGpdpQ9eIy8=
+	t=1778840408; cv=none; b=FVaezyqda38mBDoCnmhtz7I1ecQ3c73wZQEARpHd7+HzMeZJN6I1GYvUrAWtpjHSnOsaswcUguhm1blwXSiNvDfB0ljHhmRMI50y37BG0cU80WgdCrGmPcoc/Jui/a7NwyKUPXbsmqX6l6UZ6jJJwmH+FbocT/7iEk2FSvAcaP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778840361; c=relaxed/simple;
+	s=arc-20240116; t=1778840408; c=relaxed/simple;
 	bh=OBSPvXaRrxrfrhsTs64tbVj8zcTZcTiu3rvbp295l6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0PDmhfaLij4J8HrrWezBEXwTL+sYoLSu0EK5+J8oOLkEm6MLhfkFZxIrvOB/Htt5dqW4JgsQo5+IB6J6mGlY4h6zzX/Q31ul2kmeyBfSBrP9IpFEiCIsG9uPf6/iF1Zt7KRH+HaPuaTZVkCxAy2hvpM3ZZTGT3NihE1l7tFjiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz; spf=pass smtp.mailfrom=fourdim.xyz; dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b=K4k75gnS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SO9xh5+r; arc=none smtp.client-ip=103.168.172.144
+	 MIME-Version; b=FDhEDOVfvgMYA7VlI+x/mnzCourAFERF/z/bzJuO7X7s7NWn4HDhIxapMSpeTvxewyYGXOtg4uDntd+SgruRavnb3POz1cZfbkcVEYRW94F4Aw04jxXMejPguU9MjgATTbPCMrYACxgw3K9SBAYHGiwC0mLPC5RqwUek4QMJUoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz; spf=pass smtp.mailfrom=fourdim.xyz; dkim=pass (2048-bit key) header.d=fourdim.xyz header.i=@fourdim.xyz header.b=fRHvirMn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=uqOZ2T2f; arc=none smtp.client-ip=103.168.172.156
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fourdim.xyz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fourdim.xyz
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.phl.internal (Postfix) with ESMTP id E1823EC0175;
-	Fri, 15 May 2026 06:19:19 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Fri, 15 May 2026 06:19:19 -0400
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id B7C3D1400138;
+	Fri, 15 May 2026 06:20:05 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Fri, 15 May 2026 06:20:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fourdim.xyz; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1778840359; x=
-	1778926759; bh=eUTO1sFEDceL9NhbMHZwWw3LJofuPGNfLgpavY59mn4=; b=K
-	4k75gnSuG+eMPEfRezOSpkUCnH78I4d3G0G+SaZbgwlwBnnczT6BRh+4W9tsezVr
-	KeTcJxRONlxKh8WJMOOMmq6XbPhSQr8bzUEz9ykeMb6NjohXJfKWBXTOwYd0z8YO
-	N30c7lJdEv+En8TbD1PQR15iQNkN21zgL2oBCe0NM7hYieqvZxIpn9puZqmCSLkV
-	2dTK9qCf/4Z344u8ygqPM1N7wQ4sieeHhtVpCTGJtJyt7KbidnaaOtljlufhVzhs
-	euTNTg0qcUnHxfG8ybi/hEZCAKKEv6N0Ha/Os2cbWSZpih6F5jKJZonKRXUDJAHt
-	EshLWVDWZ62V9ndFG48tw==
+	:reply-to:subject:subject:to:to; s=fm2; t=1778840405; x=
+	1778926805; bh=eUTO1sFEDceL9NhbMHZwWw3LJofuPGNfLgpavY59mn4=; b=f
+	RHvirMnQP6141sQ6ATLQaZ+AGA8Y7muPoc6RQdh1lsN90a1/fPR6D6wfqn0rQVyJ
+	bDRiNfdOSsLBleyWwLpYdd7o2Z5hNNaaiHMR04uK5JS11LGCZq55U1qgLL/J9Oy7
+	MknSo8FqMr8rjkYx+e5cIe6eyniiVGeTcWDJ7jIE6ajrBwmWOzE33EerYn7s4xtV
+	i4R20evFENk11eYo1Id/pdLJyBpaNWrl+4wq6yC1icB9V1ZmN/WXhQlVreftOGEX
+	7VqYxWdaM16/M/f7ojBtpqmKqCWeIGCevevoNzmUJkKgVHHMWwSXsBSeovovhEDh
+	r2YeNHWU7yuyQqP9wAVdA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1778840359; x=1778926759; bh=e
-	UTO1sFEDceL9NhbMHZwWw3LJofuPGNfLgpavY59mn4=; b=SO9xh5+r8V7qzn3Ys
-	tw/uh/wpZ0SNmTj/Bmjc0HJc7Qvki4QBI8LJT3hE3fV5Gt4ON6L8VQOh8vXrv/HI
-	SzsdgcdBYlIqG5TyU2PX8rM7mrW3Utq6jGVN1bfhYVXNnq1BvHkWEtD1/WNuWeib
-	DZJJ2U85wNZgWOhokeWTCI69D3XX/q97FDr/SRcJ3sFLmJ8uvCSngFwBMvKqzLSR
-	kGh6VBkFl+oCnRsHaUp79/AWCXP+wtgCfS+kTHZ2kouLw9S7p1XMAFQToPIYX7H8
-	bewu3JHG+k4Ndv+Q7GR38S0dgNRvGZugdZ/44NlvuQGxXuY2q2h+qA+jgLTljy44
-	CBCrA==
-X-ME-Sender: <xms:J_MGakOIlSUEdUrMzWiqlpTcyfkXPionmaWu2liqKWmTz9O-TVPgSw>
-    <xme:J_MGaiYurcIY7WAH5ePAFb15xlear5lc53vk_ECMnzFzsRczB3EuMvcSnvhUxlhqb
-    0crBk5tEWdy2q21fk8Qu6I49ag-we2roDZ4CvAPALJGuOc2tffEEyU>
-X-ME-Received: <xmr:J_MGaorSuC5OOyE1m4BNIALi4V3xzcSM50iemyKsxkrwNBgd-0A9wDm9DJaQmOpxibbxK18>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1778840405; x=1778926805; bh=e
+	UTO1sFEDceL9NhbMHZwWw3LJofuPGNfLgpavY59mn4=; b=uqOZ2T2fy/ZnKKD7P
+	tiGvp2/rv6Qo6WtRfC+VMuCmXdRPVjv6xuxqpHKIhqcJ5IBvgYLOa+eRhZ6NtQJm
+	mtTYKlX41eCgMpYn2VrBqSYi5FQasRQ2jHiANlSqnJIbon9cPgHDJMkj7JW2ydcV
+	xHEutddob9PWXNIfBvtZLy0kBrtciMzY/KyYnyQ3Vd6BXxWbzgC+FpDlJcuL6qXk
+	Uq6+gTUGJraveyMDQhafRKnP0FPUwvxlF2WOBYYkmoRRG6bjcAUhmfCs4b3lAIWO
+	oSfLLpN2vvDhzDBZpV/wIZgx0v79AaKVr4UcRtUjRDcvs8Ee3ME0jUKH1rfLgvA7
+	2BXAA==
+X-ME-Sender: <xms:VfMGag_dBzzan7E1w8JdzHECAsSguhmSoGphf7ez0Y4lthoqO60oFg>
+    <xme:VfMGagKRmh3mvtYRWGU3lG_j286ZEzrO56gBtgWyk3n7UzvKXgonPULtdQDKtmomZ
+    CAKIeTi-cSADRHfgoQgIZ_VKSIjQzBNKd7SSNNlMXlbbfVuIEZfmA>
+X-ME-Received: <xmr:VfMGajaSbReZCCDIbaLNoWhMo2RySIXhRveoLEtwYo7t8HuVMLZyC_VCa4N-v-a6xB-7uak>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufedtudegucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegfrh
@@ -79,24 +79,24 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufedtudegucetufdote
     mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrh
     hnvghlrdhorhhgpdhrtghpthhtohepohhsshesfhhouhhrughimhdrgiihiidprhgtphht
     thhopehluhhiiidrvhhonhdruggvnhhtiiesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:J_MGamYk3J0F3KNq3URajsa0UcjBKi9DpoiiTSl1PjPlIY_yncdhHg>
-    <xmx:J_MGagSf2GuRiq12JThB7PS3p-vbz1bLweDYCTOM-VsC_1iL3wwNyw>
-    <xmx:J_MGat7NWqTnfuh0fuHvVIJ-AR7DFnjdZSkV36b5FzGDa95KDKHEPQ>
-    <xmx:J_MGalwlGko7oHgYtJGwN8ISbCC7n5mdgdcgEvsMmGxND9G5lJvQ3A>
-    <xmx:J_MGajK4p4oxgHmE4C6XknuNPmU3VopBACJmF_HifU3tIPTeB5MaKEI5>
+X-ME-Proxy: <xmx:VfMGaqJIlvFcWDCxNYOOSyJJEMIaitlrhTZtNZE1OBejImTM4nY60A>
+    <xmx:VfMGapD09739iENimdfLKLw0xwzR-MAvQRDLWMNfQjRcoiAGv8purg>
+    <xmx:VfMGanoCngeS_BS2IWE0ByqkF3-40D3dueOVggYj-tl-obywirl4ug>
+    <xmx:VfMGasizy7Yz-xH5N7aNNGPrF2-1nUahV8b-JjyEty5-1MjbPyhDBA>
+    <xmx:VfMGao54gKZbvjy8eA9u-Hql2O2OUnr6rucJs05y_crfxpfHDgLJ_QOv>
 Feedback-ID: if72e4b10:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 15 May 2026 06:19:19 -0400 (EDT)
+ 15 May 2026 06:20:04 -0400 (EDT)
 From: Siwei Zhang <oss@fourdim.xyz>
 To: stable@vger.kernel.org
 Cc: Siwei Zhang <oss@fourdim.xyz>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10.y] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_get_sndtimeo_cb()
-Date: Fri, 15 May 2026 06:19:40 -0400
-Message-ID: <20260515101943.3694443-1-oss@fourdim.xyz>
+Subject: [PATCH 5.15.y] Bluetooth: L2CAP: Fix null-ptr-deref in l2cap_sock_get_sndtimeo_cb()
+Date: Fri, 15 May 2026 06:20:19 -0400
+Message-ID: <20260515102024.3694989-1-oss@fourdim.xyz>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <2026051217-erasure-slick-6fb7@gregkh>
-References: <2026051217-erasure-slick-6fb7@gregkh>
+In-Reply-To: <2026051217-footing-cement-0817@gregkh>
+References: <2026051217-footing-cement-0817@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,25 +104,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 64D5554DCD6
+X-Rspamd-Queue-Id: CF89754D74B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[fourdim.xyz,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[fourdim.xyz:s=fm2,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[fourdim.xyz:+,messagingengine.com:+];
-	TAGGED_FROM(0.00)[bounces-247645-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247646-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[fourdim.xyz:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[oss@fourdim.xyz,stable@vger.kernel.org];
