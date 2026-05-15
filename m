@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-247930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DssKvJpB2pA2QIAu9opvQ
-	(envelope-from <stable+bounces-247930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:46:10 +0200
+	id 5pb/MrxnB2ol2AIAu9opvQ
+	(envelope-from <stable+bounces-247941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:36:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A8355675F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:46:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F48556572
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 04F163034552
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3909431674E2
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0933175A87;
-	Fri, 15 May 2026 15:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F99E2DC334;
+	Fri, 15 May 2026 15:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dspXKMf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SO4WEl1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936DB3FF1D1;
-	Fri, 15 May 2026 15:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FD23FF1DD;
+	Fri, 15 May 2026 15:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860438; cv=none; b=bZsrvdLaH746D8ZhPfH0U/DSmG4ZHD4zDAFdYBM0KZG05M7vucQJJyLajrYVo1rtKP1F/pOGvdhxCZ4F7SjApYnHNj+1xPa4yDdRrk4DnxQDe6wYixfNjwZkoGgEgRYhHYKGdY4avRah2pobt5shqvqgCosWp9zZhe16Hg73KS8=
+	t=1778860467; cv=none; b=B/oLZOXb0SZNzHWWHBbgdairM9yTKHHlZaRo0rWUwDFVzkzn6eOh3K8pM9V4vIBroutxG2cK8lpQLc/ECS0qwg3+fIgvlnduaIXpx/qwr2c3VB8uMOYNpru9WtQ94TmjFG3gTQFnG6ZgZBylg6wLfgPV2GX7xU5XgK2kREHhBv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860438; c=relaxed/simple;
-	bh=HGK17HdZ+M7BclXyz7EiuRJ4lhdMDuPshr8Q9lwzdmM=;
+	s=arc-20240116; t=1778860467; c=relaxed/simple;
+	bh=TAT8u8GG4xnpUAHzRjiCXdmJ4jduDZo3ZQGGcrDth6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mObXttKiHyI8xdE1vIHZSU+bQuifAdX6LzFbBP8k+A+kqW0911eW536+rdDLIplHmvkEUAu9DYGVdf3dIdeOu7uYbP5vhF6581+4SYPoVLyb3p16DPBqG4C9C3DvdBLeaT+2wm+vjVDuyqT/EoE+1DL6T54e5uH43hr8k8RnBrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dspXKMf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C36C2BCB3;
-	Fri, 15 May 2026 15:53:57 +0000 (UTC)
+	 MIME-Version; b=OPxqZd1yzJqCpPnP65+o1bQnrwZxu/Ib2l4Vg+63vH6L5wIfcUXwIyrlSEG6C7fSn6a73lHjrZqL3rRW5+FjmAprQvIr/+d2Fvt94+1txRpmdd1FxNPSRbPMitk2K+5PRCshya6PR51kFHGxnGQkMTAOInFAi738DZuTlZNVZdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SO4WEl1s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764BAC2BCB0;
+	Fri, 15 May 2026 15:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860438;
-	bh=HGK17HdZ+M7BclXyz7EiuRJ4lhdMDuPshr8Q9lwzdmM=;
+	s=korg; t=1778860466;
+	bh=TAT8u8GG4xnpUAHzRjiCXdmJ4jduDZo3ZQGGcrDth6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dspXKMf+4xUyxQDLtEgLCa+AWq5dndxDl3CZWexRRvwiFZ1bRCh6+EMeUjdUB0Q2Q
-	 dqCpB+SH/ETWJ3EOWgqR3Q86gFA7VDYAJthoYsCxbJr8oPBJ9nzKyRcpOjcyWbHm4H
-	 jSp2nQnVITBdoOtueRaY/Xf85jeyOguY1LZQqwK4=
+	b=SO4WEl1sqC3XWlMb86EXhbFG+zQrzesCeourObhsZ+tF54QJaomQO772DByiMAdHJ
+	 ICvawIYgeRsVaKEHtqJTKy3aEFSBAjb2F4x6slYvgrmxNvIqwA8tgnQR7JzfCTgyXX
+	 EUL7pGb7mOl36TGqNdVYqts58BDQ+7ItF+3LwLj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
+	Harini Katakam <harinik@xilinx.com>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 062/144] spi: mpc52xx: fix use-after-free on unbind
-Date: Fri, 15 May 2026 17:48:08 +0200
-Message-ID: <20260515154654.986102192@linuxfoundation.org>
+Subject: [PATCH 6.12 063/144] spi: cadence: fix controller deregistration
+Date: Fri, 15 May 2026 17:48:09 +0200
+Message-ID: <20260515154655.007976043@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
 References: <20260515154653.469907118@linuxfoundation.org>
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 00A8355675F
+X-Rspamd-Queue-Id: 30F48556572
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247930-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247941-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,xilinx.com:email]
 X-Rspamd-Action: no action
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
@@ -101,38 +101,44 @@ X-Rspamd-Action: no action
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 706b3dc2ac7a998c55e14b3fd2e8f934c367e6e0 upstream.
+commit 666fa7e9ca98e71c880086ca24147ae843f1ed6e upstream.
 
-The state machine work is scheduled by the interrupt handler and
-therefore needs to be cancelled after disabling interrupts to avoid a
-potential use-after-free.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Fixes: 984836621aad ("spi: mpc52xx: Add cancel_work_sync before module remove")
-Cc: stable@vger.kernel.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
+Fixes: c474b3866546 ("spi: Add driver for Cadence SPI controller")
+Cc: stable@vger.kernel.org	# 3.16
+Cc: Harini Katakam <harinik@xilinx.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260414134319.978196-5-johan@kernel.org
+Link: https://patch.msgid.link/20260414134319.978196-2-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mpc52xx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -525,10 +525,11 @@ static void mpc52xx_spi_remove(struct pl
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -699,6 +699,10 @@ static void cdns_spi_remove(struct platf
+ 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+ 	struct cdns_spi *xspi = spi_controller_get_devdata(ctlr);
  
- 	spi_unregister_controller(host);
- 
--	cancel_work_sync(&ms->work);
- 	free_irq(ms->irq0, ms);
- 	free_irq(ms->irq1, ms);
- 
-+	cancel_work_sync(&ms->work);
++	spi_controller_get(ctlr);
 +
- 	for (i = 0; i < ms->gpio_cs_count; i++)
- 		gpiod_put(ms->gpio_cs[i]);
++	spi_unregister_controller(ctlr);
++
+ 	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
  
+ 	if (!spi_controller_is_target(ctlr)) {
+@@ -706,7 +710,7 @@ static void cdns_spi_remove(struct platf
+ 		pm_runtime_set_suspended(&pdev->dev);
+ 	}
+ 
+-	spi_unregister_controller(ctlr);
++	spi_controller_put(ctlr);
+ }
+ 
+ /**
 
 
 
