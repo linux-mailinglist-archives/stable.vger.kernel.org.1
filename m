@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-248741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248423-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6B/pCS1aB2orzwIAu9opvQ
-	(envelope-from <stable+bounces-248741-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:53 +0200
+	id sHg2ChROB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248423-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC0F5555E0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF8D553E9C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D70C33AFB53
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF9C0328BBBF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF634BCADB;
-	Fri, 15 May 2026 16:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C34B3E009B;
+	Fri, 15 May 2026 16:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ND79NdKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gF68OBOG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B364BCACA;
-	Fri, 15 May 2026 16:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E46E3BFE4C;
+	Fri, 15 May 2026 16:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862511; cv=none; b=bzI2gi2R7lPeHOhdm8HOXicpeJoZD3qqTINNY1eraoRhVDt1SodWAesnsYt3MgfrAmiw8SSTb1IyQq+g1tq24V97KzHI3B5MQ8IrLwbp/AGe7gm1yOULG4peHNC4KMmq+19Gev14mW6ZzJ3eTPwJc1M/ABh1uHrnMf97IiAho8M=
+	t=1778861694; cv=none; b=dE28o5DBH0wWyADsPkckLmCgYmkxQrIskL1DpOLH78Smh90IppIkgo561NioOTmnicYIcYfwWcEw82/Hw2iQt/VoN1QkARfrZfcnZlKGKTCaiYv/u9pvgWb8T/W5yHSawNYQcjsbzjt/txugS0QEkKp4Uc6KZI8L0LLthVdCUfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862511; c=relaxed/simple;
-	bh=yB2P4og3bowYBgDIYfVbDfFM6fdTEbErbQwq6axeks0=;
+	s=arc-20240116; t=1778861694; c=relaxed/simple;
+	bh=WfkakbwekN0JKu4a7OQ3gOVTjrv81kTmJFeQioPFfPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQnhorUcXO2w6TkTaUCuMkikAiEy2yhdRP5Uhw/r/TnMlbeiGHQFQw3mX0y4MZNPKRzRMOowXAfxT2Myp/aPH6lKrCU993SNscF80tDrLq5vEoxVRPCeCRvemcIZcvnovAAGyHupKbylCcXyYGKjUmnA2SlvmyzZOJ6Ma8sPozo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ND79NdKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E450C2BCB3;
-	Fri, 15 May 2026 16:28:30 +0000 (UTC)
+	 MIME-Version; b=H2gafJbWKpPeR9vooSBGDZdcHNUZggPXcEfNCUrW8uisrdC/P7uI70t1Z8JB0/gSYz97WQeRm2JG2ayh/YvF+s05YsV8KWX/Ko5XzSAgDh53tsVy77NZlv3fvSUzQvstjr9CgvXC8MNCTMpWwbqqxh3WUmCAZ2qxKAoQhsTMHak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gF68OBOG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BE3C2BCB0;
+	Fri, 15 May 2026 16:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862510;
-	bh=yB2P4og3bowYBgDIYfVbDfFM6fdTEbErbQwq6axeks0=;
+	s=korg; t=1778861693;
+	bh=WfkakbwekN0JKu4a7OQ3gOVTjrv81kTmJFeQioPFfPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ND79NdKwDlMX5sGScvraWVXDiZQqTLc9NeL8YAtJLa/+5MbnAfTmJYorSu7z2uSJB
-	 VeYFHRfUv3nItZcJGPCSkmAkgg81QS1DkFaHv/Gkz8fB5/z2E8dTCXQG6U48EFbVFl
-	 qb3SK0AIRmcJdyspT0+PyjRncI/aVJkuJLnz961w=
+	b=gF68OBOG7VHU4yo31dQkExtxfHycSsKKflkvvY0crwJOmLMdmw4m1hyUu43BlOfk0
+	 B1gLd4J+k1cRaN3f3YEAzf0KjL9eY9G00g0wPWPlq51NkGRn+IfhSy1/Oupymvsb31
+	 feqFlAzsDCSyItUrcuahEW5TO+rqy40bMxFVr8/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 075/201] media: qcom: camss: Fix csid IRQ offset for sa8775p
-Date: Fri, 15 May 2026 17:48:13 +0200
-Message-ID: <20260515154700.159403585@linuxfoundation.org>
+	Naman Jain <namjain@linux.microsoft.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 385/474] block: relax pgmap check in bio_add_page for compatible zone device pages
+Date: Fri, 15 May 2026 17:48:14 +0200
+Message-ID: <20260515154723.368126709@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +65,150 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BCC0F5555E0
+X-Rspamd-Queue-Id: 8AF8D553E9C
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248741-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248423-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,qualcomm.com:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+From: Naman Jain <namjain@linux.microsoft.com>
 
-commit dd1b373941079cc102cc18bc68884e18245f5912 upstream.
+[ Upstream commit 41c665aae2b5dbecddddcc8ace344caf630cc7a4 ]
 
-Fix BUF_DONE_IRQ_STATUS_RDI_OFFSET calculation for csid lite on
-sa8775p platform. The offset should be 0 for csid lite on sa8775p,
+bio_add_page() and bio_integrity_add_page() reject pages from different
+dev_pagemaps entirely, returning 0 even when those pages have compatible
+DMA mapping requirements. This forces callers to start a new bio when
+buffers span pgmap boundaries, even though the pages could safely coexist
+as separate bvec entries.
 
-Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Fixes: ed03e99de0fa ("media: qcom: camss: Add support for CSID 690")
+This matters for guests where memory is registered through
+devm_memremap_pages() with MEMORY_DEVICE_GENERIC in multiple calls,
+creating separate dev_pagemaps for each chunk. When a direct I/O buffer
+spans two such chunks, bio_add_page() rejects the second page, forcing an
+unnecessary bio split or I/O failure.
+
+Introduce zone_device_pages_compatible() in blk.h to check whether two
+pages can coexist in the same bio as separate bvec entries. The block DMA
+iterator (blk_dma_map_iter_start) caches the P2PDMA mapping state from the
+first segment and applies it to all others, so P2PDMA pages from different
+pgmaps must not be mixed, and neither must P2PDMA and non-P2PDMA pages.
+All other combinations (MEMORY_DEVICE_GENERIC pages from different pgmaps,
+or MEMORY_DEVICE_GENERIC with normal RAM) use the same dma_map_phys path
+and are safe.
+
+Replace the blanket zone_device_pages_have_same_pgmap() rejection with
+zone_device_pages_compatible(), while keeping
+zone_device_pages_have_same_pgmap() as a merge guard.
+Pages from different pgmaps can be added as separate bvec entries but
+must not be coalesced into the same segment, as that would make
+it impossible to recover the correct pgmap via page_pgmap().
+
+Fixes: 49580e690755 ("block: add check when merging zone device pages")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20260410153414.4159050-3-namjain@linux.microsoft.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ restructured combined `if` into explicit `bv` block ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-csid-gen3.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ block/bio-integrity.c |    2 ++
+ block/bio.c           |   14 +++++++++-----
+ block/blk.h           |   19 +++++++++++++++++++
+ 3 files changed, 30 insertions(+), 5 deletions(-)
 
---- a/drivers/media/platform/qcom/camss/camss-csid-gen3.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid-gen3.c
-@@ -48,9 +48,9 @@
- #define IS_CSID_690(csid)	((csid->camss->res->version == CAMSS_8775P) \
- 				 || (csid->camss->res->version == CAMSS_8300))
- #define CSID_BUF_DONE_IRQ_STATUS	0x8C
--#define BUF_DONE_IRQ_STATUS_RDI_OFFSET  (csid_is_lite(csid) ?\
--						1 : (IS_CSID_690(csid) ?\
--						13 : 14))
-+#define BUF_DONE_IRQ_STATUS_RDI_OFFSET  (csid_is_lite(csid) ? \
-+						((IS_CSID_690(csid) ? 0 : 1)) : \
-+						((IS_CSID_690(csid) ? 13 : 14)))
- #define CSID_BUF_DONE_IRQ_MASK		0x90
- #define CSID_BUF_DONE_IRQ_CLEAR		0x94
- #define CSID_BUF_DONE_IRQ_SET		0x98
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -134,6 +134,8 @@ int bio_integrity_add_page(struct bio *b
+ 		struct bio_vec *bv = &bip->bip_vec[bip->bip_vcnt - 1];
+ 		bool same_page = false;
+ 
++		if (!zone_device_pages_compatible(bv->bv_page, page))
++			return 0;
+ 		if (bvec_try_merge_hw_page(q, bv, page, len, offset,
+ 					   &same_page)) {
+ 			bip->bip_iter.bi_size += len;
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1098,11 +1098,15 @@ int bio_add_page(struct bio *bio, struct
+ 	if (bio->bi_iter.bi_size > UINT_MAX - len)
+ 		return 0;
+ 
+-	if (bio->bi_vcnt > 0 &&
+-	    bvec_try_merge_page(&bio->bi_io_vec[bio->bi_vcnt - 1],
+-				page, len, offset, &same_page)) {
+-		bio->bi_iter.bi_size += len;
+-		return len;
++	if (bio->bi_vcnt > 0) {
++		struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
++
++		if (!zone_device_pages_compatible(bv->bv_page, page))
++			return 0;
++		if (bvec_try_merge_page(bv, page, len, offset, &same_page)) {
++			bio->bi_iter.bi_size += len;
++			return len;
++		}
+ 	}
+ 
+ 	if (bio->bi_vcnt >= bio->bi_max_vecs)
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -104,6 +104,25 @@ static inline bool biovec_phys_mergeable
+ 	return true;
+ }
+ 
++/*
++ * Check if two pages from potentially different zone device pgmaps can
++ * coexist as separate bvec entries in the same bio.
++ *
++ * The block DMA iterator (blk_dma_map_iter_start) caches the P2PDMA mapping
++ * state from the first segment and applies it to all subsequent segments, so
++ * P2PDMA pages from different pgmaps must not be mixed in the same bio.
++ *
++ * Other zone device types (FS_DAX, GENERIC) use the same dma_map_phys() path
++ * as normal RAM.  PRIVATE and COHERENT pages never appear in bios.
++ */
++static inline bool zone_device_pages_compatible(const struct page *a,
++						const struct page *b)
++{
++	if (is_pci_p2pdma_page(a) || is_pci_p2pdma_page(b))
++		return zone_device_pages_have_same_pgmap(a, b);
++	return true;
++}
++
+ static inline bool __bvec_gap_to_prev(const struct queue_limits *lim,
+ 		struct bio_vec *bprv, unsigned int offset)
+ {
 
 
 
