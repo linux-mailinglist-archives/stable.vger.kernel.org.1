@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LzaMj9EB2oCvAIAu9opvQ
-	(envelope-from <stable+bounces-247923-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:19 +0200
+	id 8I9rMgBYB2oozgIAu9opvQ
+	(envelope-from <stable+bounces-248565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481B5552A79
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ADBC5551AD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A360830B0193
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 662883247EED
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D537F305667;
-	Fri, 15 May 2026 15:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1B93C0607;
+	Fri, 15 May 2026 16:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snc87FyL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="foB15lPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95918282F1A;
-	Fri, 15 May 2026 15:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F60A3F58D7;
+	Fri, 15 May 2026 16:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860420; cv=none; b=qAMbjLuCpA2faD4WW19LvblOpNHd34XdwBk8TdI5Qv5sf7IpD2u49D5brvSuMh8FT8Dbb0tTtF+KOJY0ju/87j2eD5TZ/vAEq3MpWOW8aw8jzFQ47l+dmYfMpu2egW1UOedhqrWtMi9rWQodukemOGuXK7J/P/mM93DWIVSyWvk=
+	t=1778862056; cv=none; b=ER2zcNleL/YxJ25JKocw0qIfGWuaOOfai79m2MJal9nRJ5NEYJhM7cGKQ9D3ZBhsHz1ZMWJTM7IiAb9bh8Mr3dnXeJKIlpmW9sCZ8seEmXqTIDk/f93UKmMzdLptXRRuob+TQSyxkfXQXOJD1A6cVyKGItVeJ9RrJPnj7aVWFYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860420; c=relaxed/simple;
-	bh=WoF8dBhOsxgebnM7XdzphgansWI7K0vI7QxckTnekD0=;
+	s=arc-20240116; t=1778862056; c=relaxed/simple;
+	bh=QIFW6hJ0O6OamG3yf45z8llAXMaLN4rRR96X9Hys2xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QA5SCqPvhD/iqiIaKlDOInp+9BdnJWPZhgVFwpbJ1gmwfcVCXFGGQzksd8IYdOwxcGKULqZiaQc0aMjq0nrE5ZAPJzA8WCv+GlSL5R8jKkWhb4LUpgHHdsEd/TNdBMwR3T2OEmKbbf1Mn1LEiPt2uxj4USF/GcWUNe3JNPpjGJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snc87FyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3FFC2BCB0;
-	Fri, 15 May 2026 15:53:40 +0000 (UTC)
+	 MIME-Version; b=bsAeMIzleNqFHEEY+OlwF6nzlisqvmCOvkK3T9OcQYtbpHHrRO6PC41RkKxUqUBfl88T6PRXX4fMUClXGu7UFtQAlQHm58ls4NFuWcyNNRNVzfYZOD/4RX5W9qGJ+JEv1YcFNCrqukNujoWLngWrasNcTt6WwNYzrbZoM6BLlOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foB15lPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361A2C2BCB0;
+	Fri, 15 May 2026 16:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860420;
-	bh=WoF8dBhOsxgebnM7XdzphgansWI7K0vI7QxckTnekD0=;
+	s=korg; t=1778862056;
+	bh=QIFW6hJ0O6OamG3yf45z8llAXMaLN4rRR96X9Hys2xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snc87FyLLsb1ZycIQYCbxdiGFKJiwy7GXCROsIHHvuszrcYMKe41Ax3CTQrJe0KWb
-	 3MeX4NYTKsIPcMxuLt7e4E35NwQ+6Jp9Av7Q7lFPEK7qxuWHJy27/CGPz3FqPkkdhA
-	 kHX5iFnCyKhRtm544MSg6XB7jRU6BxncZrSW5Acg=
+	b=foB15lPr4JMnltJv3rlA4DtOzBTmTpENCyZEqHWx/3U3gw/TpYKz0QKjag8R202vV
+	 OyMsQ/S7Fiu1xqqzqq9LG2XRU15Q0Vo0hI7Q7hgCEvxLUX8/cCVpLrqk0GqWTSWRYa
+	 igDsp5OpCCvICuMc4jeO5rxQUY0YogLVMT1QsjVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.12 082/144] drm/xe/bo: Fix bo leak on unaligned size validation in xe_bo_init_locked()
+	Grant Likely <grant.likely@secretlab.ca>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 091/188] spi: mpc52xx: fix use-after-free on registration failure
 Date: Fri, 15 May 2026 17:48:28 +0200
-Message-ID: <20260515154655.426928030@linuxfoundation.org>
+Message-ID: <20260515154659.302610231@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 481B5552A79
+X-Rspamd-Queue-Id: 2ADBC5551AD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247923-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248565-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,51 +91,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,secretlab.ca:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 09a8f3c1c11977a6e10c167f26dd298790b31c32 upstream.
+commit f62c060272b9d7423b1650b844e8e4e7b8f9f925 upstream.
 
-When type is ttm_bo_type_device and aligned_size != size, the function
-returns an error without freeing a caller-provided bo, violating the
-documented contract that bo is freed on failure.
+Make sure to disable and free the interrupts in case controller
+registration fails to avoid a potential use-after-free and resource
+leak.
 
-Add xe_bo_free(bo) before returning the error.
+This issue was flagged by Sashiko when reviewing a controller
+deregistration fix.
 
-Fixes: 4e03b584143e ("drm/xe/uapi: Reject bo creation of unaligned size")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4.6
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260408175255.3402838-2-shuicheng.lin@intel.com
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-(cherry picked from commit 601c2aa087b6f21014300a3f107a08ee4dde7bdf)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 42bbb70980f3 ("powerpc/5200: Add mpc5200-spi (non-PSC) device driver")
+Cc: stable@vger.kernel.org	# 2.6.33
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Link: https://sashiko.dev/#/patchset/20260414134319.978196-1-johan%40kernel.org?part=3
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260421125800.1537361-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-mpc52xx.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -1334,8 +1334,10 @@ struct xe_bo *___xe_bo_create_locked(str
- 		alignment = SZ_4K >> PAGE_SHIFT;
- 	}
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -501,6 +501,9 @@ static int mpc52xx_spi_probe(struct plat
  
--	if (type == ttm_bo_type_device && aligned_size != size)
-+	if (type == ttm_bo_type_device && aligned_size != size) {
-+		xe_bo_free(bo);
- 		return ERR_PTR(-EINVAL);
-+	}
- 
- 	if (!bo) {
- 		bo = xe_bo_alloc();
+  err_register:
+ 	dev_err(&ms->host->dev, "initialization failed\n");
++	free_irq(ms->irq0, ms);
++	free_irq(ms->irq1, ms);
++	cancel_work_sync(&ms->work);
+  err_gpio:
+ 	while (i-- > 0)
+ 		gpiod_put(ms->gpio_cs[i]);
 
 
 
