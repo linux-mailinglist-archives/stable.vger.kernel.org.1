@@ -1,121 +1,162 @@
-Return-Path: <stable+bounces-247356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EI9GFqvBmrImgIAu9opvQ
-	(envelope-from <stable+bounces-247356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:30:02 +0200
+	id 2IthJq+vBmrImgIAu9opvQ
+	(envelope-from <stable+bounces-247359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:31:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F2F5498D3
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:30:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 135575498FE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 07:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B3BDF30219AC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 05:30:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0A753051AB8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 05:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0533333893D;
-	Fri, 15 May 2026 05:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611F1346E78;
+	Fri, 15 May 2026 05:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="5znACS2i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8orYLTU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566172773C3
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 05:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778822997; cv=none; b=XDJb5VPK15yp6s1d+b6COC+ktqr7MYw7Dms6W93fwY61DubNifWzk9Y6tMOXdg4S1U6UCwXl4pva7XVNuBMpFf5BkLcPWiWRDByjebEXwj0YqnbIqvPIT/PDAqHzu0+3l9ZCxB44oZn72BNKMbN5zkqtbFF6m4i3rBHIiQPyI4E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778822997; c=relaxed/simple;
-	bh=5QBKM7gsl9HnnVZ9ndHvviXb+hikBiR6z0o719FuAiM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nu7MHZyICe2TtDogzvNOPCkcX2giRpZ3aNoCAB9rHyTa6HeqQtfkVt/qrEhoEDxbuCIRw+VmEhOgxcwEn1HIw9Ouwdz4aT4WP7O7NK5mDLD6yw/ZAbUvAiyTfjohfm8JQoAj7nM7mrl8+OdKzr29Jy9iVKgqh/8W9YZo1UJkyb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=5znACS2i; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 5EA371C3CD6;
-	Fri, 15 May 2026 07:29:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1778822988;
-	bh=5QBKM7gsl9HnnVZ9ndHvviXb+hikBiR6z0o719FuAiM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=5znACS2iT2zYHYtRWAsoErcu4zenVdtJPmZyw4cQX0wFbLuZVMgCIL1yfZyOT+5RO
-	 H8prQxV3Nl0rKFfoNQONUL2/LmX4grU/RXUW+TvpEU3uAGxRmA5nfA5sWqhGKBGS+e
-	 Rv9ojbM46GPfwvpKHv1y+vDKUuoCg52EYjyrynWQI8qoC8b4aGVpkrXP2CUETP6GO0
-	 klrUsVHRheSCU/2+eHkeYEsGbEp09sL5ZyTfPqSXkhxNHyxoxz3qA8Afp9o1vcb19l
-	 2GdbYKwjMBGNBXalSk0lzy8472Rpn2DF4xbkJjW/Ll5pyHTWinV8Aqzee/ZdNNC9IG
-	 rwK7V1ILsANpw==
-Date: Fri, 15 May 2026 07:29:47 +0200
-From: Joerg Roedel <joro@8bytes.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: iommu@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>, 
-	Will Deacon <will@kernel.org>, Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joerg.roedel@amd.com>, 
-	Josua Mayer <josua@solid-run.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, patches@lists.linux.dev, Pranjal Shrivastava <praan@google.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Mostafa Saleh <smostafa@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH rc 0/5] Fix some iommupt mistakes from Sashiko
-Message-ID: <as2elpzwtlir6zqvgs2f3ahd4fmg4owdquldeiy4fufrxvp36q@yji7xglqxcjm>
-References: <0-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2473533893D
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 05:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778823053; cv=none; b=BdAHxD5ee8H4OwrMcuGPQnDaFMjr9L59jUNPVNDS+9zNMuFqkziXKNJrSdKDk7vDYNUT21gnX2KsQkwatk532cCAOCJfRSi05pPoM3ZH0wqXjqhg3GNbnovB0SBxcXvjIdVwzMO3dZYSvCXWFM8IYoErbHdDNtz+kO98z7b/tns=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778823053; c=relaxed/simple;
+	bh=xqu5cOuG+CL4cnXPdCts91hQBmzNEw/xXhRYbeuFk8g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=j9ZhRcBLZCQwOk1NF9Ay+v+9987fpjVHaZPuRu/MpVtKiVcl8HkDdkwQgHGU5gWg8imxSjqFN06LI2wYX3n9qaWpBAxatJ9+ezHWYh0SHIKG1/wuuUJ3fWzm70+aPgRLUSiTygQ4TUHGcQqT1FTylgRITp5BaYdx5PUvZOMJpvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8orYLTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BF2C2BCB0;
+	Fri, 15 May 2026 05:30:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778823052;
+	bh=xqu5cOuG+CL4cnXPdCts91hQBmzNEw/xXhRYbeuFk8g=;
+	h=Subject:To:Cc:From:Date:From;
+	b=G8orYLTUwskVeWZeQ5QeiI7eUtv/hS3dTa3xzSWhxLhGMDylvtixca0A/0RvJnQ8V
+	 XmVlwOoFQTxgxFQW2yhjV9TAKHaRzJMS9WY/3jLJiVPP9E+vwNNis3JuhANuO5X/DS
+	 amyr7gJOADeLZlkI3ew5UNKZidypIAY5vueHVLGU=
+Subject: FAILED: patch "[PATCH] spi: sifive: fix controller deregistration" failed to apply to 6.12-stable tree
+To: johan@kernel.org,broonie@kernel.org,yash.shah@sifive.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 15 May 2026 07:30:46 +0200
+Message-ID: <2026051546-turbine-skirmish-96b4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0-v1-44b2fef88b25+d3-iommupt_map_rc_jgg@nvidia.com>
-X-Rspamd-Queue-Id: C9F2F5498D3
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 135575498FE
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[8bytes.org:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[8bytes.org: no valid DMARC record];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247356-lists,stable=lfdr.de];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247359-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.986];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joro@8bytes.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[8bytes.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,gregkh:email,sifive.com:email]
 X-Rspamd-Action: no action
 
-On Tue, May 12, 2026 at 01:46:12PM -0300, Jason Gunthorpe wrote:
-> Josua found there was an errant !ret, so I ran the original series through
-> Sashiko, which found some other interesting things, a few miskates were
-> made while rebasing across the iommu_debug_map() series, and a few other
-> interesting remarks.
-> 
-> Jason Gunthorpe (5):
->   iommu: Fix loss of errno on map failure for classic ops
->   iommu: Fix up map/unmap debugging for iommupt domains
->   iommu: Handle unmap error when iommu_debug is enabled
->   iommupt: Check for missing PAGE_SIZE in the pgsize_bitmap
->   iommupt: Fix the end_index calculation in __map_range_leaf()
-> 
->  drivers/iommu/generic_pt/iommu_pt.h | 24 +++++----
->  drivers/iommu/iommu.c               | 82 +++++++++++++----------------
->  2 files changed, 51 insertions(+), 55 deletions(-)
 
-Applied, thanks Jason.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0f25236694a2854627c1597465a071e6bb6fe572
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051546-turbine-skirmish-96b4@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 0f25236694a2854627c1597465a071e6bb6fe572 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Fri, 10 Apr 2026 10:17:44 +0200
+Subject: [PATCH] spi: sifive: fix controller deregistration
+
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind.
+
+Note that clocks were also disabled before the recent commit
+140039c23aca ("spi: sifive: Simplify clock handling with
+devm_clk_get_enabled()").
+
+Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
+Cc: stable@vger.kernel.org	# 5.1
+Cc: Yash Shah <yash.shah@sifive.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-15-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index 54adbc057af6..74a3e32fd2b5 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -392,7 +392,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+ 		 irq, host->num_chipselect);
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_host failed\n");
+ 		goto put_host;
+@@ -411,8 +411,14 @@ static void sifive_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct sifive_spi *spi = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	/* Disable all the interrupts just in case */
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
++
++	spi_controller_put(host);
+ }
+ 
+ static int sifive_spi_suspend(struct device *dev)
+
 
