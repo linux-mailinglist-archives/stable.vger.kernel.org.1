@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHg2ChROB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:16 +0200
+	id wKB4OuxEB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF8D553E9C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:47:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7C2552B84
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF9C0328BBBF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:17:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7140322CF5B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C34B3E009B;
-	Fri, 15 May 2026 16:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD7F30566A;
+	Fri, 15 May 2026 15:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gF68OBOG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPL256yM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E46E3BFE4C;
-	Fri, 15 May 2026 16:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F6F175A87;
+	Fri, 15 May 2026 15:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861694; cv=none; b=dE28o5DBH0wWyADsPkckLmCgYmkxQrIskL1DpOLH78Smh90IppIkgo561NioOTmnicYIcYfwWcEw82/Hw2iQt/VoN1QkARfrZfcnZlKGKTCaiYv/u9pvgWb8T/W5yHSawNYQcjsbzjt/txugS0QEkKp4Uc6KZI8L0LLthVdCUfM=
+	t=1778860493; cv=none; b=NRyNtUBoj193eedVkdB7wNN95Auq1GZwgwSFcX3rOvxmt0GFCpSxlnzMRZQ9U51/Ro5//493n7ihaobnRsSyVk7mek1QeXp1ypIP7h0DGmycapcTrHOGHQgMDh8dscVDsd4HV2tKyRYnhFkBl7MCsstHcpZiYf1+ZbglY+qCym8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861694; c=relaxed/simple;
-	bh=WfkakbwekN0JKu4a7OQ3gOVTjrv81kTmJFeQioPFfPo=;
+	s=arc-20240116; t=1778860493; c=relaxed/simple;
+	bh=is7RaoVblCVMobnLonKU9RuRxuQ7NLaOja/90UV3/Bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2gafJbWKpPeR9vooSBGDZdcHNUZggPXcEfNCUrW8uisrdC/P7uI70t1Z8JB0/gSYz97WQeRm2JG2ayh/YvF+s05YsV8KWX/Ko5XzSAgDh53tsVy77NZlv3fvSUzQvstjr9CgvXC8MNCTMpWwbqqxh3WUmCAZ2qxKAoQhsTMHak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gF68OBOG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BE3C2BCB0;
-	Fri, 15 May 2026 16:14:53 +0000 (UTC)
+	 MIME-Version; b=bNzYkyxG5sw54OwoLWp+9voSbw67TO5YxSC++5Goh7OE1YrwVMBqKRZdy/OhaCWwEET0lY/vnFWL7DY2w9FiWmCO/03eYoUxOzEmiQEavYymEfa5zQU+YsxknGorW66U0bey73N2WxQYh+SFBphMEo/nCw0YqqjjLQguwtZQSLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPL256yM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723CCC2BCB0;
+	Fri, 15 May 2026 15:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861693;
-	bh=WfkakbwekN0JKu4a7OQ3gOVTjrv81kTmJFeQioPFfPo=;
+	s=korg; t=1778860492;
+	bh=is7RaoVblCVMobnLonKU9RuRxuQ7NLaOja/90UV3/Bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gF68OBOG7VHU4yo31dQkExtxfHycSsKKflkvvY0crwJOmLMdmw4m1hyUu43BlOfk0
-	 B1gLd4J+k1cRaN3f3YEAzf0KjL9eY9G00g0wPWPlq51NkGRn+IfhSy1/Oupymvsb31
-	 feqFlAzsDCSyItUrcuahEW5TO+rqy40bMxFVr8/E=
+	b=ZPL256yMKFrIdDHCFsMgjgipSbTdZLP0G8W7rTYS+KXMsrI7XE9AookQV4CZDyOKO
+	 6fPuuOP9ZhiBdHZSes5z1I6kwSSGSqI5mSu66L52p9kVUtL7/QJBhesONg502zWYR6
+	 VNHIG2k27eX6XA2PCwgtrhN+o7DjASnkxa25BK3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naman Jain <namjain@linux.microsoft.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 385/474] block: relax pgmap check in bio_add_page for compatible zone device pages
+	Alex Deucher <alexander.deucher@amd.com>,
+	Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
+	"Ramalingeswara Reddy, Kanala" <Kanala.RamalingeswaraReddy@amd.com>
+Subject: [PATCH 6.12 068/144] drm/amdgpu: Use SMUIO 15.0.0 offsets for TSC upper and lower count.
 Date: Fri, 15 May 2026 17:48:14 +0200
-Message-ID: <20260515154723.368126709@linuxfoundation.org>
+Message-ID: <20260515154655.120444484@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,150 +64,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8AF8D553E9C
+X-Rspamd-Queue-Id: 7D7C2552B84
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248423-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247951-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naman Jain <namjain@linux.microsoft.com>
+From: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
 
-[ Upstream commit 41c665aae2b5dbecddddcc8ace344caf630cc7a4 ]
+commit 574b3b14f7d1b329fc6e67b79328f0e6f4d4b3d4 upstream.
 
-bio_add_page() and bio_integrity_add_page() reject pages from different
-dev_pagemaps entirely, returning 0 even when those pages have compatible
-DMA mapping requirements. This forces callers to start a new bio when
-buffers span pgmap boundaries, even though the pages could safely coexist
-as separate bvec entries.
+Define and use regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0 and
+regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0 for TSC upper and lower count.
 
-This matters for guests where memory is registered through
-devm_memremap_pages() with MEMORY_DEVICE_GENERIC in multiple calls,
-creating separate dev_pagemaps for each chunk. When a direct I/O buffer
-spans two such chunks, bio_add_page() rejects the second page, forcing an
-unnecessary bio split or I/O failure.
-
-Introduce zone_device_pages_compatible() in blk.h to check whether two
-pages can coexist in the same bio as separate bvec entries. The block DMA
-iterator (blk_dma_map_iter_start) caches the P2PDMA mapping state from the
-first segment and applies it to all others, so P2PDMA pages from different
-pgmaps must not be mixed, and neither must P2PDMA and non-P2PDMA pages.
-All other combinations (MEMORY_DEVICE_GENERIC pages from different pgmaps,
-or MEMORY_DEVICE_GENERIC with normal RAM) use the same dma_map_phys path
-and are safe.
-
-Replace the blanket zone_device_pages_have_same_pgmap() rejection with
-zone_device_pages_compatible(), while keeping
-zone_device_pages_have_same_pgmap() as a merge guard.
-Pages from different pgmaps can be added as separate bvec entries but
-must not be coalesced into the same segment, as that would make
-it impossible to recover the correct pgmap via page_pgmap().
-
-Fixes: 49580e690755 ("block: add check when merging zone device pages")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
+Signed-off-by: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260410153414.4159050-3-namjain@linux.microsoft.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ restructured combined `if` into explicit `bv` block ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bio-integrity.c |    2 ++
- block/bio.c           |   14 +++++++++-----
- block/blk.h           |   19 +++++++++++++++++++
- 3 files changed, 30 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |   31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
---- a/block/bio-integrity.c
-+++ b/block/bio-integrity.c
-@@ -134,6 +134,8 @@ int bio_integrity_add_page(struct bio *b
- 		struct bio_vec *bv = &bip->bip_vec[bip->bip_vcnt - 1];
- 		bool same_page = false;
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -63,6 +63,11 @@
+ #define regPC_CONFIG_CNTL_1		0x194d
+ #define regPC_CONFIG_CNTL_1_BASE_IDX	1
  
-+		if (!zone_device_pages_compatible(bv->bv_page, page))
-+			return 0;
- 		if (bvec_try_merge_hw_page(q, bv, page, len, offset,
- 					   &same_page)) {
- 			bip->bip_iter.bi_size += len;
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -1098,11 +1098,15 @@ int bio_add_page(struct bio *bio, struct
- 	if (bio->bi_iter.bi_size > UINT_MAX - len)
- 		return 0;
- 
--	if (bio->bi_vcnt > 0 &&
--	    bvec_try_merge_page(&bio->bi_io_vec[bio->bi_vcnt - 1],
--				page, len, offset, &same_page)) {
--		bio->bi_iter.bi_size += len;
--		return len;
-+	if (bio->bi_vcnt > 0) {
-+		struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
++#define regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0               0x0030
++#define regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0_BASE_IDX      1
++#define regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0               0x0031
++#define regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0_BASE_IDX      1
 +
-+		if (!zone_device_pages_compatible(bv->bv_page, page))
-+			return 0;
-+		if (bvec_try_merge_page(bv, page, len, offset, &same_page)) {
-+			bio->bi_iter.bi_size += len;
-+			return len;
+ #define regCP_GFX_MQD_CONTROL_DEFAULT                                             0x00000100
+ #define regCP_GFX_HQD_VMID_DEFAULT                                                0x00000000
+ #define regCP_GFX_HQD_QUEUE_PRIORITY_DEFAULT                                      0x00000000
+@@ -4975,11 +4980,27 @@ static uint64_t gfx_v11_0_get_gpu_clock_
+ 		amdgpu_gfx_off_ctrl(adev, true);
+ 	} else {
+ 		preempt_disable();
+-		clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
+-		clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
+-		clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
+-		if (clock_counter_hi_pre != clock_counter_hi_after)
+-			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
++		if (amdgpu_ip_version(adev, SMUIO_HWIP, 0) < IP_VERSION(15, 0, 0)) {
++			clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER);
++			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_LOWER);
++			clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER);
++			if (clock_counter_hi_pre != clock_counter_hi_after)
++				clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++						regGOLDEN_TSC_COUNT_LOWER);
++		} else {
++			clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0);
++			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0);
++			clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0,
++					regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0);
++			if (clock_counter_hi_pre != clock_counter_hi_after)
++				clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
++						regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0);
 +		}
+ 		preempt_enable();
  	}
- 
- 	if (bio->bi_vcnt >= bio->bi_max_vecs)
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -104,6 +104,25 @@ static inline bool biovec_phys_mergeable
- 	return true;
- }
- 
-+/*
-+ * Check if two pages from potentially different zone device pgmaps can
-+ * coexist as separate bvec entries in the same bio.
-+ *
-+ * The block DMA iterator (blk_dma_map_iter_start) caches the P2PDMA mapping
-+ * state from the first segment and applies it to all subsequent segments, so
-+ * P2PDMA pages from different pgmaps must not be mixed in the same bio.
-+ *
-+ * Other zone device types (FS_DAX, GENERIC) use the same dma_map_phys() path
-+ * as normal RAM.  PRIVATE and COHERENT pages never appear in bios.
-+ */
-+static inline bool zone_device_pages_compatible(const struct page *a,
-+						const struct page *b)
-+{
-+	if (is_pci_p2pdma_page(a) || is_pci_p2pdma_page(b))
-+		return zone_device_pages_have_same_pgmap(a, b);
-+	return true;
-+}
-+
- static inline bool __bvec_gap_to_prev(const struct queue_limits *lim,
- 		struct bio_vec *bprv, unsigned int offset)
- {
+ 	clock = clock_counter_lo | (clock_counter_hi_after << 32ULL);
 
 
 
