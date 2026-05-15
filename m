@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-247321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHbxHiuhBmoMlgIAu9opvQ
-	(envelope-from <stable+bounces-247321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 06:29:31 +0200
+	id eE42F6ChBmoMlgIAu9opvQ
+	(envelope-from <stable+bounces-247322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 06:31:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8752B549326
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 06:29:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2EB5493C9
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 06:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0298B3026135
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 04:28:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2506630604A6
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 04:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BDE3D45E7;
-	Fri, 15 May 2026 04:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A3F3D5239;
+	Fri, 15 May 2026 04:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F7GwFW2b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqIKx34G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4293E3D4103;
-	Fri, 15 May 2026 04:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DBD3D412C;
+	Fri, 15 May 2026 04:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778819291; cv=none; b=oJHhHPjmq2dI+0R/AbcpSTRC4oljxXg7MaigyX/6ga7riqIpjj6v3+RSZlsj4Z6QUZxTZaAc4yOEEmRSmYuE0YrZ0KKcqIxRPWgtYR5uJVH7XYQF8JDwY7/McKeibYINUTAjYa/1LjhYGIbNnTIDMBxqP89QEfOSx5UGwntc25M=
+	t=1778819297; cv=none; b=JNMl1NlCwoho+j18YyGceux04y4JEpbYRhZFzwJLuYnP1jODnopnopGhxMzBYmuORvPono71JXns41vdVVNdpAFXMBYi64/Kh/rp1Nbg1c0edYgnm51o66HuYKI+2j/DM/UC2GJMyHo45Tb9PiJPvd37HK6uO2Uz330XLeW6cGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778819291; c=relaxed/simple;
-	bh=qQvn5axOR+yyPoQDWmxod2/JnSKoOIIR/aijmbsFW08=;
+	s=arc-20240116; t=1778819297; c=relaxed/simple;
+	bh=8Q4veE2pixKdG2Hn7ZQPBXIgIhaLZqlRWfE2OTr3Kas=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OH7VsWkMSjVgkJhIlVRWzwWFAEg16v0TyBX9W49FP6wH3Ci0N7Y4PVNFHUaK1VYOYT+5ayYAMJaek+1Bm4JHlq6JX0SkfJMdh3G9Nd9B4yb2SDj1vcTLIBp/dz6VAW9nIULq6JhV//IzrqdGB1WF3x5LYWve9eDdrjiXDaTbV+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F7GwFW2b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6284AC2BCB0;
-	Fri, 15 May 2026 04:28:05 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=K8nSXkOb1wYe09TghXmVdGCPPA1BImzOZre4kdNXKbP4M1eHKiJpRj9UW87cyA8dSTbuojnKqkNVK0lXbAayc/xOSB2iV9UcqDpRCuczoufv/BObd7iF/IVbXYB2GmJhu2bbsVJwo6V26a/is6ISe7+zcZU89xMERftH+GQ28Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqIKx34G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE49CC2BCB0;
+	Fri, 15 May 2026 04:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778819290;
-	bh=qQvn5axOR+yyPoQDWmxod2/JnSKoOIIR/aijmbsFW08=;
+	s=k20201202; t=1778819297;
+	bh=8Q4veE2pixKdG2Hn7ZQPBXIgIhaLZqlRWfE2OTr3Kas=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=F7GwFW2bvGWtBJMJ/SWBFZs/qMW8nitfD6DuEIXwVCAppM6bi1ulBI9AyLqCQilYb
-	 8IRpDpD2bwy05O8a6WQrc7q5GQkphxuRIgOq90Ui7Nn3hegDr+zMtwpF7Zi91j1d5d
-	 u/Q65+KlPT7VbDNAwUtBy0AW/3BydTRnyW9ujxoypw30sdQJ3McOim/IGN/TESMrXV
-	 LPETmMenKoYuknahpyn7FeEkI5WxrWrUJT8vFERHWWj5OOMK/PXQRK/acK1pRAR2Vg
-	 M+hewsHfL5CtgHK4z5t/W8M8Afh8lq7lwhd3YeJQVB8LOmY/z+uYW+ZN8liVyuYU2W
-	 Xdp4tzQakpQiw==
+	b=gqIKx34GRy6wAY2QbGGu0hpg8TX5W5QKPDO92XebEqwv2sz2HUfnUY8QFSnM48Bjb
+	 iYgdAq4rz4kQpOxzZLzFdDj3sW6DuuKoY1ik+kgYQaYTOX5rpbjP1s/wZNDzyDGGp3
+	 hEUf37hJ/1R5hBXH62j48LeiQiMxgvgXFifq2HdcQfxy8dWOaIW1Hnc3wmHYstqDJc
+	 1cUmZ+LuP3gmPHpWl4GD4EWi8J/ZlDm+IjFjDD1vsC45lk69zQy17gi+QJEhC+Ixfk
+	 jzNbM6YwCeZtR1Fk9CZR2GnT+y26NZC6ne53VuC2dgH6eCuwsaPx8JvH+3dTj4pcV0
+	 RPRh+QxS/9+Ow==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Fri, 15 May 2026 06:27:32 +0200
-Subject: [PATCH net v2 1/6] mptcp: do not drop partial packets
+Date: Fri, 15 May 2026 06:27:33 +0200
+Subject: [PATCH net v2 2/6] mptcp: pm: fix ADD_ADDR timer infinite retry on
+ option space insufficient
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,7 +56,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260515-net-mptcp-misc-fixes-7-1-rc4-v2-1-701e96419f2f@kernel.org>
+Message-Id: <20260515-net-mptcp-misc-fixes-7-1-rc4-v2-2-701e96419f2f@kernel.org>
 References: <20260515-net-mptcp-misc-fixes-7-1-rc4-v2-0-701e96419f2f@kernel.org>
 In-Reply-To: <20260515-net-mptcp-misc-fixes-7-1-rc4-v2-0-701e96419f2f@kernel.org>
 To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
@@ -65,43 +66,43 @@ To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
 Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
  linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
  linux-kselftest@vger.kernel.org, Eric Dumazet <edumaze@google.com>, 
- Shardul Bankar <shardul.b@mpiricsoftware.com>, stable@vger.kernel.org
+ Li Xiasong <lixiasong1@huawei.com>, stable@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3127; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=doSwMYEfSiK6uGg6E6Qa8BN/Nu92k84XWlJ5BdjtdXs=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBqBqDKbnJLNZZ8c8s5pHZvcBHGHJIpaxSHCFZNV
- heMNzxSNl2JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCagagygAKCRD2t4JPQmmg
- c/aTEACWjZEsrwGSQLpwSGVLtJu+sJryxm+vfcCfTgd3mIcxKwbypG7w54BvenJt+IbR8D7ATnH
- SC1d6TPSiQ1tz9LtvkNifBRh19nu7P7/KN/Ia96k8Op6g+euCHEQfRO/YaA5IrsYjyLEKOEfZe1
- tmjT0ciNLc//AGnNv95ZhxmtfFRZ8x3V8sflSc9DTH9GVQth2u4KOFeWBP6uh9FaUP868mif1/k
- KNCiki4rlhIeoyploQkO2QdnFCi/vFyMeUunVEtwcpK4HNC5lEyGCnTwQHxr6aKXlWG0VXCg1QR
- ghCyLmxL7C5JKTDamK3Nlw7ZMAbmqTaWZS1ZCsEBNClraGUvf67VyyxMppXP6lIxc9wvdtDT+Ne
- SuIdTJYefDuaeZfoDc/qgH/YEtO2WycjgLTI62CIATaNYjORi8iqjsvvXTGb/IEHcHreVL6sP7r
- x2l0VF/pUUImCkAfGxfznm9PZMLaxtH1ePf27EQ1wFt9eWN0PmOMvt71WL0mdQFP0CPH9dZX6aa
- 5uJWNHOkNYhfSsOrxfR9wcWVdMibuKOeyL0zMMTG0SWIiSVRMJ6xeZCI9l/vUKT+mEutH5lcv/U
- b1uleHE9Otj+17EdIBqfd8Ek6qAq2KDs2Q3JbAjBiMlt4aep4ZUHVu7MYnKjmTHPrS2LvNDURXs
- e41aE7ws1WzTy3g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4928; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=sPnzFdsNttVGUezP0ccoEY3L+m3b4Tf5peNFQD479qA=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBqBqDLcYJA4WE6mqKzqstI/rKwiEv8H6EB1XDh7
+ 3mwBNeAA0CJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCagagywAKCRD2t4JPQmmg
+ c9HPEADticNuhZOZ9gpX5QCh/YKkeF3BeN7tSiZwQRRZlp/1/FnZj14D+g9l5fvZAcr12vjMXRy
+ BSQduzLSgy8oSYpmfjwk1qHbZaphbTr5Oo+LCpxdroOhH8dgeFXoeEHBlSWhvB+fvlupyvvQA7N
+ /xKR7obww0zREXK9c45WYbBrvZURRJoOuHVf/ci8ZUheJNFUqlJ6srdwdmQaNkQ9X0MrpFpwhPU
+ DxcJ1lxOd+Y0b8/SSECeHalC+K15U+V3aKUQbZLE/4yIHAgQHcTnSb3zUnWVaVlqgQm2elf2/ao
+ jueqbYgpkD0Wwibg5iv/ZEC6BGAG8tTfftplbXdbWtfLzif3OTdiOq45MLYaomGdLnJ9G0ery+g
+ tdKDjPCWF4LW0GupY3bAblVrRnIe51mbFVC5TV+J4YktGoZptqkKFsDt6nhNACwL1f1LtFE6S31
+ Z4/k2zAMIXEWsTRwQHiOphgC+P6zHaBmO0GAHV4+hlrbq5/Lmh8wF7Aji5Oba4vRyBG6Dj04/XQ
+ KF4rPRiVGD5poB2ri9ShXzImn3f8Srx75Fg/rysT7rO0DIW0IBPxj7AxXeiv/6MDY/fV9oQXaHn
+ B750NXOyPnI5eUfFoHnhgjJTtunpZdbdsAYlT0+utzdWLDrpnzPs01EsvTML9pHBIEKmrCVfKNo
+ L+nTB2+b50wKClw==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-X-Rspamd-Queue-Id: 8752B549326
+X-Rspamd-Queue-Id: EE2EB5493C9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247321-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247322-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[16];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
@@ -110,86 +111,146 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
 X-Rspamd-Action: no action
 
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+From: Li Xiasong <lixiasong1@huawei.com>
 
-When a packet arrives with map_seq < ack_seq < end_seq, the beginning
-of the packet has already been acknowledged but the end contains new
-data. Currently the entire packet is dropped as "old data," forcing
-the sender to retransmit.
+When TCP option space is insufficient (e.g., when sending ADD_ADDR with an
+IPv6 address and port while tcp_timestamps is enabled), the original code
+jumped to out_unlock without clearing the addr_signal flag. This caused
+mptcp_pm_add_timer to keep rescheduling indefinitely, not sending ADD_ADDR,
+preventing subsequent addresses in the endpoint list from being announced.
 
-Instead, skip the already-acked bytes by adjusting the skb offset and
-enqueue only the new portion. Update bytes_received and ack_seq to
-reflect the new data consumed.
+Handle this case by clearing the ADD_ADDR signal and skipping the matching
+ADD_ADDR retransmission entry. The skip path cancels the matching timer
+(with id check) and advances PM state progression, preserving forward
+progress to subsequent PM work.
 
-A previous attempt at this fix has been sent by Paolo Abeni [1], but had
-issues [2]: it also added a zero-window check and changed rcv_wnd_sent
-initialization, which caused test regressions. This version addresses
-only the partial packet handling without modifying receive window
-accounting.
+This cancellation is inherently best-effort. A concurrent add_timer
+callback may already be running and may acquire pm.lock before the
+cancel path updates entry state. In that case, one final ADD_ADDR
+transmit attempt can still be executed.
 
-Fixes: ab174ad8ef76 ("mptcp: move ooo skbs into msk out of order queue.")
+Once the cancel path sets entry->retrans_times to ADD_ADDR_RETRANS_MAX,
+the callback-side retrans_times check suppresses further ADD_ADDR
+retransmissions.
+
+Note that when an ADD_ADDR is being prepared, a pure-ACK is queued. On
+the output side, it means that it is fine to skip non-pure-ACK packets,
+when drop_other_suboptions is set: a pure-ACK will be processed soon
+after.
+
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/c9b426a4e163aa3c4fe8b80c79f1a610f47ae7d8.1763075056.git.pabeni@redhat.com [1]
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/600 [2]
-Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
-[pabeni@redhat.com: update map]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
-v3: (Paolo)
-  - update map_seq, too (AI tool)
-v2: (Shardul)
-  - Drop the mptcp_try_coalesce() attempt for partial packets, since
-    non-zero offset always prevents coalescing (Paolo).
-  - https://lore.kernel.org/20260422143931.43281-1-shardul.b@mpiricsoftware.com
-v1: (Shardul)
-  - https://lore.kernel.org/20260422120954.8877-1-shardul.b@mpiricsoftware.com
-v0: (Paolo)
-  - https://lore.kernel.org/mptcp/c9b426a4e163aa3c4fe8b80c79f1a610f47ae7d8.1763075056.git.pabeni@redhat.com
+v2: add a note for sashiko-nipa's: it's a false positive.
 ---
- net/mptcp/protocol.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ net/mptcp/pm.c | 56 ++++++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 46 insertions(+), 10 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 4546a8b09884..859df49e16dc 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -397,12 +397,26 @@ static bool __mptcp_move_skb(struct sock *sk, struct sk_buff *skb)
- 		return false;
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index 3c152bf66cd5..3e770c7407e1 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -364,7 +364,13 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 
+ 	spin_lock_bh(&msk->pm.lock);
+ 
+-	if (!mptcp_pm_should_add_signal_addr(msk)) {
++	/* The cancel path (mptcp_pm_del_add_timer()) can race with this
++	 * callback. Once cancel updates retrans_times to MAX, suppress further
++	 * retransmissions here. If this callback acquires pm.lock first, one
++	 * final transmit attempt is still possible.
++	 */
++	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX &&
++	    !mptcp_pm_should_add_signal_addr(msk)) {
+ 		pr_debug("retransmit ADD_ADDR id=%d\n", entry->addr.id);
+ 		mptcp_pm_announce_addr(msk, &entry->addr, false);
+ 		mptcp_pm_add_addr_send_ack(msk);
+@@ -414,8 +420,12 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
+ 	/* Note: entry might have been removed by another thread.
+ 	 * We hold rcu_read_lock() to ensure it is not freed under us.
+ 	 */
+-	if (stop_timer)
+-		sk_stop_timer_sync(sk, &entry->add_timer);
++	if (stop_timer) {
++		if (check_id)
++			sk_stop_timer(sk, &entry->add_timer);
++		else
++			sk_stop_timer_sync(sk, &entry->add_timer);
++	}
+ 
+ 	rcu_read_unlock();
+ 	return entry;
+@@ -882,6 +892,7 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
+ 			      struct mptcp_addr_info *addr, bool *echo,
+ 			      bool *drop_other_suboptions)
+ {
++	bool skip_add_addr = false;
+ 	int ret = false;
+ 	u8 add_addr;
+ 	u8 family;
+@@ -903,24 +914,49 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
  	}
  
--	/* old data, keep it simple and drop the whole pkt, sender
--	 * will retransmit as needed, if needed.
-+	/* Completely old data? */
-+	if (!after64(MPTCP_SKB_CB(skb)->end_seq, msk->ack_seq)) {
-+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
-+		mptcp_drop(sk, skb);
-+		return false;
+ 	*echo = mptcp_pm_should_add_signal_echo(msk);
+-	port = !!(*echo ? msk->pm.remote.port : msk->pm.local.port);
+-
+-	family = *echo ? msk->pm.remote.family : msk->pm.local.family;
+-	if (remaining < mptcp_add_addr_len(family, *echo, port))
+-		goto out_unlock;
+-
+ 	if (*echo) {
+ 		*addr = msk->pm.remote;
+ 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_ECHO);
++		port = !!msk->pm.remote.port;
++		family = msk->pm.remote.family;
+ 	} else {
+ 		*addr = msk->pm.local;
+ 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_SIGNAL);
++		port = !!msk->pm.local.port;
++		family = msk->pm.local.family;
+ 	}
+-	WRITE_ONCE(msk->pm.addr_signal, add_addr);
++
++	if (remaining < mptcp_add_addr_len(family, *echo, port)) {
++		struct net *net = sock_net((struct sock *)msk);
++
++		if (!*drop_other_suboptions)
++			goto out_unlock;
++
++		if (*echo) {
++			MPTCP_INC_STATS(net, MPTCP_MIB_ECHOADDTXDROP);
++		} else {
++			skip_add_addr = true;
++			MPTCP_INC_STATS(net, MPTCP_MIB_ADDADDRTXDROP);
++		}
++		goto drop_signal_mark;
 +	}
 +
-+	/* Partial packet: map_seq < ack_seq < end_seq.
-+	 * Skip the already-acked bytes and enqueue the new data.
- 	 */
--	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
--	mptcp_drop(sk, skb);
--	return false;
-+	copy_len = MPTCP_SKB_CB(skb)->end_seq - msk->ack_seq;
-+	MPTCP_SKB_CB(skb)->offset += msk->ack_seq - MPTCP_SKB_CB(skb)->map_seq;
-+	MPTCP_SKB_CB(skb)->map_seq += msk->ack_seq -
-+				      MPTCP_SKB_CB(skb)->map_seq;
-+	msk->bytes_received += copy_len;
-+	WRITE_ONCE(msk->ack_seq, msk->ack_seq + copy_len);
+ 	ret = true;
+ 
++drop_signal_mark:
++	WRITE_ONCE(msk->pm.addr_signal, add_addr);
 +
-+	skb_set_owner_r(skb, sk);
-+	__skb_queue_tail(&sk->sk_receive_queue, skb);
-+	return true;
+ out_unlock:
+ 	spin_unlock_bh(&msk->pm.lock);
++
++	/* On pure-ACK option-space exhaustion, stop retrying this ADD_ADDR:
++	 * clear the signal bit, cancel the matching retransmission timer, and
++	 * let the PM state machine progress.
++	 */
++	if (skip_add_addr) {
++		mptcp_pm_del_add_timer(msk, addr, true);
++		mptcp_pm_subflow_established(msk);
++	}
+ 	return ret;
  }
  
- static void mptcp_stop_rtx_timer(struct sock *sk)
 
 -- 
 2.53.0
