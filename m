@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248929-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oMkIOOCTB2pU9AIAu9opvQ
-	(envelope-from <stable+bounces-248928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:45:04 +0200
+	id WOXiLwSUB2pU9AIAu9opvQ
+	(envelope-from <stable+bounces-248929-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:45:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F9E558663
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C6F558673
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 23:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C70330142BF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:44:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB993301411C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A773EDE5B;
-	Fri, 15 May 2026 21:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0642A3EDE5D;
+	Fri, 15 May 2026 21:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="AIwWVeeG"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="E8ebA2fK"
 X-Original-To: stable@vger.kernel.org
 Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3167E3ED5C7;
-	Fri, 15 May 2026 21:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7340019A288;
+	Fri, 15 May 2026 21:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778881496; cv=none; b=s57T3iDRvvAQQlMC61DkMUlqLU9p/n22eI456EWqlTOnodMt/ZztHUjk703v9Hhgmj9Rw5sF6mGeGW1oglUcYZB3p5edKdQlo0ItIYGjZIZQtVH+TNsiGq7LcZx1B78AGECsTqEmcaBbcakAjl8mTEN2X2w3zP4dz16TogemTzY=
+	t=1778881504; cv=none; b=fI6XTB0k5FM9SpH/XI7m21A04Bj5k6hpmPstR2mazqZd0FKAjI+8bft/hM0WWA1lqt3jBDOmbv2BN6j9+035Altbbkf7JnF4KaRDMsIofXmckK7HrsWj4p2FL7XK8beKi8WGrVE+IVPQEOpp/AI/5LXbmFPAwg96qcKUaEmV6hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778881496; c=relaxed/simple;
-	bh=Rhhg2VREEvIkK1nSeGi18mzV3AWkkFohy/JeEFpVuoc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CNyuiRkmslU52nWRW03pEbeiO7E2l6tzbMjEN/dIR3KwCxKDOo5w1M0cyrfiCZ/d1OehQ1N91Dn8/AUK2gtLhJUsseKDfX+FV/pe5othADIlbaLnesa49HWbAAUIYSTqys994zjjzjcPj0WjPyvEBDiQVPp+G+TGzfL+F+0N6Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=AIwWVeeG; arc=none smtp.client-ip=178.21.23.139
+	s=arc-20240116; t=1778881504; c=relaxed/simple;
+	bh=iW7rNRh2ArJWOxm9/fuOocPIaTFuDAFc1tz6G/PVRKU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=XDVIYM41BZfh+zQXQ1EMcE1bWU7+ISQxrTBUEV3ugLZ9vElCTYw7svk9tO+lALmONWDkvGuT7Eug7isYWNIdhmQKK8zeof8jn0caKJri6NX6W+XlMhrK+ThXZ6u3eO8vAGa8IWlGaXtAwHcssJALerGT/p/ZGx/ORh/iAR6acxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=E8ebA2fK; arc=none smtp.client-ip=178.21.23.139
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
 Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id 9979F27247;
-	Fri, 15 May 2026 23:44:53 +0200 (CEST)
+	by disroot.org (Postfix) with ESMTP id 1CBF726DA5;
+	Fri, 15 May 2026 23:45:02 +0200 (CEST)
 X-Virus-Scanned: SPAM Filter at disroot.org
 Received: from layka.disroot.org ([127.0.0.1])
  by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id 5xyq5njVtx1n; Fri, 15 May 2026 23:44:52 +0200 (CEST)
+ id 8iJf4IhH47ap; Fri, 15 May 2026 23:45:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1778881492; bh=Rhhg2VREEvIkK1nSeGi18mzV3AWkkFohy/JeEFpVuoc=;
-	h=From:Subject:Date:To:Cc;
-	b=AIwWVeeGEiZ1bvnKDoVLlCWcTol8A7r9mVSh6L69qV/hZgTkqIEASfdjkDVa+ZKsH
-	 jSCvI4g6Vguqvx+sS/jf/OkeOOIBgBvF66M7l/aXQmrpXJ4vD42eWTYp69KzwuWUrL
-	 Pid0O3NT4Vbjfeic/a/UXbALoL+BzFUMdl7yDap7p16qf3LYbhiaxefSGzM92Ha7dA
-	 d7yXFfD+xtCeevmFQJj8LnS4nZX04g2+jEGRPhNYjHBnqjkBnvX+5GsgmqwIxXWbDc
-	 QSfWEuTHwx7wk00HeYzZXmU8fv6zE8Wqn82IKNLyBM0itp3x6O4kiRpkRLajhLCfBz
-	 VKz9oYSX3WDVw==
+	t=1778881501; bh=iW7rNRh2ArJWOxm9/fuOocPIaTFuDAFc1tz6G/PVRKU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=E8ebA2fKtVSaNL0rEz7ShcoMVK4gKwc9LXzR6+iJrOUfWQxHSY5mRWCsKKPZk10ql
+	 hvjs8JXTwf6+LRC8bZ+wSdNWbYZc3Ul0JRYDysYpCVtrd9GV5n9RgobxFxiQ+PvgG1
+	 jSTOWM47cxhvaHqs0+qJvBfibqbhC6NfcdG8m3BpEwwFXveRmc3WYi4kUPeaToXQcW
+	 ulCmCsLo/tYVNvRypFy5+5UXJgoSNMVfv5tvGBpRJbfTi/nCIXA7/6bmZrgjdv4aQT
+	 7TkFztGKk10lxKcqsnL0HnBvl17FoDxgGIUnqbqrfRIJ4E93m5q8EP1cLAQwOAQvCl
+	 voErUk+8UcplA==
 From: Kaustabh Chakraborty <kauschluss@disroot.org>
-Subject: [PATCH RESEND v2 0/2] Fixes and enhancements for Exynos (7870)
- DSIM bridge driver
-Date: Sat, 16 May 2026 03:14:29 +0530
-Message-Id: <20260516-exynos-dsim-fixes-v2-0-db9bf96ae641@disroot.org>
+Date: Sat, 16 May 2026 03:14:30 +0530
+Subject: [PATCH RESEND v2 1/2] drm/bridge: samsung-dsim: enable MFLUSH_VS
+ for Exynos 7870 DSIM
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,6 +62,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260516-exynos-dsim-fixes-v2-1-db9bf96ae641@disroot.org>
+References: <20260516-exynos-dsim-fixes-v2-0-db9bf96ae641@disroot.org>
+In-Reply-To: <20260516-exynos-dsim-fixes-v2-0-db9bf96ae641@disroot.org>
 To: Inki Dae <inki.dae@samsung.com>, 
  Jagan Teki <jagan@amarulasolutions.com>, 
  Marek Szyprowski <m.szyprowski@samsung.com>, 
@@ -74,7 +77,7 @@ To: Inki Dae <inki.dae@samsung.com>,
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
 Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
  Kaustabh Chakraborty <kauschluss@disroot.org>, stable@vger.kernel.org
-X-Rspamd-Queue-Id: 46F9E558663
+X-Rspamd-Queue-Id: 15C6F558673
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -85,7 +88,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248928-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248929-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[samsung.com,amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -103,39 +106,46 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,disroot.org:email,disroot.org:mid,disroot.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[disroot.org:email,disroot.org:mid,disroot.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Since v6.17, there is a regression for the Exynos 7870 DSIM driver. The
-display occasionally had random aberration when the panel was turned on.
-The first patch addresses that.
+Commit a36c533ad3e1 ("drm/bridge: samsung-dsim: Always flush display
+FIFO on vsync pulse") intends to enable FIFO flushing at v-sync pulse by
+not setting the active-low MFLUSH_VS bit.
 
-The second patch replaces an implicit loop for waiting for PLL
-stabilization with an interrupt-based solution, which should be more
-reliable. This solution was suggested by Inki Dae in a discussion of an
-earlier patch series sent by me. For further details, refer to its
-commit description.
+However, in Exynos 7870 DSIM, the MFLUSH_VS bit is active-high. There is
+no publicly available documentation to the best of my knowledge, but
+downstream kernel code [1] supports this claim. Enable the bit for
+Exynos 7870.
 
+Cc: stable@vger.kernel.org # v6.17 and later
+Link: https://github.com/samsungexynos7870/android_kernel_samsung_exynos7870/blob/a3762bb1761ae/drivers/video/fbdev/exynos/decon_7870/dsim_reg_7870.c#L699 [1]
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
 Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
 ---
-Changes in v2:
-- drop now-not-required [v1 1/3] (Marek Szyprowski)
-- Link to v1: https://lore.kernel.org/r/20260124-exynos-dsim-fixes-v1-0-122d047a23d1@disroot.org
+ drivers/gpu/drm/bridge/samsung-dsim.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
----
-Kaustabh Chakraborty (2):
-      drm/bridge: samsung-dsim: enable MFLUSH_VS for Exynos 7870 DSIM
-      drm/bridge: samsung-dsim: use DSIM interrupt to wait for PLL stability
+diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
+index 1d85e706c74b9..70f8946ad3b24 100644
+--- a/drivers/gpu/drm/bridge/samsung-dsim.c
++++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+@@ -1089,6 +1089,13 @@ static int samsung_dsim_init_link(struct samsung_dsim *dsi)
+ 			reg |= DSIM_HBP_DISABLE_MODE;
+ 		if (dsi->mode_flags & MIPI_DSI_MODE_VIDEO_NO_HSA)
+ 			reg |= DSIM_HSA_DISABLE_MODE;
++
++		/*
++		 * For some hardware types, DSIM_MFLUSH_VS bit needs to be
++		 * enabled explicitly.
++		 */
++		if (dsi->plat_data->hw_type == DSIM_TYPE_EXYNOS7870)
++			reg |= DSIM_MFLUSH_VS;
+ 	}
+ 
+ 	if (dsi->mode_flags & MIPI_DSI_MODE_NO_EOT_PACKET)
 
- drivers/gpu/drm/bridge/samsung-dsim.c | 48 +++++++++++++++++++++++++----------
- include/drm/bridge/samsung-dsim.h     |  1 +
- 2 files changed, 35 insertions(+), 14 deletions(-)
----
-base-commit: 9845cf73f7db6094c0d8419d6adb848028f4a921
-change-id: 20260124-exynos-dsim-fixes-5383d6a6f073
-
-Best regards,
 -- 
-Kaustabh Chakraborty <kauschluss@disroot.org>
+2.53.0
 
 
