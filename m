@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-248091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJWdOspHB2p6wAIAu9opvQ
-	(envelope-from <stable+bounces-248091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:20:26 +0200
+	id 6Hc+KtpGB2r6wAIAu9opvQ
+	(envelope-from <stable+bounces-248092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:16:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950835530B4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:20:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379E2552EA4
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:16:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2FBB3308B85A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:00:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8195130D5B75
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8669839B971;
-	Fri, 15 May 2026 16:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342703B0ADB;
+	Fri, 15 May 2026 16:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAEuGpjU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0Qq6ocj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AAC30DD1D;
-	Fri, 15 May 2026 16:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF760355049;
+	Fri, 15 May 2026 16:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860849; cv=none; b=XcCTSJcfOEFhVc1NDtB/1w3iHJaQOpCDv0NLBcQEuTvKxEBKChk28ERDrKXb+Kvgal56svXeqgzavRdTTMy3Bbl0+/34ccZhJTWdU9EgoFKFheOW4A6H32cpUkS97zkBw3bPYQbav+HoJXZFfaLl8+6AePCLyjNaYO6VFuhY6NQ=
+	t=1778860851; cv=none; b=i4Q69hEF+KPsiu6RN7sHbIcF9arwJOFBot4UdqkYa8SvixcIrMyhFuZMy8wcmssKKV0FJSM5eDpj+MC+5t/BD6/Osg8he7/oGrv6T/vU7ZGWvQxYSX3oUG1QdTmc24Gx/xjjWsCsIdPw5peLB8LTMlRwPKNczZ7WYb6Pr6yUUkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860849; c=relaxed/simple;
-	bh=YVu8/1PJ2czff1F2ybuZJExJm24DHqwmOv1KQhCUBog=;
+	s=arc-20240116; t=1778860851; c=relaxed/simple;
+	bh=DZiKf/ZxjolGWhdfdhqeLJ4FFrlUzJwFs2Go/8JiGv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQNIr0rb3BXDZmM2ky1RLRdNWoGNDL6cYbxk5MtDxRYezeqGMEv/30HBWPECb4TpfqHFp6DiB0zfcPhWamyNlB6lPsu1KNX1k+Rh6xMkSXzkSZx7V6KIMh/sF5llu9/0doYR48oUO+NMu/Fnp91DdydEyaul+afm+lcLpGX4jRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAEuGpjU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C4C5C2BCB0;
-	Fri, 15 May 2026 16:00:48 +0000 (UTC)
+	 MIME-Version; b=F2IugEqWi2xJqEi3ZoQbiCVriN/MPlJx1jAL5MrfFayjBvgcXP042p/+6JHTx3ckZoldDzybMEWPquGxY8xQoNNv9knWEy9S6xSbFnyDoep9xnUJFaT1+sJ2ATx1kTmPF+hiK/Tnd9ywOqyqLF+mmV55kU9KavC3IK7xteZ4TzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0Qq6ocj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365ECC2BCB0;
+	Fri, 15 May 2026 16:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860849;
-	bh=YVu8/1PJ2czff1F2ybuZJExJm24DHqwmOv1KQhCUBog=;
+	s=korg; t=1778860851;
+	bh=DZiKf/ZxjolGWhdfdhqeLJ4FFrlUzJwFs2Go/8JiGv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CAEuGpjUq1QZgsWCItOMQdf/4gYQNTd1IJ7Wc17jp7l70vIUmvE7/GIoCQWGmuzCu
-	 zJztmFc/Wy35lg+xL/PDvPSjwq1Szc84yvasCYGtdMexG3AjT3DUyXgYx0HWL1S2Ub
-	 z3lXDNJsPN7ZpIFD1IPf+dHWV+Io529kBDiNgoak=
+	b=V0Qq6ocjTqcsb8auHJj0Jd0VVxBedkM0jCv1aYMCmLeRSDRx0pDfvb3duQ0bBi473
+	 FbIoyqxqrNgWJCJBxwuoq52IDA891rrZ76SUVLSvY8v+/NbYSyUHnjGUBUoDH+2Rj8
+	 4rAU4rcd2ExWnI8tPuA0iQWM4WGLck3zy4EQSLBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Yosry Ahmed <yosry@kernel.org>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 101/474] KVM: nSVM: Use vcpu->arch.cr2 when updating vmcb12 on nested #VMEXIT
-Date: Fri, 15 May 2026 17:43:30 +0200
-Message-ID: <20260515154717.223081024@linuxfoundation.org>
+Subject: [PATCH 6.6 102/474] KVM: nSVM: Always inject a #GP if mapping VMCB12 fails on nested VMRUN
+Date: Fri, 15 May 2026 17:43:31 +0200
+Message-ID: <20260515154717.244901965@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -63,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 950835530B4
+X-Rspamd-Queue-Id: 379E2552EA4
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248091-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248092-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,82 +90,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
 
-commit 5c247d08bc81bbad4c662dcf5654137a2f8483ec upstream.
+commit 01ddcdc55e097ca38c28ae656711b8e6d1df71f8 upstream.
 
-KVM currently uses the value of CR2 from vmcb02 to update vmcb12 on
-nested #VMEXIT. This value is incorrect in some cases, causing L1 to run
-L2 with a corrupted CR2. This could lead to segfaults or data corruption
-if L2 is in the middle of handling a #PF and reads a corrupted CR2. Use
-the correct value in vcpu->arch.cr2 instead.
+nested_svm_vmrun() currently only injects a #GP if kvm_vcpu_map() fails
+with -EINVAL. But it could also fail with -EFAULT if creating a host
+mapping failed. Inject a #GP in all cases, no reason to treat failure
+modes differently.
 
-The value in vcpu->arch.cr2 is sync'd to vmcb02 shortly before a VMRUN
-of L2, and sync'd back to vcpu->arch.cr2 shortly after. The value are
-only out-of-sync in two cases: after save+restore, and after a #PF is
-injected into L2. In either case, if a #VMEXIT to L1 is synthesized
-before L2 runs, using the value in vmcb02 would be incorrect.
-
-After save+restore, the value of CR2 is restored by KVM_SET_SREGS into
-vcpu->arch.cr2. It is not reflect in vmcb02 until a VMRUN of L2. Before
-that, it holds whatever was in vmcb02 before restore, which would be
-zero on a new vCPU that never ran nested. If a #VMEXIT to L1 is
-synthesized before L2 ever runs, using vcpu->arch.cr2 to update vmcb12
-is the right thing to do.
-
-The #PF injection case is more nuanced.  Although the APM is a bit
-unclear about when CR2 is written during a #PF, the SDM is more clear:
-
-	Processors update CR2 whenever a page fault is detected. If a
-	second page fault occurs while an earlier page fault is being
-	delivered, the faulting linear address of the second fault will
-	overwrite the contents of CR2 (replacing the previous address).
-	These updates to CR2 occur even if the page fault results in a
-	double fault or occurs during the delivery of a double fault.
-
-KVM injecting the exception surely counts as the #PF being "detected".
-More importantly, when an exception is injected into L2 at the time of a
-synthesized #VMEXIT, KVM updates exit_int_info in vmcb12 accordingly,
-such that an L1 hypervisor can re-inject the exception. If CR2 is not
-written at that point, the L1 hypervisor have no way of correctly
-re-injecting the #PF. Hence, if a #VMEXIT to L1 is synthesized after
-the #PF is injected into L2 but before it actually runs, using
-vcpu->arch.cr2 to update vmcb12 is also the right thing to do.
-
-Note that KVM does _not_ update vcpu->arch.cr2 when a #PF is pending for
-L2, only when it is injected. The distinction is important, because only
-injected (but not intercepted) exceptions are propagated to L1 through
-exit_int_info. It would be incorrect to update CR2 in vmcb12 for a
-pending #PF, as L1 would perceive an updated CR2 value with no #PF.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20260203201010.1871056-1-yosry.ahmed@linux.dev
+Fixes: 8c5fbf1a7231 ("KVM/nSVM: Use the new mapping API for mapping guest memory")
+CC: stable@vger.kernel.org
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Link: https://patch.msgid.link/20260303003421.2185681-6-yosry@kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -1005,7 +1005,7 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 	vmcb12->save.efer   = svm->vcpu.arch.efer;
- 	vmcb12->save.cr0    = kvm_read_cr0(vcpu);
- 	vmcb12->save.cr3    = kvm_read_cr3(vcpu);
--	vmcb12->save.cr2    = vmcb02->save.cr2;
-+	vmcb12->save.cr2    = vcpu->arch.cr2;
- 	vmcb12->save.cr4    = svm->vcpu.arch.cr4;
- 	vmcb12->save.rflags = kvm_get_rflags(vcpu);
- 	vmcb12->save.rip    = kvm_rip_read(vcpu);
+@@ -863,12 +863,9 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
+ 	}
+ 
+ 	vmcb12_gpa = svm->vmcb->save.rax;
+-	ret = kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map);
+-	if (ret == -EINVAL) {
++	if (kvm_vcpu_map(vcpu, gpa_to_gfn(vmcb12_gpa), &map)) {
+ 		kvm_inject_gp(vcpu, 0);
+ 		return 1;
+-	} else if (ret) {
+-		return kvm_skip_emulated_instruction(vcpu);
+ 	}
+ 
+ 	ret = kvm_skip_emulated_instruction(vcpu);
 
 
 
