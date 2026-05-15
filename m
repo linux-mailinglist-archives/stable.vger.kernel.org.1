@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-248596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEvZGY5XB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:27:42 +0200
+	id SEMFOLZFB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF855550C3
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:27:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88DBA552CCF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A7EDB33926F8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:23:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E460F308BEE1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DE63E00BB;
-	Fri, 15 May 2026 16:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458583FF1DE;
+	Fri, 15 May 2026 15:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGUQZ7fG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzwk6a3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0713F26CE11;
-	Fri, 15 May 2026 16:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0853D3FF1D8;
+	Fri, 15 May 2026 15:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862137; cv=none; b=XS3MRA4mOmgFeAf4QnN6jcdNtdjfZfiuVRXklkIX+2kMppXA/jaWBOufPGfetngP/TeapNSUggoWWCIRFDL4AwBRLOQDSvq6crQGUYvuhMnlAWHjdVuJ4h937hbiJkpW0n/OAajySJlWHp9We2V02UrQtdXPUsUeDcSRg7Lzhn0=
+	t=1778860501; cv=none; b=lpLLzz4eQaPUK2ff4+lVKj0y87sf4JMV/uxpSoBqZsF6crw4R14GttirftA3BONiC2wYCSSZu+cDY7YVxjrG/JoJ4vehTQ75ii2hAIfdbkG+TewO75jaEGOZVmlMk/m52NtcuezBGzfk5AoaKQxk7nhq8GvIC1RhBevXDtNqXTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862137; c=relaxed/simple;
-	bh=tereJNCvk04N3aQaQ1glXl2aLUeBUuiI/XFXvp4e9WQ=;
+	s=arc-20240116; t=1778860501; c=relaxed/simple;
+	bh=MUltUfA2MssW4w2iqeBszyAs+nCQEEMRZazWyMux11w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P89cKpEweqCmIoDPsmSvZ62QTIdU7rFO7HKa7fZ9XHjuOIdXdkD7oP8jq9s8Mo+IxLQV5fMNYJW5MQ/46MGnpYmdX1a/G6AsvQfSb2zSflmf1RCVLhd5Q9bYZhm9r7uSXKUwjJZ30CXp1/TUZFM8FOApxsSPluo0Mb5LQq9h8Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGUQZ7fG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A140C2BCB0;
-	Fri, 15 May 2026 16:22:16 +0000 (UTC)
+	 MIME-Version; b=Gmj2fEzCLwX+yxmGJoNeCYGk0HNNkb/js6h9EtSRdU3/ustrTFAED7Aww5f6/FcFr9Vcy4cQ90TUx/4CO5o2c7Q5RqQNSFBrhT1yjgU2KkR66T1FytpR6bUnJ0hvwPdJocmd1G5qs3i6EZlCm0XaLM3TyWl/lWXk/gzY1Y+g1ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzwk6a3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908B8C2BCB3;
+	Fri, 15 May 2026 15:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862136;
-	bh=tereJNCvk04N3aQaQ1glXl2aLUeBUuiI/XFXvp4e9WQ=;
+	s=korg; t=1778860500;
+	bh=MUltUfA2MssW4w2iqeBszyAs+nCQEEMRZazWyMux11w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YGUQZ7fG8StaV7qbD9yQMA3jZ3JI+qcOQ3zdviE4Qin0i2tT+T/k7q7IUeNPyZSJK
-	 4CEuvsoxJr0xZ4tJZu8rRvZe+0MUbiBeYTO2ekIwOmNM47Zf77uLcYHVMYq0LW7BVS
-	 htBB0Pulv2kD19uhP1QorN2N0kBRng8aFto6GcgU=
+	b=zzwk6a3YviggJDgwlHDAi1t8uTMPtvSCu7g+mXNDYNkMALAuIjB42Syr8F/V1CkZZ
+	 0juSijBjEie1HSvcEIjW2jGUJUhsdHYjOah8eL5pahgAqSISpz8h1KgYXGnD1uMiFX
+	 XrrWWuxBQGD3pjia+Xp+8SuUqw32ZfAsnzKmPa2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 123/188] drm/amdgpu: zero-initialize GART table on allocation
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 114/144] spi: uniphier: Simplify clock handling with devm_clk_get_enabled()
 Date: Fri, 15 May 2026 17:49:00 +0200
-Message-ID: <20260515154659.998704380@linuxfoundation.org>
+Message-ID: <20260515154656.137134929@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +64,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1BF855550C3
+X-Rspamd-Queue-Id: 88DBA552CCF
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248596-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247954-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[socionext.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-commit e6c2e6c2e1fa066968a16aca1cb66cd1bdde7741 upstream.
+[ Upstream commit fdca270f8f87cae2eb5b619234b9dd11a863ce6b ]
 
-GART TLB is flushed after unmapping but not after mapping. Since
-amdgpu_bo_create_kernel() does not zero-initialize the buffer, when a
-single PTE is written the TLB may speculatively load other uninitialized
-entries from the same cacheline. Those garbage entries can appear valid,
-and a subsequent write to another PTE in the same cacheline may cause the
-GPU to use a stale garbage PTE from the TLB.
+Replace devm_clk_get() followed by clk_prepare_enable() with
+devm_clk_get_enabled() for the clock. This removes the need for
+explicit clock enable and disable calls, as the managed API automatically
+handles clock disabling on device removal or probe failure.
 
-Fix this by calling memset_io() to zero-initialize the GART table with
-gart_pte_flags immediately after allocation.
+Remove the now-unnecessary clk_disable_unprepare() calls from the probe
+error path and the remove callback. Adjust error labels accordingly.
 
-Using AMDGPU_GEM_CREATE_VRAM_CLEARED, SDMA-based clear will not work
-since SDMA needs GART to be initialized to work.
-
-Suggested-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d9af8263b82b6eaa60c5718e0c6631c5037e4b24)
-Cc: stable@vger.kernel.org
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Reviewed-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://patch.msgid.link/b2deeefd4ef1a4bce71116aabfcb7e81400f6d37.1775546948.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0245435f7772 ("spi: uniphier: fix controller deregistration")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/spi/spi-uniphier.c |   18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-@@ -262,12 +262,19 @@ void amdgpu_gart_table_ram_free(struct a
-  */
- int amdgpu_gart_table_vram_alloc(struct amdgpu_device *adev)
- {
-+	int r;
-+
- 	if (adev->gart.bo != NULL)
- 		return 0;
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -666,28 +666,24 @@ static int uniphier_spi_probe(struct pla
+ 	}
+ 	priv->base_dma_addr = res->start;
  
--	return amdgpu_bo_create_kernel(adev,  adev->gart.table_size, PAGE_SIZE,
--				       AMDGPU_GEM_DOMAIN_VRAM, &adev->gart.bo,
--				       NULL, (void *)&adev->gart.ptr);
-+	r = amdgpu_bo_create_kernel(adev,  adev->gart.table_size, PAGE_SIZE,
-+				    AMDGPU_GEM_DOMAIN_VRAM, &adev->gart.bo,
-+				    NULL, (void *)&adev->gart.ptr);
-+	if (r)
-+		return r;
-+
-+	memset_io(adev->gart.ptr, adev->gart.gart_pte_flags, adev->gart.table_size);
-+	return 0;
+-	priv->clk = devm_clk_get(&pdev->dev, NULL);
++	priv->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(priv->clk)) {
+ 		dev_err(&pdev->dev, "failed to get clock\n");
+ 		ret = PTR_ERR(priv->clk);
+ 		goto out_host_put;
+ 	}
+ 
+-	ret = clk_prepare_enable(priv->clk);
+-	if (ret)
+-		goto out_host_put;
+-
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+ 		ret = irq;
+-		goto out_disable_clk;
++		goto out_host_put;
+ 	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, irq, uniphier_spi_handler,
+ 			       0, "uniphier-spi", priv);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to request IRQ\n");
+-		goto out_disable_clk;
++		goto out_host_put;
+ 	}
+ 
+ 	init_completion(&priv->xfer_done);
+@@ -717,7 +713,7 @@ static int uniphier_spi_probe(struct pla
+ 	if (IS_ERR_OR_NULL(host->dma_tx)) {
+ 		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER) {
+ 			ret = -EPROBE_DEFER;
+-			goto out_disable_clk;
++			goto out_host_put;
+ 		}
+ 		host->dma_tx = NULL;
+ 		dma_tx_burst = INT_MAX;
+@@ -767,9 +763,6 @@ out_release_dma:
+ 		host->dma_tx = NULL;
+ 	}
+ 
+-out_disable_clk:
+-	clk_disable_unprepare(priv->clk);
+-
+ out_host_put:
+ 	spi_controller_put(host);
+ 	return ret;
+@@ -778,14 +771,11 @@ out_host_put:
+ static void uniphier_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+-	struct uniphier_spi_priv *priv = spi_controller_get_devdata(host);
+ 
+ 	if (host->dma_tx)
+ 		dma_release_channel(host->dma_tx);
+ 	if (host->dma_rx)
+ 		dma_release_channel(host->dma_rx);
+-
+-	clk_disable_unprepare(priv->clk);
  }
  
- /**
+ static const struct of_device_id uniphier_spi_match[] = {
 
 
 
