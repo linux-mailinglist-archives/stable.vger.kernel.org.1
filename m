@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGzfNt9KB2rqwgIAu9opvQ
-	(envelope-from <stable+bounces-248354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:35 +0200
+	id 4HG0MAdFB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A1355373C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9411F552BA7
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 65D25312A9E9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DC71B306FD3E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21883FBB52;
-	Fri, 15 May 2026 16:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9983FF1D5;
+	Fri, 15 May 2026 15:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4qI9P4v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpTvaTqX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950CF303CB0;
-	Fri, 15 May 2026 16:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000503FF1A0;
+	Fri, 15 May 2026 15:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861519; cv=none; b=mtPz8w9HVJoYN1YGzdMdAVMLb/OVHL3FqQhDFkkUCxF0zCdNFiG2WiZrNQ+RB+HnfKj3iSmWGtGwIGoNAOycoj6jurk0XB9jliRUnIGNQVR/SgKHkfyhUcEV9WXfCThYsFh35ejxfL+2z1PKk/HsLnlotK86OqBH87luT6I+wgM=
+	t=1778860320; cv=none; b=pRD+b/FEVm6Hu2W8lgwiiGsT75GMtUt0xI1fOi3YDGsH2VGox2hdrVtN2+ezpzTo1e+DrUGJXdaGJyDQ+JvtUc0x1H1A6N/ProSRXu5Ff3lJM6srm93/G4KciKv52w8e2HPcKMd/bbdVI8c0VwlwwthV4w+AQkCiJWhSEqwLcTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861519; c=relaxed/simple;
-	bh=ottGAUj9sviCgB5/h9DVDJZ1VSpBj5qrANpH/0Aj+XQ=;
+	s=arc-20240116; t=1778860320; c=relaxed/simple;
+	bh=yibTLfO+8VequM+jpc2sKJle4DfgR3i9eEXT+eYNQIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6fdOkIOqgMKOx5ucJ3u7+ouYwi/1wdBt1wnZIony9RAVroPdKDT0GZhsI1VEx8RT4mpF2U5YcLyP4mpaI1GjtZMlbV6U5lw6EPMSSmjM0c6lV/maw19qMnc+tWi8cdR2ycwKpR/X7yRFdrBkprX91HDUWBSmzPfbqnSw/VwU7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4qI9P4v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8F4C2BCB0;
-	Fri, 15 May 2026 16:11:59 +0000 (UTC)
+	 MIME-Version; b=QFed/nhhcbsjicdE7TgR37BpRl05ALM+bVkNObtAxFlBoTcNjXi/OEcc18VUKP3IbFLP2991fY8SRR0iuqYx1JsrcMhuBSBwgL5bfi7MG53Mvgv2os20CZoUIACaaqYZfvwBkoD1z6jrVzw1D3EgokRK+dYk3S+/vgmmnFQf53o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpTvaTqX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E517C2BCB0;
+	Fri, 15 May 2026 15:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861519;
-	bh=ottGAUj9sviCgB5/h9DVDJZ1VSpBj5qrANpH/0Aj+XQ=;
+	s=korg; t=1778860319;
+	bh=yibTLfO+8VequM+jpc2sKJle4DfgR3i9eEXT+eYNQIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4qI9P4v2Y0lWAUDJ2QOeY5rbR8gpPSp5ossCBkrJA87rypRpOQpZc8xtRDQ72LS4
-	 434YuLNvN2NpXDrMEQXw0YBVUBSZimPtgKYiGMEGusI4jPrg7I7dmdHFWf/UxcXPh8
-	 37KUTa0EGQiVFf1Fwn5rq8S1a1slGavrI5Ksz19I=
+	b=RpTvaTqX7w80BgbxIoizOk2tRBzehk5Es7eoGa/k4eMDPDeeRp0cKPsP5kWqk6IzG
+	 lif/dbDbJ39Tv74KyI6H5AM4Mli5VcDbej9C5edzUoeeXrfnNN+XtyZ4XwMIg2/gps
+	 ah+j6H6FxaYFTI51u2n0Ins804mYDIPihFWcKdnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 6.6 360/474] batman-adv: bla: only purge non-released claims
+	Purna Chandra Mandal <purna.mandal@microchip.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 043/144] spi: pic32: fix controller deregistration
 Date: Fri, 15 May 2026 17:47:49 +0200
-Message-ID: <20260515154722.807863336@linuxfoundation.org>
+Message-ID: <20260515154654.526538170@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A4A1355373C
+X-Rspamd-Queue-Id: 9411F552BA7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248354-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247884-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,63 +89,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,microchip.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit cf6b604011591865ae39ac82de8978c1120d17af upstream.
+commit 6b627bfe0c44e064aba464839e430dc1ca2b0bb8 upstream.
 
-When batadv_bla_purge_claims() goes through the list of claims, it is only
-traversing the hash list with an rcu_read_lock(). Due to a potential
-parallel batadv_claim_put(), it can happen that it encounters a claim which
-was actually in the process of being released+freed by
-batadv_claim_release(). In this case, backbone_gw is set to NULL before the
-delayed RCU kfree is started. Calling batadv_bla_claim_get_backbone_gw() is
-then no longer allowed because it would cause a NULL-ptr derefence.
+Make sure to deregister the controller before releasing underlying
+resources like DMA during driver unbind.
 
-To avoid this, only claims with a valid reference counter must be purged.
-All others are already taken care of.
-
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: 1bcb9f8ceb67 ("spi: spi-pic32: Add PIC32 SPI master driver")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: Purna Chandra Mandal <purna.mandal@microchip.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-7-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/spi/spi-pic32.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -1288,6 +1288,13 @@ static void batadv_bla_purge_claims(stru
- 
- 		rcu_read_lock();
- 		hlist_for_each_entry_rcu(claim, head, hash_entry) {
-+			/* only purge claims not currently in the process of being released.
-+			 * Such claims could otherwise have a NULL-ptr backbone_gw set because
-+			 * they already went through batadv_claim_release()
-+			 */
-+			if (!kref_get_unless_zero(&claim->refcount))
-+				continue;
-+
- 			backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
- 			if (now)
- 				goto purge_now;
-@@ -1313,6 +1320,7 @@ purge_now:
- 					      claim->addr, claim->vid);
- skip:
- 			batadv_backbone_gw_put(backbone_gw);
-+			batadv_claim_put(claim);
- 		}
- 		rcu_read_unlock();
+--- a/drivers/spi/spi-pic32.c
++++ b/drivers/spi/spi-pic32.c
+@@ -821,7 +821,7 @@ static int pic32_spi_probe(struct platfo
  	}
+ 
+ 	/* register host */
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&host->dev, "failed registering spi host\n");
+ 		goto err_bailout;
+@@ -840,11 +840,16 @@ err_host:
+ 
+ static void pic32_spi_remove(struct platform_device *pdev)
+ {
+-	struct pic32_spi *pic32s;
++	struct pic32_spi *pic32s = platform_get_drvdata(pdev);
++
++	spi_controller_get(pic32s->host);
++
++	spi_unregister_controller(pic32s->host);
+ 
+-	pic32s = platform_get_drvdata(pdev);
+ 	pic32_spi_disable(pic32s);
+ 	pic32_spi_dma_unprep(pic32s);
++
++	spi_controller_put(pic32s->host);
+ }
+ 
+ static const struct of_device_id pic32_spi_of_match[] = {
 
 
 
