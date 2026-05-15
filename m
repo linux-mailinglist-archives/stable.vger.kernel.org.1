@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-248574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gG19F1RXB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:44 +0200
+	id 6J4QO0VoB2o+2AIAu9opvQ
+	(envelope-from <stable+bounces-247932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:39:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA93255504F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:26:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC355565F8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9ABBF337EEB7
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63C0430CC4CF
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2233FBB4A;
-	Fri, 15 May 2026 16:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0668914B08A;
+	Fri, 15 May 2026 15:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wa9yMkIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CATrSKPK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AD23F9290;
-	Fri, 15 May 2026 16:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA8A3FF1D5;
+	Fri, 15 May 2026 15:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862080; cv=none; b=ngbOsx/Cp7bPb63pO8BbIQ0M+R7rZn//kUuCnUlHCNlL/oNRT9NA9O6Bt6HfeD+VVNWZNCuiarMDeidYTwKM4iKp1Q8F+6H4xawkXlsNC0sCycSqdPDvGWTbWaVe8ABESawnyskLbwfORr2Gy5dIUUnplZ7LkBs+EOni8aGS3K8=
+	t=1778860443; cv=none; b=XPjb1algUFoxp79Qxo+qsgZrcevVTb0eLpT9XM0pOGgFou6NH414PGp454HdH2hv/99TfhaxTdgnAuiUboU7+q/KC1rX1VsicNyxMNEGSJlZLZksQCdMsY/tDdTSDzfU9Kkf2dlUqORsndks2JJNw101IAVzn3X1wFZ8tNFfKrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862080; c=relaxed/simple;
-	bh=uueHRP6n8cly8IGqMiQlxedy4VJ1QhI3/1VTwFue3xI=;
+	s=arc-20240116; t=1778860443; c=relaxed/simple;
+	bh=ehYVexv93yCQt8/hpEyC+Sh4TK843dW1CuyO4OnkcMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AvqxU/PyElvFDdMbFOFk7+xxbRPD77vmUZf2D5T+ziXWI7ZNUlJ/rSWyaCKJFLYT9t+IYSnJAVM3FnqUowSUkjWSgahnFwTg6kzqMui1XW3XRUjOXKlYqx5xpGS2gGnbe41TycqItXLWc+3kofMMa02jOeCod/1tatMLQXeTgBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wa9yMkIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DA8C2BCB0;
-	Fri, 15 May 2026 16:21:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P00HaquIg6MdAjoDCvfJ4me9oBOSshY+BQl5Bq61pvVWuDJwxsALgU/oYI0PYC8Gee6Nt015OE1LIZmF5kqN4ejRm6TAkFgt6PwzCO2li578yrTLO10IpiFouSdKLWF6TqnoG7opcT3AoFEZHNaIyT8iFOaYfPaMY/HPE0JFPXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CATrSKPK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55180C2BCB0;
+	Fri, 15 May 2026 15:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862079;
-	bh=uueHRP6n8cly8IGqMiQlxedy4VJ1QhI3/1VTwFue3xI=;
+	s=korg; t=1778860443;
+	bh=ehYVexv93yCQt8/hpEyC+Sh4TK843dW1CuyO4OnkcMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wa9yMkIf15TygqGqagpnXHQMkc6J/Tdjfl9wbdKjYQojxyJExhkWNy1VVLCyqoV6X
-	 NcTr7sIrAwregRee+tfRDKlQUXFbogbTe/aWfnofAIAQmb4+RX7u87QcvJDowCvs/g
-	 q0kA7uY4PhwHkz0xf1hkoQS0QKV7iSPevPpzeng8=
+	b=CATrSKPKEnXyLgQ6IMlIeQ8PAf7uOHtL+FQkqy97eL0v17mQGTerKexIy3Y7w+EZh
+	 jIIeWGzpW1iWjxOMV2Lx+C6kMv0VihZlDszWR5hBZ2R3g8V2+7xgLrg3AeVYLW7fQ2
+	 871N3wM5x8NUCRUBKuDmVOEXWyYkGleNewkSvYXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anna Maniscalco <anna.maniscalco2000@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>
-Subject: [PATCH 6.18 099/188] drm/msm: always recover the gpu
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	"John B. Moore" <jbmoore61@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 090/144] drm/amdgpu/sdma4: replace BUG_ON with WARN_ON in fence emission
 Date: Fri, 15 May 2026 17:48:36 +0200
-Message-ID: <20260515154659.478029476@linuxfoundation.org>
+Message-ID: <20260515154655.603171884@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +63,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DA93255504F
+X-Rspamd-Queue-Id: 6DC355565F8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248574-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247932-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anna Maniscalco <anna.maniscalco2000@gmail.com>
+From: John B. Moore <jbmoore61@gmail.com>
 
-commit 01a0d6cd7032e9993feea19fadb03ef9d5b488f2 upstream.
+commit 78d2e624fa073c14970aa097adcf3ea31c157a66 upstream.
 
-Previously, in case there was no more work to do, recover worker
-wouldn't trigger recovery and would instead rely on the gpu going to
-sleep and then resuming when more work is submitted.
+sdma_v4_0_ring_emit_fence() contains two BUG_ON(addr & 0x3) assertions
+that verify fence writeback addresses are dword-aligned.  These
+assertions can be reached from unprivileged userspace via crafted
+DRM_IOCTL_AMDGPU_CS submissions, causing a fatal kernel panic in a
+scheduler worker thread.
 
-Recover_worker will first increment the fence of the hung ring so, if
-there's only one job submitted to a ring and that causes an hang, it
-will early out.
+Replace both BUG_ON() calls with WARN_ON() to log the condition without
+crashing the kernel.  A misaligned fence address at this point indicates
+a driver bug, but crashing the kernel is never the correct response when
+the assertion is reachable from userspace.
 
-There's no guarantee that the gpu will suspend and resume before more
-work is submitted and if the gpu is in a hung state it will stay in that
-state and probably trigger a timeout again.
+The CS IOCTL path is the correct place to filter invalid submissions;
+the ring emission callback is too late to do anything about it.
 
-Just stop checking and always recover the gpu.
-
-Signed-off-by: Anna Maniscalco <anna.maniscalco2000@gmail.com>
+Fixes: 2130f89ced2c ("drm/amdgpu: add SDMA v4.0 implementation (v2)")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: John B. Moore <jbmoore61@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b90250bd933afd1ba94d86d6b13821997b22b18e)
 Cc: stable@vger.kernel.org
-Patchwork: https://patchwork.freedesktop.org/patch/704066/
-Message-ID: <20260210-recovery_suspend_fix-v1-1-00ed9013da04@gmail.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_gpu.c |   42 ++++++++++++++++++++----------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/msm/msm_gpu.c
-+++ b/drivers/gpu/drm/msm/msm_gpu.c
-@@ -548,32 +548,30 @@ static void recover_worker(struct kthrea
- 		msm_update_fence(ring->fctx, fence);
- 	}
- 
--	if (msm_gpu_active(gpu)) {
--		/* retire completed submits, plus the one that hung: */
--		retire_submits(gpu);
-+	/* retire completed submits, plus the one that hung: */
-+	retire_submits(gpu);
- 
--		gpu->funcs->recover(gpu);
-+	gpu->funcs->recover(gpu);
- 
--		/*
--		 * Replay all remaining submits starting with highest priority
--		 * ring
--		 */
--		for (i = 0; i < gpu->nr_rings; i++) {
--			struct msm_ringbuffer *ring = gpu->rb[i];
--			unsigned long flags;
-+	/*
-+	 * Replay all remaining submits starting with highest priority
-+	 * ring
-+	 */
-+	for (i = 0; i < gpu->nr_rings; i++) {
-+		struct msm_ringbuffer *ring = gpu->rb[i];
-+		unsigned long flags;
- 
--			spin_lock_irqsave(&ring->submit_lock, flags);
--			list_for_each_entry(submit, &ring->submits, node) {
--				/*
--				 * If the submit uses an unusable vm make sure
--				 * we don't actually run it
--				 */
--				if (to_msm_vm(submit->vm)->unusable)
--					submit->nr_cmds = 0;
--				gpu->funcs->submit(gpu, submit);
--			}
--			spin_unlock_irqrestore(&ring->submit_lock, flags);
-+		spin_lock_irqsave(&ring->submit_lock, flags);
-+		list_for_each_entry(submit, &ring->submits, node) {
-+			/*
-+			 * If the submit uses an unusable vm make sure
-+			 * we don't actually run it
-+			 */
-+			if (to_msm_vm(submit->vm)->unusable)
-+				submit->nr_cmds = 0;
-+			gpu->funcs->submit(gpu, submit);
- 		}
-+		spin_unlock_irqrestore(&ring->submit_lock, flags);
- 	}
- 
- 	pm_runtime_put(&gpu->pdev->dev);
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+@@ -890,7 +890,7 @@ static void sdma_v4_0_ring_emit_fence(st
+ 	/* write the fence */
+ 	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_FENCE));
+ 	/* zero in first two bits */
+-	BUG_ON(addr & 0x3);
++	WARN_ON(addr & 0x3);
+ 	amdgpu_ring_write(ring, lower_32_bits(addr));
+ 	amdgpu_ring_write(ring, upper_32_bits(addr));
+ 	amdgpu_ring_write(ring, lower_32_bits(seq));
+@@ -900,7 +900,7 @@ static void sdma_v4_0_ring_emit_fence(st
+ 		addr += 4;
+ 		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_FENCE));
+ 		/* zero in first two bits */
+-		BUG_ON(addr & 0x3);
++		WARN_ON(addr & 0x3);
+ 		amdgpu_ring_write(ring, lower_32_bits(addr));
+ 		amdgpu_ring_write(ring, upper_32_bits(addr));
+ 		amdgpu_ring_write(ring, upper_32_bits(seq));
 
 
 
