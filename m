@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id bR0QL2NEB2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-247927-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:55 +0200
+	id EDaaGmRMB2opxQIAu9opvQ
+	(envelope-from <stable+bounces-248397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:40:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38989552AB0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:05:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B00553B1E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0ACDC30B305E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 44D90327F407
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D01817C220;
-	Fri, 15 May 2026 15:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853CA3F44CD;
+	Fri, 15 May 2026 16:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujKGuuES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9xodS+0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6423FF1DD;
-	Fri, 15 May 2026 15:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480CF3EFFA0;
+	Fri, 15 May 2026 16:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860430; cv=none; b=Ytsi82gXoGgQNw5mqauIG2fEt0SjSRsZbVoY/Esg2LbXOxCkYT3J2W4rBHvPIOn0SvS9O2wuHuKHFipcCCp5hgMoNo979N2xw+flVL3g8Kj0Kpyu6g2Hy5JOW7/RaVqEWZC7Oo7SbrIV0fH3/mYHlE8fCbxxqC/c7QE95qyjF+M=
+	t=1778861632; cv=none; b=ZGzSIWZhLIndMg61Arb0fM0PhfAI0UhUI1UxOZIb3w3hasYShEQZlHKGPXFVd6YJBZtt3WeyXWUSXYlDSbAZjNHv5UCoNDiJMXmlf7hcFjx2/D0Y9XZ0RhE9GcyTpnjslfIdpJ7yOin4/yH0vBgY9Gq9glbJDk7FHHMWnIRe+4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860430; c=relaxed/simple;
-	bh=ioDL2l7FeF24FRAnKC9S3PNgbq2S5IcQ00HNwbKEFTI=;
+	s=arc-20240116; t=1778861632; c=relaxed/simple;
+	bh=p2FpX8ldRcCn7gk5sdSkEZBxOkp+AeXEMlWj3osszIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qrsu1smmI35FfKWa/fHAcpiXR2L0rNVZYhvvnxdJ03jdBa+ex4j4oy1r8JxZfNXmT4ZINOOnbhtcFsoI5EshvfI4MFFwM8QdujpuxENltAjmTTgk6ipax4JOon9IGRdvih86qPCn9xUZJuAOwpM/Gh5GLNFwbfqOMoOsUJt7NHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujKGuuES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64873C2BCB0;
-	Fri, 15 May 2026 15:53:50 +0000 (UTC)
+	 MIME-Version; b=HahStxMMJHxei4rkGFdTRH1BsHaSBux/DD6aiHE6ECZTC0cwroHYlpxKeUBlDDiCfB2nxqZuB/fQWXG9Di1I/Vl0lJ4hESGzGL8rhp5YtrOJdr/zwLld8RsOI7ihJcu2q0XhfQKw8oC9yNsMhksPJchtKR0Vo+Iy5LxyMeUMcRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9xodS+0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CF3C2BCB0;
+	Fri, 15 May 2026 16:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860430;
-	bh=ioDL2l7FeF24FRAnKC9S3PNgbq2S5IcQ00HNwbKEFTI=;
+	s=korg; t=1778861632;
+	bh=p2FpX8ldRcCn7gk5sdSkEZBxOkp+AeXEMlWj3osszIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ujKGuuESWC8JIXWQSq+3x0wIgFHMZiOZjcKIA3PmsMwa1vafe5aYkm6FwO8QaSvCP
-	 Oe6xtDN/B9e1Z9XBkNZpPvDC61WZyBJ6Knon8LO+rBeJ5plv8gFDbNEOpJccxwhDRK
-	 fyvjarN3oUYshiVIRppcObPpxT+psLZiSjvjRvow=
+	b=H9xodS+078NaNEQGN5BT6Gd2hhsfqVi+Lw1UAoZnBCWoMfocyVoeI8vWs/EDjqadR
+	 AkXYLgp+II2stmrmHS5bFqa1VKKGxmswcOA/grk7o+L/SIFNhzDRVQPbwyVTA2goSQ
+	 TuKodRRpFlkCacaiZkjIwB7plhD1YcQssB/vrZhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 6.12 086/144] drm/panel: himax-hx83102: restore MODE_LPM after sending disable cmds
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 403/474] crypto: nx - Avoid -Wflex-array-member-not-at-end warning
 Date: Fri, 15 May 2026 17:48:32 +0200
-Message-ID: <20260515154655.516990150@linuxfoundation.org>
+Message-ID: <20260515154723.770558382@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 38989552AB0
+X-Rspamd-Queue-Id: D2B00553B1E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247927-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248397-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,52 +91,126 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,iscas.ac.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,chromium.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 
-commit 2d4e80271f784aa0c7b17676e9762c7e8156be1c upstream.
+[ Upstream commit 1e6b251ce1759392666856908113dd5d7cea044d ]
 
-When preparing the panel, it seems that it always expects commands to be
-transferred in LP mode. However, the disable function removes the
-MIPI_DSI_MODE_LPM flag, and no other function re-adds it.
+-Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
+ready to enable it globally. So, we are deprecating flexible-array
+members in the middle of another structure.
 
-As the unprepare function contains no DSI commands, re-adding the flag
-just after disabling the panel should be safe. Add the code re-adding
-the flag after the two commands for disabling the panel are sent.
+There is currently an object (`header`) in `struct nx842_crypto_ctx`
+that contains a flexible structure (`struct nx842_crypto_header`):
 
-This fixes screen unblanking (after blanking once) on
-mt8188-geralt-ciri-sku1 device.
+struct nx842_crypto_ctx {
+	...
+        struct nx842_crypto_header header;
+        struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
+	...
+};
 
-Cc: stable@vger.kernel.org # 6.11+
-Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out as separate driver")
-Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260425165751.1716569-1-zhengxingda@iscas.ac.cn
+So, in order to avoid ending up with a flexible-array member in the
+middle of another struct, we use the `struct_group_tagged()` helper to
+separate the flexible array from the rest of the members in the flexible
+structure:
+
+struct nx842_crypto_header {
+	struct_group_tagged(nx842_crypto_header_hdr, hdr,
+
+		... the rest of the members
+
+	);
+        struct nx842_crypto_header_group group[];
+} __packed;
+
+With the change described above, we can now declare an object of the
+type of the tagged struct, without embedding the flexible array in the
+middle of another struct:
+
+struct nx842_crypto_ctx {
+	...
+        struct nx842_crypto_header_hdr header;
+        struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
+	...
+ } __packed;
+
+We also use `container_of()` whenever we need to retrieve a pointer to
+the flexible structure, through which we can access the flexible
+array if needed.
+
+So, with these changes, fix the following warning:
+
+In file included from drivers/crypto/nx/nx-842.c:55:
+drivers/crypto/nx/nx-842.h:174:36: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+  174 |         struct nx842_crypto_header header;
+      |                                    ^~~~~~
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: adb3faf2db1a ("crypto: nx - fix bounce buffer leaks in nx842_crypto_{alloc,free}_ctx")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-himax-hx83102.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/nx/nx-842.c |    6 ++++--
+ drivers/crypto/nx/nx-842.h |   10 ++++++----
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/panel/panel-himax-hx83102.c
-+++ b/drivers/gpu/drm/panel/panel-himax-hx83102.c
-@@ -479,6 +479,8 @@ static int hx83102_disable(struct drm_pa
- 	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
- 	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
+--- a/drivers/crypto/nx/nx-842.c
++++ b/drivers/crypto/nx/nx-842.c
+@@ -251,7 +251,9 @@ int nx842_crypto_compress(struct crypto_
+ 			  u8 *dst, unsigned int *dlen)
+ {
+ 	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
+-	struct nx842_crypto_header *hdr = &ctx->header;
++	struct nx842_crypto_header *hdr =
++				container_of(&ctx->header,
++					     struct nx842_crypto_header, hdr);
+ 	struct nx842_crypto_param p;
+ 	struct nx842_constraints c = *ctx->driver->constraints;
+ 	unsigned int groups, hdrsize, h;
+@@ -490,7 +492,7 @@ int nx842_crypto_decompress(struct crypt
+ 	}
  
-+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
- 	mipi_dsi_msleep(&dsi_ctx, 150);
+ 	memcpy(&ctx->header, src, hdr_len);
+-	hdr = &ctx->header;
++	hdr = container_of(&ctx->header, struct nx842_crypto_header, hdr);
  
- 	return dsi_ctx.accum_err;
+ 	for (n = 0; n < hdr->groups; n++) {
+ 		/* ignore applies to last group */
+--- a/drivers/crypto/nx/nx-842.h
++++ b/drivers/crypto/nx/nx-842.h
+@@ -157,9 +157,11 @@ struct nx842_crypto_header_group {
+ } __packed;
+ 
+ struct nx842_crypto_header {
+-	__be16 magic;		/* NX842_CRYPTO_MAGIC */
+-	__be16 ignore;		/* decompressed end bytes to ignore */
+-	u8 groups;		/* total groups in this header */
++	struct_group_tagged(nx842_crypto_header_hdr, hdr,
++		__be16 magic;		/* NX842_CRYPTO_MAGIC */
++		__be16 ignore;		/* decompressed end bytes to ignore */
++		u8 groups;		/* total groups in this header */
++	);
+ 	struct nx842_crypto_header_group group[];
+ } __packed;
+ 
+@@ -171,7 +173,7 @@ struct nx842_crypto_ctx {
+ 	u8 *wmem;
+ 	u8 *sbounce, *dbounce;
+ 
+-	struct nx842_crypto_header header;
++	struct nx842_crypto_header_hdr header;
+ 	struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
+ 
+ 	struct nx842_driver *driver;
 
 
 
