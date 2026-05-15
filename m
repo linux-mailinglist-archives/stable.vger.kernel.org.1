@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-248411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IM1kEulNB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:33 +0200
+	id ILttEdlnB2ol2AIAu9opvQ
+	(envelope-from <stable+bounces-247942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:37:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF100553E3D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:46:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9628B556586
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 997523274BD7
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:16:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 471C03167B22
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722AF30DD1D;
-	Fri, 15 May 2026 16:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27153FF1D1;
+	Fri, 15 May 2026 15:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t81MLhnI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDSk0Rct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3477E3F86E5;
-	Fri, 15 May 2026 16:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55B23FF1CD;
+	Fri, 15 May 2026 15:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861668; cv=none; b=tZXLUF95vFkGFEh9pfTWz/SG/eiCKnZuD5wH06TmI6gqj17L+NavYTg13PCrA+EUpBWMq5RftegGhMsK0jCSawZnx577qHQC+V3xDjNLmt4P3LvwJ/0d9IuKPVQZ4ZgrYehiPgU+RNoj2bJhr+96I5AB0egREiA0buNzX8Fqnts=
+	t=1778860469; cv=none; b=CjGxdlFEbcT+7E9PxuDHT0zYFg2OPL9Q+k/McHt66339lxnjRN1Q+vPU9w+sdyc4M4x9Oc84+tjyVUjCGGaTvi2ln5m66Q8AQhRfYpU46KA0mE11gp8yj7XzsFdrinuOVrk+6Tcrmax2P2bjKH+PTEFud4ndqZ9Uvka1LdW6g9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861668; c=relaxed/simple;
-	bh=Qa9/9M6jlQR87nX9m3ZPcFHN2Piw3KU+R188zlBS/Ls=;
+	s=arc-20240116; t=1778860469; c=relaxed/simple;
+	bh=85LcsC+LB9739e+Ybuz5L6KH1ga7cl/9Gf1wcEN6+sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bR28eO4BVmRFibD3SpknfLDJl3H1vDzcBemcOIiWhj6Rz1z6bpRV5mS8qnC5BSDhPeE5rUA5XUUcL6qduPwleX2TYWmhx2FrmrUOq1Y168EiJ8K7QT49CYfqp3GIr7K2w9L05uspaSLqtdxDYtsqxpyw9GxiPpy+m2yKXa1OqXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t81MLhnI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C95C2BCB0;
-	Fri, 15 May 2026 16:14:27 +0000 (UTC)
+	 MIME-Version; b=YfCHil1HnCi8c5+y14CAMKS+qGmHVgok4BL7zScZlWrg87xUIgxTSLQOk2QderpOq6XVbgzvs9bPPA9ipIUdB5J78LVPZZFWuda0THcqiuocVLBydybWer2nLtZiYAfsSD7ejtacL4LJDhXOXSBnFWhubVjfJvgVwKkOncB4pHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDSk0Rct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0491DC2BCB0;
+	Fri, 15 May 2026 15:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861668;
-	bh=Qa9/9M6jlQR87nX9m3ZPcFHN2Piw3KU+R188zlBS/Ls=;
+	s=korg; t=1778860469;
+	bh=85LcsC+LB9739e+Ybuz5L6KH1ga7cl/9Gf1wcEN6+sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t81MLhnIHsB2A4+3sUaEzXtNCFEvzF3pgLO6vEZ337wWddGJA5xAXtaIzYOAbgUEW
-	 GsNxpYuUgCc1PbtVhE56kxtC4H5HJNJXOudYa2KlLDlKtH2+I7vQ+9rxSn3U/HU52j
-	 FVu250n1zAu81x+cW3yF2jVNT3m9GF1rzG8zK0eI=
+	b=xDSk0Rct/aDBrTNpLxnhgGv4L0QNpvEZ9z0+bxX1KBEwBPabhVaNdCil2ZiUG3mRj
+	 mk1jvyklpxkYrrpsKJzGOPjl1SZlViIfRNCktT7ZAfaLYVGekNKBmIs7gq0KsOvtNQ
+	 R55z/joUnzMHdxMTjQeLp9fpd0Yik6yg0TU3qxFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Lentczner <mark@glyphic.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 416/474] ALSA: seq: Notify client and port info changes
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.12 099/144] batman-adv: bla: only purge non-released claims
 Date: Fri, 15 May 2026 17:48:45 +0200
-Message-ID: <20260515154724.060302565@linuxfoundation.org>
+Message-ID: <20260515154655.798631558@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +63,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BF100553E3D
+X-Rspamd-Queue-Id: 9628B556586
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248411-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247942-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,77 +88,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,glyphic.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,narfation.org:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit b8e49e24cdba27a0810a0988e810e2c68f2033cb ]
+commit cf6b604011591865ae39ac82de8978c1120d17af upstream.
 
-It was supposed to be notified when a sequencer client info and a port
-info has changed (via SNDRV_SEQ_EVENT_CLIENT_CHANGE and
-SNDRV_SEQ_EVENT_PORT_CHANGE event, respectively), and there are
-already helper functions.  But those aren't really sent from the
-driver so far, except for the recent support of UMP, simply due to the
-lack of implementations.
+When batadv_bla_purge_claims() goes through the list of claims, it is only
+traversing the hash list with an rcu_read_lock(). Due to a potential
+parallel batadv_claim_put(), it can happen that it encounters a claim which
+was actually in the process of being released+freed by
+batadv_claim_release(). In this case, backbone_gw is set to NULL before the
+delayed RCU kfree is started. Calling batadv_bla_claim_get_backbone_gw() is
+then no longer allowed because it would cause a NULL-ptr derefence.
 
-This patch adds the missing notifications at updating the client and
-the port info.  The formerly added notification for UMP is dropped
-because it's handled now in the port info side.
+To avoid this, only claims with a valid reference counter must be purged.
+All others are already taken care of.
 
-Reported-by: Mark Lentczner <mark@glyphic.com>
-Link: https://lore.kernel.org/CAPnksqRok7xGa4bxq9WWimVV=28-7_j628OmrWLS=S0=hzaTHQ@mail.gmail.com
-Link: https://patch.msgid.link/20241128074734.32165-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 92429ca999db ("ALSA: seq: Fix UMP group 16 filtering")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/seq/seq_clientmgr.c  |    7 +++++++
- sound/core/seq/seq_ump_client.c |    2 --
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ net/batman-adv/bridge_loop_avoidance.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/sound/core/seq/seq_clientmgr.c
-+++ b/sound/core/seq/seq_clientmgr.c
-@@ -1334,6 +1334,10 @@ static int snd_seq_ioctl_set_client_info
- 		client->midi_version = client_info->midi_version;
- 	memcpy(client->event_filter, client_info->event_filter, 32);
- 	client->group_filter = client_info->group_filter;
-+
-+	/* notify the change */
-+	snd_seq_system_client_ev_client_change(client->number);
-+
- 	return 0;
- }
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -1288,6 +1288,13 @@ static void batadv_bla_purge_claims(stru
  
-@@ -1457,6 +1461,9 @@ static int snd_seq_ioctl_set_port_info(s
- 	if (port) {
- 		snd_seq_set_port_info(port, info);
- 		snd_seq_port_unlock(port);
-+		/* notify the change */
-+		snd_seq_system_client_ev_port_change(info->addr.client,
-+						     info->addr.port);
+ 		rcu_read_lock();
+ 		hlist_for_each_entry_rcu(claim, head, hash_entry) {
++			/* only purge claims not currently in the process of being released.
++			 * Such claims could otherwise have a NULL-ptr backbone_gw set because
++			 * they already went through batadv_claim_release()
++			 */
++			if (!kref_get_unless_zero(&claim->refcount))
++				continue;
++
+ 			backbone_gw = batadv_bla_claim_get_backbone_gw(claim);
+ 			if (now)
+ 				goto purge_now;
+@@ -1313,6 +1320,7 @@ purge_now:
+ 					      claim->addr, claim->vid);
+ skip:
+ 			batadv_backbone_gw_put(backbone_gw);
++			batadv_claim_put(claim);
+ 		}
+ 		rcu_read_unlock();
  	}
- 	return 0;
- }
---- a/sound/core/seq/seq_ump_client.c
-+++ b/sound/core/seq/seq_ump_client.c
-@@ -273,8 +273,6 @@ static void update_port_infos(struct seq
- 						new);
- 		if (err < 0)
- 			continue;
--		/* notify to system port */
--		snd_seq_system_client_ev_port_change(client->seq_client, i);
- 	}
- }
- 
 
 
 
