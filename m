@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-247872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AB3NH+5nB2ol2AIAu9opvQ
-	(envelope-from <stable+bounces-247872-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:37:34 +0200
+	id AM/4BehZB2orzwIAu9opvQ
+	(envelope-from <stable+bounces-248712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE826556598
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 20:37:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AADEB55551A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58852321BA56
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:51:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE4313254E50
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B9E3FF1DD;
-	Fri, 15 May 2026 15:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC003C0607;
+	Fri, 15 May 2026 16:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGaS1KUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OV1IE7Kg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE953FF1A0;
-	Fri, 15 May 2026 15:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C46C3F927C;
+	Fri, 15 May 2026 16:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860289; cv=none; b=mXulstJwZRwEflI63MQ6LFHFG+TOsI0b0UObQs080gIMXCjII2zU489MZ5Kw/VxdN79gSjSrq7NTYalfjEPoxg2AC1Wyh3cY4lLqukWUrt6qCIEm+JH2GNEGHB2f4KxN2TV2UBHj3UXd+iejsiPb9j3H/TfFXwcK81OSjc8UTGo=
+	t=1778862435; cv=none; b=TNLsflwoZ/qPD46cLjOcYymvjmyi9oANqXsNU0J/lnn9ZAOvyzcK9v8ap/eiB0HMUfYTeY8eHxFMxTtAzYxTYNqoYlUXtnwD33xUhAoy7p2yZ5zmuqYsi2fB+fmaYb6uysWBvHuzOqTi4EpROfQPeTSAPBjlWUgWYD2WATVa0HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860289; c=relaxed/simple;
-	bh=bJSUgErWMe39JzbQaL0TweG4hmP0FIan8qzN/+8ARcA=;
+	s=arc-20240116; t=1778862435; c=relaxed/simple;
+	bh=m3YgQNgtvoeBJdZSsVjXk7d5lSFR0s5MjCoZboKa3p4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbYpp6ipsFkIF4M/Ay7bbzeQ2NDeqFdid5yJXFnXnEvBDyVylFayuXgvG2O2nM1cdT6jZvkS/Vkad8SpTQPjGClolrO4pPizSnTgR9JM33PmgmFUP/qukYOehRI04rwHB8Ls52Zxa/Ff1NLxrupr1I8gebbgz31UM0B4LRn9fZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGaS1KUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7565EC2BCB0;
-	Fri, 15 May 2026 15:51:28 +0000 (UTC)
+	 MIME-Version; b=oAecm1jSv3ZXWlqqjHV9x1nI4r6kdiSGL48DG0ADPVNvbzE1Oj46qthupfMnXorUclIV8iRHHaeGsb8drLsLnAGq2efvOW9O1IrBsEBjSEc5TlRiKr2XYKC+8AMixE5+NTU2rXpQEALt9OY1S5sNJ7zKnRJrlh9O8PzrcgUqKPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OV1IE7Kg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026E9C2BCB0;
+	Fri, 15 May 2026 16:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860288;
-	bh=bJSUgErWMe39JzbQaL0TweG4hmP0FIan8qzN/+8ARcA=;
+	s=korg; t=1778862435;
+	bh=m3YgQNgtvoeBJdZSsVjXk7d5lSFR0s5MjCoZboKa3p4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGaS1KUbu6+WpvtAR+dwrDToLVNUIik1ytmx6L2vgfIt4846h/Vv7AtRiw9d0zqbC
-	 /KDuuIdA7vWD/4uvXSmPmwGthUdQ1NbW07CqD5h/+Gpq7Gj2oBQ27d6IoROnq8tOeO
-	 srFpSD7S98TJOgc7fVBm0TKSiPdRWryrZWSOVNrw=
+	b=OV1IE7KgEfnTiBmzO0/LQhdHLIg7YsWZE4dBhUxGtV/iT3ai0UFctRY4nHACw934k
+	 I+znKjzmoGMxPPXuimCamkTpxj1Tv5Kz44Y3jUpFBNgVxobuQSgbnh3/x+qWk57AAC
+	 PXW3oDvrcNGeVX7hf+bDzM6Z+2KFSBeGcAAHeWAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 032/144] media: pci: zoran: fix potential memory leak in zoran_probe()
+	Chris Morgan <macromorgan@hotmail.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 040/201] regulator: bq257xx: fix OF node reference imbalance
 Date: Fri, 15 May 2026 17:47:38 +0200
-Message-ID: <20260515154654.256950930@linuxfoundation.org>
+Message-ID: <20260515154659.401210690@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +65,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CE826556598
+X-Rspamd-Queue-Id: AADEB55551A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247872-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,chromium.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-248712-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable,cisco];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,chromium.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Johan Hovold <johan@kernel.org>
 
-commit 8ea21435fe36fb853706f4935d78bc11beb63fb4 upstream.
+commit 7ea07bc030d8d6395524dec22ff3267441a28c0d upstream.
 
-The memory allocated for codec in videocodec_attach() is not freed in
-one of the error paths, due to an incorrect goto label. Fix the label
-to free it on error.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-Fixes: 8f7cc5c0b0eb ("media: staging: media: zoran: introduce zoran_i2c_init")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fix this by using the intended helper for reusing OF nodes.
+
+Fixes: 981dd162b635 ("regulator: bq257xx: Add bq257xx boost regulator driver")
+Cc: stable@vger.kernel.org	# 6.18
+Cc: Chris Morgan <macromorgan@hotmail.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260408073055.5183-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/zoran/zoran_card.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/bq257xx-regulator.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/media/pci/zoran/zoran_card.c
-+++ b/drivers/media/pci/zoran/zoran_card.c
-@@ -1377,7 +1377,7 @@ static int zoran_probe(struct pci_dev *p
- 		}
- 		if (zr->codec->type != zr->card.video_codec) {
- 			pci_err(pdev, "%s - wrong codec\n", __func__);
--			goto zr_unreg_videocodec;
-+			goto zr_detach_codec;
- 		}
- 	}
- 	if (zr->card.video_vfe != 0) {
+--- a/drivers/regulator/bq257xx-regulator.c
++++ b/drivers/regulator/bq257xx-regulator.c
+@@ -142,8 +142,7 @@ static int bq257xx_regulator_probe(struc
+ 	struct device_node *np = dev->of_node;
+ 	struct regulator_config cfg = {};
+ 
+-	pdev->dev.of_node = pdev->dev.parent->of_node;
+-	pdev->dev.of_node_reused = true;
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
+ 
+ 	pdata = devm_kzalloc(&pdev->dev, sizeof(struct bq257xx_reg_data), GFP_KERNEL);
+ 	if (!pdata)
 
 
 
