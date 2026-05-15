@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-247971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NPLF8dFB2p6wAIAu9opvQ
-	(envelope-from <stable+bounces-247971-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:51 +0200
+	id EI3WGH9YB2oozgIAu9opvQ
+	(envelope-from <stable+bounces-248613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:31:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF56552CFB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8BD5552A5
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3B21A30941F8
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:55:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 049B83207BEA
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E388303CB0;
-	Fri, 15 May 2026 15:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCE04B8DCA;
+	Fri, 15 May 2026 16:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkqKD9qT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYINeBUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F07F3FF1D8;
-	Fri, 15 May 2026 15:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070F33246FE;
+	Fri, 15 May 2026 16:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860542; cv=none; b=urh6xLpv6Q7dPFw5Sa396yVOB3qNqx8U1X80QSSaYzBNLGfemLAu5py2A2gPj7xx/3zG7CT7VYviN0dUNkUT267+zCxcvz6Jqrb8bSxcKPPTEXfboTbZxcD99m6Zh3GbcZtnqambfDwlrVRPkI3dk0H+0uJIetyAPlHV9kViuGQ=
+	t=1778862181; cv=none; b=FaptZrITMP6DFO9d+0t/wlQHn0lFtVxvXBXtffIWobLWNnbahJqn4WB0tBT9ZDSZFeOFv9ZqQwVozOCtkAmpsYingH6mpJZer3Zo6MRHrstaBbcjcD2zQOwto2foKuneLWqII9tRPoglqSRKFt1cVzLOdaBmLqiOAvGNeZJUE3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860542; c=relaxed/simple;
-	bh=o3XzFbL15NkbultVJ4tvNzUkg7XqqDaYSs7BynJ6D18=;
+	s=arc-20240116; t=1778862181; c=relaxed/simple;
+	bh=S0/qdXpkhcpRb1YTTGChMSpUjaZgf/+RU6h86bBIuno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=thA5DPP4x5bIDuDMwYog4tUVzK3IY71IKEH7QzSDa8H0EKHNn+lXbjNQ/P/asPUrByW7xXDfmWj7AcE7UcbwfaufMZP3uCclpGEVkLP2mW2lGBiMV1Fq7uP0MEYc25KmhTyAb5//3LVg8A20tEjgYY1ifN73kbaakpQLnzTjueI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkqKD9qT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B64C2BCB0;
-	Fri, 15 May 2026 15:55:41 +0000 (UTC)
+	 MIME-Version; b=WYPS03UyqqRHNG/PhzezVXW9A1txYFNHEm3gyz5WT5/GAiIGLAdKY2mo35PriBDwnssiOhUS9f+JxT8Qb5z7MY/fUgTWZONe9CL7Ti3ySf/tfk0iqRJuCpqVRnsawnpk+nSFkUcfV8WNa5k5HG5x0Y8Uq8IUVrZLWDVix+AZe8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYINeBUB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CB9C2BCB0;
+	Fri, 15 May 2026 16:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860541;
-	bh=o3XzFbL15NkbultVJ4tvNzUkg7XqqDaYSs7BynJ6D18=;
+	s=korg; t=1778862180;
+	bh=S0/qdXpkhcpRb1YTTGChMSpUjaZgf/+RU6h86bBIuno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pkqKD9qToTLqvkJ/Q17DOAnA/dB8iEcaQX4C00ZyqHRNshaUyqhYCDu0pO4dAB7kl
-	 atU3q4WayoLlKOonAnRbmCvwFcebalPENLdb9wgiLgPQhLeJCYRStAX6CjRY/NYuv2
-	 uCnzplIdg9xrR6VuIjxFOkKotXP97PjVoCXe6t1g=
+	b=VYINeBUBIo6xIXljKZ4MydZEeK6g1s9B8huy3UOFuVg7mL8WnrYCTQXmnAr5Tj6Xa
+	 VaO/THnRv457sHgOS/vBG26byv42GzD5O1f/itK5Sc3VefbxqZQHymtu/vrx8OATKs
+	 1thhb7PEKLGTcUwxR+2UnZ7bJtU7tSbEVM9vZnGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Chen Zhen <chenzhen126@huawei.com>,
-	Jussi Maki <joamaki@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Yunseong Kim <yunseong.kim@est.tech>,
-	=?UTF-8?q?David=20Nystr=C3=83=C2=B6m?= <david.nystrom@est.tech>
-Subject: [PATCH 6.12 129/144] bonding: fix use-after-free due to enslave fail after slave array update
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxing Yin <tr0jan@lzu.edu.cn>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 138/188] batman-adv: stop tp_meter sessions during mesh teardown
 Date: Fri, 15 May 2026 17:49:15 +0200
-Message-ID: <20260515154656.505044119@linuxfoundation.org>
+Message-ID: <20260515154700.320840437@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,137 +69,271 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2AF56552CFB
+X-Rspamd-Queue-Id: BB8BD5552A5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,blackwall.org,huawei.com,gmail.com,iogearbox.net,redhat.com,kernel.org,est.tech];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247971-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248613-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,est.tech:email,blackwall.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-commit e9acda52fd2ee0cdca332f996da7a95c5fd25294 upstream.
+commit 3d3cf6a7314aca4df0a6dde28ce784a2a30d0166 upstream.
 
-Fix a use-after-free which happens due to enslave failure after the new
-slave has been added to the array. Since the new slave can be used for Tx
-immediately, we can use it after it has been freed by the enslave error
-cleanup path which frees the allocated slave memory. Slave update array is
-supposed to be called last when further enslave failures are not expected.
-Move it after xdp setup to avoid any problems.
+TP meter sessions remain linked on bat_priv->tp_list after the netlink
+request has already finished. When the mesh interface is removed,
+batadv_mesh_free() currently tears down the mesh without first draining
+these sessions.
 
-It is very easy to reproduce the problem with a simple xdp_pass prog:
- ip l add bond1 type bond mode balance-xor
- ip l set bond1 up
- ip l set dev bond1 xdp object xdp_pass.o sec xdp_pass
- ip l add dumdum type dummy
+A running sender thread or a late incoming tp_meter packet can then keep
+processing against a mesh instance which is already shutting down.
+Synchronize tp_meter with the mesh lifetime by stopping all active
+sessions from batadv_mesh_free() and waiting for sender threads to exit
+before teardown continues.
 
-Then run in parallel:
- while :; do ip l set dumdum master bond1 1>/dev/null 2>&1; done;
- mausezahn bond1 -a own -b rand -A rand -B 1.1.1.1 -c 0 -t tcp "dp=1-1023, flags=syn"
-
-The crash happens almost immediately:
- [  605.602850] Oops: general protection fault, probably for non-canonical address 0xe0e6fc2460000137: 0000 [#1] SMP KASAN NOPTI
- [  605.602916] KASAN: maybe wild-memory-access in range [0x07380123000009b8-0x07380123000009bf]
- [  605.602946] CPU: 0 UID: 0 PID: 2445 Comm: mausezahn Kdump: loaded Tainted: G    B               6.19.0-rc6+ #21 PREEMPT(voluntary)
- [  605.602979] Tainted: [B]=BAD_PAGE
- [  605.602998] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
- [  605.603032] RIP: 0010:netdev_core_pick_tx+0xcd/0x210
- [  605.603063] Code: 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 3e 01 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b 6b 08 49 8d 7d 30 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 25 01 00 00 49 8b 45 30 4c 89 e2 48 89 ee 48 89
- [  605.603111] RSP: 0018:ffff88817b9af348 EFLAGS: 00010213
- [  605.603145] RAX: dffffc0000000000 RBX: ffff88817d28b420 RCX: 0000000000000000
- [  605.603172] RDX: 00e7002460000137 RSI: 0000000000000008 RDI: 07380123000009be
- [  605.603199] RBP: ffff88817b541a00 R08: 0000000000000001 R09: fffffbfff3ed8c0c
- [  605.603226] R10: ffffffff9f6c6067 R11: 0000000000000001 R12: 0000000000000000
- [  605.603253] R13: 073801230000098e R14: ffff88817d28b448 R15: ffff88817b541a84
- [  605.603286] FS:  00007f6570ef67c0(0000) GS:ffff888221dfa000(0000) knlGS:0000000000000000
- [  605.603319] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- [  605.603343] CR2: 00007f65712fae40 CR3: 000000011371b000 CR4: 0000000000350ef0
- [  605.603373] Call Trace:
- [  605.603392]  <TASK>
- [  605.603410]  __dev_queue_xmit+0x448/0x32a0
- [  605.603434]  ? __pfx_vprintk_emit+0x10/0x10
- [  605.603461]  ? __pfx_vprintk_emit+0x10/0x10
- [  605.603484]  ? __pfx___dev_queue_xmit+0x10/0x10
- [  605.603507]  ? bond_start_xmit+0xbfb/0xc20 [bonding]
- [  605.603546]  ? _printk+0xcb/0x100
- [  605.603566]  ? __pfx__printk+0x10/0x10
- [  605.603589]  ? bond_start_xmit+0xbfb/0xc20 [bonding]
- [  605.603627]  ? add_taint+0x5e/0x70
- [  605.603648]  ? add_taint+0x2a/0x70
- [  605.603670]  ? end_report.cold+0x51/0x75
- [  605.603693]  ? bond_start_xmit+0xbfb/0xc20 [bonding]
- [  605.603731]  bond_start_xmit+0x623/0xc20 [bonding]
-
-Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reported-by: Chen Zhen <chenzhen126@huawei.com>
-Closes: https://lore.kernel.org/netdev/fae17c21-4940-5605-85b2-1d5e17342358@huawei.com/
-CC: Jussi Maki <joamaki@gmail.com>
-CC: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://patch.msgid.link/20260123120659.571187-1-razor@blackwall.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Tested-by: Yunseong Kim <yunseong.kim@est.tech>
-Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
-Reviewd-by: David NystrÃ¶m <david.nystrom@est.tech>
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/batman-adv/main.c     |    1 
+ net/batman-adv/tp_meter.c |   94 +++++++++++++++++++++++++++++++++++++---------
+ net/batman-adv/tp_meter.h |    1 
+ net/batman-adv/types.h    |    4 +
+ 4 files changed, 82 insertions(+), 18 deletions(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2349,9 +2349,6 @@ skip_mac_set:
- 		unblock_netpoll_tx();
- 	}
+--- a/net/batman-adv/main.c
++++ b/net/batman-adv/main.c
+@@ -249,6 +249,7 @@ void batadv_mesh_free(struct net_device
+ 	atomic_set(&bat_priv->mesh_state, BATADV_MESH_DEACTIVATING);
  
--	if (bond_mode_can_use_xmit_hash(bond))
--		bond_update_slave_arr(bond, NULL);
--
- 	if (!slave_dev->netdev_ops->ndo_bpf ||
- 	    !slave_dev->netdev_ops->ndo_xdp_xmit) {
- 		if (bond->xdp_prog) {
-@@ -2385,6 +2382,9 @@ skip_mac_set:
- 			bpf_prog_inc(bond->xdp_prog);
- 	}
+ 	batadv_purge_outstanding_packets(bat_priv, NULL);
++	batadv_tp_stop_all(bat_priv);
  
-+	if (bond_mode_can_use_xmit_hash(bond))
-+		bond_update_slave_arr(bond, NULL);
+ 	batadv_gw_node_free(bat_priv);
+ 
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -12,6 +12,7 @@
+ #include <linux/byteorder/generic.h>
+ #include <linux/cache.h>
+ #include <linux/compiler.h>
++#include <linux/completion.h>
+ #include <linux/container_of.h>
+ #include <linux/err.h>
+ #include <linux/etherdevice.h>
+@@ -365,23 +366,38 @@ static void batadv_tp_vars_put(struct ba
+ }
+ 
+ /**
+- * batadv_tp_sender_cleanup() - cleanup sender data and drop and timer
+- * @bat_priv: the bat priv with all the mesh interface information
+- * @tp_vars: the private data of the current TP meter session to cleanup
++ * batadv_tp_list_detach() - remove tp session from mesh session list once
++ * @tp_vars: the private data of the current TP meter session
+  */
+-static void batadv_tp_sender_cleanup(struct batadv_priv *bat_priv,
+-				     struct batadv_tp_vars *tp_vars)
++static void batadv_tp_list_detach(struct batadv_tp_vars *tp_vars)
+ {
+-	cancel_delayed_work(&tp_vars->finish_work);
++	bool detached = false;
+ 
+ 	spin_lock_bh(&tp_vars->bat_priv->tp_list_lock);
+-	hlist_del_rcu(&tp_vars->list);
++	if (!hlist_unhashed(&tp_vars->list)) {
++		hlist_del_init_rcu(&tp_vars->list);
++		detached = true;
++	}
+ 	spin_unlock_bh(&tp_vars->bat_priv->tp_list_lock);
+ 
++	if (!detached)
++		return;
 +
- 	bond_xdp_set_features(bond_dev);
++	atomic_dec(&tp_vars->bat_priv->tp_num);
++
+ 	/* drop list reference */
+ 	batadv_tp_vars_put(tp_vars);
++}
  
- 	slave_info(bond_dev, slave_dev, "Enslaving as %s interface with %s link\n",
+-	atomic_dec(&tp_vars->bat_priv->tp_num);
++/**
++ * batadv_tp_sender_cleanup() - cleanup sender data and drop and timer
++ * @tp_vars: the private data of the current TP meter session to cleanup
++ */
++static void batadv_tp_sender_cleanup(struct batadv_tp_vars *tp_vars)
++{
++	cancel_delayed_work_sync(&tp_vars->finish_work);
++
++	batadv_tp_list_detach(tp_vars);
+ 
+ 	/* kill the timer and remove its reference */
+ 	timer_delete_sync(&tp_vars->timer);
+@@ -886,7 +902,8 @@ out:
+ 	batadv_orig_node_put(orig_node);
+ 
+ 	batadv_tp_sender_end(bat_priv, tp_vars);
+-	batadv_tp_sender_cleanup(bat_priv, tp_vars);
++	batadv_tp_sender_cleanup(tp_vars);
++	complete(&tp_vars->finished);
+ 
+ 	batadv_tp_vars_put(tp_vars);
+ 
+@@ -918,7 +935,8 @@ static void batadv_tp_start_kthread(stru
+ 		batadv_tp_vars_put(tp_vars);
+ 
+ 		/* cleanup of failed tp meter variables */
+-		batadv_tp_sender_cleanup(bat_priv, tp_vars);
++		batadv_tp_sender_cleanup(tp_vars);
++		complete(&tp_vars->finished);
+ 		return;
+ 	}
+ 
+@@ -1024,6 +1042,7 @@ void batadv_tp_start(struct batadv_priv
+ 	tp_vars->start_time = jiffies;
+ 
+ 	init_waitqueue_head(&tp_vars->more_bytes);
++	init_completion(&tp_vars->finished);
+ 
+ 	spin_lock_init(&tp_vars->unacked_lock);
+ 	INIT_LIST_HEAD(&tp_vars->unacked_list);
+@@ -1126,14 +1145,7 @@ static void batadv_tp_receiver_shutdown(
+ 		   "Shutting down for inactivity (more than %dms) from %pM\n",
+ 		   BATADV_TP_RECV_TIMEOUT, tp_vars->other_end);
+ 
+-	spin_lock_bh(&tp_vars->bat_priv->tp_list_lock);
+-	hlist_del_rcu(&tp_vars->list);
+-	spin_unlock_bh(&tp_vars->bat_priv->tp_list_lock);
+-
+-	/* drop list reference */
+-	batadv_tp_vars_put(tp_vars);
+-
+-	atomic_dec(&bat_priv->tp_num);
++	batadv_tp_list_detach(tp_vars);
+ 
+ 	spin_lock_bh(&tp_vars->unacked_lock);
+ 	list_for_each_entry_safe(un, safe, &tp_vars->unacked_list, list) {
+@@ -1497,6 +1509,52 @@ out:
+ }
+ 
+ /**
++ * batadv_tp_stop_all() - stop all currently running tp meter sessions
++ * @bat_priv: the bat priv with all the mesh interface information
++ */
++void batadv_tp_stop_all(struct batadv_priv *bat_priv)
++{
++	struct batadv_tp_vars *tp_vars[BATADV_TP_MAX_NUM];
++	struct batadv_tp_vars *tp_var;
++	size_t count = 0;
++	size_t i;
++
++	spin_lock_bh(&bat_priv->tp_list_lock);
++	hlist_for_each_entry(tp_var, &bat_priv->tp_list, list) {
++		if (WARN_ON_ONCE(count >= BATADV_TP_MAX_NUM))
++			break;
++
++		if (!kref_get_unless_zero(&tp_var->refcount))
++			continue;
++
++		tp_vars[count++] = tp_var;
++	}
++	spin_unlock_bh(&bat_priv->tp_list_lock);
++
++	for (i = 0; i < count; i++) {
++		tp_var = tp_vars[i];
++
++		switch (tp_var->role) {
++		case BATADV_TP_SENDER:
++			batadv_tp_sender_shutdown(tp_var,
++						  BATADV_TP_REASON_CANCEL);
++			wake_up(&tp_var->more_bytes);
++			wait_for_completion(&tp_var->finished);
++			break;
++		case BATADV_TP_RECEIVER:
++			batadv_tp_list_detach(tp_var);
++			if (timer_shutdown_sync(&tp_var->timer))
++				batadv_tp_vars_put(tp_var);
++			break;
++		}
++
++		batadv_tp_vars_put(tp_var);
++	}
++
++	synchronize_net();
++}
++
++/**
+  * batadv_tp_meter_init() - initialize global tp_meter structures
+  */
+ void __init batadv_tp_meter_init(void)
+--- a/net/batman-adv/tp_meter.h
++++ b/net/batman-adv/tp_meter.h
+@@ -17,6 +17,7 @@ void batadv_tp_start(struct batadv_priv
+ 		     u32 test_length, u32 *cookie);
+ void batadv_tp_stop(struct batadv_priv *bat_priv, const u8 *dst,
+ 		    u8 return_value);
++void batadv_tp_stop_all(struct batadv_priv *bat_priv);
+ void batadv_tp_meter_recv(struct batadv_priv *bat_priv, struct sk_buff *skb);
+ 
+ #endif /* _NET_BATMAN_ADV_TP_METER_H_ */
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -14,6 +14,7 @@
+ #include <linux/average.h>
+ #include <linux/bitops.h>
+ #include <linux/compiler.h>
++#include <linux/completion.h>
+ #include <linux/if.h>
+ #include <linux/if_ether.h>
+ #include <linux/kref.h>
+@@ -1328,6 +1329,9 @@ struct batadv_tp_vars {
+ 	/** @finish_work: work item for the finishing procedure */
+ 	struct delayed_work finish_work;
+ 
++	/** @finished: completion signaled when a sender thread exits */
++	struct completion finished;
++
+ 	/** @test_length: test length in milliseconds */
+ 	u32 test_length;
+ 
 
 
 
