@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-248638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNNZCgNSB2qnyQIAu9opvQ
-	(envelope-from <stable+bounces-248638-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:04:03 +0200
+	id ACZ0OM5WB2pVzQIAu9opvQ
+	(envelope-from <stable+bounces-248479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:24:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A9755462F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:04:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB4B554F6E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:24:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92083317D7AC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3BDC63319F7A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47223F660B;
-	Fri, 15 May 2026 16:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B153E009B;
+	Fri, 15 May 2026 16:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOpiFPZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyoZQQQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CF039734B;
-	Fri, 15 May 2026 16:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6403BFE4C;
+	Fri, 15 May 2026 16:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862245; cv=none; b=e5knBgHtCnmUR2HZjiLKuJtDnea8rc24zU9k9CUaL+xAYOixHD7KeS+Ul6KzgTFCFizh/3L2nrLEXHsML3vIfcH20FFSRshDLB5rycNzj1efMNb145+OYRUR2NKHbnWId2GO63qcHPSyPutdEXAeU2UeaTBoKRIeixPp/a2262Q=
+	t=1778861835; cv=none; b=nH9X+91z95Jp6CxCrV+bNGsVIrHfRqFq5lKN55gdf5/ub3jtkqnAQQpG0o4ayrhjJ0JaPDWS2UoX8sv43De6jDmgdP3Z9iPZAunDzZOSk9x9v95Z+rNAUlHXVs+4W2InIU4ORotWGddTEYy4hD0RjNlHxNLUQI1pGAnkoO2di0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862245; c=relaxed/simple;
-	bh=ANo4BUnj1QzQM0aW+biGOTZ/qNEV8UnApohH+TEcx2w=;
+	s=arc-20240116; t=1778861835; c=relaxed/simple;
+	bh=RNmNfwV7WA6fuKXgKPwo0xNueNbwLPNBVQPQvUvW9eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StuED25kMHeca/aX64ySUIGZViCpGVaanpgElBw1IufGwVOtHHKsjHBDmNrpP6ctLrD4OmAYeMlpsquwB8LxpHsIdC78EA6LnAKhBS71kag4OOwKH2ToXkO/7MXCf9v074nv7EWQDGcujes9fn9T0Rgb9CUDvgXdZtUYWiYWkGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOpiFPZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4080FC2BCB0;
-	Fri, 15 May 2026 16:24:05 +0000 (UTC)
+	 MIME-Version; b=k+8OUAKdiINaT1EqlVXYfNYFf/vOYIyKaL/0/PYzitEjMMlV/NpQbmcAXFN5CBvVgccOexlpPJe3OaPJTg0uNUe01cBBdTQwhmfZK7tlI+4heNaBfYBRdV4kn9m1HsGCyYkapnY1uho957eoIO56mLnur1hxjEWlGHLYVJ7Lfs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyoZQQQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61306C2BCB0;
+	Fri, 15 May 2026 16:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862245;
-	bh=ANo4BUnj1QzQM0aW+biGOTZ/qNEV8UnApohH+TEcx2w=;
+	s=korg; t=1778861834;
+	bh=RNmNfwV7WA6fuKXgKPwo0xNueNbwLPNBVQPQvUvW9eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOpiFPZD7X8ueOuhp2RCJQ6/YhHVFvu4LpLABqS9gTRoE1vjpC3xwOmdBjEaavzh2
-	 MbtAdoCNg+f40IdNT8TykKLFimI40Ch/WOU7XHO09zG57OF95Is6eg5v4X51OYrZc3
-	 40336iSF55PduFGaVwQGcm3eW3QSeE/OVMu/yJ7o=
+	b=YyoZQQQtmVyrO5f/pXMH6m/G1oZaHZQtiLgP0+bszupDbgR67YqovRJeNEZhHIdYI
+	 7019+QgwE6Wj1T07+effSTPvI0YjwcfnVdgHHigYsFd/pO/QKZunUrWFEkRShbzP3l
+	 Od3DQYCdUFLFZFo0rTOPOX3RhgDhIb2QAx3Sr0ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jingoo Han <jg1.han@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 165/188] spi: tegra114: fix controller deregistration
-Date: Fri, 15 May 2026 17:49:42 +0200
-Message-ID: <20260515154700.912141179@linuxfoundation.org>
+	Bjoern Doebel <doebel@amazon.de>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 474/474] smb: client: use kzalloc to zero-initialize security descriptor buffer
+Date: Fri, 15 May 2026 17:49:43 +0200
+Message-ID: <20260515154725.362273852@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +63,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 88A9755462F
+X-Rspamd-Queue-Id: 9CB4B554F6E
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248638-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248479-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amazon.de:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Bjoern Doebel <doebel@amazon.de>
 
-[ Upstream commit 9c9c27ff2058142d8f800de3186d6864184958de ]
+commit 5e489c6c47a2ac15edbaca153b9348e42c1eacab upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Commit 62e7dd0a39c2d ("smb: common: change the data type of num_aces
+to le16") split struct smb_acl's __le32 num_aces field into __le16
+num_aces and __le16 reserved. The reserved field corresponds to Sbz2
+in the MS-DTYP ACL wire format, which must be zero [1].
 
-Fixes: 5c8096439600 ("spi: tegra114: use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.13
-Cc: Jingoo Han <jg1.han@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-22-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ kept `host->dev.of_node = pdev->dev.of_node;` context line above the `spi_register_controller()` conversion ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When building an ACL descriptor in build_sec_desc(), we are using a
+kmalloc()'ed descriptor buffer and writing the fields explicitly using
+le16() writes now. This never writes to the 2 byte reserved field,
+leaving it as uninitialized heap data.
+
+When the reserved field happens to contain non-zero slab garbage,
+Samba rejects the security descriptor with "ndr_pull_security_descriptor
+failed: Range Error", causing chmod to fail with EINVAL.
+
+Change kmalloc() to kzalloc() to ensure the entire buffer is
+zero-initialized.
+
+Fixes: 62e7dd0a39c2d ("smb: common: change the data type of num_aces to le16")
+Cc: stable@vger.kernel.org
+
+Signed-off-by: Bjoern Doebel <doebel@amazon.de>
+Assisted-by: Kiro:claude-opus-4.6
+[1] https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/20233ed8-a6c6-4097-aafa-dd545ed24428
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra114.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/smb/client/cifsacl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -1416,7 +1416,7 @@ static int tegra_spi_probe(struct platfo
- 	}
- 
- 	host->dev.of_node = pdev->dev.of_node;
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can not register to host err %d\n", ret);
- 		goto exit_free_irq;
-@@ -1442,6 +1442,10 @@ static void tegra_spi_remove(struct plat
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct tegra_spi_data	*tspi = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	free_irq(tspi->irq, tspi);
- 
- 	if (tspi->tx_dma_chan)
-@@ -1453,6 +1457,8 @@ static void tegra_spi_remove(struct plat
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_spi_runtime_suspend(&pdev->dev);
-+
-+	spi_controller_put(host);
- }
- 
- #ifdef CONFIG_PM_SLEEP
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -1766,7 +1766,7 @@ id_mode_to_cifs_acl(struct inode *inode,
+ 	 * descriptor parameters, and security descriptor itself
+ 	 */
+ 	nsecdesclen = max_t(u32, nsecdesclen, DEFAULT_SEC_DESC_LEN);
+-	pnntsd = kmalloc(nsecdesclen, GFP_KERNEL);
++	pnntsd = kzalloc(nsecdesclen, GFP_KERNEL);
+ 	if (!pnntsd) {
+ 		kfree(pntsd);
+ 		cifs_put_tlink(tlink);
 
 
 
