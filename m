@@ -1,192 +1,270 @@
-Return-Path: <stable+bounces-247806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247807-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOHABmg1B2rftQIAu9opvQ
-	(envelope-from <stable+bounces-247806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:02:00 +0200
+	id wPymFII1B2rftQIAu9opvQ
+	(envelope-from <stable+bounces-247807-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:02:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAEF551D1D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:01:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65270551D3A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 96AB730071E9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:00:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DCA8D300914C
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD203B7751;
-	Fri, 15 May 2026 15:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CC93C4B90;
+	Fri, 15 May 2026 15:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2SEGkpU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQKwRrRe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2E33932D1
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 15:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5767B3932D1;
+	Fri, 15 May 2026 15:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778857255; cv=none; b=YZZLsB4ThkDCvrQYemBTJE+z0O2ZQWtqAv0fQbWp7dI3sHdOD7G3nIC/rTO39pTOzOch4efL9PqCBU3B25LV69SFoCRSNUA4ChGca0ZLShh4jJkcdy7KrjO7OVYfCvge9fqJL3687YzsQvBLBE8gigJ3QgfIdM5GsNUuL8fC+r0=
+	t=1778857299; cv=none; b=ip4zper+tUYT84fBgriyQ39MueS5YIcTisdUwysranvMlyXCm1usq/Zv9+VrjtIwkhPfOqmeF8WB5BvqUnWCye/Mw0LpXL9APOyHGtYDxngUArDuUtanzHCQmB9B8UjWEgR162+7saEbxWa0lvOo/qnqULVNlOaIeF0bstEIK2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778857255; c=relaxed/simple;
-	bh=8nxNrU1gNTSmIMPvlDCTy3ug7wlIEoDHuFVBbkkM/VA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mmrYCkMXP9wiJWcxtL0SZ8v3HxVWejRQKOYnkoPalCeGh3PGW22wUyFYrw0NaeCcDwwRbQj6PVxxDn3PiYuK14LwnYOwbwBnZJkIZWneGLnxigy2n8QCmOC83DcQkhC4crI8GdKPlwVk0jODReohugt1OdDZM5Dnzz6CBJytRKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2SEGkpU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEAFC2BCB0;
-	Fri, 15 May 2026 15:00:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778857254;
-	bh=8nxNrU1gNTSmIMPvlDCTy3ug7wlIEoDHuFVBbkkM/VA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=v2SEGkpUdAoSiCX9FpYTE/xAOBYj6gBv9KPaQkIj71c5UyUQV5hoL3jfN/vFQ+mD3
-	 RKBaQEIByw/qQ7TPgY9L0GdSvKQ5lQf7FeWSl8y5F2yAVrU2a/wQbsbc7CZDh06d0a
-	 XVXFb6v258hrondpgQC5DjDHbWzJydMQa9My3Nco=
-Date: Fri, 15 May 2026 17:00:58 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Hendrik Donner <hd@os-cillation.de>
-Cc: sanjaikumar.vs@dicortech.com, pratyush@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] mtd: spi-nor: sst: Fix write enable
- before AAI sequence" failed to apply to 6.6-stable tree
-Message-ID: <2026051542-gnat-legislate-e5ad@gregkh>
-References: <2026050405-manly-surplus-9d27@gregkh>
- <de0ac6cc-453c-46a6-8c6c-9be33720e516@os-cillation.de>
+	s=arc-20240116; t=1778857299; c=relaxed/simple;
+	bh=itExJiGkZ6HIPPRSW3hnX46O42Hw5jWW8bgNWcx6GsA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k28RfVNJzKFiko33+O+jbYxJG7s3vZaybFXHrtaOWbJZyTtkwloQTulUFtkzv3AzKEUI9x8TsKS2q7c2ksVxTHAxPowTU4CyNRI2WhDA/PI7DWuhjDlFruiIHLRqK/aucaH1yZYYQqI3p8s3Eo6eQsWR2yc/6ySi9A8EyGsGw2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQKwRrRe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031B7C2BCB8;
+	Fri, 15 May 2026 15:01:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778857299;
+	bh=itExJiGkZ6HIPPRSW3hnX46O42Hw5jWW8bgNWcx6GsA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oQKwRrRe+/gqfIF44ewwvEckptBQdewfykuUSWQAKwdmmGt9Wr2XALjGWxvoeDCiz
+	 ywwr5HOqaXNvrSFtQiXF9Dr252nRDzq5AFbaI2/RAhcn50gsc3vuwl/0tw0EA/RqNB
+	 HUG28TG3001zHJKvndJspacIZpvj65viG6R1eIq9cPN0Vx1Wbr4+vBuAXO+t8iTF2H
+	 PGi8yPgj1V4ID+0sip1lgadlIizGnOR1F1+I4eqSnfgf6luSt2nAWLrxlf4qtcSlCQ
+	 KYZvRmK9lIc+keSX4WRKxDI+AHHsWL1IT8pepkDZlhEyT7TNJ/J+W5ZY4ED9hE4C28
+	 lSTJ2PbHUecgw==
+Message-ID: <a88cbcff-2114-45fe-9ab6-d456c69dba99@kernel.org>
+Date: Fri, 15 May 2026 18:01:33 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de0ac6cc-453c-46a6-8c6c-9be33720e516@os-cillation.de>
-X-Rspamd-Queue-Id: EEAEF551D1D
+User-Agent: Mozilla Thunderbird
+Subject: sashiko review: Re: [PATCH] phy: renesas: rcar-gen3-usb2: Avoid long
+ delay in atomic context
+To: yoshihiro.shimoda.uh@renesas.com, vkoul@kernel.org,
+ neil.armstrong@linaro.org, geert+renesas@glider.be, magnus.damm@gmail.com,
+ prabhakar.mahadev-lad.rj@bp.renesas.com
+Cc: linux-renesas-soc@vger.kernel.org, linux-phy@lists.infradead.org,
+ linux-kernel@vger.kernel.org,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org,
+ Pavel Machek <pavel@nabladev.com>, Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+References: <20260514111300.2152386-1-claudiu.beznea@kernel.org>
+Content-Language: en-US
+From: Claudiu Beznea <claudiu.beznea@kernel.org>
+In-Reply-To: <20260514111300.2152386-1-claudiu.beznea@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 65270551D3A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247806-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[os-cillation.de:query timed out,gregkh:query timed out,dicortech.com:query timed out];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247807-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[renesas.com,kernel.org,linaro.org,glider.be,gmail.com,bp.renesas.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[sanjaikumar.vs.dicortech.com:query timed out,hd.os-cillation.de:query timed out,2026050405-manly-surplus-9d27.gregkh:query timed out,pratyush.kernel.org:query timed out];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.996];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,os-cillation.de:email,dicortech.com:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Thu, May 07, 2026 at 07:31:43PM +0200, Hendrik Donner wrote:
-> Hello,
-> 
-> On 5/4/26 10:38, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 6.6-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x a0f64241d3566a49c0a9b33ba7ae458ae22003a9
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026050405-manly-surplus-9d27@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-> > 
-> > Possible dependencies:
-> > 
-> > 
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> > 
-> > ------------------ original commit in Linus's tree ------------------
-> > 
-> >  From a0f64241d3566a49c0a9b33ba7ae458ae22003a9 Mon Sep 17 00:00:00 2001
-> > From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-> > Date: Wed, 11 Mar 2026 10:30:56 +0000
-> > Subject: [PATCH] mtd: spi-nor: sst: Fix write enable before AAI sequence
-> > 
-> > When writing to SST flash starting at an odd address, a single byte is
-> > first programmed using the byte program (BP) command. After this
-> > operation completes, the flash hardware automatically clears the Write
-> > Enable Latch (WEL) bit.
-> > 
-> > If an AAI (Auto Address Increment) word program sequence follows, it
-> > requires WEL to be set. Without re-enabling writes, the AAI sequence
-> > fails.
-> > 
-> > Add spi_nor_write_enable() after the odd-address byte program when more
-> > data needs to be written. Use a local boolean for clarity.
-> > 
-> > Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
-> > Tested-by: Hendrik Donner <hd@os-cillation.de>
-> > Reviewed-by: Hendrik Donner <hd@os-cillation.de>
-> > Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> > 
-> > diff --git a/drivers/mtd/spi-nor/sst.c b/drivers/mtd/spi-nor/sst.c
-> > index 175211fe6a5e..db02c14ba16f 100644
-> > --- a/drivers/mtd/spi-nor/sst.c
-> > +++ b/drivers/mtd/spi-nor/sst.c
-> > @@ -203,6 +203,8 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
-> >   	/* Start write from odd address. */
-> >   	if (to % 2) {
-> > +		bool needs_write_enable = (len > 1);
-> > +
-> >   		/* write one byte. */
-> >   		ret = sst_nor_write_data(nor, to, 1, buf);
-> >   		if (ret < 0)
-> > @@ -210,6 +212,17 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
-> >   		to++;
-> >   		actual++;
-> > +
-> > +		/*
-> > +		 * Byte program clears the write enable latch. If more
-> > +		 * data needs to be written using the AAI sequence,
-> > +		 * re-enable writes.
-> > +		 */
-> > +		if (needs_write_enable) {
-> > +			ret = spi_nor_write_enable(nor);
-> > +			if (ret)
-> > +				goto out;
-> > +		}
-> >   	}
-> >   	/* Write out most of the data here. */
-> > 
-> 
-> it doesn't apply because of changes made in
-> 18bcb4aa54eab75dce41e5c176a1c2bff94f0f79.
-> 
-> That commit was never backported and is not in any stable tree older
-> than 6.12.y. So it needs to be applied first to 5.10.y, 5.15.y, 6.1.y
-> and 6.6.y. It's a refactor commit that should not change behaviour at all.
+ >commit 856d28e68a5bcfa08fa03aa685cb15772197dedc
+ >Author: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+ >phy: renesas: rcar-gen3-usb2: Avoid long delay in atomic context
+ >This commit releases the spin lock before sleeping for 20 ms during
+ >OTG PHY initialization and introduces completion mechanisms to prevent
+ >other threads from configuring the hardware concurrently. It also disables
+ >IRQs while waiting to prevent interrupt handlers from applying settings.
+ >Closes: https://lore.kernel.org/all/afhkX2Ys2BG1gnqy@duo.ucw.cz
+ >Closes: https://lore.kernel.org/all/afhkX2Ys2BG1gnqy@duo.ucw.cz
+ >> diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c 
+b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+ >> index 79e820e2fe55d..5a18bbd87c3b9 100644
+ >> --- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+ >> +++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+ >[ ... ]
+ >> @@ -388,32 +392,68 @@ static bool rcar_gen3_are_all_rphys_power_off(struct 
+rcar_gen3_chan *ch)
+ >>      return true;
+ >>  }
+ >>
+ >> +static int rcar_gen3_phy_wait_otg_init(struct rcar_gen3_chan *channel,
+ >> +                                   unsigned long *flags)
+ >> +{
+ >> +    unsigned long timeout = msecs_to_jiffies(25);
+ >Could this completion timeout be too tight?
 
-The refactor commit worked for 6.1.y and 6.6.y, but not the others.
+I tried to have a bit increased compared with the fsleep() value to avoid just 
+being to tight but not to big.
 
-thanks,
+ >The initializing thread uses fsleep(20000) which guarantees a minimum sleep
+ >of 20ms. Due to scheduler jitter or timer wheel granularity (especially if
+ >HZ=100, where 25ms rounds to just 2 or 3 jiffies), the 20ms sleep can easily
+ >exceed 25ms of wall-clock time, causing this to spuriously return -ETIMEDOUT.
+ >> +    unsigned long ret = 1;
+ >> +
+ >> +    lockdep_assert_held(&channel->lock);
+ >[ ... ]
+ >> @@ -427,7 +467,10 @@ static ssize_t role_store(struct device *dev, struct 
+device_attribute *attr,
+ >>                        const char *buf, size_t count)
+ >>  {
+ >>      struct rcar_gen3_chan *ch = dev_get_drvdata(dev);
+ >>      bool is_b_device;
+ >>      enum phy_mode cur_mode, new_mode;
+ >> +    unsigned long flags;
+ >> +    int ret = -EIO;
+ >>
+ >> -    guard(spinlock_irqsave)(&ch->lock);
+ >> +    spin_lock_irqsave(&ch->lock, flags);
+ >>
+ >>      if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
+ >> -            return -EIO;
+ >> +            goto unlock;
+ >> +
+ >> +    ret = rcar_gen3_phy_wait_otg_init(ch, &flags);
+ >Does checking the initialized state before waiting for the lock to be
+ >released introduce a race condition?
+ >Because rcar_gen3_phy_usb2_init() only sets rphy->initialized = true after
+ >it finishes its 20ms sleep and reacquires the lock, a concurrent sysfs write
+ >to role_store() during this 20ms window will see initialized as false and
+ >immediately return -EIO instead of waiting for initialization to complete.
 
-greg k-h
+It is better to have it as suggested here, thus I'll adjust it as proposed.
+
+ >> +    if (ret)
+ >> +            goto unlock;
+ >[ ... ]
+ >> @@ -512,6 +556,11 @@ static irqreturn_t rcar_gen3_phy_usb2_irq(int irq, void 
+*_ch)
+ >>              goto rpm_put;
+ >>
+ >>      scoped_guard(spinlock, &ch->lock) {
+ >> +            if (READ_ONCE(ch->otg_initializing)) {
+ >> +                    dev_warn(dev, "%s: Got IRQ while waiting for OTG 
+init!\n", __func__);
+ >> +                    return IRQ_NONE;
+ >> +            }
+ >Does returning early here leak the PM runtime reference?
+
+Indeed, I missed that, will adjust it in the next version.
+
+ >The interrupt handler calls pm_runtime_get_noresume(dev) at the beginning of
+ >the function, and releases it at the rpm_put label. By using return IRQ_NONE
+ >inside the scoped_guard, the code bypasses pm_runtime_put_noidle() completely,
+ >preventing the device from ever entering runtime suspend.
+ >Additionally, since this interrupt is requested with IRQF_SHARED, could
+ >another device sharing the line trigger a valid interrupt during the 20ms
+ >OTG initialization window? If so, this would print a spurious warning to
+ >the kernel log for a valid shared interrupt event.
+
+That's a valid point. Better would be to just mask the interrupt locally.
+
+ >> +
+ >>              status = readl(usb2_base + USB2_OBINTSTA);
+ >>              if (status & ch->phy_data->obint_enable_bits) {
+ >>                      dev_vdbg(dev, "%s: %08x\n", __func__, status);
+ >[ ... ]
+ >> @@ -550,8 +605,22 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
+ >>      }
+ >>
+ >>      /* Initialize otg part (only if we initialize a PHY with IRQs). */
+ >> -    if (rphy->int_enable_bits)
+ >> -            rcar_gen3_init_otg(channel);
+ >> +    if (rphy->int_enable_bits && channel->is_otg_channel &&
+ >> +        !rcar_gen3_is_any_otg_rphy_initialized(channel)) {
+ >> +            rcar_gen3_init_otg_phase0(channel);
+ >> +            disable_irq_nosync(channel->irq);
+ >Could channel->irq be 0 here?
+
+In theory, AFAIK, this code should not be executed when the interrupt is not 
+present as the OTG PHY needs the interrupt.
+
+ >In rcar_gen3_phy_usb2_probe(), platform_get_irq_optional() is used. If it
+ >returns -ENXIO, channel->irq remains 0. Since rphy->int_enable_bits is a
+ >statically defined non-zero value for OTG PHYs, this would pass 0 to
+ >disable_irq_nosync(), which manipulates critical system interrupts.
+ >Also, does calling disable_irq_nosync() on a shared interrupt line starve
+ >other devices?
+ >Since the interrupt is requested with IRQF_SHARED, masking it at the
+ >interrupt controller level means all other unrelated devices on the same
+ >physical line will have their interrupts disabled for the full 20ms
+ >duration. Should shared interrupts be masked locally at the device level
+ >instead?
+
+That would be better, indeed.
+
+ >> +            reinit_completion(&channel->otg_init_done);
+ >> +            WRITE_ONCE(channel->otg_initializing, true);
+ >> +            spin_unlock_irqrestore(&channel->lock, flags);
+ >[ ... ]
+ >> @@ -598,6 +678,7 @@ static int rcar_gen3_phy_usb2_power_on(struct phy *p)
+ >>      struct rcar_gen3_phy *rphy = phy_get_drvdata(p);
+ >>      struct rcar_gen3_chan *channel = rphy->ch;
+ >>      void __iomem *usb2_base = channel->base;
+ >> +    unsigned long flags;
+ >>      u32 val;
+ >>      int ret = 0;
+ >>
+ >> @@ -607,11 +688,15 @@ static int rcar_gen3_phy_usb2_power_on(struct phy *p)
+ >>                      return ret;
+ >>      }
+ >>
+ >> -    guard(spinlock_irqsave)(&channel->lock);
+ >> +    spin_lock_irqsave(&channel->lock, flags);
+ >>
+ >>      if (!rcar_gen3_are_all_rphys_power_off(channel))
+ >>              goto out;
+ >>
+ >> +    ret = rcar_gen3_phy_wait_otg_init(channel, &flags);
+ >> +    if (ret)
+ >> +            goto unlock;
+ >> +
+ >>      val = readl(usb2_base + USB2_USBCTR);
+ >>      val |= USB2_USBCTR_PLL_RST;
+ >Does dropping the lock in rcar_gen3_phy_wait_otg_init() introduce a race
+ >condition with the !rcar_gen3_are_all_rphys_power_off() check?
+ >If two threads concurrently power on different PHYs, both will evaluate the
+ >condition as false because neither has reached rphy->powered = true at the
+ >end of the function. Both threads might then sleep in
+ >rcar_gen3_phy_wait_otg_init().
+ >Upon waking and reacquiring the lock, both will unconditionally apply
+ >USB2_USBCTR_PLL_RST, which could catastrophically disrupt the PHY that was
+ >just initialized by the first thread.
+ >Should the power off condition be re-evaluated after the lock is reacquired?
+
+Yes, rcar_gen3_phy_wait_otg_init() should be called first.
+
 
