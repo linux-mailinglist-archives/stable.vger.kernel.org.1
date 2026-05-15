@@ -1,210 +1,336 @@
-Return-Path: <stable+bounces-247623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247625-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOOHEATlBmoHowIAu9opvQ
-	(envelope-from <stable+bounces-247623-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:19:00 +0200
+	id 2GQLK1fnBmoHowIAu9opvQ
+	(envelope-from <stable+bounces-247625-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:28:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A34754C42D
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:18:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D65B54C6AD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 13C9B309943F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:00:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9B31320DA77
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 09:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9A34279E7;
-	Fri, 15 May 2026 09:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBE342B721;
+	Fri, 15 May 2026 09:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A52d2FKi"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rhC/CPXb";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="UmaRIA08";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nk2pKARl";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qF3q43IE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF1E3FFAD8
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 09:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778835633; cv=pass; b=VabdcBK7GMobn9dPBxJfs2VyzteRau7vwpUglvrHfmD5amUwvDt0CrYrnWkM2QOVGL/RuTmTYisgx6S/YcCVed7l1YDCFjVnAKAl6IP6JBHYMoeZ9dddDNL2Tj+P7KmfksHLSevmh8+bl7PYAe4pYFonyAfhg68azQOAzfulXME=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778835633; c=relaxed/simple;
-	bh=F/X+K7mq57LanIUzere2hvolhecmdp/IaOj+v5+0pyo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ava53oYyf+nVjQazA9+YYQv6FhyNFLXmY5fFoP5UH8cN8jAy/ET802c9Cs+Lr63AJelIheM7ZhTepc6mZ8ix68iSR1LitrmQSwRnEp4JMPx3CWMunLG/CTicmkXK9S3JGlLyR063eIf+PZiwLwYS7WwYeB8wxshU4lR/5Jz6KL4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A52d2FKi; arc=pass smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43d734223e4so407645f8f.0
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 02:00:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778835629; cv=none;
-        d=google.com; s=arc-20240605;
-        b=X2+WBYtdsvYrL1+234X4IGpvDKRnQmgnKXrTBROTRUKErq+OGoLE8R6n/L5TyMatY2
-         yjDsest8KgtIH81md6wlAuoQq3qM90tzIDWgFo9M1nEBTHghsiwVHg4cYcHghdT/DYKo
-         cI7qR1lehui6KVzb5XqEpH1Y0fPYhoB0QfzAXTHoYuKDUGQPdv3GTbL9LK7yq8jm9wfF
-         GBOt8M6I/vRkcKQqTKjk2tFXNNQ/MDO6vCHgsTIl87y1SSdSUtRLNOTclINx36lAE5ye
-         RFcO5ViwOWZO6GJULc3cyntNGV1R3cVGbHRXItJm/SXdab5W4nBDRYZ96Jua0YSzpaTS
-         cKJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=fSEW1HYxOL8S924kl6mfYFM2UkEZu01y2bHFTxrJdTs=;
-        fh=ZFdmri+DIMJOQQeEA+H4ylHw6n8prWxLqyow/hfrE0o=;
-        b=AZ5nr21OY4zn/4/hFhpTHvi8I75nYAHYYpRnes7m9TI86KHo5kwrl88NWsQVTQVo7h
-         2itP2sBRRVjzwJUbKSui6aOeBzDOeHBOS1MjgOjkHVeXB6qKFhI8Ji5T1m1uQA0i3ZjE
-         6A8MBz9gXpuMEwBaBQ6sOSfPksrzV1uneTB2Mdfk4ujEatUSLGzyAGChV3s+4nqdDWyW
-         /cQI37c9DFpl+QP9vEJfBzZv/eNMySbCoBn8IMa3qz3yBr/G0W9sn0FnhQI4ozv4jdMJ
-         s0M/1tqrHiePUzV5u/g2Fpd1sawKzxhs6+8E0V6x48EByZ+Q+/Rbx30SSiGQ+tAKTKY0
-         zRSg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778835629; x=1779440429; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fSEW1HYxOL8S924kl6mfYFM2UkEZu01y2bHFTxrJdTs=;
-        b=A52d2FKidQ+wv+Wcf6Onyqbl1WlDBNfXRttqanqgV3M6Yo/WiwrQ9nG9vx/5am4LzZ
-         2RZAGuHlkuyCcySPaK/pSGtyMi/KFhWCQQIGhVWJZeLl/qGgj/ERQinNLmiC4h1M2Ttd
-         QCPwtc3aTD4rjHoSRy9/ZTJoK2/1YKdX1+54jvHj4gxXyPnw+yjV6FoEYbEjRJg5BVqf
-         QZ6//6diwYJ3YAcBrX/1aFBLDOwY4hdiDhQXWvfALmWXrp2yRqMhO8vlD2dAdTAjK2ib
-         Hn906ioEHLFLkV1DLmUJPs/jvGfROrO/Vc0MZJaymNcVBhqIdgcmU3IcdAeeUPNKICTq
-         fGlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778835629; x=1779440429;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fSEW1HYxOL8S924kl6mfYFM2UkEZu01y2bHFTxrJdTs=;
-        b=OG9FO7XicprVYaEBs2OrtwWZ+87+EX6e1tN74zyWNVhNpadUg8dJ+199J/Wvp3OC+f
-         kyyEaS/YJh4me4fcR1j/jwO7ZcBbNJhNBtUECMvWwO9dPn0Ac0c8jVXxjIh1eYyirkdy
-         E6AgoDC3tl3BvKIFSIAusSXAOd74HQe31x/sTfeYcr69ysLiJ0WPFxTq+HqhcOX6xxHz
-         dXjmz4uYExX/DLwgxU1iLTHLqvqNyB1PpkQ4dPoVJbNeIUAqeyAT6HbC91B1gxFNCh2Y
-         Ejj1QXN7qASQR4TEGb9xkcvKQz4rYLBw4kbsgkakfGQR8Xcb3dIKOkXiAvFsH+bUfc8D
-         cIuQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8N0EKeP8mwisV6/ntiktgxk3/WSk372O51UaBNTODv0qwm2nkfDq2rMcL4h3nfMldNcmV19WQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGZHdA2Y1fIOmj3XfXBXXXX0Di37YCG4b5w2oS2ZSr1zLt6i2r
-	/7cmOUSnnf7+OGN30zSd15t29dnkYL6oJkeWGIWPqTa5wumpyGk1jQkOJXbjDSToBE9SmNg4bFz
-	zjPZKtITgrA506PNCaO0QjgzJ8oIMW0I=
-X-Gm-Gg: Acq92OEIWMLxi1dBk4Q5U+m7xqlWhatCXkQfSp6Xk+aeb1c+9p5YQQoK+0EB2UQBvuy
-	MFRDIRZHEB+lH7I1utN0W04aE6ZKy17Bnm1JEJwtiQomnHBcieY1Fqz/3hjr2NfuN3nK0IGKqda
-	F4pMFQyWlbL7xRibbiYtyyEGgvrcb+LhTkiUAJB5V1A2ljDcAhJ0t7pPduFOqHHrLv5C0r38KkM
-	RSjUyEoTJlxY+QXQGrClnYGezIrFs6xcuqQfClU8x0TQAr3HN/S6sVnDfcQZhUUfk9IIccZRvj5
-	z1AD0ektdfLOTit0F+GEqYlFOuOLuqhkoS+6dmesPM7h9uVv3wnSPdlEVaOTT63F3txDzkKECwP
-	rxkzyBlEfJ4vzmXRYMdQeqbW/1iANg6ylGbdZiX6BQTJfyz6v0f3xe6acPQwI984cduQc4XdRaP
-	+Umy3upg==
-X-Received: by 2002:a05:6000:186c:b0:45d:2efc:dc6e with SMTP id
- ffacd0b85a97d-45e5b895b4bmr4803889f8f.20.1778835628703; Fri, 15 May 2026
- 02:00:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C5042883C
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 09:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778836038; cv=none; b=TmJOJT2kVeyt7LSXDz+j4G6uTe9TqM7rNhkMln3oH+XJA8PcGdwO905H4FuhhT0i6xdVYq2A3eEme9rlhSXMOuj+ltvjuNPEQ71GLDMofzhI+V4e3bJafJw0ovY74ruU8LhSmkRqQK9ztLDCT3+fIrhp0Ut3TNUCPBVYFQvh5Xc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778836038; c=relaxed/simple;
+	bh=DrqXsdqp2Vd8spFl6O+WtPgMPTIpADhVfhi31z/1iS4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MhxlpkfFlgd+Z437EV147KPQsTOjkPLxm2Tcn/t4vgmkRoR3b0n0b5wnzKpcdQLESkx60WREUxBvQGl99b5WYLZ3L+3NTEmSurTsdqUwYMTP1o0M+lie0BFj7+W+EUc6/5xL35bCJz6ZvKQN7FoGS97KIkqaASS+PWj2S/CdT2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rhC/CPXb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UmaRIA08; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nk2pKARl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qF3q43IE; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E724261F54;
+	Fri, 15 May 2026 09:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778836035; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8IQAcAzoKTIOjOz2aGlg5r/suVgpvoeOQg+9QcsRjnQ=;
+	b=rhC/CPXbzjd4nzG4bpOUlVSraSgtHUBI18MplhV7XzoM+/n2wvLABFNOVMiaSD4oc2O4E/
+	dvlfCPVc9XY6Pc9MIXGRLQqy9QrvU2TNUNe5cvpYbThVgQ4b5Mxo8r9lbIcbVIz5PctoOp
+	zx4bdDhxNmlO+wvnhVOeBh70k1jQ1KE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778836035;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8IQAcAzoKTIOjOz2aGlg5r/suVgpvoeOQg+9QcsRjnQ=;
+	b=UmaRIA08H+z03HzdttiOZe56vhhh4nR19eFGwElCNJvTevRh90wc2TWOeEkxwRb5lqxqVF
+	yeRi4eM5mHXxYUBg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nk2pKARl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qF3q43IE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778836034; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8IQAcAzoKTIOjOz2aGlg5r/suVgpvoeOQg+9QcsRjnQ=;
+	b=nk2pKARl8R+sG5TTim0jseDA2cO1JD/NyUG/Ie3CJuiRfhon6jeE1jvaxnmWUkdqPxjeGA
+	9cmWeaCUYDPRpChj0+sxWh71rgaBcBp6DZYyqM0JEuWaW1B/Q48eYHOj/dknq86NPuSXPD
+	c7Rk79LllomnlS8jgHioSgLPOOGDoS8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778836034;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8IQAcAzoKTIOjOz2aGlg5r/suVgpvoeOQg+9QcsRjnQ=;
+	b=qF3q43IEfl6tVA/L/JIaTvjJtrN7h015jgjUKtueuUPKLKWHsJkd3fsbcsVgr4dDspRVKh
+	xCqVHxIZ/WfTdNAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 96A38593A9;
+	Fri, 15 May 2026 09:07:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id d3E/I0LiBmpfWQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 15 May 2026 09:07:14 +0000
+Date: Fri, 15 May 2026 11:07:14 +0200
+Message-ID: <87mry1t519.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: David Rhodes <david.rhodes@cirrus.com>,
+    Richard Fitzgerald <rf@opensource.cirrus.com>,
+    Stefan Binding <sbinding@opensource.cirrus.com>,
+    Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+Cc: =?ISO-8859-1?Q?C=E1ssio?= Gabriel <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.com>,	Jaroslav Kysela <perex@perex.cz>,
+	linux-sound@vger.kernel.org,	patches@opensource.cirrus.com,
+	linux-kernel@vger.kernel.org,	stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] ALSA: hda/cs35l41: Fix firmware load work teardown
+In-Reply-To: <20260511-alsa-hda-cs35l41-fw-work-teardown-v1-1-1184e9bc4f25@gmail.com>
+References: <20260511-alsa-hda-cs35l41-fw-work-teardown-v1-1-1184e9bc4f25@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260514-magnetometer-kernel-mem-leak-v1-1-35b48d699faf@gmail.com>
-In-Reply-To: <20260514-magnetometer-kernel-mem-leak-v1-1-35b48d699faf@gmail.com>
-From: Joshua Crofts <joshua.crofts1@gmail.com>
-Date: Fri, 15 May 2026 11:00:17 +0200
-X-Gm-Features: AVHnY4Kp5BeexoywxD3HdfQW-xQ6iB-Lgl5_DxsLl3wuKsZ5H5iqQcVjeUTYCwY
-Message-ID: <CALoEA-x31YdsdCtubOw7o1GBakCBcc4ha_KvuP=W5URBHyZDtA@mail.gmail.com>
-Subject: Re: [PATCH] iio: magnetometer: ak8975: fix potential kernel stack
- memory leak
-To: joshua.crofts1@gmail.com
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Gregor Boirie <gregor.boirie@parrot.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 3A34754C42D
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
+X-Rspamd-Queue-Id: 0D65B54C6AD
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247623-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[kernel.org,baylibre.com,analog.com,parrot.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	TAGGED_FROM(0.00)[bounces-247625-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,suse.com,perex.cz,vger.kernel.org,opensource.cirrus.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joshuacrofts1@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-On Thu, 14 May 2026 at 13:38, Joshua Crofts via B4 Relay
-<devnull+joshua.crofts1.gmail.com@kernel.org> wrote:
->
-> From: Joshua Crofts <joshua.crofts1@gmail.com>
->
-> Currently in the AK8975 driver there are two instances where potential
-> uninitialized kernel stack memory leaks can occur. If
-> i2c_smbus_read_i2c_block_data_or_emulated() returns a value less than
-> the size of the buffer, uninitialized bytes are retained in the buffer
-> and later the buffer is passed on to IIO buffers, potentially leaking
-> memory to userspace.
->
-> Fix this by adding checks whether the return value of the function is
-> equal to the size of the buffer and subsequently if the value is
-> lesser than zero to distinguish from a returned error code.
->
-> Fixes: bc11ca4a0b84 ("iio:magnetometer:ak8975: triggered buffer support")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260513-ak8975-fix-v1-1-104ea605dd54%40gmail.com
+On Mon, 11 May 2026 06:29:34 +0200,
+Cássio Gabriel wrote:
+> 
+> cs35l41_hda creates ALSA controls whose private data points at the
+> cs35l41_hda object. The firmware load control can also queue
+> fw_load_work.
+> 
+> Those controls are not removed on component unbind, and device remove
+> only cancels fw_load_work through cs35l41_remove_dsp(). That helper is
+> skipped when halo_initialized is false. With firmware_autostart
+> disabled, a firmware load can be requested before the DSP has been
+> initialized. If the component or device is removed before the queued
+> work runs, the worker can run after teardown and dereference driver
+> state that is no longer valid.
+> 
+> Track the created controls and remove them on unbind so no new control
+> callback can reach the driver data or queue more work. Then cancel
+> fw_load_work to drain any request that was already queued. Also cancel
+> the work unconditionally during device remove before runtime PM teardown.
+> 
+> Fixes: 47ceabd99a28 ("ALSA: hda: cs35l41: Support Firmware switching and reloading")
+> Fixes: 4c870513fbb0 ("ALSA: hda: cs35l41: Add read-only ALSA control for forced mute")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Joshua Crofts <joshua.crofts1@gmail.com>
+> Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+
+Cirrus people, could you take a look?  I'd like to let this better
+reviewed since it's non-trivial changes.
+
+
+thanks,
+
+Takashi
+
 > ---
->  drivers/iio/magnetometer/ak8975.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-> index b648b0afa5733fd7a54bdf2b8f92f00e924c074b..9d23c8136291a52ca9ab928d81332aa32933fec6 100644
-> --- a/drivers/iio/magnetometer/ak8975.c
-> +++ b/drivers/iio/magnetometer/ak8975.c
-> @@ -756,8 +756,11 @@ static int ak8975_read_axis(struct iio_dev *indio_dev, int index, int *val)
->         ret = i2c_smbus_read_i2c_block_data_or_emulated(
->                         client, def->data_regs[index],
->                         sizeof(rval), (u8*)&rval);
-> -       if (ret < 0)
-> +       if (ret != sizeof(rval)) {
-> +               if (ret >= 0)
-> +                       ret = -EIO;
->                 goto exit;
-> +       }
->
->         /* Read out ST2 for release lock on measurement data. */
->         ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
-> @@ -871,8 +874,11 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
->                                                         def->data_regs[0],
->                                                         3 * sizeof(fval[0]),
->                                                         (u8 *)fval);
-> -       if (ret < 0)
-> +       if (ret != sizeof(fval)) {
-
-Hmm, Sashiko pointed out that I am comparing a signed integer with
-an unsigned integer, which would result in type promotion and subsequent
-mangling of any potential negative values... will fix in v2.
-
-https://sashiko.dev/#/patchset/20260514-magnetometer-kernel-mem-leak-v1-1-35b48d699faf%40gmail.com
-
--- 
-Kind regards
-
-CJD
+>  sound/hda/codecs/side-codecs/cs35l41_hda.c | 77 +++++++++++++++++++++---------
+>  sound/hda/codecs/side-codecs/cs35l41_hda.h |  5 ++
+>  2 files changed, 60 insertions(+), 22 deletions(-)
+> 
+> diff --git a/sound/hda/codecs/side-codecs/cs35l41_hda.c b/sound/hda/codecs/side-codecs/cs35l41_hda.c
+> index b64890006bb7..7f18be0ccf5a 100644
+> --- a/sound/hda/codecs/side-codecs/cs35l41_hda.c
+> +++ b/sound/hda/codecs/side-codecs/cs35l41_hda.c
+> @@ -1325,6 +1325,43 @@ static int cs35l41_fw_type_ctl_info(struct snd_kcontrol *kcontrol, struct snd_ct
+>  	return snd_ctl_enum_info(uinfo, 1, ARRAY_SIZE(cs35l41_hda_fw_ids), cs35l41_hda_fw_ids);
+>  }
+>  
+> +static void cs35l41_remove_controls(struct cs35l41_hda *cs35l41)
+> +{
+> +	if (!cs35l41->codec)
+> +		return;
+> +
+> +	snd_ctl_remove(cs35l41->codec->card, cs35l41->mute_override_ctl);
+> +	cs35l41->mute_override_ctl = NULL;
+> +
+> +	snd_ctl_remove(cs35l41->codec->card, cs35l41->fw_load_ctl);
+> +	cs35l41->fw_load_ctl = NULL;
+> +
+> +	snd_ctl_remove(cs35l41->codec->card, cs35l41->fw_type_ctl);
+> +	cs35l41->fw_type_ctl = NULL;
+> +}
+> +
+> +static int cs35l41_add_control(struct cs35l41_hda *cs35l41,
+> +			       struct snd_kcontrol_new *ctl,
+> +			       struct snd_kcontrol **kctl)
+> +{
+> +	int ret;
+> +
+> +	*kctl = snd_ctl_new1(ctl, cs35l41);
+> +	if (!*kctl)
+> +		return -ENOMEM;
+> +
+> +	ret = snd_ctl_add(cs35l41->codec->card, *kctl);
+> +	if (ret) {
+> +		dev_err(cs35l41->dev, "Failed to add KControl %s = %d\n", ctl->name, ret);
+> +		*kctl = NULL;
+> +		return ret;
+> +	}
+> +
+> +	dev_dbg(cs35l41->dev, "Added Control %s\n", ctl->name);
+> +
+> +	return 0;
+> +}
+> +
+>  static int cs35l41_create_controls(struct cs35l41_hda *cs35l41)
+>  {
+>  	char fw_type_ctl_name[SNDRV_CTL_ELEM_ID_NAME_MAXLEN];
+> @@ -1360,32 +1397,23 @@ static int cs35l41_create_controls(struct cs35l41_hda *cs35l41)
+>  	scnprintf(mute_override_ctl_name, SNDRV_CTL_ELEM_ID_NAME_MAXLEN, "%s Forced Mute Status",
+>  		  cs35l41->amp_name);
+>  
+> -	ret = snd_ctl_add(cs35l41->codec->card, snd_ctl_new1(&fw_type_ctl, cs35l41));
+> -	if (ret) {
+> -		dev_err(cs35l41->dev, "Failed to add KControl %s = %d\n", fw_type_ctl.name, ret);
+> -		return ret;
+> -	}
+> -
+> -	dev_dbg(cs35l41->dev, "Added Control %s\n", fw_type_ctl.name);
+> -
+> -	ret = snd_ctl_add(cs35l41->codec->card, snd_ctl_new1(&fw_load_ctl, cs35l41));
+> -	if (ret) {
+> -		dev_err(cs35l41->dev, "Failed to add KControl %s = %d\n", fw_load_ctl.name, ret);
+> -		return ret;
+> -	}
+> -
+> -	dev_dbg(cs35l41->dev, "Added Control %s\n", fw_load_ctl.name);
+> +	ret = cs35l41_add_control(cs35l41, &fw_type_ctl, &cs35l41->fw_type_ctl);
+> +	if (ret)
+> +		goto err;
+>  
+> -	ret = snd_ctl_add(cs35l41->codec->card, snd_ctl_new1(&mute_override_ctl, cs35l41));
+> -	if (ret) {
+> -		dev_err(cs35l41->dev, "Failed to add KControl %s = %d\n", mute_override_ctl.name,
+> -			ret);
+> -		return ret;
+> -	}
+> +	ret = cs35l41_add_control(cs35l41, &fw_load_ctl, &cs35l41->fw_load_ctl);
+> +	if (ret)
+> +		goto err;
+>  
+> -	dev_dbg(cs35l41->dev, "Added Control %s\n", mute_override_ctl.name);
+> +	ret = cs35l41_add_control(cs35l41, &mute_override_ctl, &cs35l41->mute_override_ctl);
+> +	if (ret)
+> +		goto err;
+>  
+>  	return 0;
+> +
+> +err:
+> +	cs35l41_remove_controls(cs35l41);
+> +	return ret;
+>  }
+>  
+>  static bool cs35l41_dsm_supported(acpi_handle handle, unsigned int commands)
+> @@ -1522,6 +1550,10 @@ static void cs35l41_hda_unbind(struct device *dev, struct device *master, void *
+>  		device_link_remove(&cs35l41->codec->core.dev, cs35l41->dev);
+>  		unlock_system_sleep(sleep_flags);
+>  		memset(comp, 0, sizeof(*comp));
+> +
+> +		cs35l41_remove_controls(cs35l41);
+> +		cancel_work_sync(&cs35l41->fw_load_work);
+> +		cs35l41->codec = NULL;
+>  	}
+>  }
+>  
+> @@ -2058,6 +2090,7 @@ void cs35l41_hda_remove(struct device *dev)
+>  	struct cs35l41_hda *cs35l41 = dev_get_drvdata(dev);
+>  
+>  	component_del(cs35l41->dev, &cs35l41_hda_comp_ops);
+> +	cancel_work_sync(&cs35l41->fw_load_work);
+>  
+>  	pm_runtime_get_sync(cs35l41->dev);
+>  	pm_runtime_dont_use_autosuspend(cs35l41->dev);
+> diff --git a/sound/hda/codecs/side-codecs/cs35l41_hda.h b/sound/hda/codecs/side-codecs/cs35l41_hda.h
+> index 7d003c598e93..56ec07c0bb74 100644
+> --- a/sound/hda/codecs/side-codecs/cs35l41_hda.h
+> +++ b/sound/hda/codecs/side-codecs/cs35l41_hda.h
+> @@ -57,6 +57,8 @@ enum control_bus {
+>  	SPI
+>  };
+>  
+> +struct snd_kcontrol;
+> +
+>  struct cs35l41_hda {
+>  	struct device *dev;
+>  	struct regmap *regmap;
+> @@ -75,6 +77,9 @@ struct cs35l41_hda {
+>  	int speaker_id;
+>  	struct mutex fw_mutex;
+>  	struct work_struct fw_load_work;
+> +	struct snd_kcontrol *fw_type_ctl;
+> +	struct snd_kcontrol *fw_load_ctl;
+> +	struct snd_kcontrol *mute_override_ctl;
+>  
+>  	struct regmap_irq_chip_data *irq_data;
+>  	bool firmware_running;
+> 
+> ---
+> base-commit: 1bc46462f4c09f8d429ae8ec17f92886d604659f
+> change-id: 20260421-alsa-hda-cs35l41-fw-work-teardown-48cdba14a9cd
+> 
+> Best regards,
+> --
+> Cássio Gabriel <cassiogabrielcontato@gmail.com>
+> -- 
+> Cássio Gabriel <cassiogabrielcontato@gmail.com>
+> 
 
