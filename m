@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-248531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247890-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KahJWVQB2qayAIAu9opvQ
-	(envelope-from <stable+bounces-248531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:57:09 +0200
+	id wFvyMpJDB2oCvAIAu9opvQ
+	(envelope-from <stable+bounces-247890-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:02:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFE9554405
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:57:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FAF5529B4
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6260831154FF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2503F3031F4F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A0E3FBB51;
-	Fri, 15 May 2026 16:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B820314B08A;
+	Fri, 15 May 2026 15:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsgED+d6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r805+GC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FD93E00A7;
-	Fri, 15 May 2026 16:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9833FF1D5;
+	Fri, 15 May 2026 15:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861968; cv=none; b=Fzh6TXwkz8uvZekenxEuGG7IpnIjHRXUQFFwcmaRAkLdlWvOGpXJVVNhUMYDw3c4F7VlssJGs62V2ji+VUqtSas3iPsgSIzCOw7jB0ZIY4skLZjiu/dxtzPdcqxiYy8QWxOGIiqbW5nzGQgp3lyjVji6wB+tBL+mmoiqadqYytg=
+	t=1778860335; cv=none; b=L5ONedKJotd2QQ2ca0e23okqOkNlNMP0BtvX54zCx9hai3tCN1iaqIiGcS2bKH+IN3K5cGV8Rk8P/YBD0B/Uxrf98RhkKAooPoeJJ3NuQzj7Gc2NeYXV5mZ6ZSB2+vxsoaCceSFBytRmFDNJ1c+5jTcNNDSMO0zyFyubfZinBuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861968; c=relaxed/simple;
-	bh=4pMSBJFFJcecKa6j58PYZxFwOcX33BDPHRdBuyUTCNo=;
+	s=arc-20240116; t=1778860335; c=relaxed/simple;
+	bh=9lCKff/vvwyp5tA0mSokY5A963Oo5YEoEg2AIPcm5YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7qoDLqQ7G5N+MlEN4fpi3vvUlR+RnfVSPLUr8PrWe668BuSkZryzEYrcLWvLNjDSjGnY9jXVj8nmq+7lWZ6gkBfBVtCg/Qrv+Krw42GOroctlH4/mikK2ZxznpWy0KEepYNV8fBCraOU8jfMcikW5T9aQEkephKv29bEmQVR9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsgED+d6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AF4C2BCB0;
-	Fri, 15 May 2026 16:19:27 +0000 (UTC)
+	 MIME-Version; b=FY7vVnOjRWYGGN59XCFCTO+ebzeVHFB0UYbodsxeOwjzkaMwhnfqtDf3SYL0xkzroFCWnVs7/98mKy3vAfaRMWIKdVQxTK/gMACuxqUfI4z9f7/RtloK8YZclLPY/N/Zhxw8/QYw1tIo554SXw1fEkWtKEsU+I9Rc36+4/nZXQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r805+GC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C61BC2BCB0;
+	Fri, 15 May 2026 15:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861968;
-	bh=4pMSBJFFJcecKa6j58PYZxFwOcX33BDPHRdBuyUTCNo=;
+	s=korg; t=1778860335;
+	bh=9lCKff/vvwyp5tA0mSokY5A963Oo5YEoEg2AIPcm5YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QsgED+d6IjHsqEdVQIybqG1SQb58J2VS/6IYvcs4KpsyGHagv4NCF4FVQCPAaMxAU
-	 BVsZX2uAalNFJzbwWeFO1nkkkJMulrTUkox/FtNN5iYU3FxxiLNYF98I3szch2LdCl
-	 PU4VPfOhz4hgXEQet6KUtJofUNof9sfERCNzFJGY=
+	b=r805+GC7GQ/uwIQK9Xr/XfsJRhN4fXJPQtdFxLyzNNslrCR0rYXmJstE8rbyvt9Wa
+	 L45BxhlcZhlCPd7T+thH+MKd2zSnjn3zdzz7HfjiGOF2w07czKHo6Rb2LfRT5Ia80g
+	 ekJz/RUcbnVK0f2vDPa+9mjXVXua+cVCcuslyVdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 056/188] media: iris: Fix use-after-free in iris_release_internal_buffers()
-Date: Fri, 15 May 2026 17:47:53 +0200
-Message-ID: <20260515154658.529960861@linuxfoundation.org>
+	William Zhang <william.zhang@broadcom.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 048/144] spi: bcmbca-hsspi: fix controller deregistration
+Date: Fri, 15 May 2026 17:47:54 +0200
+Message-ID: <20260515154654.650545635@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +64,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0DFE9554405
+X-Rspamd-Queue-Id: C2FAF5529B4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248531-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-247890-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit f27cfdcfc916bb59297825805f4c3499f89f9e76 upstream.
+commit c3d97c3320b9a1ebbd6119857341be034f7b3efc upstream.
 
-The recent change in commit 1dabf00ee206 ("media: iris: gen1: Destroy
-internal buffers after FW releases") introduced a regression where
-session_release_buf() may free the buffer. The caller,
-iris_release_internal_buffers(), continued to access `buffer` after the
-call, leading to a potential use-after-free.
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind to allow SPI drivers to
+do I/O during deregistration.
 
-Fix this by setting BUF_ATTR_PENDING_RELEASE before calling
-session_release_buf(), and reverting the flag if the call fails. This
-ensures no dereference occurs after potential freeing.
+Note that clocks were also disabled before the recent commit
+e532e21a246d ("spi: bcm63xx-hsspi: Simplify clock handling with
+devm_clk_get_enabled()").
 
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Closes: https://lore.kernel.org/lkml/aYXvKAX3Pg3sL37P@stanley.mountain/#r
-Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-Fixes: 1dabf00ee206 ("media: iris: gen1: Destroy internal buffers after FW releases")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI controller")
+Cc: stable@vger.kernel.org	# 6.3: deb269e0394f
+Cc: stable@vger.kernel.org	# 6.3
+Cc: William Zhang <william.zhang@broadcom.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260409120419.388546-8-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/iris/iris_buffer.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-bcmbca-hsspi.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/iris/iris_buffer.c
-+++ b/drivers/media/platform/qcom/iris/iris_buffer.c
-@@ -571,10 +571,12 @@ static int iris_release_internal_buffers
- 			continue;
- 		if (!(buffer->attr & BUF_ATTR_QUEUED))
- 			continue;
-+		buffer->attr |= BUF_ATTR_PENDING_RELEASE;
- 		ret = hfi_ops->session_release_buf(inst, buffer);
--		if (ret)
-+		if (ret) {
-+			buffer->attr &= ~BUF_ATTR_PENDING_RELEASE;
- 			return ret;
--		buffer->attr |= BUF_ATTR_PENDING_RELEASE;
-+		}
+--- a/drivers/spi/spi-bcmbca-hsspi.c
++++ b/drivers/spi/spi-bcmbca-hsspi.c
+@@ -550,7 +550,7 @@ static int bcmbca_hsspi_probe(struct pla
  	}
  
- 	return 0;
+ 	/* register and we are done */
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto out_sysgroup_disable;
+ 
+@@ -572,6 +572,8 @@ static void bcmbca_hsspi_remove(struct p
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct bcmbca_hsspi *bs = spi_controller_get_devdata(host);
+ 
++	spi_unregister_controller(host);
++
+ 	/* reset the hardware and block queue progress */
+ 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
+ 	clk_disable_unprepare(bs->pll_clk);
 
 
 
