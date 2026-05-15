@@ -1,97 +1,85 @@
-Return-Path: <stable+bounces-247660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGHAKuEFB2pNqwIAu9opvQ
-	(envelope-from <stable+bounces-247660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:39:13 +0200
+	id YMirHH8IB2qcqwIAu9opvQ
+	(envelope-from <stable+bounces-247661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:50:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D64D54E995
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:39:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FAB354EC6E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A46E3097029
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:10:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E06B33025658
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B0E477E40;
-	Fri, 15 May 2026 11:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D397043C048;
+	Fri, 15 May 2026 11:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b="RpCGOBN8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gOoBDWyD"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kw2FRBMO"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010064.outbound.protection.outlook.com [52.101.46.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12EE3D1AA6
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 11:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778843410; cv=none; b=HvSlvdpyKpsAZrNHyoxi0wLXYMKe2p5cfzzUsDYSiM5LtmZnkn0F1EQy9ygeTu9AX0PDIlwGv6wBk6ZYAgYWFfuBuZn9nC3KMahYfegTzl9Kmbg888guRBS7KTA5M4nScluDur16v94TKZ8weQJL/hGbL9R7yuxbklSiTShgAT4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778843410; c=relaxed/simple;
-	bh=BriSj4VgexAhSi/5HjSDb6eC5q7DvPArDFrMjh+7Wzo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kAodJex2dz+BOc5Ta0rGeYY3Wd+7WNbDUhrKVbZCc4V81yfOgDjavDLxgdfEkTN9hkVfcjmAQ6NmX5KEqxDDhz7YNmZuqrin5Ar+vT6GWyt3jHPOwYnGzWaKyx4gVVOh74Kz4usVltL9vRUXuNS7dqZWlR/XQqKH6raF3NqMiSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com; spf=pass smtp.mailfrom=bsbernd.com; dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b=RpCGOBN8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gOoBDWyD; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bsbernd.com
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 1710B1400130;
-	Fri, 15 May 2026 07:10:07 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 15 May 2026 07:10:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1778843407;
-	 x=1778929807; bh=68KZOoQdNrAEbxcuySuhm/3i6xsXq0Eg9oOMtXe6TxI=; b=
-	RpCGOBN8c9+2dm9ECCKorh5npwZa57Fb0vjJ4pCUJn8Ae3uuZ2Hy2HPbxON4RRYz
-	blsqCi0+i7WhPdUtxT5WehxYgiSeNuTPmAVRgVf8e/d1v5AsySU0PK9SrwjNGJMY
-	lda/3wcySsrrjsc67PZLEGFx852laQ6gVx0yPVnuurf6L9vstKyY2K9Z48USTDUm
-	eTdg2/C/7R3UDN4wa6DYg2EDbRf1Bqf7q/UnJKhvQivHxgQKo8F2UF/uLFNMPvtm
-	ZwPNWaTgfQ1vKVxWCa4n+NNZDSAbQ+THXMoZZa5gnyfatawlqpfsA6/WnqLCvhkT
-	5XCQ+rogOioEwcl8Gf6i6A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778843407; x=
-	1778929807; bh=68KZOoQdNrAEbxcuySuhm/3i6xsXq0Eg9oOMtXe6TxI=; b=g
-	OoBDWyD+M5yeksTF1BmxPLow6pKcMnC+Dm4S3l7Iq09nPphpzhV3BUlafrbTDAAk
-	Jn4D2x31+0RuNZl5PRJvjDBL/cTt9Z14qwKSpTSqCybOrFCc5zUDAXaEO74hKZ6k
-	AVLzCBpBM6IVpU6LBh4q4LQAmxoc9Y8XBMZH7OChQGplMneVfB1Kcu+QkI2n9J8s
-	Ok8H3+H/4g43ZRmMc3JcVsHzSVwgvJh5QTBxjN63bOOpyMBYVe81C5+o2zb9QJaA
-	e+yNaaHPwRYJDNKsOnbVndk3xDS84fIAO1aE/4EjkxeGAXoyQxlK5IORE1xT69hM
-	nCTR3zRqdGLSD6iRa1Flw==
-X-ME-Sender: <xms:Dv8GagdZk5hbaJNPqzUhkvVSv2hw556YGb7vL12uLzlj7VFJXpJ-bA>
-    <xme:Dv8Gai6g3AvedyzmPj8RcJeX2TNoUIvN8tp0KdlM5CLJblEAov9GvzaShTWVbo2hq
-    s-1pm_-IBMAo0Su_1Azp-aAHuTzLN4Ra9SV8ML_hfZ8AHrUV5c>
-X-ME-Received: <xmr:Dv8Gavtb9hpgLnwOFOLu6UjaPWcLWJQa7R7zBqdzcSrnM7DNuy2BcR-vqb0uWHZq_ysW9p9qI9n8da5QwfwjxDbtMAYdIwXfytw-Xwwzvayln69E7g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufedtvdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeeuvghrnhgu
-    ucfutghhuhgsvghrthcuoegsvghrnhgusegsshgsvghrnhgurdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehhfejueejleehtdehteefvdfgtdelffeuudejhfehgedufedvhfehueev
-    udeugeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsvghrnhgusegsshgsvghrnhgurdgtohhmpdhnsggprhgtphhtthhopeejpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopehjohgrnhhnvghlkhhoohhnghesghhmrghilhdrtg
-    homhdprhgtphhtthhopehmihhklhhoshesshiivghrvgguihdrhhhupdhrtghpthhtohep
-    fhhushgvqdguvghvvghlsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheprg
-    hlihesuggunhdrtghomhdprhgtphhtthhopehhohhrshhtsegsihhrthhhvghlmhgvrhdr
-    uggvpdhrtghpthhtohepghhgrghnjhhiuddusehnrghvvghrrdgtohhmpdhrtghpthhtoh
-    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:Dv8GaqgLOpl8gh_3HIYfAa7rLBd6fnHEoYbmqdQPTAARAXB70lLGKg>
-    <xmx:Dv8GaipC6kaARNy3w8l00QPIZVCZEXnhxH-oClTYK04Uvw7HKQlW_A>
-    <xmx:Dv8GavviUKIC-Q8csu-FsUWj-v4Wx5u-wcIlh45aNxoLzQIgQHTg4w>
-    <xmx:Dv8GatbkTkVBXY5JEahHaVUjzpnlve-1KXItve-maRJ3-1s8UPcgHA>
-    <xmx:D_8GaqGE9LozfkPQvkeeRPSA0LbFon46Zp0u9xreKwpr-KD2wKJuiaku>
-Feedback-ID: i5c2e48a5:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 15 May 2026 07:10:04 -0400 (EDT)
-Message-ID: <5c010e24-b4f7-481a-97e8-00da0aec6f3c@bsbernd.com>
-Date: Fri, 15 May 2026 13:10:01 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F3847A0C7;
+	Fri, 15 May 2026 11:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778843773; cv=fail; b=hNq1ho0QNed3TYYd2lHFGbjHvRXO2xUWXbaAzkBxz268UD8IoPoOyp9GdhUdNqZ8/jj1z56RNQBkPXnADW4lnLsngJtDp52sbzWBwa/C2UxzzIlAsV22vqlk1Q3RpD9ZOM9+U6TKj8LNjSzMODhQp/vNEhUfbX0Qk969Ydhhan8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778843773; c=relaxed/simple;
+	bh=Qwy81pdOxSmrz276VfsiO0kjO8INJjgBF3XBswtowlE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=YkP503OXMe9+j+m5eX4jCi70ATjPesqh9JivTgrLP7+M2LYbSYaSYNtMriygCVNMgTILzSvP1e3uxL/kXFQmer69GFG4/ctuyHsrBUfXPMBXq6ZznrYEPs5N/LIL/5nYOC2GNRNx2TsFvqreRXIKwoqF66nv5QGnGaIRSiQ6SxQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kw2FRBMO; arc=fail smtp.client-ip=52.101.46.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bC8e5u+9GwyPASSnzikXpBgaVcdUU8qglr2uOzqi+f1gqm2afQ/t+mSwrq3O37QqkTSIlKE/kVTsIxGMrUlqwPpw1xlfvgClj2Zj9BwKbTmCCg+DhoXBYlFBQlWp4Ww3LFG7KDZwPbkaJ/rUlhBlkyRyxViDJYpJKgrs0I+SuzN8hQiVv/y6AAh8vDQn534RF4t1N2yGbz8C5CmYJ6mL7l7Tkkg/YaHkng2g+U/TYGWs3drGMTomkRw8A9cDqE+zQRRykHLQZXG8z6WC3cWJomBaxDLf3yEbklNgyY6UAMggUBy3NQEOkTywJVSXDzEOv5wZjwkt59ClEJ9Nehxiww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=To4DNKOgUC/s4g+9Jw0a3SwPYaz1j0fhHgC9ZH+Tu5Q=;
+ b=ksk3TPbxALOcb54yXKK4ubkFaff2969/2kxdIv7sxBsHGtzekxj2qgi4TGlCbbIUtckPGhhIpp7hIq5loUZAwnUqQ4RpFQpJAc6+PYw7sK6AtZudMlQdLqZyR/gnLPSqtW02GD+5qYKd4IuAz7ra4eLO75Flny4Y6iBZ6RvMulliU/XApQufW8UcPWoFz6z9H+ERMEBCgIm0vrzRDgt0HtOyg+SyUGJTSv9JQWdsO98oh0evQrc4T7YF5hFPBV2I1sJOgbFjrAB7tgeB7AwfiuMWUuE/I9Fh28c55zWTro31NTrCrt3edw6Ba3czQ3z+/y+B9+CzX7/asrUzb3N/zA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=To4DNKOgUC/s4g+9Jw0a3SwPYaz1j0fhHgC9ZH+Tu5Q=;
+ b=kw2FRBMOO5rY3iQ0FJci8kv3fKGmSO9PkQoXilAtFgTjt4IpmYEssTvY94zUC44BG3LaxCNgi7EnCrN4yeq8BFPKVVtBLE1IAGmkUwZcmjRhfZQvxLpoCJU6O6X6I96U6PvgKoXD/nMoCIK0/Y2o25noD/qAYo62lrasohWEJqT2urpTmslUnvOMaGde5jfiXCcDh51efsCHKkmt3naR5Bc63d3H7JX4v/fc04DoEnWZMwaybL6/RwYaYfnQn0lQwvvliNZltnVRgnCQcIz5CdlPiboeU515SNt0KqxoL+iZ0B8qFm1nXaIPEkg9/J/tlGU+e03N7xnDfaaq8z0RzQ==
+Received: from CY5PR19CA0011.namprd19.prod.outlook.com (2603:10b6:930:15::13)
+ by DS7PR12MB5839.namprd12.prod.outlook.com (2603:10b6:8:7a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Fri, 15 May
+ 2026 11:16:03 +0000
+Received: from CY4PEPF0000EDD5.namprd03.prod.outlook.com
+ (2603:10b6:930:15:cafe::cf) by CY5PR19CA0011.outlook.office365.com
+ (2603:10b6:930:15::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9913.14 via Frontend Transport; Fri,
+ 15 May 2026 11:16:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF0000EDD5.mail.protection.outlook.com (10.167.241.201) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Fri, 15 May 2026 11:16:02 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 15 May
+ 2026 04:15:45 -0700
+Received: from [10.64.160.70] (10.126.231.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 15 May
+ 2026 04:15:43 -0700
+Message-ID: <20be39e1-8da7-4f81-9134-d748841b3611@nvidia.com>
+Date: Fri, 15 May 2026 13:15:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,149 +87,166 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/3] fuse: fix moving cancelled entry to
- ent_in_userspace list
-To: Joanne Koong <joannelkoong@gmail.com>, miklos@szeredi.hu
-Cc: fuse-devel@lists.linux.dev, ali@ddn.com, horst@birthelmer.de,
- Heechan Kang <gganji11@naver.com>, stable@vger.kernel.org
-References: <20260515045541.1171335-1-joannelkoong@gmail.com>
- <20260515045541.1171335-4-joannelkoong@gmail.com>
-From: Bernd Schubert <bernd@bsbernd.com>
-Content-Language: fr, en-US, de-DE, ru-RU
-In-Reply-To: <20260515045541.1171335-4-joannelkoong@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2D64D54E995
+Subject: Re: [PATCH v2] ovl: keep err zero after successful ovl_cache_get()
+To: Amir Goldstein <amir73il@gmail.com>
+CC: Miklos Szeredi <miklos@szeredi.hu>, Christian Brauner
+	<brauner@kernel.org>, <linux-unionfs@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	<syzbot+a16fb0cce329a320661c@syzkaller.appspotmail.com>,
+	<stable@vger.kernel.org>
+References: <20260514111354.3552538-1-nirmoyd@nvidia.com>
+ <20260514144258.3068715-1-nirmoyd@nvidia.com>
+ <CAOQ4uxjGhRLnuU_=m=P-omUMM=0F+Mxs1O=zTasVnLdLz8ut3A@mail.gmail.com>
+ <CAOQ4uxgad=DE9wMAS6Wn9rrEkOX3p0S8jEhsjnj=Or=_7HsqyA@mail.gmail.com>
+Content-Language: en-US
+From: Nirmoy Das <nirmoyd@nvidia.com>
+In-Reply-To: <CAOQ4uxgad=DE9wMAS6Wn9rrEkOX3p0S8jEhsjnj=Or=_7HsqyA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD5:EE_|DS7PR12MB5839:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2fb4250e-597e-4718-030b-08deb27359be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|376014|1800799024|18002099003|22082099003|4143699003|13003099007|56012099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	NQyEd8VbH3rBpc0I+Gd+j80NEQCgHNSxhXiVEEcX8ZAxKXh7CMWta5E1dpa2ZgPOcYRsvqiqtupiK3m534Ba9NevUVwE1fznIX0YJRk19Wod6UdIAmBDd0x9Zia2fj/f8lEaIidPXLjEAUN55fhFP7y+KyndH0VYAuhz7yk139okPAHz/Sa/1c0Hs5A8D4ouKL7qGqmzvpejA9Qd8yJZjiQ6oba7ZNMYDD99jcNQkgvyocWlNbPcDhE1W0Rk69LLzrSOmSQexsBXa+g8XSjEa9gYJA93+C5JRde9HqDtupVDg2O+Cyyz1hAO9Xea/mdBaXPF0eIs4H4yWxGbSit1gA2jmimJ4c8eLVncqQmxBvs31fydZzdIATJ49fY324hZmmxj9iO86OYuBzLDRMNeg0gH9dP9ivRUcMT7XLakOpzHkEloXYPwDdY13GaH4HrsGVS4Outn8BEKScU1PdXxqbLafnPruhPpMa0h1+egjU/dNzez9klvlXAairQ26po03gVzNWNfXL3O36004SqcPM6OIR3ft1nIwXhYGOJUfnDHi0ZgCTottz4fBzualgrk54Y83MGlTYxSDcrOyqAq4ChWPVedN2zh9bVnB4nmzJwWX+bmdemCrq9AjV+3HuddqQwm9rfDvhlIC07IphZ1ItJxAWyx4c4WvzWkZUHlP5jnkAWN2ygAab2N59bA6xOqry7lSMgAe3P9ClWSGjkI14H6c+uqW1nQDRGaXJLoqDE=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(1800799024)(18002099003)(22082099003)(4143699003)(13003099007)(56012099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	sezpQHO02kjOEYKL6LYSe/WmfCH2BEIA+r+hTrbVg08fZ2hU1uVke47g2FabryaxdYV5cS1jFyPOltuJKwta8CuIn9ARVC3oVt1bM9BWOdNHDeoJCNvrQdKZk0VETTb24A3zSQlCbssRWBupvKotdIICRidZjJvlujWa5/7WzLyuRDBovaLaEA82tYZIHeEPSkxOzh+YBLTCuWNc/1+JVVexm8DRxVHq695l+/fk6CszUZWtck25DZ7Xj44PivufBRJWK+N0ppop7I9noPdKOstFqXromInYXAlb9//Ohr33Biw4gNzz8wKGDyKV6lQPyFgh7q9zFVnwEGaU5ch6MhWGwzRv+bKN7+2zSN9fgf5of9EIZedM6ZQeoM5ka5DdRmCsoCmlIKxM5R+VG2EDsO7oeUlRPgn/sfezNWvchCt1S3zG87fVjBGHbfvDCw8C
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 11:16:02.8287
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2fb4250e-597e-4718-030b-08deb27359be
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EDD5.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5839
+X-Rspamd-Queue-Id: 7FAB354EC6E
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bsbernd.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[bsbernd.com:s=fm2,messagingengine.com:s=fm3];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-247661-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,Nvidia.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,syzkaller.appspot.com:url,nvidia.com:email,nvidia.com:mid];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,ddn.com,birthelmer.de,naver.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-247660-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,szeredi.hu];
-	DKIM_TRACE(0.00)[bsbernd.com:+,messagingengine.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bernd@bsbernd.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[nirmoyd@nvidia.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bsbernd.com:mid,bsbernd.com:dkim,messagingengine.com:dkim,birthelmer.de:email,ddn.com:email,naver.com:email]
+	TAGGED_RCPT(0.00)[stable,a16fb0cce329a320661c];
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Action: no action
 
+Hi Amir,
+
+On 14.05.26 22:19, Amir Goldstein wrote:
+> On Thu, May 14, 2026 at 5:26 PM Amir Goldstein <amir73il@gmail.com> wrote:
+>> On Thu, May 14, 2026 at 4:43 PM Nirmoy Das <nirmoyd@nvidia.com> wrote:
+>>> ovl_iterate_merged() stores PTR_ERR(cache) in err before checking
+>>> IS_ERR(cache). On success err holds the truncated cache pointer and
+>>> can be returned as a bogus non-zero error.
+>>>
+>>> The syzbot reproducer reaches this through overlay-on-overlay readdir:
+>>>
+>>>    getdents64
+>>>      iterate_dir(outer overlay file)
+>>>        ovl_iterate_merged()
+>>>          ovl_cache_get()
+>>>            ovl_dir_read_merged()
+>>>              ovl_dir_read()
+>>>                iterate_dir(inner overlay file)
+>>>                  ovl_iterate_merged()
+>>>
+>>> Only compute PTR_ERR(cache) on the error path.
+>>>
+>>> Fixes: d25e4b739f83 ("ovl: refactor ovl_iterate() and port to cred guard")
+>>> Reported-by: syzbot+a16fb0cce329a320661c@syzkaller.appspotmail.com
+>>> Closes: https://syzkaller.appspot.com/bug?extid=a16fb0cce329a320661c
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
+>>> ---
+>>> v2:
+>>>   - Drop the now-redundant 'int err = 0' initializer and the trailing
+>>>     'return err' in ovl_iterate_merged(); err is only used inside the
+>>>     loop's update-check, so the function can just return 0 on success.
+>>>     (Amir Goldstein)
+>>>   - Link to v1:
+>>>     https://lore.kernel.org/all/20260514111354.3552538-1-nirmoyd@nvidia.com/
+>>>
+>> I queue this up and will work on fortifying patches.
+> Nirmoy,
+>
+> I pushed fortify patches to ovl-fixes on my github [1].
+>
+> Can you verify that the assertions trigger if you revert your fix
+> and run the reproducer?
+>
+> I imagine they would trigger much more frequently than the KASAN
+> warnings do.
 
 
-On 5/15/26 06:55, Joanne Koong wrote:
-> fuse_uring_cancel() moves entries that are available (these have no reqs
-> attached) to the ent_in_userspace list. ent_list_request_expired()
-> checks the first entry on ent_in_userspace and dereferences
-> ent->fuse_req unconditionally, which will crash on a cancelled entry
-> that was moved to this list.
-> 
-> Fix this by freeing the entry and dropping queue_refs directly in
-> fuse_uring_cancel(). This is safe because cancel is the cancel handler
-> itself - after io_uring_cmd_done(), no more cancels will be dispatched
-> for this command, and teardown serializes with cancel via queue->lock.
-> 
-> Since cancel now decrements queue_refs, fuse_uring_abort() must no
-> longer gate fuse_uring_abort_end_requests() on queue_refs > 0, as
-> cancelled entries may have already dropped queue_refs while requests are
-> still queued. Remove the gate so abort always flushes requests and stops
-> queues.
-> 
-> Reported-by: Heechan Kang <gganji11@naver.com>
-> Fixes: 4fea593e625c ("fuse: optimize over-io-uring request expiration check")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Jian Huang Li <ali@ddn.com>
-> Co-developed-by: Horst Birthelmer <horst@birthelmer.de>
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> ---
->  fs/fuse/dev_uring.c   | 6 ++++--
->  fs/fuse/dev_uring_i.h | 6 +++---
->  2 files changed, 7 insertions(+), 5 deletions(-)
-> 
-> diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
-> index d9108b5b5db8..f4ba64a1796a 100644
-> --- a/fs/fuse/dev_uring.c
-> +++ b/fs/fuse/dev_uring.c
-> @@ -511,8 +511,7 @@ static void fuse_uring_cancel(struct io_uring_cmd *cmd,
->  	queue = ent->queue;
->  	spin_lock(&queue->lock);
->  	if (ent->state == FRRS_AVAILABLE) {
-> -		ent->state = FRRS_USERSPACE;
-> -		list_move_tail(&ent->list, &queue->ent_in_userspace);
-> +		list_del_init(&ent->list);
->  		need_cmd_done = true;
->  		ent->cmd = NULL;
->  	}
-> @@ -521,6 +520,9 @@ static void fuse_uring_cancel(struct io_uring_cmd *cmd,
->  	if (need_cmd_done) {
->  		/* no queue lock to avoid lock order issues */
->  		io_uring_cmd_done(cmd, -ENOTCONN, issue_flags);
-> +		kfree(ent);
-> +		if (atomic_dec_and_test(&queue->ring->queue_refs))
-> +			wake_up_all(&queue->ring->stop_waitq);
->  	}
->  }
+Yes, the assertion triggers with your ovl-fixes branch after reverting 
+my fix.
 
-Hmm, ok, I had done that via fuse_uring_entry_teardown(), but this way
-is also fine.
+9541f25af774 Revert "ovl: keep err zero after successful ovl_cache_get()"
+1c067d912e47 ovl: add assertions in dir cache code
+98e3a2d258e9 ovl: fix race between copy-up and open of a directory
+4f80bb375112 ovl: keep err zero after successful ovl_cache_get()
+18de6460b6bd ovl: opt-in for fortified ERR_PTR()
+690bd87e1fef err_ptr.h: introduce ERR_PTR_SAFE()
+7fd2df204f34 Linux 7.1-rc2
 
-While thinking about it over night, I wonder if we should abort the
-connection here. Calls for fuse_uring_cancel() / IO_URING_F_CANCEL
-happen when
+Running the syz reproducer with panic_on_warn=1 triggered:
 
-a) The daemon dies - that is what I had written the function for
-b) When one calls
+[   55.404636] ------------[ cut here ]------------
+[   55.404646] WARNING: fs/overlayfs/readdir.c:511 at 
+ovl_iterate+0x4c0/0x5bc, CPU#2: syz-ovl-iterate/14575
+[   55.406875] CPU: 2 UID: 0 PID: 14575 Comm: syz-ovl-iterate Not 
+tainted 7.1.0-rc2-g9541f25af774 #1 PREEMPT
+[   55.408328] pc : ovl_iterate+0x4c0/0x5bc
+[   55.408632] lr : ovl_iterate+0x4b4/0x5bc
+[   55.413504] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 
+ffffffffc152db40
+[   55.414036] Call trace:
+[   55.414209]  ovl_iterate+0x4c0/0x5bc (P)
+[   55.414503]  wrap_directory_iterator+0x60/0x90
+[   55.414809]  shared_ovl_iterate+0x18/0x24
+[   55.415125]  iterate_dir+0x10c/0x3a4
+[   55.415365]  __arm64_sys_getdents64+0xe0/0x1e4
+[   55.417312] Kernel panic - not syncing: kernel: panic_on_warn set ...
 
-With reduced rings queues we would actually need to have per queue refs
-and if a single queue reaches 0, it would need to re-calculate the
-queue. In general this gets complex and from my point of view, if
-fuse-server wants to re-initialize queues, fuse-server should:
+Regards,
 
-a) wake up the ring thread with an eventfd (libfuse already has that)
-b) we need a reconfig SQE (like FUSE_IO_URING_CMD_RECONFIG) that
-requests to re-configure things
+Nirmoy
 
-Right now that is all not supported, from my point of view we should
-call fuse_abort_conn() when we call into fuse_uring_cancel()
-
-
-Thanks,
-Bernd
-
->  
-> diff --git a/fs/fuse/dev_uring_i.h b/fs/fuse/dev_uring_i.h
-> index 368f4d0790eb..22ec67e39ee0 100644
-> --- a/fs/fuse/dev_uring_i.h
-> +++ b/fs/fuse/dev_uring_i.h
-> @@ -150,10 +150,10 @@ static inline void fuse_uring_abort(struct fuse_chan *fch)
->  	if (ring == NULL)
->  		return;
->  
-> -	if (atomic_read(&ring->queue_refs) > 0) {
-> -		fuse_uring_abort_end_requests(ring);
-> +	fuse_uring_abort_end_requests(ring);
-> +
-> +	if (atomic_read(&ring->queue_refs) > 0)
->  		fuse_uring_stop_queues(ring);
-> -	}
->  }
->  
->  static inline void fuse_uring_wait_stopped_queues(struct fuse_chan *fch)
-
+>
+> Thanks,
+> Amir.
+>
+> [1] https://github.com/amir73il/linux/commits/ovl-fixes/
 
