@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-248746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCUwKDBUB2oqywIAu9opvQ
-	(envelope-from <stable+bounces-248746-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:13:20 +0200
+	id SOaWAwRWB2p7zAIAu9opvQ
+	(envelope-from <stable+bounces-248381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BAAC5549F4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:13:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D6C9554E1F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CF5A33DA109
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBAC431F7D48
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30ABB3FD95B;
-	Fri, 15 May 2026 16:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D403BB68B;
+	Fri, 15 May 2026 16:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVT93bpj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3bYCplD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83A63E0092;
-	Fri, 15 May 2026 16:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E902720297C;
+	Fri, 15 May 2026 16:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862524; cv=none; b=DGVoZj2V3erYoBfKqZsUQ46wIvykbxvvm+FayVtW2/xqRltytgJABVJKIbglbRkOK/t3IEJ1geDCzmRVQ1UfQczkm/JSox+8mcnhV0ajNX6i7jM+NZ6n9BBuj9/q5GsXmnVzl6cfypaLFNJc3RSe8X4Dj2maTU88srf21rM3g1M=
+	t=1778861590; cv=none; b=aK81DL/uSKqYeGd81sq+SDARxV1yTk/ZxG3w+yWYuBybKZMyNFntEB8w8EYqIaAYih7c7s5614DNX2ldTuO24wEXe9c0hnbZbjYPvKeVEICBM9FxNOmksApobZmT/Ljagn5YZwatZAVp7CSWSOZ7li9ujs6ggCr5BxWzYt2KYAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862524; c=relaxed/simple;
-	bh=5Ydec4jVfZflJ9BMnefuWdvBDNKx6ZJKfjKbj3dC8Io=;
+	s=arc-20240116; t=1778861590; c=relaxed/simple;
+	bh=BzyfiOESfSV1cMkPNPin0+2QCTsNr3o9ffW2YgUPDnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oeMFiNatblfWwB9DpiQgQ6uQjvqRnCacGAx3X0Qb5YPj7wRXZb1vHkMXES7qAm4/kB63C9CYLk8S8W9DToluUbu3LFQlgNZlkMNA2TTmY31I/nD0zmmfs4hYkVsVERi+w0jqISQDgwc6t7cqX3hMVg8YuL1jACfh+yuhuJePzVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVT93bpj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D720C2BCB0;
-	Fri, 15 May 2026 16:28:43 +0000 (UTC)
+	 MIME-Version; b=ldDjX9s7+WL1QxnzXyun6fUcjiq/IWyPHGEMZYG2B/j6TKzYlP0CnIGzE6/zZhEYojr2VFgHx4cvlO0jXPq90U53OWwCCCBrC3Kd5yUVBvA94mljWC20tYQGbzZtuCYlag8VF/jsjp3SkLv/lU7z2OkpTOCOMSXO7agmVImhlqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3bYCplD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E172C2BCB0;
+	Fri, 15 May 2026 16:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862523;
-	bh=5Ydec4jVfZflJ9BMnefuWdvBDNKx6ZJKfjKbj3dC8Io=;
+	s=korg; t=1778861589;
+	bh=BzyfiOESfSV1cMkPNPin0+2QCTsNr3o9ffW2YgUPDnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GVT93bpjBKlHjn0gR24fbcLTv7svGHmV6/f2hwlHVbJBwHbUgRPkm/2f+jHfPlYib
-	 pmd4DqQktJi4dmZA77hgiu/ADRgzkobtsjvYs5orWg5XJca0pltHPdXlmB5AJLi2E1
-	 1oUl6s/IAu0YObmNRhJlnh2HWZU58EWSAenUeZ8w=
+	b=r3bYCplDHYZZH3RWBKjpQypBNSTWiSX0RHV3d4xvhKaEKkelH7eRRPS3RsNoBNuBm
+	 JHVrjTKUoZr+qOxcml7a94sxP6lV2puOjQsLOEqZhW+VQfh0Q4WeL2xvI0U10mnnDS
+	 /d3VcfRV0UODivefQM6O88iyuB+FxjbxcdWLqb2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Vishnu Reddy <busanna.reddy@oss.qualcomm.com>,
-	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 079/201] media: iris: fix use-after-free of fmt_src during MBPF check
+	Yuan Zhaoming <yuanzm2@lenovo.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 388/474] net: mctp: fix dont require received header reserved bits to be zero
 Date: Fri, 15 May 2026 17:48:17 +0200
-Message-ID: <20260515154700.243844154@linuxfoundation.org>
+Message-ID: <20260515154723.437171203@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,155 +65,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1BAAC5549F4
+X-Rspamd-Queue-Id: 6D6C9554E1F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-248746-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248381-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,lenovo.com:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+From: Yuan Zhaoming <yuanzm2@lenovo.com>
 
-commit 3d9593ad1a58c5acc3e5fa2a48222bb7632e6812 upstream.
+[ Upstream commit a663bac71a2f0b3ac6c373168ca57b2a6e6381aa ]
 
-During concurrency testing, multiple instances can run in parallel, and
-each instance uses its own inst->lock while the core->lock protects the
-list of active instances. The race happens because these locks cover
-different scopes, inst->lock protects only the internals of a single
-instance, while the Macro Blocks Per Frame (MBPF) checker walks the
-core list under core->lock and reads fields like fmt_src->width and
-fmt_src->height. At the same time, iris_close() may free fmt_src and
-fmt_dst under inst->lock while the instance is still present in the core
-list. This allows a situation where the MBPF checker, still iterating
-through the core list, reaches an instance whose fmt_src was already
-freed by another thread and ends up dereferencing a dangling pointer,
-resulting in a use-after-free. This happens because the MBPF checker
-assumes that any instance in the core list is fully valid, but the
-freeing of fmt_src and fmt_dst without removing the instance from the
-core list is not correct.
+>From the MCTP Base specification (DSP0236 v1.2.1), the first byte of
+the MCTP header contains a 4 bit reserved field, and 4 bit version.
 
-The correct ordering is to defer freeing fmt_src and fmt_dst until after
-the instance has been removed from the core list and all teardown under
-the core lock has completed, ensuring that no dangling pointers are ever
-exposed during MBPF checks.
+On our current receive path, we require those 4 reserved bits to be
+zero, but the 9500-8i card is non-conformant, and may set these
+reserved bits.
 
-Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-Reviewed-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
-Fixes: 5ad964ad5656 ("media: iris: Initialize and deinitialize encoder instance structure")
+DSP0236 states that the reserved bits must be written as zero, and
+ignored when read. While the device might not conform to the former,
+we should accept these message to conform to the latter.
+
+Relax our check on the MCTP version byte to allow non-zero bits in the
+reserved field.
+
+Fixes: 889b7da23abf ("mctp: Add initial routing framework")
+Signed-off-by: Yuan Zhaoming <yuanzm2@lenovo.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://patch.msgid.link/20260417141340.5306-1-yuanzhaoming901030@126.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/iris/iris_vdec.c |    6 ------
- drivers/media/platform/qcom/iris/iris_vdec.h |    1 -
- drivers/media/platform/qcom/iris/iris_venc.c |    6 ------
- drivers/media/platform/qcom/iris/iris_venc.h |    1 -
- drivers/media/platform/qcom/iris/iris_vidc.c |    6 ++----
- 5 files changed, 2 insertions(+), 18 deletions(-)
+ include/net/mctp.h |    3 +++
+ net/mctp/route.c   |    8 ++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/qcom/iris/iris_vdec.c
-+++ b/drivers/media/platform/qcom/iris/iris_vdec.c
-@@ -61,12 +61,6 @@ int iris_vdec_inst_init(struct iris_inst
- 	return iris_ctrls_init(inst);
- }
+--- a/include/net/mctp.h
++++ b/include/net/mctp.h
+@@ -26,6 +26,9 @@ struct mctp_hdr {
+ #define MCTP_VER_MIN	1
+ #define MCTP_VER_MAX	1
  
--void iris_vdec_inst_deinit(struct iris_inst *inst)
--{
--	kfree(inst->fmt_dst);
--	kfree(inst->fmt_src);
--}
--
- static const struct iris_fmt iris_vdec_formats_cap[] = {
- 	[IRIS_FMT_NV12] = {
- 		.pixfmt = V4L2_PIX_FMT_NV12,
---- a/drivers/media/platform/qcom/iris/iris_vdec.h
-+++ b/drivers/media/platform/qcom/iris/iris_vdec.h
-@@ -9,7 +9,6 @@
- struct iris_inst;
++/* Definitions for ver field */
++#define MCTP_HDR_VER_MASK	GENMASK(3, 0)
++
+ /* Definitions for flags_seq_tag field */
+ #define MCTP_HDR_FLAG_SOM	BIT(7)
+ #define MCTP_HDR_FLAG_EOM	BIT(6)
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -335,6 +335,7 @@ static int mctp_route_input(struct mctp_
+ 	unsigned long f;
+ 	u8 tag, flags;
+ 	int rc;
++	u8 ver;
  
- int iris_vdec_inst_init(struct iris_inst *inst);
--void iris_vdec_inst_deinit(struct iris_inst *inst);
- int iris_vdec_enum_fmt(struct iris_inst *inst, struct v4l2_fmtdesc *f);
- int iris_vdec_try_fmt(struct iris_inst *inst, struct v4l2_format *f);
- int iris_vdec_s_fmt(struct iris_inst *inst, struct v4l2_format *f);
---- a/drivers/media/platform/qcom/iris/iris_venc.c
-+++ b/drivers/media/platform/qcom/iris/iris_venc.c
-@@ -79,12 +79,6 @@ int iris_venc_inst_init(struct iris_inst
- 	return iris_ctrls_init(inst);
- }
+ 	msk = NULL;
+ 	rc = -EINVAL;
+@@ -357,7 +358,8 @@ static int mctp_route_input(struct mctp_
+ 	mh = mctp_hdr(skb);
+ 	skb_pull(skb, sizeof(struct mctp_hdr));
  
--void iris_venc_inst_deinit(struct iris_inst *inst)
--{
--	kfree(inst->fmt_dst);
--	kfree(inst->fmt_src);
--}
--
- static const struct iris_fmt iris_venc_formats_cap[] = {
- 	[IRIS_FMT_H264] = {
- 		.pixfmt = V4L2_PIX_FMT_H264,
---- a/drivers/media/platform/qcom/iris/iris_venc.h
-+++ b/drivers/media/platform/qcom/iris/iris_venc.h
-@@ -9,7 +9,6 @@
- struct iris_inst;
+-	if (mh->ver != 1)
++	ver = mh->ver & MCTP_HDR_VER_MASK;
++	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
+ 		goto out;
  
- int iris_venc_inst_init(struct iris_inst *inst);
--void iris_venc_inst_deinit(struct iris_inst *inst);
- int iris_venc_enum_fmt(struct iris_inst *inst, struct v4l2_fmtdesc *f);
- int iris_venc_try_fmt(struct iris_inst *inst, struct v4l2_format *f);
- int iris_venc_s_fmt(struct iris_inst *inst, struct v4l2_format *f);
---- a/drivers/media/platform/qcom/iris/iris_vidc.c
-+++ b/drivers/media/platform/qcom/iris/iris_vidc.c
-@@ -289,10 +289,6 @@ int iris_close(struct file *filp)
- 	v4l2_m2m_ctx_release(inst->m2m_ctx);
- 	v4l2_m2m_release(inst->m2m_dev);
- 	mutex_lock(&inst->lock);
--	if (inst->domain == DECODER)
--		iris_vdec_inst_deinit(inst);
--	else if (inst->domain == ENCODER)
--		iris_venc_inst_deinit(inst);
- 	iris_session_close(inst);
- 	iris_inst_change_state(inst, IRIS_INST_DEINIT);
- 	iris_v4l2_fh_deinit(inst, filp);
-@@ -304,6 +300,8 @@ int iris_close(struct file *filp)
- 	mutex_unlock(&inst->lock);
- 	mutex_destroy(&inst->ctx_q_lock);
- 	mutex_destroy(&inst->lock);
-+	kfree(inst->fmt_src);
-+	kfree(inst->fmt_dst);
- 	kfree(inst);
+ 	flags = mh->flags_seq_tag & (MCTP_HDR_FLAG_SOM | MCTP_HDR_FLAG_EOM);
+@@ -1124,6 +1126,7 @@ static int mctp_pkttype_receive(struct s
+ 	struct mctp_skb_cb *cb;
+ 	struct mctp_route *rt;
+ 	struct mctp_hdr *mh;
++	u8 ver;
  
- 	return 0;
+ 	rcu_read_lock();
+ 	mdev = __mctp_dev_get(dev);
+@@ -1141,7 +1144,8 @@ static int mctp_pkttype_receive(struct s
+ 
+ 	/* We have enough for a header; decode and route */
+ 	mh = mctp_hdr(skb);
+-	if (mh->ver < MCTP_VER_MIN || mh->ver > MCTP_VER_MAX)
++	ver = mh->ver & MCTP_HDR_VER_MASK;
++	if (ver < MCTP_VER_MIN || ver > MCTP_VER_MAX)
+ 		goto err_drop;
+ 
+ 	/* source must be valid unicast or null; drop reserved ranges and
 
 
 
