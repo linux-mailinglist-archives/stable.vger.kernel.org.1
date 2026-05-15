@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-248691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AN2aN7BOB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:52 +0200
+	id yPijCalCB2oCvAIAu9opvQ
+	(envelope-from <stable+bounces-247896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:58:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5238553FD2
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6E38552877
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 17:58:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 404F0304A430
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 71BC03088E7E
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5CB26CE11;
-	Fri, 15 May 2026 16:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2EA614B08A;
+	Fri, 15 May 2026 15:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqObvtjq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbqHFqqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667412C11DF;
-	Fri, 15 May 2026 16:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C973FF1A0;
+	Fri, 15 May 2026 15:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862380; cv=none; b=BvJtXkBVSOj+9JAd+0CAzWToIweLtTEdMiqbpJwMfBl8EEdUyQ7/Mq7KYzwSMXzplNObxLZnk1zS4G02yqWKsVuTYRXXMvQ/RHe5nBU3gyXEnTSIGYyc9povvDymG8vU+7fNAMZXbkV1k2UMcpIDUvq0z+Pq9+B56Zi666hcAis=
+	t=1778860351; cv=none; b=UuufJIowqQev6vz2FuaBn6MWK92WddATnU25wGdDP9twuqmcQch6XIvmUelQrX0Pd2WGfEHFrBBwquh4855JvEn2yQy9X4Zf+804ziLcDnj/5hugxesz66pwn05QmyX07P65Kiuq1zQp/s0Nas1hq5wenMJ++8VJf54gu2Vf970=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862380; c=relaxed/simple;
-	bh=KsY9DCZV7YR9tItlqAbNcgYJ21OoCp3qEpa0iuCq4sI=;
+	s=arc-20240116; t=1778860351; c=relaxed/simple;
+	bh=pPNSHpc9HOfh1G125Mznmh4b6AW+M3AgoTwQ1bw3Nzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZAqvwT/dlFeG+vnHVP8coz/uUE25/8i+PxKq9PR5NvCrmaIB2KSniO/vy6x3R5OucwxRKQ76JnvMBwTgdlfqZQVyDb14hYA34rJIzxoCVWug2qrQ2e8FmDBovGBSj4rcdtSTgvKNw5iICpL+JIG/8OsQOm7XaRNl99Bvc/uvj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqObvtjq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12CAC2BCC7;
-	Fri, 15 May 2026 16:26:19 +0000 (UTC)
+	 MIME-Version; b=Ixw5+Y34cJsFzJATfjT3pPK03Mrj7a9Wu7yzgzeuLlWOwBMkME5HVy/mR8CwGXnxIQgIYPOgNQ00QjDmz06xwbMyqTC26q0Vj5woSSNZu8+4wc7qameMu7fpITltyQ/a5DRFv+lBSG8IzO3UZiwQ/huXJKXbikpNuEwwFmcdTbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbqHFqqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C911EC2BCB3;
+	Fri, 15 May 2026 15:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862380;
-	bh=KsY9DCZV7YR9tItlqAbNcgYJ21OoCp3qEpa0iuCq4sI=;
+	s=korg; t=1778860351;
+	bh=pPNSHpc9HOfh1G125Mznmh4b6AW+M3AgoTwQ1bw3Nzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqObvtjqVO5TopMCRLlje836joE7mbOE+ubXUVvCk57U9uchB8g8qHBy3TBzO3dBt
-	 3bFdWgJAw9PXnjxzRe+YoQOVxjrcl8ZR+EckiGTUZ0OlZbZW4EKcaKDmz9+Ol2NBea
-	 n+H/wkgEgmMv1/F+AzeAhN8qmtfxkh3+LwATd34E=
+	b=DbqHFqqpmFA2cCJzTPwZGhsXUoVEMeeurrGH5rhu34FrTIesGqLmYRvXLdYcNseY+
+	 6jls2cgZR+EkaecbOaUCP2cItEB0teIc9HL87q7E/252imR64/NoW6LoEBMMKXzZIM
+	 Fm9wx1OM6Hi9b7JbdzjrNuXdu5bnyk9LruOZ/KIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH 7.0 026/201] drm/gpusvm: Allow device pages to be mapped in mixed mappings after system pages
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 018/144] regulator: rk808: fix OF node reference imbalance
 Date: Fri, 15 May 2026 17:47:24 +0200
-Message-ID: <20260515154659.100154142@linuxfoundation.org>
+Message-ID: <20260515154653.918283733@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +65,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A5238553FD2
+X-Rspamd-Queue-Id: A6E38552877
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247896-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248691-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,chromium.org:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit ec49857ad181f2a68a3bea15422f2936ff366d47 upstream.
+commit 65290b24d8a5f0b8cd065201e653db824c4a4da6 upstream.
 
-The current code rejects device mappings whenever system pages have
-already been encountered. This is not the intended behavior when
-allow_mixed is set.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-Relax the restriction by permitting a single pagemap to be selected when
-allow_mixed is enabled, even if system pages were found earlier.
+Fix this by using the intended helper for reusing OF nodes.
 
-Fixes: bce13d6ecd6c ("drm/gpusvm, drm/xe: Allow mixed mappings for userptr")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-Link: https://patch.msgid.link/20260130194928.3255613-3-matthew.brost@intel.com
+Fixes: 647e57351f8e ("regulator: rk808: reduce 'struct rk808' usage")
+Cc: stable@vger.kernel.org	# 6.2
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260408073055.5183-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gpusvm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/rk808-regulator.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/drm_gpusvm.c
-+++ b/drivers/gpu/drm/drm_gpusvm.c
-@@ -1495,7 +1495,7 @@ map_pages:
- 			}
- 			zdd = page->zone_device_data;
- 			if (pagemap != page_pgmap(page)) {
--				if (i > 0) {
-+				if (pagemap) {
- 					err = -EOPNOTSUPP;
- 					goto err_unmap;
- 				}
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -1878,8 +1878,7 @@ static int rk808_regulator_probe(struct
+ 	struct regmap *regmap;
+ 	int ret, i, nregulators;
+ 
+-	pdev->dev.of_node = pdev->dev.parent->of_node;
+-	pdev->dev.of_node_reused = true;
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
+ 
+ 	regmap = dev_get_regmap(pdev->dev.parent, NULL);
+ 	if (!regmap)
 
 
 
