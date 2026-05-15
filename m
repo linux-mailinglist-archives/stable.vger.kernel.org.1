@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-248321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6N/9KopLB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:26 +0200
+	id 6NLNIS9ZB2pmzgIAu9opvQ
+	(envelope-from <stable+bounces-248681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:34:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AF75538FC
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:36:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 004E55553C0
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:34:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 296B6325806C
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42C7E30F1D9F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AB74A341C;
-	Fri, 15 May 2026 16:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D0D3F9285;
+	Fri, 15 May 2026 16:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQnCNw9C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09fqOWuA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1603E20297C;
-	Fri, 15 May 2026 16:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179563BB68B;
+	Fri, 15 May 2026 16:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861434; cv=none; b=qi5MpbnTG1jYbwYb/cfxJWxZh+COeECswnosQZv5haI4GASEesH8QcbtiUNT2g2SjLq05wi4/G0weljpem6hAGue+oKvKe48jAs1luF3FQMOa3rqjdWWaQU27W/wCt0ydlG+9btNwQtfmfJGq3Z5MQpSYCvlPoHkaCZvUxJSPpk=
+	t=1778862354; cv=none; b=jOVm6YpGEdjVv4CZ4xV4XeQv4vXdzuDU7mf67sjTDDgHqR5i+9vK0L6dKc766BtC9t1ZyPO58xyhxS6OX+NT0KiwQxtjhBzV6aCSJAIbl/IxjRnsmMWoy7T6EbKALdIDx8Y8qBwTOX2iJBzecm9km0r7juUXq/v4z88mtjVuuQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861434; c=relaxed/simple;
-	bh=twdWKM01QC4CQG8xwkdo2vH2hInFi/mOSWnVFrB1rAY=;
+	s=arc-20240116; t=1778862354; c=relaxed/simple;
+	bh=a+SN8f6xlUPYbeSdi2SckGdurlb+t8Om05InlAhmkLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZDeREaV3GVbl5IBPV7qIwY0CSRxrmDfRkUutwEyjkPJatrgVwdhjLp0L6zTKvHStfhzv9zv4tT2+hWAJRBrVT00gkTJiRYAqHvuP84suwE1j8CDTzZa55KsMlNWD5aC6AXQp/xN/LjkfnNVC6q11wlB61iVXkT9pKQKAoqLi9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQnCNw9C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660C0C2BCB0;
-	Fri, 15 May 2026 16:10:33 +0000 (UTC)
+	 MIME-Version; b=FqWPgUncxmr0aLKrqJCx8fHBXT8n+A4yG4S9EKT5vyvDncpkxUFIegQeqF4EqEqscO4x1uzP/0hCk/Nsr6XW0LzFYGnCXtKlU6CFE3B6VxB8P0JZKO2aYdUOaUNVMJSnqfghfkk1ZgqNqGS8L8+m7RdvCZ1pFvc5dZIQrzIJOlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09fqOWuA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A936C2BCB0;
+	Fri, 15 May 2026 16:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861433;
-	bh=twdWKM01QC4CQG8xwkdo2vH2hInFi/mOSWnVFrB1rAY=;
+	s=korg; t=1778862353;
+	bh=a+SN8f6xlUPYbeSdi2SckGdurlb+t8Om05InlAhmkLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQnCNw9CaHcC2crXncT6eW93ZcymUFJJlHhJ2V24C2zVxy7c4WtAzijxvJp4Sma1b
-	 oXpMgz1h0eWMiD364ryV/e0B0FD/mYSHbKlw9qIEPt2rMIEO9kO+KfPz/VwnPZcwDY
-	 YiRn1RWwr2VEoxnQOCe/9tKZ0Pj640S3lwh8NMXI=
+	b=09fqOWuAidzCKBnYY0khFE3PDQVdxgJobFW5+648yNifvaUTnrfHUF7KvtNrnafYH
+	 YOcy9/TjHTrFnBBIBYHt765D0mR87TU+tmCs4C6xwSt56J05oOZ3BMtUeLILjJdmk5
+	 D0wfg4bW/LKgg7lUye3WZO4pP0ckGCA0szkQ8/aY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuanhong Guo <gch981213@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 326/474] spi: mtk-nor: fix controller deregistration
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 017/201] media: renesas: vsp1: Fix NULL pointer deref on module unload
 Date: Fri, 15 May 2026 17:47:15 +0200
-Message-ID: <20260515154722.065118004@linuxfoundation.org>
+Message-ID: <20260515154658.909059862@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +66,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 45AF75538FC
+X-Rspamd-Queue-Id: 004E55553C0
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248321-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-248681-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,renesas,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ideasonboard.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
 
-commit 76336f24934621db286cabb20b483773ee01dcaa upstream.
+commit 58b1e9664d8f74d55d8411cc7a7b275a76a6f24f upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+When unloading the module on gen 4, we hit a NULL pointer dereference.
+This is caused by the cleanup code calling vsp1_drm_cleanup() where it
+should be calling vsp1_vspx_cleanup().
 
-Fixes: 881d1ee9fe81 ("spi: add support for mediatek spi-nor controller")
-Cc: stable@vger.kernel.org	# 5.7
-Cc: Chuanhong Guo <gch981213@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix this by checking the IP version and calling the drm or vspx function
+accordingly, the same way as the init code does.
+
+Fixes: d06c1a9f348d ("media: vsp1: Add VSPX support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mtk-nor.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/renesas/vsp1/vsp1_drv.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-mtk-nor.c
-+++ b/drivers/spi/spi-mtk-nor.c
-@@ -914,7 +914,7 @@ static int mtk_nor_probe(struct platform
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_get_noresume(&pdev->dev);
+--- a/drivers/media/platform/renesas/vsp1/vsp1_drv.c
++++ b/drivers/media/platform/renesas/vsp1/vsp1_drv.c
+@@ -240,8 +240,12 @@ static void vsp1_destroy_entities(struct
+ 		media_device_unregister(&vsp1->media_dev);
+ 	media_device_cleanup(&vsp1->media_dev);
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret < 0)
- 		goto err_probe;
+-	if (!vsp1->info->uapi)
+-		vsp1_drm_cleanup(vsp1);
++	if (!vsp1->info->uapi) {
++		if (vsp1->info->version == VI6_IP_VERSION_MODEL_VSPX_GEN4)
++			vsp1_vspx_cleanup(vsp1);
++		else
++			vsp1_drm_cleanup(vsp1);
++	}
+ }
  
-@@ -940,6 +940,8 @@ static void mtk_nor_remove(struct platfo
- 	struct spi_controller *ctlr = dev_get_drvdata(&pdev->dev);
- 	struct mtk_nor *sp = spi_controller_get_devdata(ctlr);
- 
-+	spi_unregister_controller(ctlr);
-+
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ static int vsp1_create_entities(struct vsp1_device *vsp1)
 
 
 
