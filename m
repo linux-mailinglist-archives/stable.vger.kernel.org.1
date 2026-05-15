@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-247852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248325-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKjqC3pKB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-247852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:54 +0200
+	id wMdrB7dKB2rqwgIAu9opvQ
+	(envelope-from <stable+bounces-248325-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84576553574
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6DCC55368B
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:32:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 155F53139E9F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:50:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE342311E50D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737083FF1DA;
-	Fri, 15 May 2026 15:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6F64B8DC5;
+	Fri, 15 May 2026 16:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdMHRXxb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQMPdsID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366D73FF1A2;
-	Fri, 15 May 2026 15:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64EE3F927C;
+	Fri, 15 May 2026 16:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860237; cv=none; b=tcLrQrkmFhWPuPYNM4hqJAAPTyAkGny/m6Od90PG4OVAnkbK4lDiUGe6cMiWIWLHMfVkmmB2fCMQjykjjGBaXX7CcZx0HjGwBBwVWs0LJa069rj+yt4fWR+Brz+ZAHu/oSLNU0mHWBaP9wJbO3LQjd+8kbMlMo37WRacxIplyj0=
+	t=1778861444; cv=none; b=Ug8K8qfgDKkJF8BNaMS38vDFCrleAdXWsj1NXWV4rMq6G0RIITtHJPdcaZqslEwNCrwa8NWif/wIaWE5NClESg6SPtsZ5AMOeT3BCJF8ozLalJhrjVF209EfA41BiL2/PWJIZNkN8Zai16CfCOdANXbsQwS5AtAHCc3iHRl5FME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860237; c=relaxed/simple;
-	bh=BkihdvWBqzw7uRs99Zmc5TIDX6xSFf+ECuaU4RAfAhY=;
+	s=arc-20240116; t=1778861444; c=relaxed/simple;
+	bh=kZgWYx2AE0ypTEETC8r8gchwVzJmTbUyhnO/7dLHu+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=heY/P2EwsPkHlMo2vYO30AcLSqc/t99rCcVLdd4+uL6J88yubIhJsDxsZIqe6ZFu68kGVyJyEfHZwmgJSkr/yOQNbO2gPqTrMHUD9fHHO0OxMwNa7V+Pvlbjd1jarC+kFN/ZAQpL9TczCO8fzjz6iD3ljXONrDIjO0kTEtvWiTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdMHRXxb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2F4C2BCB0;
-	Fri, 15 May 2026 15:50:36 +0000 (UTC)
+	 MIME-Version; b=PJK1XJj6YcYgDffnacDEIUeIuo1ZYrNgtMlpVXJC15NH+kaW/RX0YunxjFVP5OWGpG99B07S54hw71b+noVrN4Y9rwHanj6sOJ5r0/wpqXIP+f/93OrCoPXi/foDB+5d/KC6p6A5lDYxLMLP2Kch7uOao7WXJoCMj3v8QUPC5JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQMPdsID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC777C2BCB0;
+	Fri, 15 May 2026 16:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860236;
-	bh=BkihdvWBqzw7uRs99Zmc5TIDX6xSFf+ECuaU4RAfAhY=;
+	s=korg; t=1778861444;
+	bh=kZgWYx2AE0ypTEETC8r8gchwVzJmTbUyhnO/7dLHu+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdMHRXxbo1wTG9FLRZbGrJ/a7PYtuuGIOTrnha9ScYwih5CizUGGnie3KZSp6NeW8
-	 3SxJdvcQUYkoss4U1c6QbM6dicCGT9+zazCZxDK1J3LETISrbvBiGaEsF8h8lO0vdT
-	 NivMnWt3dJ3Q2LFF7rgzO4PLaLEMrZpvrllueKLc=
+	b=UQMPdsIDPQSLbXwmMpXWHy74homOJZej7dE9ZP9mzwsMG8z1ceNmiGpdTUVRxZQy6
+	 HbWB6d4xHL8jWE3YMErk6HO9/omJdzAvKYYjWu1wegP3VE/TdaYzwAKtqN+6JI1G7d
+	 O5przl5IH8PAzi9cYp3BO8DKRPMZccBxN+F68MqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	William Zhang <william.zhang@broadcom.com>,
 	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 012/144] regulator: mt6357: fix OF node reference imbalance
+Subject: [PATCH 6.6 329/474] spi: bcmbca-hsspi: fix controller deregistration
 Date: Fri, 15 May 2026 17:47:18 +0200
-Message-ID: <20260515154653.774454007@linuxfoundation.org>
+Message-ID: <20260515154722.131357987@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 84576553574
+X-Rspamd-Queue-Id: B6DCC55368B
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247852-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248325-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,48 +89,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,config.dev:url]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,broadcom.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 2f38e96c273e15f5e9f5d1fc2c0cbba703751602 upstream.
+commit c3d97c3320b9a1ebbd6119857341be034f7b3efc upstream.
 
-The driver reuses the OF node of the parent multi-function device but
-fails to take another reference to balance the one dropped by the
-platform bus code when unbinding the MFD and deregistering the child
-devices.
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind to allow SPI drivers to
+do I/O during deregistration.
 
-Fix this by using the intended helper for reusing OF nodes.
+Note that clocks were also disabled before the recent commit
+e532e21a246d ("spi: bcm63xx-hsspi: Simplify clock handling with
+devm_clk_get_enabled()").
 
-Fixes: dafc7cde23dc ("regulator: add mt6357 regulator")
-Cc: stable@vger.kernel.org	# 6.2
+Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI controller")
+Cc: stable@vger.kernel.org	# 6.3: deb269e0394f
+Cc: stable@vger.kernel.org	# 6.3
+Cc: William Zhang <william.zhang@broadcom.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260408073055.5183-5-johan@kernel.org
+Link: https://patch.msgid.link/20260409120419.388546-8-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/mt6357-regulator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-bcmbca-hsspi.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/regulator/mt6357-regulator.c
-+++ b/drivers/regulator/mt6357-regulator.c
-@@ -410,7 +410,7 @@ static int mt6357_regulator_probe(struct
- 	struct regulator_dev *rdev;
- 	int i;
+--- a/drivers/spi/spi-bcmbca-hsspi.c
++++ b/drivers/spi/spi-bcmbca-hsspi.c
+@@ -557,7 +557,7 @@ static int bcmbca_hsspi_probe(struct pla
+ 	}
  
--	pdev->dev.of_node = pdev->dev.parent->of_node;
-+	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
+ 	/* register and we are done */
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto out_sysgroup_disable;
  
- 	for (i = 0; i < MT6357_MAX_REGULATOR; i++) {
- 		config.dev = &pdev->dev;
+@@ -581,6 +581,8 @@ static void bcmbca_hsspi_remove(struct p
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct bcmbca_hsspi *bs = spi_controller_get_devdata(host);
+ 
++	spi_unregister_controller(host);
++
+ 	/* reset the hardware and block queue progress */
+ 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
+ 	clk_disable_unprepare(bs->pll_clk);
 
 
 
