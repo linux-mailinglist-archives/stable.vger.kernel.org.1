@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-248218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248219-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNurJkhKB2rqwgIAu9opvQ
-	(envelope-from <stable+bounces-248218-lists+stable=lfdr.de@vger.kernel.org>)
+	id LR+aLUhKB2pXwwIAu9opvQ
+	(envelope-from <stable+bounces-248219-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FB95534F6
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB445534FD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 89E2530C85CF
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:09:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D986231AD4DA
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8828A3FD965;
-	Fri, 15 May 2026 16:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1849F3F86F9;
+	Fri, 15 May 2026 16:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnIQwC2Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjb5OXt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACC020297C;
-	Fri, 15 May 2026 16:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7CC3F86FF;
+	Fri, 15 May 2026 16:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861172; cv=none; b=Bmk7oJQnMuU/zlUrOdWOTEd7gAkwaJWFEGd0upB5X061AQuEJuGRn1fPtIhle4IQBa97o9mTSp+NS2xc4T/bS0m73aLgtH6/Csx0Rt8VPxZ72PrDKk6CudPATcBn7RZQZ9/HMiePusTNFrm2F8ukA09Gd18rISWDjY6PNb/7aKo=
+	t=1778861174; cv=none; b=NdSPvQuiSH3S6GUc0zi8RwK3AJnsCAT9IXBuQPcIOenOhbXO9QFUbCqrgCKfBjDCdoEXszTo9RXHtoVqMOrePK/bTkhbb3kiGcyorCnP1wPgx2nQOU8SRyd2aXTLQI73+uUm5Wua/8NqU819xRYuKaZ1ak3tCxzf+GNLHjFMLcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861172; c=relaxed/simple;
-	bh=vaALc1RlqcpfthlzwGmRVT83k3JjUA1NVec5kKzYZMY=;
+	s=arc-20240116; t=1778861174; c=relaxed/simple;
+	bh=RtGS/6a/95oXMClgEkTv9456iKLmIzCXsmdmzfbd9X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eytxdVtXLm8oTR2cwY5xcy5rPaVr51DwAAqFaoWbEhrl3Hi9jhTGMNQ1YqNIkeTwYlp3u+QVhpXKzEgXmqn/s1++Gl7IssP1g2tQ8QDM2ZypdIRAu48nsOuIoO7L6UY4IsvdlZF/Hemk41Dm2XHrqbghh4zXFEYO0TOxG+7NqU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnIQwC2Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BAFC2BCB3;
-	Fri, 15 May 2026 16:06:11 +0000 (UTC)
+	 MIME-Version; b=ESQn0nPEJ2DlWUXdwKa4vcS2Q/EU7WJW1paJJxzeiZQJknrtJCq9NoXGtAqqP71qwFY6ErWc8CVEOnvY+RkFuUJw9rsHmt4SAB9LmqwBxT2MduAQigFZGxDpQu/Va1clP66KrmIeYOb5DMtPcX+GYfyzuCODVaaaW5BR6xkjF18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjb5OXt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616D0C2BCB0;
+	Fri, 15 May 2026 16:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861172;
-	bh=vaALc1RlqcpfthlzwGmRVT83k3JjUA1NVec5kKzYZMY=;
+	s=korg; t=1778861174;
+	bh=RtGS/6a/95oXMClgEkTv9456iKLmIzCXsmdmzfbd9X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bnIQwC2QIXdOhl0t7SmNf8bzrshjDL3NOc60xPgRDr1BPZ5e60zxxGBBObfNmfWtK
-	 IvRYinsow0aSjmyfm9WeQq6R7butOB3CLWjvYX/SvcjQ869UtMMXQLvErkkewwg0D/
-	 hzvE2lkCEAq3GVD6jC+uA5FBPj6jlajwvOYRRlpI=
+	b=jjb5OXt618/shutBa3cznUaPzCVJpIQ5EXjyC89epTPtdzn7W3Ns75rc0yO63Kx45
+	 5rJ6OMYtMmuftNu1oix+R2PdCS04YIZGN3G4WOUwAt5Ky+uqSnhEydDijmW2naxcVF
+	 9h+CcslMWwPeyBJhvOmSd4hvva53motFQoXRYt7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 226/474] hwmon: (ltc2992) Fix u32 overflow in power read path
-Date: Fri, 15 May 2026 17:45:35 +0200
-Message-ID: <20260515154719.897519159@linuxfoundation.org>
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Johan Hovold <johan@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.6 227/474] clk: rk808: fix OF node reference imbalance
+Date: Fri, 15 May 2026 17:45:36 +0200
+Message-ID: <20260515154719.918391067@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -63,7 +66,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 32FB95534F6
+X-Rspamd-Queue-Id: 4EB445534FD
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -74,74 +77,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248219-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248218-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,roeck-us.net:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Johan Hovold <johan@kernel.org>
 
-commit 2da0c1fd01dbd6b22844e8676585153dfc660cbe upstream.
+commit de019f203b0d472c98ead4081ad4f05d92c9b826 upstream.
 
-ltc2992_get_power() computes the divisor for mul_u64_u32_div() as
-r_sense_uohm * 1000. This multiplication overflows u32 when
-r_sense_uohm exceeds about 4.29 ohms (4294967 micro-ohms), producing
-a truncated divisor and an incorrect power reading.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-Cancel the factor of 1000 from both the numerator
-(VADC_UV_LSB * IADC_NANOV_LSB = 312500000) and the divisor
-(r_sense_uohm * 1000), giving (VADC_UV_LSB / 1000) * IADC_NANOV_LSB
-= 312500 as the numerator and plain r_sense_uohm as the divisor.
-The cancellation is exact because LTC2992_VADC_UV_LSB (25000) is
-divisible by 1000.
+Fix this by using the intended helper for reusing OF nodes.
 
-This is the read-path counterpart of the write-path fix applied in
-the preceding patch.
-
-Fixes: b0bd407e94b03 ("hwmon: (ltc2992) Add support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260416215904.101969-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 2dc51ca822e4 ("clk: RK808: Reduce 'struct rk808' usage")
+Cc: stable@vger.kernel.org	# 6.5
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ltc2992.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/clk/clk-rk808.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/ltc2992.c
-+++ b/drivers/hwmon/ltc2992.c
-@@ -627,8 +627,10 @@ static int ltc2992_get_power(struct ltc2
- 	if (reg_val < 0)
- 		return reg_val;
+--- a/drivers/clk/clk-rk808.c
++++ b/drivers/clk/clk-rk808.c
+@@ -153,7 +153,7 @@ static int rk808_clkout_probe(struct pla
+ 	struct rk808_clkout *rk808_clkout;
+ 	int ret;
  
--	*val = mul_u64_u32_div(reg_val, LTC2992_VADC_UV_LSB * LTC2992_IADC_NANOV_LSB,
--			       st->r_sense_uohm[channel] * 1000);
-+	*val = mul_u64_u32_div(reg_val,
-+			       LTC2992_VADC_UV_LSB / 1000 *
-+			       LTC2992_IADC_NANOV_LSB,
-+			       st->r_sense_uohm[channel]);
+-	dev->of_node = pdev->dev.parent->of_node;
++	device_set_of_node_from_dev(dev, dev->parent);
  
- 	return 0;
- }
+ 	rk808_clkout = devm_kzalloc(dev,
+ 				    sizeof(*rk808_clkout), GFP_KERNEL);
 
 
 
