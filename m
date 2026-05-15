@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDdXL5dEB2oCvAIAu9opvQ
-	(envelope-from <stable+bounces-247864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:06:47 +0200
+	id oAfoHxdMB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-248376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CB72552AF9
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:06:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2599D553A75
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:38:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2AE9830664B5
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:51:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 439C3308655F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E023E305667;
-	Fri, 15 May 2026 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C3D3FD948;
+	Fri, 15 May 2026 16:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBxDCZSA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2z0cSXU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02CF17C220;
-	Fri, 15 May 2026 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D33F3F6C49;
+	Fri, 15 May 2026 16:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860268; cv=none; b=RzkloL3CSwi80vDMDgDqOSTs2PNByYdtjxkaAac5nBy9LGXMLh50cSIq1nJR8ZLSwMfF9ESshFPWzNrfZvRbFQWjU0gfvicWP9qtXi25OKL2dfWnWD5Ggc6j/8NNja7OaY6rZpV1kTRnm1dLrweg6Xo9YQkSOgVzYOxtccFHK0I=
+	t=1778861577; cv=none; b=PBd4Wihcb7D3E3xCudmihQMwuL2lYSUh56W2x6mD1SyhjwtjRY9ALbv+E9xhN323L5QAJGkn4z7QhBnJVKXGUvpNWeM8w0UlYGT3/5ftvgoHdDe/atUBxQINAiVwTXvwFBcCiAHVakszupkET7n9Pzxo50E2ygKOFC7dSSGV4Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860268; c=relaxed/simple;
-	bh=gKnWxwOM0C55MSFEE9xQU/hWQsx48yHhkznFblUZI1o=;
+	s=arc-20240116; t=1778861577; c=relaxed/simple;
+	bh=4sobHNaZBtuXZi6OXpgXK6zjIi/+fSZeEFdmCbAmwQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGrNIOrifI7TbbsQm3G7w6Mb2q6ySDtwDRXp5EXHBZ9BwfoLBNhqIz8sNUkFyvIZn+kAXFsfNqvO1tn6fHJhaS3UvIwzGqRBcAUdnxyX1U6jfkiHoIcmRFTUUTIRaCA54xsv12MKcoHX2vUoZ8Smyo3b3tUOWvU2CoaFkdGoubU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBxDCZSA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30EFC2BCC9;
-	Fri, 15 May 2026 15:51:07 +0000 (UTC)
+	 MIME-Version; b=PFJR/8sHPQXOTQfToHk9tdG2fj7OGYLpq3varAgyEY4hExbvk+PVewvZSLBQ2Hmf10frKacSAZFfFjfYHgaGhg+Y5pknsyL2161pn7D6TWNYZUi2pVtgXMSVjNXudXxI4BB3t9FkKbYeslN18sMGcDJz8fU0rGQf2uu3vLm010k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2z0cSXU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6ACFC2BCB0;
+	Fri, 15 May 2026 16:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860268;
-	bh=gKnWxwOM0C55MSFEE9xQU/hWQsx48yHhkznFblUZI1o=;
+	s=korg; t=1778861577;
+	bh=4sobHNaZBtuXZi6OXpgXK6zjIi/+fSZeEFdmCbAmwQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBxDCZSA+OIiltP9Zydq/Cj2hJbKZhrwDsIf7e22VXnpsUNRwy79Ys692qdXm1mLJ
-	 o8xySbzABk5hVUFjm4y3fhNNHeoUdv+nvWofe5KEJSSdhjRMf8h00q0uVYSbYj7ASo
-	 1iJ9JIDc+3iXZDiiiIwNfq8Zh1jMDJOvmtrTzKL8=
+	b=S2z0cSXUEDiJLkQAgHxNbTcoVvJQd13U2tfxPZoX0mZ1pErpOWve2XkwCBazlkCRk
+	 OUokHpCcmr+xfK9eD8zIP7ZwE8NwYoOqHpnIMVtGETKvWxFm2EeaeBLCPuwvjmab+w
+	 XMHMaZgzpg7ntyb/UcUy4VeEkorej3bGki21jVJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 024/144] spi: lantiq-ssc: fix controller deregistration
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alysa Liu <Alysa.Liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 341/474] drm/amdkfd: Add upper bound check for num_of_nodes
 Date: Fri, 15 May 2026 17:47:30 +0200
-Message-ID: <20260515154654.064245181@linuxfoundation.org>
+Message-ID: <20260515154722.394079098@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8CB72552AF9
+X-Rspamd-Queue-Id: 2599D553A75
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247864-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248376-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,63 +91,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,hauke-m.de:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Alysa Liu <Alysa.Liu@amd.com>
 
-commit b99206710d032c16b7f8b75e4bc18414d8e4b9f4 upstream.
+commit 74b73fa56a395d46745e4f245225963e9f8be7f1 upstream.
 
-Make sure to deregister the controller before releasing underlying
-resources like clocks during driver unbind.
+drm/amdkfd: Add upper bound check for num_of_nodes
+in kfd_ioctl_get_process_apertures_new.
 
-Fixes: 17f84b793c01 ("spi: lantiq-ssc: add support for Lantiq SSC SPI controller")
-Cc: stable@vger.kernel.org	# 4.11
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-17-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alysa Liu <Alysa.Liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 98ff46a5ea090c14d2cdb4f5b993b05d74f3949f)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-lantiq-ssc.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c  |    3 +++
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h     |    1 +
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c |   11 +++++++++++
+ 3 files changed, 15 insertions(+)
 
---- a/drivers/spi/spi-lantiq-ssc.c
-+++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -995,7 +995,7 @@ static int lantiq_ssc_probe(struct platf
- 		"Lantiq SSC SPI controller (Rev %i, TXFS %u, RXFS %u, DMA %u)\n",
- 		revision, spi->tx_fifo_size, spi->rx_fifo_size, supports_dma);
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -784,6 +784,9 @@ static int kfd_ioctl_get_process_apertur
+ 		goto out_unlock;
+ 	}
  
--	err = devm_spi_register_controller(dev, host);
-+	err = spi_register_controller(host);
- 	if (err) {
- 		dev_err(dev, "failed to register spi host\n");
- 		goto err_wq_destroy;
-@@ -1017,6 +1017,10 @@ static void lantiq_ssc_remove(struct pla
- {
- 	struct lantiq_ssc_spi *spi = platform_get_drvdata(pdev);
++	if (args->num_of_nodes > kfd_topology_get_num_devices())
++		return -EINVAL;
++
+ 	/* Fill in process-aperture information for all available
+ 	 * nodes, but not more than args->num_of_nodes as that is
+ 	 * the amount of memory allocated by user
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -1145,6 +1145,7 @@ static inline struct kfd_node *kfd_node_
+ 	return NULL;
+ }
+ int kfd_topology_enum_kfd_devices(uint8_t idx, struct kfd_node **kdev);
++uint32_t kfd_topology_get_num_devices(void);
+ int kfd_numa_node_to_apic_id(int numa_node_id);
  
-+	spi_controller_get(spi->host);
-+
-+	spi_unregister_controller(spi->host);
-+
- 	lantiq_ssc_writel(spi, 0, LTQ_SPI_IRNEN);
- 	lantiq_ssc_writel(spi, 0, LTQ_SPI_CLC);
- 	rx_fifo_flush(spi);
-@@ -1025,6 +1029,8 @@ static void lantiq_ssc_remove(struct pla
- 
- 	destroy_workqueue(spi->wq);
- 	clk_put(spi->fpi_clk);
-+
-+	spi_controller_put(spi->host);
+ /* Interrupts */
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -2177,6 +2177,17 @@ int kfd_topology_remove_device(struct kf
+ 	return res;
  }
  
- static struct platform_driver lantiq_ssc_driver = {
++uint32_t kfd_topology_get_num_devices(void)
++{
++	uint32_t num_devices;
++
++	down_read(&topology_lock);
++	num_devices = sys_props.num_devices;
++	up_read(&topology_lock);
++
++	return num_devices;
++}
++
+ /* kfd_topology_enum_kfd_devices - Enumerate through all devices in KFD
+  *	topology. If GPU device is found @idx, then valid kfd_dev pointer is
+  *	returned through @kdev
 
 
 
