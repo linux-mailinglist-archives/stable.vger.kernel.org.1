@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-247925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOXED1dHB2r6wAIAu9opvQ
-	(envelope-from <stable+bounces-247925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:18:31 +0200
+	id wLMHNEtPB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682E7552FD4
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:18:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0E4554128
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7CC133046EE0
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:53:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1BE3D32D3303
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045A522FF22;
-	Fri, 15 May 2026 15:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C543F9285;
+	Fri, 15 May 2026 16:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXBOqgjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lt3BeXO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2533FF1DA;
-	Fri, 15 May 2026 15:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833603F9282;
+	Fri, 15 May 2026 16:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860425; cv=none; b=hIvIgAgf3ksor1DtDKgojhcoF4RnY+yTsEHdb7RvOe1IPZdeLK2rWaw6W//EcFYxPBmp+IKj05UM8D7UznKaiK2lQo7Pt0/r9OATxj28lU8BCP1X8MUgTX+SzD/Yy7xHhrRXrOEJGP89GKThi7G0fxMxhrMI37p+L0B8vgqDFdk=
+	t=1778862064; cv=none; b=olaSXc97gACwsCxFMctLvtNyzCQ/aBiWNyA+y6XcE2yW1mxsMwda2Pl18Xg54gpPUz/80Xw8ZXQ17Yf3BsBBL/voLTdJNNSiCTwP5TZmxJHhN2bWmWXfaQJb6mWygtx6Dj+y1XSiwqKvy93MKDOu8N6BsVyECLzMccBzuUQQcj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860425; c=relaxed/simple;
-	bh=xxcXbv13ciefRQx/bgPskdBgtbg65xFQbGXG9Z0ASGY=;
+	s=arc-20240116; t=1778862064; c=relaxed/simple;
+	bh=zt3fPTZ9hB1F92ssbx244e0qnjpouLQOiaAx7LFWPtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZHvQwrILm3UbX8xU2I3lwKzmQTQEiAFXBbKQtognNQ7zDeQ/HRZ+hdt8aDZxFmUis8LFdpAJ1JG/6kTuPRf8vrnVUtHlGLy2OdcyTHIx1G6nYdxXggihoiF4upF1VaRfYyB1SMa7XM8oevfjX++mITe74odWs5a2DEiV4VVXp3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXBOqgjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47033C2BCB0;
-	Fri, 15 May 2026 15:53:45 +0000 (UTC)
+	 MIME-Version; b=Z7rayMYkOFCoICMXMlP/KaH3Cngs+PqZApynMqt64oeLTpvJ7wscy/mG8OLxLhD+qq7Y8FBnrk2VuM2r8qaJ2Gzc3GgN8SfE1uGmP4OFawaa2aGrGS1VmEkVlnfwrVS/uuUiGWxdKGCBq+8euCH78EUkhndXDGyWEL32TliiNbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lt3BeXO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3FDC2BCB0;
+	Fri, 15 May 2026 16:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860425;
-	bh=xxcXbv13ciefRQx/bgPskdBgtbg65xFQbGXG9Z0ASGY=;
+	s=korg; t=1778862064;
+	bh=zt3fPTZ9hB1F92ssbx244e0qnjpouLQOiaAx7LFWPtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXBOqgjVevZbZtUb8vsG5g8LuUxGHiU6w4p2i5kEAzUtVpDQSeFriYmjAfivq7SwP
-	 4kRJW9tcj0y1cC5eoNvEMxbiRJG9lgiHlVdur+NYNQjrOv1QLZa9yQaVQ5SbmgYzXT
-	 JJ+3FDdKm1jYAPgQayCVwaNhvKjSfPuh/76zgbPE=
+	b=lt3BeXO+CnOX9VkF5M47ygawf+lheYTBWAcUZWWpKPC0NF6c78u7JfPtYQTOfdZ0e
+	 95vW6OT2pfexQ7PrltFxl5Zh9Bt2cPoef1O8d7rjcM8LbBmxpAK+/eXCdwDTYTTaYn
+	 ebFtLNyQsI5LxYhN7cixA+Fe5YIgyTNgxXhIn4e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 084/144] drm/amdgpu: zero-initialize GART table on allocation
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 093/188] spi: mpc52xx: fix use-after-free on unbind
 Date: Fri, 15 May 2026 17:48:30 +0200
-Message-ID: <20260515154655.470925919@linuxfoundation.org>
+Message-ID: <20260515154659.346317102@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 682E7552FD4
+X-Rspamd-Queue-Id: 4B0E4554128
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247925-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248568-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,kylinos.cn:email]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit e6c2e6c2e1fa066968a16aca1cb66cd1bdde7741 upstream.
+commit 706b3dc2ac7a998c55e14b3fd2e8f934c367e6e0 upstream.
 
-GART TLB is flushed after unmapping but not after mapping. Since
-amdgpu_bo_create_kernel() does not zero-initialize the buffer, when a
-single PTE is written the TLB may speculatively load other uninitialized
-entries from the same cacheline. Those garbage entries can appear valid,
-and a subsequent write to another PTE in the same cacheline may cause the
-GPU to use a stale garbage PTE from the TLB.
+The state machine work is scheduled by the interrupt handler and
+therefore needs to be cancelled after disabling interrupts to avoid a
+potential use-after-free.
 
-Fix this by calling memset_io() to zero-initialize the GART table with
-gart_pte_flags immediately after allocation.
-
-Using AMDGPU_GEM_CREATE_VRAM_CLEARED, SDMA-based clear will not work
-since SDMA needs GART to be initialized to work.
-
-Suggested-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d9af8263b82b6eaa60c5718e0c6631c5037e4b24)
+Fixes: 984836621aad ("spi: mpc52xx: Add cancel_work_sync before module remove")
 Cc: stable@vger.kernel.org
+Cc: Pei Xiao <xiaopei01@kylinos.cn>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260414134319.978196-5-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/spi/spi-mpc52xx.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-@@ -260,12 +260,19 @@ void amdgpu_gart_table_ram_free(struct a
-  */
- int amdgpu_gart_table_vram_alloc(struct amdgpu_device *adev)
- {
-+	int r;
-+
- 	if (adev->gart.bo != NULL)
- 		return 0;
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -525,10 +525,11 @@ static void mpc52xx_spi_remove(struct pl
  
--	return amdgpu_bo_create_kernel(adev,  adev->gart.table_size, PAGE_SIZE,
--				       AMDGPU_GEM_DOMAIN_VRAM, &adev->gart.bo,
--				       NULL, (void *)&adev->gart.ptr);
-+	r = amdgpu_bo_create_kernel(adev,  adev->gart.table_size, PAGE_SIZE,
-+				    AMDGPU_GEM_DOMAIN_VRAM, &adev->gart.bo,
-+				    NULL, (void *)&adev->gart.ptr);
-+	if (r)
-+		return r;
-+
-+	memset_io(adev->gart.ptr, adev->gart.gart_pte_flags, adev->gart.table_size);
-+	return 0;
- }
+ 	spi_unregister_controller(host);
  
- /**
+-	cancel_work_sync(&ms->work);
+ 	free_irq(ms->irq0, ms);
+ 	free_irq(ms->irq1, ms);
+ 
++	cancel_work_sync(&ms->work);
++
+ 	for (i = 0; i < ms->gpio_cs_count; i++)
+ 		gpiod_put(ms->gpio_cs[i]);
+ 
 
 
 
