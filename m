@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-248689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDHGJp5YB2pmzgIAu9opvQ
-	(envelope-from <stable+bounces-248689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:32:14 +0200
+	id QM4UHs1EB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:07:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38037555317
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:32:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9554552B60
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1FA7430BA953
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9456A321D735
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A7E3E00BB;
-	Fri, 15 May 2026 16:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7A13FF1DA;
+	Fri, 15 May 2026 15:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Py992S5+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1sLBNTT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE0B3B9D91;
-	Fri, 15 May 2026 16:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4E93FF1A2;
+	Fri, 15 May 2026 15:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862375; cv=none; b=ZNyGkaeyKt7LjUa7IEohXmYeqHPA0DrdCVnHUqdbdQuid/QAQN89yKROGYhwfq2xSB2PuqPn1BeaSDg/7Ymp3Qc7i4R5RkTgQH4fBKScMzRZQTkwkW9NW0Ab4IBwBNTcEU4PqnCVwluCywAXqVa9/tUboKNMmM+kj35LFvidzRE=
+	t=1778860294; cv=none; b=cOlPmEO+uqYl/FhTkaetdcuE6kBzr8Hd39KJhPaKr7yzfDVnmKFKmTnW2bkWtw6ZtQoJYqs/Q+mr5WqbKVqWVlRe56dpF4GXsETvSWrBmOjF7qLwzQEEspMAQF9vnO75i2Zxei50D5+d75sUqlZP9WsmALmN1IQJjoG6mCb2vyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862375; c=relaxed/simple;
-	bh=GYodvWxzyDzZ9WoR3pJYxFLuaKUpnRLioaqQGZO+q7k=;
+	s=arc-20240116; t=1778860294; c=relaxed/simple;
+	bh=izXdzrdt0+LVWC/IYvn7h5GXm56+dOp19s2HDjYWya4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFEqnco4/2WnU1+oVYFAuOKd4q4rjEWHvcOAebgsfijSa6o9VMlDCNbgK6hI3hC1REcTcFjhZ1m0wAIYh7Ay3aBezCSxdlz9WveYk2vP1SPZnhOdYsiJisq/zduNerGQ9qjnbTd/JCtYPv0H8YjVztpgV3HxYxBykaCMORRsnMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Py992S5+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BD6C2BCB0;
-	Fri, 15 May 2026 16:26:14 +0000 (UTC)
+	 MIME-Version; b=SV+JY+Guyj6IofeoiCUsED4E8gjHQXjGkOpXEgl1vdWLNdNV9qBncDmyRAT46ABzqt4nloFq0wMq6yC/Cghr05GzXncw3LKDsFCn53uEJBKmB1uvRmumXnlYs68RsdXQUEr8HmaU8/chYXWxz7U72Dwlm132LZJCFwq+y/HUdzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1sLBNTT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E92C2BCB0;
+	Fri, 15 May 2026 15:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862375;
-	bh=GYodvWxzyDzZ9WoR3pJYxFLuaKUpnRLioaqQGZO+q7k=;
+	s=korg; t=1778860294;
+	bh=izXdzrdt0+LVWC/IYvn7h5GXm56+dOp19s2HDjYWya4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Py992S5+7Q2UiAUTTo+YHZV0injfeulzEOGWqvXJ4rTL81as6dhIoIlHgBgYi3j3L
-	 1f/5EF/dE6lAcjSAapmnXefrTu8a24iqQdF8+KrVyimZw6fDobbYLyHIzZB8zxw0fj
-	 ETLwP3fu1o5jkkBiDBY69aHo95T5x6TAxuUofiIk=
+	b=Q1sLBNTTiemNtYlcTb5ef2wI8bSfDhJHUOH/e3izGHR9zn7Qpe4R4dO+MqrpIWn9i
+	 PgmTFBYXYsKL3QHm3sSekXnjf81s4SxMr3/UxOC9LETqUrpqzjVGQRbd7Mvbdl4ZKr
+	 8uwcJe8xCKsLd7ScjXwSP4qm1FgWn9wZ5BTVicQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyi Guo <n7l8m4@u.northwestern.edu>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Sean Young <sean@mess.org>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 024/201] media: chips-media: wave5: add missing spinlock protection for handle_dynamic_resolution_change()
+Subject: [PATCH 6.12 016/144] media: rc: streamzap: Error handling in probe
 Date: Fri, 15 May 2026 17:47:22 +0200
-Message-ID: <20260515154659.057441353@linuxfoundation.org>
+Message-ID: <20260515154653.870313180@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +64,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 38037555317
+X-Rspamd-Queue-Id: E9554552B60
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [5.34 / 15.00];
-	SEM_URIBL(3.50)[northwestern.edu:email];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248689-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	TAGGED_FROM(0.00)[bounces-247874-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,meta];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_SPAM(0.00)[0.963];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[northwestern.edu:email,collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,mess.org:email]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit cb8bdd3ffca280d014311ab395651d33f58a8708 upstream.
+commit 42844992664f03ef9f930e64f7370fa481e9c267 upstream.
 
-Add spin_lock_irqsave()/spin_unlock_irqrestore() around the
-handle_dynamic_resolution_change() call in initialize_sequence() to fix
-the missing lock protection.
+If submitting the URB fails, the device will be unusable.
+Probe() must fail.
 
-initialize_sequence() calls handle_dynamic_resolution_change() without
-holding inst->state_spinlock. However, handle_dynamic_resolution_change()
-has lockdep_assert_held(&inst->state_spinlock) indicating that callers
-must hold this lock.
-
-Other callers of handle_dynamic_resolution_change() properly acquire the
-spinlock:
-- wave5_vpu_dec_finish_decode()
-- wave5_vpu_dec_device_run()
-
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Fixes: 9707a6254a8a6b ("media: chips-media: wave5: Add the v4l2 layer")
+Fixes: 7a569f524dd36 ("V4L/DVB: IR/streamzap: functional in-kernel decoding")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Sean Young <sean@mess.org>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/rc/streamzap.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
-+++ b/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
-@@ -1593,6 +1593,7 @@ static int initialize_sequence(struct vp
- {
- 	struct dec_initial_info initial_info;
- 	int ret = 0;
-+	unsigned long flags;
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -219,9 +219,8 @@ static void streamzap_callback(struct ur
+ 	case -ESHUTDOWN:
+ 		/*
+ 		 * this urb is terminated, clean up.
+-		 * sz might already be invalid at this point
+ 		 */
+-		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
++		dev_dbg(sz->dev, "urb terminated, status: %d\n", urb->status);
+ 		return;
+ 	default:
+ 		break;
+@@ -358,11 +357,16 @@ static int streamzap_probe(struct usb_in
  
- 	memset(&initial_info, 0, sizeof(struct dec_initial_info));
+ 	usb_set_intfdata(intf, sz);
  
-@@ -1614,7 +1615,9 @@ static int initialize_sequence(struct vp
- 		return ret;
- 	}
- 
-+	spin_lock_irqsave(&inst->state_spinlock, flags);
- 	handle_dynamic_resolution_change(inst);
-+	spin_unlock_irqrestore(&inst->state_spinlock, flags);
+-	if (usb_submit_urb(sz->urb_in, GFP_ATOMIC))
++	retval = usb_submit_urb(sz->urb_in, GFP_ATOMIC);
++	if (retval < 0) {
+ 		dev_err(sz->dev, "urb submit failed\n");
++		goto rc_submit_fail;
++	}
  
  	return 0;
- }
+-
++rc_submit_fail:
++	rc_free_device(sz->rdev);
++	usb_set_intfdata(intf, NULL);
+ rc_dev_fail:
+ 	usb_free_urb(sz->urb_in);
+ free_buf_in:
 
 
 
