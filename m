@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mO4nM4ZVB2p7zAIAu9opvQ
-	(envelope-from <stable+bounces-248316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:02 +0200
+	id sC7bNqROB2p3xwIAu9opvQ
+	(envelope-from <stable+bounces-248675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5972B554CE5
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:19:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B527553FAC
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F0CD324DDD2
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:12:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A3D6F30A08DD
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DD749219F;
-	Fri, 15 May 2026 16:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC003F926A;
+	Fri, 15 May 2026 16:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJ1ntM32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKjSbRqk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4D53BB12D;
-	Fri, 15 May 2026 16:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E6E3FF1BD;
+	Fri, 15 May 2026 16:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861421; cv=none; b=Cl0fftx2lCkKbEkEtEEI1YpHUPF3WlUVGKYEYxUHl46h0XJJCJp84BApk66lIkUC0ftW/FqQF1CZnnIUgwU+lnNZL+baAp//ICU9EEhPiEs/tWS9SUzsviJ5BL7xUvrC2D2SB+jN2Z8ERVFZGCDYljvuzvgjtLXLByltqhOjV0g=
+	t=1778862343; cv=none; b=ZQNn6afKYUoG41Kl0Zz+8WYeiyVrcgyVkOxyVkP6RXY9TsK09byKgGQZRTSY0RaUgerA1JHjE72Af2xw1t0JvUhawCGJhRGJeviUWYSJka9TqBHsZ4R4GMnD5NvgFZ43sTVGOPDgSWfuWi0kqtjmYI0QKXUZyhu63C9HDHfqu88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861421; c=relaxed/simple;
-	bh=yNKwXe8fKNSx8rS0lSqMqqIpqr+8T9C/jIo7F23tvjw=;
+	s=arc-20240116; t=1778862343; c=relaxed/simple;
+	bh=Ori2c8vsEx2JRMbOcBmavVwvpWEVJfsgy/ZFerEFFZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYgqu0oPE4+bcPOEXb9MgOQ9c6IXAV0vSiihJcv06RWa3wHO1WLpaFyzwi3ck8JJHpSNXXbb4VOpxCAB5yEPK5GBWehcpyC82YEYjg34vkFzviT01sSg42Wz33Fyan4j0LZjEZTECvoOh4WP6I64AwGYEds8j6T2/VBIXS6epJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJ1ntM32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571E7C2BCB0;
-	Fri, 15 May 2026 16:10:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ImZX7FqpjNdh5v0B7n2AF5TvqhDn3qvdHD0TTa+QbqDZgLhnZFSALosX2WpYjPZjVDDb7lZwoQ1eRX9jeQKt96C/MN4WvYrFijTaWZZgbfo+9CH+jVcweEYFPFTEFAKortjEyYPq442dN0HWHoC50wCw4Ald3xczokK3jqeXz4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKjSbRqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEC3C2BCB0;
+	Fri, 15 May 2026 16:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861420;
-	bh=yNKwXe8fKNSx8rS0lSqMqqIpqr+8T9C/jIo7F23tvjw=;
+	s=korg; t=1778862343;
+	bh=Ori2c8vsEx2JRMbOcBmavVwvpWEVJfsgy/ZFerEFFZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJ1ntM32KXTcpzDZKyfHc5IDUPZEkYFJF8DZBTAfp5so93kCZ7vlpsCCS4YCbL8Vw
-	 xxmO9uuE4AIwFvQLa/6FL6/DR6XSVl+W3YVBLPnemsGDWBx3wJRFSXKFD8tRMgd2lJ
-	 cOs30f6oC/Hh6ElFtOhzCoCQEDtAg9XKSXrJSHiM=
+	b=pKjSbRqkxKTPGDrw1bpPOey6H56jP34EZptBLCYeYztligeD/SZ5vgpWOmAnrTiQv
+	 Ie8dM2rVP/vmc5eC/VN8mfL1hEMLP42PNYTyWO5YDqC+8lpNdpEECEYqq4msCcjBby
+	 mTC2OfWyPnHv6ei5pfGqy13aSckzxkMGSl8F+Sg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 321/474] media: omap3isp: drop the use count of v4l2 pipeline
-Date: Fri, 15 May 2026 17:47:10 +0200
-Message-ID: <20260515154721.956679223@linuxfoundation.org>
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <barnabas.pocze+renesas@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 013/201] media: rzv2h-ivc: Fix concurrent buffer list access
+Date: Fri, 15 May 2026 17:47:11 +0200
+Message-ID: <20260515154658.824430519@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
+References: <20260515154658.538039039@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5972B554CE5
+X-Rspamd-Queue-Id: 8B527553FAC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-248316-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248675-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas,cisco];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,iscas.ac.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ideasonboard.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Barnabás Pőcze <barnabas.pocze+renesas@ideasonboard.com>
 
-commit 9da49bd9d4224035cff39b40d7395310abb10201 upstream.
+commit 72773ff1cdfaebc593f53b1719b2c1773ecf8c43 upstream.
 
-In isp_video_open(), drop the use count of v4l2
-pipeline if vb2_queue_init() fails.
+The list of buffers (`rzv2h_ivc::buffers.queue`) is protected by a
+spinlock (`rzv2h_ivc::buffers.lock`). However, in
+`rzv2h_ivc_transfer_buffer()`, which runs in a separate workqueue, the
+`list_del()` call is executed without holding the spinlock, which makes
+it possible for the list to be concurrently modified
 
-Fixes: 8fd390b89cc8 ("media: Split v4l2_pipeline_pm_use into v4l2_pipeline_pm_{get, put}")
+Fix that by removing a buffer from the list in the lock protected section.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: f0b3984d821b ("media: platform: Add Renesas Input Video Control block driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Barnabás Pőcze <barnabas.pocze+renesas@ideasonboard.com>
+[assign ivc->buffers.curr in critical section as reported by Barnabas]
+Signed-off-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/ti/omap3isp/ispvideo.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/media/platform/ti/omap3isp/ispvideo.c
-+++ b/drivers/media/platform/ti/omap3isp/ispvideo.c
-@@ -1324,6 +1324,7 @@ static int isp_video_open(struct file *f
+--- a/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
++++ b/drivers/media/platform/renesas/rzv2h-ivc/rzv2h-ivc-video.c
+@@ -158,14 +158,13 @@ static void rzv2h_ivc_transfer_buffer(st
+ 	scoped_guard(spinlock_irqsave, &ivc->buffers.lock) {
+ 		buf = list_first_entry_or_null(&ivc->buffers.queue,
+ 					       struct rzv2h_ivc_buf, queue);
+-	}
+-
+-	if (!buf)
+-		return;
++		if (!buf)
++			return;
  
- 	ret = vb2_queue_init(&handle->queue);
- 	if (ret < 0) {
-+		v4l2_pipeline_pm_put(&video->video.entity);
- 		omap3isp_put(video->isp);
- 		goto done;
- 	}
+-	list_del(&buf->queue);
++		list_del(&buf->queue);
++		ivc->buffers.curr = buf;
++	}
+ 
+-	ivc->buffers.curr = buf;
+ 	buf->addr = vb2_dma_contig_plane_dma_addr(&buf->vb.vb2_buf, 0);
+ 	rzv2h_ivc_write(ivc, RZV2H_IVC_REG_AXIRX_SADDL_P0, buf->addr);
+ 
 
 
 
