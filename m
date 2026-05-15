@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-247965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PtOCOZFB2p6wAIAu9opvQ
-	(envelope-from <stable+bounces-247965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:12:22 +0200
+	id QEnVBXZYB2pmzgIAu9opvQ
+	(envelope-from <stable+bounces-248607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:31:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B4E552D2A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:12:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF2D55528F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EA0E83033CC1
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:55:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06B9933E6360
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FDB17C220;
-	Fri, 15 May 2026 15:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38923F9286;
+	Fri, 15 May 2026 16:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQ1ZpKr5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXeqXmdc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DE73FF1D8;
-	Fri, 15 May 2026 15:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F1A3EFFC9;
+	Fri, 15 May 2026 16:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778860529; cv=none; b=jxRoWjK6bmG1SoerlR1j8QWPKsW5NLofVYTAJGal35mTxrKL8v00QQRAHZrjETQsKc80TkfTRifJjwePB8tFvPSNDmWy2ilXeTgfij8H2FL3qlunChqaUkDHkAynO0PlxFpOrqHKBt39NallGJ2ILUYnGK2ZAyP/iPuC7SGJ4EI=
+	t=1778862165; cv=none; b=HG3+yWhms5DmX1fmPjbmehCTFAHRK7g4tWKWs89xugshiZV1hH4hbTtSNLHtT6M+MOTx3D+xMW03RQmOgmh5nhtmNKiPk38L2imnw3ZC1qf+6FBENTG2ofSAyE019O0pvq2S65zMUgXxdx4UC4DytQfibudi+vyuFzh5P8+FBKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778860529; c=relaxed/simple;
-	bh=gviy11P/YkBm27ZoGF/TBkArOIHwp8nXEs/HZa+I64M=;
+	s=arc-20240116; t=1778862165; c=relaxed/simple;
+	bh=UtAbYGv3MWYvYJ+DdN0erbo7GHm2QI51zkxSFgVntL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IDiP/tU6P7IdbDnNMVsUbNV3GceZeJzvIGZtOR3fdmG9kdBUpw/Ls7s6QSkwtExM4l0xze4l4Q+cRBIBpAAJi904oJ/T+TJ92r7uqmQeUSIMgiX0WnQupqamJon1ny1WojYm7J/0Oo2BmCda1eM8W/MWUgKhiihw3no+xA+0kus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQ1ZpKr5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CF3C2BCB0;
-	Fri, 15 May 2026 15:55:28 +0000 (UTC)
+	 MIME-Version; b=SIumXpP1P2vQu45J6lsfp0S51hKggeY9/3/M81/Lii1lOinORYWZQqnPDqOa33yeKG/o5lzTtkS5i4WzHA4spiljXQdWaHlOviuEY+fOylC9t5tS+pdPWpL978FmDRxxU7bUsmBp5zfrc++Nq9rcIg7OtIc29RWW41uyQhzEslw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXeqXmdc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7101C2BCB3;
+	Fri, 15 May 2026 16:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778860529;
-	bh=gviy11P/YkBm27ZoGF/TBkArOIHwp8nXEs/HZa+I64M=;
+	s=korg; t=1778862165;
+	bh=UtAbYGv3MWYvYJ+DdN0erbo7GHm2QI51zkxSFgVntL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQ1ZpKr51znlwUosz5KqQ5bpCGO3G6Baep7dao2ihrHsdKVuje7yqILWJwMZIXmnR
-	 5v3lnSq5gHFKQoSuziVqachjdEGwqIxlw6onMFilS0WA7KxXOT1JAsL2sOBQZe6zfX
-	 3ECViY0Iyh1JfWEcMroQ7GEerYDAiDkn2MOCa4C4=
+	b=oXeqXmdc4wsjyeF0vdjmqWkc9V0M4uQxX32lgtBx1HYmm6YVZgb6Be//F13pddDG2
+	 qLHSxUxPe7BLWNaoantz9ErGCxFkTgoLjQHDy0RkooDGdIIC2r4sGroAYY2toRtkQu
+	 ZkCBx+mT/1981QXdOfXHrQj7sys0RZBS+VXwLaAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 124/144] mm/damon/core: implement damon_kdamond_pid()
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.18 133/188] arm64: dts: qcom: lemans: Correct QUP interrupt numbers
 Date: Fri, 15 May 2026 17:49:10 +0200
-Message-ID: <20260515154656.383346472@linuxfoundation.org>
+Message-ID: <20260515154700.212935838@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
-References: <20260515154653.469907118@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +64,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D4B4E552D2A
+X-Rspamd-Queue-Id: 6CF2D55528F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,106 +80,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-247965-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248607-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,0.13.179.208:email,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 
-commit 4262c53236977de3ceaa3bf2aefdf772c9b874dd upstream.
+commit c5b22c88cc09b180e3a23010b29f4d02ec117a44 upstream.
 
-Patch series "mm/damon: hide kdamond and kdamond_lock from API callers".
+Fix GIC_SPI interrupt numbers for QUPv3 SE6 nodes on Lemans SoC.
+Using incorrect interrupt lines can prevent IRQs from triggering
+and break I2C, SPI, and UART operation.
 
-'kdamond' and 'kdamond_lock' fields initially exposed to DAMON API callers
-for flexible synchronization and use cases.  As DAMON API became somewhat
-complicated compared to the early days, Keeping those exposed could only
-encourage the API callers to invent more creative but complicated and
-difficult-to-debug use cases.
-
-Fortunately DAMON API callers didn't invent that many creative use cases.
-There exist only two use cases of 'kdamond' and 'kdamond_lock'.  Finding
-whether the kdamond is actively running, and getting the pid of the
-kdamond.  For the first use case, a dedicated API function, namely
-'damon_is_running()' is provided, and all DAMON API callers are using the
-function for the use case.  Hence only the second use case is where the
-fields are directly being used by DAMON API callers.
-
-To prevent future invention of complicated and erroneous use cases of the
-fields, hide the fields from the API callers.  For that, provide new
-dedicated DAMON API functions for the remaining use case, namely
-damon_kdamond_pid(), migrate DAMON API callers to use the new function,
-and mark the fields as private fields.
-
-
-This patch (of 5):
-
-'kdamond' and 'kdamond_lock' are directly being used by DAMON API callers
-for getting the pid of the corresponding kdamond.  To discourage invention
-of creative but complicated and erroneous new usages of the fields that
-require careful synchronization, implement a new API function that can
-simply be used without the manual synchronizations.
-
-Link: https://lkml.kernel.org/r/20260115152047.68415-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20260115152047.68415-2-sj@kernel.org
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 34a407316b7d3 ("arm64: dts: qcom: sa8775p: Populate additional UART DT nodes")
+Fixes: 1b2d7ad5ac14d ("arm64: dts: qcom: sa8775p: add missing spi nodes")
+Fixes: ee2f5f906d69d ("arm64: dts: qcom: sa8775p: add missing i2c nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260325-lemans-irq-num-v1-1-a470d544966a@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/damon.h |    1 +
- mm/damon/core.c       |   17 +++++++++++++++++
- 2 files changed, 18 insertions(+)
+ arch/arm64/boot/dts/qcom/lemans.dtsi |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -778,6 +778,7 @@ static inline unsigned int damon_max_nr_
- 
- int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
- int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
-+int damon_kdamond_pid(struct damon_ctx *ctx);
- 
- int damon_set_region_biggest_system_ram_default(struct damon_target *t,
- 				unsigned long *start, unsigned long *end);
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1163,6 +1163,23 @@ int damon_stop(struct damon_ctx **ctxs,
- 	return err;
- }
- 
-+/**
-+ * damon_kdamond_pid() - Return pid of a given DAMON context's worker thread.
-+ * @ctx:	The DAMON context of the question.
-+ *
-+ * Return: pid if @ctx is running, negative error code otherwise.
-+ */
-+int damon_kdamond_pid(struct damon_ctx *ctx)
-+{
-+	int pid = -EINVAL;
-+
-+	mutex_lock(&ctx->kdamond_lock);
-+	if (ctx->kdamond)
-+		pid = ctx->kdamond->pid;
-+	mutex_unlock(&ctx->kdamond_lock);
-+	return pid;
-+}
-+
- /*
-  * Reset the aggregated monitoring results ('nr_accesses' of each region).
-  */
+--- a/arch/arm64/boot/dts/qcom/lemans.dtsi
++++ b/arch/arm64/boot/dts/qcom/lemans.dtsi
+@@ -1563,7 +1563,7 @@
+ 				reg = <0x0 0x898000 0x0 0x4000>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+-				interrupts = <GIC_SPI 834 IRQ_TYPE_LEVEL_HIGH>;
++				interrupts = <GIC_SPI 833 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP2_S6_CLK>;
+ 				clock-names = "se";
+ 				pinctrl-0 = <&qup_i2c20_default>;
+@@ -1590,7 +1590,7 @@
+ 				reg = <0x0 0x898000 0x0 0x4000>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+-				interrupts = <GIC_SPI 834 IRQ_TYPE_LEVEL_HIGH>;
++				interrupts = <GIC_SPI 833 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP2_S6_CLK>;
+ 				clock-names = "se";
+ 				pinctrl-0 = <&qup_spi20_default>;
+@@ -1615,7 +1615,7 @@
+ 			uart20: serial@898000 {
+ 				compatible = "qcom,geni-uart";
+ 				reg = <0x0 0x00898000 0x0 0x4000>;
+-				interrupts = <GIC_SPI 834 IRQ_TYPE_LEVEL_HIGH>;
++				interrupts = <GIC_SPI 833 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP2_S6_CLK>;
+ 				clock-names = "se";
+ 				pinctrl-0 = <&qup_uart20_default>;
+@@ -2561,7 +2561,7 @@
+ 				reg = <0x0 0xa98000 0x0 0x4000>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+-				interrupts = <GIC_SPI 836 IRQ_TYPE_LEVEL_HIGH>;
++				interrupts = <GIC_SPI 835 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S6_CLK>;
+ 				clock-names = "se";
+ 				pinctrl-0 = <&qup_i2c13_default>;
 
 
 
