@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-247689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCwyFpwJB2oLrAIAu9opvQ
-	(envelope-from <stable+bounces-247689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:55:08 +0200
+	id CKjAKqIJB2oLrAIAu9opvQ
+	(envelope-from <stable+bounces-247690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:55:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F20554EDBA
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F2F54EDF9
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 13:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 432CD30B887E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:46:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C616B30C51DE
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 11:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACCF46AF0B;
-	Fri, 15 May 2026 11:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8CD347D94F;
+	Fri, 15 May 2026 11:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZN7Gqy+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hx1YB6Ii"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CC544CAEC
-	for <Stable@vger.kernel.org>; Fri, 15 May 2026 11:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6533246AF0B
+	for <Stable@vger.kernel.org>; Fri, 15 May 2026 11:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778845572; cv=none; b=JRqg6zh+FvrscFC3tRipKAsrLCgtFs0FngLIS3NttZo2rafuSuzzGaR3vFDFQ5twgVhjSOdbvPA8YIbHQ1H/uPZ3o4vDRv0qRFPmUY7ZiAjeCWNxMtvmrmYp1XvWSDlfxbcetcE8CMi9oVVKADNkXp0FOykEF6Sf0VI3XxSqDu8=
+	t=1778845574; cv=none; b=CkqtBPvo75LnDAvbUZuOjh8d/4V8ZcoU4v4jbKELTHoamrakuBbQVUV2+u/21/4o+Hg5By8M0j9pkRZRokMLRjz/ugYdr4KWIh3l6Imhis+jZ+rYLkaz2IBIjp9F+kcyirS80I6c3YpXJEgO1NMX907U2bIV/rNSnh5QMquSpqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778845572; c=relaxed/simple;
-	bh=4VK4oXnlgxjBzxU9bb2HufvF2ufwQYe4aqVBcqfMIyI=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=CIxPGsfwkulQumHPZ1wiosfFW7msPUqMtLsfwZwsWJ8/otO8XwnbkDZwh5px3D7WwgEkdDH45PyXUT1f843NvwG8dTEimkHIrHn/H9w1wBYwCq7E8+Fp4sEdXPr37UViHjBcuWAVbxwVI3O7zLz13h7wbEHq0utITKuElFtaTMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZN7Gqy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D8BC2BCB0;
-	Fri, 15 May 2026 11:46:11 +0000 (UTC)
+	s=arc-20240116; t=1778845574; c=relaxed/simple;
+	bh=u3OXNV1ZsGJ7YV+75tbKsC2Qixqc1UjjuVP+PF3T+n8=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=krG7cFZsKZd7wnrwSNAI1qMUFsxfH8XNTIHpF/ijSH6dq1G8Q0CQOtLm0ebguVRiShaE82LAyFe6k64ozDCdlrqbdTaQ3AQGH7IWBOw64oVs/x/KWsOUDMnU19a3bgPPB+FZYlmUHEwbgowjHElwwCHw/F2hwmtWo62QT3OJPDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hx1YB6Ii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3FEC2BCB0;
+	Fri, 15 May 2026 11:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778845571;
-	bh=4VK4oXnlgxjBzxU9bb2HufvF2ufwQYe4aqVBcqfMIyI=;
+	s=korg; t=1778845574;
+	bh=u3OXNV1ZsGJ7YV+75tbKsC2Qixqc1UjjuVP+PF3T+n8=;
 	h=Subject:To:From:Date:From;
-	b=zZN7Gqy+IqmAYqzVuSJo9/3Ko9MttLQlvjQHzP+s4+2K7eAKrESR89D7A+5BrR3Jr
-	 FFeOITLScMcSJzM4+yhfkfxDrUpIpfrxwTXzGtpoflRsC8k8zhTyTgEG8Gd4zXOIHB
-	 H5gRypEGGWJqBge53DTqh9zWzKIzyxO5C1qxEb9M=
-Subject: patch "iio: adc: nxp-sar-adc: fix division by zero in write_raw" added to char-misc-linus
-To: antoniu.miclaus@analog.com,Stable@vger.kernel.org,jic23@kernel.org
+	b=hx1YB6IiiVRhIp3W5wulLx/7V8N11LpcYJjLHzYKysJnEuU1Qcb7CM7sYlbL/aK60
+	 Pz4OHIvWLEF2zNxAGfQPL91zWNujE8Jvraqfb55UOtb1ViZIfo9CATShyxtSuZ1THc
+	 WHmcn/KkP40uP5DH4Zh9OQ2UCtTv7sxh/EHLrsq4=
+Subject: patch "iio: buffer: Fix DMA fence leak in iio_buffer_enqueue_dmabuf()" added to char-misc-linus
+To: benoit.monin@bootlin.com,Stable@vger.kernel.org,jamesnuss@nanometrics.ca,jic23@kernel.org,paul@crapouillou.net
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 15 May 2026 13:45:56 +0200
-Message-ID: <2026051556-skiing-poison-e81b@gregkh>
+Message-ID: <2026051556-overrate-renegade-4eae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0F20554EDBA
+X-Rspamd-Queue-Id: 49F2F54EDF9
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -65,29 +65,29 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247689-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-247690-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NO_DN(0.00)[];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
+	NEURAL_HAM(-0.00)[-0.991];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+]
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_FIVE(0.00)[5]
 X-Rspamd-Action: no action
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: nxp-sar-adc: fix division by zero in write_raw
+    iio: buffer: Fix DMA fence leak in iio_buffer_enqueue_dmabuf()
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -102,55 +102,58 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From a9aba21a539c668a66b58eeb08ad3909e5a54c2a Mon Sep 17 00:00:00 2001
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Date: Wed, 1 Apr 2026 18:29:24 +0300
-Subject: iio: adc: nxp-sar-adc: fix division by zero in write_raw
+From a093999355084bdbfe6e97f1dd232e58a1525f0b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>
+Date: Wed, 1 Apr 2026 17:24:58 +0200
+Subject: iio: buffer: Fix DMA fence leak in iio_buffer_enqueue_dmabuf()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add a validation check for the sampling frequency value before using it
-as a divisor. A user writing zero or a negative value to the
-sampling_frequency sysfs attribute triggers a division by zero in the
-kernel.
+iio_buffer_enqueue_dmabuf() allocates a struct iio_dma_fence (104 bytes,
+kmalloc-128) via kmalloc_obj()+dma_fence_init(), which sets the initial
+kref to 1.  It then calls dma_resv_add_fence() which takes a second
+reference (kref=2), and stores a raw pointer in block->fence.
 
-Also prevent unsigned integer underflow when the computed cycle count is
-smaller than NXP_SAR_ADC_CONV_TIME, which would wrap the u32 inpsamp to
-a huge value.
+On the success path the function returns without calling dma_fence_put()
+to release the initial reference, so every buffer enqueue permanently
+leaks one kmalloc-128 allocation.
 
-Fixes: 4434072a893e ("iio: adc: Add the NXP SAR ADC support for the s32g2/3 platforms")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+The iio_buffer_cleanup() work item only releases the temporary reference
+taken during completion signalling by iio_buffer_signal_dmabuf_done();
+the initial reference from dma_fence_init() is never released.
+
+With four iio_rwdev instances at 240kHz and 512 samples per buffer,
+this produces ~1875 kmalloc-128 allocations per second matching the
+observed slab growth exactly. A test with ftrace confirmed that the
+dma_fence_destroy event was never triggered.
+
+Fix by calling dma_fence_put() after dma_resv_add_fence(), transferring
+ownership of the fence to the DMA reservation object. The DMA fence then
+gets properly discarded after being signalled.
+
+Fixes: 3e26d9f08fbe0 ("iio: core: Add new DMABUF interface infrastructure")
+Originally-by: James Nuss <jamesnuss@nanometrics.ca>
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+Reviewed-by: Paul Cercueil <paul@crapouillou.net>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 ---
- drivers/iio/adc/nxp-sar-adc.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/iio/industrialio-buffer.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/nxp-sar-adc.c b/drivers/iio/adc/nxp-sar-adc.c
-index 705dd7da1bd2..1711cae7d872 100644
---- a/drivers/iio/adc/nxp-sar-adc.c
-+++ b/drivers/iio/adc/nxp-sar-adc.c
-@@ -569,6 +569,9 @@ static int nxp_sar_adc_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index 46f36a6ed271..5c3df993bea2 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -1909,6 +1909,7 @@ static int iio_buffer_enqueue_dmabuf(struct iio_dev_buffer_pair *ib,
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
-+		if (val <= 0)
-+			return -EINVAL;
-+
- 		/*
- 		 * Configures the sample period duration in terms of the SAR
- 		 * controller clock. The minimum acceptable value is 8.
-@@ -577,7 +580,11 @@ static int nxp_sar_adc_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec
- 		 * sampling timing which gives us the number of cycles expected.
- 		 * The value is 8-bit wide, consequently the max value is 0xFF.
- 		 */
--		inpsamp = clk_get_rate(info->clk) / val - NXP_SAR_ADC_CONV_TIME;
-+		inpsamp = clk_get_rate(info->clk) / val;
-+		if (inpsamp < NXP_SAR_ADC_CONV_TIME)
-+			return -EINVAL;
-+
-+		inpsamp -= NXP_SAR_ADC_CONV_TIME;
- 		nxp_sar_adc_conversion_timing_set(info, inpsamp);
- 		return 0;
+ 	dma_resv_add_fence(dmabuf->resv, &fence->base,
+ 			   dma_to_ram ? DMA_RESV_USAGE_WRITE : DMA_RESV_USAGE_READ);
++	dma_fence_put(&fence->base);
+ 	dma_resv_unlock(dmabuf->resv);
  
+ 	cookie = dma_fence_begin_signalling();
 -- 
 2.54.0
 
