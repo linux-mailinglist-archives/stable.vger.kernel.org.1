@@ -1,192 +1,152 @@
-Return-Path: <stable+bounces-247790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IjPALQrB2oLsgIAu9opvQ
-	(envelope-from <stable+bounces-247790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:36 +0200
+	id kPHJJ9krB2oLsgIAu9opvQ
+	(envelope-from <stable+bounces-247791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C37B551458
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:20:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F4D55147D
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 943B23017C15
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:15:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E340F304B246
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FFA47DD4E;
-	Fri, 15 May 2026 14:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z36CpN9U"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FF233F58F;
+	Fri, 15 May 2026 14:16:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [144.76.133.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A2C3CC7C5;
-	Fri, 15 May 2026 14:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7423368A4;
+	Fri, 15 May 2026 14:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.133.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778854500; cv=none; b=ngFYkaXsvNKIHQ6cvV3wGIxHquDl+tN9IFeX8m/yKUIfTCKW2neeIebc1YpFXE0+w1GZfK9o0wSC9P5S5G4348O1pYSdI76PtH5uP8Ab2MXhczQV7bPoQS2b2ID31WhgWZK+i+AboLEDKN0wow214gfOmT/8mxGI2Co8VfqHiGk=
+	t=1778854610; cv=none; b=LG7s3WLKbVYi6zn70DS+7vaU6amuysOLKODbkPIkfm/VM+949lIZtyVg6/yKwuwLH3ZWeCJURrQWp1v1gkdi08n6NuXGoCB6th/Zz3QGYSeKtar2Dnxx8nwzTszAe5xWaLer04MY+u3CMhxgZMXtsnL8zY2L3ao02kCp/YVuDlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778854500; c=relaxed/simple;
-	bh=yQWnXkmSBYV3ZtuAW2rc6CZYiOl9hk/SlqVzEGyJZ90=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M8X8ChuDghghuHCbHP5uQgxHKpE4QNY9eRX+WOhBL+TiApaXIasWz5PdhHBPjrM9DShBO+Tm+ByScEkw7G87RIn6FXWuHGBdK1N0Lr3Eof7m1SvuhOzXHRr7sAwXi+VkRvf4so0PvNEkv129+WMqjqW4YayFRQxBiR6d5zcvlUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z36CpN9U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29EB8C2BCB0;
-	Fri, 15 May 2026 14:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778854500;
-	bh=yQWnXkmSBYV3ZtuAW2rc6CZYiOl9hk/SlqVzEGyJZ90=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Z36CpN9UitkhDRLCBX4339ww2Q3wmt7AatBmqS35QCWKCSW9V/CGzn2OQYG6ACjH4
-	 KbDxhYJcE4KcRXYTW01AKt/yBnM5fdFqAWbiqSl5Q/s+L7ezf/EmwqTCF2sZQ1rlIM
-	 ldvCd4J4yqHw5312J0vsWVpdsPyr70sgCXhus8zxoKy8Iz2SdvbvJIA9Jc21ob708n
-	 Yjy3eNrHHzkfU3q30gIcAy3llGgaJSRQ0xW6KeJpDQzqCE6XCS26P5sFbinGaUReg4
-	 JlNv3liMT3HtiIwH7uPLKGB55XcZLySxgtVPnS0Hy6w6rxxFQgMqLF31hOus3bjDAL
-	 rG9XauhDwgaug==
-Message-ID: <26a33ed4-d851-462a-948e-b19079d12ea8@kernel.org>
-Date: Fri, 15 May 2026 17:14:54 +0300
+	s=arc-20240116; t=1778854610; c=relaxed/simple;
+	bh=LMWu1vnqrD3LfTpw6ou8anAKHcBl3b+UzyrGpHJhi5A=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=TzIJmcX63sd5Lf/agoI8tUt2ezywCU2UowrdUN8XbAI/0dAA3kUyzQApZvCnzrkIca1UGv5pevaMyjBEC1YqVAOLiN6A3GoY0h+iCqempMtGNK9ukVXu69swVYFYb4zu/Phx3hpP4FR6FFeA01obb5zvF13bGBsJ1tKsaiDsLlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=144.76.133.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout3.hostsharing.net (Postfix) with ESMTPS id 0C3D3C08;
+	Fri, 15 May 2026 16:16:47 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id C8994602DFAC; Fri, 15 May 2026 16:16:46 +0200 (CEST)
+From: Lukas Wunner <lukas@wunner.de>
+Date: Fri, 15 May 2026 16:16:47 +0200
+Subject: [PATCH 5.10-stable] lib/crypto: mpi: Fix integer underflow in
+ mpi_read_raw_from_sgl()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, linux-crypto@vger.kernel.org, Eric Biggers <ebiggers@kernel.org>, Ignat Korchagin <ignat@linux.win>, Jarkko Sakkinen <jarkko@kernel.org>, Yiming Qian <yimingqian591@gmail.com>
+Message-Id: <20260515141646.C8994602DFAC@h08.hostsharing.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] phy: renesas: rcar-gen3-usb2: Avoid long delay in atomic
- context
-To: Pavel Machek <pavel@nabladev.com>
-Cc: yoshihiro.shimoda.uh@renesas.com, vkoul@kernel.org,
- neil.armstrong@linaro.org, geert+renesas@glider.be, magnus.damm@gmail.com,
- prabhakar.mahadev-lad.rj@bp.renesas.com, linux-renesas-soc@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org,
- Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-References: <20260514111300.2152386-1-claudiu.beznea@kernel.org>
- <agY8NAyCcHkhBvBv@duo.ucw.cz>
-Content-Language: en-US
-From: Claudiu Beznea <claudiu.beznea@kernel.org>
-In-Reply-To: <agY8NAyCcHkhBvBv@duo.ucw.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8C37B551458
+X-Rspamd-Queue-Id: 15F4D55147D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247790-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[renesas.com,kernel.org,linaro.org,glider.be,gmail.com,bp.renesas.com,vger.kernel.org,lists.infradead.org,nigauri.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-247791-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,linux.win,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[wunner.de: no valid DMARC record];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lukas@wunner.de,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.win:email,h08.hostsharing.net:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,wunner.de:email]
 X-Rspamd-Action: no action
 
-Hi, Pavel,
+commit 8c2f1288250a90a4b5cabed5d888d7e3aeed4035 upstream.
 
-On 5/15/26 00:18, Pavel Machek wrote:
-> Hi!
-> 
->> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>
->> The OTG PHY initialization sequence needs to wait for 20 ms at a specific
->> step, as described in commit 72c0339c115b ("phy: renesas:
->> rcar-gen3-usb2: follow the hardware manual procedure").
->>
->> Commit 55a387ebb921 ("phy: renesas: rcar-gen3-usb2: Lock around hardware
->> registers and driver data") tried to address various problems in the
->> rcar-gen3-usb2 driver and converted the mutex protecting HW register
->> accesses to a spin lock, leaving, however, a long delay in the critical
->> section protected by the spin lock. This may become a problem,
->> especially on RT kernels.
->>
->> To address this, release the spin lock before sleeping for 20 ms as
->> required by the HW manual and reacquire it afterwards. To avoid other
->> threads entering the critical section and configuring the HW while the
->> software is waiting for the OTG initialization to complete, introduce the
->> otg_initializing variable alongside the otg_init_done completion. Any
->> other thread trying to configure the HW while the OTG PHY initialization
->> is in progress waits for the completion instead of immediately returning
->> errors to PHY users. The IRQs were also disabled while waiting for the OTG
->> PHY initialization to complete, as the interrupt handler may also apply HW
->> settings.
-> 
-> Just... there has to be a better way.
-> 
->> +++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
->> +static int rcar_gen3_phy_wait_otg_init(struct rcar_gen3_chan *channel,
->> +				       unsigned long *flags)
->> +{
->> +	unsigned long timeout = msecs_to_jiffies(25);
->> +	unsigned long ret = 1;
->> +
->> +	lockdep_assert_held(&channel->lock);
->> +
->> +	/*
->> +	 * The OTG can be initialized only once and needs to release the lock
->> +	 * and wait for 20 ms due to hardware constraints. Wait for the OTG PHY
->> +	 * initialization to complete if another PHY executes configuration
->> +	 * code while the OTG PHY is waiting. This avoids returning failures to
->> +	 * PHY users.
->> +	 */
->> +	if (READ_ONCE(channel->otg_initializing)) {
->> +		spin_unlock_irqrestore(&channel->lock, *flags);
-> 
-> This is not nice, passing flags between functions like this is a red flag.
-> 
-> You are only accessing otg_initializing under the spinlock. That means
-> that READ_ONCE is reduntant.
-> 
-> But AFAICT spinlock is only held over this function to protect
-> channel->otg_initializing access. I suspect correct answer here is
-> getting rid of spinlock over this function, and using
-> test_bit(BIT_INITIALIZING, ...) or something similar.
+Yiming reports an integer underflow in mpi_read_raw_from_sgl() when
+subtracting "lzeros" from the unsigned "nbytes".
 
-If I understand correctly your point here, I don't think making the 
-otg_initializing atomic (or using test_bit()) and moving it out of the spin lock 
-works for all the cases. Suppose the following:
+For this to happen, the scatterlist "sgl" needs to occupy more bytes
+than the "nbytes" parameter and the first "nbytes + 1" bytes of the
+scatterlist must be zero.  Under these conditions, the while loop
+iterating over the scatterlist will count more zeroes than "nbytes",
+subtract the number of zeroes from "nbytes" and cause the underflow.
 
-thread1:                               thread2:
+When commit 2d4d1eea540b ("lib/mpi: Add mpi sgl helpers") originally
+introduced the bug, it couldn't be triggered because all callers of
+mpi_read_raw_from_sgl() passed a scatterlist whose length was equal to
+"nbytes".
 
-0: sleep                               spin_lock_irqsave();
+However since commit 63ba4d67594a ("KEYS: asymmetric: Use new crypto
+interface without scatterlists"), the underflow can now actually be
+triggered.  When invoking a KEYCTL_PKEY_ENCRYPT system call with a
+larger "out_len" than "in_len" and filling the "in" buffer with zeroes,
+crypto_akcipher_sync_prep() will create an all-zero scatterlist used for
+both the "src" and "dst" member of struct akcipher_request and thereby
+fulfil the conditions to trigger the bug:
 
-1: still sleep                         otg_initalizing = 1;
+  sys_keyctl()
+    keyctl_pkey_e_d_s()
+      asymmetric_key_eds_op()
+        software_key_eds_op()
+          crypto_akcipher_sync_encrypt()
+            crypto_akcipher_sync_prep()
+              crypto_akcipher_encrypt()
+                rsa_enc()
+                  mpi_read_raw_from_sgl()
 
-2: check otg_initializing              // ...
+To the user this will be visible as a DoS as the kernel spins forever,
+causing soft lockup splats as a side effect.
 
-3: spin_lock_irqsave();                // ...
+Fix it.
 
-4:                                     spin_unlock_irqsave();
+Reported-by: Yiming Qian <yimingqian591@gmail.com> # off-list
+Fixes: 2d4d1eea540b ("lib/mpi: Add mpi sgl helpers")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org # v4.4+
+Reviewed-by: Ignat Korchagin <ignat@linux.win>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/r/59eca92ff4f87e2081777f1423a0efaaadcfdb39.1776003111.git.lukas@wunner.de
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ lib/mpi/mpicoder.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-5:                                     fsleep(20000);
+diff --git a/lib/mpi/mpicoder.c b/lib/mpi/mpicoder.c
+index 7054311d7879..5d0a92fb3128 100644
+--- a/lib/mpi/mpicoder.c
++++ b/lib/mpi/mpicoder.c
+@@ -453,7 +453,7 @@ MPI mpi_read_raw_from_sgl(struct scatterlist *sgl, unsigned int nbytes)
+ 	lzeros = 0;
+ 	len = 0;
+ 	while (nbytes > 0) {
+-		while (len && !*buff) {
++		while (len && !*buff && lzeros < nbytes) {
+ 			lzeros++;
+ 			len--;
+ 			buff++;
+-- 
+2.51.0
 
-
-In this way, thread1 will get access to the HW registers once instruction at 
-line 4 will be executed and be able to configure other HW registers when it 
-should wait for the fsleep() to finish.
-
-The point with the solution provided in this patch was to not allow any other 
-thread to configure the HW while the fsleep() is executed.
-
-Thank you,
-Claudiu
 
