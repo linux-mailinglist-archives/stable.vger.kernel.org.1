@@ -1,248 +1,478 @@
-Return-Path: <stable+bounces-247309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CXeBvuABmrnkAIAu9opvQ
-	(envelope-from <stable+bounces-247309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 04:12:11 +0200
+	id QEOZJAWDBmqdkQIAu9opvQ
+	(envelope-from <stable+bounces-247311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 04:20:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B62548A93
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 04:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A45548B11
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 04:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23CD03025905
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 02:10:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B550E302207A
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 02:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A7638A72F;
-	Fri, 15 May 2026 02:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945B8311942;
+	Fri, 15 May 2026 02:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="AfRzscmE";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="J10tAF8M"
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="A/WENgJx"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC971387363;
-	Fri, 15 May 2026 02:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778811056; cv=fail; b=MH9bYsWqoFiAkgDNop6Ea04rzqpUqfBweowwtlziDS7cubpgfc3opvrvjd2E8aO5qLctsq7FMFUoN21E7dXxZ/VLkXBkkrp3gnrCAiRIPDc0cPgljCpMWKB3MivbRp6tmZN+ju1YZ9o7jFxnV5gavTnlfXIFMZwWO5L1lL3/2ws=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778811056; c=relaxed/simple;
-	bh=tLUiIdklj1BlEGA/UNp6TeateBCn4gT6gdZoMlAQ67g=;
-	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
-	 Content-Type:MIME-Version; b=tASQAsYoX0cY8k5ZdM2Cn3R3Rv2PL/rz080RJjSxZHN4Ps3rMs0otkJIWAtQcOhxg14dfO1t1zjviniGZPOrpgn0e+oY5Ndbj/pD+Xn0iHqtadO011X+rSG1vO+MJPvwIz8EZ3jNHglDbdguWyOfHRxBhwNyd0vYGNV0/nFwK7Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=AfRzscmE; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=J10tAF8M; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64F0T9SO2807207;
-	Fri, 15 May 2026 02:10:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=DaO8JPy1ufGA+H2li1
-	5dH03TP97Nsow/pOW4/Ge57HY=; b=AfRzscmEMP/CftPgGyiWlp3h7pRDLggudl
-	fbpYpBF+jLLKoA2WJAy8XhdS/oGVrvfrnqlCKar8qGcQQk1XqfGbF+dhU5a5e1Zb
-	wEpaN+LZGmmT/0tkvTpnNDxTzIJUHM6XUpoluDTQrsAxfSbNuWgzNyffIcsJTg69
-	eYtlZ+7AKjTydR3Ynvdfo16irz5/BBHTK+LsTrikjIgTCQ/iJGPto62ix2/8JeOY
-	DDZfuIK8MJZ398eO5uC+FXFRR3a4nEcz1/QPrdp/soOOENfUNX5ivz2FPuZE/EhK
-	MNhodvj+Abb6xcozllPql2EIyvQNFN6p+o/UAHV66RRRcOlGFHAw==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4e5m208dn9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 15 May 2026 02:10:50 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64F29hBS018200;
-	Fri, 15 May 2026 02:10:49 GMT
-Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010034.outbound.protection.outlook.com [52.101.61.34])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4e5kw0cprp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 15 May 2026 02:10:49 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cAIkOJjZEepEjwIg1n039v186sWwAI/3PGIhtddK+SKqqCpzacNUybDKsJ5zte6aEjnXDaiQgNb2IG32JzA7anj+XREfHQ8r2SnKDldas+2ly8MeFGcw0+lnKokpJYc+2UYil4TZjl2MF33Lwj/82uMmj66OLZ9jdIRWXqUCf9nEGwlDPAvcjOr+LIgPiYN3BXPy//lHxUFB7dluMkES/FJKSGqtJ0nlQO9D/rOZsXv7LCOcrt7JHl9PgRokD84Bb76aPArtwWoVJrFbZiUIHw/VCZ2NBtYFsXmnjtTLDDqUu1MrlRaWhuK/9qLSZAyB5m3U6DmfUTyohOMW1aTm4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DaO8JPy1ufGA+H2li15dH03TP97Nsow/pOW4/Ge57HY=;
- b=xSmt4y1IjzayAVJVT+K2UUWbB9T5HndgILGmWZX5mJpvc4sM8dNeuSMIb9OHXMHdbFgH9nY/8wwZNWS88d2eWK+UMod/GU2/FAsAiF4VckQ1CwOVuGGR007AeDWvSO2jYNQG5fGXpz4hDJoz+mKDW/xq3MAtGEQLEeY+DmNMktu2qUByrBMXkWoMSkykNw8QOq19Wj/exqGs9weGrqnmvLbWuLKEGg+TOl3LrpQnxDWnvCe0dBO2ALWJIsicR5JQKM8xRMjkZ/sKy1bhAQqXYDsj+0VcMi8cKxSnS9W6q2gCQbOxGKjVAiyG0Q4fb90FRdVNfJkOULYYyKgXElFunw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DaO8JPy1ufGA+H2li15dH03TP97Nsow/pOW4/Ge57HY=;
- b=J10tAF8MZU6caaqL1QY1CucvKEugJCzSIEIMVlLoxgyKyKaq71QTErXJT9AIZ2NYPWLV9svTsHk0SvAAkurkDFhhko3mhBkgwXH62lQpgntLfs+jJKrEeI6MwZVXjnj6PHaul6mVgA4FPu4Q6MzcQ55j/QV7P2WhPbIyhF/oV70=
-Received: from CH0PR10MB5338.namprd10.prod.outlook.com (2603:10b6:610:cb::8)
- by MN0PR10MB5960.namprd10.prod.outlook.com (2603:10b6:208:3cc::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Fri, 15 May
- 2026 02:10:44 +0000
-Received: from CH0PR10MB5338.namprd10.prod.outlook.com
- ([fe80::e525:dd71:b002:6ad5]) by CH0PR10MB5338.namprd10.prod.outlook.com
- ([fe80::e525:dd71:b002:6ad5%6]) with mapi id 15.20.9913.009; Fri, 15 May 2026
- 02:10:44 +0000
-To: Sagar Biradar <sagar.biradar@microchip.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        James Bottomley
- <James.Bottomley@HansenPartnership.com>,
-        Jack Wang
- <jinpu.wang@cloud.ionos.com>,
-        linux-scsi <linux-scsi@vger.kernel.org>, <stable@vger.kernel.org>,
-        "Brian King" <brking@linux.vnet.ibm.com>,
-        Don
- Brace <don.brace@microchip.com>,
-        "Raja VS" <raja.vs@microchip.com>,
-        Kumar Meiyappan <kumar.meiyappan@microchip.com>,
-        Abhinav Kuchibhotla
- <abhinav.kuchibhotla@microchip.com>,
-        Uday kumar Bagam
- <udaykumar.bagam@microchip.com>,
-        Advait Churi
- <advait.churi@microchip.com>
-Subject: Re: [PATCH] scsi: pm8001: reject non-fatal dump when controller is
- crashed
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-In-Reply-To: <20260416154650.415624-1-sagar.biradar@microchip.com> (Sagar
-	Biradar's message of "Thu, 16 Apr 2026 15:46:50 +0000")
-Organization: Oracle Corporation
-Message-ID: <yq133zt5soc.fsf@ca-mkp.ca.oracle.com>
-References: <20260416154650.415624-1-sagar.biradar@microchip.com>
-Date: Thu, 14 May 2026 22:10:43 -0400
-Content-Type: text/plain
-X-ClientProxiedBy: YT4PR01CA0274.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:109::27) To CH0PR10MB5338.namprd10.prod.outlook.com
- (2603:10b6:610:cb::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5743C1A680E;
+	Fri, 15 May 2026 02:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778811493; cv=none; b=gsmGPYSxnXw44/UX0wrE6OJJ+gFGkTxgWYfWOwehBkRPyGWett1w3DUK2lUL1mgjXm0twX+sSFwLmosxzzfW8B/8CtaT0fePCrc8YDs++pQbE7DxHlARZCFZHyhbnAYi2bmdSzXCVFX1zh7DQBsHYxQZyf3hUF74JMfrsEBjV4U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778811493; c=relaxed/simple;
+	bh=G/HLAujxOGZoKY7T4N7zmJwowPqnhr1WI5Ll+ZCdcEs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HHZAnVcISSV5jP1sOFQZbqq8dzKWoArqij0HVVX9cCOpnFZGgk5JJcixHcu8epaUQbeYI08/m+11OLo3PuDHZCopSBhysuCYxVV/Flr2SMEVm7V8ZP/8GL67LqKgOkhLA68cJ2wYRTM8ajiL3GTzBWphzhEgZhLEMsR+hm8P1XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=A/WENgJx; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64ENYY142903672;
+	Thu, 14 May 2026 19:11:58 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=s2048-2025-q2; bh=EwBxFjX1eavIj3qPyP
+	29Ph8gfareLfDf0+V/+gO2k4k=; b=A/WENgJx0Z3Xn4gFaQXDJBViV+sdb/cGmd
+	rp6n67IOmM56E+APhaVVZcGqe1mELqqeHD6oxF0Qql7Ex328NwFCPX5OUiNQqUoJ
+	hsStdh4AXJIwd1rXzBHxehnwMdjKBHkVetF//vRWB584bCMIanUhDu1tGxzZsll9
+	fLvVnBn515A0XB4NperGkV1hzty1cc9NGHY91pC7nxYG3lHr+D4NHnpQhPaMoJRR
+	RieeQE+Pl30Z1mk6Ij8lJb8KFTS6Rvcre8f8pN0R8D4MPKDHl8RFTCIRwC5cuNkR
+	YwNlUGbc92v3nsiLj+PsipNwoFEsfvqqrU1hNmUzfRooiZXpOcpQ==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e5m75j84c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 14 May 2026 19:11:58 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:1b::30) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.37; Fri, 15 May
+ 2026 02:11:56 +0000
+From: Amir Ayupov <aaupov@meta.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Mike Leach
+	<mike.leach@arm.com>, James Clark <james.clark@linaro.org>,
+        Leo Yan
+	<leo.yan@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar
+	<mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim
+	<namhyung@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander
+ Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>,
+        <coresight@lists.linaro.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-perf-users@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <stable@vger.kernel.org>
+Subject: [PATCH] perf cs-etm: stamp pid/tid/EL on each buffered packet to fix cross-pid attribution
+Date: Thu, 14 May 2026 19:11:34 -0700
+Message-ID: <20260515021135.1729028-1-aaupov@meta.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR10MB5338:EE_|MN0PR10MB5960:EE_
-X-MS-Office365-Filtering-Correlation-Id: 78c8bab1-910a-44c2-2a57-08deb2272c09
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	d1fUpj3dxKAWcveSYUGaNGyN/Tkr2ffdkwGQwRmbwwq0728IK3b8WhV/Kpb5vpsVwOVm1hmqf68RFlgVT9sTN5qFyVdjVTPTWwk2pb9Ff1NjqzGm+LIfCo4SbHcTz2LUsKT5zZFaH0J3vfu3Fu/xlENW3unlop43CLF5OM0zZEfyTEwV6ONQCJRPVOD+r30Hb+ikOHvY6lBSxx3SvPd9Z1jVeWY1qrNxfeAD/O54h6FLOe9l+Z4j6bNAZFkhRfzSwUVJME4HfQsOk3tkdbvTY+H3JIFd49WgkvWZIH5nLoSg1EGWyc+Tj5OrqNQd+Pr/rZFUI0NsA+cgyD5A94YsrRnwkCoI3NmSR+WvWoL5HojrVPkitIy5hKKM7jR6aKTJC8HGhbxdUVhCjQYMcM18DHZieD8mq8HTIE789A+yyMfyrqT/AGV0DGKC4NB3wZChQlTwy2hOBRz74mV650SOaaOdymxUhF1CEvjc/COZYMkgOe20cH7LXK3DM3TGgB2txsOVuBcj9aM3w/gzHdzFoEuDANpjBnzTxSXk86jho6SPnYLou2ZYC4UCIe7dJ5+5KXc2u6YjStXeegfwRJmxvUtJtrJv1v4T0pzJcGf4Tycdzjdp0KswFCr3D2IxwuptBX9KtxQTdcle7r3JDfPiwJevc3FjQcRwwB3I/ZvHh5Hdu2UHnzLPIrqTZpzdyXKd
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR10MB5338.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6v9li+jnus37wFaw2gLHPuuVnsOtrPYqqG9CR1GZ+O8Le6JC+pX52DHxlu9U?=
- =?us-ascii?Q?Vuayw0W/Ri+zVTdtipUunANlcT7JK3e6HcY0mV3jyQhJwtrc/I7ZJrEoOu/b?=
- =?us-ascii?Q?DBVPpHbIj4YoyWG3lKHT1HQ8ZhB4d2/kZHJ3SmtO8weFjMbVi47vyLpUTUCX?=
- =?us-ascii?Q?HNEjIvV393IfVHMpKO8AZO5Gm+KQgPSwKjKmkP4H2DFgoXRbMZOurEuoYWsZ?=
- =?us-ascii?Q?sXiu8ZMZgldh5qwQagL0QeistGFXc7KVirrgQpqdgkfO8ZFVf1Ovv2MbTSS8?=
- =?us-ascii?Q?mHWSOeDkdzaRqXcJKuABBW1cs95RBrVNWkN/txVfa/l9j0xQjUkDJT2hR30K?=
- =?us-ascii?Q?zb+5EvmoLMQHjgWWHq0U36ZP6kMUbq5wni410QqWtuzLcYXbUw5OEWbvKtbN?=
- =?us-ascii?Q?FE+iHDMv9Tg+FR71KFirqe9t863IILlRRO3v9fs68hNsYl3WBlO4RzqS11Nw?=
- =?us-ascii?Q?FpHrA/vTZz85kaDWTDz34OuEwqtw/a013BsqZoF5GRWn/phdG1qCZJJCUQew?=
- =?us-ascii?Q?ttOoomD5VcYcV07lOCH6MiY3Uhlhx0SklazkREUNulskj1QSWvXUfnYRA7A0?=
- =?us-ascii?Q?4t9rWeoL8DziJHaAxTDENqhc9kzmIxvz+GCoRtoaGP9pja6XTWHWPs/KARkZ?=
- =?us-ascii?Q?3qOIvvKW0IIjEmhX2ixyEjD9XnuscgXT87tHavrnFmRBX28//83NLylGYhKl?=
- =?us-ascii?Q?RiORH5Wbwp+eB7EJvkcciQIF5VY9Ui9OSYQraUp36Gsky6eZusAkH13jYomC?=
- =?us-ascii?Q?Dl3h9TXCHUkvv45suCuPXGSlDaDsQOblzwosH9HooxNOgnrr/NtqRFjH8f8i?=
- =?us-ascii?Q?B2hXTa0p9L5/Cce71UOuen35r4ZT4bTPe8gXOv7m/AqGrDEkpGhBT8L/5qxY?=
- =?us-ascii?Q?VHVpdMSnYxE6MsWUBUuIjjXB5OBqqwhVM25K/urxPC+HhBxa6Q1zPc+vi7lB?=
- =?us-ascii?Q?dGrInemtNKxitlscrxxleqK4vXuB29EULgvl97f20ACJPVoo1O4KMhDibRbZ?=
- =?us-ascii?Q?nVPT1GZ/sLMFORD065bJxTVUVhydGWyJdoeXYqF/INxbruFamSvXuADw5ojr?=
- =?us-ascii?Q?7zEE1vq43z8N6DAHqKCMWiUvBnKOicY/uCDDzAsfKA0YPapeU7mF8UlqClqg?=
- =?us-ascii?Q?sle1JHK9bfLLaT5sQiV0fxaeYoK7pb5cBRx76jy12A77/B1BZhl1EgvXN/LR?=
- =?us-ascii?Q?4e3Z0LxB17vSoRoR19YJcVzkKc4ML95whi9KF8bJtqCEpvkLbKI1Qu0O4aSF?=
- =?us-ascii?Q?6uX6cwvmsBiePZJG9XmqX3ZeKrbg5wtwkfcDFPA8R2EHM6zHyv5kd1VJ0ygD?=
- =?us-ascii?Q?707jzseiXeau0BRZ7+di9bOtsB7b+zH5wwiW1FVzB5lZf2NcGYRVgc78r9w/?=
- =?us-ascii?Q?5L/hydLpjt/ibvtMJPLpmvUbraOU3fenIuxoXqPORrgH8OIpCeTxPCwR/Ce1?=
- =?us-ascii?Q?uZwMyEN9aWeXgGZpoxTUfQjte3Uew9/1IKFrw+WKmoKXb3cI3mw9JJ5EW7a3?=
- =?us-ascii?Q?1O3iHToid1ScLjvj2ee3hZkgFeKojGT+gMqV7graYU/x2leC7ItaCzb9Favs?=
- =?us-ascii?Q?bhILsbPXd6/f2r0vVYfq8CiNfEL7eRVyz2ZPUFCDYde45Q6tvjjLI0y7x9AL?=
- =?us-ascii?Q?OzSvXigMCKSZprKSMNU4EfyYca7kymkijba4e91/ZpUu/M5sxAbZln+NjPtg?=
- =?us-ascii?Q?UqkNdS51Fcg1FvKl66vazkhD0Ztba5OFkOGKi2fgSgt0/0b2buGPhecwZ+J9?=
- =?us-ascii?Q?7f95x1iSxHa7dDFUo/3s3X5XfJ0meUE=3D?=
-X-Exchange-RoutingPolicyChecked:
-	dDW2LiLDDN7BXpr+U/g5rb4oiejMcc4pF6b5Suu+QIHT3+1XkFnLUCu12GncMra3bMT+7r2wyC7kw36FDxGa43+VsNqAWtKcVa8sWLmcw6oZ12906n5T+9nKXA6aPgwAI3i8879j6XMmWb59kj+eP52roOhoSE/OS2AYzwuYGw0xCFVBlXa9p0OVe9/yLT1s/rJKGcH4TyQTJi6dOGHaJyO7S1oBpfS5aHITn2LGg5JYZGT9NoXMFKayn5YvhD9TFGY/jJ5XwX0YhgIlPl0qHnB1125LDYe880aE7W5WCXmnfiBVAt5t2fkKtnJ86LWwLohn/BhttbiRqBvjTglr0Q==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	JZNlj827JYMzkfvtEU0P9Ds/sBKks7WD7sO9Z+MMZow2KDPI3t6n764S9v1lF/tYS39t3YFL9hQl0lq876/wSW24pTVObx8PAXF+dGjFAsyYiYbwybJd3qFixpYR1k9a59cxoIv7wt8FWpNzZ72tKFZGMtTYtpyd12j2oGg3sj5H8sEGuG4Nq6oUBUpcFkUQYVoJrFs5JkTqaaGYHbthvAtDh1Dtxdt+m9vlr/tq0jArSoZodRaEkBy2zu5fNcE98RDWRrPsP/cXFIcnYfM7mDa6kC5jC8Ed5eCaz1Js6dIWnhmQPGJEMXz/6grhthQUU8f2O6Z4eTvc+5x57ezIs46YMzPwtzhDko417ByYoVXVQDW6xp+otzQmGVcLYxGJvXYNWOuIFafKRBp11Zj9yeN25ZnwMsM5hOdIDJ9xXJegadYrGflTPWTxO1CdJkH0exwKvcwAj3ir3DoB8ZDg+ZVExOGXq6TX37MI83VhrWqDiZrPt/vaqqtGdslVZwovoUtaC/5KC/pIvzjls22fvrB3XYpYKgqmuh0AOYo2Hcrl6w2rwI0csBcJqctgg7XekVqr6GF1AbsvADaqQ89ZETQPuAbFJ0km1pSi5g0N6yU=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78c8bab1-910a-44c2-2a57-08deb2272c09
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR10MB5338.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 02:10:44.6524
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: g9F1zY/yHxGrw/wTK9Af5OcIPrmg4CI2II7KnH0G9R5H9+n57yWegxecS7s0M260J35tk3hDYdIX9Sw3TIJ+fvwXI5JSFGH9XDfDIl9iNw0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR10MB5960
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE1MDAxOSBTYWx0ZWRfX9hmD7U+wvoDJ
+ VaSw4HTnE+2BoRlmvFfInqETYXkdrC4s8TmW3HycNbIBWrSGNXXWSi3LNU9cfmAQKAA2FiydvX1
+ OoPVNZM5+mOM5zxP/YqT72GHG7ioA2eokcofmCZ6PqljAxuDMMP8B2UKQOUQICqYgO+SHYh3t1h
+ IUfAJLsOayBJKPwraxWF0ZkjXru81P1FpsLuFIWoE2otAnobeBwSaVqQO83Xl7/8ybh4Og01m68
+ fE2SKijUwhRNn6jF+5VYl4bH7I4pTdmPo2msP1+QXiTI/p+R5Htp0nejgmVVqbP4nIwC+1+s3N0
+ eeTTYo0sZVGWjM8XyR4Ub17++QC4sMfvqIpd7bwsym7m3Yk7Ynci9NzIGm1ZMPN7F1WgjJSsleb
+ 1pvzLCa6QjFuw3VqXF5QMHk+rRTfihMTfQ4i2gBTrJoKKT3nhHzLsmmf68xbRbnlKlaA7dp2UDZ
+ EtO37VzACzKUov2FuMg==
+X-Authority-Analysis: v=2.4 cv=GuZyPE1C c=1 sm=1 tr=0 ts=6a0680ee cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=PAz_-FQ8hEVmOPYdF0yf:22 a=VabnemYjAAAA:8
+ a=FOH2dFAWAAAA:8 a=oW9o44teytli3FqwapYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: tXaccQsMbZEfzP8b5T8xt9eYVIL6PsGu
+X-Proofpoint-ORIG-GUID: tXaccQsMbZEfzP8b5T8xt9eYVIL6PsGu
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-14_06,2026-05-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- mlxlogscore=905 suspectscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0
- spamscore=0 phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2605130000 definitions=main-2605150019
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE1MDAxOCBTYWx0ZWRfXxdcr7BPuPDgB
- kR5noGbVqEBBaxv2/xoILgfy9fzdu62DJsJDs2lD7A2dSntztmcgwLkAMuR2hjKNp0tYsss0XTr
- o26XVkDN65m147Yl49Ckj+ZsgeCuzBTgxTJkFeAFMfp988SvBZCPkQr9nshvCF7HI1WTK2zdeYg
- tasxHv5gxwaduMeSKhFTTb7NQJYAB5/5vDuLSBvDgNmHqGjVayz4CJUfXNfyiOwlkiCa+5p/5r0
- Qe5F79I4QKnpKjG+IPUc1Xuy27GiYNB2TMLYbYhQue2eZSmWB/nfanf9cwVJIDDBCHkXgLHKZGo
- cOZ/fgjURm8cdiXcjsbbdGoZpIxxD+vTRA80w0gfuaZF1t50uUKpY3dij/g/5QXP5i+i5BaCbs6
- l5Jps5paOWeCJo+5Vsu4iXkZXr0NjXVKdouZPxSjNADEf+kkA6MxoGH6LqdbY+qZ6eGrucGcpQH
- 9UdxK9p99LoXI/7avOA==
-X-Authority-Analysis: v=2.4 cv=T9W8ifKQ c=1 sm=1 tr=0 ts=6a0680aa cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=NGcC8JguVDcA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=EIcjfB9IiI4px24ztqRk:22 a=Qd_XJmDTjCV-o7kNHBYA:9 a=zZCYzV9kfG8A:10
-X-Proofpoint-GUID: lVZ0kPxpotzpK45JvmmrsZ-u0H2wjzbI
-X-Proofpoint-ORIG-GUID: lVZ0kPxpotzpK45JvmmrsZ-u0H2wjzbI
-X-Rspamd-Queue-Id: 73B62548A93
+X-Rspamd-Queue-Id: E5A45548B11
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[meta.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
+	R_DKIM_ALLOW(-0.20)[meta.com:s=s2048-2025-q2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247309-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
+	TAGGED_FROM(0.00)[bounces-247311-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.onmicrosoft.com:dkim,ca-mkp.ca.oracle.com:mid];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aaupov@meta.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[meta.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[9]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,meta.com:mid,meta.com:dkim,sample.pid:url,fb.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
+In a system-wide `perf record -e cs_etm/.../u` capture on aarch64,
+synthesized samples emitted by `perf script --itrace=il64` are
+sometimes attributed to the WRONG sample.pid/tid (and to the wrong
+EL/cpumode) for the chunk of branches that straddle a context-switch
+boundary on a CPU. A branch actually retired by process A is emitted
+with sample.pid set to the thread that next ran on the same CPU.
 
-Sagar,
+Mechanism:
+  1. ETM emits CONTEXTIDR/EL packets in-stream when the kernel updates
+     CONTEXTIDR_EL1 on context switch / EL change. OpenCSD turns these
+     into OCSD_GEN_TRC_ELEM_PE_CONTEXT elements interleaved with
+     OCSD_GEN_TRC_ELEM_INSTR_RANGE elements for retired branch ranges.
+  2. cs_etm_decoder__buffer_range() queues each INSTR_RANGE into
+     packet_queue->packet_buffer[]; packets carry start/end addrs,
+     instr_count, last-instruction info, etc., but NO owner identity.
+  3. PE_CONTEXT goes through cs_etm_decoder__set_tid() ->
+     cs_etm__set_thread(), which immediately mutates tidq->thread and
+     tidq->el. Queued packets are not drained first; reset_timestamp()
+     is called so the next TIMESTAMP triggers OCSD_RESP_WAIT and a
+     drain.
+  4. By drain time in cs_etm__process_traceid_queue() ->
+     cs_etm__sample(), sample.pid/tid is read from the now-mutated
+     tidq->thread and sample.cpumode from the now-mutated tidq->el.
+     Pre-context INSTR_RANGEs get the post-context owner.
 
-> pm80xx_get_non_fatal_dump() can be called even after the controller
-> has entered a fatal error state. In that case the forensic memory
-> contents are not safe to access for a non-fatal dump request, and
-> attempting to do so can trigger a call trace.
+The same race affects branch samples via tidq->prev_packet_thread /
+tidq->prev_packet_el, captured at packet-swap time from
+tidq->thread / tidq->el (which may already have flipped).
 
-Applied to 7.2/scsi-staging, thanks!
+This is independent of PERF_RECORD_SWITCH_CPU_WIDE, which is
+deliberately not used to assign sample identity in this path. The
+bug applies to any cs_etm capture with in-stream CONTEXTIDR
+(PIDFMT_CTXTID or PIDFMT_CTXTID2).
 
+Effect on downstream tools: branches that should belong to the
+previous thread on the CPU get attributed to the next thread. When
+the two threads share a binary, leaked branches' VAs land in the
+wrong thread's mappings; samples whose IPs land in r-x mappings
+silently pollute that binary's profile, while samples landing in
+R-only/RW mappings show up as out-of-range / non-text samples.
+Either way, AutoFDO/BOLT profiles built from `perf script --itrace`
+output of system-wide cs_etm captures contain misattributed samples.
+
+Concrete example from `perf script --itrace=il64` of the same
+captured branch (same timestamp, same IP, same from/to addrs) before
+and after this fix:
+
+  before: launcher_multia 2638146/2638146 705897.219172: \
+              fffcda6b124c 0xfffcda641958/0xfffcda6b123c
+  after:  ws-tcf-sr-io13  2736581/2741587 705897.219172: \
+              fffcda6b124c 0xfffcda641958/0xfffcda6b123c
+
+The branch was retired by ws-tcf-sr-io13 (tid 2741587) but, before
+the fix, was attributed to launcher_multia (the next thread to run on
+that CPU after the context switch). After the fix, it is correctly
+attributed to ws-tcf-sr-io13.
+
+Why not "drain on PE_CONTEXT then switch" (deferred-set_thread):
+tidq->thread has two consumers \u2014 sample emission needs the OUTGOING
+identity for queued packets, but cs_etm__mem_access() needs the
+CURRENT thread's maps to fetch instruction bytes for OpenCSD. The
+two needs are temporally inverted; a single tidq->thread cannot
+serve both. Keeping tidq->thread current and stamping owner identity
+per packet is the only design that decouples them cleanly.
+
+Fix: capture the owning pid/tid/EL on each buffered packet at
+cs_etm_decoder__buffer_packet() time (before any subsequent
+PE_CONTEXT can mutate tidq->thread / tidq->el), and read them at
+sample emission time.
+
+  - struct cs_etm_packet gains pid_t pid, pid_t tid, int el (storing
+    an ocsd_ex_level value; typed as int so the struct does not
+    depend on OpenCSD headers, which are only included inside
+    HAVE_CSTRACE_SUPPORT).
+  - cs_etm__etmq_get_pid_tid_el() (formerly cs_etm__etmq_get_pid_tid)
+    returns all three.
+  - cs_etm__synth_instruction_sample() reads sample.pid / sample.tid
+    from tidq->packet->{pid,tid} and derives sample.cpumode from
+    tidq->packet->el.
+  - cs_etm__synth_branch_sample() reads sample.pid / sample.tid /
+    cpumode from tidq->prev_packet->{pid,tid,el}.
+  - The separate prev_packet_thread / prev_packet_el bookkeeping in
+    cs_etm__packet_swap() / cs_etm__init_traceid_queue() /
+    cs_etm__free_traceid_queues() is removed; the per-packet stamp
+    on prev_packet now carries that information.
+
+Cost: 12 bytes added to struct cs_etm_packet (~12-16 KB per
+packet_queue with CS_ETM_PACKET_MAX_BUFFER=1024), 16 bytes saved per
+cs_etm_traceid_queue (one struct thread * + one ocsd_ex_level).
+
+A residual gap: cs_etm__copy_insn() reads sample.insn bytes via
+cs_etm__mem_access(), which still uses tidq->thread (the current
+thread), so the inline insn bytes for an outgoing-thread sample may
+be looked up against the wrong address space. Fixing this requires
+threading the packet's owner pid through cs_etm__mem_access and is
+left for a follow-up. sample.ip / sample.pid attribution \u2014 what
+AutoFDO/BOLT consume \u2014 is correct.
+
+A workaround for users on existing perf binaries:
+`perf record -p PIDS \u2026` programs the ETM
+TRCCONTEXTIDCTLR/TRCVMIDCCTLR registers so the trace stream itself
+never carries foreign-PID instructions, eliminating the leak at the
+trace source.
+
+Signed-off-by: Amir Ayupov <aaupov@meta.com>
+Signed-off-by: Amir Ayupov <aaupov@fb.com>
+---
+ .../perf/util/cs-etm-decoder/cs-etm-decoder.c | 12 +++
+ tools/perf/util/cs-etm.c                      | 75 +++++++++++++------
+ tools/perf/util/cs-etm.h                      | 25 +++++++
+ 3 files changed, 88 insertions(+), 24 deletions(-)
+
+diff --git a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
+index dee3020ceaa91..ed99dfc7b0f8d 100644
+--- a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
++++ b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
+@@ -402,6 +402,18 @@ cs_etm_decoder__buffer_packet(struct cs_etm_queue *etmq,
+ 	packet_queue->packet_buffer[et].flags = 0;
+ 	packet_queue->packet_buffer[et].exception_number = UINT32_MAX;
+ 	packet_queue->packet_buffer[et].trace_chan_id = trace_chan_id;
++	/*
++	 * Stamp the owner thread (pid/tid) onto the packet at buffer time.
++	 * A subsequent OCSD_GEN_TRC_ELEM_PE_CONTEXT element will mutate
++	 * tidq->thread before this packet is emitted as a sample; recording
++	 * the identity here keeps each buffered packet correctly attributed
++	 * to the thread that retired its instructions. See
++	 * cs_etm__synth_instruction_sample().
++	 */
++	cs_etm__etmq_get_pid_tid_el(etmq, trace_chan_id,
++				    &packet_queue->packet_buffer[et].pid,
++				    &packet_queue->packet_buffer[et].tid,
++				    &packet_queue->packet_buffer[et].el);
+ 
+ 	if (packet_queue->packet_count == CS_ETM_PACKET_MAX_BUFFER - 1)
+ 		return OCSD_RESP_WAIT;
+diff --git a/tools/perf/util/cs-etm.c b/tools/perf/util/cs-etm.c
+index 8a639d2e51a4c..ee3437488b753 100644
+--- a/tools/perf/util/cs-etm.c
++++ b/tools/perf/util/cs-etm.c
+@@ -86,8 +86,6 @@ struct cs_etm_traceid_queue {
+ 	size_t last_branch_pos;
+ 	union perf_event *event_buf;
+ 	struct thread *thread;
+-	struct thread *prev_packet_thread;
+-	ocsd_ex_level prev_packet_el;
+ 	ocsd_ex_level el;
+ 	struct branch_stack *last_branch;
+ 	struct branch_stack *last_branch_rb;
+@@ -614,10 +612,9 @@ static int cs_etm__init_traceid_queue(struct cs_etm_queue *etmq,
+ 
+ 	queue = &etmq->etm->queues.queue_array[etmq->queue_nr];
+ 	tidq->trace_chan_id = trace_chan_id;
+-	tidq->el = tidq->prev_packet_el = ocsd_EL_unknown;
++	tidq->el = ocsd_EL_unknown;
+ 	tidq->thread = machine__findnew_thread(&etm->session->machines.host, -1,
+ 					       queue->tid);
+-	tidq->prev_packet_thread = machine__idle_thread(&etm->session->machines.host);
+ 
+ 	tidq->packet = zalloc(sizeof(struct cs_etm_packet));
+ 	if (!tidq->packet)
+@@ -740,6 +737,26 @@ struct cs_etm_packet_queue
+ 	return NULL;
+ }
+ 
++void cs_etm__etmq_get_pid_tid_el(struct cs_etm_queue *etmq, u8 trace_chan_id,
++				 pid_t *pid, pid_t *tid, int *el)
++{
++	struct cs_etm_traceid_queue *tidq;
++
++	*pid = -1;
++	*tid = -1;
++	*el  = ocsd_EL_unknown;
++
++	tidq = cs_etm__etmq_get_traceid_queue(etmq, trace_chan_id);
++	if (!tidq)
++		return;
++
++	*el = tidq->el;
++	if (tidq->thread) {
++		*pid = thread__pid(tidq->thread);
++		*tid = thread__tid(tidq->thread);
++	}
++}
++
+ static void cs_etm__packet_swap(struct cs_etm_auxtrace *etm,
+ 				struct cs_etm_traceid_queue *tidq)
+ {
+@@ -748,23 +765,15 @@ static void cs_etm__packet_swap(struct cs_etm_auxtrace *etm,
+ 	if (etm->synth_opts.branches || etm->synth_opts.last_branch ||
+ 	    etm->synth_opts.instructions) {
+ 		/*
+-		 * Swap PACKET with PREV_PACKET: PACKET becomes PREV_PACKET for
+-		 * the next incoming packet.
+-		 *
+-		 * Threads and exception levels are also tracked for both the
+-		 * previous and current packets. This is because the previous
+-		 * packet is used for the 'from' IP for branch samples, so the
+-		 * thread at that time must also be assigned to that sample.
+-		 * Across discontinuity packets the thread can change, so by
+-		 * tracking the thread for the previous packet the branch sample
+-		 * will have the correct info.
++		 * Rotate PACKET into PREV_PACKET so the next decoded packet
++		 * lands in PACKET. Owner identity (pid/tid/el) travels with
++		 * the packet itself — it was stamped at
++		 * cs_etm_decoder__buffer_packet() time — so no separate
++		 * thread/EL tracking is needed here.
+ 		 */
+ 		tmp = tidq->packet;
+ 		tidq->packet = tidq->prev_packet;
+ 		tidq->prev_packet = tmp;
+-		tidq->prev_packet_el = tidq->el;
+-		thread__put(tidq->prev_packet_thread);
+-		tidq->prev_packet_thread = thread__get(tidq->thread);
+ 	}
+ }
+ 
+@@ -938,7 +947,6 @@ static void cs_etm__free_traceid_queues(struct cs_etm_queue *etmq)
+ 		/* Free this traceid_queue from the array */
+ 		tidq = etmq->traceid_queues[idx];
+ 		thread__zput(tidq->thread);
+-		thread__zput(tidq->prev_packet_thread);
+ 		zfree(&tidq->event_buf);
+ 		zfree(&tidq->last_branch);
+ 		zfree(&tidq->last_branch_rb);
+@@ -1570,15 +1578,24 @@ static int cs_etm__synth_instruction_sample(struct cs_etm_queue *etmq,
+ 
+ 	perf_sample__init(&sample, /*all=*/true);
+ 	event->sample.header.type = PERF_RECORD_SAMPLE;
+-	event->sample.header.misc = cs_etm__cpu_mode(etmq, addr, tidq->el);
++	event->sample.header.misc = cs_etm__cpu_mode(etmq, addr,
++						     (ocsd_ex_level)tidq->packet->el);
+ 	event->sample.header.size = sizeof(struct perf_event_header);
+ 
+ 	/* Set time field based on etm auxtrace config. */
+ 	sample.time = cs_etm__resolve_sample_time(etmq, tidq);
+ 
+ 	sample.ip = addr;
+-	sample.pid = thread__pid(tidq->thread);
+-	sample.tid = thread__tid(tidq->thread);
++	/*
++	 * Read pid/tid (and EL above for cpumode) from the packet's
++	 * stamped owner identity rather than tidq->thread / tidq->el,
++	 * which reflect the thread that is current at sample emission
++	 * time. A PE_CONTEXT element delivered between buffer time and
++	 * emit time would otherwise misattribute pre-context packets to
++	 * the next thread/EL on the CPU.
++	 */
++	sample.pid = tidq->packet->pid;
++	sample.tid = tidq->packet->tid;
+ 	sample.id = etmq->etm->instructions_id;
+ 	sample.stream_id = etmq->etm->instructions_id;
+ 	sample.period = period;
+@@ -1586,6 +1603,16 @@ static int cs_etm__synth_instruction_sample(struct cs_etm_queue *etmq,
+ 	sample.flags = tidq->prev_packet->flags;
+ 	sample.cpumode = event->sample.header.misc;
+ 
++	/*
++	 * Note: cs_etm__copy_insn() reads sample.insn bytes via
++	 * cs_etm__mem_access(), which uses tidq->thread (the *current*
++	 * thread). For samples whose pid/tid were stamped from an
++	 * outgoing thread that has since been replaced by a PE_CONTEXT,
++	 * the inline insn bytes may be looked up against the wrong
++	 * address space. sample.ip / sample.pid attribution is correct;
++	 * fixing the insn bytes requires threading the packet's owner
++	 * pid through cs_etm__mem_access and is left for a follow-up.
++	 */
+ 	cs_etm__copy_insn(etmq, tidq->trace_chan_id, tidq->packet, &sample);
+ 
+ 	if (etm->synth_opts.last_branch)
+@@ -1631,15 +1658,15 @@ static int cs_etm__synth_branch_sample(struct cs_etm_queue *etmq,
+ 
+ 	event->sample.header.type = PERF_RECORD_SAMPLE;
+ 	event->sample.header.misc = cs_etm__cpu_mode(etmq, ip,
+-						     tidq->prev_packet_el);
++						     (ocsd_ex_level)tidq->prev_packet->el);
+ 	event->sample.header.size = sizeof(struct perf_event_header);
+ 
+ 	/* Set time field based on etm auxtrace config. */
+ 	sample.time = cs_etm__resolve_sample_time(etmq, tidq);
+ 
+ 	sample.ip = ip;
+-	sample.pid = thread__pid(tidq->prev_packet_thread);
+-	sample.tid = thread__tid(tidq->prev_packet_thread);
++	sample.pid = tidq->prev_packet->pid;
++	sample.tid = tidq->prev_packet->tid;
+ 	sample.addr = cs_etm__first_executed_instr(tidq->packet);
+ 	sample.id = etmq->etm->branches_id;
+ 	sample.stream_id = etmq->etm->branches_id;
+diff --git a/tools/perf/util/cs-etm.h b/tools/perf/util/cs-etm.h
+index aa9bb4a32ecaf..6ba47604b8c52 100644
+--- a/tools/perf/util/cs-etm.h
++++ b/tools/perf/util/cs-etm.h
+@@ -10,6 +10,7 @@
+ #include "debug.h"
+ #include "util/event.h"
+ #include <linux/bits.h>
++#include <sys/types.h>
+ 
+ struct perf_session;
+ struct perf_pmu;
+@@ -184,6 +185,20 @@ struct cs_etm_packet {
+ 	u8 last_instr_size;
+ 	u8 trace_chan_id;
+ 	int cpu;
++	/*
++	 * Owner identity captured at cs_etm_decoder__buffer_packet() time.
++	 * A subsequent PE_CONTEXT element will mutate tidq->thread/tidq->el
++	 * before this packet is emitted as a sample; stamping pid/tid/el on
++	 * the packet keeps each one attributed to the thread that actually
++	 * retired its instructions and the EL it ran at. Read at sample
++	 * emission time by cs_etm__synth_instruction_sample() and
++	 * cs_etm__synth_branch_sample(). 'el' holds an ocsd_ex_level value
++	 * but is typed as int so the struct does not depend on OpenCSD
++	 * headers (which are only included inside HAVE_CSTRACE_SUPPORT).
++	 */
++	pid_t pid;
++	pid_t tid;
++	int el;
+ };
+ 
+ #define CS_ETM_PACKET_MAX_BUFFER 1024
+@@ -266,6 +281,16 @@ void cs_etm__etmq_set_traceid_queue_timestamp(struct cs_etm_queue *etmq,
+ 					      u8 trace_chan_id);
+ struct cs_etm_packet_queue
+ *cs_etm__etmq_get_packet_queue(struct cs_etm_queue *etmq, u8 trace_chan_id);
++/*
++ * Read the pid/tid/EL currently associated with the given trace_chan_id.
++ * Called from cs_etm_decoder__buffer_packet() to stamp owner identity on
++ * each buffered packet at buffer time, before any subsequent PE_CONTEXT
++ * (CONTEXTIDR / EL change) can mutate tidq->thread / tidq->el. The stamp
++ * is consumed at sample emission time so that each sample is attributed
++ * to the thread/EL that actually retired its instructions.
++ */
++void cs_etm__etmq_get_pid_tid_el(struct cs_etm_queue *etmq, u8 trace_chan_id,
++				 pid_t *pid, pid_t *tid, int *el);
+ int cs_etm__process_auxtrace_info_full(union perf_event *event __maybe_unused,
+ 				       struct perf_session *session __maybe_unused);
+ u64 cs_etm__convert_sample_time(struct cs_etm_queue *etmq, u64 cs_timestamp);
 -- 
-Martin K. Petersen
+2.52.0
+
 
