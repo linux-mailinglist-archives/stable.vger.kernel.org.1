@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-248152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJDMJE5UB2oqywIAu9opvQ
-	(envelope-from <stable+bounces-248152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:13:50 +0200
+	id IPkULPdHB2p6wAIAu9opvQ
+	(envelope-from <stable+bounces-248107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:21:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB58554A36
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:13:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AAE0553115
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54AEB3111262
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:04:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AF17B309D0C1
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C095C303CB0;
-	Fri, 15 May 2026 16:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104053A961B;
+	Fri, 15 May 2026 16:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tW42XMQj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDmSNO3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F413C0A13;
-	Fri, 15 May 2026 16:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C786F30568A;
+	Fri, 15 May 2026 16:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861004; cv=none; b=OpEfCFzlAvoGjIRXLjtuQVyzuDSPCFQWwEuHWV5CiRT1ZWyfUX/2S2Gb7klCKipiw6QMcF4CMFfgCxoz9M/ZiWALjuorgo1Ov8wPKTDgIkR9Gsf0HTPxNDn2qWIt8pXWNN7CjaWLGj0gGJpx9GBz+r5lVGnmM8HBVRecT/uVOLE=
+	t=1778860890; cv=none; b=ds2kX2JoTfdKg5fWwIhYwaZXFvfrBsZv287w5CIrZRqteiCcAaxH/7aCpWuyfHEdf8R4xR3YhCnTC1AmkRflgEHSLRF4jFsQ7dPA0v5TW3Gwo9pe3NvBAtkL+NudCmOIbWXI+DCIGTnTIj9FonryPM9e/7dXjWHLkN/HJenvzIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861004; c=relaxed/simple;
-	bh=C62e9avq40rRAJm9iSEi6Ix1b4G8/yEa4cAZeRMM664=;
+	s=arc-20240116; t=1778860890; c=relaxed/simple;
+	bh=MHC6HLBxC8mOj2plJ4SVys0e9/GXJe9mKB5ytOFnECk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DuGNpQUmL74ItjJEb5FpxnkrZn+Ysrf3YYEbz26z9NuyRuDcPdQ/Lg5WEzF0H15xw3QGfes/qro5QbBMxS72lQCsw/y7XR2ZU2MGesioPu3kZvOQcSQ3XuiX+avnmYuiXINPM0rsItNBtIzK1ByGhH7149zz9iGBdiRr8jMw+VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tW42XMQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18301C2BCB0;
-	Fri, 15 May 2026 16:03:23 +0000 (UTC)
+	 MIME-Version; b=Tgqsbpub/+KpLzW++RziBqjQE+tBmDSyTKWb25HxjFf/W/i62W558IrnnEB0omKzoz4bOFuJn5ZYA3ENG5xgBwyq7v560MmXYHoMGsBRMG28eSkNEQsrU9mNMrJ8gEDPA7c6nm1GPvLei5tIB0luLU5aBFbHtITdxTQxAA4Ickk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDmSNO3q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16450C2BCB0;
+	Fri, 15 May 2026 16:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861004;
-	bh=C62e9avq40rRAJm9iSEi6Ix1b4G8/yEa4cAZeRMM664=;
+	s=korg; t=1778860890;
+	bh=MHC6HLBxC8mOj2plJ4SVys0e9/GXJe9mKB5ytOFnECk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tW42XMQjlPUzVYKauD0AJaOf4NFe3LmN430L4eJvwGeP6HwmQUl3RuBxEskFTWYvc
-	 xfOYR6Eucxfr882WPo1IPU8sjyG7VLsXm4dbJUzSrDPZ08Jv1g0wlci9jLqLpYPDUI
-	 o1XcvFL4YDfT8y0ePoZQBarIgawVxTGt6yRVxdEQ=
+	b=RDmSNO3qKmQd8Fjgu80hRZ3Kvfczw7DItK8SAppAAyGKlfashgCe03bwDNpboWV5j
+	 umE1+PmFy8rkEIBMm7GlBuza8mUV+yI2iHll434aFlmtO+p8S44idXaF0G5JD7tcqj
+	 cRiyrpplTqL7YsDDnNYTP4HyveL5N/NkG7giLJp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francis Brosseau <francis@malagauche.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/474] io_uring/poll: fix multishot recv missing EOF on wakeup race
-Date: Fri, 15 May 2026 17:43:39 +0200
-Message-ID: <20260515154717.416833895@linuxfoundation.org>
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 111/474] ext4: fix bounds check in check_xattrs() to prevent out-of-bounds access
+Date: Fri, 15 May 2026 17:43:40 +0200
+Message-ID: <20260515154717.438445182@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
 References: <20260515154715.053014143@linuxfoundation.org>
@@ -64,102 +63,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1CB58554A36
+X-Rspamd-Queue-Id: 6AAE0553115
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-248107-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mit.edu];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248152-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit a68ed2df72131447d131531a08fe4dfcf4fa4653 ]
+commit eceafc31ea7b42c984ece10d79d505c0bb6615d5 upstream.
 
-When a socket send and shutdown() happen back-to-back, both fire
-wake-ups before the receiver's task_work has a chance to run. The first
-wake gets poll ownership (poll_refs=1), and the second bumps it to 2.
-When io_poll_check_events() runs, it calls io_poll_issue() which does a
-recv that reads the data and returns IOU_RETRY. The loop then drains all
-accumulated refs (atomic_sub_return(2) -> 0) and exits, even though only
-the first event was consumed. Since the shutdown is a persistent state
-change, no further wakeups will happen, and the multishot recv can hang
-forever.
+The bounds check for the next xattr entry in check_xattrs() uses
+(void *)next >= end, which allows next to point within sizeof(u32)
+bytes of end. On the next loop iteration, IS_LAST_ENTRY() reads 4
+bytes via *(__u32 *)(entry), which can overrun the valid xattr region.
 
-Check specifically for HUP in the poll loop, and ensure that another
-loop is done to check for status if more than a single poll activation
-is pending. This ensures we don't lose the shutdown event.
+For example, if next lands at end - 1, the check passes since
+next < end, but IS_LAST_ENTRY() reads 4 bytes starting at end - 1,
+accessing 3 bytes beyond the valid region.
 
-Backport notes for linux-6.6.y:
-  - In 6.6.y the do-while masks v in the while-condition itself
-    (`atomic_sub_return(v & IO_POLL_REF_MASK, ...) & IO_POLL_REF_MASK`),
-    so v can carry IO_POLL_RETRY_FLAG / IO_POLL_CANCEL_FLAG bits when
-    we reach the multishot branch.  The HUP check therefore compares
-    `(v & IO_POLL_REF_MASK) != 1` rather than the upstream
-    `v != 1`, to avoid reacting to flag bits.
-  - io_poll_issue takes `ts` (struct io_tw_state *) here.
+Fix this by changing the check to (void *)next + sizeof(u32) > end,
+ensuring there is always enough space for the IS_LAST_ENTRY() read
+on the subsequent iteration.
 
-CVE: CVE-2026-23473
-Cc: stable@vger.kernel.org # 6.6.y
-Fixes: dbc2564cfe0f ("io_uring: let fast poll support multishot")
-Reported-by: Francis Brosseau <francis@malagauche.com>
-Link: https://github.com/axboe/liburing/issues/1549
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[backport for linux-6.6.y, verified 2026-05-01]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3478c83cf26b ("ext4: improve xattr consistency checking and error reporting")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20260224231429.31361-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260328150038.349497-1-kartikey406@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/poll.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/ext4/xattr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/poll.c b/io_uring/poll.c
-index a154df4d16204..66a0a9b9950b4 100644
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -321,7 +321,13 @@ static int io_poll_check_events(struct io_kiocb *req, struct io_tw_state *ts)
- 				return IOU_POLL_REMOVE_POLL_USE_RES;
- 			}
- 		} else {
--			int ret = io_poll_issue(req, ts);
-+			int ret;
-+
-+			/* multiple refs and HUP, ensure we loop once more */
-+			if ((req->cqe.res & (POLLHUP | POLLRDHUP)) &&
-+			    (v & IO_POLL_REF_MASK) != 1)
-+				v--;
-+			ret = io_poll_issue(req, ts);
- 			if (ret == IOU_STOP_MULTISHOT)
- 				return IOU_POLL_REMOVE_POLL_USE_RES;
- 			else if (ret == IOU_REQUEUE)
--- 
-2.53.0
-
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -226,7 +226,7 @@ check_xattrs(struct inode *inode, struct
+ 	/* Find the end of the names list */
+ 	while (!IS_LAST_ENTRY(e)) {
+ 		struct ext4_xattr_entry *next = EXT4_XATTR_NEXT(e);
+-		if ((void *)next >= end) {
++		if ((void *)next + sizeof(u32) > end) {
+ 			err_str = "e_name out of bounds";
+ 			goto errout;
+ 		}
 
 
 
