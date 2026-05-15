@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-248577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MJrFlxNB2pZwwIAu9opvQ
-	(envelope-from <stable+bounces-248577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:44:12 +0200
+	id mCLwLJtFB2qgvwIAu9opvQ
+	(envelope-from <stable+bounces-247935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD0F553D3E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:44:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58755552C93
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:11:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 519993032F86
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:22:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 42DAE30869B8
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A4A3FD94D;
-	Fri, 15 May 2026 16:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA03E305667;
+	Fri, 15 May 2026 15:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKExXmnj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viNxYIkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47C33FD947;
-	Fri, 15 May 2026 16:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E58717C220;
+	Fri, 15 May 2026 15:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862087; cv=none; b=A23ajd/8YSX0pusOoXqMwcwHwK1sXe0tfkZSViht4HopjUG9fQIBmq8+SOEjlcCq4ytmPP1XORfbd+i3UfZ+SVhmRY8yklea2gR13EuEQarjHVyUJsWW7+7UM1GqR1tXvJH+CZuU9CmyVJ6quOgcpp/oPHUbFIHbRhyXIlNIctU=
+	t=1778860451; cv=none; b=fgRWiZiEh72nQPs+/UFUKnfK0XrYwtYb63JJTK3z52EXz5jUrS3KLuDr5cFmC6mSfyHeFlXOSEuRQPbRmBTUlb701x9VFBvTTB/PMEFaHjH9vSpoKwb8CfQrsbhnZI/dznbUDGO2F0WYH6LbX7e9lR4K+0iCDe54xHxh7jwx+z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862087; c=relaxed/simple;
-	bh=G7FULhrOrH98BpC1Xc9MTm1Qbf0VXyHu4/d6fxXQ/U0=;
+	s=arc-20240116; t=1778860451; c=relaxed/simple;
+	bh=n0rtYuX9pxLJr4a7wUPeGPOr13tAOScFgG86z71ThAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7qOt+GlXgMZgLUK4zEO1ErsAgE8z5pqr8bRx8IdvCvjO837wbFwWu6kRD9d7hf1/ylooORwPG6CeqzjXEFOIn81qNZcwOMfRNYIX6NWcEM/FjY5IIiGHxOfkXpWNwYqXHY6PXzsC9nZ9t/i8NH6+pVGS1/jsSrdElh5/kj7lyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKExXmnj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDC6C2BCB0;
-	Fri, 15 May 2026 16:21:27 +0000 (UTC)
+	 MIME-Version; b=etQRS3pjKGZp6By6kIs7ebZmktTVVE5KRLeUoHLpM74wlrpb0adj5m87j82QodIpfaviVrPcS3PsyUM6Kq+WUGp9HnjCWume3BaxPfgJmgZAhjH+95gvZxmioH+/W6bhcODoVRUvHuZLBiLk0bqTmnCqUQ2Onq44oRugl6Cd/4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viNxYIkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C5BC2BCB3;
+	Fri, 15 May 2026 15:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862087;
-	bh=G7FULhrOrH98BpC1Xc9MTm1Qbf0VXyHu4/d6fxXQ/U0=;
+	s=korg; t=1778860451;
+	bh=n0rtYuX9pxLJr4a7wUPeGPOr13tAOScFgG86z71ThAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FKExXmnjCe4sdDrjlpnje3lx7d5R3jN36AufiiKzcClFj+wxtvA1VVGsZOKDKduZR
-	 qsk1mobdMGKsLUR99FWa0GBQcOY4JNpQN+HPKzT8ZWU6zs6RWzoS7H8KGc7FB5L3OS
-	 E5UjdT0YDYG9fm5kYbCE+rcex/X/UquWcXBei4A8=
+	b=viNxYIkhelScvxd5tAQTHWtxBM9cLCLiKQJepP+FnWjjPlLifAl0DjB25+Xu4fFQJ
+	 FdXihmQW/fUTZr/VSuYZt0fNuPbGalz/21XVNbFB5nbrrJO2TTv5R7j9/6324zchwG
+	 oxOWTmNmF0fEi7aOujpLHfwfxBOkYQN+HBWW28U8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>,
-	"Ramalingeswara Reddy, Kanala" <Kanala.RamalingeswaraReddy@amd.com>
-Subject: [PATCH 6.18 102/188] drm/amdgpu: Use SMUIO 15.0.0 offsets for TSC upper and lower count.
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Andrew Davis <afd@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.12 093/144] arm64: dts: ti: k3-am62a7-sk: Fix pin name in comment from M19 to N22
 Date: Fri, 15 May 2026 17:48:39 +0200
-Message-ID: <20260515154659.541833852@linuxfoundation.org>
+Message-ID: <20260515154655.667816662@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +65,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EFD0F553D3E
+X-Rspamd-Queue-Id: 58755552C93
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-247935-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248577-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,ti.com:email]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 574b3b14f7d1b329fc6e67b79328f0e6f4d4b3d4 upstream.
+commit 6ee0792d83d5c690205c350825a4c30746c0e0a2 upstream.
 
-Define and use regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0 and
-regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0 for TSC upper and lower count.
+The pin for GPMC0_CLK.GPIO0_31 at address 0x000F407C is N22 and not M19.
+Hence, fix the pin name in the comment to avoid confusion.
 
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
-Signed-off-by: Ramalingeswara Reddy, Kanala <Kanala.RamalingeswaraReddy@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 8f023012eb4a ("arm64: dts: ti: k3-am62a: Enable UHS mode support for SD cards")
 Cc: stable@vger.kernel.org
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Andrew Davis <afd@ti.com>
+Reviewed-by: Bryan Brattlof <bb@ti.com>
+Link: https://patch.msgid.link/20260309045539.2070793-1-s-vadapalli@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |   31 ++++++++++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a7-sk.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -64,6 +64,11 @@
- #define regPC_CONFIG_CNTL_1		0x194d
- #define regPC_CONFIG_CNTL_1_BASE_IDX	1
+--- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+@@ -369,7 +369,7 @@
  
-+#define regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0               0x0030
-+#define regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0_BASE_IDX      1
-+#define regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0               0x0031
-+#define regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0_BASE_IDX      1
-+
- #define regCP_GFX_MQD_CONTROL_DEFAULT                                             0x00000100
- #define regCP_GFX_HQD_VMID_DEFAULT                                                0x00000000
- #define regCP_GFX_HQD_QUEUE_PRIORITY_DEFAULT                                      0x00000000
-@@ -5174,11 +5179,27 @@ static uint64_t gfx_v11_0_get_gpu_clock_
- 		amdgpu_gfx_off_ctrl(adev, true);
- 	} else {
- 		preempt_disable();
--		clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
--		clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
--		clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_UPPER);
--		if (clock_counter_hi_pre != clock_counter_hi_after)
--			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0, regGOLDEN_TSC_COUNT_LOWER);
-+		if (amdgpu_ip_version(adev, SMUIO_HWIP, 0) < IP_VERSION(15, 0, 0)) {
-+			clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_UPPER);
-+			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_LOWER);
-+			clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_UPPER);
-+			if (clock_counter_hi_pre != clock_counter_hi_after)
-+				clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+						regGOLDEN_TSC_COUNT_LOWER);
-+		} else {
-+			clock_counter_hi_pre = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0);
-+			clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0);
-+			clock_counter_hi_after = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+					regGOLDEN_TSC_COUNT_UPPER_smu_15_0_0);
-+			if (clock_counter_hi_pre != clock_counter_hi_after)
-+				clock_counter_lo = (uint64_t)RREG32_SOC15(SMUIO, 0,
-+						regGOLDEN_TSC_COUNT_LOWER_smu_15_0_0);
-+		}
- 		preempt_enable();
- 	}
- 	clock = clock_counter_lo | (clock_counter_hi_after << 32ULL);
+ 	vddshv_sdio_pins_default: vddshv-sdio-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62AX_IOPAD(0x07c, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO0_31 */
++			AM62AX_IOPAD(0x07c, PIN_OUTPUT, 7) /* (N22) GPMC0_CLK.GPIO0_31 */
+ 		>;
+ 	};
+ };
 
 
 
