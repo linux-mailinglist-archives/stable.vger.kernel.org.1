@@ -1,91 +1,92 @@
-Return-Path: <stable+bounces-248832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEWhLhZQB2rBxgIAu9opvQ
-	(envelope-from <stable+bounces-248832-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:50 +0200
+	id gFrvCBhQB2rBxgIAu9opvQ
+	(envelope-from <stable+bounces-248834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644EC554350
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0480F554357
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:55:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 660F930F591A
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5BB3430E6516
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414D63EFFC9;
-	Fri, 15 May 2026 16:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97212949E0;
+	Fri, 15 May 2026 16:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="NdQSdj/F"
+	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="GL5iguDF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25233F58EF
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 16:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8E13E00A3
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 16:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862746; cv=none; b=LCv5ceIQLdvKoq/wfUFm6cGWs5EF+MLnI5iliJcFuAMJBdYxR0c2vQf6/StS38MHJ+HUkaw/aZYix9RN6R8s5rcagB59XlpiSX2nUDJkGiJx96eFj7HNv4IaeUVv/xSGaq+RJVtSNeSAqnDmiszAvGC7kJSZkzv4Tn49eYUvt7M=
+	t=1778862747; cv=none; b=lS0fkRNQGstEzxMUOLQOXIVWsnwGDAEe+jc9ecE2uCJuU0RuKdF8Mq/uz6yFEml1KaJRJfeBHPLzpoo9W2U4/6W8USTi06E+PFiJn4auUrMCp2i4a+NtKdT6/72odXdFmvxwiVd8DLpsUXpH8ANBUxoWBh5FYsuccy59lBONZr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862746; c=relaxed/simple;
-	bh=GXwOY7VfcWvuc6sber8bmSrdUzlp97IgLJ/kAbmBURI=;
+	s=arc-20240116; t=1778862747; c=relaxed/simple;
+	bh=dPAlCQ7CamKJWpH3yYFUpq/IoYtHj+j7eQfz/0JyHZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdMGEp+EjzzUqFB2R7Lkp6ZNYFINLW6tEfzAyRjuAUApiZDZzbcW+HVCNcS6vD5z1cKReLfSSMbTBI52LSn0BF8zTRWEjEMsZMz+7wn/Bbv8rImDOjYcriZYYFy46Da1wru4upLXwhDgT4XV1/w2+1qT8X9297y1la0HSfUKk4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=NdQSdj/F; arc=none smtp.client-ip=209.85.160.43
+	 MIME-Version; b=amHX1Ju9GWuhuPGeC2A7P+XkquyyGFqBlKn/UR0YtaWtB8u5tns1OCjHmL4k6V3f+R+xwW/vzvPA3jRwfvzD3VMOrBcSKxQzGW6xq8rqdgYYINV/adJiefD4wGaL8dHDdFn5t+Yr3QUu5ygm6QnQbItL7fcb1AuRxRlITpRjCjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=GL5iguDF; arc=none smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-435153d9b68so6103874fac.3
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 09:32:24 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7e4004a4a6fso2083416a34.1
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 09:32:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1778862744; x=1779467544; darn=vger.kernel.org;
+        d=minyard.net; s=google; t=1778862745; x=1779467545; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4yZD+FfEMr9LyOWaWHNwRUeTqm6rHNyodryqhK/S00A=;
-        b=NdQSdj/F8LoYJFzD5JoZAE8yZ5ZdGbgSuAMVbXPBK+Zn0hho56srEUksG1nPm3hbFQ
-         Z+XRwfy90zhiNIEWvpvYqzyeY2ZjxTplT4wtMMjrJrwOdc7WTq0xhHEZ81xZqqAj6zQe
-         f3iej6rGmpx5fBiUYmH+DjZhZC/noI2C3Tt9xvg0RZ/s83bty+kBLIqHdl/oc0Ld3P8t
-         0uCyUK1KF7f4br5IeKBR4fGzV2/U5CJaEtERhqIIDtqyRtEoo7DIfDoHRRoi4dQl9VTO
-         l6FQpKb/YV4s7l46JM8t74MNQpsHgLsRLenYCqmdHlf3AbRCBon0rXp05co3ujHtG6G2
-         /FWg==
+        bh=gXVodw1E6K24BZjEFIdMFaaX39L55IwMJxB4Jx+bt2c=;
+        b=GL5iguDFKskg5EsQl2gpFDJw2bGViqOPxOxQVpzNud6ayuHHHpBX7VA7UhTY8N5n0v
+         2hust1ptLR8HS2I0t1kuDRr8zBe34sy2PMMQ9rJ645opT5k35FOaSUjL3cR0i4VUX0su
+         DPaGhR7mxkXF9QOll8wn8lBjP9KTlxuU21meKDi46G/Q+Q9bVv6gSN3xCW6d0IoGFb+f
+         dbb3QhKsdBQIOWWV7g2j29/EJxmggYG0y197fc3SRkZaf70A/Ug9k4lRXNPZGk3AtUXg
+         iirzglM6H9UwFHyHZkv4+R7MhAqYSBD2TbgdS96YSZK9ZNtd1XKClAmnPM2zNGFGPu3g
+         Sl+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778862744; x=1779467544;
+        d=1e100.net; s=20251104; t=1778862745; x=1779467545;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=4yZD+FfEMr9LyOWaWHNwRUeTqm6rHNyodryqhK/S00A=;
-        b=AOefzpjriHxSGIEz5FarPvXPnEnLvTde3iRqedVjkyMIBdiZ6y8nlf9stfjn6Pa5WK
-         QDstzLD1QxA6nQ3ah/RGqEeV3V/2ZiEa/EQhmVf07qzDgGPNOfE6z796dnHL5nbW8KB2
-         /cLdaoE5azYgh/1eZFDOljhG/vZ5iR5KCOW4PT5P6q1BSaPWZQqundMJv0+6k8XhYlZ/
-         V8mPhjUeH3DoXoyb+EmTdD5Y8k5xslGMhiiknwWQ95hPHSJVqXkeARXIyiNFeMKVz57S
-         WHG9rJVHvhT5i656c7uAp3+LvI/XllCVQaQ0Qa5npAxeEv4at9MCrad7NQIG4hWdLPfv
-         E1PA==
-X-Gm-Message-State: AOJu0YztuP2N2fkdDFpIojXnAE9+C19i+fM2CoTOXemaITaL3X4GcVp7
-	lH/7RXOYZTU8DhrDfeDtl9+b81Ydt3LI1fw6kipxuLfY57t09rjDBxqTdT21BgaFpSqAXteXM9H
-	ryxIF
-X-Gm-Gg: Acq92OGywbtYvb74/tXx36RYz7bfiALjLLRC4ixil1a60LPbyNg/QdkEGgwC12Hq74H
-	LdcBXRoTUEsTE0r8TgvpfmKtxkq76qRgatdodgci/xF8ZdHYQDBPpyx0LFMS7Opgi6hB+xHyZcq
-	L1RPuDUXjAg9HXX/41LcdL6u3VP4a7ojRCDjokPR0gsebmkZTHRCELXKpP7GiDYx4fSubGsKMrV
-	OdXiV5f/xXPojWdhmVE7/s1y/wYGrNoDe1JdVO6KJye3g5/5CSI38LsqZHTCewagozJUwQSUwYQ
-	VEobBG00NgnWbyUtR9tGDuep9Bk57q/HzG/ru/wtSr6iSzp5w5dyS+eSB0qw10AHokmY38Xfv8a
-	Fe3Yue7PSQNYjc556zsG+u9O0MDv9GPmTcgeweR/Bq3qzLjZkl0GHKGhOP18otgorTjm0oepXTh
-	nEe1iGm3e+O8bUIEgWE/eI88JAOHQl0LT/+Lc/5TrCS9O8dv8vdTKXpMSY94DV1donfjAvdFjoX
-	Q/6
-X-Received: by 2002:a05:6870:3343:b0:439:f6d8:459e with SMTP id 586e51a60fabf-43a2dd8f096mr3240208fac.31.1778862743569;
-        Fri, 15 May 2026 09:32:23 -0700 (PDT)
-Received: from localhost ([2001:470:b8f6:1b:5de0:f9c5:a427:bb0])
-        by smtp.gmail.com with UTF8SMTPSA id 586e51a60fabf-439fc54217esm4347097fac.13.2026.05.15.09.32.22
+        bh=gXVodw1E6K24BZjEFIdMFaaX39L55IwMJxB4Jx+bt2c=;
+        b=G82esvmiaZPBt9codBaH/GlZAX6rAba5EfP3aY6UwM4AEQoSWn5j6IkFqWXz7lKFzW
+         4udyV0Cu75UKE12BDe8lfd61UGc3wYnIX6VEEM0k0a8xeM2I1f528xIh7y88VtS9yqXo
+         qJzd/ZRi13IpCA+lUzhEJre7t0bu+59MlSqOP0JS6KEmjJSXHSF21r+EDGipCeVS8Ydc
+         LjmFq4tqzf8FwjqpJ4DHomVJMwdmvu53Bp1X+C0Z6fK8iWWnctx87D8naqWX7u+BVRy+
+         kjxMDRAxIM+IQbwSVfs8/0/qWbXYKjDdR/9Zw38C5gogEOS1oCtg9zvIv3wBnH9f7d+l
+         nYZw==
+X-Gm-Message-State: AOJu0YwMRFvquXxP7PECtXg0Bu9s7cH+qxA5mqG57bGsuFZFS/WaFNB2
+	Q6GR1TjMIhiMxHHJcbrEhNkwkzTP+T779TDS9NJHsuD2S5DaUMRV7N4hRo6oHZ54StQ2XIV11RX
+	CFwDw
+X-Gm-Gg: Acq92OHKQrGjcFxAwQ74hFGI/aU1z+qu8YeTmUBa5q0Ahpr8Pnm3UUDlFKRjfQf70z/
+	AyfEmLWO5UaeDKUokbcZGgwycVqbN576en3Gpr3G1OvCcmrh6eccNk3UPpRd/VNBAHTdtsUZxOo
+	bvo6adErk3AraYQ3qt2utwnpILRJSMjijjBQf6ZOTHX97Wlco0gCapLBpUapmMS0UWIYbt4a/9j
+	lXuqLrTuSgoilvyciWyBwHjFD9w8ErG3BSGrGixfT7zHqCh7Z6XtnAb4y9JYahAW2HFt2cf/dVm
+	ybgeMfr1065PqKRgew0ZDG5TpRCDovOqoyuP7KFe/I5PNjsskaLfy81JPCjE+AOx7gN6B8m2Dsg
+	y+lM1S+L7sUwjWRDxK4mhcAjsC2NBdC8UMuWYzf6ZO/RDPwKIBpGaLHuHkBjInn8XtiWnJ5t7Qc
+	wBF2UMvMfxxMfgcG18w+aP22UK8DEHywwgCQJkTzfzdto4G+cTD6pw2eK6fKbBHJYR7om6H6G4i
+	3qVZg==
+X-Received: by 2002:a05:6830:6106:b0:7dc:e45a:adda with SMTP id 46e09a7af769-7e4f2b6e6ccmr2931921a34.19.1778862745103;
+        Fri, 15 May 2026 09:32:25 -0700 (PDT)
+Received: from localhost ([47.184.181.198])
+        by smtp.gmail.com with UTF8SMTPSA id 46e09a7af769-7e55b7cd6c0sm1785956a34.4.2026.05.15.09.32.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 May 2026 09:32:23 -0700 (PDT)
+        Fri, 15 May 2026 09:32:24 -0700 (PDT)
 From: Corey Minyard <corey@minyard.net>
 To: stable@vger.kernel.org
 Cc: Corey Minyard <corey@minyard.net>
-Subject: [PATCH 5.15.y 1/2] ipmi:ssif: Remove unnecessary indention
-Date: Fri, 15 May 2026 11:32:18 -0500
-Message-ID: <20260515163219.2279960-1-corey@minyard.net>
+Subject: [PATCH 5.15.y 2/2] ipmi:ssif: NULL thread on error
+Date: Fri, 15 May 2026 11:32:19 -0500
+Message-ID: <20260515163219.2279960-2-corey@minyard.net>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026051541-going-septic-6fe5@gregkh>
+In-Reply-To: <20260515163219.2279960-1-corey@minyard.net>
 References: <2026051541-going-septic-6fe5@gregkh>
+ <20260515163219.2279960-1-corey@minyard.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,7 +94,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 644EC554350
+X-Rspamd-Queue-Id: 0480F554357
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -106,7 +107,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248832-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-248834-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
@@ -124,61 +125,33 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,minyard.net:email,minyard.net:mid,minyard.net:dkim]
 X-Rspamd-Action: no action
 
-A section was in {} that didn't need to be, move the variable
-definition to the top and set th eindentino properly.
+Cleanup code was checking the thread for NULL, but it was possibly
+a PTR_ERR() in one spot.
 
+Spotted with static analysis.
+
+Link: https://sourceforge.net/p/openipmi/mailman/message/59324676/
+Fixes: 75c486cb1bca ("ipmi:ssif: Clean up kthread on errors")
+Cc: <stable@vger.kernel.org> # 91eb7ec72612: ipmi:ssif: Remove unnecessary indention
+Cc: stable@vger.kernel.org
 Signed-off-by: Corey Minyard <corey@minyard.net>
-(cherry picked from commit 91eb7ec7261254b6875909df767185838598e21e)
+(cherry picked from commit a8aebe93a4938c0ca1941eeaae821738f869be3d)
 ---
- drivers/char/ipmi/ipmi_ssif.c | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index 30f757249c5c..266a5f223739 100644
+index 266a5f223739..71622a95517a 100644
 --- a/drivers/char/ipmi/ipmi_ssif.c
 +++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1664,6 +1664,7 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	int               len;
- 	int               i;
- 	u8		  slave_addr = 0;
-+	unsigned int      thread_num;
- 	struct ssif_addr_info *addr_info = NULL;
- 
- 	mutex_lock(&ssif_infos_mutex);
-@@ -1872,22 +1873,17 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	ssif_info->handlers.request_events = request_events;
- 	ssif_info->handlers.set_need_watch = ssif_set_need_watch;
- 
--	{
--		unsigned int thread_num;
--
--		thread_num = ((i2c_adapter_id(ssif_info->client->adapter)
--			       << 8) |
--			      ssif_info->client->addr);
--		init_completion(&ssif_info->wake_thread);
--		ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
--					       "kssif%4.4x", thread_num);
--		if (IS_ERR(ssif_info->thread)) {
--			rv = PTR_ERR(ssif_info->thread);
--			dev_notice(&ssif_info->client->dev,
--				   "Could not start kernel thread: error %d\n",
--				   rv);
--			goto out;
--		}
-+	thread_num = ((i2c_adapter_id(ssif_info->client->adapter) << 8) |
-+		      ssif_info->client->addr);
-+	init_completion(&ssif_info->wake_thread);
-+	ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
-+					"kssif%4.4x", thread_num);
-+	if (IS_ERR(ssif_info->thread)) {
-+		rv = PTR_ERR(ssif_info->thread);
-+		dev_notice(&ssif_info->client->dev,
-+			   "Could not start kernel thread: error %d\n",
-+			   rv);
-+		goto out;
- 	}
- 
- 	dev_set_drvdata(&ssif_info->client->dev, ssif_info);
+@@ -1880,6 +1880,7 @@ static int ssif_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 					"kssif%4.4x", thread_num);
+ 	if (IS_ERR(ssif_info->thread)) {
+ 		rv = PTR_ERR(ssif_info->thread);
++		ssif_info->thread = NULL;
+ 		dev_notice(&ssif_info->client->dev,
+ 			   "Could not start kernel thread: error %d\n",
+ 			   rv);
 -- 
 2.43.0
 
