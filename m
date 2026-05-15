@@ -1,182 +1,186 @@
-Return-Path: <stable+bounces-247402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247403-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id C1OqFGDABmo2ngIAu9opvQ
-	(envelope-from <stable+bounces-247402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:42:40 +0200
+	id UC6cOkDBBmpdngIAu9opvQ
+	(envelope-from <stable+bounces-247403-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:46:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54F754A138
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5848354A193
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 08:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AAF5C301E945
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 06:42:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E7383036D41
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 06:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AF0382F1B;
-	Fri, 15 May 2026 06:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3ECB372EE4;
+	Fri, 15 May 2026 06:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="dogdxfVT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lz3Q1eVJ"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C636D3016F7
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 06:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9625726B764;
+	Fri, 15 May 2026 06:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778827355; cv=none; b=O1BniazAgGUykLdhGy4VzFGnvUVQ7V0ruzWp1OGa6fYytQakupGaKIZk2Rroq7p3tZhBcUIQEqvJ2U5u3FgP50OoDLT/i/3f2IckSqxFDH/0JJsK6Y8uA6OwVgxx7QrDu9quqEj/ICQjT4ywVNAM5yxO+E4BaVAtebmyazEErqA=
+	t=1778827552; cv=none; b=psu1QdxlL8mRlmT9lWl1P5bggxdB+2Ik5qnDTdyvnZa70e9FW0Ou16fOiGj89aUqqlrmUHRnLyiD4+QvqB3cJ9D93OO0GTAfdSnVWYbXGCGTOzGTpk48n/5Ffz/EDio9Cxrcv2MmaTcrNvUpsxc1blsIVrZgYUHM7wsOAUlwuDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778827355; c=relaxed/simple;
-	bh=cBliRQreQ5Z8fGd8hc8VuDT9dT4MHhfSsLEWXio4x9I=;
-	h=From:To:Subject:Date:Message-Id; b=t15w/LU5DMWWxgCPxAf/qkUydY96oJPGhG3sQ6PRf08TcutWRzUX6qOum0fGyIXxIBrcwgicSkhl/xK+vZc2QqMR4/YdcjwXz8fgPjGoROIGWGbdPjMAA+EB31q7Pg9D9yv5e06wp9ziI5xQwSvIVu2YuMHaxWYQSoSI6sEB3Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=dogdxfVT; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=dogdxfVTDp6i6FhSljRQeFMxtCqtk3fHro/Ye4EShG/gmw572n8UMbrSdCt3joNSk8pxVuribe0hp
-	 WlXCJskXZPG/sTojfumy7etB3y69s7wcD6yMETnPxDaZeBHB9uUhzkjbz+og2+NnEmmpDbsfnH3s+P
-	 2XjgUTHwXzn5/jAQ=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[183.241.248.164])
-	by rmsmtp-lg-appmail-05-12083 (RichMail) with SMTP id 2f336a06c050e7a-4ebc6;
-	Fri, 15 May 2026 14:42:26 +0800 (CST)
-X-RM-TRANSID:2f336a06c050e7a-4ebc6
-From: Rajani Kantha <681739313@139.com>
-To: ebiggers@kernel.org,
-	linkinjeon@kernel.org,
-	stfrench@microsoft.com,
-	stable@vger.kernel.org
-Subject: [PATCH 5.15.y] ksmbd: Compare MACs in constant time
-Date: Fri, 15 May 2026 14:42:19 +0800
-Message-Id: <20260515064219.3087-1-681739313@139.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1778827552; c=relaxed/simple;
+	bh=fdhRKJPCGZXjAWQoCegJr3llv8cjpNm22fP8NssyrcE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X6oef8Qa31/ptpHrZz1FuLvQ4junpriCRL5tGg61Jt0Ei5NiZYueTc9o02VbheaK9UomaKAtxuuIcvc44Nx6DHwAzH+CemtfBrrwptizRauIyobCcn+mo07A02dtk4uOT+RkhVMcRMlAWPloOWVtoZWTy3H/mzuobXBl7lLXnkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lz3Q1eVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3608AC2BCB0;
+	Fri, 15 May 2026 06:45:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778827552;
+	bh=fdhRKJPCGZXjAWQoCegJr3llv8cjpNm22fP8NssyrcE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lz3Q1eVJw88rpf/bioyITL0kLSmO09UYalnIIAZdaKP1Q98TXOj1p0pNisUPyMSPm
+	 SIb0lVZ2qf+ZfVErMKZDQFQJGTdsIwHCwa2B+WZiCYKPsAiM3IKhbDA32S1qQsBlzG
+	 3gpve1hugc24Cj5+jaPMvz3LOQbNlBhkkJyvpSEQvu7pzRD5GBCfer8ibe+3OXOAYO
+	 6WAYK1TZFSudpNkz6yEIQvL+fB8dkgodOAoQi4XARPCNP34/p+F/tTavMPBMLE/vxl
+	 7X8oF0JtUZJUVi3vGQHOeUUl/bTU3+THtqIQuiG7dCPwt4TBAOTYdyeZTsPVI0P+Y/
+	 z6quxt3HhPjcw==
+Date: Thu, 14 May 2026 23:44:27 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: lukas@wunner.de, ignat@linux.win, jarkko@kernel.org,
+	yimingqian591@gmail.com, stable@vger.kernel.org,
+	linux-crypto@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] lib/crypto: mpi: Fix integer underflow
+ in" failed to apply to 6.1-stable tree
+Message-ID: <20260515064427.GA15865@sol>
+References: <2026051223-undercoat-reps-6626@gregkh>
+ <20260513025130.GA3110@sol>
+ <2026051334-showgirl-hurdle-22eb@gregkh>
+ <20260513170445.GA2128@quark>
+ <20260513225934.GA501859@google.com>
+ <2026051530-lushness-attest-bcbb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: C54F754A138
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026051530-lushness-attest-bcbb@gregkh>
+X-Rspamd-Queue-Id: 5848354A193
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-247402-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[wunner.de,linux.win,kernel.org,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-247403-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	NEURAL_SPAM(0.00)[0.865];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[139.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Eric Biggers <ebiggers@kernel.org>
+On Fri, May 15, 2026 at 07:45:40AM +0200, Greg KH wrote:
+> On Wed, May 13, 2026 at 10:59:34PM +0000, Eric Biggers wrote:
+> > On Wed, May 13, 2026 at 10:04:47AM -0700, Eric Biggers wrote:
+> > > > > A couple issues.  First, this email wasn't sent to the subsystem's
+> > > > > mailing list (linux-crypto@vger.kernel.org in this case).  That greatly
+> > > > > reduces the number of people who are made aware that this didn't get
+> > > > > automatically backported.
+> > > > 
+> > > > We never send out these FAILED emails to the mailing lists, as that
+> > > > would make just even more noise.  It's always been this way, sorry.
+> > > 
+> > > Yes, this has been a problem for a long time, resulting in lots of
+> > > missed backports including the copy.fail ones.  It's time for you to fix
+> > > your process.
+> > > 
+> > > > > Second, the upstream commit cherry-picks to 6.1, 5.15, and 5.10 without
+> > > > > conflict.  (The file being changed was renamed between 6.1 and 6.6, but
+> > > > > 'git cherry-pick' handles that automatically.)
+> > > > > 
+> > > > > I don't know what you're doing exactly that caused it to be
+> > > > > unnecessarily marked as FAILED.  But whatever it is, it's not working,
+> > > > > and it is causing backports to be missed.
+> > > > 
+> > > > We don't use git for cherry-picking as we have a patch queue, so renames
+> > > > will often times fail, like it did here.  This has always been the case
+> > > > in the decades we have been running the stable kernels :)
+> > > 
+> > > Again, this has been a problem for a long time, and it's time for you to
+> > > fix your process.  You can still have the patch queue; just use git for
+> > > the actual cherry-pick.
+> > 
+> > Also I should mention that your own instructions for "reproducing" the
+> > conflict use 'git cherry-pick':
+> > 
+> >     git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> >     git checkout FETCH_HEAD
+> >     git cherry-pick -x 8c2f1288250a90a4b5cabed5d888d7e3aeed4035
+> >     # <resolve conflicts, build, test, etc.>
+> >     git commit -s
+> >     git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051223-undercoat-reps-6626@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> > 
+> > When these instructions are followed, there is no conflict.  The
+> > "conflict" is purely because you didn't use 'git cherry-pick' yourself.
+> 
+> Yes, that is true, we are showing how someone else can potentially
+> resolve the issue.  The magic is in the line:
+>
+> 	# <resolve conflicts, build, test, etc.>
+> 
+> We issue FAILED emails for any number of reasons, we don't go into the
+> details of why it FAILED, otherwise we would have just too much
+> information here.
 
-commit c5794709bc9105935dbedef8b9cf9c06f2b559fa upstream.
+I'm not asking for details on why it's FAILED.  I'm asking for commits
+that cherry-pick cleanly to not be FAILED in the first place.
 
-To prevent timing attacks, MAC comparisons need to be constant-time.
-Replace the memcmp() with the correct function, crypto_memneq().
+> > So just start using 'git cherry-pick', and stop asking other people to
+> > do it for you when there are no conflicts, please.
+> 
+> That does not work in our workflow at all.  Given the huge flow of
+> patches, and all the different issues/errors, the odds that a simple
+> rename will resolve the problem is very low.  For that I can not slow
+> down the whole process for all submissions.
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Rajani Kantha <681739313@139.com>
----
- fs/ksmbd/Kconfig   | 1 +
- fs/ksmbd/auth.c    | 4 +++-
- fs/ksmbd/smb2pdu.c | 5 +++--
- 3 files changed, 7 insertions(+), 3 deletions(-)
+I've been doing stable backports for a long time, and it's happened
+*many* times that something cherry-picks cleanly for me but you say
+there are "conflicts".  Here's an example from just 2 weeks ago where
+you spent time "resolving" a "conflict" in commits that actually
+cherry-picked cleanly:
+https://lore.kernel.org/linux-crypto/2026043050-drainpipe-salvage-07c1@gregkh/
 
-diff --git a/fs/ksmbd/Kconfig b/fs/ksmbd/Kconfig
-index d036ab80fec3..9f22849c50d9 100644
---- a/fs/ksmbd/Kconfig
-+++ b/fs/ksmbd/Kconfig
-@@ -10,6 +10,7 @@ config SMB_SERVER
- 	select CRYPTO_HMAC
- 	select CRYPTO_ECB
- 	select CRYPTO_LIB_DES
-+	select CRYPTO_LIB_UTILS
- 	select CRYPTO_SHA256
- 	select CRYPTO_CMAC
- 	select CRYPTO_SHA512
-diff --git a/fs/ksmbd/auth.c b/fs/ksmbd/auth.c
-index 647692ca78a2..1fc76e41622c 100644
---- a/fs/ksmbd/auth.c
-+++ b/fs/ksmbd/auth.c
-@@ -13,6 +13,7 @@
- #include <linux/xattr.h>
- #include <crypto/hash.h>
- #include <crypto/aead.h>
-+#include <crypto/utils.h>
- #include <linux/random.h>
- #include <linux/scatterlist.h>
- 
-@@ -281,7 +282,8 @@ int ksmbd_auth_ntlmv2(struct ksmbd_conn *conn, struct ksmbd_session *sess,
- 		goto out;
- 	}
- 
--	if (memcmp(ntlmv2->ntlmv2_hash, ntlmv2_rsp, CIFS_HMAC_MD5_HASH_SIZE) != 0)
-+	if (crypto_memneq(ntlmv2->ntlmv2_hash, ntlmv2_rsp,
-+			  CIFS_HMAC_MD5_HASH_SIZE))
- 		rc = -EINVAL;
- out:
- 	if (ctx)
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 978a103e72bb..163b51ef5dda 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -4,6 +4,7 @@
-  *   Copyright (C) 2018 Samsung Electronics Co., Ltd.
-  */
- 
-+#include <crypto/utils.h>
- #include <linux/inetdevice.h>
- #include <net/addrconf.h>
- #include <linux/syscalls.h>
-@@ -8433,7 +8434,7 @@ int smb2_check_sign_req(struct ksmbd_work *work)
- 				signature))
- 		return 0;
- 
--	if (memcmp(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
-+	if (crypto_memneq(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
- 		pr_err("bad smb2 signature\n");
- 		return 0;
- 	}
-@@ -8521,7 +8522,7 @@ int smb3_check_sign_req(struct ksmbd_work *work)
- 	if (ksmbd_sign_smb3_pdu(conn, signing_key, iov, 1, signature))
- 		return 0;
- 
--	if (memcmp(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
-+	if (crypto_memneq(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
- 		pr_err("bad smb2 signature\n");
- 		return 0;
- 	}
--- 
-2.17.1
+> > And please start Cc'ing the mailing lists.  Linux kernel development
+> > isn't done in private email.
+> 
+> This isn't a private list, we are cc:ing the people who signed off on
+> the patch directly.  They are the "owners" of it.
 
+And sometimes the "owners" don't do it and other people involved in the
+subsystem need to do it.  Or the backports are wrong and other people
+involved in the system need to point that out.  It's not much different
+from any other kernel development; it should be done on the lists.
 
+- Eric
 
