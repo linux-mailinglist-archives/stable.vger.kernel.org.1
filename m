@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-248724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ArYEOVTB2oqywIAu9opvQ
-	(envelope-from <stable+bounces-248724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:12:05 +0200
+	id aPubIw5KB2rUwQIAu9opvQ
+	(envelope-from <stable+bounces-248363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:30:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE55554969
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:12:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7736F553499
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E179313351B
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:31:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8F62C3057CB9
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314343F44CB;
-	Fri, 15 May 2026 16:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794923FBB5C;
+	Fri, 15 May 2026 16:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPZeY79N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuGpcgrP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C273B19DE;
-	Fri, 15 May 2026 16:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8663FADE0;
+	Fri, 15 May 2026 16:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862467; cv=none; b=bxOmcni/OLKz6KMqaZO3jpS6dJ40cEGxgo1FZwtNGyT6VhL9UUpdyMABG5XG/yeUhiUz0ffHkUHaBBgdR7vuElpJ1D8kg4mnCPJxmHid446MvaGHCRwo9CQ8lsPFkF7FArwsgr76pI3sDVUsSpte1DufEji52u+XmtfkP3HVtPI=
+	t=1778861543; cv=none; b=LG5Uq01eE567r/gD9cfG07Z7Dwl8DBKismMILiOjd9jBsoXiaQ4vm9z7dTH2QeZDNZcdGMwemaIsPXCRuJByzYp4FY40effhFeaPZVexERg4AB3VoQIciRtYEYgztw1udrbTcs3MQTy1xFc4zshvb/f4p/sueKcurFCoOb5Beo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862467; c=relaxed/simple;
-	bh=SO1iqbXk4rhWZEsPIPV99w25JKmx2cHXTsBGF765J18=;
+	s=arc-20240116; t=1778861543; c=relaxed/simple;
+	bh=DYnlvXk++wf2mscnT1FLwrRk/atkKDJdBfTP++uUsiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FpvxLtkOjv5+ItpBHVFpIE+72N9W2SaYeNHsvlXAwcvS9qpq8cNQUwQpiz9T0xuI2qLwORCYeitCGnw0soXcufVkDL5oHcsY9Qtj2In2uU5na93AvHVaIezEpJ2NqE9g13TS9XCxfz9IHg1zafc/e6xyPTW+Iki3gE49qfpJyEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPZeY79N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEDDC2BCB0;
-	Fri, 15 May 2026 16:27:46 +0000 (UTC)
+	 MIME-Version; b=hK3pc1UDoBF4IuS8U1xrq2FD1mvB4gvZOK1ONo5/pDRrgxQWSvS6qOnkSTLG+CYkDBY/OuvspbynemQdA5bXV2JF2wBd8cyIx5qbRc9CHlrm1hZvUTnalY9tSqOMAQzLQBDomMHrnwZUjrb0mya203vwtT+0R443NhfRAwc2e50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuGpcgrP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68E3C2BCB0;
+	Fri, 15 May 2026 16:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778862466;
-	bh=SO1iqbXk4rhWZEsPIPV99w25JKmx2cHXTsBGF765J18=;
+	s=korg; t=1778861543;
+	bh=DYnlvXk++wf2mscnT1FLwrRk/atkKDJdBfTP++uUsiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPZeY79NwYX19IANWcsZhbOWYZPy/rc5R9titdCmX7cvH0AkCn+wAIrMjIaQD/YHq
-	 mJQDd+dEy6qJww4+OQsVYV2fbeCpCyHBwg6HrohHh7MEHbnUkDv4apYoB9Tg8T2dAz
-	 tTh5g6pwIyFqR5UjgkdVRdU4VTyycVQS6ZBmOIEM=
+	b=uuGpcgrPWxAIrfY5a4oqhCVRIoRPKwcB2IavVsRsbQtvCYpM2+v70FAnahople+N4
+	 7GbhVOy5M2K0pngCZd+17DWgdsCb3+lUX4r7OCvy9jxtqBCIuXcPRf+a6t+LHEKKFc
+	 cPMmcM+/SUBwi28Rn6o4fpv+9ZKdZYdrxs3dr3yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uma Shankar <uma.shankar@intel.com>,
-	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH 7.0 059/201] drm/colorop: Preserve bypass value in duplicate_state()
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 368/474] ksmbd: replace connection list with hash table
 Date: Fri, 15 May 2026 17:47:57 +0200
-Message-ID: <20260515154659.812240803@linuxfoundation.org>
+Message-ID: <20260515154722.985406801@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-References: <20260515154658.538039039@linuxfoundation.org>
+In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
+References: <20260515154715.053014143@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +64,276 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CBE55554969
+X-Rspamd-Queue-Id: 7736F553499
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248724-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248363-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 0d9710aeb6959ae244f255986187562fa50504b9 upstream.
+[ Upstream commit 0bcc831be535269556f59cb70396f7e34f03a276 ]
 
-__drm_atomic_helper_colorop_duplicate_state() unconditionally
-sets state->bypass = true after copying the existing state.
+Replace connection list with hash table to improve lookup performance.
 
-This override causes the new atomic state to no longer reflect
-the currently committed hardware state. Since the bypass property
-directly controls whether the colorop is active in hardware,
-resetting it to true can inadvertently disable an active colorop
-during a subsequent commit, particularly for internal driver commits
-where userspace does not touch the property.
-
-Drop the unconditional assignment and preserve the duplicated
-bypass value.
-
-Fixes: 8c5ea1745f4c ("drm/colorop: Add BYPASS property")
-Cc: <stable@vger.kernel.org> #v6.19+
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260310113238.3495981-2-chaitanya.kumar.borah@intel.com
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: def036ef87f8 ("ksmbd: reset rcount per connection in ksmbd_conn_wait_idle_sess_id()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_colorop.c |    2 --
- 1 file changed, 2 deletions(-)
+ fs/smb/server/connection.c     |   23 +++++++++++------------
+ fs/smb/server/connection.h     |    6 ++++--
+ fs/smb/server/smb2pdu.c        |    4 ++--
+ fs/smb/server/transport_rdma.c |    5 +++++
+ fs/smb/server/transport_tcp.c  |   25 +++++++++++++++++++++----
+ 5 files changed, 43 insertions(+), 20 deletions(-)
 
---- a/drivers/gpu/drm/drm_colorop.c
-+++ b/drivers/gpu/drm/drm_colorop.c
-@@ -441,8 +441,6 @@ static void __drm_atomic_helper_colorop_
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -19,7 +19,7 @@ static DEFINE_MUTEX(init_lock);
  
- 	if (state->data)
- 		drm_property_blob_get(state->data);
--
--	state->bypass = true;
+ static struct ksmbd_conn_ops default_conn_ops;
+ 
+-LIST_HEAD(conn_list);
++DEFINE_HASHTABLE(conn_list, CONN_HASH_BITS);
+ DECLARE_RWSEM(conn_list_lock);
+ 
+ /**
+@@ -33,7 +33,7 @@ DECLARE_RWSEM(conn_list_lock);
+ void ksmbd_conn_free(struct ksmbd_conn *conn)
+ {
+ 	down_write(&conn_list_lock);
+-	list_del(&conn->conns_list);
++	hash_del(&conn->hlist);
+ 	up_write(&conn_list_lock);
+ 
+ 	xa_destroy(&conn->sessions);
+@@ -78,7 +78,6 @@ struct ksmbd_conn *ksmbd_conn_alloc(void
+ 
+ 	init_waitqueue_head(&conn->req_running_q);
+ 	init_waitqueue_head(&conn->r_count_q);
+-	INIT_LIST_HEAD(&conn->conns_list);
+ 	INIT_LIST_HEAD(&conn->requests);
+ 	INIT_LIST_HEAD(&conn->async_requests);
+ 	spin_lock_init(&conn->request_lock);
+@@ -91,19 +90,17 @@ struct ksmbd_conn *ksmbd_conn_alloc(void
+ 
+ 	init_rwsem(&conn->session_lock);
+ 
+-	down_write(&conn_list_lock);
+-	list_add(&conn->conns_list, &conn_list);
+-	up_write(&conn_list_lock);
+ 	return conn;
  }
  
- struct drm_colorop_state *
+ bool ksmbd_conn_lookup_dialect(struct ksmbd_conn *c)
+ {
+ 	struct ksmbd_conn *t;
++	int bkt;
+ 	bool ret = false;
+ 
+ 	down_read(&conn_list_lock);
+-	list_for_each_entry(t, &conn_list, conns_list) {
++	hash_for_each(conn_list, bkt, t, hlist) {
+ 		if (memcmp(t->ClientGUID, c->ClientGUID, SMB2_CLIENT_GUID_SIZE))
+ 			continue;
+ 
+@@ -164,9 +161,10 @@ void ksmbd_conn_unlock(struct ksmbd_conn
+ void ksmbd_all_conn_set_status(u64 sess_id, u32 status)
+ {
+ 	struct ksmbd_conn *conn;
++	int bkt;
+ 
+ 	down_read(&conn_list_lock);
+-	list_for_each_entry(conn, &conn_list, conns_list) {
++	hash_for_each(conn_list, bkt, conn, hlist) {
+ 		if (conn->binding || xa_load(&conn->sessions, sess_id))
+ 			WRITE_ONCE(conn->status, status);
+ 	}
+@@ -182,14 +180,14 @@ int ksmbd_conn_wait_idle_sess_id(struct
+ {
+ 	struct ksmbd_conn *conn;
+ 	int rc, retry_count = 0, max_timeout = 120;
+-	int rcount = 1;
++	int rcount = 1, bkt;
+ 
+ retry_idle:
+ 	if (retry_count >= max_timeout)
+ 		return -EIO;
+ 
+ 	down_read(&conn_list_lock);
+-	list_for_each_entry(conn, &conn_list, conns_list) {
++	hash_for_each(conn_list, bkt, conn, hlist) {
+ 		if (conn->binding || xa_load(&conn->sessions, sess_id)) {
+ 			if (conn == curr_conn)
+ 				rcount = 2;
+@@ -480,10 +478,11 @@ static void stop_sessions(void)
+ {
+ 	struct ksmbd_conn *conn;
+ 	struct ksmbd_transport *t;
++	int bkt;
+ 
+ again:
+ 	down_read(&conn_list_lock);
+-	list_for_each_entry(conn, &conn_list, conns_list) {
++	hash_for_each(conn_list, bkt, conn, hlist) {
+ 		t = conn->transport;
+ 		ksmbd_conn_set_exiting(conn);
+ 		if (t->ops->shutdown) {
+@@ -494,7 +493,7 @@ again:
+ 	}
+ 	up_read(&conn_list_lock);
+ 
+-	if (!list_empty(&conn_list)) {
++	if (!hash_empty(conn_list)) {
+ 		msleep(100);
+ 		goto again;
+ 	}
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -52,11 +52,12 @@ struct ksmbd_conn {
+ 		u8			inet6_addr[16];
+ #endif
+ 	};
++	unsigned int			inet_hash;
+ 	char				*request_buf;
+ 	struct ksmbd_transport		*transport;
+ 	struct nls_table		*local_nls;
+ 	struct unicode_map		*um;
+-	struct list_head		conns_list;
++	struct hlist_node		hlist;
+ 	struct rw_semaphore		session_lock;
+ 	/* smb session 1 per user */
+ 	struct xarray			sessions;
+@@ -151,7 +152,8 @@ struct ksmbd_transport {
+ #define KSMBD_TCP_SEND_TIMEOUT	(5 * HZ)
+ #define KSMBD_TCP_PEER_SOCKADDR(c)	((struct sockaddr *)&((c)->peer_addr))
+ 
+-extern struct list_head conn_list;
++#define CONN_HASH_BITS	12
++extern DECLARE_HASHTABLE(conn_list, CONN_HASH_BITS);
+ extern struct rw_semaphore conn_list_lock;
+ 
+ bool ksmbd_conn_alive(struct ksmbd_conn *conn);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -7348,7 +7348,7 @@ int smb2_lock(struct ksmbd_work *work)
+ 	int nolock = 0;
+ 	LIST_HEAD(lock_list);
+ 	LIST_HEAD(rollback_list);
+-	int prior_lock = 0;
++	int prior_lock = 0, bkt;
+ 
+ 	WORK_BUFFERS(work, req, rsp);
+ 
+@@ -7458,7 +7458,7 @@ int smb2_lock(struct ksmbd_work *work)
+ 		nolock = 1;
+ 		/* check locks in connection list */
+ 		down_read(&conn_list_lock);
+-		list_for_each_entry(conn, &conn_list, conns_list) {
++		hash_for_each(conn_list, bkt, conn, hlist) {
+ 			spin_lock(&conn->llist_lock);
+ 			list_for_each_entry_safe(cmp_lock, tmp2, &conn->lock_list, clist) {
+ 				if (file_inode(cmp_lock->fl->fl_file) !=
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -381,6 +381,11 @@ static struct smb_direct_transport *allo
+ 	conn = ksmbd_conn_alloc();
+ 	if (!conn)
+ 		goto err;
++
++	down_write(&conn_list_lock);
++	hash_add(conn_list, &conn->hlist, 0);
++	up_write(&conn_list_lock);
++
+ 	conn->transport = KSMBD_TRANS(t);
+ 	KSMBD_TRANS(t)->conn = conn;
+ 	KSMBD_TRANS(t)->ops = &ksmbd_smb_direct_transport_ops;
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -89,13 +89,21 @@ static struct tcp_transport *alloc_trans
+ 	}
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (client_sk->sk->sk_family == AF_INET6)
++	if (client_sk->sk->sk_family == AF_INET6) {
+ 		memcpy(&conn->inet6_addr, &client_sk->sk->sk_v6_daddr, 16);
+-	else
++		conn->inet_hash = ipv6_addr_hash(&client_sk->sk->sk_v6_daddr);
++	} else {
+ 		conn->inet_addr = inet_sk(client_sk->sk)->inet_daddr;
++		conn->inet_hash = ipv4_addr_hash(inet_sk(client_sk->sk)->inet_daddr);
++	}
+ #else
+ 	conn->inet_addr = inet_sk(client_sk->sk)->inet_daddr;
++	conn->inet_hash = ipv4_addr_hash(inet_sk(client_sk->sk)->inet_daddr);
+ #endif
++	down_write(&conn_list_lock);
++	hash_add(conn_list, &conn->hlist, conn->inet_hash);
++	up_write(&conn_list_lock);
++
+ 	conn->transport = KSMBD_TRANS(t);
+ 	KSMBD_TRANS(t)->conn = conn;
+ 	KSMBD_TRANS(t)->ops = &ksmbd_tcp_transport_ops;
+@@ -242,7 +250,7 @@ static int ksmbd_kthread_fn(void *p)
+ 	struct socket *client_sk = NULL;
+ 	struct interface *iface = (struct interface *)p;
+ 	struct ksmbd_conn *conn;
+-	int ret;
++	int ret, inet_hash;
+ 	unsigned int max_ip_conns;
+ 
+ 	while (!kthread_should_stop()) {
+@@ -267,9 +275,18 @@ static int ksmbd_kthread_fn(void *p)
+ 		/*
+ 		 * Limits repeated connections from clients with the same IP.
+ 		 */
++#if IS_ENABLED(CONFIG_IPV6)
++		if (client_sk->sk->sk_family == AF_INET6)
++			inet_hash = ipv6_addr_hash(&client_sk->sk->sk_v6_daddr);
++		else
++			inet_hash = ipv4_addr_hash(inet_sk(client_sk->sk)->inet_daddr);
++#else
++		inet_hash = ipv4_addr_hash(inet_sk(client_sk->sk)->inet_daddr);
++#endif
++
+ 		max_ip_conns = 0;
+ 		down_read(&conn_list_lock);
+-		list_for_each_entry(conn, &conn_list, conns_list) {
++		hash_for_each_possible(conn_list, conn, hlist, inet_hash) {
+ #if IS_ENABLED(CONFIG_IPV6)
+ 			if (client_sk->sk->sk_family == AF_INET6) {
+ 				if (memcmp(&client_sk->sk->sk_v6_daddr,
 
 
 
