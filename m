@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-248532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247852-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMGrG85XB2pVzQIAu9opvQ
-	(envelope-from <stable+bounces-248532-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:28:46 +0200
+	id wKjqC3pKB2pZwwIAu9opvQ
+	(envelope-from <stable+bounces-247852-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02ED55512F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84576553574
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 62CFC30AD48E
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:21:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 155F53139E9F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 15:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891D43F929D;
-	Fri, 15 May 2026 16:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737083FF1DA;
+	Fri, 15 May 2026 15:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlnIH6pO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdMHRXxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF833FF1BD;
-	Fri, 15 May 2026 16:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366D73FF1A2;
+	Fri, 15 May 2026 15:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861971; cv=none; b=fk+WMkiGzmNqx+HMLfEi27fWlJsd5nVkGa3twHNPBAW5Nd3FZqvYCI7ItpmVrtcMToJ3Uv2v1jBwyBM2twxGHbos7mkxsF1Wx+Um2xlrKIeDQpxHvAcL7dGwv7Wvut6BKhThTGd+e8CZ2Od7sRPOWjyNwpAceq8jDaMK0FcypBA=
+	t=1778860237; cv=none; b=tcLrQrkmFhWPuPYNM4hqJAAPTyAkGny/m6Od90PG4OVAnkbK4lDiUGe6cMiWIWLHMfVkmmB2fCMQjykjjGBaXX7CcZx0HjGwBBwVWs0LJa069rj+yt4fWR+Brz+ZAHu/oSLNU0mHWBaP9wJbO3LQjd+8kbMlMo37WRacxIplyj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861971; c=relaxed/simple;
-	bh=E9ZMFXU/empI8QWU869agazVk1loX88Gi+tb0jmkwu4=;
+	s=arc-20240116; t=1778860237; c=relaxed/simple;
+	bh=BkihdvWBqzw7uRs99Zmc5TIDX6xSFf+ECuaU4RAfAhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTEOmVF78KqCgOZOgr3h9XR6jeYAgDDrKVOZZf4+CK2EhLlfR2/RMBKZtQXN36sATkHqJU9b3AKgGQQb59UYPJUfGj76+VPEZIzWHYzPgTuoB4PZogzGEdcdae5D6psY2YlMYDeUcObcvmtCUb/N9QRpPDgz83UUGwqh4Q+bM+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlnIH6pO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88358C2BCB0;
-	Fri, 15 May 2026 16:19:30 +0000 (UTC)
+	 MIME-Version; b=heY/P2EwsPkHlMo2vYO30AcLSqc/t99rCcVLdd4+uL6J88yubIhJsDxsZIqe6ZFu68kGVyJyEfHZwmgJSkr/yOQNbO2gPqTrMHUD9fHHO0OxMwNa7V+Pvlbjd1jarC+kFN/ZAQpL9TczCO8fzjz6iD3ljXONrDIjO0kTEtvWiTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdMHRXxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2F4C2BCB0;
+	Fri, 15 May 2026 15:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861970;
-	bh=E9ZMFXU/empI8QWU869agazVk1loX88Gi+tb0jmkwu4=;
+	s=korg; t=1778860236;
+	bh=BkihdvWBqzw7uRs99Zmc5TIDX6xSFf+ECuaU4RAfAhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlnIH6pO8oYnoiShS0ay7qLMr2H5JOUyhRJVvSxCcZDHv3xNqpNjstG/wFmXQ8WfK
-	 NnBwgQ7w/3Ttyd+AfVjzSHgUsswgOXo0NrKIkYDiAd+l+a5QHIUMSv/hvVHDDhjXlx
-	 t+mK37h9VA3SLBFBCBJG+DHYt2ZQgPLSf6Tf/T+A=
+	b=PdMHRXxbo1wTG9FLRZbGrJ/a7PYtuuGIOTrnha9ScYwih5CizUGGnie3KZSp6NeW8
+	 3SxJdvcQUYkoss4U1c6QbM6dicCGT9+zazCZxDK1J3LETISrbvBiGaEsF8h8lO0vdT
+	 NivMnWt3dJ3Q2LFF7rgzO4PLaLEMrZpvrllueKLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.18 021/188] arm64: dts: lx2160a-cex7/lx2162a-sr-som: fix usd-cd & gpio pinmux
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 012/144] regulator: mt6357: fix OF node reference imbalance
 Date: Fri, 15 May 2026 17:47:18 +0200
-Message-ID: <20260515154657.767329011@linuxfoundation.org>
+Message-ID: <20260515154653.774454007@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
-References: <20260515154657.309489048@linuxfoundation.org>
+In-Reply-To: <20260515154653.469907118@linuxfoundation.org>
+References: <20260515154653.469907118@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E02ED55512F
+X-Rspamd-Queue-Id: 84576553574
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-248532-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-247852-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,165 +91,45 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,0.0.0.0:email,solid-run.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,config.dev:url]
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 70008aee892bbb5c2969bbe9e5778fc081b14bd2 upstream.
+commit 2f38e96c273e15f5e9f5d1fc2c0cbba703751602 upstream.
 
-Commit 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to
-support bus recovery") introduced pinmux nodes for lx2160 i2c
-interfaces, allowing runtime change between i2c and gpio functions
-implementing bus recovery.
+The driver reuses the OF node of the parent multi-function device but
+fails to take another reference to balance the one dropped by the
+platform bus code when unbinding the MFD and deregistering the child
+devices.
 
-However, the dynamic configuration area (overwrite MUX) used by the
-pinctrl-single driver initially reads as zero and does not reflect the
-actual hardware state set by the Reset Configuration Word (RCW) at
-power-on.
+Fix this by using the intended helper for reusing OF nodes.
 
-Because multiple groups of pins are configured from a single 32-bit
-register, the first write from the pinctrl driver unintentionally clears
-all other bits to zero.
-
-For example, on the LX2162A Clearfog, RCWSR12 is initialized to
-0x08000006. When any i2c pinmux is applied, it clears all other fields.
-This inadvertently disables SD card-detect (IIC2_PMUX) and some GPIOs
-(SDHC1_DIR_PMUX):
-
-LX2162-CF RCWSR12: 0b0000100000000000 0000000000000110
-IIC2_PMUX              |||   |||   || |   |||   |||XXX : I2C/GPIO/CD-WP
-SDHC1_DIR_PMUX         XXX   |||   || |   |||   |||    : SDHC/GPIO/SPI
-
-Reverting the commit in question was considered but bus recovery is an
-important feature.
-
-Instead add pinmux nodes for those pins that were unintentionally
-reconfigured on SolidRun LX2160A Clearfog-CX and LX2162A Clearfog
-boards.
-
-Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: dafc7cde23dc ("regulator: add mt6357 regulator")
+Cc: stable@vger.kernel.org	# 6.2
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260408073055.5183-5-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi         |    7 +++
- arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi |    2 +
- arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi              |   24 ++++++++++++
- arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts      |    2 +
- arch/arm64/boot/dts/freescale/fsl-lx2162a-sr-som.dtsi       |    7 +++
- 5 files changed, 42 insertions(+)
+ drivers/regulator/mt6357-regulator.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-cex7.dtsi
-@@ -162,6 +162,8 @@
- };
+--- a/drivers/regulator/mt6357-regulator.c
++++ b/drivers/regulator/mt6357-regulator.c
+@@ -410,7 +410,7 @@ static int mt6357_regulator_probe(struct
+ 	struct regulator_dev *rdev;
+ 	int i;
  
- &fspi {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&fspi_data74_pins>, <&fspi_data30_pins>, <&fspi_dqs_sck_cs10_pins>;
- 	status = "okay";
+-	pdev->dev.of_node = pdev->dev.parent->of_node;
++	device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
  
- 	flash@0 {
-@@ -177,6 +179,11 @@
- 	};
- };
- 
-+&pinmux_i2crv {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&gpio0_14_12_pins>;
-+};
-+
- &usb0 {
- 	status = "okay";
- };
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a-clearfog-itx.dtsi
-@@ -89,6 +89,8 @@
- };
- 
- &esdhc0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&esdhc0_cd_wp_pins>, <&esdhc0_cmd_data30_clk_vsel_pins>;
- 	sd-uhs-sdr104;
- 	sd-uhs-sdr50;
- 	sd-uhs-sdr25;
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -1717,6 +1717,10 @@
- 				pinctrl-single,bits = <0x0 0x1 0x7>;
- 			};
- 
-+			esdhc0_cd_wp_pins: iic2-sdhc-pins {
-+				pinctrl-single,bits = <0x0 0x6 0x7>;
-+			};
-+
- 			i2c2_scl: i2c2-scl-pins {
- 				pinctrl-single,bits = <0x0 0 (0x7 << 3)>;
- 			};
-@@ -1749,6 +1753,26 @@
- 				pinctrl-single,bits = <0x0 (0x1 << 12) (0x7 << 12)>;
- 			};
- 
-+			fspi_data74_pins: xspi1-data74-pins {
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 15)>;
-+			};
-+
-+			fspi_data30_pins: xspi1-data30-pins {
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 18)>;
-+			};
-+
-+			fspi_dqs_sck_cs10_pins: xspi1-base-pins {
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 21)>;
-+			};
-+
-+			esdhc0_cmd_data30_clk_vsel_pins: sdhc1-base-sdhc-vsel-pins {
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 24)>;
-+			};
-+
-+			gpio0_14_12_pins: sdhc1-dir-gpio-pins {
-+				pinctrl-single,bits = <0x0 (0x1 << 27) (0x7 << 27)>;
-+			};
-+
- 			i2c6_scl: i2c6-scl-pins {
- 				pinctrl-single,bits = <0x4 0x2 0x7>;
- 			};
---- a/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2162a-clearfog.dts
-@@ -223,6 +223,8 @@
- };
- 
- &esdhc0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&esdhc0_cd_wp_pins>, <&esdhc0_cmd_data30_clk_vsel_pins>;
- 	sd-uhs-sdr104;
- 	sd-uhs-sdr50;
- 	sd-uhs-sdr25;
---- a/arch/arm64/boot/dts/freescale/fsl-lx2162a-sr-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2162a-sr-som.dtsi
-@@ -30,6 +30,8 @@
- };
- 
- &fspi {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&fspi_data74_pins>, <&fspi_data30_pins>, <&fspi_dqs_sck_cs10_pins>;
- 	status = "okay";
- 
- 	flash@0 {
-@@ -80,3 +82,8 @@
- 		reg = <0x6f>;
- 	};
- };
-+
-+&pinmux_i2crv {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&gpio0_14_12_pins>;
-+};
+ 	for (i = 0; i < MT6357_MAX_REGULATOR; i++) {
+ 		config.dev = &pdev->dev;
 
 
 
