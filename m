@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-248440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248610-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Lc1B0NNB2rJxQIAu9opvQ
-	(envelope-from <stable+bounces-248440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:43:47 +0200
+	id KDfeEoBYB2pmzgIAu9opvQ
+	(envelope-from <stable+bounces-248610-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:31:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8294553D11
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 18:43:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A6D5552AC
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8073316D366
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:17:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B3C732B3A5F
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 16:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDEC3EFFCD;
-	Fri, 15 May 2026 16:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581153FBB4A;
+	Fri, 15 May 2026 16:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRspakdO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SldXS1ki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC2F3E7BAD;
-	Fri, 15 May 2026 16:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6413FBB40;
+	Fri, 15 May 2026 16:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861737; cv=none; b=cbkN0mlOcK9M88A5mxV53i3uZeXcn6/P1lODlGiwphQyk4GsF6UVBjqLafzvxWpCeu2L+Gj3X45nyppPMddGVdnBniBd+A/ymx4tQdnukUEEQb3dsJyGmsJrnIna/+DcK7w/tidKS9JGNVJ27cA2kejQPrsVp2UARGud14lanwM=
+	t=1778862173; cv=none; b=K7qLAgh3TBWQLDsYpZX03lysU3Q3xHUOq4311V6tsMVHx4WOuKgeHHEsIR27OAeLCEwVPB05BdRL6m8/qfGfcabdJoVekc/8q2wkOXbBmmdQ3Y4qcFM4rlXQNRJBVgNIHleTJdLVIlFZi8pS4jiREOiXHJB1Rli/XFm05bIpk+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861737; c=relaxed/simple;
-	bh=P8DkaNsoA1Fr1lWX85YxApvFctG7RhvktmGYYASIeXI=;
+	s=arc-20240116; t=1778862173; c=relaxed/simple;
+	bh=eljk+e9Mrxgw39gRTkICb+Colj8Uwz5xjpRa6Iodemk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5RjMZqGfRnUwYXrxL9y6CumdiamwZXINM6X/QE8/NzGD0XDivaBoMeOD4XiZ7MN776aWUlHWWb6j6cW9ShJMU0Axm0jJl7TsiD/ElSWEt+c3sw5QhjBwsPwLCw7pAPRUwyGT7gCzZhCRubtUv0ynWMByduy8p0Myv0CDp2g+88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRspakdO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A8BC2BCB0;
-	Fri, 15 May 2026 16:15:37 +0000 (UTC)
+	 MIME-Version; b=ucg+y5ubCId1YhA5MtuK0QnuQy4Wf5WwgTBBhVLxCKGi04bDIY535ZQeL2jSSgfZK+XRy5PJpggGB5XkwjuvA7ykMwu5Mp6REeZbfJ7X+FIwc6LEGUzK3JxrZXHfcfrzZKmAFxdKQQd1naNYwb8Wmoh37poOm0696X1DkWsvcKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SldXS1ki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE63C2BCB0;
+	Fri, 15 May 2026 16:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861737;
-	bh=P8DkaNsoA1Fr1lWX85YxApvFctG7RhvktmGYYASIeXI=;
+	s=korg; t=1778862172;
+	bh=eljk+e9Mrxgw39gRTkICb+Colj8Uwz5xjpRa6Iodemk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRspakdOs37S/L2E2lOwCMz5Rqk6sij577fmRKBbOkbkRt+QIxmBGaDHDDpnnMReM
-	 rKdgZwOS/lZ+yMzYhe6IVDoAC3YZ16VapSe1BRrF0NQvZ48s3Hu+e99Vn12vFbRnk0
-	 X5F3Jl93sX1b3t2dPmR5CNB2QjQRUnRQsrH1lmfs=
+	b=SldXS1ki5qnTVMXYyqi/lsc15dTYugHTwbrrFRVdZ5q59fm/g55wfhFVTHtVkCysm
+	 51zZQ+sBmaD9gPKvPV9opnlTHDx9Mv9dY27I46+W4vhBITNkaRKpS3ooZ7JS67dYT5
+	 b45TCGigzvdS/H0gD1C2sHXl/O7rx15jyoWUKFg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 444/474] rxrpc: Fix conn-level packet handling to unshare RESPONSE packets
+	Lyes Bourennani <lbourennani@fuzzinglabs.com>,
+	Alexis Pinson <apinson@fuzzinglabs.com>,
+	Sven Eckelmann <sven@narfation.org>
+Subject: [PATCH 6.18 136/188] batman-adv: fix integer overflow on buff_pos
 Date: Fri, 15 May 2026 17:49:13 +0200
-Message-ID: <20260515154724.694719011@linuxfoundation.org>
+Message-ID: <20260515154700.279383213@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+In-Reply-To: <20260515154657.309489048@linuxfoundation.org>
+References: <20260515154657.309489048@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,114 +64,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A8294553D11
+X-Rspamd-Queue-Id: C1A6D5552AC
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248440-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248610-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,auristor.com:email,sashiko.dev:url,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,narfation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Lyes Bourennani <lbourennani@fuzzinglabs.com>
 
-[ Upstream commit 24481a7f573305706054c59e275371f8d0fe919f ]
+commit 0799e5943611006b346b8813c7daf7dd5aa26bfd upstream.
 
-The security operations that verify the RESPONSE packets decrypt bits of it
-in place - however, the sk_buff may be shared with a packet sniffer, which
-would lead to the sniffer seeing an apparently corrupt packet (actually
-decrypted).
+Fixing an integer overflow present in batadv_iv_ogm_send_to_if. The size
+check is done using the int type in batadv_iv_ogm_aggr_packet whereas the
+buff_pos variable uses the s16 type. This could lead to an out-of-bound
+read.
 
-Fix this by handing a copy of the packet off to the specific security
-handler if the packet was cloned.
-
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Closes: https://sashiko.dev/#/patchset/20260408121252.2249051-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-5-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Signed-off-by: Lyes Bourennani <lbourennani@fuzzinglabs.com>
+Signed-off-by: Alexis Pinson <apinson@fuzzinglabs.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/conn_event.c |   29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ net/batman-adv/bat_iv_ogm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -226,6 +226,33 @@ static void rxrpc_call_is_secure(struct
- 		rxrpc_notify_socket(call);
- }
- 
-+static int rxrpc_verify_response(struct rxrpc_connection *conn,
-+				 struct sk_buff *skb)
-+{
-+	int ret;
-+
-+	if (skb_cloned(skb)) {
-+		/* Copy the packet if shared so that we can do in-place
-+		 * decryption.
-+		 */
-+		struct sk_buff *nskb = skb_copy(skb, GFP_NOFS);
-+
-+		if (nskb) {
-+			rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
-+			ret = conn->security->verify_response(conn, nskb);
-+			rxrpc_free_skb(nskb, rxrpc_skb_put_response_copy);
-+		} else {
-+			/* OOM - Drop the packet. */
-+			rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
-+			ret = -ENOMEM;
-+		}
-+	} else {
-+		ret = conn->security->verify_response(conn, skb);
-+	}
-+
-+	return ret;
-+}
-+
- /*
-  * connection-level Rx packet processor
-  */
-@@ -253,7 +280,7 @@ static int rxrpc_process_event(struct rx
- 		}
- 		spin_unlock(&conn->state_lock);
- 
--		ret = conn->security->verify_response(conn, skb);
-+		ret = rxrpc_verify_response(conn, skb);
- 		if (ret < 0)
- 			return ret;
- 
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -335,7 +335,7 @@ static void batadv_iv_ogm_send_to_if(str
+ 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
+ 	const char *fwd_str;
+ 	u8 packet_num;
+-	s16 buff_pos;
++	int buff_pos;
+ 	struct batadv_ogm_packet *batadv_ogm_packet;
+ 	struct sk_buff *skb;
+ 	u8 *packet_pos;
 
 
 
