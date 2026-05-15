@@ -1,157 +1,188 @@
-Return-Path: <stable+bounces-248901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNSRBEF2B2pL4QIAu9opvQ
-	(envelope-from <stable+bounces-248901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:38:41 +0200
+	id SPt7O811B2pL4QIAu9opvQ
+	(envelope-from <stable+bounces-248902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:36:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AA1556FAB
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:38:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC61556F30
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 21:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3248130C51C7
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 35DA130606B9
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 19:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A1D3DEFED;
-	Fri, 15 May 2026 19:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB1B413D67;
+	Fri, 15 May 2026 19:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="O7dqmSiL"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="0VoWPyXr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02F238F629;
-	Fri, 15 May 2026 19:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB20413D61;
+	Fri, 15 May 2026 19:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778873077; cv=none; b=gDTs6DEbVWMUjSShgMeTm4/jjWD6RXMN9+UISvygY+pzs9CgNNRKNFT9DRxkSL8BX2d5LjV++VR8r9FLu6vUY5meGIFeMQ7nLI/4A9upfs4vyh8B7jIkbfS4XnVU1MX64aUNa0pReY22onMUQ202HGXPLXVyqudRslCPxFitb1I=
+	t=1778873335; cv=none; b=ske7Lr3oYzS5G+xMJdbOs8m6u7Y6mS1vu9xdybCjUpbrTgdRavYHWhiYxm/QS0tCEzYJ5qPsyossFRAOWu6KiOoXqIWEjK/3brO3nTaqWV94/Ptwd3EY9bx1pI+U5hjYEh2m3ya4qB+csmpIbYTUo73xOdTJ6OqbCrFzDSUnnWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778873077; c=relaxed/simple;
-	bh=kyfxj2mo5rCxHXOxm5xyMoAMsP60CFmZJY6lx/DDl4Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bpoYSx8EnGtbfxgS6gzZf31exVAf0Quql7/zl56CGX5vipuZVAyjUzQ2NvgLShltOgOnILVoLVJ/S7J75nV9B6HCp5nUBZjtYJ1eFkjyDxrsaQvYIlBBXWzwKB0wtDqiQ41Fr6EtecX218pMG81cvOTP0GXKSxMpFl7Hw//o4p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=O7dqmSiL; arc=none smtp.client-ip=54.243.244.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1778872991;
-	bh=kyfxj2mo5rCxHXOxm5xyMoAMsP60CFmZJY6lx/DDl4Y=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=O7dqmSiLahnLLTfctcXTswGLD/rm3LqgVlp06s52SITSQn/l2jI0uPDWeLg9lGGGt
-	 jciDZv762GcujGYrfBWtJEH5SuTqkx11tqLKyJvWGOagT/OG5r5c9TV+7F+FWHHrLD
-	 PHTLpFpNu1wP50TMZA4uvtbDCj5FN8wo3GyCDWig=
-X-QQ-mid: zesmtpip3t1778872984t33a6089d
-X-QQ-Originating-IP: EjvclRGT8guTSOtt91bOuSf2bxlwu4W1wKTVJeHVvSU=
-Received: from localhost.localdomain ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 16 May 2026 03:23:01 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 2303780427200084558
-EX-QQ-RecipientCnt: 21
-From: Wentao Guan <guanwentao@uniontech.com>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@nabladev.com,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: Re: [PATCH 6.6 000/474] 6.6.140-rc1 review
-Date: Sat, 16 May 2026 03:21:40 +0800
-Message-Id: <20260515192140.621472-1-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+	s=arc-20240116; t=1778873335; c=relaxed/simple;
+	bh=w2f3ChhxMh++6hMqqVCOdUz1fuyi6OQYr/0d4UjTDQo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GenHmmj4Vw7GSYjcLRCAy6nubCGSrJcyBpX0xW9IU3Q9j8VD1nIcUeuUg3PFs+fTJyK/4KSoVnh3cHuWKkfeXduxpDiza3avXZNvO+rpEc9kpAVHSUteQIEhjM9V4j9u5uSl/3d078QsmrruNXnPihYIsyICt02WdEYjxDIpvBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=0VoWPyXr; arc=none smtp.client-ip=185.100.197.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+Received: from [10.0.0.200] (unknown [10.88.125.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 2760E5341512;
+	Fri, 15 May 2026 21:28:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1778873324;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UGN7OPUNLPy+4nGfmDZ8SvvzbakzohHHAfIWGxDkA8M=;
+	b=0VoWPyXrxsa6MKmmP9LMQOzUBiOdq4uoSDhWNw00dKiZtJPq9fwVl2clR/WuREUaci6yL3
+	tVVmfWkKHhWItsLHlbO8J64r0rBkz890BfMCzakYirmqzgDC6MiBWQfau3mKtITtSkfsV9
+	3BrdFGWan0Law2+t/PlglddbW67zUZs=
+Message-ID: <366cef36-d3cb-485f-a71a-dea347e8531b@ixit.cz>
+Date: Fri, 15 May 2026 21:28:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: OHWc+cbX84vH4u8BCbP4CqQ5sLZx4F1V2ybM10tQNm751txco0110R7m
-	LkW7TxjzXxpJhUF4MXmy1lSHhqwyc365HV3hPOWgoZoMb0CMcPedU+WLG6ck8ALhgc7gbfI
-	AG1Ct3nEzxYcNDMS9TSZmMvUBR4SAZ379e/AKXqUULI5XrAFwrA6/M+B3PZmEcuf9wLifb/
-	5PgR78cXRlT6iknme7Ao9pv7bgZlsRgzn54cZ9bEGK/M8/8H9EwzMv2OqHdZFANPIMI9bwV
-	mnkz/AdFdf1uMrGBcnb5GX6+Q2LEfCqUgMguO3eI2YFKjSctSs9pjBcbUD22svuufNZ8R3G
-	W65RwfqmPJV8Yt8bbN9MyBsk2wroJ+N+bStPgqyt+a4RN/x5eA2ZNG9Q1RV+k7jn4ertD2x
-	JoAQ8Al9nPctUdEfx8xiW0rl8JXUQg7B44rNumRWlEH8lA3JQv4VdEMCR1H7QD/iYcwmOX3
-	/TKexZb+pCnj83p/kyNfCxsmZzGrdiPftlD5P67/dt76lrv1v0IPlGeuo/1uBTFHuVMu71q
-	vzZOXqcDftD1OUDM4E8p24WNtPh6yHqZ62del+omkAKQOomGHvLXO10ZW+vaXCUbuCzm+/Z
-	mcUb9vNUIuh9zJVB/cHQt/0aBxqI/dS6BEhC4HOWWzdNmMDT4gETNE+27NaPHHnnTEiRubf
-	SrDxPfgIh4vOR+Os4XLcs3jsFZFnmNbIw3WHiKosFBVebl29G9UwYqaKpaeOmPUZxvsI5cl
-	rqVZ9AJRUfxitIqIVpPE4LQzVXwBZXs9QAgHzI2LoJ740BbQ5Y7eZZuXE8NoNmuJ498RgCK
-	9Bjob3pcT1inpSw395bF+Wgp47sHQJjxEzjHirHYGiXnOADi5Ln//iLUMvfXhgWtGgLT6dl
-	85QUV7zQA/sMGMCcVg0Qvib1Np+kxcLOt164itd06Ds9ITwUehtub7mYDTF2c6X5uim7cA1
-	BBil8D9XYuzyL8T83J6n8majZG5RYigIW5TiegKGVaIAS0eJIY+H2UZalHbs4qIBWMUZWpc
-	J2bgGxSmayZ5PvZaAklQjMxsIqBWqtUMH09qgHfR/eEjujmrdMHZzHbxmNIEeGF9q2Ypfti
-	ErKLMf3JHxg
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: 77AA1556FAB
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "nfc: nxp-nci: remove interrupt trigger type"
+To: Carl Lee <carl.lee@amd.com>
+Cc: oe-linux-nfc@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, brgl@kernel.org, Sasha Levin <sashal@kernel.org>,
+ Ian Ray <ian.ray@gehealthcare.com>,
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+ Jakub Kicinski <kuba@kernel.org>
+References: <20260511082611.12721-1-bartosz.golaszewski@oss.qualcomm.com>
+Content-Language: en-US
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260511082611.12721-1-bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8FC61556F30
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	DMARC_POLICY_ALLOW(-0.50)[ixit.cz,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[ixit.cz:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-248902-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248901-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
-	DKIM_TRACE(0.00)[uniontech.com:+];
+	DKIM_TRACE(0.00)[ixit.cz:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@ixit.cz,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ixit.cz:mid,ixit.cz:dkim,qualcomm.com:email]
 X-Rspamd-Action: no action
 
-Build tested in our x86,arm64,loongarch,riscv config successfully without error.
+Hello Carl,
 
-Tested-by: Wentao Guan <guanwentao@uniontech.com>
+do you see any better solution than just reverting it? In case no, I'll accept 
+the revert.
 
-BRs
-Wentao Guan
+David
 
-Log:
-Linux version 6.6.140-rc1-arm64-desktop-hwe-g7a0265922ac4-dirty (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT
-Linux version 6.6.140-rc1-arm64-desktop-hwe-g7a0265922ac4-dirty (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #25.01.01.23 SMP PREEMPT Sat May 16 02:47:56 CST 2026
-Linux version 6.6.140-rc1-loong64-desktop-hwe-g7a0265922ac4-dirty (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT
-Linux version 6.6.140-rc1-loong64-desktop-hwe-g7a0265922ac4-dirty (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #25.01.01.23 SMP PREEMPT Sat May 16 03:02:51 CST 2026
-Linux version 6.6.140-rc1-riscv64-desktop-hwe+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP
-Linux version 6.6.140-rc1-riscv64-desktop-hwe+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #25.01.01.23 SMP Sat May 16 03:17:21 CST 2026
-Linux version 6.6.140-rc1-amd64-desktop-hwe-g7a0265922ac4-dirty (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
-Linux version 6.6.140-rc1-amd64-desktop-hwe-g7a0265922ac4-dirty (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #25.01.01.23 SMP PREEMPT_DYNAMIC Sat May 16 02:31:39 CST 2026
+On 11/05/2026 10:26, Bartosz Golaszewski wrote:
+> This commit causes an infinite interrupt storm on Lenovo T14s (at least
+> the AMD Ryzen 7 variant) which requires blacklisting of this driver.
+> Neither firmware updates nor the proposed solution[1] seem to help. This
+> reverts the change due to an unfixed regression. The problem is present
+> since v6.19.6 stable kernel.
+> 
+> [1] https://lore.kernel.org/all/20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com/
+> 
+> Cc: stable@vger.kernel.org # v6.19, v7.0
+> Fixes: 941270962861 ("nfc: nxp-nci: remove interrupt trigger type")
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+>   drivers/nfc/nxp-nci/i2c.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+> index b3d34433bd14..e99e1f381028 100644
+> --- a/drivers/nfc/nxp-nci/i2c.c
+> +++ b/drivers/nfc/nxp-nci/i2c.c
+> @@ -305,7 +305,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+>   
+>   	r = request_threaded_irq(client->irq, NULL,
+>   				 nxp_nci_i2c_irq_thread_fn,
+> -				 IRQF_ONESHOT,
+> +				 IRQF_TRIGGER_RISING | IRQF_ONESHOT,
+>   				 NXP_NCI_I2C_DRIVER_NAME, phy);
+>   	if (r < 0)
+>   		nfc_err(&client->dev, "Unable to register IRQ handler\n");
+
+-- 
+David Heidelberg
+
 
