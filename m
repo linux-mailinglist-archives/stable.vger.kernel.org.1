@@ -1,152 +1,153 @@
-Return-Path: <stable+bounces-247740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-247742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHyoCscTB2rgrQIAu9opvQ
-	(envelope-from <stable+bounces-247740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:38:31 +0200
+	id oBslOCoUB2rgrQIAu9opvQ
+	(envelope-from <stable+bounces-247742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:40:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF4B54FB4F
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C03754FBE9
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 14:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B881F31238C7
-	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:16:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B209C3086568
+	for <lists+stable@lfdr.de>; Fri, 15 May 2026 12:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2F147DFAB;
-	Fri, 15 May 2026 12:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D15947CC83;
+	Fri, 15 May 2026 12:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I/UdHOUN"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sHeGxc4O"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEA447F2CA
-	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656712BEFEB
+	for <stable@vger.kernel.org>; Fri, 15 May 2026 12:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778847332; cv=none; b=klE2lr3C+JClIJHKjXrzORhDl4NqmDvUyASQYUmFwIxwh/PMS9AtDgBzmqDn95XtL5R8u3GpgXR7LRAoy4M27ypjRNjIZvlamW413b4u4NEignL3fOYxYPGUmK0qnGD2t5Ex15B6jwTK51XO5ZjuhGo8gCDiygJWEdk44iWSlGQ=
+	t=1778847474; cv=none; b=Yarnq+xZyJUMHX9WQk8o0dC2eU7xCR1TaBaPSmE3VtGnPvYIP3LSGxdTodzPBWIrDl1gfldU21Mo0Z1XvWVgYS1HWliKfEtxmZGUSWJWcgtSIFUqNYJBwhGJGcLUEpnxsAVfxU6pAWsR1E7PlAWPv/8dpha0Vt9JLjZ4+DJnE+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778847332; c=relaxed/simple;
-	bh=kH6HmDnoVwwv9fhT3ERMfT0WKHG0GJUZlH7RW6sNuq8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDwycqVfcHZMzpagTatGw0Yohmy2E19zSbf2IXIYfv4oknGJykXk11pFdShk5rOSGiZXplnEqgnyZ2cINO8ntXW3Hv+Cge8L7z4+fezQ6TllQZGpj3Gqho8nYbEzcCFmLrkWPM2Tq3LMNYmfdtTrVCHz22h5qe2xEGy6rAIS7TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I/UdHOUN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE087C2BCB0;
-	Fri, 15 May 2026 12:15:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778847331;
-	bh=kH6HmDnoVwwv9fhT3ERMfT0WKHG0GJUZlH7RW6sNuq8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/UdHOUNJYpU9lUCHiQy8IfuUU7FsSwtoqQ7tkfhUPvf8aQvyXdIF7adSM051vh23
-	 7xCxR/0bwSy505Ki4cx530ns9DP/eLc6U64jf7EI5llYlpz9E3+jq1lE/zjSqZ6VWk
-	 0oEel+N2UOM0FZHoi/RNzr1YIEZbH0dOGV/dcVFeNaJxhzn1kGOiiOeEV0XzkMNos0
-	 fiG/H18iNl94BAGKjheg9AjE1F3wpgEI8EnITdc3kJ5kskpKEDiPsJD+555we/hhjn
-	 aoJapeJLF5+IuJeollTTX/fBgyZAxeUe9wr9x4kyMsNRccd4l3eVskgWgWAXI5uqVG
-	 nHXF1I2ANHJuQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] btrfs: fix double free in create_space_info_sub_group() error path
-Date: Fri, 15 May 2026 08:15:28 -0400
-Message-ID: <20260515121528.3130102-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260515121528.3130102-1-sashal@kernel.org>
-References: <2026051235-rockband-barrel-a707@gregkh>
- <20260515121528.3130102-1-sashal@kernel.org>
+	s=arc-20240116; t=1778847474; c=relaxed/simple;
+	bh=N9ikYvwVeWzWt/2mT3//uTQ7f/hAfrfWxWay4tNhY9s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cLBYVCadIcxnWJXTz40wNIszE68k50lvjzJf1GegkSyPHSvxClEbSC6O7QN3K2W2r3MTNBQzS0Wa9j5OI1QIf3GiKoN1deRhD9b4s5VFzrz8zLTlYHaB3KvAbB5XYnb+meXgrHuTpbeRb9mDRkdRxJvKi5znLu0GNn8kKaZSizw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rnj.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sHeGxc4O; arc=none smtp.client-ip=209.85.208.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rnj.bounces.google.com
+Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-38e9589b7c7so9626081fa.0
+        for <stable@vger.kernel.org>; Fri, 15 May 2026 05:17:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778847472; x=1779452272; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dm/zJLbbgDSNoqLaVbuam14QZYRwWJXjLg7s4Fbg50w=;
+        b=sHeGxc4ONOyQ65jC/GYZ+AVDGaKgDIJs7e5ccxnNv8J/9jB39uWZdt1YV9CskvKVt2
+         plJJcHga5aCqHtbwc+M8Kd8UW6zXS54T/9Azkwy3peuc7tNdzAgzcL6ODkqGSPacnPd4
+         nRCrghG1pgvzKFAcaULLZAGA5tmvNWM29UFSgs5HLOTekg9xdZL/O8FKjIBIvO2Aq/pF
+         X8uceFNKkN//4510QZyt2vWhHUhGkU8l4wT06pRz3PI4gdLoILzXFiu4Q7MxZ5MlUJJ3
+         10xlRbUWZO68KJoUJeK2ljTanExsNUSENcu2JkNV9I6M6lu/L8I+aK9C3J7KGHYo7nwz
+         qpIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778847472; x=1779452272;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dm/zJLbbgDSNoqLaVbuam14QZYRwWJXjLg7s4Fbg50w=;
+        b=JLs1lS9MmDNibFJ44yhyDALw7jRhnehPTyZfZ+8GyoyDy/kYBttzKyjRzZgva5eDs4
+         anWZixNxliD7OEISaX8Ni/WAftQMMoakvTaSz6pC2OGxRq1/I0ywUuLWaLfYe85sPPLr
+         TmaFqQj4s4hXyxHyWUyWI3oeJblESeHJsCWe/c1LsW5iJFneCEnhBE2Aw8QpY/3AGMpZ
+         CyTzh4Q5RarXrlp5SFrHmIuYtU/vBABVdgvNTe94h7WfRVZLq1azhWK0hRKk+5kdqouu
+         LuW9dyfCVXHWOUI8Qjh90FHAGEAzzjGOJ0aHhF9Ft2YuGoTdgBOMtQ6D38wEnyxTUHGv
+         hnOQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+Oj/+HXTswpmLjLV8tbF/LzQAjP2l2iMIEBOKjl+P32dzWLSh0QW7auq3MGHTm+eH+jIW6FHQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxio1xKUBx4VEvCFYDBfGbbCsCGozaXImWfDcKFSLVUn8yjLNaX
+	hiav4QVJidXwA/BQuYAGkwOr2JwhJDV3Wmfj/jS5Fzt/PNtJtfgCQ7jPy/92dvBmydLO7Q==
+X-Received: from ljbq23-n1.prod.google.com ([2002:a2e:a017:0:10b0:393:9f55:d15])
+ (user=rnj job=prod-delivery.src-stubby-dispatcher) by 2002:a2e:3507:0:b0:38e:ae31:f0a5
+ with SMTP id 38308e7fff4ca-39561c3db53mr8723811fa.9.1778847471538; Fri, 15
+ May 2026 05:17:51 -0700 (PDT)
+Date: Fri, 15 May 2026 12:15:38 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8EF4B54FB4F
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAGoOB2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDU0NT3bT8opLMtMr4glwLA90kUyPzREODZAvLFAMloJaCotS0zAqwcdG xtbUADVjNBV4AAAA=
+X-Change-Id: 20260515-fortify_pm80-b527a10c89d0
+X-Developer-Key: i=rnj@google.com; a=ed25519; pk=QwUkB1OONd7dk9zV4pLRQRehoWHHsLcRZD2QcswqHTc=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778847470; l=1021;
+ i=rnj@google.com; s=20260515; h=from:subject:message-id; bh=N9ikYvwVeWzWt/2mT3//uTQ7f/hAfrfWxWay4tNhY9s=;
+ b=33hkqcbK6GMpl9qSkXZ0k6mkZQRpQZxwGylyQ4UaSKzkpTQHMIyBg4RdOBg8kZErs3RNunxjo aIFWbJ8AAa9AvhCKbxy01yPw8eQBG5giNeInJR5845M3O0C3i60kPx1
+X-Mailer: b4 0.14.3
+Message-ID: <20260515-fortify_pm80-v1-0-2863187f6d4b@google.com>
+Subject: [PATCH 0/2] scsi: pm8001: Fix struct layout and FORTIFY_SOURCE crash
+From: Ronja Meyer <rnj@google.com>
+To: Jack Wang <jinpu.wang@cloud.ionos.com>, 
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Tom Peng <tom_peng@usish.com>, 
+	Kevin Ao <aoqingyun@usish.com>, Lindar Liu <lindar_liu@usish.com>, 
+	James Bottomley <James.Bottomley@suse.de>
+Cc: jack wang <jack_wang@usish.com>, linux-scsi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Ronja Meyer <rnj@google.com>, stable@vger.kernel.org, 
+	Igor Pylypiv <ipylypiv@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: 5C03754FBE9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,suse.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-247740-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-247742-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rnj@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+This patch series:
+- Fixes a crash when the driver is built with FORTIFY_SOURCE=y.
+- Aligns the struct layout of hw_event_resp to what the HBA believes
+  it looks like.
+- Simplifies code previously required to work around the incorrect
+  struct definition.
 
-[ Upstream commit a7449edf96143f192606ec8647e3167e1ecbd728 ]
+Testing:
+- Verified I can still read from disks using the pm80xx driver.
+- I do not have pm8001 hardware available to verify against.
 
-When kobject_init_and_add() fails, the call chain is:
-
-create_space_info_sub_group()
--> btrfs_sysfs_add_space_info_type()
--> kobject_init_and_add()
--> failure
--> kobject_put(&sub_group->kobj)
--> space_info_release()
--> kfree(sub_group)
-
-Then control returns to create_space_info_sub_group(), where:
-
-btrfs_sysfs_add_space_info_type() returns error
--> kfree(sub_group)
-
-Thus, sub_group is freed twice.
-
-Keep parent->sub_group[index] = NULL for the failure path, but after
-btrfs_sysfs_add_space_info_type() has called kobject_put(), let the
-kobject release callback handle the cleanup.
-
-Fixes: f92ee31e031c ("btrfs: introduce btrfs_space_info sub-group")
-CC: stable@vger.kernel.org # 6.18+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ronja Meyer <rnj@google.com>
 ---
- fs/btrfs/space-info.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Ronja Meyer (2):
+      scsi: pm8001: Redefine sas_identify_frame structure
+      scsi: pm8001: Match hw_event_resp to HBA data layout
 
-diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
-index d059bf5eaa098..2b71ed343b63d 100644
---- a/fs/btrfs/space-info.c
-+++ b/fs/btrfs/space-info.c
-@@ -266,10 +266,8 @@ static int create_space_info_sub_group(struct btrfs_space_info *parent, u64 flag
- 	sub_group->subgroup_id = id;
- 
- 	ret = btrfs_sysfs_add_space_info_type(sub_group);
--	if (ret) {
--		kfree(sub_group);
-+	if (ret)
- 		parent->sub_group[index] = NULL;
--	}
- 	return ret;
- }
- 
+ drivers/scsi/pm8001/pm8001_hwi.c |   6 +--
+ drivers/scsi/pm8001/pm8001_hwi.h | 103 +++++++++++++++++++++++++++++++++++++--
+ drivers/scsi/pm8001/pm80xx_hwi.c |   6 +--
+ drivers/scsi/pm8001/pm80xx_hwi.h |   4 +-
+ 4 files changed, 108 insertions(+), 11 deletions(-)
+---
+base-commit: 98f69975d4c0434ca2e6e8cfa1d8d51647a20593
+change-id: 20260515-fortify_pm80-b527a10c89d0
+
+Best regards,
 -- 
-2.53.0
+Ronja Meyer <rnj@google.com>
 
 
