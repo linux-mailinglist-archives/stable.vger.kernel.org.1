@@ -1,218 +1,166 @@
-Return-Path: <stable+bounces-249016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLzBK2mlCGrezQMAu9opvQ
-	(envelope-from <stable+bounces-249016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:12:09 +0200
+	id oK20KjaqCGrP0AMAu9opvQ
+	(envelope-from <stable+bounces-249017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:32:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1190B55CC96
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1038055CED8
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD45B301429A
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 17:11:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 490E03010BBD
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 17:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426DB3E5A15;
-	Sat, 16 May 2026 17:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DB0296BCC;
+	Sat, 16 May 2026 17:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="YsuniPda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVXuaIT2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F103ED5B2
-	for <stable@vger.kernel.org>; Sat, 16 May 2026 17:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A8554654
+	for <stable@vger.kernel.org>; Sat, 16 May 2026 17:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778951513; cv=none; b=GoKvnDZAgRoVJJPaECQBNM09+hwyXczol1jUywANiZXoVRWYF1wAX5jATMumdRKmbuKXR7eqJa/Ymqr6mneywWOkZ1U09xJi/8CwXH0qLsubuzaWjZazbkRWkclKQ5Mubkzn6YknqFvkFA4n6459thpCiG9WJV+fuWgJ8awYvgI=
+	t=1778952754; cv=none; b=MLeVCzc7pbF+7UEOCYIBk8vbK1px5E0/yO2y46b3OtRBCjvaPdX+k3UW7uOaxtQe6tQh35iIm3bsZhvYV3R0ixkeZ6L7jwV8DosgmWC4soPONClCFAJwy3d6AmDdcKpvEe2D+D2RcXFf3W6WQZc6rqCHx0tmqFQzYj4PezA8Kag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778951513; c=relaxed/simple;
-	bh=oX33zzrhzx2wnBTO434znlc7XiOBQWwh4mIrmCX2a+c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MXeROQZRYhiIbWzURkqqAa81VTNTUN0Fn23sbxW6Nv5XOQqrFkmcN/HDHHNveMxjWannny17qdSmuoIog3D6xJyMlDhKhfCQjaJgDI1jzju9t4cTiWCvQMaDTLLKZfQVOFyAYqCsB+bGwdPs+c/uekmxbJcYS4I9XOYrrUkHhdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=YsuniPda; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488b8bc6bc9so4331185e9.3
-        for <stable@vger.kernel.org>; Sat, 16 May 2026 10:11:48 -0700 (PDT)
+	s=arc-20240116; t=1778952754; c=relaxed/simple;
+	bh=WJzga0QqZAxO1Yjdi5lRsklVaT7UVqCs4grf4qY2enY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kyL8j1UbtnSEcl4XQE53IvcXFYTMo4uG3+pvf/mKVKHKqUTnQ7dxvIvWtHgJH9aNwjjxaG2gKw9bIMRyn/yPqqNS961pYN2uewzfoew0Lpon4hfWINbRKXuQkLb6esTaS5eqRCsYqBkA42zEd/3mrHkdCgwx2Kvml2SQm6IOSG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVXuaIT2; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bcd3c190f71so174545066b.0
+        for <stable@vger.kernel.org>; Sat, 16 May 2026 10:32:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20251104; t=1778951507; x=1779556307; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=daDGZ35CtqHe++jeBQ8nOe5orQydlheCaV35Ow+XAS4=;
-        b=YsuniPdaMM/6dHYCUKTm0JBKRU8QH2eYZ9t7gtBzKTpJlpL4Z8bbVcSSp3IBwk0c9C
-         ysNGJpfDi5AMWFtwMBpF+86NU8jv2nSmWMLhkVTA3yMvUkFdqfsXIEEwb+dTvZa4kT3a
-         dpXzqtOs+9oFfAjfBMUHMIILE73CQGzSv8NsBzlVvajCcJwirZ0a+gYrB7NIOMDk7kCe
-         f4U2JkRn+iyR8Mh+BpuHm4qkqc5NKJPQLy3znecZNwMnNIlmF37F6Z35HtTaS38iYiCV
-         hbl3uaCHoBdbLkG11Q34uARweP871r8GMzeWNtju+7/lJSu2TZnCYnPQQ+wd3Rdy/hj+
-         4uOg==
+        d=linuxfoundation.org; s=google; t=1778952751; x=1779557551; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PRqWOI5lEDkAX8dh7uVdCRdEuSOby6Kyc0mg871lWR0=;
+        b=QVXuaIT2ICrmbe0sOXCc67ujjmQU61oLL+jvSx1J1jILRGISCcofXwl2dmdMGQxVeN
+         ep1oQblp3x3pwIgCowJ3zRm7nAPZBzSwd/HN9pGiXKuHqKl6JxKspdg1sqSuy1BnW+2A
+         ClKv1q3WlfCN7uGifR+LdjPG5ZAXLZQX5jEpk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778951507; x=1779556307;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=daDGZ35CtqHe++jeBQ8nOe5orQydlheCaV35Ow+XAS4=;
-        b=S+IEx+bCZDj72/gLKyFK7cpj7UPfb5LqpTom0QmdZ2Wey7ATFPySxDM5mA/XmM8BNP
-         ZJB12Q6IEMAU5zb4QBXY7NcQK16ARFUIRe5ycGDuIYhHtRKZ5JgHuM+BiDzROD0ui+dB
-         GIRnEIKiSPxFDtGaV0QTnHZ1hyt6U/dKVoSsXxc1Iut0sGP7X2XJ/rb9Z1uQjiEmx+4k
-         9yMm98crLYLUgechVOInoYvChOudLZn5UkiubNXA6T77svslotqb3mAnVdPnP7aIOJEi
-         dH0AsZsyK8/vX7fdH6LbeT+wKlOhfg9EvAiqZ539pj+cye6hR613FbDE4TJfgAu5uMlM
-         booA==
-X-Forwarded-Encrypted: i=1; AFNElJ8ToFnCLNVuP8Lh4VEdaTjs333mcGlJiX+F/yi9S4hmg4fL86TwuM0LR7i/kBovjFK5DT6QszI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSbjxJcWBBS84u9IwskhwBiiArceZMTWvjo0EEuTxNSMGkoxrs
-	KQOrVn/huBnDP8JMci/Ya4xs+i+uV/CkvR6cVFhRM9s2W/BarJSogDo=
-X-Gm-Gg: Acq92OFB3JBrKW56Zs+JHPWk3n2igTVnmYhg7T9lnnlRyMBE9aueGtJdWffggGnO0CR
-	PdYW/bmLOusaSrx9XjITYhOYou9TyeazZ3bRFZLfdpvkrHjuXx+GU/rewr3YUFht4hC0ZUkW1EB
-	ySkEC4yDbCW/OGQOvZZEUgm7/NLuwxyZXXJGOpqqZsolM04aIcGzJtTWzeDLYn2NWPEkKtDpB4b
-	oEb/1KWi2MTpdUHbtIKciRGYe7BX+TyywlLd4fI3Kx1zer4tqHr5TzTOlyXDy3SnunHZr/0sypS
-	0s2JmaNJJ1iT4NsdcgKxF73XShnQycwPBDpCxec60+vCntGencn/uy++N4m8GCEFuHvFiRs/3Rk
-	f5g/O2J+9hVnK2JdHY1pWG4up004GSgvjPKHnxD+Zgocm7/U6D5cUXOc0BlgeC2P94LMPU9788T
-	FhEo46tJbqox/m+7OiCFOi9wmKI0jlcwrSn1SP1U18XjWSjHVn3kjMnkydSUHGazFxE7aTG7Xfa
-	Hk=
-X-Received: by 2002:a05:600c:a00f:b0:48a:5301:bb5c with SMTP id 5b1f17b1804b1-48fe63263dfmr124480665e9.16.1778951506303;
-        Sat, 16 May 2026 10:11:46 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b4b92.dip0.t-ipconnect.de. [91.43.75.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febf81970sm56216295e9.8.2026.05.16.10.11.44
+        d=1e100.net; s=20251104; t=1778952751; x=1779557551;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PRqWOI5lEDkAX8dh7uVdCRdEuSOby6Kyc0mg871lWR0=;
+        b=Z47Hxf7X7NF1ZPlx67o9F2X30ymA0mnRFqpMd5Ku34bZVGl0HR3TSPGp/MEmelEfhs
+         NcsHYbWURdHgWMFOVYwJ3gE9R+lM0hxL1VLSxxpcfxFx07oXAem8dqERKED184qGFdll
+         N85S0/59hQJD50s39aNrXrdVZVJ3whhkJIH/mnDPjKHEbAh432BnZS0JqkkM53V5c7r6
+         U6HzBI98TPQw4HouvvXZRDB/TfygOIXT0MMhs1JxxZ0zsUIokqsVD6jSWFK0FDBTtjzA
+         ufjSY4YcJYAf7gVeOhbBdUvDXjat5n5jRDGtCixyzYDfP/IIZCrC9vLMfhSEiW5EYso9
+         u5Ow==
+X-Forwarded-Encrypted: i=1; AFNElJ9BCQnLPyI7+5VCsMUMEWtY+6DuW9iGjMXPqfjn5se56uAwy2JEPYVp4ApuQGq6oNDkh9XdJsQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhZlCacHmRLjOSR7B/NFUypdgMO3dhCiYizHWQF+xFomjm4l5t
+	TtzgLtRQmgjUCeum+Gw4vpvKsbpPjhpnmqaMlBHLoZMsZeWdHAR051jWH8/4F1ap7+xp7XPNEjy
+	ZHJmXR0A=
+X-Gm-Gg: Acq92OGMwzrT1C6t/3sy75XEtlw41eG0nsfugYdY/pfUI5p/UCt1bJP4iXhdj4ZhCS6
+	i9jwY2qYRTCP6526/p6afBmUBMHOqphZjRqnrH3CJuKi8t4Aqxyf4+qoJqnbuqd4O9SCD+lxxuo
+	frbuSRg4xydFjOm2NFiu8AGiLlXFOCIh00XGbCjCFbaKanlEMpI/077lWV7VRu2WRlOgRBg+aYQ
+	4G4jqT9JveXDnUL6BijOJ+879lzT022ZAXyHmmhEJBG234WI49jvBjl0ZLLiZHuYGIMzt9+NWKM
+	8dhyRuestwKSIH9FNV/11RlXTWe48EhgBveuceTjcueYvD88ZMc2vsdVnobineghcZ5GvXBrnqh
+	6yTzp16/TyRhhmsJ5xEx09KlAw0Cf1o/K3ptS+Jsf12rSCwDNUT6dY3J+vSJ9qBy1B2OUW+DMXR
+	8n0WXzjLJmCVrg/NIBgzee9E4dJrVE0HoPSP8LGK0/JitjjOyOoV/IZVwOw3DBTf8dbO2BPo0=
+X-Received: by 2002:a17:907:2688:b0:bc3:7b0f:91ea with SMTP id a640c23a62f3a-bd51785f7e7mr410674366b.19.1778952750879;
+        Sat, 16 May 2026 10:32:30 -0700 (PDT)
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com. [209.85.208.41])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4bd2f67sm365117566b.7.2026.05.16.10.32.29
+        for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 May 2026 10:11:45 -0700 (PDT)
-Message-ID: <a56911f8-9c02-464e-b61c-0d565a5dbd43@googlemail.com>
-Date: Sat, 16 May 2026 19:11:44 +0200
+        Sat, 16 May 2026 10:32:29 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67be871ed3fso2462613a12.1
+        for <stable@vger.kernel.org>; Sat, 16 May 2026 10:32:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8CgKU98nkz3urtAxA4HYuId8hrD7OIZlXtBRWA4INSlMCv7Q9mGeBBlnoYHUbfm/5ayGzW7Hw=@vger.kernel.org
+X-Received: by 2002:a05:6402:13d4:b0:67c:5745:ba25 with SMTP id
+ 4fb4d7f45d1cf-683ba93ae7emr4639055a12.0.1778952749527; Sat, 16 May 2026
+ 10:32:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/144] 6.12.90-rc1 review
-To: Greg KH <gregkh@linuxfoundation.org>,
- Wentao Guan <guanwentao@uniontech.com>
-Cc: achill@achill.org, akpm@linux-foundation.org, broonie@kernel.org,
- conor@kernel.org, f.fainelli@gmail.com, hargar@microsoft.com,
- jonathanh@nvidia.com, linux-kernel@vger.kernel.org, linux@roeck-us.net,
- lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev,
- pavel@nabladev.com, rwarsow@gmx.de, shuah@kernel.org, sr@sladewatkins.com,
- stable@vger.kernel.org, sudipm.mukherjee@gmail.com,
- torvalds@linux-foundation.org
-References: <20260515154653.469907118@linuxfoundation.org>
- <20260515190713.620177-1-guanwentao@uniontech.com>
- <2026051658-affront-uplifting-095b@gregkh>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <2026051658-affront-uplifting-095b@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1190B55CC96
+References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
+In-Reply-To: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
+Date: Sat, 16 May 2026 10:32:12 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
+X-Gm-Features: AVHnY4Kka0j2IZtXlEubXEvbRLDshDfFW_ViyHQQNFc30kCO1qbUru6xi8FCkyU
+Message-ID: <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
+Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field post-exit
+To: Christian Brauner <brauner@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Qualys Security Advisory <qsa@qualys.com>, 
+	Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 1038055CED8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249016-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[googlemail.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249017-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[torvalds@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[googlemail.com:mid,googlemail.com:dkim,suse.cz:email,mailvelope.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-Am 16.05.2026 um 12:09 schrieb Greg KH:
-> On Sat, May 16, 2026 at 03:07:14AM +0800, Wentao Guan wrote:
->> Build failed, you can drop the commit to build ok, same as 6.18.30-rc1:
->> git revert 14d9ce90cf4855d638ecbcdb0c208a144d6f991b..
->> Revert "sched_ext: Use HK_TYPE_DOMAIN_BOOT to detect isolcpus= domain isolation"
->>
->> Tested-by: Wentao Guan <guanwentao@uniontech.com>
->>
->> BRs
->> Wentao Guan
->>
->> defconfigs:
->> https://gist.github.com/opsiff/a840ae9e3d6857f5b7bacb9cdc49f8e9
->>
->> Log:
->> In file included from kernel/sched/build_policy.c:63:
->> kernel/sched/ext.c: In function ‘scx_ops_enable’:
->> kernel/sched/ext.c:5524:34: error: ‘HK_TYPE_DOMAIN_BOOT’ undeclared (first use in this function); did you mean ‘HK_TYPE_DOMAIN’?
->>   5524 |         if (housekeeping_enabled(HK_TYPE_DOMAIN_BOOT)) {
->>        |                                  ^~~~~~~~~~~~~~~~~~~
->>        |                                  HK_TYPE_DOMAIN
->>
->> missed HK_TYPE_DOMAIN_BOOT is introduced in this commit:
->>
->> commit 4fca0e550d506e1c95504c2d9247bc92bf621bf6
->> Author: Frederic Weisbecker <frederic@kernel.org>
->> Date:   Mon May 26 13:06:21 2025 +0200
->>
->>      sched/isolation: Save boot defined domain flags
->>
->>      HK_TYPE_DOMAIN will soon integrate not only boot defined isolcpus= CPUs
->>      but also cpuset isolated partitions.
->>
->>      Housekeeping still needs a way to record what was initially passed
->>      to isolcpus= in order to keep these CPUs isolated after a cpuset
->>      isolated partition is modified or destroyed while containing some of
->>      them.
->>
->>      Create a new HK_TYPE_DOMAIN_BOOT to keep track of those.
->>
->>      Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
->>      Reviewed-by: Phil Auld <pauld@redhat.com>
->>      Reviewed-by: Waiman Long <longman@redhat.com>
->>      Cc: Ingo Molnar <mingo@redhat.com>
->>      Cc: Marco Crivellari <marco.crivellari@suse.com>
->>      Cc: Michal Hocko <mhocko@suse.com>
->>      Cc: Peter Zijlstra <peterz@infradead.org>
->>      Cc: Tejun Heo <tj@kernel.org>
->>      Cc: Thomas Gleixner <tglx@linutronix.de>
->>      Cc: Vlastimil Babka <vbabka@suse.cz>
->>      Cc: Waiman Long <longman@redhat.com>
->>
-> 
-> Also dropped from here, thanks.  My fault, I should have only backported
-> this to 7.0.y as the commit itself said to.
-> 
-> greg k-h
+On Sat, 16 May 2026 at 10:09, Christian Brauner <brauner@kernel.org> wrote:
+>
+> I massaged the patch a bit and rewrote parts of the commit message.
 
+I still don't really like this. I think it's disgusting to add a
+pointer just for ptrace_may_access(), particularly with 99% of users
+already checking the mm for other reasons _anyway_.
 
-Now I really wonder why I didn't hit this build error with that patch included in 6.12.90-rc1...
-Because I hit it in 6.18.32-rc!
+IOW, that user_dumpable bit was a minimal bandaid for bad behavior
+without breaking old code.
 
-Let me check my .config ...
+And the fix is *NOT* to make the bandaid bigger, but to just fix the
+things that are broken.
 
-Beste Grüße,
-Peter Schneider
+And Christian - right now pidfd is broken. THAT was always the real
+security bug here. Let's not change exit just because pidfd did the
+wrong thing and didn't check the mm like it should have.
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+It might make sense to change the 'mode' argument to be something more
+flexible and something that forces people to *think* about the zombie
+situation.
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+That mode thing is already a bitmap, so one bit could be "require it
+to have a MM", but I think it sjhould probably be done in a way that
+forces the callers to think about it a bit more.
+
+There's only like 20 call sites: let's *not* add a pointer to 'struct
+task_struct' when 15 of those call sites either already check that
+there's a mm, or explicitly don't care and handle the mm vs not-mm
+cases themselves.
+
+                    Linus
 
