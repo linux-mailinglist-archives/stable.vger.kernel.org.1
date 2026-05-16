@@ -1,154 +1,174 @@
-Return-Path: <stable+bounces-249025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHSLJC7ACGrh3gMAu9opvQ
-	(envelope-from <stable+bounces-249025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 21:06:22 +0200
+	id C8kjENnACGrC3wMAu9opvQ
+	(envelope-from <stable+bounces-249026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 21:09:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D016155D721
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 21:06:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8857455D758
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 21:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3293E3005166
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:06:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D045C30086EC
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA2336212C;
-	Sat, 16 May 2026 19:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF0635E1A4;
+	Sat, 16 May 2026 19:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="c8r9nwQD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ndF2hgXO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E3F34D929
-	for <stable@vger.kernel.org>; Sat, 16 May 2026 19:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE92405C31
+	for <stable@vger.kernel.org>; Sat, 16 May 2026 19:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778958361; cv=none; b=E0W4mAn9PGv2BTpTXGhZiy7EQTpXNm+TOQm6e+caRyBiCK/R2t20Qily0VfnofNOJG5NTWA+VvJc+1SZWe0eaJIhbD8VxVv1naChssDrm2IaQn+Cmin3TkDdMWhnmyYFQVCDTg0AI3BMku14VStIhL3Mt3LDJmLovia1Gof3yuI=
+	t=1778958549; cv=none; b=CQRMAUQ3bGWYecAsqJXFILxPXa08IrnIbabNSQRy+8td9lUeMFlkQuiPb41dfc4hr2GHPm1S6Ledv1nm9gaLsfaOAcuCIXC6F/r6c/rwplXavHtE7iCVuVUyqiTxJxlKs57/26qyXWb9CS29dagJU0aGZbWqcHfKHVN8HgKZEdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778958361; c=relaxed/simple;
-	bh=H1v8hiSujTN0uZjS5kUmvN1xFFGnrx/aq0tiUpBHd+E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=IPCYLgW1Oz7sWF5m+DuJWryT7Hwc63a1KE/1LlULURBqGeFJh8wkFz9OlUVMXoAuSISwDZ/11HkAJOOfTSseowD0FxbmMWO6aWdoFppVsI0VNQAGJIGEku4tAI93RNkY3G0WF5YTc5CgYwepxChGLD0qjUfBugbJL2febn5dPqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=c8r9nwQD; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7dcd689829eso908435a34.3
-        for <stable@vger.kernel.org>; Sat, 16 May 2026 12:06:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1778958359; x=1779563159; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hCg2nDoT/7KdIN0atTPHQrr5FV6YL1prt6+sWTXtM4k=;
-        b=c8r9nwQDTiOG4uQyA3n+lzE0498l5BKs1IgbkodvZqOJ+ZTxLuDzx3V5PArYBeqb/c
-         pFj3njBWBgNRg5kLHWNtwkE4qOzvr9rdi+IoU6utP9na2EMOmeYfd3r0xTtbSPfnA62R
-         wWs3SLl7LzKZo/VtMmlThWOkkQABzBnpfnxdssvNFXONlrJnMz8cS5IX5YgSy2o/Pxsu
-         yi5fqSxrOc1MCI21rFnNvt0QfHGpEmxUQswL+mNfpUP6/JU5CtZj56c1fNQz/DEaRdQs
-         joiyShctqBBCgLcC5ReMF8O1Q7ULdzVQi1vC2HwWTvSocg5oqQ3LAC0AlX+Fl+jkc39/
-         JOpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778958359; x=1779563159;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hCg2nDoT/7KdIN0atTPHQrr5FV6YL1prt6+sWTXtM4k=;
-        b=laYg3aitskmwdv2DMGfQQy1+gC2jkE3kAK4tSW9TOH9hpt/Su/aatAIUftr6s9+1n/
-         xvI8h0tmP9xXA073oZCdNMfQBxAKH0lIB5bQbgMIK90yBzVNX3ckirBHhO1ujqdOf+eL
-         Fp+Cu5x7Thz/fm773qLtUoP5hKxrb0jNnTXQu9u0FZVIzT79+E3Gjoh25ZJx6kTeW53L
-         Uy2PT+wshRpc+GCX1cwwUBxjBoOj0goDb11IpP9j2QUtfkFxJKrEi3sD2ktG/Je9V6Aa
-         k4214kmulr53PmTEmmFyAcBWmgiXT1ewH3Meh0AT0kjdnJgK3bPre4aOorEWQMeEb3zS
-         XMFw==
-X-Forwarded-Encrypted: i=1; AFNElJ8vOCRIY930FsOTryCJa/cTK+bI8p+rCggcz1FGoCQIXb3myJVt4EMkBsyJ8iLY+4Fdknwj8o4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHLtD1/jnWWn2sjz+XznVhewdkHd1NEmB14d1vozXv/dmw/8nX
-	WrGGNapi51plf+0ACHFPKWegptN6M0GnPV8/Lb9lrwRW/aN/EbvV3YKRL2JbfMEbfAo=
-X-Gm-Gg: Acq92OHlTVMzw6UHZ4MuMFtUGaHvKP56UwmQ4orSvIXpmIG6faqAav+dKwCx4fByBMp
-	Ww4cVTfs6aDS2OBxFKXF45V3ZOvCBLgYUiTegjEep3lZ8p6+8aMdkyxjHpvGb1fe3OpQggPc8LS
-	UCCqTMXQ2IYP3MLUi5sOyXbIij6e5k3Ld75pxv2E3gmHfBQAfozdebtl703fZ3zeG3I3MAeygP/
-	Qyq62sr84KTMjcYy5RH2Tx2nrM3YLxSn6I2FTuMkxVT2HNDJHx/P1mbDO3E/67zvFM9Yr5an7eW
-	P8KzLmSUJVKXfv+yQOx8Tic4sJrNfvUNIUuYnLK04frdAt12RvNP/HnaAaLniD2MvBMGo1MsfiR
-	w6JB8QZ73y7O2Vo7svFOkkdfvTkn1BX9SJOHi2FjdWFno5z3owxjulJx4UBRhPHTd2EOf0eiCg4
-	31jMv30VwzZzEkCR936sbU1/5qt1wOZS4KpL0N5ZiYznZeX6etyth8aeSLdmgXkkM8sihQnNZkS
-	1ui
-X-Received: by 2002:a05:6830:6f48:b0:7d7:d60e:650a with SMTP id 46e09a7af769-7e4fa054ce1mr6867691a34.23.1778958359453;
-        Sat, 16 May 2026 12:05:59 -0700 (PDT)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e55bbd08ccsm4023092a34.17.2026.05.16.12.05.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 12:05:58 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: io-uring@vger.kernel.org, Heechan Kang <gganji11@naver.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260516184709.852814-1-gganji11@naver.com>
-References: <20260516184709.852814-1-gganji11@naver.com>
-Subject: Re: [PATCH v2] io_uring/waitid: clear waitid info before copying
- it to userspace
-Message-Id: <177895835836.925638.10996898303585193992.b4-ty@b4>
-Date: Sat, 16 May 2026 13:05:58 -0600
+	s=arc-20240116; t=1778958549; c=relaxed/simple;
+	bh=hEJqAVpfLsj33tM4EtWZ5PzB4GzR9yCKEPDAmeApcFs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=M9I9rth+TnoTCE3ZOBeIK+gXymtA7RZvit+wKVS/2nRP1khsUuBF4hqwaHMKV9BdwcwKL/vO4WgSGNJv9mo4Rf3zHoXykSu+TOY/bzDcPEl+8Zcq0i+qQwhRl1FtGXVMNDArexAfgzWoyLBgSHsLN1QF+mCJCywL2LbAYjkypr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ndF2hgXO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECD8C19425;
+	Sat, 16 May 2026 19:09:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778958549;
+	bh=hEJqAVpfLsj33tM4EtWZ5PzB4GzR9yCKEPDAmeApcFs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ndF2hgXO/3vO5caTnjpGSRqaK+T1dyTca6bxyCNxj+EeQ9xyXK9++o8ev8PLW1ac5
+	 acWfbxUsCfMd0g5DphHEwZh6iZpttfvDVZfKp4UgAjJ3PC7vLGbvsOkrYXtPx+jEad
+	 1oCrq1Th6uVDl8MO0tC1OVg7metF8PUu+Kqs1E+ss45EGiMMVlUK3SIOXiKHttXlL8
+	 /2qPcno0NocBmoZjeVdwXzummkxny9XLELUX0UO6TKKXHng/MS2KWCoXgcLjbqHaff
+	 tWF6YYxfOquMa1LlIP/4Uf3E/RvMeNJh1Wv6wbQhG69TcR5xTnyxF7aWv2Ifix5Vb5
+	 +HfyQg3stwJNw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y] btrfs: do not mark inode incompressible after inline attempt fails
+Date: Sat, 16 May 2026 15:09:07 -0400
+Message-ID: <20260516190907.4016888-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051210-encourage-bagel-d5d1@gregkh>
+References: <2026051210-encourage-bagel-d5d1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
-X-Rspamd-Queue-Id: D016155D721
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8857455D758
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,naver.com];
-	TAGGED_FROM(0.00)[bounces-249025-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-249026-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kernel-dk.20251104.gappssmtp.com:dkim]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
 X-Rspamd-Action: no action
 
+From: Qu Wenruo <wqu@suse.com>
 
-On Sun, 17 May 2026 03:47:09 +0900, Heechan Kang wrote:
-> IORING_OP_WAITID stores its result fields in struct io_waitid::info and
-> later copies them to userspace siginfo. The prep path initializes the
-> request arguments, but it does not initialize info itself.
-> 
-> If the wait operation completes without reporting a child event, the common
-> wait code can return without writing wo_info. In that case io_waitid_finish()
-> still copies iw->info to userspace, exposing stale bytes from the reused
-> io_kiocb command storage.
-> 
-> [...]
+[ Upstream commit 2e0e3716c7b6f8d71df2fbe709b922e54700f71b ]
 
-Applied, thanks!
+[BUG]
+The following sequence will set the file with nocompress flag:
 
-[1/1] io_uring/waitid: clear waitid info before copying it to userspace
-      commit: 93d93f5f8da791e98159795c6ef683f45bd95d13
+  # mkfs.btrfs -f $dev
+  # mount $dev $mnt -o max_inline=4,compress
+  # xfs_io -f -c "pwrite 0 2k" -c sync $mnt/foobar
 
-Best regards,
+The inode will have NOCOMPRESS flag, even if the content itself (all 0xcd)
+can still be compressed very well:
+
+	item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
+		generation 9 transid 10 size 2097152 nbytes 1052672
+		block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
+		sequence 257 flags 0x8(NOCOMPRESS)
+
+Please note that, this behavior is there even before commit 59615e2c1f63
+("btrfs: reject single block sized compression early").
+
+[CAUSE]
+At compress_file_range(), after btrfs_compress_folios() call, we try
+making an inlined extent by calling cow_file_range_inline().
+
+But cow_file_range_inline() calls can_cow_file_range_inline() which has
+more accurate checks on if the range can be inlined.
+
+One of the user configurable conditions is the "max_inline=" mount
+option. If that value is set low (like the example, 4 bytes, which
+cannot store any header), or the compressed content is just slightly
+larger than 2K (the default value, meaning a 50% compression ratio),
+cow_file_range_inline() will return 1 immediately.
+
+And since we're here only to try inline the compressed data, the range
+is no larger than a single fs block.
+
+Thus compression is never going to make it a win, we fall back to
+marking the inode incompressible unavoidably.
+
+[FIX]
+Just add an extra check after inline attempt, so that if the inline
+attempt failed, do not set the nocompress flag.
+
+As there is no way to remove that flag, and the default 50% compression
+ratio is way too strict for the whole inode.
+
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/inode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index feaa6de8a90f2..efdc075027393 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1006,6 +1006,12 @@ static void compress_file_range(struct btrfs_work *work)
+ 			mapping_set_error(mapping, -EIO);
+ 		goto free_pages;
+ 	}
++	/*
++	 * If a single block at file offset 0 cannot be inlined, fall back to
++	 * regular writes without marking the file incompressible.
++	 */
++	if (start == 0 && end <= blocksize)
++		goto cleanup_and_bail_uncompressed;
+ 
+ 	/*
+ 	 * We aren't doing an inline extent. Round the compressed size up to a
 -- 
-Jens Axboe
-
-
+2.53.0
 
 
