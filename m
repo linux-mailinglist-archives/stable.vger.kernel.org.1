@@ -1,370 +1,218 @@
-Return-Path: <stable+bounces-249015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLWAINWkCGpVzQMAu9opvQ
-	(envelope-from <stable+bounces-249015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:09:41 +0200
+	id iLzBK2mlCGrezQMAu9opvQ
+	(envelope-from <stable+bounces-249016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:12:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF8955CC4B
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:09:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1190B55CC96
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D7F9300A757
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 17:09:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD45B301429A
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 17:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D0730EF63;
-	Sat, 16 May 2026 17:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426DB3E5A15;
+	Sat, 16 May 2026 17:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ag5kydUm"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="YsuniPda"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7B2381AF
-	for <stable@vger.kernel.org>; Sat, 16 May 2026 17:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F103ED5B2
+	for <stable@vger.kernel.org>; Sat, 16 May 2026 17:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778951378; cv=none; b=Anl6jLi4KD8qCaXMSgckYc+HdSfpnXShE9pGUW+YvL8qlhNzq2rib5szCETi/5jyzI6WgdthmP87d/quh6erH5owwk8dzpssl/ZwNLN8KOSU4U/XXcAujQRlsrHua0QNnBDJ3X3w7tOAKZenXor3qWs2jjUwnu805Rv35jAVZZ4=
+	t=1778951513; cv=none; b=GoKvnDZAgRoVJJPaECQBNM09+hwyXczol1jUywANiZXoVRWYF1wAX5jATMumdRKmbuKXR7eqJa/Ymqr6mneywWOkZ1U09xJi/8CwXH0qLsubuzaWjZazbkRWkclKQ5Mubkzn6YknqFvkFA4n6459thpCiG9WJV+fuWgJ8awYvgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778951378; c=relaxed/simple;
-	bh=avja1c3muB5aNK53/UaHaJfeVEZuRT7fYut3+BUNLt8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fidJ9q6HQSW5KHit4idYjGoCjNewDuHPaKnWcLG4PhYWOqiifO7Oqot1p0bukfeB0t8ozjBYe6CkRsvap8q6PKEUkZUi+d9vK48fAN9ZQ1P/j3y3WQwWfKxcf8jLzPJprnC/H4WaKtw1lb76E5o4RAq/VNAo6wtKG/td/xSMNOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ag5kydUm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A291C19425;
-	Sat, 16 May 2026 17:09:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778951378;
-	bh=avja1c3muB5aNK53/UaHaJfeVEZuRT7fYut3+BUNLt8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=ag5kydUmTpTQAKdVMN7SdKDY8miGTuSmSg0iUg2aUknsWndOET1pt+xdlPKKsdK51
-	 qtkxDISjzJdGbVCjLIUEKYu3Hto2roT+diyoidN5F2Ett0ijdtoICAZfK3JEUTjpaS
-	 +PORvzyzp8DL6P/+Nv0Gh8Ar/Z70wy+oqvUT7u2gzdI3zzdTqRpr5vaxrGqJF4y1Vc
-	 HSMV39zKuZjMjLxFXnjDEv31fCbbYK2QXc5zMP0q2gTdQROxlFnmAmCuGh72qs+gfQ
-	 BsuZYKRNOZZg62iFlwfjXWXeZT3KlM+GNjPPFxcdVjessb1/sI4RqnnC/4NJn0e8MG
-	 8jFrWpXKpL+9w==
-From: Christian Brauner <brauner@kernel.org>
-Date: Sat, 16 May 2026 19:09:16 +0200
-Subject: [PATCH] ptrace: keep task's mm around in separate exit_mm field
- post-exit
+	s=arc-20240116; t=1778951513; c=relaxed/simple;
+	bh=oX33zzrhzx2wnBTO434znlc7XiOBQWwh4mIrmCX2a+c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MXeROQZRYhiIbWzURkqqAa81VTNTUN0Fn23sbxW6Nv5XOQqrFkmcN/HDHHNveMxjWannny17qdSmuoIog3D6xJyMlDhKhfCQjaJgDI1jzju9t4cTiWCvQMaDTLLKZfQVOFyAYqCsB+bGwdPs+c/uekmxbJcYS4I9XOYrrUkHhdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=YsuniPda; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488b8bc6bc9so4331185e9.3
+        for <stable@vger.kernel.org>; Sat, 16 May 2026 10:11:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20251104; t=1778951507; x=1779556307; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=daDGZ35CtqHe++jeBQ8nOe5orQydlheCaV35Ow+XAS4=;
+        b=YsuniPdaMM/6dHYCUKTm0JBKRU8QH2eYZ9t7gtBzKTpJlpL4Z8bbVcSSp3IBwk0c9C
+         ysNGJpfDi5AMWFtwMBpF+86NU8jv2nSmWMLhkVTA3yMvUkFdqfsXIEEwb+dTvZa4kT3a
+         dpXzqtOs+9oFfAjfBMUHMIILE73CQGzSv8NsBzlVvajCcJwirZ0a+gYrB7NIOMDk7kCe
+         f4U2JkRn+iyR8Mh+BpuHm4qkqc5NKJPQLy3znecZNwMnNIlmF37F6Z35HtTaS38iYiCV
+         hbl3uaCHoBdbLkG11Q34uARweP871r8GMzeWNtju+7/lJSu2TZnCYnPQQ+wd3Rdy/hj+
+         4uOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778951507; x=1779556307;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=daDGZ35CtqHe++jeBQ8nOe5orQydlheCaV35Ow+XAS4=;
+        b=S+IEx+bCZDj72/gLKyFK7cpj7UPfb5LqpTom0QmdZ2Wey7ATFPySxDM5mA/XmM8BNP
+         ZJB12Q6IEMAU5zb4QBXY7NcQK16ARFUIRe5ycGDuIYhHtRKZ5JgHuM+BiDzROD0ui+dB
+         GIRnEIKiSPxFDtGaV0QTnHZ1hyt6U/dKVoSsXxc1Iut0sGP7X2XJ/rb9Z1uQjiEmx+4k
+         9yMm98crLYLUgechVOInoYvChOudLZn5UkiubNXA6T77svslotqb3mAnVdPnP7aIOJEi
+         dH0AsZsyK8/vX7fdH6LbeT+wKlOhfg9EvAiqZ539pj+cye6hR613FbDE4TJfgAu5uMlM
+         booA==
+X-Forwarded-Encrypted: i=1; AFNElJ8ToFnCLNVuP8Lh4VEdaTjs333mcGlJiX+F/yi9S4hmg4fL86TwuM0LR7i/kBovjFK5DT6QszI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSbjxJcWBBS84u9IwskhwBiiArceZMTWvjo0EEuTxNSMGkoxrs
+	KQOrVn/huBnDP8JMci/Ya4xs+i+uV/CkvR6cVFhRM9s2W/BarJSogDo=
+X-Gm-Gg: Acq92OFB3JBrKW56Zs+JHPWk3n2igTVnmYhg7T9lnnlRyMBE9aueGtJdWffggGnO0CR
+	PdYW/bmLOusaSrx9XjITYhOYou9TyeazZ3bRFZLfdpvkrHjuXx+GU/rewr3YUFht4hC0ZUkW1EB
+	ySkEC4yDbCW/OGQOvZZEUgm7/NLuwxyZXXJGOpqqZsolM04aIcGzJtTWzeDLYn2NWPEkKtDpB4b
+	oEb/1KWi2MTpdUHbtIKciRGYe7BX+TyywlLd4fI3Kx1zer4tqHr5TzTOlyXDy3SnunHZr/0sypS
+	0s2JmaNJJ1iT4NsdcgKxF73XShnQycwPBDpCxec60+vCntGencn/uy++N4m8GCEFuHvFiRs/3Rk
+	f5g/O2J+9hVnK2JdHY1pWG4up004GSgvjPKHnxD+Zgocm7/U6D5cUXOc0BlgeC2P94LMPU9788T
+	FhEo46tJbqox/m+7OiCFOi9wmKI0jlcwrSn1SP1U18XjWSjHVn3kjMnkydSUHGazFxE7aTG7Xfa
+	Hk=
+X-Received: by 2002:a05:600c:a00f:b0:48a:5301:bb5c with SMTP id 5b1f17b1804b1-48fe63263dfmr124480665e9.16.1778951506303;
+        Sat, 16 May 2026 10:11:46 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4b92.dip0.t-ipconnect.de. [91.43.75.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febf81970sm56216295e9.8.2026.05.16.10.11.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 May 2026 10:11:45 -0700 (PDT)
+Message-ID: <a56911f8-9c02-464e-b61c-0d565a5dbd43@googlemail.com>
+Date: Sat, 16 May 2026 19:11:44 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
-X-B4-Tracking: v=1; b=H4sIALukCGoC/yWM4Q6CIBRGX8XxOxoXBKVXaa1d4JLU1AZWbs53T
- +vn+fads7BCOVFhp2phmd6ppHHYAA4V8x0ON+IpbMykkEZoMPwz5genOU3XvucaHerohAkNsE1
- 5Zopp/uXOlz+Xl7uTn/bG/nBYiLuMg+/2qccyUT4aCyboRqgQokXVRojGS+8bq1QLKGsiC7U3b
- F2/J0rfXLIAAAA=
-X-Change-ID: 20260516-work-exit_mm-5aba5fb06d71
-To: "David Hildenbrand (Arm)" <david@kernel.org>, 
- Jann Horn <jannh@google.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>, 
- Qualys Security Advisory <qsa@qualys.com>, Oleg Nesterov <oleg@redhat.com>, 
- Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
- linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9270; i=brauner@kernel.org;
- h=from:subject:message-id; bh=5crXcMUcBASVL5GsYJiuXu/2zYrar/6ATXgspyBQxe0=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRxLDmXfvfNurNPitNt3n+1czlh+WbZhsmJyak/FdJmq
- 274atTwvqOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAi4byMDLv/lijZu3VK7nma
- NzWxdILp//SdCc+DT7kdlbZ8kVp36yzDPxsH+1TdF357t01OYZ2dV3P1RTh3GetyKZu9T7LkhPP
- 3MwEA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: EBF8955CC4B
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/144] 6.12.90-rc1 review
+To: Greg KH <gregkh@linuxfoundation.org>,
+ Wentao Guan <guanwentao@uniontech.com>
+Cc: achill@achill.org, akpm@linux-foundation.org, broonie@kernel.org,
+ conor@kernel.org, f.fainelli@gmail.com, hargar@microsoft.com,
+ jonathanh@nvidia.com, linux-kernel@vger.kernel.org, linux@roeck-us.net,
+ lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev,
+ pavel@nabladev.com, rwarsow@gmx.de, shuah@kernel.org, sr@sladewatkins.com,
+ stable@vger.kernel.org, sudipm.mukherjee@gmail.com,
+ torvalds@linux-foundation.org
+References: <20260515154653.469907118@linuxfoundation.org>
+ <20260515190713.620177-1-guanwentao@uniontech.com>
+ <2026051658-affront-uplifting-095b@gregkh>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <2026051658-affront-uplifting-095b@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1190B55CC96
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249015-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-249016-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlemail.com:mid,googlemail.com:dkim,suse.cz:email,mailvelope.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Jann Horn <jannh@google.com>
+Am 16.05.2026 um 12:09 schrieb Greg KH:
+> On Sat, May 16, 2026 at 03:07:14AM +0800, Wentao Guan wrote:
+>> Build failed, you can drop the commit to build ok, same as 6.18.30-rc1:
+>> git revert 14d9ce90cf4855d638ecbcdb0c208a144d6f991b..
+>> Revert "sched_ext: Use HK_TYPE_DOMAIN_BOOT to detect isolcpus= domain isolation"
+>>
+>> Tested-by: Wentao Guan <guanwentao@uniontech.com>
+>>
+>> BRs
+>> Wentao Guan
+>>
+>> defconfigs:
+>> https://gist.github.com/opsiff/a840ae9e3d6857f5b7bacb9cdc49f8e9
+>>
+>> Log:
+>> In file included from kernel/sched/build_policy.c:63:
+>> kernel/sched/ext.c: In function ‘scx_ops_enable’:
+>> kernel/sched/ext.c:5524:34: error: ‘HK_TYPE_DOMAIN_BOOT’ undeclared (first use in this function); did you mean ‘HK_TYPE_DOMAIN’?
+>>   5524 |         if (housekeeping_enabled(HK_TYPE_DOMAIN_BOOT)) {
+>>        |                                  ^~~~~~~~~~~~~~~~~~~
+>>        |                                  HK_TYPE_DOMAIN
+>>
+>> missed HK_TYPE_DOMAIN_BOOT is introduced in this commit:
+>>
+>> commit 4fca0e550d506e1c95504c2d9247bc92bf621bf6
+>> Author: Frederic Weisbecker <frederic@kernel.org>
+>> Date:   Mon May 26 13:06:21 2025 +0200
+>>
+>>      sched/isolation: Save boot defined domain flags
+>>
+>>      HK_TYPE_DOMAIN will soon integrate not only boot defined isolcpus= CPUs
+>>      but also cpuset isolated partitions.
+>>
+>>      Housekeeping still needs a way to record what was initially passed
+>>      to isolcpus= in order to keep these CPUs isolated after a cpuset
+>>      isolated partition is modified or destroyed while containing some of
+>>      them.
+>>
+>>      Create a new HK_TYPE_DOMAIN_BOOT to keep track of those.
+>>
+>>      Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+>>      Reviewed-by: Phil Auld <pauld@redhat.com>
+>>      Reviewed-by: Waiman Long <longman@redhat.com>
+>>      Cc: Ingo Molnar <mingo@redhat.com>
+>>      Cc: Marco Crivellari <marco.crivellari@suse.com>
+>>      Cc: Michal Hocko <mhocko@suse.com>
+>>      Cc: Peter Zijlstra <peterz@infradead.org>
+>>      Cc: Tejun Heo <tj@kernel.org>
+>>      Cc: Thomas Gleixner <tglx@linutronix.de>
+>>      Cc: Vlastimil Babka <vbabka@suse.cz>
+>>      Cc: Waiman Long <longman@redhat.com>
+>>
+> 
+> Also dropped from here, thanks.  My fault, I should have only backported
+> this to 7.0.y as the commit itself said to.
+> 
+> greg k-h
 
-__ptrace_may_access() checks can happen on target tasks that are in the
-middle of do_exit(), past exit_mm(). At that point, the ->mm pointer has
-been NULLed out, and the mm_struct has been mmput().
 
-Unfortunately, the mm_struct contains the dumpability and the user_ns in
-which the task last went through execve(), and we need those for
-__ptrace_may_access(). Currently, that problem is handled by failing open:
-If the ->mm is gone, we assume that the task was dumpable. In some edge
-cases, this could potentially expose access to things like
-/proc/$pid/fd/$fd of originally non-dumpable processes.
-(exit_files() comes after exit_mm(), so the file descriptor table is still
-there when we've gone through exit_mm().)
+Now I really wonder why I didn't hit this build error with that patch included in 6.12.90-rc1...
+Because I hit it in 6.18.32-rc!
 
-I believe that this patch may be the least bad option to fix this - keep
-the mm_struct (but not process memory) around with an mmgrab() reference
-from exit_mm() until the task goes away completely.
+Let me check my .config ...
 
-Note that this moves free_task() down in order to make mmdrop_async()
-available without a forward declaration.
+Beste Grüße,
+Peter Schneider
 
-Christian Brauner (Amutable) <brauner@kernel.org> says:
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-I massaged the patch a bit and rewrote parts of the commit message.
-
-The cached task->user_dumpable bit introduced by commit 31e62c2ebbfd
-("ptrace: slightly saner 'get_dumpable() logic'") is removed here: the
-mmgrab'd exit_mm reference supplies the real dumpable flag and the
-original user_ns. exit_mm() now publishes ->exit_mm before clearing ->mm
-so that task_still_dumpable() readers cannot observe both NULL on a user
-task.
-
-Cc: stable@vger.kernel.org
-Fixes: bfedb589252c ("mm: Add a user_ns owner to mm_struct and fix ptrace permission checks")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
-In 2020 Jann actually pointed to the exact bug class that the recent
-ptrace bug used and asked for a architecturally very clean fix to be
-merged but it never got anywhere.
-
-In the off-list ptrace discussion I brought up my intention to have this
-merged on top. So this rebases Jann's patch [1] which addresses the root
-cause directly: stash an mmgrab() reference to the mm_struct in
-task->exit_mm during exit_mm(), and release it via mmdrop_async() in
-free_task(). The pinned mm_struct keeps the address space metadata
-(flags, user_ns) reachable for the full lifetime of the task_struct
-without keeping the actual memory mappings alive. ptrace_may_access()
-then simply takes the exit_mm into account. The exit_mm field is
-separate and none of the other in-kernel callers need to change so
-there's no regression risks.
-
-Beyond ptrace, the fact that task->mm isn't accessible post-exit anymore
-causes complications for other series. Minchan Kim's recent
-PROCESS_MRELEASE_REAP_KILL series [2] describes the same shape from the
-OOM-reaper side: process_mrelease() racing against do_exit() ends up with
-task->mm and falls over with -ESRCH, deferring reclamation indefinitely
-under Android LMKD pressure. That series works around it by moving the
-SIGKILL injection into process_mrelease() itself, but the underlying
-issue is identical: callers legitimately need to reach the mm of a task
-after exit. That whole patch becomes rather simple with this fix.
-
-Note that I had already brought this up with some mm folks that were
-involved in the ptrace issue off-list.
-
-Also note that the upstream patch has at least two regressions. Reading
-the exit status from /proc/<pid>/stat and opening
-/proc/<pid>/ns/{pid,user} of a zombie. The latter I've used multiple
-times from inside a container for non-dumpable tasks for nested and
-non-nested containers. Afaict, both will now be denied because we resort
-to checking in the initial userns for non-dumpable tasks. And tools like
-Incus do nested containers so I also suspect that anything that relies
-on looking at the userns or pidns of zombies risks spurious failures.
-
-I think we should do the clean thing and let ptrace look at the actual
-mm state post exit. Keep it in a separate field and there's no
-regression risk for users that expect task->mm itself to be NULL post
-exit.
-
-[1] https://lore.kernel.org/r/20201016024019.1882062-2-jannh@google.com
-[2] https://lore.kernel.org/r/20260511214226.937793-1-minchan@kernel.org
----
- include/linux/sched.h |  4 +---
- kernel/exit.c         |  3 ++-
- kernel/fork.c         | 64 ++++++++++++++++++++++++++-------------------------
- kernel/ptrace.c       | 20 +++++++++++-----
- 4 files changed, 50 insertions(+), 41 deletions(-)
-
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index ee06cba5c6f5..7cefeb6cbba7 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -961,6 +961,7 @@ struct task_struct {
- 
- 	struct mm_struct		*mm;
- 	struct mm_struct		*active_mm;
-+	struct mm_struct		*exit_mm;
- 
- 	int				exit_state;
- 	int				exit_code;
-@@ -1002,9 +1003,6 @@ struct task_struct {
- 	unsigned			sched_rt_mutex:1;
- #endif
- 
--	/* Save user-dumpable when mm goes away */
--	unsigned			user_dumpable:1;
--
- 	/* Bit to tell TOMOYO we're in execve(): */
- 	unsigned			in_execve:1;
- 	unsigned			in_iowait:1;
-diff --git a/kernel/exit.c b/kernel/exit.c
-index f50d73c272d6..9af227c23e2b 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -571,7 +571,8 @@ static void exit_mm(void)
- 	 */
- 	smp_mb__after_spinlock();
- 	local_irq_disable();
--	current->user_dumpable = (get_dumpable(mm) == SUID_DUMP_USER);
-+	mmgrab(mm);
-+	current->exit_mm = mm;
- 	current->mm = NULL;
- 	membarrier_update_current_mm(NULL);
- 	enter_lazy_tlb(mm, current);
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 5f3fdfdb14c7..f43ea7f5888a 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -528,37 +528,6 @@ void put_task_stack(struct task_struct *tsk)
- }
- #endif
- 
--void free_task(struct task_struct *tsk)
--{
--#ifdef CONFIG_SECCOMP
--	WARN_ON_ONCE(tsk->seccomp.filter);
--#endif
--	release_user_cpus_ptr(tsk);
--	scs_release(tsk);
--
--#ifndef CONFIG_THREAD_INFO_IN_TASK
--	/*
--	 * The task is finally done with both the stack and thread_info,
--	 * so free both.
--	 */
--	release_task_stack(tsk);
--#else
--	/*
--	 * If the task had a separate stack allocation, it should be gone
--	 * by now.
--	 */
--	WARN_ON_ONCE(refcount_read(&tsk->stack_refcount) != 0);
--#endif
--	rt_mutex_debug_task_free(tsk);
--	ftrace_graph_exit_task(tsk);
--	arch_release_task_struct(tsk);
--	if (tsk->flags & PF_KTHREAD)
--		free_kthread_struct(tsk);
--	bpf_task_storage_free(tsk);
--	free_task_struct(tsk);
--}
--EXPORT_SYMBOL(free_task);
--
- void dup_mm_exe_file(struct mm_struct *mm, struct mm_struct *oldmm)
- {
- 	struct file *exe_file;
-@@ -775,6 +744,39 @@ static inline void put_signal_struct(struct signal_struct *sig)
- 		free_signal_struct(sig);
- }
- 
-+void free_task(struct task_struct *tsk)
-+{
-+#ifdef CONFIG_SECCOMP
-+	WARN_ON_ONCE(tsk->seccomp.filter);
-+#endif
-+	release_user_cpus_ptr(tsk);
-+	scs_release(tsk);
-+
-+#ifndef CONFIG_THREAD_INFO_IN_TASK
-+	/*
-+	 * The task is finally done with both the stack and thread_info,
-+	 * so free both.
-+	 */
-+	release_task_stack(tsk);
-+#else
-+	/*
-+	 * If the task had a separate stack allocation, it should be gone
-+	 * by now.
-+	 */
-+	WARN_ON_ONCE(refcount_read(&tsk->stack_refcount) != 0);
-+#endif
-+	rt_mutex_debug_task_free(tsk);
-+	ftrace_graph_exit_task(tsk);
-+	arch_release_task_struct(tsk);
-+	if (tsk->flags & PF_KTHREAD)
-+		free_kthread_struct(tsk);
-+	bpf_task_storage_free(tsk);
-+	if (tsk->exit_mm)
-+		mmdrop_async(tsk->exit_mm);
-+	free_task_struct(tsk);
-+}
-+EXPORT_SYMBOL(free_task);
-+
- void __put_task_struct(struct task_struct *tsk)
- {
- 	WARN_ON(!tsk->exit_state);
-diff --git a/kernel/ptrace.c b/kernel/ptrace.c
-index 130043bfc209..2955a59c18cf 100644
---- a/kernel/ptrace.c
-+++ b/kernel/ptrace.c
-@@ -272,18 +272,26 @@ static bool ptrace_has_cap(struct user_namespace *ns, unsigned int mode)
- 	return ns_capable(ns, CAP_SYS_PTRACE);
- }
- 
--static bool task_still_dumpable(struct task_struct *task, unsigned int mode)
-+/*
-+ * Decide whether ptrace access to @task is allowed based on its mm.
-+ * Reads the dumpable flag and user_ns from ->mm, or from ->exit_mm if
-+ * the task has gone through exit_mm(). Note that kernel threads may have
-+ * neither.
-+ */
-+static bool may_access_mm(struct task_struct *task, unsigned int mode)
- {
- 	struct mm_struct *mm = task->mm;
-+	struct user_namespace *mm_userns = &init_user_ns;
-+
-+	if (!mm)
-+		mm = task->exit_mm;
- 	if (mm) {
- 		if (get_dumpable(mm) == SUID_DUMP_USER)
- 			return true;
--		return ptrace_has_cap(mm->user_ns, mode);
-+		mm_userns = mm->user_ns;
- 	}
- 
--	if (task->user_dumpable)
--		return true;
--	return ptrace_has_cap(&init_user_ns, mode);
-+	return ptrace_has_cap(mm_userns, mode);
- }
- 
- /* Returns 0 on success, -errno on denial. */
-@@ -350,7 +358,7 @@ static int __ptrace_may_access(struct task_struct *task, unsigned int mode)
- 	 * Pairs with a write barrier in commit_creds().
- 	 */
- 	smp_rmb();
--	if (!task_still_dumpable(task, mode))
-+	if (!may_access_mm(task, mode))
- 		return -EPERM;
- 
- 	return security_ptrace_access_check(task, mode);
-
----
-base-commit: 6916d5703ddf9a38f1f6c2cc793381a24ee914c6
-change-id: 20260516-work-exit_mm-5aba5fb06d71
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
