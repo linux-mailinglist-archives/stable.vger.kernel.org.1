@@ -1,252 +1,202 @@
-Return-Path: <stable+bounces-249031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249032-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHDxLwLBCGrC3wMAu9opvQ
-	(envelope-from <stable+bounces-249031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 21:09:54 +0200
+	id mK2hDcnBCGph4AMAu9opvQ
+	(envelope-from <stable+bounces-249032-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 21:13:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C447F55D77C
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 21:09:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 983ED55D787
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 21:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C8140300406C
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:09:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B26663010ED7
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FC035E1A4;
-	Sat, 16 May 2026 19:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78FD361DD9;
+	Sat, 16 May 2026 19:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nVc1gfGh"
+	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="Iuma67aS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EB1405C31
-	for <stable@vger.kernel.org>; Sat, 16 May 2026 19:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179F230DECC
+	for <stable@vger.kernel.org>; Sat, 16 May 2026 19:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778958589; cv=none; b=rRcVrrE3FqM4eM8hii9ct4QP6BfzziMV7RqDyuyQplqrR/y5hAX9eOQI1mRWJ7+ei7l/0xeb0Y+aPP0KUHiAdBDM+ixgDstBFQmoXx6SjahpwiwhFTlQhB6r81QPYybrMcwClqzTMOCjNnagKyrIFcyHvJAXD+Yb3wEpebi8vxM=
+	t=1778958789; cv=none; b=q1ufaLrWsl6DffIR7SsqgJhxlOuwrYMZP3rp4092htWK32Fj6Prqy6FZ/rvC1W6iaCOkDPyprU2oNcKFsZfKFc9pu2Y7usdSE3rTnBfmrYyXY3l4Km32ZylMNYBeqLvcBuQpf+fFORq9nl2tr+XTrCrkYyn8AKYZPoZn3CGVecE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778958589; c=relaxed/simple;
-	bh=RVfBS1yr/CqQPkI+zxMHlAmt39OrLloHtS1rLDjIrdA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nAE612YVrpA+8Gn5+shiml2q8YfQ7XObXhfLNKBYaiZ0ChrT5QPNA0sLjDA4gwZhFeDfDtEBiGfI74JrZYkbUQYxU8TsmC5oUQ+J9+eKweebK8E/BhfIzW6KBDABu3Uv5+sAAa1tw+d0HBxa0+Ws7ukGdx9u6/uKrJedSfDVa68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nVc1gfGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD25C19425;
-	Sat, 16 May 2026 19:09:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778958589;
-	bh=RVfBS1yr/CqQPkI+zxMHlAmt39OrLloHtS1rLDjIrdA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nVc1gfGhXbPSKIZFZFkmaxYUK5H4QmKqJ5noyq+befhAEEei055tvRfHJwAkPHxlg
-	 yiuVvKFxcJqZ3YFrvLuP7BpV2DmR+gNUlWbmmqK0k0y9JTikBtidBe45VJK8N+uLk3
-	 A1m3GCcUFIxWYqhXcmwaEYL+RRnKP3UQrn+sG7g/Je3QQ1fLjZrsILaxlh1n2c2H4z
-	 8e5yUlHmiwnMaNvc0oAV4IcPnRC0tt8uxg8cldxSsTuzbHdWmVeB4wBkgx4SnduD9x
-	 j49VZGsEW7q4jQVfIrrnCaElCz5fMw9tRPcvPYoQv4w2Bpz+uoM80yHOKk7X2n+abZ
-	 +Ek+TmOxRuMlA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Piyush Sachdeva <s.piyush1024@gmail.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Piyush Sachdeva <psachdeva@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] smb: client: Use FullSessionKey for AES-256 encryption key derivation
-Date: Sat, 16 May 2026 15:09:46 -0400
-Message-ID: <20260516190946.4018100-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051202-broiling-reptile-02dc@gregkh>
-References: <2026051202-broiling-reptile-02dc@gregkh>
+	s=arc-20240116; t=1778958789; c=relaxed/simple;
+	bh=gn2uMmGVqz7bX9M35WbIy51eFSYt1rl4hYvMtRDztHc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:Mime-Version:
+	 References:In-Reply-To; b=sWSkcbYpZAm7rS+B3VamVXRcWPyzh1b0oNNcSxcO46C0gYj9TEezJIz3kAOZ5c7lLhf5bA6u3JNs5kb3ttBMb3ZT/pPEcY254oa/SD0Wfh3kYHpib3hn5MIW5KtGoakGar8dtJndQXrN37L+ZIBx3P/SbBJlX58oyT5UjAgVyyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=Iuma67aS; arc=none smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1330d6bb78dso797962c88.1
+        for <stable@vger.kernel.org>; Sat, 16 May 2026 12:13:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nexthop.ai; s=google; t=1778958786; x=1779563586; darn=vger.kernel.org;
+        h=in-reply-to:references:content-transfer-encoding:mime-version:to
+         :from:subject:cc:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e8MJvVWg0F0H0jEwe7ABZnubh9KyrgWaVRhp78yyYlk=;
+        b=Iuma67aSVt8qMWqkGW0rkta/GCsnMGN9BZte5OBOnScGEBGHP8nxDgEPHKlZnczilY
+         bd/ojji4yWFZL+AlnXBN+2SzNznUYFvRnl9ySdRM3xPpz6NzNm75z4tIGbyyneCoXvro
+         uWm/fLq0ity/QT5EL0wi5Jss/hZmwUJp8ZqUgVnF4oadatY6BKhA52bAMWnYbgbYC4OS
+         xNy7ggWNBAagSm2/p9NRwGF6wMM0879RNlMeM83IPJktPaK5BehUMgY7F4cDYubqzikz
+         0g5AAAMYY+lxI3tfGF9KlxNgRxVge47PknLY71RVA2JyjITNvQ1zVTew/RNkn7FYxskq
+         dSaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778958786; x=1779563586;
+        h=in-reply-to:references:content-transfer-encoding:mime-version:to
+         :from:subject:cc:message-id:date:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=e8MJvVWg0F0H0jEwe7ABZnubh9KyrgWaVRhp78yyYlk=;
+        b=nMSqrUR4G4Lo1oCa+YvwCTWiNiBdVsH4BWYIBVdgfV2PAVw3TAeV4c2o9ksoSjWGAC
+         VrI9FhdoTlQWkBMXAmbFgFAaQ5wzK1DAYnNqcC+L/zU7LC5uzx6ZxR8li2422EXOYXnr
+         k2kDediEsA9jbP8/LNPsk9AOmZlPHOkDBRY6KMVLSc1npYNlAAwU8CQ+aw7khhLHzUM0
+         Yg7DHjJc6Xcnk88SaiFz0v8fLad7BEwScUog2AQSswfp/gjrlbgOnQV681GEyCWBk7Gw
+         9XcpKguJM9TX/V/X7Xq/GLyGujMZjkAF+QlBm8bIYz1vXVmZE3FXeh1EgveU3GUA2bIc
+         Z/pw==
+X-Forwarded-Encrypted: i=1; AFNElJ9W04d4CjPXq40Mdu//x+pnYVvn8CPNc9NmkkUvep8hh+Z2ynHSugPpTmnwpFcf7ZtpViw/YMU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQWCAjSAAy2hTtobca/rYj4BvoJQdlF+gUc2o4P9DnIy/PC7Vu
+	M0skkvI3jrdVmNtQBYzTYH3wKP12lQFfJ/t/RBaaEJkTQS5gas0+ps2t21QZ7D0bQOw=
+X-Gm-Gg: Acq92OGc199fyFC42AbGOEgrlmaOFBJB9shKbB04GJLCpEtp6BBubHzGWnDr6qU1wj/
+	OnccwIM4Tac2H1IHQQdJ76CfmhIrVDgCicVJdmgDBf46AU+n3SB7EjHb7zt+p5qtkERwhse2JP6
+	KglKRkVRfy8hvmySue/oNy9fc4i5+S3m9Bn2XHaaxS9Llr1VOmBS61ZaPS6B2hMSI6LiwrA3fAe
+	oYboyFgmBQu1nz7pC8CpWefL7N0sxTBaRqZDuaudtYGo2PoaIfOTjTS/4DjPiIkMfuzzCMNZVR9
+	a2F+wWmyMgirquKlsOhrCI0XRXBYT5DwED4htx3ohCtirUxvd5AK4VimqVON8kgxzKcDu/uqn17
+	KtZLeJzTXJ1RxMra8obtRN1ACdTYtC+MP0K3Yz3SG99bbBFndw7P8Po6/qQeX7uqnIa8BPOSFpE
+	F0WbaIgHCrDtgUrQJqDHnknjhiJdtKRlbk5Q==
+X-Received: by 2002:a05:7022:922:b0:132:7ab5:6cb8 with SMTP id a92af1059eb24-13504311c97mr4432138c88.2.1778958786004;
+        Sat, 16 May 2026 12:13:06 -0700 (PDT)
+Received: from localhost ([50.145.100.174])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cb5b3c20sm15046942c88.0.2026.05.16.12.13.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 May 2026 12:13:05 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 16 May 2026 12:13:04 -0700
+Message-Id: <DIKC9BK2GTDE.3L5O0LAIZAGH@nexthop.ai>
+Cc: "Jean Delvare" <jdelvare@suse.com>, <linux-hwmon@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, "Guenter Roeck"
+ <groeck7@gmail.com>
+Subject: Re: [PATCH 0/5] hwmon: (pmbus/adm1266) buffer-bound and timestamp
+ fixes
+From: "Abdurrahman Hussain" <abdurrahman@nexthop.ai>
+To: "Guenter Roeck" <linux@roeck-us.net>, "Abdurrahman Hussain"
+ <abdurrahman@nexthop.ai>, "Alexandru Tachici"
+ <alexandru.tachici@analog.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C447F55D77C
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.21.0
+References: <20260515-adm1266-fixes-v1-0-1c1ea1349cfe@nexthop.ai>
+ <2a3c5a65-e2b7-4159-9d3c-eb6a8a600b37@roeck-us.net>
+In-Reply-To: <2a3c5a65-e2b7-4159-9d3c-eb6a8a600b37@roeck-us.net>
+X-Rspamd-Queue-Id: 983ED55D787
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249031-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[nexthop.ai:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249032-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
-From: Piyush Sachdeva <s.piyush1024@gmail.com>
+On Sat May 16, 2026 at 8:23 AM PDT, Guenter Roeck wrote:
+> On 5/15/26 15:11, Abdurrahman Hussain wrote:
+>> This series fixes five pre-existing bugs in adm1266.c that were
+>> surfaced by automated review of an in-flight feature series for the
+>> same driver [1].  None of them are introduced by that feature work --
+>> they are all reachable on the existing driver as it sits in mainline.
+>> Sending them standalone first, with Fixes: tags and Cc: stable, so
+>> the feature respin (v5) can rebase on top.
+>>=20
+>> Patch 1 fixes a CLOCK_MONOTONIC vs CLOCK_REALTIME confusion in
+>> adm1266_set_rtc(): the chip's SET_RTC register is documented to hold
+>> wall-clock seconds, but the driver currently seeds it from
+>> ktime_get_seconds(), giving blackbox records timestamps that reset
+>> to small values on every host reboot.
+>>=20
+>> Patches 2 and 3 fix two ways the blackbox-info path can be driven
+>> out of bounds by a misbehaving slave: a 5-byte stack buffer that
+>> i2c_smbus_read_block_data() will memcpy() up to 32 bytes into, and
+>> a record_count loop bound taken directly from the device with no
+>> upper clamp against the 32-record dev_mem allocation.
+>>=20
+>> Patches 4 and 5 fix the two ways adm1266_pmbus_block_xfer() can
+>> write past the end of a buffer: an off-by-one on the helper's own
+>> read_buf (sized for the length+payload but missing the PEC byte the
+>> i2c_msg length already accounts for), and a caller-side bug where
+>> adm1266_nvmem_read_blackbox() advances its destination pointer in
+>> 64-byte strides while the helper is willing to write up to 255
+>> bytes per call.
+>>=20
+>> [1] https://lore.kernel.org/r/20260512-adm1266-v3-0-a81a479b0bb0@nexthop=
+.ai
+>>=20
+>> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+>> ---
+>> Abdurrahman Hussain (5):
+>>        hwmon: (pmbus/adm1266) seed timestamp from the real-time clock
+>>        hwmon: (pmbus/adm1266) widen blackbox-info buffer to I2C_SMBUS_BL=
+OCK_MAX
+>>        hwmon: (pmbus/adm1266) reject implausible blackbox record_count
+>>        hwmon: (pmbus/adm1266) include PEC byte in pmbus_block_xfer read =
+buffer
+>>        hwmon: (pmbus/adm1266) bounce blackbox records through a protocol=
+-sized buffer
+>>=20
+>>   drivers/hwmon/pmbus/adm1266.c | 13 +++++++++----
+>>   1 file changed, 9 insertions(+), 4 deletions(-)
+>> ---
+>> base-commit: 1f63dd8ca0dc05a8272bb8155f643c691d29bb11
+>> change-id: 20260514-adm1266-fixes-853003a0fad4
+>>=20
+>> Best regards,
+>> --
+>> Abdurrahman Hussain <abdurrahman@nexthop.ai>
+>>=20
+>
+> Sashiko identified several issues with the driver as part of the review.
+> Most if not all of them seem valid, but were not introduced with this
+> series. I'll apply the series as is. Any fixes can come later.
+>
+> Thanks,
+> Guenter
 
-[ Upstream commit 5be7a0cef3229fb3b63a07c0d289daf752545424 ]
+Thanks Guenter!
 
-When Kerberos authentication is used with AES-256 encryption (AES-256-CCM
-or AES-256-GCM), the SMB3 encryption and decryption keys must be derived
-using the full session key (Session.FullSessionKey) rather than just the
-first 16 bytes (Session.SessionKey).
+I will address the issues in a follow up series.
 
-Per MS-SMB2 section 3.2.5.3.1, when Connection.Dialect is "3.1.1" and
-Connection.CipherId is AES-256-CCM or AES-256-GCM, Session.FullSessionKey
-must be set to the full cryptographic key from the GSS authentication
-context. The encryption and decryption key derivation (SMBC2SCipherKey,
-SMBS2CCipherKey) must use this FullSessionKey as the KDF input. The
-signing key derivation continues to use Session.SessionKey (first 16
-bytes) in all cases.
-
-Previously, generate_key() hardcoded SMB2_NTLMV2_SESSKEY_SIZE (16) as the
-HMAC-SHA256 key input length for all derivations. When Kerberos with
-AES-256 provides a 32-byte session key, the KDF for encryption/decryption
-was using only the first 16 bytes, producing keys that did not match the
-server's, causing mount failures with sec=krb5 and require_gcm_256=1.
-
-Add a full_key_size parameter to generate_key() and pass the appropriate
-size from generate_smb3signingkey():
- - Signing: always SMB2_NTLMV2_SESSKEY_SIZE (16 bytes)
- - Encryption/Decryption: ses->auth_key.len when AES-256, otherwise 16
-
-Also fix cifs_dump_full_key() to report the actual session key length for
-AES-256 instead of hardcoded CIFS_SESS_KEY_SIZE, so that userspace tools
-like Wireshark receive the correct key for decryption.
-
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
-Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ adapted upstream's void/hmac_sha256_init_usingrawkey-based generate_key() to 6.12's int-return crypto_shash_* form while threading full_key_size through all callers. ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/smb/client/ioctl.c         |  2 +-
- fs/smb/client/smb2transport.c | 32 +++++++++++++++++++++++++-------
- 2 files changed, 26 insertions(+), 8 deletions(-)
-
-diff --git a/fs/smb/client/ioctl.c b/fs/smb/client/ioctl.c
-index 2ce193609d8b2..200af8bad57d1 100644
---- a/fs/smb/client/ioctl.c
-+++ b/fs/smb/client/ioctl.c
-@@ -300,7 +300,7 @@ static int cifs_dump_full_key(struct cifs_tcon *tcon, struct smb3_full_key_debug
- 		break;
- 	case SMB2_ENCRYPTION_AES256_CCM:
- 	case SMB2_ENCRYPTION_AES256_GCM:
--		out.session_key_length = CIFS_SESS_KEY_SIZE;
-+		out.session_key_length = ses->auth_key.len;
- 		out.server_in_key_length = out.server_out_key_length = SMB3_GCM256_CRYPTKEY_SIZE;
- 		break;
- 	default:
-diff --git a/fs/smb/client/smb2transport.c b/fs/smb/client/smb2transport.c
-index 87f189894b1e1..6d7e1b4d2d558 100644
---- a/fs/smb/client/smb2transport.c
-+++ b/fs/smb/client/smb2transport.c
-@@ -334,7 +334,8 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
- }
- 
- static int generate_key(struct cifs_ses *ses, struct kvec label,
--			struct kvec context, __u8 *key, unsigned int key_size)
-+			struct kvec context, __u8 *key, unsigned int key_size,
-+			unsigned int full_key_size)
- {
- 	unsigned char zero = 0x0;
- 	__u8 i[4] = {0, 0, 0, 1};
-@@ -355,7 +356,7 @@ static int generate_key(struct cifs_ses *ses, struct kvec label,
- 	}
- 
- 	rc = crypto_shash_setkey(server->secmech.hmacsha256->tfm,
--		ses->auth_key.response, SMB2_NTLMV2_SESSKEY_SIZE);
-+		ses->auth_key.response, full_key_size);
- 	if (rc) {
- 		cifs_server_dbg(VFS, "%s: Could not set with session key\n", __func__);
- 		goto smb3signkey_ret;
-@@ -430,6 +431,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 			struct TCP_Server_Info *server,
- 			const struct derivation_triplet *ptriplet)
- {
-+	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
- 	int rc;
- 	bool is_binding = false;
- 	int chan_index = 0;
-@@ -464,17 +466,31 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 		rc = generate_key(ses, ptriplet->signing.label,
- 				  ptriplet->signing.context,
- 				  ses->chans[chan_index].signkey,
--				  SMB3_SIGN_KEY_SIZE);
-+				  SMB3_SIGN_KEY_SIZE,
-+				  SMB2_NTLMV2_SESSKEY_SIZE);
- 		if (rc)
- 			return rc;
- 	} else {
- 		rc = generate_key(ses, ptriplet->signing.label,
- 				  ptriplet->signing.context,
- 				  ses->smb3signingkey,
--				  SMB3_SIGN_KEY_SIZE);
-+				  SMB3_SIGN_KEY_SIZE,
-+				  SMB2_NTLMV2_SESSKEY_SIZE);
- 		if (rc)
- 			return rc;
- 
-+		/*
-+		 * Per MS-SMB2 3.2.5.3.1, signing key always uses Session.SessionKey
-+		 * (first 16 bytes). Encryption/decryption keys use
-+		 * Session.FullSessionKey when dialect is 3.1.1 and cipher is
-+		 * AES-256-CCM or AES-256-GCM, otherwise Session.SessionKey.
-+		 */
-+
-+		if (server->dialect == SMB311_PROT_ID &&
-+		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
-+		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
-+			full_key_size = ses->auth_key.len;
-+
- 		/* safe to access primary channel, since it will never go away */
- 		spin_lock(&ses->chan_lock);
- 		memcpy(ses->chans[chan_index].signkey, ses->smb3signingkey,
-@@ -484,13 +500,15 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 		rc = generate_key(ses, ptriplet->encryption.label,
- 				  ptriplet->encryption.context,
- 				  ses->smb3encryptionkey,
--				  SMB3_ENC_DEC_KEY_SIZE);
-+				  SMB3_ENC_DEC_KEY_SIZE,
-+				  full_key_size);
- 		if (rc)
- 			return rc;
- 		rc = generate_key(ses, ptriplet->decryption.label,
- 				  ptriplet->decryption.context,
- 				  ses->smb3decryptionkey,
--				  SMB3_ENC_DEC_KEY_SIZE);
-+				  SMB3_ENC_DEC_KEY_SIZE,
-+				  full_key_size);
- 		if (rc)
- 			return rc;
- 	}
-@@ -505,7 +523,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 			&ses->Suid);
- 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
- 	cifs_dbg(VFS, "Session Key   %*ph\n",
--		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
-+		 (int)ses->auth_key.len, ses->auth_key.response);
- 	cifs_dbg(VFS, "Signing Key   %*ph\n",
- 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
- 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
--- 
-2.53.0
-
+Best regards,
+Abdurrahman
 
