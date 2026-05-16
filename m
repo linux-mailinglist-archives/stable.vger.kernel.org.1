@@ -1,162 +1,123 @@
-Return-Path: <stable+bounces-249047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GHpHDLuCGo3AQQAu9opvQ
-	(envelope-from <stable+bounces-249047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 00:22:42 +0200
+	id 4PuHCnPyCGpYBQQAu9opvQ
+	(envelope-from <stable+bounces-249048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 00:40:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C646455E14F
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 00:22:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8648355E291
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 00:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8ACA3015477
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 22:22:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 340D0301C8B8
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 22:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6E238C433;
-	Sat, 16 May 2026 22:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DC238F65D;
+	Sat, 16 May 2026 22:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="NEi92qrG"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="KWjcgPDG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from r3-21.sinamail.sina.com.cn (r3-21.sinamail.sina.com.cn [202.108.3.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD0938C2D1
-	for <stable@vger.kernel.org>; Sat, 16 May 2026 22:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1555F38E8B7
+	for <stable@vger.kernel.org>; Sat, 16 May 2026 22:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778970155; cv=none; b=njaN91iVaHN3mlNy9rW8AtRl/q9mfYizN4bITC8DsgkKcwFBAzq/s1YVaZ3adhfpo7+sWiGqb8mwk0a30P99dCml7RcPCxG7b+bHIixwrtAILdPDBcNYfRVzR6WqozdhBJ0lRALMFn1f3MTAXbhJ+Bq1v41lMei0s7lSsENRm+Q=
+	t=1778971225; cv=none; b=ISmjETz5ZNKSlv4boFp4IwF7x42mNUdtsMKcQIZjMBhuo4zUwJs03DE3CqWe2YCNsVAXiLCaRb5NpSlBj6wXJBKly3Qxj7X2VWXNrC2oV2URvJaq7/FluNSjvp2b+V1QKj9RduSji3i6c7twBbAWsNvmbbliBOISLoOegwyQBaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778970155; c=relaxed/simple;
-	bh=4jugQan87WW62OkdA+/W9xo3plv+dnJsx5zP15FbgtA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y/1TTI22RjydGAhe5Xva+tOlZUPxLsW5uduLipWjCxETso88Z6S3AYnIxCQ/StW60mzkB/dG6dEzQeiCk8TX9dedS397KzuFBdTbXjoF32nxpN/fjr+NV88P0f9SuHE5Pi53vuq+NDcPT9qXJwa+H1voaDzqI3EAbKSIxhFGw7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=NEi92qrG; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48a3e9862f0so5167305e9.1
-        for <stable@vger.kernel.org>; Sat, 16 May 2026 15:22:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20251104; t=1778970152; x=1779574952; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/KJ2iP9YLpv0fim6ZmaqIgPF+/tIhMj4Q1ToMIsKE5U=;
-        b=NEi92qrGDwkwyML/S6Jzkhkof08uaVynm9YskU5YmcnD/pDR/nLgMmTzxLGDZqqSgT
-         QMR8mHVSJXjDkuMObwqJqNQ99trlmFmirZGC1HK0KqSqy5enM1Z1DRvVd793huZuK40k
-         pI6d3dSFPhiK2LmJSmh/AIwpsKkW4ujpo3Xvell9xTD0oPwlphJKp0qJYKYOn6y+NAyZ
-         N1uo3HNM2h6d75pQ7obJzmweKrWswXMd0x5dZMlua4SOn7YJ2K+LIsB8FnhANgPTaH76
-         KmYLrUuF+2MGFaZ0Giyq97vYNbUmMFf7CFuF0jsA2l2vX7T0kfBj89gukYtaTf4ylF+R
-         Q5iQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778970152; x=1779574952;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/KJ2iP9YLpv0fim6ZmaqIgPF+/tIhMj4Q1ToMIsKE5U=;
-        b=TEo7xlWAAYrf5IQWC1E09Z2rNnEbTzN2sca/E7YxrBRO5T6fYjtX/B6G60mxghPF8e
-         mr+ooKiUExeWN7Q2xAyy3K55qt1/utDDBKiZo8q326HlQV3/GrQVTmyCEfzSS7TVrvsn
-         Rush7YSlNVL6tNT6A4xxlJqV1V0VRClFPeZsSvRKJmeTIB5VJftNuda4apEM/EYoD1IW
-         ad8SJItXIca7WHicAsMgUDiSIR4i0XdS9qR327Bsf6h0Kp257BKrqNIR1Y7Rzjj+l0X0
-         2/Gt2mKZmwkKfO6RM38ZkrViFS81oFZGhQnVktKKDNoT3RV+Acd3sE1EzAxd19jLbVzd
-         AKpQ==
-X-Forwarded-Encrypted: i=1; AFNElJ89/Zs2dhUMLCBv/N8SURSb9555wreLCqwd2ewEvNrnqLGraW9hEA+eogKbYzPvLfQSw9Pryuo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywkb8qhvqYBKzp+CnPc/GfAXvXEEbHT9zAnD2ED8kU8F/r1myB3
-	41KVgpdY3P3er/qKE5n6yL0rupEXwMAzMJb9C7g0D9MtpxA6dGVSPYY=
-X-Gm-Gg: Acq92OF6061y95kj/w66HEQedH9jq9iB202h674Xe0E/XEaOvIrWbt12LMstEN45cNN
-	ci8VgicMSwBfuN9TjyVa0S7XLoPsJes59m6XLcNr66xKG5ilAD3QnIAjUEg5qS0kSI/nxw/i3W9
-	FOM/v561NOFpWRBQBQPxlRuLI0UDkQXqhXZhL0w45BNdz0tDmU59Bkb1iVNAAuF2aI2tOzF+z99
-	/EntYKGVHziXoReXEWmBWvKHRrf8Any/ly2eU2UaSr+1UGmHugb9GWLzG9P1FPKIXrRENO7RZAm
-	sY1FXxzkF+VJqUilJWQISuNgz9cLq2V4JshZqD8Bp/IFvXdtq1Q8OsAXKJCuSFEp2IheUcR7xQK
-	0dn7bETrrQ5punnjmizaySjOSAsruYy5N6oRf9GqhppURc0QCNkicBmxwpcMWNNsa0r3UiByEsy
-	wAbtX/L/a7PBzRgAnnI5W3L4Dba7epjAzFzApu6wJzsAryZBIzmSTVE1Cf8t129M8HrluQdCHHr
-	+0gMW4oi3AyFg==
-X-Received: by 2002:a05:600c:1688:b0:488:c21a:4754 with SMTP id 5b1f17b1804b1-48fd646b8a0mr131869295e9.18.1778970152386;
-        Sat, 16 May 2026 15:22:32 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b4b92.dip0.t-ipconnect.de. [91.43.75.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0fe13b4sm25463416f8f.28.2026.05.16.15.22.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 May 2026 15:22:32 -0700 (PDT)
-Message-ID: <31029eaa-1d73-4ef1-8849-85b0cbd9a52e@googlemail.com>
-Date: Sun, 17 May 2026 00:22:31 +0200
+	s=arc-20240116; t=1778971225; c=relaxed/simple;
+	bh=MDwqzzPxpTpr7wvYUP7Ufir6bdMVkAztbi1Zb4r8XeM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HmKwL0Te4vb5OAx0OwfsM739gbQ18+fVJ8yYmK7nKwIx7F0ARflKgNfd5Xl8MmU/N3IKks3gcc5ofVFmnFfZ3zYt7VQvIB21q9MGsd9zI/cOtKTfjYnMWv83xnpYR2qSeW1t+Cl9WptpZBMBUS+zK6LYN5mtWbtKDS0CW/SUKas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=KWjcgPDG; arc=none smtp.client-ip=202.108.3.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1778971222;
+	bh=6+dytzmVokVDStxNbKqqHM9kTlgMW+5d48+NzqFuckA=;
+	h=From:Subject:Date:Message-ID;
+	b=KWjcgPDGM/fvzk6cm5P1BiOsHDIGatN6A+/0DRXMvjc/2fIqFKKC3OMWA1fXk9ox2
+	 WK9/BfVdcAw8zzW9iNThyHdpdgff3DSTDrgSd6REBKBB4N9VO/cwfzejIsODo/yFht
+	 +SSQh7YG6uXSNV1wgeAuR0+mfUGY/lHhwxBYGfWc=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.62.144])
+	by sina.com (10.54.253.33) with ESMTP
+	id 6A08F24B00002E91; Sat, 17 May 2026 06:40:13 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=hdanton@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=hdanton@sina.com
+X-SMAIL-MID: 2650226685180
+X-SMAIL-UIID: B2818D37D17A480695A921A8E0DDA772-20260517-064013-1
+From: Hillf Danton <hdanton@sina.com>
+To: Safa Karakus <safa.karakus@secunnix.com>
+Cc: linux-bluetooth@vger.kernel.org,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del()
+Date: Sun, 17 May 2026 06:40:00 +0800
+Message-ID: <20260516224002.754-1-hdanton@sina.com>
+In-Reply-To: <20260516181504.3076260-1-safa.karakus@secunnix.com>
+References: <20260516092139.2618159-1-safa.karakus@secunnix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.18 000/187] 6.18.32-rc2 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260516102236.209957148@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20260516102236.209957148@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C646455E14F
+X-Rspamd-Queue-Id: 8648355E291
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.65 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249047-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[googlemail.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-249048-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,holtmann.org];
+	DKIM_TRACE(0.00)[sina.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[hdanton@sina.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[googlemail.com:mid,googlemail.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Am 16.05.2026 um 12:30 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.18.32 release.
-> There are 187 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
-
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-
-
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+On Sat, 16 May 2026 21:15:04 +0300 Safa Karakus wrote:
+> bt_accept_dequeue() unlinks a not-yet-accepted child from the parent
+> accept queue and release_sock()s it before returning, so the returned
+> sk has no caller reference and is unlocked.
+> 
+> l2cap_sock_cleanup_listen() walks these children on listening-socket
+> close.  A concurrent HCI disconnect drives hci_rx_work ->
+> l2cap_conn_del() which runs l2cap_chan_del() + l2cap_sock_kill() and
+> frees the child sk and its l2cap_chan; cleanup_listen() then uses both:
+> 
+>   BUG: KASAN: slab-use-after-free in l2cap_sock_kill
+>     l2cap_sock_kill / l2cap_sock_cleanup_listen / __x64_sys_close
+>   Freed by: l2cap_conn_del -> l2cap_sock_close_cb -> l2cap_sock_kill
+> 
+Feel free to add the regular KASAN uaf calltrace to help understand your fix.
 
