@@ -1,296 +1,178 @@
-Return-Path: <stable+bounces-249019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uVMsHVyuCGq60wMAu9opvQ
-	(envelope-from <stable+bounces-249019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:50:20 +0200
+	id CMF3MoqwCGrz1AMAu9opvQ
+	(envelope-from <stable+bounces-249020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:59:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D925955CFD1
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:50:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC3D55D03C
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 19:59:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1CE9C300F179
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 17:50:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24AA13014BED
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 17:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B26E3E6DED;
-	Sat, 16 May 2026 17:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9224C3E51D4;
+	Sat, 16 May 2026 17:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XcQel1TJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7y8+daA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F52379991
-	for <stable@vger.kernel.org>; Sat, 16 May 2026 17:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778953815; cv=pass; b=FDfh8LUmpz35fNWrT9oIsp7NlBC1oc+XfpMn37gL85HBD1hafwQvTNm2Y7mo4NrULXsvBeRPF6mBMwX212Vcx5stTP6kK5A/iDf30fQpsXvo/e8Dz6QPBBWnRKT7iyjr06RHCuCF0uIGjK3Rbtvq3v8dyhrsI8dgbAhIL1Dbdg4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778953815; c=relaxed/simple;
-	bh=bb3jfN2NC/V2zD360wOTV4RVGdXSCuQwNzx7PxY9NBA=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE3D379991
+	for <stable@vger.kernel.org>; Sat, 16 May 2026 17:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778954318; cv=none; b=E0jdoIgGFP9opZ60Lt8aDxhbDhP4may4oBqb8D3r437YHs29p0BeqarPLQYnyWK9hRyUu1kSwK+JwBxvKp1lnrfgdxdMk34AqqtxtSQtZrNkjLuYp/SE2EgGYaVbMLXNSNdILVzQrhGDcEQ7QZLm4h77s9HH5c17FCmhvTzaOEk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778954318; c=relaxed/simple;
+	bh=j6UcsyYEwqrgKLf5qbICeLM/y+q8YM5+OtUI5QIhPKo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rKvxvYbAXhqBkEbnhAlllf7ZSttod+ryRI2ubVqm0eVh87ead70hZ3pMCjKWsxJiNmGuLAHqNiRK6knFVXTZaW10BtgcOFas76gI7VzztWtM0mZYqyFUF14u3JKveKz5u2u8g+QSUTc+b9pL2CUdPa5qPHpX/4WA1+Bga9uj7vo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XcQel1TJ; arc=pass smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bcc2b199c17so119675166b.3
-        for <stable@vger.kernel.org>; Sat, 16 May 2026 10:50:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778953812; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lki7gK5sMulDUSSt+Ti7Ek4WhbQz1Td5lg4hb+N+0lnyKlNZkrF8lJ9mdXBqdq5DVS
-         udmtNahEpgz3eWxRVaTs5KxGW8Jz0D6zfeo3PP6BNgathoW+AVJ5UL0LFoBZGMaj1o8W
-         6sQjnxQX8Kc80NXBxqKruJFPFETMiVkI/8XWcVmmVM+90dPeosEcrwc6aEeSmOCSc5RJ
-         fu4ufhSiJWhu7T5ScSWYT58E4sXia6FC1iUWzgURXnHCjkTdOR+SN7tbQW+Fm0fmyAP+
-         yqXTwP4DrTa5m/doOlu4dV6kvti/5YYvxN7ppMvVrRe5FnQA/KCpV/zG59V9lgM4n48g
-         AQVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RgYePu8cI4pa48iwAoaqdJpOJOEYxs5lf2I9rBiO5Jc=;
-        fh=0cT2fo8Twu+pd5zohjHv+ALbhtRL+A1dRMmvTaHU8v4=;
-        b=D1C+DBZVMwJxE6AbT/q5SLWrML0ZjRtE97WF7Qh+bySXBtfkLW4BfHJywLZdtb+PQO
-         jmu8wsehk2R0eHarvrHWs3GgRsrxuq79be3rE9qhAfk7XnBCWhCSB1pikxSDrM8xZIZt
-         OujOmH6Eyzl5fr+TqMdZDUpZyKqQceQ+FHKvQAV4/J+bJB5RGVv021YhWtLas/E7rBpM
-         6qFqL6AtWwoIYkWiSzZt/35jXf9chcMKRy58cDoi5zGB9SDHR8MieKh73/i4lem4s1Tw
-         OC8ALFkR5UAQXhmG87IOantFVPJSDX03G8qJ7KTzrFX6kYHnyKxP9dfAe8/Ns+31IoEK
-         ZoRA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 To:Cc:Content-Type; b=h49Y9Y5ag8DiY1DShD0YqXFA1mlm7QUjWzJxH2yJVd84MPtqqonCdrsE5OcZ7cM4qJbkyG17CyCC9u8YJHhoObN6yhrbdJnhrx+urb05+dCEjvT+VQ3CIhUkLXoXej/I4ykVxvVryc8Pp7U9c4MzS9H55NvOkIufdm7KsFp8NZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7y8+daA; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bcc2b199c17so120183766b.3
+        for <stable@vger.kernel.org>; Sat, 16 May 2026 10:58:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778953812; x=1779558612; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RgYePu8cI4pa48iwAoaqdJpOJOEYxs5lf2I9rBiO5Jc=;
-        b=XcQel1TJQ7YY76k/iqfvfos49PPGB0wgRVO294aeZaRlW0H+B5GMD0/y2ah9yAoqog
-         CcyXKkaF6/d2/ws0WVuZmkJSKVDfiuio8/svJgpe0WDvhZY4VGgiRSADJB7a0moHbjjv
-         Ip3inYK0exNu/QnHg6nAcAGdYWVzx6+OcraWOOv/DoBZiu6YUzCI6dNtNfSHvYTdkueK
-         jzOGe7IH6KS7AfsljXYbNMe3d5Ghn7pJSt/fMVRpzgGNqgOV98dDhRRHqZgfkMWfinVP
-         VLCzBN5R/E2knhuDSbjxmAQ9cn3IGNlcteWML/sDFxGjsvoUKzIW+K3Ek978DzDOXaoi
-         Zi5Q==
+        d=linuxfoundation.org; s=google; t=1778954315; x=1779559115; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=yGwTJ4BAHlzloa9AqYm3GmL0/jhInuFYHO2ONjIcdOk=;
+        b=P7y8+daAHmYgcrdKe7Qd3XVyOTKpb18PKmyf7lBw6rzFehNchjWWSBDlZdd0+6RCRq
+         PPtY3W5jNxacp9zqZzMzxvz1SYarAUb30BW0jNdWBV8zyi1EZ9owQI0E2vIFDvw4Jluy
+         tZANpIm3r+/xURtYPMe+FRhLy2DFzk+OgvWpw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778953812; x=1779558612;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RgYePu8cI4pa48iwAoaqdJpOJOEYxs5lf2I9rBiO5Jc=;
-        b=VfMB4wxyLbnSSCF6ZBwuQzmh46xw0awvGko8Qo+MfkyjTuWwbGlj1lf2NrU3hT1Vzr
-         Su0Tsn0fOrwS3oDrglVD1hEtFCjc8z70Ge/N6stKZzwTSYfX/eUAh2G65CTKr+0AqvJB
-         w0fBuIZwwVA96fFmM3rZgk8ph8SMmxE+/f2wWu3QoiXyc+afZSQemhBsARovjeLCsiV1
-         zuOnSUaLHUzXeCFIoSIknlEfh9yYCJZAXBeSPZyX34ZQ6fPoQSUEx3U40w+k5B+fcWXN
-         e5cYiMpLtD4q01iOpg/5T9OlWI/UAaJ0wC6hd7oDcHbD/Ufg6qGYUL5hHuUsecmlP4Ei
-         z9cw==
-X-Forwarded-Encrypted: i=1; AFNElJ+2j1ZCocRyqCRZZlBXkM1cCoWpcPN0VTq6nrGBI3PF2i+Pz13YYm8MJyEMMn7OpMkk48pagps=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfQXwZRPT2gl+fgTZU1JGmiZBfcIv1UObz9jkwW33pXCvjVORW
-	1Tz7oDnLDVwR2b7xSsltGpvzxqvNeQ7mYKvjeWlWl0HSLZkW9+yOu4JQy7KVVHxXRrEQb2+KEiW
-	0VQTgRLBSBURhe5GN1C5Ai0Wh5EIq37k=
-X-Gm-Gg: Acq92OFY5MwSeJOxN0kOS+6J2UlxtV9jDidgGVLGqb0BUwwh+vrml4ShGF5fBgVvsRd
-	ppUsbDh542RKyK6ddqKlrRySvqlW5g/g4g7UY30DTlPy7mfrySU88BNwyWOluNmSkxE9kiCyFcZ
-	ocLxDCepC3sSLclBGXTnE9pjgGsJOMqmLPkPTqitL1ABnIKSnzUsKR+jruyTffjQnoiIyBF196c
-	u/3MNjpBaCoS21m/Wr4asf3nsy1AP4DEkjSUWxDttis5Je4kYRSqYhHjBguEe2PFwqLJfWYbpST
-	gk+wsUOqqSlkLUXxfA==
-X-Received: by 2002:a17:907:a317:b0:baf:e47:1b6a with SMTP id
- a640c23a62f3a-bd5179305eamr483428566b.24.1778953811413; Sat, 16 May 2026
- 10:50:11 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778954315; x=1779559115;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yGwTJ4BAHlzloa9AqYm3GmL0/jhInuFYHO2ONjIcdOk=;
+        b=QRtKK22LhCcCRvLJhj/cjrEyv6DKSAZ/qEnwhIXn8lWCOVYf9DoBQkOrXAOYBdl37z
+         bGc7meDY2MgG1RECbHrfdH9g3SQVnhvJm6/M461HS95GrpDy/7xEzh3k6EUrLqTTJAw4
+         gNiwQIYzLPDtg86tPmMmilfVRdWAJJltbCQ9s4m3ZAVDTy5ltfXwyREfnx6sHhJFZM79
+         4B+0UsqaWJYhtPXvhElspTPoUeuKJuAmsM++eAsqOtB3rFHWAfiNLLMDCCq6IGwdRG6r
+         Do5tNzK2B2IGDvT7halbAoCiC6b14zS1splrDmZqAjImXnQQqFjARyH2t7K4rbOacMAz
+         boIw==
+X-Forwarded-Encrypted: i=1; AFNElJ+5AjzpmhtGLhosOcGHXT2wkxX+QA3b4gQnkDBS8iVidwfwxkE3VW/P4zL/q+Kt1hhQ+xl/bzg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0m/CNNdNxRa0GHj9L+AIUgX1AARkxSRfYX7re2ZGWI3h2HQ+/
+	9/tyitUKngJQjHzYrTYL94jyRNZGd1F20BEj8ZN0O5eQPnI/8UAC7qQihqmOAc7KCPwL0bfhB7B
+	/MXcoU9c=
+X-Gm-Gg: Acq92OF9wjQCowu16yRNWQoFSPrlU9ZKWLp1lUJlsMtk3WG+JQcwhjfZG4YZzA+JhAR
+	KH43wiIJuJM6WzhUMub/IXO2ZFmMnPE6+FASPAO52jgUQ9v6LS52NfOFOFOHyCe0F9t+DL1auzJ
+	6VG/Y4DQfLvHh0x/1ShAW2u8uE12OCff3b80oDdkNi9D1NWEeSVr7akeO96clfZHWsn3sMvyKVw
+	kYHSkPwVRHw8V75a0GQK2I2BbF9eCOGvOOMO0SeADf2rKxsT5ZLlbjKpG/dVc83v4I8M1u+q9vZ
+	j/0E6JN7nHf3eW2uZFMtmWAIsBH9ryyfi6w7qNVZPYaZwTd4i0iUCbJkpJhawksPbE0CvqDT21m
+	TwfR1x4RACa8IunpQHj0TOzeHq2p2LmypNXGKXPBG7NPFTqQ3geYF1PsBCgsjNbSEr5g3f2tbQZ
+	T9t6U2zgOoeGFxIBUZOWys2HEoN+zl840HVWqPpP6ta/3HpcXCYlRnzxGsj0ShCCA8wC0Tcp8al
+	Jl3jF40wA==
+X-Received: by 2002:a17:906:6185:b0:ba8:a21f:9c4e with SMTP id a640c23a62f3a-bd5177e0935mr467027966b.11.1778954314837;
+        Sat, 16 May 2026 10:58:34 -0700 (PDT)
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4c31494sm370490366b.20.2026.05.16.10.58.32
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 May 2026 10:58:33 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-67929ff6dbfso1730097a12.2
+        for <stable@vger.kernel.org>; Sat, 16 May 2026 10:58:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/dunVb+CEb8AsU/kLhInROG5dU0xgwnRFkEETS5GSoq9gsaLaPFXl1+OgB8uI5NiQPllu5xMc=@vger.kernel.org
+X-Received: by 2002:a05:6402:13c2:b0:683:1cc8:84a8 with SMTP id
+ 4fb4d7f45d1cf-683bd28ac44mr4486474a12.12.1778954312490; Sat, 16 May 2026
+ 10:58:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260516162825.1480113-1-rollkingzzc@gmail.com> <CAM0EoMmrn4gJ8KNu4kDpEP3+GWR1+jtJgbxMDgO_ZmyA4e6qOA@mail.gmail.com>
-In-Reply-To: <CAM0EoMmrn4gJ8KNu4kDpEP3+GWR1+jtJgbxMDgO_ZmyA4e6qOA@mail.gmail.com>
-From: Gui-Dong Han <hanguidong02@gmail.com>
-Date: Sun, 17 May 2026 01:49:35 +0800
-X-Gm-Features: AVHnY4JppdSJS1WufNsw47NSZtQlKCJAvs11MY7gSvk91z1FKBtNCedeI3YwvFA
-Message-ID: <CAOPYjvacjz-mGTWgPVRzWu9Cx593mfLdot5vUCHh_W_5oBu4sA@mail.gmail.com>
-Subject: Re: [PATCH] net/sched: act_pedit: extend the writable skb range per key
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Zhang Cen <rollkingzzc@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	zerocling0077@gmail.com, stable@vger.kernel.org, 
-	"yimingqian591@gmail.com" <yimingqian591@gmail.com>, Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org> <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
+In-Reply-To: <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
+Date: Sat, 16 May 2026 10:58:16 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wi-5WSdzg_UxAFSRtjTUfscATJ8+1R3Pqvw8=-KKLmQCg@mail.gmail.com>
+X-Gm-Features: AVHnY4K6Ktb_aIH9HBPMrhx2OrcbL7_dXcucaUZ04bAao-kOu4bqIibcgFQVmBw
+Message-ID: <CAHk-=wi-5WSdzg_UxAFSRtjTUfscATJ8+1R3Pqvw8=-KKLmQCg@mail.gmail.com>
+Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field post-exit
+To: Christian Brauner <brauner@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Qualys Security Advisory <qsa@qualys.com>, 
+	Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D925955CFD1
+X-Rspamd-Queue-Id: 4DC3D55D03C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-249020-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249019-lists,stable=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,oss.qualcomm.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hanguidong02@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[torvalds@linuxfoundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-On Sun, May 17, 2026 at 1:38=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
+On Sat, 16 May 2026 at 10:32, Linus Torvalds
+<torvalds@linuxfoundation.org> wrote:
 >
-> On Sat, May 16, 2026 at 12:28=E2=80=AFPM Zhang Cen <rollkingzzc@gmail.com=
-> wrote:
-> >
-> > tcf_pedit_act() builds a rough writable prefix from tcfp_off_max_hint
-> > before the action mutates any packet bytes.
-> >
-> > Since 6c02568fd1ae, TCP and UDP keys recompute their L4 base from the
-> > current L3 header inside the key loop. An earlier key can therefore
-> > change a later header-relative base and make the final store land
-> > outside the initially ensured prefix, where it can fall back to
-> > skb_store_bits() on skb frags.
-> >
-> > Keep the initial estimate as a fast path, but grow the ensured writable
-> > range from each key's final computed write offset before loading or
-> > storing the edited word.
-> >
-> > Fixes: 6c02568fd1ae ("net/sched: act_pedit: Parse L3 Header for L4 offs=
-et")
-> > Cc: stable@vger.kernel.org
-> > Co-developed-by: Han Guidong <2045gemini@gmail.com>
-> > Signed-off-by: Han Guidong <2045gemini@gmail.com>
-> > Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
->
-> Please dont report or post such patches in the public next time.
-> Follow the procedure outlined here:
-> https://docs.kernel.org/process/security-bugs.html
-> I have removed the public mailing lists from this response.
->
-> This issue has been under discussion for the last two days based on
-> two other patches. Those patches are better than what you posted. We
-> will make sure you get added to as reporters of this bug.
-> Will you be willing to test the final solution?
+> That mode thing is already a bitmap, so one bit could be "require it
+> to have a MM", but I think it should probably be done in a way that
+> forces the callers to think about it a bit more.
 
-Hi Jamal,
+The whole "fscreds or realcreds" bit is completely broken too. So I do
+think that we really need to just fundamentally fix
+ptrace_may_access(), and change the calling convention.
 
-Thank you for the guidance and for including us as reporters. We would
-be glad to test the final solution.
+Just as an example, look at proc_pid_wchan(). It uses that
 
-Apologies for posting this publicly and for any inconvenience caused.
-We will strictly follow the proper security procedure in the future.
+        if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
 
-Thanks.
+thing, and that's pure and utter garbage. It's a very traditional bug,
+but it's a bug.
 
->
-> cheers,
-> jamal
->
-> > ---
-> > While researching recent page cache bugs, we discovered this bug. We co=
-nfirmed it allows overwriting the page cache of read-only files via splice(=
-). We haven't attempted to write an exploit, but the corruption primitive i=
-s verified. PoC available upon request. Recommend fixing ASAP.
-> > ---
-> >  net/sched/act_pedit.c | 36 ++++++++++++++++++++++++++----------
-> >  1 file changed, 26 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-> > index bc20f08a27890..58a8eae6d43e7 100644
-> > --- a/net/sched/act_pedit.c
-> > +++ b/net/sched/act_pedit.c
-> > @@ -398,11 +398,12 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buf=
-f *skb,
-> >
-> >         parms =3D rcu_dereference_bh(p->parms);
-> >
-> > -       max_offset =3D (skb_transport_header_was_set(skb) ?
-> > -                     skb_transport_offset(skb) :
-> > -                     skb_network_offset(skb)) +
-> > -                    parms->tcfp_off_max_hint;
-> > -       if (skb_ensure_writable(skb, min(skb->len, max_offset)))
-> > +       max_offset =3D min_t(u32, skb->len,
-> > +                          (skb_transport_header_was_set(skb) ?
-> > +                           skb_transport_offset(skb) :
-> > +                           skb_network_offset(skb)) +
-> > +                          parms->tcfp_off_max_hint);
-> > +       if (skb_ensure_writable(skb, max_offset))
-> >                 goto done;
-> >
-> >         tcf_lastuse_update(&p->tcf_tm);
-> > @@ -414,8 +415,9 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff =
-*skb,
-> >         for (i =3D parms->tcfp_nkeys; i > 0; i--, tkey++) {
-> >                 int offset =3D tkey->off;
-> >                 int hoffset =3D 0;
-> > +               int write_offset;
-> >                 u32 *ptr, hdata;
-> > -               u32 val;
-> > +               u32 val, write_end;
-> >                 int rc;
-> >
-> >                 if (tkey_ex) {
-> > @@ -451,12 +453,26 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buf=
-f *skb,
-> >                         }
-> >                 }
-> >
-> > -               if (!offset_valid(skb, hoffset + offset)) {
-> > -                       pr_info_ratelimited("tc action pedit offset %d =
-out of bounds\n", hoffset + offset);
-> > +               write_offset =3D hoffset + offset;
-> > +               if (!offset_valid(skb, write_offset)) {
-> > +                       pr_info_ratelimited("tc action pedit offset %d =
-out of bounds\n",
-> > +                                           write_offset);
-> >                         goto bad;
-> >                 }
-> >
-> > -               ptr =3D skb_header_pointer(skb, hoffset + offset,
-> > +               /* Earlier edits can change later header-relative offse=
-ts, so
-> > +                * grow the writable window from the final per-key stor=
-e.
-> > +                */
-> > +               if (write_offset >=3D 0) {
-> > +                       write_end =3D (u32)write_offset + sizeof(hdata)=
-;
-> > +                       if (write_end > max_offset) {
-> > +                               max_offset =3D min_t(u32, skb->len, wri=
-te_end);
-> > +                               if (skb_ensure_writable(skb, max_offset=
-))
-> > +                                       goto bad;
-> > +                       }
-> > +               }
-> > +
-> > +               ptr =3D skb_header_pointer(skb, write_offset,
-> >                                          sizeof(hdata), &hdata);
-> >                 if (!ptr)
-> >                         goto bad;
-> > @@ -475,7 +491,7 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff =
-*skb,
-> >
-> >                 *ptr =3D ((*ptr & tkey->mask) ^ val);
-> >                 if (ptr =3D=3D &hdata)
-> > -                       skb_store_bits(skb, hoffset + offset, ptr, 4);
-> > +                       skb_store_bits(skb, write_offset, ptr, sizeof(h=
-data));
-> >         }
-> >
-> >         goto done;
-> > --
-> > 2.43.0
-> >
+Why?
+
+Because the creds used for IO should *not* be the current creds. They
+should be the *open-time* creds. That code shouldn't use
+"current_cred->fsuid" AT ALL. It should use file->f_cred for
+credential checking.
+
+This is a classic mistake where you make a suid binary a file you
+opened - open it as regular user, pass it in to a suid binary as
+'stdin' or 'stdout'/ 'stderr', and get information (or overwrite
+things) that way that you shouldn't have had permissions to do.
+
+The user filesystem creds should be used for *open* time checking, not
+for read/write time checking.
+
+Now, this wchan thing is a case of "not really impotant enough to
+worry about", but it's an example of how this ptrace_may_access()
+interface is fundamentally broken.
+
+So the problem really is ptrace_may_access(), and that thing needs
+fundamental fixes. We should not add exit_mm to try to paper over the
+real issues.
+
+                  Linus
 
