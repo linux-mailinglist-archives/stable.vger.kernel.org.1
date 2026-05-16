@@ -1,185 +1,158 @@
-Return-Path: <stable+bounces-249040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIhtGoTXCGqZ7gMAu9opvQ
-	(envelope-from <stable+bounces-249040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 22:45:56 +0200
+	id CIr6NozeCGp09AMAu9opvQ
+	(envelope-from <stable+bounces-249041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 23:15:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C919855DBBA
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 22:45:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C2755DD4F
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 23:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35B78301BA74
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 20:45:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D04803019D05
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 21:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E288378833;
-	Sat, 16 May 2026 20:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AD3386561;
+	Sat, 16 May 2026 21:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="ZcgUXt5p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udodKoFy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCB535E1D9
-	for <stable@vger.kernel.org>; Sat, 16 May 2026 20:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D372B385D69;
+	Sat, 16 May 2026 21:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778964322; cv=none; b=mL2d/2k420h88XPeb4IXYO/9NNZmMpg+poVKRpG2JwxesvKE/bVWLUKeI7zwiSIr3re53BWA2MB8dyU7W7ncUcUmkRG0vaHM86RhXJ/n+6JpBYHrOLG0xA2g9BPfX5XFGWl62GCoavQOvjlhMpr4NSO+gYMTHoZ+FZk7ei0K5gE=
+	t=1778966081; cv=none; b=JR0G/14NMPsb+w7KBuPbnVwlbHBO8uSJwr9neCXAwU/v0wY9alvNaniK/PXxqfLpBsVEA7Ext71ztru5fcY8sNuZ2DQSFZFGNUA9VmBhHeu05FrVaujb+ey4L6ZBi9LKAQOYaSzRxMXOdLyMO3psEsG3hzOVovw0IvqiTlsjxfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778964322; c=relaxed/simple;
-	bh=RfhWyhkILQ9JdmZHbT+RrfNjTCyKMG4R356hSwJe3G8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=O/u2MxU+wGkQ8VOkeu3HqC01jx2+xQ0bByojUze1JgFEFu4TMYqdvffk1KMZRVTsJV33ohwQ/nlKUIZLanzS728QEue+4vZdTXeOLk8Fq6xXRXRa+R0Xw5ZqCbS4N8F1BEBc4IEbO7234Z/F7oOoHqcZv+bk2MB3yLM3/lDN3i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=ZcgUXt5p; arc=none smtp.client-ip=74.125.82.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2ef8d6ba48bso445970eec.1
-        for <stable@vger.kernel.org>; Sat, 16 May 2026 13:45:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexthop.ai; s=google; t=1778964317; x=1779569117; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oAd95b7/1qRCPRUMfS/TXEKMP5bhCN7d3v6gwbzEek0=;
-        b=ZcgUXt5pkLED9dRjEbySF2v7MT+6DaSl7KSguC6Rq8CKXdld+Hk9wtpT5Xs9sCajnU
-         TBZP29I0Jmii0ka7JaM4NrRjS2ToJM533aGIR/lp+6KomRGR/AxwN5Tek16pesydCkTM
-         jnSTaKuEC3siK2oBXZjVMqEJ3PFO3W2IlAW+Xk5Oqbzl+SKaIlzsDwNgHhNL0BqMHHym
-         LcV5lYR3oXKY5UkBNqpe62U9RZCZ3u1qQOYTcFPhfOrDTuwPXKNBX3WGzWz1EWeH3lBH
-         ee5Ugz8iaiWC/wC39QDzxIOy7so6xm/sAC2irVGuTDCrqKk+4CSrtCd7PMNH+rnVM+wy
-         h6Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778964317; x=1779569117;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=oAd95b7/1qRCPRUMfS/TXEKMP5bhCN7d3v6gwbzEek0=;
-        b=diZYQawSwyD3/EUi5KOvXOVFyZ2tFD35pwU6EYuTQ4RvK+qW4OlYAhz8+jpWftvlNd
-         NF6wkqjMqaaM1gV5Ch3mA3ajx+ul/ll2idZS5Zc1XF26RdYH5sAmf8Ug07VHRmNqaEC0
-         ktRpXoZs5fvEa99gVQgBWfRLUdLxNAAXVludSD+lvoHSSJwKdLT+SyaD9Bj1Emr1FXVN
-         8T4XJpNnHMNbWtG0nR13EL0kMGRzUmuRl2yHllgco/R6qX5kxhfH3AJ+IIVhZMZOsUNL
-         9p/4nSL+ZUEv0d/TmVxC0l7uaj48Sr1Q1qBh3A/eOuK16z/2wo+jol49WKh7lsfN3j/2
-         8DKg==
-X-Forwarded-Encrypted: i=1; AFNElJ++SCvn/szwxjpnlw33t23zovT/jhPWJFFPgfKXwDrKUbsIS7idyDFD2+htBFLr8snurUk+cYY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycrYEdJHyiNUlEWhMRTP+mzj6/vxtScIcNFMRwgG6af022+Eh1
-	zvyj73zF1SQZ+dd9ONclJb1maQKGy3YLlw1E4z8sm8sJ77B4fZjVM33U4pEniePEn6s=
-X-Gm-Gg: Acq92OFeQvq8kOqGhlpypYFJvJ6LwDRhz66JwTmCTsCdKf1OSku8JDZrcr+UGuG1Fnb
-	sdlnWK6KgUKAfx9gcEjJWcTTOZ4V3GAeQUdW1iAuWdVk6FP9V21/p1qscuIzzSIcojgf6zeop6i
-	jj+xaqs0k0KUaQpDM1AVGu45Z3Kk0vB61HQfFek0OcNvPjNyTknk9kxQCAzmIHe/seJE7ouE7HS
-	CuqhgUCREUgYJmmHLnSO0UPTqKYHuixbt6YXmc0WYWhk1MxCAzoRfDKZgvxPzisorLYhlZPEAZQ
-	poWSNe5cmfEE9pNMjhmyHXYCSTPSYnQr8Dlt0xiwEumOJrlXSzebQyxq/N0oB1mQ4SGsLhtvxI+
-	OxEXp9CKNlX4ikclwPfEipdtg/OYTUzvbAPlrpBDuJN8kQB1Qixhnz7w29S+6XkRK3f6gud18rA
-	/pDso6g4rlrIBBezXFD+IsAUqwEYcMDbaXb9YheDslP9A2lU8=
-X-Received: by 2002:a05:7300:5786:b0:2f4:d190:37bf with SMTP id 5a478bee46e88-30261e7524emr5925773eec.16.1778964316535;
-        Sat, 16 May 2026 13:45:16 -0700 (PDT)
-Received: from [127.0.0.2] ([50.145.100.174])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302947e917dsm10181189eec.12.2026.05.16.13.45.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 13:45:16 -0700 (PDT)
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Date: Sat, 16 May 2026 13:45:07 -0700
-Subject: [PATCH 2/2] hwmon: (pmbus/adm1266) don't clobber GPIO bits before
- PDIO read in get_multiple
+	s=arc-20240116; t=1778966081; c=relaxed/simple;
+	bh=eXb27mgMuft7D/Kna5spkvt2pEa3JGTJj4WtzToGUq8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=garI8TcWTHY84FdugXaUyt7nJVpts1/++yz2z2RpZ+pnvdXTVQ7S6Fv1ignR7QJcsQrCovJfRyRdjkCP95DvtmPY1WB6Up6FEA0JYjKwdiSa2sGvLRMlDTL6waCnhuK7rscnIk7wPkd7rYaAfzY15urep3wJJ1OomndVPTzN2Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udodKoFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A661C19425;
+	Sat, 16 May 2026 21:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778966081;
+	bh=eXb27mgMuft7D/Kna5spkvt2pEa3JGTJj4WtzToGUq8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=udodKoFyHuHw4e0+rQfbvCgxWvRXAMA4MMsmXi6USJIVqOK57GtkP7btDpyX7gqOF
+	 qUGCCUA0oc8cegm1UYvT70jB1q53LkMvmvljziC78Fe9KXro2TZBkDcICXg90kFLHG
+	 0wAz4HROL6k7Icrw4KMmPOZK+AZsHcUxNh6saUH29fCbEoKaMSju4n9OxbjMWNJqA7
+	 rxgfKOL8sUqN+j7SpEkM3FZBtv8c53toiG++jNgiZUCGKeeK3HFxTZ+q9Yi1KkfqUS
+	 FLgTNGmPFezzVwz/yclBqy6GAseYw/iokdRYXDYzLmhYWrXqXPMjGtGlFX+d0v7NRM
+	 qoFYWjLSd4v2g==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 2 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH] mm/damon/sysfs-schemes: delete tried region in regions_rmdirs()
+Date: Sat, 16 May 2026 14:14:35 -0700
+Message-ID: <20260516211436.1883-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260516-adm1266-gpio-fixes-v1-2-38d9dd39b905@nexthop.ai>
-References: <20260516-adm1266-gpio-fixes-v1-0-38d9dd39b905@nexthop.ai>
-In-Reply-To: <20260516-adm1266-gpio-fixes-v1-0-38d9dd39b905@nexthop.ai>
-To: Guenter Roeck <linux@roeck-us.net>, 
- Alexandru Tachici <alexandru.tachici@analog.com>, 
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, linux-gpio@vger.kernel.org, 
- Abdurrahman Hussain <abdurrahman@nexthop.ai>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778964314; l=1492;
- i=abdurrahman@nexthop.ai; s=20260510; h=from:subject:message-id;
- bh=RfhWyhkILQ9JdmZHbT+RrfNjTCyKMG4R356hSwJe3G8=;
- b=w7SBG8WKVytyc0UPa0IqJNBMBW0tyJp01IO5+hbO9NQmQBlE6iXe90w1vbz3ZaaylqfT9gY4u
- YEdqDozT+oCAAJQBxYRgvdBEZB0qsql1Lf0Al0oe+SSsx08B+L0eayD
-X-Developer-Key: i=abdurrahman@nexthop.ai; a=ed25519;
- pk=omTm9cCAbO0ZhS32aKfJDKue0W3sQGpG9ub5eYHif8I=
-X-Rspamd-Queue-Id: C919855DBBA
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 89C2755DD4F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
-	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nexthop.ai:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249041-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249040-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-adm1266_gpio_get_multiple() zeroes *bits before the GPIO_STATUS loop
-and then a second time before the PDIO_STATUS loop:
+DAMON sysfs maintains the DAMOS tried region directory objects via a
+linked list.  When the user requests refresh of the directories, DAMON
+sysfs removes all the region directories first, and then generate
+updated regions directory on the empty space.  The removal function
+(damon_sysfs_scheme_regions_rm_dirs()) only puts the kobj objects.
+Deletion of the container region object from the linked list is done
+inside the kobj release callback function.
 
-	*bits = 0;
-	for_each_set_bit(gpio_nr, mask, ADM1266_GPIO_NR) {
-		...
-		set_bit(gpio_nr, bits);
-	}
+If somehow the callback invocation is delayed, the list will contain
+regions list that gonna be freed.  If the updated region directories
+creation is started in this situation, the list can be corrupted and
+use-after-free can happen.
 
-	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, ...);
-	...
-	*bits = 0;
-	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
-		...
-		set_bit(gpio_nr, bits);
-	}
+Because the kobj objects are managed by only DAMON sysfs, the issue
+cannot happen in normal situation.  But, such delays can be made on
+kernels that built with CONFIG_DEBUG_KOBJECT_RELEASE.  On the kernel,
+the issue can indeed be reproduced like below.
 
-The second *bits = 0 throws away every GPIO bit the first loop just
-populated, so callers asking for any combination of GPIO and PDIO
-pins always see the GPIO portion of the returned bits as zero.
+    # damo start --damos_action stat
+    # cd /sys/kernel/mm/damon/admin/kdamonds/0/
+    # for i in {1..10}; do echo update_schemes_tried_regions > state; done
+    # dmesg | grep underflow
+    [   89.296152] refcount_t: underflow; use-after-free.
 
-Drop the redundant second assignment so both halves of the result
-survive.
+Fix the issue by removing the region object from the list when
+decrementing the reference count.
 
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+The issue was discovered [1] by Sashiko.
+
+[1] https://lore.kernel.org/20260513011920.119183-1-sj@kernel.org
+
+Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
+Cc: <stable@vger.kernel.org> # 6.2.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c | 1 -
- 1 file changed, 1 deletion(-)
+ mm/damon/sysfs-schemes.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index 11f9a44f4361..4dd67c02b412 100644
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -210,7 +210,6 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 5d966ac864193..52627ce3a1a62 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -88,7 +88,6 @@ static void damon_sysfs_scheme_region_release(struct kobject *kobj)
+ 	struct damon_sysfs_scheme_region *region = container_of(kobj,
+ 			struct damon_sysfs_scheme_region, kobj);
  
- 	status = read_buf[0] + (read_buf[1] << 8);
+-	list_del(&region->list);
+ 	kfree(region);
+ }
  
--	*bits = 0;
- 	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
- 		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
- 			set_bit(gpio_nr, bits);
+@@ -164,7 +163,7 @@ static void damon_sysfs_scheme_regions_rm_dirs(
+ 	struct damon_sysfs_scheme_region *r, *next;
+ 
+ 	list_for_each_entry_safe(r, next, &regions->regions_list, list) {
+-		/* release function deletes it from the list */
++		list_del(&r->list);
+ 		kobject_put(&r->kobj);
+ 		regions->nr_regions--;
+ 	}
 
+base-commit: 950de73f0f8bb17fc322e8f9ec09a5fbb4a72ed8
 -- 
-2.53.0
-
+2.47.3
 
