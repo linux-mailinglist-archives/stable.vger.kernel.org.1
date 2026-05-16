@@ -1,85 +1,85 @@
-Return-Path: <stable+bounces-249052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIbDL5j7CGpgDgQAu9opvQ
-	(envelope-from <stable+bounces-249052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 01:19:52 +0200
+	id sPp4LLb7CGppDgQAu9opvQ
+	(envelope-from <stable+bounces-249053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 01:20:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499C555E3FC
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 01:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5586255E418
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 01:20:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA30130293C4
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 23:19:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 644FA302FA97
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 23:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3E33A4513;
-	Sat, 16 May 2026 23:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545173A6B79;
+	Sat, 16 May 2026 23:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="TKiimgkS"
+	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="XGRWecXk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6B139DBFF
-	for <stable@vger.kernel.org>; Sat, 16 May 2026 23:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9DF39DBC2
+	for <stable@vger.kernel.org>; Sat, 16 May 2026 23:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778973540; cv=none; b=Nede/2cI9Al0iQUq8SyM/dKgX9r6Es+wiRdmMh1/1pXMJNX7NwrqSXMZVCCMPlcGL+P2cqYYAsQ9wjnS2KXvzGjW2hQF+S2dAvSqK3C+LKDnfYzAPZe+bz8GhJ5os/dWDd2y2ZTzDBqpzFXyhOP/TDUTwZdzzdh+8HO9V3vmrVY=
+	t=1778973541; cv=none; b=Gjr7R+imP2HBkEJuEnxA29xAtA3CHTW1dyxEwtQTSbip2F3EfVWJer9pos1wUi84gvzOg1fTICpfL+cXWWhpKf0H9NFk8dfeU69MVtnykiwZ4bmqeniQ/aym0Rao1bjpriSOZrrXoD2ZbD48fKY1ZTgtg4vFqbsd1mkhtuwifK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778973540; c=relaxed/simple;
-	bh=N23J27IfJVGe7SPQQt1S3jRHCJD8YogYhTzhMnkG0uE=;
+	s=arc-20240116; t=1778973541; c=relaxed/simple;
+	bh=yxjAXeOD8vgYHpYNi2nRb2U8lGvMYDcyt4MCoMgxNz8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aYFharCr8rpUU8zuFnnUEzYQatmCuiXnQ41+NJWBhzW3/K8XNQJdmw6QAswkPkpUSuvYdIl6WXU/TNT4csXjojf+sPC5fqw9xMGgT0aly3+PQ4Qi9sEIRr8fM8bFW+mtS6OF25WXvkewTErABvqYFRfcZBtGF/zjm83ro1yFakA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=TKiimgkS; arc=none smtp.client-ip=74.125.82.53
+	 In-Reply-To:To:Cc; b=uKfp3sDoXDZX0c8VE5zAuDIdhiKa0RUnBOzDKp6oVhbe12191HFOx5ik8jkyjl17ggCu7X3orDTm95h2cxRzfOvLT+KdGZzuG4h4hT60/ChGWPGvboLpRPK/ftY3CRIgnNalBz5gFrg//3t/YRvcELXFI952aw6oX9Bi6cE9d9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=XGRWecXk; arc=none smtp.client-ip=74.125.82.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-132c338a537so1397084c88.0
-        for <stable@vger.kernel.org>; Sat, 16 May 2026 16:18:58 -0700 (PDT)
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-12c1a170a50so1172000c88.0
+        for <stable@vger.kernel.org>; Sat, 16 May 2026 16:18:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=nexthop.ai; s=google; t=1778973538; x=1779578338; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dA2Xn0JnUjF9oxy4I1Ocf3rxy01MmF3T7GcfHEypX4c=;
-        b=TKiimgkSAL9g5bijz9kfouf72dVsWGjjga+8jKXZTK7hJuSTq7h8j7fLR65+G3qvhv
-         QVwCvVMVE4RYBXDYnaNOGiLOCwU/orzmrnwXgcZqpYBjMF6V95ESjEZJKsufgFv5IHTH
-         bWfEjMU/nYdwDcju3NYgugt6yRkjdum6KVnBhlFGygXxtHPa8x6eQBvmchL1Dn5g/xE2
-         b5L677/E9r3MAc6IGCnsAFhf7s+iMft/MTxr57/BRQ2XirBJj5kQjQ0DQ52COHRvB6Zc
-         f1kRTNOseNX5G9jLXsaqQultJqYh8o1Jjz1aXqRpgSvbtp/yrtki8Db6JsRAs2deqBvi
-         UZTg==
+        bh=jUnfFsool58oW+sRC5tpMK9MOqrwqv2manCcCe6X7bw=;
+        b=XGRWecXkhtobTKZQlG46zaZAm34o3C9AA9gVr2yB0uDviFi4xxbnHQtsTFstT6xMi6
+         YSnH2wTfJBT7cwFQaggRfl9RFopXStbHXByPoNN3A6pedzqzHfdKAryxcnCJZewe4A+X
+         FtcVCQNVPXdYeIAWLM0MqKWaPGziopTZjIn1qaiU/gJrGr1iQrXOrd2luXzZ2PKs7UhE
+         Lbcs2Y2FAF4VX3RVSHU5/0WQ2a+8nI+QDMs+kPRRWfaRCaQ9OPH8HD17iZamCP4Ft/Lu
+         KHNgSzUC2fHSt53LNwqjNEsWXxbm+ySEzW7+imWPTTUdHjrQdUN5Ozl0b1M06DIEcAQR
+         MV3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1778973538; x=1779578338;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=dA2Xn0JnUjF9oxy4I1Ocf3rxy01MmF3T7GcfHEypX4c=;
-        b=lVg822vhA3rXNGL8roIJ72Fd515D9nLcp2zHTVJ7GaWfQ2uy5ylCOwKnSqdUCW1+3d
-         Vjc79iJRQ8df0ogKLkemvs++IFeuOxAQW8N4hLI+/4IiaWoI+vdBlFOBeAOCnU1qmRWk
-         Q7swXhRoAH1L+RsBPqWwcORrUNJEivRU5J01cf6/H2QPaoI5nWXgLdAm7Z2wBs4xn55k
-         db64DqjcS9pohPuBfitdYCwu4Ri7oKk8byrIyvq/J1zz7Rnq1jExFecL6AKjTFVlzV2f
-         +QoPpc+0Iua8iR0AIUx85D5362A/VJuWjZjZJ5EbZF4FontG0MlNVa8CfpsLxj/qdu6b
-         Gdqw==
-X-Forwarded-Encrypted: i=1; AFNElJ9Y3tKp+wEd9sj0Ie4YME8aJtTWBIsAMnQFEMeqlar43mAlBvBLf9W6j9WkZulKG1QsviyN7Cg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6ScRDAml/gHvwbIqZ38MbU8tNEXd5DtF7xNIOCukvRRLdrsO9
-	9nC0fSIsBSFw4S/FSDlH3JdcxiQtjaz6aafuG6qeC6nkywbX58RLBFcMjVnSqvR2RD8=
-X-Gm-Gg: Acq92OEATpC1kmNmkZQupFnjoY7isODhzD9kaK/9SFdE6BbAMUHESkn+OvnSKD9pjuj
-	KQPyWeDDaA/d9WrGdxjjy7l3w3CLgAf1mRR9FOYQFD+hJDPMO4NfUXnb65gMSWOEiCO7mbhAjpj
-	lSjrK1K1t1Xq7N2S8UTopPSJHKhUJngSNxwmOKuMiJtu7r869hAo7+5rR1MqUnDCm7T6k12590I
-	sGb9ubUjChiVYJsS9dWHmBA5Kz7FnnIJaoS3FzNITXFreugQW7X9Sd0Bs5x39WdHTwHIAZHoSNP
-	H2SQsiXjnd6kXMbYpdM8oJjJkzd6hxBQMWyt+S5+kbqnJKq580hM7CrsYA7I+K+MVAiFXRnJmyq
-	WuXFXUxANqn4b+WyC5GVHUN6TknPrguOOInTEN0QiKb26yTOYOXX/bHVOkV2UBoP/MXeb7MPvu4
-	d013C36X+01XPVoswYv1tdiKZOcXRPQvrej1KW
-X-Received: by 2002:a05:7022:f96:b0:12c:9037:5115 with SMTP id a92af1059eb24-134ffe9529bmr3676098c88.13.1778973537611;
-        Sat, 16 May 2026 16:18:57 -0700 (PDT)
+        bh=jUnfFsool58oW+sRC5tpMK9MOqrwqv2manCcCe6X7bw=;
+        b=l2uRov60CtmJK4NJPpNH2//lEnDwY06B1C0iVZRilSlkXw/cEndxLUdHpWH5Frd7nz
+         NKcb8Jzy3pvaAOX2i5JmWCAETYwdMRsOtux7eEe7XfjhqIHHj8gLYWi19lHpeeJTNf0f
+         x9tnk17alcP1FwtwkwugslxZVXCJ8Fr04k+98Zpv22sHWaEnVeQgBM/iSGSP3nBZSc9t
+         rhdKJu0VPUGJJ4lWCIuNE/cugeRdSROqzPdY1zMLanPAj84d6j8jFDENGlOdo1rBxQXP
+         PLies1V6tqfJGque09bPMosJ88VpocqTv+6HzeGvHKGwPTcUGPn+zmKGvt8FVRkmqJEk
+         YcnA==
+X-Forwarded-Encrypted: i=1; AFNElJ8pZuLOFP8o8jB3JDSNfmo+Fcyi1OBlWYpFsOFBHbCNxtFyBbWx8/3m52Mw1ghkNbqxG6BomRk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvbfK/59YTnRNYafs5I5v3rL1Ao9WHjQPapiFcIrxx/dmsvJik
+	+wUaGFjJfUC9W3ZsDZhussnX2434dGJe5zqhLAkEeaWjIwRCzLlalzuVKKjiPgiRW2A=
+X-Gm-Gg: Acq92OGevm/QaXepS3yJXXvipw05dlHzh5bW+/AT5RMxewvSNxETeq7sSILXZFNmCdg
+	MCF/AgvkEqX0O3Y6lbzFyorR/l/koyBsBhO6IWCdgGQ/PKbCd1aMesS4swGAKFl3ScVIpx/A6Nd
+	jQhTF5p5z/hW6/+pFDIoVeM69XNsZobzt0S9sw9ckIS+j9ux40RwWvivFNjhTf72PkZCIbcaqe7
+	daqk8bUnRMHrLJV0LtZSmZyGmI4v7NiqsJwTbrdSUVWfV5Hpxd7je/CMdjm+srmgyCs5ps3P02J
+	OSzYu4+uPdH1YsxqzY1u69AMP1EqzYLL0ulNbEaAnTPwGHfyVArWLLzeTEc6MDZnHfw4A9Nqe/m
+	n77qrYvOFNkGRytLw7+8eEDbxRMp/eESKhKNu4wYboI8aQOQm5OpWCLdSBrNNs/IiWN9F3SezKc
+	c62oDs22ipB8FxB/CfP2NYLrj2TzqMw7g6r+fP
+X-Received: by 2002:a05:7022:6621:b0:134:a710:d908 with SMTP id a92af1059eb24-1350451887emr3707639c88.13.1778973538361;
+        Sat, 16 May 2026 16:18:58 -0700 (PDT)
 Received: from [127.0.0.2] ([50.145.100.174])
         by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbcb9ef5sm14722254c88.2.2026.05.16.16.18.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 16:18:57 -0700 (PDT)
+        Sat, 16 May 2026 16:18:58 -0700 (PDT)
 From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Date: Sat, 16 May 2026 16:18:49 -0700
-Subject: [PATCH v2 3/5] hwmon: (pmbus/adm1266) reject short block-read
- responses in the GPIO accessors
+Date: Sat, 16 May 2026 16:18:50 -0700
+Subject: [PATCH v2 4/5] hwmon: (pmbus/adm1266) register the gpio_chip after
+ pmbus_do_probe()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,7 +88,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260516-adm1266-gpio-fixes-v2-3-801f13debcb2@nexthop.ai>
+Message-Id: <20260516-adm1266-gpio-fixes-v2-4-801f13debcb2@nexthop.ai>
 References: <20260516-adm1266-gpio-fixes-v2-0-801f13debcb2@nexthop.ai>
 In-Reply-To: <20260516-adm1266-gpio-fixes-v2-0-801f13debcb2@nexthop.ai>
 To: Guenter Roeck <linux@roeck-us.net>, 
@@ -98,20 +98,20 @@ Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org, linux-gpio@vger.kernel.org, 
  Abdurrahman Hussain <abdurrahman@nexthop.ai>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778973534; l=2321;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778973534; l=1739;
  i=abdurrahman@nexthop.ai; s=20260510; h=from:subject:message-id;
- bh=N23J27IfJVGe7SPQQt1S3jRHCJD8YogYhTzhMnkG0uE=;
- b=XrOwSRfWwG+q0SuALxjvhTMWsm+OP1kNQlIn0Z46oqN7219YpmYw7z+gUT4oTOENMEBlSyuQv
- Syirv9rW4wWBz9/Z9npoptY/vyCDDNp1+tsx75VEVuEyHPX4hV0gOhx
+ bh=yxjAXeOD8vgYHpYNi2nRb2U8lGvMYDcyt4MCoMgxNz8=;
+ b=WTiOWdWghEIO6M71PDijdRA0E0SWlC77JtKTutsFSXf2+p8yo3CIbVwylMBta2u5GORRt7VpR
+ WfxCxYPFXsSAF4CAqveVJLuBo0aBnPgglLTy0Y4rYcbslUwj/KD/i+d
 X-Developer-Key: i=abdurrahman@nexthop.ai; a=ed25519;
  pk=omTm9cCAbO0ZhS32aKfJDKue0W3sQGpG9ub5eYHif8I=
-X-Rspamd-Queue-Id: 499C555E3FC
+X-Rspamd-Queue-Id: 5586255E418
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
 	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -120,7 +120,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249052-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249053-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
@@ -132,69 +132,58 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-adm1266_gpio_get() and adm1266_gpio_get_multiple() both compose the
-pin-status word as
+adm1266_probe() calls adm1266_config_gpio() -- which goes on to
+devm_gpiochip_add_data() and exposes the gpio_chip callbacks to
+gpiolib -- before pmbus_do_probe() has initialised the per-client
+PMBus state (notably the pmbus_lock mutex the core hands out via
+pmbus_get_data()).
 
-	pins_status = read_buf[0] + (read_buf[1] << 8);
+That ordering is already a latent hazard: any GPIO access that lands
+between adm1266_config_gpio() and the end of pmbus_do_probe() (for
+example a sysfs read from a user space agent that opens the gpiochip
+the instant gpiolib advertises it) races pmbus_do_probe()'s own
+device accesses with no serialisation.
 
-right after i2c_smbus_read_block_data(), guarding only against an
-error return.  A well-behaved device returns 2 bytes for
-GPIO_STATUS/PDIO_STATUS, but the helper happily reports a 0- or
-1-byte response too.  If the device returns 0 bytes, both read_buf
-slots are uninitialized stack memory; if it returns 1 byte, read_buf[1]
-is.
-
-The composed value then flows through set_bit() into the caller's
-*bits in adm1266_gpio_get_multiple(), or into the return value of
-adm1266_gpio_get(), and ends up in userspace via gpiolib (sysfs and
-the char-dev ioctls).  That leaks a few bits of kernel stack per
-request on any device whose firmware glitch, bus error, or hostile
-slave produces a short block-read response.
-
-Add the missing length check to both call sites and surface a short
-response as -EIO.
+Move adm1266_config_gpio() down past pmbus_do_probe() so the chip
+isn't reachable from userspace until the PMBus state it depends on
+is fully initialised.
 
 Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
 Cc: stable@vger.kernel.org
 Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 ---
- drivers/hwmon/pmbus/adm1266.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hwmon/pmbus/adm1266.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index 4dd67c02b412..57cb7d302cdd 100644
+index 57cb7d302cdd..b91dcf067fa6 100644
 --- a/drivers/hwmon/pmbus/adm1266.c
 +++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -175,6 +175,8 @@ static int adm1266_gpio_get(struct gpio_chip *chip, unsigned int offset)
- 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
+@@ -467,10 +467,6 @@ static int adm1266_probe(struct i2c_client *client)
+ 	crc8_populate_msb(pmbus_crc_table, 0x7);
+ 	mutex_init(&data->buf_mutex);
+ 
+-	ret = adm1266_config_gpio(data);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = adm1266_set_rtc(data);
  	if (ret < 0)
  		return ret;
-+	if (ret < 2)
-+		return -EIO;
- 
- 	pins_status = read_buf[0] + (read_buf[1] << 8);
- 	if (offset < ADM1266_GPIO_NR)
-@@ -195,6 +197,8 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
- 	if (ret < 0)
+@@ -483,6 +479,10 @@ static int adm1266_probe(struct i2c_client *client)
+ 	if (ret)
  		return ret;
-+	if (ret < 2)
-+		return -EIO;
  
- 	status = read_buf[0] + (read_buf[1] << 8);
++	ret = adm1266_config_gpio(data);
++	if (ret < 0)
++		return ret;
++
+ 	adm1266_init_debugfs(data);
  
-@@ -207,6 +211,8 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, read_buf);
- 	if (ret < 0)
- 		return ret;
-+	if (ret < 2)
-+		return -EIO;
- 
- 	status = read_buf[0] + (read_buf[1] << 8);
- 
+ 	return 0;
 
 -- 
 2.53.0
