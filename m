@@ -1,255 +1,204 @@
-Return-Path: <stable+bounces-248976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LJKI2UvCGr/dAMAu9opvQ
-	(envelope-from <stable+bounces-248976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 10:48:37 +0200
+	id qNa5Eo82CGoHegMAu9opvQ
+	(envelope-from <stable+bounces-248977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 11:19:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D71C55ACB3
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 10:48:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F7E55ADED
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 11:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 999EE301626A
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 08:48:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D85CE300F525
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 09:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603DF33D6CA;
-	Sat, 16 May 2026 08:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D8231B131;
+	Sat, 16 May 2026 09:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bIHDi5VA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KnINnkac"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F50C221F1F;
-	Sat, 16 May 2026 08:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3BB2C375A
+	for <stable@vger.kernel.org>; Sat, 16 May 2026 09:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778921310; cv=none; b=QcZMm+9xO6isNPfuJVdROrI5JHpV36OiBK8P/Pc2moC+KMl3x5Q4N1dRPB6lNewdN4QLU/QOrdN9qWTXymtMoUnQDu/xE724r9bCp8Xgf8a8ySgFw384T+7oi3Qr6GgH6oUXM2Bf+gg40UECOtnFGnUtx8hftXQRWLrjUdriqcU=
+	t=1778923148; cv=none; b=TgApscALCo+fxK2b5oBJLOjmhLx70TdzfSps9UCdKBZbk69R01gZzUQKWoIySL3lpgY95tuB44Mhx3gVQvUVP0g3jLVBI6KCsObcENSLDHQoOaXhoV6ZeaqkrzNQQ4AIaYiJ/6sHZHz/OARd0L4OzIa1au2GCu9ggsuf7zcE6Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778921310; c=relaxed/simple;
-	bh=C/KdbZhKdnm2IqWBK6/nDYzlhoIAHVR0ak5kFaG1D30=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rZdGz48ii+ZvZ5ks67Etr8VIp45gTRXoAvXkU1GmgJ4svbh0f28VvbUQKBwckE/LFbizTwykkuHwzR8cCgm5n8so9NlZX9vof9dzKnM/JvmqVcrXr3zsmWfmfPqJ/EH+sF0JjBTShznZGl6+qfnWbJmqWV9jX3ze+t3jZVM91AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bIHDi5VA; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=jH
-	AhjcETb/ZnAdmx4n8IoZ5YTVndi/c2JT90gNt21W8=; b=bIHDi5VArZZQbJSQVu
-	bCIPiGdk8ZbCrNRnJmwLdoNrUGcIOOgqVw2s2DviqBuKb/2QDawckjQJ1iZs/HwQ
-	0ELff+9091xLTI29SWps87A3PMN9LJ/TZPf5FmLzVfkzkze8Am19eEoBQoybBxNM
-	+xe1PyBZ7UtVGl8HutAnSRJeE=
-Received: from 163.com (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wB3oPMhLwhqLqdABg--.53984S2;
-	Sat, 16 May 2026 16:47:40 +0800 (CST)
-From: <w15303746062@163.com>
-To: luiz.dentz@gmail.com,
-	pmenzel@molgen.mpg.de,
-	marcel@holtmann.org,
-	linux-bluetooth@vger.kernel.org
-Cc: linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	greg@kroah.com,
-	stable@vger.kernel.org,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Subject: [PATCH v7] Bluetooth: hci_uart: fix UAFs and race conditions in close and init paths
-Date: Sat, 16 May 2026 16:47:27 +0800
-Message-Id: <20260516084727.420032-1-w15303746062@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CABBYNZ+r3gm37FW5WqE79bRp+x9UZsaCtyvfz_FdixqEucAxGw@mail.gmail.com>
-References: <CABBYNZ+r3gm37FW5WqE79bRp+x9UZsaCtyvfz_FdixqEucAxGw@mail.gmail.com>
+	s=arc-20240116; t=1778923148; c=relaxed/simple;
+	bh=eOb5sbdQV10aHUonwTo2zubM7o6+2xf0HTAp6nThwfw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Fnz9xreWAs535DyYRXmuDNaNaAFmZe526kIbzagqQviY0ga36zsebbhTon3oMmEYSUv7gANYFmxNpIt9DNdx4iRrSaIs2PFZdAUkYGq+Hhu80sirWnckAAoGg8WE3Qj8RODkCCxDwwqNow+IKe5Hng4/tW0rreAS2FezTPVL1fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KnINnkac; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778923146; x=1810459146;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=eOb5sbdQV10aHUonwTo2zubM7o6+2xf0HTAp6nThwfw=;
+  b=KnINnkacvexZQo6xn4QoIYeYBp8jmCvYVjoDMLdSyxMPM4rEizdaLpdf
+   3CFviCMmlfoxgzTP8KUBXPACcYncqJOdOXVTh0RtLb3zpDdQzkgI0c8xn
+   1PyaiiOFBUt+8IJ3+KcIBkhLFbj+PYOsJXRMQHkphVX5YnR9BP4aZoVv1
+   AoriaEYJC2lqUF0RXzKMtiA13LrPQA3DqavM2UrbxYy8U5WvjiPifYHEk
+   SgHbzHy21zEE3bBB3vce+KO50mtWnQbxcFI9sfoNQMfeQyCtWVKv93wBt
+   Jr4ek853Z3DF+HpcpJxL+yCbbpPQGgf74QpxXHjEPDPq09aby0+Q5UsKl
+   A==;
+X-CSE-ConnectionGUID: 4aXLc2btTaq8e7dYU4LO7w==
+X-CSE-MsgGUID: p+UIa428SnCIr1lsdAEHHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79579657"
+X-IronPort-AV: E=Sophos;i="6.23,238,1770624000"; 
+   d="scan'208";a="79579657"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2026 02:19:05 -0700
+X-CSE-ConnectionGUID: dR1vF0YzQWy4kKwKWQ4/7A==
+X-CSE-MsgGUID: oVmPZFnSQbaR2aD12Xo0IA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,238,1770624000"; 
+   d="scan'208";a="277033151"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.160])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2026 02:19:04 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: "Kandpal, Suraj" <suraj.kandpal@intel.com>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] drm/xe/display: fix oops in suspend/shutdown without
+ display
+In-Reply-To: <DM3PPF208195D8D504F655566B2A718B650E3042@DM3PPF208195D8D.namprd11.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260515160920.1082842-1-jani.nikula@intel.com>
+ <DM3PPF208195D8D504F655566B2A718B650E3042@DM3PPF208195D8D.namprd11.prod.outlook.com>
+Date: Sat, 16 May 2026 12:19:01 +0300
+Message-ID: <47fc29d462ebaa0fde9f229c8384099e9ccd99c0@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wB3oPMhLwhqLqdABg--.53984S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Xr1fZF18GF4kuFyxKFykKrg_yoWxGw4rpF
-	4YkF90kr48XFW293WDZa1xJF1rKF1fKayak34fG3yrX3s8tr1YkF1IkFyFgF1UCryvyr4S
-	vF4UXrW5ua4jvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5_-PUUUUU=
-X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC5AxzV2oILyxUXQAA3k
-X-Rspamd-Queue-Id: 0D71C55ACB3
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 99F7E55ADED
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248976-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,molgen.mpg.de,holtmann.org,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	NEURAL_HAM(-0.00)[-0.996];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248977-lists,stable=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[163.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jani.nikula@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gitlab.freedesktop.org:url,intel.com:email,intel.com:mid,intel.com:dkim]
 X-Rspamd-Action: no action
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+On Fri, 15 May 2026, "Kandpal, Suraj" <suraj.kandpal@intel.com> wrote:
+>> Subject: [PATCH] drm/xe/display: fix oops in suspend/shutdown without
+>> display
+>> 
+>> The xe driver keeps track of whether to probe display, and whether display
+>> hardware is there, using xe->info.probe_display. It gets set to false if there's no
+>> display after intel_display_device_probe(). However, the display may also be
+>> disabled via fuses, detected at a later time in
+>> intel_display_device_info_runtime_init().
+>> 
+>> In this case, the xe driver does for_each_intel_crtc() on uninitialized mode
+>> config in xe_display_flush_cleanup_work(), leading to a NULL pointer
+>> dereference, and generally calls display code with display info cleared.
+>> 
+>> Check for intel_display_device_present() after
+>> intel_display_device_info_runtime_init(), and reset
+>> xe->info.probe_display as necessary. Also do unset_display_features()
+>> for completeness, although display runtime init has already done that. This will
+>> need to be unified across all cases later.
+>> 
+>> Move intel_display_device_info_runtime_init() call slightly earlier, similar to
+>> i915, to avoid a bunch of unnecessary setup for no display cases.
+>> 
+>> Note #1: The xe driver has no business doing low level display plumbing like
+>> for_each_intel_crtc() to begin with. It all needs to happen in display code.
+>> 
+>> Note #2: The actual bug is present already in commit 44e694958b95
+>> ("drm/xe/display: Implement display support"), but the oops was likely
+>> introduced later at commit ddf6492e0e50 ("drm/xe/display: Make display
+>> suspend/resume work on discrete").
+>> 
+>> Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
+>> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7904
+>> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/6150
+>> Cc: <stable@vger.kernel.org> # v6.8+
+>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>
+> LGTM,
+> Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 
-Vulnerabilities leading to Use-After-Free (UAF) and Null Pointer
-Dereference (NPD) conditions were observed in the lifecycle management
-of hci_uart.
+Thanks, pushed to drm-intel-next (and not drm-xe-next) to avoid
+conflicts with other display changes.
 
-The primary issue arises because the workqueues (init_ready and
-write_work) are only flushed/cancelled if the HCI_UART_PROTO_READY
-flag is set during TTY close. If a hangup occurs before setup completes,
-hci_uart_tty_close() skips the teardown of these workqueues and
-proceeds to free the `hu` struct. When the scheduled work executes
-later, it blindly dereferences the freed `hu` struct.
+BR,
+Jani.
 
-Furthermore, several data races and UAFs were identified in the teardown
-sequence:
-1. Calling hci_uart_close(hdev) before cancel_work_sync(&hu->write_work)
-   causes a race condition where hci_uart_flush() and write_work
-   can concurrently double-free hu->tx_skb.
-2. Calling hci_free_dev(hdev) before hu->proto->close(hu) causes a UAF
-   when vendor specific protocol close callbacks dereference hu->hdev.
-3. In the initialization error paths, failing to take the proto_lock
-   write lock before clearing PROTO_READY leads to races with active
-   readers (e.g., hci_uart_tty_receive).
+>
+>> ---
+>>  drivers/gpu/drm/xe/display/xe_display.c | 11 +++++++++--
+>>  1 file changed, 9 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/drivers/gpu/drm/xe/display/xe_display.c
+>> b/drivers/gpu/drm/xe/display/xe_display.c
+>> index 053abd6f6514..5f25932730f4 100644
+>> --- a/drivers/gpu/drm/xe/display/xe_display.c
+>> +++ b/drivers/gpu/drm/xe/display/xe_display.c
+>> @@ -104,6 +104,15 @@ int xe_display_init_early(struct xe_device *xe)
+>> 
+>>  	intel_display_driver_early_probe(display);
+>> 
+>> +	intel_display_device_info_runtime_init(display);
+>> +
+>> +	/* Display may have been disabled at runtime init */
+>> +	if (!intel_display_device_present(display)) {
+>> +		xe->info.probe_display = false;
+>> +		unset_display_features(xe);
+>> +		return 0;
+>> +	}
+>> +
+>>  	/* Early display init.. */
+>>  	intel_opregion_setup(display);
+>> 
+>> @@ -117,8 +126,6 @@ int xe_display_init_early(struct xe_device *xe)
+>> 
+>>  	intel_bw_init_hw(display);
+>> 
+>> -	intel_display_device_info_runtime_init(display);
+>> -
+>>  	err = intel_display_driver_probe_noirq(display);
+>>  	if (err)
+>>  		goto err_opregion;
+>> --
+>> 2.47.3
+>
 
-Fix these synchronization and lifecycle issues by:
-1. Re-ordering hci_uart_tty_close() to unconditionally cancel init_ready
-   first, then atomically clear PROTO_READY under proto_lock, and safely
-   cancel write_work before touching hdev.
-2. Relocating hu->proto->close(hu) strictly prior to hci_free_dev(hdev)
-   across all close and error paths to prevent vendor-level UAFs.
-3. Utilizing cancel_work_sync() instead of disable_work_sync() after
-   flags are cleared to safely flush workqueues without permanently
-   breaking user-space retry capabilities.
-
-Fixes: 3b799254cf6f ("Bluetooth: hci_uart: Cancel init work before unregistering")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
----
-Changes in v7:
-- Reverted disable_work_sync() back to cancel_work_sync() across all error and close paths to preserve user-space retry capabilities, addressing the regression introduced in v4/v6 where work items were permanently disabled.
-- Synchronized workqueue teardown safely by atomically clearing PROTO_READY / PROTO_INIT under proto_lock prior to calling cancel_work_sync(), preventing any concurrent work requeuing.
-- Fixed a Use-After-Free (UAF) vulnerability in the teardown sequence by relocating hu->proto->close(hu) strictly prior to hci_free_dev(hdev) in all close and error paths, ensuring vendor specific callbacks safely access hu->hdev.
-- Added cancel_work_sync(&hu->init_ready) at the very beginning of hci_uart_tty_close() to serialize teardown against active asynchronous registration, eliminating race-induced double-frees.
-
-Changes in v6:
-- Fixed missing `hu->proto_lock` write lock in hci_uart_init_work() error path to prevent race with readers (reported by Sashiko).
-- Added disable_work_sync() instead of cancel_work_sync() for `hu->write_work` in hci_uart_init_work() and hci_uart_register_dev() error paths to completely block any concurrent re-queuing window before hdev is freed (reported by Sashiko).
-
-Changes in v5:
-- Relocated disable_work_sync() to the very top of hci_uart_tty_close(), 
-  before hci_uart_close(), to ensure no new work is submitted during device teardown.
-
-Changes in v4:
-- Adopted Luiz's suggestion to use disable_work_sync() instead of 
-  cancel_work_sync() in close path to prevent new work submissions.
-
-Changes in v3:
-- Added 'Cc: stable' tag as requested by the stable bot.
-
-Changes in v2:
-- Added KASAN/ODEBUG crash trace.
-
- drivers/bluetooth/hci_ldisc.c | 35 ++++++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index 275ea865bc29..46a080f77cb1 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -194,7 +194,15 @@ void hci_uart_init_work(struct work_struct *work)
- 	err = hci_register_dev(hu->hdev);
- 	if (err < 0) {
- 		BT_ERR("Can't register HCI device");
-+
-+		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
-+		percpu_up_write(&hu->proto_lock);
-+
-+		/* Safely cancel work after clearing flags */
-+		cancel_work_sync(&hu->write_work);
-+
-+		/* Close protocol before freeing hdev */
- 		hu->proto->close(hu);
- 		hdev = hu->hdev;
- 		hu->hdev = NULL;
-@@ -531,6 +539,7 @@ static void hci_uart_tty_close(struct tty_struct *tty)
- {
- 	struct hci_uart *hu = tty->disc_data;
- 	struct hci_dev *hdev;
-+	bool proto_ready;
- 
- 	BT_DBG("tty %p", tty);
- 
-@@ -540,24 +549,32 @@ static void hci_uart_tty_close(struct tty_struct *tty)
- 	if (!hu)
- 		return;
- 
--	hdev = hu->hdev;
--	if (hdev)
--		hci_uart_close(hdev);
-+	/* Wait for init_ready to finish to prevent registration races */
-+	cancel_work_sync(&hu->init_ready);
- 
--	if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
-+	proto_ready = test_bit(HCI_UART_PROTO_READY, &hu->flags);
-+	if (proto_ready) {
- 		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
- 		percpu_up_write(&hu->proto_lock);
-+	}
-+	/* Unconditionally cancel write_work after clearing flags */
-+	cancel_work_sync(&hu->write_work);
- 
--		cancel_work_sync(&hu->init_ready);
--		cancel_work_sync(&hu->write_work);
-+	hdev = hu->hdev;
-+	if (hdev)
-+		hci_uart_close(hdev);
- 
-+	if (proto_ready) {
- 		if (hdev) {
- 			if (test_bit(HCI_UART_REGISTERED, &hu->flags))
- 				hci_unregister_dev(hdev);
--			hci_free_dev(hdev);
- 		}
-+		/* Close protocol before freeing hdev */
- 		hu->proto->close(hu);
-+
-+		if (hdev)
-+			hci_free_dev(hdev);
- 	}
- 	clear_bit(HCI_UART_PROTO_SET, &hu->flags);
- 
-@@ -695,6 +712,10 @@ static int hci_uart_register_dev(struct hci_uart *hu)
- 		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
- 		percpu_up_write(&hu->proto_lock);
-+		/* Cancel work after clearing flags */
-+		cancel_work_sync(&hu->write_work);
-+
-+		/* Close protocol before freeing hdev */
- 		hu->proto->close(hu);
- 		hu->hdev = NULL;
- 		hci_free_dev(hdev);
 -- 
-2.34.1
-
+Jani Nikula, Intel
 
