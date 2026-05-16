@@ -1,208 +1,142 @@
-Return-Path: <stable+bounces-248965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AooJIrSB2reKAMAu9opvQ
-	(envelope-from <stable+bounces-248965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 04:12:26 +0200
+	id GIupDdHuB2qhPgMAu9opvQ
+	(envelope-from <stable+bounces-248970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 06:13:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 158F5559DBC
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 04:12:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A397E55A237
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 06:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7818C3019532
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 02:12:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72F14301982D
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 04:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046A51A3154;
-	Sat, 16 May 2026 02:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88972D1913;
+	Sat, 16 May 2026 04:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c1itzru4"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a87OCMB4"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8845026ED37
-	for <stable@vger.kernel.org>; Sat, 16 May 2026 02:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671B62D061D;
+	Sat, 16 May 2026 04:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778897543; cv=none; b=OpwTkW7ALZL36bHSUPSdricLMX3eSWLnPc5rgZDy3hfaw2trdARLo0nkHFlydCG0/pJTWD0F7GeHl7PZn5aF2QGWUkd7AZNz8OfXsJWCxZSCtHeBJfMlMwZ6NeJyYcFdyrjUylTLmD/eyafMjZYbdQ1NKK6LGIg81ngF1LKDyTA=
+	t=1778904771; cv=none; b=YLBZitUNVnCmt/2voSjcJZnQ2SL6h0+w5hF3ZYh1IKYt6PQnRksGdyxpftCm1EvG4bNcy6WvPs6EujQBDlt+2hyT0G6BQbsWNDEhp2KOQfjpzEAslTaOWRw5u0q/zl3tMJgHE8pBGqmGmvczJHxrEzMUiqEkqGlMFZVu/5tDoL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778897543; c=relaxed/simple;
-	bh=6rDfVuGVwaViFTnt51KivUesECctwWwNG4HfJaZ79Rs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oo4QbL7/1fiFaitrJ5IfKYd795dP+socwor7ScCWPWqekmtsY3dql6whlfgbLZcgoXCcsyPem/WYr9DHwWpI1Dks7hBKlpetbi6YU5eLRzpUwaG91d6VhzpOEWNEsLtbfAnpfJyI7lPt+MFHx+7hznoOAnxkPexdpNEw6O/fc7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c1itzru4; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-7c52e49d978so833887b3.2
-        for <stable@vger.kernel.org>; Fri, 15 May 2026 19:12:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778897541; x=1779502341; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AYNddEeOwGt0k46UY8z9L6gutGtCdNQjs1ntJnn2kyA=;
-        b=c1itzru4+kchqma53pdKBn+FM73zrgb5ddppechgCp4cSpFQpWMiVZ8xw7B8PA9h0o
-         9P6/F3QG4KYBOUFrHTmTlKwhslg849NSLxDGoYgEfooINkeMcaGPxV4Iq7Apv1T458vS
-         q1otj22XCZTyfUhgmiB/KZCO/i5aqg8/+/w+NK+MLsUIXYDXLU/uFCXUC1vQ0WQd/owJ
-         mDuUAd4zZ/ekSnZuVdZ3lm4SO2QDmRmpFRZo1GLfCm4g0n5j6txKA//NimmHbrnXy9t3
-         4sFM8jBHI7zYLeNupCKSYFnsLilBzg5lWBOgIy1AziZvn+BZubWhrbDqTQF8TR7pQuUx
-         tdqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778897541; x=1779502341;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AYNddEeOwGt0k46UY8z9L6gutGtCdNQjs1ntJnn2kyA=;
-        b=cpupHUsC8wUWFts8UCh69EfGvx96TP4/7yEJtlmcvuIK15dcwAEFoPgVS9WbE5kSoA
-         fhj8uHAIvqi3Sj122ys41LZa6261zalVzbLeA00MECiGEnKRjkR+FAAOH8wb7Hcp8lzq
-         gu2EsX5Tt2rOqlifRKoW1gb5J9/SqR/26FKVH9DlXYFrN0XoKo0PT9XQ59XrOTgN1eW9
-         VBSfPeJeGLCeLHHMKY8Vi6secr0FqerDFA26dJbFxgsbzbdoG0+USw2G4Lnu3n/9GVPF
-         VQS4hq/jisszuNL/IxMidGQa33lzA/N9t4+jR9kUDR4Dd96ZabX5BTlQ2sEW8fojqLAU
-         p9Nw==
-X-Forwarded-Encrypted: i=1; AFNElJ/+6UjN8eAzAPL+8HXAiQs85oHibcBV6Jzjw+tdL/er1wkkwJwLT6VgOhxAXyXzoPZTIyEf4w4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4Ue0RtzpGj9gFy72IfmnyiwQTmN1W9EevSxDObaqKJLAV+qrg
-	ZgSyo+z5vJXqIcBZri2COF5xnsvRQPLxuyr4vVa8dmUjieztNUsoiN6L
-X-Gm-Gg: Acq92OFhsU2ZrHn7TruiMaIco4kM1qxxt/wMcQNL9igd/FTioz5StsN0Vj3+Yx25EoF
-	i2rvRqmIR6KRDCQiNIdHz4gIbG7Yvz40uyHYcdrklrnnErMIkdT53pnSnZ6vr3bTI0R5OKjssRy
-	Jh0NJ3c8hq6GPIpf93I9glXliqDq2j+756Q7xw1HyigzkJIJThUBF3fTdY+6eEVcGyA2vzqtLUJ
-	LtJgmuNr4xDjLpyfEUY5RounylLrERVI494IJuNTWaZ2jykWqtKwedXYrCNblpDgOPVt84nR6Vi
-	ANSevC7wpuC3cyWB/j9n4jHlDU40oJpsF0Pe4EC31hirTIT5dpkfIcDkUbhn6pw0k4KRRVjbuLP
-	CrFBz+jhBbn4/kAOzxzKoW5p0HeaokKbASHYSy+/l6tnS5BPl1BkjL2ZyL6gKWuEArvIRgN1Eh4
-	uGIZZ1p8H948RctX/+jso6lANr0UNWU6A=
-X-Received: by 2002:a05:690c:3705:b0:7c0:4f0:883d with SMTP id 00721157ae682-7c95d1d977cmr73877487b3.44.1778897541467;
-        Fri, 15 May 2026 19:12:21 -0700 (PDT)
-Received: from localhost ([2a03:2880:f806:1b::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7c7f28b810csm37583987b3.14.2026.05.15.19.12.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 19:12:20 -0700 (PDT)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: miklos@szeredi.hu
-Cc: fuse-devel@lists.linux.dev,
-	bernd@bsbernd.com,
-	ali@ddn.com,
-	horst@birthelmer.de,
-	Heechan Kang <gganji11@naver.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 3/3] fuse: fix moving cancelled entry to ent_in_userspace list
-Date: Fri, 15 May 2026 19:11:38 -0700
-Message-ID: <20260516021138.2759874-4-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260516021138.2759874-1-joannelkoong@gmail.com>
-References: <20260516021138.2759874-1-joannelkoong@gmail.com>
+	s=arc-20240116; t=1778904771; c=relaxed/simple;
+	bh=phWCXV0dBEQHQviaWYpuUPx6Jj/IPGm2F1w2+xzPxqw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=D0d9GnJalyUXr/gp8UP9MX8Tz8ZQDL1KoS/V3eB6GxCPFSor6cO7syq6t2BQJIBAv9lLMb4CVnOQAkWILnOMUzh2cCDcu8h4EGyYVW81kJ/H9EoxNNRU8uw2ZMhEi5iasNj+5cByEsA+bA2a2BRnAgT7K2kuRaMyYmD214MHqT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a87OCMB4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A57C19425;
+	Sat, 16 May 2026 04:12:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778904771;
+	bh=phWCXV0dBEQHQviaWYpuUPx6Jj/IPGm2F1w2+xzPxqw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=a87OCMB4q25e5rGodyV9Vd1cneTdC5ljv+YLjDqLpLendU2mEwonOmXtwer+7DXrb
+	 iCtf5EUA59b4RuhpcDVcIsUxlTOqgmsJ6CYIpDrf0iEIsIbf8hjC8EbpvVtNcKc0iF
+	 lcXGnHahmjHeD1B/5ZopVyDXDfdblc3JrjwNtdZEmPXCW/WDLZE/c952Z5ZrHp0Giu
+	 M5+Qioem2uq3yPfpFHEgJUOTnGTB8ZJFm8wo2sxMSPErZqmNGPGJC+UBmSj8OTaAHE
+	 BMhF0LVjzDh0xeGiaX/J1t3QPVbtxu/QNReuAwYhqoPz7onBoilu3hKIMqK/FWv3ne
+	 t0XRYPlUxd8Sw==
+From: Mark Brown <broonie@kernel.org>
+To: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Cc: jens.glathe@oldschoolsolutions.biz, linux-sound@vger.kernel.org, 
+ lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, johan@kernel.org, 
+ dmitry.baryshkov@oss.qualcomm.com, konrad.dybcio@oss.qualcomm.com, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ val@packett.cool, mailingradian@gmail.com, Stable@vger.kernel.org
+In-Reply-To: <20260514090607.2435484-1-srinivas.kandagatla@oss.qualcomm.com>
+References: <20260514090607.2435484-1-srinivas.kandagatla@oss.qualcomm.com>
+Subject: Re: [PATCH] ASoC: qcom: q6apm-dai: Allocate an extra page for PCM
+ buffers
+Message-Id: <177889769874.1174745.11916206017896372567.b4-ty@b4>
+Date: Sat, 16 May 2026 11:14:58 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 158F5559DBC
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1147; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=phWCXV0dBEQHQviaWYpuUPx6Jj/IPGm2F1w2+xzPxqw=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqB+68HEKvV1ekiBeehCcsmqSpy6ea7nHqx4qaS
+ HSWMTyuCeOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCagfuvAAKCRAk1otyXVSH
+ 0IlGB/4+utikhbeeJOLd/w7wRdN+HEybp1esL44kjqJFeLxp3sGeq7RbZNx2Mqzy8htsIqyMMnb
+ ptP0/Zf2OsuYVxXvfGKE9f4/8AYWvQrtbQQbfUNENgthILvJnhUkb0phWNFY94hKMlsItbdZdrF
+ jCVUB6Gv2DPA06Z57oCe1aUzFK9kQRki47WWClVuvToVLafoPhPiWR4AINt42bLNvuOx4V/TVP5
+ uOeh9qjZteqbpMwpoEFLQ/NMH8cET+TtnG30WfCIbe2vJFbMfwUnAhGwapUJN6NGztzP2urc6z9
+ B2bLALUGNWDVOnYr5MmmGFZUcONyNyVD2ayeusHNrCzghuuo
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-Rspamd-Queue-Id: A397E55A237
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,bsbernd.com,ddn.com,birthelmer.de,naver.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248970-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248965-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[oldschoolsolutions.biz,vger.kernel.org,gmail.com,perex.cz,suse.com,kernel.org,oss.qualcomm.com,packett.cool];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,naver.com:email,ddn.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-fuse_uring_cancel() moves entries that are available (these have no reqs
-attached) to the ent_in_userspace list. ent_list_request_expired()
-checks the first entry on ent_in_userspace and dereferences
-ent->fuse_req unconditionally, which will crash on a cancelled entry
-that was moved to this list.
+On Thu, 14 May 2026 09:06:07 +0000, Srinivas Kandagatla wrote:
+> ASoC: qcom: q6apm-dai: Allocate an extra page for PCM buffers
 
-Fix this by freeing the entry and dropping queue_refs directly in
-fuse_uring_cancel(). This is safe because cancel is the cancel handler
-itself - after io_uring_cmd_done(), no more cancels will be dispatched
-for this command, and teardown serializes with cancel via queue->lock.
+Applied to
 
-Since cancel now decrements queue_refs, fuse_uring_abort() must no
-longer gate fuse_uring_abort_end_requests() on queue_refs > 0, as
-cancelled entries may have already dropped queue_refs while requests are
-still queued. Remove the gate so abort always flushes requests and stops
-queues.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.1
 
-Reported-by: Heechan Kang <gganji11@naver.com>
-Tested-by: Heechan Kang <gganji11@naver.com>
-Fixes: 4fea593e625c ("fuse: optimize over-io-uring request expiration check")
-Cc: stable@vger.kernel.org
-Co-developed-by: Jian Huang Li <ali@ddn.com>
-Co-developed-by: Horst Birthelmer <horst@birthelmer.de>
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
----
- fs/fuse/dev_uring.c   | 6 ++++--
- fs/fuse/dev_uring_i.h | 6 +++---
- 2 files changed, 7 insertions(+), 5 deletions(-)
+Thanks!
 
-diff --git a/fs/fuse/dev_uring.c b/fs/fuse/dev_uring.c
-index d9108b5b5db8..f4ba64a1796a 100644
---- a/fs/fuse/dev_uring.c
-+++ b/fs/fuse/dev_uring.c
-@@ -511,8 +511,7 @@ static void fuse_uring_cancel(struct io_uring_cmd *cmd,
- 	queue = ent->queue;
- 	spin_lock(&queue->lock);
- 	if (ent->state == FRRS_AVAILABLE) {
--		ent->state = FRRS_USERSPACE;
--		list_move_tail(&ent->list, &queue->ent_in_userspace);
-+		list_del_init(&ent->list);
- 		need_cmd_done = true;
- 		ent->cmd = NULL;
- 	}
-@@ -521,6 +520,9 @@ static void fuse_uring_cancel(struct io_uring_cmd *cmd,
- 	if (need_cmd_done) {
- 		/* no queue lock to avoid lock order issues */
- 		io_uring_cmd_done(cmd, -ENOTCONN, issue_flags);
-+		kfree(ent);
-+		if (atomic_dec_and_test(&queue->ring->queue_refs))
-+			wake_up_all(&queue->ring->stop_waitq);
- 	}
- }
- 
-diff --git a/fs/fuse/dev_uring_i.h b/fs/fuse/dev_uring_i.h
-index 368f4d0790eb..22ec67e39ee0 100644
---- a/fs/fuse/dev_uring_i.h
-+++ b/fs/fuse/dev_uring_i.h
-@@ -150,10 +150,10 @@ static inline void fuse_uring_abort(struct fuse_chan *fch)
- 	if (ring == NULL)
- 		return;
- 
--	if (atomic_read(&ring->queue_refs) > 0) {
--		fuse_uring_abort_end_requests(ring);
-+	fuse_uring_abort_end_requests(ring);
-+
-+	if (atomic_read(&ring->queue_refs) > 0)
- 		fuse_uring_stop_queues(ring);
--	}
- }
- 
- static inline void fuse_uring_wait_stopped_queues(struct fuse_chan *fch)
--- 
-2.52.0
+[1/1] ASoC: qcom: q6apm-dai: Allocate an extra page for PCM buffers
+      https://git.kernel.org/broonie/sound/c/7e68ba282165
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
