@@ -1,155 +1,206 @@
-Return-Path: <stable+bounces-248983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-248984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNHHCEQ+CGoUgAMAu9opvQ
-	(envelope-from <stable+bounces-248983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 11:52:04 +0200
+	id 6ywCAvVBCGpNgwMAu9opvQ
+	(envelope-from <stable+bounces-248984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 12:07:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E1F55AF89
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 11:52:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C5FA55B07B
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 12:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6342D3006205
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 09:51:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B0D6300DF65
+	for <lists+stable@lfdr.de>; Sat, 16 May 2026 10:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3716C19B5B1;
-	Sat, 16 May 2026 09:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EB73A641D;
+	Sat, 16 May 2026 10:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Do3ffFL4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+5dxUKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF310405C31;
-	Sat, 16 May 2026 09:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6A11FCFEF;
+	Sat, 16 May 2026 10:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778925116; cv=none; b=rleyYxM5bw/Rh8vFE7uMyzGZMhqw22/rg7/sd0CksGjA5/KgrxBx5+sr4ySKCvugzUctuvtUGdK0CIY4+0GyBvlF30DzA5gJp3d/6Sd1FawCjamW8glACt+wA8bz2B/ElZ0/h8U0qWdg2iABgLn3wm2sbf0HmovtCD0oWVgqvvE=
+	t=1778926065; cv=none; b=oJAnpAzWoyN06aCnQ4NObHIj/80m+jW9gU+mTS5zUfrc0w13ISmVB5CCFWaT9o3z6xCrPqNbo7XI73MakbXC4PLvZf0uO8D/PuHUCgNro23AOdt6URnQdVybwPomoJX5p1XHU0tE93jc6jiJpVxx5u+RaOTSpi5xEnPkFTbs4Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778925116; c=relaxed/simple;
-	bh=BUSSURdgLQ4YIhYewunrGBSH8jEmDTjnZ5bx7//RKTE=;
+	s=arc-20240116; t=1778926065; c=relaxed/simple;
+	bh=RVSVsy49zcCR8JxducCQ8VPQjausu3k80Yu6oLH38VU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fC5pnYLpPAj9712jWjQzqnAf/nm7J/v/11vX0P9q1Dwygpautqqdv94/o3aLPWkoJ1oLzVJUjXozlCVGnmHrgHHPM0mqYowq9u2UWRPlQ71SbdRzQkpHHrbmQCvj39BlVZK/MFZNxyZrMI6B4OiwrhqbqeWP3TG0d9iKQz/Uzxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Do3ffFL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A45C19425;
-	Sat, 16 May 2026 09:51:55 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZqlEjAbdWN62famukilLKn+aQsH7wu1p+d4fgSbv2peokGWRNOK0NIql0qu9P/saeghGORAHjm5/W4IKpujznqojv96ehoHWz0kUucMUHjbMZEyGfCFDTwScC/MQpUEmJr1oVUCq8gnVllR+MXRYPsSirGu4CNv2qBGatn2WZIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+5dxUKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D735CC19425;
+	Sat, 16 May 2026 10:07:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778925115;
-	bh=BUSSURdgLQ4YIhYewunrGBSH8jEmDTjnZ5bx7//RKTE=;
+	s=korg; t=1778926065;
+	bh=RVSVsy49zcCR8JxducCQ8VPQjausu3k80Yu6oLH38VU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Do3ffFL45gZaMeh3qIm+wGMso7ZmQxL7Ss8PiQoU9Sr7W2vGtmPs6gnqidpTwuCX/
-	 AqcYWLKNQQCHHVXO7OhRFlzIkH53eVUtv/ORPnUxDRnRTLFmwHf0YhI4UHfkfsFRz0
-	 JkBA1oPR0ox/fv4utXvt2eGFVFXlRNmpyI+4BHJw=
-Date: Sat, 16 May 2026 11:51:59 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: w15303746062 <w15303746062@163.com>
-Cc: louis.chauvet@bootlin.com, hamohammed.sa@gmail.com, simona@ffwll.ch,
-	melissa.srw@gmail.com, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Subject: Re: Re: [PATCH 6.18.y] drm/vkms: Fix ABBA deadlock in vblank disable
- and timer callback
-Message-ID: <2026051633-skyward-parrot-cdd3@gregkh>
-References: <20260515131826.388154-1-w15303746062@163.com>
- <2026051557-thermal-petite-7da0@gregkh>
- <581657f0.ba8.19e2eaaf003.Coremail.w15303746062@163.com>
+	b=Z+5dxUKrdn9eIlTB8OnO2XqT70gU4pfhZuTCXb166ugWxFMtmfGlh0HfqfC4HF5kf
+	 RfHYi3v0c5NGKtHwKB1IDMyfsj9o+ZOUdnMrooNwGPHcI3K2dfD+qlRE+X3LZ7d8yE
+	 Xyr/4Mpx3xhLwyvPZKwTcHrr9DXZwq4P3oIyrwsU=
+Date: Sat, 16 May 2026 12:07:49 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Peter Schneider <pschneider1968@googlemail.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Andrea Righi <arighi@nvidia.com>, Tejun Heo <tj@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>
+Subject: Re: [PATCH 6.18 143/188] sched_ext: Use HK_TYPE_DOMAIN_BOOT to
+ detect isolcpus= domain isolation
+Message-ID: <2026051633-crepe-enslave-0cdd@gregkh>
+References: <20260515154657.309489048@linuxfoundation.org>
+ <20260515154700.426346174@linuxfoundation.org>
+ <508bf3b7-56c7-4290-b663-7daf8ed4e80d@googlemail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <581657f0.ba8.19e2eaaf003.Coremail.w15303746062@163.com>
-X-Rspamd-Queue-Id: 20E1F55AF89
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <508bf3b7-56c7-4290-b663-7daf8ed4e80d@googlemail.com>
+X-Rspamd-Queue-Id: 4C5FA55B07B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-248983-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[163.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_TO(0.00)[googlemail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-248984-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[bootlin.com,gmail.com,ffwll.ch,linux.intel.com,kernel.org,suse.de,lists.freedesktop.org,vger.kernel.org,stu.xidian.edu.cn];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,kroah.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Sat, May 16, 2026 at 10:43:35AM +0800, w15303746062 wrote:
-> 
+On Sat, May 16, 2026 at 02:48:00AM +0200, Peter Schneider wrote:
 > Hi Greg,
 > 
-> Thanks for the quick response and review.
+> Am 15.05.2026 um 17:49 schrieb Greg Kroah-Hartman:
+> > 6.18-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Andrea Righi <arighi@nvidia.com>
+> > 
+> > commit 6ae315d37924435516d697ea7dde0b799a5928e0 upstream.
+> > 
+> > scx_enable() refuses to attach a BPF scheduler when isolcpus=domain is
+> > in effect by comparing housekeeping_cpumask(HK_TYPE_DOMAIN) against
+> > cpu_possible_mask.
+> > 
+> > Since commit 27c3a5967f05 ("sched/isolation: Convert housekeeping
+> > cpumasks to rcu pointers"), HK_TYPE_DOMAIN's cpumask is RCU protected
+> > and dereferencing it requires either RCU read lock, the cpu_hotplug
+> > write lock, or the cpuset lock; scx_enable() holds none of these, so
+> > booting with isolcpus=domain and attaching any BPF scheduler triggers
+> > the following lockdep splat:
+> > 
+> >    =============================
+> >    WARNING: suspicious RCU usage
+> >    -----------------------------
+> >    kernel/sched/isolation.c:60 suspicious rcu_dereference_check() usage!
+> > 
+> >    1 lock held by scx_flash/281:
+> >     #0: ffffffff8379fce0 (update_mutex){+.+.}-{4:4}, at:
+> >         bpf_struct_ops_link_create+0x134/0x1c0
+> > 
+> >    Call Trace:
+> >     dump_stack_lvl+0x6f/0xb0
+> >     lockdep_rcu_suspicious.cold+0x37/0x70
+> >     housekeeping_cpumask+0xcd/0xe0
+> >     scx_enable.isra.0+0x17/0x120
+> >     bpf_scx_reg+0x5e/0x80
+> >     bpf_struct_ops_link_create+0x151/0x1c0
+> >     __sys_bpf+0x1e4b/0x33c0
+> >     __x64_sys_bpf+0x21/0x30
+> >     do_syscall_64+0x117/0xf80
+> >     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> > 
+> > In addition, commit 03ff73510169 ("cpuset: Update HK_TYPE_DOMAIN cpumask
+> > from cpuset") made HK_TYPE_DOMAIN include cpuset isolated partitions as
+> > well, which means the current check also rejects BPF schedulers when a
+> > cpuset partition is active. That contradicts the original intent of
+> > commit 9f391f94a173 ("sched_ext: Disallow loading BPF scheduler if
+> > isolcpus= domain isolation is in effect"), which explicitly noted that
+> > cpuset partitions are honored through per-task cpumasks and should not
+> > be rejected.
+> > 
+> > Switch to housekeeping_enabled(HK_TYPE_DOMAIN_BOOT), which reads only
+> > the housekeeping flag bit (no RCU dereference) and reflects exactly the
+> > boot-time isolcpus= configuration that the error message refers to.
+> > 
+> > Fixes: 27c3a5967f05 ("sched/isolation: Convert housekeeping cpumasks to rcu pointers")
+> > Cc: stable@vger.kernel.org # v7.0+
+> > Signed-off-by: Andrea Righi <arighi@nvidia.com>
+> > Signed-off-by: Tejun Heo <tj@kernel.org>
+> > Acked-by: Frederic Weisbecker <frederic@kernel.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >   kernel/sched/ext.c |    3 +--
+> >   1 file changed, 1 insertion(+), 2 deletions(-)
+> > 
+> > --- a/kernel/sched/ext.c
+> > +++ b/kernel/sched/ext.c
+> > @@ -4906,8 +4906,7 @@ static int scx_enable(struct sched_ext_o
+> >   	static DEFINE_MUTEX(helper_mutex);
+> >   	struct scx_enable_cmd cmd;
+> > -	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
+> > -			   cpu_possible_mask)) {
+> > +	if (housekeeping_enabled(HK_TYPE_DOMAIN_BOOT)) {
+> >   		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
+> >   		return -EINVAL;
+> >   	}
+> > 
+> > 
 > 
 > 
-> At 2026-05-15 23:09:46, "Greg KH" <greg@kroah.com> wrote:
-> >On Fri, May 15, 2026 at 09:18:26PM +0800, w15303746062@163.com wrote:
-> >> From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-> >> 
-> >> [Note: This patch addresses a legacy VKMS implementation deadlock specific
-> >> to older stable trees (e.g., 6.18.y). Mainline has removed this code during
-> >> the generic DRM_CRTC_VBLANK_TIMER_FUNCS refactoring.]
-> >
-> >Why not apply those upstream commits here as well?  No need to diverge
-> >from Linus's tree, otherwise we will end up having a mess that nothing
-> >can ever be backported to.
-> >
-> >How many commits need to be backported?  Have you tried?
+> This patch causes a build failure for me:
 > 
-> I have looked into the upstream commits. The commit that removed this 
-> vulnerable legacy code in mainline is:
-> 02e2681ffe1a ("drm/vkms: Convert to DRM's vblank timer")
+>   CC      kernel/sched/build_policy.o
+> In file included from kernel/sched/build_policy.c:62:
+> kernel/sched/ext.c: In function ‘scx_enable’:
+> kernel/sched/ext.c:4924:34: error: ‘HK_TYPE_DOMAIN_BOOT’ undeclared (first
+> use in this function); did you mean ‘HK_TYPE_DOMAIN’?
+>  4924 |         if (housekeeping_enabled(HK_TYPE_DOMAIN_BOOT)) {
+>       |                                  ^~~~~~~~~~~~~~~~~~~
+>       |                                  HK_TYPE_DOMAIN
+> kernel/sched/ext.c:4924:34: note: each undeclared identifier is reported only once for each function it appears in
+> make[4]: *** [scripts/Makefile.build:287: kernel/sched/build_policy.o] Fehler 1
+> make[3]: *** [scripts/Makefile.build:544: kernel/sched] Fehler 2
+> make[2]: *** [scripts/Makefile.build:544: kernel] Fehler 2
+> make[1]: *** [/usr/src/linux-stable-rc/Makefile:2024: .] Fehler 2
+> make: *** [Makefile:248: __sub-make] Fehler 2
+> root@linus:/usr/src/linux-stable-rc#
 > 
-> I tried to apply it to 6.18.y, but it does not apply cleanly. The reason 
-> is that this upstream commit is not a simple bug fix, but a massive 
-> refactoring. It completely rips out the custom VKMS hrtimer and ports 
-> the driver to a newly introduced DRM core infrastructure 
-> (DRM_CRTC_VBLANK_TIMER_FUNCS and drm_vblank_helper.h).
+> If I revert this patch, the build succeeds, and the kernel boots and seems to work fine without any observable regressions.
 > 
-> To backport commit 02e2681ffe1a, we would first need to backport the 
-> entire DRM generic vblank timer infrastructure to 6.18.y. This seems 
-> too intrusive and violates the minimal-risk policy for stable trees.
+> Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-There is no "minimal-risk policy for stable trees".  And if there was,
-the least ammount of risk would be to take the reviewed and tested
-patches that are already in Linus's tree, and NOT take anything that is
-not already there, as 90% of the time that we do that, it comes back to
-bite us hard.
-
-So please, just backport all the needed changes here.  Otherwise how are
-we going to deal with the merge conflicts for the next 4 years in this
-file?
-
-Or, get the maintainers of this file to agree and review this one-off
-change that it is acceptable.  As they are going to be the ones getting
-the bug reports and not having their patches applied over the years, not
-anyone else :)
-
-thanks,
+Thanks for this, I'll go drop this commit and push out a -rc2
 
 greg k-h
 
