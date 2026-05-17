@@ -1,161 +1,164 @@
-Return-Path: <stable+bounces-249139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IFUCMgGCmq9wAQAu9opvQ
-	(envelope-from <stable+bounces-249139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 20:19:52 +0200
+	id CB0iImQICmrqwAQAu9opvQ
+	(envelope-from <stable+bounces-249140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 20:26:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B3956308E
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 20:19:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 883AC56317F
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 20:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B65CB3023D9E
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:19:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 742643002B4C
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603663CD8AD;
-	Sun, 17 May 2026 18:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BF03CE4A5;
+	Sun, 17 May 2026 18:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/Xcgn3E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b9qd9H9S"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6A53CF02D;
-	Sun, 17 May 2026 18:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE2C331A7E
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 18:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779041930; cv=none; b=d/nS/aLgeEjkwC4Qc4P2E9JdrtcjnfZkBZya3nKXgm7KDE6j53Oej2DdMUrbsHqmoIzzrVH8wAXFXGTjmtrDKxofIPgHF1qIsmNfzCrPZVuScxiqkd9oIQNiHPUEYp5n9Al8PjmK3ZYB3Ce4quSbEcFGuzLStKRFhCo/nSuBgYQ=
+	t=1779042396; cv=none; b=CCAEpus6JtosMSgIXa90wf73evGNm8hUvHd59elP3mV/vUesl3DtzX/QerXOP78H4W3mUEomje/CCg+3/5WWP1F1vTDapqYPSYihvUPlh9ZlnSF/PYiFiZFI58h8ivcLIA5D3g+DJ/Z1YGjGVpjcafVEXJADxag6ZbwlmSitRLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779041930; c=relaxed/simple;
-	bh=FdTz52kBiuxxnKRGyJY8LYIp811khf+rWDjvDMYs5Rc=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=ZKZTP3kzVnZuP5dlE7sIMsG9st/236mt+k86PMCBqrfKrlMmjfXRZODWK4oCP4wyS2xWNQpUgaKMTHGeqIPLbHzfl+i4JOcsASif71G6jqU6w2oUZ4ZqhzHbSckfcqKEQSeJWCtMHzLU8vTgCMUhMQnff/xDpRdZZfmBdSThsXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/Xcgn3E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C784AC2BCC6;
-	Sun, 17 May 2026 18:18:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779041929;
-	bh=FdTz52kBiuxxnKRGyJY8LYIp811khf+rWDjvDMYs5Rc=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=R/Xcgn3EfpQZ7yJolrPGRQ5v3X7TKIyJpoV3r3zTXJyr7pVl517l7MMEMWPhbaMTj
-	 fPtBG8CMOv1r19o6WVKylBp8Vo/jYSyozFZssnmAh196WxWScJjMvsdwGUeBc67ARs
-	 PEXRSkOe6f0RHXxkaxuGLfbNBvkyQ7MUf6kOdX/RXjUEfYYWpuCFilY2EMbg9qAUby
-	 +PomWpXt7M16B7riEtp3ndNl1Tr5mjKNj0IymsVlMQnTqM4a157isY1mVBPwJLdbyK
-	 CAC2PrHn3LwL3nIknQS/9oTceAg1JIN6uQJ7KlFSXYIm0YkiSpnAcvuMyvD5FzipCV
-	 eYcYIannNMcrA==
-Content-Type: multipart/mixed; boundary="===============1283525173956514337=="
+	s=arc-20240116; t=1779042396; c=relaxed/simple;
+	bh=Kr+wRFKCa78PP/xIkl6wWb5vru7OSFdDl39shroWsq0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Uv98bjJTKGeIkkZRWHj3nP5OXMg5ky/lAJ6WbrYGV19fH5HQFAdtRowhIWsooAhpU8RHsR7SrgivjxRa94h/a8W/qGo7gSWK/xnWHpGGYWvM3fCGaLQiVicCocUUsYpYUus6nnnW1bqjNuBLLNchOtq8jWH+m4AMs9FRM4FaScY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b9qd9H9S; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488ac04e13dso1874715e9.1
+        for <stable@vger.kernel.org>; Sun, 17 May 2026 11:26:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779042388; x=1779647188; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FdItoqgHnYFyIUQVhKieBd/PQ9Fluw8ZpOdySHOHHGI=;
+        b=b9qd9H9SX3BzXQr5ypnz3K8T9WC/BntkKBhCfHvGRbLUGuIC/3l/RQ3oINeMaPPGVQ
+         Z8lGvfNgG1qag12KpOukck4H6XYyTg/5RhqkZd4+uTzCpJWlS0JJcWTY6BzepWcWOi+U
+         cK+ATQkGCDNlmPqM3bn3IBIqhQZeMgyPFCepqfYo1z/TtNdJ/TwBN9pfu0txg4XVtcsR
+         b06Z3zpSV6P21JhwoB/TulhIjLr9ZetoAnl9gaxJ3RxhutXYER4u1JxSFWSQF71PYK04
+         9eOeNNd5io5RkHRYza62zbLnCh2wXX8bXPZBO/y2VkG6zfHVY6sgOLQYsNPTN95WIfty
+         IIrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779042388; x=1779647188;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FdItoqgHnYFyIUQVhKieBd/PQ9Fluw8ZpOdySHOHHGI=;
+        b=gz1ChALf8GMme3adia1lDJIK5Ui3gwoqhjKNGu5eZLB2XM+gtIvO58lFiXmnaxVOwA
+         2TCZZwUWUFVwgxNZyvbcN1v+dYiZOTk2yinqz0okCavdFh9hQw6vulpSxSVUv112ziUX
+         UCC7dx/u4gTIcJQi2clZB1DphPIkN1Nf40dIDPDny2DaBK32bNLmDvqnFLqHPoApDqCC
+         yvBuXz4LGu2hxCnj2CGMA9K+IoKYkuld/B9NadVNUjs47F5fIjNlDvvZOwxl9c/yy00v
+         dYg2phoqBvJZPHI7OkULOMEznaaLzvELX6US3hFax/RvnO37WRfgEtdzjwLXCEZpjJ9Q
+         1qFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9ndTnLdixdBz9D2Evh3gfFuJ01Gp95c94sWJNWW06+/dtS7/M2MyV7Xi6WfV+haBg8ndq/fA4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMFcNu3uvw/GOw1OQ8s3QRgUprGiIspESvhPmXoCiXfzYiRPsI
+	t3njONJrXxQce0hwuIccfMG7MC0BRnJ1oEhl7ihRIvgMFGXaAkyNu+Bq
+X-Gm-Gg: Acq92OESamkrJS1B6dU3aCqn4hm943Dt28YZ1PjrMWoVD3h6lNvTSjDnVmVFgcxsrPH
+	Tn12N5rBqYMpi/QxVsdHM6qelaWXljqOcAtv+EEbpH0OPxtoAW2+v4zmlQA5a5GOBbsffqNCmfu
+	3u8K+7cDCU1NrLSyavdxMGwqd/uQghP2ZYni3i+g5Fs4/kUOF4sEaXrgwzDyYr6gplPtkytyDsZ
+	LdTBGKiWjwJ4cdIUEwOstFSplCzvUP5UUTzGc0A4OM+mzreCJciz1EZOXzZ5cHEqSRirGEg7tcS
+	tyvm1efaUIvXcPya46e2epglI9MwqwEsLOJiTaXrIfZUG5bkbcoC7g71EWB9kV7k/5c70+dWGco
+	C6omLhnGgJKAg7UXFWumHdjw2uC8fU74ZpBBLvfW9mSgKmJcGpIwlgmg1ifOCeSUonnSWOjFUqB
+	bbfRC5KsVMHv8XnNLvfSHsz96A6OOxySJbrTWBJeAMEjs1
+X-Received: by 2002:a05:600c:3b07:b0:48e:6db5:76e6 with SMTP id 5b1f17b1804b1-48fe63099c6mr97084715e9.2.1779042388030;
+        Sun, 17 May 2026 11:26:28 -0700 (PDT)
+Received: from localhost.localdomain ([82.215.118.79])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe81b2dsm64676625e9.34.2026.05.17.11.26.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 May 2026 11:26:26 -0700 (PDT)
+From: Stepan Ionichev <sozdayvek@gmail.com>
+To: jic23@kernel.org
+Cc: dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	hcazarim@yahoo.com,
+	gregkh@linuxfoundation.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	sozdayvek@gmail.com
+Subject: [PATCH] iio: temperature: tmp006: use devm_iio_trigger_register
+Date: Sun, 17 May 2026 23:26:13 +0500
+Message-Id: <20260517182614.218-1-sozdayvek@gmail.com>
+X-Mailer: git-send-email 2.33.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <afd81a2105bb0deae207a35569bde1f3e1cf07d4a119a6fa745a3a15acd8be91@mail.kernel.org>
-In-Reply-To: <20260517214043.12975-4-adubey@linux.ibm.com>
-References: <20260517214043.12975-4-adubey@linux.ibm.com>
-Subject: Re: [PATCH v4 3/5] selftest/bpf: Fixing powerpc JIT disassembly failure
-From: bot+bpf-ci@kernel.org
-To: adubey@linux.ibm.com,bpf@vger.kernel.org
-Cc: hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org,maddy@linux.ibm.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,shuah@kernel.org,linux-kselftest@vger.kernel.org,stable@vger.kernel.org,adubey@linux.ibm.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Sun, 17 May 2026 18:18:48 +0000 (UTC)
-X-Rspamd-Queue-Id: 91B3956308E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 883AC56317F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	CTYPE_MIXED_BOGUS(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,lists.ozlabs.org,kernel.org,iogearbox.net,vger.kernel.org,gmail.com,linux.dev,meta.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-249139-lists,stable=lfdr.de,bpf-ci];
-	MIME_TRACE(0.00)[0:+,1:+];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-249140-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[baylibre.com,analog.com,kernel.org,yahoo.com,linuxfoundation.org,vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sozdayvek@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NO_DN(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.kernel.org:mid]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
---===============1283525173956514337==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+tmp006_probe() allocates the DRDY trigger with devm_iio_trigger_alloc()
+but registers it with plain iio_trigger_register(). The driver has no
+.remove() callback, so on module unload the trigger stays in the global
+trigger list while its memory is freed by devm, leaving a dangling
+entry.
 
-> diff --git a/tools/testing/selftests/bpf/jit_disasm_helpers.c b/tools/testing/selftests/bpf/jit_disasm_helpers.c
-> index 364c557c5115..4c6bcbe08491 100644
-> --- a/tools/testing/selftests/bpf/jit_disasm_helpers.c
-> +++ b/tools/testing/selftests/bpf/jit_disasm_helpers.c
-> @@ -170,9 +170,11 @@ int get_jited_program_text(int fd, char *text, size_t text_sz)
->  	struct bpf_prog_info info = {};
->  	__u32 info_len = sizeof(info);
->  	__u32 jited_funcs, len, pc;
-> +	__u32 trunc_len = 0;
->  	__u32 *func_lens = NULL;
->  	FILE *text_out = NULL;
->  	uint8_t *image = NULL;
-> +	char *triple = NULL;
->  	int i, err = 0;
->
->  	if (!llvm_initialized) {
+Switch to devm_iio_trigger_register() so the registration is undone in
+the same devm scope as the allocation.
 
-[ ... ]
-
-> @@ -216,9 +218,18 @@ int get_jited_program_text(int fd, char *text, size_t text_sz)
->  	if (!ASSERT_OK(err, "bpf_prog_get_info_by_fd #2"))
->  		goto out;
->
-> +	/*
-> +	 * last 8 bytes contains dummy_trampoline address in JIT
-> +	 * output for 64-bit and 32-bit powerpc, which can't
-> +	 * disassemble a to valid instruction.
-> +	 */
-> +	triple = LLVMGetDefaultTargetTriple();
-> +	if (strstr(triple, "powerpc"))
-> +		trunc_len = 8;
-> +
-
-Does this code leak the triple string? Looking at the LLVM C API,
-LLVMGetDefaultTargetTriple() returns a string that must be freed with
-LLVMDisposeMessage(). The sibling function disasm_one_func() in this
-same file shows the correct pattern:
-
-    if (triple)
-        LLVMDisposeMessage(triple);
-
-The cleanup section at the 'out:' label properly frees text_out, image,
-and func_lens, but triple isn't included. While this is test code and
-the leak is small, it violates the established cleanup pattern in the
-file and can accumulate across test runs.
-
->  	for (pc = 0, i = 0; i < jited_funcs; ++i) {
->  		fprintf(text_out, "func #%d:\n", i);
-> -		disasm_one_func(text_out, image + pc, func_lens[i]);
-> +		disasm_one_func(text_out, image + pc, func_lens[i] - trunc_len);
->  		fprintf(text_out, "\n");
->  		pc += func_lens[i];
->  	}
-
-
+Fixes: 91f75ccf9f03 ("iio: temperature: tmp006: add triggered buffer support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+ drivers/iio/temperature/tmp006.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/25998434343
---===============1283525173956514337==--
+diff --git a/drivers/iio/temperature/tmp006.c b/drivers/iio/temperature/tmp006.c
+index d8d8c8936..bf62143fa 100644
+--- a/drivers/iio/temperature/tmp006.c
++++ b/drivers/iio/temperature/tmp006.c
+@@ -350,7 +350,7 @@ static int tmp006_probe(struct i2c_client *client)
+ 
+ 		data->drdy_trig->ops = &tmp006_trigger_ops;
+ 		iio_trigger_set_drvdata(data->drdy_trig, indio_dev);
+-		ret = iio_trigger_register(data->drdy_trig);
++		ret = devm_iio_trigger_register(&client->dev, data->drdy_trig);
+ 		if (ret)
+ 			return ret;
+ 
+-- 
+2.43.0
+
 
