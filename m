@@ -1,60 +1,96 @@
-Return-Path: <stable+bounces-249136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oH/OIAYCCmoqwAQAu9opvQ
-	(envelope-from <stable+bounces-249136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 19:59:34 +0200
+	id yNfyHCUFCmqNwAQAu9opvQ
+	(envelope-from <stable+bounces-249137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 20:12:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B1E562D4A
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 19:59:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B22562EEC
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 20:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 924143016D11
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 17:59:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47580300BD82
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC5A3CBE88;
-	Sun, 17 May 2026 17:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38B23C65E0;
+	Sun, 17 May 2026 18:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVFvnMWT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZsZ3jaqK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12AB3CBE70;
-	Sun, 17 May 2026 17:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4455D285050
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 18:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779040758; cv=none; b=X9N/N1K+nv9tnq9nYZS0ZhQ4whPT0+4E0vC2isfVKeG99ozBX5jfdBSK+llOG4ZntBPYn6e+Dsv0uW3Ps5doqYyHtcHSP2gZToclnBnmjjWJwuh8/yZ7Z2ipS95UA2e3EfgHTa3Zjq4O9g0OvSHqjxHvL/zZhz6c/l+O1k4QEjM=
+	t=1779041336; cv=none; b=TCQRF3yqSGZyoGrcvjMikjzdHVyz1yJXdNJF70MXeEYe7Vb56Fu+ANoDujsM182xQ7HfERhgL9Rg+UMVjpohLkssmjYgyqLLpX1JMmDNhBNDO6hdKMABNuaMexpGJ81bIKdTy3e2Mr1Iq1fsGZ/VIOO42rqUJw04kfLtGMst7UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779040758; c=relaxed/simple;
-	bh=9oeAOM3C3JyLTWhy1VBvlaGvxy8pkJWaNVHEz9VMkTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EOISB+uuzVTLNYZzHZVHa4TmUkgtjvS6SUTOOaxt4LYPVbZjPPHQD208aTO4CixYHtFLwGAyKBZuiPexeDhP12Z9JFfwuATi+oV0L0FVpCJk6znE+U2sB2F/gws8O2M4w7EEn5CZu5uJ7oQQfvLcyhbxw8GPM/VFNp/Ff82fiKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVFvnMWT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3004BC2BCC6;
-	Sun, 17 May 2026 17:59:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779040758;
-	bh=9oeAOM3C3JyLTWhy1VBvlaGvxy8pkJWaNVHEz9VMkTM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iVFvnMWTyqqjm79NBQpe7V4oI06vsZGTDzY7tpd9W7zIPiaryq9eo59WDqrHXIYZe
-	 fOsQLG1lXTSIRX0IjraqXSbRAfnAZfF8xDJ5A2xaUFGakSTwysu9RUzmkwW+6oGd7M
-	 ByIiZXCVC20FsfKH0YWVg8zeMst/q/aPqahPxvSpO+eBINm4fyA52cfrnrTjJygumH
-	 E800lzDMC3dsnouqtEFmCVVlLuZefkiZNHIdIRoB3/TperCfQUxLBIVhUdTUqQc0gB
-	 TXYPY7mhgXindqbA5v1FyDSB0o+u03KNUcT+ZS104wTiaRCq6xft0PUBWGc81BtQCq
-	 ajvu0jOT4DWWA==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 2 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
+	s=arc-20240116; t=1779041336; c=relaxed/simple;
+	bh=rOgPvVJ9luMy3zvxNUEgiV+7mlyNFSeV5ChMY+xLhFg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rFRSDO8SoCRx/JvQp98Xkj5MkVg+WDOm5L8xXsX0XqHrLPRtMZliV5BtARgt9vLkjpghid+z/W7eGzAFoyf79xbGJ5uVY7LupxA8YTFEWRNWiG9npXc2FTMiMP6PYq5CtSInT1c70rc5Ih+m0fryADyz1H0EAA4N7C2Te+GIlcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZsZ3jaqK; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso11647675e9.0
+        for <stable@vger.kernel.org>; Sun, 17 May 2026 11:08:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779041334; x=1779646134; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rOgPvVJ9luMy3zvxNUEgiV+7mlyNFSeV5ChMY+xLhFg=;
+        b=ZsZ3jaqKiaMrA38mhvlb8vku3Jq0uuBD+gtuBnO/f+J+d91trvIlRHRXVYDN7NQWKR
+         PUTDQ/IrWbIK76x68eNQ/dozGSFVCwkHhoJnvwjAA59XVEXIQh1u6lxCF5BJtR445wfp
+         c1z6z38STj/er0/mx7/S4bioyJn8gFWGRn8ED+6yC9ZWF2ANigMbTeOHBdCSMjeYwJ7S
+         xcMxVBXDYDPQJBsKHzea18sQcJFqacJXn2od1od9Gb1bEymFt6jTLoRiW09jTkBMgKYI
+         PVd9vDc3R9/XLDpEmTjLcEBUwiAIxEtS3GiufDwdnhZAnCwpr9l6K6ml8MJbCXCt/ISX
+         g72w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779041334; x=1779646134;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rOgPvVJ9luMy3zvxNUEgiV+7mlyNFSeV5ChMY+xLhFg=;
+        b=Yw3469D6fh6Z/venmDB37UhO6cG/V7RidUSlT3BXPTmxhBwxeWUEtzeKhRp/5hJHpM
+         ncYhN+byM1/nhqQZbVEcPDPOIB46A9kon0sD8ulwQHcV8lnodIlxemjW+fa1tGiRHCqJ
+         E6T7wW1yc4rX+vzuwWLDQ2QNCq9tekKA08NyPpsy14v8lGo8oiClMN0reCntJrXG7kJS
+         ZOcVqcf1ARQhuHRXnmTwe/8edsMgiiZAXO8Sq4DVgUAryecA95Cok1mLzNhJEeJjkLLN
+         v17wGEaJrIQS2l7CB6X+0793YRRASqYtRZ0jyD2rOR7yGYBFKDnGweG2gV7UbPAt6P+w
+         l2Kw==
+X-Forwarded-Encrypted: i=1; AFNElJ+knsyqTPCv7lS0BbXRuclyN5/4lLfmAzZGPyaPsapP1jQaQy+4PfHddMfjPYX9H7LhlLavYSc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJDxZSXIUvWzNqSOUI6D/t+e+vLr7V+prGeZs0jhgcV0Kgw/9m
+	gLyzeaQD0jUb58CazUimP/mYwlSNXHR9Df2t4+KcWyzAciG8FrYeGVBU
+X-Gm-Gg: Acq92OFKLTimBLwwE9gMWsux+XOB97nAKOFcgessIKG00fN0jqN8dbnL+WI29oVAOKc
+	ZKNb6BoR/7evbDyjT7z+D4mjICMg5WMvgKfhVBrQJ13vo3++lOkDzRvynnTfJzDiHRfGJct6SFN
+	F8tiG3Yok4W3d0XFTHzhiiXewvuB4DMO11Nv51+ub4gzxHS3oZx7VALYsqUbYdykzM5xfX5V8/S
+	th1DJei3yPXK/WpHJy+6iymnNzN76OqyfXqRrh3i8fisSvq/UdZ24gsb080uNSzftYWonBejxtj
+	h+7sCHQV1MLN1vyFKO+4ZCeB3yJjZMuc70W/Is6fXiH9QxYL3RWv9ep6shscsvYp3lRkFJ/Suf6
+	IUITjGF9ie6utBuB6lUOV2iYz7/vRGTDCYU3yy6bQNjqyoLcIqyjb9BzLU4RZP4BFP3CTAVo6kR
+	QzlZI+gNY12LiEVPidkIbnhIwxCmggJOZDJEotM8S/Vjo1nbp0pxNP/NRTFV3zKa76jOhQ13Sy0
+	Q==
+X-Received: by 2002:a05:600c:3b12:b0:488:a824:fdff with SMTP id 5b1f17b1804b1-48fe61ed2cfmr169618865e9.22.1779041333535;
+        Sun, 17 May 2026 11:08:53 -0700 (PDT)
+Received: from node ([202.47.63.86])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe585absm65005075e9.19.2026.05.17.11.08.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 May 2026 11:08:52 -0700 (PDT)
+From: Muhammad Bilal <meatuni001@gmail.com>
+To: pmenzel@molgen.mpg.de
+Cc: linux-bluetooth@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v2.1] mm/damon/sysfs-schemes: delete tried region in regions_rmdirs()
-Date: Sun, 17 May 2026 10:59:13 -0700
-Message-ID: <20260517175915.3352-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	marcel@holtmann.org,
+	luiz.dentz@gmail.com,
+	johan.hedberg@gmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] Bluetooth: SMP: add missing skb len check in smp_cmd_keypress_notify
+Date: Sun, 17 May 2026 14:08:32 -0400
+Message-ID: <20260517180832.52329-1-meatuni001@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <3a7eaf6e-6e4e-42b1-a136-3ed2befa90e2@molgen.mpg.de>
+References: <20260517145417.31910-1-meatuni001@gmail.com> <3a7eaf6e-6e4e-42b1-a136-3ed2befa90e2@molgen.mpg.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,130 +98,55 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 13B1E562D4A
+X-Rspamd-Queue-Id: 06B22562EEC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249136-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-249137-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,holtmann.org,gmail.com];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-DAMON sysfs maintains the DAMOS tried region directory objects via a
-linked list.  When the user requests refresh of the directories, DAMON
-sysfs removes all the region directories first, and then generate
-updated regions directory on the empty space.  The removal function
-(damon_sysfs_scheme_regions_rm_dirs()) only puts the kobj objects.
-Deletion of the container region object from the linked list is done
-inside the kobj release callback function.
+Hi Paul,
 
-If somehow the callback invocation is delayed, the list will contain
-regions list that gonna be freed.  If the updated region directories
-creation is started in this situation, the list can be corrupted and
-use-after-free can happen.
+Thanks for the review.
 
-Because the kobj objects are managed by only DAMON sysfs, the issue
-cannot happen in normal situation.  But, such delays can be made on
-kernels that built with CONFIG_DEBUG_KOBJECT_RELEASE.  On the kernel,
-the issue can indeed be reproduced like below.
+Moving the check after bt_dev_dbg() would not be safe since the debug
+statement reads kp->value, which is exactly what the length check is guarding.
 
-    # damo start --damos_action stat
-    # cd /sys/kernel/mm/damon/admin/kdamonds/0/
-    # for i in {1..10}; do echo update_schemes_tried_regions > state; done
-    # dmesg | grep underflow
-    [   89.296152] refcount_t: underflow; use-after-free.
+On a truncated SMP_CMD_KEYPRESS_NOTIFY packet, skb->len may be smaller
+than sizeof(*kp) when entering the handler, so evaluating kp->value in
+the debug log would already access out-of-bounds memory before the
+guard is reached.
 
-Fix the issue by removing the region object from the list when
-decrementing the reference count.
+Therefore the length check needs to remain before any access to
+kp->value.
 
-Also update damos_sysfs_populate_region_dir() to add the region object
-to the list only after the kobject_init_and_add() is success, so that
-fail of kobject_init_and_add() is not leaving the deallocated object on
-the list.
-
-The issue was discovered [1] by Sashiko.
-
-[1] https://lore.kernel.org/20260513011920.119183-1-sj@kernel.org
-
-Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
-Cc: <stable@vger.kernel.org> # 6.2.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
-Changes from RFC v2
-- RFC v2: https://lore.kernel.org/20260517172624.888-1-sj@kernel.org
-- Rebase to mm-stable (7.1-rc3) for Sashiko review.
-Changes from RFC
-- RFC: https://lore.kernel.org/20260516211436.1883-1-sj@kernel.org
-- Add region to the list after kobject_init_and_add() success.
-
- mm/damon/sysfs-schemes.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 245d63808411a..a2ebc752d9332 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -88,7 +88,6 @@ static void damon_sysfs_scheme_region_release(struct kobject *kobj)
- 	struct damon_sysfs_scheme_region *region = container_of(kobj,
- 			struct damon_sysfs_scheme_region, kobj);
- 
--	list_del(&region->list);
- 	kfree(region);
- }
- 
-@@ -164,7 +163,7 @@ static void damon_sysfs_scheme_regions_rm_dirs(
- 	struct damon_sysfs_scheme_region *r, *next;
- 
- 	list_for_each_entry_safe(r, next, &regions->regions_list, list) {
--		/* release function deletes it from the list */
-+		list_del(&r->list);
- 		kobject_put(&r->kobj);
- 		regions->nr_regions--;
- 	}
-@@ -2926,15 +2925,16 @@ void damos_sysfs_populate_region_dir(struct damon_sysfs_schemes *sysfs_schemes,
- 	region = damon_sysfs_scheme_region_alloc(r);
- 	if (!region)
- 		return;
--	region->sz_filter_passed = sz_filter_passed;
--	list_add_tail(&region->list, &sysfs_regions->regions_list);
--	sysfs_regions->nr_regions++;
- 	if (kobject_init_and_add(&region->kobj,
- 				&damon_sysfs_scheme_region_ktype,
- 				&sysfs_regions->kobj, "%d",
- 				sysfs_regions->nr_regions++)) {
- 		kobject_put(&region->kobj);
-+		return;
- 	}
-+	region->sz_filter_passed = sz_filter_passed;
-+	list_add_tail(&region->list, &sysfs_regions->regions_list);
-+	sysfs_regions->nr_regions++;
- }
- 
- int damon_sysfs_schemes_clear_regions(
-
-base-commit: 5d6919055dec134de3c40167a490f33c74c12581
--- 
-2.47.3
+Regards,
+Muhammad Bilal
 
