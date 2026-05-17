@@ -1,74 +1,90 @@
-Return-Path: <stable+bounces-249066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODICKhVhCWpOXgQAu9opvQ
-	(envelope-from <stable+bounces-249066-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 08:32:53 +0200
+	id qIXUL9xyCWpJaQQAu9opvQ
+	(envelope-from <stable+bounces-249067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 09:48:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA7B55F826
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 08:32:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF9655FC5C
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 09:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E508B3012CE5
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 06:32:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22D93301E20E
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 07:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011A92DB780;
-	Sun, 17 May 2026 06:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B509F3164AA;
+	Sun, 17 May 2026 07:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b="q5SSwdCy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L1iKEco/"
 X-Original-To: stable@vger.kernel.org
-Received: from cvsmtppost03.nm.naver.com (cvsmtppost03.nm.naver.com [114.111.35.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A232D8DA8
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 06:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.111.35.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F34330C154
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 07:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778999567; cv=none; b=aygaRNZ94/7++NVCZwAUWW1J4nKXlchheO96+g5H6kzaDS9Np6a8m47pF8wrs8Q7SVH9e1XfwECUjuTAXNkDwpgNRy+8ghbA74yFCrYWPR9xv9imqIpNWmDrdin8Mtfhcy156NiGokAQ7K7/6FWUmYcNF7L3rS4C5kPSwSBYc5o=
+	t=1779004053; cv=none; b=VCjF6PQdrC/Lw2rvhxwqZ1+qaN79uKnsRFEisyDuyDqlgCKWZBEt0rtd9edKqqI9w3XJvX/l8M/BSBjx8u/evkrZc2rXkj9/FMLs1TNvTe+1znH+BbmPreFu+55AwNujspNC6RjG4RvRVREaxBD7CHwGBmU+2Ji88CzWJseTaX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778999567; c=relaxed/simple;
-	bh=EUmxwMrXZ0cwf1j8lx2HZkA1cEuoNvq7xjtIstY5bQ4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D3Ji7GFmxgd32bz/AxwlTfWmYykJCvEwyNkWA3n6mG6MQKs/VFZzH8AoNBDelpKbXi3mczafpvZKoE7vREljxjot74Gy6id9JF0ye8Mc6W3yCuUuoVZNeKRIwtdA4ubsjTnFHe8Gl+hxro7rX2eFa4VSFqZRXok3kbpRVtgqa5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com; spf=pass smtp.mailfrom=naver.com; dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b=q5SSwdCy; arc=none smtp.client-ip=114.111.35.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=naver.com
-Received: from cvsendbo027.nm ([10.112.22.36])
-  by cvsmtppost03.nm.naver.com with ESMTP id ClCj16LHRc6PN4bHX7xJMA
-  for <stable@vger.kernel.org>;
-  Sun, 17 May 2026 06:22:36 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
-	t=1778998956; bh=EUmxwMrXZ0cwf1j8lx2HZkA1cEuoNvq7xjtIstY5bQ4=;
-	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
-	 X-Works-Security;
-	b=q5SSwdCyC2uDY8yMSfIx/AZ1g+miBICPlaHZHRO6usGRSKK+DUaxdOm/aZhBxY9fd
-	 u8fhHqRilKrxUk6ERyGvmVOmGaFNXMLfKSRSTZI8Tam2bEILreymsNoAsiK7H8o239
-	 W0F5DO9CVN9nVLZ/Ltxlebypv4+psFPPjkRo/KN/10C42iH49PJ9AcHQDae5DDOMJA
-	 +cGZ2f5iwFGf5RUZcqmA6gTrw+TIK51EZ8F/5auikf2lfo34aXe/OtCoZ6I7v3cTnb
-	 dZVTDcUhu470upou8elTk4N2ulwJQ6nHTdO0GeCZRGYST5DBgWnm8qV+bQwFtqlNkN
-	 HavKLWG9yjOFA==
-X-Session-ID: x5c5JD1aQqKZhmW--jKxrw
-X-Works-Send-Opt: pQb/jAJYjHmdKoUqFxJYaAU/aHwtxBmwjAg=
-X-Works-Smtp-Source: zdnrax2XFqJZ+HmrFxEr+6E=
-Received: from DESKTOP-PE9G5L9.localdomain ([1.219.165.140])
-  by cvnsmtp004.nm.naver.com with ESMTP id x5c5JD1aQqKZhmW--jKxrw
-  for <multiple recipients>
-  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-  Sun, 17 May 2026 06:22:36 -0000
-From: Heechan Kang <gganji11@naver.com>
-To: Brett Creeley <brett.creeley@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Dave Jiang <dave.jiang@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	s=arc-20240116; t=1779004053; c=relaxed/simple;
+	bh=DcaQAvyTv+B0bzkQ71JQZ9CCPRMCIstVRIyuOQa2hZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HapZrhh6vqBCSQdge1fuxOeoienD1bpO2H9+FRIoCxugvNMwSo1VgkxaXO/NAvbjA+lxJidATRxDa1+68Dev7qmekqwQ5OYZDo2CJN9/+nI75ij94zIyoPtjIqUDAUZhvEeGnFmpNiPRZocyz6aYSyNambtxPuTSig8GwXxisJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L1iKEco/; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-676a89de629so2230661a12.1
+        for <stable@vger.kernel.org>; Sun, 17 May 2026 00:47:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779004050; x=1779608850; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Lq35AOf8XMoPBRf51zQYzOvH5l4HY+x3jHyuSK93u4=;
+        b=L1iKEco/74W7rrNvrGy5b++L/SSv0YyXcopfZb+Gfmsl34BOPdzBRKcrud4nLBgWiu
+         SygN9s8qqADHtv1cYbSOxeTURGQjxOtD3173hhmipGJgsBgBC2VlvDtwekCN4pSkBOIq
+         8eV8gOZ0wPUZNsU/5dYJWd0smqZFeQRQ5eUhsTdxg6H31yZHSkZfyGW8hAEOpVeczi0b
+         kYhYWNK5x+pi877lf/vxCMoOsZiNrikMHN9Ub8h+O4Oj+0b4jJScvFZ10uRDE/AwjetC
+         swUZdgwZfmAQvxyAwLQqjFeBRBWVsOuFi59kHn6PmypvFUYK4F89JT498ay5NCZvlZvW
+         2Nxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779004050; x=1779608850;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0Lq35AOf8XMoPBRf51zQYzOvH5l4HY+x3jHyuSK93u4=;
+        b=TRORFfsjNbQUa+YmhtkTxId7Pt8AJEDq1t8xYfFZRaE/+2GywhO3n20vN6deabyz3Q
+         Qb9cuPXb0ZuCmrO2OwHaKV6qFOOW9t1XXWLhz3c4n1uqTn47Qx7uJHU/7EancNg6NXvl
+         kW8EF9UMDSXFtb/WBBKV64OrO2pGTXlFkrbpYERgyShJqVqFr2wshXnLveAZ9Nzc37G0
+         /yJftSvHwNCrezmBaEeAHo9U7O7cos9sMkH213Zh/o9g5t/oikIdd2uA0AUvKm4NixnE
+         CcxKgvfDTiYXgb8q/52N0isyPRgAPdHOpff2wLRVqDAY9NdrJR/+BlvE/WhzKbev1zES
+         ktOw==
+X-Forwarded-Encrypted: i=1; AFNElJ/Po4JZHBbL7hOXYdI1LPWaC86TNKsBdGE+p2I7HlpRyTTcnPqXoOmdVDxRmKmPdJ2LugKN+BU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywg84a54tR6kNZCgLHWhCbYuXIkfaQ2BNDvwh9dRIJ/QWQs3oon
+	HujrmuRRpzU7ZlNnC5A57tXxTmOjdeTZXvs5caqWl04zBSkZQq1NcfYt
+X-Gm-Gg: Acq92OHwRB9nPmyhgZAf6FPrurkcigpOeJa908+ux9pTq3BYeLvfH2x4SRpsS3ZJT8P
+	YnroKaFuUGg6Q+N9USuljm8qn9+0hMnjtHKMSbTgY4ZbR0B3ILnnowreg/A0AYzo52hkuC2idV7
+	eHmwC2WnIXcqwJwhT5thDMpNOqZfgo0FyD/kesoocbXWThuIwkdG3NkyxxvnSR84GdGzyiYzEPV
+	odYN18rHKn8DkIGaHA+16usrMizR0BnE4sOPvFmv0JeRorbbedQP9PbkgirbbG6CJg2kbzn1m33
+	pHWFZhYICJBhID75WTAipnJc7MAExgoZoK6BU6DQSjhdMDX0mjgMYUQUvdWEIDL+xxRV7nbzu7s
+	zzpherNs5aYdSjDm/srtkBz+alqcKFEVimyMzaRUmwp4egE9JmFBDKZs9NEOAIrBZZ+zh1ULM3M
+	DX35s6kxBzritn3qY9dhbVKkBnWTX+pQ==
+X-Received: by 2002:a05:6402:46d6:b0:683:1cc8:84ae with SMTP id 4fb4d7f45d1cf-683bc6b76e8mr5153525a12.7.1779004050379;
+        Sun, 17 May 2026 00:47:30 -0700 (PDT)
+Received: from nixbug.lan ([146.120.47.171])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68310b50a34sm3925355a12.7.2026.05.17.00.47.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 May 2026 00:47:30 -0700 (PDT)
+From: Andrii Kuchmenko <capyenglishlite@gmail.com>
+To: bpf@vger.kernel.org
+Cc: ast@kernel.org,
+	andrii@kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Heechan Kang <gganji11@naver.com>
-Subject: [PATCH] fwctl: pds: Validate RPC input size before parsing
-Date: Sun, 17 May 2026 15:22:32 +0900
-Message-Id: <20260517062232.1858747-1-gganji11@naver.com>
-X-Mailer: git-send-email 2.34.1
+	Andrii Kuchmenko <capyenglishlite@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] bpf: arena: fix TOCTOU race in arena_vm_fault()
+Date: Sun, 17 May 2026 10:47:25 +0300
+Message-ID: <20260517074725.7516-1-capyenglishlite@gmail.com>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,71 +92,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4DA7B55F826
+X-Rspamd-Queue-Id: 6BF9655FC5C
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[naver.com,none];
-	R_DKIM_ALLOW(-0.20)[naver.com:s=s20171208];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249066-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[intel.com,nvidia.com,kernel.org,linuxfoundation.org,vger.kernel.org,naver.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-249067-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[naver.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FREEMAIL_FROM(0.00)[naver.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gganji11@naver.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[capyenglishlite@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-The fwctl core allocates the device-specific RPC input buffer with
-fwctl_rpc.in_len and passes that buffer to the driver callback.
+The vmalloc_to_page() check and range_tree_clear() in arena_vm_fault()
+are not protected by a common critical section. A concurrent
+bpf_arena_free_pages() call on the same pgoff can return the physical
+page to the allocator between these two operations. arena_vm_fault()
+then inserts a stale or already-freed page into the user PTE, resulting
+in a SIGSEGV on next access or a silent use-after-free.
 
-pdsfc_fw_rpc() casts the buffer to struct fwctl_rpc_pds and then calls
-pdsfc_validate_rpc(), which reads fields from that structure before
-checking that the input buffer is large enough to contain it. A short
-in_len can make pds_fwctl read beyond the allocation.
+Fix: acquire arena->lock before vmalloc_to_page() and hold it through
+range_tree_clear(), making the check-and-claim atomic with respect to
+concurrent allocators and free operations.
 
-Reject pds RPC buffers that are smaller than struct fwctl_rpc_pds before
-parsing any pds-specific fields.
+arena->lock is a mutex already used by arena_vm_open() and
+arena_vm_close() for vma_list serialization. Reusing it here is
+consistent with the existing locking model and avoids introducing a
+new lock. arena_vm_fault() runs in page fault context with
+mmap_read_lock held and is sleepable, so taking a mutex is safe.
 
-Fixes: 92c66ee829b9 ("pds_fwctl: add rpc and query support")
-Cc: stable@vger.kernel.org # v6.15+
-Signed-off-by: Heechan Kang <gganji11@naver.com>
+The pte_none() check inside apply_range_set_cb() is not a sufficient
+guard: it prevents double-mapping but does not prevent the range tree
+desynchronization that occurs when the race is lost, leaving pgoff
+marked free while the PTE remains populated.
+
+Fixes: a7d032218a53 ("bpf: Introduce bpf_arena")
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrii Kuchmenko <capyenglishlite@gmail.com>
 ---
- drivers/fwctl/pds/main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/bpf/arena.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/fwctl/pds/main.c b/drivers/fwctl/pds/main.c
-index 08872ee8422f..68fe254dd10a 100644
---- a/drivers/fwctl/pds/main.c
-+++ b/drivers/fwctl/pds/main.c
-@@ -362,6 +362,9 @@ static void *pdsfc_fw_rpc(struct fwctl_uctx *uctx, enum fwctl_rpc_scope scope,
- 	void *out = NULL;
- 	int err;
+diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+index a1b2c3d..e4f5c6d 100644
+--- a/kernel/bpf/arena.c
++++ b/kernel/bpf/arena.c
+@@ -XXX,7 +XXX,7 @@ static vm_fault_t arena_vm_fault(struct vm_fault *vmf)
+ 	struct bpf_map *map = vmf->vma->vm_file->private_data;
+ 	struct bpf_arena *arena = container_of(map, struct bpf_arena, map);
+ 	struct page *page;
+-	long kbase, kaddr;
++	long kbase, kaddr;
+ 	int ret;
  
-+	if (in_len < sizeof(*rpc))
-+		return ERR_PTR(-EINVAL);
+ 	kbase = bpf_arena_get_kern_vm_start(arena);
+@@ -XXX,12 +XXX,24 @@ static vm_fault_t arena_vm_fault(struct vm_fault *vmf)
+ 	kbase = bpf_arena_get_kern_vm_start(arena);
+ 	kaddr = kbase + (u32)(vmf->address);
+ 
++	/*
++	 * Acquire arena->lock before vmalloc_to_page() and hold it through
++	 * range_tree_clear() to close the TOCTOU window.
++	 *
++	 * Without this lock, a concurrent bpf_arena_free_pages() on the
++	 * same pgoff can run between vmalloc_to_page() returning NULL and
++	 * range_tree_clear() completing:
++	 *
++	 *   arena_vm_fault()              bpf_arena_free_pages()
++	 *   vmalloc_to_page() = NULL
++	 *   [window]                      page freed, PTE zeroed in kern vma
++	 *   range_tree_clear(pgoff)
++	 *   alloc_page() + vm_insert_page() -> stale PTE in user vma
++	 *
++	 * The user VMA then holds a reference to a freed physical page.
++	 * Next access produces SIGSEGV or silent use-after-free.
++	 */
++	guard(mutex)(&arena->lock);
 +
- 	err = pdsfc_validate_rpc(pdsfc, rpc, scope);
- 	if (err)
- 		return ERR_PTR(err);
+ 	page = vmalloc_to_page((void *)kaddr);
+ 	if (page)
+ 		goto out;
+-
+ 	ret = range_tree_clear(&arena->rt, vmf->pgoff, 1);
+ 	if (ret)
+ 		return VM_FAULT_SIGBUS;
 -- 
-2.34.1
-
+2.39.0
 
