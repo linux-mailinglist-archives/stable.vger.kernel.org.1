@@ -1,150 +1,145 @@
-Return-Path: <stable+bounces-249058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249059-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id jY1cK8RACWopRgQAu9opvQ
-	(envelope-from <stable+bounces-249058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 06:15:00 +0200
+	id 3LfqJwBGCWrZSwQAu9opvQ
+	(envelope-from <stable+bounces-249059-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 06:37:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F1C55F2CE
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 06:15:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3776655F39B
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 06:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 54446300647B
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 04:14:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C86613013007
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 04:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EE42F7EEA;
-	Sun, 17 May 2026 04:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6078531A065;
+	Sun, 17 May 2026 04:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="NOVEVCXT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iz+PW5dR"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BE9405C55;
-	Sun, 17 May 2026 04:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.241.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF76405C22;
+	Sun, 17 May 2026 04:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778991295; cv=none; b=WGfXnJw0XD6iB2B7VbGhYoFoYYQs6FfT/p/ixBdyM0CKI03rIfym8DlDav7+bXKxerR8HVViyNWIkLCFnthPBneqo3hmgYynG023SZOzfFdXZrJpNRlQ+if2Zzg9fdXFXyK5Lkj1cL1tMrSjzFWkXzAywNoDJcKlfsNF5RpKJrM=
+	t=1778992635; cv=none; b=NKY8boAfu6em7gqiCoGfjv4zMAVnDXvoyrW9GBhiDg1AmL5+x/cRSZbeOIy9ubpmGkbuyPO9SbVpVz1DjX5GLiAH4auTEFNOQ/7HF+y6zZxaVY6vAfqVE9CgKIn0cXUasD9gDdTtso741q78qfcnydTpVf1r0mBSSK8mnsGPMWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778991295; c=relaxed/simple;
-	bh=HGkumJWNS9Ej6U7iitanw5ybQDQ/Vb3NEvzDetFF/Z0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=F2Bd4xcPbiN8hlRW9h1p3itBozjZLTncuZWsOYbBUPe7/Qp0t0y1LPyPQIxuF+FsnI94fLgnACo0FVvEmBiGbZOuYqTETLXW9i/1Sma4ZyF1vzvN/n9ByROU55dsUoniXOGIZOnXHZ3R+JLsFTzAP5c41SHLwB1S5ql3RDH3aMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=NOVEVCXT; arc=none smtp.client-ip=159.100.241.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.66.161])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 0736820112;
-	Sun, 17 May 2026 04:14:46 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 175413EAB5;
-	Sun, 17 May 2026 04:14:38 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 281AF40073;
-	Sun, 17 May 2026 04:14:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1778991276; bh=HGkumJWNS9Ej6U7iitanw5ybQDQ/Vb3NEvzDetFF/Z0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NOVEVCXTSliONS2cYFmcJ/jhdQJURvY6pr3J1IjBKZqbgikpMT61/8kHEtaLK5J/O
-	 lgtMIpecF94u1qzxdY/gG+fEDvJtkk/N1QjM0yziwtdy+pDdx89wiyfV7EW3h27Qyf
-	 jfynIDkShyp+gsE8b9woomuVNE89XHcwHwJJ34YI=
-Received: from JellyFocals.localdomain (flh2-133-200-255-32.tky.mesh.ad.jp [133.200.255.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id D2345405F3;
-	Sun, 17 May 2026 04:14:30 +0000 (UTC)
-From: Mingcong Bai <jeffbai@aosc.io>
-To: linux-kernel@vger.kernel.org
-Cc: Xi Ruoyao <xry111@xry111.site>,
-	Kexy Biscuit <kexybiscuit@aosc.io>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	stable@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: define __LITTLE_ENDIAN and __BIG_ENDIAN for math-emu
-Date: Sun, 17 May 2026 12:14:21 +0800
-Message-ID: <20260517041423.71243-1-jeffbai@aosc.io>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1778992635; c=relaxed/simple;
+	bh=4tCss4+MpZL1Sng5kKdHtEx5exMywGFuCrBOXlhBTqI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QjcUUaNQXeC9LSa8Q3/qy63RYnwFKaWu6eYuVvqquSjxfu7a8dhOJyjiPsdukQ3m0XKlCNCcxT6EZgnoU/wATF8LSR6SNqhRRF9IL0uDyNJ51PPE3mP7aW+E25LPDYOVqoOTIs1lLnBmGoLnYaGDQ8OFubbuoJgJVEBkTPJ3+ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iz+PW5dR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130C7C2BCB0;
+	Sun, 17 May 2026 04:37:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778992634;
+	bh=4tCss4+MpZL1Sng5kKdHtEx5exMywGFuCrBOXlhBTqI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iz+PW5dRk6r2Pkn6kCRu+6iKJps2enRk+9KaTj6KFPverUHVfkqv/pSGBlKuw2Y7X
+	 AR9k+MbAKlWcY3WKNfQGfEk1/mOToU5kg56fuicRjjPRtyU/mhAz3tkFcWM9b76tBr
+	 Oyr2Gf/f/pHnOP/Cr/u1qlvVh//0V6hu0Lx5JprEPGzn1TRG++op+GZ0sV14t7m0Uf
+	 wADSss//qI5d/99eNRDTSpffKtzXvMkwgTLg2oAx7oV/mg4TN2Kt5yGULTS99W4ycF
+	 GFP4Suv6hUJCwV520w5HvZMkJw75VYOZg36YGD8pD3LOMrUgGPjo3qWyNcXPtCbJEh
+	 gEaJ7U6SL3ONQ==
+Date: Sun, 17 May 2026 13:37:07 +0900
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, achill@achill.org,
+	akpm@linux-foundation.org, broonie@kernel.org, conor@kernel.org,
+	f.fainelli@gmail.com, hargar@microsoft.com, jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org, linux@roeck-us.net,
+	lkft-triage@lists.linaro.org, patches@kernelci.org,
+	patches@lists.linux.dev, pavel@nabladev.com, rwarsow@gmx.de,
+	shuah@kernel.org, sr@sladewatkins.com, stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com, torvalds@linux-foundation.org,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	linux-input@vger.kernel.org, Johan Hovold <johan@kernel.org>
+Subject: Re: [PATCH 6.18 000/188] 6.18.32-rc1 review
+Message-ID: <20260517043707.GC1534263@ax162>
+References: <20260515154657.309489048@linuxfoundation.org>
+ <20260516020430.110135-1-ojeda@kernel.org>
+ <2026051659-facing-superior-e50a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 37F1C55F2CE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026051659-facing-superior-e50a@gregkh>
+X-Rspamd-Queue-Id: 3776655F39B
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[aosc.io,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[aosc.io:s=default];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[xry111.site,aosc.io,vger.kernel.org,intel.com,linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,lists.ozlabs.org];
+	TAGGED_FROM(0.00)[bounces-249059-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[aosc.io:+];
-	TAGGED_FROM(0.00)[bounces-249058-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeffbai@aosc.io,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[25];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,achill.org,linux-foundation.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Similar to commit b929926f01f2 ("sh: define __BIG_ENDIAN for math-emu"),
-define __LITTLE_ENDIAN and __BIG_ENDIAN as 0 to mitigate build-time
-warnings:
+On Sat, May 16, 2026 at 12:11:56PM +0200, Greg KH wrote:
+> On Sat, May 16, 2026 at 04:04:30AM +0200, Miguel Ojeda wrote:
+> > On Fri, 15 May 2026 17:46:57 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > This is the start of the stable review cycle for the 6.18.32 release.
+> > > There are 188 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > >
+> > > Responses should be made by Sun, 17 May 2026 15:46:37 +0000.
+> > > Anything received after that time might be too late.
+> > 
+> > Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+> > for loongarch64:
+> > 
+> > Tested-by: Miguel Ojeda <ojeda@kernel.org>
+> > 
+> > Via arm32 I see:
+> > 
+> >     drivers/hid/hid-core.c:2050:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
+> >      2049 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
+> >           |                                                                                         ~~~
+> >           |                                                                                         %zu
+> >      2050 |                                      report->id, csize, bsize);
+> >           |                                                         ^~~~~
+> > 
+> > It is also reproducible in mainline, though. Cc'ing a few folks...
+> 
+> bsize is size_t, so that should be %zu, right?
 
-  ./include/math-emu/double.h:59:21: error: ‘__BIG_ENDIAN’ is not defined, evaluates to ‘0’ [-Werror=undef]
-     59 | #if __BYTE_ORDER == __BIG_ENDIAN
-        |
+Indeed. Does not look like anyone has sent a patch yet so I will send
+one shortly since this is breaking i386_defconfig in my tests since
+-Werror is enabled by default there.
 
-Cc: stable@vger.kernel.org
-Fixes: 13da9e200fe4 ("Revert "endian: #define __BYTE_ORDER"")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507301656.7FEX6J5W-lkp@intel.com/
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
----
- arch/powerpc/include/asm/sfp-machine.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/sfp-machine.h b/arch/powerpc/include/asm/sfp-machine.h
-index 8b957aabb826d..db8525605c026 100644
---- a/arch/powerpc/include/asm/sfp-machine.h
-+++ b/arch/powerpc/include/asm/sfp-machine.h
-@@ -319,10 +319,12 @@
- #define abort()								\
- 	return 0
- 
--#ifdef __BIG_ENDIAN
-+#ifdef __BIG_ENDIAN__
- #define __BYTE_ORDER __BIG_ENDIAN
-+#define __LITTLE_ENDIAN 0
- #else
- #define __BYTE_ORDER __LITTLE_ENDIAN
-+#define __BIG_ENDIAN 0
- #endif
- 
- /* Exception flags. */
 -- 
-2.52.0
-
+Cheers,
+Nathan
 
