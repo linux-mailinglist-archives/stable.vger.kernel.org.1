@@ -1,247 +1,235 @@
-Return-Path: <stable+bounces-249147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249148-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBiOKE4VCmrgwgQAu9opvQ
-	(envelope-from <stable+bounces-249147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 21:21:50 +0200
+	id WNQwINwhCmpMxAQAu9opvQ
+	(envelope-from <stable+bounces-249148-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 22:15:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2243356381F
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 21:21:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D907B563B73
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 22:15:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1EBCD301739A
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 19:21:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26FF23011124
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 20:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3971313543;
-	Sun, 17 May 2026 19:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC85630C630;
+	Sun, 17 May 2026 20:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qc+vGuQO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m9IHy5yy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB16E2E975E
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 19:21:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779045697; cv=pass; b=aeaKPSjJmYyx+ACzLRd7BB0QUgAC+USa2zSrzW29F+tly1Pl6faIHElYVNTgpl+laqUB5hoCFhP9rr+Pgm2zygV+waWJ8kEUmt9SpoaElIhee6rSTqVylIoFy/p3rCOCfGl8UOJQYM0VIlhXJtAh59ZHS5OijcrMtr5+Jifgt4U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779045697; c=relaxed/simple;
-	bh=1v/XXWFyX1CrqrfCcNCeDqucdVkXIMDW9YfLgDAaYcM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hvFiBq0mXcsn16Js6ioULVIEoDN1jdge2evNB4+6y9P3h3YfCD0JNIxFmhfAvkprEzKaZB6iSZBYhkmgYGf6Yz3pn5ANwJdCObmrrmsNnaugnlaBZTP13PO15wwxjWcu+OB3Q09TClCOk0QegB77kblnZvZ+J+gdm2LHXtUtrDs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qc+vGuQO; arc=pass smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-132c338a537so1667057c88.0
-        for <stable@vger.kernel.org>; Sun, 17 May 2026 12:21:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779045694; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kNMsSICVLaRbeE1hw9LN/YAJ12rBfmCezCvnoRg+gg1i9ntrQD19dAnM+NhC3fJ2tC
-         z9ORbxmkPyd0dn050HZL7UDcfQAugV+bOe6OMUvaNxZuxNWJTCgZTx7ofgNSC3TQjyeT
-         EAl8SodSnttwYhWnpQJ5fsysfhInQhSQFT4HzdfSerZw0x/g2WWCEm/vH8Gt2z/KpxaL
-         +PP/q8DoUn78vUjaqRnYJh6jcT+nhR1J91JN+BPu/9k2lD8flETnjyp7w4NL+9eMcswK
-         VDaHwiB6a/w/runx6zQCSuZLS6bvtAp/ug0jYKWbi3L66DQgj++5P5rzcjDvUVVdTnPS
-         f27Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=T/H79crIpuSG0oi0/XtyKYx+m0KERxP5FdagFIM7P28=;
-        fh=+kMip26XOoZYAV+dGeEppKCdwgycktI/DwXKGimTFaQ=;
-        b=XgR7AuRqcfxEsbwZvEIVFAG0N5aod8ZDF7RyIReikHrQWNILa+Wac0KuYZM5e2Rbku
-         3bZ6dH7Tj5xHTMCZmCOiBt+Zq/7Ol4hCv1y+/aVgM08Y3aHI1OdNB+luOXYwDcygfZkJ
-         mKk3/u2RM9sVsZ51Bh5m3bGoHGiwj2RHYpsLE2cUvGPxKOt2Sq4APVDj9PfBWO0FgOEz
-         +lbMahosu++3MTUEdZtfCYfWUVMi2eNQdNRMAPEns9cNQ3//+KxTQPaqeKv9PfByRw8K
-         llkFe8iQSKJwq8isY/0ahElcdEqb1ZVuZ0NMP8ZUFiqZOsnMTePgMhA7QZKLAAcm94xm
-         mmRQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779045694; x=1779650494; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T/H79crIpuSG0oi0/XtyKYx+m0KERxP5FdagFIM7P28=;
-        b=qc+vGuQOWP9Prkuk4uvVJs2FeLMDAJobrq7kCCd53I1nGQFiHME0CKBj+1D6cygKiD
-         Xp71H5z0FQg8QEC2zbSz3M3YjQRyQ+d2mPILxItGMA225HAaYqN0gAjYpXtr8Kz8qYOJ
-         ozrueSpBEhMgfS7XFWLFWpgej1+XhglwssbQft9yKypf83rxZvjxc9gAz9dvBRwE+KtW
-         Cu/6gLzYcdBNieNSkkXcqZ+yDHkUgfXH/OVag4wpu1ytF8TeXuRAh2VpasuFB4Y9CxtA
-         QrgAy3of9EzCHEL3ULx3PuuJqlKAQIVRxwMy6LsPd6ojX+xGSb82kOdBKyU2oef31rX5
-         ZxQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779045694; x=1779650494;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=T/H79crIpuSG0oi0/XtyKYx+m0KERxP5FdagFIM7P28=;
-        b=PoKGN3+ebDpbOqDphToxPAWE3rZ8VsvOTBQpBBWAbhQqGXOnNm9mzC1TVbKudnkw+3
-         eLODI+b0KH1H9FdZet3c2uylGQQH+7eMKaJh4KlZ2yoQLf8W+JTeKhucIrQjqRAQqcum
-         n7J7y4L5uPFg3d8RiLi1iGCsrEI4X/4+v9ptpfYInDb0cRoNda126/+c4O7f4+S7Cvk7
-         PGbJRFoRwKM0g0Qfe7SgU/0HMC1lHE8rnHBSP1vTFPc0fd9oWLSPQ/Ox+q+L8nI4Gn4L
-         IGOlJjwwcl+knIUVHX+pbza1ohd7Aj9Rc8xpY3rsdZ5Tji2Bjzv5XFouLPWcW152JH0A
-         AnUQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+fcgfIbxV9NVzxm3RBSGrGwQGQGOffFqRmDdvleKF72VFvQ0hmRWJb/LMsnhn7/TIJItUbSEs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxNjz9PBtcjMVlb8mdAZYz0Cx5IULcmGR78+w5PjpJN8MMqI6v
-	UKqO/kEfDAZVUW3CIF5rVyYnzl3TyY16kQ2KpnxK6Vla8sWm0j8lhVi5t0Cn0sjO1ktus4vw52W
-	U3KyEaWFtqV5zJfgsZWFLxIoeRJdYe1pc+w0fg1Qi
-X-Gm-Gg: Acq92OHSniX5+fiGDPyqk1vmvHdHvMhOWlER/76miJDgqFaerlGcDMPsiUltxF+czX4
-	o39f3IbX0bKSSc9fb4C16KRmKd/nCvUAD1UpA85Ok4IfPyaxaLMFxqR91sRDT/HpmlRi2c7y6Lc
-	O1UTrwKaRNO7gVQErPSxSEZPSt57ZC6Fkk0pjqo5nax7y/qGRv/iJAHnuiwOxnOsy3PNzmSMZt3
-	kFwVCBPmPjE1mVI/aBoij24n0GxXzDQrTwgPkSsTYVwCns2AIygVZWOqSD4JfYma0kjFIYFjeGX
-	YFwtF2afoNNg4nTXDo3YqDQ/PEzLFDp0mXZOz7sECWNZ5RL0OVGS1IROioZSkUiey1qwmTT8Nkh
-	VZshhH6tlZ7LC3kgOOL/ALAyaqjjdY20=
-X-Received: by 2002:a05:7022:128d:b0:12d:b8e5:5e2 with SMTP id
- a92af1059eb24-134c8d4f477mr7482953c88.23.1779045693291; Sun, 17 May 2026
- 12:21:33 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD082FE074;
+	Sun, 17 May 2026 20:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779048917; cv=none; b=l7ZmiuQe5o2yn/pkelhp/m1x4mykOfhpKZ/H/az/5rYyMRUVt+2BGGZfbd3/GVfFZszDbCTlBAMmaQTSvjbUsoGiHnWx3/z7uykFRxTkukGG3yXzr/IGvMt7D/eOAHoQeASHh0yrs9dlhBjx6HKflaHbTIsGZY/+amnY9jIHQyU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779048917; c=relaxed/simple;
+	bh=wPGlipT5EbZIEdNt7MOHiAYU0AmXy3zaPqy5WBml5x4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cQuOIRBbqE2rga3TKMIZMzuKHSGpRex4UeTwXc9BQRlhSiAvt/G7uBiP7kgaMwlf/rd+4IDZsdJcFQn1Zsgyvki9uDRPZjGP8pamwkXShgLtrfVu7NGXdHTrCTchL1+An+X/RArHAFt5DNLkzl4dGfbfYCANMLgahRwKmMq5204=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9IHy5yy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36FDC2BCB0;
+	Sun, 17 May 2026 20:15:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779048917;
+	bh=wPGlipT5EbZIEdNt7MOHiAYU0AmXy3zaPqy5WBml5x4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m9IHy5yy0cEUZHHJNGSRFxXqJP7SBD/EyXD/oXlZHAy4p31o878utNEWToqVaQf8+
+	 /YwiiW6481YbXNrtgdPfbh/hAcOClmpdVTw4jrVCh7zv0brNy3vjmn/W/47Idypo4C
+	 2VbDjPIV2U786Sr5adfOp86IaP0Ajgpahkdo4Len+bhU15ZvQno+BwELKXmivNMFRc
+	 cYzkMBDddP3rCLlfyHWJLWpJsjIbqCL1byxE8GlFTced2LiDc0+7XTU0SDr7RZ8PFz
+	 /HKZ+A6k6AUtM8K82/JeF/zXYUO8eBxD+7m62MOT7/pc1umDohhGAYTe+Q2A4uoRsP
+	 gLNOEzkAV9Cvw==
+Date: Sun, 17 May 2026 22:15:14 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>, 
+	William Breathitt Gray <wbg@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Thierry Reding <thierry.reding@gmail.com>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/5] pwm: rz-mtu3: fix prescale check when enabling 2nd
+ channel
+Message-ID: <agog7Z1wfrZAjHj-@monoceros>
+References: <20260130122353.2263273-1-cosmin-gabriel.tanislav.xa@renesas.com>
+ <20260130122353.2263273-2-cosmin-gabriel.tanislav.xa@renesas.com>
+ <aaqTVDQa7xn70bR_@monoceros>
+ <TYRPR01MB156191C8E77BDA44AE23A7D4F857AA@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+ <TYRPR01MB156192CC838EC0B3DD66246158540A@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+ <abkX1ssLhkGxryfM@monoceros>
+ <TYYPR01MB15615FA52860D81F04E42F2C48541A@TYYPR01MB15615.jpnprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260515-unix-recv-wait-v1-0-76adb5f063d5@google.com> <20260515-unix-recv-wait-v1-1-76adb5f063d5@google.com>
-In-Reply-To: <20260515-unix-recv-wait-v1-1-76adb5f063d5@google.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Sun, 17 May 2026 12:21:22 -0700
-X-Gm-Features: AVHnY4JBNg0xjLVUNScPxVzZN0nh0saT-xFzCCVwtR1do4uoeNLyD5M3cMYb7hI
-Message-ID: <CAAVpQUDJa0=h+iFqr6ZEJ72b5nYTX3Ay-Vbkk0-7Y-KZB_3SBg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] af_unix: Fix UAF read of tail->len in unix_stream_data_wait()
-To: Jann Horn <jannh@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Hannes Frederic Sowa <hannes@stressinduktion.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 2243356381F
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="q5alohvduecpctbe"
+Content-Disposition: inline
+In-Reply-To: <TYYPR01MB15615FA52860D81F04E42F2C48541A@TYYPR01MB15615.jpnprd01.prod.outlook.com>
+X-Rspamd-Queue-Id: D907B563B73
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249147-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-249148-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[bp.renesas.com,kernel.org,gmail.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuniyu@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ukleinek@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Fri, May 15, 2026 at 11:54=E2=80=AFAM Jann Horn <jannh@google.com> wrote=
-:
->
-> unix_stream_data_wait() does skb_peek_tail(&sk->sk_receive_queue) without
-> holding any lock that prevents SKBs on that queue from being dequeued and
-> freed.
-> This has been the case since commit 79f632c71bea ("unix/stream: fix
-> peeking with an offset larger than data in queue").
-> The first consequence of this is that the pointer comparison
-> `tail !=3D last` can be false even if `last` semantically refers to an
-> already-freed SKB while `tail` is a new SKB allocated at the same address=
-;
-> which can cause unix_stream_data_wait() to wrongly keep blocking after ne=
-w
-> data has arrived, but only in a weird scenario where a peeking recv() and
-> a normal recv() on the same socket are racing, which is probably not a
-> real problem.
->
-> But since commit 2b514574f7e8 ("net: af_unix: implement splice for stream
-> af_unix sockets"), `tail` is actually dereferenced, which can cause UAF i=
-n
-> the following race scenario (where test_setup() runs single-threaded,
-> and afterwards, test_thread1() and test_thread2() run concurrently in
-> two threads:
-> ```
-> static int socks[2];
-> void test_setup(void) {
->   socketpair(AF_UNIX, SOCK_STREAM, 0, socks);
->   send(socks[1], "A", 1, 0);
->   int peekoff =3D 1;
->   setsockopt(socks[0], SOL_SOCKET, SO_PEEK_OFF, &peekoff, sizeof(peekoff)=
-);
-> }
-> void test_thread1(void) {
->   char dummy;
->   recv(socks[0], &dummy, 1, MSG_PEEK);
-> }
-> void test_thread2(void) {
->   char dummy;
->   recv(socks[0], &dummy, 1, 0);
->   shutdown(socks[1], SHUT_WR);
-> }
-> ```
->
-> when racing like this:
-> ```
-> thread1                       thread2
-> unix_stream_read_generic
->   mutex_lock(&u->iolock)
->   skb_peek(&sk->sk_receive_queue)
->   skb_peek_next(skb, &sk->sk_receive_queue)
->   mutex_unlock(&u->iolock)
->                               unix_stream_read_generic
->                                 unix_state_lock(sk)
->                                 skb_peek(&sk->sk_receive_queue)
->                                 unix_state_unlock(sk)
->   unix_stream_data_wait
->     unix_state_lock(sk)
->     tail =3D skb_peek_tail(&sk->sk_receive_queue)
->                                 spin_lock(&sk->sk_receive_queue.lock)
->                                 __skb_unlink(skb, &sk->sk_receive_queue)
->                                 spin_unlock(&sk->sk_receive_queue.lock)
->                                 consume_skb(skb) [frees the SKB]
->     `tail !=3D last`: false
->     `tail`: true
->     `tail->len !=3D last_len` ***UAF***
-> ```
->
-> Fix the UAF by removing the read of tail->len; checking tail->len would
-> only make sense if SKBs in the receive queue of a UNIX socket could grow,
-> which AFAIK is not supposed to happen.
 
-I posted the same patch 2 years ago (and forgot to respin),
-which has the historical context.
-https://lore.kernel.org/netdev/20240530164256.40223-1-kuniyu@amazon.com/
+--q5alohvduecpctbe
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/5] pwm: rz-mtu3: fix prescale check when enabling 2nd
+ channel
+MIME-Version: 1.0
 
----8<---
-When commit 869e7c62486e ("net: af_unix: implement stream sendpage
-support") added sendpage() support, data could be appended to the last
-skb in the receiver's queue.
+Hello Cosmin,
 
-That's why we needed to check if the length of the last skb was changed
-while waiting for new data in unix_stream_data_wait().
+On Tue, Mar 17, 2026 at 11:02:12PM +0000, Cosmin-Gabriel Tanislav wrote:
+> > From: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
+> > Sent: Tuesday, March 17, 2026 11:12 AM
+> >=20
+> > On Mon, Mar 16, 2026 at 03:49:35PM +0000, Cosmin-Gabriel Tanislav wrote:
+> > > static int rz_mtu3_pwm_config(struct pwm_chip *chip, struct pwm_devic=
+e *pwm,
+> > > 			      const struct pwm_state *state)
+> > > {
+> > > 	...
+> > >
+> > > 	u32 enable_count;
+> > >
+> > > 	...
+> > >
+> > > 	/*
+> > > 	 * Account for the case where one IO is already enabled and this call
+> > > 	 * enables the second one, to prevent the prescale from being change=
+d.
+> > > 	 * If this PWM is currently disabled it will be enabled by this call,
+> > > 	 * so include it in the enable count. If it is already enabled, it h=
+as
+> > > 	 * already been accounted for.
+> > > 	 */
+> > > 	enable_count =3D rz_mtu3_pwm->enable_count[ch] + (pwm->state.enabled=
+ ? 0 : 1);
+> > >
+> > > 	...
+> > >
+> > > 	if (enable_count > 1) {
+> > > 		if (rz_mtu3_pwm->prescale[ch] > prescale)
+> > > 			return -EBUSY;
+> > >
+> > > 		prescale =3D rz_mtu3_pwm->prescale[ch];
+> > > 	}
+> > >
+> > > Please let me know what you think so we can proceed with the work
+> > > internally.
+> >=20
+> > I'd prefer the `rz_mtu3_pwm->enable_count[ch] + (pwm->state.enabled ? 0=
+ : 1);`
+> > variant. I understand that this is also the variant you prefer, so
+> > that's great, but I wouldn't stop you using the sibling option.
+>=20
+> I realized the check could be simplified quite a bit while achieving
+> the same outcome.
+>=20
+> 	if (rz_mtu3_pwm->enable_count[ch] > pwm->state.enabled) {
+> 		...
+> 	}
+>=20
+> 2 > 1 -> true, prescale gets checked when updating one of the IOs if
+> both are enabled
+>=20
+> 1 > 0 -> true, prescale gets checked when enabling the second IO
+>=20
+> 1 > 1 -> false, prescale is not checked when updating a single enabled
+> IO
+>=20
+> 0 > 0 -> false, prescale is not checked when enabling the first IO
+>=20
+> 2 > 0 and 0 > 1 -> impossible since enable_count is always in sync
+> with PWM state
 
-However, commit a0dbf5f818f9 ("af_unix: Support MSG_SPLICE_PAGES") and
-commit 57d44a354a43 ("unix: Convert unix_stream_sendpage() to use
-MSG_SPLICE_PAGES") refactored sendmsg(), and now data is always added
-to a new skb.
----8<---
+I didn't try to understand that, but on first glance it doesn't look
+intuitive, so needs a code comment.
 
+> > You can gain some extra points for not using pwm->state. This is a relic
+> > from the legacy pwm abstraction and doesn't make much sense with the
+> > waveform callbacks.=20
+>=20
+> I can switch from enable_count to an enable_mask in a later commit, and
+> that will allow us to both get rid of PWM state access entirely and also
+> make the sibling check more obvious, by doing something like:
+>=20
+> 	if (rz_mtu3_pwm->enable_mask[ch] & ~BIT(rz_mtu3_hwpwm_io(pwm->hwpwm))) {
+> 		...
+> 	}
+>=20
+> Which would read like "is any other IO enabled?". If yes, don't touch
+> prescale.
+>=20
+> But for the scope of these fixes we need to keep accessing PWM state as I
+> would like them to be backported to stable.
 
->
-> Fixes: 2b514574f7e8 ("net: af_unix: implement splice for stream af_unix s=
-ockets")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jann Horn <jannh@google.com>
+ack, getting rid of pwm->state is a separate patch that should be
+addressed only after the fixes under discussion.
+=20
+> enable_mask must remain per-HW channel because it makes the enable /
+> disable checks simpler.
+>=20
+> If this sounds good to you, I will proceed with all of these changes.
 
-Can you post this patch separately to net.git by specifying
-[PATCH net v2] in Subject ?
+It does, so go.
 
-The later patches are net-next material.
+Best regards
+Uwe
+
+--q5alohvduecpctbe
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmoKIc8ACgkQj4D7WH0S
+/k7RGgf/VEvDtodT0+oisHcW2Z6vsU8mbZ6CyXyTYVCCAfxnCMh5+Pv0JrZGF0BB
+6HTuBpK3WzDLz18WhMRvuRX0lGQ0H1GdWgRhUfCRKjK3uQ0k94jqbTS3077LogCu
+KVddT3wgqd42HvVnoKKyX6kXLdhERF1feWJimAZMyN97EnCpYkXIrt6OjcqVw1uP
+CovKK1sipd9yubGD50twFyD1mvrfBgtlttGK3+jch85WrVpiEivYywkYlg50raGX
+nGLis6QRafoe/BszDCYaAYBcNBT9DV5Acs0ABucv1KcgUe2/wFXeQpyrLalaMk0+
+4c1SKThnhzLBWSP1Dh5L+TOi7CZlzw==
+=nQKn
+-----END PGP SIGNATURE-----
+
+--q5alohvduecpctbe--
 
