@@ -1,172 +1,142 @@
-Return-Path: <stable+bounces-249117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249118-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DZtLLrrCWoDvQQAu9opvQ
-	(envelope-from <stable+bounces-249117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:24:26 +0200
+	id mApTMsHsCWpCvQQAu9opvQ
+	(envelope-from <stable+bounces-249118-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:28:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F7556240D
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:24:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69719562427
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6607301AA47
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 16:24:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 589E0301F9EC
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 16:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F79F3C0617;
-	Sun, 17 May 2026 16:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DAF3BB138;
+	Sun, 17 May 2026 16:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kZOgsJOw"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rXy10ZkO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C525F29D291
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 16:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D29529D291
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 16:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779035048; cv=none; b=juNXpmW2E0mfEwzV2mK3ZCuVs6+jXa7NtqaPpbXvj4CW11msizBiW64cjn1N93qnyd/Zz68UHyFZgQlowqE6jAU/2u6V72GbeqOmcsKKV7k6OQTF5pzfvID5zoI5kLsQmABdh7wVt3fycwj84xgfs5gAm267HQXQJK2RuJQ/6vI=
+	t=1779035299; cv=none; b=ILVcufWwozeff4vjOc3MTlJVmRDu0UqK0q8HBwdjwROFHCyJ6ig5Y70ggCpgyQAbLOf8dWiVm6uo07Yi7cVyzKONeTQAqYoxd2MVNXPNXj/nYBXuF5v5fDEvK3FmtqoOVnoT52Q+qR2+Xp57SR+lUYhNnY41fvCWpev1nIbcuIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779035048; c=relaxed/simple;
-	bh=szJiY6EJbu4bYlsozrvbiskziHki0cBuDtsWP1MNp+k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Kwl6ImsOUbm3S0Im/aZpZ//BaEOC3Yw2x33rv0q819VbbXvpNg7z+s2i6UXpx9GtyqYB+guyvgIDzwd9AmytXsyH5ICtdtqcdHax5a/XpB9QsdJ4VDvHNUqFnw/f6XK5BG3It4VvaI4oot3zr6LmGjnYuqdvWkmtmnI41J5ORl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kZOgsJOw; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-44c44af71f8so204885f8f.1
-        for <stable@vger.kernel.org>; Sun, 17 May 2026 09:24:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779035044; x=1779639844; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4xQUzenjZFV6yOOyNJ+dSYEulDJrlac0Nc+paPih8Tk=;
-        b=kZOgsJOwmXvQPSNYWHmCr34oTy9ILavNhr5IZDPv5N+W+3rxCys5y5p8EWMeS2uMPJ
-         QkgKy8pAhpSkio3CmNAVaBDqX7E0k9GpIfstIvimgYenRB+Cxn+H5yPJ+G1hBdjuMTMP
-         iwQLAO2W819MdvjbZIwoJ1CvVbh2HpZWWICXeXi/1rItMcaV1HPjymR3Dpuf1Zer1QpN
-         9AIWDpsQDOrWLwKyL+rcwtsAgPSCBVDo7QY5F2bTeqpLr+0E+ODQV2qfttY5Xt5zPb0E
-         jMlYUtaZD1/PvhzwaBXswowJyFDFf0PVNtooCoV5IGfyavvQ5SWI5AXPDvN0aZmTVQC4
-         kxnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779035044; x=1779639844;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4xQUzenjZFV6yOOyNJ+dSYEulDJrlac0Nc+paPih8Tk=;
-        b=XaINqGuXoyl3pd3xkwQP8xA1ZdklxolkqlR2YXFTYoM7vTiWBQpSFbQUQZuEOOaUhH
-         CQgoivyjiAN+6aXIFTmvcEeC0INXu7bm5s4tyKBpKIn9/1z7vRhpYm+/1o52l/dAdqkg
-         HiNwy4th4JpNc9tY9lAvBnloYtC4pNCooCSILUmDfLHnQvBEAzDKZlY2isxIeG3nPHfY
-         dolpgHscE3VGplvRf/GaDee+ndb10HVgyJwAMwzJO5XXbX9XgMdF+/i3COZUDi1mws3I
-         UDPBGTeYn5ie5lZetYan6/ER/9UuaOBJCfJe54HQJykcC9oY3rkVuHLIyeLpfSchqLuD
-         y6SA==
-X-Forwarded-Encrypted: i=1; AFNElJ8tUJtcSLXknwYp2tj7qHCBpJ6tuDSYWw3i+Y0B1poVlJgrq20RIrwAWhBjTcKyeIm3zCvLSj4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUfrBFp8MoY7sfkGjDDFAirN/eFiPw++s9wEAOugfEYPKcs3Jg
-	+fJtquYeOVuWHyCZdmbMveK6wQvTFDf64DyyzqMse0Ke46Hrf7YDGO1R
-X-Gm-Gg: Acq92OHlsO3taRscBsQF2zMnxNkcvXv8o0guLk9hrVO0BQgc9sc8b9ja62xcfzuxnv2
-	L+xysaoAvN7wgI2veKJPgXMYdpxQ5OMZ4C69MqOwr1Lkp7YTr+NcPcPMsMTfxPAvXMQRwep0hES
-	C3lsHRQbjwrJSZjaT9UL2vlhtu/ZP7gtq3Z07YZkJ4DOWMwj906QHv1L/2YIMjhkhfEP3tHrn0T
-	nHbP0VY/HwnSq9D5AVp/b0vR0wgSDpU1wtpaiK/TFQWDxqruS8ItcjuWDLP0T5ix8vdehPL2OgS
-	1tfQAu/zK3VZUdKBhBN2PeQKIXS465UjZBYYvKFl3ppyDx/yrSZYMVvN00E8xYsfQrVrXRpepP9
-	UqyxlIyV+jbLksV9fR2HEzQfzXqZn6WC2H1jgQLklVUAinUqk0EDZR9gEfSzXbRC2Of3Q07wcnl
-	ASMSrfrhTfI6DXF2G0etRjwMgBCyZYOsGlwBWGM2kN1JVv
-X-Received: by 2002:a05:6000:1ac7:b0:43e:a978:c25e with SMTP id ffacd0b85a97d-45e5c37d119mr8648504f8f.1.1779035043883;
-        Sun, 17 May 2026 09:24:03 -0700 (PDT)
-Received: from localhost.localdomain ([82.215.118.79])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0a19c2dsm31481840f8f.21.2026.05.17.09.24.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 09:24:03 -0700 (PDT)
-From: Stepan Ionichev <sozdayvek@gmail.com>
-To: jic23@kernel.org
-Cc: daniel.lezcano@linaro.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	gregkh@linuxfoundation.org,
-	hcazarim@yahoo.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	sozdayvek@gmail.com
-Subject: [PATCH] iio: adc: nxp-sar-adc: notify trigger on channel read error in buffer ISR
-Date: Sun, 17 May 2026 21:23:46 +0500
-Message-Id: <20260517162346.189-1-sozdayvek@gmail.com>
-X-Mailer: git-send-email 2.33.0.windows.2
+	s=arc-20240116; t=1779035299; c=relaxed/simple;
+	bh=edBBxxv1poLSjMB8ohIHerWYeMF+vu/6TSkucKR5d08=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iB0Bf6jbBSX3WctD/DvCu4mC2na1BfGv6ez43eqeNUtZWu32VUgaMl5Tce5ZqmP2LcTOh3V+peVOgMMPpcli2S7SSXHg1wzbaiunn+BFjmn1FcPH8i9qnl0Y8N0cpJyg521zNoQOk47RBg/fOe5Y3UT+RhsZV8UvWumYGDSLFmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rXy10ZkO; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779035285;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OwzbtTTYqiL4pShWiGkQxPeTW1obh95IMjB2QL15Rp8=;
+	b=rXy10ZkOEqCQDYX2v8Vi3hfLe+jx5GNQok4yZq5qUYzdaeep1y4+Q7Ep9NGDf/bArE32ce
+	G2CAhgid36ysZoaD6yqSOrtT7vKyZrCkFnCW9Gc6ouu7LEv7yu5kvQrC14DuH4gbtWpxcv
+	XUX1NMWAuzRTsfkJClUhs7bjH5gfigc=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Lothar Rubusch <l.rubusch@gmail.com>
+Cc: stable@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: atmel-sha204a - fail on hwrng registration error in probe path
+Date: Sun, 17 May 2026 18:27:40 +0200
+Message-ID: <20260517162740.1250-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1483; i=thorsten.blum@linux.dev; h=from:subject; bh=edBBxxv1poLSjMB8ohIHerWYeMF+vu/6TSkucKR5d08=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFmcb2rUm7NZGP7IlMtLr1APUWjtXP1c6NmBjnqx8zz5E zZ3rcnrKGVhEONikBVTZHkw68cM39Kayk0mETth5rAygQxh4OIUgIk4T2dkuMFke3GuyFuBVvew dtH9z7VfLg8Sjb4nJXKpY3LUF/OGNwx/hVWXbenaNdtQ/uzsyH96vVPevG4ICGk/4OB+3VYuXDm YAQA=
+X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 52F7556240D
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 69719562427
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-249117-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linaro.org,baylibre.com,analog.com,kernel.org,linuxfoundation.org,yahoo.com,vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[linux.dev,gondor.apana.org.au,davemloft.net,microchip.com,bootlin.com,tuxon.dev,gmail.com];
+	TAGGED_FROM(0.00)[bounces-249118-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sozdayvek@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linux.dev:mid,linux.dev:dkim]
 X-Rspamd-Action: no action
 
-nxp_sar_adc_isr_buffer() bails on the first channel-read failure
-without calling iio_trigger_notify_done(), so a single I/O error
-leaves the trigger's use_count stuck and the buffer flow wedged
-until rebind.
+Commit 13909a0c8897 ("crypto: atmel-sha204a - provide the otp content")
+overwrote the hwrng registration return value when creating the sysfs
+group, which allowed atmel_sha204a_probe() to succeed even if
+devm_hwrng_register() failed.
 
-Route the error exit through a 'done:' label that always calls
-iio_trigger_notify_done().
+Return immediately when devm_hwrng_register() fails, and report both
+hwrng and sysfs registration errors with dev_err(). Adjust the sysfs
+error log message for consistency.
 
-Fixes: 4434072a893e ("iio: adc: Add the NXP SAR ADC support for the s32g2/3 platforms")
+Fixes: 13909a0c8897 ("crypto: atmel-sha204a - provide the otp content")
 Cc: stable@vger.kernel.org
-Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
- drivers/iio/adc/nxp-sar-adc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/atmel-sha204a.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/nxp-sar-adc.c b/drivers/iio/adc/nxp-sar-adc.c
-index 9d9f2c76b..ed004812c 100644
---- a/drivers/iio/adc/nxp-sar-adc.c
-+++ b/drivers/iio/adc/nxp-sar-adc.c
-@@ -341,7 +341,7 @@ static void nxp_sar_adc_isr_buffer(struct iio_dev *indio_dev)
- 		ret = nxp_sar_adc_read_data(info, info->buffered_chan[i]);
- 		if (ret < 0) {
- 			nxp_sar_adc_read_notify(info);
--			return;
-+			goto done;
- 		}
+diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204a.c
+index 37538b0fd7c2..12eb85b57380 100644
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -183,12 +183,14 @@ static int atmel_sha204a_probe(struct i2c_client *client)
+ 		i2c_priv->hwrng.quality = *quality;
  
- 		info->buffer[i] = ret;
-@@ -352,6 +352,7 @@ static void nxp_sar_adc_isr_buffer(struct iio_dev *indio_dev)
- 	iio_push_to_buffers_with_ts(indio_dev, info->buffer, sizeof(info->buffer),
- 				    iio_get_time_ns(indio_dev));
+ 	ret = devm_hwrng_register(&client->dev, &i2c_priv->hwrng);
+-	if (ret)
+-		dev_warn(&client->dev, "failed to register RNG (%d)\n", ret);
++	if (ret) {
++		dev_err(&client->dev, "failed to register RNG (%d)\n", ret);
++		return ret;
++	}
  
-+done:
- 	iio_trigger_notify_done(indio_dev->trig);
- }
+ 	ret = sysfs_create_group(&client->dev.kobj, &atmel_sha204a_groups);
+ 	if (ret) {
+-		dev_err(&client->dev, "failed to register sysfs entry\n");
++		dev_err(&client->dev, "failed to create sysfs group (%d)\n", ret);
+ 		return ret;
+ 	}
  
--- 
-2.43.0
-
 
