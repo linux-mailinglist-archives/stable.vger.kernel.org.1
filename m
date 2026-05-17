@@ -1,141 +1,147 @@
-Return-Path: <stable+bounces-249071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EG+sC3yJCWrteQQAu9opvQ
-	(envelope-from <stable+bounces-249071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 11:25:16 +0200
+	id ENlNCiCcCWpHhQQAu9opvQ
+	(envelope-from <stable+bounces-249072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 12:44:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA875603E7
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 11:25:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0176560916
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 12:44:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 705223001D7E
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 09:25:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4520A300A7D2
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 10:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9223254A8;
-	Sun, 17 May 2026 09:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1078235F180;
+	Sun, 17 May 2026 10:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbPKp5z0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3408E35838B;
-	Sun, 17 May 2026 09:25:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C8934E774
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 10:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779009911; cv=none; b=bq388wRqOETAdes1/97PZpcCrUQr1UY7NErxVaEGLpLaNrDZDPLlef9myMwaF79snZQAfxbohS1LEReadkWtlT6n/XhOL3CkpchUVqDyPGZ96RNz2V8YFSXWnOA79F/Jhjg+Af60UHziHR5u/xB5Qm9aczw0dJ9Ii/AgoPh7sOM=
+	t=1779014680; cv=none; b=AYokVpuf7s2bh+wSqbKuYyDz7brv7i9bmiB8xRbU4h6A1PKrOBy3TfhT5PgVXV80R/cTe1+AAWriUEWiu7gj5nE7TdbQDYs21F6w6VjleteSPo2/jwgoAOxO7nrRYyBGe6LKxKw5BXigXxACSTBRwWzoTGwWEpbtA1aLZXvn/Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779009911; c=relaxed/simple;
-	bh=7y2WJ62VHjFjcC0W10A0Ibwi3RZr+dSmPhL4fXoUHjU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PobNrd5k5WNQrZn+RHQAgx6EB2a3yb8viqHJ6teIS3+0Pq5U6H3QHz9vzk1wcLZzi4MnbsajMf3tUMjsv12ni1chOv6ZrNe7WH7GTpZrTNQFzV2E3HR0pZrb/qEIFYCiAs2jSNY+FtNo13Ptip0Y8pK0vwHRcJuOMK/ZvZwlrsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.59])
-	by gateway (Coremail) with SMTP id _____8Ax_ulxiQlqiYUKAA--.30958S3;
-	Sun, 17 May 2026 17:25:05 +0800 (CST)
-Received: from kernelserver (unknown [223.64.68.59])
-	by front1 (Coremail) with SMTP id qMiowJAxlsBXiQlqD0KFAA--.49892S2;
-	Sun, 17 May 2026 17:24:43 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	linux-kernel@vger.kernel.org,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] LoongArch: Remove unused code to avoid build warning
-Date: Sun, 17 May 2026 17:24:32 +0800
-Message-ID: <20260517092432.1025008-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1779014680; c=relaxed/simple;
+	bh=NKgBvtdxZXByhazq/jWIBzKN5aXVZCRe1HDn4CdDzrU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qA5CvVlA8XHqAOkIOYvHG5Qxlr611+ZQeErXblUNAz9FCelHAYqV+BbiYxY9W55jImRDMRvOmOG5Mf6LtRkPuJWDFe6O1uyy/kcAbYt6ZXSJhq/V+0qcyymq89uJX0UIc5KqaSTgYYB8qeakSMAeZbYZsQJR/89Vo0lzAQ0sDH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbPKp5z0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CCFC2BCB8
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 10:44:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779014680;
+	bh=NKgBvtdxZXByhazq/jWIBzKN5aXVZCRe1HDn4CdDzrU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hbPKp5z02331fBlD+oTpgWi6l8Q0TDyAjRwsQyjHImfPjkHSlTooE+0uve6NRmiFi
+	 2KxKGokwVEQe0F8c2l2ysZe5YqdcoZJ60Tp1SoJsju9oEBFL87b8P3odZFBu6nrd9H
+	 SX/d6zFhkTNSzis8bUf5LGI7q8pg0L83YMIRy3zMNrAmqwMEVgLS+vnicAzT4IpAzl
+	 p3rsMVjT9JllcEf+7tipZwtPeuGpPgWkBQcqlf8fbc7hMQXqdN/iMYL5QmcBScMO8V
+	 jGEtNn3ts7aOVK+0Tx9lndZx+PQ4nXqCQeWXw9Io/6cM5s4Yb2G45ClXsHsZOc6uiW
+	 vppm1IocoCRpQ==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5a8891f0c51so1514486e87.1
+        for <stable@vger.kernel.org>; Sun, 17 May 2026 03:44:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+dSlpF7Sp/GgLyarVBYLhFI8cBiFSakuxv7ZUiy/7WdHnv6bwU4bSAjad2jZ93wedu0CCuJLI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt2TB4N//livCpWWBcdbkDfWS98z7hnuJdW5gSLXB/a5ADaKUw
+	iobBPY4D0UUKku6toUTlMjWgD5vFFFhD+SDQOoA88nCP5PpGrdrY6IiyhMzqSq5lwKrjGBXOpKr
+	S67kvL5mbsZ/kkxBFsCsoj2a4c4upclg=
+X-Received: by 2002:a05:6512:10c2:b0:5a8:89ad:e172 with SMTP id
+ 2adb3069b0e04-5aa0e742357mr2819131e87.37.1779014679272; Sun, 17 May 2026
+ 03:44:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxlsBXiQlqD0KFAA--.49892S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWrtryDZr47WrWxXryUJFW8AFc_yoW8JF1kpr
-	W8Zwn5Kr4UWr17Zws7tr9Y9rnxJ3Z7KF42qFsIkF9xWF17Xr109r1ft3ZFqFy5J3yrGFWI
-	vr4ktr13Wa1jkacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9jb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
-	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1Y
-	6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
-	AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE
-	2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
-	C2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kfnx
-	nUUI43ZEXa7IU8q2NtUUUUU==
-X-Rspamd-Queue-Id: BFA875603E7
+References: <20260516-adm1266-gpio-fixes-v1-0-38d9dd39b905@nexthop.ai>
+In-Reply-To: <20260516-adm1266-gpio-fixes-v1-0-38d9dd39b905@nexthop.ai>
+From: Linus Walleij <linusw@kernel.org>
+Date: Sun, 17 May 2026 12:44:26 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=rasuYTot3M8u75PXRgrhbCzpue=pY2Yxx7ymVwhgGGQ@mail.gmail.com>
+X-Gm-Features: AVHnY4KcJvQqyALWA-N59W5M_RE1X3XTIoTuBsqq7gVwhaUyQq70O1xKLiW2oz8
+Message-ID: <CAD++jL=rasuYTot3M8u75PXRgrhbCzpue=pY2Yxx7ymVwhgGGQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] hwmon: (pmbus/adm1266) adm1266_gpio_get_multiple() fixes
+To: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Cc: Guenter Roeck <linux@roeck-us.net>, Alexandru Tachici <alexandru.tachici@analog.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, linux-gpio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C0176560916
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249071-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[loongson.cn];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249072-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,loongson.cn:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nexthop.ai:email]
 X-Rspamd-Action: no action
 
-After commit feee6b2989165631b1 ("mm/memory_hotplug: shrink zones when
-offlining memory"), __remove_pages() doesn't need the "zone" parameter
-so the "page" variable is also unused. Remove the unused code to avoid
-such build warning:
+On Sat, May 16, 2026 at 10:45=E2=80=AFPM Abdurrahman Hussain
+<abdurrahman@nexthop.ai> wrote:
 
-arch/loongarch/mm/init.c: In function 'arch_remove_memory':
-arch/loongarch/mm/init.c:134:22: warning: variable 'page' set but not used [-Wunused-but-set-variable=]
-  134 |         struct page *page = pfn_to_page(start_pfn);
+> Two pre-existing bugs in adm1266_gpio_get_multiple() that landed
+> together when GPIO support was first added (commit d98dfad35c38).
+> Both are reachable any time userspace queries multiple ADM1266 GPIO
+> or PDIO lines at once via the gpiolib char-dev or sysfs interfaces.
+>
+> Patch 1 caps the PDIO scan loop at ADM1266_PDIO_NR (16) instead of
+> ADM1266_PDIO_STATUS (0xE9 =3D 233, a PMBus command code that ended up
+> in the bound by mistake).  As written, the scan walks
+> find_next_bit() up to bit 242 across a 25-bit caller mask, reading
+> out of bounds and -- if any of that incidental memory contains a
+> set bit -- driving a corresponding out-of-bounds write to the
+> caller's bits array.  Flagged by sashiko in review of an unrelated
+> fix series [1].
+>
+> Patch 2 drops a redundant "*bits =3D 0" reset that sits between the
+> GPIO and PDIO halves of the function.  As written, the GPIO bits
+> the first loop populates are immediately discarded before the PDIO
+> loop runs, so any caller asking for a mix of GPIO and PDIO lines
+> sees the GPIO half always reported as 0.
+>
+> [1] https://sashiko.dev/#/patchset/20260515-adm1266-fixes-v1-0-1c1ea1349c=
+fe@nexthop.ai
+>
+> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/mm/init.c | 4 ----
- 1 file changed, 4 deletions(-)
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-index 3f9ab54114c5..031b39eb081c 100644
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -123,11 +123,7 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
- {
- 	unsigned long start_pfn = start >> PAGE_SHIFT;
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
--	struct page *page = pfn_to_page(start_pfn);
- 
--	/* With altmap the first mapped page is offset from @start */
--	if (altmap)
--		page += vmem_altmap_offset(altmap);
- 	__remove_pages(start_pfn, nr_pages, altmap);
- }
- #endif
--- 
-2.52.0
+The better option would be to:
 
+1. Convert this driver to use regmap
+2. Extend gpio-regmap with get/set_multiple()
+3. Convert the driver to use gpio-regmap
+
+So if you feel adventurous and have time on your hands,
+consider it! :)
+
+Yours,
+Linus Walleij
 
