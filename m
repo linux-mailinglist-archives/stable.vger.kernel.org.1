@@ -1,193 +1,157 @@
-Return-Path: <stable+bounces-249054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CK2FdT7CGppDgQAu9opvQ
-	(envelope-from <stable+bounces-249054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 01:20:52 +0200
+	id yPQDCAsRCWpXHQQAu9opvQ
+	(envelope-from <stable+bounces-249055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 02:51:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF91D55E434
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 01:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6967E55ECFC
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 02:51:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09B323036607
-	for <lists+stable@lfdr.de>; Sat, 16 May 2026 23:19:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A81C530103A2
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 00:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF753A785D;
-	Sat, 16 May 2026 23:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5831F09AD;
+	Sun, 17 May 2026 00:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="gYWz9Lln"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Ffb7RcNf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9AF38E10C
-	for <stable@vger.kernel.org>; Sat, 16 May 2026 23:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC5175801;
+	Sun, 17 May 2026 00:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778973541; cv=none; b=DDsvpOi9l/KpcZBhh73/Bp5tGihIbBZjtp0vM+RYbvImiwJ/DLMJNsDcS6lKrWQl2Fys8pqzHkX/AJFgqJ3OzJEDl0NjgB/BL97GfG772IdoUE6x6/eWXpNBuCDRGIRP3vr9ZtIA2tfy5SINo6zv87Y0h2Wzj8WXafEYbmrZ2Yw=
+	t=1778979071; cv=none; b=bXBd8V91LaTD2t4rt5cvLMQ9FkMTM3lauHo5M9w9wgCHBPM2b1rNaq0xOLjI5MrYZSVq0yCrWAtwd+FOBlNeooSXy200G50YfdrDs2RTsX62EZJe/8nDY37joInS5Eg92yJtzh1X6+A3FiIw6C2nj4taRtUVRbmoMGLCyVffkg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778973541; c=relaxed/simple;
-	bh=YW/rtn93ECVx6D7M6zDzFzA7o/ZhLBNsrM1gBF6+BOQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MUiO0wvhZwKKEH4u3sHmN4DjHUzRZfNqM+kmBQyeWjS5U/28SpKJrL/umGtTxtoXJAIL2nRhAY97TqXuPTjUuN7J0Ws3j6wY8TCTCbgl67rXe20WeWjYkx3BS/PxDiMvRa/HuVk3k/MDq2vJfJEFF2KPwbWRCjldA2TGfGw6AT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=gYWz9Lln; arc=none smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-132c338a537so1397094c88.0
-        for <stable@vger.kernel.org>; Sat, 16 May 2026 16:18:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexthop.ai; s=google; t=1778973539; x=1779578339; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hOf0WuzHhr8GvHCx/Z0rI+KnB+Uz0CaABNA+3XjE3+k=;
-        b=gYWz9LlnNCPPb9j3hzqdI0LtvJHgn4CtftQPz64NQVDC81+lu6FW/CMdKkgfKCN6lt
-         Mwcs7mEqPlfkWooNM55QnYdgzhPeaPaup937Ap8nkisqgiI6X6/X30qUsLjKiTHAnuhC
-         TXIn/krXg0vhf+wqtXewyiFc2AtHkhyIbU0NcwPULRe+wZ+jEAHeRxeywano7nQCwb6M
-         qk1pI5eV1FJJXr8dDIKxh3sXKqqx4lDNMvSVWpmndSGUD/UuEvXG27kgrnLpy/n7otQA
-         gzFhSQ2ttEPa3iEMutecomO7qroeKJ6VHoVX24Bwz4r7vSSkpkd9J1LV6q+C5ks1rVrU
-         Pwxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778973539; x=1779578339;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=hOf0WuzHhr8GvHCx/Z0rI+KnB+Uz0CaABNA+3XjE3+k=;
-        b=Qf5ydZF4jbWeMe7wVZ0SKOWnf4Ydp3Hl0If5XiI+r+ide/3qTe1M14wpyZHgFTIaM+
-         HFY998NmLLMKxlCH+6nk1V1aNrFYtuBxPnwKcqutymqVKmxpVYS0rxxhEfNho0q9M+NA
-         fokD3ASqgZnopQrcGCpuWcnLCMjjfDXAgag0g1wHpTTJaQkqQe1HmqQJ2V6Ew1hKyNwh
-         +K0Cx5QogEaCBdLGnRD5T71JfEfyjwptXSFzd1Y6LtC/NFyq0xGQPb9SbTM1sBd9xbSc
-         ZO74FyQnLZmUPoB/WNVlWvfCe2FBAP9Onqc9ni5TLqP9D10OxAy0ZxrFU/5TPtmBVsJ6
-         N/Fw==
-X-Forwarded-Encrypted: i=1; AFNElJ9HjsPd5K7AHFCWqM80RGsrom2IddHROVUh/CJZMOqQpocpEAiODRcjk14U20WVWARUYFfxgNw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzydPbIFKxVGXiLF5r9gcxVbTRzXUQhlhMcWLkC6kNyMbmq56yZ
-	cbJX6mSBYrZhfCCMLyaqFMk0SLY275q0i4PoxF/OAACjQgsd6oRDBaRjmvXa8BGJOsI=
-X-Gm-Gg: Acq92OHKTsaxj2pOrm2UpgdRJjLf39hJasZuQ0a6mXcAjDgZJuMRXf5gs4HbpTxqBIE
-	nGVC50cCjzCU2Cwabk1JgcesQ1O05rtHgbw2F6Uu8woR6nQHDpilvhWLdKTjnALA3UXrgazZRhG
-	3QXSFI3oKhbaT9HYx9HH48mRn5NHRbo6kNRaByVL+f1yDnMjix9agA9SxlI6qz8vFas9uZNjrbz
-	37ObGgdpruhwym3BSyXrw+8PkB+wgyK5+/7SFbg3YVQMbt5q7kPkOgmLnaxNLmU83w06cTuDXxq
-	qbQkvI++nzeBje9h3eeSTOt6khSr/3+rH+Rp4D4aaMZl+LHjcEq7x7LBgAZIF5CK7le92TNGyqg
-	pFUACa+U462+tRwZNUTQL7zZxNlNTjL9ix/pZFi4rE4oiz2bwoNYUzBuvjn4S1Vw3utM13spM5C
-	1E2W0w8to9MZUbiz0ETlZ7j16/qYg6mjQqXlJw
-X-Received: by 2002:a05:7022:301:b0:12a:6d05:3938 with SMTP id a92af1059eb24-134ffc6a83fmr4319683c88.7.1778973539141;
-        Sat, 16 May 2026 16:18:59 -0700 (PDT)
-Received: from [127.0.0.2] ([50.145.100.174])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbcb9ef5sm14722254c88.2.2026.05.16.16.18.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 16:18:58 -0700 (PDT)
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Date: Sat, 16 May 2026 16:18:51 -0700
-Subject: [PATCH v2 5/5] hwmon: (pmbus/adm1266) serialize GPIO PMBus
- accesses with pmbus_lock
+	s=arc-20240116; t=1778979071; c=relaxed/simple;
+	bh=vQpgsGOnfqedl0TX87U4zMzvFFz0UDB4jJoZMLdhGxw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oebDROjCSNZI1un7GiMyJW04/XdsI5DyQj4y6+IbKcElLBAuZg32lCbIRyhEoMgi0qq54/Alri5B6HH7uU6kUoLsBFqGE4ByoHbgMhXna5fHA0IyiOr/hdQ/V2ORH30zXDSqsSHs+RmXBzfE4eJb+nYxIpyW9iNipznxRkoTl6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Ffb7RcNf; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from thinkpad-p16sg1.corp.microsoft.com (unknown [40.65.108.177])
+	by linux.microsoft.com (Postfix) with ESMTPSA id DC9F120B7166;
+	Sat, 16 May 2026 17:50:58 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DC9F120B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1778979059;
+	bh=mCKUQ4PV+b6oGP9aITiW6m4Z4aNfJIHGPjXpLn1su+c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Ffb7RcNfkHey8LR+idMAEG98d+2zqhimWD7OPoj93CKiXPumPfhItYXAtzeJLGDEc
+	 bR+w89A5rQ/LDdBH3eqOWjzuxlsnaFZiKfcOgCjd8gdyaMA75+hBCrPvsKgrJNSHT1
+	 rLAp9byCJ+t4VrcmMwSHJ7B0XMPXHsfw5K0wjxj4=
+From: Shyam Saini <shyamsaini@linux.microsoft.com>
+To: iommu@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	robin.clark@oss.qualcomm.com,
+	will@kernel.org,
+	robin.murphy@arm.com,
+	joro@8bytes.org,
+	stable@vger.kernel.org
+Subject: [PATCH] iommu/arm-smmu: pass smmu->dev to report_iommu_fault
+Date: Sat, 16 May 2026 17:50:52 -0700
+Message-ID: <20260517005052.3783378-1-shyamsaini@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260516-adm1266-gpio-fixes-v2-5-801f13debcb2@nexthop.ai>
-References: <20260516-adm1266-gpio-fixes-v2-0-801f13debcb2@nexthop.ai>
-In-Reply-To: <20260516-adm1266-gpio-fixes-v2-0-801f13debcb2@nexthop.ai>
-To: Guenter Roeck <linux@roeck-us.net>, 
- Alexandru Tachici <alexandru.tachici@analog.com>, 
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, linux-gpio@vger.kernel.org, 
- Abdurrahman Hussain <abdurrahman@nexthop.ai>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778973534; l=2051;
- i=abdurrahman@nexthop.ai; s=20260510; h=from:subject:message-id;
- bh=YW/rtn93ECVx6D7M6zDzFzA7o/ZhLBNsrM1gBF6+BOQ=;
- b=rLK3xSF67bYw9vOeeVD20baFsgJe0KchisiXDbpwdnxaQaYe62yO+8pWC8Y9C0GL1xbsofPfP
- QokCUjbGOa1ANdxf9Jmh9I0Uw2CSuGE2CeVjGT1O0Tx0ojG+lQxhi2p
-X-Developer-Key: i=abdurrahman@nexthop.ai; a=ed25519;
- pk=omTm9cCAbO0ZhS32aKfJDKue0W3sQGpG9ub5eYHif8I=
-X-Rspamd-Queue-Id: EF91D55E434
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6967E55ECFC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
-	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nexthop.ai:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249054-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-249055-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shyamsaini@linux.microsoft.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-adm1266_gpio_get(), adm1266_gpio_get_multiple(), and
-adm1266_gpio_dbg_show() all issue PMBus reads against the device but
-none of them take pmbus_lock.  The pmbus_core framework holds
-pmbus_lock around its own multi-transaction sequences (notably the
-"set PAGE, then read paged register" pattern used by hwmon
-attributes), so an unlocked GPIO accessor can land between a PAGE
-write and the subsequent paged read in another thread and corrupt
-either side's view of the device state machine.
+report_iommu_fault() passes the dev argument to trace_io_page_fault(),
+which dereferences it via dev_name() and dev_driver_string(). Passing
+NULL causes a kernel crash when the io_page_fault tracepoint is
+enabled.
 
-Take pmbus_lock at the top of each of the three accessors via the
-scope-based guard().  The lock is uncontended in the common case and
-adds only a single mutex round-trip per call.
+In arm-smmu.c, 'commit f8f934c180f6 ("iommu/arm-smmu: Add support for driver IOMMU fault handlers")'
+replaced a dev_err_ratelimited() call that correctly used smmu->dev with
+report_iommu_fault() but passed NULL instead.
+In arm-smmu-qcom-debug.c, 'commit d374555ef993 ("iommu/arm-smmu-qcom: Use a custom context fault handler for sdm845")'
+introduced two report_iommu_fault() calls also with NULL.
 
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Pass smmu->dev to all three call sites.
+
+Fixes: f8f934c180f629bb ("iommu/arm-smmu: Add support for driver IOMMU fault handlers")
+Fixes: d374555ef993433f ("iommu/arm-smmu-qcom: Use a custom context fault handler for sdm845")
 Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Assisted-by: GitHub_Copilot:claude-opus-4.6
+Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
 ---
- drivers/hwmon/pmbus/adm1266.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c | 4 ++--
+ drivers/iommu/arm/arm-smmu/arm-smmu.c            | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index b91dcf067fa6..2e9ae03ab64b 100644
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -172,6 +172,8 @@ static int adm1266_gpio_get(struct gpio_chip *chip, unsigned int offset)
- 	else
- 		pmbus_cmd = ADM1266_PDIO_STATUS;
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
+index 65e0ef6539fe7..8eb9f7831de07 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
+@@ -399,7 +399,7 @@ irqreturn_t qcom_smmu_context_fault(int irq, void *dev)
+ 		return IRQ_NONE;
  
-+	guard(pmbus_lock)(data->client);
-+
- 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
- 	if (ret < 0)
- 		return ret;
-@@ -194,6 +196,8 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
- 	unsigned int gpio_nr;
- 	int ret;
+ 	if (list_empty(&tbu_list)) {
+-		ret = report_iommu_fault(&smmu_domain->domain, NULL, cfi.iova,
++		ret = report_iommu_fault(&smmu_domain->domain, smmu->dev, cfi.iova,
+ 					 cfi.fsynr & ARM_SMMU_CB_FSYNR0_WNR ? IOMMU_FAULT_WRITE : IOMMU_FAULT_READ);
  
-+	guard(pmbus_lock)(data->client);
-+
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
- 	if (ret < 0)
- 		return ret;
-@@ -235,6 +239,8 @@ static void adm1266_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
- 	int ret;
- 	int i;
+ 		if (ret == -ENOSYS)
+@@ -417,7 +417,7 @@ irqreturn_t qcom_smmu_context_fault(int irq, void *dev)
  
-+	guard(pmbus_lock)(data->client);
-+
- 	for (i = 0; i < ADM1266_GPIO_NR; i++) {
- 		write_cmd = adm1266_gpio_mapping[i][1];
- 		ret = adm1266_pmbus_block_xfer(data, ADM1266_GPIO_CONFIG, 1, &write_cmd, read_buf);
-
+ 	phys_soft = ops->iova_to_phys(ops, cfi.iova);
+ 
+-	tmp = report_iommu_fault(&smmu_domain->domain, NULL, cfi.iova,
++	tmp = report_iommu_fault(&smmu_domain->domain, smmu->dev, cfi.iova,
+ 				 cfi.fsynr & ARM_SMMU_CB_FSYNR0_WNR ? IOMMU_FAULT_WRITE : IOMMU_FAULT_READ);
+ 	if (!tmp || tmp == -EBUSY) {
+ 		ret = IRQ_HANDLED;
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+index 0bd21d206eb3e..92d8fa2100adb 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+@@ -467,7 +467,7 @@ static irqreturn_t arm_smmu_context_fault(int irq, void *dev)
+ 	if (!(cfi.fsr & ARM_SMMU_CB_FSR_FAULT))
+ 		return IRQ_NONE;
+ 
+-	ret = report_iommu_fault(&smmu_domain->domain, NULL, cfi.iova,
++	ret = report_iommu_fault(&smmu_domain->domain, smmu->dev, cfi.iova,
+ 		cfi.fsynr & ARM_SMMU_CB_FSYNR0_WNR ? IOMMU_FAULT_WRITE : IOMMU_FAULT_READ);
+ 
+ 	if (ret == -ENOSYS && __ratelimit(&rs))
 -- 
-2.53.0
+2.43.0
 
 
