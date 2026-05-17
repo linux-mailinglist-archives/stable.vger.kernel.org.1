@@ -1,61 +1,90 @@
-Return-Path: <stable+bounces-249091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJ5cIRbICWropQQAu9opvQ
-	(envelope-from <stable+bounces-249091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:22 +0200
+	id CKlXOBfICWropQQAu9opvQ
+	(envelope-from <stable+bounces-249092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273075614C3
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 636035614CA
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 657803011BF4
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 13:52:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 47AFB30048F3
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 13:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1E8248F57;
-	Sun, 17 May 2026 13:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A70826A0DD;
+	Sun, 17 May 2026 13:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cbsoHV1U"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AcMyu/Yi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83361A9F9F
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 13:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CC11A9F9F
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 13:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779025929; cv=none; b=MVYbnqrl98gjhuXPj8JUsyrT8olwfY8eiWkXYKmOztuWOMg1eo/JhKkoOcKHS8Isja8wPoU0NJEHI9Y9DV0DILOhhh2fixn85Vv/aJtBQyTJ8qJ/fy8yhZS0IUFUNkXNSOy53OlC01RaE++k9tEB1foXZonYEEpYWFG3u7u5+z0=
+	t=1779025941; cv=none; b=FDD2fkFNwHZHbIXEb1o53/4+eY1h52r3ODYWBs04j30xnYWadVgeiB4Ur5tNTMos26VwHNza1u+4VrzYTvstSpmfLEKq9npEoFKvs2O5rsUYzG8gWYZ7p1JEPnm+E+/d7yRQon4VQzext/g4YYGk0dnd5YH8gbhsp+tObWKZ6AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779025929; c=relaxed/simple;
-	bh=qnKDXitn9BWsGpvrpXtAnt+hnR1pBFjxaWsZ97V/e4A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5r+kgN344pYLLkmCFANx2KDQ1HuYlnwcRQ/awUFXQNKyTnXvcNnaG8nxnph0qbl1wlKJGRDmhkkKEvlTdEsaAd0gCFTA3JftFcdF+HgYA2KSJhRm4gXmt314DxCLL/MbuOIeawkzRpJFm3wJdvr8GQO2lAuX77USA6LGYNZJdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cbsoHV1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA07FC2BCB0;
-	Sun, 17 May 2026 13:52:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779025929;
-	bh=qnKDXitn9BWsGpvrpXtAnt+hnR1pBFjxaWsZ97V/e4A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cbsoHV1USydIPp15bfmILZvzv5hyZxm1Emavx5KYngGndkVwMqpca1nsUTfMHthSA
-	 xbASx7SctoOyPQJK03VOUUn2hAk5Hx2qr7Oo+O9dAgO2edCGg/hw5XDjJ9qdJL8+MW
-	 cnuQ8ZxQhYV2eR4fLkuxmcTe2dV0oDZSEX7LvQmNFx01N/NqWNI8N6hyMN6NYISfeR
-	 k33EjXCL8vFDvBeXitwtWDqjev6yAcvA7T9W4drHxvQZKSS6dvSd1x5oDzxPuN/BwP
-	 1Dq6g2t/wFbMwuO2OGoANu2N21mr9MSne3XATfvCl8N0kNs/f43mdOMRmJUmV1V/h8
-	 Sgrez0KFZ1G2w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] btrfs: do not mark inode incompressible after inline attempt fails
-Date: Sun, 17 May 2026 09:52:07 -0400
-Message-ID: <20260517135207.148738-1-sashal@kernel.org>
+	s=arc-20240116; t=1779025941; c=relaxed/simple;
+	bh=h9wtCFyFzLcO5jEPh6ZyLGnKzsR9VPlqSRMjF9S/Z5c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TKakzwqe5gtk9gyWqSJGPmWXwHN5ZoQuhsx4oRDgTJQTQi6j+pylyW24l98zGDaqCHZnJK0pktYWo8+DbEwe9fh4OpHkxL04+lZS+fulLoUTakC2uXoyFkyOO9hDVuFjge9KR6dyBQnrMuHkyykxROHAIokPP/toyyA5cNJ5YSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AcMyu/Yi; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2bd80b3aa13so8253315ad.0
+        for <stable@vger.kernel.org>; Sun, 17 May 2026 06:52:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779025939; x=1779630739; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZgCyM9TX/SDLwUVzAsJaESZmJB2eQmJkR2yeVp3A4iI=;
+        b=AcMyu/YiHnuv8UHNrshBKcUHaBruU8r/Mcv/3mpYinz4ZnZkcwnmbwP78k3L1nLOSG
+         mRUHngbLMUiR180OjGSjLSqJYRNF2nBMo97GMLTN/Cbb+W3U3gePvaFnZgQp2UFdCf9r
+         hvFv/NHudjvZj4PhBnn2qtnuVZXEKbwfhJFsmHA78qYpHnG8vci8Vxo0ODMyg3S85l3H
+         ZA780cCPO1PtW/9nMoQ2RCSVynehZSsDATBhIRkKKylV1Zl8upVup62sVXpBi7GRlWUj
+         8nOT/6B0JoVivvnwsKYOtVCGv/FdH45N1h37KBikvyWr9QupLmiJOdQW0ZcoVNaiazCe
+         lj3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779025939; x=1779630739;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZgCyM9TX/SDLwUVzAsJaESZmJB2eQmJkR2yeVp3A4iI=;
+        b=ddBpWf+zPSINu35u1q0rEnNDX1mqQ71e3T6HhAkrj/V1MJUPSobklOkazuxvDIbUes
+         vkAiDrhEX2lVzaFuFOpyw6XLcS6HlH8NfSDJ2iibeKYY5+rAfdBc72PrmbAje753Jiey
+         vDt7kMzxZjAVAkIK7M7gB/aS8vRfdHCN97C1YkPxI36UbDOnx/VKPXKj+F1jVlXrq2I2
+         mxZdW4LBGpuEQA9Z+D8qhmP56K1HH6CqJ3t9NOwx39THwDxCOZBBHECBOih7FcFYDTQq
+         vSpmG+wlJOWKxTZqtX3ENPbJL6/ZvlZRKL9SZxJ/kCRjF/y9K+Bqlln+7+wKuiYjDMpL
+         UaUg==
+X-Forwarded-Encrypted: i=1; AFNElJ9/EYD16hHKtLeFOpiXV0GAC7qpb3CqFreVgH3a+arsXNvnCyQnNFYYZXVb/8gWKAOODyQ05pw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+tfEd5RM4/pJLA68OR1irIrQ+Vf3dpn6eXTZxK0ght0W0PPFU
+	Ahaonun6+RqBy4gj9pUumbXOdTViBoeWQvjCoCbIENyU6gHmV7YTbaH2
+X-Gm-Gg: Acq92OFJ7t/S5nWCGe+xtoIjPBefWLv5q3YVnjl9pedkwqszoLnX/75G3PTRYICYXom
+	CIZGcH9mHveFvclF9HuMOydDTj9inc7C25XTjmdq4+KwYHrLBfI/mKGeGq+U7fh+VlTJsR6gFXN
+	0VFK9nZMc0vEZlxWtGagrQM4WeK14AKKI+1zprlMJ/NDqPivNvCuJPVST+0FkFw2LGyrW4kkAfl
+	BWPfHhcnXWzhABld5BOtWaNtCJj1o2vj0Ms4MQ4LSnYZzdpuOs1ke+HFKMGqA6UNiq0VgOAzODS
+	KzUnUjx2eBwDCqPqmH+VVw9xlN8FdiZYMn8KCrzFEbWVi0tQk1E/VdhcgitSJMC0fdrp7yRregd
+	au62yd33MKeXvQi3eaEyrb+PrSPVmloDodROssY0/eQ0Kt/u69LX59J5KQMuj6Fxu91VldmfZHL
+	Blbm0UnKbR4lCDVu3uiEC4sTv7ZiAXHFTstoRZEFYbMPubepUT
+X-Received: by 2002:a17:902:8303:b0:2b9:f8e9:70e2 with SMTP id d9443c01a7336-2bd7e782ec7mr93513875ad.8.1779025939377;
+        Sun, 17 May 2026 06:52:19 -0700 (PDT)
+Received: from jmoon ([118.220.156.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5fc47sm113873385ad.10.2026.05.17.06.52.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 May 2026 06:52:19 -0700 (PDT)
+From: Jinmo Yang <jinmo44.yang@gmail.com>
+To: linux-input@vger.kernel.org
+Cc: jikos@kernel.org,
+	benjamin.tissoires@redhat.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Jinmo Yang <jinmo44.yang@gmail.com>
+Subject: [PATCH 0/4] HID: wacom: add report length validation in irq handlers
+Date: Sun, 17 May 2026 22:52:11 +0900
+Message-ID: <20260517135215.2220117-1-jinmo44.yang@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051210-undrafted-shelving-27b2@gregkh>
-References: <2026051210-undrafted-shelving-27b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,111 +92,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 273075614C3
+X-Rspamd-Queue-Id: 636035614CA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249091-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,vger.kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249092-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jinmo44yang@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Qu Wenruo <wqu@suse.com>
+Several wacom IRQ handler sub-functions access fixed offsets in the raw
+HID report buffer without validating the buffer length. wacom_wac_irq()
+receives the length from wacom_raw_event() but does not validate it
+before dispatching to the sub-functions, which do not receive the length
+parameter.
 
-[ Upstream commit 2e0e3716c7b6f8d71df2fbe709b922e54700f71b ]
+A malicious USB device can declare a small HID report in its descriptor
+and send a matching short report that passes the HID core size check
+(csize >= rsize), but the driver assumes a full-size hardware report
+layout, leading to slab-out-of-bounds reads.
 
-[BUG]
-The following sequence will set the file with nocompress flag:
+Note: this is not mitigated by the recent HID core bounds checking
+series which validates actual_size >= declared_size. An attacker
+controls both the descriptor (declared size) and the sent data (actual
+size), so the core check passes. Driver-level validation against the
+expected hardware report layout is still necessary.
 
-  # mkfs.btrfs -f $dev
-  # mount $dev $mnt -o max_inline=4,compress
-  # xfs_io -f -c "pwrite 0 2k" -c sync $mnt/foobar
+Tested with KASAN on Linux 7.1-rc3 (slab-out-of-bounds confirmed) and
+verified kernel panic on a production device via uhid.
 
-The inode will have NOCOMPRESS flag, even if the content itself (all 0xcd)
-can still be compressed very well:
+Jinmo Yang (4):
+  HID: wacom: validate report length for PL and PTU handlers
+  HID: wacom: validate report length for DTU handler
+  HID: wacom: validate report length for DTUS handler
+  HID: wacom: validate report length for 24HDT and 27QHDT handlers
 
-	item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
-		generation 9 transid 10 size 2097152 nbytes 1052672
-		block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
-		sequence 257 flags 0x8(NOCOMPRESS)
+ drivers/hid/wacom_wac.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Please note that, this behavior is there even before commit 59615e2c1f63
-("btrfs: reject single block sized compression early").
-
-[CAUSE]
-At compress_file_range(), after btrfs_compress_folios() call, we try
-making an inlined extent by calling cow_file_range_inline().
-
-But cow_file_range_inline() calls can_cow_file_range_inline() which has
-more accurate checks on if the range can be inlined.
-
-One of the user configurable conditions is the "max_inline=" mount
-option. If that value is set low (like the example, 4 bytes, which
-cannot store any header), or the compressed content is just slightly
-larger than 2K (the default value, meaning a 50% compression ratio),
-cow_file_range_inline() will return 1 immediately.
-
-And since we're here only to try inline the compressed data, the range
-is no larger than a single fs block.
-
-Thus compression is never going to make it a win, we fall back to
-marking the inode incompressible unavoidably.
-
-[FIX]
-Just add an extra check after inline attempt, so that if the inline
-attempt failed, do not set the nocompress flag.
-
-As there is no way to remove that flag, and the default 50% compression
-ratio is way too strict for the whole inode.
-
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/btrfs/inode.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 28024c827b756..8ec9b21db082a 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1085,6 +1085,12 @@ static void compress_file_range(struct btrfs_work *work)
- 			mapping_set_error(mapping, -EIO);
- 		goto free_pages;
- 	}
-+	/*
-+	 * If a single block at file offset 0 cannot be inlined, fall back to
-+	 * regular writes without marking the file incompressible.
-+	 */
-+	if (start == 0 && end <= blocksize)
-+		goto cleanup_and_bail_uncompressed;
- 
- 	/*
- 	 * We aren't doing an inline extent. Round the compressed size up to a
 -- 
 2.53.0
 
