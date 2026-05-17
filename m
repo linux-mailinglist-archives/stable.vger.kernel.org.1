@@ -1,404 +1,189 @@
-Return-Path: <stable+bounces-249077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFuEEruxCWo4lgQAu9opvQ
-	(envelope-from <stable+bounces-249077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 14:16:59 +0200
+	id yOdJFYLNCWq2qAQAu9opvQ
+	(envelope-from <stable+bounces-249098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 16:15:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC23560E8D
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 14:16:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C737C5618D2
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 16:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 716E030028C8
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 12:16:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CC6DA3006530
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 14:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D21B35E1A6;
-	Sun, 17 May 2026 12:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D7A2594B9;
+	Sun, 17 May 2026 14:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kNDIW61B"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b="XAwLGIrs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-03.1984.is (mail-03.1984.is [93.95.224.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A432D257844
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 12:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8265B2550D5
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 14:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.95.224.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779020211; cv=none; b=kni2WfGobogerxu+50s9a/j/d5C8bvd76Hi+ef/CpgISoEov4PM45H/xVDgZI1MxHk8K1+DMa2dZpq5NZ3Eytfmq0zYsIALFEHbQLEAt74FpkGommYT5Pbc8pEfqhYYOHmzBRpjNK/FEuM4QLxrwzep6+JL0Myptoxfb1Qi+pyM=
+	t=1779026883; cv=none; b=BCIwQIgHXMfN+47EztAxH27AIhrvSzBsYTNtgTT2p46yv0E9NfRFcg9UvutMKUHLmcyI34AaAkN4SxFxEVWOyXXww+/Upsfle4M9XX05ozPnnEA3JKzt4G8dTDyd5zmLkr/bDWo2iOMzLs4Vw7MO+3qXwZtmzuLU5FJpEy2MXME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779020211; c=relaxed/simple;
-	bh=ZkRvU0jLzvplU5bZY41Zz/7ytph4SzqDCErIdtmXOM4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zl9AgysNd8jiTURZfiMBz9PVtl/AapI2zdmiNRXcxfscqTrsTc/Gr6HB3uKNT5nls/lnFRbLmuKqq41/ee65nD6OhFjpq3hXNteUgCx/zHODuT1EZ5AjnV8i9PqFx/Hh8bXE2w0RQ5Tth5HshA5Jftg3sA4aMoNEwSrokobl1AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kNDIW61B; arc=none smtp.client-ip=209.85.214.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2bcd3ac3307so7451135ad.0
-        for <stable@vger.kernel.org>; Sun, 17 May 2026 05:16:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779020209; x=1779625009; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yjlRY4tntfwtwjxbRp3yBR4txk5DfmJk/3uX12iiOEM=;
-        b=kNDIW61BGQKGPKSmPsNxKtGZA+f72Td+DgmTSJw3IcinSNaE3vuN8KpmT+kpGVkkX8
-         iCM7olURrfZh27g2PgGFn2WBX7pg+A7swZ0U7Vle+orHmpX4HTLRcNvTkYJE/JN1U2fg
-         uFZkbQFi8h3bQYAJaSu43G4i7q25N1F4Hu5RsOkpx1vbsksEJP3UDMTOw6SUCBYUfMou
-         MRl9MjNFEpZnJ+JL7ZQfO91fr840CErcLfvmt/+XWU52SkVm1eQOoMfZ+1gNbcxQLyJQ
-         xPVMKtnEtTc+7kF8DoW/z0VMMP64bRhJcGwS+TofnYGbdlYn6QMItyEb8wbVUls9RKIn
-         txXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779020209; x=1779625009;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yjlRY4tntfwtwjxbRp3yBR4txk5DfmJk/3uX12iiOEM=;
-        b=Y+8DAWoLO+oqm5tYU4Ikd71Dng7IPO91B18mpWr1VdCFjnnAbYpOoSyue+CPRxWh3U
-         Pij4QCmMFkveV5uwnxZDI+ejRaXXDXqWzVllK6WoLtXlyqDngzwaaG4/mQudU48ImPRG
-         f2l9kAzk3RZ5s/BkqMac7FajeMZyThlAU1thwmLn+DbTYlFCLTMdmjaXKQXOn/9L09jB
-         EfG09fR68CTptBoodavJJHemaBIP+RdQwFs9nJKelEnNjbLwkBvY3ciAoufBaKY5kEMf
-         Zp9RCyJHCl8u3hF31rkNQG3NkXQKj6Mibj+CKvItDPUZGN9INIU4/fAF7efVYdg7ak7L
-         Vhfw==
-X-Forwarded-Encrypted: i=1; AFNElJ+auPqWTTpqMiXJRVonaEGJ2G6RftWmv75is8nAWaQ+XAciTzWyu5BDNHJnKW+LPO39u0wbBK0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCw2zt0mMiE40qnlUc5OWtXv9Nv4zpZ5Dn+/9KUIfWyAyd5s/o
-	oLLnK63zOWhli1+hRjLc7f7Z43FT4w47SG1HxvJo5BTowXBLuSt45JJJ
-X-Gm-Gg: Acq92OGXTRDyUcST3NAzgv9mGgQKhynI1tFAs1BkrznGqZ815kU37oOTc62AuMZAZuE
-	T95Hb7tVckR3pQ9NOMoCLK4aMWBakLXEA8EMsxvQGFQ0oC0SbLoKIM7bMtoj34tnYOXgJSY/1Sf
-	dEF1EEaP4BCu+0O1EKY48xJMxmGoNnI8sezyc6BsuT5+4xssr4+a4GtyuFKsrp32lZn/L009dwP
-	aAWBeb3JV5AQfVQSolkf1MyfOzpcisNa8K9ExCRJdqQ81cuWhSnXFvshGsDX9rNVUJFb1bdzIv1
-	ol2jG7oTFkqaTYAMEvzROf49DyjlBAtMMI8E3yQAdkkQ7YA96vVNG1t6mzq2C9H8adDTxwQtzZF
-	5PNJKpaIk3yko9a0IOy69nhyyAgr2VajIxKnf5pzugxNIcaNK79TmnLH2UcDay+mgEoqP5023oM
-	W+dSGzyqA2xX2/A1urDJIOJ/v1Oi84G1A=
-X-Received: by 2002:a17:902:b60a:b0:2bc:b366:4731 with SMTP id d9443c01a7336-2bd7e9b8086mr82854435ad.31.1779020208698;
-        Sun, 17 May 2026 05:16:48 -0700 (PDT)
-Received: from localhost ([111.228.63.84])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5c05ffbesm121124815ad.27.2026.05.17.05.16.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 05:16:48 -0700 (PDT)
-From: Zhang Cen <rollkingzzc@gmail.com>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Sitnicki <jakub@cloudflare.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zerocling0077@gmail.com,
-	2045gemini@gmail.com,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] bpf, sockmap: keep sk_msg copy state in sync
-Date: Sun, 17 May 2026 20:16:26 +0800
-Message-Id: <20260517121626.406516-1-rollkingzzc@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779026883; c=relaxed/simple;
+	bh=Oh7q8nC9wITOr2UummyBIMmvVJTwjiXvDl9btxtWfGs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=nZC03PfHIWCIQqgiB5ck+M6n9I2a3o3NOPUS2tlwjcuDEPH3QjWrX+zXfnY7XBnDctRAkPQDHk8OeG/jSXGfe9Uu5PaNVa8xKI4qwVFZ6kNs/7p2pSEepXVlzkkqxOz0NoMTGrt/rh0kWRJaPsHfS93KK8NCKLoQv6kes2f3Pdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkoc.com; spf=pass smtp.mailfrom=berkoc.com; dkim=pass (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b=XAwLGIrs; arc=none smtp.client-ip=93.95.224.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkoc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkoc.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=berkoc.com;
+	s=1984; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Message-ID
+	:References:In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=07i/g/3Qja7ieAQrUk+sKmkgbN29B4mnFsuWaZjIhwI=; b=XAwLGIrs1dxOKw/8B1dA5vxomj
+	+QhRG2aC2nMu/RJw6v4VzE1Ftifr6+rjwtTC6KO1dDoEpTEcBagfPXHU9cPD8ozKlpsZloyHPgbCC
+	hevERJRT+x3QOed5sxD1X4//BL7hfQOnnaPqLTT6fSzTA29g1Upv0hsY5OHz84+06u9g1v4f6lXnl
+	y8NoZ1RhUQP9eNCwv57IC+GDMi3uesOFn6DzC+lPjnKXxR2ZcVvjdpUZwMNDw/ERqd3HLxF4M7UQn
+	A3RsER1I24cLrUn5QDpMGnZ1/1CjYBMvEv6tqBN2ICecZWV3SxPjtwWrIGYLwPgKRF/Bw5H79QTTk
+	X9IGbJLA==;
+Received: from localhost
+	by mail-03.1984.is with utf8esmtp (Exim 4.96)
+	(envelope-from <me@berkoc.com>)
+	id 1wOc9o-00HEJm-2p;
+	Sun, 17 May 2026 14:07:53 +0000
+From: Berkant Koc <me@berkoc.com>
+To: Zack Rusin <zack.rusin@broadcom.com>, bcm-kernel-feedback-list@broadcom.com, dri-devel@lists.freedesktop.org
+Cc: security@kernel.org, Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+Subject: [PATCH] drm/vmwgfx: validate execbuf header.size lower bound
+In-Reply-To: <2026051743-genre-cacti-bdf3@gregkh>
+References: <20260517-vmwgfx-uaf-report@berkoc.com> <2026051743-genre-cacti-bdf3@gregkh>
+Message-ID: <20260517-vmwgfx-uaf-patch@berkoc.com>
+Date: Sun, 17 May 2026 15:05:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4FC23560E8D
+X-Spam-Score: -0.0 (/)
+X-Authenticated-User: me@berkoc.com
+X-Sender-Address: me@berkoc.com
+X-Rspamd-Queue-Id: C737C5618D2
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [5.84 / 15.00];
+	SEM_URIBL_FRESH15(3.00)[berkoc.com:email];
+	DMARC_POLICY_REJECT(2.00)[berkoc.com : SPF not aligned (strict),reject];
+	R_DKIM_REJECT(1.00)[berkoc.com:s=1984];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-249098-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,ffwll.ch,gmail.com,suse.de,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249077-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[berkoc.com:-];
+	MIME_TRACE(0.00)[0:+];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[kernel.org,iogearbox.net,linux.dev,gmail.com,fomichev.me,cloudflare.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	GREYLIST(0.00)[pass,body];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rollkingzzc@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[me@berkoc.com,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.987];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,berkoc.com:email,berkoc.com:mid]
 X-Rspamd-Action: no action
 
-SK_MSG uses msg->sg.copy as per-scatterlist-entry provenance. Entries
-with this bit set are copied before data/data_end are exposed to SK_MSG
-BPF programs for direct packet access.
+Commit 32b415a9dc2c ("drm/vmwgfx: Validate command header size against
+SVGA_CMD_MAX_DATASIZE") added an upper bound on the user-supplied
+SVGA3dCmdHeader.size field but no matching lower bound. When
+header->size is smaller than sizeof(cmd->body), the size_t subtraction
+in expressions like
 
-bpf_msg_pull_data(), bpf_msg_push_data() and bpf_msg_pop_data() rewrite
-the sk_msg scatterlist ring by collapsing, splitting and shifting
-entries. These operations move msg->sg.data[] entries, but the parallel
-copy bitmap can be left behind or stale in slots that no longer contain
-the original entry. A copied entry can therefore later occupy a slot whose
-copy bit is clear and be exposed as directly writable packet data.
+  maxnum = (header->size - sizeof(cmd->body)) / sizeof(*decl);
 
-Keep msg->sg.copy synchronized with scatterlist entry moves, preserve the
-copy bit when an entry is split, clear it when a helper replaces an entry
-with a private page, and clear every slot vacated by pull-data
-compaction.
+underflows. The subsequent bound check
 
-Fixes: 015632bb30da ("bpf: sk_msg program helper bpf_sk_msg_pull_data")
-Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
-Fixes: 7246d8ed4dcc ("bpf: helper to pop data from messages")
-Cc: stable@vger.kernel.org
-Co-developed-by: Han Guidong <2045gemini@gmail.com>
-Signed-off-by: Han Guidong <2045gemini@gmail.com>
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+  if (cmd->body.numVertexDecls > maxnum) return -EINVAL;
+
+is bypassed because maxnum is ~SIZE_MAX, and the loop walks
+attacker-chosen entries past the command buffer.
+
+In vmw_cmd_draw this leads to a 4-byte OOB-read per iteration via
+vmw_cmd_res_check(&decl[i].array.surfaceId, ...); on a surface-handle
+collision, vmw_resource_relocation_add records the OOB address as
+rel->offset (29-bit bitfield), and vmw_resource_relocations_apply
+later performs a 32-bit kernel write at cb + rel->offset.
+
+The same root cause is present in vmw_cmd_dma (suffix pointer-arith
+underflow leading to OOB-read of suffix->suffixSize) and
+vmw_cmd_shader_define (size_t wraparound passed to
+vmw_compat_shader_add).
+
+Reachable via DRM_VMW_EXECBUF (DRM_RENDER_ALLOW). Reject undersized
+headers at all three sites before the subtraction.
+
+Cc: stable@vger.kernel.org # v6.18+
+Fixes: 32b415a9dc2c ("drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE")
+Signed-off-by: Berkant Koc <me@berkoc.com>
 ---
-v2:
-Sashiko-bot pointed out that bpf_msg_pull_data() could leave stale copy
-bits on collapsed tail entries.
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-Clear msg->sg.copy for every entry consumed by bpf_msg_pull_data()
-before compacting the scatterlist ring.
-
-While researching recent page cache bugs, we discovered this bug.
-We confirmed it allows overwriting the page cache of read-only files
-via splice(). We haven't attempted to write an exploit, but the
-corruption primitive is verified. PoC available upon request.
-Recommend fixing ASAP.
----
- net/core/filter.c | 66 +++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 64 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 9590877b0714f..018c30a0d71fb 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2654,6 +2654,27 @@ static void sk_msg_reset_curr(struct sk_msg *msg)
- 	}
- }
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index e1f18020170a..6f9c7d61cc66 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1506,6 +1506,12 @@ static int vmw_cmd_dma(struct vmw_private *dev_priv,
+ 	bool dirty;
  
-+static bool sk_msg_elem_is_copy(const struct sk_msg *msg, u32 i)
-+{
-+	return test_bit(i, msg->sg.copy);
-+}
+ 	cmd = container_of(header, typeof(*cmd), header);
 +
-+static void sk_msg_set_elem_copy(struct sk_msg *msg, u32 i, bool copy)
-+{
-+	if (copy)
-+		__set_bit(i, msg->sg.copy);
-+	else
-+		__clear_bit(i, msg->sg.copy);
-+}
-+
-+static void sk_msg_clear_copy_range(struct sk_msg *msg, u32 start, u32 end)
-+{
-+	while (start != end) {
-+		__clear_bit(start, msg->sg.copy);
-+		sk_msg_iter_var_next(start);
-+	}
-+}
-+
- static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
- 	.func           = bpf_msg_cork_bytes,
- 	.gpl_only       = false,
-@@ -2738,6 +2759,7 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
- 	} while (i != last_sge);
- 
- 	sg_set_page(&msg->sg.data[first_sge], page, copy, 0);
-+	sk_msg_set_elem_copy(msg, first_sge, false);
- 
- 	/* To repair sg ring we need to shift entries. If we only
- 	 * had a single entry though we can just replace it and
-@@ -2747,13 +2769,20 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
- 	shift = last_sge > first_sge ?
- 		last_sge - first_sge - 1 :
- 		NR_MSG_FRAG_IDS - first_sge + last_sge - 1;
--	if (!shift)
-+	if (!shift) {
-+		sk_msg_set_elem_copy(msg, msg->sg.end, false);
- 		goto out;
++	if (unlikely(header->size < sizeof(cmd->body) + sizeof(*suffix))) {
++		VMW_DEBUG_USER("DMA cmd header.size too small.\n");
++		return -EINVAL;
 +	}
 +
-+	i = first_sge;
-+	sk_msg_iter_var_next(i);
-+	sk_msg_clear_copy_range(msg, i, last_sge);
+ 	suffix = (SVGA3dCmdSurfaceDMASuffix *)((unsigned long) &cmd->body +
+ 					       header->size - sizeof(*suffix));
  
- 	i = first_sge;
- 	sk_msg_iter_var_next(i);
- 	do {
- 		u32 move_from;
-+		bool move_copy;
+@@ -1572,6 +1578,12 @@ static int vmw_cmd_draw(struct vmw_private *dev_priv,
+ 		return ret;
  
- 		if (i + shift >= NR_MSG_FRAG_IDS)
- 			move_from = i + shift - NR_MSG_FRAG_IDS;
-@@ -2762,16 +2791,20 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
- 		if (move_from == msg->sg.end)
- 			break;
- 
-+		move_copy = sk_msg_elem_is_copy(msg, move_from);
- 		msg->sg.data[i] = msg->sg.data[move_from];
-+		sk_msg_set_elem_copy(msg, i, move_copy);
- 		msg->sg.data[move_from].length = 0;
- 		msg->sg.data[move_from].page_link = 0;
- 		msg->sg.data[move_from].offset = 0;
-+		sk_msg_set_elem_copy(msg, move_from, false);
- 		sk_msg_iter_var_next(i);
- 	} while (1);
- 
- 	msg->sg.end = msg->sg.end - shift > msg->sg.end ?
- 		      msg->sg.end - shift + NR_MSG_FRAG_IDS :
- 		      msg->sg.end - shift;
-+	sk_msg_set_elem_copy(msg, msg->sg.end, false);
- out:
- 	sk_msg_reset_curr(msg);
- 	msg->data = sg_virt(&msg->sg.data[first_sge]) + start - offset;
-@@ -2794,6 +2827,8 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- {
- 	struct scatterlist sge, nsge, nnsge, rsge = {0}, *psge;
- 	u32 new, i = 0, l = 0, space, copy = 0, offset = 0;
-+	bool sge_copy = false, nsge_copy = false, nnsge_copy = false;
-+	bool rsge_copy = false;
- 	u8 *raw, *to, *from;
- 	struct page *page;
- 
-@@ -2866,6 +2901,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 			sk_msg_iter_var_prev(i);
- 		psge = sk_msg_elem(msg, i);
- 		rsge = sk_msg_elem_cpy(msg, i);
-+		rsge_copy = sk_msg_elem_is_copy(msg, i);
- 
- 		psge->length = start - offset;
- 		rsge.length -= psge->length;
-@@ -2891,23 +2927,31 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 	/* Shift one or two slots as needed */
- 	sge = sk_msg_elem_cpy(msg, new);
- 	sg_unmark_end(&sge);
-+	sge_copy = sk_msg_elem_is_copy(msg, new);
- 
- 	nsge = sk_msg_elem_cpy(msg, i);
-+	nsge_copy = sk_msg_elem_is_copy(msg, i);
- 	if (rsge.length) {
- 		sk_msg_iter_var_next(i);
- 		nnsge = sk_msg_elem_cpy(msg, i);
-+		nnsge_copy = sk_msg_elem_is_copy(msg, i);
- 		sk_msg_iter_next(msg, end);
- 	}
- 
- 	while (i != msg->sg.end) {
- 		msg->sg.data[i] = sge;
-+		sk_msg_set_elem_copy(msg, i, sge_copy);
- 		sge = nsge;
-+		sge_copy = nsge_copy;
- 		sk_msg_iter_var_next(i);
- 		if (rsge.length) {
- 			nsge = nnsge;
-+			nsge_copy = nnsge_copy;
- 			nnsge = sk_msg_elem_cpy(msg, i);
-+			nnsge_copy = sk_msg_elem_is_copy(msg, i);
- 		} else {
- 			nsge = sk_msg_elem_cpy(msg, i);
-+			nsge_copy = sk_msg_elem_is_copy(msg, i);
- 		}
- 	}
- 
-@@ -2915,13 +2959,15 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 	/* Place newly allocated data buffer */
- 	sk_mem_charge(msg->sk, len);
- 	msg->sg.size += len;
--	__clear_bit(new, msg->sg.copy);
-+	sk_msg_set_elem_copy(msg, new, false);
- 	sg_set_page(&msg->sg.data[new], page, len + copy, 0);
- 	if (rsge.length) {
- 		get_page(sg_page(&rsge));
- 		sk_msg_iter_var_next(new);
- 		msg->sg.data[new] = rsge;
-+		sk_msg_set_elem_copy(msg, new, rsge_copy);
- 	}
-+	sk_msg_set_elem_copy(msg, msg->sg.end, false);
- 
- 	sk_msg_reset_curr(msg);
- 	sk_msg_compute_data_pointers(msg);
-@@ -2945,29 +2991,41 @@ static void sk_msg_shift_left(struct sk_msg *msg, int i)
- 
- 	put_page(sg_page(sge));
- 	do {
-+		bool copy;
+ 	cmd = container_of(header, typeof(*cmd), header);
 +
- 		prev = i;
- 		sk_msg_iter_var_next(i);
-+		copy = sk_msg_elem_is_copy(msg, i);
- 		msg->sg.data[prev] = msg->sg.data[i];
-+		sk_msg_set_elem_copy(msg, prev, copy);
- 	} while (i != msg->sg.end);
++	if (unlikely(header->size < sizeof(cmd->body))) {
++		VMW_DEBUG_USER("Draw cmd header.size smaller than body.\n");
++		return -EINVAL;
++	}
++
+ 	maxnum = (header->size - sizeof(cmd->body)) / sizeof(*decl);
  
- 	sk_msg_iter_prev(msg, end);
-+	sk_msg_set_elem_copy(msg, msg->sg.end, false);
- }
+ 	if (unlikely(cmd->body.numVertexDecls > maxnum)) {
+@@ -1915,6 +1927,11 @@ static int vmw_cmd_shader_define(struct vmw_private *dev_priv,
+ 	if (unlikely(!dev_priv->has_mob))
+ 		return 0;
  
- static void sk_msg_shift_right(struct sk_msg *msg, int i)
- {
- 	struct scatterlist tmp, sge;
-+	bool tmp_copy, sge_copy;
- 
- 	sk_msg_iter_next(msg, end);
- 	sge = sk_msg_elem_cpy(msg, i);
-+	sge_copy = sk_msg_elem_is_copy(msg, i);
- 	sk_msg_iter_var_next(i);
- 	tmp = sk_msg_elem_cpy(msg, i);
-+	tmp_copy = sk_msg_elem_is_copy(msg, i);
- 
- 	while (i != msg->sg.end) {
- 		msg->sg.data[i] = sge;
-+		sk_msg_set_elem_copy(msg, i, sge_copy);
- 		sk_msg_iter_var_next(i);
- 		sge = tmp;
-+		sge_copy = tmp_copy;
- 		tmp = sk_msg_elem_cpy(msg, i);
-+		tmp_copy = sk_msg_elem_is_copy(msg, i);
- 	}
-+	sk_msg_set_elem_copy(msg, msg->sg.end, false);
- }
- 
- BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
-@@ -3024,8 +3082,10 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 	 */
- 	if (start != offset) {
- 		struct scatterlist *nsge, *sge = sk_msg_elem(msg, i);
-+		u32 sge_idx = i;
- 		int a = start - offset;
- 		int b = sge->length - pop - a;
-+		bool sge_copy = sk_msg_elem_is_copy(msg, sge_idx);
- 
- 		sk_msg_iter_var_next(i);
- 
-@@ -3038,6 +3098,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 				sg_set_page(nsge,
- 					    sg_page(sge),
- 					    b, sge->offset + pop + a);
-+				sk_msg_set_elem_copy(msg, i, sge_copy);
- 			} else {
- 				struct page *page, *orig;
- 				u8 *to, *from;
-@@ -3054,6 +3115,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 				memcpy(to, from, a);
- 				memcpy(to + a, from + a + pop, b);
- 				sg_set_page(sge, page, a + b, 0);
-+				sk_msg_set_elem_copy(msg, sge_idx, false);
- 				put_page(orig);
- 			}
- 			pop = 0;
++	if (unlikely(cmd->header.size < sizeof(cmd->body))) {
++		VMW_DEBUG_USER("Shader define cmd header.size smaller than body.\n");
++		return -EINVAL;
++	}
++
+ 	size = cmd->header.size - sizeof(cmd->body);
+ 	ret = vmw_compat_shader_add(dev_priv, vmw_context_res_man(ctx),
+ 				    cmd->body.shid, cmd + 1, cmd->body.type,
 -- 
-2.43.0
+2.47.3
+
 
