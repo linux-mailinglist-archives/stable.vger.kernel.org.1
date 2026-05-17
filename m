@@ -1,79 +1,81 @@
-Return-Path: <stable+bounces-249092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKlXOBfICWropQQAu9opvQ
-	(envelope-from <stable+bounces-249092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:23 +0200
+	id OGrPKS7ICWropQQAu9opvQ
+	(envelope-from <stable+bounces-249093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636035614CA
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2A25614F0
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47AFB30048F3
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 13:52:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67BF73019F08
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 13:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A70826A0DD;
-	Sun, 17 May 2026 13:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF4126B973;
+	Sun, 17 May 2026 13:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AcMyu/Yi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BhiAP5RV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CC11A9F9F
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 13:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C377D1A9F9F
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 13:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779025941; cv=none; b=FDD2fkFNwHZHbIXEb1o53/4+eY1h52r3ODYWBs04j30xnYWadVgeiB4Ur5tNTMos26VwHNza1u+4VrzYTvstSpmfLEKq9npEoFKvs2O5rsUYzG8gWYZ7p1JEPnm+E+/d7yRQon4VQzext/g4YYGk0dnd5YH8gbhsp+tObWKZ6AI=
+	t=1779025943; cv=none; b=KM69hiyfO2Exp29d+XOgB19dybGcGAlsNqiN8oOGKQFeUxtR6yceZVxrZC3rrM2vfblrSAg8Ps7cvMHRnMJe+TvLo131q6qFso1PtEz2EO3+qJzviogzAKDTCSAJ+z8W0tsLjn07TCVe2SA6aMLywFvwlyBw/XCNX9v/HCVy68c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779025941; c=relaxed/simple;
-	bh=h9wtCFyFzLcO5jEPh6ZyLGnKzsR9VPlqSRMjF9S/Z5c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TKakzwqe5gtk9gyWqSJGPmWXwHN5ZoQuhsx4oRDgTJQTQi6j+pylyW24l98zGDaqCHZnJK0pktYWo8+DbEwe9fh4OpHkxL04+lZS+fulLoUTakC2uXoyFkyOO9hDVuFjge9KR6dyBQnrMuHkyykxROHAIokPP/toyyA5cNJ5YSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AcMyu/Yi; arc=none smtp.client-ip=209.85.214.171
+	s=arc-20240116; t=1779025943; c=relaxed/simple;
+	bh=yvRThhtFRzgNLNcZCuDT8RcuBgO7/FLtuzpeOVLUW9M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KDfnqv2ZlBi8TvaVp/7ixWd0mj4JsuFZQ0whn5zYsWv46x+cetrXmxzC0+b4KFpvXtZ3I8Dh5q1XDr9HN5BCNh6RfGxktx9S0zldmTAfDgEQcY8DWJ0Bh5+6Gs64xAZII9JfNpN/P3mlAQlGH+5aNnO8qa3CnHLBHWl/06T+U9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BhiAP5RV; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2bd80b3aa13so8253315ad.0
-        for <stable@vger.kernel.org>; Sun, 17 May 2026 06:52:19 -0700 (PDT)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2baca4df358so6989605ad.2
+        for <stable@vger.kernel.org>; Sun, 17 May 2026 06:52:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779025939; x=1779630739; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZgCyM9TX/SDLwUVzAsJaESZmJB2eQmJkR2yeVp3A4iI=;
-        b=AcMyu/YiHnuv8UHNrshBKcUHaBruU8r/Mcv/3mpYinz4ZnZkcwnmbwP78k3L1nLOSG
-         mRUHngbLMUiR180OjGSjLSqJYRNF2nBMo97GMLTN/Cbb+W3U3gePvaFnZgQp2UFdCf9r
-         hvFv/NHudjvZj4PhBnn2qtnuVZXEKbwfhJFsmHA78qYpHnG8vci8Vxo0ODMyg3S85l3H
-         ZA780cCPO1PtW/9nMoQ2RCSVynehZSsDATBhIRkKKylV1Zl8upVup62sVXpBi7GRlWUj
-         8nOT/6B0JoVivvnwsKYOtVCGv/FdH45N1h37KBikvyWr9QupLmiJOdQW0ZcoVNaiazCe
-         lj3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779025939; x=1779630739;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779025941; x=1779630741; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZgCyM9TX/SDLwUVzAsJaESZmJB2eQmJkR2yeVp3A4iI=;
-        b=ddBpWf+zPSINu35u1q0rEnNDX1mqQ71e3T6HhAkrj/V1MJUPSobklOkazuxvDIbUes
-         vkAiDrhEX2lVzaFuFOpyw6XLcS6HlH8NfSDJ2iibeKYY5+rAfdBc72PrmbAje753Jiey
-         vDt7kMzxZjAVAkIK7M7gB/aS8vRfdHCN97C1YkPxI36UbDOnx/VKPXKj+F1jVlXrq2I2
-         mxZdW4LBGpuEQA9Z+D8qhmP56K1HH6CqJ3t9NOwx39THwDxCOZBBHECBOih7FcFYDTQq
-         vSpmG+wlJOWKxTZqtX3ENPbJL6/ZvlZRKL9SZxJ/kCRjF/y9K+Bqlln+7+wKuiYjDMpL
-         UaUg==
-X-Forwarded-Encrypted: i=1; AFNElJ9/EYD16hHKtLeFOpiXV0GAC7qpb3CqFreVgH3a+arsXNvnCyQnNFYYZXVb/8gWKAOODyQ05pw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+tfEd5RM4/pJLA68OR1irIrQ+Vf3dpn6eXTZxK0ght0W0PPFU
-	Ahaonun6+RqBy4gj9pUumbXOdTViBoeWQvjCoCbIENyU6gHmV7YTbaH2
-X-Gm-Gg: Acq92OFJ7t/S5nWCGe+xtoIjPBefWLv5q3YVnjl9pedkwqszoLnX/75G3PTRYICYXom
-	CIZGcH9mHveFvclF9HuMOydDTj9inc7C25XTjmdq4+KwYHrLBfI/mKGeGq+U7fh+VlTJsR6gFXN
-	0VFK9nZMc0vEZlxWtGagrQM4WeK14AKKI+1zprlMJ/NDqPivNvCuJPVST+0FkFw2LGyrW4kkAfl
-	BWPfHhcnXWzhABld5BOtWaNtCJj1o2vj0Ms4MQ4LSnYZzdpuOs1ke+HFKMGqA6UNiq0VgOAzODS
-	KzUnUjx2eBwDCqPqmH+VVw9xlN8FdiZYMn8KCrzFEbWVi0tQk1E/VdhcgitSJMC0fdrp7yRregd
-	au62yd33MKeXvQi3eaEyrb+PrSPVmloDodROssY0/eQ0Kt/u69LX59J5KQMuj6Fxu91VldmfZHL
-	Blbm0UnKbR4lCDVu3uiEC4sTv7ZiAXHFTstoRZEFYbMPubepUT
-X-Received: by 2002:a17:902:8303:b0:2b9:f8e9:70e2 with SMTP id d9443c01a7336-2bd7e782ec7mr93513875ad.8.1779025939377;
-        Sun, 17 May 2026 06:52:19 -0700 (PDT)
+        bh=1t7vRy14fAIhG2Wr4kGou1JDcvmH5z+z8GUCNDyefuA=;
+        b=BhiAP5RVnssOdyMMW3sT74bM4e4o+oiqPzeOm6hNPJMKOjVaQ4Fxj3J4dbg0qZNr7Z
+         XM3cr5Rd37AO7AB70CkJUXU9Qa0UP4aWPc5TOIla705YFg0e54dknqTAV/ojSz0hEWG+
+         j69n7ezzw56OaZLwflSliHCsqaQUyijnNvdc6I2FHeursV2P6qCMYMjWUGpeUb8rQE10
+         dBEd+NFPDd6Uxmho0c+hDCTkFXaDO+cYQYOi8lNLWKs7A/bJhbtW0pReIC0BUA7b4QFc
+         dJgwFK7faDWBtejq2360C2PGL74DlEVyYHvbzo0aFBGRqA362KrMRBB/ozVT/PzZdZl3
+         oaeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779025941; x=1779630741;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1t7vRy14fAIhG2Wr4kGou1JDcvmH5z+z8GUCNDyefuA=;
+        b=WE8vibPr6JkI7x5fa836UNY7RYpmU3+tsxi5/weXgwf9gQ9tdF3pDHmwyob6/Io1IU
+         DoCko2ASsJ6UVYjqAM8ofMBqduNhgDDcOBCVVmRPisoawq/XmCUAgHHYD7OXDCcUPV2n
+         epBRe3X0IkO3tzyumez/HMW/ZgaN4JVBxGz6zKiMSrh1fMVi+RcGx2NU5uKs1qCG0a3y
+         3BsqeiDmoUkgrbwpupJ0DJ0yyU6akKcN7PR68bEiV+e3j2wLqd3X8JHgRWChgGlWywHi
+         QyGY6EUwIyMY7EntesV7uwoYFZoNkuKVKbtsvpZKa0q2Qfy3edeUDxJUFQU3v+ZV9JX3
+         l3cA==
+X-Forwarded-Encrypted: i=1; AFNElJ/U2OQ+PFThAVXD6gnhpHYFKB3teSNx9piruDGWcVu5zvGwgozljszbHeF1FsK7BtDiHh+6+6E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznDnRtiYZySwho/Fp/fsa6bmAhe1AUMXDP5NDq22bzQArEk6fh
+	4cKKa2gRFFu2IIZQsTQPs+4hOd1JLL6b7Eq8iuew43Olj5JMx/HLmKFT
+X-Gm-Gg: Acq92OFkbyM1nHeoREHuIlikn9Xl3N0Vygte1w+bX5Y8+lGsdE4+kmwD6epLVuh7xf4
+	PXw/5dX2/6JGZ+h4y4N5vooeBRqehnkIPGlXCMos2aFjmP3NaNLaI15NyW/ZPJ9rMwCtfr2jxZ/
+	vmUXo4liN8L8ujuGQd6ocdSqcot8gdAxxcehWasB434eVnhdb2Kg0uel7THlzmhdq0EP+i1jUmU
+	I1qHf2tieWBjY3InV7H0jWtuhl6wTLFrzUW7xZhkAMLoxHQsjwYt3F+SVDmTnySAaGQySMhFNJ4
+	i6rAtYQoIxQttth6uA2YWLmj62F/IWZKydXKQGT3rkiTpI0wZybERX6sHG6v68MfY+M1KbcsVqE
+	OdNlGztAYE1sLRrYS6fbzNgIsxxXrCblTKmYHXoKSG0+qBbRP8EW3l/lN/vUc2hAkgsnlZ2sZfq
+	dNj5yqcZK3dxaRAL41zxU5FF1c2vT4AdoiSE4W1ifVLPuRjcUa
+X-Received: by 2002:a17:902:b60a:b0:2bc:b366:4731 with SMTP id d9443c01a7336-2bd7e9b8086mr84503465ad.31.1779025941162;
+        Sun, 17 May 2026 06:52:21 -0700 (PDT)
 Received: from jmoon ([118.220.156.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5fc47sm113873385ad.10.2026.05.17.06.52.17
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5fc47sm113873385ad.10.2026.05.17.06.52.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 06:52:19 -0700 (PDT)
+        Sun, 17 May 2026 06:52:20 -0700 (PDT)
 From: Jinmo Yang <jinmo44.yang@gmail.com>
 To: linux-input@vger.kernel.org
 Cc: jikos@kernel.org,
@@ -81,10 +83,12 @@ Cc: jikos@kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Jinmo Yang <jinmo44.yang@gmail.com>
-Subject: [PATCH 0/4] HID: wacom: add report length validation in irq handlers
-Date: Sun, 17 May 2026 22:52:11 +0900
-Message-ID: <20260517135215.2220117-1-jinmo44.yang@gmail.com>
+Subject: [PATCH 1/4] HID: wacom: validate report length for PL and PTU handlers
+Date: Sun, 17 May 2026 22:52:12 +0900
+Message-ID: <20260517135215.2220117-2-jinmo44.yang@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260517135215.2220117-1-jinmo44.yang@gmail.com>
+References: <20260517135215.2220117-1-jinmo44.yang@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,14 +96,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 636035614CA
+X-Rspamd-Queue-Id: 4A2A25614F0
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -109,10 +113,10 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FREEMAIL_CC(0.00)[kernel.org,redhat.com,vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249092-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249093-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jinmo44yang@gmail.com,stable@vger.kernel.org];
@@ -123,38 +127,51 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Several wacom IRQ handler sub-functions access fixed offsets in the raw
-HID report buffer without validating the buffer length. wacom_wac_irq()
-receives the length from wacom_raw_event() but does not validate it
-before dispatching to the sub-functions, which do not receive the length
-parameter.
+wacom_pl_irq() and wacom_ptu_irq() access fixed offsets up to data[7]
+in the raw HID report buffer without validating the buffer length.
+These sub-functions are called from wacom_wac_irq() which receives the
+length parameter but does not pass it to the handlers.
 
 A malicious USB device can declare a small HID report in its descriptor
 and send a matching short report that passes the HID core size check
 (csize >= rsize), but the driver assumes a full-size hardware report
 layout, leading to slab-out-of-bounds reads.
 
-Note: this is not mitigated by the recent HID core bounds checking
-series which validates actual_size >= declared_size. An attacker
-controls both the descriptor (declared size) and the sent data (actual
-size), so the core check passes. Driver-level validation against the
-expected hardware report layout is still necessary.
+Add minimum length checks in wacom_wac_irq() before dispatching to
+wacom_pl_irq() and wacom_ptu_irq().
 
-Tested with KASAN on Linux 7.1-rc3 (slab-out-of-bounds confirmed) and
-verified kernel panic on a production device via uhid.
+Fixes: 4104d13fe019 ("Input: move USB tablets under drivers/input/tablet")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinmo Yang <jinmo44.yang@gmail.com>
+---
+ drivers/hid/wacom_wac.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Jinmo Yang (4):
-  HID: wacom: validate report length for PL and PTU handlers
-  HID: wacom: validate report length for DTU handler
-  HID: wacom: validate report length for DTUS handler
-  HID: wacom: validate report length for 24HDT and 27QHDT handlers
-
- drivers/hid/wacom_wac.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
+diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+index da1f0ea85..6d06842b6 100644
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -3453,6 +3453,8 @@ void wacom_wac_irq(struct wacom_wac *wacom_wac, size_t len)
+ 		break;
+ 
+ 	case PL:
++		if (len < 8)
++			return;
+ 		sync = wacom_pl_irq(wacom_wac);
+ 		break;
+ 
+@@ -3464,6 +3466,8 @@ void wacom_wac_irq(struct wacom_wac *wacom_wac, size_t len)
+ 		break;
+ 
+ 	case PTU:
++		if (len < 8)
++			return;
+ 		sync = wacom_ptu_irq(wacom_wac);
+ 		break;
+ 
 -- 
 2.53.0
 
