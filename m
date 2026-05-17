@@ -1,134 +1,172 @@
-Return-Path: <stable+bounces-249116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFs+EI3pCWpavAQAu9opvQ
-	(envelope-from <stable+bounces-249116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:15:09 +0200
+	id +DZtLLrrCWoDvQQAu9opvQ
+	(envelope-from <stable+bounces-249117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:24:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 838685623AE
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:15:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F7556240D
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 18:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 759BB3010C1C
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 16:15:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6607301AA47
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 16:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FEB3254A5;
-	Sun, 17 May 2026 16:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F79F3C0617;
+	Sun, 17 May 2026 16:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="kK3VDQIl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kZOgsJOw"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD55352C5C;
-	Sun, 17 May 2026 16:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779034503; cv=pass; b=KL971VNLOChcrcshVNyFdNqmsV0O62NFt0dmhLcUIAdVyWTXOtlrWIqjrGKPlY6pLNNCMue3/ZR4l/2e3bhwbQLYo0EJtfWnf+6pAPzxhMmTOykp5coiBZ6lCLcRyd7aMMH3G5RIQqhyDQjadejwU+ma0WBXD38/pahfUz5xVvk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779034503; c=relaxed/simple;
-	bh=zciJ29y6V7yiCwg5Y+ZUNqXXnQi5wfbsoF5QJvupyeI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r9yBmAESUPUXnY54N3q1iBgGZXsHO6ADBOTzbRo0/SxJ2qcy3KwxJy3zVRtlykPSFveVbE4X/EMS+Z9WqO9HmPX7u+r+aGQ6yqtvMdT8T3vyPJXWoM+UPbENNU+5EVjo3s2+xMHIcgeCsAOGVxp0ZrUDHEN/ettqi90d/lA8xtk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=kK3VDQIl; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1779034483; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=M0Xub1lCq4wl/BRc1gcF4eJJCj/eSpnhkULjWNDElqQiyTW0UNbh3QJHtzkqlvUMpazbWCRIaca47D91LHTc4F0McBwD0MneF/WTNjeecN72k/unFO0eWUxDXcjdAx5fjKfY4DkMvac0cTGq9msZG9WAQVivFdoaWmF66X41GaI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1779034483; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=lTQnY3Wob79n+0pHlloPg9VDdqG3m8pLTGa60m2YmDw=; 
-	b=HvhX71YnZ/4RKA5Sdq19cWUGLngYf6644gM99bCMz8criNBBvaD5uRv0yz/Aj++2ajTvG2AshS/iX5vNsL8Rj8sXJlTK5fHdazgHSga3fvVYXxDa23xrURBuaW4gtoPDRhuZMvQ6k6feL5kdCgaT164ffRKfuVudbFUAUP9Vd8E=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
-	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779034483;
-	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=lTQnY3Wob79n+0pHlloPg9VDdqG3m8pLTGa60m2YmDw=;
-	b=kK3VDQIlpnav25+wGvbaoQB+J+x4Rv83gqmpDLjiPvqqFJeIWS/ppTaCBsQlelAN
-	myuvqeE1jQ+rwxSHlJw5p6md+w07WhslZVYbtH3Vk7C0K1VlzybzLvwaYhITUhWhgka
-	eKooLOSAEMWOG8qp8KjkA0KRagncd3x+8eoYnuuE=
-Received: by mx.zohomail.com with SMTPS id 17790344794755.096580494770819;
-	Sun, 17 May 2026 09:14:39 -0700 (PDT)
-Message-ID: <afec1199-4889-4d35-964c-4432ec792fa3@collabora.com>
-Date: Sun, 17 May 2026 19:14:32 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C525F29D291
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 16:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779035048; cv=none; b=juNXpmW2E0mfEwzV2mK3ZCuVs6+jXa7NtqaPpbXvj4CW11msizBiW64cjn1N93qnyd/Zz68UHyFZgQlowqE6jAU/2u6V72GbeqOmcsKKV7k6OQTF5pzfvID5zoI5kLsQmABdh7wVt3fycwj84xgfs5gAm267HQXQJK2RuJQ/6vI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779035048; c=relaxed/simple;
+	bh=szJiY6EJbu4bYlsozrvbiskziHki0cBuDtsWP1MNp+k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Kwl6ImsOUbm3S0Im/aZpZ//BaEOC3Yw2x33rv0q819VbbXvpNg7z+s2i6UXpx9GtyqYB+guyvgIDzwd9AmytXsyH5ICtdtqcdHax5a/XpB9QsdJ4VDvHNUqFnw/f6XK5BG3It4VvaI4oot3zr6LmGjnYuqdvWkmtmnI41J5ORl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kZOgsJOw; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-44c44af71f8so204885f8f.1
+        for <stable@vger.kernel.org>; Sun, 17 May 2026 09:24:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779035044; x=1779639844; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4xQUzenjZFV6yOOyNJ+dSYEulDJrlac0Nc+paPih8Tk=;
+        b=kZOgsJOwmXvQPSNYWHmCr34oTy9ILavNhr5IZDPv5N+W+3rxCys5y5p8EWMeS2uMPJ
+         QkgKy8pAhpSkio3CmNAVaBDqX7E0k9GpIfstIvimgYenRB+Cxn+H5yPJ+G1hBdjuMTMP
+         iwQLAO2W819MdvjbZIwoJ1CvVbh2HpZWWICXeXi/1rItMcaV1HPjymR3Dpuf1Zer1QpN
+         9AIWDpsQDOrWLwKyL+rcwtsAgPSCBVDo7QY5F2bTeqpLr+0E+ODQV2qfttY5Xt5zPb0E
+         jMlYUtaZD1/PvhzwaBXswowJyFDFf0PVNtooCoV5IGfyavvQ5SWI5AXPDvN0aZmTVQC4
+         kxnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779035044; x=1779639844;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4xQUzenjZFV6yOOyNJ+dSYEulDJrlac0Nc+paPih8Tk=;
+        b=XaINqGuXoyl3pd3xkwQP8xA1ZdklxolkqlR2YXFTYoM7vTiWBQpSFbQUQZuEOOaUhH
+         CQgoivyjiAN+6aXIFTmvcEeC0INXu7bm5s4tyKBpKIn9/1z7vRhpYm+/1o52l/dAdqkg
+         HiNwy4th4JpNc9tY9lAvBnloYtC4pNCooCSILUmDfLHnQvBEAzDKZlY2isxIeG3nPHfY
+         dolpgHscE3VGplvRf/GaDee+ndb10HVgyJwAMwzJO5XXbX9XgMdF+/i3COZUDi1mws3I
+         UDPBGTeYn5ie5lZetYan6/ER/9UuaOBJCfJe54HQJykcC9oY3rkVuHLIyeLpfSchqLuD
+         y6SA==
+X-Forwarded-Encrypted: i=1; AFNElJ8tUJtcSLXknwYp2tj7qHCBpJ6tuDSYWw3i+Y0B1poVlJgrq20RIrwAWhBjTcKyeIm3zCvLSj4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUfrBFp8MoY7sfkGjDDFAirN/eFiPw++s9wEAOugfEYPKcs3Jg
+	+fJtquYeOVuWHyCZdmbMveK6wQvTFDf64DyyzqMse0Ke46Hrf7YDGO1R
+X-Gm-Gg: Acq92OHlsO3taRscBsQF2zMnxNkcvXv8o0guLk9hrVO0BQgc9sc8b9ja62xcfzuxnv2
+	L+xysaoAvN7wgI2veKJPgXMYdpxQ5OMZ4C69MqOwr1Lkp7YTr+NcPcPMsMTfxPAvXMQRwep0hES
+	C3lsHRQbjwrJSZjaT9UL2vlhtu/ZP7gtq3Z07YZkJ4DOWMwj906QHv1L/2YIMjhkhfEP3tHrn0T
+	nHbP0VY/HwnSq9D5AVp/b0vR0wgSDpU1wtpaiK/TFQWDxqruS8ItcjuWDLP0T5ix8vdehPL2OgS
+	1tfQAu/zK3VZUdKBhBN2PeQKIXS465UjZBYYvKFl3ppyDx/yrSZYMVvN00E8xYsfQrVrXRpepP9
+	UqyxlIyV+jbLksV9fR2HEzQfzXqZn6WC2H1jgQLklVUAinUqk0EDZR9gEfSzXbRC2Of3Q07wcnl
+	ASMSrfrhTfI6DXF2G0etRjwMgBCyZYOsGlwBWGM2kN1JVv
+X-Received: by 2002:a05:6000:1ac7:b0:43e:a978:c25e with SMTP id ffacd0b85a97d-45e5c37d119mr8648504f8f.1.1779035043883;
+        Sun, 17 May 2026 09:24:03 -0700 (PDT)
+Received: from localhost.localdomain ([82.215.118.79])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0a19c2dsm31481840f8f.21.2026.05.17.09.24.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 May 2026 09:24:03 -0700 (PDT)
+From: Stepan Ionichev <sozdayvek@gmail.com>
+To: jic23@kernel.org
+Cc: daniel.lezcano@linaro.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	gregkh@linuxfoundation.org,
+	hcazarim@yahoo.com,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	sozdayvek@gmail.com
+Subject: [PATCH] iio: adc: nxp-sar-adc: notify trigger on channel read error in buffer ISR
+Date: Sun, 17 May 2026 21:23:46 +0500
+Message-Id: <20260517162346.189-1-sozdayvek@gmail.com>
+X-Mailer: git-send-email 2.33.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] drm/virtio: use uninterruptible resv lock for plane
- updates
-To: Deepanshu Kartikey <kartikey406@gmail.com>, airlied@redhat.com,
- kraxel@redhat.com, gurchetansingh@chromium.org, olvaffe@gmail.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- simona@ffwll.ch, sumit.semwal@linaro.org, christian.koenig@amd.com
-Cc: dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org,
- syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20260515084030.21986-1-kartikey406@gmail.com>
-Content-Language: en-US
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <20260515084030.21986-1-kartikey406@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
-X-Rspamd-Queue-Id: 838685623AE
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 52F7556240D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249116-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,redhat.com,chromium.org,linux.intel.com,kernel.org,suse.de,ffwll.ch,linaro.org,amd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-249117-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linaro.org,baylibre.com,analog.com,kernel.org,linuxfoundation.org,yahoo.com,vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.osipenko@collabora.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[collabora.com:+];
+	FROM_NEQ_ENVFROM(0.00)[sozdayvek@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On 5/15/26 11:40, Deepanshu Kartikey wrote:
-> +int virtio_gpu_array_lock_resv_uninterruptible(struct virtio_gpu_object_array *objs)
-> +{
-> +	unsigned int i;
-> +	int ret = 0;
-> +
-> +	if (objs->nents == 1) {
-> +		dma_resv_lock(objs->objs[0]->resv, NULL);
-> +	} else {
-> +		ret = drm_gem_lock_reservations(objs->objs, objs->nents,
-> +						&objs->ticket);
+nxp_sar_adc_isr_buffer() bails on the first channel-read failure
+without calling iio_trigger_notify_done(), so a single I/O error
+leaves the trigger's use_count stuck and the buffer flow wedged
+until rebind.
 
-drm_gem_lock_reservations() is interruptible. Given that only one BO
-needs to be locked for the fix, make it
-virtio_gpu_lock_one_resv_uninterruptible() and fail with -EINVAL if
-objs->nents > 1
+Route the error exit through a 'done:' label that always calls
+iio_trigger_notify_done().
 
+Fixes: 4434072a893e ("iio: adc: Add the NXP SAR ADC support for the s32g2/3 platforms")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
+---
+ drivers/iio/adc/nxp-sar-adc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/nxp-sar-adc.c b/drivers/iio/adc/nxp-sar-adc.c
+index 9d9f2c76b..ed004812c 100644
+--- a/drivers/iio/adc/nxp-sar-adc.c
++++ b/drivers/iio/adc/nxp-sar-adc.c
+@@ -341,7 +341,7 @@ static void nxp_sar_adc_isr_buffer(struct iio_dev *indio_dev)
+ 		ret = nxp_sar_adc_read_data(info, info->buffered_chan[i]);
+ 		if (ret < 0) {
+ 			nxp_sar_adc_read_notify(info);
+-			return;
++			goto done;
+ 		}
+ 
+ 		info->buffer[i] = ret;
+@@ -352,6 +352,7 @@ static void nxp_sar_adc_isr_buffer(struct iio_dev *indio_dev)
+ 	iio_push_to_buffers_with_ts(indio_dev, info->buffer, sizeof(info->buffer),
+ 				    iio_get_time_ns(indio_dev));
+ 
++done:
+ 	iio_trigger_notify_done(indio_dev->trig);
+ }
+ 
 -- 
-Best regards,
-Dmitry
+2.43.0
+
 
