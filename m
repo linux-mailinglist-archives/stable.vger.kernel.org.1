@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-249151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id VjoFCaBJCmqtzAQAu9opvQ
-	(envelope-from <stable+bounces-249151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 01:05:04 +0200
+	id aPsdOO5JCmrFzAQAu9opvQ
+	(envelope-from <stable+bounces-249152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 01:06:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4A45643AF
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 01:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48693564404
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 01:06:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F376D300B111
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 23:05:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EEF81302C90D
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 23:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07A3330337;
-	Sun, 17 May 2026 23:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795D73D6693;
+	Sun, 17 May 2026 23:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hwBJBfzm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="adMpoJZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A251D3161A1
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 23:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AF13C3438
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 23:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779059099; cv=none; b=dWab18BxHieB66/ivwnIAkKCoN2VqJ1V0MEe75BVD8byxDDqgxzN1eVPkigT8F8smnjoZI99eoxuFMZP4QGTx3SHdOVGD6zs4gEe8dT0O4HBGLlTLeQSl4X1KDhVUjPTnW1jWA1Azvkynh0MBcdX7Gb7p87h59+Xw+CD65IA8EI=
+	t=1779059135; cv=none; b=eUDC+G25Q9gKYfEZgXF41J3najJRGH40EG8g9rW2z//eLKrcd3nZ++sXjJC0rRA6emU4rpWvjENZq77HLniyrm84u/cMFLxRfdnxSFhiIEC34S5dN+1wBk4S5f1zLgSJnmIfyZkjUIIfs+jtLYSVXl4VgYxmM/8bng4FkP5c0Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779059099; c=relaxed/simple;
-	bh=3COdT/ogf7AubaZxMXrL0S1BhWrp6sVc4HEcy9ghdpw=;
+	s=arc-20240116; t=1779059135; c=relaxed/simple;
+	bh=Jq57dZm4FypZLU3ZS5NJIxl1MKD4GwBgnHTlWetJ9do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEqc+BoSTCpSO5MOxLikAocA4P9UMKNko3EOiQiW4GlhEmJPlIc5GwOQ8s2irllnTDkhvBj5srsoO55tAG8CFufe4DRaLVF8yEV+Qm/wTylZ4AS5rn7DOOYA1Tqfu1I9kAIEg3oEKjwxmQQSRCp751GjFyNxK6/zFDLKh0wGE/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hwBJBfzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FA5C2BCB0;
-	Sun, 17 May 2026 23:04:58 +0000 (UTC)
+	 MIME-Version; b=IKtp/YolUVruzhvNN2bqq2308PZfGhFmNN3ZQv0/jsZ1FyHfWukMM+hLRcZbxYbVLip/lABqQMUxqrsigRpme39tJiUlJ4wlbWLM9el2Hs876lwlUcyavOFl3mP8QfcteJBCBfs9fnweNk6LwfFFW71EQ35Ong8U1pT1iBp6+AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=adMpoJZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46577C2BCB0;
+	Sun, 17 May 2026 23:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779059099;
-	bh=3COdT/ogf7AubaZxMXrL0S1BhWrp6sVc4HEcy9ghdpw=;
+	s=k20201202; t=1779059135;
+	bh=Jq57dZm4FypZLU3ZS5NJIxl1MKD4GwBgnHTlWetJ9do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwBJBfzmWIweHlMtlQDD84GMNsNw3FMDrhHj4n0tdvgRb6P30Zo6epVWQuOKfFGJT
-	 aHFysFLVtKrXdhjB6StO1OPvrNfgch9aKaWBHculMtvWVgUCsK2CjnMaz7BCPKXic7
-	 9QCy3FK7cRVzzfRXYvR8ft6CDd7WBxxnNlNnZtDFXQeaZyxL/mNM9E554HP2NhazXu
-	 EUYgoc1587J8f0kKJuf2AlKmVUY6z14wEBc9i9zJvjJwcaOHKBW/eapMDXY4XDNGrL
-	 aq1haPxfyl20tcuIpA+z178EvpXBG/8xh9+aUdCYPrFOIZQ6dfOLbyinEjbwNUAK8+
-	 1G4k20dCyXjYQ==
+	b=adMpoJZC7xQ0tN8XSgH5KK5uyCEaV9k1eFUSeb8wmaE3yYjlEJj463jamryh0KrwB
+	 uy4LrBRkRdGx0nmN3nkIxMQ2gFFPmqAQtYdVIQn9WiR6d3Fd/ejKxCamLZMYTaU9tA
+	 lmRFR8CShFycRix45ZtK9XYP+hC8mEyo1g6Auzk8J9lg/opJcWSCp0mGXzntMsyh9T
+	 nu8EnctGIQktGxXCmQisIYTgBixNyG/RexRyP9QvwgJSjENbft4cK9z+PEHfvI5YK9
+	 JtT8/wK3/bOoxrCyjZv2wgznsWRVngMZ+Y1HLs8rsq/VqXv9yLQ3KwmmFAQtYKXTrl
+	 9ykfUxcH/fDzA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Slava0135 <slava.kovalevskiy.2014@gmail.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Piyush Sachdeva <s.piyush1024@gmail.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Piyush Sachdeva <psachdeva@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] btrfs: fix missing last_unlink_trans update when removing a directory
-Date: Sun, 17 May 2026 19:04:56 -0400
-Message-ID: <20260517230456.408419-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] smb: client: Use FullSessionKey for AES-256 encryption key derivation
+Date: Sun, 17 May 2026 19:05:32 -0400
+Message-ID: <20260517230532.410411-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051236-bats-citizen-bd4a@gregkh>
-References: <2026051236-bats-citizen-bd4a@gregkh>
+In-Reply-To: <2026051203-superman-brunette-3ba1@gregkh>
+References: <2026051203-superman-brunette-3ba1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6B4A45643AF
+X-Rspamd-Queue-Id: 48693564404
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -72,19 +73,19 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[suse.com,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249151-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249152-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -93,226 +94,162 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,qemu.org:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Piyush Sachdeva <s.piyush1024@gmail.com>
 
-[ Upstream commit 999757231c49376cd1a37308d2c8c4c9932571e1 ]
+[ Upstream commit 5be7a0cef3229fb3b63a07c0d289daf752545424 ]
 
-When removing a directory we are not updating its last_unlink_trans field,
-which can result in incorrect fsync behaviour in case some one fsyncs the
-directory after it was removed because it's holding a file descriptor on
-it.
+When Kerberos authentication is used with AES-256 encryption (AES-256-CCM
+or AES-256-GCM), the SMB3 encryption and decryption keys must be derived
+using the full session key (Session.FullSessionKey) rather than just the
+first 16 bytes (Session.SessionKey).
 
-Example scenario:
+Per MS-SMB2 section 3.2.5.3.1, when Connection.Dialect is "3.1.1" and
+Connection.CipherId is AES-256-CCM or AES-256-GCM, Session.FullSessionKey
+must be set to the full cryptographic key from the GSS authentication
+context. The encryption and decryption key derivation (SMBC2SCipherKey,
+SMBS2CCipherKey) must use this FullSessionKey as the KDF input. The
+signing key derivation continues to use Session.SessionKey (first 16
+bytes) in all cases.
 
-   mkdir /mnt/dir1
-   mkdir /mnt/dir1/dir2
-   mkdir /mnt/dir3
+Previously, generate_key() hardcoded SMB2_NTLMV2_SESSKEY_SIZE (16) as the
+HMAC-SHA256 key input length for all derivations. When Kerberos with
+AES-256 provides a 32-byte session key, the KDF for encryption/decryption
+was using only the first 16 bytes, producing keys that did not match the
+server's, causing mount failures with sec=krb5 and require_gcm_256=1.
 
-   sync -f /mnt
+Add a full_key_size parameter to generate_key() and pass the appropriate
+size from generate_smb3signingkey():
+ - Signing: always SMB2_NTLMV2_SESSKEY_SIZE (16 bytes)
+ - Encryption/Decryption: ses->auth_key.len when AES-256, otherwise 16
 
-   # Do some change to the directory and fsync it.
-   chmod 700 /mnt/dir1
-   xfs_io -c fsync /mnt/dir1
+Also fix cifs_dump_full_key() to report the actual session key length for
+AES-256 instead of hardcoded CIFS_SESS_KEY_SIZE, so that userspace tools
+like Wireshark receive the correct key for decryption.
 
-   # Move dir2 out of dir1 so that dir1 becomes empty.
-   mv /mnt/dir1/dir2 /mnt/dir3/
-
-   open fd on /mnt/dir1
-   call rmdir(2) on path "/mnt/dir1"
-   fsync fd
-
-   <trigger power failure>
-
-When attempting to mount the filesystem, the log replay will fail with
-an -EIO error and dmesg/syslog has the following:
-
-   [445771.626482] BTRFS info (device dm-0): first mount of filesystem 0368bbea-6c5e-44b5-b409-09abe496e650
-   [445771.626486] BTRFS info (device dm-0): using crc32c checksum algorithm
-   [445771.627912] BTRFS info (device dm-0): start tree-log replay
-   [445771.628335] page: refcount:2 mapcount:0 mapping:0000000061443ddc index:0x1d00 pfn:0x7072a5
-   [445771.629453] memcg:ffff89f400351b00
-   [445771.629892] aops:btree_aops [btrfs] ino:1
-   [445771.630737] flags: 0x17fffc00000402a(uptodate|lru|private|writeback|node=0|zone=2|lastcpupid=0x1ffff)
-   [445771.632359] raw: 017fffc00000402a fffff47284d950c8 fffff472907b7c08 ffff89f458e412b8
-   [445771.633713] raw: 0000000000001d00 ffff89f6c51d1a90 00000002ffffffff ffff89f400351b00
-   [445771.635029] page dumped because: eb page dump
-   [445771.635825] BTRFS critical (device dm-0): corrupt leaf: root=5 block=30408704 slot=10 ino=258, invalid nlink: has 2 expect no more than 1 for dir
-   [445771.638088] BTRFS info (device dm-0): leaf 30408704 gen 10 total ptrs 17 free space 14878 owner 5
-   [445771.638091] BTRFS info (device dm-0): refs 4 lock_owner 0 current 3581087
-   [445771.638094] 	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
-   [445771.638097] 		inode generation 3 transid 9 size 16 nbytes 16384
-   [445771.638098] 		block group 0 mode 40755 links 1 uid 0 gid 0
-   [445771.638100] 		rdev 0 sequence 2 flags 0x0
-   [445771.638102] 		atime 1775744884.0
-   [445771.660056] 		ctime 1775744885.645502983
-   [445771.660058] 		mtime 1775744885.645502983
-   [445771.660060] 		otime 1775744884.0
-   [445771.660062] 	item 1 key (256 INODE_REF 256) itemoff 16111 itemsize 12
-   [445771.660064] 		index 0 name_len 2
-   [445771.660066] 	item 2 key (256 DIR_ITEM 1843588421) itemoff 16077 itemsize 34
-   [445771.660068] 		location key (259 1 0) type 2
-   [445771.660070] 		transid 9 data_len 0 name_len 4
-   [445771.660075] 	item 3 key (256 DIR_ITEM 2363071922) itemoff 16043 itemsize 34
-   [445771.660076] 		location key (257 1 0) type 2
-   [445771.660077] 		transid 9 data_len 0 name_len 4
-   [445771.660078] 	item 4 key (256 DIR_INDEX 2) itemoff 16009 itemsize 34
-   [445771.660079] 		location key (257 1 0) type 2
-   [445771.660080] 		transid 9 data_len 0 name_len 4
-   [445771.660081] 	item 5 key (256 DIR_INDEX 3) itemoff 15975 itemsize 34
-   [445771.660082] 		location key (259 1 0) type 2
-   [445771.660083] 		transid 9 data_len 0 name_len 4
-   [445771.660084] 	item 6 key (257 INODE_ITEM 0) itemoff 15815 itemsize 160
-   [445771.660086] 		inode generation 9 transid 9 size 8 nbytes 0
-   [445771.660087] 		block group 0 mode 40777 links 1 uid 0 gid 0
-   [445771.660088] 		rdev 0 sequence 2 flags 0x0
-   [445771.660089] 		atime 1775744885.641174097
-   [445771.660090] 		ctime 1775744885.645502983
-   [445771.660091] 		mtime 1775744885.645502983
-   [445771.660105] 		otime 1775744885.641174097
-   [445771.660106] 	item 7 key (257 INODE_REF 256) itemoff 15801 itemsize 14
-   [445771.660107] 		index 2 name_len 4
-   [445771.660108] 	item 8 key (257 DIR_ITEM 2676584006) itemoff 15767 itemsize 34
-   [445771.660109] 		location key (258 1 0) type 2
-   [445771.660110] 		transid 9 data_len 0 name_len 4
-   [445771.660111] 	item 9 key (257 DIR_INDEX 2) itemoff 15733 itemsize 34
-   [445771.660112] 		location key (258 1 0) type 2
-   [445771.660113] 		transid 9 data_len 0 name_len 4
-   [445771.660114] 	item 10 key (258 INODE_ITEM 0) itemoff 15573 itemsize 160
-   [445771.660115] 		inode generation 9 transid 10 size 0 nbytes 0
-   [445771.660116] 		block group 0 mode 40755 links 2 uid 0 gid 0
-   [445771.660117] 		rdev 0 sequence 0 flags 0x0
-   [445771.660118] 		atime 1775744885.645502983
-   [445771.660119] 		ctime 1775744885.645502983
-   [445771.660120] 		mtime 1775744885.645502983
-   [445771.660121] 		otime 1775744885.645502983
-   [445771.660122] 	item 11 key (258 INODE_REF 257) itemoff 15559 itemsize 14
-   [445771.660123] 		index 2 name_len 4
-   [445771.660124] 	item 12 key (258 INODE_REF 259) itemoff 15545 itemsize 14
-   [445771.660125] 		index 2 name_len 4
-   [445771.660126] 	item 13 key (259 INODE_ITEM 0) itemoff 15385 itemsize 160
-   [445771.660127] 		inode generation 9 transid 10 size 8 nbytes 0
-   [445771.660128] 		block group 0 mode 40755 links 1 uid 0 gid 0
-   [445771.660129] 		rdev 0 sequence 1 flags 0x0
-   [445771.660130] 		atime 1775744885.645502983
-   [445771.660130] 		ctime 1775744885.645502983
-   [445771.660131] 		mtime 1775744885.645502983
-   [445771.660132] 		otime 1775744885.645502983
-   [445771.660133] 	item 14 key (259 INODE_REF 256) itemoff 15371 itemsize 14
-   [445771.660134] 		index 3 name_len 4
-   [445771.660135] 	item 15 key (259 DIR_ITEM 2676584006) itemoff 15337 itemsize 34
-   [445771.660136] 		location key (258 1 0) type 2
-   [445771.660137] 		transid 10 data_len 0 name_len 4
-   [445771.660138] 	item 16 key (259 DIR_INDEX 2) itemoff 15303 itemsize 34
-   [445771.660139] 		location key (258 1 0) type 2
-   [445771.660140] 		transid 10 data_len 0 name_len 4
-   [445771.660144] BTRFS error (device dm-0): block=30408704 write time tree block corruption detected
-   [445771.661650] ------------[ cut here ]------------
-   [445771.662358] WARNING: fs/btrfs/disk-io.c:326 at btree_csum_one_bio+0x217/0x230 [btrfs], CPU#8: mount/3581087
-   [445771.663588] Modules linked in: btrfs f2fs xfs (...)
-   [445771.671229] CPU: 8 UID: 0 PID: 3581087 Comm: mount Tainted: G        W           7.0.0-rc6-btrfs-next-230+ #2 PREEMPT(full)
-   [445771.672575] Tainted: [W]=WARN
-   [445771.672987] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-   [445771.674460] RIP: 0010:btree_csum_one_bio+0x217/0x230 [btrfs]
-   [445771.675222] Code: 89 44 24 (...)
-   [445771.677364] RSP: 0018:ffffd23882247660 EFLAGS: 00010246
-   [445771.678029] RAX: 0000000000000000 RBX: ffff89f6c51d1a90 RCX: 0000000000000000
-   [445771.678975] RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff89f406020000
-   [445771.679983] RBP: ffff89f821204000 R08: 0000000000000000 R09: 00000000ffefffff
-   [445771.680905] R10: ffffd23882247448 R11: 0000000000000003 R12: ffffd23882247668
-   [445771.681978] R13: ffff89f458e40fc0 R14: ffff89f737f4f500 R15: ffff89f737f4f500
-   [445771.682912] FS:  00007f0447a98840(0000) GS:ffff89fb9771d000(0000) knlGS:0000000000000000
-   [445771.684393] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-   [445771.685230] CR2: 00007f0447bf1330 CR3: 000000017cb02002 CR4: 0000000000370ef0
-   [445771.686273] Call Trace:
-   [445771.686646]  <TASK>
-   [445771.686969]  btrfs_submit_bbio+0x83f/0x860 [btrfs]
-   [445771.687750]  ? write_one_eb+0x28f/0x340 [btrfs]
-   [445771.688428]  btree_writepages+0x2e3/0x550 [btrfs]
-   [445771.689180]  ? kmem_cache_alloc_noprof+0x12a/0x490
-   [445771.689963]  ? alloc_extent_state+0x19/0x120 [btrfs]
-   [445771.690801]  ? kmem_cache_free+0x135/0x380
-   [445771.691328]  ? preempt_count_add+0x69/0xa0
-   [445771.691831]  ? set_extent_bit+0x252/0x8e0 [btrfs]
-   [445771.692468]  ? xas_load+0x9/0xc0
-   [445771.692873]  ? xas_find+0x14d/0x1a0
-   [445771.693304]  do_writepages+0xc6/0x160
-   [445771.693756]  filemap_writeback+0xb8/0xe0
-   [445771.694274]  btrfs_write_marked_extents+0x61/0x170 [btrfs]
-   [445771.694999]  btrfs_write_and_wait_transaction+0x4e/0xc0 [btrfs]
-   [445771.695818]  btrfs_commit_transaction+0x5c8/0xd10 [btrfs]
-   [445771.696530]  ? kmem_cache_free+0x135/0x380
-   [445771.697120]  ? release_extent_buffer+0x34/0x160 [btrfs]
-   [445771.697786]  btrfs_recover_log_trees+0x7be/0x7e0 [btrfs]
-   [445771.698525]  ? __pfx_replay_one_buffer+0x10/0x10 [btrfs]
-   [445771.699206]  open_ctree+0x11e5/0x1810 [btrfs]
-   [445771.699776]  btrfs_get_tree.cold+0xb/0x162 [btrfs]
-   [445771.700463]  ? fscontext_read+0x165/0x180
-   [445771.701146]  ? rw_verify_area+0x50/0x180
-   [445771.701866]  vfs_get_tree+0x25/0xd0
-   [445771.702491]  vfs_cmd_create+0x59/0xe0
-   [445771.703125]  __do_sys_fsconfig+0x303/0x610
-   [445771.703603]  do_syscall_64+0xe9/0xf20
-   [445771.703974]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   [445771.704700] RIP: 0033:0x7f0447cbd4aa
-   [445771.705108] Code: 73 01 c3 (...)
-   [445771.707263] RSP: 002b:00007ffc4e528318 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
-   [445771.708107] RAX: ffffffffffffffda RBX: 00005561585d8c20 RCX: 00007f0447cbd4aa
-   [445771.708931] RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
-   [445771.709744] RBP: 00005561585d9120 R08: 0000000000000000 R09: 0000000000000000
-   [445771.710674] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-   [445771.711477] R13: 00007f0447e4f580 R14: 00007f0447e5126c R15: 00007f0447e36a23
-   [445771.712277]  </TASK>
-   [445771.712541] ---[ end trace 0000000000000000 ]---
-   [445771.713382] BTRFS error (device dm-0): error while writing out transaction: -5
-   [445771.714679] BTRFS warning (device dm-0): Skipping commit of aborted transaction.
-   [445771.715562] BTRFS error (device dm-0 state A): Transaction aborted (error -5)
-   [445771.716459] BTRFS: error (device dm-0 state A) in cleanup_transaction:2068: errno=-5 IO failure
-   [445771.717936] BTRFS error (device dm-0 state EA): failed to recover log trees with error: -5
-   [445771.719681] BTRFS error (device dm-0 state EA): open_ctree failed: -5
-
-The problem is that such a fsync should have result in a fallback to a
-transaction commit, but that did not happen because through the
-btrfs_rmdir() we never update the directory's last_unlink_trans field.
-Any inode that had a link removed must have its last_unlink_trans updated
-to the ID of transaction used for the operation, otherwise fsync and log
-replay will not work correctly.
-
-btrfs_rmdir() calls btrfs_unlink_inode() and through that call chain we
-never call btrfs_record_unlink_dir() in order to update last_unlink_trans.
-However btrfs_unlink(), which is used for unlinking regular files, calls
-btrfs_record_unlink_dir() and then calls btrfs_unlink_inode(). So fix
-this by moving the call to btrfs_record_unlink_dir() from btrfs_unlink()
-to btrfs_unlink_inode().
-
-A test case for fstests will follow soon.
-
-Reported-by: Slava0135 <slava.kovalevskiy.2014@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CAAJYhww5ov62Hm+n+tmhcL-e_4cBobg+OWogKjOJxVUXivC=MQ@mail.gmail.com/
-CC: stable@vger.kernel.org
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ wrapped dir and inode arguments with BTRFS_I() since 6.1 btrfs_rmdir() uses struct inode * instead of struct btrfs_inode * ]
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
+Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adapted to legacy crypto_shash API and ses->binding boolean instead of upstream's hmac_sha256 helpers and chan_lock machinery ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/cifs/ioctl.c         |  2 +-
+ fs/cifs/smb2transport.c | 36 ++++++++++++++++++++++++++----------
+ 2 files changed, 27 insertions(+), 11 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 27aaa5064ff7e..63d23b20bf3d5 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4691,6 +4691,8 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
- 	if (err)
- 		goto out;
+diff --git a/fs/cifs/ioctl.c b/fs/cifs/ioctl.c
+index e846c18b71d2d..281515ed473da 100644
+--- a/fs/cifs/ioctl.c
++++ b/fs/cifs/ioctl.c
+@@ -262,7 +262,7 @@ static int cifs_dump_full_key(struct cifs_tcon *tcon, struct smb3_full_key_debug
+ 		break;
+ 	case SMB2_ENCRYPTION_AES256_CCM:
+ 	case SMB2_ENCRYPTION_AES256_GCM:
+-		out.session_key_length = CIFS_SESS_KEY_SIZE;
++		out.session_key_length = ses->auth_key.len;
+ 		out.server_in_key_length = out.server_out_key_length = SMB3_GCM256_CRYPTKEY_SIZE;
+ 		break;
+ 	default:
+diff --git a/fs/cifs/smb2transport.c b/fs/cifs/smb2transport.c
+index ffae3a7f46ce4..f1e981328bc87 100644
+--- a/fs/cifs/smb2transport.c
++++ b/fs/cifs/smb2transport.c
+@@ -291,7 +291,8 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
+ }
  
-+	btrfs_record_unlink_dir(trans, BTRFS_I(dir), BTRFS_I(inode), false);
+ static int generate_key(struct cifs_ses *ses, struct kvec label,
+-			struct kvec context, __u8 *key, unsigned int key_size)
++			struct kvec context, __u8 *key, unsigned int key_size,
++			unsigned int full_key_size)
+ {
+ 	unsigned char zero = 0x0;
+ 	__u8 i[4] = {0, 0, 0, 1};
+@@ -312,7 +313,7 @@ static int generate_key(struct cifs_ses *ses, struct kvec label,
+ 	}
+ 
+ 	rc = crypto_shash_setkey(server->secmech.hmacsha256,
+-		ses->auth_key.response, SMB2_NTLMV2_SESSKEY_SIZE);
++		ses->auth_key.response, full_key_size);
+ 	if (rc) {
+ 		cifs_server_dbg(VFS, "%s: Could not set with session key\n", __func__);
+ 		goto smb3signkey_ret;
+@@ -393,10 +394,9 @@ static int
+ generate_smb3signingkey(struct cifs_ses *ses,
+ 			const struct derivation_triplet *ptriplet)
+ {
+-	int rc;
+-#ifdef CONFIG_CIFS_DEBUG_DUMP_KEYS
++	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
+ 	struct TCP_Server_Info *server = ses->server;
+-#endif
++	int rc;
+ 
+ 	/*
+ 	 * All channels use the same encryption/decryption keys but
+@@ -412,30 +412,46 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 		rc = generate_key(ses, ptriplet->signing.label,
+ 				  ptriplet->signing.context,
+ 				  cifs_ses_binding_channel(ses)->signkey,
+-				  SMB3_SIGN_KEY_SIZE);
++				  SMB3_SIGN_KEY_SIZE,
++				  SMB2_NTLMV2_SESSKEY_SIZE);
+ 		if (rc)
+ 			return rc;
+ 	} else {
+ 		rc = generate_key(ses, ptriplet->signing.label,
+ 				  ptriplet->signing.context,
+ 				  ses->smb3signingkey,
+-				  SMB3_SIGN_KEY_SIZE);
++				  SMB3_SIGN_KEY_SIZE,
++				  SMB2_NTLMV2_SESSKEY_SIZE);
+ 		if (rc)
+ 			return rc;
+ 
++		/*
++		 * Per MS-SMB2 3.2.5.3.1, signing key always uses Session.SessionKey
++		 * (first 16 bytes). Encryption/decryption keys use
++		 * Session.FullSessionKey when dialect is 3.1.1 and cipher is
++		 * AES-256-CCM or AES-256-GCM, otherwise Session.SessionKey.
++		 */
 +
- 	/* now the directory is empty */
- 	err = btrfs_unlink_inode(trans, BTRFS_I(dir),
- 			BTRFS_I(d_inode(dentry)), dentry->d_name.name,
++		if (server->dialect == SMB311_PROT_ID &&
++		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
++		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
++			full_key_size = ses->auth_key.len;
++
+ 		memcpy(ses->chans[0].signkey, ses->smb3signingkey,
+ 		       SMB3_SIGN_KEY_SIZE);
+ 
+ 		rc = generate_key(ses, ptriplet->encryption.label,
+ 				  ptriplet->encryption.context,
+ 				  ses->smb3encryptionkey,
+-				  SMB3_ENC_DEC_KEY_SIZE);
++				  SMB3_ENC_DEC_KEY_SIZE,
++				  full_key_size);
+ 		if (rc)
+ 			return rc;
+ 		rc = generate_key(ses, ptriplet->decryption.label,
+ 				  ptriplet->decryption.context,
+ 				  ses->smb3decryptionkey,
+-				  SMB3_ENC_DEC_KEY_SIZE);
++				  SMB3_ENC_DEC_KEY_SIZE,
++				  full_key_size);
+ 		if (rc)
+ 			return rc;
+ 	}
+@@ -450,7 +466,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 			&ses->Suid);
+ 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
+ 	cifs_dbg(VFS, "Session Key   %*ph\n",
+-		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
++		 (int)ses->auth_key.len, ses->auth_key.response);
+ 	cifs_dbg(VFS, "Signing Key   %*ph\n",
+ 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
+ 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
 -- 
 2.53.0
 
