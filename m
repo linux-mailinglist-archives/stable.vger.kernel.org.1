@@ -1,97 +1,60 @@
-Return-Path: <stable+bounces-249122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249123-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OAThFHP4CWrivgQAu9opvQ
-	(envelope-from <stable+bounces-249122-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 19:18:43 +0200
+	id GPoWGIf6CWpPvwQAu9opvQ
+	(envelope-from <stable+bounces-249123-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 19:27:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E658B56275E
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 19:18:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A81562869
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 19:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C725A300A4C6
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 17:18:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1A3B3027B7B
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 17:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527333C457C;
-	Sun, 17 May 2026 17:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055723C5DDC;
+	Sun, 17 May 2026 17:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZT8YHCl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZqUikQcW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7063C4B81
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 17:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0383BE645;
+	Sun, 17 May 2026 17:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779038321; cv=none; b=F2sJ85wD7SuD6+pO6pXDm5paWiuzYYdjiuEUEW7DZwKXqTYMG7trCuowi6t/KwMn/joQJ6M7R9NRSZNGQ8QHEgDi00iLGPw/d9hvp0tN6rSdDJ/JjFx7hfpniJbDbdZ11rTw6yA2KXQqdg31hxSC3NjW4BFkBbwbpiZD0GXf8PU=
+	t=1779038790; cv=none; b=CJERXr/fU9s6uQP58pCuOA99qyHAKS1COxaj4u1l1Glpd29H/o788xtRL2Jy185RFqhfn4tnKaAqpuvQMZI0SAZ9nIKN5WPt8pKDeJPz0yfoLiBry6sW0fMXPU7SnUlv0lGocE8iJe6BXHfBsRSo/BH090uSFt+AEP41mVcXGE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779038321; c=relaxed/simple;
-	bh=sC7gGKV7ozm/WzcKRL8dyf5wyvuKoJ9tCvD0h0m34KA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iWMszXM7IL96tglA1DHpPSjeVEFbnVHrEM50NFKQPuN3/d+3IBzecYuzefRVM3430BwTgRyobos7/3cH9lmcH2zlReDkwAfyEPoRwLJChH6A82kknA2ux6rkUsUoF1o6x8L8wN3zcawVI5OOLl2gQ12vShbD6gQEIeGMAWcePsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZT8YHCl; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48fde653997so1831815e9.2
-        for <stable@vger.kernel.org>; Sun, 17 May 2026 10:18:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779038317; x=1779643117; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sC7gGKV7ozm/WzcKRL8dyf5wyvuKoJ9tCvD0h0m34KA=;
-        b=eZT8YHCl9SLDA7CfoQ6j3M+c1Iaflh/BAv+/Wc/EriQzKp0bUCe5CfdCgitKl7GXxa
-         t1+UrR/KdIX0YNfijHS+RMhpVMolS1AUmCFUn4EnkBvDqUVvTP0k+lAI9u4z6OKRZ2bM
-         gL/A//PLT2/M/x6iFszzmehWSpGrmmk/2fT8nWIVR2ncwwabFF2sUfHhyYUIqnLwHLTR
-         REaKLSfVn4GM5/z6F+m0VJRV8Ds6+E4hGQOoKtwxL4yCWWLMfWw7SzgGK6cIb/0EI0Ao
-         dkp6TLBmMm3OOgW2Tyk+obOGXdlOhSsmBM7tPKrlEO4uDLnoPETFieqOHPTauMbtefWF
-         VlpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779038317; x=1779643117;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sC7gGKV7ozm/WzcKRL8dyf5wyvuKoJ9tCvD0h0m34KA=;
-        b=apRH+3pvtQ4UtDy4Df6sNxau2lDirA4X7f04Wp0LW7DU9qQNa95WuLsRXzbUMuHH9h
-         6Bka2r14QdQh7VCAdyqCWHqr03E9nuJC3eahaTy95CJ3udNTND/AFE1FOTBjFSt4k2U4
-         92dUyJk/kLLf2tGrznuEBE3c0JLzMJbMt87x6btqDsXqK0npthncOJJP8pEThcxMPd6v
-         1LmEUw/+7siOXxF+6bUEAft6SYS/vufIELdTlLmRpvxAW4e6KKD2hbxFzzYL9aYJk+fv
-         MnBlRPtaA3Gfny+5aUWqsXMhN1HW1weO+B++8OweeZ0RwQc4DMK//UMu6r6GFkHaxjYc
-         VC5g==
-X-Forwarded-Encrypted: i=1; AFNElJ/FjaCdelYnAuLD3fw8f1x/Ae1bOp8REvaoLApJr6C9LRASoy95glkmRVHBbgvzQ9pdYEHlCDI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuAi4MGqKkdhRQWlaEUJY9UHXS5RwkTOty9NxULfn2PAoxFF0/
-	bhTCSoYtP+1G51yab2GXVztpvtgSfmxe3POrwbDRUIBKLLSmT10MQ1Ts
-X-Gm-Gg: Acq92OFobOLjGF6xnOTKzQatox59EQ/aLSFZ3ieionHnhY3vIzGqVkCxMUG5AZnsX5x
-	eFCRVxQWw0tfx0VzurYUZkgNVtGHkgMaPEIn9yV/misib2d4oDbQDYlPf+9DDILRITyxhZvyFuu
-	aqTuVNP9Jtan85K5hr6jCWTsLHbtjQTG5OORvJE4JgChCud9hX/qd6JctK8yVSC6KQc7sdJNRba
-	FfWuc+dXNTfuLTq8fdt/Pk8Jz+YK3NaPpFGsfYhY3BZ581dRggU4jZarIk94plNz9NoBB4fdar8
-	4pB5BUWvsh0xCnY6NorsWp9ykeg5Srg8prSlKOAfAvoamt0kehpcaORsw/GyOwyiebz38nDPj/T
-	MgrEgoTTa3a+9QRsEYRgxDYpKrM90RXmz6LWcGVH2BplRirly21THqHvZA7bQKMM4KY/1VW/7kM
-	9ipzt+LAhz59B+Ru6iLehQbSgcaYa/ujtpvbwS8KJxIdy6
-X-Received: by 2002:a05:600c:3b07:b0:48e:6db5:76e6 with SMTP id 5b1f17b1804b1-48fe63099c6mr95495075e9.2.1779038317040;
-        Sun, 17 May 2026 10:18:37 -0700 (PDT)
-Received: from localhost.localdomain ([82.215.118.79])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ec3acf7sm30645659f8f.12.2026.05.17.10.18.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 10:18:36 -0700 (PDT)
-From: Stepan Ionichev <sozdayvek@gmail.com>
-To: dlechner@baylibre.com
-Cc: mazziesaccount@gmail.com,
-	jic23@kernel.org,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	linux-iio@vger.kernel.org,
+	s=arc-20240116; t=1779038790; c=relaxed/simple;
+	bh=uSmhrok23qhHp/UuKR5PcZR4/GmFUZQCLIknry70ibk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JfnB1mcnP2vojCSfFHHjzyW5QM1AaAS7ZowIa5g3cK14P244PqbZ/6C/E5GbgbFcGaCPebN/jjbXtXw1gR54paGzgJWI0RNE5B9U3xqqpybIM5kRSjEYXM9pNr3yvBv+gdQptK+ECyU3zSBSLmIrRd2oF/18GL5dsPGpLH9HHWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZqUikQcW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F86DC2BCB0;
+	Sun, 17 May 2026 17:26:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779038790;
+	bh=uSmhrok23qhHp/UuKR5PcZR4/GmFUZQCLIknry70ibk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZqUikQcW9Evjr7yatHBQHdM3uw52R38uUb2fVpt+MrdYfo6kq2QMD2JriXVJBsQGL
+	 RJge6mPFr6oFhn1WRoqOfYuN7jDjvfOq/bW4atI+sFaPa5Bc8lkuQDmtLu+mnreJyK
+	 jRPDOiZfoyMrf079tRQ0dXet/yk9Kq0WrJlb5jPX7pO6yZ/Zhs12tB7SlsAQk+2JWq
+	 xvVbykHyrTwobwMdsrodM6AShwRWHERnOBLqgRO5rCQBzJelvWjIA6rJ1w/rWEe/Xy
+	 LCN68rn/qhHye2VrgQKYGhNT14q7nx6tSJhlzmki3hhScpglOQXXEw7ytWwrrwOns4
+	 6wbm2jlOlfxLw==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 2 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Stepan Ionichev <sozdayvek@gmail.com>
-Subject: Re: [PATCH] iio: pressure: rohm-bm1390: notify trigger on all error paths
-Date: Sun, 17 May 2026 22:18:24 +0500
-Message-Id: <20260517171824.1845-1-sozdayvek@gmail.com>
-X-Mailer: git-send-email 2.33.0.windows.2
-In-Reply-To: <54ee1fba-3209-4192-82c3-674a1ae3ca8f@baylibre.com>
-References: <54ee1fba-3209-4192-82c3-674a1ae3ca8f@baylibre.com>
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2] mm/damon/sysfs-schemes: delete tried region in regions_rmdirs()
+Date: Sun, 17 May 2026 10:26:21 -0700
+Message-ID: <20260517172624.888-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,52 +62,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E658B56275E
+X-Rspamd-Queue-Id: E9A81562869
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,analog.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-249122-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249123-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sozdayvek@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Sun, May 17, 2026, David Lechner wrote:
-> IRQ_NONE means that the interrupt wasn't handled, so it won't be cleared
-> and the handler will likely just run again immediately. So it probably
-> isn't the right thing to be returning in the first place.
+DAMON sysfs maintains the DAMOS tried region directory objects via a
+linked list.  When the user requests refresh of the directories, DAMON
+sysfs removes all the region directories first, and then generate
+updated regions directory on the empty space.  The removal function
+(damon_sysfs_scheme_regions_rm_dirs()) only puts the kobj objects.
+Deletion of the container region object from the linked list is done
+inside the kobj release callback function.
 
-Right -- though here it is called via handle_nested_irq() from the
-threaded pollfunc, so the return value does not feed the IRQ
-controller and the immediate re-fire concern is moot in practice.
-But the IRQ_NONE choice is still odd.
+If somehow the callback invocation is delayed, the list will contain
+regions list that gonna be freed.  If the updated region directories
+creation is started in this situation, the list can be corrupted and
+use-after-free can happen.
 
-Matti, do you want a v2 that always returns IRQ_HANDLED on the
-error paths instead, or keep the current shape and just fix the
-missing notify_done()?
+Because the kobj objects are managed by only DAMON sysfs, the issue
+cannot happen in normal situation.  But, such delays can be made on
+kernels that built with CONFIG_DEBUG_KOBJECT_RELEASE.  On the kernel,
+the issue can indeed be reproduced like below.
 
-Stepan
+    # damo start --damos_action stat
+    # cd /sys/kernel/mm/damon/admin/kdamonds/0/
+    # for i in {1..10}; do echo update_schemes_tried_regions > state; done
+    # dmesg | grep underflow
+    [   89.296152] refcount_t: underflow; use-after-free.
+
+Fix the issue by removing the region object from the list when
+decrementing the reference count.
+
+Also update damos_sysfs_populate_region_dir() to add the region object
+to the list only after the kobject_init_and_add() is success, so that
+fail of kobject_init_and_add() is not leaving the deallocated object on
+the list.
+
+The issue was discovered [1] by Sashiko.
+
+[1] https://lore.kernel.org/20260513011920.119183-1-sj@kernel.org
+
+Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
+Cc: <stable@vger.kernel.org> # 6.2.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from RFC
+- RFC: https://lore.kernel.org/20260516211436.1883-1-sj@kernel.org
+- Add region to the list after kobject_init_and_add() success.
+
+ mm/damon/sysfs-schemes.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 5d966ac864193..b625f616f57e7 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -88,7 +88,6 @@ static void damon_sysfs_scheme_region_release(struct kobject *kobj)
+ 	struct damon_sysfs_scheme_region *region = container_of(kobj,
+ 			struct damon_sysfs_scheme_region, kobj);
+ 
+-	list_del(&region->list);
+ 	kfree(region);
+ }
+ 
+@@ -164,7 +163,7 @@ static void damon_sysfs_scheme_regions_rm_dirs(
+ 	struct damon_sysfs_scheme_region *r, *next;
+ 
+ 	list_for_each_entry_safe(r, next, &regions->regions_list, list) {
+-		/* release function deletes it from the list */
++		list_del(&r->list);
+ 		kobject_put(&r->kobj);
+ 		regions->nr_regions--;
+ 	}
+@@ -2992,15 +2991,16 @@ void damos_sysfs_populate_region_dir(struct damon_sysfs_schemes *sysfs_schemes,
+ 	region = damon_sysfs_scheme_region_alloc(r);
+ 	if (!region)
+ 		return;
+-	region->sz_filter_passed = sz_filter_passed;
+-	list_add_tail(&region->list, &sysfs_regions->regions_list);
+-	sysfs_regions->nr_regions++;
+ 	if (kobject_init_and_add(&region->kobj,
+ 				&damon_sysfs_scheme_region_ktype,
+ 				&sysfs_regions->kobj, "%d",
+ 				sysfs_regions->nr_regions)) {
+ 		kobject_put(&region->kobj);
++		return;
+ 	}
++	region->sz_filter_passed = sz_filter_passed;
++	list_add_tail(&region->list, &sysfs_regions->regions_list);
++	sysfs_regions->nr_regions++;
+ }
+ 
+ int damon_sysfs_schemes_clear_regions(
+
+base-commit: 950de73f0f8bb17fc322e8f9ec09a5fbb4a72ed8
+-- 
+2.47.3
 
