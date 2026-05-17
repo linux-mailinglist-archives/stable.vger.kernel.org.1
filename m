@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-249090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IH5cGQrICWropQQAu9opvQ
-	(envelope-from <stable+bounces-249090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:10 +0200
+	id cJ5cIRbICWropQQAu9opvQ
+	(envelope-from <stable+bounces-249091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044C65614B5
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 273075614C3
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 52E26300337E
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 13:52:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 657803011BF4
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 13:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2F625B663;
-	Sun, 17 May 2026 13:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1E8248F57;
+	Sun, 17 May 2026 13:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Axbk5wd7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cbsoHV1U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1874248F57
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 13:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83361A9F9F
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 13:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779025928; cv=none; b=cVFb3F12/Hc/myXH26uEnW6EoM6IxcGCF+WHeIE147aoH9NYjWHqYeWLnQsD4pQNFFsMj7N0Ih2v+vWIPhLZJvP4zbDpzSTH+10h1HHvTvF1MFWxvX6+rOuqBSJvwuZWie3m+pagwNF82dDxhjsU9UuG2OiQZ4df1legTQqVzoY=
+	t=1779025929; cv=none; b=MVYbnqrl98gjhuXPj8JUsyrT8olwfY8eiWkXYKmOztuWOMg1eo/JhKkoOcKHS8Isja8wPoU0NJEHI9Y9DV0DILOhhh2fixn85Vv/aJtBQyTJ8qJ/fy8yhZS0IUFUNkXNSOy53OlC01RaE++k9tEB1foXZonYEEpYWFG3u7u5+z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779025928; c=relaxed/simple;
-	bh=vDpGbEbWQTsqAxPilVdYw/+rRojTqbAs1ncHcPaTXYg=;
+	s=arc-20240116; t=1779025929; c=relaxed/simple;
+	bh=qnKDXitn9BWsGpvrpXtAnt+hnR1pBFjxaWsZ97V/e4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8zDUbLFtI8fYWAIIwc4hV53ySS31U8Qqs2QqPOTx0InLiOb7NTnpWdLc4+a5auTn4xX+74UDZvPPS+Xl+8Ds2kKm4zSisOr3VG6G1jvQheF+iaECAT57HT4TRjGTVgqriXy+KRQKwb7a4qc3nq6Il5+5teQ7FakW1mY5+TJKzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Axbk5wd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82FBC2BCF5;
-	Sun, 17 May 2026 13:52:07 +0000 (UTC)
+	 MIME-Version; b=i5r+kgN344pYLLkmCFANx2KDQ1HuYlnwcRQ/awUFXQNKyTnXvcNnaG8nxnph0qbl1wlKJGRDmhkkKEvlTdEsaAd0gCFTA3JftFcdF+HgYA2KSJhRm4gXmt314DxCLL/MbuOIeawkzRpJFm3wJdvr8GQO2lAuX77USA6LGYNZJdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cbsoHV1U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA07FC2BCB0;
+	Sun, 17 May 2026 13:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779025928;
-	bh=vDpGbEbWQTsqAxPilVdYw/+rRojTqbAs1ncHcPaTXYg=;
+	s=k20201202; t=1779025929;
+	bh=qnKDXitn9BWsGpvrpXtAnt+hnR1pBFjxaWsZ97V/e4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Axbk5wd7fqI9dMRgG/vstpOiLNw65gWPZn6+3J8zU6dEEEPn8fFyTnEBSoiSdYm+W
-	 auSXXJL88BxNCJbHopisLvRIqOHE1JyG2rdXh+q5GG+kY5KSMszQLM98YF0/y5yBW5
-	 pKhrbFxkBSXZT8zrR0M8yZ77dH9hksk7goxF0o5KtjRj8ysnGwdXsNZjaTTOgmg6y1
-	 QVvQ06CqLwRtj7wJGmZIp8Few3rBHRjWmT2vbORVZWgksgnwTejUB7s6Kk4yZ6eJ1H
-	 FQSTx1HZqGuOasKNpO8+wJOMqusJt08Ka236sSSBNRgQomfZHk8Ywitn8kpd3yFWBH
-	 vL3UTt59TOrmw==
+	b=cbsoHV1USydIPp15bfmILZvzv5hyZxm1Emavx5KYngGndkVwMqpca1nsUTfMHthSA
+	 xbASx7SctoOyPQJK03VOUUn2hAk5Hx2qr7Oo+O9dAgO2edCGg/hw5XDjJ9qdJL8+MW
+	 cnuQ8ZxQhYV2eR4fLkuxmcTe2dV0oDZSEX7LvQmNFx01N/NqWNI8N6hyMN6NYISfeR
+	 k33EjXCL8vFDvBeXitwtWDqjev6yAcvA7T9W4drHxvQZKSS6dvSd1x5oDzxPuN/BwP
+	 1Dq6g2t/wFbMwuO2OGoANu2N21mr9MSne3XATfvCl8N0kNs/f43mdOMRmJUmV1V/h8
+	 Sgrez0KFZ1G2w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Slava0135 <slava.kovalevskiy.2014@gmail.com>,
+Cc: Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] btrfs: fix missing last_unlink_trans update when removing a directory
-Date: Sun, 17 May 2026 09:52:04 -0400
-Message-ID: <20260517135204.148250-3-sashal@kernel.org>
+Subject: [PATCH 6.12.y] btrfs: do not mark inode incompressible after inline attempt fails
+Date: Sun, 17 May 2026 09:52:07 -0400
+Message-ID: <20260517135207.148738-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260517135204.148250-1-sashal@kernel.org>
-References: <2026051232-runner-cornhusk-38cf@gregkh>
- <20260517135204.148250-1-sashal@kernel.org>
+In-Reply-To: <2026051210-undrafted-shelving-27b2@gregkh>
+References: <2026051210-undrafted-shelving-27b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,28 +63,26 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 044C65614B5
+X-Rspamd-Queue-Id: 273075614C3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[suse.com,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249090-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249091-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -93,226 +90,84 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qemu.org:url]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 999757231c49376cd1a37308d2c8c4c9932571e1 ]
+[ Upstream commit 2e0e3716c7b6f8d71df2fbe709b922e54700f71b ]
 
-When removing a directory we are not updating its last_unlink_trans field,
-which can result in incorrect fsync behaviour in case some one fsyncs the
-directory after it was removed because it's holding a file descriptor on
-it.
+[BUG]
+The following sequence will set the file with nocompress flag:
 
-Example scenario:
+  # mkfs.btrfs -f $dev
+  # mount $dev $mnt -o max_inline=4,compress
+  # xfs_io -f -c "pwrite 0 2k" -c sync $mnt/foobar
 
-   mkdir /mnt/dir1
-   mkdir /mnt/dir1/dir2
-   mkdir /mnt/dir3
+The inode will have NOCOMPRESS flag, even if the content itself (all 0xcd)
+can still be compressed very well:
 
-   sync -f /mnt
+	item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
+		generation 9 transid 10 size 2097152 nbytes 1052672
+		block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
+		sequence 257 flags 0x8(NOCOMPRESS)
 
-   # Do some change to the directory and fsync it.
-   chmod 700 /mnt/dir1
-   xfs_io -c fsync /mnt/dir1
+Please note that, this behavior is there even before commit 59615e2c1f63
+("btrfs: reject single block sized compression early").
 
-   # Move dir2 out of dir1 so that dir1 becomes empty.
-   mv /mnt/dir1/dir2 /mnt/dir3/
+[CAUSE]
+At compress_file_range(), after btrfs_compress_folios() call, we try
+making an inlined extent by calling cow_file_range_inline().
 
-   open fd on /mnt/dir1
-   call rmdir(2) on path "/mnt/dir1"
-   fsync fd
+But cow_file_range_inline() calls can_cow_file_range_inline() which has
+more accurate checks on if the range can be inlined.
 
-   <trigger power failure>
+One of the user configurable conditions is the "max_inline=" mount
+option. If that value is set low (like the example, 4 bytes, which
+cannot store any header), or the compressed content is just slightly
+larger than 2K (the default value, meaning a 50% compression ratio),
+cow_file_range_inline() will return 1 immediately.
 
-When attempting to mount the filesystem, the log replay will fail with
-an -EIO error and dmesg/syslog has the following:
+And since we're here only to try inline the compressed data, the range
+is no larger than a single fs block.
 
-   [445771.626482] BTRFS info (device dm-0): first mount of filesystem 0368bbea-6c5e-44b5-b409-09abe496e650
-   [445771.626486] BTRFS info (device dm-0): using crc32c checksum algorithm
-   [445771.627912] BTRFS info (device dm-0): start tree-log replay
-   [445771.628335] page: refcount:2 mapcount:0 mapping:0000000061443ddc index:0x1d00 pfn:0x7072a5
-   [445771.629453] memcg:ffff89f400351b00
-   [445771.629892] aops:btree_aops [btrfs] ino:1
-   [445771.630737] flags: 0x17fffc00000402a(uptodate|lru|private|writeback|node=0|zone=2|lastcpupid=0x1ffff)
-   [445771.632359] raw: 017fffc00000402a fffff47284d950c8 fffff472907b7c08 ffff89f458e412b8
-   [445771.633713] raw: 0000000000001d00 ffff89f6c51d1a90 00000002ffffffff ffff89f400351b00
-   [445771.635029] page dumped because: eb page dump
-   [445771.635825] BTRFS critical (device dm-0): corrupt leaf: root=5 block=30408704 slot=10 ino=258, invalid nlink: has 2 expect no more than 1 for dir
-   [445771.638088] BTRFS info (device dm-0): leaf 30408704 gen 10 total ptrs 17 free space 14878 owner 5
-   [445771.638091] BTRFS info (device dm-0): refs 4 lock_owner 0 current 3581087
-   [445771.638094] 	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
-   [445771.638097] 		inode generation 3 transid 9 size 16 nbytes 16384
-   [445771.638098] 		block group 0 mode 40755 links 1 uid 0 gid 0
-   [445771.638100] 		rdev 0 sequence 2 flags 0x0
-   [445771.638102] 		atime 1775744884.0
-   [445771.660056] 		ctime 1775744885.645502983
-   [445771.660058] 		mtime 1775744885.645502983
-   [445771.660060] 		otime 1775744884.0
-   [445771.660062] 	item 1 key (256 INODE_REF 256) itemoff 16111 itemsize 12
-   [445771.660064] 		index 0 name_len 2
-   [445771.660066] 	item 2 key (256 DIR_ITEM 1843588421) itemoff 16077 itemsize 34
-   [445771.660068] 		location key (259 1 0) type 2
-   [445771.660070] 		transid 9 data_len 0 name_len 4
-   [445771.660075] 	item 3 key (256 DIR_ITEM 2363071922) itemoff 16043 itemsize 34
-   [445771.660076] 		location key (257 1 0) type 2
-   [445771.660077] 		transid 9 data_len 0 name_len 4
-   [445771.660078] 	item 4 key (256 DIR_INDEX 2) itemoff 16009 itemsize 34
-   [445771.660079] 		location key (257 1 0) type 2
-   [445771.660080] 		transid 9 data_len 0 name_len 4
-   [445771.660081] 	item 5 key (256 DIR_INDEX 3) itemoff 15975 itemsize 34
-   [445771.660082] 		location key (259 1 0) type 2
-   [445771.660083] 		transid 9 data_len 0 name_len 4
-   [445771.660084] 	item 6 key (257 INODE_ITEM 0) itemoff 15815 itemsize 160
-   [445771.660086] 		inode generation 9 transid 9 size 8 nbytes 0
-   [445771.660087] 		block group 0 mode 40777 links 1 uid 0 gid 0
-   [445771.660088] 		rdev 0 sequence 2 flags 0x0
-   [445771.660089] 		atime 1775744885.641174097
-   [445771.660090] 		ctime 1775744885.645502983
-   [445771.660091] 		mtime 1775744885.645502983
-   [445771.660105] 		otime 1775744885.641174097
-   [445771.660106] 	item 7 key (257 INODE_REF 256) itemoff 15801 itemsize 14
-   [445771.660107] 		index 2 name_len 4
-   [445771.660108] 	item 8 key (257 DIR_ITEM 2676584006) itemoff 15767 itemsize 34
-   [445771.660109] 		location key (258 1 0) type 2
-   [445771.660110] 		transid 9 data_len 0 name_len 4
-   [445771.660111] 	item 9 key (257 DIR_INDEX 2) itemoff 15733 itemsize 34
-   [445771.660112] 		location key (258 1 0) type 2
-   [445771.660113] 		transid 9 data_len 0 name_len 4
-   [445771.660114] 	item 10 key (258 INODE_ITEM 0) itemoff 15573 itemsize 160
-   [445771.660115] 		inode generation 9 transid 10 size 0 nbytes 0
-   [445771.660116] 		block group 0 mode 40755 links 2 uid 0 gid 0
-   [445771.660117] 		rdev 0 sequence 0 flags 0x0
-   [445771.660118] 		atime 1775744885.645502983
-   [445771.660119] 		ctime 1775744885.645502983
-   [445771.660120] 		mtime 1775744885.645502983
-   [445771.660121] 		otime 1775744885.645502983
-   [445771.660122] 	item 11 key (258 INODE_REF 257) itemoff 15559 itemsize 14
-   [445771.660123] 		index 2 name_len 4
-   [445771.660124] 	item 12 key (258 INODE_REF 259) itemoff 15545 itemsize 14
-   [445771.660125] 		index 2 name_len 4
-   [445771.660126] 	item 13 key (259 INODE_ITEM 0) itemoff 15385 itemsize 160
-   [445771.660127] 		inode generation 9 transid 10 size 8 nbytes 0
-   [445771.660128] 		block group 0 mode 40755 links 1 uid 0 gid 0
-   [445771.660129] 		rdev 0 sequence 1 flags 0x0
-   [445771.660130] 		atime 1775744885.645502983
-   [445771.660130] 		ctime 1775744885.645502983
-   [445771.660131] 		mtime 1775744885.645502983
-   [445771.660132] 		otime 1775744885.645502983
-   [445771.660133] 	item 14 key (259 INODE_REF 256) itemoff 15371 itemsize 14
-   [445771.660134] 		index 3 name_len 4
-   [445771.660135] 	item 15 key (259 DIR_ITEM 2676584006) itemoff 15337 itemsize 34
-   [445771.660136] 		location key (258 1 0) type 2
-   [445771.660137] 		transid 10 data_len 0 name_len 4
-   [445771.660138] 	item 16 key (259 DIR_INDEX 2) itemoff 15303 itemsize 34
-   [445771.660139] 		location key (258 1 0) type 2
-   [445771.660140] 		transid 10 data_len 0 name_len 4
-   [445771.660144] BTRFS error (device dm-0): block=30408704 write time tree block corruption detected
-   [445771.661650] ------------[ cut here ]------------
-   [445771.662358] WARNING: fs/btrfs/disk-io.c:326 at btree_csum_one_bio+0x217/0x230 [btrfs], CPU#8: mount/3581087
-   [445771.663588] Modules linked in: btrfs f2fs xfs (...)
-   [445771.671229] CPU: 8 UID: 0 PID: 3581087 Comm: mount Tainted: G        W           7.0.0-rc6-btrfs-next-230+ #2 PREEMPT(full)
-   [445771.672575] Tainted: [W]=WARN
-   [445771.672987] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-   [445771.674460] RIP: 0010:btree_csum_one_bio+0x217/0x230 [btrfs]
-   [445771.675222] Code: 89 44 24 (...)
-   [445771.677364] RSP: 0018:ffffd23882247660 EFLAGS: 00010246
-   [445771.678029] RAX: 0000000000000000 RBX: ffff89f6c51d1a90 RCX: 0000000000000000
-   [445771.678975] RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff89f406020000
-   [445771.679983] RBP: ffff89f821204000 R08: 0000000000000000 R09: 00000000ffefffff
-   [445771.680905] R10: ffffd23882247448 R11: 0000000000000003 R12: ffffd23882247668
-   [445771.681978] R13: ffff89f458e40fc0 R14: ffff89f737f4f500 R15: ffff89f737f4f500
-   [445771.682912] FS:  00007f0447a98840(0000) GS:ffff89fb9771d000(0000) knlGS:0000000000000000
-   [445771.684393] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-   [445771.685230] CR2: 00007f0447bf1330 CR3: 000000017cb02002 CR4: 0000000000370ef0
-   [445771.686273] Call Trace:
-   [445771.686646]  <TASK>
-   [445771.686969]  btrfs_submit_bbio+0x83f/0x860 [btrfs]
-   [445771.687750]  ? write_one_eb+0x28f/0x340 [btrfs]
-   [445771.688428]  btree_writepages+0x2e3/0x550 [btrfs]
-   [445771.689180]  ? kmem_cache_alloc_noprof+0x12a/0x490
-   [445771.689963]  ? alloc_extent_state+0x19/0x120 [btrfs]
-   [445771.690801]  ? kmem_cache_free+0x135/0x380
-   [445771.691328]  ? preempt_count_add+0x69/0xa0
-   [445771.691831]  ? set_extent_bit+0x252/0x8e0 [btrfs]
-   [445771.692468]  ? xas_load+0x9/0xc0
-   [445771.692873]  ? xas_find+0x14d/0x1a0
-   [445771.693304]  do_writepages+0xc6/0x160
-   [445771.693756]  filemap_writeback+0xb8/0xe0
-   [445771.694274]  btrfs_write_marked_extents+0x61/0x170 [btrfs]
-   [445771.694999]  btrfs_write_and_wait_transaction+0x4e/0xc0 [btrfs]
-   [445771.695818]  btrfs_commit_transaction+0x5c8/0xd10 [btrfs]
-   [445771.696530]  ? kmem_cache_free+0x135/0x380
-   [445771.697120]  ? release_extent_buffer+0x34/0x160 [btrfs]
-   [445771.697786]  btrfs_recover_log_trees+0x7be/0x7e0 [btrfs]
-   [445771.698525]  ? __pfx_replay_one_buffer+0x10/0x10 [btrfs]
-   [445771.699206]  open_ctree+0x11e5/0x1810 [btrfs]
-   [445771.699776]  btrfs_get_tree.cold+0xb/0x162 [btrfs]
-   [445771.700463]  ? fscontext_read+0x165/0x180
-   [445771.701146]  ? rw_verify_area+0x50/0x180
-   [445771.701866]  vfs_get_tree+0x25/0xd0
-   [445771.702491]  vfs_cmd_create+0x59/0xe0
-   [445771.703125]  __do_sys_fsconfig+0x303/0x610
-   [445771.703603]  do_syscall_64+0xe9/0xf20
-   [445771.703974]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   [445771.704700] RIP: 0033:0x7f0447cbd4aa
-   [445771.705108] Code: 73 01 c3 (...)
-   [445771.707263] RSP: 002b:00007ffc4e528318 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
-   [445771.708107] RAX: ffffffffffffffda RBX: 00005561585d8c20 RCX: 00007f0447cbd4aa
-   [445771.708931] RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
-   [445771.709744] RBP: 00005561585d9120 R08: 0000000000000000 R09: 0000000000000000
-   [445771.710674] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-   [445771.711477] R13: 00007f0447e4f580 R14: 00007f0447e5126c R15: 00007f0447e36a23
-   [445771.712277]  </TASK>
-   [445771.712541] ---[ end trace 0000000000000000 ]---
-   [445771.713382] BTRFS error (device dm-0): error while writing out transaction: -5
-   [445771.714679] BTRFS warning (device dm-0): Skipping commit of aborted transaction.
-   [445771.715562] BTRFS error (device dm-0 state A): Transaction aborted (error -5)
-   [445771.716459] BTRFS: error (device dm-0 state A) in cleanup_transaction:2068: errno=-5 IO failure
-   [445771.717936] BTRFS error (device dm-0 state EA): failed to recover log trees with error: -5
-   [445771.719681] BTRFS error (device dm-0 state EA): open_ctree failed: -5
+Thus compression is never going to make it a win, we fall back to
+marking the inode incompressible unavoidably.
 
-The problem is that such a fsync should have result in a fallback to a
-transaction commit, but that did not happen because through the
-btrfs_rmdir() we never update the directory's last_unlink_trans field.
-Any inode that had a link removed must have its last_unlink_trans updated
-to the ID of transaction used for the operation, otherwise fsync and log
-replay will not work correctly.
+[FIX]
+Just add an extra check after inline attempt, so that if the inline
+attempt failed, do not set the nocompress flag.
 
-btrfs_rmdir() calls btrfs_unlink_inode() and through that call chain we
-never call btrfs_record_unlink_dir() in order to update last_unlink_trans.
-However btrfs_unlink(), which is used for unlinking regular files, calls
-btrfs_record_unlink_dir() and then calls btrfs_unlink_inode(). So fix
-this by moving the call to btrfs_record_unlink_dir() from btrfs_unlink()
-to btrfs_unlink_inode().
+As there is no way to remove that flag, and the default 50% compression
+ratio is way too strict for the whole inode.
 
-A test case for fstests will follow soon.
-
-Reported-by: Slava0135 <slava.kovalevskiy.2014@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CAAJYhww5ov62Hm+n+tmhcL-e_4cBobg+OWogKjOJxVUXivC=MQ@mail.gmail.com/
-CC: stable@vger.kernel.org
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/inode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index eb9e02c9a7ed1..0879951645a97 100644
+index 28024c827b756..8ec9b21db082a 100644
 --- a/fs/btrfs/inode.c
 +++ b/fs/btrfs/inode.c
-@@ -4681,6 +4681,8 @@ static int btrfs_rmdir(struct inode *vfs_dir, struct dentry *dentry)
- 	if (ret)
- 		goto out;
+@@ -1085,6 +1085,12 @@ static void compress_file_range(struct btrfs_work *work)
+ 			mapping_set_error(mapping, -EIO);
+ 		goto free_pages;
+ 	}
++	/*
++	 * If a single block at file offset 0 cannot be inlined, fall back to
++	 * regular writes without marking the file incompressible.
++	 */
++	if (start == 0 && end <= blocksize)
++		goto cleanup_and_bail_uncompressed;
  
-+	btrfs_record_unlink_dir(trans, dir, inode, false);
-+
- 	/* now the directory is empty */
- 	ret = btrfs_unlink_inode(trans, dir, inode, &fname.disk_name);
- 	if (!ret)
+ 	/*
+ 	 * We aren't doing an inline extent. Round the compressed size up to a
 -- 
 2.53.0
 
