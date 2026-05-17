@@ -1,238 +1,252 @@
-Return-Path: <stable+bounces-249083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249085-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBWTFu/ECWpTowQAu9opvQ
-	(envelope-from <stable+bounces-249083-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:38:55 +0200
+	id pv0WNPbHCWropQQAu9opvQ
+	(envelope-from <stable+bounces-249085-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:51:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9B55613BC
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:38:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EB3561498
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BB821300853C
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 13:38:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68C86300A75A
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 13:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310A83B3C08;
-	Sun, 17 May 2026 13:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774FB25B663;
+	Sun, 17 May 2026 13:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sT5SyM3k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDl8wx4E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C513B38BA
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 13:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B97C1A9F9F
+	for <stable@vger.kernel.org>; Sun, 17 May 2026 13:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779025133; cv=none; b=C537qfIciEhZZ3LiAnkFsaB8z5pik20FsSmqC/PhQFeAGD+Rob+OzfvFchOczaAmyfFz9zxvBrN8O1/D8l0o3cLDaRJVsoacui499al9Mfbs8yJsrIAsf1f0J/K+O5sDN6bXSxaPB3HGIitb1DzamHh52LdQr4cij1jPQH0O3Ro=
+	t=1779025906; cv=none; b=eLAgaofGSPr3KRGHgzsJUdHy6xoDCjSvLsPMyq/W85HTUJBQYtgwujTSccVxygH8jWD6YsgPlHnAtdRA79FRl7WFv7ESCR6lYCWHizfXOM0E1foKKolWKJroCqnT+/10k7oIAMcUppXC2dZZSl5T+i5BAOZ0UAv0mJdD5UDrge8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779025133; c=relaxed/simple;
-	bh=zvI3iErBgpM2+zr0N2hHleAvsdLAxSoiyu1LB78c6zw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YRmabGM5YywXjDo1IcpyYgFBscqz5wkdFoBdb2jYi9dfTcynoLTjMgz3rD2I5JvVNWoLkKfBTG0EVo2iXfdstEkF6tC1vVnxZ+F8M/3FcDlwT8F8xEUrjg8Xs8qBqDw56iI2/I+NjZzTUF6qCFY9CJIRoNGpvDJJuXsc1965VtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sT5SyM3k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AFEC2BCB0;
-	Sun, 17 May 2026 13:38:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1779025132;
-	bh=zvI3iErBgpM2+zr0N2hHleAvsdLAxSoiyu1LB78c6zw=;
-	h=Subject:To:Cc:From:Date:From;
-	b=sT5SyM3kWY3YkPF9DSGluvWvkUweKcVhZsD1aLhJPqQfoe3wqFROZOwhsVwIeG0ux
-	 GfZNipUk9WG5cFSp5O9ch9bWjQyANsCPzdKv+xhQSLFAMzh/mYcPexQTa52j9Qh+3q
-	 kfJjY9YSlGbE3imK+PfVZPDWKIEqTuFkqjiWX4Wg=
-Subject: FAILED: patch "[PATCH] HID: core: introduce hid_safe_input_report()" failed to apply to 6.18-stable tree
-To: bentiss@kernel.org,jkosina@suse.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 17 May 2026 15:38:48 +0200
-Message-ID: <2026051748-deletion-marry-d5df@gregkh>
+	s=arc-20240116; t=1779025906; c=relaxed/simple;
+	bh=2Mpxm5sfD21Myl+Zaw2ji2zxVN4TVRgYU112hneE5Nk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bqru2DIIPItw0qpI4VIqo7o+tuZcuAGKbzdNZcTG5qcNY0fSgoHVATsU7k5DonV6QK9IWTsbLT6kjNl+MzUPQOalyzrs2MF8PR0+pRDEYttFWhaaYTyZrc7hWMCxU8EZJ+fjz6O0tnnIlZUHj+9gdPSRPTiJDVsp6p61DtBlrP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDl8wx4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3764CC2BCB0;
+	Sun, 17 May 2026 13:51:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779025905;
+	bh=2Mpxm5sfD21Myl+Zaw2ji2zxVN4TVRgYU112hneE5Nk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kDl8wx4EGLV8BEZPioXsQThrtfQiZpmdzUHuxOJ427iP3xkeWL/+mq0BlgwhiWSRE
+	 6vnT48f6qTS1Y4IC8+9vLOqLVu8/cCD908+a7dSMrcBiPeCjBNgf8tNxlmY+h1/fhU
+	 nsAdBTjNpC5hYfZVWqF+T+nRl8eEGi+qpcLlSpPdn3DDWsnWTaOpxLlZlNpGLyqQJS
+	 noV9AUNX8TWl0B8OmGO7d7V0uOKmAPfToOYo2/3yEes8rYrAVcb8cU+NegPiMKgiPu
+	 CTTH99+ctN6yCbJ3oYvfeliWInPZvorGvC3RDtyX9YeJE1XZ6+6RWmXhwJWnCxEIf6
+	 MriU9njZWMDyg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Piyush Sachdeva <s.piyush1024@gmail.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Piyush Sachdeva <psachdeva@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] smb: client: Use FullSessionKey for AES-256 encryption key derivation
+Date: Sun, 17 May 2026 09:51:43 -0400
+Message-ID: <20260517135143.147448-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051202-disfigure-tutu-ef08@gregkh>
+References: <2026051202-disfigure-tutu-ef08@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CB9B55613BC
+X-Rspamd-Queue-Id: 33EB3561498
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249083-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249085-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
+From: Piyush Sachdeva <s.piyush1024@gmail.com>
 
-The patch below does not apply to the 6.18-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+[ Upstream commit 5be7a0cef3229fb3b63a07c0d289daf752545424 ]
 
-To reproduce the conflict and resubmit, you may use the following commands:
+When Kerberos authentication is used with AES-256 encryption (AES-256-CCM
+or AES-256-GCM), the SMB3 encryption and decryption keys must be derived
+using the full session key (Session.FullSessionKey) rather than just the
+first 16 bytes (Session.SessionKey).
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-git checkout FETCH_HEAD
-git cherry-pick -x 206342541fc887ae919774a43942dc883161fece
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051748-deletion-marry-d5df@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+Per MS-SMB2 section 3.2.5.3.1, when Connection.Dialect is "3.1.1" and
+Connection.CipherId is AES-256-CCM or AES-256-GCM, Session.FullSessionKey
+must be set to the full cryptographic key from the GSS authentication
+context. The encryption and decryption key derivation (SMBC2SCipherKey,
+SMBS2CCipherKey) must use this FullSessionKey as the KDF input. The
+signing key derivation continues to use Session.SessionKey (first 16
+bytes) in all cases.
 
-Possible dependencies:
+Previously, generate_key() hardcoded SMB2_NTLMV2_SESSKEY_SIZE (16) as the
+HMAC-SHA256 key input length for all derivations. When Kerberos with
+AES-256 provides a 32-byte session key, the KDF for encryption/decryption
+was using only the first 16 bytes, producing keys that did not match the
+server's, causing mount failures with sec=krb5 and require_gcm_256=1.
 
+Add a full_key_size parameter to generate_key() and pass the appropriate
+size from generate_smb3signingkey():
+ - Signing: always SMB2_NTLMV2_SESSKEY_SIZE (16 bytes)
+ - Encryption/Decryption: ses->auth_key.len when AES-256, otherwise 16
 
+Also fix cifs_dump_full_key() to report the actual session key length for
+AES-256 instead of hardcoded CIFS_SESS_KEY_SIZE, so that userspace tools
+like Wireshark receive the correct key for decryption.
 
-thanks,
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
+Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adapted upstream's void/hmac_sha256_init_usingrawkey-based generate_key() to 6.12's int-return crypto_shash_* form while threading full_key_size through all callers. ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/client/ioctl.c         |  2 +-
+ fs/smb/client/smb2transport.c | 32 +++++++++++++++++++++++++-------
+ 2 files changed, 26 insertions(+), 8 deletions(-)
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 206342541fc887ae919774a43942dc883161fece Mon Sep 17 00:00:00 2001
-From: Benjamin Tissoires <bentiss@kernel.org>
-Date: Mon, 4 May 2026 10:47:23 +0200
-Subject: [PATCH] HID: core: introduce hid_safe_input_report()
-
-hid_input_report() is used in too many places to have a commit that
-doesn't cross subsystem borders. Instead of changing the API, introduce
-a new one when things matters in the transport layers:
-- usbhid
-- i2chid
-
-This effectively revert to the old behavior for those two transport
-layers.
-
-Fixes: 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing bogus memset()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index a806820df7e5..b3596851c719 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2181,6 +2181,7 @@ static int __hid_input_report(struct hid_device *hid, enum hid_report_type type,
-  * @interrupt: distinguish between interrupt and control transfers
-  *
-  * This is data entry for lower layers.
-+ * Legacy, please use hid_safe_input_report() instead.
-  */
- int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
- 		     int interrupt)
-@@ -2191,6 +2192,30 @@ int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data
+diff --git a/fs/smb/client/ioctl.c b/fs/smb/client/ioctl.c
+index 855ac5a62edfa..8ea532cdc4302 100644
+--- a/fs/smb/client/ioctl.c
++++ b/fs/smb/client/ioctl.c
+@@ -280,7 +280,7 @@ static int cifs_dump_full_key(struct cifs_tcon *tcon, struct smb3_full_key_debug
+ 		break;
+ 	case SMB2_ENCRYPTION_AES256_CCM:
+ 	case SMB2_ENCRYPTION_AES256_GCM:
+-		out.session_key_length = CIFS_SESS_KEY_SIZE;
++		out.session_key_length = ses->auth_key.len;
+ 		out.server_in_key_length = out.server_out_key_length = SMB3_GCM256_CRYPTKEY_SIZE;
+ 		break;
+ 	default:
+diff --git a/fs/smb/client/smb2transport.c b/fs/smb/client/smb2transport.c
+index daf8ba2cd8a10..63907fb245e9a 100644
+--- a/fs/smb/client/smb2transport.c
++++ b/fs/smb/client/smb2transport.c
+@@ -334,7 +334,8 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
  }
- EXPORT_SYMBOL_GPL(hid_input_report);
  
-+/**
-+ * hid_safe_input_report - report data from lower layer (usb, bt...)
-+ *
-+ * @hid: hid device
-+ * @type: HID report type (HID_*_REPORT)
-+ * @data: report contents
-+ * @bufsize: allocated size of the data buffer
-+ * @size: useful size of data parameter
-+ * @interrupt: distinguish between interrupt and control transfers
-+ *
-+ * This is data entry for lower layers.
-+ * Please use this function instead of the non safe version because we provide
-+ * here the size of the buffer, allowing hid-core to make smarter decisions
-+ * regarding the incoming buffer.
-+ */
-+int hid_safe_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
-+			  size_t bufsize, u32 size, int interrupt)
-+{
-+	return __hid_input_report(hid, type, data, bufsize, size, interrupt, 0,
-+				  false, /* from_bpf */
-+				  false /* lock_already_taken */);
-+}
-+EXPORT_SYMBOL_GPL(hid_safe_input_report);
-+
- bool hid_match_one_id(const struct hid_device *hdev,
- 		      const struct hid_device_id *id)
+ static int generate_key(struct cifs_ses *ses, struct kvec label,
+-			struct kvec context, __u8 *key, unsigned int key_size)
++			struct kvec context, __u8 *key, unsigned int key_size,
++			unsigned int full_key_size)
  {
-diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
-index 5a183af3d5c6..e0a302544cef 100644
---- a/drivers/hid/i2c-hid/i2c-hid-core.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-core.c
-@@ -574,9 +574,10 @@ static void i2c_hid_get_input(struct i2c_hid *ihid)
- 		if (ihid->hid->group != HID_GROUP_RMI)
- 			pm_wakeup_event(&ihid->client->dev, 0);
- 
--		hid_input_report(ihid->hid, HID_INPUT_REPORT,
--				ihid->inbuf + sizeof(__le16),
--				ret_size - sizeof(__le16), 1);
-+		hid_safe_input_report(ihid->hid, HID_INPUT_REPORT,
-+				      ihid->inbuf + sizeof(__le16),
-+				      ihid->bufsize - sizeof(__le16),
-+				      ret_size - sizeof(__le16), 1);
+ 	unsigned char zero = 0x0;
+ 	__u8 i[4] = {0, 0, 0, 1};
+@@ -355,7 +356,7 @@ static int generate_key(struct cifs_ses *ses, struct kvec label,
  	}
  
- 	return;
-diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
-index fbbfc0f60829..5af93b9b1fb5 100644
---- a/drivers/hid/usbhid/hid-core.c
-+++ b/drivers/hid/usbhid/hid-core.c
-@@ -283,9 +283,9 @@ static void hid_irq_in(struct urb *urb)
- 			break;
- 		usbhid_mark_busy(usbhid);
- 		if (!test_bit(HID_RESUME_RUNNING, &usbhid->iofl)) {
--			hid_input_report(urb->context, HID_INPUT_REPORT,
--					 urb->transfer_buffer,
--					 urb->actual_length, 1);
-+			hid_safe_input_report(urb->context, HID_INPUT_REPORT,
-+					      urb->transfer_buffer, urb->transfer_buffer_length,
-+					      urb->actual_length, 1);
- 			/*
- 			 * autosuspend refused while keys are pressed
- 			 * because most keyboards don't wake up when
-@@ -482,9 +482,10 @@ static void hid_ctrl(struct urb *urb)
- 	switch (status) {
- 	case 0:			/* success */
- 		if (usbhid->ctrl[usbhid->ctrltail].dir == USB_DIR_IN)
--			hid_input_report(urb->context,
-+			hid_safe_input_report(urb->context,
- 				usbhid->ctrl[usbhid->ctrltail].report->type,
--				urb->transfer_buffer, urb->actual_length, 0);
-+				urb->transfer_buffer, urb->transfer_buffer_length,
-+				urb->actual_length, 0);
- 		break;
- 	case -ESHUTDOWN:	/* unplug */
- 		unplug = 1;
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index ac432a2ef415..bfb9859f391e 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1030,6 +1030,8 @@ struct hid_field *hid_find_field(struct hid_device *hdev, unsigned int report_ty
- int hid_set_field(struct hid_field *, unsigned, __s32);
- int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
- 		     int interrupt);
-+int hid_safe_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
-+			  size_t bufsize, u32 size, int interrupt);
- struct hid_field *hidinput_get_led_field(struct hid_device *hid);
- unsigned int hidinput_count_leds(struct hid_device *hid);
- __s32 hidinput_calc_abs_res(const struct hid_field *field, __u16 code);
+ 	rc = crypto_shash_setkey(server->secmech.hmacsha256->tfm,
+-		ses->auth_key.response, SMB2_NTLMV2_SESSKEY_SIZE);
++		ses->auth_key.response, full_key_size);
+ 	if (rc) {
+ 		cifs_server_dbg(VFS, "%s: Could not set with session key\n", __func__);
+ 		goto smb3signkey_ret;
+@@ -430,6 +431,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 			struct TCP_Server_Info *server,
+ 			const struct derivation_triplet *ptriplet)
+ {
++	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
+ 	int rc;
+ 	bool is_binding = false;
+ 	int chan_index = 0;
+@@ -464,17 +466,31 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 		rc = generate_key(ses, ptriplet->signing.label,
+ 				  ptriplet->signing.context,
+ 				  ses->chans[chan_index].signkey,
+-				  SMB3_SIGN_KEY_SIZE);
++				  SMB3_SIGN_KEY_SIZE,
++				  SMB2_NTLMV2_SESSKEY_SIZE);
+ 		if (rc)
+ 			return rc;
+ 	} else {
+ 		rc = generate_key(ses, ptriplet->signing.label,
+ 				  ptriplet->signing.context,
+ 				  ses->smb3signingkey,
+-				  SMB3_SIGN_KEY_SIZE);
++				  SMB3_SIGN_KEY_SIZE,
++				  SMB2_NTLMV2_SESSKEY_SIZE);
+ 		if (rc)
+ 			return rc;
+ 
++		/*
++		 * Per MS-SMB2 3.2.5.3.1, signing key always uses Session.SessionKey
++		 * (first 16 bytes). Encryption/decryption keys use
++		 * Session.FullSessionKey when dialect is 3.1.1 and cipher is
++		 * AES-256-CCM or AES-256-GCM, otherwise Session.SessionKey.
++		 */
++
++		if (server->dialect == SMB311_PROT_ID &&
++		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
++		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
++			full_key_size = ses->auth_key.len;
++
+ 		/* safe to access primary channel, since it will never go away */
+ 		spin_lock(&ses->chan_lock);
+ 		memcpy(ses->chans[chan_index].signkey, ses->smb3signingkey,
+@@ -484,13 +500,15 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 		rc = generate_key(ses, ptriplet->encryption.label,
+ 				  ptriplet->encryption.context,
+ 				  ses->smb3encryptionkey,
+-				  SMB3_ENC_DEC_KEY_SIZE);
++				  SMB3_ENC_DEC_KEY_SIZE,
++				  full_key_size);
+ 		if (rc)
+ 			return rc;
+ 		rc = generate_key(ses, ptriplet->decryption.label,
+ 				  ptriplet->decryption.context,
+ 				  ses->smb3decryptionkey,
+-				  SMB3_ENC_DEC_KEY_SIZE);
++				  SMB3_ENC_DEC_KEY_SIZE,
++				  full_key_size);
+ 		if (rc)
+ 			return rc;
+ 	}
+@@ -505,7 +523,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 			&ses->Suid);
+ 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
+ 	cifs_dbg(VFS, "Session Key   %*ph\n",
+-		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
++		 (int)ses->auth_key.len, ses->auth_key.response);
+ 	cifs_dbg(VFS, "Signing Key   %*ph\n",
+ 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
+ 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
+-- 
+2.53.0
 
 
