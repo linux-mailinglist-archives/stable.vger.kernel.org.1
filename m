@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-249086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNUED/zHCWropQQAu9opvQ
-	(envelope-from <stable+bounces-249086-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:51:56 +0200
+	id 0PwNOQHICWropQQAu9opvQ
+	(envelope-from <stable+bounces-249087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF11C5614A0
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:51:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7C45614A7
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 15:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14FF5300A630
+	by sea.lore.kernel.org (Postfix) with ESMTP id 747CB30086FE
 	for <lists+stable@lfdr.de>; Sun, 17 May 2026 13:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9525525D215;
-	Sun, 17 May 2026 13:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009E9260580;
+	Sun, 17 May 2026 13:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GyrO/EW/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJ3SyzNg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582A42512DE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B865B25E469
 	for <stable@vger.kernel.org>; Sun, 17 May 2026 13:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779025913; cv=none; b=nR/IV0m4vyrb9c0uVR0mIooSz4HmEsfV2YCSfOYBJKwTj3m8VfN9YYvylriWc+IyGlHkn4q4yx0njJzSQGHsnnaNAiD5F2VNmLftqqSfHxL1TT4seKAGZj5GzugQEogVWupB7GtK/lRUX9tLGxhH+NIU85C5bReDek3HtEMh0MA=
+	t=1779025913; cv=none; b=PfaN9I7P7xIOkuaCHpiZAxhbB4d2Cafr/MD1PJDhoS4V6oJgGmRNur2IvEVXydeSIsMjHj4w8zmK+2W5vVnHg0uOyXlUIOzS0ACS4P/lNtv9MNY8dpGAHePf1OhvuvaWLsoW5A86KkQcPfxklYocxAeRojm/9wzM3DbgeBoK6dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779025913; c=relaxed/simple;
-	bh=n4iUB/Mhj5yP26wgYARuZq/pnx6u3J6D+O2mhLXhRbU=;
+	bh=dzhM0BGO5IIv/LaxbsIYy0zYqqVt8dTV1QE5i7pWYls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COrK+Ek4Xm7Vd3eRYq3uJi84eVTntsX+0yuEd5H9bBKCRFbtLcYHAM8UdpdjzMwwgcuYHPTLv5j0aav4J6U4W9nTkbl6hoNbzZ+zAjX/a9/CSqoHOcfxHML2OEofd+AqCUulfncS7XLV4TdFQinNTEqqEAX5f4iR3KNXU94cDaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GyrO/EW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FB4C2BCB0;
-	Sun, 17 May 2026 13:51:52 +0000 (UTC)
+	 MIME-Version; b=B7Zsadc21bkYgCXjLlrOOLkI79P3kVmHFeDyotdkuEbY58HA4W4wvlbc1WSTkD3q0ViNv1qjL16eT+35rfDZU1YP9iFiU37UNDG958zg5kNPd12NZ6e71ACi/5cELcg3jbW8LAU6yaE55p8ficuH96R2KZ/J9r/bjC2ndObh2KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJ3SyzNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F018C2BCF5;
+	Sun, 17 May 2026 13:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1779025913;
-	bh=n4iUB/Mhj5yP26wgYARuZq/pnx6u3J6D+O2mhLXhRbU=;
+	bh=dzhM0BGO5IIv/LaxbsIYy0zYqqVt8dTV1QE5i7pWYls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GyrO/EW/SJSdfdvicBVoSpdvQ7VGIhKa4wMMDaGV2hLSYwIFZJyLKPPTL/2mugw4f
-	 glXMDZq6ajrS/EIoHTDmVih+Rw32dQnEMgiZ0kDnIKlmsgde5L9ocqAcqPUtTpGW2L
-	 kpqGvoQ9OZM3IIJ2zix5IRjyTy9OX4ScUXcqPCOzofTrKzwd2lC0CSo9avQ9BYRNj8
-	 683rU0/kynwJcfltO0YBurxdWCqv6AAfJVQo+bqTygeKD6+ARfsOn2h+jWQqXEl2le
-	 UfDs/O8BcaJDoZXJgggJ+H6ECudyhAtrD/Dlgv0UIc+SK9MGZ+4+fQMTXDuYTOaSYY
-	 LDe9cn3BTogBA==
+	b=FJ3SyzNgDJclbvrn/NikRSqbt1sKfNQs0V3Sll9T05RBn1t+avh9ThrOOwgwO61i4
+	 G4doYDUq3+LosN5/UCJtSROQDViOpDJz2Rh70gGD14cOmmKxWtIQrbC3GTCVT6h/eh
+	 fkrlN/7fZf1oXzVyY4gWUNw0IsKiu0WXJIJlO9cNE41spnXFmnD6XK2B2wZ6ld8A48
+	 duwSqdezLUcPNUs/jl/wfPweFG9Jc3f6fE6aw3GTIT0ponwcm3/vvD6NIAzr0ZpfUe
+	 p2wR1eRBlr1tiBfJegYyN8e+xbNrYPwRiovnfrMC8toqcGmyS2Aj4lnTnWsjaZtaFR
+	 /Vp66pAQgF45A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Joe Thornber <ejt@redhat.com>,
-	Colin Ian King <colin.king@canonical.com>,
-	Mike Snitzer <snitzer@redhat.com>,
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 1/2] dm btree: improve btree residency
-Date: Sun, 17 May 2026 09:51:48 -0400
-Message-ID: <20260517135149.147613-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y 2/2] dm-thin: fix metadata refcount underflow
+Date: Sun, 17 May 2026 09:51:49 -0400
+Message-ID: <20260517135149.147613-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051203-outbreak-showgirl-7530@gregkh>
+In-Reply-To: <20260517135149.147613-1-sashal@kernel.org>
 References: <2026051203-outbreak-showgirl-7530@gregkh>
+ <20260517135149.147613-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,26 +62,26 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AF11C5614A0
+X-Rspamd-Queue-Id: 4E7C45614A7
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249086-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249087-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,628 +89,61 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Joe Thornber <ejt@redhat.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 4eafdb1515a708d97e4659bd488ddac19f274c4f ]
+[ Upstream commit 09a65adc7d8bbfce06392cb6d375468e2728ead5 ]
 
-This commit improves the residency of btrees built in the metadata for
-dm-thin and dm-cache.
+There's a bug in dm-thin in the function rebalance_children. If the
+internal btree node has one entry, the code tries to copy all btree
+entries from the node's child to the node itself and then decrement the
+child's reference count.
 
-When inserting a new entry into a full btree node the current code
-splits the node into two.  This can result in very many half full nodes,
-particularly if the insertions are occurring in an ascending order (as
-happens in dm-thin with large writes).
+If the child node is shared (it has reference count > 1), we won't free
+it, so there would be two pointers to each of the grandchildren nodes.
+But the reference counts of the grandchildren is not increased, thus the
+reference count doesn't match the number of pointers that point to the
+grandchildren. This results in "device mapper: space map common: unable
+to decrement block" errors.
 
-With this commit, when we insert into a full node we first try and move
-some entries to a neighbouring node that has space, failing that it
-tries to split two neighbouring nodes into three.
+Fix this bug by incrementing reference counts on the grandchildren if the
+btree node is shared.
 
-Results are given below.  'Residency' is how full nodes are on average
-as a percentage.  Average instruction counts for the operations
-are given to show the extra processing has little overhead.
-
-                         +--------------------------+--------------------------+
-                         |         Before           |         After            |
-+------------+-----------+-----------+--------------+-----------+--------------+
-|    Test    |   Phase   | Residency | Instructions | Residency | Instructions |
-+------------+-----------+-----------+--------------+-----------+--------------+
-| Ascending  | insert    |        50 |         1876 |        96 |         1930 |
-|            | overwrite |        50 |         1789 |        96 |         1746 |
-|            | lookup    |        50 |          778 |        96 |          778 |
-| Descending | insert    |        50 |         3024 |        96 |         3181 |
-|            | overwrite |        50 |         1789 |        96 |         1746 |
-|            | lookup    |        50 |          778 |        96 |          778 |
-| Random     | insert    |        68 |         3800 |        84 |         3736 |
-|            | overwrite |        68 |         4254 |        84 |         3911 |
-|            | lookup    |        68 |          779 |        84 |          779 |
-| Runs       | insert    |        63 |         2546 |        82 |         2815 |
-|            | overwrite |        63 |         2013 |        82 |         1986 |
-|            | lookup    |        63 |          778 |        82 |          779 |
-+------------+-----------+-----------+--------------+-----------+--------------+
-
-   Ascending - keys are inserted in ascending order.
-   Descending - keys are inserted in descending order.
-   Random - keys are inserted in random order.
-   Runs - keys are split into ascending runs of ~20 length.  Then
-          the runs are shuffled.
-
-Signed-off-by: Joe Thornber <ejt@redhat.com>
-Signed-off-by: Colin Ian King <colin.king@canonical.com> # contains_key() fix
-Signed-off-by: Mike Snitzer <snitzer@redhat.com>
-Stable-dep-of: 09a65adc7d8b ("dm-thin: fix metadata refcount underflow")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 3241b1d3e0aa ("dm: add persistent data library")
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/persistent-data/dm-btree.c         | 451 ++++++++++++++++--
- .../persistent-data/dm-transaction-manager.c  |   9 +
- .../persistent-data/dm-transaction-manager.h  |  10 +-
- 3 files changed, 439 insertions(+), 31 deletions(-)
+ drivers/md/persistent-data/dm-btree-remove.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/md/persistent-data/dm-btree.c b/drivers/md/persistent-data/dm-btree.c
-index ee3e63aa864bf..0b416fea8d3b9 100644
---- a/drivers/md/persistent-data/dm-btree.c
-+++ b/drivers/md/persistent-data/dm-btree.c
-@@ -502,6 +502,122 @@ int dm_btree_lookup_next(struct dm_btree_info *info, dm_block_t root,
+diff --git a/drivers/md/persistent-data/dm-btree-remove.c b/drivers/md/persistent-data/dm-btree-remove.c
+index 63f2baed3c8a6..1cf31861020b4 100644
+--- a/drivers/md/persistent-data/dm-btree-remove.c
++++ b/drivers/md/persistent-data/dm-btree-remove.c
+@@ -415,12 +415,20 @@ static int rebalance_children(struct shadow_spine *s,
  
- EXPORT_SYMBOL_GPL(dm_btree_lookup_next);
+ 	if (le32_to_cpu(n->header.nr_entries) == 1) {
+ 		struct dm_block *child;
++		int is_shared;
+ 		dm_block_t b = value64(n, 0);
  
-+/*----------------------------------------------------------------*/
-+
-+/*
-+ * Copies entries from one region of a btree node to another.  The regions
-+ * must not overlap.
-+ */
-+static void copy_entries(struct btree_node *dest, unsigned dest_offset,
-+			 struct btree_node *src, unsigned src_offset,
-+			 unsigned count)
-+{
-+	size_t value_size = le32_to_cpu(dest->header.value_size);
-+	memcpy(dest->keys + dest_offset, src->keys + src_offset, count * sizeof(uint64_t));
-+	memcpy(value_ptr(dest, dest_offset), value_ptr(src, src_offset), count * value_size);
-+}
-+
-+/*
-+ * Moves entries from one region fo a btree node to another.  The regions
-+ * may overlap.
-+ */
-+static void move_entries(struct btree_node *dest, unsigned dest_offset,
-+			 struct btree_node *src, unsigned src_offset,
-+			 unsigned count)
-+{
-+	size_t value_size = le32_to_cpu(dest->header.value_size);
-+	memmove(dest->keys + dest_offset, src->keys + src_offset, count * sizeof(uint64_t));
-+	memmove(value_ptr(dest, dest_offset), value_ptr(src, src_offset), count * value_size);
-+}
-+
-+/*
-+ * Erases the first 'count' entries of a btree node, shifting following
-+ * entries down into their place.
-+ */
-+static void shift_down(struct btree_node *n, unsigned count)
-+{
-+	move_entries(n, 0, n, count, le32_to_cpu(n->header.nr_entries) - count);
-+}
-+
-+/*
-+ * Moves entries in a btree node up 'count' places, making space for
-+ * new entries at the start of the node.
-+ */
-+static void shift_up(struct btree_node *n, unsigned count)
-+{
-+	move_entries(n, count, n, 0, le32_to_cpu(n->header.nr_entries));
-+}
-+
-+/*
-+ * Redistributes entries between two btree nodes to make them
-+ * have similar numbers of entries.
-+ */
-+static void redistribute2(struct btree_node *left, struct btree_node *right)
-+{
-+	unsigned nr_left = le32_to_cpu(left->header.nr_entries);
-+	unsigned nr_right = le32_to_cpu(right->header.nr_entries);
-+	unsigned total = nr_left + nr_right;
-+	unsigned target_left = total / 2;
-+	unsigned target_right = total - target_left;
-+
-+	if (nr_left < target_left) {
-+		unsigned delta = target_left - nr_left;
-+		copy_entries(left, nr_left, right, 0, delta);
-+		shift_down(right, delta);
-+	} else if (nr_left > target_left) {
-+		unsigned delta = nr_left - target_left;
-+		if (nr_right)
-+			shift_up(right, delta);
-+		copy_entries(right, 0, left, target_left, delta);
-+	}
-+
-+	left->header.nr_entries = cpu_to_le32(target_left);
-+	right->header.nr_entries = cpu_to_le32(target_right);
-+}
-+
-+/*
-+ * Redistribute entries between three nodes.  Assumes the central
-+ * node is empty.
-+ */
-+static void redistribute3(struct btree_node *left, struct btree_node *center,
-+			  struct btree_node *right)
-+{
-+	unsigned nr_left = le32_to_cpu(left->header.nr_entries);
-+	unsigned nr_center = le32_to_cpu(center->header.nr_entries);
-+	unsigned nr_right = le32_to_cpu(right->header.nr_entries);
-+	unsigned total, target_left, target_center, target_right;
-+
-+	BUG_ON(nr_center);
-+
-+	total = nr_left + nr_right;
-+	target_left = total / 3;
-+	target_center = (total - target_left) / 2;
-+	target_right = (total - target_left - target_center);
-+
-+	if (nr_left < target_left) {
-+		unsigned left_short = target_left - nr_left;
-+		copy_entries(left, nr_left, right, 0, left_short);
-+		copy_entries(center, 0, right, left_short, target_center);
-+		shift_down(right, nr_right - target_right);
-+
-+	} else if (nr_left < (target_left + target_center)) {
-+		unsigned left_to_center = nr_left - target_left;
-+		copy_entries(center, 0, left, target_left, left_to_center);
-+		copy_entries(center, left_to_center, right, 0, target_center - left_to_center);
-+		shift_down(right, nr_right - target_right);
-+
-+	} else {
-+		unsigned right_short = target_right - nr_right;
-+		shift_up(right, right_short);
-+		copy_entries(right, 0, left, nr_left - right_short, right_short);
-+		copy_entries(center, 0, left, target_left, nr_left - target_left);
-+	}
-+
-+	left->header.nr_entries = cpu_to_le32(target_left);
-+	center->header.nr_entries = cpu_to_le32(target_center);
-+	right->header.nr_entries = cpu_to_le32(target_right);
-+}
-+
- /*
-  * Splits a node by creating a sibling node and shifting half the nodes
-  * contents across.  Assumes there is a parent node, and it has room for
-@@ -532,12 +648,10 @@ EXPORT_SYMBOL_GPL(dm_btree_lookup_next);
-  *
-  * Where A* is a shadow of A.
-  */
--static int btree_split_sibling(struct shadow_spine *s, unsigned parent_index,
--			       uint64_t key)
-+static int split_one_into_two(struct shadow_spine *s, unsigned parent_index,
-+			      struct dm_btree_value_type *vt, uint64_t key)
- {
- 	int r;
--	size_t size;
--	unsigned nr_left, nr_right;
- 	struct dm_block *left, *right, *parent;
- 	struct btree_node *ln, *rn, *pn;
- 	__le64 location;
-@@ -551,36 +665,18 @@ static int btree_split_sibling(struct shadow_spine *s, unsigned parent_index,
- 	ln = dm_block_data(left);
- 	rn = dm_block_data(right);
- 
--	nr_left = le32_to_cpu(ln->header.nr_entries) / 2;
--	nr_right = le32_to_cpu(ln->header.nr_entries) - nr_left;
--
--	ln->header.nr_entries = cpu_to_le32(nr_left);
--
- 	rn->header.flags = ln->header.flags;
--	rn->header.nr_entries = cpu_to_le32(nr_right);
-+	rn->header.nr_entries = cpu_to_le32(0);
- 	rn->header.max_entries = ln->header.max_entries;
- 	rn->header.value_size = ln->header.value_size;
--	memcpy(rn->keys, ln->keys + nr_left, nr_right * sizeof(rn->keys[0]));
--
--	size = le32_to_cpu(ln->header.flags) & INTERNAL_NODE ?
--		sizeof(uint64_t) : s->info->value_type.size;
--	memcpy(value_ptr(rn, 0), value_ptr(ln, nr_left),
--	       size * nr_right);
-+	redistribute2(ln, rn);
- 
--	/*
--	 * Patch up the parent
--	 */
-+	/* patch up the parent */
- 	parent = shadow_parent(s);
--
- 	pn = dm_block_data(parent);
--	location = cpu_to_le64(dm_block_location(left));
--	__dm_bless_for_disk(&location);
--	memcpy_disk(value_ptr(pn, parent_index),
--		    &location, sizeof(__le64));
- 
- 	location = cpu_to_le64(dm_block_location(right));
- 	__dm_bless_for_disk(&location);
--
- 	r = insert_at(sizeof(__le64), pn, parent_index + 1,
- 		      le64_to_cpu(rn->keys[0]), &location);
- 	if (r) {
-@@ -588,6 +684,7 @@ static int btree_split_sibling(struct shadow_spine *s, unsigned parent_index,
- 		return r;
- 	}
- 
-+	/* patch up the spine */
- 	if (key < le64_to_cpu(rn->keys[0])) {
- 		unlock_block(s->info, right);
- 		s->nodes[1] = left;
-@@ -599,6 +696,121 @@ static int btree_split_sibling(struct shadow_spine *s, unsigned parent_index,
- 	return 0;
- }
- 
-+/*
-+ * We often need to modify a sibling node.  This function shadows a particular
-+ * child of the given parent node.  Making sure to update the parent to point
-+ * to the new shadow.
-+ */
-+static int shadow_child(struct dm_btree_info *info, struct dm_btree_value_type *vt,
-+			struct btree_node *parent, unsigned index,
-+			struct dm_block **result)
-+{
-+	int r, inc;
-+	dm_block_t root;
-+	struct btree_node *node;
-+
-+	root = value64(parent, index);
-+
-+	r = dm_tm_shadow_block(info->tm, root, &btree_node_validator,
-+			       result, &inc);
-+	if (r)
-+		return r;
-+
-+	node = dm_block_data(*result);
-+
-+	if (inc)
-+		inc_children(info->tm, node, vt);
-+
-+	*((__le64 *) value_ptr(parent, index)) =
-+		cpu_to_le64(dm_block_location(*result));
-+
-+	return 0;
-+}
-+
-+/*
-+ * Splits two nodes into three.  This is more work, but results in fuller
-+ * nodes, so saves metadata space.
-+ */
-+static int split_two_into_three(struct shadow_spine *s, unsigned parent_index,
-+                                struct dm_btree_value_type *vt, uint64_t key)
-+{
-+	int r;
-+	unsigned middle_index;
-+	struct dm_block *left, *middle, *right, *parent;
-+	struct btree_node *ln, *rn, *mn, *pn;
-+	__le64 location;
-+
-+	parent = shadow_parent(s);
-+	pn = dm_block_data(parent);
-+
-+	if (parent_index == 0) {
-+		middle_index = 1;
-+		left = shadow_current(s);
-+		r = shadow_child(s->info, vt, pn, parent_index + 1, &right);
-+		if (r)
-+			return r;
-+	} else {
-+		middle_index = parent_index;
-+		right = shadow_current(s);
-+		r = shadow_child(s->info, vt, pn, parent_index - 1, &left);
-+		if (r)
-+			return r;
-+	}
-+
-+	r = new_block(s->info, &middle);
-+	if (r < 0)
-+		return r;
-+
-+	ln = dm_block_data(left);
-+	mn = dm_block_data(middle);
-+	rn = dm_block_data(right);
-+
-+	mn->header.nr_entries = cpu_to_le32(0);
-+	mn->header.flags = ln->header.flags;
-+	mn->header.max_entries = ln->header.max_entries;
-+	mn->header.value_size = ln->header.value_size;
-+
-+	redistribute3(ln, mn, rn);
-+
-+	/* patch up the parent */
-+	pn->keys[middle_index] = rn->keys[0];
-+	location = cpu_to_le64(dm_block_location(middle));
-+	__dm_bless_for_disk(&location);
-+	r = insert_at(sizeof(__le64), pn, middle_index,
-+		      le64_to_cpu(mn->keys[0]), &location);
-+	if (r) {
-+		if (shadow_current(s) != left)
-+			unlock_block(s->info, left);
-+
-+		unlock_block(s->info, middle);
-+
-+		if (shadow_current(s) != right)
-+			unlock_block(s->info, right);
-+
-+	        return r;
-+	}
-+
-+
-+	/* patch up the spine */
-+	if (key < le64_to_cpu(mn->keys[0])) {
-+		unlock_block(s->info, middle);
-+		unlock_block(s->info, right);
-+		s->nodes[1] = left;
-+	} else if (key < le64_to_cpu(rn->keys[0])) {
-+		unlock_block(s->info, left);
-+		unlock_block(s->info, right);
-+		s->nodes[1] = middle;
-+	} else {
-+		unlock_block(s->info, left);
-+		unlock_block(s->info, middle);
-+		s->nodes[1] = right;
-+	}
-+
-+	return 0;
-+}
-+
-+/*----------------------------------------------------------------*/
-+
- /*
-  * Splits a node by creating two new children beneath the given node.
-  *
-@@ -692,6 +904,186 @@ static int btree_split_beneath(struct shadow_spine *s, uint64_t key)
- 	return 0;
- }
- 
-+/*----------------------------------------------------------------*/
-+
-+/*
-+ * Redistributes a node's entries with its left sibling.
-+ */
-+static int rebalance_left(struct shadow_spine *s, struct dm_btree_value_type *vt,
-+			  unsigned parent_index, uint64_t key)
-+{
-+	int r;
-+	struct dm_block *sib;
-+	struct btree_node *left, *right, *parent = dm_block_data(shadow_parent(s));
-+
-+	r = shadow_child(s->info, vt, parent, parent_index - 1, &sib);
-+	if (r)
-+		return r;
-+
-+	left = dm_block_data(sib);
-+	right = dm_block_data(shadow_current(s));
-+	redistribute2(left, right);
-+	*key_ptr(parent, parent_index) = right->keys[0];
-+
-+	if (key < le64_to_cpu(right->keys[0])) {
-+		unlock_block(s->info, s->nodes[1]);
-+		s->nodes[1] = sib;
-+	} else {
-+		unlock_block(s->info, sib);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Redistributes a nodes entries with its right sibling.
-+ */
-+static int rebalance_right(struct shadow_spine *s, struct dm_btree_value_type *vt,
-+			   unsigned parent_index, uint64_t key)
-+{
-+	int r;
-+	struct dm_block *sib;
-+	struct btree_node *left, *right, *parent = dm_block_data(shadow_parent(s));
-+
-+	r = shadow_child(s->info, vt, parent, parent_index + 1, &sib);
-+	if (r)
-+		return r;
-+
-+	left = dm_block_data(shadow_current(s));
-+	right = dm_block_data(sib);
-+	redistribute2(left, right);
-+	*key_ptr(parent, parent_index + 1) = right->keys[0];
-+
-+	if (key < le64_to_cpu(right->keys[0])) {
-+		unlock_block(s->info, sib);
-+	} else {
-+		unlock_block(s->info, s->nodes[1]);
-+		s->nodes[1] = sib;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Returns the number of spare entries in a node.
-+ */
-+static int get_node_free_space(struct dm_btree_info *info, dm_block_t b, unsigned *space)
-+{
-+	int r;
-+	unsigned nr_entries;
-+	struct dm_block *block;
-+	struct btree_node *node;
-+
-+	r = bn_read_lock(info, b, &block);
-+	if (r)
-+		return r;
-+
-+	node = dm_block_data(block);
-+	nr_entries = le32_to_cpu(node->header.nr_entries);
-+	*space = le32_to_cpu(node->header.max_entries) - nr_entries;
-+
-+	unlock_block(info, block);
-+	return 0;
-+}
-+
-+/*
-+ * Make space in a node, either by moving some entries to a sibling,
-+ * or creating a new sibling node.  SPACE_THRESHOLD defines the minimum
-+ * number of free entries that must be in the sibling to make the move
-+ * worth while.  If the siblings are shared (eg, part of a snapshot),
-+ * then they are not touched, since this break sharing and so consume
-+ * more space than we save.
-+ */
-+#define SPACE_THRESHOLD 8
-+static int rebalance_or_split(struct shadow_spine *s, struct dm_btree_value_type *vt,
-+			      unsigned parent_index, uint64_t key)
-+{
-+	int r;
-+	struct btree_node *parent = dm_block_data(shadow_parent(s));
-+	unsigned nr_parent = le32_to_cpu(parent->header.nr_entries);
-+	unsigned free_space;
-+	int left_shared = 0, right_shared = 0;
-+
-+	/* Should we move entries to the left sibling? */
-+	if (parent_index > 0) {
-+		dm_block_t left_b = value64(parent, parent_index - 1);
-+		r = dm_tm_block_is_shared(s->info->tm, left_b, &left_shared);
++		r = dm_tm_block_is_shared(info->tm, b, &is_shared);
 +		if (r)
 +			return r;
 +
-+		if (!left_shared) {
-+			r = get_node_free_space(s->info, left_b, &free_space);
-+			if (r)
-+				return r;
-+
-+			if (free_space >= SPACE_THRESHOLD)
-+				return rebalance_left(s, vt, parent_index, key);
-+		}
-+	}
-+
-+	/* Should we move entries to the right sibling? */
-+	if (parent_index < (nr_parent - 1)) {
-+		dm_block_t right_b = value64(parent, parent_index + 1);
-+		r = dm_tm_block_is_shared(s->info->tm, right_b, &right_shared);
-+		if (r)
-+			return r;
-+
-+		if (!right_shared) {
-+			r = get_node_free_space(s->info, right_b, &free_space);
-+			if (r)
-+				return r;
-+
-+			if (free_space >= SPACE_THRESHOLD)
-+				return rebalance_right(s, vt, parent_index, key);
-+		}
-+	}
-+
-+	/*
-+	 * We need to split the node, normally we split two nodes
-+	 * into three.	But when inserting a sequence that is either
-+	 * monotonically increasing or decreasing it's better to split
-+	 * a single node into two.
-+	 */
-+	if (left_shared || right_shared || (nr_parent <= 2) ||
-+	    (parent_index == 0) || (parent_index + 1 == nr_parent)) {
-+		return split_one_into_two(s, parent_index, vt, key);
-+	} else {
-+		return split_two_into_three(s, parent_index, vt, key);
-+	}
-+}
-+
-+/*
-+ * Does the node contain a particular key?
-+ */
-+static bool contains_key(struct btree_node *node, uint64_t key)
-+{
-+	int i = lower_bound(node, key);
-+
-+	if (i >= 0 && le64_to_cpu(node->keys[i]) == key)
-+		return true;
-+
-+	return false;
-+}
-+
-+/*
-+ * In general we preemptively make sure there's a free entry in every
-+ * node on the spine when doing an insert.  But we can avoid that with
-+ * leaf nodes if we know it's an overwrite.
-+ */
-+static bool has_space_for_insert(struct btree_node *node, uint64_t key)
-+{
-+	if (node->header.nr_entries == node->header.max_entries) {
-+		if (le32_to_cpu(node->header.flags) & LEAF_NODE) {
-+			/* we don't need space if it's an overwrite */
-+			return contains_key(node, key);
-+		}
-+
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static int btree_insert_raw(struct shadow_spine *s, dm_block_t root,
- 			    struct dm_btree_value_type *vt,
- 			    uint64_t key, unsigned *index)
-@@ -721,17 +1113,18 @@ static int btree_insert_raw(struct shadow_spine *s, dm_block_t root,
+ 		r = dm_tm_read_lock(info->tm, b, &btree_node_validator, &child);
+ 		if (r)
+ 			return r;
  
- 		node = dm_block_data(shadow_current(s));
- 
--		if (node->header.nr_entries == node->header.max_entries) {
-+		if (!has_space_for_insert(node, key)) {
- 			if (top)
- 				r = btree_split_beneath(s, key);
- 			else
--				r = btree_split_sibling(s, i, key);
-+				r = rebalance_or_split(s, vt, i, key);
- 
- 			if (r < 0)
- 				return r;
--		}
- 
--		node = dm_block_data(shadow_current(s));
-+			/* making space can cause the current node to change */
-+			node = dm_block_data(shadow_current(s));
-+		}
- 
- 		i = lower_bound(node, key);
- 
-diff --git a/drivers/md/persistent-data/dm-transaction-manager.c b/drivers/md/persistent-data/dm-transaction-manager.c
-index abe2c5dd0993b..4353e1146d738 100644
---- a/drivers/md/persistent-data/dm-transaction-manager.c
-+++ b/drivers/md/persistent-data/dm-transaction-manager.c
-@@ -379,6 +379,15 @@ int dm_tm_ref(struct dm_transaction_manager *tm, dm_block_t b,
- 	return dm_sm_get_count(tm->sm, b, result);
- }
- 
-+int dm_tm_block_is_shared(struct dm_transaction_manager *tm, dm_block_t b,
-+			  int *result)
-+{
-+	if (tm->is_clone)
-+		return -EWOULDBLOCK;
++		if (is_shared)
++			inc_children(info->tm, dm_block_data(child), vt);
 +
-+	return dm_sm_count_is_more_than_one(tm->sm, b, result);
-+}
-+
- struct dm_block_manager *dm_tm_get_bm(struct dm_transaction_manager *tm)
- {
- 	return tm->bm;
-diff --git a/drivers/md/persistent-data/dm-transaction-manager.h b/drivers/md/persistent-data/dm-transaction-manager.h
-index f3a18be68f305..3d75cc59bbb82 100644
---- a/drivers/md/persistent-data/dm-transaction-manager.h
-+++ b/drivers/md/persistent-data/dm-transaction-manager.h
-@@ -103,8 +103,14 @@ void dm_tm_inc(struct dm_transaction_manager *tm, dm_block_t b);
- 
- void dm_tm_dec(struct dm_transaction_manager *tm, dm_block_t b);
- 
--int dm_tm_ref(struct dm_transaction_manager *tm, dm_block_t b,
--	      uint32_t *result);
-+int dm_tm_ref(struct dm_transaction_manager *tm, dm_block_t b, uint32_t *result);
-+
-+/*
-+ * Finds out if a given block is shared (ie. has a reference count higher
-+ * than one).
-+ */
-+int dm_tm_block_is_shared(struct dm_transaction_manager *tm, dm_block_t b,
-+			  int *result);
- 
- struct dm_block_manager *dm_tm_get_bm(struct dm_transaction_manager *tm);
+ 		memcpy(n, dm_block_data(child),
+ 		       dm_bm_block_size(dm_tm_get_bm(info->tm)));
  
 -- 
 2.53.0
