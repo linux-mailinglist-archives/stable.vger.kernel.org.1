@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-249063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPeoNtdVCWpWVgQAu9opvQ
-	(envelope-from <stable+bounces-249063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 07:44:55 +0200
+	id KJsNOVBXCWpQVwQAu9opvQ
+	(envelope-from <stable+bounces-249064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 07:51:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80BEF55F54A
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 07:44:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B4155F57D
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 07:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54341301A710
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 05:44:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D2853012CEC
+	for <lists+stable@lfdr.de>; Sun, 17 May 2026 05:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D71E30DEBE;
-	Sun, 17 May 2026 05:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1762131280D;
+	Sun, 17 May 2026 05:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jAkToqma"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzdgvaWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269282F8E9A;
-	Sun, 17 May 2026 05:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE77C73463;
+	Sun, 17 May 2026 05:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778996669; cv=none; b=jBWiguSCYoo273grD+FZa7jvfuZhvEfk17qEeegbRgT+5pJS8P1yGW/JSHhYBUEQ8qVrLSdlqck0u4I5P+udjItpb/AOEYQZ8QGI65uBzr9lgfa0xTI+Gysg9GeWNnBdxOot8tsDynPVAoXm5ocFogz5lUA79vqxymYL+B1foVM=
+	t=1778997065; cv=none; b=bNi6Fv36ssseN0h7Lxj4C308ili/DQurMQku26MbxmVzUG8stJArcbfoU3DXUMsjZuxCFohXivdKi0hu4m1eQhaNWbmu3mygr0rt0PLpf+8pMMsLVT3Ilfl2B0kUWAVgfoYbqhwgw4FDGU1ksfQcbNXKa+x8AziW+ITzjHZfT1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778996669; c=relaxed/simple;
-	bh=oop5U7nxXVqwQe95Zs308MFuJ638RAQq24XeUN6RnPs=;
+	s=arc-20240116; t=1778997065; c=relaxed/simple;
+	bh=GfVo+wMcHFCWeSLaasazUP9yqDMCJT2bcGpLDxj8XgI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AuR+J1p74aECLSqGdaq+NfVJDjSgV7C1u36R7EYJ+HUsmgoHWTWYZFN+pGJHrl4REKp9nsFe2ZQYFPBaFvITNSmC78ahft9JMmE53VNDfpxDyOborv34VLgIAe6f7w0kU4XPEq2Q/jSnoFtR8w9SoqPwtjhMTDRI8Iv4rzLih1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jAkToqma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD311C2BCB0;
-	Sun, 17 May 2026 05:44:23 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=S5lfw922hE9kZIlLlO2fVCmQJCZ7wpJHE6NnC2JfgSHkBtQ6SpEdR8zeQUEvSJNKIXuPGig1m0CBeuS6/fWiCGmpzcMVGYfCyxNqThCK+CBpS87S7U5oMlS68YbiCok7ivWPbUXnpX8M94jLwqCQ+6+g4v801IW9nX1FEJxOwd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzdgvaWQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC57C2BCB0;
+	Sun, 17 May 2026 05:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778996668;
-	bh=oop5U7nxXVqwQe95Zs308MFuJ638RAQq24XeUN6RnPs=;
+	s=k20201202; t=1778997065;
+	bh=GfVo+wMcHFCWeSLaasazUP9yqDMCJT2bcGpLDxj8XgI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jAkToqmaJdtO8bnAbnIlATUeSd2QAuhkksTrABi1AAv4y7NFvwVi2qdMm2UHKTym2
-	 lzIF45PFX1gxAIkRBfLvCLg40yi7KJAe7vJzNcaO3+sJ5EZ8ToM4oj5j466WDgnm59
-	 Qe80+WbO6RIBDNwthdfR08Pt3PmR4WCqBv0FsDFRTaK/CB6HDou306MpyAtrQ75PoX
-	 E9c6e9WtmLESArkTpak9DIosXvd2GVMuA2nlCK/dQLtH1/sacMtQ4jjLeJAffPUFh1
-	 +fGSrvG5uPuKNTfSUe+76Aow5m/ug4zBkvh9ncZB7R0ui1tNjwj9jiKI5iBgMB02QU
-	 u+8g6SLdKjOHQ==
-Message-ID: <f5a568c9-f786-40d5-8faf-c41bbebccbff@kernel.org>
-Date: Sun, 17 May 2026 15:44:15 +1000
+	b=dzdgvaWQEtIpSc767EbmghV7oM5bpUIB1xp2jBMAjIQ4vtPQexPHnoXjNr4DL2QQz
+	 fa9EROOQ799zX9OD2bIDxslfxLgZWOdNKm/otYtNodib6H3WKAHu7pvuCwpkC6G5dK
+	 2lQaPy1GtKi+cwpDqAbmeD40E8v8EioPhBg/XXd56gtWDc0tl6WWhDp7sBh1eO2e03
+	 CEAZgRsrZJHvwvwcqcfRCmTnzMtfiS0EXH+Cf5Ay4DT9GDroI3AaiBeVer+bQTaTKX
+	 vzpZ9eVkrnLVjq0DIupMhiwjGZTjCAm356O8fS1H/GDem7yx7J7k40NT/QUJC27yeu
+	 TA8X9c74yd+tA==
+Message-ID: <85b89125-57f2-43ab-a834-4dca56881e26@kernel.org>
+Date: Sun, 17 May 2026 15:50:56 +1000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,18 +53,19 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net v2 6/6] selftests: mptcp: drop nanoseconds width
- specifier
+Subject: Re: [PATCH net v2 2/6] mptcp: pm: fix ADD_ADDR timer infinite retry
+ on option space insufficient
 Content-Language: fr
-To: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+To: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Li Xiasong <lixiasong1@huawei.com>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Eric Dumazet <edumaze@google.com>, stable@vger.kernel.org,
  Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
 References: <20260515-net-mptcp-misc-fixes-7-1-rc4-v2-0-701e96419f2f@kernel.org>
- <20260515-net-mptcp-misc-fixes-7-1-rc4-v2-6-701e96419f2f@kernel.org>
+ <20260515-net-mptcp-misc-fixes-7-1-rc4-v2-2-701e96419f2f@kernel.org>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -110,25 +111,25 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <20260515-net-mptcp-misc-fixes-7-1-rc4-v2-6-701e96419f2f@kernel.org>
+In-Reply-To: <20260515-net-mptcp-misc-fixes-7-1-rc4-v2-2-701e96419f2f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 80BEF55F54A
+X-Rspamd-Queue-Id: 65B4155F57D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249063-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249064-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	HAS_ORG_HEADER(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -136,27 +137,51 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sashiko.dev:url]
 X-Rspamd-Action: no action
 
 Hello,
 
 On 15/05/2026 06:27, Matthieu Baerts (NGI0) wrote:
-> Using the format specifier +%s%3N with GNU date is honoured, and only
-> prints 3 digits of the nanoseconds portion of the seconds since epoch,
-> which corresponds to the milliseconds.
+> From: Li Xiasong <lixiasong1@huawei.com>
 > 
-> The uutils implementation of date currently does not honour this, and
-> always prints all 9 digits. This is a known issue [1], but can be worked
-> around by adapting this test to use nanoseconds instead of microseconds,
+> When TCP option space is insufficient (e.g., when sending ADD_ADDR with an
+> IPv6 address and port while tcp_timestamps is enabled), the original code
+> jumped to out_unlock without clearing the addr_signal flag. This caused
+> mptcp_pm_add_timer to keep rescheduling indefinitely, not sending ADD_ADDR,
+> preventing subsequent addresses in the endpoint list from being announced.
 
-Sashiko noticed that I wrote microseconds instead of milliseconds. Do I
-need to send a v3 just to fix this typo?
+(...)
+
+> diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+> index 3c152bf66cd5..3e770c7407e1 100644
+> --- a/net/mptcp/pm.c
+> +++ b/net/mptcp/pm.c
+
+(...)
+
+> @@ -414,8 +420,12 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
+>  	/* Note: entry might have been removed by another thread.
+>  	 * We hold rcu_read_lock() to ensure it is not freed under us.
+>  	 */
+> -	if (stop_timer)
+> -		sk_stop_timer_sync(sk, &entry->add_timer);
+FYI, sashiko found a pre-existing issue here, but I guess that's not
+blocking this series.
+
+https://sashiko.dev/#/patchset/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-0-701e96419f2f%40kernel.org
+
+@Li: just to know what I do with this pre-existing issue, do you plan to
+look at it?
+
+Just in case, I just opened:
+
+  https://github.com/multipath-tcp/mptcp_net-next/issues/623
 
 Cheers,
 Matt
