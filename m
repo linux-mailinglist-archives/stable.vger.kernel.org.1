@@ -1,178 +1,196 @@
-Return-Path: <stable+bounces-249252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SCNZHTn6CmpF+wQAu9opvQ
-	(envelope-from <stable+bounces-249252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:38:33 +0200
+	id 2O/UF4L6CmpF+wQAu9opvQ
+	(envelope-from <stable+bounces-249253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:39:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AE056BB22
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:38:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B59BE56BB6F
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:39:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E17C305817D
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 11:29:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 359D5309DAD9
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 11:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333A03EC2E0;
-	Mon, 18 May 2026 11:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499B43F54BC;
+	Mon, 18 May 2026 11:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WlK7TH9Q"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="WG6qFcRY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBA33EDE51
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 11:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91DE3321BD;
+	Mon, 18 May 2026 11:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779103752; cv=none; b=ja9aV0G7NSLFVaL+swrf7wkZJ5VArPwJVW9ox9rjss84o5Wk9VV2rSt4ioq9gCGHp0uUiB9t0ACMWknRiEg46qbKwwov493uk9IfpmBLlqJFgOVMF020LOXdW2c4Abxhrs9XFORx6Mz9XPlRUxVx5/e/ir5pwcugjKTQ4lwptE8=
+	t=1779103791; cv=none; b=nB/KklRO739Tmy9dRShakKLsechOv67mJIzc7dpammvq9eUoZtAppq7JVrQ9Pljwa4hLVTBeDAjvPTDT3XzlqA2fvK6u/m8iiZhFQyrP7nH4pYyt14F2bMxANsa97JBmCdoxWXGgibev9l54nmokyCn2ijBEkB9tUY2P8uDIjJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779103752; c=relaxed/simple;
-	bh=KbabBor54xBK33nwMtrMqpUI7sK9R/iILVn+vEiaIFQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iq9c7YWEPTd2iAAs+0cp05jl07iNu8Rsk9+PU0K1YtWO6wYz40DgRb4f7ucX+BaYIc/il/FQ//yqTYewsbjY2CvC8Nnd8o0jqDAv7lEVV6QR1AthhJWziZs4vwG6InKcYdiywhre7yE1lUF1cY3g0pe+fbH8Z/UA0ICgRr11+uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WlK7TH9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85127C2BCF6
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 11:29:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779103752;
-	bh=KbabBor54xBK33nwMtrMqpUI7sK9R/iILVn+vEiaIFQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WlK7TH9QHxRAYFQsczwkbhsr3fu+Q3vBmWcGhHj6YhXFM4kt7I72A7OpHSEhORvmj
-	 n05FUAsMY2Xf8DN3z77DZf4te57v/EXINNOPSJPOqZkHA4YsFpI4u4VPKXbr9ZnB9V
-	 hSZm/KQ7gJy/JyPne2iJJzvpXZEHj8Koy7XK3aj5laTmrHmQRuoFITRUhDp9TmjKDL
-	 TIVA9sXS3nm8hsaMJn9OqL5UPb+46tFZFF5Z8nLYyUJrw/btv9kdQTGQOAWjW8ZaxD
-	 99KO8Truf+m8Rn15NlB2uLeIMlHg9qLjPJidSi50vvutVa9aq+KRipostTCUJKq86i
-	 V7GmMZ+MYf51g==
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4585a116a4aso1718785f8f.3
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 04:29:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ83UdBbimOlfUmPoty8Q8ZAZAwH0eXeihbPAjrQI9qFZz2ERZmpITYSBtIXr5i/H103LGTbfbg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQHSn8n/6ve6aHDtWeM3ASZbgSmnufatcumroG4nMgCGS6vjj/
-	4bLUc2psWQdf4RUTvdiWc8cTQT7kDF5cWpeK6ocV4VJiSZkOKOflbSnfjhufjot/pweub+x/q39
-	DDPcAyLVzCeKmCrZ8XgCE2Nz0pHWtbyc=
-X-Received: by 2002:a05:6000:2383:b0:449:9aee:4575 with SMTP id
- ffacd0b85a97d-45e5c5ccbf6mr23525653f8f.30.1779103751090; Mon, 18 May 2026
- 04:29:11 -0700 (PDT)
+	s=arc-20240116; t=1779103791; c=relaxed/simple;
+	bh=3ne2qLLoCCbskEmi6lYHYTd/lmowwrIY8ojJ5bJZjww=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=QzZjXlYS+VxUiQIoVOZdekT364teAkDmK/xQG/HU+IWw2vu3JU75ndbKwjv0SmGS4lsp5TOM7Nt8IYV3KnrMHKlgZwl5TekMneo6OUFxaD7N2OB+sAn2lo0CezdKN2B297DdtylTpC9J8s3jjc+gNe04b4WlLO4yL0s4vfOGO0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=WG6qFcRY; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1779103788; x=1810639788;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=3ne2qLLoCCbskEmi6lYHYTd/lmowwrIY8ojJ5bJZjww=;
+  b=WG6qFcRYWfl2xbSCCyeXKtfChfc5jeGfw1wKakxjo7lg6WRmkaDRH+tF
+   Kl9x814x7GEig2K7VIYZ++/f+lhGmP0MLbnHyLFCTgWRyKUdtjjguQ8FM
+   mYy2Ptbzih6YSU6g+zi1eePeUKKc3EjnlrwT9xRv2yEuLISNH0RMEABD7
+   g9WukKLFUA4XhnSgvT12HBaF+DNrCxt57WMB9g7KmPohaCxyqgdFepM6R
+   Q4sB5CvHPa1Xerf+46OlCLAW5x3JhysRrTbGt37umu/JEs1ny/CBKAjjN
+   npO6ZWbroPsiOmFX6Yp4UPpET21ze5U9XeUuwpp0ujAP1IWXT5Ys40NoL
+   Q==;
+X-CSE-ConnectionGUID: AOxhwFhpROaZ7wci6oWuJA==
+X-CSE-MsgGUID: uvKL02kWTI6WcHsPcL9WoQ==
+X-IronPort-AV: E=Sophos;i="6.23,241,1770620400"; 
+   d="scan'208";a="66410413"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 May 2026 04:29:45 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 18 May 2026 04:29:45 -0700
+Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 18 May 2026 04:29:41 -0700
+From: Balakrishnan Sambath <balakrishnan.s@microchip.com>
+Subject: [PATCH v4 00/12] media: microchip-isc: fixes and enhancements
+Date: Mon, 18 May 2026 16:59:38 +0530
+Message-ID: <20260518-balki-isc-series1-v4-v4-0-97f189185b7e@microchip.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260517092432.1025008-1-chenhuacai@loongson.cn>
- <CAJF2gTSn-44So=SdVYxvF5ihJjWs9R7vFAyuPNpeLBwBpJrY9Q@mail.gmail.com> <CAAhV-H4Zvqvb_Crx-cpunZV8tGcFu=2T6x0aG9iV31BPcO5xng@mail.gmail.com>
-In-Reply-To: <CAAhV-H4Zvqvb_Crx-cpunZV8tGcFu=2T6x0aG9iV31BPcO5xng@mail.gmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Mon, 18 May 2026 19:28:57 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTSAWP4X19t10f8kgd3xdufDEdyc_z4aiaLCmOieMd2ipQ@mail.gmail.com>
-X-Gm-Features: AVHnY4I8JVtIkj6eFcO1hPldyVb7fH2I0uNTYz-q65m2QrRT3MN7DuJpfsss4TA
-Message-ID: <CAJF2gTSAWP4X19t10f8kgd3xdufDEdyc_z4aiaLCmOieMd2ipQ@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: Remove unused code to avoid build warning
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
-	Xuefeng Li <lixuefeng@loongson.cn>, Xuerui Wang <kernel@xen0n.name>, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 07AE056BB22
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACP4CmoC/yXMQQqAIBBA0avErBvQ0KiuEi0mG2soKhQikO6e1
+ PIv3k8QOQhH6IoEgS+Jcuw5TFmAW2ifGWXKDZWqamV1gyNtq6BEh7/UeBnUzERWUesbA5megb3
+ c37YfnucFqI5LG2YAAAA=
+X-Change-ID: 20260518-balki-isc-series1-v4-1eeaa50a9f84
+To: Eugen Hristev <eugen.hristev@linaro.org>, Mauro Carvalho Chehab
+	<mchehab@kernel.org>, Hans Verkuil <hverkuil@kernel.org>
+CC: <linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Laurent
+ Pinchart" <laurent.pinchart@ideasonboard.com>, Kieran Bingham
+	<kieran.bingham@ideasonboard.com>, Balakrishnan Sambath
+	<balakrishnan.s@microchip.com>, Sakari Ailus <sakari.ailus@linux.intel.com>,
+	<stable@vger.kernel.org>, Balamanikandan Gunasundar
+	<balamanikandan.gunasundar@microchip.com>
+X-Mailer: b4 0.14.3
+X-Rspamd-Queue-Id: B59BE56BB6F
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[microchip.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[microchip.com:s=mchp];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249253-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249252-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[microchip.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guoren@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[balakrishnan.s@microchip.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,mail.gmail.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,microchip.com:mid,microchip.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Mon, May 18, 2026 at 10:58=E2=80=AFAM Huacai Chen <chenhuacai@kernel.org=
-> wrote:
->
-> On Mon, May 18, 2026 at 9:42=E2=80=AFAM Guo Ren <guoren@kernel.org> wrote=
-:
-> >
-> >
-> >
-> > On Sun, May 17, 2026 at 5:25=E2=80=AFPM Huacai Chen <chenhuacai@loongso=
-n.cn> wrote:
-> > >
-> > > After commit feee6b2989165631b1 ("mm/memory_hotplug: shrink zones whe=
-n
-> > > offlining memory"), __remove_pages() doesn't need the "zone" paramete=
-r
-> > > so the "page" variable is also unused. Remove the unused code to avoi=
-d
-> > > such build warning:
-> > >
-> > > arch/loongarch/mm/init.c: In function 'arch_remove_memory':
-> > > arch/loongarch/mm/init.c:134:22: warning: variable 'page' set but not=
- used [-Wunused-but-set-variable=3D]
-> > >   134 |         struct page *page =3D pfn_to_page(start_pfn);
-> > >
-> > > Cc: <stable@vger.kernel.org>
-> > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > ---
-> > >  arch/loongarch/mm/init.c | 4 ----
-> > >  1 file changed, 4 deletions(-)
-> > >
-> > > diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-> > > index 3f9ab54114c5..031b39eb081c 100644
-> > > --- a/arch/loongarch/mm/init.c
-> > > +++ b/arch/loongarch/mm/init.c
-> > > @@ -123,11 +123,7 @@ void arch_remove_memory(u64 start, u64 size, str=
-uct vmem_altmap *altmap)
-> > >  {
-> > >         unsigned long start_pfn =3D start >> PAGE_SHIFT;
-> > >         unsigned long nr_pages =3D size >> PAGE_SHIFT;
-> > > -       struct page *page =3D pfn_to_page(start_pfn);
-> > >
-> > > -       /* With altmap the first mapped page is offset from @start */
-> > > -       if (altmap)
-> > > -               page +=3D vmem_altmap_offset(altmap);
-> > >         __remove_pages(start_pfn, nr_pages, altmap);
-> >
-> > Good cleanup, but does LoongArch forget to remove the linear mapping? I=
-f the memory is unplugged, the mapping is still there. How does the core fe=
-tch data from there?
-> LoongArch's linear mapping is based on DMW rather than TLB, so
-> removing linear mapping is unnecessary.
-Do you mean SSEG tech? mips & csky also have that. But my question is:
-how does the core fetch data/instructions from an unplugged memory
-region, given that the mapping is established by DMW?
+Bug fixes and feature additions for the Microchip ISC/XISC driver.
 
->
->
-> Huacai
-> >
-> > --
-> >
-> > Best Regards
-> >
-> >   GUO Ren
+Fixes:
+ - SBGGR10 Bayer pattern was mapped incorrectly (red/blue swap)
+ - WB register fields corrupted by sign extension
+ - Race between histogram IRQ and stream stop
+ - PM runtime reference leak in AWB work handler
 
+Features:
+ - Driver documentation
+ - Gamma 1.8/2.4 preset curves
+ - Hue/saturation controls for SAMA7G5
+ - Grey World AWB with EMA smoothing
 
+Split from v1 per review. Histogram statistics support is being sent
+as a separate follow-up series.
 
---=20
-Best Regards
- Guo Ren
+Tested on SAMA7G5-EK with IMX219 (RAW10 Bayer capture, AWB, controls
+verified across 8 formats and 5 resolutions up to 3264x2464).
+
+Based on v6.19 (e9ec05addd1a).
+
+v1: https://lore.kernel.org/linux-media/20251009155251.102472-1-balamanikandan.gunasundar@microchip.com/
+v2: https://lore.kernel.org/linux-media/20260512154339.210444-1-balakrishnan.s@microchip.com/
+v3: https://lore.kernel.org/linux-media/20260513071742.97263-1-balakrishnan.s@microchip.com/
+
+v4:
+ - Drop gamma LUT controls and CC matrix V4L2 controls patches (move
+   to parameter buffer follow-up per Sakari's review)
+ - Drop AWB enable pipeline reset patch (cleanup for the dropped
+   controls, will return with the follow-up series)
+ - Update documentation patch to remove references to dropped controls
+ - Rebase on v6.19
+
+v3:
+ - Fix bisect failures (regmap declaration, gamma LUT macro ordering)
+ - Fix Fixes: tag (use mainline commit, not staging)
+ - Add Co-developed-by trailers for Balamanikandan Gunasundar
+
+v2:
+ - Split series (histogram stats moved to a separate follow-up series)
+ - Reorder: bug fixes first, then features
+ - Commit message cleanups
+ - Rebase on v6.19-rc8
+
+Signed-off-by: Balakrishnan Sambath <balakrishnan.s@microchip.com>
+---
+Balakrishnan Sambath (12):
+      media: microchip-isc: fix SBGGR10 Bayer pattern
+      media: microchip-isc: mask WB offset and gain register fields
+      media: microchip-isc: fix race condition on stream stop
+      media: microchip-isc: fix PM runtime leak in AWB work handler
+      media: microchip-isc: add driver documentation
+      media: microchip-isc: set SAM9X7 maximum resolution to 2560x1920
+      media: microchip-isc: configure DPC and pipeline for SAMA7G5
+      media: microchip-isc: add gamma 1.8 and 2.4 correction curves
+      media: microchip-isc: add SAMA7G5 hue and saturation controls
+      media: microchip-isc: use weighted averages for Grey World AWB
+      media: microchip-isc: smooth AWB gains with EMA filter
+      media: microchip-isc: scale DPC black level to sensor bit depth
+
+ .../userspace-api/media/drivers/index.rst          |   1 +
+ .../userspace-api/media/drivers/microchip-isc.rst  |  66 +++++
+ MAINTAINERS                                        |   1 +
+ .../media/platform/microchip/microchip-isc-base.c  | 320 ++++++++++++++++-----
+ .../media/platform/microchip/microchip-isc-regs.h  |  11 +-
+ drivers/media/platform/microchip/microchip-isc.h   |   8 +-
+ .../platform/microchip/microchip-sama5d2-isc.c     |   2 +-
+ .../platform/microchip/microchip-sama7g5-isc.c     | 100 +++++--
+ 8 files changed, 413 insertions(+), 96 deletions(-)
+---
+base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
+change-id: 20260518-balki-isc-series1-v4-1eeaa50a9f84
+
+Best regards,
+-- 
+Balakrishnan Sambath <balakrishnan.s@microchip.com>
+
 
