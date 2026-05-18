@@ -1,247 +1,335 @@
-Return-Path: <stable+bounces-249317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249318-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sC4FMNYqC2pAEAUAu9opvQ
-	(envelope-from <stable+bounces-249317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:05:58 +0200
+	id WAHBJj4rC2oNEQUAu9opvQ
+	(envelope-from <stable+bounces-249318-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:07:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690FC56F8D1
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:05:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADB556F985
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:07:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 313D2301455A
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:50:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA6BC3051A83
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4DC27FD44;
-	Mon, 18 May 2026 14:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91615283FE5;
+	Mon, 18 May 2026 14:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPVoOX3H"
+	dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b="J5/P3kon"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00154904.pphosted.com (mx0b-00154904.pphosted.com [148.163.137.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5F1273D76;
-	Mon, 18 May 2026 14:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779115827; cv=none; b=YPBOndYqbYfVUA0WXZdTCi0RbfL/I1fejQvY1n/Hp/FnmEVlcZuma+QgWUBfyt9b7YQkiCvdjLRK6Qe5swHG0kECKw5G/RC9NFdzvRnSaIAQTs4G4+wb9iITkTjTSKWb+LDInqjkQ8LD/QgaoF+hxVz7uFq5mJsg7dXSIeoO22s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779115827; c=relaxed/simple;
-	bh=AkU1VBeWYq+FJsE+w+HJkSpj0XLUlerI1rFIRbuYp3w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AfIOY6eNKzse+VkQZAvx7X1cwmdG7N+wn55iFstfYFN2KGu+8OO89yms/DStz//vAq9qTcRb2s4kwt/RB8jVlZBjefqsDA9NGUE9kz6TCvmFyX2etzLDyhAnf/NEBVo6WXy4DnA1lv3NPTMyd8M8lbHWDQeJ/5m57AvowWqwW34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPVoOX3H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB91C2BCB7;
-	Mon, 18 May 2026 14:50:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779115827;
-	bh=AkU1VBeWYq+FJsE+w+HJkSpj0XLUlerI1rFIRbuYp3w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HPVoOX3HO+QF7VWfePQ0uYOZzNrQ1uknWEG8u6G6yJlu7yimUQG2Lp3eviZOfaDqR
-	 5tbn1KPnEC/pP+/V1NhKhSEdjv7/7rFv2i3pt48am7UxBmtEFLQgLb/DK0RlefGZBR
-	 v0oxBg59dUj6kR0dp47XT52hoiPPgFhtUUucFsCpwx0wPaPe6pNBIiysaOeU5kZg8Y
-	 fQ4Z04/0mgAigjHCCK6HyZXYxXQeJLlFZZmyIko1q1t/fwYRLBBzUK6g4M8liSUl4H
-	 lwWTE3UQZ3jNBDgqQCOQKCMxfEbtgUp7Ucw2nLAci3CHPNYAV7JBfLR6rNbI2VVayR
-	 2ViDRY/H/EmZA==
-Date: Mon, 18 May 2026 15:50:18 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Stepan Ionichev
- <sozdayvek@gmail.com>, nuno.sa@analog.com, andy@kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] iio: pressure: rohm-bm1390: notify trigger on all error
- paths
-Message-ID: <20260518155018.41192eee@jic23-huawei>
-In-Reply-To: <3cb30f12-8b4f-415f-9a1d-823d8ff8c33b@gmail.com>
-References: <20260517160801.269-1-sozdayvek@gmail.com>
-	<54ee1fba-3209-4192-82c3-674a1ae3ca8f@baylibre.com>
-	<3cb30f12-8b4f-415f-9a1d-823d8ff8c33b@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE61326F28D;
+	Mon, 18 May 2026 14:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.137.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779116008; cv=fail; b=t7dp1wLF/VWib6dVUbtMSKw/SkrB2CF2XFxe4nnvNEsOni3bi8cI9Q5sugE+oyKBZ8ei0o2IdcSn9eU8/bFW0ubVsk0vF5qi/3EjTf2fNHJMh0pPmN4X+ae8retgmFhdR7EE8gMZdU+5MhHgeOyWSzebUZ5EyPm91+6UKxHTR1g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779116008; c=relaxed/simple;
+	bh=+6h8upgwWBIqnXKWSyMaQ2OV+yD55CQkV5Cy4uuDbP8=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=HVqe29IJEdFFRgpCTKVytZp7gX03QnjruH47yUtJnVFdOMBRFVWLCjyfUtwekCMn9y/ADE0F+MLVz1LfBnh/WJg3liHPSr5xvm8ivBkS4b4kXvZW34mf113dP7bqRKYbSXPhfaUcrHhh6zn4NHJo6YC7mgMhByVlAqY9BA++ACo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dell.com; spf=pass smtp.mailfrom=dell.com; dkim=pass (2048-bit key) header.d=dell.com header.i=@dell.com header.b=J5/P3kon; arc=fail smtp.client-ip=148.163.137.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dell.com
+Received: from pps.filterd (m0170397.ppops.net [127.0.0.1])
+	by mx0b-00154904.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64I8rRE92769914;
+	Mon, 18 May 2026 10:53:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dell.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=smtpout1; bh=2XEhqJmsgrDFlLug1XaoTO7
+	gc/D2Aupmoge4tAv0cU0=; b=J5/P3kon/OGHwNg948BsbNIuyOAEfx+R2YBz/Zu
+	irEO4liQ/OfMy+ZQmX9Vp8pd4ReESkwpeOma7Qw4aJhjR+ghDlhutL1v6+iAUDCe
+	lrKEDwxSJUBEhiGGLvaMe6XQ2RL/DBdshKn0oHsgaEKC1HXGzKu7r5rTEN1+ApmM
+	2pIDTQRCuxx5y1QySAfYReo6crXKxrtINsI/EIlfnwVNDR6IuS1ItvGtRZp2XL2U
+	Z8NrbsaL2nQaQmlGglzgD0OT6NCQJt1peeCaGzeTEEvfn3dZuiRGYfQcZVeHjgRG
+	RWxn0lCcPipAcInQxuYEqrUvk+PgV+Bwe7Phl2VYhDsdHYw==
+Received: from mx0a-00154901.pphosted.com (mx0a-00154901.pphosted.com [67.231.149.39])
+	by mx0b-00154904.pphosted.com (PPS) with ESMTPS id 4e6hnmr9dd-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 10:53:02 -0400 (EDT)
+Received: from pps.filterd (m0134746.ppops.net [127.0.0.1])
+	by mx0a-00154901.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64ICTjh23993822;
+	Mon, 18 May 2026 10:53:01 -0400
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010064.outbound.protection.outlook.com [52.101.61.64])
+	by mx0a-00154901.pphosted.com (PPS) with ESMTPS id 4e829atwgh-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Mon, 18 May 2026 10:53:01 -0400 (EDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tr+iwqx/3M2rMNgHqwkA6SWs8kNGjChJsdPgDS21Yr41biu+KS4HeqS553Ex8S59VvvKCF3axycGnF46WhT9wT1N52rbjCfPGeV1qUPjb3iUyvSZOi6KjhvEs4vXOF/8ptTJXbYqp6UdctWkC2k6lkPTAM5ZTfLqW43GZNGo34paiCIF/69JcKHqlj8j9KyulRNQ6VcnYPc5oQfWdh87Sd3waB685NmlPaHhl8eO4PYRsUGY8DNeAUiSJb8MJnuOPoRNWXeVkY5lGX9FUTYrS/eYL+HZsEYbE7h3Gn2c+GEtiWexs7GF2XuQ9XMjk2qjC8Hx/wLeQdHvwAdXYfyXUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2XEhqJmsgrDFlLug1XaoTO7gc/D2Aupmoge4tAv0cU0=;
+ b=ck4KT5MG1mw22suZvP2NtPT6boF2jE/VCyQXabO0qqq42LliSnpBpnJPy9WbcWM0KW2kAVSqMW0Lu1UcgZbk4ASNw/T41rsKiIyT1i1mZuKpX96VW4VGNJlJekcm+biWo2lFV2v00ye4TmNzDDwYmfFs913t31u1G24CCHsJTn35lblbLLjrZ0XJuvXECFDriR3aMj0uK256G+Bu7ayWQ8KEkGWbnCyZUOmZmExlg1V9VKtu7PdS8CoxeYhm7twTPRwDyUM0S+HvtdfFJJNQsTBC/wTe3MitvOQMdV3GIZ0+6VRw6qKGboIYc5HL6XVKKwjaGlVXBLe/v704Jm5NRQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=dell.com; dmarc=pass action=none header.from=dell.com;
+ dkim=pass header.d=dell.com; arc=none
+Received: from MW5PR19MB5484.namprd19.prod.outlook.com (2603:10b6:303:191::16)
+ by BLAPR19MB4307.namprd19.prod.outlook.com (2603:10b6:208:254::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Mon, 18 May
+ 2026 14:52:57 +0000
+Received: from MW5PR19MB5484.namprd19.prod.outlook.com
+ ([fe80::88b9:ee8a:d884:49ff]) by MW5PR19MB5484.namprd19.prod.outlook.com
+ ([fe80::88b9:ee8a:d884:49ff%4]) with mapi id 15.20.9913.009; Mon, 18 May 2026
+ 14:52:56 +0000
+From: "Achkinazi, Igor" <Igor.Achkinazi@dell.com>
+To: "kbusch@kernel.org" <kbusch@kernel.org>, "hch@lst.de" <hch@lst.de>,
+        "sagi@grimberg.me" <sagi@grimberg.me>,
+        "axboe@kernel.dk" <axboe@kernel.dk>
+CC: "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "Achkinazi, Igor"
+	<Igor.Achkinazi@dell.com>
+Subject: [PATCH] nvme-multipath: set BIO_REMAPPED on bios remapped to per-path
+ namespace disks
+Thread-Topic: [PATCH] nvme-multipath: set BIO_REMAPPED on bios remapped to
+ per-path namespace disks
+Thread-Index: Adzm1dy/Cx6JquSnSUq/8UuX73jm6Q==
+Date: Mon, 18 May 2026 14:52:56 +0000
+Message-ID:
+ <MW5PR19MB548483D1FAE4F322E4C97352FD032@MW5PR19MB5484.namprd19.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_Enabled=True;MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_SiteId=945c199a-83a2-4e80-9f8c-5a91be5752dd;MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_SetDate=2026-05-18T14:50:42.0000000Z;MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_Name=No
+ Protection (Label Only) - Internal
+ Use;MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_ContentBits=3;MSIP_Label_73dd1fcc-24d7-4f55-9dc2-c1518f171327_Method=Standard
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW5PR19MB5484:EE_|BLAPR19MB4307:EE_
+x-ms-office365-filtering-correlation-id: e47af3ec-7068-4b38-ae94-08deb4ed25d7
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|1800799024|786006|366016|38070700021|11063799003|56012099003|18002099003;
+x-microsoft-antispam-message-info:
+ c68HO0UYOAN1rNk/knbWGcC3H93engg+rdULYuA/jKoc3UZ4JpTZsrY8L7zJTVG3QVQsiA2krbQi7quAt7WsYqajbBagzE6rjIlMUaxt0PZB4LJo5rpbySRLRrheZv9zwAHhXaILD801YT3CfQRs5fUN3DNaO9a/BPODd7BKA5mAs4NV5328t17SeilL4yX5xzdqsWgCqiX/wznGTbFW2bBU9Ap55K0WCQLW0FDXrl2I3Ih9BEQ9YBRen3EmWeCM5PdNUHTv2FLiCoXLLotCmX9gAIRVp2jJNAhSVq5gBHHed/fSE3C52KHU7yyhJd1WKqBh4qXbM/fukb0iop5e/0o9OyKo0h0Gaghvx6IooNaHUrmYteinrfPlGjccGu0SbQGGlUzquPeQqwWAfjmlrkGWxXunL+Yeyy7GUlz79HNflgPfHsgzLrdjF/mNS3G3MjISzxy2670Rcr4BLOpeJhQI6BUrIvrBAhDipJXz20oSDQqbPgWqSkdhT6yUMiyuO1CmvAaNG462ZtU9vFDthODrdrBjnAYK5fS4niTA72FRaw49C4Z1hCmkTleKRBMR1spwhfeQhNC9KnXXEKOz0PrYZqIypFrDkw3ISwFdPVxesCknbQMCbX8ybERiL/wR4ImprEgxZEE+DfLPlgUiwu3BazR7svVHxftwVDpTBp3Q+3tXW5zfw1pPePMWi0aOb3yXOimPjEKIOAz13uJZ3bCK28rOU4WJ4Wwbkx1o00AAa/RhiLBsN/r2xQBUmWP3
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR19MB5484.namprd19.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(786006)(366016)(38070700021)(11063799003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?dpLXtEtke6UtA3VD4IMqZn7KBn+dzMLosECF35pevkOHLsjnVN2m+U41wfDi?=
+ =?us-ascii?Q?ruBRzShIR0VR6sDB9caAHhxWTOu639p7/HEaQqfvF9NOxK7SAucMAIEfLmUI?=
+ =?us-ascii?Q?OMaOjCm8WM8jT77Q0SJn91p/1JFR/kGQhZzYeJpu8fQBpdG7OlAxM23iz9VA?=
+ =?us-ascii?Q?1Spxs4+6NZC3+gYtkpBpa+bz3CTldJVkL1p/HwfFAm3dpttLMdgw9gPyi28n?=
+ =?us-ascii?Q?25KbD+boEkLXdWUlxmPMPSeq87vZzFdVZh8SjM5GZF8pt8/pExcoPv+MBL+D?=
+ =?us-ascii?Q?8deBoi1rZAr9Xx6Pve/aygDxbnRVclqiT0yEQ55OH58EEJp/NYr1k1mIJfgz?=
+ =?us-ascii?Q?ck4n/hSEAWvPm31ckviB32YPAv0X4nH0UL2iFFc09oS5z8RwEMKa5HLV3rL8?=
+ =?us-ascii?Q?W/l9ijVqlHpjNC396Cve+ps+7Dj0XlHTUp4NygX7qYAS4mwlRBy5eyVyBRAc?=
+ =?us-ascii?Q?vp7TMJvmB0Y2gju0GgdBaweXoFnTpX6EiJv53aOdSf0a/mI3vGSvFCv54Rnt?=
+ =?us-ascii?Q?IbXzcqVgNHgXcvkwELQ747Yv2Wl/xc/1nR4mhcTbMJ8esTu8M8n8h70paSJA?=
+ =?us-ascii?Q?gjQpg/1Ooehvz2uWeNCEPf/DhA3IT4mts46QSUyg3hpINbAZP5hGSTfqp1oB?=
+ =?us-ascii?Q?mBz8uLvmkQAz9GsLLfwzT3TSNHY4j6DwPQ44RmgOPvatvdCJwPJMBdKllozA?=
+ =?us-ascii?Q?tzI/z3WWAvU/PSIid7lZaZSaGKuOa1aVMqv0prY/hvk4Ugs8eOSbLzkHv7Dy?=
+ =?us-ascii?Q?Q9UtzMUjQRVUwtN6KCV0fFamHD6edL6F6CEFsMju39zHQHsgdPBYrvuqNVaW?=
+ =?us-ascii?Q?eSi94PhV/nNQOPri58ZXSCZyOwZS6I0F50uItleStRBMnfAaEM5KKqRSt4A9?=
+ =?us-ascii?Q?sOLPqrvJhQkS5uyNrbHMrTrsiwxjgVhaw6i6yWOoNLzEAgtJee1BniOniE5l?=
+ =?us-ascii?Q?VaTs84gCR870ldPO2BxG48dd1szkWP6T/Z/gA4xgWvlHTBoTIu8LiOpoK67e?=
+ =?us-ascii?Q?Gv6Za0xM6xH/eUXWCi77I0I4tGvMl2upz6WG90+DQhogBZfxQfH6spL26rz4?=
+ =?us-ascii?Q?jojXE/e5iKlaGjK1Rwa1bnnLVglcq273ThxQZVBQ8mX6r4jRg3nkNjik8/6m?=
+ =?us-ascii?Q?2K1yQfQhov0rpqyz2qaFQA5bEAjMREWxca4FvuvwehDZp6/TQfzvq8xcWEOQ?=
+ =?us-ascii?Q?bUSGrafuR+euRvW4FD2KIVMhEONQeBdVzvoIHHdzT4jRltgJXQv9w/2MGPxt?=
+ =?us-ascii?Q?hgNe8Q4i6VT5bOVX0p3SpxzTbFdEizsWMW/HrZv/IZ31Z1u0L8N8SutLopus?=
+ =?us-ascii?Q?rIe43b8qH5aOhrl/Db1Sesh56FkoqTtgn+PyueZaGHOXnMAlC3hgsOFI1H0J?=
+ =?us-ascii?Q?3F49wyHcafLhZA1CcEVfYujn8y7xE9flgr8w8iyYcFrlrQPpFRa9U7HdRZKR?=
+ =?us-ascii?Q?ns4LdW7uEU2xwu57OA1zrfSwWjAiPq+ooxW7ihKSAGH3Ywsel9guThYL4lux?=
+ =?us-ascii?Q?CNnoLRxkSlQ1y+/cwcYN5cl0G+AkOLDk6vIhejMvcGhA95u32EkLz0/bFRJx?=
+ =?us-ascii?Q?9EcpVza/45E06jmFMAnRCu/98Wm8FLSWM3N7urzXDdkf/Ds8fB/ikUCiXK/0?=
+ =?us-ascii?Q?1nwdGemUXSc39XYJwE1bJuLydcGlb5iHfqgFrtIhL4xk4MqydySs2Q6Ct8qn?=
+ =?us-ascii?Q?5emBgLqKb7Dld02cLtyTO20QdvOslB7Qw5T4nu2i4ojrczoGz98g55aD6NcI?=
+ =?us-ascii?Q?FDcEWaGFcw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Exchange-RoutingPolicyChecked:
+	PG2N39Z0kJsDngIwtR943Xfw9bxwlkMZo1sefPeMiwXuTAxgkmrWTzMbhMzSY6NmJFE06SpOEqlQ1p6jcZtYtUJFh0GY5t0P9ZsAOmqqhc3G7G3uO+ABmZ4Oo6TgvdvztaN/77IFT50Kl90h59//YFKZ2qt2swVawmyJO75kYWv3lpij1YrBYkb0FsKm+Mz7NMR3S3PhbSOpCbBIv0wi5eTK95fDWT1LwxIOwdW/4gQRIvFifNkPKx05F+RnL+a2XtwPPX90doiCzKS6nuAB0F3K6TPWavYKHOrdrNHKAzONH5Gexp47JCGQ3jEckHmKV4wz9CGWzq8AgCNQs8NCYA==
+X-OriginatorOrg: Dell.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW5PR19MB5484.namprd19.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e47af3ec-7068-4b38-ae94-08deb4ed25d7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 May 2026 14:52:56.8169
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 945c199a-83a2-4e80-9f8c-5a91be5752dd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ihqn/AWL1hvwm/RPv+v5pLCWTLXjj7HZNQKKftnPSnYGWx26epMvBQory2ogclWbWNhnRw1X6f7Cljwvf/Yrkg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR19MB4307
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-18_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 suspectscore=0 adultscore=0 spamscore=0 phishscore=0
+ impostorscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605180146
+X-Proofpoint-GUID: dtcLSzU2gOsIwgj8wzeELR3gnJbMIJbO
+X-Authority-Analysis: v=2.4 cv=VJLtWdPX c=1 sm=1 tr=0 ts=6a0b27ce cx=c_pps
+ a=j0++y401J6f/BxNAf5EDow==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=6gNNCFAoQcIphELLPWWu:22
+ a=U3ti1ie9CgboSd2qXsAw:22 a=VwQbUJbxAAAA:8 a=iLNU1ar6AAAA:8
+ a=n8P0Md7YgY-1yq5sWS8A:9 a=CjuIK1q_8ugA:10 a=gbU3OgOOxF9bX48Letew:22
+X-Proofpoint-ORIG-GUID: dtcLSzU2gOsIwgj8wzeELR3gnJbMIJbO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDE0NiBTYWx0ZWRfX4aBmy5aV7aUO
+ BK5UZA9+pP/ESkH0nEvYl2CYJ2E+f8Tq8INK+UjM8bwofBx5Ke0kP7Hnp4JKGzHjK6uatJRQv8B
+ aK+Xp5RXPySdi+C3kMUeN2W+1eV/tDIkGm8InjVovz9vZNIq3dGj6pXlx9rQ014zI5+Vpb+DjxH
+ uagWbeRPGv3NMpsxwrOwHoVKhQBZxvpnrknVRism1jD7auCdYHdM7cpjKfFPMvZWvJ/1l13222w
+ OsbV3+HfpqaDKazvFbaVGySN3mdh91N6bgz593QuF+wkqxXK2M7cFUbTRRxFmQX3INAtv+dy/df
+ e2ZqkkTShQIP7qBs9ajQM/pZ2IF2WBgCLuajA1mBYtBJfGZmCU6QDYNqD7Zs8bzbf85Ez6rWkfl
+ eYBzn5lwe9rAWPRaRE0McnCQBbP8d4pHilTyPbPp9rfqp3Dv3Szj1ZU7LIVZD/lgL5K/orIcDlJ
+ Eqazwn0hLpowkxyVcMA==
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 spamscore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180146
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[dell.com,reject];
+	R_DKIM_ALLOW(-0.20)[dell.com:s=smtpout1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249317-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249318-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[baylibre.com,gmail.com,analog.com,kernel.org,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[dell.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[Igor.Achkinazi@dell.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 690FC56F8D1
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 1ADB556F985
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 18 May 2026 08:21:17 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+When nvme_ns_head_submit_bio() remaps a block IO from the multipath
+head to a per-path namespace (path of multipath), bio_set_dev() clears
+BIO_REMAPPED.  Before commit a7c7f7b2b641 ("nvme: use bio_set_dev to
+assign ->bi_bdev"), the code used a direct bio->bi_bdev assignment
+which did not clear BIO_REMAPPED.  The block IO is then
+queued on current->bio_list (deferred, not processed inline) and SRCU
+read lock is released.
 
-> On 17/05/2026 20:12, David Lechner wrote:
-> > On 5/17/26 11:08 AM, Stepan Ionichev wrote:  
-> >> bm1390_trigger_handler() has three error returns:
-> >>
-> >> 	if (ret || !status)
-> >> 		return IRQ_NONE;          /* status read failed */
-> >> 	...
-> >> 	if (ret) {
-> >> 		dev_warn(...);
-> >> 		return IRQ_NONE;          /* pressure read failed */
-> >> 	}
-> >> 	...
-> >> 	if (ret) {
-> >> 		dev_warn(...);
-> >> 		return IRQ_HANDLED;       /* temp read failed */
-> >> 	}
-> >>
-> >> None of them call iio_trigger_notify_done(). The success path at the
-> >> end does, so on a single transient regmap or pressure-read error the
-> >> trigger never sees its use_count decremented, and the
-> >> !atomic_read(&trig->use_count) guard in iio_trigger_poll_chained()
-> >> drops every subsequent dispatch for that trigger. The buffered-data
-> >> flow stays wedged until the trigger is detached.  
-> 
-> I don't really know the intended logic of the use_count, so I'll leave 
-> this to those who understand it better. I'll just add some thoughts this 
-> invoked.
-> 
-> I think it is not really nice to require (or trust) drivers to call the 
-> "iio_trigger_notify_done()" if the handler fails. Maybe it would be 
-> better to do something like:
-> 
-> void iio_trigger_poll_nested(struct iio_trigger *trig)
-> {
->          int i;
-> 
->          if (!atomic_read(&trig->use_count)) {
->                  atomic_set(&trig->use_count, 
-> CONFIG_IIO_CONSUMERS_PER_TRIGGER);
-> 
->                  for (i = 0; i < CONFIG_IIO_CONSUMERS_PER_TRIGGER; i++) {
->                          if (trig->subirqs[i].enabled)
->                                  handle_nested_irq(trig->subirq_base + i);
->                          else
->                                  iio_trigger_notify_done(trig);
->                  }
-> 		atomic_set(&trig->use_count, 0); /* Clear the use_count if drivers 
-> didn't */
+The deferred block IO itself is dispatched directly to
+blk_mq_submit_bio() without re-entering submit_bio_noacct(), so it
+would be fine on its own.  The problem is when the block IO size
+exceeds queue limits and blk_mq_submit_bio() needs to split it using
+__bio_split_to_limits().
 
-If this worked we could just drop the use_count :)
+The split remainder is resubmitted through submit_bio_noacct() which
+calls bio_check_eod() again because BIO_REMAPPED is not set.  This
+sometimes races with nvme_ns_remove() zeroing the capacity after
+synchronize_srcu().  Result: bio_check_eod() sees zeroed capacity and
+fails the IO with "attempt to access beyond end of device" instead of
+letting it fail over to another path.
 
->          }
-> }
-> 
-> to prevent this class of problems once and for all. But yeah, wiser 
-> minds have designed this - so let's hear some other opinions as well :)
+Observed failure scenario during tests:
 
-I've mused about similar myself. The problem is the iio_trigger_notify_done()
-at least in theory doesn't have to be anywhere near the interrupt handler.
+  Setup: NVMe multipath with multiple paths (e.g., controllers nvme0,
+  nvme1) to the same namespace, exposed as a single multipath block
+  device (e.g., nvme0n1).
 
-It normally is, but there is potential for some other delaying action to be
-fired - e.g. using an hrtimer to fire off an action that then starts sampling
-and waits for an interrupt to finish the sampling.  The iio_trigger_notify_done()
-call belongs in that interrupt handler - which is no anywhere near here.
+  Steps to reproduce:
+    1. Run sustained IO against the multipath head device (e.g. vdbench)
+    2. Delete the namespace on one of the paths (e.g., detach the
+       namespace from NVMe controller on a subsystem on the
+       target side).
+    3. The IO that was remapped to the removed path and requires
+       splitting (exceeds queue limits) hits the race.
 
-Can't find an example right now, but they existed when I wrote that complex
-mess in the first place.
+  Expected behavior:
+    The IO should fail on the removed path and nvme_failover_req()
+    should retry it on the remaining healthy path.  IO continues
+    without errors visible to the application.
 
-Like many things in IIO we may have designed it for a case that went away
-in the meantime.  The silliest one of those is that (last time I checked) there
-are no top half / thread combinations for pollfuncs where the top half
-does anything beyond grabbing a timestamp.  So ultimately we could replace
-the top half handler parameter with a bool to say if the timestamp is useful.
+  Actual behavior:
+    The kernel reports IO errors to the application.  dmesg shows:
 
-> 
-> >>
-> >> The IRQ_HANDLED return on the temperature path additionally leaves
-> >> the temp branch's last partial state in &data->buf.temp without
-> >> pushing the sample, which is the existing intended behaviour; only
-> >> the missing notify_done() needs fixing.
-> >>
-> >> Funnel all returns through a single 'done' label that calls
-> >> iio_trigger_notify_done() before returning the saved irqreturn_t.
-> >>
-> >> Fixes: 81ca5979b6ed ("iio: pressure: Support ROHM BU1390")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
-> >> ---
-> >>   drivers/iio/pressure/rohm-bm1390.c | 15 ++++++++++-----
-> >>   1 file changed, 10 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/pressure/rohm-bm1390.c b/drivers/iio/pressure/rohm-bm1390.c
-> >> index 08146ca0f..c18352399 100644
-> >> --- a/drivers/iio/pressure/rohm-bm1390.c
-> >> +++ b/drivers/iio/pressure/rohm-bm1390.c
-> >> @@ -626,12 +626,15 @@ static irqreturn_t bm1390_trigger_handler(int irq, void *p)
-> >>   	struct iio_poll_func *pf = p;
-> >>   	struct iio_dev *idev = pf->indio_dev;
-> >>   	struct bm1390_data *data = iio_priv(idev);
-> >> +	irqreturn_t result = IRQ_HANDLED;
-> >>   	int ret, status;
-> >>   
-> >>   	/* DRDY is acked by reading status reg */
-> >>   	ret = regmap_read(data->regmap, BM1390_REG_STATUS, &status);
-> >> -	if (ret || !status)
-> >> -		return IRQ_NONE;
-> >> +	if (ret || !status) {
-> >> +		result = IRQ_NONE;  
-> > 
-> > IRQ_NONE means that the interrupt wasn't handled, so it won't be cleared
-> > and the handler will likely just run again immediately. So it probably
-> > isn't the right thing to be returning in the first place.  
-> 
-> This is exactly why IRQ-none is returned, and what it is used for. If 
-> the problem with bus-access / device persists, the kernel will (after 
-> XXXX fails indicated by IRQ_NONE - don't remember exact numbers) disable 
-> the IRQ from the host side, and emit the, ass-saving, "nobody cared" -print.
-> 
-> This is (in my opinion) the only RightThing(tm). (Especially so, if the 
-> device is accessed from the fast handler, and is system is single-core). 
-> There is a tremendous difference when debugging a system which just 
-> hangs in IRQ loop forever (and you can't get no contact to it), and when 
-> debugging a system which, after a relatively short hang-up, let's you 
-> see the magic "nobody cared" -print telling a misbehaving IRQ was disabled.
-> 
-> Furthermore, if the status register read failure was a temporary one, 
-> then we should be getting new IRQ as soon as the handler exists. This 
-> should then successfully handle the IRQ.
+      IO_task /dev/di: attempt to access beyond end of device
+      nvme1c9n1: rw=3D33556480, sector=3D476160, nr_sectors=3D256 limit=3D0
 
-I see this as a bit more nuanced. Depends on what fails. If we detect
-no interrupt then it makes sense. For other cases it's is tricky to
-figure out the right option.  Some errors are fine as we know they don't
-affect the interrupt being cleared (if we even need to clear it).
+    IO errors were reported to the testing application, causing
+    it to stop, despite a healthy path being available.  The IO is
+    rejected by bio_check_eod() on the split remainder before it
+    ever reaches the NVMe driver, so nvme_failover_req() never gets
+    a chance to fail over to the other path.
 
-So generally I've left that analysis and decision up to individual driver
-authors.
+We observed this failure during NVMe multipath failover testing at
+Dell, for example, on kernel 5.14.0-570.23.1.el9_6.x86_64 (Red Hat
+9.7), kernel 6.4.0-150600.23.53-default (SLES 15.6), and others.
+
+The fix is setting BIO_REMAPPED after bio_set_dev() in
+nvme_ns_head_submit_bio().  This skips bio_check_eod() on resubmission
+for both the remapped IO and any split clones derived from it.  The
+EOD check already passed on the multipath head.
+
+This is safe because the individual path for nvme has bd_partno=3D0
+(NVMe per-path namespace device is always a whole disk, not a
+partition), so skipping blk_partition_remap() (also gated by
+BIO_REMAPPED) has no effect: adjusting bio sector offsets from
+partition-relative to whole-disk-relative is not necessary.  If the
+per-path queue is dead, it fails via GD_DEAD check in
+bio_queue_enter().  If the per-path queue is still alive, the
+request completes with error Invalid-Namespace coming from nvme target
+and nvme_failover_req() handles path failover.
+
+Same approach as commit 3a905c37c351 ("block: skip bio_check_eod for
+partition-remapped bios") which solved the same problem for partition
+remaps resubmitted after bio splitting.
+
+Fixes: a7c7f7b2b641 ("nvme: use bio_set_dev to assign ->bi_bdev")
+Cc: stable@vger.kernel.org
+Signed-off-by: Igor Achkinazi <igor.achkinazi@dell.com>
+---
+ drivers/nvme/host/multipath.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 263161cb8ac0..04f7c7e59945 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -511,6 +511,13 @@ static void nvme_ns_head_submit_bio(struct bio *bio)
+        ns =3D nvme_find_path(head);
+        if (likely(ns)) {
+                bio_set_dev(bio, ns->disk->part0);
++               /*
++                * Mark the bio as remapped to the per-path namespace disk =
+so
++                * that bio_check_eod() is skipped on resubmission (e.g. fr=
+om
++                * bio splitting in blk_mq_submit_bio).  The EOD check alre=
+ady
++                * passed on the multipath head disk.
++                */
++               bio_set_flag(bio, BIO_REMAPPED);
+                bio->bi_opf |=3D REQ_NVME_MPATH;
+                trace_block_bio_remap(bio, disk_devt(ns->head->disk),
+                                      bio->bi_iter.bi_sector);
+--
+2.43.0
 
 
-> 
-> Yours,
-> 	-- Matti
-> 
-
+Internal Use - Confidential
 
