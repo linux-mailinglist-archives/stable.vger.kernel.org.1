@@ -1,186 +1,199 @@
-Return-Path: <stable+bounces-249349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249350-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IYgOY9HC2o7FQUAu9opvQ
-	(envelope-from <stable+bounces-249349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:08:31 +0200
+	id iIVAB7dIC2o7FQUAu9opvQ
+	(envelope-from <stable+bounces-249350-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:13:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FF65716F9
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771545717B3
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 144D930D8E99
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:02:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD7A130B5846
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A9B382368;
-	Mon, 18 May 2026 17:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6392037EFFB;
+	Mon, 18 May 2026 17:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="HCGvVc/d"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c9EVSeBU"
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EB137EFFB;
-	Mon, 18 May 2026 17:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779123736; cv=none; b=UJwQHLG5dvL03XwAD5mmeKZRh9TVA7mvjNnvt2xB5abhEqsRd2Mlsh15YgP5HjsJOjMghJlb4faqChHqk2PeZjkecpHg+FhoeDuSqMWfurQ+HVFPBi9H57FzxCP5ntsk1hOauqpSVFejhSy2lwFoQPaQZnfPrjrsgBYUpXalER4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779123736; c=relaxed/simple;
-	bh=HTVC/uQlc3+FyQxEwauI5xzA8o6CsaZzTi+fW37idnY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iLkxs66HUT/kYcJPmNVwMWc5GmcxSZm5HJEKTSe8lvV2ExsMsFSyTOhwcfIssfwnlzEU8Mc1arnk7fORSEmkqq1q0lXeGIaltyWYnjy0jiliVT3v+v1WckRpaJ38O5my07YpGp23oNm4REEqmKJ1E8uXF0gpDWRBHSHqS+TTd2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=HCGvVc/d; arc=none smtp.client-ip=95.215.58.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
-	s=key1; t=1779123731;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ESnfBt7T8rmVjr1iPiYQF7zF6vpA6x++Cs8prC+X9Ng=;
-	b=HCGvVc/drxd0YUoh8KQzqiACoSkWjvy7ila2F4/+V32iI+R6K+RZXYKkT2lipsT+n2jf+c
-	6wxiQtH7IaAO9ixEEKqQAWXFR1RUFMHCswgjx7lTVvvRUgjOsVcPNW/YKYIZhPbQbpwtdZ
-	fZgDekBY+1YSGsAP+DCZ5UPMLY5N/lltjAduXm/xB3qwPlQUEILbEzLak6VMRhXplgu82X
-	B6q3QiTPbRcTc5TokP61KQRXL2eNCqDNY0FKylnpkJx1OdKr7WvdbbX9zgVFx+JtIBCCQl
-	e23jAKYUnH/2O8M6t32sifwVJr/hpmAvnZYCibh1XqDTUJvp0GqtKtvwn2liCA==
-From: Devin Wittmayer <lucid_duck@justthetip.ca>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Oscar Alfonso Diaz <oscar.alfonso.diaz@gmail.com>,
-	fjhhz1997@gmail.com,
-	Devin Wittmayer <lucid_duck@justthetip.ca>
-Subject: [PATCH v3] wifi: mac80211: fix monitor mode frame capture for real chanctx drivers
-Date: Mon, 18 May 2026 10:01:47 -0700
-Message-ID: <20260518170147.13885-2-lucid_duck@justthetip.ca>
-In-Reply-To: <20260518170147.13885-1-lucid_duck@justthetip.ca>
-References: <20260308164510.5927-1-fjhhz1997@gmail.com>
- <20260518170147.13885-1-lucid_duck@justthetip.ca>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFABF37BE83
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 17:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779124025; cv=pass; b=V/86s5FB2m1Q2qcNKQgKih8B4s+6/09GjghDpi42wW7BJOddR0ggAIu1bhvUA0sBRDdJk5RUJidRZSwjMcg52NcWPMUhOf3iwoth4FkFHLoPdvuIu31qT17mohZdNSdKh7N+5duQjmM/Jsu4tq0/6cVF2XOGsSzif74hvUYzOAE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779124025; c=relaxed/simple;
+	bh=u+/oyza7yMnBBM1bP4jBLTY0KF+57Saj3R2F9P61tns=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YsyW3hRkGLwdYMEJXisqFgK9oHE558e66Ir6nNmirRVQKLhnY5XyDqcI521+FsmcdqlMe94CeBD8JULpVm0D+hazj8FOz43MgvfL0PZ8Cp9YaEugKdwBH0wfIfc9DoO8nBC/bowfNcSVlSR5hIByNtNEsRWG/fAm2K4/uT6e1UU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c9EVSeBU; arc=pass smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-67bf769704eso263a12.0
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 10:07:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779124022; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HcGC+glez0G9uc0GJ2qqjG3+Wkvi/UVZSemCIhKVn3RL0AEzf3+9efOlRSbaEuL2R3
+         5PYkj78p2JxluEonqNg19ejvcrIYo9RX5ev5PayHKXYkzeK/XeKpftm1YL7dW2UfRJpI
+         QO+Hhr2McdwQSUsTtPijdkpNJDMEu8RTMFDkE2mWj7wT6bLaE8a79crD21nf4SwsBia0
+         I0m8H0M4CgdbMRNL59jNoxszDgQWSQPauPJBcTJhYolAuA2+vplpIsKjr95v19k/ggAD
+         Iu8HgeSURMXpGS90c1d4Vksk50o+eLJlZHnkLSHXvxELWAR4ZKPWzWPi6hEXY0+QzW1a
+         3tZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dAc2fCMTUkDP1AieE5yiC819W4Ul0vR1PY4hx/ymEks=;
+        fh=WYsYpD8Bfi1MYuwDuwR1pYH7gHFBjBWkCvsdzDVNDV0=;
+        b=SSUVLy9BE+TQOHuOQ9CNu804BTox1ldjKfxZYovWgk6jlnwc+HtnEUKcclsiQ23+AO
+         XseHA9Tc0wFYyergmBvbKDIcOWKsWL7WtCDtz/CB1j6QQeqc52JQV4FtXLRjyYKaoUAy
+         xnhDPSEEL2sDtFtb+6h7reBTMnlr94hVQxdLvQ4jmX/ULN5O2hxHA1vTiiwxT62qajAW
+         SXDX4xY9X0jf4hDFRu/9mQgvJJbbWVsHjK72vHC7FyrERc4LIXE91kZmxJ1EnHReMTtS
+         +FQqja4NkLC7G5kCvKUkq5hMVhLypE79sG9V6zED+tCj+zAwtfBSiT6Y7AI3J+j0E24d
+         aVWQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779124022; x=1779728822; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dAc2fCMTUkDP1AieE5yiC819W4Ul0vR1PY4hx/ymEks=;
+        b=c9EVSeBUbVy5Bh/5MzH/ioHlUYHdJWc1FRoKI+S4tecECQdf0/cLwn1HklB+gWhXQG
+         J7DY07N8FGXBfYKdwMXfOuhnBiBUxvTW7GufLPCro9guLjsBjk7CZKElrWNV99Xg89pK
+         flZyAo08Sgx1PeBXis1zqrX3mxZ6b34Z1wtwR/QDmrkiBDCBctHUP6BlS15UunQ8EwY3
+         YfloHqe0FFHbX5isU2yLHNrpjtZVpkp9Xx0HPk9L5I/kzbbbfMRERw4NuMQN6tnYYAxe
+         MGHuiH/lUBmtEyQH64VMxUBs+t+Ut5SfsSnY9Arvm7rrodvyT0p6yUSDIW09GWsK4ffg
+         +Iiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779124022; x=1779728822;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dAc2fCMTUkDP1AieE5yiC819W4Ul0vR1PY4hx/ymEks=;
+        b=A7otztQxDWvqzcaFSeB16hLGXEBV+PT4RV+ioMRmDmUsJV1047aLoMIyrumqQTMJYV
+         9a1Y86eB8Lhi6aneLsmeQtXUN3J8qPOLT8b/+EIfWi6oLpTlYtfVDqAonU+n+euib5PP
+         w242R7jTOmCfv+bvHfi8GhKHNObY82mxFXXraI6BgtavInsJAPnJBpJGLB88T00XS9QT
+         Qclx0PCECkR9kfdznEhf33iKYcBgpIj90OE1R6h4pM2c3JKRZ1y0jpgiPMCCZmJtG/LT
+         2VOR7KyxOP0hoYpoZ3hOuvpoI2axa1XfGnAhw/Q5R/1NvrPEE//2RvmPFlssBsiB3UbA
+         gjjA==
+X-Forwarded-Encrypted: i=1; AFNElJ/jETlVZflOm42NVfSRjp6mb/kpFAEqmrY1m0o3C942dCag+NeEy0uuJLAjqYcVNr/f3xiXVOs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPBa2LWSxsQIrB3xpipoxLl/BW5k4CXde2i9KKwC2QTi5oq0SH
+	kA3FFIkVaXiBeDP2czCxRf/FwD2v3VGRGE3lGFxdAMH9j8JG5/MfKeMFIFzCQpo9Z6CbyGrpnmj
+	bsMnWf+FZQ5BiazOc814/cwR5Rmnj0bwagQqjTL1d
+X-Gm-Gg: Acq92OGN3ChMNXMrqH3Kf4GjYE6VMZsOVVuxIvIVCjzy8NlsXcGf/+TMBOLIKdfMRIo
+	+ZuyqQtwM4j/BvahY452jyLNhdilXY/nc53F9b+2E3pYum6NXN+kLwKM4F5HxM3gLOJtxbnONGE
+	T6r9wOe+dAlRDlItIyeBFy8vFY/MMkRMpds4V+cdvBXB9CPOUK2yeUnD5qZwMyb2By63REEv0YN
+	1BvLC8lyfAiy0h+Gq3GddROWa9il6gVKEgAwo3X+VK5IDX2ouUB74CFgcUzJ3zHyRQT0i6xWAi9
+	HKXNs7AOqGBccxsCdNejnCIMkohq7vxBf+lAEcYTjJoZcYk=
+X-Received: by 2002:aa7:d994:0:b0:678:93b4:1fd3 with SMTP id
+ 4fb4d7f45d1cf-68489aadd24mr106742a12.6.1779124021571; Mon, 18 May 2026
+ 10:07:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
+ <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com> <CAHk-=wi-5WSdzg_UxAFSRtjTUfscATJ8+1R3Pqvw8=-KKLmQCg@mail.gmail.com>
+In-Reply-To: <CAHk-=wi-5WSdzg_UxAFSRtjTUfscATJ8+1R3Pqvw8=-KKLmQCg@mail.gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 18 May 2026 19:06:25 +0200
+X-Gm-Features: AVHnY4J7uTZVu3VWspc9GgfysKp-lVvtARSbXVXvqVI_-MuHqBAL5ClZcJ4MwN8
+Message-ID: <CAG48ez3_ocrFct3KJBFFzXoa81dRpBOenx1bkJBdrrzYgMmFsw@mail.gmail.com>
+Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field post-exit
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: Christian Brauner <brauner@kernel.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Qualys Security Advisory <qsa@qualys.com>, 
+	Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[sipsolutions.net,nbd.name,kernel.org,vger.kernel.org,gmail.com,justthetip.ca];
-	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249349-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[justthetip.ca:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jannh@google.com,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[justthetip.ca:email,justthetip.ca:mid,justthetip.ca:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:email]
-X-Rspamd-Queue-Id: 69FF65716F9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249350-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[google.com:+]
+X-Rspamd-Queue-Id: 771545717B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: 傅继晗 <fjhhz1997@gmail.com>
+On Sat, May 16, 2026 at 8:04=E2=80=AFPM Linus Torvalds
+<torvalds@linuxfoundation.org> wrote:
+> On Sat, 16 May 2026 at 10:32, Linus Torvalds
+> <torvalds@linuxfoundation.org> wrote:
+> >
+> > That mode thing is already a bitmap, so one bit could be "require it
+> > to have a MM", but I think it should probably be done in a way that
+> > forces the callers to think about it a bit more.
+>
+> The whole "fscreds or realcreds" bit is completely broken too. So I do
+> think that we really need to just fundamentally fix
+> ptrace_may_access(), and change the calling convention.
+>
+> Just as an example, look at proc_pid_wchan(). It uses that
+>
+>         if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
+>
+> thing, and that's pure and utter garbage. It's a very traditional bug,
+> but it's a bug.
+>
+> Why?
+>
+> Because the creds used for IO should *not* be the current creds. They
+> should be the *open-time* creds. That code shouldn't use
+> "current_cred->fsuid" AT ALL. It should use file->f_cred for
+> credential checking.
+>
+> This is a classic mistake where you make a suid binary a file you
+> opened - open it as regular user, pass it in to a suid binary as
+> 'stdin' or 'stdout'/ 'stderr', and get information (or overwrite
+> things) that way that you shouldn't have had permissions to do.
+>
+> The user filesystem creds should be used for *open* time checking, not
+> for read/write time checking.
+>
+> Now, this wchan thing is a case of "not really impotant enough to
+> worry about", but it's an example of how this ptrace_may_access()
+> interface is fundamentally broken.
 
-Commit d594cc6f2c58 ("wifi: mac80211: restore non-chanctx injection
-behaviour") restored the monitor injection fallback for drivers using
-chanctx emulation but explicitly deferred the harder case of drivers
-that transitioned to real chanctx ops. mt76 falls in that category
-and still drops every injected frame when monitor coexists with
-another interface.
+The current implementation of PTRACE_MODE_READ_FSCREDS is appropriate
+for stuff like proc_ns_get_link().
 
-When the monitor has no chanctx of its own, fall back to the only
-chanctx in flight if there is exactly one. Refuse if multiple are
-present: picking arbitrarily would inject onto an unrelated channel.
+I agree that calling ptrace_may_access() in proc_pid_wchan() is wrong;
+but I think a good fix for this is to do the ptrace_may_access() check
+at open() time, and only allow read()ing from the resulting file as
+long as the target process hasn't called execve() in the meantime.
 
-Reran the airgeddon evil-twin flow (hostapd AP + coexisting monitor
-VIF on the same phy + aireplay-ng deauth from the monitor) on
-mt7921e PCIe and mt7921u USB across 2.4 GHz and 5 GHz, and on a
-Kali VM with MT7921U passthrough as the closest match to the
-original reporter's setup. None reproduced the hang seen against
-the earlier attempt at this fix
-(<20251216111909.25076-2-johannes@sipsolutions.net>) or against v1
-on lore in March.
-
-Cc: stable@vger.kernel.org # 6.9+
-Reported-by: Oscar Alfonso Diaz <oscar.alfonso.diaz@gmail.com>
-Closes: https://github.com/morrownr/USB-WiFi/issues/682
-Tested-by: Devin Wittmayer <lucid_duck@justthetip.ca>
-Fixes: 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
-Signed-off-by: 傅继晗 <fjhhz1997@gmail.com>
-Signed-off-by: Devin Wittmayer <lucid_duck@justthetip.ca>
----
-v3:
-  - Replace list_is_singular() + list_first_entry() with
-    list_first_or_null_rcu() and an rcu_access_pointer() check
-    that the entry is the only one in the list. The v2 pair
-    re-read ->next without RCU between the singularity check
-    and the entry fetch, racing list_del_rcu() of the sole entry
-    (rculist.h).
-  - Tested-by carries from v2: v3 changes the lookup primitive
-    only, not the TX path, so the v2 airgeddon evil-twin flow on
-    mt7921e/mt7921u/Kali-VM still applies.
-
-v2:
-  - First respin under my submitter signoff; preserves fjh1997
-    authorship.
-  - Verification matrix; airgeddon evil-twin flow on mt7921e/
-    mt7921u/Kali-VM does not reproduce the hang reported against
-    the v1 attempt at this fix.
-
- net/mac80211/tx.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 933c86ca21c3..6d2c71a13f26 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2407,12 +2407,20 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
- 				rcu_dereference(tmp_sdata->vif.bss_conf.chanctx_conf);
- 	}
- 
--	if (chanctx_conf)
-+	if (chanctx_conf) {
- 		chandef = &chanctx_conf->def;
--	else if (local->emulate_chanctx)
-+	} else if (local->emulate_chanctx) {
- 		chandef = &local->hw.conf.chandef;
--	else
--		goto fail_rcu;
-+	} else {
-+		struct ieee80211_chanctx *ctx;
-+
-+		ctx = list_first_or_null_rcu(&local->chanctx_list,
-+					     struct ieee80211_chanctx, list);
-+		if (!ctx ||
-+		    rcu_access_pointer(ctx->list.next) != &local->chanctx_list)
-+			goto fail_rcu;
-+		chandef = &ctx->conf.def;
-+	}
- 
- 	/*
- 	 * If driver/HW supports IEEE80211_CHAN_CAN_MONITOR we still
+We could try to do ptrace_may_access() with ->f_cred at read() time,
+but it would not entirely work because ptrace_may_access() looks at
+things other than the caller's credentials - there is that
+same_thread_group() check, and yama_ptrace_access_check() also looks
+at process hierarchy (in the case of PTRACE_MODE_ATTACH_FSCREDS).
 
