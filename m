@@ -1,151 +1,156 @@
-Return-Path: <stable+bounces-249328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCL5EbwxC2oZEgUAu9opvQ
-	(envelope-from <stable+bounces-249328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:35:24 +0200
+	id SK6XNWY1C2qgEgUAu9opvQ
+	(envelope-from <stable+bounces-249329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:51:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA420570140
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:35:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 439235704EE
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63E89301E7C6
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:31:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61770305F099
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43143F20FC;
-	Mon, 18 May 2026 15:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8152C40587A;
+	Mon, 18 May 2026 15:40:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nfCosSOI"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2D62D8378;
-	Mon, 18 May 2026 15:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F250288530;
+	Mon, 18 May 2026 15:40:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779118275; cv=none; b=qTeEvp7dn7+TTmMD4vKQk0Qg3IDcfIqKvQflKqEEWJqaA2EaS0A1M+Y4jatMf6iWLN2zrsp9IwYTdx35eEQmobwKVJai4WUmGTjg3deXLxirUkulooWsHVqzRqVVdwHHwWF+QDPy6CAzjluPuZlDDyfU4ztvWiWhSy4sqOG/Hgk=
+	t=1779118858; cv=none; b=UiT6Lcvrg4VShkFEbXPf+q0Dl7149f95TGkWBBLqkJ1x9Dw2D0LPIonQtvHYKQV2GvLK6DwFZ2USGe3aSrGLKK1BUdbvZt6grIrezC8v59vgIMFZfSl8zwlycmiwlwY5DrPcZ3+d9985Qt6hc/sG7G2iMvqHg4o2wdB65nJC/c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779118275; c=relaxed/simple;
-	bh=qhbDMOvMPQeHRe/9aaGcQ3ujNEB6olbTTpOnMHb3mOk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fnkkvkOz8wJPA56q3coXsHZrNhJKlJPprFJ1bSF7AWRavrE3BnDlPyeIICZkx9juW6Rd7Hoxb92EWFE4vFwQwhLLddvXefspFhLdV7MM6IrnuphMwNF84C5f66mlzPqjyHHuYWXdK5Wn9ErW6b/GFq0k9qwniuSMrNcTv5UbEhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowAAHKN+rMAtq0WBoEQ--.4645S2;
-	Mon, 18 May 2026 23:30:51 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Cc: NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] nfsd: fix use-after-free in nfsd4_lock() when releasing new lock stateid
-Date: Mon, 18 May 2026 15:30:48 +0000
-Message-Id: <20260518153048.1343021-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779118858; c=relaxed/simple;
+	bh=TCIx526+A3AbMfZ+N+q4IsjoBWU4M5CvRsNZ0djzGpI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M+aOUljHXcU4QiWjJxQhRdoxDvXmodR5TGxaaEZ2yk1eyv+gtHMWsfd+omB68YpC9FzomkVy2/YhL6/izyVxipOvYskekFbCvSg17rV0HCLv0ZpAcflNl8K8btr2a4520EBIgc4YWQ2leh2IGZdPmkmmVa2AB/Ml2QScOSMqD3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nfCosSOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F01DC2BCB7;
+	Mon, 18 May 2026 15:40:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779118857;
+	bh=TCIx526+A3AbMfZ+N+q4IsjoBWU4M5CvRsNZ0djzGpI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nfCosSOI00g829TCsgb1ycYjZPoPEjNP7bP3FIZVEPTEiliGWUup22kXrJO2NPXz4
+	 krNqVqyOqjjHjWPoC8jlpqd/SHtStcxRA+BWXuuNI2zZXTiNmB3WBoOxK6m8LT75m3
+	 5AQAwGz2Kdx5D7f8HtwnvE1SpBQJBeRlCws7iyO58KqCXt1Goe0AhcjAzeq9v7JiOf
+	 KoHIGaV7PrIZ/5SXunJrWo/DQDk064UF5Z568eptLD6gfOY5XCZLtioLP5t1YzR2+I
+	 6t99BeuqADc3CIGVao9GJ2b1FZ3kBwrCjS2JLhO+WIjf1+WIH8viz0To0lV1FFQpCB
+	 /znQDxEfBNhOg==
+Date: Mon, 18 May 2026 16:40:48 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Stepan Ionichev <sozdayvek@gmail.com>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ hcazarim@yahoo.com, joshua.crofts1@gmail.com, gregkh@linuxfoundation.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: light: tsl2591: return actual error from probe
+ IRQ failure
+Message-ID: <20260518163647.3b4966fb@jic23-huawei>
+In-Reply-To: <20260518094311.2000-1-sozdayvek@gmail.com>
+References: <20260517181042.668-1-sozdayvek@gmail.com>
+	<20260518094311.2000-1-sozdayvek@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAHKN+rMAtq0WBoEQ--.4645S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZrWrKrW7tF13Wr4fWrWxJFb_yoW8WrWrpr
-	s7Ja13KFWUXF4IqFsrZ3yUZFn5Gw1Fgr15Kryvq39Iyws3Xr13WryF934q9w4qvrWxXa1D
-	XF1Dtws8Ww4DX3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWxJVW8Jr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUZtxDUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkLA2oLKugMcgAAsb
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249329-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	R_DKIM_NA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249328-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BA420570140
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[baylibre.com,analog.com,kernel.org,yahoo.com,gmail.com,linuxfoundation.org,vger.kernel.org];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 439235704EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When processing a new lock request that fails with an error,
-nfsd4_lock() may call release_lock_stateid() on a newly created
-lock stateid.  release_lock_stateid() can free the stateid via
-nfs4_put_stid() if it is the last reference, but the caller
-subsequently accesses lock_stp->st_mutex and lock_stp->st_stid,
-leading to a use-after-free.
+On Mon, 18 May 2026 14:43:11 +0500
+Stepan Ionichev <sozdayvek@gmail.com> wrote:
 
-Fix this by moving mutex_unlock() before release_lock_stateid()
-and jumping over the remaining lock_stp cleanup after release,
-since release_lock_stateid() already handles the final put.
-This ensures no further access to lock_stp after it may be freed.
+> When devm_request_threaded_irq() fails, probe logs the error and
+> then returns -EINVAL, dropping the real error code and breaking the
+> deferred-probe flow for -EPROBE_DEFER.
+> 
+> Return ret directly; the IRQ subsystem already prints on failure.
+> 
+> Fixes: 2335f0d7c790 ("iio: light: Added AMS tsl2591 driver implementation")
 
-Fixes: 5db1c03feb00 ("nfsd: clean up lockowner refcounting when finding them")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- fs/nfsd/nfs4state.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Hmm. To me borderline on whether it's a fix.  In theory a board may exist
+where the defer is a possibility.  In practice probably not given I don't
+think we've ever had a report of this.
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 88c347957da5..cef9d8ddfc43 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8388,13 +8388,18 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		 * If this is a new, never-before-used stateid, and we are
- 		 * returning an error, then just go ahead and release it.
- 		 */
--		if (status && new)
-+		if (status && new) {
-+			mutex_unlock(&lock_stp->st_mutex);
- 			release_lock_stateid(lock_stp);
-+			goto out_no_lock_stp;
-+		}
- 
- 		mutex_unlock(&lock_stp->st_mutex);
- 
- 		nfs4_put_stid(&lock_stp->st_stid);
- 	}
-+
-+out_no_lock_stp:
- 	if (open_stp)
- 		nfs4_put_stid(&open_stp->st_stid);
- 	nfsd4_bump_seqid(cstate, status);
--- 
-2.34.1
+Meh, it's harmless enough and maybe helps someone.
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
+New series versions should never be in reply to older series.
+
+It tends to hide them in people's inboxes and brings little nor no benefit.
+> ---
+> v2:
+> - Drop dev_err_probe(); just return ret (Andy)
+> - Add Cc: stable@ as suggested by Joshua
+Mostly for IIO I add those to patches that I think need it but don't object
+if people feel strongly enough and add them themselves.
+
+Applied to the iio-fixes branch of iio.git.
+
+> 
+> v1: https://lore.kernel.org/all/20260517181042.668-1-sozdayvek@gmail.com/
+> 
+>  drivers/iio/light/tsl2591.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/light/tsl2591.c b/drivers/iio/light/tsl2591.c
+> index c5557867e..c5ccd833d 100644
+> --- a/drivers/iio/light/tsl2591.c
+> +++ b/drivers/iio/light/tsl2591.c
+> @@ -1137,10 +1137,8 @@ static int tsl2591_probe(struct i2c_client *client)
+>  						NULL, tsl2591_event_handler,
+>  						IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+>  						"tsl2591_irq", indio_dev);
+> -		if (ret) {
+> -			dev_err_probe(&client->dev, ret, "IRQ request error\n");
+> -			return -EINVAL;
+> -		}
+> +		if (ret)
+> +			return ret;
+>  		indio_dev->info = &tsl2591_info;
+>  	} else {
+>  		indio_dev->info = &tsl2591_info_no_irq;
 
 
