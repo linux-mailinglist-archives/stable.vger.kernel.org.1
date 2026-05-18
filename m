@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-249160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id dPa+MQpqCmp+1AQAu9opvQ
-	(envelope-from <stable+bounces-249160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 03:23:22 +0200
+	id 0DPOFA9qCmp+1AQAu9opvQ
+	(envelope-from <stable+bounces-249161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 03:23:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E419564BB0
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 03:23:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C202564BB7
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 03:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F958300BD9F
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 01:23:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 14A353001051
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 01:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E671A9B46;
-	Mon, 18 May 2026 01:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6FE1A9B46;
+	Mon, 18 May 2026 01:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPBRra7U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="USKcUhtW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF90171CD
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 01:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E5C171CD
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 01:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779067397; cv=none; b=BLABvvuSnirS/DzwTJnjIHmG2XCSUUr91HsIMz99ho9QV/7CSQyIXFkkX6L6ajG9w6WsY6IaVAWR9Y22+Bvmwql05YgNL9XrXjF4/A86S7lFdGJUm56rZyNB/oJQBPD9QYgbb2PXve644hxrAN6wliZ7R3sAOkufLpgvqWRd5n4=
+	t=1779067400; cv=none; b=d2nF29Rbv+35H2iIZ4KjbgmugTpgQuHF/YNtaZ9vQIMhCfWzLHYzZ55AACK5pozl8+Lly8guF9R9cWvHG+ItXrFmHcIJcRe6MNAXfcZwMXNfnMszCoBEQ2Ax80MBKqWcXMtNUfwdoAbZQhuoaGoQiVwhPlzPVy+hjDXJWczrGwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779067397; c=relaxed/simple;
-	bh=HEr+MmcRGEH1OPNAMTIvomqWSZK+XH5/gTH+b0Ye+ss=;
+	s=arc-20240116; t=1779067400; c=relaxed/simple;
+	bh=rroBxfvwLvn6Azrs62208qssdWeMVeqFDsQdm7QY634=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKNv+BkicfBrxZ+c7JZh3V3Rn2oQEioD2QGIu3rwZAewv3JSVTFLlXh4SR53SkNQ/4cbIzgHDs1dsp9cADeRuEuokgDW8kLRFo9tlXhQ8IywPpg6gnKK0RPmzQ524/9iC4DOJvJ371dMNCvcXxnaTqRrVOl0Vti4et2QSLF3iII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPBRra7U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D136EC2BCB0;
-	Mon, 18 May 2026 01:23:16 +0000 (UTC)
+	 MIME-Version; b=ZayfzX8IlYigRe2K0e6MzkjrN0MJ65L+MzM54bO354LD8BPGS6UfKOlVurma135rzP5Nuq0xgyoljCJuc5KXsiD7yRK9pqAvLxkFNnbOr5A6uszixTw6vH27sZXbRA7zjsjO/abk7W7HlDpC4puNmq/B1OFOjKNR7tEamAy5ajQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=USKcUhtW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BAAC2BCB0;
+	Mon, 18 May 2026 01:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779067397;
-	bh=HEr+MmcRGEH1OPNAMTIvomqWSZK+XH5/gTH+b0Ye+ss=;
+	s=k20201202; t=1779067400;
+	bh=rroBxfvwLvn6Azrs62208qssdWeMVeqFDsQdm7QY634=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPBRra7U9ZlaGKaYNxbEHureBdjg8/8gtwqdS7V3/SDCWuwv0pzeTtncybyhV+wh4
-	 SeQzZ78GQoh06UqLHtAbwBNmZtCPuDc5/rD0NbofFU0pJMX95v3m6foW27785y7s+W
-	 dvHt+ZW0XIqt5esX8U+ArukNoSHFrxuTIkOMvKUH2YiNmwtImGdY/zRGR+VEQWXpzA
-	 QglWtkSw8hW/33ZLroLGyPWLTw+0Ol9N80cCs8W34KJX9SgB0l4rq+waLvd3hOH6Rc
-	 dABsgNJZKtWrxFgCSUfMBrM+QJ97VYepKNBFkfHcWrVBOFoRKyoqEwvpEk1UYmcz8c
-	 vIR9GOYCtUjVQ==
+	b=USKcUhtWVrJ/fUAL0GaSLohGFChJFINfvDRpHtFBmxVLe9SV4uWYFH9tV5VRpCOsG
+	 7aBLBEDH1U9qeYXNTlGuB2a/B1cgpZ/yH/Nj6VYddWfLWP+TltmHrRAf8zCNYl+L1d
+	 kJUFSW4WxLIocSy1Axtx5NQOqG6G4RJHyn+mfi/OB6lXgPhFzL57ne6+Zaky501B1n
+	 a7aziDyEmmYFK7AP/BSAG4Vl5GV9DOXxueOZ24adC69XXDSb/2PgKkBlkJ95ZRcK+d
+	 99BNNQlSrAw4XOovZIUx8aLOVzqNncf3RAFPK89o2DIx9fNlHF0iIaY7fYcxDB3Mpr
+	 pdanK4cNlPspg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Slava0135 <slava.kovalevskiy.2014@gmail.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] perf/x86/intel: Disable PMI for self-reloaded ACR events
-Date: Sun, 17 May 2026 21:23:15 -0400
-Message-ID: <20260518012315.481330-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] btrfs: fix missing last_unlink_trans update when removing a directory
+Date: Sun, 17 May 2026 21:23:18 -0400
+Message-ID: <20260518012318.481373-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051250-afflicted-express-5419@gregkh>
-References: <2026051250-afflicted-express-5419@gregkh>
+In-Reply-To: <2026051238-causation-manly-d103@gregkh>
+References: <2026051238-causation-manly-d103@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,26 +63,28 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E419564BB0
+X-Rspamd-Queue-Id: 4C202564BB7
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249160-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249161-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,102 +92,227 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,infradead.org:email,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 1271aeccc307066315b2d3b0d5af2510e27018b5 ]
+[ Upstream commit 999757231c49376cd1a37308d2c8c4c9932571e1 ]
 
-On platforms with Auto Counter Reload (ACR) support, such as NVL, a
-"NMI received for unknown reason 30" warning is observed when running
-multiple events in a group with ACR enabled:
+When removing a directory we are not updating its last_unlink_trans field,
+which can result in incorrect fsync behaviour in case some one fsyncs the
+directory after it was removed because it's holding a file descriptor on
+it.
 
-  $ perf record -e '{instructions/period=20000,acr_mask=0x2/u,\
-    cycles/period=40000,acr_mask=0x3/u}' ./test
+Example scenario:
 
-The warning occurs because the Performance Monitoring Interrupt (PMI)
-is enabled for the self-reloaded event (the cycles event in this case).
-According to the Intel SDM, the overflow bit
-(IA32_PERF_GLOBAL_STATUS.PMCn_OVF) is never set for self-reloaded events.
-Since the bit is not set, the perf NMI handler cannot identify the source
-of the interrupt, leading to the "unknown reason" message.
+   mkdir /mnt/dir1
+   mkdir /mnt/dir1/dir2
+   mkdir /mnt/dir3
 
-Furthermore, enabling PMI for self-reloaded events is unnecessary and
-can lead to extraneous records that pollute the user's requested data.
+   sync -f /mnt
 
-Disable the interrupt bit for all events configured with ACR self-reload.
+   # Do some change to the directory and fsync it.
+   chmod 700 /mnt/dir1
+   xfs_io -c fsync /mnt/dir1
 
-Fixes: ec980e4facef ("perf/x86/intel: Support auto counter reload")
-Reported-by: Andi Kleen <ak@linux.intel.com>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260430002558.712334-4-dapeng1.mi@linux.intel.com
+   # Move dir2 out of dir1 so that dir1 becomes empty.
+   mv /mnt/dir1/dir2 /mnt/dir3/
+
+   open fd on /mnt/dir1
+   call rmdir(2) on path "/mnt/dir1"
+   fsync fd
+
+   <trigger power failure>
+
+When attempting to mount the filesystem, the log replay will fail with
+an -EIO error and dmesg/syslog has the following:
+
+   [445771.626482] BTRFS info (device dm-0): first mount of filesystem 0368bbea-6c5e-44b5-b409-09abe496e650
+   [445771.626486] BTRFS info (device dm-0): using crc32c checksum algorithm
+   [445771.627912] BTRFS info (device dm-0): start tree-log replay
+   [445771.628335] page: refcount:2 mapcount:0 mapping:0000000061443ddc index:0x1d00 pfn:0x7072a5
+   [445771.629453] memcg:ffff89f400351b00
+   [445771.629892] aops:btree_aops [btrfs] ino:1
+   [445771.630737] flags: 0x17fffc00000402a(uptodate|lru|private|writeback|node=0|zone=2|lastcpupid=0x1ffff)
+   [445771.632359] raw: 017fffc00000402a fffff47284d950c8 fffff472907b7c08 ffff89f458e412b8
+   [445771.633713] raw: 0000000000001d00 ffff89f6c51d1a90 00000002ffffffff ffff89f400351b00
+   [445771.635029] page dumped because: eb page dump
+   [445771.635825] BTRFS critical (device dm-0): corrupt leaf: root=5 block=30408704 slot=10 ino=258, invalid nlink: has 2 expect no more than 1 for dir
+   [445771.638088] BTRFS info (device dm-0): leaf 30408704 gen 10 total ptrs 17 free space 14878 owner 5
+   [445771.638091] BTRFS info (device dm-0): refs 4 lock_owner 0 current 3581087
+   [445771.638094] 	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
+   [445771.638097] 		inode generation 3 transid 9 size 16 nbytes 16384
+   [445771.638098] 		block group 0 mode 40755 links 1 uid 0 gid 0
+   [445771.638100] 		rdev 0 sequence 2 flags 0x0
+   [445771.638102] 		atime 1775744884.0
+   [445771.660056] 		ctime 1775744885.645502983
+   [445771.660058] 		mtime 1775744885.645502983
+   [445771.660060] 		otime 1775744884.0
+   [445771.660062] 	item 1 key (256 INODE_REF 256) itemoff 16111 itemsize 12
+   [445771.660064] 		index 0 name_len 2
+   [445771.660066] 	item 2 key (256 DIR_ITEM 1843588421) itemoff 16077 itemsize 34
+   [445771.660068] 		location key (259 1 0) type 2
+   [445771.660070] 		transid 9 data_len 0 name_len 4
+   [445771.660075] 	item 3 key (256 DIR_ITEM 2363071922) itemoff 16043 itemsize 34
+   [445771.660076] 		location key (257 1 0) type 2
+   [445771.660077] 		transid 9 data_len 0 name_len 4
+   [445771.660078] 	item 4 key (256 DIR_INDEX 2) itemoff 16009 itemsize 34
+   [445771.660079] 		location key (257 1 0) type 2
+   [445771.660080] 		transid 9 data_len 0 name_len 4
+   [445771.660081] 	item 5 key (256 DIR_INDEX 3) itemoff 15975 itemsize 34
+   [445771.660082] 		location key (259 1 0) type 2
+   [445771.660083] 		transid 9 data_len 0 name_len 4
+   [445771.660084] 	item 6 key (257 INODE_ITEM 0) itemoff 15815 itemsize 160
+   [445771.660086] 		inode generation 9 transid 9 size 8 nbytes 0
+   [445771.660087] 		block group 0 mode 40777 links 1 uid 0 gid 0
+   [445771.660088] 		rdev 0 sequence 2 flags 0x0
+   [445771.660089] 		atime 1775744885.641174097
+   [445771.660090] 		ctime 1775744885.645502983
+   [445771.660091] 		mtime 1775744885.645502983
+   [445771.660105] 		otime 1775744885.641174097
+   [445771.660106] 	item 7 key (257 INODE_REF 256) itemoff 15801 itemsize 14
+   [445771.660107] 		index 2 name_len 4
+   [445771.660108] 	item 8 key (257 DIR_ITEM 2676584006) itemoff 15767 itemsize 34
+   [445771.660109] 		location key (258 1 0) type 2
+   [445771.660110] 		transid 9 data_len 0 name_len 4
+   [445771.660111] 	item 9 key (257 DIR_INDEX 2) itemoff 15733 itemsize 34
+   [445771.660112] 		location key (258 1 0) type 2
+   [445771.660113] 		transid 9 data_len 0 name_len 4
+   [445771.660114] 	item 10 key (258 INODE_ITEM 0) itemoff 15573 itemsize 160
+   [445771.660115] 		inode generation 9 transid 10 size 0 nbytes 0
+   [445771.660116] 		block group 0 mode 40755 links 2 uid 0 gid 0
+   [445771.660117] 		rdev 0 sequence 0 flags 0x0
+   [445771.660118] 		atime 1775744885.645502983
+   [445771.660119] 		ctime 1775744885.645502983
+   [445771.660120] 		mtime 1775744885.645502983
+   [445771.660121] 		otime 1775744885.645502983
+   [445771.660122] 	item 11 key (258 INODE_REF 257) itemoff 15559 itemsize 14
+   [445771.660123] 		index 2 name_len 4
+   [445771.660124] 	item 12 key (258 INODE_REF 259) itemoff 15545 itemsize 14
+   [445771.660125] 		index 2 name_len 4
+   [445771.660126] 	item 13 key (259 INODE_ITEM 0) itemoff 15385 itemsize 160
+   [445771.660127] 		inode generation 9 transid 10 size 8 nbytes 0
+   [445771.660128] 		block group 0 mode 40755 links 1 uid 0 gid 0
+   [445771.660129] 		rdev 0 sequence 1 flags 0x0
+   [445771.660130] 		atime 1775744885.645502983
+   [445771.660130] 		ctime 1775744885.645502983
+   [445771.660131] 		mtime 1775744885.645502983
+   [445771.660132] 		otime 1775744885.645502983
+   [445771.660133] 	item 14 key (259 INODE_REF 256) itemoff 15371 itemsize 14
+   [445771.660134] 		index 3 name_len 4
+   [445771.660135] 	item 15 key (259 DIR_ITEM 2676584006) itemoff 15337 itemsize 34
+   [445771.660136] 		location key (258 1 0) type 2
+   [445771.660137] 		transid 10 data_len 0 name_len 4
+   [445771.660138] 	item 16 key (259 DIR_INDEX 2) itemoff 15303 itemsize 34
+   [445771.660139] 		location key (258 1 0) type 2
+   [445771.660140] 		transid 10 data_len 0 name_len 4
+   [445771.660144] BTRFS error (device dm-0): block=30408704 write time tree block corruption detected
+   [445771.661650] ------------[ cut here ]------------
+   [445771.662358] WARNING: fs/btrfs/disk-io.c:326 at btree_csum_one_bio+0x217/0x230 [btrfs], CPU#8: mount/3581087
+   [445771.663588] Modules linked in: btrfs f2fs xfs (...)
+   [445771.671229] CPU: 8 UID: 0 PID: 3581087 Comm: mount Tainted: G        W           7.0.0-rc6-btrfs-next-230+ #2 PREEMPT(full)
+   [445771.672575] Tainted: [W]=WARN
+   [445771.672987] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+   [445771.674460] RIP: 0010:btree_csum_one_bio+0x217/0x230 [btrfs]
+   [445771.675222] Code: 89 44 24 (...)
+   [445771.677364] RSP: 0018:ffffd23882247660 EFLAGS: 00010246
+   [445771.678029] RAX: 0000000000000000 RBX: ffff89f6c51d1a90 RCX: 0000000000000000
+   [445771.678975] RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff89f406020000
+   [445771.679983] RBP: ffff89f821204000 R08: 0000000000000000 R09: 00000000ffefffff
+   [445771.680905] R10: ffffd23882247448 R11: 0000000000000003 R12: ffffd23882247668
+   [445771.681978] R13: ffff89f458e40fc0 R14: ffff89f737f4f500 R15: ffff89f737f4f500
+   [445771.682912] FS:  00007f0447a98840(0000) GS:ffff89fb9771d000(0000) knlGS:0000000000000000
+   [445771.684393] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+   [445771.685230] CR2: 00007f0447bf1330 CR3: 000000017cb02002 CR4: 0000000000370ef0
+   [445771.686273] Call Trace:
+   [445771.686646]  <TASK>
+   [445771.686969]  btrfs_submit_bbio+0x83f/0x860 [btrfs]
+   [445771.687750]  ? write_one_eb+0x28f/0x340 [btrfs]
+   [445771.688428]  btree_writepages+0x2e3/0x550 [btrfs]
+   [445771.689180]  ? kmem_cache_alloc_noprof+0x12a/0x490
+   [445771.689963]  ? alloc_extent_state+0x19/0x120 [btrfs]
+   [445771.690801]  ? kmem_cache_free+0x135/0x380
+   [445771.691328]  ? preempt_count_add+0x69/0xa0
+   [445771.691831]  ? set_extent_bit+0x252/0x8e0 [btrfs]
+   [445771.692468]  ? xas_load+0x9/0xc0
+   [445771.692873]  ? xas_find+0x14d/0x1a0
+   [445771.693304]  do_writepages+0xc6/0x160
+   [445771.693756]  filemap_writeback+0xb8/0xe0
+   [445771.694274]  btrfs_write_marked_extents+0x61/0x170 [btrfs]
+   [445771.694999]  btrfs_write_and_wait_transaction+0x4e/0xc0 [btrfs]
+   [445771.695818]  btrfs_commit_transaction+0x5c8/0xd10 [btrfs]
+   [445771.696530]  ? kmem_cache_free+0x135/0x380
+   [445771.697120]  ? release_extent_buffer+0x34/0x160 [btrfs]
+   [445771.697786]  btrfs_recover_log_trees+0x7be/0x7e0 [btrfs]
+   [445771.698525]  ? __pfx_replay_one_buffer+0x10/0x10 [btrfs]
+   [445771.699206]  open_ctree+0x11e5/0x1810 [btrfs]
+   [445771.699776]  btrfs_get_tree.cold+0xb/0x162 [btrfs]
+   [445771.700463]  ? fscontext_read+0x165/0x180
+   [445771.701146]  ? rw_verify_area+0x50/0x180
+   [445771.701866]  vfs_get_tree+0x25/0xd0
+   [445771.702491]  vfs_cmd_create+0x59/0xe0
+   [445771.703125]  __do_sys_fsconfig+0x303/0x610
+   [445771.703603]  do_syscall_64+0xe9/0xf20
+   [445771.703974]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   [445771.704700] RIP: 0033:0x7f0447cbd4aa
+   [445771.705108] Code: 73 01 c3 (...)
+   [445771.707263] RSP: 002b:00007ffc4e528318 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
+   [445771.708107] RAX: ffffffffffffffda RBX: 00005561585d8c20 RCX: 00007f0447cbd4aa
+   [445771.708931] RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+   [445771.709744] RBP: 00005561585d9120 R08: 0000000000000000 R09: 0000000000000000
+   [445771.710674] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+   [445771.711477] R13: 00007f0447e4f580 R14: 00007f0447e5126c R15: 00007f0447e36a23
+   [445771.712277]  </TASK>
+   [445771.712541] ---[ end trace 0000000000000000 ]---
+   [445771.713382] BTRFS error (device dm-0): error while writing out transaction: -5
+   [445771.714679] BTRFS warning (device dm-0): Skipping commit of aborted transaction.
+   [445771.715562] BTRFS error (device dm-0 state A): Transaction aborted (error -5)
+   [445771.716459] BTRFS: error (device dm-0 state A) in cleanup_transaction:2068: errno=-5 IO failure
+   [445771.717936] BTRFS error (device dm-0 state EA): failed to recover log trees with error: -5
+   [445771.719681] BTRFS error (device dm-0 state EA): open_ctree failed: -5
+
+The problem is that such a fsync should have result in a fallback to a
+transaction commit, but that did not happen because through the
+btrfs_rmdir() we never update the directory's last_unlink_trans field.
+Any inode that had a link removed must have its last_unlink_trans updated
+to the ID of transaction used for the operation, otherwise fsync and log
+replay will not work correctly.
+
+btrfs_rmdir() calls btrfs_unlink_inode() and through that call chain we
+never call btrfs_record_unlink_dir() in order to update last_unlink_trans.
+However btrfs_unlink(), which is used for unlinking regular files, calls
+btrfs_record_unlink_dir() and then calls btrfs_unlink_inode(). So fix
+this by moving the call to btrfs_record_unlink_dir() from btrfs_unlink()
+to btrfs_unlink_inode().
+
+A test case for fstests will follow soon.
+
+Reported-by: Slava0135 <slava.kovalevskiy.2014@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/CAAJYhww5ov62Hm+n+tmhcL-e_4cBobg+OWogKjOJxVUXivC=MQ@mail.gmail.com/
+CC: stable@vger.kernel.org
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ wrapped dir and inode arguments with BTRFS_I() since 6.1 btrfs_rmdir() uses struct inode * instead of struct btrfs_inode * ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c | 17 +++++++++++++----
- arch/x86/events/perf_event.h | 10 ++++++++++
- 2 files changed, 23 insertions(+), 4 deletions(-)
+ fs/btrfs/inode.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 7d8c7eb7838da..7d9f6a58f3f26 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -2866,11 +2866,11 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
- 	intel_set_masks(event, idx);
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 7e66ebb91af78..eff4ac7b676cb 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4186,6 +4186,8 @@ static int btrfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	if (err)
+ 		goto out;
  
- 	/*
--	 * Enable IRQ generation (0x8), if not PEBS,
--	 * and enable ring-3 counting (0x2) and ring-0 counting (0x1)
--	 * if requested:
-+	 * Enable IRQ generation (0x8), if not PEBS or self-reloaded
-+	 * ACR event, and enable ring-3 counting (0x2) and ring-0
-+	 * counting (0x1) if requested:
- 	 */
--	if (!event->attr.precise_ip)
-+	if (!event->attr.precise_ip && !is_acr_self_reload_event(event))
- 		bits |= INTEL_FIXED_0_ENABLE_PMI;
- 	if (hwc->config & ARCH_PERFMON_EVENTSEL_USR)
- 		bits |= INTEL_FIXED_0_USER;
-@@ -2955,6 +2955,15 @@ static void intel_pmu_enable_event(struct perf_event *event)
- 			enable_mask |= ARCH_PERFMON_EVENTSEL_BR_CNTR;
- 		intel_set_masks(event, idx);
- 		static_call_cond(intel_pmu_enable_acr_event)(event);
-+		/*
-+		 * For self-reloaded ACR event, don't enable PMI since
-+		 * HW won't set overflow bit in GLOBAL_STATUS. Otherwise,
-+		 * the PMI would be recognized as a suspicious NMI.
-+		 */
-+		if (is_acr_self_reload_event(event))
-+			hwc->config &= ~ARCH_PERFMON_EVENTSEL_INT;
-+		else if (!event->attr.precise_ip)
-+			hwc->config |= ARCH_PERFMON_EVENTSEL_INT;
- 		__x86_pmu_enable_event(hwc, enable_mask);
- 		break;
- 	case INTEL_PMC_IDX_FIXED ... INTEL_PMC_IDX_FIXED_BTS - 1:
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index 493e6ba51e06d..2bafb8f0f9077 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -133,6 +133,16 @@ static inline bool is_acr_event_group(struct perf_event *event)
- 	return check_leader_group(event->group_leader, PERF_X86_EVENT_ACR);
- }
- 
-+static inline bool is_acr_self_reload_event(struct perf_event *event)
-+{
-+	struct hw_perf_event *hwc = &event->hw;
++	btrfs_record_unlink_dir(trans, BTRFS_I(dir), BTRFS_I(inode), false);
 +
-+	if (hwc->idx < 0)
-+		return false;
-+
-+	return test_bit(hwc->idx, (unsigned long *)&hwc->config1);
-+}
-+
- struct amd_nb {
- 	int nb_id;  /* NorthBridge id */
- 	int refcnt; /* reference count */
+ 	/* now the directory is empty */
+ 	err = btrfs_unlink_inode(trans, root, BTRFS_I(dir),
+ 			BTRFS_I(d_inode(dentry)), dentry->d_name.name,
 -- 
 2.53.0
 
