@@ -1,171 +1,137 @@
-Return-Path: <stable+bounces-249283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GI7BRkTC2o5/wQAu9opvQ
-	(envelope-from <stable+bounces-249283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:24:41 +0200
+	id QG/8NQUSC2pN/gQAu9opvQ
+	(envelope-from <stable+bounces-249284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:20:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F2556D91B
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:24:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EED656D81D
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1AF24304297C
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:10:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53E9730DC79D
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E952248122B;
-	Mon, 18 May 2026 13:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62CF480DD9;
+	Mon, 18 May 2026 13:10:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF5E421EE7
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 13:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BE343E4A6;
+	Mon, 18 May 2026 13:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779109817; cv=none; b=d/dhZCRF/W9tB+GGiwqUPhYGz+wIFMv7B8LnfoUxpJ0YQqe/Z6sfu3pCk5++0OadQB0qVarSCXvOM0qoJhEegNRJzPBgTTES98aYhC6ZcOTeCpi2Vozc+RwzYGGGjxGt02+pyVw8n/vY6H5JNyV3Cf1nu593JpgDFlV4Ij0Uj5s=
+	t=1779109854; cv=none; b=FjBMZZHFSn2bNwapqcyKJQkje/vY5YzMU6bzOK5JhQAATCEkdVuGj4+cC/ysKKvlh1GUuEGEWQ7BeTa+iWJCiRyDFgoN8GB6Y7yRd/nY8dMWWk0hW1cpGBJzOpx0hft7KHg0pwQVK/e3pNYqkiqLuEmMRmhwO/045o4nL6gydek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779109817; c=relaxed/simple;
-	bh=G7+udxGdMzW311PV93iVyWCQ/w9rFtkOUgJWnF/y29o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pkYBByMy343Of7IIzI6B8Ja2qygSvgyHiL2f5vs7H2jJaAUVLvTMtVlxfhf9gfssVjwz99lwnz+3UTJ9loR1zAqSAQGF8vjXUaJA5408X/VmNKbUdJkQAkAxo0seZS21Whv2FEE2RfeJGPx3sUYJYjyGScddQrwsaHGXo2v0MNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-6314a0eefb1so547628137.2
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 06:10:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779109815; x=1779714615;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uHrpzbVHUORDOZVtpFM2vQlzLjhthGfdMakUGRCP+CQ=;
-        b=AleDXUue3VXZACmBvxsuo5cfr5BJeoCeK8jZdgPxMbnN84CKimTi4wWy08tuc4XTtd
-         bTjw9uqWb2MGm5YpTAins+JlZMo/atlLuXVxlOEzjPkWR1kRnOYuuRqJrXvTuWvZUw0/
-         Xblnrygrcz6Btcn6Q/Q2oQuuTfiFOXV6/9wi8KMn1Yj7RtvTr/oo+7vrU4nH3TsQcP48
-         bnZI8PHcurhJb1nGf8yzQ6ET367KkK86Ob2wX+iiV9wPajd8dn9zUUbDsk9YY+NrnCGz
-         j11Lo2W3dH3QYM/LOzXiVaKsjyt4jdNFXLul13HZ4OtK/ABs8MywEwcFvi4t/JVPLsLt
-         +vxg==
-X-Forwarded-Encrypted: i=1; AFNElJ+QegL/8H+SKfvYmfz52vy8ohxX9v8lwHmSpp6vCtt4nJ/C2YEPcMG3mw9mew5m7vAQvFrK8QU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyABDKuSHyiuPCyc0t0bS02v1xvydUKgTUM5bR7ATG2nOmZP7jv
-	r2PWmoD9Vs91NqyC3c3KUW2D9zw6mj09judm8mBRovekPwfDDGeUacXC4frL4/eN
-X-Gm-Gg: Acq92OEK+yUAufeI2g06IJFPv+8ufU26RxvN2TNiQDYCdS9J0hg/LC4FUchz3k5OBOv
-	VQNqVtuRtPqAtldhCwBt2Lm5950SwVNeJM6yaN+8owAXzSFFDU5ZZMLzjC4vautwUWfmrgdhBmQ
-	mNYf428wtV6n5avGVxkJ9l/+oZ/+UaMMqQD78gPl2lmyj7Ud/VpZh2yUPn3dzm4lI69I/I3I+rE
-	TKTngsl+5jc2oUGzginf/9BMJOIkXihOjR5t1YhiD1+m7jbM3UqNLQ0LsebJestN58Kpec9LRdF
-	joGLjVr/nKzLb5oEdRITNF0B7GEzklMSyMzEEzgySTaxoN5/jHLtV0TcOwYcYk34cdy6LBWtagv
-	NRSP/5MZm8fqJSwzhEmJuIKziWqmcu4pqwwiPbUp5bCQIBHSyuB2UcxTIlQSIIXb8uiqApkIffP
-	VTEoH9qxjUBpvozIDqVYVRY5fmdk+9sXVojX5Zshb2gJ6nCnWWl2zk8tJN/gO7XnbJ5YYxIm8KG
-	h0=
-X-Received: by 2002:a05:6102:1492:b0:631:d3e4:efc4 with SMTP id ada2fe7eead31-63a3d951d5dmr6425591137.11.1779109815256;
-        Mon, 18 May 2026 06:10:15 -0700 (PDT)
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com. [209.85.221.177])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-63cea473caasm4706410137.12.2026.05.18.06.10.13
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2026 06:10:14 -0700 (PDT)
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-575602688deso701130e0c.1
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 06:10:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+RbucLThbmw6wZVw5ceGnX1xwr5Ua+LUyU6EiA27ydCTGuoIkJaeXnx1s6keRRa771MJ+5H3Y=@vger.kernel.org
-X-Received: by 2002:a05:6123:2e2:b0:570:f670:587d with SMTP id
- 71dfb90a1353d-5760c1db187mr6653637e0c.12.1779109813267; Mon, 18 May 2026
- 06:10:13 -0700 (PDT)
+	s=arc-20240116; t=1779109854; c=relaxed/simple;
+	bh=+QjnbQxCyMhGjjqpabKfXZUcgiAQmQDkG5vgyRq3dy0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ktgzO7OiFbikJpYFgs8Hsh8J4xxcw35yfQRFvfODVcdWebCEMfZQiXRQadDf1m43/ww+ggU2EAxBahE+H/91JiptvyeyxUC/40K9Kxe+3+/ujcYs9IXdv8giAUNZR9tJKtlF5806Flfzx0VxD2LrOjqu32RMM2K1IoKb/qL/9yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-01 (Coremail) with SMTP id qwCowAAHsm3PDwtqqIKfEA--.3835S2;
+	Mon, 18 May 2026 21:10:39 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>
+Cc: linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] pNFS: Fix use-after-free in pnfs_update_layout()
+Date: Mon, 18 May 2026 13:10:36 +0000
+Message-Id: <20260518131036.1337001-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260514212024.1624517-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20260514212024.1624517-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20260514212024.1624517-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 18 May 2026 15:10:02 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWGiJ_SQag2ZdYsz-rgiUp1X7OuA=9BwzdCp2MvKt4NGQ@mail.gmail.com>
-X-Gm-Features: AVHnY4L_CmKmFv6NTtb7Ex2zBx473PgByWg0FHBUS3H5Q5GXZk_wFPvmtDeeWDM
-Message-ID: <CAMuHMdWGiJ_SQag2ZdYsz-rgiUp1X7OuA=9BwzdCp2MvKt4NGQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] mmc: renesas_sdhi: Add SDHI quirk for RZ/G2E
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, Ulf Hansson <ulfh@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, linux-mmc@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Biju Das <biju.das.jz@bp.renesas.com>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 26F2556D91B
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAAHsm3PDwtqqIKfEA--.3835S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ar4xWrW5Wr1Utry8tr1rCrg_yoW8JF4xpr
+	ZIka1F9FZ8tw4jy3Wqv3y8ZasIy3y5X3y2krZ3Grn8ZanxAr1fAr12gw1v9F18tr4kJ3s0
+	gr4rGw18J34rZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWxJVW8Jr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUbqg4DUUUU
+	U==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgwLA2oK6CVyNAAAsp
+X-Rspamd-Queue-Id: 6EED656D81D
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249283-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[linux-m68k.org];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	RCVD_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249284-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,linux-m68k.org:email]
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Hi Prabhakar,
+When hitting the NFS_LAYOUT_RETURN branch in pnfs_update_layout(),
+the code calls pnfs_prepare_to_retry_layoutget(lo). If it succeeds,
+pnfs_put_layout_hdr(lo) is called before trace_pnfs_update_layout(),
+which still references 'lo'. This results in a use-after-free when the
+tracepoint accesses lo's fields.
 
-On Thu, 14 May 2026 at 23:20, Prabhakar <prabhakar.csengg@gmail.com> wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->
-> The RZ/G2E (R8A774C0) is identical to R-Car E3 (R8A77990), so apply
-> the same sdhi_quirks_r8a77965 quirk across all revisions, as is already
-> done for R-Car E3.
->
-> Fixes: ca804a5615a7 ("mmc: renesas_sdhi_internal_dmac: Whitelist r8a774c0")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Fix this by moving the tracepoint call before pnfs_put_layout_hdr(lo).
 
-Thanks for your patch!
+Fixes: 2c8d5fc37fe2 ("pNFS: Stricter ordering of layoutget and layoutreturn")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ fs/nfs/pnfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> --- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> +++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> @@ -225,6 +225,7 @@ static const struct renesas_sdhi_quirks sdhi_quirks_rzg2l = {
->  static const struct soc_device_attribute sdhi_quirks_match[]  = {
-
-This array is meant for quirks, i.e. to address issues on specific
-SoC variants that cannot just be identified by the compatible value.
-
->         { .soc_id = "r8a774a1", .revision = "ES1.[012]", .data = &sdhi_quirks_4tap_nohs400 },
->         { .soc_id = "r8a774b1", .data = &sdhi_quirks_r8a77965 },
-> +       { .soc_id = "r8a774c0", .data = &sdhi_quirks_r8a77990 },
-
-Hence I think the RZ/G2E entry should be added to
-renesas_sdhi_internal_dmac_of_match[] instead, referring to
-of_r8a77990_compatible.
-
->         { .soc_id = "r8a774e1", .data = &sdhi_quirks_bad_taps2367 },
->         { .soc_id = "r8a7795", .revision = "ES2.0", .data = &sdhi_quirks_4tap },
->         { .soc_id = "r8a7796", .revision = "ES1.0", .data = &sdhi_quirks_4tap_nohs400_one_rx },
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index a3135b5af7ee..42e5f8ec31d4 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -2191,11 +2191,11 @@ pnfs_update_layout(struct inode *ino,
+ 		dprintk("%s wait for layoutreturn\n", __func__);
+ 		lseg = ERR_PTR(pnfs_prepare_to_retry_layoutget(lo));
+ 		if (!IS_ERR(lseg)) {
+-			pnfs_put_layout_hdr(lo);
+ 			dprintk("%s retrying\n", __func__);
+ 			trace_pnfs_update_layout(ino, pos, count, iomode, lo,
+ 						 lseg,
+ 						 PNFS_UPDATE_LAYOUT_RETRY);
++			pnfs_put_layout_hdr(lo);
+ 			goto lookup_again;
+ 		}
+ 		trace_pnfs_update_layout(ino, pos, count, iomode, lo, lseg,
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.34.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
