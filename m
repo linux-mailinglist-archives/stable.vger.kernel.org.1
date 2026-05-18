@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-249180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFXpAReUCmrL3gQAu9opvQ
-	(envelope-from <stable+bounces-249180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 06:22:47 +0200
+	id IDXbM5yUCmrL3gQAu9opvQ
+	(envelope-from <stable+bounces-249181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 06:25:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75215565A3A
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 06:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37855565A5A
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 06:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B17C30063B0
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 04:21:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A2AC3006B28
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 04:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5363806B5;
-	Mon, 18 May 2026 04:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD793812F2;
+	Mon, 18 May 2026 04:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="LFU+w16i"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="H4Ku3cn8"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADEA349B16;
-	Mon, 18 May 2026 04:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
+Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7261C3803C2;
+	Mon, 18 May 2026 04:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779078106; cv=none; b=AZSrwzxM3aipduW0GZSA7UvlMdfqAoDWe6LZdOg/wkVDr8FG5WCgQvcwuQZgA14DE5cn+Bm2D3sC9v5zIlDK5Np3cp8StjzCUcEkpFCtS4cduljtNhkmhVRg4fYmelYhiJgToI9o70RJ8SRoERdOsXE0lq5sFqHbF5YA71m8N24=
+	t=1779078295; cv=none; b=q2yxvLsXfYB4hQe5B6BWoCPAexC0U5Enx9yDw+hFkDYn5sP3ZxLldyiYwRjGnjLivjdHLrTFSJk8nEeWsbf00RLJYsHOXzUa+n2CCZmFX/QQbq7ZM6fAZOCuX7sLYJCUQbvrB81Loq0u7+EZZP5g/91DDeTUG01uT2IpWENAlnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779078106; c=relaxed/simple;
-	bh=8aXYRl//JGNCU2h37QhnEWAcwTENSu3Si3q7xsFzPhw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NRrBKuV/mdJSVjuQPNfLsWh7Y+GPlU9g/ryfWCHPhYdsTVvl1aNnX0BnpeHGA7Sk6w/36hWoJ9iuExpCvx2An3SrP4Ncek2+yU9EY3fRani4N42Ns/71s2WoLoaxhg0BjQ9AeQGMJrgy/Y9k2m/HUkRVKJuFExjRtDLJRwQ14ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=LFU+w16i; arc=none smtp.client-ip=120.232.169.114
+	s=arc-20240116; t=1779078295; c=relaxed/simple;
+	bh=2kGfG/QFvpPuYLFnnCltNJVHsYdYT4CVHgSM1heSi48=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uGRskFLihECWxKeS3+XB4dupTXfDgK3Py0XOK7pDrA3mNvOsH0V9zaw1z0swczicw8A9R5QYeL1uJXSUQctkYQnX+0KCLqgvTuy4OMaXsG0/Pm+Vj+VcqSKPaF0yD2ov7M8ZgMYh3dPa9B37JQPPmxl0nW1i4l4II/30edRsCcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=H4Ku3cn8; arc=none smtp.client-ip=120.232.169.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=LFU+w16iKWArwZ/IR/xbuS6WW2XIRnICRpluGJKHbY2F7tZ1fYp6A8aC9V4g89UGVTo5VUi6P/6LB
-	 cLdMFVXGQmB8F0UdY4aCxJh2q1iJKJaTHcyvy3tFTch+Y6afOT6PFjtusEu/hq6kBIEmEcRUfQe8iO
-	 dN3iA9to0JB9OoVQ=
+	b=H4Ku3cn83CTvT0gGZdYHzvuqWw6KTlM+WopubAziz5I/KBY1fniKCMV7FA0hF5pEsi5aHjB0ilAYa
+	 coGxvAqE5Xipay5z6ofVBKPkwx/6tqKvw1vqgv4kHV97Z6STkYM+2wTYZXa1nCx7ZvNW9dRXwYm8Va
+	 mhSImpoFcXNDeXJM=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-40-12054 (RichMail) with SMTP id 2f166a0a93c86e1-006ea;
-	Mon, 18 May 2026 12:21:32 +0800 (CST)
-X-RM-TRANSID:2f166a0a93c86e1-006ea
+	by rmsmtp-lg-appmail-15-12004 (RichMail) with SMTP id 2ee46a0a93d4435-0144e;
+	Mon, 18 May 2026 12:21:41 +0800 (CST)
+X-RM-TRANSID:2ee46a0a93d4435-0144e
 From: Li hongliang <1468888505@139.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -55,9 +53,9 @@ Cc: patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	almaz.alexandrovich@paragon-software.com,
 	ntfs3@lists.linux.dev
-Subject: [PATCH 6.12.y] ntfs: ->d_compare() must not block
-Date: Mon, 18 May 2026 12:21:30 +0800
-Message-Id: <20260518042130.489507-1-1468888505@139.com>
+Subject: [PATCH 6.6.y] ntfs: ->d_compare() must not block
+Date: Mon, 18 May 2026 12:21:40 +0800
+Message-Id: <20260518042140.489545-1-1468888505@139.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 75215565A3A
+X-Rspamd-Queue-Id: 37855565A5A
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -81,20 +79,20 @@ X-Spamd-Result: default: False [1.04 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249180-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249181-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[139.com];
 	DKIM_TRACE(0.00)[139.com:-];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_SPAM(0.00)[0.393];
-	PRECEDENCE_BULK(0.00)[];
+	NEURAL_SPAM(0.00)[0.713];
 	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	FREEMAIL_FROM(0.00)[139.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,139.com:email,139.com:mid,linux.org.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.org.uk:email,139.com:email,139.com:mid]
 X-Rspamd-Action: no action
 
 From: Al Viro <viro@zeniv.linux.org.uk>
@@ -122,7 +120,7 @@ Signed-off-by: Li hongliang <1468888505@139.com>
  5 files changed, 20 insertions(+), 24 deletions(-)
 
 diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index 600e66035c1b..522ebc14b1fb 100644
+index 6b93c909bdc9..894fd44164b4 100644
 --- a/fs/ntfs3/dir.c
 +++ b/fs/ntfs3/dir.c
 @@ -425,8 +425,7 @@ static int ntfs_readdir(struct file *file, struct dir_context *ctx)
@@ -145,19 +143,19 @@ index 600e66035c1b..522ebc14b1fb 100644
  
  	if (err == 1) {
 diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
-index 37c5d9a1f77b..5972f160e566 100644
+index e17d4c1ba06f..a38547bd12bb 100644
 --- a/fs/ntfs3/fsntfs.c
 +++ b/fs/ntfs3/fsntfs.c
-@@ -2670,7 +2670,7 @@ int ntfs_set_label(struct ntfs_sb_info *sbi, u8 *label, int len)
- 	u32 uni_bytes;
+@@ -2666,7 +2666,7 @@ int ntfs_set_label(struct ntfs_sb_info *sbi, u8 *label, int len)
  	struct ntfs_inode *ni = sbi->volume.ni;
+ 	const u8 max_ulen = 0x80; /* TODO: use attrdef to get maximum length */
  	/* Allocate PATH_MAX bytes. */
 -	struct cpu_str *uni = __getname();
 +	struct cpu_str *uni = kmalloc(PATH_MAX, GFP_KERNEL);
  
  	if (!uni)
  		return -ENOMEM;
-@@ -2714,6 +2714,6 @@ int ntfs_set_label(struct ntfs_sb_info *sbi, u8 *label, int len)
+@@ -2709,6 +2709,6 @@ int ntfs_set_label(struct ntfs_sb_info *sbi, u8 *label, int len)
  		err = _ni_write_inode(&ni->vfs_inode, 0);
  
  out:
@@ -167,10 +165,10 @@ index 37c5d9a1f77b..5972f160e566 100644
  }
 \ No newline at end of file
 diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 8113d47b0ceb..b50c9dff327d 100644
+index ce381eafd084..787e15ba0ca4 100644
 --- a/fs/ntfs3/inode.c
 +++ b/fs/ntfs3/inode.c
-@@ -1301,7 +1301,7 @@ int ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
+@@ -1327,7 +1327,7 @@ struct inode *ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
  		fa |= FILE_ATTRIBUTE_READONLY;
  
  	/* Allocate PATH_MAX bytes. */
@@ -179,7 +177,7 @@ index 8113d47b0ceb..b50c9dff327d 100644
  	if (!new_de) {
  		err = -ENOMEM;
  		goto out1;
-@@ -1713,7 +1713,7 @@ int ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
+@@ -1733,7 +1733,7 @@ struct inode *ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
  	ntfs_mark_rec_free(sbi, ino, false);
  
  out2:
@@ -188,7 +186,7 @@ index 8113d47b0ceb..b50c9dff327d 100644
  	kfree(rp);
  
  out1:
-@@ -1734,7 +1734,7 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
+@@ -1756,7 +1756,7 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
  	struct NTFS_DE *de;
  
  	/* Allocate PATH_MAX bytes. */
@@ -197,7 +195,7 @@ index 8113d47b0ceb..b50c9dff327d 100644
  	if (!de)
  		return -ENOMEM;
  
-@@ -1748,7 +1748,7 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
+@@ -1770,7 +1770,7 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
  
  	err = ni_add_name(ntfs_i(d_inode(dentry->d_parent)), ni, de);
  out:
@@ -206,7 +204,7 @@ index 8113d47b0ceb..b50c9dff327d 100644
  	return err;
  }
  
-@@ -1771,8 +1771,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
+@@ -1793,8 +1793,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
  	if (ntfs_is_meta_file(sbi, ni->mi.rno))
  		return -EINVAL;
  
@@ -216,7 +214,7 @@ index 8113d47b0ceb..b50c9dff327d 100644
  	if (!de)
  		return -ENOMEM;
  
-@@ -1808,7 +1807,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
+@@ -1830,7 +1829,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
  
  out:
  	ni_unlock(ni);
@@ -226,7 +224,7 @@ index 8113d47b0ceb..b50c9dff327d 100644
  }
  
 diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
-index 71a5a959a48c..fa4f7d9f3845 100644
+index f5901c23ab93..1b0c075c1485 100644
 --- a/fs/ntfs3/namei.c
 +++ b/fs/ntfs3/namei.c
 @@ -68,7 +68,7 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
@@ -247,7 +245,7 @@ index 71a5a959a48c..fa4f7d9f3845 100644
  	}
  
  	/*
-@@ -287,8 +287,7 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
+@@ -304,8 +304,7 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
  			return err;
  	}
  
@@ -257,7 +255,7 @@ index 71a5a959a48c..fa4f7d9f3845 100644
  	if (!de)
  		return -ENOMEM;
  
-@@ -333,7 +332,7 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
+@@ -350,7 +349,7 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
  	ni_unlock(ni);
  	ni_unlock(dir_ni);
  out:
@@ -266,7 +264,7 @@ index 71a5a959a48c..fa4f7d9f3845 100644
  	return err;
  }
  
-@@ -391,7 +390,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
+@@ -497,7 +496,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
  	/*
  	 * Try slow way with current upcase table
  	 */
@@ -275,7 +273,7 @@ index 71a5a959a48c..fa4f7d9f3845 100644
  	if (!uni)
  		return -ENOMEM;
  
-@@ -413,7 +412,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
+@@ -519,7 +518,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
  	err = 0;
  
  out:
@@ -284,7 +282,7 @@ index 71a5a959a48c..fa4f7d9f3845 100644
  	return err;
  }
  
-@@ -452,7 +451,7 @@ static int ntfs_d_compare(const struct dentry *dentry, unsigned int len1,
+@@ -558,7 +557,7 @@ static int ntfs_d_compare(const struct dentry *dentry, unsigned int len1,
  	 * Try slow way with current upcase table
  	 */
  	sbi = dentry->d_sb->s_fs_info;
@@ -293,7 +291,7 @@ index 71a5a959a48c..fa4f7d9f3845 100644
  	if (!uni1)
  		return -ENOMEM;
  
-@@ -482,7 +481,7 @@ static int ntfs_d_compare(const struct dentry *dentry, unsigned int len1,
+@@ -588,7 +587,7 @@ static int ntfs_d_compare(const struct dentry *dentry, unsigned int len1,
  	ret = !ntfs_cmp_names_cpu(uni1, uni2, sbi->upcase, false) ? 0 : 1;
  
  out:
@@ -303,10 +301,10 @@ index 71a5a959a48c..fa4f7d9f3845 100644
  }
  
 diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
-index e0055dcf8fe3..6861c09d66d7 100644
+index 72bceb8cd164..a03b4bce5fbf 100644
 --- a/fs/ntfs3/xattr.c
 +++ b/fs/ntfs3/xattr.c
-@@ -552,8 +552,7 @@ struct posix_acl *ntfs_get_acl(struct mnt_idmap *idmap, struct dentry *dentry,
+@@ -551,8 +551,7 @@ struct posix_acl *ntfs_get_acl(struct mnt_idmap *idmap, struct dentry *dentry,
  	int err;
  	void *buf;
  
@@ -316,7 +314,7 @@ index e0055dcf8fe3..6861c09d66d7 100644
  	if (!buf)
  		return ERR_PTR(-ENOMEM);
  
-@@ -584,7 +583,7 @@ struct posix_acl *ntfs_get_acl(struct mnt_idmap *idmap, struct dentry *dentry,
+@@ -583,7 +582,7 @@ struct posix_acl *ntfs_get_acl(struct mnt_idmap *idmap, struct dentry *dentry,
  	if (!IS_ERR(acl))
  		set_cached_acl(inode, type, acl);
  
