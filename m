@@ -1,173 +1,177 @@
-Return-Path: <stable+bounces-249281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ALAACTMSC2o5/wQAu9opvQ
-	(envelope-from <stable+bounces-249281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:20:51 +0200
+	id uIECLUcSC2pN/gQAu9opvQ
+	(envelope-from <stable+bounces-249280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:21:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023E856D85B
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:20:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB21856D886
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6C6C5301B1F8
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:08:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 36F1D3018313
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C046E480DDD;
-	Mon, 18 May 2026 13:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0C7480978;
+	Mon, 18 May 2026 13:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="me6+H4cd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39290480DC5
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 13:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3243F88A2;
+	Mon, 18 May 2026 13:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779109679; cv=none; b=SjNdNTm8uyYub+PEp6ZYUbQ+vVQ1G+0TKHPu7PItVXwEgQ1MuTwaJHArnc/qDEubHOfVgftNRXjnvh0XJrYR78mAAyltlWy3DwB8fl9pQYDx7ycj1UBgjmi2y9M8RaocVKxkLY4roHxlTNwRoEpHq2JUsSh3wSHt/0XoAL7a/D8=
+	t=1779109675; cv=none; b=ZbMkMZrqwOTAQfiOB3kIqBvSbNM3UJLFTjArGnTgkfZ+YrA8fnGqLfIrAaXtO52FGrAYWiGSkstFwJnT+XiBKJ5flmZQapS4BCKrBWNrAEQJ49kieDSLy1XZ/8dV1Hgx2fi0lgltfQx9mUUmFO33GzXWUICY8ouwaZfZAC3OWWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779109679; c=relaxed/simple;
-	bh=bLoHqx7iz89YsOH9/yJgX2I07MLCqfljXasqV1HWAJc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U2m/JAua2oyRcu4KxMn07GD2+z5l0LnukP/ZWVVT1S7Q165b7OpH1aP/il3R1oZOq8u3z/QLQ9I6H67iFWYQBx6cJpM0fM797dCYPb2Kh12blmiP4FKcWMZcjqPHrLI+0F8y8dcPlAjdmUHJvfnGtAL0SU+i4lgN6+L5qaTklhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5751b7d147aso719841e0c.2
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 06:07:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779109677; x=1779714477;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o8A4vYkByGT4hltTC530nDELFOVxe5LtgHJp6bYwWpg=;
-        b=kGHPZQt26Xx0/3ZCSMGMt1nwXcecd3ysFBC6x2o2oSP6ws/kXKWKMtHZ5pBoZcMw2H
-         Q38C2L87L3f8NZH5sbBK1uKIDIFHf4NA0gQY6gUKAwW0U6cfvWzQ4fo7X2wHVic/qmOP
-         iheXx4Hy3i+Q40fhz/hBjDupvAiSup9RssgZ+7AY66+q6JJ8WPl+cboGvHrjLmnMLqEB
-         nhU+2LIpmXnzZQ+NZqVeV+auM5uubdxitgoGjVs7dgwMD0WBF2RRKtShaTFa9Vw/DePF
-         fstE7W85wvk2OF/E1ND81tiBnUFuZ9ZCocATgbEkDrGDjjjFhsbb9R5A0W43n6RHSsvW
-         zF8Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/alogB0rjyKXeZuUxHLonL5r7HbGS4kTDPZRVQ728LJz/u6PMCvfuT1mq5Tqd26AnX8n6/ZyI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPRqOMSsIzRccfrg9TaOs5uC1b1Zq7NadWwE/oeBsFmwVIcBBF
-	5KeY9a2pA2/nNdTvnxJXajQqxZ86xV4InbZrfr1PVwTXrZcj+3BNdsdhqgUaLsgk
-X-Gm-Gg: Acq92OHSQP10Bw8Ivx5sURj2YITGI8igVmA9BDnNzfHasO8A/npFm6qyODDeQyZGvPJ
-	rlMHgXkMqvnD5ldNH2XmNmUpwdJGlnbRMZk6o9iWwU5eEIDfeft2lFQM8vwns3451P0XuAKSYnM
-	ILKqHJExILTXepsriC/sEOp2Jq4MfELSDJ4KsplEaqZwHBLzVO5NkYwUzZyl0qBLY0qlvHyiCPx
-	+3wLN08wGn//pzhQIgD043vQjjiDC50kZLW2znUN7idzQsgKO4w1r6EwGS/xeKPY6r4BdUUwnBP
-	KnXN1lLUmc3gJWEeXlw9Lgpc9WMShNrIoWAn3Zv989PLgV9PBBB2qLvPRsfIAfZLJMb8POaYqoo
-	j1xOC1zReSasa3NdRvy8qQKYcf+BikubMkgOm+gAWP5qv23wScRscQ3Q4mn9CVz5NrtjrSanxmG
-	l8o1QXrFBo+kuqsUUKdx9wxSg9/SKDYpRCEMEutaMz3vnutkAEn29x9SIp7l3zOYC65+k1MVJE/
-	Co=
-X-Received: by 2002:a05:6123:128:b0:56b:8e1c:582d with SMTP id 71dfb90a1353d-5760c09b0f8mr6573431e0c.14.1779109677033;
-        Mon, 18 May 2026 06:07:57 -0700 (PDT)
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com. [209.85.221.182])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-95fc2d278a8sm4536083241.6.2026.05.18.06.07.56
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2026 06:07:56 -0700 (PDT)
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5774680983dso613609e0c.0
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 06:07:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+UGu3EO8FFGMaXHHble7wutIQ9rm6tHbYI/psSBxKGKlh33oeh4+wFFpllnqUQo2MFJjDplzk=@vger.kernel.org
-X-Received: by 2002:a05:6122:da3:b0:56d:9e98:4676 with SMTP id
- 71dfb90a1353d-5760c09d17bmr7729115e0c.13.1779109676420; Mon, 18 May 2026
- 06:07:56 -0700 (PDT)
+	s=arc-20240116; t=1779109675; c=relaxed/simple;
+	bh=AvfNu9jlJpGJlIYpoRUZdi7XLgJYXd2+WaQoIFSPags=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ho2b441HX5+lxEmo7KiN1mwkAIc/p3RYLNIWfdsirN12bq8sJHmsAuOt+8K/JtZdAlq3gqN8unEvuUtlAi57BC31UUOc99ueMp6DPKY5We7qxgV7EpETDP3/B4xckeD/faTgzbCwiB3tN8eHirypcSeqFA7fllHt8QZ24sqdK+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=me6+H4cd; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1779109670; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=EJLJnuLqOMpH68dERtbj6mGH23tk8aFZAhB97rCiwEA=;
+	b=me6+H4cdD+qGgp6CNGpt5U4F358alrLrvPmuriAXeJJQD5fSa08isxlXBXvrQSNiOaWOnb5DeR9/Hz0hw2DURxFdip/mTw92YJqWheq4e2RGJykuzw5yj/7obA+y/pZnL7AEQ/xgNavTvVQ2giyjrVYa8vm6UIYhABTnIDF5mo0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X399IwA_1779109668;
+Received: from 30.120.66.214(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X399IwA_1779109668 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 18 May 2026 21:07:49 +0800
+Message-ID: <5a4afec4-fe39-419e-8b2b-4e9901eb93be@linux.alibaba.com>
+Date: Mon, 18 May 2026 21:07:48 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260514212024.1624517-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20260514212024.1624517-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20260514212024.1624517-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 18 May 2026 15:07:45 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXDAJjWGRLQb6jfvzUPAWymmTC3yE89UPyiydykHN4u6w@mail.gmail.com>
-X-Gm-Features: AVHnY4IiZkti6BwVvlbvdUVkcYDNCX04P78NcYM0PkLVTLe5ljlG3OOT8x4qAls
-Message-ID: <CAMuHMdXDAJjWGRLQb6jfvzUPAWymmTC3yE89UPyiydykHN4u6w@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mmc: renesas_sdhi: Apply bad taps quirk to RZ/G2H
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, Ulf Hansson <ulfh@kernel.org>, 
-	linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 023E856D85B
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "erofs: verify metadata accesses for file-backed mounts"
+ has been added to the 6.18-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org, xiang@kernel.org
+Cc: Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
+ Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale
+ <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>,
+ Chunhai Guo <guochunhai@vivo.com>
+References: <20260518124317.897115-1-sashal@kernel.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <20260518124317.897115-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: BB21856D886
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-9.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249281-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[linux-m68k.org];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,linux.alibaba.com,google.com,huawei.com,vivo.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-249280-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-m68k.org:email,mail.gmail.com:mid,renesas.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[hsiangkao@linux.alibaba.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,vivo.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.alibaba.com:mid,linux.alibaba.com:dkim]
 X-Rspamd-Action: no action
 
-Hi Prabhakar,
+Hi,
 
-On Thu, 14 May 2026 at 23:20, Prabhakar <prabhakar.csengg@gmail.com> wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->
-> Apply the sdhi_quirks_bad_taps2367 quirk to the RZ/G2H (R8A774E1)
-> SoC.
->
-> RZ/G2H is identical to the R-Car H3-N (R8A77951), which already uses
-> this quirk to avoid unreliable tuning tap positions. Use the same
-> quirk entry for RZ/G2H to ensure consistent SDHI tuning behaviour.
->
-> Fixes: 31941342888d ("arm64: dts: renesas: r8a774e1: Add SDHI nodes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+On 2026/5/18 20:43, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>      erofs: verify metadata accesses for file-backed mounts
+> 
+> to the 6.18-stable tree which can be found at:
+>      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>       erofs-verify-metadata-accesses-for-file-backed-mount.patch
+> and it can be found in the queue-6.18 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-Thanks for your patch!
+Please drop it from the stable tree, since it will introduce
+a permission issue on Android and an ongoing fix is under very
+slow discussion.  I will address this commit manually instead.
 
-> --- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> +++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
-> @@ -224,6 +224,7 @@ static const struct renesas_sdhi_quirks sdhi_quirks_rzg2l = {
->   */
->  static const struct soc_device_attribute sdhi_quirks_match[]  = {
+Thanks,
+Gao Xiang
 
-This array is meant for quirks, i.e. to address issues on specific
-SoC variants that cannot just be identified by the compatible value.
+> 
+> 
+> 
+> commit f4178da1373dec03d01f1044acb0ff49a4c7f6a9
+> Author: Gao Xiang <xiang@kernel.org>
+> Date:   Mon Mar 30 10:29:29 2026 +0800
+> 
+>      erofs: verify metadata accesses for file-backed mounts
+>      
+>      [ Upstream commit 307210c262a29f41d7177851295ea1703bd04175 ]
+>      
+>      For file-backed mounts, metadata is fetched via the page cache of
+>      backing inodes to avoid double caching and redundant copy ops out
+>      of RO uptodate folios, which is used by Android APEXes, ComposeFS,
+>      containerd.  However, rw_verify_area() was missing prior to
+>      metadata accesses.
+>      
+>      Similar to vfs_iocb_iter_read(), fix this by:
+>       - Enabling fanotify pre-content hooks on metadata accesses;
+>       - security_file_permission() for security modules.
+>      
+>      Verified that fanotify pre-content hooks now works correctly.
+>      
+>      Fixes: fb176750266a ("erofs: add file-backed mount support")
+>      Acked-by: Amir Goldstein <amir73il@gmail.com>
+>      Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
+>      Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+>      Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+> index 8ca29962a3dde..58aea2b48580c 100644
+> --- a/fs/erofs/data.c
+> +++ b/fs/erofs/data.c
+> @@ -29,6 +29,20 @@ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset, bool need_kmap)
+>   {
+>   	pgoff_t index = (buf->off + offset) >> PAGE_SHIFT;
+>   	struct folio *folio = NULL;
+> +	loff_t fpos;
+> +	int err;
+> +
+> +	/*
+> +	 * Metadata access for file-backed mounts reuses page cache of backing
+> +	 * fs inodes (only folio data will be needed) to prevent double caching.
+> +	 * However, the data access range must be verified here in advance.
+> +	 */
+> +	if (buf->file) {
+> +		fpos = index << PAGE_SHIFT;
+> +		err = rw_verify_area(READ, buf->file, &fpos, PAGE_SIZE);
+> +		if (err < 0)
+> +			return ERR_PTR(err);
+> +	}
+>   
+>   	if (buf->page) {
+>   		folio = page_folio(buf->page);
 
->         { .soc_id = "r8a774a1", .revision = "ES1.[012]", .data = &sdhi_quirks_4tap_nohs400 },
-> +       { .soc_id = "r8a774e1", .data = &sdhi_quirks_bad_taps2367 },
-
-Hence I think this should be RZ/G2H should be added to
-renesas_sdhi_internal_dmac_of_match[] instead, referring to
-of_r8a7795_compatible.
-
->         { .soc_id = "r8a7795", .revision = "ES2.0", .data = &sdhi_quirks_4tap },
->         { .soc_id = "r8a7796", .revision = "ES1.0", .data = &sdhi_quirks_4tap_nohs400_one_rx },
->         { .soc_id = "r8a7796", .revision = "ES1.[12]", .data = &sdhi_quirks_4tap_nohs400 },
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
