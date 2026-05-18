@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-249170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPkVErl5Cmqe1wQAu9opvQ
-	(envelope-from <stable+bounces-249170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 04:30:17 +0200
+	id 6IcwHj96Cmqe1wQAu9opvQ
+	(envelope-from <stable+bounces-249171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 04:32:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DE356519B
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 04:30:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8A15651C2
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 04:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E27CA300145D
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 02:30:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E8B53020AA7
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 02:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84BE370D41;
-	Mon, 18 May 2026 02:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7362A1CF;
+	Mon, 18 May 2026 02:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="NkAxsCR+"
+	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="SQdbqlGN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6792372EF6
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 02:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA91405C49
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 02:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779071411; cv=none; b=QmdMLSxgALq1BnUF9CUCVzo1/kgH7FcIMwhGkiK1CHDzWM++517HZms6LyCTcAl897gtvgBSViOu5KDXgHwFR2ASCxnrR7njh4t4DefI+Ra5+ah5M9kO4vsVZGm23sqV7syxElHDLSyQjK6xOXi1xT4pUgiytnd77CqAOxYuz2w=
+	t=1779071426; cv=none; b=BDz0bnoQlfCYdIs2giLjRJ3MfCkqm26NeIaZQ96Z4X1pd5Iu283lm02IP/9pnwLg1TmCZ3UYbls4KveyKhnfFJHT8HZ7UaiSpq8lB0iR7Fi1dmw5L8dxF9r0TNn2JiJPshlqDzw+TMFJbyRWJ9vQ5E9OAaCAZj3K058gM9Oym2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779071411; c=relaxed/simple;
-	bh=7CNtfjQhsmU2rthxkC5TMG29qFMV4mirICuzNK1PDF8=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=jPUppcMjHTCVtvNg+106DkOzWwX35ofi2tV5n4rosavgne/JygT2nNRz0siFnI9ISXgLbq06jtgGYNVvcO82TxByUyVDSd5lTWLLVCjhamYAD2ZCN5OPOYM4xrK8md6EHmqISHh22UbeQSas9Eh0Z+gmqyVqd9mC0PLxnqRFkQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=NkAxsCR+; arc=none smtp.client-ip=74.125.82.169
+	s=arc-20240116; t=1779071426; c=relaxed/simple;
+	bh=W1h4Sjyko+nVGWBjrxveOtuvFawZHnjTxlmvraCjkMg=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=BTL/jDlDZuJ3tYPqC6jmMwg/v4xx2ON3mOgsqJ5iydqkolPm5XsLjIM6/oermDrE3uE4uQqKDTNRBv/KCJXyW9upbw0PUB+zhkyuu4qXBevsT89IZdxLEl/uOC+piKw47x8QQlXm5ITKjNK9B2asAAyjo7Y0TYQuitn0n4M2urI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=SQdbqlGN; arc=none smtp.client-ip=74.125.82.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2ff5472f263so1526679eec.1
-        for <stable@vger.kernel.org>; Sun, 17 May 2026 19:30:07 -0700 (PDT)
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2f33ae12f97so6924391eec.1
+        for <stable@vger.kernel.org>; Sun, 17 May 2026 19:30:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1779071406; x=1779676206; darn=vger.kernel.org;
+        d=kernelci.org; s=google; t=1779071421; x=1779676221; darn=vger.kernel.org;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZHt6G5bWJ+IqSUlcDU472f2pLpjykVQst0aXGpa/C9Q=;
-        b=NkAxsCR+KpzhdQbAtjue0iV51CsnHmJJacEW6Ml4iuwij3PlcIg6I1Zcp3Fy9oPeEC
-         Scbi6VY2ZXKaNqKKIRgd+piyjL7imfs1DbHnHs/OK8aNBcYQlBZkubg9Fk3E7PMVxWon
-         QiCFWh93HEO4z4SU2lIMZ9McdbiDxU+PH6c0MpCkD+6FMYxDptXHVVrr/+7f3cNOMIM6
-         QjVQ9d9eebVmHmnBoRqI55cfZBf4hBSc+0KWzbr0XfE9umbtR7zapsdnSKiHcJ0O9Z+7
-         lzqa4KuxfU9Qr9PZmx0qZciVzEx4Awzkz/MKjFWkky3MGIl/Wu0iUGjLzcCLJUK8UlkH
-         fpqQ==
+        bh=D3W9nRsi6NsBy28wDHHiBB7H/eQWVSIS/nDdEFJ9h6I=;
+        b=SQdbqlGN3qkTgTanf2RbX2bZDEL0CGGE+G7LPzn0KcBvRLAFU7F1cn9SekuXM+1i6y
+         XlsEeRh7VozbHKqd0Ucu6EgiPiZ/bvqgxVZ8yzUfy/RpyyIH4zvuOQOe4f40l7aW58e2
+         jNcdaDYelwO6NmzYFYVXmUpGVTQK9S0E6s3DKxNWgfWNj2PlbGTFkkBlefePked8f0st
+         y5joVWjrM7IpoUuLjNxWBTiaeOd64ltf5Uyc3d8Avw7awCFCp1lM998kwf5By5FyXkBI
+         yEsej9rxffszs052nET6MpK0c8trTi9kSBoiuZBw5oW04PJzAhg9tkD43cY+9Z0LZjmX
+         E87Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779071406; x=1779676206;
+        d=1e100.net; s=20251104; t=1779071421; x=1779676221;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZHt6G5bWJ+IqSUlcDU472f2pLpjykVQst0aXGpa/C9Q=;
-        b=afxeFrG0YAkYdBWKUwtyFrHM5Mn13e+2qmaszQ7hbmi511/HHTkHveb2oQInMixBLE
-         b5Irnd62Ugg7PSeGeg2ElUoBzt/8gaynz7nrULuixSWMs/KP5Wi73kaxmLMf6Ypvl88/
-         bIsIJ5Heo/PhNTdsbmuxiOqVaoKbNQxl19YEySfymtcEdiryWNfj559mpXMmIb8njSkZ
-         URTTdTGvYmkgAR37sgBf9lF1riQRuyPZBQPfuimO3LH4NclsUMIZLqBLrwxxg7kabNm1
-         j1MvbEgpDb+Tsn76tc4gVQ4CdfQ4lLrqsESSLgBSOuMHXt9KBctZqisB5HYtK2n4FMeB
-         5hrA==
-X-Gm-Message-State: AOJu0YyGIsOaefwKQWjiJaoucynXagbQJai8kDwyaoRU1Ymwjer/sVqG
-	fvq8A+CtEbGGHn/tUFXwV0hJf7slhVrhx++XzvNo3fdEfpcp2eY0bozot/n+U29orp4RxYPwsu4
-	bPDsi
-X-Gm-Gg: Acq92OEWufYiiYs4WZHSSo4oCQekMmZ/+D59oQb3uJmTAbuLHrAWICIIkPi6xur9GFS
-	L4VNWJKp0KWKWxKDNpMW2G8IS0NgbCCqe2gpAEmGksLDMeUEq5eySpDth+Snt92Md/C+bY36v9a
-	ptF8NHoCScOyGktKx4lLNJf3eQbEsBvLjw36P7dm+Lg9e1UEwo+ItOp0eTHLslP6iZsbhPBj9PB
-	jTr0KStBRozkV9L5inyZJpl44wcRwd7gjPUgfvtGlSVSlTpTmN8a9kzWw2HeETHbzdO+JcZwG5a
-	kL2MNg235ym5oO/qw5z75gvF/wo2CzC8deLrfV6i9ldvyI994ZH6JPTn+skiuCP2ocJOCagkGnA
-	kYsU/s7J8Ps67g9UrJ5N2ep5M4T6l+5jomZ93BaG/AcWT49n8IDBgunB6MHBE0MI2E+Gsy2f7XG
-	F6G7//G5R1U8RLOmcJ
-X-Received: by 2002:a05:7300:ec11:b0:2ea:c085:44b1 with SMTP id 5a478bee46e88-3039867f4d0mr5533156eec.19.1779071406297;
-        Sun, 17 May 2026 19:30:06 -0700 (PDT)
+        bh=D3W9nRsi6NsBy28wDHHiBB7H/eQWVSIS/nDdEFJ9h6I=;
+        b=nLIAdst/XQVutafxkcODdVJf6a7OBrmzs53mYi+HURY/bSH01dK8VAuCNRWCJXcvxK
+         +VjIbnpEm53yoDmpl6PzM9AMTm2E2NaAIxYww2IB4V19BXnOytlNx8KGpCOSh9HMuOmG
+         DZA3wMUlW8BBwea+VCu1CRWFRLpWvL907vzU1ovWxt33Ij6LZQW7d00Tq60414/vrZEG
+         Q1jP4VR6PInA+HdIMU9VtU4X2iFUAJ7PTTcGfvzdXvpLHNKZ7+LU5iofvGtkVC2e2DMQ
+         ytSWkSqdzi6d/Eg6vaa83o0ezcguVKA4R3lbOXNGo6SgQsD353R28Xk+ymcWXyvJxhf0
+         34cg==
+X-Gm-Message-State: AOJu0YyF1+e1oOt1gZ0ZSTIEzEOeGv7E17kCZ++Cpw/OqVtyHOHq4NY+
+	xaDSSD5jhddQFgkkmil4O7xsVGJWHBoLP8yHlnkaEXJ5CUEIz+FLcjan1g4hOvaW9nTlfywlVdB
+	S/4JZ
+X-Gm-Gg: Acq92OEmu1jTfb1qJ0V1dCLIZGHkNrRT5cC8UVnXNb6lQSKFcTHk17LpWE7u/FQgSJ8
+	y6fccMTeGF3keY3pw80TecUdIVPXQtVlpZgI63SlxzR7DRk1sq8JjirVQFSKpgw7+efHMeLAXGX
+	/pG/8Lw5QbJasWgB2RbGE2JUMgQFDKGEhHy9v0+UY8OnUvzD/kQqM8ENSpbcHmtegIXM2iqcklo
+	XRuaPgi+/KmNW5y/1CcAlBatea7GrVy/Gy8ROAkNT8I0XriaY86OBmdSgNWVbXFGOhj54C3DYOu
+	zQmiBx4Dk9Pe5tM7nZl1g0+BwfuildVJCYcBM0oRND1SqwArnqHR0u4pinosN7SBUwqfVkr9tjc
+	rZ3Gc4/4i1vXhZKJv+P3lY0dilVdARQ5I2wgClPOqK3NfAsQmts3KtbAffu39vqJrbjCzaaeDwk
+	BAdkzcSp1eEVRvLyullPQ4BGRJt6w=
+X-Received: by 2002:a05:7022:4183:b0:132:1e01:8737 with SMTP id a92af1059eb24-1350542e5a3mr6415623c88.26.1779071420993;
+        Sun, 17 May 2026 19:30:20 -0700 (PDT)
 Received: from 330cfa3079ca ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302978ad18asm12664182eec.26.2026.05.17.19.30.05
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cc2352f2sm18616328c88.10.2026.05.17.19.30.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 19:30:05 -0700 (PDT)
+        Sun, 17 May 2026 19:30:20 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -83,27 +83,27 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [STATUS] stable/linux-6.12.y -
- 2538fbeff8a94ee2b54eb09d92209e24a1e650d4
+Subject: [STATUS] stable/linux-6.6.y -
+ eac8889a3a1c81d7113cc4656b9420e84c379cf5
 From: KernelCI bot <bot@kernelci.org>
 To: kernelci-results@groups.io
 Cc: stable@vger.kernel.org
 Reply-To: kernelci@lists.linux.dev
-Date: Mon, 18 May 2026 02:30:05 -0000
-Message-ID: <177907140508.2148.4899475057510016321@330cfa3079ca>
-X-Rspamd-Queue-Id: D9DE356519B
+Date: Mon, 18 May 2026 02:30:20 -0000
+Message-ID: <177907142006.2148.8872427316148195023@330cfa3079ca>
+X-Rspamd-Queue-Id: CF8A15651C2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
 	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249170-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249171-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -120,9 +120,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
 
@@ -131,57 +131,60 @@ X-Rspamd-Action: no action
 
 Hello,
 
-Status summary for stable/linux-6.12.y
+Status summary for stable/linux-6.6.y
 
 Dashboard:
-https://d.kernelci.org/c/stable/linux-6.12.y/2538fbeff8a94ee2b54eb09d92209e24a1e650d4/
+https://d.kernelci.org/c/stable/linux-6.6.y/eac8889a3a1c81d7113cc4656b9420e84c379cf5/
 
 giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-branch: linux-6.12.y
-commit hash: 2538fbeff8a94ee2b54eb09d92209e24a1e650d4
+branch: linux-6.6.y
+commit hash: eac8889a3a1c81d7113cc4656b9420e84c379cf5
 origin: maestro
-test start time: 2026-05-17 15:54:39.219000+00:00
+test start time: 2026-05-17 15:54:38.766000+00:00
 
 Builds:	   44 ✅    0 ❌    0 ⚠️
-Boots: 	   74 ✅    0 ❌    0 ⚠️
-Tests: 	 8644 ✅  566 ❌ 2769 ⚠️
+Boots: 	   57 ✅    0 ❌    0 ⚠️
+Tests: 	 4575 ✅ 1468 ❌ 1462 ⚠️
 
 ### POSSIBLE REGRESSIONS
     
-Hardware: imx8mp-evk
-  > Config: defconfig+arm64-chromebook+kselftest
-    - Architecture/compiler: arm64/gcc-14
-      - kselftest.kvm.kvm_arch_timer_edge_cases
-      last run: https://d.kernelci.org/test/maestro:6a0a20570ed99f002e99f2c2
-      history:  > ✅  > ✅  > ❌  
+Hardware: asus-CX3402CVA-brya
+  > Config: x86_64_defconfig+lab-setup+x86-board+kselftest
+    - Architecture/compiler: x86_64/gcc-14
+      - kernelci_sleep
+      last run: https://d.kernelci.org/test/maestro:6a09ebb00ed99f002e996d72
+      history:  > ✅  > ❌  
             
-Hardware: k3-am625-verdin-wifi-mallow
-  > Config: defconfig+arm64-chromebook+kselftest
+Hardware: sun50i-a64-pine64-plus
+  > Config: defconfig+lab-setup+kselftest
     - Architecture/compiler: arm64/gcc-14
-      - kselftest.kvm.kvm_arch_timer_edge_cases
-      last run: https://d.kernelci.org/test/maestro:6a0a0e8b0ed99f002e99d077
-      history:  > ✅  > ❌  > ❌  
-            
-      - kselftest.kvm.kvm_memslot_perf_test
-      last run: https://d.kernelci.org/test/maestro:6a0a0e8b0ed99f002e99d028
-      history:  > ✅  > ❌  > ❌  
+      - kselftest.device_error_logs
+      last run: https://d.kernelci.org/test/maestro:6a09ece10ed99f002e9970f1
+      history:  > ✅  > ❌  
             
 
 
 ### FIXED REGRESSIONS
-
-  No fixed regressions observed.
-
-
-### UNSTABLE TESTS
     
+Hardware: mt8183-kukui-jacuzzi-juniper-sku16
+  > Config: defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
+    - Architecture/compiler: arm64/gcc-14
+      - kernelci_watchdog_reset.wdt-reset.wdt-get-timeout
+      last run: https://d.kernelci.org/test/maestro:6a09eb7c0ed99f002e996d3e
+      history:  > ❌  > ✅  
+            
 Hardware: mt8195-cherry-tomato-r2
   > Config: defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
     - Architecture/compiler: arm64/gcc-14
       - kernelci_watchdog_reset.wdt-reset.wdt-get-timeout
-      last run: https://d.kernelci.org/test/maestro:6a09f17a0ed99f002e99976d
-      history:  > ❌  > ✅  > ❌  
+      last run: https://d.kernelci.org/test/maestro:6a09ec400ed99f002e996db8
+      history:  > ❌  > ✅  
             
+
+
+### UNSTABLE TESTS
+
+  No unstable tests observed.
 
 
 Sent every day if there were changes in the past 24 hours.
