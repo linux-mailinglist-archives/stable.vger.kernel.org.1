@@ -1,222 +1,177 @@
-Return-Path: <stable+bounces-249405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JUNKMyNC2p2JQUAu9opvQ
-	(envelope-from <stable+bounces-249405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 00:08:12 +0200
+	id GDhHMfuPC2rhJQUAu9opvQ
+	(envelope-from <stable+bounces-249406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 00:17:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FC057447C
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 00:08:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69FB95745EB
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 00:17:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A54F9301CEBC
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 22:08:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C75A93014946
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 22:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E637339BFE7;
-	Mon, 18 May 2026 22:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDF039E16C;
+	Mon, 18 May 2026 22:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mfwVRnxd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRMe8GJ9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4742739D6D4
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 22:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8D12F7EF5;
+	Mon, 18 May 2026 22:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779142087; cv=none; b=oGpJZsth+tks61VxYpZe+fmlYh3NYqf/qp8QS+mubDnZYOuPTEgATCz8UMWO1S+3VGEzP5SBGG0t1/mtm+CsWMVHhR42BX59ZwBcaq+fQhzdxamM0CgsFE1626XMZrD2Eim99VW7dSvoRHqxu8GVtqCwK8eZIM/tWr2L47FgOqA=
+	t=1779142644; cv=none; b=ZkjWJ2HJtpH9AY3XfnkDUP1dd+Wr3JAOJTR/fYGTqJTCxh4FIyeonnjq5Ql0UOqayZrYPBwqJWGRzZRV9uEz6k3QopH8ogPB7MEeyrxDrtgmDJ5WUSAYV9V+8NQQVR2L45FTsLK+ilHEPAfeaPoqPUsUK6vXDVWUvwMKltiCo4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779142087; c=relaxed/simple;
-	bh=ZeHrTM95+S1Ac1kBGowZn208fl0ne8C3fh5bhdKFRT0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MoY7/kJUG+8Bv0q4/JKUeLZCg3iBgVsgOVrc2LffBhS/xOO0lrBoYrhLWO4duFsNghOBDmfQYX/JQ0ySg45rguNJY3kNyEA/gqnRM2Xlhcd0G2io21eIc/Camp2je2vv4FpmmN0+4H19UZf00stAeazjMqRWqtxmk0IibHWFZNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mfwVRnxd; arc=none smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2f30a4601bbso2546360eec.1
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 15:08:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779142085; x=1779746885; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=4h7adFpT3DzT6y9igk6xVmIBKDtCJtpJ+ZzZ67vZi7A=;
-        b=mfwVRnxd5nfIAlLNtjmxWz27II4bazTCZPMM0hj9bYIs2DVQ4Ew9VCu/vZqKJwwCL9
-         85F51FTGz7j+zNGbJ+CX6lmy79F5k3StTZ5XS5rj86dzNem3Gh0Vy0KxnQjNh+E6q0pz
-         0ZUBAhIh7hOvpzzI40la6tt39l0ISp1+3XUKzc4bgU+tykk8kJL4fqRpityIWiCj/XX1
-         GieHhXOWLSqi+Moq7bLTBfAaIf1+S4GLKmlzOwZejJPtEFNFYQag8uXFSCGT/3P5tDxG
-         jFX5G+73x9J8VRHAQuX3VGTa/BUBipJIsr95Q7ZySUJt/IUvm+feYIFDrHq4IJbDJpyW
-         AV1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779142085; x=1779746885;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4h7adFpT3DzT6y9igk6xVmIBKDtCJtpJ+ZzZ67vZi7A=;
-        b=Tun1w0D9G7nfJhPqLnpz0Zb6Jkd7yX9WIP06u3KK1qvP6Y7sGBiWpjOzOlzw77iK5E
-         niA7V2D3mvYFZj6DcWMeB7ZGRodJd7Tj1NtPQox6MwiAClqCk5vW5zs9Mi4DmjNhXTvd
-         AxWQy4uVJgNXFwFXfxFohgSH5dfaUrWq/x1D0ghNMFDq7bY38i1OuMSEQnFryZl7iAvj
-         C1K0P+9V65Es86NfS3SoKvEwf92aYW6NK5GGFvwaG3d+odv5WCS4aU1gu8Daz01XZ46C
-         3h1He9Xr70xFozaQlukvOSkCgv7Lq90Z0/tlts923/QlpVYSzHzhsldV7BfzLng3FbNw
-         aBKQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9tc2Yw3l5lrsQ7ZWdCpqZSfG5yvLj6fxfr93frk1OC5zwLMGdG5VYPXppvWgsdo3a+3EmqAUg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcfKyIhxoLLvz1KU8O8TR5KFd/mvF6xxmUuAEzq+SBYRQbI8JU
-	zC0hnoIVHbXSdRQWL4xeJL/rouQW180IsENBaLKA/P+hxBsUHeAHyMKq
-X-Gm-Gg: Acq92OGq+mm7nYvS3/sSYtzv620TuaEaBhZWsyZNTdqWivzbpzAtO8BP57Gd0PvNcAW
-	2EQqSgLHmHXjk4IK9Q8HecaPyaPeNE8xL7IuMUtMSpsVve+ncdm3wim7kr+Sq5eT5NUqWsCkEQZ
-	s8z6RCo48s0GF815rWgOMI9Uqo+EVcmpa8ta//tNgxDpc4ee+RQCX14UflO9TwEAdhJSvwxTYcR
-	W+07iOAGOkbAcDqHzKf+fs3DZ0MCBOmamzlGbwY82NXtIPyCJxPNhnyvaWkU0OddQ8anztyi/Oq
-	TzrPlYAPIp72uqKMIOdy93xpWOilimx8D60xGeQX/PX9jWzlF4RmlFowFoxRHFK+4Elp0lkZnl/
-	3GiQNpzlBlHkyVZeuQmbWupRzi+ksOs1nPP2GYgCFD5X/DMaZb+i7HL1E0atwtFSKl9hB0RFXSH
-	BjTEfutjGdcquO1yV5ibdMCwtUKsBb3BzQAd5uFwjVDE/yQY3YXVC+lpEyIpFYt6sEDpTEZpzi
-X-Received: by 2002:a05:7300:5726:b0:2d9:bc8d:f62a with SMTP id 5a478bee46e88-3039868cd4fmr7172595eec.16.1779142085307;
-        Mon, 18 May 2026 15:08:05 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30293e2e6a9sm14601361eec.2.2026.05.18.15.08.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2026 15:08:04 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <6ec6270c-595e-49b2-8465-31b5019de87c@roeck-us.net>
-Date: Mon, 18 May 2026 15:08:03 -0700
+	s=arc-20240116; t=1779142644; c=relaxed/simple;
+	bh=2byBZ7K9TFGi279fR4cU+LvkzjbAdmFJbPPXhJHi/og=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Wp/94AfYpcRfq1rWMJqSef8P0KDfRbiBBEQdxT3Wsu+gvMlahRC51lQcDNMLGfztSletklec1DPkn9YLhpPtgyygjRmN7CFy+y0luwL+pFGxy9RdiSHNCBQJRiusZwWUgb0ngIGE7fPbWqDhIOEvA0Rn4hJv3lpqasi1DLcQlIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRMe8GJ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32911C2BCB7;
+	Mon, 18 May 2026 22:17:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779142643;
+	bh=2byBZ7K9TFGi279fR4cU+LvkzjbAdmFJbPPXhJHi/og=;
+	h=From:Date:Subject:To:Cc:From;
+	b=DRMe8GJ9sRVOyuVrnmUVJ7QxRmRD1w9H4qhOiYdA4yCgrvGUT2+wnMMgrG+1jJRpz
+	 QVZbXcKKqelR3ILk8NZuvOkQQaH5ppyjXs9LUwYrPTzazw/AAxRRv65Qb00mn1uh13
+	 L8uZAeY18nqUnhO+UR/b179QmBGPXRFYkS9fR3cZNuWyFrjGq3WkFQs9G9o79fpbYm
+	 POWoXgsAfIBZaoQC+5ZoyjGEEUkgA3esSdC95Mcahtb0V2DA/5kbREtKBHopnWw++B
+	 6OTsH2g6WBIzxQUDiWQVxmit1WEOaABhp0MFwmD6RYiGUP2lJBhk78cP5cyV7UDeAh
+	 6TK/m0MxpmLdQ==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 18 May 2026 15:17:14 -0700
+Subject: [PATCH] drm/msm: Restore second parameter name in purge() and
+ evict()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] hwmon: (pmbus/adm1266) GPIO accessor fixes
-To: Abdurrahman Hussain <abdurrahman@nexthop.ai>,
- Alexandru Tachici <alexandru.tachici@analog.com>,
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, linux-gpio@vger.kernel.org
-References: <20260516-adm1266-gpio-fixes-v2-0-801f13debcb2@nexthop.ai>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20260516-adm1266-gpio-fixes-v2-0-801f13debcb2@nexthop.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Message-Id: <20260518-drm-msm-fix-c23-extensions-v1-1-0833559418c7@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMUQrCMBCE4auUfXahSYwUryI+mHRat5Ao2VYKp
+ Xc31ccfZr6NFEWgdG02KviIyivXMKeG4vORR7D0tcm29tJ603FfEidNPMjK0TrGOiMfL2UTog/
+ mbOGdowq8C+rqh9/u/9YlTIjzIdK+fwE754OxfgAAAA==
+X-Change-ID: 20260518-drm-msm-fix-c23-extensions-1bc5b142e533
+To: Rob Clark <robin.clark@oss.qualcomm.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Daniel J Blueman <daniel@quora.org>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ llvm@lists.linux.dev, stable@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2746; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=2byBZ7K9TFGi279fR4cU+LvkzjbAdmFJbPPXhJHi/og=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDFnc/R9UrV9GMav3RZuWpCmsMiiZVRIY+H/fZ9XTS/9MT
+ vhxZd3WjlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRCZcY/ml9OSycliWrHVmz
+ Zvbxu3eSTNWVD7Hu0tp0yMmnJfzbjdWMDLunm57Se1ptwLOwe8rj8u+7bCeb63boFNiHRokl1bv
+ E8AEA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-249405-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[oss.qualcomm.com,kernel.org,linux.dev,gmail.com,poorly.run,somainline.org,quora.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
+	TAGGED_FROM(0.00)[bounces-249406-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nexthop.ai:email]
-X-Rspamd-Queue-Id: 40FC057447C
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 69FB95745EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+After commit 3392291fc509 ("drm/msm: Fix shrinker deadlock"), all
+supported versions of clang warn (or error with CONFIG_WERROR=y):
 
-On 5/16/26 16:18, Abdurrahman Hussain wrote:
-> Five pre-existing bugs in the adm1266 GPIO path that all landed when
-> GPIO support was first added (commit d98dfad35c38).  Each is
-> reachable any time userspace queries an ADM1266 GPIO/PDIO line via
-> the gpiolib char-dev or sysfs interfaces, or reads
-> debugfs/gpio-<chip>.
-> 
-> Patch 1 caps the PDIO scan loop in adm1266_gpio_get_multiple() at
-> ADM1266_PDIO_NR (16) instead of ADM1266_PDIO_STATUS (0xE9 = 233, a
-> PMBus command code that ended up in the bound by mistake).  As
-> written, the scan walks find_next_bit() up to bit 242 across a
-> 25-bit caller mask, reading out of bounds and -- if any of that
-> incidental memory contains a set bit -- driving a corresponding
-> out-of-bounds write to the caller's bits array.
-> 
-> Patch 2 drops a redundant "*bits = 0" reset that sits between the
-> GPIO and PDIO halves of adm1266_gpio_get_multiple().  As written,
-> the GPIO bits the first loop populates are immediately discarded
-> before the PDIO loop runs, so any caller asking for a mix of GPIO
-> and PDIO lines sees the GPIO half always reported as 0.
-> 
-> Patch 3 adds the missing "ret < 2" length check after the three
-> i2c_smbus_read_block_data() calls in adm1266_gpio_get() and
-> adm1266_gpio_get_multiple().  A device returning a 0- or 1-byte
-> response would otherwise compose pin status from uninitialised
-> stack memory and leak it to userspace via gpiolib.
-> 
-> Patch 4 moves adm1266_config_gpio() past pmbus_do_probe() in
-> adm1266_probe() so the gpio_chip isn't registered (and reachable
-> from userspace) until the PMBus state the GPIO accessors depend
-> on is initialised.  This is a prerequisite for patch 5.
-> 
-> Patch 5 takes pmbus_lock at the top of adm1266_gpio_get(),
-> adm1266_gpio_get_multiple(), and adm1266_gpio_dbg_show() so the
-> GPIO PMBus reads can't land between a PAGE write and the paged
-> read pmbus_core does in another thread.
-> 
-> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+  drivers/gpu/drm/msm/msm_gem_shrinker.c:105:58: error: omitting the parameter name in a function definition is a C23 extension [-Werror,-Wc23-extensions]
+    105 | purge(struct drm_gem_object *obj, struct ww_acquire_ctx *)
+        |                                                          ^
+  drivers/gpu/drm/msm/msm_gem_shrinker.c:117:58: error: omitting the parameter name in a function definition is a C23 extension [-Werror,-Wc23-extensions]
+    117 | evict(struct drm_gem_object *obj, struct ww_acquire_ctx *)
+        |                                                          ^
+  2 errors generated.
 
-Sashiko reported a number of additional problems. As far as I can
-see those are real. Would you mind fixing those issues as well
-as part of this series ?
+With older but supported versions of GCC, this is an unconditional hard error:
 
-Thanks,
-Guenter
+  drivers/gpu/drm/msm/msm_gem_shrinker.c: In function 'purge':
+  drivers/gpu/drm/msm/msm_gem_shrinker.c:105:35: error: parameter name omitted
+   purge(struct drm_gem_object *obj, struct ww_acquire_ctx *)
+                                     ^~~~~~~~~~~~~~~~~~~~~~~
+  drivers/gpu/drm/msm/msm_gem_shrinker.c: In function 'evict':
+  drivers/gpu/drm/msm/msm_gem_shrinker.c:117:35: error: parameter name omitted
+   evict(struct drm_gem_object *obj, struct ww_acquire_ctx *)
+                                     ^~~~~~~~~~~~~~~~~~~~~~~
+
+Restore the parameter name to clear up the warnings, renaming it
+"unused" to make it clear it is only needed to satisfy the prototype of
+drm_gem_lru_scan().
+
+Cc: stable@vger.kernel.org
+Fixes: 3392291fc509 ("drm/msm: Fix shrinker deadlock")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/gpu/drm/msm/msm_gem_shrinker.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+index 6e39e4e578bb..8f118b5185a1 100644
+--- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
++++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+@@ -102,7 +102,7 @@ with_vm_locks(void (*fn)(struct drm_gem_object *obj),
+ }
+ 
+ static bool
+-purge(struct drm_gem_object *obj, struct ww_acquire_ctx *)
++purge(struct drm_gem_object *obj, struct ww_acquire_ctx *unused)
+ {
+ 	if (!is_purgeable(to_msm_bo(obj)))
+ 		return false;
+@@ -114,7 +114,7 @@ purge(struct drm_gem_object *obj, struct ww_acquire_ctx *)
+ }
+ 
+ static bool
+-evict(struct drm_gem_object *obj, struct ww_acquire_ctx *)
++evict(struct drm_gem_object *obj, struct ww_acquire_ctx *unused)
+ {
+ 	if (is_unevictable(to_msm_bo(obj)))
+ 		return false;
+
+---
+base-commit: db339b6bc9f234b4883eb02946ea01d8d9faa11c
+change-id: 20260518-drm-msm-fix-c23-extensions-1bc5b142e533
+
+Best regards,
+--  
+Cheers,
+Nathan
 
 
