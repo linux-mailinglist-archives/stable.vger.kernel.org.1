@@ -1,169 +1,126 @@
-Return-Path: <stable+bounces-249347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBOoJalFC2rgFAUAu9opvQ
-	(envelope-from <stable+bounces-249347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:00:25 +0200
+	id +IDwIo9HC2o7FQUAu9opvQ
+	(envelope-from <stable+bounces-249348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:08:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A3A5715B6
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:00:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A245716F8
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0CEBC3012CC1
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:00:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC14530D7E94
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3612580CF;
-	Mon, 18 May 2026 17:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE143822A7;
+	Mon, 18 May 2026 17:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="WqqK7h5F"
+	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="ISsuNxnk"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D857A4949E6;
-	Mon, 18 May 2026 17:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A79376490
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 17:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779123623; cv=none; b=MmKpo0XSk5dB6RhD+zYJs/Ho/fv3cdwfOTZWb3nHZViLBL01xd8pR47F4Amp5ZyTLiLOL/Fq0NyxeN+ZBuvHoGh/Cue97VDl5CyV4PrMU464n2vhPbNux40OqCH2laiUnJFAXSaM3npiUk+VefMgpKczvOne+7lZ1DKSG2r4ZMU=
+	t=1779123736; cv=none; b=oaXcRazAwcDxFSATa8hrSa2YIAk79pMrjsXBOYpJXQHCS3zpFpM8+/JZTTppGxJha8kwC5Vbfl12XtkQ+7wXow7oMqjc0k4IirUtvMXvlJTY7cbiXz+DU8Q3Vl+Jg7asZElFooT17gY2T5nSzx0S5vVyds+cfz0TcBuO0cpcSJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779123623; c=relaxed/simple;
-	bh=zugYL5vZCUyEQykpVMWy7k6xRPMdLB3vw6jYEjwAALM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jAxTQghJJLdudYqi2iMTclCxqk4g6tAuqP3EvdVV0koq114YhH6Q8vUszrFRSqs1hT8tfolVUvO1E4/tVyOnit99ydPB7jX0C0g7/CORaYcSmsGIriXC82t6dPzmnNHQ6S1eOkq0HqVYNAzaEQVqHn9qkqHPr3+Y6cMZUBd8jn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=WqqK7h5F; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7CDDF1C01;
-	Mon, 18 May 2026 10:00:13 -0700 (PDT)
-Received: from [10.1.196.85] (e121345-lin.cambridge.arm.com [10.1.196.85])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EA0B63F7B4;
-	Mon, 18 May 2026 10:00:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779123618; bh=zugYL5vZCUyEQykpVMWy7k6xRPMdLB3vw6jYEjwAALM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WqqK7h5FWp2KhMpVKzpxLfTmT18whExXGBcJr4XbD0XRL2A5fZ8iHZUXsWqOGiCMK
-	 1NfKj9ZYcNJd+BiY/CBkKrcfbb5YQ1LPbM3WF6t+T1q5W3LbAobk1+GCOqaAsL31cC
-	 fp4SKF/1zjRptiTTL0NL+yg10qJ95nkU4vCt5ayQ=
-Message-ID: <83e27ae0-870e-4bfe-806d-2c2f21a719df@arm.com>
-Date: Mon, 18 May 2026 18:00:14 +0100
+	s=arc-20240116; t=1779123736; c=relaxed/simple;
+	bh=zfRWNKJw/Y0qg1loJVvUjMgTwYSxj8FCErKYtehASys=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PR/6ux5sn4oXOfdp8T2H2fXqSm/tMVhiJ8JMqjNvo1UnPVqQQINwKDwSHJZM9SOcbhL5zyXj69Ba9hyStYHOWv7X/HvJGnjAG9LcHZplHRYmMHhVX/pfmRMWI2CVFCmcbrjoqhyuWx+ovXN09genZs21CoXIjMpUwQTq34wLSi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=ISsuNxnk; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
+	s=key1; t=1779123729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jx+/uFpfX1YYemeTrEW7LOAvWeEpWKhwrZRtiB04gYs=;
+	b=ISsuNxnkYEQOJ9DdT2f+ZQiinBjlF5rDLlbK/RmKJ55kgo3yw73aalXfhEqKw8riL6t00Z
+	WQG+wdkAQ+M47dfdSNXXlPK1y/Ypes+/2n2ndSEPVovDDFaF5JNkymgs09b3T6R8qMDX2X
+	sdcM0k35/skf2DCtIsiTrw0EnDUBdIosGQFbjQJQvGnml+0EUKPcCjaC1/ICOe2a7wDgie
+	FSKkap0X8Fthm2vuW2EoUrC5lZcjBbAjZuN7ZdP8Xa4hjxZRy8OHp423RgbhEa0i/tLbFc
+	N3P96X2nbblH5JnhXsDA7ozEDRmyyjxOYY8Ei3HQqyV487bLVelxu6JcBe2wWQ==
+From: Devin Wittmayer <lucid_duck@justthetip.ca>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Oscar Alfonso Diaz <oscar.alfonso.diaz@gmail.com>,
+	fjhhz1997@gmail.com,
+	Devin Wittmayer <lucid_duck@justthetip.ca>
+Subject: [PATCH v3 0/1] wifi: mac80211: fix monitor mode frame capture for real chanctx drivers
+Date: Mon, 18 May 2026 10:01:46 -0700
+Message-ID: <20260518170147.13885-1-lucid_duck@justthetip.ca>
+In-Reply-To: <20260308164510.5927-1-fjhhz1997@gmail.com>
+References: <20260308164510.5927-1-fjhhz1997@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iommu/arm-smmu: pass smmu->dev to report_iommu_fault
-To: Shyam Saini <shyamsaini@linux.microsoft.com>, iommu@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- robin.clark@oss.qualcomm.com, will@kernel.org, joro@8bytes.org,
- stable@vger.kernel.org
-References: <20260517005052.3783378-1-shyamsaini@linux.microsoft.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260517005052.3783378-1-shyamsaini@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[arm.com:+];
-	TAGGED_FROM(0.00)[bounces-249347-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[sipsolutions.net,nbd.name,kernel.org,vger.kernel.org,gmail.com,justthetip.ca];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249348-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[justthetip.ca:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:mid,arm.com:dkim]
-X-Rspamd-Queue-Id: 13A3A5715B6
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,justthetip.ca:mid,justthetip.ca:dkim]
+X-Rspamd-Queue-Id: E2A245716F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 17/05/2026 1:50 am, Shyam Saini wrote:
-> report_iommu_fault() passes the dev argument to trace_io_page_fault(),
-> which dereferences it via dev_name() and dev_driver_string(). Passing
-> NULL causes a kernel crash when the io_page_fault tracepoint is
-> enabled.
-> 
-> In arm-smmu.c, 'commit f8f934c180f6 ("iommu/arm-smmu: Add support for driver IOMMU fault handlers")'
-> replaced a dev_err_ratelimited() call that correctly used smmu->dev with
+v2 [1] used list_is_singular() + list_first_entry() to find the
+fallback chanctx. Johannes pointed out [2] that the pair is the
+rculist.h anti-pattern: the two reads of head->next race
+list_del_rcu() of the sole entry between the singularity check
+and the entry fetch. v3 uses list_first_or_null_rcu() with an
+rcu_access_pointer() check that the entry is the only one in
+the list, as rculist.h suggests.
 
-I'm not sure it was really correct - it's pretty clear that "dev" is 
-intended to be the client device that _caused_ the fault, since why 
-would it make any sense to pass the IOMMU device to some other 
-driver/subsystem's fault handler? (Yes, other IOMMU drivers already do 
-that; I would consider them just as wrong too).
+The v2 user-visible TX path is unchanged in v3, so my Tested-by
+from v2 carries forward: the airgeddon evil-twin flow on mt7921e
+PCIe + mt7921u USB + Kali VM with MT7921U passthrough still
+applies.
 
-IMO it would seem more robust to just fix the tracepoint to handle a 
-NULL "dev" in the case that one can't (easily) be identified.
+[1] https://lore.kernel.org/linux-wireless/20260518064025.96792-1-lucid_duck@justthetip.ca/
+[2] https://lore.kernel.org/linux-wireless/70c49e598ffba2864c8168c7185c0abec76b59dd.camel@sipsolutions.net/
 
-Thanks,
-Robin.
+傅继晗 (1):
+  wifi: mac80211: fix monitor mode frame capture for real chanctx drivers
 
-> report_iommu_fault() but passed NULL instead.
-> In arm-smmu-qcom-debug.c, 'commit d374555ef993 ("iommu/arm-smmu-qcom: Use a custom context fault handler for sdm845")'
-> introduced two report_iommu_fault() calls also with NULL.
-> 
-> Pass smmu->dev to all three call sites.
-> 
-> Fixes: f8f934c180f629bb ("iommu/arm-smmu: Add support for driver IOMMU fault handlers")
-> Fixes: d374555ef993433f ("iommu/arm-smmu-qcom: Use a custom context fault handler for sdm845")
-> Cc: stable@vger.kernel.org
-> Assisted-by: GitHub_Copilot:claude-opus-4.6
-> Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
-> ---
->   drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c | 4 ++--
->   drivers/iommu/arm/arm-smmu/arm-smmu.c            | 2 +-
->   2 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
-> index 65e0ef6539fe7..8eb9f7831de07 100644
-> --- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
-> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
-> @@ -399,7 +399,7 @@ irqreturn_t qcom_smmu_context_fault(int irq, void *dev)
->   		return IRQ_NONE;
->   
->   	if (list_empty(&tbu_list)) {
-> -		ret = report_iommu_fault(&smmu_domain->domain, NULL, cfi.iova,
-> +		ret = report_iommu_fault(&smmu_domain->domain, smmu->dev, cfi.iova,
->   					 cfi.fsynr & ARM_SMMU_CB_FSYNR0_WNR ? IOMMU_FAULT_WRITE : IOMMU_FAULT_READ);
->   
->   		if (ret == -ENOSYS)
-> @@ -417,7 +417,7 @@ irqreturn_t qcom_smmu_context_fault(int irq, void *dev)
->   
->   	phys_soft = ops->iova_to_phys(ops, cfi.iova);
->   
-> -	tmp = report_iommu_fault(&smmu_domain->domain, NULL, cfi.iova,
-> +	tmp = report_iommu_fault(&smmu_domain->domain, smmu->dev, cfi.iova,
->   				 cfi.fsynr & ARM_SMMU_CB_FSYNR0_WNR ? IOMMU_FAULT_WRITE : IOMMU_FAULT_READ);
->   	if (!tmp || tmp == -EBUSY) {
->   		ret = IRQ_HANDLED;
-> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> index 0bd21d206eb3e..92d8fa2100adb 100644
-> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> @@ -467,7 +467,7 @@ static irqreturn_t arm_smmu_context_fault(int irq, void *dev)
->   	if (!(cfi.fsr & ARM_SMMU_CB_FSR_FAULT))
->   		return IRQ_NONE;
->   
-> -	ret = report_iommu_fault(&smmu_domain->domain, NULL, cfi.iova,
-> +	ret = report_iommu_fault(&smmu_domain->domain, smmu->dev, cfi.iova,
->   		cfi.fsynr & ARM_SMMU_CB_FSYNR0_WNR ? IOMMU_FAULT_WRITE : IOMMU_FAULT_READ);
->   
->   	if (ret == -ENOSYS && __ratelimit(&rs))
-
+ net/mac80211/tx.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
