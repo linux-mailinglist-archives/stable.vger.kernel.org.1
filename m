@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-249291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OImkFyQYC2o5/wQAu9opvQ
-	(envelope-from <stable+bounces-249291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:46:12 +0200
+	id MG+5C5gZC2o5/wQAu9opvQ
+	(envelope-from <stable+bounces-249292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:52:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C7F56DECE
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:46:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F95D56E0A3
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 97B5830183F8
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:45:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6B2430B65C6
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069211A3165;
-	Mon, 18 May 2026 13:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B13B1A3165;
+	Mon, 18 May 2026 13:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="saSHdwa9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AoRSkYJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFA217A300
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 13:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8388634C
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 13:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779111931; cv=none; b=HXIB1VlX5AfhpDlIrSMds7es7mN3qldmZTsyXnkCAbdyXlVvTGdPB+9G4QfGOAKmBKHsYwleG+RBzBXBgUg098nYdhuavRHZrAqRaCY7yGhBzOCjNBoe6oBoXDKUbzxlxLIhD4wv9iatT6O3TjXMMd9X9FoSwBh1vbudx5zfSr8=
+	t=1779111934; cv=none; b=tejkwdYISblyM18ZNV84+TLWf+6utRjbOC6ZpHAtN9UCN/61h5B3/XGvIx5zPPY80u78hTzo+FigplTP93ObTQ8Oiall961mTf04wbpxPD51PpOQCBg2lI/qiU/XEO7voa3Eb6mi2rjRYR8iHdZxdjPxY+JAgl2vWSpEJgwAXVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779111931; c=relaxed/simple;
-	bh=JCtKFrjOvCVCJbxtpy0KDerGz0qSjPSw1fu0wUmhGfQ=;
+	s=arc-20240116; t=1779111934; c=relaxed/simple;
+	bh=YYiyTrhmhtUgJqjXS8Rf5WrOCTiEFTMa0gpi5jQg3S0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WG9KK0q+7x+VrGcDC3FnntImtl6Hbcdzb5hwWOf38nbQbbkY3Z0ugd8K/7DO3cNfjeHEpHUEr1hvxx3IBPnwTvOQq6HZizARCzewpRhVGd0tL60qiUrshbRzYq4Q08easfZhReEazlGH02iUeJnOjUP/BIzXQqZmJjXMEqFXvjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=saSHdwa9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C968DC2BCB7;
-	Mon, 18 May 2026 13:45:30 +0000 (UTC)
+	 MIME-Version; b=gS6TI52TZMtSGAigfnrrMUTQ8UrYS5mM9q4M2d3vQItqsHmpAOl9kFBL9H+rLDlyByq9zO3/XxzyVEBicQwGSOCNwptdwt19Vk2w4+CiYS1F+tj3AlQvZbptOfkLWDF5IyN3HgaOWvFaufh0bP/LzaSOZmYc1Kgjj4LbdYOcAOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AoRSkYJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B906C2BCB7;
+	Mon, 18 May 2026 13:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779111931;
-	bh=JCtKFrjOvCVCJbxtpy0KDerGz0qSjPSw1fu0wUmhGfQ=;
+	s=k20201202; t=1779111934;
+	bh=YYiyTrhmhtUgJqjXS8Rf5WrOCTiEFTMa0gpi5jQg3S0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=saSHdwa9QbZTrX2mRavM1PtCuXW+dt+eNOPJVqUaE3Q0VIv0QxxXr7v7StjWw6sYU
-	 ily55EZPW7SAamVR5B9Ks+XLrESgNNpSD3RcPxbZRNRVItVz+RrzrHEbECTeaWjKVv
-	 WRzFjoS4CtsI6lGjpjzIUM8Y4okssPijf/9PHskNjz4ROMBAovhcnNlZ9lzqnPUtuI
-	 C8xQkp7NGIcqzaAEDjAqfqTqow5EFmL9dPW8CNHyAoCvVpwkDOrciJ4LIikh75iTyU
-	 6H8dY+P2a51ea4A9moqEscfW9YyeIhUkBxO82IUpK2AJXijnvFweO23svPdgmeXa4l
-	 2d2i9eoXzgTYQ==
+	b=AoRSkYJGBaJnNfkxKyjXgMnyYhyY68hPx9URsV/t83oFbjox/vCIu+DFiCPJe065/
+	 mSuDLxNtv53JcUz1nG2qials8OpC/UPR2xvMYYeAecvIMkluhtp2c1V9hN/o+8WUFX
+	 fGvUgm0F96hs9Ee7IZUoExFEtYRZbgz7CVH+B2e8Z2rnpc3DllEUoWUeoXsfl78MAK
+	 OSny2fP5Fxm8Hrc0fvCzBOB7IhHF95cC2jOWP5WuqVRdgZip15xmfXyCo/xPlBHJ6L
+	 DxZQw/O2GD4GOZzwSTkSnAc7DUI9uvN2J9fvnhSZNvP8tlho8fVLNqiofCRpvttRH+
+	 31TdE1NIziRmg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Mat Martineau <martineau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] mptcp: pm: kernel: correctly retransmit ADD_ADDR ID 0
-Date: Mon, 18 May 2026 09:45:28 -0400
-Message-ID: <20260518134529.1135588-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] mptcp: pm: prio: skip closed subflows
+Date: Mon, 18 May 2026 09:45:31 -0400
+Message-ID: <20260518134531.1135631-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051244-unrivaled-everglade-a9bc@gregkh>
-References: <2026051244-unrivaled-everglade-a9bc@gregkh>
+In-Reply-To: <2026051229-ozone-hardener-e249@gregkh>
+References: <2026051229-ozone-hardener-e249@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,12 +69,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249291-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249292-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -87,76 +87,51 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,addr.id:url]
-X-Rspamd-Queue-Id: 00C7F56DECE
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7F95D56E0A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit b12014d2d36eaed4e4bec5f1ac7e91110eeb100d ]
+[ Upstream commit 166b78344031bf7ac9f55cb5282776cfd85f220e ]
 
-When adding the ADD_ADDR to the list, the address including the IP, port
-and ID are copied. On the other hand, when the endpoint corresponds to
-the one from the initial subflow, the ID is set to 0, as specified by
-the MPTCP protocol.
+When sending an MP_PRIO, closed subflows need to be skipped.
 
-The issue is that the ID was reset after having copied the ID in the
-ADD_ADDR entry. So the retransmission was done, but using a different ID
-than the initial one.
+This fixes the case where the initial subflow got closed, re-opened
+later, then an MP_PRIO is needed for the same local address.
 
-Fixes: 8b8ed1b429f8 ("mptcp: pm: reuse ID 0 after delete and re-add")
+Note that explicit MP_PRIO cannot be sent during the 3WHS, so it is fine
+to use __mptcp_subflow_active().
+
+Fixes: 067065422fcd ("mptcp: add the outgoing MP_PRIO support")
 Cc: stable@vger.kernel.org
+Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-1-fca8091060a4@kernel.org
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-9-fca8091060a4@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied to net/mptcp/pm_netlink.c instead of upstream's pm_kernel.c ]
+[ applied to renamed function `mptcp_pm_nl_mp_prio_send_ack()` in `pm_netlink.c` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ net/mptcp/pm_netlink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 28f8d7fb7bdf3..a12379619ab4f 100644
+index a16a7a538c425..2f261d691c6f5 100644
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -591,6 +591,8 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+@@ -924,6 +924,9 @@ int mptcp_pm_nl_mp_prio_send_ack(struct mptcp_sock *msk,
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+ 		struct mptcp_addr_info local, remote;
  
- 	/* check first for announce */
- 	if (msk->pm.add_addr_signaled < add_addr_signal_max) {
-+		u8 endp_id;
++		if (!__mptcp_subflow_active(subflow))
++			continue;
 +
- 		/* due to racing events on both ends we can reach here while
- 		 * previous add address is still running: if we invoke now
- 		 * mptcp_pm_announce_addr(), that will fail and the
-@@ -604,19 +606,20 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 		if (!select_signal_address(pernet, msk, &local))
- 			goto subflow;
- 
-+		/* Special case for ID0: set the correct ID */
-+		endp_id = local.addr.id;
-+		if (endp_id == msk->mpc_endpoint_id)
-+			local.addr.id = 0;
-+
- 		/* If the alloc fails, we are on memory pressure, not worth
- 		 * continuing, and trying to create subflows.
- 		 */
- 		if (!mptcp_pm_alloc_anno_list(msk, &local.addr))
- 			return;
- 
--		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
-+		__clear_bit(endp_id, msk->pm.id_avail_bitmap);
- 		msk->pm.add_addr_signaled++;
- 
--		/* Special case for ID0: set the correct ID */
--		if (local.addr.id == msk->mpc_endpoint_id)
--			local.addr.id = 0;
--
- 		mptcp_pm_announce_addr(msk, &local.addr, false);
- 		mptcp_pm_nl_addr_send_ack(msk);
- 
+ 		mptcp_local_address((struct sock_common *)ssk, &local);
+ 		if (!mptcp_addresses_equal(&local, addr, addr->port))
+ 			continue;
 -- 
 2.53.0
 
