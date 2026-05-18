@@ -1,191 +1,144 @@
-Return-Path: <stable+bounces-249155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPWlHyNUCmrxzwQAu9opvQ
-	(envelope-from <stable+bounces-249155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 01:49:55 +0200
+	id wDblD8NjCmoA0wQAu9opvQ
+	(envelope-from <stable+bounces-249156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 02:56:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07AF5646CD
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 01:49:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9448D564A02
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 02:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12E8830221FF
-	for <lists+stable@lfdr.de>; Sun, 17 May 2026 23:49:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42BDF300F52A
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 00:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66D931F9AD;
-	Sun, 17 May 2026 23:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825EF1D5146;
+	Mon, 18 May 2026 00:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AbYGiYS8"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b="ExmhZXcB";
+	dkim=temperror (0-bit key) header.d=berkoc.com header.i=@berkoc.com header.b="SRhvhkS2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-01.1984.is (mail-01.1984.is [185.112.145.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B42263C9F
-	for <stable@vger.kernel.org>; Sun, 17 May 2026 23:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332182A1CF
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 00:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.112.145.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779061774; cv=none; b=aE97f64vfIAA+jTqQkT10mBNtui3jGqX0vn5t2ujfjxrpE/Up7yiq2j2QjyYsDxDF0rO/xILUEikkHLbtVwU5loILJsn6wleoEG+Phw3qzVs23lyyuXxaqlkvYAhl/irsakSX8nSNdYTlEaXLR4XmFbziAK+t6JAz0fmBymj0JE=
+	t=1779065792; cv=none; b=ETK83WVVFAHco3luN1geEjAQ9ytB5VFeBGVW02l7JPs9sR+gdwhpmRgZxEdm3OCvvRZ4XQjm8CHoXgZ8h5xqeyRvEsAPzWAagskhUhV6Ee/S4c041Nf3wlw4DjZNeOa0VmCu4R5NHTjm7HQA4VClf3dyqCg3otdpzX9tc9XL1M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779061774; c=relaxed/simple;
-	bh=18r8WGr0sLy2v2ONuN/uyQDOzOFcYvt1CAOLrZySO8I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AX5UIMS9ROesmzRwb70bBA+R5XxMhVe62/fujjElnm3RM0v4/fGcD1+VsjnEYKGt17bWApcJD9i6stYLbQQKzPbjppLxWdUnsQFAivLoP8VenMmNFi+q4u9wrY9JRDe7uHFRZ8IX0qodnOobOY0uMLTAtfSwPskJveheTKj32S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AbYGiYS8; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4890d945eb4so14088145e9.0
-        for <stable@vger.kernel.org>; Sun, 17 May 2026 16:49:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779061771; x=1779666571; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=q4JPW1ddnaHfBwPTUg/aODR+UFy3JRdz5SXqJfspXx8=;
-        b=AbYGiYS8nkbo+JbSnshL6H+aBDgClnztbe+pd/QC8uUrJRU+dnJFtiIPFfAyfVjiui
-         47tpix7Zk/1Tp68LaGFvzZnrE6TUaTFQv9DemY3TeVSKCSasJkGwIqEG9U5xJOmRYTjN
-         X/6Fyop7+EzgCBrukGNDBCkLZnq2PQrRMkDyirPg/olp1e57olXRqVd/xYdmllEoxesn
-         V4+N3VyL4jeVMnuS76ua3BGCYEvfHv9FXhuNaqIK+Wdu20edGbbSp7vh8AEbmJ/QQ9+6
-         Jlpzv/dro3z/TNYU5v+o1ITHfZ+Kp3sKbTiEVW0YQywqLXFX0VXI/mqRU7mi8E2ple5o
-         qkaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779061771; x=1779666571;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q4JPW1ddnaHfBwPTUg/aODR+UFy3JRdz5SXqJfspXx8=;
-        b=fgh8dFQzDSdp4JxnOKwzyYQSGAZoSYHBoty1aYF0rLK6bYUF3kjsdjQBCKVd6E6Dr4
-         KVSNV1fI0PomgLiuFmXKLd0+ZpPNxpwklrztD2eZVwznVt1fP3ltWrbjFkOOZLXYDDLN
-         DCOp5oCGNserEdjjjUKqp4ptQFItXYZP9u25j/sEXT22WwUUQzqg+Z88G9EXJ5dA+Ymi
-         ko//nC132EvVBU/Gi7raJRScV8hnAgawcIEgYU7qWqv+5AFF6rJy/lZ/hbfXVA2M6x9X
-         V8ny3HSmVtmUy6u1Qh/05zfVTmIvGOujDu9Gd5iDrb81Mez4+wDcR1WhRF1SXtCT0J2p
-         4fEA==
-X-Forwarded-Encrypted: i=1; AFNElJ/FhVaw2AMc6X0DBjRLPIoIaO79e+RvLeHa4VJzs6oiWGAnAW8iTvOcY4ioPqVVsGE84u47Lq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo+bY1kAw1R6EvCKz4o4zsdW0syCbXofYj4JYvlSUR6aKlOdhq
-	1N78htvMpgg5kK0aQfNLUwKqVeeN2wJpqdOobRzGHOrHqdC/lTIdkY6V
-X-Gm-Gg: Acq92OFH9KuAzfkkhpIWsKwsjpJXeBehpAU5IKZkJd2Dq+9J0uSWhJJ2FFPwJ59vJDP
-	CM73OWRDiheeIoQpD0Czh3Lb2S8hdvRXKADLds3EhWns9N3yYhLqi2eMg2UaSvtAEvo7oFbWyOh
-	CFkFNSzr6GpXhKlId7ROS46qKSWuNPiSz/CZqKmzqTntcYsPeACi+J/Bo6Na1uz4JEEasL0KhqI
-	yGrHHaNSMsLe88OmzXmLDz1UjJQtmQ5qo9yI9mBQRH0JCnp+Ks4VC/yU7ziVLNcLrCgKCUXMLom
-	BTGFBAKwHUZaDAyC7WbC2nGWuj/75VZMCO6IqWQ2Tban+SA888wcfkdt6LoMgBx0uYggW2RlVf5
-	CiseWyJ/BGfOOl+h1SE3RhyQF0dLmc9UjaBMiUVLzvKsq+IPhiBHNPh5U8YXwaH2atUUz2wbgke
-	dTjxL89kLCmhfgXEhu8RU4bKKgxC4Z4qCsKGOMZ0nqOrzezStoJM6Tb5Gh1cdBGYfryfmfRpGI5
-	hy9OM571s6Z
-X-Received: by 2002:a05:600c:a406:b0:489:32b:ac0b with SMTP id 5b1f17b1804b1-48fe4fa1902mr154323275e9.6.1779061771345;
-        Sun, 17 May 2026 16:49:31 -0700 (PDT)
-Received: from node ([202.47.63.86])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febf86db7sm100133505e9.6.2026.05.17.16.49.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 16:49:30 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: linux-bluetooth@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	marcel@holtmann.org,
-	luiz.dentz@gmail.com,
-	johan.hedberg@gmail.com,
-	stable@vger.kernel.org,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: [PATCH] Bluetooth: HIDP: fix missing length checks in hidp_input_report()
-Date: Sun, 17 May 2026 19:48:05 -0400
-Message-ID: <20260517234805.116570-1-meatuni001@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1779065792; c=relaxed/simple;
+	bh=EAQX1Sfbq575thscWiKi136F/+gD6s4Z2BS9Woxw11M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Message-ID:Date; b=SbneukXA7hNx1j9p/V0FTf6PkQQ0SWQI0qjATvOjCnzoPBvhsE7mTcpYHVPNwYr/5fm1M/xeX7EcokwMKJNi4E9AT5SfC3OzA5yiDKC/2CmoUg9OwTNhMcBIx2vJTe9gbGKU9V+hNKaSP4d/zapeahQG8SqGDWsbxtKYeIy5HJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=berkoc.com; spf=pass smtp.mailfrom=berkoc.com; dkim=pass (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b=ExmhZXcB; dkim=temperror (0-bit key) header.d=berkoc.com header.i=@berkoc.com header.b=SRhvhkS2; arc=none smtp.client-ip=185.112.145.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=berkoc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkoc.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=berkoc.com;
+	s=1984; h=Date:Message-ID:References:In-Reply-To:Subject:Cc:To:From:Sender:
+	Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=EAQX1Sfbq575thscWiKi136F/+gD6s4Z2BS9Woxw11M=; b=ExmhZXcBMI6TPcXNZB8IW6tglw
+	MoLfrA43x4msoi2Jq3w797EH4tkeAeCxhwrQcYqCPXziZZ3CsUBR7g+C6V2XYFT8vVYshSyiR+hyW
+	TshL9kl+NfmHGoRD6e4E4BK5qX4VDqs5Ry8n+B2wGmlE80AGOOeDnJI8tniyZCPCyuRbhbScugcmo
+	1olt227rkWygXAM9dt0oCDKBk+FLZlJDTmMf1orEis0Fae7JGGu6W9UOpadI0uyfL+maEOyQvoVDG
+	TvI/s1YnY1XOrCDC3zr6C8nyRrPwPicR65pMCz04xqhsLE42QAfoJvwjeBK5NVUxyyd7InQ7P61Sw
+	5/a2/z7w==;
+Received: from localhost
+	by mail-01.1984.is with utf8esmtp (Exim 4.96)
+	(envelope-from <me@berkoc.com>)
+	id 1wOmHN-00HQfN-07;
+	Mon, 18 May 2026 00:56:21 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=berkoc.com;
+ i=@berkoc.com; q=dns/txt; s=me; t=1779065776; h=message-id : date :
+ subject : cc : to : from : sender : reply-to;
+ bh=EAQX1Sfbq575thscWiKi136F/+gD6s4Z2BS9Woxw11M=;
+ b=SRhvhkS2qsA5kKmLlhTBGiEBPNc57R9WZhmL0Yc4seyOGJabVrV0pV5+e7PieB9nHEgik
+ /CRtXIXtnbE/r9Rq0YMEfuOB7jRaTLG0TqGGSl3i3jEWkgoT0VqJiEq2Emdvyu5GwCWafAI
+ qgNmOYvX1rrFPBddfFXhUzx8bWIY7/DW+yEeaPKQLOzfSxVfvMiE413uZN6OlptlF2MweED
+ X1/jERTR9bGfWufXyW7SmOR9GP6F2vmWusWhQh2LmooGmBWHia4sYZlU/YnSOVCxxC5DXUj
+ uET2CWujlPKkQsHHNMnH109dsDvX+ghBMfVbsM6EpNwubNWyRgWGv5G6Pyyg==
+From: Berkant Koc <me@berkoc.com>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: bcm-kernel-feedback-list@broadcom.com,
+ dri-devel@lists.freedesktop.org,
+ Daniel Vetter <daniel@ffwll.ch>,
+ David Airlie <airlied@gmail.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] drm/vmwgfx: validate execbuf header.size lower bound
+In-Reply-To: 
+ <CABQX2QMuLf-gDSfcoHgSrzjY8CyN9GSpt8J7Kv08QeeQMDUxqA@mail.gmail.com>
+References: <20260517-vmwgfx-uaf-report@berkoc.com>
+ <2026051743-genre-cacti-bdf3@gregkh>
+ <20260517-vmwgfx-uaf-patch@berkoc.com>
+ <CABQX2QMuLf-gDSfcoHgSrzjY8CyN9GSpt8J7Kv08QeeQMDUxqA@mail.gmail.com>
+Message-ID: <177906577661.918345.11000778175674964652@berkoc.com>
+Date: Mon, 18 May 2026 02:56:16 +0200
+X-Spam-Score: -0.2 (/)
+X-Authenticated-User: me@berkoc.com
+X-Sender-Address: me@berkoc.com
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D07AF5646CD
+X-Rspamd-Queue-Id: 9448D564A02
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-Spamd-Result: default: False [3.14 / 15.00];
+	SEM_URIBL_FRESH15(3.00)[berkoc.com:dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[berkoc.com:s=me];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	R_DKIM_REJECT(0.00)[berkoc.com:s=1984];
+	TAGGED_FROM(0.00)[bounces-249156-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,holtmann.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-249155-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_MIXED(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[broadcom.com,lists.freedesktop.org,ffwll.ch,gmail.com,suse.de,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[berkoc.com: no valid DMARC record];
+	DKIM_TRACE(0.00)[berkoc.com:-,berkoc.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[me@berkoc.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[berkoc.com:mid,berkoc.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-hidp_input_report() reads keyboard and mouse payload data from an skb
-without first verifying that skb->len contains enough data.
+Thanks for the catch, you're right, I should have flagged the tooling
+in the patch body. And cross-pollination with your own series on
+patchwork is a good outcome.
 
-hidp_recv_intr_frame() pulls the 1-byte HIDP header before dispatching
-to hidp_input_report(). If a paired device sends a truncated packet,
-the handler reads beyond the valid skb data, resulting in
-an out-of-bounds read of skb data.
-The OOB bytes may be interpreted as phantom key presses or
-spurious mouse movement.
+Tooling: berkoc-pipeline, a custom RAG framework on Claude Opus 4.7
+(Anthropic CVP cohort, May 2026). Full agentic stack: multi-tool
+execution (filesystem, web fetch, code execution), parallel subagent
+orchestration with adaptive task decomposition, extended-thinking
+integration, retrieval-augmented context over a file-based semantic
+knowledge base, MCP-style integration patterns. 7-step pre-disclosure
+validation gate, manual verification on every finding before submit.
 
-Add a check that skb->len is non-zero before the type switch, and
-per-report-type minimum length checks before accessing the payload.
+v2 of this patch will include the formal trailer:
+Assisted-by: Claude:claude-opus-4-7 berkoc-pipeline
 
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
----
- net/bluetooth/hidp/core.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+Happy to send v2 with the trailer formalised, or keep the methodology
+disclosure to follow-up comments if you prefer.
 
-diff --git a/net/bluetooth/hidp/core.c b/net/bluetooth/hidp/core.c
-index 976f91eeb..03838a6ff 100644
---- a/net/bluetooth/hidp/core.c
-+++ b/net/bluetooth/hidp/core.c
-@@ -179,12 +179,22 @@ static void hidp_input_report(struct hidp_session *session, struct sk_buff *skb)
- {
- 	struct input_dev *dev = session->input;
- 	unsigned char *keys = session->keys;
--	unsigned char *udata = skb->data + 1;
--	signed char *sdata = skb->data + 1;
--	int i, size = skb->len - 1;
-+	unsigned char *udata;
-+	signed char *sdata;
-+	int i, size;
-+
-+	if (!skb->len)
-+		return;
-+
-+	udata = skb->data + 1;
-+	sdata = skb->data + 1;
-+	size = skb->len - 1;
- 
- 	switch (skb->data[0]) {
- 	case 0x01:	/* Keyboard report */
-+		if (size < 8)
-+			break;
-+
- 		for (i = 0; i < 8; i++)
- 			input_report_key(dev, hidp_keycode[i + 224], (udata[0] >> i) & 1);
- 
-@@ -213,6 +223,9 @@ static void hidp_input_report(struct hidp_session *session, struct sk_buff *skb)
- 		break;
- 
- 	case 0x02:	/* Mouse report */
-+		if (size < 3)
-+			break;
-+
- 		input_report_key(dev, BTN_LEFT,   sdata[0] & 0x01);
- 		input_report_key(dev, BTN_RIGHT,  sdata[0] & 0x02);
- 		input_report_key(dev, BTN_MIDDLE, sdata[0] & 0x04);
--- 
-2.54.0
-
+Berkant
 
