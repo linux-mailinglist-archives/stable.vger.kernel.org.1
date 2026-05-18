@@ -1,229 +1,178 @@
-Return-Path: <stable+bounces-249268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPF5OXwFC2rd/QQAu9opvQ
-	(envelope-from <stable+bounces-249268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:26:36 +0200
+	id kMyKNiEGC2rd/QQAu9opvQ
+	(envelope-from <stable+bounces-249269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:29:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4381056C9BA
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:26:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B2856CA53
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2F0E30A6B78
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 12:16:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C432E3010DD0
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 12:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3B63FF1C9;
-	Mon, 18 May 2026 12:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA43540243C;
+	Mon, 18 May 2026 12:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CH9a70z2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNHR5HHi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BB93FF1C1;
-	Mon, 18 May 2026 12:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC103264FA
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 12:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779106569; cv=none; b=ThIFnAHntDG81wk8CDHGF2/7CI7EWNnm/q4DPfOOBJomnOMCYk6+HwzHVc9TXqUdzh7UnLslXpQpU+KE+77fc3IJnnO1xT/t8m02t43kM5jmM14WfCNkIe+1p2nr56gjiSLDnte0QsFM0fgdThCDxNC2NjMzcRlwlA/1VzHLZzE=
+	t=1779106717; cv=none; b=P0VqEPw0nFep8mEwExPTWvNtMCe64bHOI1ei8o5dRVXsozoQXhPEFWOmy810wI5t2JGH1mTr+OKt/o/HtUK1KpofG2JxCUzwD7aAggtdSa/dXIVRJ0gyWmNbaP4p4iX1rVhKYgoGi3qpnG69+UldyUOZ8hznsfsnVWI27cKDLg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779106569; c=relaxed/simple;
-	bh=XYsRtPYTFaKawM7nUzhJPb+P7s87NzrhXN2ierK/HFM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UBCfAo7ji24XWzM159gUkYloP7Q3xEo1+5r4VjZaac2O4uYpAeSFc7wRaCFF/9nQV+8eH0gLb2HVvSPlTZzZJIHdZ+4QF5tKBIs+JMazsdy000u9+6/rgfFAJHDgSxm+Puvy+eyFyDVHm77cqn+clWCv59IToQojqkRNiGl+FBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CH9a70z2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4A4C2BCC6;
-	Mon, 18 May 2026 12:16:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1779106569;
-	bh=XYsRtPYTFaKawM7nUzhJPb+P7s87NzrhXN2ierK/HFM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CH9a70z25f5en7QJqQut1DAIFQEV+scVEzKMjihNBIMeiKtR5rICpW/oJRfl3DEeG
-	 rX9O/02SWielbnrWCfZxSxbW6jCSlxdZh6u6qnd+J03ucf2te2Ltkz8t3IlSz0PAQN
-	 4/HKqySN4Ql98DYb0YZb77wj1S10JlnExlLI+9os=
-Date: Mon, 18 May 2026 14:16:12 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	Martin Michaelis <code@mgjm.de>,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Vegard Nossum <vegard.nossum@oracle.com>
-Subject: Re: [PATCH 6.12 130/144] io_uring/kbuf: support min length left for
- incremental buffers
-Message-ID: <2026051801-trifocals-gummy-2be3@gregkh>
-References: <20260515154653.469907118@linuxfoundation.org>
- <20260515154656.529062291@linuxfoundation.org>
- <876ac528-b2db-4d52-afff-2a44f13a6767@oracle.com>
- <bc8ede5a-ab28-4191-9153-7e66c28916ac@kernel.dk>
+	s=arc-20240116; t=1779106717; c=relaxed/simple;
+	bh=4Uh3eQNG1AzQ8+Z/3G2EaHP2yuu8tI/1ewQgpcXwoSk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uyZPOKBl9/267iTbi3F0tM1hVESQpkGWreKeN8B1Iaoc6Fyfik9ybHK39OjzsW108kZOyt81SmagmOlH2yO0brIn5H1EikPNxsXtws5b+qfkjU3K4go5kL778FMPpTA58xcMUAhCozATFEkB0vuqe4REGBlyhd6883nNn3H++Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNHR5HHi; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bd2087858c4so533581366b.0
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 05:18:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779106714; x=1779711514; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sUmwK/E8k0/+bmmnitAn3thbhE/x2wsT2IrX01fre1Y=;
+        b=XNHR5HHiAin54LUGTCXqPOGiCVfjzXfUfv9IkxU8pnXfYfY96DkGw8aQG3nXhzEAwj
+         +eczCJmsg+NQNbCg5opZN6BLAJ8SQZYVjg4kVN3Wf/rQtZpVLe4nKk3KC1quH0WTOC5m
+         rzZ1FYohAIrjDCC0Owln6/cl3cL6ctTHJORLoSorM5Cm/lDaPc9eeQJICOx6kR7FgJLf
+         SGTFvW87eXDavUi7+PjVduuhLlVJVSCxyV8cKsCtjnXhFQZJgZMieC4AtaouvRx7eSNh
+         uxVW0kzDTgaZWHkhhxva82iiisMLRiR3Um7WVtEO9fsqzAh+//ByPsopqn3YutA9Wr9O
+         0pSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779106714; x=1779711514;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sUmwK/E8k0/+bmmnitAn3thbhE/x2wsT2IrX01fre1Y=;
+        b=qkn5BiX7bZx3LMx8JW7Qd/r3fDcdaUw5uSKqOvWxNlwhWknvbj75Y7GdpuFgtcJ5Um
+         +cQSO5yG9BlgU3PNH17MPkiqHpwZUU1t9JihPOOhfcrGNpfwkzbHrN9q0e+LYqBv2w2x
+         M4VM4IIUkVROtE5LKwJuEd6IMBA3ekd3yweLSKNvw6JBtzEFS8BINQiypBla4txAkLY9
+         r3aDoUKB4NGG4TbfcCrmCks6dfYb2XRc7nOGBXv6tPM7NZCbf7evduJOMXzq+h7dgQnl
+         5EUerNaQtDNb2Ma0snoltfYGj5yv86yw8+A2Y3tGhv1OuoDJquDwutZjUB1vjamj6ALa
+         cJ4g==
+X-Forwarded-Encrypted: i=1; AFNElJ+funhIIZGDePoPncP+eztkWyPqB79zqzTQvgl6ZE0/kw/okD3JLk5K3/UdT8HR8bwcg3UJ4Xs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0J7rN55FC2oPircNPZtgBBGO24vbB+ufcV4xYmb5HMHgLVOiD
+	SDsemXfhqHnUyBQjOTGaNlsx0JxqMHKygh9efCdUedQEeeTALjFmUEQqCitQeszC
+X-Gm-Gg: Acq92OEejHmj3Y/D8bIlVT5ABNFkh5bwjdKrcongEDaslQ23oNmMjCsEDtS6WnXMhT4
+	O614H8ezVA5ICoChxCU10YmXxG3xmkwGkS1O943Sp5Q4xWxEVxox01CRFG4DLzBYaYrZ2zq3aos
+	D+LcyQZ3zMr6FAa/6Az6RKMSNjs6/x6Z4UjhcKjI9Y7apirZ67w3eBsFeQYBpqw3a2LyvInq5Wl
+	2h3KVI4anoFxpoZAtm7Z17n61vjIrrJ0Lya/jgkvCaORo4f3H7gTbYu9XIDaG3Ij/PzPvcNtPSf
+	ivbhY59yx6JF8IybF+wWrkj4AucGCcPUUKDUfKnGgKIrAT2vPtW7RlyXQxf14RYVfdSp+AvgVUf
+	0e9rrIJ2er0X99K9ri276agA10W26FeenAb8JS02NPNQhKQ5Qo3/wtWi0Jk6ARZBFyi0Yil2qif
+	oAE1aBkRu7RJXLIwYvhXjHwVi30ljzc7NKSlbRcA9o5WJCVGwMrDakOY3O6dEg742mTQsxFu0ja
+	ZkQBX7XbR2Q9QbC0BMzXhdqpJAM9NovoAsqKb7bX8k4VgDg1c87Oi1rTTdUwz9QVeBP/Y46CtEq
+	jIL8UcNKSreh45zXuSWKIMSRY1nC
+X-Received: by 2002:a17:906:5189:10b0:bd4:f814:efe8 with SMTP id a640c23a62f3a-bd5177ee44amr557710666b.18.1779106714108;
+        Mon, 18 May 2026 05:18:34 -0700 (PDT)
+Received: from ahossu.localdomain (ip-217-105-56-94.ip.prioritytelecom.net. [217.105.56.94])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4c631e2sm547638066b.28.2026.05.18.05.18.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 05:18:33 -0700 (PDT)
+From: Alexandru Hossu <hossu.alexandru@gmail.com>
+To: "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	target-devel@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	hossu.alexandru@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: target: iscsi: validate CHAP_R length before base64 decode
+Date: Mon, 18 May 2026 14:18:11 +0200
+Message-ID: <20260518121811.385350-1-hossu.alexandru@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bc8ede5a-ab28-4191-9153-7e66c28916ac@kernel.dk>
-X-Rspamd-Queue-Id: 4381056C9BA
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E2B2856CA53
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249268-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-249269-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_CC(0.00)[acm.org,vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hossualexandru@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-On Sun, May 17, 2026 at 07:02:25PM -0600, Jens Axboe wrote:
-> On 5/17/26 12:39 PM, Harshit Mogalapalli wrote:
-> > Hi Greg and Jens,
-> > 
-> > On 15/05/26 21:19, Greg Kroah-Hartman wrote:
-> >> 6.12-stable review patch.  If anyone has any objections, please let me know.
-> >>
-> >> ------------------
-> >>
-> >> From: Martin Michaelis <code@mgjm.de>
-> >>
-> >> commit 7deba791ad495ce1d7921683f4f7d1190fa210d1 upstream.
-> >>
-> >> Incrementally consumed buffer rings are generally fully consumed, but
-> >> it's quite possible that the application has a minimum size it needs to
-> >> meet to avoid truncation. Currently that minimum limit is 1 byte, but
-> >> this should be a setting that is the hands of the application. For
-> >> recvmsg multishot, a prime use case for incrementally consumed buffers,
-> >> the application may get spurious -EFAULT returned at the end of an
-> >> incrementally consumed buffer, as less space is available than the
-> >> headers need.
-> >>
-> >> Grab a u32 field in struct io_uring_buf_reg, which the application can
-> >> use to inform the kernel of the minimum size that should be available
-> >> in an incrementally consumed buffer. If less than that is available,
-> >> the current buffer is fully processed and the next one will be picked.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-> >> Link: https://github.com/axboe/liburing/issues/1433
-> >> Signed-off-by: Martin Michaelis <code@mgjm.de>
-> >> [axboe: write commit message, change io_buffer_list member name]
-> >> Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
-> >> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> >> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >> ---
-> >>   include/uapi/linux/io_uring.h |    3 ++-
-> >>   io_uring/kbuf.c               |    8 +++++++-
-> >>   io_uring/kbuf.h               |    7 +++++++
-> >>   3 files changed, 16 insertions(+), 2 deletions(-)
-> >>
-> >> --- a/include/uapi/linux/io_uring.h
-> >> +++ b/include/uapi/linux/io_uring.h
-> >> @@ -758,7 +758,8 @@ struct io_uring_buf_reg {
-> >>       __u32    ring_entries;
-> >>       __u16    bgid;
-> >>       __u16    flags;
-> >> -    __u64    resv[3];
-> >> +    __u32    min_left;
-> >> +    __u32    resv[5];
-> >>   };
-> > 
-> > ^^^ let us remember this. More comments below
-> >>     /* argument for IORING_REGISTER_PBUF_STATUS */
-> >> --- a/io_uring/kbuf.c
-> >> +++ b/io_uring/kbuf.c
-> >> @@ -47,7 +47,7 @@ static bool io_kbuf_inc_commit(struct io
-> >>           this_len = min_t(u32, len, buf_len);
-> >>           buf_len -= this_len;
-> >>           /* Stop looping for invalid buffer length of 0 */
-> >> -        if (buf_len || !this_len) {
-> >> +        if (buf_len > bl->min_left_sub_one || !this_len) {
-> >>               WRITE_ONCE(buf->addr, READ_ONCE(buf->addr) + this_len);
-> >>               WRITE_ONCE(buf->len, buf_len);
-> >>               return false;
-> >> @@ -727,6 +727,10 @@ int io_register_pbuf_ring(struct io_ring
-> >>       if (reg.ring_entries >= 65536)
-> >>           return -EINVAL;
-> >>   +    /* minimum left byte count is a property of incremental buffers */
-> >> +    if (!(reg.flags & IOU_PBUF_RING_INC) && reg.min_left)
-> >> +        return -EINVAL;
-> >> +
-> >>       bl = io_buffer_get_list(ctx, reg.bgid);
-> >>       if (bl) {
-> >>           /* if mapped buffer ring OR classic exists, don't allow */
-> >> @@ -747,6 +751,8 @@ int io_register_pbuf_ring(struct io_ring
-> >>       if (!ret) {
-> >>           bl->nr_entries = reg.ring_entries;
-> >>           bl->mask = reg.ring_entries - 1;
-> >> +        if (reg.min_left)
-> >> +            bl->min_left_sub_one = reg.min_left - 1;
-> >>           if (reg.flags & IOU_PBUF_RING_INC)
-> >>               bl->flags |= IOBL_INC;
-> > 
-> > 
-> > I have run an AI assisted backport review and it spotted an issue: I
-> > have taken a look and the issues goes like:
-> > 
-> > Backport updates struct io_uring_buf_reg to min_left + resv[5] but
-> > keeps legacy validation that only checks reg.resv[0..2], so resv[3]
-> > and resv[4] are silently accepted.
-> > 
-> > Upstream has something like this:
-> > 
-> > if (copy_from_user(&reg, arg, sizeof(reg)))
-> >     return -EFAULT;
-> > if (!mem_is_zero(reg.resv, sizeof(reg.resv)))
-> >     return -EINVAL;
-> > if (reg.flags & ~(IOU_PBUF_RING_MMAP | IOU_PBUF_RING_INC))
-> >     return -EINVAL;
-> > 
-> > 6.12.y still has:
-> > 
-> > if (copy_from_user(&reg, arg, sizeof(reg)))
-> >     return -EFAULT;
-> > 
-> > if (reg.resv[0] || reg.resv[1] || reg.resv[2])
-> >     return -EINVAL;
-> > if (reg.flags & ~(IOU_PBUF_RING_MMAP | IOU_PBUF_RING_INC))
-> >     return -EINVAL;
-> > 
-> > So we are not checking resv[3], resv[4],
-> > 
-> > This commit is needed commit: 172484907285 ("io_uring/kbuf: use
-> > mem_is_zero()") to fix this. It is a clean cherry-pick, so I think the
-> > best thing is to take it for next cycle. this commit is present in
-> > 6.16-rc1+ so newer long-term stable kernel releases than 6.12.y don't
-> > have this problem.
-> > 
-> > 
-> > Jens, please correct me if the above understanding looks wrong.
-> 
-> Nope you are right. It's not an actual issue, it's just future proofing
-> checking. So it's quite fine to just add that commit for the next stable
-> release. I'll check the others too, as the mem_is_zero() commit landed
-> in 6.16.
+chap_server_compute_hash() allocates client_digest as
+kzalloc(chap->digest_size) and then, for BASE64-encoded responses,
+passes chap_r directly to chap_base64_decode() without checking whether
+the input length could produce more than digest_size bytes of output.
 
-Thanks, now queued up.
+chap_base64_decode() writes to the destination unconditionally as long
+as there is input to consume. With MAX_RESPONSE_LENGTH set to 128 and
+the "0b" prefix stripped by extract_param(), up to 127 base64 characters
+can reach the decoder. 127 characters decode to 95 bytes. For SHA-256
+(digest_size=32) this overflows client_digest by 63 bytes; for MD5
+(digest_size=16) the overflow is 79 bytes.
 
-greg k-h
+The length check at line 344 fires after the write has already happened.
+
+The HEX branch in the same switch statement already validates the length
+up front. Apply the same approach to the BASE64 branch: reject any input
+whose maximum decoded length exceeds digest_size before calling the
+decoder.
+
+The formula (digest_size * 4 + 2) / 3 is the ceiling of digest_size *
+4/3, i.e. the maximum number of base64 characters that can decode to
+exactly digest_size bytes.
+
+Fixes: 1e5733883421 ("scsi: target: iscsi: Support base64 in CHAP")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
+---
+ drivers/target/iscsi/iscsi_target_auth.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/iscsi/iscsi_target_auth.c
+index c46c69a..653be1a 100644
+--- a/drivers/target/iscsi/iscsi_target_auth.c
++++ b/drivers/target/iscsi/iscsi_target_auth.c
+@@ -341,6 +341,10 @@ static int chap_server_compute_hash(
+ 		}
+ 		break;
+ 	case BASE64:
++		if (strlen(chap_r) > (chap->digest_size * 4 + 2) / 3) {
++			pr_err("Malformed CHAP_R: base64 payload too long\n");
++			goto out;
++		}
+ 		if (chap_base64_decode(client_digest, chap_r, strlen(chap_r)) !=
+ 		    chap->digest_size) {
+ 			pr_err("Malformed CHAP_R: invalid BASE64\n");
+-- 
+2.54.0
+
 
