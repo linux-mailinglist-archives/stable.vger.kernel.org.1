@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-249163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDbsLDhqCmp+1AQAu9opvQ
-	(envelope-from <stable+bounces-249163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 03:24:08 +0200
+	id cOQ5Fz5tCmrN1AQAu9opvQ
+	(envelope-from <stable+bounces-249164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 03:37:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0CB564BCF
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 03:24:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6947564D78
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 03:37:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F37B3008E11
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 01:24:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD5BC3018AF8
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 01:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C571E1A33;
-	Mon, 18 May 2026 01:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB99C242D84;
+	Mon, 18 May 2026 01:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZlCI2xf"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RfaTDiuH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E4E171CD
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 01:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A7C243376;
+	Mon, 18 May 2026 01:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779067446; cv=none; b=XCXzaWOx9+F2106SK42llYmHGuIDmPSh/mUeaLwNrGppXuAeMwmk+WnP0bf5Tt56mCTfHpsKVEbWS+KIvt9jnfEz3vzRDW+0jpEqjruvyAPJPXH3a/9prIGIQeIVCS0CBbhScDr7YZhEo7RYuH5wAmoiym4E6K9GK7TgHOpiKvY=
+	t=1779068213; cv=none; b=WbltvcFKA/BV/dSa6Zmo362/c8mCIF2MnOPencHUx3vlCH/axfwrKyhxsBHPD0Y/V5/K1cmABKpaiC+KLTdbLAUQzyZnPELfaV3XplhoXhB5pFy+BN4sL+EjtfDExu+PluaB/sMxVWU1hoJRUuflBfAEbwwT3sfKbb4FwqxCd4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779067446; c=relaxed/simple;
-	bh=LpbIZaR0pcMaO9d5MlC67SseMt39cBH5xgQk9+mdUWA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jL2YTzz/jRy3JS2By08I/d5kxcg66vQMah73TtZPmkSs/izMIKSWlsL6VxPrmkIneDjfxlPAoCM+xs/jJLX0UcTKvVj1P+Za/5LqnLOBY0LN4huBMK4IYAVVUcxMDxb9W9N8hdmeo30W43AuYfP/mtVpiX5HeOF98L77m25klYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZlCI2xf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2A4C2BCB0;
-	Mon, 18 May 2026 01:24:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779067446;
-	bh=LpbIZaR0pcMaO9d5MlC67SseMt39cBH5xgQk9+mdUWA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZlCI2xf5l0mn6u4r6SEdOI7F2t0fREEnYGZymI9pLPkxJa8AvCyj0XEe1hj3r7Rk
-	 oq13coqbrxXQnRruZkS1ZS06FwexWunMKirx554/XnkRmD8K5s23xD/r8o27YH7Wxt
-	 c4jP2/eAGWg2dutYMy5lZCh5UVrylMX02FGwxeSfJX0/0Cp5dXK9eJ/o+s4++eruxd
-	 etHR0fvtWPcR3iolPo1IE++TnYj7SSkiHuT6pwRDfCl6nvgn3iAA5UY2SOc5gFrG0c
-	 pfyrdjehRlOzW9MCRPtWk5L/LeRhLL9PfRq5Qm4OParmN8jkz8E6WklLl1aTwxvAMz
-	 tw5gZtZBMUNFQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Piyush Sachdeva <s.piyush1024@gmail.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Piyush Sachdeva <psachdeva@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] smb: client: Use FullSessionKey for AES-256 encryption key derivation
-Date: Sun, 17 May 2026 21:24:03 -0400
-Message-ID: <20260518012403.482990-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051204-landside-tartly-eedd@gregkh>
-References: <2026051204-landside-tartly-eedd@gregkh>
+	s=arc-20240116; t=1779068213; c=relaxed/simple;
+	bh=izY9gmTYTh5O4FaHhPXjL2FuiWin5P1oTorQ1ZAn2DY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=XjYm6KrmFitKNEIm0qLORn6skESeQ6NagtmywW1G4OcVYzPM+Pluy1XMAqi70frDdEGvjt1Y8qokaigTVmCWMckd1ll+BKBeO0wkOtDQ9oiJTQgYWdsx4Td/NVTFJHE0V8aiVsQaMe6L1fcXXKUiD9mL7Ngsv1UDWJJ6A5KdEVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RfaTDiuH; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=26
+	zmB/Y8iqtSiE5skmnsbgDH+S1Kksp79ZmnNcLA2i0=; b=RfaTDiuHmuUvXY56SF
+	+BrSk0xEMvZUlP31EbZUfQSy0RfeEY0erTeRbzdBBI76gkTu/n6xmaf/YEQxd3Xj
+	75TRU6UEYKEX0Bvr9ZclFOjFl3uCID9kqr1K4L5kp5RtE2jKw0G/jQ1U8M1mJei2
+	yaPJ+/ug8TAkqLLmY4FLfFw+Y=
+Received: from 163.com (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wA37pMEbQpqEaO+Bw--.11011S2;
+	Mon, 18 May 2026 09:36:18 +0800 (CST)
+From: <w15303746062@163.com>
+To: luiz.dentz@gmail.com,
+	pmenzel@molgen.mpg.de,
+	marcel@holtmann.org,
+	linux-bluetooth@vger.kernel.org
+Cc: linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	greg@kroah.com,
+	stable@vger.kernel.org,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Subject: [PATCH v8] Bluetooth: hci_uart: fix UAFs and race conditions in close and init paths
+Date: Mon, 18 May 2026 09:36:02 +0800
+Message-Id: <20260518013602.438835-1-w15303746062@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CABBYNZ+r3gm37FW5WqE79bRp+x9UZsaCtyvfz_FdixqEucAxGw@mail.gmail.com>
+References: <CABBYNZ+r3gm37FW5WqE79bRp+x9UZsaCtyvfz_FdixqEucAxGw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,179 +66,216 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4F0CB564BCF
+X-CM-TRANSID:_____wA37pMEbQpqEaO+Bw--.11011S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Xr1fZrWDtw18Xw47Jw1UJrb_yoW3Gw4rpF
+	W5KF90kr4kWFW29w1DZa18JF1rKr1fKayay34fG3y5Jwn8tr1Yk3WIkayF9F18Cryvkr4S
+	vr4UXrW5ua4UZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jehFxUUUUU=
+X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC4xJ8YGoKbRJQtwAA3V
+X-Rspamd-Queue-Id: E6947564D78
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249163-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249164-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,molgen.mpg.de,holtmann.org,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_FROM(0.00)[163.com];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[163.com:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Piyush Sachdeva <s.piyush1024@gmail.com>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-[ Upstream commit 5be7a0cef3229fb3b63a07c0d289daf752545424 ]
+Vulnerabilities leading to Use-After-Free (UAF) and Null Pointer
+Dereference (NPD) conditions were observed in the lifecycle management
+of hci_uart.
 
-When Kerberos authentication is used with AES-256 encryption (AES-256-CCM
-or AES-256-GCM), the SMB3 encryption and decryption keys must be derived
-using the full session key (Session.FullSessionKey) rather than just the
-first 16 bytes (Session.SessionKey).
+The primary issue arises because the workqueues (init_ready and
+write_work) are only flushed/cancelled if the HCI_UART_PROTO_READY
+flag is set during TTY close. If a hangup occurs before setup completes,
+hci_uart_tty_close() skips the teardown of these workqueues and
+proceeds to free the `hu` struct. When the scheduled work executes
+later, it blindly dereferences the freed `hu` struct.
 
-Per MS-SMB2 section 3.2.5.3.1, when Connection.Dialect is "3.1.1" and
-Connection.CipherId is AES-256-CCM or AES-256-GCM, Session.FullSessionKey
-must be set to the full cryptographic key from the GSS authentication
-context. The encryption and decryption key derivation (SMBC2SCipherKey,
-SMBS2CCipherKey) must use this FullSessionKey as the KDF input. The
-signing key derivation continues to use Session.SessionKey (first 16
-bytes) in all cases.
+Furthermore, several data races and UAFs were identified in the teardown
+sequence:
+1. Calling hci_uart_flush() from hci_uart_close() without canceling
+   write_work causes a race condition where both can concurrently
+   double-free hu->tx_skb. This occurs both in TTY hangup and when the
+   HCI device is closed via the HCI core.
+2. Calling hci_free_dev(hdev) before hu->proto->close(hu) causes a UAF
+   when vendor specific protocol close callbacks dereference hu->hdev.
+3. In the initialization error paths, failing to take the proto_lock
+   write lock before clearing PROTO_READY leads to races with active
+   readers. Additionally, hci_uart_tty_receive() accesses hu->hdev
+   outside the read lock, leading to UAFs if the initialization error
+   path frees hdev concurrently.
 
-Previously, generate_key() hardcoded SMB2_NTLMV2_SESSKEY_SIZE (16) as the
-HMAC-SHA256 key input length for all derivations. When Kerberos with
-AES-256 provides a 32-byte session key, the KDF for encryption/decryption
-was using only the first 16 bytes, producing keys that did not match the
-server's, causing mount failures with sec=krb5 and require_gcm_256=1.
+Fix these synchronization and lifecycle issues by:
+1. Re-ordering hci_uart_tty_close() to unconditionally cancel init_ready
+   and write_work first. This prevents the double-free race in
+   hci_uart_flush(), while preserving the HCI_UART_PROTO_READY flag so
+   underlying hu->proto->flush() callbacks can still execute safely.
+2. Relocating hu->proto->close(hu) strictly prior to hci_free_dev(hdev)
+   across all close and error paths to prevent vendor-level UAFs.
+3. Moving the hdev->stat.byte_rx increment in hci_uart_tty_receive()
+   inside the proto_lock read-side critical section to safely synchronize
+   with device unregistration.
+4. Adding cancel_work_sync(&hu->write_work) to hci_uart_close() to safely
+   flush the workqueue before hci_uart_flush() is invoked.
+5. Utilizing cancel_work_sync() instead of disable_work_sync() after
+   flags are cleared to safely flush workqueues without permanently
+   breaking user-space retry capabilities.
 
-Add a full_key_size parameter to generate_key() and pass the appropriate
-size from generate_smb3signingkey():
- - Signing: always SMB2_NTLMV2_SESSKEY_SIZE (16 bytes)
- - Encryption/Decryption: ses->auth_key.len when AES-256, otherwise 16
-
-Also fix cifs_dump_full_key() to report the actual session key length for
-AES-256 instead of hardcoded CIFS_SESS_KEY_SIZE, so that userspace tools
-like Wireshark receive the correct key for decryption.
-
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
-Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ adapted to old crypto_shash API ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3b799254cf6f ("Bluetooth: hci_uart: Cancel init work before unregistering")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 ---
- fs/cifs/smb2transport.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+Changes in v8:
+- Corrected the teardown sequence in hci_uart_tty_close() by unconditionally canceling write_work BEFORE hci_uart_close(). This completely prevents the tx_skb double-free without prematurely clearing PROTO_READY, ensuring underlying hu->proto->flush(hu) runs correctly.
+- Moved hu->hdev->stat.byte_rx increment inside the proto_lock read-side critical section in hci_uart_tty_receive() to prevent read-side UAF against concurrent registration failures.
+- Added cancel_work_sync(&hu->write_work) inside hci_uart_close() to eliminate the race condition between write_work and hci_uart_flush() when the interface is brought down via the HCI core.
 
-diff --git a/fs/cifs/smb2transport.c b/fs/cifs/smb2transport.c
-index c02e57d8e228b..e4cea6c2d835e 100644
---- a/fs/cifs/smb2transport.c
-+++ b/fs/cifs/smb2transport.c
-@@ -305,7 +305,8 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
+Changes in v7:
+- Reverted disable_work_sync() back to cancel_work_sync() across all error and close paths to preserve user-space retry capabilities.
+- Synchronized workqueue teardown safely by atomically clearing PROTO_READY / PROTO_INIT under proto_lock prior to calling cancel_work_sync().
+- Fixed a Use-After-Free (UAF) vulnerability in the teardown sequence by relocating hu->proto->close(hu) strictly prior to hci_free_dev(hdev).
+- Added cancel_work_sync(&hu->init_ready) at the very beginning of hci_uart_tty_close() to serialize teardown against active asynchronous registration.
+
+Changes in v6:
+- Fixed missing `hu->proto_lock` write lock in hci_uart_init_work() error path to prevent race with readers (reported by Sashiko).
+- Added disable_work_sync() instead of cancel_work_sync() for `hu->write_work` in hci_uart_init_work() and hci_uart_register_dev() error paths.
+
+Changes in v5:
+- Relocated disable_work_sync() to the very top of hci_uart_tty_close(), 
+  before hci_uart_close(), to ensure no new work is submitted during device teardown.
+
+Changes in v4:
+- Adopted Luiz's suggestion to use disable_work_sync() instead of 
+  cancel_work_sync() in close path to prevent new work submissions.
+
+Changes in v3:
+- Added 'Cc: stable' tag as requested by the stable bot.
+
+Changes in v2:
+- Added KASAN/ODEBUG crash trace.
+
+ drivers/bluetooth/hci_ldisc.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
+index 275ea865bc29..cb56194daad1 100644
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -194,7 +194,15 @@ void hci_uart_init_work(struct work_struct *work)
+ 	err = hci_register_dev(hu->hdev);
+ 	if (err < 0) {
+ 		BT_ERR("Can't register HCI device");
++
++		percpu_down_write(&hu->proto_lock);
+ 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
++		percpu_up_write(&hu->proto_lock);
++
++		/* Safely cancel work after clearing flags */
++		cancel_work_sync(&hu->write_work);
++
++		/* Close protocol before freeing hdev */
+ 		hu->proto->close(hu);
+ 		hdev = hu->hdev;
+ 		hu->hdev = NULL;
+@@ -263,8 +271,12 @@ static int hci_uart_open(struct hci_dev *hdev)
+ /* Close device */
+ static int hci_uart_close(struct hci_dev *hdev)
+ {
++	struct hci_uart *hu = hci_get_drvdata(hdev);
++
+ 	BT_DBG("hdev %p", hdev);
+ 
++	cancel_work_sync(&hu->write_work);
++
+ 	hci_uart_flush(hdev);
+ 	hdev->flush = NULL;
+ 	return 0;
+@@ -540,6 +552,12 @@ static void hci_uart_tty_close(struct tty_struct *tty)
+ 	if (!hu)
+ 		return;
+ 
++	/* Wait for init_ready to finish to prevent registration races */
++	cancel_work_sync(&hu->init_ready);
++
++	/* Unconditionally cancel write_work BEFORE hci_uart_close() to prevent double-free */
++	cancel_work_sync(&hu->write_work);
++
+ 	hdev = hu->hdev;
+ 	if (hdev)
+ 		hci_uart_close(hdev);
+@@ -549,15 +567,15 @@ static void hci_uart_tty_close(struct tty_struct *tty)
+ 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
+ 		percpu_up_write(&hu->proto_lock);
+ 
+-		cancel_work_sync(&hu->init_ready);
+-		cancel_work_sync(&hu->write_work);
+-
+ 		if (hdev) {
+ 			if (test_bit(HCI_UART_REGISTERED, &hu->flags))
+ 				hci_unregister_dev(hdev);
+-			hci_free_dev(hdev);
+ 		}
++		/* Close protocol before freeing hdev */
+ 		hu->proto->close(hu);
++
++		if (hdev)
++			hci_free_dev(hdev);
+ 	}
+ 	clear_bit(HCI_UART_PROTO_SET, &hu->flags);
+ 
+@@ -625,11 +643,12 @@ static void hci_uart_tty_receive(struct tty_struct *tty, const u8 *data,
+ 	 * tty caller
+ 	 */
+ 	hu->proto->recv(hu, data, count);
+-	percpu_up_read(&hu->proto_lock);
+ 
+ 	if (hu->hdev)
+ 		hu->hdev->stat.byte_rx += count;
+ 
++	percpu_up_read(&hu->proto_lock);
++
+ 	tty_unthrottle(tty);
  }
  
- static int generate_key(struct cifs_ses *ses, struct kvec label,
--			struct kvec context, __u8 *key, unsigned int key_size)
-+			struct kvec context, __u8 *key, unsigned int key_size,
-+			unsigned int full_key_size)
- {
- 	unsigned char zero = 0x0;
- 	__u8 i[4] = {0, 0, 0, 1};
-@@ -326,7 +327,7 @@ static int generate_key(struct cifs_ses *ses, struct kvec label,
- 	}
- 
- 	rc = crypto_shash_setkey(server->secmech.hmacsha256,
--		ses->auth_key.response, SMB2_NTLMV2_SESSKEY_SIZE);
-+		ses->auth_key.response, full_key_size);
- 	if (rc) {
- 		cifs_server_dbg(VFS, "%s: Could not set with session key\n", __func__);
- 		goto smb3signkey_ret;
-@@ -407,10 +408,9 @@ static int
- generate_smb3signingkey(struct cifs_ses *ses,
- 			const struct derivation_triplet *ptriplet)
- {
--	int rc;
--#ifdef CONFIG_CIFS_DEBUG_DUMP_KEYS
-+	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
- 	struct TCP_Server_Info *server = ses->server;
--#endif
-+	int rc;
- 
- 	/*
- 	 * All channels use the same encryption/decryption keys but
-@@ -426,30 +426,46 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 		rc = generate_key(ses, ptriplet->signing.label,
- 				  ptriplet->signing.context,
- 				  cifs_ses_binding_channel(ses)->signkey,
--				  SMB3_SIGN_KEY_SIZE);
-+				  SMB3_SIGN_KEY_SIZE,
-+				  SMB2_NTLMV2_SESSKEY_SIZE);
- 		if (rc)
- 			return rc;
- 	} else {
- 		rc = generate_key(ses, ptriplet->signing.label,
- 				  ptriplet->signing.context,
- 				  ses->smb3signingkey,
--				  SMB3_SIGN_KEY_SIZE);
-+				  SMB3_SIGN_KEY_SIZE,
-+				  SMB2_NTLMV2_SESSKEY_SIZE);
- 		if (rc)
- 			return rc;
- 
-+		/*
-+		 * Per MS-SMB2 3.2.5.3.1, signing key always uses Session.SessionKey
-+		 * (first 16 bytes). Encryption/decryption keys use
-+		 * Session.FullSessionKey when dialect is 3.1.1 and cipher is
-+		 * AES-256-CCM or AES-256-GCM, otherwise Session.SessionKey.
-+		 */
+@@ -695,6 +714,10 @@ static int hci_uart_register_dev(struct hci_uart *hu)
+ 		percpu_down_write(&hu->proto_lock);
+ 		clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
+ 		percpu_up_write(&hu->proto_lock);
++		/* Cancel work after clearing flags */
++		cancel_work_sync(&hu->write_work);
 +
-+		if (server->dialect == SMB311_PROT_ID &&
-+		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
-+		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
-+			full_key_size = ses->auth_key.len;
-+
- 		memcpy(ses->chans[0].signkey, ses->smb3signingkey,
- 		       SMB3_SIGN_KEY_SIZE);
- 
- 		rc = generate_key(ses, ptriplet->encryption.label,
- 				  ptriplet->encryption.context,
- 				  ses->smb3encryptionkey,
--				  SMB3_ENC_DEC_KEY_SIZE);
-+				  SMB3_ENC_DEC_KEY_SIZE,
-+				  full_key_size);
- 		if (rc)
- 			return rc;
- 		rc = generate_key(ses, ptriplet->decryption.label,
- 				  ptriplet->decryption.context,
- 				  ses->smb3decryptionkey,
--				  SMB3_ENC_DEC_KEY_SIZE);
-+				  SMB3_ENC_DEC_KEY_SIZE,
-+				  full_key_size);
- 		if (rc)
- 			return rc;
- 	}
-@@ -464,7 +480,7 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 			&ses->Suid);
- 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
- 	cifs_dbg(VFS, "Session Key   %*ph\n",
--		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
-+		 (int)ses->auth_key.len, ses->auth_key.response);
- 	cifs_dbg(VFS, "Signing Key   %*ph\n",
- 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
- 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
++		/* Close protocol before freeing hdev */
+ 		hu->proto->close(hu);
+ 		hu->hdev = NULL;
+ 		hci_free_dev(hdev);
 -- 
-2.53.0
+2.34.1
 
 
