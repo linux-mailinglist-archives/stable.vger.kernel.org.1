@@ -1,239 +1,179 @@
-Return-Path: <stable+bounces-249221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249222-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNXRHQLOCmq18QQAu9opvQ
-	(envelope-from <stable+bounces-249221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:29:54 +0200
+	id OD2BGCbPCmru8QQAu9opvQ
+	(envelope-from <stable+bounces-249222-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:34:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DA8568C8A
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:29:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B7DD568E52
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:34:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CBDFA307F41B
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:16:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 384953024D5F
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4A53E122C;
-	Mon, 18 May 2026 08:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744DC3E3172;
+	Mon, 18 May 2026 08:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="yXPetU0+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YEFuiHQp"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42743E16B5;
-	Mon, 18 May 2026 08:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352003E3152;
+	Mon, 18 May 2026 08:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779092190; cv=none; b=AXQ+L9DSYcEqMi1eASEFtofVMtdZVOPnRAVPQBlCb/5CA1Q/moJu0qGnMuwyNReQFKHQbLxmdsH57zNukZ6gW91EsQrgc8TQFxO0TSJL2ws/38i7zSyma4uzcTae57iHpHb66Pz/jpAjW7i1GWMuQRFrjFHTo0sSAjGosnbZAYk=
+	t=1779092565; cv=none; b=SWLuEVBFA7zbQbuFdZGdumLt0YOF+Eq9ApZZaGnun96My9VeN0P0iNFxcaHdzjtJ07OQ5Urx7hgrYu8sGST3Gbp6cW+61vfY4C09g1XZhdFxVjeyVL2W8wjFI6k0vR4Dm3Um940m3/KCce7vhK7HgLTLh4WX9ZtyqZ6ThHlweqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779092190; c=relaxed/simple;
-	bh=JhIcdbdQLcgj4UKpNSj9GSm1PBD5jnm5zV0iBTYrM4g=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=RCaV6Yuv/BNtl62FtDb+K/LBnjc9ZU41Dr0f0Q3aWyYXnd/kkfTYbliBC0qolwxb6nkgaSRO01GgP89UJ+2tG8bTWzYYUtehBhctdREGyMDicztKUvDfQQ5wsTT8ybNsIG2mnzrECXb7N8uR1DgAFgLrrFZS6ozP5vaNtmYpgXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=yXPetU0+; arc=none smtp.client-ip=203.205.221.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1779092179;
-	bh=4IxuhOwzABNC8IL++ludYkU8O8WExX1VY8dfqrvsQKw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yXPetU0+ZZV4gq6h47BGECDRn3ZEEliVGlASFxzaFBHDODNSk6UMownffIocXPBns
-	 w5dBMGJsyRUajrKFZgR3W98hyWytsZB4BMmNI+DjC8hwvX1PEl+CkyZWl+lcRG7Yiq
-	 uNiFnZJG4/Dn65aIlNmo2m8ia0OeL9lRA9hvXAYk=
-Received: from China-team ([47.95.114.252])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 4018BC9E; Mon, 18 May 2026 16:16:01 +0800
-X-QQ-mid: xmsmtpt1779092170tmzdlk0g4
-Message-ID: <tencent_7A69076B1A3E822455AD85719260081AEE09@qq.com>
-X-QQ-XMAILINFO: NX3IH4pixvQA85ED3sK18DcgVIekmMgB5Yc0FuSe4YZ0LJhmDhqP2LOE4fu8QY
-	 NXE7Cr2huRHHlD4Y/hlpXScQq2/MQOvN1mLMmekSCA+AvqcKFAEvpChlRyPmANjmZTwe7DWMphRW
-	 18LomtP29BLkmvXNr/HaO/2MasQzoZyd6ZC3aRoczPzvMsvL1AFqq1WOvdlIn8IY7QqpMzwPtdiP
-	 GlNusFX5bbnEiKBZjZ3uAU3NRFgHnabH4wLads0jBo7BGgcn3Y1mWaOXBuRPrn+bZG4PaJa5Nmih
-	 rvv+wm4ryRX0vJXNzk7kp5betwKZ4U/l1DUWeUw3OJOu2f5KfdF4hR4ExzEeTiu9sh8ABpAN5mrt
-	 EeP1e7Sq92psCaRq/Z8gWKhNDaZfBGW0dG4sNSX/ADMxJ6n35/BxJ33O/lFDiqIUfSGjHWSoDjJ5
-	 KwX6sinRDZDeQsQ5+3j0yR2MvbYXB4OPYxP22nQuK6eAnL/tJv9fV3T3kBAbd1R35vZ0+Uk0t26D
-	 OVn7sLDuT6FbEPaQQhuKry7DZz9BgmnqQOMEmwRp/cY/TBo0ZUqpK25e3m9uSD8KfwwMpMbXf899
-	 CxLrldKZJTpPjQkvLPs8a9OmDkkndFbMiWfZcCpca5mdaG01Vf1b7B1hOMVhOaYtVy9k/04a4HNi
-	 IXVvc/THuWCtWtWqP6OV7eeAyPS128OpH6wC9yb9k0Mm4PIjHgaJyVyRj6Pk8RTANhFn/cVr5xCt
-	 pYmEBsXlCSkc0PJNkC3QuPdkQi6C9d5wzbkaxnoa2ovFWYyfR13MMZaZqGFh/ZJyewU/QP8Hdef2
-	 PFQFUVJorrwMbvK8PMztf5tB7LEHxb3H9JiUITZusJfMWTTwg8fANCvD08/1CaI1B64Emg0uVlVV
-	 KdfakOhXMLizq8n4SVkObdc9chPjOOs1Kn1V+EssUn/D3+V1jYdDaIfw+wAUbAPv+CLs3IGBAsrH
-	 GukaohjcqdL+LgWsdRufZyDByRhCPS/vwRzN/vmauiWlPAfESMNY27K4PpC+CvM5AMqf+IilkbPl
-	 SKbIcLPfhdEikTRauCuG28chzVkpospLGE5QtB8kl3d7JGafqpf5fm0Naao+lDX+Ge9TY98sJrhT
-	 vMxaOB6KbJHlvioljal/H6KJ6fagHdW5BRx3tv
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Alva Lan <alvalan9@foxmail.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	samba-technical@lists.samba.org,
-	stable <stable@kernel.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6.y 2/2] smb: client: fix OOB reads parsing symlink error response
-Date: Mon, 18 May 2026 16:15:54 +0800
-X-OQ-MSGID: <20260518081554.21484-2-alvalan9@foxmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260518081554.21484-1-alvalan9@foxmail.com>
-References: <20260518081554.21484-1-alvalan9@foxmail.com>
+	s=arc-20240116; t=1779092565; c=relaxed/simple;
+	bh=Ja8xJYvBHw17MUGizTjwFmkJ2dRz7Z5VWkYWZtCVoog=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NzVUAunD8S4nJ7wMnp8sszTXK0QU4/cpIUUaHzp3LrL4Bfni+zJ8UsL7RGCEPI/FYeFnPf+CwDhJ5dRdfuziDSNdbBSr3DIBRZs1qYcSTL3U7v7qAKm9LX9vtFwdquFQOhe5kfs1nQ6uulN8LVi3Bc477VTO9sv0wkUyLI6m7ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YEFuiHQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65E5C2BCB7;
+	Mon, 18 May 2026 08:22:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779092565;
+	bh=Ja8xJYvBHw17MUGizTjwFmkJ2dRz7Z5VWkYWZtCVoog=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YEFuiHQpDtqhUhZ3FORIrOHsR0w499XWeUAjyakRRs+GQWxJZc4epb6SHKrRpHGmP
+	 nDBO0uGOVzS64kCc/r0tOevkb2pWycBH12kTlFDG47ObtOx/PrLzFU0xixixWDeULu
+	 YAyKl1yTlkV6U7NNn2hqDK1K6Pet0dAxt9qArgjzPxss295VOJZXhrMZ34Pyg9itvN
+	 JKGR7lPLLYHGL6cR1QmtB+CMhTd1BSwyn2f3WWn8lGaTKhwkWDxx5ttLvUQMX6B2A8
+	 Sw2R5uwdiuSIEUOsh2VveriUic99JXBtrZZE40EWth3C5YFuOAjTneq0YMof5U+rtJ
+	 CfjD58w2Wh/Rw==
+Message-ID: <f9fab2bc-ee1c-4d9c-af76-cde159b29ed9@kernel.org>
+Date: Mon, 18 May 2026 10:22:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] module: decompress: check return value of
+ module_extend_max_pages()
+To: Andrii Kuchmenko <capyenglishlite@gmail.com>,
+ linux-modules@vger.kernel.org
+Cc: mcgrof@kernel.org, dmitry.torokhov@gmail.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260517110037.21506-1-capyenglishlite@gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260517110037.21506-1-capyenglishlite@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 71DA8568C8A
+X-Rspamd-Queue-Id: 5B7DD568E52
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[foxmail.com];
-	TAGGED_FROM(0.00)[bounces-249221-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[foxmail.com:+];
+	TAGGED_FROM(0.00)[bounces-249222-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,microsoft.com,talpey.com,lists.samba.org,kernel.org,manguebit.org,foxmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	REDIRECTOR_URL(0.00)[aka.ms];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[aka.ms:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 3df690bba28edec865cf7190be10708ad0ddd67e ]
 
-When a CREATE returns STATUS_STOPPED_ON_SYMLINK, smb2_check_message()
-returns success without any length validation, leaving the symlink
-parsers as the only defense against an untrusted server.
+Le 17/05/2026 à 13:00, Andrii Kuchmenko a écrit :
+> [Vous ne recevez pas souvent de courriers de capyenglishlite@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> module_extend_max_pages() calls kvrealloc() internally and returns
+> -ENOMEM on allocation failure. The return value is never checked.
+> The decompression loop then continues calling module_get_next_page(),
+> which writes struct page pointers into info->pages[]. When used_pages
+> reaches the stale max_pages value (not updated due to the failed
+> extend), a subsequent write to info->pages[used_pages++] goes out of
+> bounds into adjacent heap memory.
+> 
+> Adjacent slab objects in the same kmalloc cache (pipe_buffer,
+> seq_operations, cred) can be corrupted, potentially leading to local
+> privilege escalation on kernels without SLAB_VIRTUAL mitigation.
+> 
+> The call order in finit_module() is:
+> 
+>    module_decompress()    <- vulnerable, runs FIRST
+>    load_module()
+>      module_sig_check()   <- signature check, runs SECOND
+> 
+> Decompression happens before signature verification. A crafted
+> compressed module submitted via finit_module(MODULE_INIT_COMPRESSED_FILE)
+> reaches this code path before any signature gate is applied. On kernels
+> with module.sig_enforce=0 (default without SecureBoot) or with
+> unprivileged user namespaces (Ubuntu, Debian default), this is
+> reachable without CAP_SYS_MODULE.
+> 
+> Confirmed present in mainline (tested on v6.14-rc3).
+> 
+> Fix: add the missing error check after module_extend_max_pages() and
+> return immediately on failure. This matches the pattern used by every
+> other kvrealloc() caller in the module loading path.
+> 
+> Fixes: 169a58ad824d ("module: add in-kernel support for decompressing")
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Luis Chamberlain <mcgrof@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andrii Kuchmenko <capyenglishlite@gmail.com>
+> ---
+>   kernel/module/decompress.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/module/decompress.c b/kernel/module/decompress.c
+> index a1b2c3d4e5f6..b7c8d9e0f1a2 100644
+> --- a/kernel/module/decompress.c
+> +++ b/kernel/module/decompress.c
+> @@ -XXX,10 +XXX,13 @@ int module_decompress(struct load_info *info,
+>                                  const void *buf, size_t size)
+>   {
+>          unsigned int n_pages;
+> -       int error;
+> +       int error = 0;
 
-symlink_data() walks SMB 3.1.1 error contexts with the loop test "p <
-end", but reads p->ErrorId at offset 4 and p->ErrorDataLength at offset
-0.  When the server-controlled ErrorDataLength advances p to within 1-7
-bytes of end, the next iteration will read past it.  When the matching
-context is found, sym->SymLinkErrorTag is read at offset 4 from
-p->ErrorContextData with no check that the symlink header itself fits.
+Please don't do that, this is unnecessary. 'error' is being set 
+inconditionaly two lines below and unused before that.
 
-smb2_parse_symlink_response() then bounds-checks the substitute name
-using SMB2_SYMLINK_STRUCT_SIZE as the offset of PathBuffer from
-iov_base.  That value is computed as sizeof(smb2_err_rsp) +
-sizeof(smb2_symlink_err_rsp), which is correct only when
-ErrorContextCount == 0.
+>          ssize_t data_size;
+> 
+>          n_pages = DIV_ROUND_UP(size, PAGE_SIZE) * 2;
+> +
 
-With at least one error context the symlink data sits 8 bytes deeper,
-and each skipped non-matching context shifts it further by 8 +
-ALIGN(ErrorDataLength, 8).  The check is too short, allowing the
-substitute name read to run past iov_len.  The out-of-bound heap bytes
-are UTF-16-decoded into the symlink target and returned to userspace via
-readlink(2).
+Don't add unrelated blank lines.
 
-Fix this all up by making the loops test require the full context header
-to fit, rejecting sym if its header runs past end, and bound the
-substitute name against the actual position of sym->PathBuffer rather
-than a fixed offset.
+>          error = module_extend_max_pages(info, n_pages);
+> +       if (error)
+> +               return error;
+> +
+>          data_size = MODULE_DECOMPRESS_FN(info, buf, size);
+>          if (data_size < 0) {
+>                  error = data_size;
+> --
+> 2.39.0
+> 
 
-Because sub_offs and sub_len are 16bits, the pointer math will not
-overflow here with the new greater-than.
-
-Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Cc: Shyam Prasad N <sprasad@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Bharath SM <bharathsm@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Cc: stable <stable@kernel.org>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
----
- fs/smb/client/smb2file.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
-
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index 3a5b62b29806..044512b77448 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -27,10 +27,11 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
- {
- 	struct smb2_err_rsp *err = iov->iov_base;
- 	struct smb2_symlink_err_rsp *sym = ERR_PTR(-EINVAL);
-+	u8 *end = (u8 *)err + iov->iov_len;
- 	u32 len;
- 
- 	if (err->ErrorContextCount) {
--		struct smb2_error_context_rsp *p, *end;
-+		struct smb2_error_context_rsp *p;
- 
- 		len = (u32)err->ErrorContextCount * (offsetof(struct smb2_error_context_rsp,
- 							      ErrorContextData) +
-@@ -39,8 +40,7 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
- 			return ERR_PTR(-EINVAL);
- 
- 		p = (struct smb2_error_context_rsp *)err->ErrorData;
--		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
--		do {
-+		while ((u8 *)p + sizeof(*p) <= end) {
- 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
- 				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
- 				break;
-@@ -50,14 +50,16 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
- 
- 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
- 			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
--		} while (p < end);
-+		}
- 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
- 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
- 		sym = (struct smb2_symlink_err_rsp *)err->ErrorData;
- 	}
- 
--	if (!IS_ERR(sym) && (le32_to_cpu(sym->SymLinkErrorTag) != SYMLINK_ERROR_TAG ||
--			     le32_to_cpu(sym->ReparseTag) != IO_REPARSE_TAG_SYMLINK))
-+	if (!IS_ERR(sym) &&
-+	    ((u8 *)sym + sizeof(*sym) > end ||
-+	     le32_to_cpu(sym->SymLinkErrorTag) != SYMLINK_ERROR_TAG ||
-+	     le32_to_cpu(sym->ReparseTag) != IO_REPARSE_TAG_SYMLINK))
- 		sym = ERR_PTR(-EINVAL);
- 
- 	return sym;
-@@ -82,8 +84,10 @@ int smb2_parse_symlink_response(struct cifs_sb_info *cifs_sb, const struct kvec
- 	print_len = le16_to_cpu(sym->PrintNameLength);
- 	print_offs = le16_to_cpu(sym->PrintNameOffset);
- 
--	if (iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + sub_offs + sub_len ||
--	    iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + print_offs + print_len)
-+	if ((char *)sym->PathBuffer + sub_offs + sub_len >
-+		(char *)iov->iov_base + iov->iov_len ||
-+	    (char *)sym->PathBuffer + print_offs + print_len >
-+		(char *)iov->iov_base + iov->iov_len)
- 		return -EINVAL;
- 
- 	return smb2_parse_native_symlink(path,
--- 
-2.43.0
-
+On which tree/branch does your patch applies ?
 
