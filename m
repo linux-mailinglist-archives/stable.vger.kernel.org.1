@@ -1,208 +1,186 @@
-Return-Path: <stable+bounces-249359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aD5CA7NaC2oCGAUAu9opvQ
-	(envelope-from <stable+bounces-249359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:30:11 +0200
+	id uG1fJdBbC2oCGAUAu9opvQ
+	(envelope-from <stable+bounces-249360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:34:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F4F572459
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:30:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56973572557
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C804730283FA
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:26:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CF46E301A153
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AB3387363;
-	Mon, 18 May 2026 18:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD36C38A720;
+	Mon, 18 May 2026 18:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GEOOYRjr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mJSPPxBz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2416D18C933
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 18:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432D338657A;
+	Mon, 18 May 2026 18:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779128772; cv=none; b=nvsy4tmTwDqbmSb8Z6S5BRTnIrUyyvNBfa8uMYn4kdgglnzEQrGEiZTaRi85ip5tLMeEnYp7sAZ4gMZX214kEZ25UGiHmd9oPlLjs4LqrgWAhVjpZxLnUxebVytXrbwLg8BNN7d21Ly98BIU7Yh6Ql7LK23ECMLyf/gwdU5cYmI=
+	t=1779129114; cv=none; b=gtwAuDpJL2/zQPwScecQI23Yol94SiJHTQ8hOsXKvl962oPlFHcyKYCx08fU6/VNEpPTZUP5D18q/baiXKydlpiR0kf6KAzu/Zj8h6lcYqRT0OQwTuJMq/phJyIYGhMiejdN9hxVQIpySzvaoat4+/gbt1bYdXM5ecgGBNvlxSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779128772; c=relaxed/simple;
-	bh=AJQ8X8vekQbsX2A2arXJ8CBDC1jAwqSdrm7rYzzgrNs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MMjBauIcE8WjsK9g5cfFR1A3XMkhQtRupDNov1JHilh1/ulHXK2QD+EixRrkgVng7fEmp7c/jYhc4H6o6DBwcg5gxdYVdZgzpbfgqOcP+P7ItvttlupSAfXPV8kjKwurFsSjJel9RJcihkIpboE2yvgGuOFdDNKnck/QTOWEw1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GEOOYRjr; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-67c9616b4feso4624570a12.1
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 11:26:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779128767; x=1779733567; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fjppO2+PwKNhaclh25OQ0CMNeNNbO/jvr0ag7TFBQ9k=;
-        b=GEOOYRjr7jabRzKpTfVGB0uROawVxK9+gZC7t6JzLZuza8bI8fA5GU8No9N5/RJD4q
-         /nYGbgo2h5IBgIRtLW7/+0KGvVAmcSPNAp4MC9y840M2z6OfodXPqgs3yzflzxjcOVbm
-         O6dt8LJQLosfx+DPnFjPEc4iw70Rjuo93T+B2IaCFFoak8Ccs17MGNtHvC4sDZ2Jvbaz
-         PCuJdzzLKpCwByYP6F+9CwTmfsh7bGEnxviW2j8E3GZhiRaKjnFYaRlHAh/s+G4Bsy39
-         QXYiUT5qrmafgcv1hdLCmmXP121m3c+d9MH17sCgnpLDZj+23cApWZjF5eLktsqNFjJO
-         MwLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779128767; x=1779733567;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fjppO2+PwKNhaclh25OQ0CMNeNNbO/jvr0ag7TFBQ9k=;
-        b=EQPxKuima+q1fG+r3KP2wTV3mPwli8D7esTlvLErJf+oiIZIpXOMhYwAwCI/a6zZPj
-         faJ3Lehuhy2bmxNXbD8lT+Z7PL4/GNr2AXqKf67Funl07aPFMlqnoWpR4bjKtZtLCwWS
-         zZmDQuNUDbczv1bauonMxm20rrJ8LsQNDVJcj3O+Wd04SPVrKe5YaAqMECvorNMbEFKl
-         oMfzXJpBCxA7zbeHcsA3OQJu9zvbOwITvJiohN58rWIRJhN3mNjzgkVwYHb/kBHD42P4
-         YPhbg6cmITCIKZBIO5GoX2B3vIv9RnH9B1bxfhFnuMDg0YQS3zpEtGF98YGd6c4YgOrH
-         OwEA==
-X-Forwarded-Encrypted: i=1; AFNElJ8aMejnAaPqOhWfsnWqYygp0yLSRbWgQ9epg96MtEUOkFx+uMjCPW680ykIvo2Fi5Cc8JN+0SM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyemLJl3kVvbZp365eGc14TGDlXvyTzGLwpc2DvWb+dfdoc2MUA
-	u2F6IYlQnNWwR5YK8K+z4DXCLUjvEmrGhlC6VH1kAzFjcPT2o1Nzra9xBk++VWVGXqosFA==
-X-Gm-Gg: Acq92OGg1obozvT/cbExuZLpI1f7a1pWxjqw5v/GrmFkWHUJDFUsOldOOJbljy7b8D9
-	a37/I2vLCnPSw8//+QuKuB0AB+eBOjeXVMumiWCHyZttck4zrX2FbpxbFNZ8B0FkC+var0643/T
-	Yyjr230FeqWb5V6PnnLOeeDLHpB4lr5NzJbLxIgnBUqiFGg0Tcxm0PoGxgCqpPX3Dp5lzB3i/4x
-	ilzx5XzEM7qGSITDaw4TognmTLm6iB8k03ogJG0WUn0eqtEyK374woHFfsD8k0+D5qhvcO2D7kb
-	zG1mOSPN103R9egqHJIssn0q4ywDt0zQBmQ9f5T7cjjbGT0G7a6v6ddW1XMurAXsIwb/Wb8li0d
-	eB3eXaGsYJjVG3/HUOesJrnGLFLJon8cOxMd0Os0eEOPkf/tqyqk2PbF7dUhFAiSRxqCgkjTXb5
-	ME0J4Pe1rrT+cAffaN
-X-Received: by 2002:aa7:c652:0:b0:681:5b68:b26d with SMTP id 4fb4d7f45d1cf-683bc4b5ae7mr5810099a12.6.1779128767128;
-        Mon, 18 May 2026 11:26:07 -0700 (PDT)
-Received: from localhost ([2a03:2880:32ff:70::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68310b3e973sm5691646a12.3.2026.05.18.11.26.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 11:26:05 -0700 (PDT)
-From: Vlad Poenaru <vlad.wing@gmail.com>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Joanne Koong <joannelkoong@gmail.com>,
-	Breno Leitao <leitao@debian.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 6.18.y] fuse: avoid 0x10 fault in fuse_readahead when max_pages == 0
-Date: Mon, 18 May 2026 11:26:02 -0700
-Message-ID: <20260518182602.3107764-1-vlad.wing@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1779129114; c=relaxed/simple;
+	bh=agUT8Mpk+dy8irIoWlm7UzBAg+qJnb8pUPGuEVZ5NvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jPvrIRZiG3msuZWNaqPnPbHTULH1gGhW0ODATTmoP8fGYaekti+s9nuaOjUqOk28QkX4yqULyyTpaS2TK6uhuTb8f5e7KGYOIahIqTQBb9U7ZgM/eLM2gQtcPcf8AcRa6rLQcfZBYgw1JUgZ+qebXtFjUqGjRTLV8fF0LZ0bMdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mJSPPxBz; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779129113; x=1810665113;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=agUT8Mpk+dy8irIoWlm7UzBAg+qJnb8pUPGuEVZ5NvQ=;
+  b=mJSPPxBzpmFzqd7/7c9+XKh/e3dbwPktwbrTiMy61Ff8Rdb7I5ewfK5r
+   /qvuWzcc3GtyaAFf/74JyugR0Ka+w1YGyNOrAO1uQ2bxrVVtyFeQUYSv8
+   IdCSYH6Pk0ib+eMShoZscWXAcdImTLpW/I75LuDCUWskxB4T1M5kECQp1
+   HB3985jw5ERMGgbGYgyRn5ofMWvzMwHF8dhqPCa4pWKannyM1dtK6+F/4
+   TQesk8D5CfYKiOAOJAWIeTPfRiReoc9VM+HOv8Japzv7+Mc49eG5l9rRR
+   cdJKuA4MH0BRT+Ohkjwr5MTqDEYkzMui6aAXFhNVqFGKIFiy5tjuQOlHd
+   g==;
+X-CSE-ConnectionGUID: hil9mQ6tSlekvSuMhMavUA==
+X-CSE-MsgGUID: 4ujVF/+oQ+yUNmdCaAbl3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="80111813"
+X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
+   d="scan'208";a="80111813"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 11:31:52 -0700
+X-CSE-ConnectionGUID: J3D55b7RQkGsSXFj+aXtFw==
+X-CSE-MsgGUID: Sxq1+rIoQ5GKeaKswBrA1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
+   d="scan'208";a="263290263"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.244.3])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 11:31:50 -0700
+Date: Mon, 18 May 2026 21:31:48 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stepan Ionichev <sozdayvek@gmail.com>, nuno.sa@analog.com,
+	andy@kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: pressure: rohm-bm1390: notify trigger on all error
+ paths
+Message-ID: <agtbFDbw2m9ptEua@ashevche-desk.local>
+References: <20260517160801.269-1-sozdayvek@gmail.com>
+ <54ee1fba-3209-4192-82c3-674a1ae3ca8f@baylibre.com>
+ <3cb30f12-8b4f-415f-9a1d-823d8ff8c33b@gmail.com>
+ <agq4zER5Tv2LErZV@ashevche-desk.local>
+ <20260518155521.6c61504d@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260518155521.6c61504d@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249359-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249360-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,baylibre.com,analog.com,kernel.org,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,debian.org,toxicpanda.com,vger.kernel.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vladwing@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 02F4F572459
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ashevche-desk.local:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,intel.com:dkim]
+X-Rspamd-Queue-Id: 56973572557
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When fc->max_read is smaller than PAGE_SIZE (common on aarch64 with
-64K base pages if the FUSE server advertises a small max_read in INIT),
-max_pages = min(fc->max_pages, fc->max_read / PAGE_SIZE) is 0, so
-cur_pages is 0 on every outer iteration.
+On Mon, May 18, 2026 at 03:55:21PM +0100, Jonathan Cameron wrote:
+> On Mon, 18 May 2026 09:59:24 +0300
+> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+> > On Mon, May 18, 2026 at 08:21:17AM +0300, Matti Vaittinen wrote:
+> > > On 17/05/2026 20:12, David Lechner wrote:  
+> > > > On 5/17/26 11:08 AM, Stepan Ionichev wrote:  
 
-fuse_io_alloc(NULL, 0) then calls fuse_folios_alloc(0, ...), which
-calls kzalloc(0, ...) and gets back ZERO_SIZE_PTR == (void *)16.
-The "if (!ia->ap.folios)" guard in fuse_io_alloc does not catch
-ZERO_SIZE_PTR, so fuse_io_alloc happily returns an ia whose
-ap.folios is 0x10.
+...
 
-The inner "while (pages < cur_pages)" loop runs zero times, then
-fuse_send_readpages(ia, ...) dereferences ap->folios[0] in
-folio_pos(), faulting at virtual address 0x10:
+> > > Maybe it would be better to do something like:
+> > > 
+> > > void iio_trigger_poll_nested(struct iio_trigger *trig)
+> > > {
+> > >         int i;
+> > > 
+> > >         if (!atomic_read(&trig->use_count)) {
+> > >                 atomic_set(&trig->use_count,
+> > > CONFIG_IIO_CONSUMERS_PER_TRIGGER);  
+> > 
+> > Just in case somebody is going to do that, avoid doing atomic_read() followed
+> > by atomic_set(). This is typical TOCTOU issue. This should be something like
+> > atomic_xchg() or atomic_add_return() or something like this in a single atomic
+> > operation.
+> 
+> Just to clarify - the current code is fine.  This got reported a few years
+> back and I did the analysis to prove it. From what I recall the key is
+> that the state space isn't as complex as it immediately looks.
+> That counter is either non 0 at the start (we don't use it here and we
+> skip an interrupt - that's actually the desired behaviour if the trigger is running
+> too fast - triggers must survive that - reenable() callback is there to make that
+> all work).
+> 
+> Otherwise there is a single path that sets it and we know any decrement until after
+> that happens would have undeflowed (and hence was a bug). The rest are decrement
+> only and it can never go to less than 0.
+> 
+> Hence it is fine.
+> 
+> Agreed things get messy if we make this alg any more complex though!
 
-  Unable to handle kernel NULL pointer dereference at virtual address
-  0000000000000010
-   fuse_readahead+0x14c/0x490
-   read_pages+0x80/0x318
-   page_cache_ra_unbounded+0x1c0/0x2b0
-   page_cache_ra_order+0xb8/0x368
-   page_cache_sync_ra+0x210/0x320
-   filemap_get_pages+0x290/0xdb0
-   generic_file_read_iter+0xd0/0x540
-   fuse_file_read_iter+0x8c/0x158
-   __arm64_sys_read+0x1a0/0x488
+Perhaps we need a good comment just on top of this atomic_read()/atomic_set()
+pair. Because it's really the code no one should take as an example how to do
+atomics :-) Logical question, why do we even have atomics there? Shouldn't
+be that READ_ONCE()/WRITE_ONCE() to have an integrity in place? (This I believe
+even mentioned in the documentation for atomics.)
 
-addr2line on the aarch64 vmlinux maps fuse_readahead+0x14c to
-fs/fuse/file.c:897 inlined into :999, i.e. "folio_pos(ap->folios[0])"
-inside fuse_send_readpages.  The faulting instruction "ldr x8, [x8]"
-loads ap->folios[0]; ap->folios was previously loaded as 0x10
-(ZERO_SIZE_PTR).
+> > >                 for (i = 0; i < CONFIG_IIO_CONSUMERS_PER_TRIGGER; i++) {
+> > >                         if (trig->subirqs[i].enabled)
+> > >                                 handle_nested_irq(trig->subirq_base + i);
+> > >                         else
+> > >                                 iio_trigger_notify_done(trig);
+> > >                 }
+> > > 		atomic_set(&trig->use_count, 0); /* Clear the use_count if drivers didn't
+> > > */
+> > >         }
+> > > }
+> > > 
+> > > to prevent this class of problems once and for all. But yeah, wiser minds
+> > > have designed this - so let's hear some other opinions as well :)  
 
-Without this fix the function would also spin forever, since
-"nr_pages -= pages" makes no progress when pages stays 0; in practice
-the NULL deref masks the spin.
-
-Bail out of the outer loop if cur_pages is 0 -- there is no work we
-can issue via FUSE in this iteration, and remaining folios will be
-handled by read_pages() falling back to ->read_folio.
-
-Note: this code was rewritten in mainline by commit 4ea907108a5c
-("fuse: use iomap for readahead"), which switched fuse_readahead to
-iomap and removed the buggy loop entirely.  This patch therefore
-applies only to stable branches that still carry the pre-iomap
-readahead path.
-
-Fixes: 3eab9d7bc2f4 ("fuse: convert readahead to use folios")
-Reported-by: Breno Leitao <leitao@debian.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
----
- fs/fuse/file.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 6014d588845c..782178124512 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -974,6 +974,16 @@ static void fuse_readahead(struct readahead_control *rac)
- 		unsigned cur_pages = min(max_pages, nr_pages);
- 		unsigned int pages = 0;
- 
-+		/*
-+		 * If max_pages == 0 (e.g. fc->max_read < PAGE_SIZE on a
-+		 * 64K-page kernel), cur_pages is 0 and we cannot make
-+		 * progress.  Bailing here avoids passing 0 to fuse_io_alloc,
-+		 * which would return an ia whose ap.folios is ZERO_SIZE_PTR
-+		 * (0x10) -- later dereferenced by fuse_send_readpages.
-+		 */
-+		if (!cur_pages)
-+			break;
-+
- 		if (fc->num_background >= fc->congestion_threshold &&
- 		    rac->ra->async_size >= readahead_count(rac))
- 			/*
 -- 
-2.53.0-Meta
+With Best Regards,
+Andy Shevchenko
+
 
 
