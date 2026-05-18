@@ -1,133 +1,132 @@
-Return-Path: <stable+bounces-249209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249210-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BMMHmvDCmoI7gQAu9opvQ
-	(envelope-from <stable+bounces-249209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:44:43 +0200
+	id MK7rNeXDCmoI7gQAu9opvQ
+	(envelope-from <stable+bounces-249210-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:46:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8A5568070
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:44:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CFC5680DC
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F1E29300E14E
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:37:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4141305D124
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCF33B52E2;
-	Mon, 18 May 2026 07:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FE83D3305;
+	Mon, 18 May 2026 07:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jU1kM3Ug"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jtn0ekis"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53DD2EBB9E;
-	Mon, 18 May 2026 07:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88FC30567A
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 07:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779089870; cv=none; b=djBk+GRTH4WXfcSKuDui+/xTUGh86kDxlPqXUGLMuR0aKd3g+b8N+whOw/BIEfduiWk488cDkOOrUjoO/ONj4A7dm6mZTYVS7OxPQMsDHXY7xNW+V1GZN5ip8FIbCEpj5aljkHV7L+AEaXZmPTtedaTJT5yQd6BLyBdO7gl4ZGU=
+	t=1779090008; cv=none; b=oTBN3A6zZa9cE+uy47yZ0hNjbnt0B3GyimgLpKdKPbaEx5ht+/1tmTS2LL8tTSlrK2QRsGVP1OIS2B1wYMMvPYIOAzaxFsP8/TwXxh4TuujaH/O/9DxAXEdpluyD4eSi9dXZiDw5xD86Fhj6lGLGvwg1sxIi8acgutJXuOX3FXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779089870; c=relaxed/simple;
-	bh=7kqhO4Pu44sVWjxvRxm+t9ukq2zL3816xcgPAE7R2E4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EmPNxies0uhtkIQEk+ElhmbwWl1OhXOz4PuLjp5HSLl+oEuaNyOfaxWH5PcYos6XxX6UjSTIdl1D/xSoj8sgV7s8z2mkE7vY/fD132MnEtk/ugXnK9H1i5KL0oW1L4NVe3ixlJSpgzYnDolAViNvrFVLm/9qpioKLHzDO+LZcG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jU1kM3Ug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E7CC2BCB7;
-	Mon, 18 May 2026 07:37:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779089869;
-	bh=7kqhO4Pu44sVWjxvRxm+t9ukq2zL3816xcgPAE7R2E4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jU1kM3UgZqNrsFcaRuAgVMVQmVNGAznHUv4nFiD6DY5wqQYoFRTnP1Z0+FuVxihmO
-	 OWJsJIl3b9jdIR61AvYv9h2d1uCJ43uzz4XTnSi6kk+DiEM3kSmIzjTNBykF87Tx74
-	 2zSRQaOgTgJaM1y/ZhViBdhlCrNToey1KJ3w2iu/IOK7GyQ0L3qU6/pmCLpXIhghir
-	 IDFHuLQ/1hKuteFNa2tR2dvUdVQdVtJTzITtexUj9MJaT5cfH4dngkbThMdUoF1Rlf
-	 OPtmCPrFALPHZ63x0ckpwU9fdiEbixS0UXq6k/1cIm67Tsh5LRndtORikf/v7wbmmx
-	 FcH4l6uF7jQAg==
-Date: Mon, 18 May 2026 08:37:43 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 7.0 000/201] 7.0.9-rc1 review
-Message-ID: <403bd472-1e0d-4189-819b-76e6b6635392@sirena.org.uk>
-References: <20260515154658.538039039@linuxfoundation.org>
+	s=arc-20240116; t=1779090008; c=relaxed/simple;
+	bh=XX+NCiRBpx1RRKv5/r+32dJcg+j+AcRG7OLhJl2qFXg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=uqJE5vXeh2rjGsgO4JGPwmrZz0LfGSQd8qQsPn+SzT5TsIxi7U11tpkAdParzGoPbG4bJXZHRuR6zWocICVMlIuRxkNF1ZpTDdY2HpHzOfs0QYpOyVb5u566wdWd5q5aOFPMohV2RY0N8Ule3ss/NS6PNuNAnxAERm+mtl5oFQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jtn0ekis; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9950C4E42CE4;
+	Mon, 18 May 2026 07:40:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6666C602B8;
+	Mon, 18 May 2026 07:40:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C3F2411AF8605;
+	Mon, 18 May 2026 09:40:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1779090001; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=XX+NCiRBpx1RRKv5/r+32dJcg+j+AcRG7OLhJl2qFXg=;
+	b=jtn0ekistDGlG3TEVGexLbGAC6LLAoM1LCVTQNCSh8o4h718BX4AxRZ9/FJXvnpeUbla8X
+	nuEHbo5v3sKlgyWzSJa6vBkxhoq8k0BsfEDZ0lb3MkYZByYKPUapDzdiDFwD33/bo+1RqN
+	NUQQBgif23qEojb/UjgWiy9nz1pTWctxfs1iLMmuDG2NYQQJxdCXWW/r4Y1xQKvnOQ3pyN
+	0mAuaf4piMoBDGtPIXuhRg7p4QvsJNh6e5k5wFV2raOTOnyZywKn60DHZ5z65y3srxHjIU
+	GUyv3kmuNHD+/Zxn8we6bnAJiSFITIoUchMJbBjbPAnA5xlCHmgiGZvAExcuiA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+Cc: Srinivas Kandagatla <srini@kernel.org>,  Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  =?utf-8?Q?Gr=C3=A9gory?= Clement
+ <gregory.clement@bootlin.com>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  linux-kernel@vger.kernel.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] nvmem: layouts: Add fixed-layout driver
+In-Reply-To: <20260515-mathieu-nvmem-fixed-layout-v2-1-8ac215dd4016@bootlin.com>
+	(Mathieu Dubois-Briand's message of "Fri, 15 May 2026 13:56:56 +0200")
+References: <20260515-mathieu-nvmem-fixed-layout-v2-0-8ac215dd4016@bootlin.com>
+	<20260515-mathieu-nvmem-fixed-layout-v2-1-8ac215dd4016@bootlin.com>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Mon, 18 May 2026 09:40:00 +0200
+Message-ID: <87ik8lupwv.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="bQFFMTZVOn4os8l5"
-Content-Disposition: inline
-In-Reply-To: <20260515154658.538039039@linuxfoundation.org>
-X-Cookie: She sells cshs by the cshore.
-X-Rspamd-Queue-Id: 3A8A5568070
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 41CFC5680DC
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249209-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	TAGGED_FROM(0.00)[bounces-249210-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sirena.org.uk:mid]
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,bootlin.com:mid,bootlin.com:dkim]
 X-Rspamd-Action: no action
 
+Hi Mathieu,
 
---bQFFMTZVOn4os8l5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 15/05/2026 at 13:56:56 +02, Mathieu Dubois-Briand <mathieu.dubois-briand=
+@bootlin.com> wrote:
 
-On Fri, May 15, 2026 at 05:46:58PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 7.0.9 release.
-> There are 201 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> Current implementation isn't working well when device tree nodes have a
+> phandle on a fixed-layout nvmem node. As the fixed layout is handled in
+> nvmem core, no driver is ever associated with the layout, and the device
+> consumer driver probe is deferred indefinitely.
+>
+> Remove the specific handling of fixed-layout and add a layout driver.
+> This makes the fixed-layout similar to all other layouts, fixing the
+> whole issue.
+>
+> Fixes: fc29fd821d9a ("nvmem: core: Rework layouts to become regular devic=
+es")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
---bQFFMTZVOn4os8l5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoKwcYACgkQJNaLcl1U
-h9BS4gf4wFrz8vM2+lKaOWzYc86tEC2I5yKzoVvjPXHObxQE5RIx8AjMT1lCF7nn
-MlpkhsfwSAtzgk/HcpPhsrharAOgxQEkMnJbgW4nihty5EC56D5PzvFSusZ/Vx3i
-Sz60qgmAdaS58GLhEomwKpb4ATP9w2PAN3cAAJpQSmwQuufllAMpTYuo3Iv8UHt+
-cPq7Egb19SZTlZ3TzK5Pf2QZECFO1JUu/j1SdEeQo9RYwYkZH9zBOg0jQ4VcA7vK
-a/kpwrabhZQMYeRwXQ3e75NmP7ap76Y+BF5c8+JIZyJ70T3MRRxSu+QKXXQdj7vi
-JZh+D7RpFmVek7QpXw148cBtNif1
-=sZyB
------END PGP SIGNATURE-----
-
---bQFFMTZVOn4os8l5--
+Thanks!
+Miqu=C3=A8l
 
