@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-249156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDblD8NjCmoA0wQAu9opvQ
-	(envelope-from <stable+bounces-249156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 02:56:35 +0200
+	id EMeWKE5kCmo+0wQAu9opvQ
+	(envelope-from <stable+bounces-249157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 02:58:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9448D564A02
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 02:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03724564A23
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 02:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42BDF300F52A
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 00:56:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3776330179E5
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 00:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825EF1D5146;
-	Mon, 18 May 2026 00:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6471DDC28;
+	Mon, 18 May 2026 00:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b="ExmhZXcB";
-	dkim=temperror (0-bit key) header.d=berkoc.com header.i=@berkoc.com header.b="SRhvhkS2"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b="o15Kpshx";
+	dkim=temperror (0-bit key) header.d=berkoc.com header.i=@berkoc.com header.b="MhgUco/r"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-01.1984.is (mail-01.1984.is [185.112.145.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332182A1CF
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 00:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE992A1CF;
+	Mon, 18 May 2026 00:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.112.145.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779065792; cv=none; b=ETK83WVVFAHco3luN1geEjAQ9ytB5VFeBGVW02l7JPs9sR+gdwhpmRgZxEdm3OCvvRZ4XQjm8CHoXgZ8h5xqeyRvEsAPzWAagskhUhV6Ee/S4c041Nf3wlw4DjZNeOa0VmCu4R5NHTjm7HQA4VClf3dyqCg3otdpzX9tc9XL1M4=
+	t=1779065924; cv=none; b=iVE4i3XLxVouyGp7cyHObbYz4VZj/+RwFKNcxu4REJs3qDfdizWfcYLHl7lyUHtmhIwt7AXA/tUG5uw2K1r707SWLppuoiRwAzUO7xtQ0VLBdp8X5m2LLMy6L2StLz/15qNl7RZXOTvQ+5wirfqtEKqFwv9kCTBT6xUEQJYFBwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779065792; c=relaxed/simple;
-	bh=EAQX1Sfbq575thscWiKi136F/+gD6s4Z2BS9Woxw11M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Message-ID:Date; b=SbneukXA7hNx1j9p/V0FTf6PkQQ0SWQI0qjATvOjCnzoPBvhsE7mTcpYHVPNwYr/5fm1M/xeX7EcokwMKJNi4E9AT5SfC3OzA5yiDKC/2CmoUg9OwTNhMcBIx2vJTe9gbGKU9V+hNKaSP4d/zapeahQG8SqGDWsbxtKYeIy5HJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=berkoc.com; spf=pass smtp.mailfrom=berkoc.com; dkim=pass (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b=ExmhZXcB; dkim=temperror (0-bit key) header.d=berkoc.com header.i=@berkoc.com header.b=SRhvhkS2; arc=none smtp.client-ip=185.112.145.69
+	s=arc-20240116; t=1779065924; c=relaxed/simple;
+	bh=+GwKwgibjD6vFzzZUY6k/uoyAOrX6oxfWQDv0BNVfwk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Message-ID:Date; b=gV0uh6PDQHvOmPVGx+Calib8fILu0Nd3MkynTTx6xqlQy5JsuM6qObGZv4a65clzhQUHfajJQUrw68nFr1HAq+Fl8hvD1fJzmWOVPi2agkFfG+Ta58jT1Mxpmz9uOrO2ClzxXgq5T22kACTiP2xrXmYKrBly2+qSgrx24hcvsIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=berkoc.com; spf=pass smtp.mailfrom=berkoc.com; dkim=pass (2048-bit key) header.d=berkoc.com header.i=@berkoc.com header.b=o15Kpshx; dkim=temperror (0-bit key) header.d=berkoc.com header.i=@berkoc.com header.b=MhgUco/r; arc=none smtp.client-ip=185.112.145.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=berkoc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkoc.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=berkoc.com;
@@ -40,43 +40,43 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=berkoc.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=EAQX1Sfbq575thscWiKi136F/+gD6s4Z2BS9Woxw11M=; b=ExmhZXcBMI6TPcXNZB8IW6tglw
-	MoLfrA43x4msoi2Jq3w797EH4tkeAeCxhwrQcYqCPXziZZ3CsUBR7g+C6V2XYFT8vVYshSyiR+hyW
-	TshL9kl+NfmHGoRD6e4E4BK5qX4VDqs5Ry8n+B2wGmlE80AGOOeDnJI8tniyZCPCyuRbhbScugcmo
-	1olt227rkWygXAM9dt0oCDKBk+FLZlJDTmMf1orEis0Fae7JGGu6W9UOpadI0uyfL+maEOyQvoVDG
-	TvI/s1YnY1XOrCDC3zr6C8nyRrPwPicR65pMCz04xqhsLE42QAfoJvwjeBK5NVUxyyd7InQ7P61Sw
-	5/a2/z7w==;
+	bh=+GwKwgibjD6vFzzZUY6k/uoyAOrX6oxfWQDv0BNVfwk=; b=o15KpshxXZgBUFtlVw9R3ekN+k
+	b93TUUFqP1M0orvk45m1ODI4Xxvf7W6+EXlsyiywisQpL9acl52gB/tfW0JghWd4ty57xG9aZqX06
+	/apiYHtQHxg7ALUaML6MXNr7Cr6Q34UWHAx42lLpav8z/P3ORNpclKbWyOeRSdkriGaPaSgzQ7yoo
+	qd7diT5XbAQjmb+W8gKlr8RGiCPu7UcCNRMNNIiedlqmBVd4Z8AwlcWVX+CFOo3GiksdcMRGjHHCL
+	ebn9IzPBU3Afw5Bg5iJ37hb6rz8/kPBkokm5IcH9/E9WhNMQ5U9R6+xbrIut1SIRj4lA+PEOcQVqI
+	SRmgozNw==;
 Received: from localhost
 	by mail-01.1984.is with utf8esmtp (Exim 4.96)
 	(envelope-from <me@berkoc.com>)
-	id 1wOmHN-00HQfN-07;
-	Mon, 18 May 2026 00:56:21 +0000
+	id 1wOmJZ-00HQu5-0s;
+	Mon, 18 May 2026 00:58:38 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=berkoc.com;
- i=@berkoc.com; q=dns/txt; s=me; t=1779065776; h=message-id : date :
+ i=@berkoc.com; q=dns/txt; s=me; t=1779065912; h=message-id : date :
  subject : cc : to : from : sender : reply-to;
- bh=EAQX1Sfbq575thscWiKi136F/+gD6s4Z2BS9Woxw11M=;
- b=SRhvhkS2qsA5kKmLlhTBGiEBPNc57R9WZhmL0Yc4seyOGJabVrV0pV5+e7PieB9nHEgik
- /CRtXIXtnbE/r9Rq0YMEfuOB7jRaTLG0TqGGSl3i3jEWkgoT0VqJiEq2Emdvyu5GwCWafAI
- qgNmOYvX1rrFPBddfFXhUzx8bWIY7/DW+yEeaPKQLOzfSxVfvMiE413uZN6OlptlF2MweED
- X1/jERTR9bGfWufXyW7SmOR9GP6F2vmWusWhQh2LmooGmBWHia4sYZlU/YnSOVCxxC5DXUj
- uET2CWujlPKkQsHHNMnH109dsDvX+ghBMfVbsM6EpNwubNWyRgWGv5G6Pyyg==
+ bh=+GwKwgibjD6vFzzZUY6k/uoyAOrX6oxfWQDv0BNVfwk=;
+ b=MhgUco/rdvkfmNjEiJxxR64DM35FmUkD0qoJGa4pmlVshZ2qWDBWZsLbQDWmZd66UYzFB
+ l7dWBWSGdgra+df8CrtunAy8Nba62rAUIjfFjO7CftxAL0SdXd+p22ScpOREl67eaJnZybo
+ o2WOJ+Kd8tOYkwg/32UfEEsEvCf338Gs9a7dRBcpD2Vi5B5YID5M2daCbHn/9eQx1QudZM2
+ KzpU35Hwh/2ikY5gHOLn1If2ttSjtj4nfScN+UXdeWtixPvphorW54ZwKpFHnm0USyBq9zD
+ rBsw7LAyerht8tzgGfxu+aXIlo8Y0BIGRPyxo420JSczG97OyxRMJlDwyIfg==
 From: Berkant Koc <me@berkoc.com>
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: bcm-kernel-feedback-list@broadcom.com,
- dri-devel@lists.freedesktop.org,
- Daniel Vetter <daniel@ffwll.ch>,
- David Airlie <airlied@gmail.com>,
- Thomas Zimmermann <tzimmermann@suse.de>,
+To: Vincent Mailhol <mailhol@kernel.org>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+ Stephane Grosjean <stephane.grosjean@hms-networks.com>,
+ linux-can@vger.kernel.org,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ kernel@pengutronix.de,
  stable@vger.kernel.org
-Subject: Re: [PATCH] drm/vmwgfx: validate execbuf header.size lower bound
-In-Reply-To: 
- <CABQX2QMuLf-gDSfcoHgSrzjY8CyN9GSpt8J7Kv08QeeQMDUxqA@mail.gmail.com>
-References: <20260517-vmwgfx-uaf-report@berkoc.com>
- <2026051743-genre-cacti-bdf3@gregkh>
- <20260517-vmwgfx-uaf-patch@berkoc.com>
- <CABQX2QMuLf-gDSfcoHgSrzjY8CyN9GSpt8J7Kv08QeeQMDUxqA@mail.gmail.com>
-Message-ID: <177906577661.918345.11000778175674964652@berkoc.com>
-Date: Mon, 18 May 2026 02:56:16 +0200
+Subject: Re: [PATCH 1/2] can: peak_usb: validate URB length in
+ pcan_usb_fd_decode_buf()
+In-Reply-To: <b978603c-4878-4eee-adc1-290e905fe768@kernel.org>
+References: <20260517-can-usb-fix-cover@berkoc.com>
+ <20260517-can-usb-fix-1@berkoc.com>
+ <b978603c-4878-4eee-adc1-290e905fe768@kernel.org>
+Message-ID: <177906591253.919135.13839066904083701982@berkoc.com>
+Date: Mon, 18 May 2026 02:58:32 +0200
 X-Spam-Score: -0.2 (/)
 X-Authenticated-User: me@berkoc.com
 X-Sender-Address: me@berkoc.com
@@ -85,7 +85,7 @@ X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 9448D564A02
+X-Rspamd-Queue-Id: 03724564A23
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [3.14 / 15.00];
 	SEM_URIBL_FRESH15(3.00)[berkoc.com:dkim];
@@ -95,14 +95,13 @@ X-Spamd-Result: default: False [3.14 / 15.00];
 	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	R_DKIM_REJECT(0.00)[berkoc.com:s=1984];
-	TAGGED_FROM(0.00)[bounces-249156-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_MIXED(0.00)[];
+	R_DKIM_REJECT(0.00)[berkoc.com:s=1984];
+	TAGGED_FROM(0.00)[bounces-249157-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[broadcom.com,lists.freedesktop.org,ffwll.ch,gmail.com,suse.de,vger.kernel.org];
+	DKIM_MIXED(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[berkoc.com: no valid DMARC record];
 	DKIM_TRACE(0.00)[berkoc.com:-,berkoc.com:+];
@@ -116,15 +115,14 @@ X-Spamd-Result: default: False [3.14 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[berkoc.com:mid,berkoc.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-Thanks for the catch, you're right, I should have flagged the tooling
-in the patch body. And cross-pollination with your own series on
-patchwork is a good outcome.
+Vincent, fair, my earlier "custom CVE-hunter setup" was too thin.
+Here's the fuller picture.
 
 Tooling: berkoc-pipeline, a custom RAG framework on Claude Opus 4.7
 (Anthropic CVP cohort, May 2026). Full agentic stack: multi-tool
@@ -137,8 +135,17 @@ validation gate, manual verification on every finding before submit.
 v2 of this patch will include the formal trailer:
 Assisted-by: Claude:claude-opus-4-7 berkoc-pipeline
 
-Happy to send v2 with the trailer formalised, or keep the methodology
-disclosure to follow-up comments if you prefer.
+For the peak_usb finding specifically: seeded with reference commit
+6fe9f3279f7d ("can: gs_usb: gs_usb_receive_bulk_callback(): check
+actual_length before accessing header"), scanned drivers/net/can/usb/
+for the "actual_length verified before header dereference" pattern,
+candidate sites surfaced by the model, then manual verification with
+a reproducer harness (synthetic short URB, walk through msg_ptr/msg_end
+bounds) before the report went out.
+
+Happy to formalise as `Assisted-by: Claude:claude-opus-4-7
+berkoc-pipeline` trailer in v2 if you'd prefer, or drop the methodology
+into a follow-up note.
 
 Berkant
 
