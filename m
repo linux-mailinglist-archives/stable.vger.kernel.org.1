@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-249307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249308-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOnnJ7kiC2omDwUAu9opvQ
-	(envelope-from <stable+bounces-249307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:31:21 +0200
+	id 0AMEN8EiC2oxDwUAu9opvQ
+	(envelope-from <stable+bounces-249308-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:31:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED96356ED17
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9635A56ED30
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:31:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD76930BA600
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:24:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6585230BD577
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6503E48C416;
-	Mon, 18 May 2026 14:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A417C48C41F;
+	Mon, 18 May 2026 14:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="P4bLvHVV"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Y4sgGUpG"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD433436375
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 14:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A8948B385
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 14:23:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779114226; cv=none; b=pD23j03pGsat6Bhp+656otKwAwDKmgFVaJ6BPwbuRZYb3n1G+ELR7ZR4rhdrDevh20IDuPMkp1wqFJxhUgFkp45b+U6sUjmygLlGbUefVDTjmt1ehhfLpPJN3nRKp1Y5myiydOLj/GdeW1rxJhhKhpg2PEYWajz126Zi1OavFUk=
+	t=1779114228; cv=none; b=E66cs8TjeyfAXbOKWHhgIXMl9zFN9kd4SxHZBKmN7XmXzVVfodK2eGngrhkaE3CBWcAaSwTsa9/h6a8tjqb1UAXVZYaNbwKUfN5MDcZbb0uMK8hR5MEHvLk5pnDwVNDL7hF0C2ZgCu74sHDzNy728fXnBnp5YGHLXwRsStVJhS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779114226; c=relaxed/simple;
-	bh=jf0TmQKmVeYC0gpsI55lB1pWbgi0el4/1nCal3luHvQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QXwEmNJn1uTI3iZKV/2TCTOVtzwNZSOcYCgH2oi/ocIDJCZ9pTGs/g5Iou066OfmKhL09U5Np/14G3En0fywURZGKyzldpjAZh6CF12wUKbf8ZDEFBlbj8dINjF+nOrlaYKNyBWjpIqFhbAs/1p4a24iIWnZamV+8M0UbcQ+DFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=P4bLvHVV; arc=none smtp.client-ip=95.215.58.189
+	s=arc-20240116; t=1779114228; c=relaxed/simple;
+	bh=SJNouWG9N49DwlJLdrIoGEnUc1bC0vBsiRAFE5KGYOw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=huIVj46TuaqkgWylk+dhGL+mVqRdVCxKz84+mxYoN2D2XPJVbgcMnHIjhYWdmidBfjyYkUOFoS2p8y2SiW1LI9EikqC4NEN+9lDy3rtCt6j3wvkjDD8c8qBwoDP8ygZrfjrmsW/KVVJGe7226QZYpvswo+1B70wZQbpYMDIyGRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Y4sgGUpG; arc=none smtp.client-ip=95.215.58.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779114218;
+	t=1779114220;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FwD5v3ONOdOsGGNvw1Tq8CqMFhIulXeR+lh+f9/MFGk=;
-	b=P4bLvHVVUqXHQigori2cShp4vvaLbI8qVETXb+uQfAsewoiOdl7dAQBp7HeaWXJuSMzqSe
-	YOgiqz+N++MNVVurtTM68VuybUIvi7AmorQq9DEHVvgFWG4JE5gC4IeVO5j7JBS6ad4iXh
-	WM/Ht6BketLxcVbdEYKL/cxKlVtheJ8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=am8E06sbfDGT3YQjEADivRAyuYuxtPXZN7W3YBwkanM=;
+	b=Y4sgGUpGN0Sv61JlQpt888ReSan3+0bUgp2PZHYUU1i1+Eb3w5bg/yioe6uUroMgo6uwb2
+	SRN0Ui7TZbHJ5ExKomrL8qGi6sBiGgt/XQX7WcqqFZGlQ+wT8e6VqXbKfMyRnfuW6FnvNG
+	jVgGJzMODoYty98QhPZMyyKCPfF5uB4=
 From: luka.gejak@linux.dev
 To: Ping-Ke Shih <pkshih@realtek.com>
 Cc: Kalle Valo <kvalo@kernel.org>,
@@ -50,9 +52,11 @@ Cc: Kalle Valo <kvalo@kernel.org>,
 	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v4] wifi: rtw88: increase TX report timeout to fix race condition
-Date: Mon, 18 May 2026 16:23:10 +0200
-Message-ID: <20260518142311.10328-1-luka.gejak@linux.dev>
+Subject: [PATCH v4] wifi: rtw88: usb: fix memory leaks on USB write failures
+Date: Mon, 18 May 2026 16:23:11 +0200
+Message-ID: <20260518142311.10328-2-luka.gejak@linux.dev>
+In-Reply-To: <20260518142311.10328-1-luka.gejak@linux.dev>
+References: <20260518142311.10328-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,7 +75,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249307-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249308-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -86,30 +90,33 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NO_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,realtek.com:email]
-X-Rspamd-Queue-Id: ED96356ED17
+	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,linux.dev:email,linux.dev:mid,linux.dev:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9635A56ED30
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Luka Gejak <luka.gejak@linux.dev>
 
-The driver expects the firmware to report TX status within 500ms.
-However, a timeout can be triggered when the hardware performs
-background scans while under TX load. During these scans, the firmware
-stays off-channel for periods exceeding 500ms, delaying the delivery of
-TX reports back to the driver.
+When rtw_usb_write_port() fails to submit a USB Request Block (URB)
+(e.g., due to device disconnect or ENOMEM), the completion callback is
+never executed.
 
-When this occurs, the purge timer fires prematurely and drops the
-tracking skbs from the queue. This results in the host stack
-interpreting the missing status as packet loss, leading to TCP window
-collapse. In testing with iperf3, this causes throughput to drop from
-~90 Mbps to near-zero for approximately 2 seconds until the connection
-recovers.
+Currently, the driver ignores the return value of rtw_usb_write_port()
+in rtw_usb_write_data() and rtw_usb_tx_agg_skb(). Because these
+functions rely on the completion callback to free the socket buffers
+(skbs) and the transaction control block (txcb), a submission failure
+results in:
+1. A memory leak of the allocated skb in rtw_usb_write_data().
+2. A memory leak of the txcb structure and all aggregated skbs in
+   rtw_usb_tx_agg_skb().
 
-Increase RTW_TX_PROBE_TIMEOUT to 2500ms for RTL8723DU. This duration is
-sufficient to accommodate off-channel dwell time during full background
-scans, ensuring the purge timer only trips during genuine firmware
-lockups and preventing unnecessary TCP retransmission cycles.
+Fix this by checking the return value of rtw_usb_write_port(). If it
+fails, explicitly free the skb in rtw_usb_write_data(), and properly
+purge the tx_ack_queue and free the txcb in rtw_usb_tx_agg_skb().
+
+The issue was discovered in practice during device disconnect/reconnect
+scenarios and memory pressure conditions. Tested by verifying normal TX
+operation continues after the fix without regressions.
 
 Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
 Cc: stable@vger.kernel.org
@@ -118,42 +125,58 @@ Tested-by: Luka Gejak <luka.gejak@linux.dev>
 Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
 ---
 Changes in v4:
- - Picked up Acked-by tag.
+ - Fixed checkpatch issues and picked up Acked-by tag.
 Changes in v3:
- -Declared timeout with RTW_TX_PROBE_TIMEOUT as the default value and 
- removed the else branch.
- -Updated the Fixes tag to the commit that introduced USB support.
+ - Updated the Fixes tag to the commit that introduced USB support.
 Changes in v2:
- -Isolated the change to RTL8723DU as requested by Ping-Ke
+ - Use ret = rtw_usb_write_port(...); style, and check by next line (in
+   rtw_usb_tx_agg_skb)
+ - Remove unnecessary comment
+ - Use ieee80211_purge_tx_queue() instead of skb_queue_purge()
+ - Add testing details to commit message
 
- drivers/net/wireless/realtek/rtw88/tx.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/usb.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index 3106edb84fb4..a6e43314a4e9 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -196,6 +196,7 @@ void rtw_tx_report_purge_timer(struct timer_list *t)
- void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
- {
- 	struct rtw_tx_report *tx_report = &rtwdev->tx_report;
-+	unsigned long timeout = RTW_TX_PROBE_TIMEOUT;
- 	unsigned long flags;
- 	u8 *drv_data;
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+index 718940ebba31..1a0bdbf52cb0 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -399,6 +399,7 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb, struct sk_buff_head *list
+ 	int agg_num = 0;
+ 	unsigned int align_next = 0;
+ 	u8 qsel;
++	int ret;
  
-@@ -207,7 +208,11 @@ void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
- 	__skb_queue_tail(&tx_report->queue, skb);
- 	spin_unlock_irqrestore(&tx_report->q_lock, flags);
+ 	if (skb_queue_empty(list))
+ 		return false;
+@@ -456,7 +457,13 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb, struct sk_buff_head *list
+ 	tx_desc = (struct rtw_tx_desc *)skb_head->data;
+ 	qsel = le32_get_bits(tx_desc->w1, RTW_TX_DESC_W1_QSEL);
  
--	mod_timer(&tx_report->purge_timer, jiffies + RTW_TX_PROBE_TIMEOUT);
-+	if (rtwdev->chip->id == RTW_CHIP_TYPE_8723D &&
-+	    rtwdev->hci.type == RTW_HCI_TYPE_USB)
-+		timeout = msecs_to_jiffies(2500);
-+
-+	mod_timer(&tx_report->purge_timer, jiffies + timeout);
+-	rtw_usb_write_port(rtwdev, qsel, skb_head, rtw_usb_write_port_tx_complete, txcb);
++	ret = rtw_usb_write_port(rtwdev, qsel, skb_head,
++				 rtw_usb_write_port_tx_complete, txcb);
++	if (ret) {
++		ieee80211_purge_tx_queue(rtwdev->hw, &txcb->tx_ack_queue);
++		kfree(txcb);
++		return false;
++	}
+ 
+ 	return true;
  }
- EXPORT_SYMBOL(rtw_tx_report_enqueue);
+@@ -518,8 +525,10 @@ static int rtw_usb_write_data(struct rtw_dev *rtwdev,
  
+ 	ret = rtw_usb_write_port(rtwdev, qsel, skb,
+ 				 rtw_usb_write_port_complete, skb);
+-	if (unlikely(ret))
++	if (unlikely(ret)) {
+ 		rtw_err(rtwdev, "failed to do USB write, ret=%d\n", ret);
++		dev_kfree_skb_any(skb);
++	}
+ 
+ 	return ret;
+ }
 -- 
 2.54.0
 
