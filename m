@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-249364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAvWMPZfC2pgGQUAu9opvQ
-	(envelope-from <stable+bounces-249364-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:52:38 +0200
+	id QBLhCDFgC2pgGQUAu9opvQ
+	(envelope-from <stable+bounces-249365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:53:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349F7572742
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72845572766
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79DEA302E935
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:51:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E7F42301F30A
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD9038C421;
-	Mon, 18 May 2026 18:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7C938BF75;
+	Mon, 18 May 2026 18:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqN572yY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKrQEC8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D10A38AC9A;
-	Mon, 18 May 2026 18:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFEA29D291;
+	Mon, 18 May 2026 18:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779130305; cv=none; b=Oh/XkMkRGghno5BhOCKTh4AKVK1WZtLW0dSxPIKbWzae8erY7UDlsW6SB2Lx9KsWUoZLKLn7qLlnBrOvPF78e2mvl2QO9sy2SR75PNHCrjxR25XsMCn5r4CKE/A6V+0ZvkJ21nD84YyPZFT7eQH+2Ewzh1AYNxj8VOu1jvCnJYM=
+	t=1779130356; cv=none; b=XyoDJEecQkK33kmEwyHxXcy8eAMiPKrCLfoCENDpCoQA0igYwFP9Wu1+jaLIYrVPFU9L7DgZwIJHgQWXFrclNL+X5jqc3wteJp6N7K/N0G4NmYVtLN2bMJPTZbyoKmDOdi0U9wTNwSaoPnLUA3be4/87kuiO6+V3+DaAA6BC724=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779130305; c=relaxed/simple;
-	bh=6Lvgnhc6Xb8QPNlRI9znH0XN9rOqY6eKVRxMv6ll1RE=;
+	s=arc-20240116; t=1779130356; c=relaxed/simple;
+	bh=cN9ag78TztArFuWuOfxv3gwdfM668ZkfYAsbDso04QM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BkrHtX5xw1RbBn2Dn3yS5e7P+mDWBvdt9pMp5yRyaV0rg5tFc5DcC8lFf/zp92sjznBRNbMlh7R1ONTCU0VPkX6XAb8uiVhZENMGaAXjcmdK7uWeZbhLDRNqpr6gE9YcqGwgO4nJlhRFEbdazeciWOoFesHHQd8QKqfN1GbTP6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqN572yY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1291C2BCB7;
-	Mon, 18 May 2026 18:51:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=FwqpVmnLZ5EGrSzTSKVXdytLxjXNwMM/ztMz6e+6meDCd14E6Hvt5IfQgAdkIK90XOAeJs5mYn1EEVIbBTA0m/7FZw2AJO488/lQ0Cxko2aM5/chMqBqy6JTAYlV/8UGXmipgNoyf1IZxG98DRD55LFjW1ZwSphqjSkNFhQbvO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKrQEC8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B40BC2BCB7;
+	Mon, 18 May 2026 18:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1779130305;
-	bh=6Lvgnhc6Xb8QPNlRI9znH0XN9rOqY6eKVRxMv6ll1RE=;
+	s=korg; t=1779130355;
+	bh=cN9ag78TztArFuWuOfxv3gwdfM668ZkfYAsbDso04QM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iqN572yYEGMeCn69DQxDp9wYtLvYTM8ekMp93jJJAmLa4XkiLpGAPMFOnBXjEQtaN
-	 Jx9jaHfBynxZJYJ+a0h8AlkURkZxDoeXvHsnCM6vgENZ9P1qkroyeiwUr9yXGed0z2
-	 eQy2Zi6onzK6AiHM44gOheTuyhd/00ko8eopapOU=
-Date: Mon, 18 May 2026 20:50:58 +0200
+	b=NKrQEC8tnZ8egVpHpIpp9Jz08rLL85//6lXZrZB2jucv4GOI7pzvnm9nfO9kEuHCR
+	 p158b41+axeYauvtuU+V+JCbP5ngWMcFT3Uzq8itjtFnZEnfwqHqfGNq3IVH+sJJ9J
+	 HFeF7q/zCzL0U8MS1zj9LaBd8TQabUnYrV5YcQ7E=
+Date: Mon, 18 May 2026 20:51:49 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Vlad Poenaru <vlad.wing@gmail.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Breno Leitao <leitao@debian.org>,
-	Josef Bacik <josef@toxicpanda.com>, linux-fsdevel@vger.kernel.org,
+To: Sebastian Alba Vives <sebasjosue84@gmail.com>
+Cc: yilun.xu@linux.intel.com, linux-fpga@vger.kernel.org,
+	conor.dooley@microchip.com, mdf@kernel.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 6.18.y] fuse: avoid 0x10 fault in fuse_readahead when
- max_pages == 0
-Message-ID: <2026051846-amazingly-bacteria-ab37@gregkh>
-References: <20260518182602.3107764-1-vlad.wing@gmail.com>
+Subject: Re: [PATCH v7 1/3] fpga: dfl: add bounds check in
+ dfh_get_param_size()
+Message-ID: <2026051837-aggregate-garnish-ca3c@gregkh>
+References: <20260518165218.35388-1-sebasjosue84@gmail.com>
+ <20260518165218.35388-2-sebasjosue84@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,10 +60,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260518182602.3107764-1-vlad.wing@gmail.com>
-X-Spamd-Result: default: False [3.84 / 15.00];
+In-Reply-To: <20260518165218.35388-2-sebasjosue84@gmail.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
@@ -74,91 +72,104 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249364-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-249365-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[szeredi.hu,gmail.com,debian.org,toxicpanda.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 349F7572742
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 72845572766
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, May 18, 2026 at 11:26:02AM -0700, Vlad Poenaru wrote:
-> When fc->max_read is smaller than PAGE_SIZE (common on aarch64 with
-> 64K base pages if the FUSE server advertises a small max_read in INIT),
-> max_pages = min(fc->max_pages, fc->max_read / PAGE_SIZE) is 0, so
-> cur_pages is 0 on every outer iteration.
+On Mon, May 18, 2026 at 10:52:16AM -0600, Sebastian Alba Vives wrote:
+> dfh_get_param_size() can return a parameter size larger than the feature
+> region because the loop bounds check is evaluated before incrementing
+> size. If the EOP (End of Parameters) bit is set in the same iteration,
+> the inflated size is returned without re-validation against max.
 > 
-> fuse_io_alloc(NULL, 0) then calls fuse_folios_alloc(0, ...), which
-> calls kzalloc(0, ...) and gets back ZERO_SIZE_PTR == (void *)16.
-> The "if (!ia->ap.folios)" guard in fuse_io_alloc does not catch
-> ZERO_SIZE_PTR, so fuse_io_alloc happily returns an ia whose
-> ap.folios is 0x10.
+> This can cause create_feature_instance() to call memcpy_fromio() with a
+> size exceeding the ioremap'd region when a malicious FPGA device provides
+> crafted DFHv1 parameter headers.
 > 
-> The inner "while (pages < cur_pages)" loop runs zero times, then
-> fuse_send_readpages(ia, ...) dereferences ap->folios[0] in
-> folio_pos(), faulting at virtual address 0x10:
+> Add a bounds check after the size increment to ensure the accumulated
+> size never exceeds the feature boundary.
 > 
->   Unable to handle kernel NULL pointer dereference at virtual address
->   0000000000000010
->    fuse_readahead+0x14c/0x490
->    read_pages+0x80/0x318
->    page_cache_ra_unbounded+0x1c0/0x2b0
->    page_cache_ra_order+0xb8/0x368
->    page_cache_sync_ra+0x210/0x320
->    filemap_get_pages+0x290/0xdb0
->    generic_file_read_iter+0xd0/0x540
->    fuse_file_read_iter+0x8c/0x158
->    __arm64_sys_read+0x1a0/0x488
-> 
-> addr2line on the aarch64 vmlinux maps fuse_readahead+0x14c to
-> fs/fuse/file.c:897 inlined into :999, i.e. "folio_pos(ap->folios[0])"
-> inside fuse_send_readpages.  The faulting instruction "ldr x8, [x8]"
-> loads ap->folios[0]; ap->folios was previously loaded as 0x10
-> (ZERO_SIZE_PTR).
-> 
-> Without this fix the function would also spin forever, since
-> "nr_pages -= pages" makes no progress when pages stays 0; in practice
-> the NULL deref masks the spin.
-> 
-> Bail out of the outer loop if cur_pages is 0 -- there is no work we
-> can issue via FUSE in this iteration, and remaining folios will be
-> handled by read_pages() falling back to ->read_folio.
-> 
-> Note: this code was rewritten in mainline by commit 4ea907108a5c
-> ("fuse: use iomap for readahead"), which switched fuse_readahead to
-> iomap and removed the buggy loop entirely.  This patch therefore
-> applies only to stable branches that still carry the pre-iomap
-> readahead path.
-> 
-> Fixes: 3eab9d7bc2f4 ("fuse: convert readahead to use folios")
-> Reported-by: Breno Leitao <leitao@debian.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
+> Fixes: 4747ab89b4a6 ("fpga: dfl: add basic support for DFHv1")
+> Signed-off-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
 > ---
->  fs/fuse/file.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+> Changes in v7:
+>   - Correct the Fixes: tag commit hash (checkpatch).
+>     Reported by Xu Yilun.
+> Changes in v6:
+>   - Rebase onto linux-next. Add cover letter.
+>     Suggested by Xu Yilun.
+> Changes in v5:
+>   - Add blank line after the new bounds check.
+>     Suggested by Xu Yilun.
+> Changes in v2:
+>   - Use (size > max) instead of (size + DFHv1_PARAM_HDR > max).
+>     Suggested by Xu Yilun.
+> ---
+>  drivers/fpga/dfl.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/fpga/dfl.c b/drivers/fpga/dfl.c
+> index 4087a36a0..4c63c7c85 100644
+> --- a/drivers/fpga/dfl.c
+> +++ b/drivers/fpga/dfl.c
+> @@ -1132,6 +1132,8 @@ static int dfh_get_param_size(void __iomem *dfh_base, resource_size_t max)
+>  			return -EINVAL;
+>  
+>  		size += next * sizeof(u64);
+> +		if (size > max)
+> +			return -EINVAL;
+>  
+>  		if (FIELD_GET(DFHv1_PARAM_HDR_NEXT_EOP, v))
+>  			return size;
+> -- 
+> 2.43.0
+> 
 > 
 
-<formletter>
+Hi,
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
-</formletter>
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- You have marked a patch with a "Fixes:" tag for a commit that is in an
+  older released kernel, yet you do not have a cc: stable line in the
+  signed-off-by area at all, which means that the patch will not be
+  applied to any older kernel releases.  To properly fix this, please
+  follow the documented rules in the
+  Documentation/process/stable-kernel-rules.rst file for how to resolve
+  this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
 
