@@ -1,146 +1,182 @@
-Return-Path: <stable+bounces-249189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249190-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Bs4G2KyCmpx5wQAu9opvQ
-	(envelope-from <stable+bounces-249189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:32:02 +0200
+	id SOqOIGOzCmpx5wQAu9opvQ
+	(envelope-from <stable+bounces-249190-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:36:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CD8566B67
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CF2566C25
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99D0B302C5FA
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 06:30:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96D8B3038292
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 06:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6173DFC7B;
-	Mon, 18 May 2026 06:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D3130567B;
+	Mon, 18 May 2026 06:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X2JJ8bwB"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BBA37FF68;
-	Mon, 18 May 2026 06:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AB030567F
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 06:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779085798; cv=none; b=T/gHW/aRNHv+po+bHSQW3mNS0MUsMpVbvcFcXljzr7s6fx0sbdRmK0lp0WjAB47bqd0LSre1aiFf0W+FTo9yMsI8p+vYBIuTHyVd400l185eZUoaCxjlwKRnuvxOkLEe8yDXHIwIHXvvXZ4lcUDfrFpM5s9omk86AMagbNegvf0=
+	t=1779086028; cv=none; b=Js8ZN4yZy8kZLldO1GRl3/q/7HPFg4aBZA6qk0TS0lIIHqBXm3sXds6WmT6f5+1GNuuoSD6oUVpz2Rmh9PJaB7XJJTfdoEyxlOjPxA7bwmTYyXxKkcE43zEa7WJianCR7dcHutj2uDo2PYVSaEKp9xYrOUQOlUOt1/X4SOlmgtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779085798; c=relaxed/simple;
-	bh=HJlCY8DOaqDOhKrls2zg5ibUsXi7m2DzGGh/4c+j2bU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=og8Qn2FUkf+MNpE7l6LKmQv+B8I+2iejH+eqxLTsOJizBfUP/vESwOIqv3S+cOncXkA4HLd+It0T0k5V/TizUAwEws3lANnU3UKj8e/+P2V2ZZT27zMg79ax74ymGRLcp7+FGbEkLsgrqzxMq/vB44ipqVyx+KfjydDDfrjc1wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f607e8ba528211f1aa26b74ffac11d73-20260518
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:4bb8eabc-56d3-4dfa-a082-a4f92b4d3046,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:e7bac3a,CLOUDID:2cf1c7d3a309c4189b32b605f2a15957,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|865|898,TC:nil,Content:0|1
-	5|50,EDM:-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,
-	OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f607e8ba528211f1aa26b74ffac11d73-20260518
-X-User: zenghongling@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zenghongling@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2073245212; Mon, 18 May 2026 14:29:45 +0800
-From: Hongling Zeng <zenghongling@kylinos.cn>
-To: vkoul@kernel.org,
-	neil.armstrong@linaro.org,
-	johan@kernel.org,
-	kishon@kernel.org,
-	rogerq@ti.com
-Cc: linux-phy@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	zhongling0719@126.com,
-	Hongling Zeng <zenghongling@kylinos.cn>,
-	Sashiko AI <sashiko@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v5 4/4] phy: ti-pipe3: Fix clock leak in init error path
-Date: Mon, 18 May 2026 14:29:38 +0800
-Message-Id: <20260518062938.48114-5-zenghongling@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260518062938.48114-1-zenghongling@kylinos.cn>
-References: <20260518062938.48114-1-zenghongling@kylinos.cn>
+	s=arc-20240116; t=1779086028; c=relaxed/simple;
+	bh=GzirVmbbl19vb3T/f30XWXfsVpjcUcgMGXyjfyCBb7o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bo5b38gMa00SQKrHxFBytlMWeUL6fpYwQ8uvef0IuNvdVwjuaqgI4csXwX/X3DPBxQvm+WWIgtA7b8H7BDvOkn2ZVsQCJnLdUJVK8TL/ptqt1N4oPIxhLrwCnukssluCoSPAgMWcA7RtQpJM7c4ovLWTNAw395AEijBzlJChDcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X2JJ8bwB; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-449de065cb3so1742683f8f.2
+        for <stable@vger.kernel.org>; Sun, 17 May 2026 23:33:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779086024; x=1779690824; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R0+ToRarRTop3v5V07kaNb9bFJZRjYjBP/9rHn8kGX0=;
+        b=X2JJ8bwB6ORESoUbTRIWqZNXHFo9iPp1kW1DIq6PJtrnmtn2RUa0bDJbR9emgP3b2+
+         saorC1JEYfGyaw3YbFnR6uWm1R5VjZ732E5kBk5G1zWp2qJQZ3zxhffzCo9ewewJDSOC
+         Eok30vrwwyZ+2C3GmHfBny6u1L4Bj+bZ/n6KV4p9C0mmiIR8xkaBIpLjyiJLIQonbskM
+         u5YILvLDlrantHl0VRd3WIiguo+Nyb0mlSrvhB511frlQK3yNFcHFHvX+/uiuafD4dm7
+         95caTkop9TDnEEVGOACnhiQiWmjVVsvNknNvLMRtzJkO+1RV002t8hGmYX7XtLAYSVWS
+         f60Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779086024; x=1779690824;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=R0+ToRarRTop3v5V07kaNb9bFJZRjYjBP/9rHn8kGX0=;
+        b=gatL/COlBsPdwENMytfeZ15d8V2ddDMhBGz8f1ggazW7MTouC+kY4LoGnsLmVTtyla
+         +AqYzw9XsPMGbgO2yJWmkuQ1UHDJ4i4ng2AmiD+qLU3FAIOroIQgFNvZ3pi+GO7Pfyhf
+         q6vPRVlJjVvegGy+/g/CJJhC5Q9hYSBRcatbBEM/Gi71WLXyfeCehru6O0+eKD4SIaxX
+         6aALtnLFCtunql2itBPqqMR8pMT32tTd/vO6oJqLxISpk9knTJxkxAAHfbaVHAsE+THQ
+         /Y1zEosk/N4paZthHbwRkfkUydaww/5kE0cM1tlmrVDhBx3r502QvcsRx6ZFb4QjoGTO
+         CwLA==
+X-Forwarded-Encrypted: i=1; AFNElJ9JdNJn6iPo7bApUkWPmmQ/VYoriZSi6SSF1OZNqq4F+U9RmfTcgPsJDWKVr74qc7VCvto7kuM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgRUK+l9kupYsai4sChAY9JhAAfit+R+cIW8J36Hh6eMICFswx
+	AlQf19uE4Q6cpF2gwwJPDp5NoOj1v5QuaqqHjnBe1wO99Cl1xa26TLYU
+X-Gm-Gg: Acq92OEAe1ENKoAwnJ7iH7YIW8xVkT+9atO6r4CRo00nL0FEm4OCouE0E5csjEr0Jjb
+	pl2PtvRy8YevxSnINZlZgiqWb3AfPadY0wkF6hTyv9d7pCwOC3F8vWKw2Z1PhQIoVvsbcQlkYyX
+	T7PLmtSq82L19Jq9MtFIiVwT82AT1vLwC4BHnJ5osXeIstZK4Z1YKUY6dV/yOmugpcKDSc4mTNp
+	CcUhwjnqIcb7n3phcpEjR0GZbzD4Enz4wUlIBLS0iFgOckPyaF74MjQ7TxbIb63lrsQytjv/mAD
+	hl1CJpKxKa84L2K0uGhqYQi9aH0Q19wZ5RtMj2BrxtkDgDaBB1ZKMCkhzcMNJ8nnSiNaJGNO+He
+	TsoZ1U94ISz40h612Y9W3N0PBmJzmxsbFZZ6/Vnn8rc6fK00FI4bXnXkOlh9YvZES2X4WzdyOJL
+	RQFX5PPdoJJRfDVXAuqNZJuLr/lvKNk5xX
+X-Received: by 2002:a05:6000:2207:b0:45e:73eb:2a75 with SMTP id ffacd0b85a97d-45e73eb2ab3mr8485115f8f.16.1779086023636;
+        Sun, 17 May 2026 23:33:43 -0700 (PDT)
+Received: from foxbook (bfk48.neoplus.adsl.tpnet.pl. [83.28.48.48])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ec39806sm33840751f8f.9.2026.05.17.23.33.42
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sun, 17 May 2026 23:33:43 -0700 (PDT)
+Date: Mon, 18 May 2026 08:33:39 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Desnes Nunes <desnesn@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ gregkh@linuxfoundation.org, mathias.nyman@intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH RFT RFC] usb: xhci: Kill hosts with HCE or HSE on
+ command timeout
+Message-ID: <20260518083339.507e24bd.michal.pecio@gmail.com>
+In-Reply-To: <20260504093118.615ff480.michal.pecio@gmail.com>
+References: <20260430014817.2006885-1-desnesn@redhat.com>
+	<20260430104850.352bd946.michal.pecio@gmail.com>
+	<CACaw+exdPSVSfdAob7+d-xH=JEjBbPpY_z1cPPU6rzXx4wUZpA@mail.gmail.com>
+	<20260430235453.2288c973.michal.pecio@gmail.com>
+	<CACaw+ewwM_5eqyGW5=+THwHsYPs7u3NT096AFQdt6x4E6HcWtA@mail.gmail.com>
+	<20260502114644.76e6b5a3.michal.pecio@gmail.com>
+	<CACaw+eyKh7buHDoDyTOe8O65FP5cSXYdzCcQvwqKw=1DwX26oA@mail.gmail.com>
+	<20260502235517.089ba5bf.michal.pecio@gmail.com>
+	<CACaw+ewOTVh49tnkz+cRr0SD_Z-LmYrMWhFUrsik6YF83mPBtA@mail.gmail.com>
+	<20260503071749.6abda137.michal.pecio@gmail.com>
+	<CACaw+ew8uV5g1G-6qZGtVBEYZ3k+fvFrOq3XMyq-Nuhbq5mdnA@mail.gmail.com>
+	<20260503213111.117db3a1.michal.pecio@gmail.com>
+	<20260504093118.615ff480.michal.pecio@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D1CD8566B67
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E6CF2566C25
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249189-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[kylinos.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,126.com,kylinos.cn,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[zenghongling@kylinos.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TAGGED_FROM(0.00)[bounces-249190-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,kylinos.cn:mid]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,usbcmd.run:url]
 X-Rspamd-Action: no action
 
-When regmap_update_bits() fails in ti_pipe3_init() for PCIe mode,
-the function returns the error without calling ti_pipe3_disable_clocks().
-This leaves the clocks permanently enabled since the PHY framework won't
-invoke the .exit callback on init failure.
+On Mon, 4 May 2026 09:31:18 +0200, Michal Pecio wrote:
+> Never mind, here's the smoking gun:
+> 
+> [...]
+> [Fri May  1 09:46:41 2026] xhci_hcd 0000:80:14.0: // Turn on HC, cmd = 0x5.
+> [Fri May  1 09:46:41 2026] DMAR: DRHD: handling fault status reg 2
+> [Fri May  1 09:46:41 2026] DMAR: [DMA Read NO_PASID] Request device
+> [80:14.0] fault addr 0x1001680000 [fault reason 0x39] SM: Present bit
+> in Root Entry is clear
+> 
+> The chip IOMMU faults shortly after setting USBCMD.RUN = 1.
+> Such fault is expected to cause HSE assertion and usually it does.
+> You will probably find that HSE is already set while Enable Slot
+> is being queued, even if it was clear in xhci_gen_setup().
+> 
+> 1001680000 is close to valid addresses like 100167e000 or 100167c000.
+> 
+> Possible causes:
+> - xHCI or IOMMU driver bug
+> - HW corrupted a pointer
+> - HW accessed something out of bounds
+> - HW dereferenced a stale pointer from the original kernel
+> 
+> Do you happen to have more of those logs saved, are they all like that?
+> Any chance that 1001680000 appears somewhere in the main kernel's log?
 
-Fix this by adding proper clock cleanup in the PCIe error path, consistent
-with how the DPLL program error path handles cleanup.
+Hi again,
 
-Fixes: 234738ea3390 ("phy: ti-pipe3: move clk initialization to a separate function")
-Reported-by: Sashiko AI <sashiko@kernel.org>
-Closes: https://lore.kernel.org/all/20260518023657.41852C2BCB0@smtp.kernel.org/
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-Cc: stable@vger.kernel.org
+I see a certain lack of interest in finding the root cause of this.
 
----
-Change in v5:
-  -Add Fix ignored clock enable return value in init patch
----
- drivers/phy/ti/phy-ti-pipe3.c | 2 ++
- 1 file changed, 2 insertions(+)
+I have done a simple test on my own HW: writing bogus CRCR to cause
+IOMMU fault when the first command is submitted. I found that not all
+HCs reliably set HSE in this case, but obviously none of them ever
+complete the command properly.
 
-diff --git a/drivers/phy/ti/phy-ti-pipe3.c b/drivers/phy/ti/phy-ti-pipe3.c
-index 9ec228c2a940..4897e4ba2d7d 100644
---- a/drivers/phy/ti/phy-ti-pipe3.c
-+++ b/drivers/phy/ti/phy-ti-pipe3.c
-@@ -518,6 +518,8 @@ static int ti_pipe3_init(struct phy *x)
- 		val = 0x96 << OMAP_CTRL_PCIE_PCS_DELAY_COUNT_SHIFT;
- 		ret = regmap_update_bits(phy->pcs_syscon, phy->pcie_pcs_reg,
- 					 PCIE_PCS_MASK, val);
-+		if (ret)
-+			ti_pipe3_disable_clocks(phy);
- 		return ret;
- 	}
- 
--- 
-2.25.1
+It seems that unconditional hc_died() on Enable Slot timeout may not be
+a bad idea. Makes me wonder if the same shouldn't apply to all commands
+besides Address Device, they typically only timeout due to HW issues.
 
+Regards,
+Michal
 
