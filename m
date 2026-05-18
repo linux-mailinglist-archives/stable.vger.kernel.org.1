@@ -1,172 +1,180 @@
-Return-Path: <stable+bounces-249219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LZ8CEbNCmq18QQAu9opvQ
-	(envelope-from <stable+bounces-249219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:26:46 +0200
+	id WKZEF+rNCmq18QQAu9opvQ
+	(envelope-from <stable+bounces-249220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:29:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320A3568B71
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C190568C5D
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 619E13010F17
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:15:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 97DBE3018A30
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7C63E277F;
-	Mon, 18 May 2026 08:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A428D3E1D14;
+	Mon, 18 May 2026 08:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jrE7ZGzt"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="VNdawQuM"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from out203-205-221-235.mail.qq.com (out203-205-221-235.mail.qq.com [203.205.221.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF42C3E276A;
-	Mon, 18 May 2026 08:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC983644C7;
+	Mon, 18 May 2026 08:16:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779092108; cv=none; b=TYYoZhCgDGb4nhWJK9pcnxerHVrkLX5NgHHPpRQjU752jp72OGim5N0IEMJB5m3W8UZftrzLLzv25YZemBdo6pj9qZu+/cqplk8m0ANUEkrL5P56jWxHY/9Fr3LoEc2zQz4O9xDbL/dLFFENb+fCvrknO3IVeQf88nbjBcHSF+s=
+	t=1779092178; cv=none; b=VhBt1RzJ5Ujty9vnk9roYybwL6M8TYJ/+4aYyGifdkH2OSPlutwVFb3DGjmtHDfZbfsvjXzLSjFNJ/9rBUjcrrQWyNE9yoCbXvpTti+3HSI26YD7dEnCpJYExrNgk5xEZ0X4ij5i1HpNcJvNGM0vekl/xe7WSH06qdQxbB9NSrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779092108; c=relaxed/simple;
-	bh=03y1ZTW9G/BytRAviEq6s7RpV7ovG3W3nN8jwCgUR70=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bNEQH5UElnoMQ/QX13ikCQVgnbyI3uczw3nMHUhFAfVN8K7yh31jthFjKuPyW7IEdSs7lzIFYFOdtu3ifExo1NPY2gM3hXW16nuL8PPD5e+7zsuogDj6pCk9Uqp9vtAo7xSOFnkli1ZvqkIyTUxbze7dXubLQv28J9EdwjlM/iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jrE7ZGzt; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779092106; x=1810628106;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=03y1ZTW9G/BytRAviEq6s7RpV7ovG3W3nN8jwCgUR70=;
-  b=jrE7ZGzthvnHGE04nwY7u6xd0Ish7VoHehe7mx34cSdmPWndrFdzo+OI
-   vOuUWl+GkeNcvZaa7MLJ7fpQN9dQQTWsBFytItwTpCvAeaC+YEbbVZvMS
-   rl5AuwBvwhxaCNyco9CBEeYxq5cXUtLolE+yMMg7FSW0uCdIpJ7wyzTGf
-   WDu8c58ROMjeUfY5XpZYhO7CBD4BxupZESvTQ/PhTmxFCX0ETkUUAj021
-   XmUOYW0+QGkzKe1osOYDUrOpJbrzJj4fVpRknjZ8xFHfcZ0lzNbZ3ZmPc
-   LVZzg3EszdXdJaoL3DkERKPem0e9mRfleeU7/2Tiaf6M/vKrBWX66d6e7
-   Q==;
-X-CSE-ConnectionGUID: HghaRUO4RduAYkqWkn07vg==
-X-CSE-MsgGUID: BrZkjRXEQ+aH3kHMFEknxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="79792362"
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="79792362"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 01:15:05 -0700
-X-CSE-ConnectionGUID: MAGe3PucTWecG6MXjfkVIQ==
-X-CSE-MsgGUID: ZU1fDBTrTW+hYKY/CaBnNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="263137490"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.244.3])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 01:15:03 -0700
-Date: Mon, 18 May 2026 11:15:00 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Stepan Ionichev <sozdayvek@gmail.com>, andy@kernel.org,
-	hcazarim@yahoo.com, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] auxdisplay: line-display: fix OOB read on zero-length
- message_store()
-Message-ID: <agrKhHqSfKIb0N2o@ashevche-desk.local>
-References: <20260514174342.28451-1-sozdayvek@gmail.com>
- <CAHp75VfsA_LsbEKjxoeMdbhPbWj7OHZ7=0SYNA3c=ZLj_M94Bw@mail.gmail.com>
- <CAMuHMdUahvn5dr-sdN=4GP+0Mc2usG4CqVxYqkkzZz5RJbqZsQ@mail.gmail.com>
+	s=arc-20240116; t=1779092178; c=relaxed/simple;
+	bh=AjykVUVum+L/g4SJHBUELsKjZvyuDorNEoQ1miSVWN0=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=ErSGSZUS+jR/6CfFKgp4c6Ap/TIJqPEJ8OM5AdsQoM/BjDaeXzYpAWaecq+4Dl9/FaEw1eb5hw9rcpiXHja33FfhW8hL78VfJv00AvoSinnqP7TpXhIQQVS3n8X4yr/4cc3ErDum/rhEfW5p8imQF6tXrSbEEPztoqp5eE7NZhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=VNdawQuM; arc=none smtp.client-ip=203.205.221.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1779092172;
+	bh=Nax7KtpG10DrfUGIZPwYV/97qy2GgKkjcNWpTwIURro=;
+	h=From:To:Cc:Subject:Date;
+	b=VNdawQuMg0aFnZJUHwE0MgFHE4w2Jw77c6103GkpfhgIeyWUY/kK84bnVN6RPC3eS
+	 pl01cL1XNwYwnOC0qaicc7jq2uG8MUqiXKqP3ZLiAtn3Wb7RNGP+uuy4OPoJmeYsZw
+	 PtXOR8dc8/nEm7oq9Z7nyfCP0KpXOO2OgHPbAZdU=
+Received: from China-team ([47.95.114.252])
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id 4018BC9E; Mon, 18 May 2026 16:16:01 +0800
+X-QQ-mid: xmsmtpt1779092161tjh48x0u3
+Message-ID: <tencent_F47050611C1AC8694B6B203F9C249FADAB09@qq.com>
+X-QQ-XMAILINFO: MK9ZM/6TSGijC1ronhEqx2g8BqlZ28YsdIn9VJboYDG+lvUCihSklJE4et0NGF
+	 T//00IWb1uRvuzn31drk/wUS1MngJdkoFwXOff1OSW0U0/46wyMzxkQiJxaDmUKjm7RVQNOcOJL9
+	 vP+2/NzGsJW0pLfPoZGB8fODIII4kUR5NL9d0Yi0/AdPyI8osxSqGBmMSCv9B6hWtG9jifGpfAwo
+	 ZAjFDqNmeYpNnxJ4fuMOqOOPBcDLBKi5QoVFf1HDaTjKxUukKQ4w1RTTCxWP451NQkYZaAw4Um3u
+	 GEytPFtAWtRHpFY/L7PilKRjtydg21g2jxPKyg+gEAASxyG2BGbasNOol4Grc+q0TYex+4hKe5ZM
+	 QrfAyyEZeWpYN2HWSKQG0yvZE6641zoLvl6qyCT2shz2Een3gnU24/44gMN7CdtUxmiMsIsUVW+i
+	 omDMWh6qPhdhigU3Jp7WpZNVF8/9UIsQo7Of0vEiCHnWuQOxUKg5dQgG0xYeQ8Sflvfp5G3FcJUv
+	 NCZ1EoMhXWmHMlHF/+XvZtW3L0Nx6QoVrMsbMxfMd8D3OpV6fjqxzbniScUqE+BbHIZoV/qrvc1j
+	 wcfTzPRzFtKe0OOc/GbwitpVA/KGommZ79wrDCpu6BMeKJD42ZNnU/T/mMbqxWl5SE9YcS1oGkzF
+	 uvah5Rn9yVDsqN3SAgcn0JxHEhvkdJ3PAk40vEfkoJOUpqYEgvWGICw1AXaAGB/Id9PcbTZESxg9
+	 2HqDAqugW2pJ1ZeoCZf/l4JUM49g1+pMLU3NxtN+mKQYLP4FxFkWzm/CT37sH6chj9X5JDg6qiqq
+	 c++1ojqPiKHaF37fCLVst18KuIlJl/ba9xr/RmSnrx7mvetZlovkNeNXv4qg6FsCnW2N7TCFeY4q
+	 FRBmdGyubC63hGNxuNXtqW+Q2JCs2Mq5HgDg1q4xCs69Y32eID8VqAmACpFbx4Uk2MSIg6Ethjzd
+	 I/Ur1CL+GJG7fOEWdw32tv6/OpK3IvB0NgLTeUpH+8LVzfl5L1yJ8G3ry885FB8GYI75vDOZuuKj
+	 dq3nTeqvX1iMRs2U7CQzwL0qTH0z7N0vDj4S4iEAojrfSlt7BtF+/Z23EFcGyhDevvRjJszcoTmh
+	 KXsbjI
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: Alva Lan <alvalan9@foxmail.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	Liang Jie <liangjie@lixiang.com>,
+	Tom Talpey <tom@talpey.com>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.6.y 1/2] smb: client: correctly handle ErrorContextData as a flexible array
+Date: Mon, 18 May 2026 16:15:53 +0800
+X-OQ-MSGID: <20260518081554.21484-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMuHMdUahvn5dr-sdN=4GP+0Mc2usG4CqVxYqkkzZz5RJbqZsQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Queue-Id: 320A3568B71
+X-Rspamd-Queue-Id: 7C190568C5D
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
+	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,yahoo.com,linuxfoundation.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-249219-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249220-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lixiang.com,talpey.com,microsoft.com,foxmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FREEMAIL_FROM(0.00)[foxmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[foxmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,ashevche-desk.local:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-On Mon, May 18, 2026 at 10:08:07AM +0200, Geert Uytterhoeven wrote:
-> On Fri, 15 May 2026 at 09:13, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Thu, May 14, 2026 at 8:44 PM Stepan Ionichev <sozdayvek@gmail.com> wrote:
-> > > linedisp_display() unconditionally reads msg[count - 1] before
-> > > checking whether count is zero, so a write of zero bytes to the
-> > > message sysfs attribute hits msg[-1]:
-> > >
-> > >         write(fd, "", 0);
-> > >
-> > >         -> message_store(..., buf, count=0)
-> > >            -> linedisp_display(linedisp, buf, count=0)
-> > >               -> msg[count - 1] == '\n'  ; OOB read
-> > >
-> > > The kernfs write buffer for that store is a 1-byte allocation
-> > > (kernfs_fop_write_iter() does kmalloc(len + 1) with len == 0),
-> > > so msg[-1] is a 1-byte read before the slab object. On a
-> > > KASAN-enabled kernel this trips an out-of-bounds report and
-> > > panics; on stock kernels it silently reads adjacent slab data
-> > > and, if that byte happens to be '\n', the following count--
-> > > wraps ssize_t 0 to -1 and is then passed to kmemdup_nul().
-> > >
-> > > linedisp_display() is reached from the message_store() sysfs
-> > > callback (drivers/auxdisplay/line-display.c message attribute,
-> > > mode 0644) and from the in-tree initial-message setup with
-> > > count == -1, so the OOB path is only userspace-triggerable via
-> > > zero-byte writes;
-> >
-> > Isn't it also triggerable when  PANEL_BOOT_MESSAGE is left default
-> > with PANEL_CHANGE_MESSAGE="y"? (However these double quotes makes me
-> > wonder if this even works, as usually we compare symbols against plain
-> > 'n'. 'm', or 'y' (without any quotes).
-> >
-> > > vfs_write() does not short-circuit on
-> > > count == 0 and kernfs_fop_write_iter() dispatches the store
-> > > callback regardless.
-> 
-> I think PANEL_BOOT_MESSAGE is the only way to trigger this, as
-> writing an empty string to a device attribute is a no-op according
-> to commit afcb5a811ff3ab39 ("auxdisplay: img-ascii-lcd: Fix lock-up
-> when displaying empty string")? If that is still true, the issue
-> was introduced by commit c8ffef985af564c1 ("auxdisplay: linedisp:
-> Support configuring the boot message")?
+From: Liang Jie <liangjie@lixiang.com>
 
-Good points. Should I drop the patch and ask for a new commit message
-(and Fixes tag)?
+[ Upstream commit 215b7f9ecb8d7c14d56febdcdd246f3579c32aba ]
 
+The `smb2_symlink_err_rsp` structure was previously defined with
+`ErrorContextData` as a single `__u8` byte. However, the `ErrorContextData`
+field is intended to be a variable-length array based on `ErrorDataLength`.
+This mismatch leads to incorrect pointer arithmetic and potential memory
+access issues when processing error contexts.
+
+Updates the `ErrorContextData` field to be a flexible array
+(`__u8 ErrorContextData[]`). Additionally, it modifies the corresponding
+casts in the `symlink_data()` function to properly handle the flexible
+array, ensuring correct memory calculations and data handling.
+
+These changes improve the robustness of SMB2 symlink error processing.
+
+Signed-off-by: Liang Jie <liangjie@lixiang.com>
+Suggested-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Remove the __counted_by_le annotation in v6.6. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+---
+ fs/smb/client/smb2file.c | 4 ++--
+ fs/smb/client/smb2pdu.h  | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
+index 4e7d5c612256..3a5b62b29806 100644
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -42,14 +42,14 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
+ 		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
+ 		do {
+ 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
+-				sym = (struct smb2_symlink_err_rsp *)&p->ErrorContextData;
++				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
+ 				break;
+ 			}
+ 			cifs_dbg(FYI, "%s: skipping unhandled error context: 0x%x\n",
+ 				 __func__, le32_to_cpu(p->ErrorId));
+ 
+ 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
+-			p = (struct smb2_error_context_rsp *)((u8 *)&p->ErrorContextData + len);
++			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
+ 		} while (p < end);
+ 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
+ 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
+diff --git a/fs/smb/client/smb2pdu.h b/fs/smb/client/smb2pdu.h
+index 076d9e83e1a0..3c09a58dfd07 100644
+--- a/fs/smb/client/smb2pdu.h
++++ b/fs/smb/client/smb2pdu.h
+@@ -79,7 +79,7 @@ struct smb2_symlink_err_rsp {
+ struct smb2_error_context_rsp {
+ 	__le32 ErrorDataLength;
+ 	__le32 ErrorId;
+-	__u8  ErrorContextData; /* ErrorDataLength long array */
++	__u8  ErrorContextData[];
+ } __packed;
+ 
+ /* ErrorId values */
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
 
