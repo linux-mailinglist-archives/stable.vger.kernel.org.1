@@ -1,85 +1,85 @@
-Return-Path: <stable+bounces-249339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBUSKek/C2phFAUAu9opvQ
-	(envelope-from <stable+bounces-249339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:35:53 +0200
+	id UHlROv0/C2p4FAUAu9opvQ
+	(envelope-from <stable+bounces-249340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:36:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A5F570FFA
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 897BE57102B
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E67E7303013D
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:35:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 661A93039C8E
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F080148B394;
-	Mon, 18 May 2026 16:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D024F48B384;
+	Mon, 18 May 2026 16:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tSS/vC2D"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ukhi34VE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66C8481AA7
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 16:35:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBA048A2D1
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 16:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779122131; cv=none; b=R4nx11biXjzN6xEwBP+mkGeOh34UFRPSjutDYqT+ECLv5GEiZjuoPeP+c+nkZ29wLa/724Wx22ukebL7kebbBiX/IA5pN7GM32nQATd7ZzTghJSoiwvUizY5+U+YzQoER4AQm0g+fyoIizvzxG6qhZuKZCYqzwKw43IR5fsFkNc=
+	t=1779122132; cv=none; b=GEasNkaipgcp6Hrd6rFN6Wwi5bF8BROSJ1wLA4BWMl3ZqDU4toHnkLXWiLc730qF4qxc4Xz1Aiqyq8m0Ms7cmSs3/aPuEGlz/GAh9njZFFx7co1Hx7eLYW0Z4TtsNxvph/pJcjid+65A2nNIyhPl7VFZdNl/LlW6WW+FZwcrZtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779122131; c=relaxed/simple;
-	bh=djRGGOfNBbozjPnt/kQUnWI/N0nUnUMisT2sVceci6g=;
+	s=arc-20240116; t=1779122132; c=relaxed/simple;
+	bh=J6vYP+pwxqJtl3IXGpjK6NcN9iylazyz59URcLbnfuQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZWA6xoU3tSvgYrvSLmC+LWY1Bl5x4IuVw3bNQ2IDODmNXBH0q5QyGCwDIQqmC9xZBwyHc4RgWoFAGMBsqr9A9GgWKNu45pzXQ7O2FYLeki0LQ6IgEdClIR6CFCeV68g/q6yRfzeIzET0qyKA3C42oUuPHtRjYmjAhlVvaFqGbTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tSS/vC2D; arc=none smtp.client-ip=209.85.128.43
+	 In-Reply-To:To:Cc; b=gR+tdX4DZEfuJ56iu6HnNXIJ5ZSso8fNXUE84OhKRD4HPAt1ihr2NKonf7uc40lnBms6VrKpdml9m8rWM37UdC40xC4KlBB7vQ0XcyyMsDn+3CswTo6+vK7hKkz4dZD3mPEtuYSut+w+uPpXoTOHd+YSwePiGoiYq781pxOsJJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ukhi34VE; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4891b4934ffso1125e9.0
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 09:35:28 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48d1c670255so375e9.0
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 09:35:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779122127; x=1779726927; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779122128; x=1779726928; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GM6eeee61f70ct0y/r5ABG7xt/dD+OPujWKV47jCuiw=;
-        b=tSS/vC2DIW/yg5OPWACD4lnLLjFciL98hQ4rs19gGcnxsX6gOcoLbvYpeEKzvXioG5
-         ZD7V0nt7UsBf3YkeTgTXulGhs2gDtmlibXZKhce2Unrc1DhQ/vJ9EOOSESAQAUE2gbri
-         yTl+MvcVJ8teIcdQZpqgVG/Z+A/qJ/q5L1cOHCjTEHCnUjKUbqczIVI7izuf+89lSYM8
-         xHkIkQoYs3I2jlvFwpoaJZlFCn/WwJKx3IlPSlAu+UAs0MHgPIYCY3dgk9FPrlTEHw2K
-         nhXIO+jEu9sW1LBRwwLcG5DfZNQ2agk2ns3L9C0YN0dnPT4XskWe+KV61qyhMv5ZDsRq
-         x7kA==
+        bh=9JIolJGgKb991CwNklVUCVvleyM5JMSNh06xqnYIkkE=;
+        b=ukhi34VE7hisDw8lB9rjG8v4kOMjx9/9N+vbJOg9cN2rdFS4tLh3yx3DwwwrTB1+bn
+         QyOHu0q7mDWGdRK3CGDh4oT5idAc6UoeD2P1+k9ODKsRWSTapIlF5qHx/qjiQ0RMkJVf
+         2afRtWw4YpBCeq/fAyq4DVWK8yU9UVo9KfXKHRKFI3H8d5thqlBDJxFl4n4uS4k1C9IV
+         etxsoRGc/6kve1d9hFgV4YtIhtmwFzp15rhFRyaKSnFyGQbWMbuBaakohMlKOGkxuAnK
+         mPZI7s5bUYm6GUOVvdXO1H7hVOVa/cJB5c8z4GsvUmiFRhzg1FICol5EZj3BqC+vB4zm
+         AExg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779122127; x=1779726927;
+        d=1e100.net; s=20251104; t=1779122128; x=1779726928;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=GM6eeee61f70ct0y/r5ABG7xt/dD+OPujWKV47jCuiw=;
-        b=sd9ViRIHx2YTVSMKULmA269qZQ7a7/BbeujFNlrtij/GB2krPswqJqb33JxfVDcfuR
-         KBfxStCwVdhajguX7LJ0FHZAHJDAjZDgAq4Cw6+fbnQvMBDBNAxYw+fL8fGqWVXuyu+5
-         XlJD9zsElrSXisCAzEdszLJQJwdv5vioHVM7bDd6+n4ESS7dkF84ekUaqUvE3V4Mm8iw
-         cPwxFj6btZVzjH6ZvVOGwDHzJVnQrNp75H+AnzEAX1rEvIXKXAwTOc4T5NKKVSoygvuI
-         OWvmBnnkIRmD/EGpoAd/pwRrmDv8roQ+wGOZSYn7mGLLVWDQKNdE10KvApeeONJd9f3H
-         g30g==
-X-Forwarded-Encrypted: i=1; AFNElJ+4ta/auX+P69t+8icGv84rgauXJpMNSbi2IVe2zJvLyHhJ4KeVTK4QStgaDLb5zFQA1QHhUQc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8GLaGK/+AHd9JPiIaT2oJ2vqvguMtGD46bJED/5unxXn0lNAh
-	pkooyre6Vv+AuZe2EA8jspSxbTal7EX4D/ksdY3txFvuHnAPJyfRFahTpsHNlRN5NA==
-X-Gm-Gg: Acq92OFmTQ1ON2dLsr40BgS8TPItimmNOwegQ3N3XJdx7MQEf4/eYnszhMT/L6YLbYq
-	+5NTxPko3buX9gUf6wvMXdL6maG9onQKbFAac5LNv/c/s4vrhMH8GNWAMAQodWzkVZD3NqUxU8u
-	M7lSIz8x13dFUVCsn+3ktgGjF8NTffIMD+4tU3hesSJczM+8h/cVuLuqrTOsxFpfYnGEft+95fM
-	H7Bx6TTVi/L6NyO++jhpnNMxIGA2FDEA2Pzi1D2WlQF+yN8Bc2pg8NyShTpG1sDC5mdP8ZBHU9h
-	yOx2zEHxK6acO5td++Y912nCVrM5YRXD9qlyMvGyBq93ddxCM1Fg0pqtm0YEl7CQdm+kCH06Kd9
-	6ubE38HFcmQYLezhAb7NXUxcEfNI2BYffLvSF9k+B/cDQ322bshaGVM7+/I/GPEya6QD4LMX/1w
-	Ojw5jjrQkvCzHh8Ni1XG+PXZ9KeQxv46k+NZYRKsIiGwx6nzLJTNq8mqj7RYYd
-X-Received: by 2002:a7b:cc8b:0:b0:48f:de33:777a with SMTP id 5b1f17b1804b1-48ffd857abfmr2248535e9.11.1779122126285;
-        Mon, 18 May 2026 09:35:26 -0700 (PDT)
+        bh=9JIolJGgKb991CwNklVUCVvleyM5JMSNh06xqnYIkkE=;
+        b=h0F0lJONEKpaLgXdrqrZ7IQEV52x9CQ8XUdT3uk8PVnFafU+IcKW/WLCwfc5uazGfh
+         mJnbqLCOGUcDy9I2uGWiqoT+WcNkfmxyIMuEBpPD8GEijozVwE4CvkDNzJgnc8H65gQ0
+         BR5dnw01oMGRrmRBRRbPTJ8s7NutHVWeUUKZAq88k8SUSKcd4NV2BSX0XMps2TphzLIU
+         CcAv23vzSIDdcTmHXjR/10Fsd8C8zcc272+WxzfA1dVdUjAjWn08wCMbXevMLS2Tfv8d
+         e7o4yJ/4o1kEYEuFQyz5M7Ezxg1GYJyxzeO18uo43dOlVm7m3a0TRDQ8gufTLHPJWW2S
+         rFeg==
+X-Forwarded-Encrypted: i=1; AFNElJ9T/6LoFmDWkHirXIim6gNV78FVThMWMMRqtVj//Nb/Y7SPGPXuHoEZdKFRDqVGTbeLuwpJAQg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWq4wyhlbgbWp+O97VT7xNSeEv5Ytevahh6rg5LVlW7inL2xxT
+	hUUs7BvOyrLg8VuoALvZZwikqqhnFQ00UoouFLcsP/9KTcEvq7fagKF3kMoFcgrVZA==
+X-Gm-Gg: Acq92OHN8Srx/XjuY9gIr2uXVqLP/kgM5ZyuDJ4sIExO5Z173awDVe7itHp554PubVT
+	EUWDP+KuzYl/0UiNNlqwTiX2n3Ahs8y5PJxcti6Mv1cwg54vwgz6eKHDesUxiw81iMU93qnkCF9
+	p/+p9GW9CkxuFq+UDlKzCeFe91KvVa5J8wZAG4USKK74KRwihG8rHmeUKwwPQM60PsVxPwsxva5
+	e1pUYHvBKJ1GT4gUXraDt47hH94N31jzAwvyXuGa79Rw/g7ofvloA8ESEM5sZOPWB4Nhqnmdp/U
+	2gwyJ6fzxsyD+B/sDBPWb7rLqb7BpJTXRudjVVFoZOKh3iXxmOQ7HJAskz7djph+bm+RLPzKEaw
+	2mjutS0x/5lSznUUkh7h3m+6k7akcto3RDw2dxj5AxL1amrFjylihTX8l9+h0ZYyFcRh7PQcBXJ
+	lpYfT3qjpPAMsWXwPwjywPIqOB8YeDZ/MhDUoyIYzBq6zgN3SLLP8nmP82EqSO
+X-Received: by 2002:a05:600c:6986:b0:485:2ab4:c1f9 with SMTP id 5b1f17b1804b1-48ffa5a381fmr2897155e9.4.1779122127357;
+        Mon, 18 May 2026 09:35:27 -0700 (PDT)
 Received: from localhost ([2a00:79e0:288a:8:866a:e549:273b:bc0])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ec3acf7sm38427000f8f.12.2026.05.18.09.35.25
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0a1aeafsm40394849f8f.23.2026.05.18.09.35.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 09:35:25 -0700 (PDT)
+        Mon, 18 May 2026 09:35:26 -0700 (PDT)
 From: Jann Horn <jannh@google.com>
-Date: Mon, 18 May 2026 18:35:15 +0200
-Subject: [PATCH 1/2] proc: protect ptrace_may_access() with
- exec_update_lock (part 1)
+Date: Mon, 18 May 2026 18:35:16 +0200
+Subject: [PATCH 2/2] proc: protect ptrace_may_access() with
+ exec_update_lock (FD links)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,7 +88,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260518-procfs-lockfix-part1-v1-1-5c3d20e0ac33@google.com>
+Message-Id: <20260518-procfs-lockfix-part1-v1-2-5c3d20e0ac33@google.com>
 References: <20260518-procfs-lockfix-part1-v1-0-5c3d20e0ac33@google.com>
 In-Reply-To: <20260518-procfs-lockfix-part1-v1-0-5c3d20e0ac33@google.com>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -98,11 +98,11 @@ Cc: Jan Kara <jack@suse.cz>, Arjan van de Ven <arjan@linux.intel.com>,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  Jann Horn <jannh@google.com>, stable@vger.kernel.org
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779122120; l=5553;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779122120; l=7748;
  i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=djRGGOfNBbozjPnt/kQUnWI/N0nUnUMisT2sVceci6g=;
- b=bO91HUMzG4P0W1Yx2ORHO+hPa3YyNmBXkVORAsg8OmR5uNHV92gGhL0bfoVSeWZ9al1W5U9z2
- ltoGAmawz8gBzEJuWVGfPrqVR0sRvKboxFfgbs829qqeXF5kjImB5df
+ bh=J6vYP+pwxqJtl3IXGpjK6NcN9iylazyz59URcLbnfuQ=;
+ b=VGuWqwO60b4SF4T9W/cDNEZOqXEC7aVVevIZX9SsSb7uy7X+b/lA73E07zjsjHEDTj1bkJKC4
+ Sr5mX0rxXNWBNf5FqcB4mV1qb5KBWiQZz4gXJvCc1GPzB4bRclzXhJN
 X-Developer-Key: i=jannh@google.com; a=ed25519;
  pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 X-Spamd-Result: default: False [-2.16 / 15.00];
@@ -115,7 +115,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249339-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249340-lists,stable=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[google.com:+];
@@ -131,205 +131,275 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 41A5F570FFA
+X-Rspamd-Queue-Id: 897BE57102B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Fix the easy cases where procfs currently calls ptrace_may_access() without
-exec_update_lock protection, where the fix is to simply add the extra lock
-or use mm_access():
+proc_pid_get_link() and proc_pid_readlink() currently look up the task from
+the pid once, then do the ptrace access check on that task, then look up
+the task from the pid a second time to do the actual access.
+That's racy in several ways.
 
- - do_task_stat(): grab exec_update_lock
- - proc_pid_wchan(): grab exec_update_lock
- - proc_map_files_lookup(): use mm_access() instead of get_task_mm()
- - proc_map_files_readdir(): use mm_access() instead of get_task_mm()
- - proc_ns_get_link(): grab exec_update_lock
- - proc_ns_readlink(): grab exec_update_lock
+To fix it, pass the task to the ->proc_get_link() handler, and instead of
+proc_fd_access_allowed(), introduce a new helper call_proc_get_link() that
+looks up and locks the task, does the access check, and calls
+->proc_get_link().
 
-Fixes: f83ce3e6b02d ("proc: avoid information leaks to non-privileged processes")
+Fixes: 778c1144771f ("[PATCH] proc: Use sane permission checks on the /proc/<pid>/fd/ symlinks")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jann Horn <jannh@google.com>
 ---
- fs/proc/array.c      |  6 ++++++
- fs/proc/base.c       | 40 ++++++++++++++++++++--------------------
- fs/proc/namespaces.c | 12 ++++++++++++
- 3 files changed, 38 insertions(+), 20 deletions(-)
+ fs/proc/base.c     | 119 +++++++++++++++++++++--------------------------------
+ fs/proc/fd.c       |  27 +++++-------
+ fs/proc/internal.h |   2 +-
+ 3 files changed, 59 insertions(+), 89 deletions(-)
 
-diff --git a/fs/proc/array.c b/fs/proc/array.c
-index 90fb0c6b5f99..479ea8cb4ef4 100644
---- a/fs/proc/array.c
-+++ b/fs/proc/array.c
-@@ -482,6 +482,11 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
- 	unsigned long flags;
- 	int exit_code = task->exit_code;
- 	struct signal_struct *sig = task->signal;
-+	int ret;
-+
-+	ret = down_read_killable(&task->signal->exec_update_lock);
-+	if (ret)
-+		return ret;
- 
- 	state = *get_task_state(task);
- 	vsize = eip = esp = 0;
-@@ -657,6 +662,7 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
- 		seq_puts(m, " 0");
- 
- 	seq_putc(m, '\n');
-+	up_read(&task->signal->exec_update_lock);
- 	if (mm)
- 		mmput(mm);
- 	return 0;
 diff --git a/fs/proc/base.c b/fs/proc/base.c
-index d9acfa89c894..09b02d1621e5 100644
+index 09b02d1621e5..ef2f59461374 100644
 --- a/fs/proc/base.c
 +++ b/fs/proc/base.c
-@@ -423,18 +423,24 @@ static int proc_pid_wchan(struct seq_file *m, struct pid_namespace *ns,
- {
- 	unsigned long wchan;
- 	char symname[KSYM_NAME_LEN];
-+	int err;
- 
-+	err = down_read_killable(&task->signal->exec_update_lock);
-+	if (err)
-+		return err;
- 	if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
- 		goto print0;
- 
- 	wchan = get_wchan(task);
- 	if (wchan && !lookup_symbol_name(wchan, symname)) {
- 		seq_puts(m, symname);
-+		up_read(&task->signal->exec_update_lock);
- 		return 0;
- 	}
- 
- print0:
- 	seq_putc(m, '0');
-+	up_read(&task->signal->exec_update_lock);
- 	return 0;
+@@ -218,33 +218,24 @@ static int get_task_root(struct task_struct *task, struct path *root)
+ 	return result;
  }
- #endif /* CONFIG_KALLSYMS */
-@@ -2360,17 +2366,15 @@ static struct dentry *proc_map_files_lookup(struct inode *dir,
- 	if (!task)
- 		goto out;
  
--	result = ERR_PTR(-EACCES);
--	if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
--		goto out_put_task;
+-static int proc_cwd_link(struct dentry *dentry, struct path *path)
++static int proc_cwd_link(struct dentry *dentry, struct path *path,
++			 struct task_struct *task)
+ {
+-	struct task_struct *task = get_proc_task(d_inode(dentry));
+ 	int result = -ENOENT;
+ 
+-	if (task) {
+-		task_lock(task);
+-		if (task->fs) {
+-			get_fs_pwd(task->fs, path);
+-			result = 0;
+-		}
+-		task_unlock(task);
+-		put_task_struct(task);
++	task_lock(task);
++	if (task->fs) {
++		get_fs_pwd(task->fs, path);
++		result = 0;
+ 	}
++	task_unlock(task);
+ 	return result;
+ }
+ 
+-static int proc_root_link(struct dentry *dentry, struct path *path)
++static int proc_root_link(struct dentry *dentry, struct path *path,
++			  struct task_struct *task)
+ {
+-	struct task_struct *task = get_proc_task(d_inode(dentry));
+-	int result = -ENOENT;
 -
- 	result = ERR_PTR(-ENOENT);
- 	if (dname_to_vma_addr(dentry, &vm_start, &vm_end))
- 		goto out_put_task;
- 
--	mm = get_task_mm(task);
--	if (!mm)
-+	mm = mm_access(task, PTRACE_MODE_READ_FSCREDS);
-+	if (IS_ERR(mm)) {
-+		result = ERR_CAST(mm);
- 		goto out_put_task;
-+	}
- 
- 	result = ERR_PTR(-EINTR);
- 	if (mmap_read_lock_killable(mm))
-@@ -2420,23 +2424,19 @@ proc_map_files_readdir(struct file *file, struct dir_context *ctx)
- 	if (!task)
- 		goto out;
- 
--	ret = -EACCES;
--	if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
-+	mm = mm_access(task, PTRACE_MODE_READ_FSCREDS);
-+	if (IS_ERR(mm)) {
-+		ret = PTR_ERR(mm);
- 		goto out_put_task;
-+	}
- 
- 	ret = 0;
- 	if (!dir_emit_dots(file, ctx))
--		goto out_put_task;
--
--	mm = get_task_mm(task);
--	if (!mm)
--		goto out_put_task;
-+		goto out_put_mm;
- 
- 	ret = mmap_read_lock_killable(mm);
--	if (ret) {
--		mmput(mm);
--		goto out_put_task;
+-	if (task) {
+-		result = get_task_root(task, path);
+-		put_task_struct(task);
 -	}
-+	if (ret)
-+		goto out_put_mm;
+-	return result;
++	return get_task_root(task, path);
+ }
  
- 	nr_files = 0;
+ /*
+@@ -710,23 +701,6 @@ static int proc_pid_syscall(struct seq_file *m, struct pid_namespace *ns,
+ /*                       Here the fs part begins                        */
+ /************************************************************************/
  
-@@ -2462,8 +2462,7 @@ proc_map_files_readdir(struct file *file, struct dir_context *ctx)
- 		if (!p) {
- 			ret = -ENOMEM;
- 			mmap_read_unlock(mm);
--			mmput(mm);
--			goto out_put_task;
-+			goto out_put_mm;
- 		}
+-/* permission checks */
+-static bool proc_fd_access_allowed(struct inode *inode)
+-{
+-	struct task_struct *task;
+-	bool allowed = false;
+-	/* Allow access to a task's file descriptors if it is us or we
+-	 * may use ptrace attach to the process and find out that
+-	 * information.
+-	 */
+-	task = get_proc_task(inode);
+-	if (task) {
+-		allowed = ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS);
+-		put_task_struct(task);
+-	}
+-	return allowed;
+-}
+-
+ int proc_nochmod_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 		 struct iattr *attr)
+ {
+@@ -1783,16 +1757,12 @@ static const struct file_operations proc_pid_set_comm_operations = {
+ 	.release	= single_release,
+ };
  
- 		p->start = vma->vm_start;
-@@ -2471,7 +2470,6 @@ proc_map_files_readdir(struct file *file, struct dir_context *ctx)
- 		p->mode = vma->vm_file->f_mode;
- 	}
- 	mmap_read_unlock(mm);
--	mmput(mm);
+-static int proc_exe_link(struct dentry *dentry, struct path *exe_path)
++static int proc_exe_link(struct dentry *dentry, struct path *exe_path,
++			 struct task_struct *task)
+ {
+-	struct task_struct *task;
+ 	struct file *exe_file;
  
- 	for (i = 0; i < nr_files; i++) {
- 		char buf[4 * sizeof(long) + 2];	/* max: %lx-%lx\0 */
-@@ -2488,6 +2486,8 @@ proc_map_files_readdir(struct file *file, struct dir_context *ctx)
- 		ctx->pos++;
- 	}
+-	task = get_proc_task(d_inode(dentry));
+-	if (!task)
+-		return -ENOENT;
+ 	exe_file = get_task_exe_file(task);
+-	put_task_struct(task);
+ 	if (exe_file) {
+ 		*exe_path = exe_file->f_path;
+ 		path_get(&exe_file->f_path);
+@@ -1802,26 +1772,42 @@ static int proc_exe_link(struct dentry *dentry, struct path *exe_path)
+ 		return -ENOENT;
+ }
  
-+out_put_mm:
-+	mmput(mm);
- out_put_task:
- 	put_task_struct(task);
- out:
-diff --git a/fs/proc/namespaces.c b/fs/proc/namespaces.c
-index 39f4169f669f..2f46f1396744 100644
---- a/fs/proc/namespaces.c
-+++ b/fs/proc/namespaces.c
-@@ -55,6 +55,10 @@ static const char *proc_ns_get_link(struct dentry *dentry,
- 	if (!task)
- 		return ERR_PTR(-EACCES);
- 
-+	error = down_read_killable(&task->signal->exec_update_lock);
-+	if (error)
-+		goto out_put_task;
++static int call_proc_get_link(struct dentry *dentry, struct inode *inode, struct path *path_out)
++{
++	struct task_struct *task;
++	int ret;
 +
- 	if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS))
- 		goto out;
- 
-@@ -64,6 +68,8 @@ static const char *proc_ns_get_link(struct dentry *dentry,
- 
- 	error = nd_jump_link(&ns_path);
- out:
++	task = get_proc_task(inode);
++	if (!task)
++		return -ENOENT;
++	ret = down_read_killable(&task->signal->exec_update_lock);
++	if (ret)
++		goto out_put_task;
++	if (!ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS)) {
++		ret = -EACCES;
++		goto out;
++	}
++	ret = PROC_I(inode)->op.proc_get_link(dentry, path_out, task);
++
++out:
 +	up_read(&task->signal->exec_update_lock);
 +out_put_task:
- 	put_task_struct(task);
++	put_task_struct(task);
++	return ret;
++}
++
+ static const char *proc_pid_get_link(struct dentry *dentry,
+ 				     struct inode *inode,
+ 				     struct delayed_call *done)
+ {
+ 	struct path path;
+-	int error = -EACCES;
++	int error;
+ 
+ 	if (!dentry)
+ 		return ERR_PTR(-ECHILD);
+-
+-	/* Are we allowed to snoop on the tasks file descriptors? */
+-	if (!proc_fd_access_allowed(inode))
+-		goto out;
+-
+-	error = PROC_I(inode)->op.proc_get_link(dentry, &path);
+-	if (error)
+-		goto out;
+-
+-	error = nd_jump_link(&path);
+-out:
++	error = call_proc_get_link(dentry, inode, &path);
++	if (!error)
++		error = nd_jump_link(&path);
  	return ERR_PTR(error);
  }
-@@ -80,11 +86,17 @@ static int proc_ns_readlink(struct dentry *dentry, char __user *buffer, int bufl
- 	if (!task)
- 		return res;
  
-+	res = down_read_killable(&task->signal->exec_update_lock);
-+	if (res)
-+		goto out_put_task;
-+
- 	if (ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS)) {
- 		res = ns_get_name(name, sizeof(name), task, ns_ops);
- 		if (res >= 0)
- 			res = readlink_copy(buffer, buflen, name, strlen(name));
- 	}
-+	up_read(&task->signal->exec_update_lock);
-+out_put_task:
- 	put_task_struct(task);
- 	return res;
+@@ -1855,17 +1841,11 @@ static int proc_pid_readlink(struct dentry * dentry, char __user * buffer, int b
+ 	struct inode *inode = d_inode(dentry);
+ 	struct path path;
+ 
+-	/* Are we allowed to snoop on the tasks file descriptors? */
+-	if (!proc_fd_access_allowed(inode))
+-		goto out;
+-
+-	error = PROC_I(inode)->op.proc_get_link(dentry, &path);
+-	if (error)
+-		goto out;
+-
+-	error = do_proc_readlink(&path, buffer, buflen);
+-	path_put(&path);
+-out:
++	error = call_proc_get_link(dentry, inode, &path);
++	if (!error) {
++		error = do_proc_readlink(&path, buffer, buflen);
++		path_put(&path);
++	}
+ 	return error;
  }
+ 
+@@ -2256,21 +2236,16 @@ static const struct dentry_operations tid_map_files_dentry_operations = {
+ 	.d_delete	= pid_delete_dentry,
+ };
+ 
+-static int map_files_get_link(struct dentry *dentry, struct path *path)
++static int map_files_get_link(struct dentry *dentry, struct path *path,
++			      struct task_struct *task)
+ {
+ 	unsigned long vm_start, vm_end;
+ 	struct vm_area_struct *vma;
+-	struct task_struct *task;
+ 	struct mm_struct *mm;
+ 	int rc;
+ 
+ 	rc = -ENOENT;
+-	task = get_proc_task(d_inode(dentry));
+-	if (!task)
+-		goto out;
+-
+ 	mm = get_task_mm(task);
+-	put_task_struct(task);
+ 	if (!mm)
+ 		goto out;
+ 
+diff --git a/fs/proc/fd.c b/fs/proc/fd.c
+index 05c7513e77c7..0f9a1556f2a3 100644
+--- a/fs/proc/fd.c
++++ b/fs/proc/fd.c
+@@ -171,24 +171,19 @@ static const struct dentry_operations tid_fd_dentry_operations = {
+ 	.d_delete	= pid_delete_dentry,
+ };
+ 
+-static int proc_fd_link(struct dentry *dentry, struct path *path)
++static int proc_fd_link(struct dentry *dentry, struct path *path,
++			struct task_struct *task)
+ {
+-	struct task_struct *task;
+ 	int ret = -ENOENT;
+-
+-	task = get_proc_task(d_inode(dentry));
+-	if (task) {
+-		unsigned int fd = proc_fd(d_inode(dentry));
+-		struct file *fd_file;
+-
+-		fd_file = fget_task(task, fd);
+-		if (fd_file) {
+-			*path = fd_file->f_path;
+-			path_get(&fd_file->f_path);
+-			ret = 0;
+-			fput(fd_file);
+-		}
+-		put_task_struct(task);
++	unsigned int fd = proc_fd(d_inode(dentry));
++	struct file *fd_file;
++
++	fd_file = fget_task(task, fd);
++	if (fd_file) {
++		*path = fd_file->f_path;
++		path_get(&fd_file->f_path);
++		ret = 0;
++		fput(fd_file);
+ 	}
+ 
+ 	return ret;
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index 64dc44832808..d31984c3c797 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -107,7 +107,7 @@ extern struct kmem_cache *proc_dir_entry_cache;
+ void pde_free(struct proc_dir_entry *pde);
+ 
+ union proc_op {
+-	int (*proc_get_link)(struct dentry *, struct path *);
++	int (*proc_get_link)(struct dentry *, struct path *, struct task_struct *);
+ 	int (*proc_show)(struct seq_file *m,
+ 		struct pid_namespace *ns, struct pid *pid,
+ 		struct task_struct *task);
 
 -- 
 2.54.0.563.g4f69b47b94-goog
