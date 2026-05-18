@@ -1,137 +1,137 @@
-Return-Path: <stable+bounces-249284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QG/8NQUSC2pN/gQAu9opvQ
-	(envelope-from <stable+bounces-249284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:20:05 +0200
+	id GGYGA5ARC2pN/gQAu9opvQ
+	(envelope-from <stable+bounces-249285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:18:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EED656D81D
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:20:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB1656D7AA
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53E9730DC79D
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:11:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D4F1C301E4A1
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62CF480DD9;
-	Mon, 18 May 2026 13:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E499C481641;
+	Mon, 18 May 2026 13:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8O1xZ6i"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BE343E4A6;
-	Mon, 18 May 2026 13:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4283EF0B3;
+	Mon, 18 May 2026 13:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779109854; cv=none; b=FjBMZZHFSn2bNwapqcyKJQkje/vY5YzMU6bzOK5JhQAATCEkdVuGj4+cC/ysKKvlh1GUuEGEWQ7BeTa+iWJCiRyDFgoN8GB6Y7yRd/nY8dMWWk0hW1cpGBJzOpx0hft7KHg0pwQVK/e3pNYqkiqLuEmMRmhwO/045o4nL6gydek=
+	t=1779110193; cv=none; b=VM7e9AgD1p5jQJrgGZytq32iAuPlQNHJBvN+JJ9H5JvcZhRygJ50i4FA6Z3ATocKJ9wt2jl87UBIvKpraozhHmZ9mQxk6/knRoqM5XUaxG3+o9D9FewbnYd+eiIzpvNIY8i1AcI1mz+pO+FTTn9cN2awFNg5g7WwXpKZGncAqfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779109854; c=relaxed/simple;
-	bh=+QjnbQxCyMhGjjqpabKfXZUcgiAQmQDkG5vgyRq3dy0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ktgzO7OiFbikJpYFgs8Hsh8J4xxcw35yfQRFvfODVcdWebCEMfZQiXRQadDf1m43/ww+ggU2EAxBahE+H/91JiptvyeyxUC/40K9Kxe+3+/ujcYs9IXdv8giAUNZR9tJKtlF5806Flfzx0VxD2LrOjqu32RMM2K1IoKb/qL/9yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowAAHsm3PDwtqqIKfEA--.3835S2;
-	Mon, 18 May 2026 21:10:39 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>
-Cc: linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] pNFS: Fix use-after-free in pnfs_update_layout()
-Date: Mon, 18 May 2026 13:10:36 +0000
-Message-Id: <20260518131036.1337001-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779110193; c=relaxed/simple;
+	bh=vzWTlP3kV/s0WrkONdqr1IhqEI7kfy1mlq+6vTPh5Ys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sUFMqpQaXTKvZKL2KNnRoGCi/fJHzObcL8gf8kAX0m1l/WrQo6q9zHbON/c1f3CeMf/jLHOARCQIBmihfvTB44xk2I9cXjKHUNAlh00E9XPrjJpL3dOzDUiBSMfdr7ZEhYZ8d+euGeVyEm1nHpc7NMkYEsKXWsh94fBnqvxTYhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8O1xZ6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA314C2BCB7;
+	Mon, 18 May 2026 13:16:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1779110193;
+	bh=vzWTlP3kV/s0WrkONdqr1IhqEI7kfy1mlq+6vTPh5Ys=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e8O1xZ6i8KOIcvjH6ysB+n2ghGmgJXVbqxmFWLfqwVjeHh1HBCARRV/tIERlBSqAa
+	 DQisiN5lB8+ZdKpTohxVPtPP75WMky7QBVEhB0mGDDBWqfpabjTV+abNsDjwK6l/HM
+	 uuMJcKAJ/yPE1jV5wO0aVJq3aLMCf6PX8QqjAi1k=
+Date: Mon, 18 May 2026 15:10:49 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: SnailSploit | Kai Aizen <kai.aizen.dev@gmail.com>
+Cc: linux-usb@vger.kernel.org, laurent.pinchart@ideasonboard.com,
+	balbi@kernel.org, w@1wt.eu,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	SnailSploit | Kai Aizen <95986478+SnailSploit@users.noreply.github.com>
+Subject: Re: [PATCH] usb: gadget: uvc: hold opts->lock across XU walks in
+ uvc_function_bind
+Message-ID: <2026051836-citable-overripe-4abd@gregkh>
+References: <20260430152702.60771-1-95986478+SnailSploit@users.noreply.github.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAHsm3PDwtqqIKfEA--.3835S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ar4xWrW5Wr1Utry8tr1rCrg_yoW8JF4xpr
-	ZIka1F9FZ8tw4jy3Wqv3y8ZasIy3y5X3y2krZ3Grn8ZanxAr1fAr12gw1v9F18tr4kJ3s0
-	gr4rGw18J34rZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWxJVW8Jr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUbqg4DUUUU
-	U==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgwLA2oK6CVyNAAAsp
-X-Rspamd-Queue-Id: 6EED656D81D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260430152702.60771-1-95986478+SnailSploit@users.noreply.github.com>
+X-Rspamd-Queue-Id: 9EB1656D7AA
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249285-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249284-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,SnailSploit];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-When hitting the NFS_LAYOUT_RETURN branch in pnfs_update_layout(),
-the code calls pnfs_prepare_to_retry_layoutget(lo). If it succeeds,
-pnfs_put_layout_hdr(lo) is called before trace_pnfs_update_layout(),
-which still references 'lo'. This results in a use-after-free when the
-tracepoint accesses lo's fields.
+On Thu, Apr 30, 2026 at 06:27:02PM +0300, SnailSploit | Kai Aizen wrote:
+> From: "SnailSploit | Kai Aizen" <95986478+SnailSploit@users.noreply.github.com>
+> 
+> uvc_function_bind() walks &opts->extension_units twice without holding
+> opts->lock:
+> 
+>   - directly, for the iExtension string-descriptor fixup loop;
+>   - indirectly, four times via uvc_copy_descriptors() (once per speed),
+>     where the helper iterates uvc->desc.extension_units (which aliases
+>     &opts->extension_units) to size and emit XU descriptors.
+> 
+> The configfs side (uvcg_extension_make / uvcg_extension_drop, in
+> drivers/usb/gadget/function/uvc_configfs.c) takes opts->lock around its
+> list_add_tail / list_del operations.  A privileged userspace process
+> that holds the configfs subtree open and writes the gadget UDC name
+> to bind the function while concurrently rmdir()'ing an extensions
+> subdir can race uvcg_extension_drop() against the bind-time list walks
+> and dereference a freed struct uvcg_extension.
+> 
+> Hold opts->lock from the start of the XU string-descriptor fixup
+> through the last uvc_copy_descriptors() call, releasing on the
+> descriptor-error path via a new error_unlock label that drops the
+> lock before falling through to the existing error label.  This
+> matches the locking discipline of the configfs callbacks and removes
+> the only remaining unsynchronised reader of the XU list during bind.
+> 
+> Reachability: only privileged processes that can mount configfs and
+> write to gadget UDC files can trigger the race, so this is a
+> correctness fix rather than a security boundary.
+> 
+> Fixes: 0525210c9840 ("usb: gadget: uvc: Allow definition of XUs in configfs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: SnailSploit | Kai Aizen <95986478+SnailSploit@users.noreply.github.com>
 
-Fix this by moving the tracepoint call before pnfs_put_layout_hdr(lo).
+We need a real name and a real email address.
 
-Fixes: 2c8d5fc37fe2 ("pNFS: Stricter ordering of layoutget and layoutreturn")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- fs/nfs/pnfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+thanks,
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index a3135b5af7ee..42e5f8ec31d4 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -2191,11 +2191,11 @@ pnfs_update_layout(struct inode *ino,
- 		dprintk("%s wait for layoutreturn\n", __func__);
- 		lseg = ERR_PTR(pnfs_prepare_to_retry_layoutget(lo));
- 		if (!IS_ERR(lseg)) {
--			pnfs_put_layout_hdr(lo);
- 			dprintk("%s retrying\n", __func__);
- 			trace_pnfs_update_layout(ino, pos, count, iomode, lo,
- 						 lseg,
- 						 PNFS_UPDATE_LAYOUT_RETRY);
-+			pnfs_put_layout_hdr(lo);
- 			goto lookup_again;
- 		}
- 		trace_pnfs_update_layout(ino, pos, count, iomode, lo, lseg,
--- 
-2.34.1
-
+greg k-h
 
