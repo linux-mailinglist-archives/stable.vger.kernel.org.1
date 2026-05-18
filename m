@@ -1,169 +1,206 @@
-Return-Path: <stable+bounces-249335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAAsIsM+C2pQFAUAu9opvQ
-	(envelope-from <stable+bounces-249335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:30:59 +0200
+	id +BxVDmc/C2pdFAUAu9opvQ
+	(envelope-from <stable+bounces-249337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:33:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051F8570F01
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:30:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E66B0570FA0
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 45B34302F77A
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:21:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E82B430454F4
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2C044E044;
-	Mon, 18 May 2026 16:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4CF378832;
+	Mon, 18 May 2026 16:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/ezEnb0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ezXdf2Qn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE77C47886E;
-	Mon, 18 May 2026 16:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1A61C84A2
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 16:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779121275; cv=none; b=ul9g7DG9SNsNk+CWseFOT2BRo2O2NGGKXe5ZVxtJFKImQGu3QIjVYn3mPdtW8TQXPyJfkfYpbbDADJf0EthoMNH05kboGwkE8jFVaFIbyUUjAgiz5AOlBXqiIUI9XVVHNQG50QY1FTeozrrFO3Y0fPkid5rzXjLKpgLF5LRIHsA=
+	t=1779121581; cv=none; b=Lzcq6Cw3pGQkP2Zs4w4EralfmuMVVat4cP5RO1XPEfVzxglC2zU4lJUL3zqmWNqA7KxdXhj08wxF4PlA6YA56cJMGtod2poh6J4Q650oF6XUp2Q7v1wmq6ZssuPcKGFydt7iwazPYz/lnSaFI6Mihgt/rXc1TUykAoyd6ZLZqfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779121275; c=relaxed/simple;
-	bh=4ovUSVlsIvBgxFkMAwIXQGZSlg7tcGA+QS26l5de8oY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pUu0TLon1YM1e+w39YdaS2XSnClXGDluxF+4dx5OEPysVPp15Zm8dlt0YI5fpgkKWOlXpRU92uXDtFuF5+K0Y3HtrGnvmbfsG53xdMWpgvWBxZI3hYLdG3f+yWLY0m9jxmqWZB2kLJ5mwqR7ovkyGstI4gHNWQxS0JZRyN8ax0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/ezEnb0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5FAC2BCB7;
-	Mon, 18 May 2026 16:21:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779121271;
-	bh=4ovUSVlsIvBgxFkMAwIXQGZSlg7tcGA+QS26l5de8oY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=e/ezEnb0KYd2gfaJ3NYVQKeJL238+8WbJbN/+x808RyvcwYBCirB2ZLYL7nyIgkoL
-	 ikJEPSIgdYLhmc3cjGjepV7WHnBKTuZFi4JWf0uGG8w5IWHzSu6TPHABRxXVbaBOHA
-	 fvTHo9fUaqZeo6IPHbtUNYgsrQGiMsuPZRHOwfqplL5DZQBJQDGI0ImHVRAKePm+65
-	 IZmngkQ7WFVX6zMRKNyKiLP0sB8sqzgEIjNRGuFD78/FXrz4GJDm5Qh1gEI+AwE6JQ
-	 VgUE0JhCNNeVyuD9aXSpHP0eZ3TdQMLwnaxce0gMvGScwmELViUSGMGXIiXDBo4/cN
-	 k8Z94vWYXdztA==
-Message-ID: <be6734b9-112e-4e71-9013-1c6dc5f750da@kernel.org>
-Date: Mon, 18 May 2026 18:21:07 +0200
+	s=arc-20240116; t=1779121581; c=relaxed/simple;
+	bh=9ibhTgmdgaVzvd0/WVlmmQhIMZ5I9GFkwHv21SR22uM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lEbHM+aL+5XvFbCVf1CGU0nEJM+k6RmYE5KPM9YkztRU0dBlcnyWud7j9RFhGBTsw+reTqu85TQbMYWzG4TZ0qr8RxVeBP2uBrMrBggam3xP9b7D2il0f519pTxwSOGJl+JNLRpfeHcQxyDmKH7q0u/EumkijjmNR5EyGAiyTkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ezXdf2Qn; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7bf02533706so18946437b3.0
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 09:26:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779121578; x=1779726378; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TEH0kDlr/EF8Y5XVB7DOIIT0Vo/0czOU72ejpPKh4QE=;
+        b=ezXdf2QnlBjLWokkUmX16ocXYZ/LeIlHH2ECdtigw0mbWF0vSqN700a8yVSs2K8qRc
+         sOXRsaMPE9+7ddA+YcZaE6iENq2voDaEUTrVWNu+hBaLbB7mv9zopUIFe9XdOIJieNx5
+         A8jpdfey4jZJfnyzLPQ75+h/3dkVqqXJgdCOav+XWMfQwUIGVrXz7jOq2S3U9eMabZh3
+         NFRITIdrkHjNI+TezhUiHaMCuOSTwX46vOZKjZC3QQiGnN6ITkXcqvognDXOtTzx/TE4
+         xfKZuNXm/BahjtUUamJQljbyL6dcVljxggubKNUUSdOaWAq5YSH+vOf95VK1zuEFxgm8
+         3igA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779121578; x=1779726378;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TEH0kDlr/EF8Y5XVB7DOIIT0Vo/0czOU72ejpPKh4QE=;
+        b=XwzMj0If1mDS7OYp+65zWmh/2cHe/MSVnJV8CLFHkxeaNiP0BRjhYWx411OKRqo1YU
+         sax/6q+3AjsnRCTLCCFnQPwA7NOido042E6xmCZnyoBsB6hevT7kWDdB/V9BxbVibvVQ
+         MrCj31/XJVyzSx3NadC+QLcrcZx6QHLe+2R4cVoPMbncefUAJFmnnobnzrGCwHyoNzBZ
+         6uHashuKprllQK1e+RM0qSpj9vCHprGTVmeC+9GqHUd3qcn8UJjb/rTMqKkQZqjDSn4i
+         Irv33UXkEjrZjm2Y52lUV57CqiXHiW+BEykIH3UIGWFzdhdhaX8QBCDVquV2iWYCah+M
+         4lhg==
+X-Forwarded-Encrypted: i=1; AFNElJ9t49igVh3jzn5fnl9LDSsDBZb/TKMp3BCYr4QOwBmFfF7VVCUaxqqwkb1JPnbFcIjgsrsw0KU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytaqTEl1BLOOHM4cS1cDv8hCWP9NXpjB80I39cpk9RTLC0XyW8
+	07umCfanWECQHlXKa8MbLP1fdd79TNSPSJ2/6XR70AtDoCy/ekROgUjF
+X-Gm-Gg: Acq92OFKDjMDC9bWznID+XMzNoINI6j9y2CBh+yD0idi7AQGIusD/UwDw01faEP3GVI
+	vzOVBOltkcXaIo0moc3rHO4IqUnJCrIuYIdmsuxF20Y0EvyeODn9aKlrxfsyIvnaxORW9fNqcaa
+	aNe3dtBTLKtSjCGTyvZi9/Wge2mHxD8HXYZMsspG4BF9kQFMtO4fuaF4yjYyFQYhLV+bEOi6Azc
+	v1BmsUIKpnbFxdTR/z5qVTmHqx+CmSc0j0n6MLJz0ypbEWfh9GAZO0udPpWQXQ/RrT4pmu7HNCj
+	ryKcy+yI3LqXacHdYhTRzi67rVLyY+mb52UitBtoimK1z+Bwuu7vOjnXg4kRAQXffCFhHWKeFvj
+	0BbJv27PBdBVSq9VCRH+fotOoNwgZNmyudbVPS2UPbR5pgo0i7mMwUKwCvM2Vm2hDghNQiAX7ek
+	e2gk7Y0sn6bMTqidf7JL0lPqhwn26I/rRic/ZlcbiO5el0Dpo=
+X-Received: by 2002:a05:690c:9304:b0:78f:bc2b:83f5 with SMTP id 00721157ae682-7c95a087a51mr151158297b3.20.1779121577988;
+        Mon, 18 May 2026 09:26:17 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:f806:18::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc9c6ce2f4sm23597927b3.39.2026.05.18.09.26.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 09:26:17 -0700 (PDT)
+Date: Mon, 18 May 2026 09:26:14 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: David Carlier <devnexen@gmail.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Kaiyuan Zhang <kaiyuanz@google.com>,
+	Mina Almasry <almasrymina@google.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: devmem: reject TX dma-buf with non-page-aligned
+ size or SG length
+Message-ID: <ags9po+uLZ++7FaP@devvm29614.prn0.facebook.com>
+References: <20260517201814.222563-1-devnexen@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] module: decompress: check return value of
- module_extend_max_pages()
-To: Andrii Kuchmenko <capyenglishlite@gmail.com>,
- linux-modules@vger.kernel.org
-Cc: mcgrof@kernel.org, dmitry.torokhov@gmail.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260518143233.16091-1-capyenglishlite@gmail.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260518143233.16091-1-capyenglishlite@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260517201814.222563-1-devnexen@gmail.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249335-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249337-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[bobbyeshleman@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	REDIRECTOR_URL(0.00)[aka.ms];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,aka.ms:url]
-X-Rspamd-Queue-Id: 051F8570F01
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[devvm29614.prn0.facebook.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E66B0570FA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-
-Le 18/05/2026 à 16:32, Andrii Kuchmenko a écrit :
-> [Vous ne recevez pas souvent de courriers de capyenglishlite@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+On Sun, May 17, 2026 at 09:18:14PM +0100, David Carlier wrote:
+> The TX dma-buf bind assumes dmabuf->size and every sg_dma_len() are
+> PAGE_SIZE multiples: tx_vec is sized dmabuf->size / PAGE_SIZE and
+> indexed by virt_addr / PAGE_SIZE, with only a virt_addr < dmabuf->size
+> bound check. A non-page-aligned size lets sendmsg() reach the tail
+> region past the last populated slot and read one past tx_vec[]. A
+> non-page-aligned, non-final SG entry causes the same OOB indirectly
+> by desyncing later slots.
 > 
-> module_extend_max_pages() calls kvrealloc() internally and returns
-> -ENOMEM on allocation failure. The return value is never checked.
-> The decompression loop then continues calling module_get_next_page(),
-> which writes struct page pointers into info->pages[]. When used_pages
-> reaches the stale max_pages value (not updated due to the failed
-> extend), a subsequent write to info->pages[used_pages++] goes out of
-> bounds into adjacent heap memory.
+> Reject both up front. Real exporters (udmabuf, dma-buf heaps, GPU
+> drivers) already page-align, so this only refuses layouts the TX path
+> can't back correctly.
 > 
-> Adjacent slab objects in the same kmalloc cache (pipe_buffer,
-> seq_operations, cred) can be corrupted, potentially leading to local
-> privilege escalation on kernels without SLAB_VIRTUAL mitigation.
-> 
-> The call order in finit_module() is:
-> 
->    module_decompress()    <- vulnerable, runs FIRST
->    load_module()
->      module_sig_check()   <- signature check, runs SECOND
-> 
-> Decompression happens before signature verification. A crafted
-> compressed module submitted via finit_module(MODULE_INIT_COMPRESSED_FILE)
-> reaches this code path before any signature gate is applied. On kernels
-> with module.sig_enforce=0 (default without SecureBoot) or with
-> unprivileged user namespaces (Ubuntu, Debian default), this is
-> reachable without CAP_SYS_MODULE.
-> 
-> Confirmed present in mainline (tested on v6.14-rc3).
-> 
-> Fix: add the missing error check after module_extend_max_pages() and
-> return immediately on failure. This matches the pattern used by every
-> other kvrealloc() caller in the module loading path.
-> 
-> Fixes: 169a58ad824d ("module: add in-kernel support for decompressing")
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Cc: Luis Chamberlain <mcgrof@kernel.org>
+> Fixes: bd61848900bf ("net: devmem: Implement TX path")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Andrii Kuchmenko <capyenglishlite@gmail.com>
+> Signed-off-by: David Carlier <devnexen@gmail.com>
 > ---
-> Changes in v2:
->   - Remove unnecessary initialization of 'error' to 0 (Christophe Leroy)
->   - Remove unrelated blank line after if (error) return error (Christophe Leroy)
+>  net/core/devmem.c | 16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
 > 
->   kernel/module/decompress.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/kernel/module/decompress.c b/kernel/module/decompress.c
-> --- a/kernel/module/decompress.c
-> +++ b/kernel/module/decompress.c
-> @@ -XXX,9 +XXX,12 @@ int module_decompress(struct load_info *info,
->                                  const void *buf, size_t size)
->   {
->          unsigned int n_pages;
->          int error;
->          ssize_t data_size;
-> 
->          n_pages = DIV_ROUND_UP(size, PAGE_SIZE) * 2;
->          error = module_extend_max_pages(info, n_pages);
-> +       if (error)
-> +               return error;
->          data_size = MODULE_DECOMPRESS_FN(info, buf, size);
->          if (data_size < 0) {
->                  error = data_size;
-> --
-> 2.39.0
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index 468344739db2..e72f48ff9094 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -193,6 +193,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+>  	struct dma_buf *dmabuf;
+>  	unsigned int sg_idx, i;
+>  	unsigned long virtual;
+> +	bool todevice;
+>  	int err;
+>  
+>  	if (!dma_dev) {
+> @@ -240,7 +241,14 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+>  		goto err_detach;
+>  	}
+>  
+> -	if (direction == DMA_TO_DEVICE) {
+> +	todevice = direction == DMA_TO_DEVICE;
 
+nit: this code already has precedent for comparing direction directly to
+DMA_TO_DEVICE in line, so probably don't need to store in a new
+variable. The binding->tx_vec[] assignment down near line 300 also does
+this and is missed in this conversion.
+
+Best,
+Bobby
+
+> +
+> +	if (todevice) {
+> +		if (!IS_ALIGNED(dmabuf->size, PAGE_SIZE)) {
+> +			err = -EINVAL;
+> +			NL_SET_ERR_MSG(extack, "TX dma-buf size must be a multiple of PAGE_SIZE");
+> +			goto err_unmap;
+> +		}
+>  		binding->tx_vec = kvmalloc_objs(struct net_iov *,
+>  						dmabuf->size / PAGE_SIZE);
+>  		if (!binding->tx_vec) {
+> @@ -267,6 +275,12 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+>  		size_t len = sg_dma_len(sg);
+>  		struct net_iov *niov;
+>  
+> +		if (todevice && !IS_ALIGNED(len, PAGE_SIZE)) {
+> +			err = -EINVAL;
+> +			NL_SET_ERR_MSG(extack, "TX dma-buf SG length must be PAGE_SIZE aligned");
+> +			goto err_free_chunks;
+> +		}
+> +
+>  		owner = kzalloc_node(sizeof(*owner), GFP_KERNEL,
+>  				     dev_to_node(&dev->dev));
+>  		if (!owner) {
+> -- 
+> 2.53.0
+> 
 
