@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-249176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJVQBEaHCmpl2wQAu9opvQ
-	(envelope-from <stable+bounces-249176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 05:28:06 +0200
+	id cOXEJlSHCmpl2wQAu9opvQ
+	(envelope-from <stable+bounces-249177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 05:28:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C99E5656A3
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 05:28:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21F05656B1
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 05:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6AFDE300B3CA
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 03:28:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98CD6300FEC3
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 03:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C074F3803D8;
-	Mon, 18 May 2026 03:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8BD3803D8;
+	Mon, 18 May 2026 03:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhfJ6jBp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2bsROt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B90212542
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 03:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F277837F00A
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 03:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779074883; cv=none; b=ouCZtut4/mPlHi/l0mGtoA7TNJlzU0W3tB8u8SoMCJ8LDQlrgBF0YrOWFvkNTyG2EQ0ETASIUFyBrvMyws3xWZ+gILH2sxDdoMj7HdZRF1CkP5idDULmyr51XkARHRjWfEgH6sPOc2c0NQuUGlRErTriJ2ZHQizAxEv+7xBsvms=
+	t=1779074898; cv=none; b=laNfCrWuR3rFliIPFoqEL7kK+QOlvX367MnRkRzxgv2HdYaSmke1ReMKvAI2mTz4xKDh9jH8sLk2MGsM9QlYjZ090iZdBMiJIR3uFraSb4kSo3mRKbqftYdbr3zCiUWWR6d7tYVV1iHZPKNte6qj43tU0onWrw0vicBwmBuqTt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779074883; c=relaxed/simple;
-	bh=Y6AiHMzld19Y9qjM11PpsRRCeLlcbQ0okP0i7rLUQRQ=;
+	s=arc-20240116; t=1779074898; c=relaxed/simple;
+	bh=+pbr7K8AS2zxZUKxbhR5PkTc1SWlVSNH7i2OpHNUGkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LXmQmB23KNkXk11ArRekx8sqculvKKXmYfbiFWsFE4TRSo789+y+63fATbuAkqZQNmsnOgNldUTyAR8RQo0zle3yg+CFpMhz143lh+4b/2ICZfy9GTcoYB8qcN5yTwNHUJo330jp9YqsY3zhFDrUN7yWbVDRWg8I6zb/q6yFPSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhfJ6jBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889ACC2BCB0;
-	Mon, 18 May 2026 03:28:02 +0000 (UTC)
+	 MIME-Version; b=msXHYoC21ALk4powIuBVEz4/eAjNrQMoBQeCw+BZE7H8vKOmDRrPQGOY71h66v/UIk+ZpNZ+TV/zouoqEuaizOKZ1Y0PF5+re2LYsvAcLjPBHerMyjXScalPqompjtqK4+B88eM4upy/kNwytthMPgxhH/pidMzQOMMepeMJfb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2bsROt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00BDC2BCB3;
+	Mon, 18 May 2026 03:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779074883;
-	bh=Y6AiHMzld19Y9qjM11PpsRRCeLlcbQ0okP0i7rLUQRQ=;
+	s=k20201202; t=1779074897;
+	bh=+pbr7K8AS2zxZUKxbhR5PkTc1SWlVSNH7i2OpHNUGkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhfJ6jBpo2uAs50jeHI8mLBhT+vkaRtFgMpwkmFUO7H8yNXPGt1VSGkIvLxl2A4nw
-	 x3z5Yk06/LcE0sFcM+wV4J070oVx/m461aGUszfHnuzs18vf31hoLujOLygMXDCcQ2
-	 hqOqCe6PI+LMS/oxHY1T1tvG/gOnA/mw3kMP2K+3LKk/h/pfoYyXYTymdC++QA5t5g
-	 5oTyEabQ4vPm6Ts4tV6AskY3bjMQhcHK8ZqnYFcLNZxUzTjn826l5a9FKOnGHEi0Pq
-	 mLo4lGZdDjb+SB5/9yfcU1MFAkw0/IZ0RCDtSf7phuePol4Mqt6jvD60SWVgcArbIq
-	 fE8LOfPGR+vxA==
+	b=N2bsROt6juzQZfOnMOXbrz2MNNPtGK3/1M80BakSDQ+XnV59Zu2z7xY/rE9AWpcM3
+	 dZUO/cbByxOmkAI0ql5kRXlMONhp0AVzK4veI5zBfpH5TWVai0BtHNTOluPwcO+35K
+	 q27Q3Sp0y3ygLlhvDHEx0Uto2vW25hKqEKhzFn+MsUYnAKA3Sqry1yseJlwEdnNKvg
+	 EcBjPa+OgRtyQLMozbtA2jkpSsgGS9ZAmfO6Q02eqhTCu/6PwtFzLtrE/UAmVjrk4R
+	 tru1qXL5hpW7QcsL3u4zNryf191UCokIn7PPN7IVI5Rx0yoQjdVHa7p48RCsZfEZJY
+	 R9AapbVpiqaxA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Chris Mason <clm@meta.com>,
-	Andrea Righi <arighi@nvidia.com>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Lance Tuller <lance@lance0.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] sched_ext: Guard scx_dsq_move() against NULL kit->dsq after failed iter_new
-Date: Sun, 17 May 2026 23:28:00 -0400
-Message-ID: <20260518032800.587649-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] mptcp: fastclose msk when linger time is 0
+Date: Sun, 17 May 2026 23:28:15 -0400
+Message-ID: <20260518032815.587921-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051201-visibly-fossil-2e59@gregkh>
-References: <2026051201-visibly-fossil-2e59@gregkh>
+In-Reply-To: <2026051200-skewed-easing-cc4c@gregkh>
+References: <2026051200-skewed-easing-cc4c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,25 +64,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8C99E5656A3
+X-Rspamd-Queue-Id: F21F05656B1
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249176-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249177-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -90,51 +91,59 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-From: Tejun Heo <tj@kernel.org>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 4fda9f0e7c950da4fe03cedeb2ac818edf5d03e9 ]
+[ Upstream commit f14d6e9c3678a067f304abba561e0c5446c7e845 ]
 
-bpf_iter_scx_dsq_new() clears kit->dsq on failure and
-bpf_iter_scx_dsq_{next,destroy}() guard against that. scx_dsq_move() doesn't -
-it dereferences kit->dsq immediately, so a BPF program that calls
-scx_bpf_dsq_move[_vtime]() after a failed iter_new oopses the kernel.
+The SO_LINGER socket option has been supported for a while with MPTCP
+sockets [1], but it didn't cause the equivalent of a TCP reset as
+expected when enabled and its time was set to 0. This was causing some
+behavioural differences with TCP where some connections were not
+promptly stopped as expected.
 
-Return false if kit->dsq is NULL.
+To fix that, an extra condition is checked at close() time before
+sending an MP_FASTCLOSE, the MPTCP equivalent of a TCP reset.
 
-Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
-Cc: stable@vger.kernel.org # v6.12+
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-[ dropped the `struct scx_sched *sch` declaration and `sch = src_dsq->sched` line ]
+Note that backporting up to [1] will be difficult as more changes are
+needed to be able to send MP_FASTCLOSE. It seems better to stop at [2],
+which was supposed to already imitate TCP.
+
+Validated with MPTCP packetdrill tests [3].
+
+Fixes: 268b12387460 ("mptcp: setsockopt: support SO_LINGER") [1]
+Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios") [2]
+Cc: stable@vger.kernel.org
+Reported-by: Lance Tuller <lance@lance0.com>
+Closes: https://github.com/lance0/xfr/pull/67
+Link: https://github.com/multipath-tcp/packetdrill/pull/196 [3]
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260427-net-mptcp-misc-fixes-7-1-rc2-v1-3-7432b7f279fa@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ kept `mptcp_check_readable()` name and explicit `inet_sk_state_store(sk, TCP_CLOSE)` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/mptcp/protocol.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 25df16aed142a..f24579675cf32 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -6346,6 +6346,14 @@ static bool scx_dispatch_from_dsq(struct bpf_iter_scx_dsq_kern *kit,
- 	bool in_balance;
- 	unsigned long flags;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 965819ddc04c9..fec40ce165101 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3154,7 +3154,8 @@ bool __mptcp_close(struct sock *sk, long timeout)
+ 		goto cleanup;
+ 	}
  
-+	/*
-+	 * The verifier considers an iterator slot initialized on any
-+	 * KF_ITER_NEW return, so a BPF program may legally reach here after
-+	 * bpf_iter_scx_dsq_new() failed and left @kit->dsq NULL.
-+	 */
-+	if (unlikely(!src_dsq))
-+		return false;
-+
- 	if (!scx_kf_allowed_if_unlocked() && !scx_kf_allowed(SCX_KF_DISPATCH))
- 		return false;
- 
+-	if (mptcp_check_readable(msk)) {
++	if (mptcp_check_readable(msk) ||
++	    (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime)) {
+ 		/* the msk has read data, do the MPTCP equivalent of TCP reset */
+ 		inet_sk_state_store(sk, TCP_CLOSE);
+ 		mptcp_do_fastclose(sk);
 -- 
 2.53.0
 
