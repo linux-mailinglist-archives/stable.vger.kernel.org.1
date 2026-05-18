@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-249308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AMEN8EiC2oxDwUAu9opvQ
-	(envelope-from <stable+bounces-249308-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:31:29 +0200
+	id UJCBIMYiC2oxDwUAu9opvQ
+	(envelope-from <stable+bounces-249303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:31:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9635A56ED30
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:31:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A71E856ED3F
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6585230BD577
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:24:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 69AB23028550
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A417C48C41F;
-	Mon, 18 May 2026 14:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FF63EC2F4;
+	Mon, 18 May 2026 14:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Y4sgGUpG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHAqwk0y"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A8948B385
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 14:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B3B3F20EF
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 14:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779114228; cv=none; b=E66cs8TjeyfAXbOKWHhgIXMl9zFN9kd4SxHZBKmN7XmXzVVfodK2eGngrhkaE3CBWcAaSwTsa9/h6a8tjqb1UAXVZYaNbwKUfN5MDcZbb0uMK8hR5MEHvLk5pnDwVNDL7hF0C2ZgCu74sHDzNy728fXnBnp5YGHLXwRsStVJhS8=
+	t=1779114214; cv=none; b=Epld5yJ//h0GeuIQrGp4N+GI5zQPnkAmHyA8r9uklmFDgq1KPffFvCAUcVbaxZiW9vnefehWHQQzpImHJfjLus7UtG3M5FQqxPJobvYgcYERQIK9ym/EU5bXdbwGrv3fpaNp9E+ZHh9ebqP2lA4yLh6egyprrbs5GLh0IO0aa+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779114228; c=relaxed/simple;
-	bh=SJNouWG9N49DwlJLdrIoGEnUc1bC0vBsiRAFE5KGYOw=;
+	s=arc-20240116; t=1779114214; c=relaxed/simple;
+	bh=UTmEMiYDuBvGrHtaljXcS3ov7esuk4tk3p/gestBTPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=huIVj46TuaqkgWylk+dhGL+mVqRdVCxKz84+mxYoN2D2XPJVbgcMnHIjhYWdmidBfjyYkUOFoS2p8y2SiW1LI9EikqC4NEN+9lDy3rtCt6j3wvkjDD8c8qBwoDP8ygZrfjrmsW/KVVJGe7226QZYpvswo+1B70wZQbpYMDIyGRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Y4sgGUpG; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779114220;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=am8E06sbfDGT3YQjEADivRAyuYuxtPXZN7W3YBwkanM=;
-	b=Y4sgGUpGN0Sv61JlQpt888ReSan3+0bUgp2PZHYUU1i1+Eb3w5bg/yioe6uUroMgo6uwb2
-	SRN0Ui7TZbHJ5ExKomrL8qGi6sBiGgt/XQX7WcqqFZGlQ+wT8e6VqXbKfMyRnfuW6FnvNG
-	jVgGJzMODoYty98QhPZMyyKCPfF5uB4=
-From: luka.gejak@linux.dev
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	Luka Gejak <luka.gejak@linux.dev>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v4] wifi: rtw88: usb: fix memory leaks on USB write failures
-Date: Mon, 18 May 2026 16:23:11 +0200
-Message-ID: <20260518142311.10328-2-luka.gejak@linux.dev>
-In-Reply-To: <20260518142311.10328-1-luka.gejak@linux.dev>
-References: <20260518142311.10328-1-luka.gejak@linux.dev>
+	 MIME-Version; b=WR0DjoP+GeOxNLw+FWti1h0FCOvq+L1ry7APijDjpBMPsVw5nGdEq41Z+sLLzp9m9PPQERI/W7rS4XuGvDhF2LZgqCzpiFnyPSOE2yqILzwxJGyOipPMaXEkbnSLFbNKvaM4/Y3pEzAiN5v2sjAqdZ7d1ecOjZwpEie7CEcvFbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHAqwk0y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C4DC2BCB7;
+	Mon, 18 May 2026 14:23:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779114212;
+	bh=UTmEMiYDuBvGrHtaljXcS3ov7esuk4tk3p/gestBTPo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EHAqwk0ySmD9EJ7FEzWCX6NXTL+9Lg7yvHHvJZXWZqB1477z7RQv15n4/Jmxv+kqw
+	 FoziUP72zZIZXOSWn4/wmTS70ri2PyFPt7dYm1UTvSqgGUmAUQpr90ymc07JZPWyrk
+	 SxmgEO/T1ZKW9zJLIEFMdTSX9z2xyNhwmoKC0yMYoC4BbHDSaycfJSg6HNOeOuRpD3
+	 0CAEkiEjFR9p7sP/u0eAKwS5eQpZcr5sRgmGiK7LWJWqjP6bhOXdGS9db5xxpGQS8c
+	 vnVLnO+HG7Qi+5vPdAiaAIHsT+ltZ//knnvzB0remfR0R+ueqORplC+wf17ZGgP74+
+	 o63Tn2nWo65nA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] mptcp: pm: ADD_ADDR rtx: allow ID 0
+Date: Mon, 18 May 2026 10:23:30 -0400
+Message-ID: <20260518142330.1307282-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051200-untwist-canister-a695@gregkh>
+References: <2026051200-untwist-canister-a695@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,120 +63,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249308-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249303-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[realtek.com:email,linux.dev:email,linux.dev:mid,linux.dev:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9635A56ED30
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A71E856ED3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Luka Gejak <luka.gejak@linux.dev>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-When rtw_usb_write_port() fails to submit a USB Request Block (URB)
-(e.g., due to device disconnect or ENOMEM), the completion callback is
-never executed.
+[ Upstream commit 03f324f3f1f7619a47b9c91282cb12775ab0a2f1 ]
 
-Currently, the driver ignores the return value of rtw_usb_write_port()
-in rtw_usb_write_data() and rtw_usb_tx_agg_skb(). Because these
-functions rely on the completion callback to free the socket buffers
-(skbs) and the transaction control block (txcb), a submission failure
-results in:
-1. A memory leak of the allocated skb in rtw_usb_write_data().
-2. A memory leak of the txcb structure and all aggregated skbs in
-   rtw_usb_tx_agg_skb().
+ADD_ADDR can be sent for the ID 0, which corresponds to the local
+address and port linked to the initial subflow.
 
-Fix this by checking the return value of rtw_usb_write_port(). If it
-fails, explicitly free the skb in rtw_usb_write_data(), and properly
-purge the tx_ack_queue and free the txcb in rtw_usb_tx_agg_skb().
+Indeed, this address could be removed, and re-added later on, e.g. what
+is done in the "delete re-add signal" MPTCP Join selftests. So no reason
+to ignore it.
 
-The issue was discovered in practice during device disconnect/reconnect
-scenarios and memory pressure conditions. Tested by verifying normal TX
-operation continues after the fix without regressions.
-
-Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Tested-by: Luka Gejak <luka.gejak@linux.dev>
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-2-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ relocated the 3-line deletion from net/mptcp/pm.c to net/mptcp/pm_netlink.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changes in v4:
- - Fixed checkpatch issues and picked up Acked-by tag.
-Changes in v3:
- - Updated the Fixes tag to the commit that introduced USB support.
-Changes in v2:
- - Use ret = rtw_usb_write_port(...); style, and check by next line (in
-   rtw_usb_tx_agg_skb)
- - Remove unnecessary comment
- - Use ieee80211_purge_tx_queue() instead of skb_queue_purge()
- - Add testing details to commit message
+ net/mptcp/pm_netlink.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
- drivers/net/wireless/realtek/rtw88/usb.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index 718940ebba31..1a0bdbf52cb0 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -399,6 +399,7 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb, struct sk_buff_head *list
- 	int agg_num = 0;
- 	unsigned int align_next = 0;
- 	u8 qsel;
-+	int ret;
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 28f8d7fb7bdf3..394eb8797d197 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -305,9 +305,6 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 	if (inet_sk_state_load(sk) == TCP_CLOSE)
+ 		return;
  
- 	if (skb_queue_empty(list))
- 		return false;
-@@ -456,7 +457,13 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb, struct sk_buff_head *list
- 	tx_desc = (struct rtw_tx_desc *)skb_head->data;
- 	qsel = le32_get_bits(tx_desc->w1, RTW_TX_DESC_W1_QSEL);
- 
--	rtw_usb_write_port(rtwdev, qsel, skb_head, rtw_usb_write_port_tx_complete, txcb);
-+	ret = rtw_usb_write_port(rtwdev, qsel, skb_head,
-+				 rtw_usb_write_port_tx_complete, txcb);
-+	if (ret) {
-+		ieee80211_purge_tx_queue(rtwdev->hw, &txcb->tx_ack_queue);
-+		kfree(txcb);
-+		return false;
-+	}
- 
- 	return true;
- }
-@@ -518,8 +525,10 @@ static int rtw_usb_write_data(struct rtw_dev *rtwdev,
- 
- 	ret = rtw_usb_write_port(rtwdev, qsel, skb,
- 				 rtw_usb_write_port_complete, skb);
--	if (unlikely(ret))
-+	if (unlikely(ret)) {
- 		rtw_err(rtwdev, "failed to do USB write, ret=%d\n", ret);
-+		dev_kfree_skb_any(skb);
-+	}
- 
- 	return ret;
- }
+-	if (!entry->addr.id)
+-		return;
+-
+ 	if (mptcp_pm_should_add_signal_addr(msk)) {
+ 		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
+ 		goto out;
 -- 
-2.54.0
+2.53.0
 
 
