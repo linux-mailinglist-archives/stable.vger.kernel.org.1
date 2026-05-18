@@ -1,201 +1,162 @@
-Return-Path: <stable+bounces-249357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLZUJuFWC2rZFwUAu9opvQ
-	(envelope-from <stable+bounces-249357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:13:53 +0200
+	id QKOuCexZC2ovGAUAu9opvQ
+	(envelope-from <stable+bounces-249358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:26:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F870572095
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:13:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD18F5723A5
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 20:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2761A3069091
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:06:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CD9A0303EBB7
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EFA238B12F;
-	Mon, 18 May 2026 18:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8080380FF2;
+	Mon, 18 May 2026 18:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaP3uOrg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ieuJS9Ok"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DED9382F03
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 18:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C021380FF6
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 18:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779127489; cv=none; b=ZZRsv2hmRsfnt7XykpPTzAPfcJTSeGUcvw1aOpeYwpT6ry84g3j7FaTRn0G0peNvWn+FJJ2mfAQWzpiBWoDsfgVjdlnFZcvj5E0SpClvk/WmVz7Hg62QmYv0AMCKCgs3X4d8l/8TgNla1E8O+jFAa8HTiB5rxLwbtM6XVDyaX1U=
+	t=1779128358; cv=none; b=vEawNj093Ik2X2xEm68lMvU8k/NIzEvl6qY7jpodhD8/s4PKZ2D5miAiEL71U0sAfxmfb+oC3aOeVwkc847IG173yKxmJzgjcJRqY32AYkbHRu4bbU4euYk95XRzpEyrWu9jff+KUvW5yL9y9lZKtW7/H/PTGcKcvRw6PJGb46Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779127489; c=relaxed/simple;
-	bh=ZTXekycrdcARK8zN+ckCwrh03qpS8uOrR4DktonbkAU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DbtXjT9BvZ7lUup4m5FeHv40f576j8wRgPFuPlEJxhW0IaC0086NjF0eglmsuDo7hvUh2djwLNIK1bobHKvd6Xz+L3PU4b0dIctRRkdNjgNvAy+fFKS4zVsEqjjbV1Zj8RJVMBQOKCF4qRx6SsOQBCerSXsX1ockdoF7KUEJFqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaP3uOrg; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67bce1840f1so4543319a12.3
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 11:04:46 -0700 (PDT)
+	s=arc-20240116; t=1779128358; c=relaxed/simple;
+	bh=L5I1Egkty18Oxhk+NikpBY/EXVWM3jPPMiyr+xwgYmk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Kt9gfiBALJzFRS0OYkLlB6H7C3Z+mTc2byoRX6TvO8f4nO1ThMvjAN5oGP4S7wXMAaS++B1g2apYbgVUAtBkvwqWa5CRz3IqaZVQB8DC+IJjMtm37P9vBflh6A7ZKo+kr3mTB1D1gIyJz6tHLbiH85YgIJ2l8PCPPt9eXatHEFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ieuJS9Ok; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-47cacb4ed99so1712028b6e.1
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 11:19:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1779127485; x=1779732285; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KUFfFGSoptj+X+A+YrFRt/y2F/l8osvryZE4iGTEyPs=;
-        b=eaP3uOrgxNNz+H5B0jhNwNgVAOuKeXjk86clcVc84GobvCS1UkEk5qu/aTEBNsnR60
-         XJeJ2uQn+RBNjDvL+vERUFU7t/7bFywWvup2w31+nxegN3Zi6DEUV8ZKGj/8CCizu7d+
-         bHzalJkRUHaCLSasHj7XXS60/H2JbdNzJQstI=
+        d=gmail.com; s=20251104; t=1779128356; x=1779733156; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VCtT6xuhMHaXw1nHALH3FFemEU2JIAPerrti8zvo02Q=;
+        b=ieuJS9OkGmfbkMit7KRuyZCg4dzLvGTnsVbD2C14Xen0WMR8FmhWoX0TcRbsuPOquY
+         4w/N/WgiosO09kp7Fll0Q1auiupyBBiBv3E/GByVTx3+V5n+fb3ntXTudOrpGP/ooXtu
+         mNeSGe0Hlmh6KJvs2E01244t/MBvAIghDnXaXjEA7q4pPIyq6cMJVMhLOkILv0xPg7Yd
+         gI9Z6JtO8h20RMVmyCH5lSWCOfQl6a/kHqcmjos0YPJHUtSUdF93UDsLtrRzrDdPiLS2
+         SRLovhrre9dZ/O6mCPMbOv6l/tZYnSUxxQ00k3ydKggMVSwqmbA8yXLMJ+ye+p3Hm4vW
+         RIcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779127485; x=1779732285;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KUFfFGSoptj+X+A+YrFRt/y2F/l8osvryZE4iGTEyPs=;
-        b=KwPUb9pZzcL2l1RBZQndKgtV25HN9l3Mj9QfgQPZbYYhudofQD0hIitF0Nq3roEjtr
-         HCTKEvccqclflXo+un5LL8mNUDC9PffC+d+78nV2FNNIZRIqUFwb1gaILSq1/E2aPo0b
-         6CKvrw8K4x4XYpFa8LYreEmr4YQmz+9XpCQXGOf0EBiiljQ0vtrI7Jx0TF5tOU6BmBBu
-         Dq5fGLGzH6VEHDhyXTLIK1CzeQBCSv3HUPWs02ludMcHu9XT0xu70bA0YoQouWGiYqTA
-         OKPVfVmyaf9OJnj/br/VnxcG0Rdyom9iDnRI9DWvI8OUSwn8pXALMKCmHMIKlaeAUaib
-         c1Gg==
-X-Forwarded-Encrypted: i=1; AFNElJ+OdkoxDqpuqvUJCyv7ibwzkPz4a5S7yO5jIt8AZ19YJVfeFcJBtIQ+tFFAyCcwc0NZjWtVhIY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwplnitWdEU434hGlBUGnknolI2716a4Os428OPflZGeXB0mmH0
-	HcIQcfmNbdTs+dGzazAlYM/NliMl8WAAxE3dOmezXL1vBUopc5Oin1btb+WyktTwoIxi7e+lEEA
-	7BW0WuOE=
-X-Gm-Gg: Acq92OEyd+SNeS5NmBHvaE442CMNLZRYVD952Xtbo/Qnbjgwe1OGzIWFXeR7CHRhUUq
-	+jFa7ttBNvpIF6ORwbZU2e4ZXHNJoadpx0fCu2X4wA4O3QZKGt7IK1WhUo83asXafKs/oAh8jxU
-	AIohNCZrNbN2ROkUjhF4bwcMQosTqxA9Y68wtgLJKQ5eGcisxyeT2VlTxeFIvv7HsoRc3qV9fyK
-	6yBRUSijd0RhKiO0MNy5dBBpboAxHODGtpjM2UixBOs3Cq31Fdi0Yesz6gP5MdZYXkrnt7pXVBF
-	G6UFT57yMn2WFVwUfP2FpiT7bPSgyTEKWwPCittvk3iEhJEOanwbpsQmkAIi5hDExMBNqs7fgec
-	Goe3yCDEjTnJIMwzP/IcxkdGkg2LgZwYh5paNtRz66w/O8C4hkzlHFWTDwzKqLxblKkmUADKojo
-	HUSGXyRRIxtEccvoGCTMT+jjPjvKseU3ee2tk+dhsaxhFoSiuAzvsfBB7bTvmHsoV5ZSpY2HZyC
-	MMGgb+Z/A==
-X-Received: by 2002:aa7:c78c:0:b0:677:1ce0:c08d with SMTP id 4fb4d7f45d1cf-683bd58a162mr5540620a12.18.1779127485198;
-        Mon, 18 May 2026 11:04:45 -0700 (PDT)
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com. [209.85.208.41])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6831187ecb7sm5380885a12.29.2026.05.18.11.04.43
-        for <stable@vger.kernel.org>
+        d=1e100.net; s=20251104; t=1779128356; x=1779733156;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VCtT6xuhMHaXw1nHALH3FFemEU2JIAPerrti8zvo02Q=;
+        b=gtWyIj1jxq24ygd6CNvCmpeJnsTecR07heGpi5RVOQlXNg6RvA221g99+X/DFZoIst
+         hDyxCwIOR2cIa0JQp2wfoiI9kOPAViwmZ6pbcYLJcR4wjeuUBaLwCbMpMXSsfxX8i7sv
+         UQyt+EdIn1JZ3gzS7gJ4N3nKSXqNIspRMUDYeUhdtOzRXLg5aGEO3e0/fC/rwbzviyv1
+         NSG9IuqJ0xHEflc80nkhQY6SAfXmWqCjUPGd6oysCX9ldOKjSEU0pqgCJtR4PXE1fGut
+         lGbMc4A65H6wblMlHaC9rtTLDKcSqkvWk/PRGfLQ23qY9HwddReApd8TJkv1Tvt5Pdjp
+         OhoA==
+X-Forwarded-Encrypted: i=1; AFNElJ+j97ymwQonkCuXSIkTFg0wsmVKDXGdMRPXsTSW/O2PsPY9lfC3RM549ZSivKxGyWQ4bdbgyJo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxb5DyPdUESDWBIvvIZ+WiTElW4LOraatlPJQiUB7xkaN7azJx3
+	GJ69W23odukN4yqV8K8gUzjvzoiRfgu30rV+wW2KjUtYbQqJWE7kbH55
+X-Gm-Gg: Acq92OHtZ0Lg8LKSYcFEVrAryr0qjFwv1hBVfzUTq+OEHpg93aDjuAZKkE7bXBpUueX
+	zDG2GyptZw4Nl3A+jS46Z36R5tTntx7w19euktM4YJN+8AXqNnBnfGSRWvbebnNK8Y9wvlkXSy7
+	ZdiH/2/qKrbsxaHy6XRBoo5041CZ1w+4slkYlLu3JpV/a4XbQVQoWyEz1keTNpjDbKEhzeBbqga
+	JiUWOxazxqo0EsuaR1N0vMYAjRsptmdV0hrkEtp3ik5l7o5hG6xCPoFX1/nUkQ81tBe76JGcxJj
+	4SgjMcNbGSPgqlc9AVnQ6Hi2R9D2oYU5IWVVJzTmdIFRp2/1+PcaCFFjoSmbwiebCS0l+iQmh+F
+	khsLOv98hthmScxJBCncSg6P9HprNDawoyRMcE2Ahc63iB74cy+YnvGd0A6KaBRsYdpTBS4AVjU
+	7Y3uqLbye/Na9PIRPCiNSgLMn/Q1mTTEKsmThFIU2uzeUXtJPbHw==
+X-Received: by 2002:a05:6808:4fc8:b0:463:efb4:f9a2 with SMTP id 5614622812f47-482e59468bbmr10642289b6e.28.1779128355915;
+        Mon, 18 May 2026 11:19:15 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-482ee389209sm5469316b6e.5.2026.05.18.11.19.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2026 11:04:44 -0700 (PDT)
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67bc6098640so5208158a12.0
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 11:04:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+FzYCi2Yi3HP5c/Bxs6ceVrwawuLR+OnCPypepHEKW6qa6e0KLAYL6aeYnBNw93QCgOzdst8k=@vger.kernel.org
-X-Received: by 2002:a05:6402:13c1:b0:67c:d93d:89ce with SMTP id
- 4fb4d7f45d1cf-683bd99e2cfmr7935976a12.23.1779127483190; Mon, 18 May 2026
- 11:04:43 -0700 (PDT)
+        Mon, 18 May 2026 11:19:14 -0700 (PDT)
+Message-ID: <537ae7dc-c2a9-4fcd-b5fa-0fec2831781f@gmail.com>
+Date: Mon, 18 May 2026 11:19:11 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
- <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com> <CAG48ez3jeAAvy5mymVkLq84Lf27VyQqM9JkjFYzXps+-jLKMkg@mail.gmail.com>
-In-Reply-To: <CAG48ez3jeAAvy5mymVkLq84Lf27VyQqM9JkjFYzXps+-jLKMkg@mail.gmail.com>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Mon, 18 May 2026 11:04:27 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjxBg4Mb98zjJP95gYsC1kYzzBdtp-Yz+J3ZYD+3HrHyw@mail.gmail.com>
-X-Gm-Features: AVHnY4Iuqm2qdDMtQoiKT137Zy8z_hIH9OsuwlmdtH8RYsDWTSLR9WP4V5WBXZ0
-Message-ID: <CAHk-=wjxBg4Mb98zjJP95gYsC1kYzzBdtp-Yz+J3ZYD+3HrHyw@mail.gmail.com>
-Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field post-exit
-To: Jann Horn <jannh@google.com>
-Cc: Christian Brauner <brauner@kernel.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Qualys Security Advisory <qsa@qualys.com>, 
-	Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/187] 6.18.32-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260516102236.209957148@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260516102236.209957148@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-249358-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249357-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[torvalds@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 2F870572095
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AD18F5723A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 18 May 2026 at 10:20, Jann Horn <jannh@google.com> wrote:
->
-> I mean... /proc/$pid/task/fd/$n probably has the same problem, no?
+On 5/16/26 03:30, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.32 release.
+> There are 187 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Mon, 18 May 2026 10:22:18 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.32-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Possibly. That said, the permissions on that directory changes when
-the process becomes a zombie, so it might almost accidentally be ok.
 
-> pidfd_getfd() is just more severe because it directly creates an FD
-> for the file, instead of going through normal VFS open() permission
-> checks. But /proc/$pid/task/fd/$n is theoretically also dangerous for
-> stuff like anonymous pipes or memfds, where security mainly relies on
-> not being able to reach the inode.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-If your security depends on "not reading the inode", your security is
-not security, it's a joke.
-
-The /proc/pid/ interface has been around forever, and that's ignoring
-regular ptrace too. Files have absolutely *never* been private, and
-anybody who thinks they are some private thing is just wrong.
-
-And being a zombie doesn't even change that - files can stay around
-afterwards, and it's not a problem.
-
-I really think the *only* bug was literally the whole "people didn't
-think about mm->dumpable as a security thing wrt zombies"
-
-(And the entirely unrelated bug of IO-time vs open-time, which we've
-had many many times because it's such an easy mistake to make).
-
-> I think that would be kind of ugly because here, the MM is not
-> actually used for memory management thing; instead, the MM is just
-> used as the one place we have that stores state that is shared between
-> threads
-
-I agree. Except it is *not* "the one place". We have multiple shared places.
-
-In fact, I wonder if we should simply just move "dumpable" into
-"struct sighand_struct" instead (or "signal_struct"). Those stay
-around until the task is released, and they kind of are more natural
-for core dumping, since it's about signals.
-
-I think dumpability being in the mm struct is mostly a historical
-accident, and the fact that it was about core-dumping that writes out
-the mm image.  And in the very historical setting, the "same thread"
-was about the mm.
-
-But core dumping is certainly *also* about the signal state that
-writes out the mm image. In fact, the 'struct core_state' pointer is
-in 'struct signal_struct'.
-
-And with pthreads, the "same thread" is actually mostly about signal
-state (ie the defining feature really is that signal group). Obviously
-pthreads doesn't know about clone() and other options.
-
-What I think really matters is that execve() will always unshare
-everything, because that's when you get more permissions. So whether
-it's the mm or signal_struct or sighand_struct doesn't much metter.
-
-But in some respects the signal structs would really be better options
-for all of this. Both for the pthreads reasons and for the "they stay
-around for zombies".
-
-Hmm.
-
-              Linus
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
