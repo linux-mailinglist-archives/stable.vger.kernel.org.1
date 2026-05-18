@@ -1,198 +1,159 @@
-Return-Path: <stable+bounces-249319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EC5xKNgpC2rqEAUAu9opvQ
-	(envelope-from <stable+bounces-249319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:01:44 +0200
+	id uIg0IWcoC2pAEAUAu9opvQ
+	(envelope-from <stable+bounces-249320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:55:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 698D656F73B
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:01:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2A856F51B
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4F223304A792
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:54:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 48AAD3009896
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8F029346F;
-	Mon, 18 May 2026 14:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7592701C4;
+	Mon, 18 May 2026 14:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oH9pdbGd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7jgX5ql"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D50283FCE
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 14:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C0C64AA4;
+	Mon, 18 May 2026 14:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779116068; cv=none; b=dznE7QY10WrPkOR4NihIu/l3dD8c6AJVwHG+/U/snLNaYe6KHya72zszsdZw5Qy6m24Fxrt5b/+jSvqmcGah5+ppHvjYDq4caDytJX4Q+KWqh7X2vfALbCiGvbI46ZF5N/h1YodvKvP3ZOAXsoIYhUfOndoqUJbJzGAycz68z40=
+	t=1779116129; cv=none; b=Jd/iAK8r6l4O9IEZ33l4MYlFFdF1K81PD0DQjVXhRfllYGjXgODbRIqZOy0hdPfxE/TG+GpP/k1XaDcDlShBXrlM/StghYve+kaIRHZasnOiVEr9bPOqQw8UYzOPad4xQbdWU9NgYkR96Co2mpI9vM8S/ZgZURZnaK/f/ASKW4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779116068; c=relaxed/simple;
-	bh=Czv8Tfe2ypNrmX0zrODg0o5K6vEJO7x3cRJLNC1oLno=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEjQPebF78K6Wzigc0SisjGVFQA40euq6qL1G0KjS2tAGSFuv+CRwdHwcawu1Na4J2R5egfh0oDpgH+4Xy/Z7JbE175EduJCXpFpr99YCzmg7yJRNDmZ7B2B55u0XdsxBqErgX5BcxBW8bqEJq+pI0Yk6WHkjQsJNDAPFgiMtr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oH9pdbGd; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488d2079582so22732375e9.2
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 07:54:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779116063; x=1779720863; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pC9TScL6CxIBlhr7Fs+T0Ee2cF3m9ksp0G13aaDD7mA=;
-        b=oH9pdbGdjywz25MCUrFB1Ze7sQc9DtouvLEQdmDEBv8gCpcL1Il53lxU6vRlvZLksv
-         GOmXQz7tMgfQk15rdjyQmgDw3hb4oQPAuY4WXMMqkAKkPLgwuHQG3M9aRZD5m2lpr/Az
-         oO5rAaypIIGFPA+iJ8FFWXCOYkZgj9X8pZNgA9LUQq/fJc5ALEeErb5LB/HVg0FLSurU
-         EPEgj3RFdumsAtMSOGEKG3te2TwhfAJnDTKdD4hSrWls6v/iNpLOgA1BCD2kSCFVdsLr
-         sMAUu1h3k7vsbA67nze95eibcYuNr/pWw9eZ7DZ5ufoBwSb+2bcFzvKWhmhCR6Bf67hN
-         fKpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779116063; x=1779720863;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pC9TScL6CxIBlhr7Fs+T0Ee2cF3m9ksp0G13aaDD7mA=;
-        b=gbCMzc2FsQzzPbS4MSXr2kXnOR5tDwfDAwBKTcMasco3AooUWoCHHkPIhii2q/LLbh
-         CeagNyRUmogsTstevyGyugeg5UIGLF/8wvXpRVRcKTE1qOgyN+xIE8NHsUVwZsP01i4/
-         aZvo1qkPOwOBKGVDKLmBJAwpIntO8hD6vbCmzQyy1/9mRDmvhJ0Nxwc11OHZ1EZ11xcu
-         uJxGToN4ZScIoHmEt8/KKHOdAMwi5EHM+3gRML1L2RjEFMDZsGiC0fUe47fonoSBHpSO
-         SHGn6gbf/7fi5QPU1D7krZ+TUK9VhT3S5PEv1uIWVLPKr9kOM9D5G7+ldZLNnON0P1hW
-         3FIQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/P/9AZyKYW7PBdWaJYrXfON4xfAWoJvyVkr4aAHzQi3PlzDPhH/ZHAUptFx1CGnUQr2MYqAsk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtFub+XsLeFCljN5wAOJ11HK3v2sD76RKub/9ZdMTQ84n+HfFS
-	ntUZlsyxInRQhEzMpugF/WBb1lDRFSvlHU5L/Jl00zrqDcSs9VM0TxU=
-X-Gm-Gg: Acq92OFz41jYDmRD3H/vWT+tdQ8y3WGNCoeBYxja3Ohh6gCt6EnFMMVJzcXkH5ET3NK
-	ei0df+aXo+jjLQov3g7YIMqrOGpIVNbzUuRgkrwxOp0s8h78/iD8kxITXlQWEabJxf8xtfb0gqM
-	IVPrvqPhrVNOEFl9u4rd1Z9rbPymclSwOH/wZdcWiAKWASLWPr2/ZiQRZRqThb6J5DOJcRnjkIu
-	B73VajmEkN0QWMIjdJPUR7mLsszpkgVdVnnTj5htqWStfjjRE3GS7bDL8yKBbWoS/CkSp0UFX6B
-	B8V4sbHeh2/W5vUuzotKx6lvzs3fceu5bqn/MdCzmcQSvIYfD4EP0XJ0X9eOnmWjRqh/WWNGP1+
-	O9wKg7WjpHp7eUz+XJznnkEKvVHVGlc8QT5xRpVI87Ft9NwFiIaghXqxFMS6w9HeZV6hKBf4N3u
-	lD6NfNeV+9qcXz3W42QfKMgDim3I1vaQlO7gS4IAiYueJEf8ixUeJXSWj6VyCD0g7HI/tJzIFyv
-	zRY+VlIizk=
-X-Received: by 2002:a05:600c:821b:b0:488:b811:51c4 with SMTP id 5b1f17b1804b1-48fe6515831mr225383255e9.25.1779116062889;
-        Mon, 18 May 2026 07:54:22 -0700 (PDT)
-Received: from localhost.localdomain ([151.47.57.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe53ab671sm261061285e9.1.2026.05.18.07.54.21
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 18 May 2026 07:54:22 -0700 (PDT)
-From: Francesco Saverio Pavone <pavone.lawyer@gmail.com>
-To: jonas@kwiboo.se,
-	detlev.casanova@collabora.com,
-	nicolas.dufresne@collabora.com,
-	hverkuil@kernel.org,
-	mchehab@kernel.org
-Cc: ezequiel@vanguardiasur.com.ar,
-	heiko@sntech.de,
-	stable@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] media: rkvdec: fix PM runtime teardown ordering in remove
-Date: Mon, 18 May 2026 16:54:14 +0200
-Message-ID: <20260518145414.64514-1-pavone.lawyer@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260518105413.42147-1-pavone.lawyer@gmail.com>
-References: <20260518105413.42147-1-pavone.lawyer@gmail.com>
+	s=arc-20240116; t=1779116129; c=relaxed/simple;
+	bh=cVvZUFt7bQm/47LolnTjjJG3c5UnAt293fdrUItpQ0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T/ZoiJ0o4aOXyYObTv/32BKTko+B597cA5WUoKv0O9ZyVAOruFkMbc2yBPAizqthLSGtqKHwbrGco5VeaUTyAH+wq6btMNTe5DlRLqZ/79JmzjYIZEpiHh/aWsnA0rglQxpH5PXwfkUj5fsO31hRcNsh2k8QxUNWm1nh4g8tlKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7jgX5ql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8D4C2BCB7;
+	Mon, 18 May 2026 14:55:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779116129;
+	bh=cVvZUFt7bQm/47LolnTjjJG3c5UnAt293fdrUItpQ0g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=S7jgX5qlcRjn4iPJi0XDQsvwT8lKS4HzGC4CM84jvIBGPt3OCIauP2oWv0WCTJ8qi
+	 IwzIa1l/AFvf+Eq7w+bpgalWt19uv4a7cOQ05wJ4kvtimRevO2HDd25UefvLptv0mG
+	 v69ropgbm+ZLeo7cd4A8E6tEVuN5EgAA3wnrrWjqidDTf1/3yVouoNdarH/uclL2sP
+	 lbfw0nUN6lwbNgJ+L4I3yHPlpE/kV27jlkGRqvfRwR07T+oUD/4r27LF5nHcPJFayp
+	 ZCYF44ERbkruiRm8NFDn5cADNDOmxjy/e3QGCrKbcf2/3ne3+Iq5MqCRJjRoQBC28U
+	 Sir647hgzr5jg==
+Date: Mon, 18 May 2026 15:55:21 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, David Lechner
+ <dlechner@baylibre.com>, Stepan Ionichev <sozdayvek@gmail.com>,
+ nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: pressure: rohm-bm1390: notify trigger on all error
+ paths
+Message-ID: <20260518155521.6c61504d@jic23-huawei>
+In-Reply-To: <agq4zER5Tv2LErZV@ashevche-desk.local>
+References: <20260517160801.269-1-sozdayvek@gmail.com>
+	<54ee1fba-3209-4192-82c3-674a1ae3ca8f@baylibre.com>
+	<3cb30f12-8b4f-415f-9a1d-823d8ff8c33b@gmail.com>
+	<agq4zER5Tv2LErZV@ashevche-desk.local>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249319-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249320-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[pavonelawyer@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,baylibre.com,analog.com,kernel.org,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 698D656F73B
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2A2A856F51B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jonas Karlman <jonas@kwiboo.se>
+On Mon, 18 May 2026 09:59:24 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-The current remove() path calls rkvdec_v4l2_cleanup() and
-pm_runtime_disable() before pm_runtime_dont_use_autosuspend(), and
-frees the empty IOMMU domain after that. With autosuspend still
-armed when the domain goes away, the VDPU381 can be left in a dirty
-state across module reload and suspend/resume cycles.
+> On Mon, May 18, 2026 at 08:21:17AM +0300, Matti Vaittinen wrote:
+> > On 17/05/2026 20:12, David Lechner wrote:  
+> > > On 5/17/26 11:08 AM, Stepan Ionichev wrote:  
+> 
+> ...
+> 
+> > Maybe it would be better to do something like:
+> > 
+> > void iio_trigger_poll_nested(struct iio_trigger *trig)
+> > {
+> >         int i;
+> > 
+> >         if (!atomic_read(&trig->use_count)) {
+> >                 atomic_set(&trig->use_count,
+> > CONFIG_IIO_CONSUMERS_PER_TRIGGER);  
+> 
+> Just in case somebody is going to do that, avoid doing atomic_read() followed
+> by atomic_set(). This is typical TOCTOU issue. This should be something like
+> atomic_xchg() or atomic_add_return() or something like this in a single atomic
+> operation.
 
-On RK3588 this surfaces as a VP9 inter-prediction bug: from the
-second ALTREF frame onward, motion blocks decode with U=V=0 (BT.709
-green), while intra and static blocks stay correct. Reordering the
-teardown to dont_use_autosuspend() -> iommu_domain_free() ->
-pm_runtime_disable() -> v4l2_cleanup() makes the symptom go away.
+Just to clarify - the current code is fine.  This got reported a few years
+back and I did the analysis to prove it. From what I recall the key is
+that the state space isn't as complex as it immediately looks.
+That counter is either non 0 at the start (we don't use it here and we
+skip an interrupt - that's actually the desired behaviour if the trigger is running
+too fast - triggers must survive that - reenable() callback is there to make that
+all work).
 
-Tested on a Radxa Rock 5B+ (RK3588, 8 GB LPDDR5) with both the
-libva-v4l2-request mpv pipeline and Chromium's V4L2 stateless
-decoder. With the fix, 300 random pixel samples on VP9 Profile 0
-clips at 1080p and 1440p match a libvpx software reference exactly
-(worst delta 0). Without it, the same 1080p sample at frame 4,
-pixel (960, 270) reads HW=(0,112,0) vs SW=(204,147,116). HEVC and
-H.264 stateless decoding via mpv keep running on hardware with no
-fallback.
+Otherwise there is a single path that sets it and we know any decrement until after
+that happens would have undeflowed (and hence was a bug). The rest are decrement
+only and it can never go to less than 0.
 
-Fixes: ff8c5622f9f7 ("media: rkvdec: Restore iommu addresses on errors")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Tested-by: Francesco Saverio Pavone <pavone.lawyer@gmail.com>
-Signed-off-by: Francesco Saverio Pavone <pavone.lawyer@gmail.com>
----
-Changes in v2:
- - Add Cc: <stable@vger.kernel.org>; media-CI flagged that the
-   Fixes: target (ff8c5622f9f7) is present in the 6.17, 6.18, 6.19
-   and 7.0 stable branches, so the fix should reach them too.
-   Link to v1: https://lore.kernel.org/all/20260518105413.42147-1-pavone.lawyer@gmail.com/
-   Media-CI report: https://linux-media.pages.freedesktop.org/-/users/patchwork/-/jobs/100124849/artifacts/report.htm
+Hence it is fine.
 
- drivers/media/platform/rockchip/rkvdec/rkvdec.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Agreed things get messy if we make this alg any more complex though!
 
-diff --git a/drivers/media/platform/rockchip/rkvdec/rkvdec.c b/drivers/media/platform/rockchip/rkvdec/rkvdec.c
-index 6f5f0422d317..bb95b090a25b 100644
---- a/drivers/media/platform/rockchip/rkvdec/rkvdec.c
-+++ b/drivers/media/platform/rockchip/rkvdec/rkvdec.c
-@@ -2066,12 +2066,13 @@ static void rkvdec_remove(struct platform_device *pdev)
- 
- 	cancel_delayed_work_sync(&rkvdec->watchdog_work);
- 
--	rkvdec_v4l2_cleanup(rkvdec);
--	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 
- 	if (rkvdec->empty_domain)
- 		iommu_domain_free(rkvdec->empty_domain);
-+
-+	pm_runtime_disable(&pdev->dev);
-+	rkvdec_v4l2_cleanup(rkvdec);
- }
- 
- #ifdef CONFIG_PM
--- 
-2.45.0
+J
+> 
+> >                 for (i = 0; i < CONFIG_IIO_CONSUMERS_PER_TRIGGER; i++) {
+> >                         if (trig->subirqs[i].enabled)
+> >                                 handle_nested_irq(trig->subirq_base + i);
+> >                         else
+> >                                 iio_trigger_notify_done(trig);
+> >                 }
+> > 		atomic_set(&trig->use_count, 0); /* Clear the use_count if drivers didn't
+> > */
+> >         }
+> > }
+> > 
+> > to prevent this class of problems once and for all. But yeah, wiser minds
+> > have designed this - so let's hear some other opinions as well :)  
+> 
+> 
 
 
