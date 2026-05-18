@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-249276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAxCAqcPC2pN/gQAu9opvQ
-	(envelope-from <stable+bounces-249276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:09:59 +0200
+	id EIb3K6oPC2rL/gQAu9opvQ
+	(envelope-from <stable+bounces-249277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:10:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 826AD56D55A
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3EE56D561
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D959303AF34
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:05:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67E9E300822B
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BA5480949;
-	Mon, 18 May 2026 13:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D58243CEF8;
+	Mon, 18 May 2026 13:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0SNH+my"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jf/II2/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA29480946
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 13:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112B240584E
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 13:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779109513; cv=none; b=jpmXd4WPaz4nTnzw4sCmXpXaaBbgfL3uTs1qHSacvgMQbu/umuPfHsEqf32pYO3pGqSYjgNI4Ig/DqhTfpv7ZR5l/piqaZ9RiB1VDzdc78MHcRIoAQG+x1GWGVm3CNbGSRUgHmVccUB6dresnjTTwp+tGG/zF5pYjV0AmQsgLko=
+	t=1779109527; cv=none; b=VSZKslmvSbr+h5sppvLB3mzdS/nI/h6o6XkefIH/Ga83kEdupak7CmwcN0oaBQVcmqZ3yhuaIFdRvdy4Uk2sdcUlT15xBRKKcjbFezwCp/owDc+j4IEHoaJ4e+2XG+la02EiGVCXBj7ZWtTYw+J660GlP55zb89k1NcHWfpihZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779109513; c=relaxed/simple;
-	bh=8BN0YY1glHtubrZGcjDiNGU56ffEiAJ0+exhqDrOfbA=;
+	s=arc-20240116; t=1779109527; c=relaxed/simple;
+	bh=ErLehjKY/7mYaARaC3KyR91rhAIlyonSMzzpgwsg5/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fjKlMVH7DTNRXssFuitM+kkSZ9wA7bgHOPHZs/68Z8A6H4lcp6jOt/VpF4hWLK2/KXBvXA710xG//vddRzdaPCYOPTk4IAepHVQFpBWwKpyy5kDzTt8fKZcypwqOavkMSzQJk7BRq3IKKsY7/+nVxDiNlmrlkGb3LVimm0dNz7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0SNH+my; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D06C2BCC6;
-	Mon, 18 May 2026 13:05:12 +0000 (UTC)
+	 MIME-Version; b=omRlk7+ADYkYQ7uPL7j/YJuZl5w/grk9+pSankOG+VMPkCcre1/wqbmtHa4ybCVNa7B8mGJ2RG7htYUfQuKXQ+AhxfklR4hWhgNocg59dFSGid0avTSW4manUegXZsqgJugC3t6vmghJEwxuDXhymfRHkDHfEbCr4N21Nzyg+iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jf/II2/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5616AC2BCB7;
+	Mon, 18 May 2026 13:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779109512;
-	bh=8BN0YY1glHtubrZGcjDiNGU56ffEiAJ0+exhqDrOfbA=;
+	s=k20201202; t=1779109526;
+	bh=ErLehjKY/7mYaARaC3KyR91rhAIlyonSMzzpgwsg5/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0SNH+mynSLPlVU42twVIoWMeq4dp0/bPekHJZUqlVpWiv8PkunqNHKmpqSDkYErX
-	 kwcsJ39EMx8jQdQjE4F5Y6L8njAlrKH46eqc7dqxSMrswRhIsI8NbkbLTUWfYNGFpZ
-	 XieB9vuJ0KYRYoKdmwEgxR9VfrB7M8eLR6Ny8+nyB+5CIvkOEYcex7h4xBKErqr0ql
-	 zo0t7JZVTqlgz2HPQKiN+9JbOH8NYQGZGn4OoD8uliXZfqs0IsPp1CYL17b4KQUTaO
-	 CGHa9eJxfYVGrknExkPsBHs9ME3OdphJMDQPyfD8kgMdcS+/+bzHCSQdEkm28kW6vR
-	 794L9FtXIzliQ==
+	b=jf/II2/NHdBBLmXB1gOLbsx1HFVnNhIANXtxorIlJozF5QuMhSQqcpKHj8ZReC+ND
+	 FK/WKDTsntDNJDApbgb5c55RskT2LQPmdF2AfAEFDVQebQeu+4VXyJMQWO4IU6KrGS
+	 5lsk1zoAaLN7xwAg5YjCU/8VfH+Z6kGW14fQXiI4AC+xqRzgLhw8NMD6zO8clC24aF
+	 mep1clTI/ZvntHNpywR2WSc9dkT2r0PAWJZUEEYABaUU4VpGV1WNO0nEuS82EC/1f6
+	 2p7uectpByg4FAlRFMv8LiscpQMHy8fKjx54DYUcIVqkaPRKpxGiLRvlacnXxXUR65
+	 NLJdBKi8r9YDw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] mptcp: fix rx timestamp corruption on fastopen
-Date: Mon, 18 May 2026 09:05:09 -0400
-Message-ID: <20260518130509.978083-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y] mptcp: pm: kernel: correctly retransmit ADD_ADDR ID 0
+Date: Mon, 18 May 2026 09:05:24 -0400
+Message-ID: <20260518130524.983282-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260518130509.978083-1-sashal@kernel.org>
-References: <2026051256-grime-usual-23e7@gregkh>
- <20260518130509.978083-1-sashal@kernel.org>
+In-Reply-To: <2026051243-corncob-shrubbery-862b@gregkh>
+References: <2026051243-corncob-shrubbery-862b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 826AD56D55A
+X-Rspamd-Queue-Id: 3D3EE56D561
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -77,7 +76,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249276-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249277-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -95,53 +94,70 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Action: no action
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 6254a16d6f0c672e3809ca5d7c9a28a55d71f764 ]
+[ Upstream commit b12014d2d36eaed4e4bec5f1ac7e91110eeb100d ]
 
-The skb cb offset containing the timestamp presence flag is cleared
-before loading such information. Cache such value before MPTCP CB
-initialization.
+When adding the ADD_ADDR to the list, the address including the IP, port
+and ID are copied. On the other hand, when the endpoint corresponds to
+the one from the initial subflow, the ID is set to 0, as specified by
+the MPTCP protocol.
 
-Fixes: 36b122baf6a8 ("mptcp: add subflow_v(4,6)_send_synack()")
+The issue is that the ID was reset after having copied the ID in the
+ADD_ADDR entry. So the retransmission was done, but using a different ID
+than the initial one.
+
+Fixes: 8b8ed1b429f8 ("mptcp: pm: reuse ID 0 after delete and re-add")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260501-net-mptcp-misc-fixes-7-1-rc3-v1-3-b70118df778e@kernel.org
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-1-fca8091060a4@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied to net/mptcp/pm_netlink.c instead of upstream's pm_kernel.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/fastopen.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/mptcp/fastopen.c b/net/mptcp/fastopen.c
-index 7777f5a2d1437..d4dbdd3d5679d 100644
---- a/net/mptcp/fastopen.c
-+++ b/net/mptcp/fastopen.c
-@@ -12,6 +12,7 @@ void mptcp_fastopen_subflow_synack_set_params(struct mptcp_subflow_context *subf
- 	struct sock *sk, *ssk;
- 	struct sk_buff *skb;
- 	struct tcp_sock *tp;
-+	bool has_rxtstamp;
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 3ac09bfe6e4b2..e414e3b7773bd 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -590,6 +590,8 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
  
- 	/* on early fallback the subflow context is deleted by
- 	 * subflow_syn_recv_sock()
-@@ -39,12 +40,13 @@ void mptcp_fastopen_subflow_synack_set_params(struct mptcp_subflow_context *subf
- 	 */
- 	tp->copied_seq += skb->len;
- 	subflow->ssn_offset += skb->len;
-+	has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
+ 	/* check first for announce */
+ 	if (msk->pm.add_addr_signaled < add_addr_signal_max) {
++		u8 endp_id;
++
+ 		/* due to racing events on both ends we can reach here while
+ 		 * previous add address is still running: if we invoke now
+ 		 * mptcp_pm_announce_addr(), that will fail and the
+@@ -603,19 +605,20 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+ 		if (!select_signal_address(pernet, msk, &local))
+ 			goto subflow;
  
- 	/* Only the sequence delta is relevant */
- 	MPTCP_SKB_CB(skb)->map_seq = -skb->len;
- 	MPTCP_SKB_CB(skb)->end_seq = 0;
- 	MPTCP_SKB_CB(skb)->offset = 0;
--	MPTCP_SKB_CB(skb)->has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
-+	MPTCP_SKB_CB(skb)->has_rxtstamp = has_rxtstamp;
- 	MPTCP_SKB_CB(skb)->cant_coalesce = 1;
++		/* Special case for ID0: set the correct ID */
++		endp_id = local.addr.id;
++		if (endp_id == msk->mpc_endpoint_id)
++			local.addr.id = 0;
++
+ 		/* If the alloc fails, we are on memory pressure, not worth
+ 		 * continuing, and trying to create subflows.
+ 		 */
+ 		if (!mptcp_pm_alloc_anno_list(msk, &local.addr))
+ 			return;
  
- 	mptcp_data_lock(sk);
+-		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
++		__clear_bit(endp_id, msk->pm.id_avail_bitmap);
+ 		msk->pm.add_addr_signaled++;
+ 
+-		/* Special case for ID0: set the correct ID */
+-		if (local.addr.id == msk->mpc_endpoint_id)
+-			local.addr.id = 0;
+-
+ 		mptcp_pm_announce_addr(msk, &local.addr, false);
+ 		mptcp_pm_nl_addr_send_ack(msk);
+ 
 -- 
 2.53.0
 
