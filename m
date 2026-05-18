@@ -1,232 +1,139 @@
-Return-Path: <stable+bounces-249403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCFaHY6HC2p1IwUAu9opvQ
-	(envelope-from <stable+bounces-249403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 23:41:34 +0200
+	id APD5OGyLC2p1IwUAu9opvQ
+	(envelope-from <stable+bounces-249404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 23:58:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75422574005
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 23:41:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BC45742BE
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 23:58:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BA6173013D7F
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 21:41:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D491300D45A
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 21:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87AA739A040;
-	Mon, 18 May 2026 21:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DC839B48E;
+	Mon, 18 May 2026 21:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FjVyqEvW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vkjf8Fmf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAA938F949;
-	Mon, 18 May 2026 21:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EE539A072;
+	Mon, 18 May 2026 21:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779140469; cv=none; b=KnA/gPf5ND1b1j6wqRMO1VVadEONQmDspk3CDKLXahrLPzRTR7E7JzIDP1n+l5JtV19irzaT+KLOWdlZHzAOKUsECqTbYlqyVYcR250VAmWJHh6fRimZF27TTTLxDR9W2bIkB4ULG87fbMRd2bjLWFGtMOl7hSDkuiLGViCjnJc=
+	t=1779141124; cv=none; b=NCp1oRpDovSd9+nc/fUSAln0ioE1108qBQnpXaQhM7jpKH86qfpFornH3jrR9tRFF5wrCSlBmE4oHChslp4FUmKx5XgsGJsggzT+gK63y3ibmVbEOL7DQpsbiNj9V7NN/uN9KTxZjOW2DcG9cDMLHRkp9SfFpvVYWHwgA4yk0O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779140469; c=relaxed/simple;
-	bh=aHVm7Hj0OODiSxgMPoeKSYLH9hJzR5gTzwSTa4kw0nU=;
-	h=Date:To:From:Subject:Message-Id; b=FrxPb02p9upb1KxVb0B0vpVsTZsoQs9SRuVgTe3uQrNaBUoGGrtG7pY6JuyU3BMAvXPNt+I9aQFSzBpW/dQVKCBqu9OmffRPDxAtpeKei4thJxAUJ4i+UqKzZXDWSVa0yW21ccHzZ9uM2oE9H74iT1hDmZfiu3ggHmHo1VIe3EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FjVyqEvW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0084C2BCB7;
-	Mon, 18 May 2026 21:41:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1779140468;
-	bh=aHVm7Hj0OODiSxgMPoeKSYLH9hJzR5gTzwSTa4kw0nU=;
-	h=Date:To:From:Subject:From;
-	b=FjVyqEvW24EhkuB7iBoiGRdjmznO+q6l4zQRUjR5Nsdm8NypttauOeFbvV1a5TbXG
-	 ePgxBV02yRYU8tj2VRhgjNmO95dV22qyPUKyIErvulcjM0WlhgGeIuZH0aZfIgTbz7
-	 RkCcX0xgDUFy+iOX3uB6ZEVqfNWZ+AHBMJ2Ja7NE=
-Date: Mon, 18 May 2026 14:41:08 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,michael.bommarito@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-reject-regular-files-with-non-zero-i_size-and-zero-i_clusters.patch added to mm-nonmm-unstable branch
-Message-Id: <20260518214108.D0084C2BCB7@smtp.kernel.org>
+	s=arc-20240116; t=1779141124; c=relaxed/simple;
+	bh=B+rmSHdIPdeug5qRLJRDMAIugwCK3bIGeOPxEOwXk9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b7MSLP9Cr/aijOcYjywgu9JGpjQOCYxDuSAjvZHMLc2LetfHniD1XDS+kIrlM9RWY1aD5DJaFKe/XAefCc/BNVWMxgY7TIoI0KXOd8u1qaG7WjAc/uL+VpNCkPyBPpyBR8GBVZwnLj6H4kUWZ2QlvJ7alQzlDl8+VsE737otDbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vkjf8Fmf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18B6C2BCB7;
+	Mon, 18 May 2026 21:52:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779141124;
+	bh=B+rmSHdIPdeug5qRLJRDMAIugwCK3bIGeOPxEOwXk9o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Vkjf8FmfZnGE3WYJOznYFtF73/GemvAXzS/awb4nmgxtd8qk4yUmQG1mePeh+5tD8
+	 9JczKUSxAcjrIiyxnMDm8y8OoJ3Dgfov+Cq8bDplIvixCIAAHdCcxWL0Y1gTZ5CRkS
+	 qHZ2NskAgx4kqMOpLiVZZ0zAj0+4vU/cro6TyayaK9FEP5oHmC3W9BaPNhu7/zvsJT
+	 JP+EWgCP9cCZ9G1MCPykXNCcc748Cg2dHTFzjCbUExPA6dS9MsnQvnLnFZNNKc7DOr
+	 PySbklQl7ESdb2fvQkSi7xfmnij4+Z9TA4obcCLeT5flgyjMyKRWbE4wsR2HRZd58s
+	 yPFpOmF3NE2LA==
+Date: Mon, 18 May 2026 15:52:02 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: "Achkinazi, Igor" <Igor.Achkinazi@dell.com>
+Cc: "hch@lst.de" <hch@lst.de>, "sagi@grimberg.me" <sagi@grimberg.me>,
+	"axboe@kernel.dk" <axboe@kernel.dk>,
+	"linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] nvme-multipath: set BIO_REMAPPED on bios remapped to
+ per-path namespace disks
+Message-ID: <aguKAgkCUOVL2pVk@kbusch-mbp>
+References: <MW5PR19MB548483D1FAE4F322E4C97352FD032@MW5PR19MB5484.namprd19.prod.outlook.com>
+ <agtnJb5a5uIqH-65@kbusch-mbp>
+ <MW5PR19MB5484B015B6B1D739D8C5CA2FFD032@MW5PR19MB5484.namprd19.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MW5PR19MB5484B015B6B1D739D8C5CA2FFD032@MW5PR19MB5484.namprd19.prod.outlook.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249403-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,gmail.com,linux-foundation.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249404-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kbusch@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,smtp.kernel.org:mid,oracle.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,fasheh.com:email]
-X-Rspamd-Queue-Id: 75422574005
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 41BC45742BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Mon, May 18, 2026 at 08:59:09PM +0000, Achkinazi, Igor wrote:
+> - submit_bio_noacct_nocheck is block-internal and not exported, so using it
+> from NVMe would require a block-layer API change just for this.
 
-The patch titled
-     Subject: ocfs2: reject regular files with non-zero i_size and zero i_clusters
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ocfs2-reject-regular-files-with-non-zero-i_size-and-zero-i_clusters.patch
+That is not a valid reason to not do this. We often export and unexport
+APIs as needs evolve. I'm not saying you have to use this API, but I'm
+just not yet seeing why we shouldn't.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-reject-regular-files-with-non-zero-i_size-and-zero-i_clusters.patch
+> - it bypasses more checks than I see we need here (throttling, RO, crypto,
+> op-type), I prefer bypassing only the EOD check.
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+I do not think we need any of those on the hidden device either. The
+stacked limits should have caught any problems or handled any policy on
+the first pass.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Though I am aware of certain limit checks that go through here are not
+done under the queue's entered reference count so there's some racy
+things possible, but that's a pre-existing issue and doing
+submit_bio_noacct a 2nd time doesn't help.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+> - BIO_REMAPPED propagates to split clones, so it covers all resubmissions,
+> not just the initial one.
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+Submitting split clones already uses submit_bio_noacct_nocheck() so the
+BIO_REMAPPED flag doesn't come into play there either.
 
-------------------------------------------------------
-From: Michael Bommarito <michael.bommarito@gmail.com>
-Subject: ocfs2: reject regular files with non-zero i_size and zero i_clusters
-Date: Sun, 17 May 2026 07:10:14 -0400
-
-On a volume mounted WITHOUT OCFS2_FEATURE_INCOMPAT_SPARSE_ALLOC, a regular
-file with non-zero i_size, zero i_clusters, and no OCFS2_INLINE_DATA_FL
-flag is structurally malformed: the extent map declares no allocated
-clusters yet the size header claims the file has content. 
-ocfs2_populate_inode() copies i_size into the in-core inode and dispatches
-to ocfs2_aops; subsequent reads or truncates then operate on an
-inconsistent extent state.
-
-This is the shape an attacker who keeps the rest of the extent list intact
-(to satisfy the inline-data, refcount, chain-list, and per-field
-validators already in this function) would produce when forging only the
-inode header to publish a synthetic file size on a victim node.  It is
-also the shape on-disk corruption of the i_clusters field produces. 
-Reject early in the validator.
-
-The check is restricted to non-sparse volumes (ocfs2_sparse_alloc()
-returns false).  On non-sparse mounts the allocator path always grows
-clusters before i_size: ocfs2_extend_file() takes the !sparse branch into
-ocfs2_extend_no_holes(), which calls ocfs2_extend_allocation() to journal
-new clusters first, and only then ocfs2_simple_size_update() journals the
-larger i_size.  The truncate path likewise lowers i_size in
-ocfs2_orphan_for_truncate() and then frees clusters in
-ocfs2_commit_truncate(), which uses ocfs2_clusters_for_bytes(new_i_size)
-as its new_highest_cpos: when new_i_size > 0 the floor is at least one
-cluster, so the on-disk dinode never legitimately exposes a non-inline
-regular file with i_size > 0 and i_clusters == 0 on a non-sparse volume.
-
-On sparse-alloc volumes the same shape is legitimate: an
-ocfs2_extend_file() call goes through ocfs2_zero_extend() +
-ocfs2_simple_size_update(), which grows i_size on its own without changing
-i_clusters; a freshly truncate -s 1M of a sparse regular file is therefore
-on-disk (i_size = 1048576, i_clusters = 0).  The check therefore opts out
-via ocfs2_sparse_alloc(OCFS2_SB(sb)).
-
-System inodes (OCFS2_SYSTEM_FL) carry their own size and cluster
-invariants validated by the allocator, journal, quota, and truncate-log
-subsystems; skip them here.  The inline-data fast path is filtered
-separately by its own dedicated branch below: its well-formed case is
-exactly i_clusters == 0 with i_size <= id_count.  Symlinks legitimately
-keep i_clusters == 0 with non-zero i_size (fast symlinks), so this check
-is restricted to S_IFREG.
-
-Link: https://lore.kernel.org/20260517111015.3187935-4-michael.bommarito@gmail.com
-Fixes: b657c95c1108 ("ocfs2: Wrap inode block reads in a dedicated function.")
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/inode.c |   41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
-
---- a/fs/ocfs2/inode.c~ocfs2-reject-regular-files-with-non-zero-i_size-and-zero-i_clusters
-+++ a/fs/ocfs2/inode.c
-@@ -1571,6 +1571,47 @@ int ocfs2_validate_inode_block(struct su
- 		goto bail;
- 	}
- 
-+	/*
-+	 * On a non-sparse volume, a regular file with non-zero i_size
-+	 * and zero i_clusters that is not marked as inline data is
-+	 * structurally malformed: the extent map declares no allocated
-+	 * clusters yet the size header claims the file has content.
-+	 * ocfs2_populate_inode() would still publish i_size to VFS and
-+	 * leave the extent state inconsistent for any later read or
-+	 * truncate.  This is the shape an attacker who keeps the rest
-+	 * of the extent list intact (to satisfy the inline-data,
-+	 * refcount, chain-list, and per-field validators above) would
-+	 * produce when forging only the inode header to publish a
-+	 * synthetic file size on a victim node.  It is also the shape
-+	 * on-disk corruption of the i_clusters field produces.
-+	 *
-+	 * The check opts out on sparse-alloc volumes, where the
-+	 * extend path (ocfs2_extend_file -> ocfs2_zero_extend ->
-+	 * ocfs2_simple_size_update) legitimately grows i_size without
-+	 * allocating clusters.  On non-sparse volumes the equivalent
-+	 * path (ocfs2_extend_no_holes) journals clusters first and
-+	 * i_size second, and truncate-down floors i_clusters at
-+	 * ocfs2_clusters_for_bytes(new_i_size) which is >= 1 whenever
-+	 * new_i_size > 0, so the rejected shape never appears on disk.
-+	 *
-+	 * Skip system inodes (OCFS2_SYSTEM_FL) and the inline-data
-+	 * fast path (handled below).  Symlinks legitimately keep
-+	 * i_clusters == 0 with non-zero i_size (fast symlinks), so
-+	 * restrict to S_IFREG.
-+	 */
-+	if (!ocfs2_sparse_alloc(OCFS2_SB(sb)) &&
-+	    S_ISREG(le16_to_cpu(di->i_mode)) &&
-+	    !(le32_to_cpu(di->i_flags) & OCFS2_SYSTEM_FL) &&
-+	    !(le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
-+	    le64_to_cpu(di->i_size) != 0 &&
-+	    le32_to_cpu(di->i_clusters) == 0) {
-+		rc = ocfs2_error(sb,
-+				 "Invalid dinode #%llu: regular file i_size %llu with i_clusters 0 and no inline-data flag on non-sparse volume\n",
-+				 (unsigned long long)bh->b_blocknr,
-+				 (unsigned long long)le64_to_cpu(di->i_size));
-+		goto bail;
-+	}
-+
- 	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) {
- 		struct ocfs2_inline_data *data = &di->id2.i_data;
- 
-_
-
-Patches currently in -mm which might be from michael.bommarito@gmail.com are
-
-ocfs2-reject-dinodes-with-non-canonical-i_mode-type-or-stray-bits.patch
-ocfs2-reject-dinodes-whose-i_rdev-disagrees-with-the-file-type.patch
-ocfs2-reject-regular-files-with-non-zero-i_size-and-zero-i_clusters.patch
-
+And BIO_REMAPPED applies to when the bio's bd_part is a partition. The
+multipath layer overrides the block device with the part0 of the path,
+so there is no partition (and we may not have been dealing with a
+partition in first place), so this patch is introducing a new implicit
+expectation on what this flag means. Consider a real failover going
+through the requeue_list using the submit_bio_noacct() again. If you've
+already set BIO_REMAPPED, then it skips the checks, but that could have
+happened across a controller format change that modified all the limits,
+so you probably want the eod checks to happen again on this scenario.
+Your suggestion would skip it because you're using BIO_REMAPPED as a
+proxy to skip "eod" checks.
 
