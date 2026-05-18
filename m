@@ -1,242 +1,169 @@
-Return-Path: <stable+bounces-249334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249335-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNoaGBA8C2oJFAUAu9opvQ
-	(envelope-from <stable+bounces-249334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:19:28 +0200
+	id SAAsIsM+C2pQFAUAu9opvQ
+	(envelope-from <stable+bounces-249335-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:30:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67443570C28
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:19:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 051F8570F01
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4D02D3007B29
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:19:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 45B34302F77A
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16BD480DCB;
-	Mon, 18 May 2026 16:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2C044E044;
+	Mon, 18 May 2026 16:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/ezEnb0"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8100940DFA3;
-	Mon, 18 May 2026 16:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE77C47886E;
+	Mon, 18 May 2026 16:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779121150; cv=none; b=aJtC3J+XRrBoT0kMqlxYuSiKpnRZuIphEdo5bHff9wb36YgbqPwXe2x6aQvPcrFk56MfYen7SWIPxksmb6BYtjPMhkYPom0wXCjhjoubNwOIAMvSwrGL5lLuT9X3tedUfoLn0rTBKdGPGZ+cRZ4jrZ4ppKkLQJHx8jlVuWTLr0M=
+	t=1779121275; cv=none; b=ul9g7DG9SNsNk+CWseFOT2BRo2O2NGGKXe5ZVxtJFKImQGu3QIjVYn3mPdtW8TQXPyJfkfYpbbDADJf0EthoMNH05kboGwkE8jFVaFIbyUUjAgiz5AOlBXqiIUI9XVVHNQG50QY1FTeozrrFO3Y0fPkid5rzXjLKpgLF5LRIHsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779121150; c=relaxed/simple;
-	bh=QXOe6snGHgdgnGJp3ZkSbp3AHOt4fgXfzTzWLnXiLA0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kqcODoa+UatN6mzpvJVNLJwry4u6zeMuFHCbswSlkSS1Q0lBvktNz1Bzyi4I/sa6aGs0Nt7g8m2hpggPn69HvOgNVo+Iw9CbUBNe7dPUoLbeRxpJSaDRc+Dw0XlxRGcSna9Cmx/xEwZ31dftoxFHtlLAI2+9d3smx936M51lLa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 441EB1C1FBC;
-	Mon, 18 May 2026 16:18:55 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf09.hostedemail.com (Postfix) with ESMTPA id 6DDB920028;
-	Mon, 18 May 2026 16:18:53 +0000 (UTC)
-Date: Mon, 18 May 2026 12:19:06 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Andrii Kuchmenko <capyenglishlite@gmail.com>
-Cc: linux-trace-kernel@vger.kernel.org, mhiramat@kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Jiri Olsa
- <jolsa@kernel.org>
-Subject: Re: [PATCH] ftrace: fix race in __modify_ftrace_direct() between
- tmp_ops registration and direct_functions update
-Message-ID: <20260518121906.4eebad77@gandalf.local.home>
-In-Reply-To: <20260517110155.21706-1-capyenglishlite@gmail.com>
-References: <20260517110155.21706-1-capyenglishlite@gmail.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1779121275; c=relaxed/simple;
+	bh=4ovUSVlsIvBgxFkMAwIXQGZSlg7tcGA+QS26l5de8oY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pUu0TLon1YM1e+w39YdaS2XSnClXGDluxF+4dx5OEPysVPp15Zm8dlt0YI5fpgkKWOlXpRU92uXDtFuF5+K0Y3HtrGnvmbfsG53xdMWpgvWBxZI3hYLdG3f+yWLY0m9jxmqWZB2kLJ5mwqR7ovkyGstI4gHNWQxS0JZRyN8ax0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/ezEnb0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5FAC2BCB7;
+	Mon, 18 May 2026 16:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779121271;
+	bh=4ovUSVlsIvBgxFkMAwIXQGZSlg7tcGA+QS26l5de8oY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=e/ezEnb0KYd2gfaJ3NYVQKeJL238+8WbJbN/+x808RyvcwYBCirB2ZLYL7nyIgkoL
+	 ikJEPSIgdYLhmc3cjGjepV7WHnBKTuZFi4JWf0uGG8w5IWHzSu6TPHABRxXVbaBOHA
+	 fvTHo9fUaqZeo6IPHbtUNYgsrQGiMsuPZRHOwfqplL5DZQBJQDGI0ImHVRAKePm+65
+	 IZmngkQ7WFVX6zMRKNyKiLP0sB8sqzgEIjNRGuFD78/FXrz4GJDm5Qh1gEI+AwE6JQ
+	 VgUE0JhCNNeVyuD9aXSpHP0eZ3TdQMLwnaxce0gMvGScwmELViUSGMGXIiXDBo4/cN
+	 k8Z94vWYXdztA==
+Message-ID: <be6734b9-112e-4e71-9013-1c6dc5f750da@kernel.org>
+Date: Mon, 18 May 2026 18:21:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 7475nq6abdfq3z4jdpinuxnnqu4obzha
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18qzFd+SMwPAxg7uknzCaPo64VnjDt9WEg=
-X-HE-Tag: 1779121133-302350
-X-HE-Meta: U2FsdGVkX19s4pTNGOLCOqaFHty2QAGT3IrNkCzug/0/ivf5UnXxhuBD5QT7emIDTTXySdQj4tiH0l1LPX3mRMLiRvm6yvUz1dMqcgVqR1N0n8x55WlLOqjujswIrZKZmWYc4dFoizO5uBloIOhoJcxTuX64lcJaVdr7NbMlGuleQ7YJHU2eBA9aeoMZeyCsuP+cZmr0P9CZOCsBLc5ZZYZkuf8fmuQyLZtkxfYaOo+fkZngGS66FlNSn4gWrL2E3RkIaT8H96v0LHmYpoWJskMX2LRO00f+Dl6qZwaSIm90eSpWgnz4VU5Kb6UciV/yNnYwh3Q/lXA+9tsJ3hIjnQ8Bdtt24DKqgJcYjftlhMsoi02Om0K83arljoMSWPKk8QstqASH3LyoO20uXMOR7SV5GI+RieJUGaQ0YYQmheU9C1FgxtDfrSfE7M/Czzns0U+BRU1ysLo=
-X-Spamd-Result: default: False [-1.36 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] module: decompress: check return value of
+ module_extend_max_pages()
+To: Andrii Kuchmenko <capyenglishlite@gmail.com>,
+ linux-modules@vger.kernel.org
+Cc: mcgrof@kernel.org, dmitry.torokhov@gmail.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260518143233.16091-1-capyenglishlite@gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260518143233.16091-1-capyenglishlite@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[goodmis.org : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249335-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rostedt@goodmis.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249334-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,goodmis.org:email]
-X-Rspamd-Queue-Id: 67443570C28
+	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	REDIRECTOR_URL(0.00)[aka.ms];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,aka.ms:url]
+X-Rspamd-Queue-Id: 051F8570F01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, 17 May 2026 14:01:53 +0300
-Andrii Kuchmenko <capyenglishlite@gmail.com> wrote:
 
-> In __modify_ftrace_direct(), register_ftrace_function_nolock() makes
-> tmp_ops visible in ftrace_ops_list before entry->direct is updated
-> under ftrace_lock. During this window any CPU entering the traced
-> function calls call_direct_funcs(), reads the old address from
-> direct_functions via RCU, and jumps to it via
-> arch_ftrace_set_direct_caller(). If the caller freed or invalidated
-> the old trampoline before calling modify_ftrace_direct(), this is a
-> use-after-free in executable code context.
->=20
-> The race window:
->=20
->   CPU 0 (__modify_ftrace_direct)       CPU 1 (executing traced func)
->   =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80       =E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80
->   register_ftrace_function_nolock()
->     -> tmp_ops visible in ops_list =20
->                                         call_direct_funcs()
->                                           ftrace_find_rec_direct() -> old=
-_addr
->                                           arch_ftrace_set_direct_caller(o=
-ld_addr)
->                                           jump to old_addr  <- UAF if fre=
-ed
 
-You do not state where old_addr is freed.
-
->   mutex_lock(&ftrace_lock)
->   entry->direct =3D addr   <- too late
->   mutex_unlock(&ftrace_lock)
->=20
-> Fix: update entry->direct under ftrace_lock BEFORE registering tmp_ops.
-> Any CPU that observes tmp_ops in ftrace_ops_list after this point will
-> already see the new address when it calls ftrace_find_rec_direct().
-> Add smp_wmb() between the store and the registration to ensure the
-> write is visible on weakly-ordered architectures before tmp_ops
-> becomes observable via ftrace_ops_list.
->=20
-> On error from register_ftrace_function_nolock(), restore entry->direct
-> to old_addr since tmp_ops never became visible to other CPUs.
-
-The above statement is incorrect. The tmp_ops hash entries are also
-*shared* with the ops that is being updated. That is, by changing the entry=
-->direct, you=20
-
->=20
-> This affects all callers of __modify_ftrace_direct(), including:
->   - modify_ftrace_direct() used by kernel modules and live patching
->   - modify_ftrace_direct_nolock() used by BPF trampolines
->     (kernel/bpf/trampoline.c) reachable with CAP_BPF + CAP_PERFMON
->=20
-> Fixes: 0567d6809440 ("ftrace: Add modify_ftrace_direct()")
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Le 18/05/2026 à 16:32, Andrii Kuchmenko a écrit :
+> [Vous ne recevez pas souvent de courriers de capyenglishlite@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> module_extend_max_pages() calls kvrealloc() internally and returns
+> -ENOMEM on allocation failure. The return value is never checked.
+> The decompression loop then continues calling module_get_next_page(),
+> which writes struct page pointers into info->pages[]. When used_pages
+> reaches the stale max_pages value (not updated due to the failed
+> extend), a subsequent write to info->pages[used_pages++] goes out of
+> bounds into adjacent heap memory.
+> 
+> Adjacent slab objects in the same kmalloc cache (pipe_buffer,
+> seq_operations, cred) can be corrupted, potentially leading to local
+> privilege escalation on kernels without SLAB_VIRTUAL mitigation.
+> 
+> The call order in finit_module() is:
+> 
+>    module_decompress()    <- vulnerable, runs FIRST
+>    load_module()
+>      module_sig_check()   <- signature check, runs SECOND
+> 
+> Decompression happens before signature verification. A crafted
+> compressed module submitted via finit_module(MODULE_INIT_COMPRESSED_FILE)
+> reaches this code path before any signature gate is applied. On kernels
+> with module.sig_enforce=0 (default without SecureBoot) or with
+> unprivileged user namespaces (Ubuntu, Debian default), this is
+> reachable without CAP_SYS_MODULE.
+> 
+> Confirmed present in mainline (tested on v6.14-rc3).
+> 
+> Fix: add the missing error check after module_extend_max_pages() and
+> return immediately on failure. This matches the pattern used by every
+> other kvrealloc() caller in the module loading path.
+> 
+> Fixes: 169a58ad824d ("module: add in-kernel support for decompressing")
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Luis Chamberlain <mcgrof@kernel.org>
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Andrii Kuchmenko <capyenglishlite@gmail.com>
 > ---
->  kernel/trace/ftrace.c | 35 +++++++++++++++++++++++++----------
->  1 file changed, 25 insertions(+), 10 deletions(-)
->=20
-> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> index a1b2c3d4e5f6..b7c8d9e0f1a2 100644
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -5950,6 +5950,7 @@ static int __modify_ftrace_direct(struct ftrace_ops=
- *ops, unsigned long addr)
->  	struct ftrace_func_entry *entry;
->  	struct ftrace_ops tmp_ops;
-> +	unsigned long old_addr;
->  	int err;
-> =20
->  	lockdep_assert_held(&direct_mutex);
-> @@ -5960,22 +5961,36 @@ static int __modify_ftrace_direct(struct ftrace_o=
-ps *ops, unsigned long addr)
->  	if (!entry)
->  		return -ENODEV;
-> =20
-> -	/*
-> -	 * tmp_ops is registered into ftrace_ops_list here, making it
-> -	 * visible to all CPUs executing the traced function. However,
-> -	 * entry->direct is not updated until after this call returns,
-> -	 * leaving a window where CPUs read the stale (possibly freed)
-> -	 * direct call address via ftrace_find_rec_direct().
-> -	 */
-
-Are you posting patches on top of your own patches that are not public?
-
-> -	err =3D register_ftrace_function_nolock(&tmp_ops);
-> -	if (err)
-> -		return err;
-> -
-> +	/* Save old address in case we need to roll back on error. */
-> +	old_addr =3D entry->direct;
-> +
-> +	/*
-> +	 * Update entry->direct BEFORE registering tmp_ops into
-> +	 * ftrace_ops_list. This closes the race window where a CPU
-> +	 * executing the traced function could read the old (potentially
-> +	 * freed) direct call address between tmp_ops becoming visible
-> +	 * and entry->direct being updated.
-> +	 *
-> +	 * Any CPU that observes tmp_ops in ftrace_ops_list after the
-> +	 * smp_wmb() below is guaranteed to see the new address when
-> +	 * it calls ftrace_find_rec_direct().
-> +	 */
->  	mutex_lock(&ftrace_lock);
->  	entry->direct =3D addr;
->  	mutex_unlock(&ftrace_lock);
-> =20
-> +	/*
-> +	 * Ensure entry->direct store is ordered before tmp_ops
-> +	 * becomes visible via ftrace_ops_list on weakly-ordered archs.
-> +	 */
-> +	smp_wmb();
-
-You do realize that register_ftrace_function_nolock() is itself a full
-memory barrier? It's doing code modification which requires lots of
-barriers to work.
-
-Still, the only bug I see that is possible is that the caller may need to
-do some synchronize RCU calls before freeing an old trampoline.
-
-Can you show a path that doesn't do that?
-
--- Steve
-
-
-> +
-> +	err =3D register_ftrace_function_nolock(&tmp_ops);
-> +	if (err) {
-> +		/* tmp_ops never became visible; safe to restore old_addr. */
-> +		mutex_lock(&ftrace_lock);
-> +		entry->direct =3D old_addr;
-> +		mutex_unlock(&ftrace_lock);
-> +		return err;
-> +	}
-> +
->  	/*
->  	 * Now that tmp_ops is registered and entry->direct is updated,
->  	 * unregister the original ops and clean up.
+> Changes in v2:
+>   - Remove unnecessary initialization of 'error' to 0 (Christophe Leroy)
+>   - Remove unrelated blank line after if (error) return error (Christophe Leroy)
+> 
+>   kernel/module/decompress.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/kernel/module/decompress.c b/kernel/module/decompress.c
+> --- a/kernel/module/decompress.c
+> +++ b/kernel/module/decompress.c
+> @@ -XXX,9 +XXX,12 @@ int module_decompress(struct load_info *info,
+>                                  const void *buf, size_t size)
+>   {
+>          unsigned int n_pages;
+>          int error;
+>          ssize_t data_size;
+> 
+>          n_pages = DIV_ROUND_UP(size, PAGE_SIZE) * 2;
+>          error = module_extend_max_pages(info, n_pages);
+> +       if (error)
+> +               return error;
+>          data_size = MODULE_DECOMPRESS_FN(info, buf, size);
+>          if (data_size < 0) {
+>                  error = data_size;
+> --
+> 2.39.0
 
 
