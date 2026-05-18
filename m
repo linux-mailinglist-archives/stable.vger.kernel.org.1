@@ -1,177 +1,215 @@
-Return-Path: <stable+bounces-249353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLDvCGhOC2o7FQUAu9opvQ
-	(envelope-from <stable+bounces-249353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:37:44 +0200
+	id aGWdEp1RC2qWFgUAu9opvQ
+	(envelope-from <stable+bounces-249354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:51:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE2A571B0C
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:37:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E070571BFF
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 19:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 396A93023E22
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:37:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 49520300D564
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF7D481642;
-	Mon, 18 May 2026 17:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB9E382394;
+	Mon, 18 May 2026 17:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FcY3k3e1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RmlMYL67";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dsas56wn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD11B283FD4
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 17:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779125860; cv=pass; b=tszqdCy+/pRXEcsmZG1OW/19+WUEomgsrwY5XX3W2yVlmx5ERS8KZkGWtxClgznO1ni6oxcHfqjPKisQv6JkidU77K6SgvPYI6S6MrqtlZR5/bt9aL2G2VSOgOyegf3KFMA6ePCAwaAsiKQIa6IVmjo/3E/7Zi+MHc0jYYktMCs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779125860; c=relaxed/simple;
-	bh=/+eYJXH7gN4r65YNa1ZSXuRYVlMzoV2VqXvUAVRKLoE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZlR5VQbRVY+o22yjbj74S4J6w1rbIASeZt3X3OA5rxQnqwWKbDIF903+90p7AP4pdtrDhwyEw5JahAg2gqSztUah++7lfQbkej2gVZ3QlSCGrZ5pTHhO3RktFxM/RIB48v5HCqVa5B5SU8kk2/67+/sscF27RM+Vh0M8XRra/uc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FcY3k3e1; arc=pass smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7de4a9cb8eeso2638837a34.0
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 10:37:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779125859; cv=none;
-        d=google.com; s=arc-20240605;
-        b=U5q1EN+jYfWAyVOF5ht/z07JT9xG85G9xcvI4bpA8uWsMIckmP6+BY7WeDjdvhOi4h
-         O0HdHcREIyehdROHSVWQE7gYNwocXc1Om4Wi81PYq8Ev+qHSWEp/33tInZDyuqFvBp86
-         qsfVcCPMjUpdYEFROTdYmL86PLee0vz8h4uGwg6/uKip8AsTgY8YrO6RXig/zJYx8q/V
-         5aR17r6GKf9bgIuIng7gcNkNGNSREgQT7uX0H5Vjx5tyYDyN9C3ozzgxbpKawXtSiXbG
-         Vj5LpZkDSGgzwBw6KLrHY6x0BbRJ/lv61uOfR7Ry2IiIj48f+akOm06PuIKSQExf6hJ9
-         Vi7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9hWrHG+EnJK1J/mM03YaROFyv2LHSAJiWvpkEvHUvW8=;
-        fh=UZWXgjgJEqC53e4XWuBGUBRyYKJzC9dEe1+xVodsMSY=;
-        b=NXsXJnVw2VvxpX571s+akeYxsPenJA2ILKkqP2Mf4ZMrU/E+IhPLia+mXFIUdfXqPx
-         8x5GnjIJU/MfRsdsKtOQyOD3jmiRuT6zOubLpcsYOZ7V2Ayeg3GJBlpZ4jfsOUjN10X7
-         EoY7kmBSg99JZV94FQHIph4riDHBQeS4mSTlkaqKeQRtEuFp0hqaiCiDjo/Vc5NUxSZz
-         fuIK0Ds4h5QMXaOeBqt1NirfWVZIi5DhsL6eYYdVkYC3CTKMV3uv/xhVXlDm4e8F1oMS
-         bJjUsbDQuflAhoQjIIdy6GBwPZaOo4Y8QY9jp/V/Zm4oaWSugLuocs4geIDxrnZ2Pq+J
-         /YlA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A05382293
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 17:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779126677; cv=none; b=JVV1MnlwQsuu4fZfwuxP14+uQyUeUaVt6gLmod+GpzeVa8CKfdAR2d9DLTD4VyF6rmFbBGgtp/KmVfZhID9GgzG751E+k91oKDRJ2lw/VYT6QSqRJqsiKtfpnP0iM60E7kqPhNeHPi92qaUdNAyFWNKrhrB0W8YCqAxQ2hUsfDE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779126677; c=relaxed/simple;
+	bh=91smVd3QAkXEQnAcUjgtO9+U3ppX/svzKoezLQCwKvo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YEOgkGbOqHH9MVtFbQxLm2Wuo6cTgVZHAmTYOAVXvbIN7mHdIGnNW6o3W2/eNsTKKp11u6Ufv4QBS2vzJq0rjVDKoN8m1Hb5EQRlJ6hpjLM6CPMfpHdriEQeFg7UnePqNutZcNAMdBVOKSI8o1bnDXrX/X8h94dPt+qESPbzfMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RmlMYL67; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Dsas56wn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779126675;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e0D/2lnvFHwbgVt4+FwCYJ0wron62f0hNfGCEfp5oz8=;
+	b=RmlMYL67isOs9QezpHt3dIuLZf/SUC7/zW5wMOkTNDeiQtmYaj06H2TMwKBNh80IgGsnrc
+	6wgV3Gh4JC+5de9voNhPDVjJokDO99qw3hvyuGN2vwAhOy08C3dwI1hVB9YX+zn0OoCynz
+	xsphMAQ/ZHjb7Nucvso87piyRzvy1OY=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-324-i-OzND7qMm6fkyiUKXIjHA-1; Mon, 18 May 2026 13:51:14 -0400
+X-MC-Unique: i-OzND7qMm6fkyiUKXIjHA-1
+X-Mimecast-MFC-AGG-ID: i-OzND7qMm6fkyiUKXIjHA_1779126673
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8acafc224a8so87958936d6.1
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 10:51:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779125859; x=1779730659; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9hWrHG+EnJK1J/mM03YaROFyv2LHSAJiWvpkEvHUvW8=;
-        b=FcY3k3e1hOQU/GOumeuL9KDWzexXSdoFAYuI9S86/EfhgvwtJ8JTQZCg/CO6qP1VsC
-         McOufRaFq1lE42lpDebyJRLkLKtkO3eCBi5g5i3soj9VVvOF9T2fD78oV4K0yYtoio6n
-         Xodz/1qZZzCm4cX7l6S2mI8DtM3zirDBGIiS3hT2PLJYiq2LqeYNhLyxjZUr6laocU9I
-         DPPwcpXSk/cP7TR4w6hpYoppRrnCWaoBD0opuwaDSskpq4nzlLhzEx1UdijHAatUVX8Y
-         GswQQljZZs7y5efCxag9rnovnPpGkWGB1E5w0+qQpJ9JuXE1p2xBrnQIvPZDEwbVmEfU
-         Fusw==
+        d=redhat.com; s=google; t=1779126673; x=1779731473; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=e0D/2lnvFHwbgVt4+FwCYJ0wron62f0hNfGCEfp5oz8=;
+        b=Dsas56wnQL0yhJ486qacPCIGx/FrA6FPfPEM2H3MXY1LPTCuDpNvLiPfO6xylDvcqP
+         ejAL89z1IO8oZVnlD9eS4zV72BwKLt1++ADs0qH805Eqx5sQBZOF9PuHQW+p+e8jpx/P
+         iVUvgm3qlkrRVxg9zsTSjnPME6vjiVYNsYdDYmjvIEZcgnQr9F9q0qhy+1NBUbIgMCQB
+         F7QfhM4CHWGa0tyFhIoXKuCku+TcWMDYhRP1C6uRa8GMboptj6ZDVnIvcMBaU7I4adyX
+         uujcJC8a5AYhBqzXODLbiDCvQfuxq0oLoX6ofKszTCNffPYwmLfTaTvWUuncTlgvPXna
+         q4uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779125859; x=1779730659;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9hWrHG+EnJK1J/mM03YaROFyv2LHSAJiWvpkEvHUvW8=;
-        b=m+KK7AbhLSvCszKLsSnw4o2pMQH6vGOFkj8AycT3du25gESYAGRYYCPROKZ5b0DT8t
-         pXVlvJGD5DwDyir6F0A17/GfVbYNrsyzat4ZhBjwEq5gzxnQ2SQwqBkpp0BZLKAgRVTz
-         oVBJ1JkIa2PElNBoiCHc6Y550FqG0pnHx7FXORG9JK5xLvjkFJrSRXg5fjbPQzg+RxAO
-         Fm6aZDOm8gT9a6i6Fav1ScFn6c1p9rcF+E/U8yi3WrcSQeeLbfyUA72b0sealvRu6SeJ
-         nP/HSCoweiRJYsQbz7PhL2uBNVSvu6VIbFSq54zIU1Tnp98CV0J8PVrx8RQDTryuHEHT
-         LpWw==
-X-Forwarded-Encrypted: i=1; AFNElJ8iKBKLUcUiHZIEHGjuGoJ9Yg0KFwfZkq2joALfCsd9nVFxS3EmLCU+F0hTTY5T+A0pbCZ1EqQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuYicE7A54XVTIvLDwHMeI/cfIXRiJ/AXHC69HckpOXYlmbQKU
-	1iSstq4GOuUajguLavFrnaf94P+he3y1HUP57Sos16XT5WoxUJ9R8LZogvKgJ4770iSXbgZ7UKc
-	BssRWyD6X0Sy55EAwBTz6scm1SvneVbE=
-X-Gm-Gg: Acq92OHCqVOMrJRgL3QZX5XkgyOKldKEefUhxIsY4rLIMXBflYH0iGS5i164GTLzkOE
-	5hWZ5wRZG5Mp/Q42TE3EnXi7Xt7mgGterjDvZTL+9YwKpqwZXac233a4ddRIc9Do/Ks9fFl16a/
-	7yAp60LY7DFHbtTD61pWcwbeUVIEauQwjIs4zdBBAG4XkxaK48RtDONwzeieSPWCdb+IRyFom3R
-	IrWa5hfDkdoHQ7l1r8azuwypkNqEfpfJNkOea1cGojYKRkj3gVruUaAxaQcCYHrSOA3F8iKBap7
-	tQJdTX7twyLsON+MGq7vmz7/aVkJPOpj1UvNXg==
-X-Received: by 2002:a05:6820:1625:b0:69b:544f:b2e1 with SMTP id
- 006d021491bc7-69c942ae156mr10711381eaf.2.1779125858555; Mon, 18 May 2026
- 10:37:38 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779126673; x=1779731473;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e0D/2lnvFHwbgVt4+FwCYJ0wron62f0hNfGCEfp5oz8=;
+        b=od4Ami6NR/0Klk/xrpgDu8kuhDJyN6u6w2Q9X1shF+ekzLoiQTtaOUnfbbfEEIPwh8
+         hauTEZwOppwU/yaUG99DgGLeP96CT1EAh67+iuVoiICFxDRwTCwkUuk8Cg7uOauwzTjH
+         29/1utF3clR9WGrUlu94qT7o919x/bQnp8MPhHjlf96gBhpO50SO8rVpeD+jlg7NVWFq
+         TON/bY6JDHwIddhtvplafDCbW8+PxAiQYCv58vIOpVWQ4/uyNVEFkavs88JUrE2Yif15
+         f7NAzNF7E1VgbmVzqbrX6Gr0X7RSDvClqA6GbiSs6bF92YjnDOv7C/yCF1nqHyoqMC66
+         N0WA==
+X-Gm-Message-State: AOJu0YzGExNUbCawiBCsELJa4jPebOCr0WKKEMoTIlHewQ1h4jr8dYXB
+	ZbQmLsU+0YjZUqz20LW+D3PcsCOW9o7mvvKV4grTUIxitmnoj5jmrdVsOTpabkr099VKQXrPdqa
+	b4J/ZZcuDmpynMPmNoNkexlf5x+yWZihq3SinkBMB0uZuT2SAHfACILX5rA==
+X-Gm-Gg: Acq92OFiqjgmON9mh2mY691YKtM6c1DGG0sN0m8l1ZH3/S7IdiVCc1wX1rtXAc+T5/Y
+	HhO3HDExO61eOk+x1q7/W1+sGgxSht8C67kd+IugI2I0bIer3QkbXE8zSiMjdKi/9ztbhX/HCI1
+	kr7ghEEjyqHefubkuMcKjidmYtNOOblAGMqD1fNGEN3FSBfhTrXRa0VrMX35Fvrj1YRWvEyVjph
+	aIRZ49jPo6dfTBJw4gwvBVU9etF1vdFRrmQDMvMoTNnJ0omFoJn8AG0OVVd6MEBAuN2Jku0SRF8
+	EO3UG5cFxaA3MGRvE9PASoblwucMpbchN940AXTvAA1UWvJVRq/4byC68ZJSchlqFmqJ0CQT8UH
+	IVuFdVADy/MCClrQJ/Q==
+X-Received: by 2002:a05:620a:170f:b0:911:5568:364e with SMTP id af79cd13be357-911cea09f95mr2541778785a.37.1779126673379;
+        Mon, 18 May 2026 10:51:13 -0700 (PDT)
+X-Received: by 2002:a05:620a:170f:b0:911:5568:364e with SMTP id af79cd13be357-911cea09f95mr2541772085a.37.1779126672725;
+        Mon, 18 May 2026 10:51:12 -0700 (PDT)
+Received: from [192.168.8.4] ([100.0.180.93])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-91435ca2855sm449582485a.40.2026.05.18.10.51.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 10:51:11 -0700 (PDT)
+Message-ID: <b8ca839c8561ad301f24921ea4c37b2cb129c4d8.camel@redhat.com>
+Subject: Re: [PATCH v2] drm/dp/mst: fix OOB reads in remote DPCD/I2C
+ sideband reply parsers
+From: lyude@redhat.com
+To: Ashutosh Desai <ashutoshdesai993@gmail.com>, 
+	dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org, airlied@gmail.com, daniel@ffwll.ch, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ 	simona@ffwll.ch, linux-kernel@vger.kernel.org
+Date: Mon, 18 May 2026 13:51:11 -0400
+In-Reply-To: <20260510201733.2882224-1-ashutoshdesai993@gmail.com>
+References: <20260510201733.2882224-1-ashutoshdesai993@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260517201814.222563-1-devnexen@gmail.com> <agsu4MoBYWPFEmpZ@devvm7509.cco0.facebook.com>
-In-Reply-To: <agsu4MoBYWPFEmpZ@devvm7509.cco0.facebook.com>
-From: David CARLIER <devnexen@gmail.com>
-Date: Mon, 18 May 2026 18:37:27 +0100
-X-Gm-Features: AVHnY4KnGBZIa09cahFXfBDEftiTT5hR2qvTT-rV9LDxP_wZ2F78wgLrb5sFiVE
-Message-ID: <CA+XhMqzBHE5_zzqRhWnjo5K32S6rK78RgF_YvM-ut9O+XYbFig@mail.gmail.com>
-Subject: Re: [PATCH net] net: devmem: reject TX dma-buf with non-page-aligned
- size or SG length
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Kaiyuan Zhang <kaiyuanz@google.com>, 
-	Mina Almasry <almasrymina@google.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-249354-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,ffwll.ch,linux.intel.com,kernel.org,suse.de];
+	FROM_NEQ_ENVFROM(0.00)[lyude@redhat.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,lists.freedesktop.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-249353-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BEE2A571B0C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4E070571BFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
- > If the real exported already export page-aligned, why does it need
-  > to go into net/stable?
+Reviewed-by: Lyude Paul <lyude@redhat.com>
 
-  That sentence was meant as "this won't break legit callers", not
-  "the OOB is unreachable" =E2=80=94 sorry, badly phrased. The reachability
-  doesn't depend on the exporter: bind accepts any dmabuf->size,
-  allocates tx_vec sized size / PAGE_SIZE, and net_devmem_get_niov_at()
-  indexes tx_vec[virt_addr / PAGE_SIZE] with only "virt_addr <
-  dmabuf->size" as the check. size =3D N*PAGE_SIZE + r lets iov_base
-  =3D N*PAGE_SIZE pass the bound check and read tx_vec[N]. dma-buf
-  itself doesn't require dmabuf->size to be page-aligned; rejecting
-  that layout is the bind path's job, not the exporter's. I'll rewrite
-  the commit message around that.
+Will push to drm-misc in just a moment
 
-  > why not do this check on both rx and tx?
+On Sun, 2026-05-10 at 20:17 +0000, Ashutosh Desai wrote:
+> drm_dp_sideband_parse_remote_dpcd_read() reads num_bytes from the raw
+> message and then unconditionally does:
+>=20
+> =C2=A0 memcpy(bytes, &raw->msg[idx], num_bytes);
+>=20
+> without checking that idx + num_bytes <=3D raw->curlen. raw->msg[] is
+> 256 bytes; if a malicious or misbehaving MST hub sets num_bytes
+> larger
+> than the remaining payload, the memcpy reads past the received data
+> into whatever follows in raw->msg[].
+>=20
+> drm_dp_sideband_parse_remote_i2c_read_ack() has the same flaw (noted
+> with a /* TODO check */ comment since the code was introduced).
+>=20
+> Fix both functions by using a single combined check
+> (idx + num_bytes > curlen) before each memcpy. Since num_bytes is u8,
+> it is always >=3D 0, so this strictly subsumes the simpler idx > curlen
+> form and no separate step is needed.
+>=20
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+> ---
+> Changes in v2:
+> - Drop separate idx > curlen check; idx + num_bytes > curlen with u8
+> =C2=A0 num_bytes (always >=3D 0) strictly subsumes it (Lyude Paul)
+>=20
+> =C2=A0drivers/gpu/drm/display/drm_dp_mst_topology.c | 6 ++++--
+> =C2=A01 file changed, 4 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> index 170113520a43..9416a48804c8 100644
+> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> @@ -871,7 +871,7 @@ static bool
+> drm_dp_sideband_parse_remote_dpcd_read(struct drm_dp_sideband_msg_rx
+> =C2=A0		goto fail_len;
+> =C2=A0	repmsg->u.remote_dpcd_read_ack.num_bytes =3D raw->msg[idx];
+> =C2=A0	idx++;
+> -	if (idx > raw->curlen)
+> +	if (idx + repmsg->u.remote_dpcd_read_ack.num_bytes > raw-
+> >curlen)
+> =C2=A0		goto fail_len;
+> =C2=A0
+> =C2=A0	memcpy(repmsg->u.remote_dpcd_read_ack.bytes, &raw->msg[idx],
+> repmsg->u.remote_dpcd_read_ack.num_bytes);
+> @@ -907,7 +907,9 @@ static bool
+> drm_dp_sideband_parse_remote_i2c_read_ack(struct drm_dp_sideband_msg
+> =C2=A0		goto fail_len;
+> =C2=A0	repmsg->u.remote_i2c_read_ack.num_bytes =3D raw->msg[idx];
+> =C2=A0	idx++;
+> -	/* TODO check */
+> +	if (idx + repmsg->u.remote_i2c_read_ack.num_bytes > raw-
+> >curlen)
+> +		goto fail_len;
+> +
+> =C2=A0	memcpy(repmsg->u.remote_i2c_read_ack.bytes, &raw->msg[idx],
+> repmsg->u.remote_i2c_read_ack.num_bytes);
+> =C2=A0	return true;
+> =C2=A0fail_len:
 
-  You're right on the SG-length check =E2=80=94 RX runs the same
-  num_niovs =3D len / PAGE_SIZE with gen_pool covering the full byte
-  len, so a non-page-multiple non-final SG entry is malformed there
-  too (no OOB, but still wrong). v2 will hoist it out of the TX
-  branch. The size-multiple check stays TX-only =E2=80=94 tx_vec is the onl=
-y
-  allocation sized off dmabuf->size / PAGE_SIZE.
-
-  Also taking Bobby's nit, dropping the bool todevice.
-
-Cheers
 
