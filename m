@@ -1,139 +1,222 @@
-Return-Path: <stable+bounces-249404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APD5OGyLC2p1IwUAu9opvQ
-	(envelope-from <stable+bounces-249404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 23:58:04 +0200
+	id +JUNKMyNC2p2JQUAu9opvQ
+	(envelope-from <stable+bounces-249405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 00:08:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BC45742BE
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 23:58:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FC057447C
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 00:08:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D491300D45A
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 21:52:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A54F9301CEBC
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 22:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DC839B48E;
-	Mon, 18 May 2026 21:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E637339BFE7;
+	Mon, 18 May 2026 22:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vkjf8Fmf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mfwVRnxd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EE539A072;
-	Mon, 18 May 2026 21:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4742739D6D4
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 22:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779141124; cv=none; b=NCp1oRpDovSd9+nc/fUSAln0ioE1108qBQnpXaQhM7jpKH86qfpFornH3jrR9tRFF5wrCSlBmE4oHChslp4FUmKx5XgsGJsggzT+gK63y3ibmVbEOL7DQpsbiNj9V7NN/uN9KTxZjOW2DcG9cDMLHRkp9SfFpvVYWHwgA4yk0O8=
+	t=1779142087; cv=none; b=oGpJZsth+tks61VxYpZe+fmlYh3NYqf/qp8QS+mubDnZYOuPTEgATCz8UMWO1S+3VGEzP5SBGG0t1/mtm+CsWMVHhR42BX59ZwBcaq+fQhzdxamM0CgsFE1626XMZrD2Eim99VW7dSvoRHqxu8GVtqCwK8eZIM/tWr2L47FgOqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779141124; c=relaxed/simple;
-	bh=B+rmSHdIPdeug5qRLJRDMAIugwCK3bIGeOPxEOwXk9o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b7MSLP9Cr/aijOcYjywgu9JGpjQOCYxDuSAjvZHMLc2LetfHniD1XDS+kIrlM9RWY1aD5DJaFKe/XAefCc/BNVWMxgY7TIoI0KXOd8u1qaG7WjAc/uL+VpNCkPyBPpyBR8GBVZwnLj6H4kUWZ2QlvJ7alQzlDl8+VsE737otDbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vkjf8Fmf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18B6C2BCB7;
-	Mon, 18 May 2026 21:52:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779141124;
-	bh=B+rmSHdIPdeug5qRLJRDMAIugwCK3bIGeOPxEOwXk9o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vkjf8FmfZnGE3WYJOznYFtF73/GemvAXzS/awb4nmgxtd8qk4yUmQG1mePeh+5tD8
-	 9JczKUSxAcjrIiyxnMDm8y8OoJ3Dgfov+Cq8bDplIvixCIAAHdCcxWL0Y1gTZ5CRkS
-	 qHZ2NskAgx4kqMOpLiVZZ0zAj0+4vU/cro6TyayaK9FEP5oHmC3W9BaPNhu7/zvsJT
-	 JP+EWgCP9cCZ9G1MCPykXNCcc748Cg2dHTFzjCbUExPA6dS9MsnQvnLnFZNNKc7DOr
-	 PySbklQl7ESdb2fvQkSi7xfmnij4+Z9TA4obcCLeT5flgyjMyKRWbE4wsR2HRZd58s
-	 yPFpOmF3NE2LA==
-Date: Mon, 18 May 2026 15:52:02 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: "Achkinazi, Igor" <Igor.Achkinazi@dell.com>
-Cc: "hch@lst.de" <hch@lst.de>, "sagi@grimberg.me" <sagi@grimberg.me>,
-	"axboe@kernel.dk" <axboe@kernel.dk>,
-	"linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] nvme-multipath: set BIO_REMAPPED on bios remapped to
- per-path namespace disks
-Message-ID: <aguKAgkCUOVL2pVk@kbusch-mbp>
-References: <MW5PR19MB548483D1FAE4F322E4C97352FD032@MW5PR19MB5484.namprd19.prod.outlook.com>
- <agtnJb5a5uIqH-65@kbusch-mbp>
- <MW5PR19MB5484B015B6B1D739D8C5CA2FFD032@MW5PR19MB5484.namprd19.prod.outlook.com>
+	s=arc-20240116; t=1779142087; c=relaxed/simple;
+	bh=ZeHrTM95+S1Ac1kBGowZn208fl0ne8C3fh5bhdKFRT0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MoY7/kJUG+8Bv0q4/JKUeLZCg3iBgVsgOVrc2LffBhS/xOO0lrBoYrhLWO4duFsNghOBDmfQYX/JQ0ySg45rguNJY3kNyEA/gqnRM2Xlhcd0G2io21eIc/Camp2je2vv4FpmmN0+4H19UZf00stAeazjMqRWqtxmk0IibHWFZNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mfwVRnxd; arc=none smtp.client-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2f30a4601bbso2546360eec.1
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 15:08:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779142085; x=1779746885; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=4h7adFpT3DzT6y9igk6xVmIBKDtCJtpJ+ZzZ67vZi7A=;
+        b=mfwVRnxd5nfIAlLNtjmxWz27II4bazTCZPMM0hj9bYIs2DVQ4Ew9VCu/vZqKJwwCL9
+         85F51FTGz7j+zNGbJ+CX6lmy79F5k3StTZ5XS5rj86dzNem3Gh0Vy0KxnQjNh+E6q0pz
+         0ZUBAhIh7hOvpzzI40la6tt39l0ISp1+3XUKzc4bgU+tykk8kJL4fqRpityIWiCj/XX1
+         GieHhXOWLSqi+Moq7bLTBfAaIf1+S4GLKmlzOwZejJPtEFNFYQag8uXFSCGT/3P5tDxG
+         jFX5G+73x9J8VRHAQuX3VGTa/BUBipJIsr95Q7ZySUJt/IUvm+feYIFDrHq4IJbDJpyW
+         AV1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779142085; x=1779746885;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4h7adFpT3DzT6y9igk6xVmIBKDtCJtpJ+ZzZ67vZi7A=;
+        b=Tun1w0D9G7nfJhPqLnpz0Zb6Jkd7yX9WIP06u3KK1qvP6Y7sGBiWpjOzOlzw77iK5E
+         niA7V2D3mvYFZj6DcWMeB7ZGRodJd7Tj1NtPQox6MwiAClqCk5vW5zs9Mi4DmjNhXTvd
+         AxWQy4uVJgNXFwFXfxFohgSH5dfaUrWq/x1D0ghNMFDq7bY38i1OuMSEQnFryZl7iAvj
+         C1K0P+9V65Es86NfS3SoKvEwf92aYW6NK5GGFvwaG3d+odv5WCS4aU1gu8Daz01XZ46C
+         3h1He9Xr70xFozaQlukvOSkCgv7Lq90Z0/tlts923/QlpVYSzHzhsldV7BfzLng3FbNw
+         aBKQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9tc2Yw3l5lrsQ7ZWdCpqZSfG5yvLj6fxfr93frk1OC5zwLMGdG5VYPXppvWgsdo3a+3EmqAUg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcfKyIhxoLLvz1KU8O8TR5KFd/mvF6xxmUuAEzq+SBYRQbI8JU
+	zC0hnoIVHbXSdRQWL4xeJL/rouQW180IsENBaLKA/P+hxBsUHeAHyMKq
+X-Gm-Gg: Acq92OGq+mm7nYvS3/sSYtzv620TuaEaBhZWsyZNTdqWivzbpzAtO8BP57Gd0PvNcAW
+	2EQqSgLHmHXjk4IK9Q8HecaPyaPeNE8xL7IuMUtMSpsVve+ncdm3wim7kr+Sq5eT5NUqWsCkEQZ
+	s8z6RCo48s0GF815rWgOMI9Uqo+EVcmpa8ta//tNgxDpc4ee+RQCX14UflO9TwEAdhJSvwxTYcR
+	W+07iOAGOkbAcDqHzKf+fs3DZ0MCBOmamzlGbwY82NXtIPyCJxPNhnyvaWkU0OddQ8anztyi/Oq
+	TzrPlYAPIp72uqKMIOdy93xpWOilimx8D60xGeQX/PX9jWzlF4RmlFowFoxRHFK+4Elp0lkZnl/
+	3GiQNpzlBlHkyVZeuQmbWupRzi+ksOs1nPP2GYgCFD5X/DMaZb+i7HL1E0atwtFSKl9hB0RFXSH
+	BjTEfutjGdcquO1yV5ibdMCwtUKsBb3BzQAd5uFwjVDE/yQY3YXVC+lpEyIpFYt6sEDpTEZpzi
+X-Received: by 2002:a05:7300:5726:b0:2d9:bc8d:f62a with SMTP id 5a478bee46e88-3039868cd4fmr7172595eec.16.1779142085307;
+        Mon, 18 May 2026 15:08:05 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30293e2e6a9sm14601361eec.2.2026.05.18.15.08.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 May 2026 15:08:04 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <6ec6270c-595e-49b2-8465-31b5019de87c@roeck-us.net>
+Date: Mon, 18 May 2026 15:08:03 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <MW5PR19MB5484B015B6B1D739D8C5CA2FFD032@MW5PR19MB5484.namprd19.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] hwmon: (pmbus/adm1266) GPIO accessor fixes
+To: Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+ Alexandru Tachici <alexandru.tachici@analog.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, linux-gpio@vger.kernel.org
+References: <20260516-adm1266-gpio-fixes-v2-0-801f13debcb2@nexthop.ai>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260516-adm1266-gpio-fixes-v2-0-801f13debcb2@nexthop.ai>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-249405-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249404-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kbusch@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 41BC45742BE
+	DMARC_NA(0.00)[roeck-us.net];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nexthop.ai:email]
+X-Rspamd-Queue-Id: 40FC057447C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, May 18, 2026 at 08:59:09PM +0000, Achkinazi, Igor wrote:
-> - submit_bio_noacct_nocheck is block-internal and not exported, so using it
-> from NVMe would require a block-layer API change just for this.
+Hi,
 
-That is not a valid reason to not do this. We often export and unexport
-APIs as needs evolve. I'm not saying you have to use this API, but I'm
-just not yet seeing why we shouldn't.
+On 5/16/26 16:18, Abdurrahman Hussain wrote:
+> Five pre-existing bugs in the adm1266 GPIO path that all landed when
+> GPIO support was first added (commit d98dfad35c38).  Each is
+> reachable any time userspace queries an ADM1266 GPIO/PDIO line via
+> the gpiolib char-dev or sysfs interfaces, or reads
+> debugfs/gpio-<chip>.
+> 
+> Patch 1 caps the PDIO scan loop in adm1266_gpio_get_multiple() at
+> ADM1266_PDIO_NR (16) instead of ADM1266_PDIO_STATUS (0xE9 = 233, a
+> PMBus command code that ended up in the bound by mistake).  As
+> written, the scan walks find_next_bit() up to bit 242 across a
+> 25-bit caller mask, reading out of bounds and -- if any of that
+> incidental memory contains a set bit -- driving a corresponding
+> out-of-bounds write to the caller's bits array.
+> 
+> Patch 2 drops a redundant "*bits = 0" reset that sits between the
+> GPIO and PDIO halves of adm1266_gpio_get_multiple().  As written,
+> the GPIO bits the first loop populates are immediately discarded
+> before the PDIO loop runs, so any caller asking for a mix of GPIO
+> and PDIO lines sees the GPIO half always reported as 0.
+> 
+> Patch 3 adds the missing "ret < 2" length check after the three
+> i2c_smbus_read_block_data() calls in adm1266_gpio_get() and
+> adm1266_gpio_get_multiple().  A device returning a 0- or 1-byte
+> response would otherwise compose pin status from uninitialised
+> stack memory and leak it to userspace via gpiolib.
+> 
+> Patch 4 moves adm1266_config_gpio() past pmbus_do_probe() in
+> adm1266_probe() so the gpio_chip isn't registered (and reachable
+> from userspace) until the PMBus state the GPIO accessors depend
+> on is initialised.  This is a prerequisite for patch 5.
+> 
+> Patch 5 takes pmbus_lock at the top of adm1266_gpio_get(),
+> adm1266_gpio_get_multiple(), and adm1266_gpio_dbg_show() so the
+> GPIO PMBus reads can't land between a PAGE write and the paged
+> read pmbus_core does in another thread.
+> 
+> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-> - it bypasses more checks than I see we need here (throttling, RO, crypto,
-> op-type), I prefer bypassing only the EOD check.
+Sashiko reported a number of additional problems. As far as I can
+see those are real. Would you mind fixing those issues as well
+as part of this series ?
 
-I do not think we need any of those on the hidden device either. The
-stacked limits should have caught any problems or handled any policy on
-the first pass.
+Thanks,
+Guenter
 
-Though I am aware of certain limit checks that go through here are not
-done under the queue's entered reference count so there's some racy
-things possible, but that's a pre-existing issue and doing
-submit_bio_noacct a 2nd time doesn't help.
-
-> - BIO_REMAPPED propagates to split clones, so it covers all resubmissions,
-> not just the initial one.
-
-Submitting split clones already uses submit_bio_noacct_nocheck() so the
-BIO_REMAPPED flag doesn't come into play there either.
-
-And BIO_REMAPPED applies to when the bio's bd_part is a partition. The
-multipath layer overrides the block device with the part0 of the path,
-so there is no partition (and we may not have been dealing with a
-partition in first place), so this patch is introducing a new implicit
-expectation on what this flag means. Consider a real failover going
-through the requeue_list using the submit_bio_noacct() again. If you've
-already set BIO_REMAPPED, then it skips the checks, but that could have
-happened across a controller format change that modified all the limits,
-so you probably want the eod checks to happen again on this scenario.
-Your suggestion would skip it because you're using BIO_REMAPPED as a
-proxy to skip "eod" checks.
 
