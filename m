@@ -1,253 +1,242 @@
-Return-Path: <stable+bounces-249333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249334-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id W8/sN1w+C2pQFAUAu9opvQ
-	(envelope-from <stable+bounces-249333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:29:16 +0200
+	id SNoaGBA8C2oJFAUAu9opvQ
+	(envelope-from <stable+bounces-249334-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:19:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1C3570EA9
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:29:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67443570C28
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 110F1304640D
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:18:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4D02D3007B29
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A200480963;
-	Mon, 18 May 2026 16:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="avu0BJwD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16BD480DCB;
+	Mon, 18 May 2026 16:19:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB0344E02A
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 16:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779121133; cv=pass; b=P/ewAggWR4bG0EQi88P+YSPqaCfusAN44JNiHrMsCESBmwRdeoshT8LU55Vv+/lFLOraaCFx04TRa+dKibfJgdNV5yfqty2ET5RE7i4HGmDDadNVROL6SM/6iCQUGmSsKYii2X71kNXaiS3RLV2MQ134wbfNlQViH3rHCqTJBR8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779121133; c=relaxed/simple;
-	bh=mATkwyC8CsfmbtEjXmliiX1cfrfLq4a/zwucAwJrrMg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R1M0GXBfAmB3MxZMhcJdSh00s+zlIfV1TcyA6Bkldb8dhOfxMndsgN8wruu/xc7iyBA+pHeQtDZh5E1JIvr1RfebU7qZMUqZ3+38x8oxFUixsi5TAKbW1oGEpkanZGON9mf0pLALNl0ABIsyKyhhxuDJcj1nmB3+4nNXJ2eZBLU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=avu0BJwD; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso379a12.1
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 09:18:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779121125; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WTOtlQjf5b79/0kqywkqdDnQsZByan5jwP14m0Qg8sj3mI0cVN0DqTMZC+RGhb/lue
-         M+ZMIgY0OJbF/rTYyuHWKRhe7QjC7r9bBWfeQWthDpleBXG1T6uT+0t81YdNDV8z2xcA
-         wAoJ52NKEuOzxUEok2A/hEdqXkbuDngE7kjzKg7dyI/FXWaap4rvnZu0vv1c/54PPRc5
-         0eRelCtFGvTwpXngf1bW16mhw1WgeXtfcroKKwkbTUxITQWksSt3536SzBlVeqBiZ5SD
-         kcWwc5465W03P/90hBFcZiwExARND2t2EPd680MQoLVLrXfLXLRnYJsr+ELrnYu9LTKM
-         +9FQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Liio1b6VDv5RScP6X+DOlI3EAYq4cFP5JNSZNtRc1oU=;
-        fh=t1+iTbkP+4WQs9FjCtd55XDKmOBv740kr3DyjGvIbMI=;
-        b=Jfqw2hnaVmWT5KHnyRjHfb8r7m/wnDqTzG5565MScla7SCZUAIvsg2NMUdyQWwVZoB
-         5VdkSx6XfDgqrOQG+GyKr3S6mV+jQPhAovZiGHSdokFdAah9srKyAyau7EGj8YIEQf54
-         OcQ9wcIi+IkFJ2vM1PXcf9uQTRuZHgIBarwYxZpZ43zd8q8h1RXTISRNi0z73+1dRmx0
-         w4IVqDBt6OUjfDsZwMjXpN2ZdU9GmYN3iNgGbop8nH5SuVqUmH9qEcu3ihUnD/FGNL3M
-         dx9Xw5Zze13LCCG+KN+/HnlW0bOjAtpN241vlkj43uVAVCcAgNN7SWTphSZSDIjmAJIf
-         wTXg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779121125; x=1779725925; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Liio1b6VDv5RScP6X+DOlI3EAYq4cFP5JNSZNtRc1oU=;
-        b=avu0BJwDBgBEO8lQSkc/1hffUI3CsBJxP2u/6vcvB8cQYAr6Hk/wveAp5i5YOAoXPi
-         lbh6bGQM9f3o3k5KRIoi2SyJdUTGLmLtkKGM9Ze20e9Hmz0hi6lAIn3W6JZhAP9RIP2m
-         pcotPfL4MasHRZaVZ6hfNzixxTDMH0dOMgY2gmiwMl4mjLD1iPdZh0kYe4ppxrX5febC
-         E8E4Qzwxj53nTaSj4S1QupzQHLzbDrP7x9S3d87Wy0dlJlFKsVgIPpJCJAUDBYVKOpfr
-         9ZtiyLGEjVhxo1sK4HAwzS9ZPpIbPukMhoGsvJOc7zmsDBaOqnXJtJVKApO4J5U9c1G6
-         Bjlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779121125; x=1779725925;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Liio1b6VDv5RScP6X+DOlI3EAYq4cFP5JNSZNtRc1oU=;
-        b=L8lM4P8zfN32WQVRGuwpX1UvtbHHD4f8K3/aiMG/iz2KZmVel9AIaWlf5DOcxRqCYL
-         QG7WhpxUc6QDhGYyf44iqTx2ecBUQcKF+FnLe9hyxVFHz5EXV1MGA24qpR0ygBLAWO7L
-         7v2kGuDjn3+lJOBf13xlwHrFNVa2lX2Ykf6HRWikboEMI4hqXYiaFEbuBp8rnltuuXev
-         mHZdTyBNkVvYFHevxxWD0DxaRushgbmBYbz5ajOR2Avj8UZZQfs96dQz5SuNbEAvRIQW
-         Tm2el/LPTg69/SEiRp+ZsaY2RXlaoiA7Yo33FVwMPk1+EpPig223E4/TP7MtttFj95Y8
-         aBeA==
-X-Forwarded-Encrypted: i=1; AFNElJ95NmR6DN7JSssf0m/OPpt9p4eZNKAsOJEDni2SQvF5Gp4hrdlFEECoeg9F7u84zpb0y3wm3Ug=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymRw/PlZjmeWPccxkhikB5zhkCn8VonEUckF5jLnx0I7xBZ4qo
-	yXmRyXgLKs5LisfsY2285F6uGCRGXmUcebSLN+pRYZXURSLIKbnIu/Pcu9khkpJCGrBHQQT7V5K
-	6H5J0VMnLk1iSzAxU8GKzgB39XvRl5csCt1gNhjLH
-X-Gm-Gg: Acq92OEwa5/G9KfJ5rOPRTOsUMLI63by+NKXaOpSOLHumNg3QKQa1fyvTFeD3k1p4qb
-	t2Q6NFEvMKwIK7hUOJM17VKCtBctLQwqNKMcDW8L30eo2sDygqRQehJvOeBEBL1CknEksOVStqW
-	QFlNc3i/8lGtb379BYVjllhQAeHqiE/Hi5JgSzTqXl6WHTzpL2tmK5qGNeUCrQKXrsF2GjUJW+G
-	lf2Bp1ll5o9MzS+yFsuUmXYC+BgUb1ygZVlPyXd6Wh3GyiL1meUZIQGbYa9/vpqpAlEo9hULoq1
-	EKdXslf09yor728BDnkIpY5tLP/NEJu1OQHcu12j1Uy+4yk=
-X-Received: by 2002:a05:6402:4c9:b0:678:8834:1b49 with SMTP id
- 4fb4d7f45d1cf-684985e96ebmr76245a12.1.1779121124779; Mon, 18 May 2026
- 09:18:44 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8100940DFA3;
+	Mon, 18 May 2026 16:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779121150; cv=none; b=aJtC3J+XRrBoT0kMqlxYuSiKpnRZuIphEdo5bHff9wb36YgbqPwXe2x6aQvPcrFk56MfYen7SWIPxksmb6BYtjPMhkYPom0wXCjhjoubNwOIAMvSwrGL5lLuT9X3tedUfoLn0rTBKdGPGZ+cRZ4jrZ4ppKkLQJHx8jlVuWTLr0M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779121150; c=relaxed/simple;
+	bh=QXOe6snGHgdgnGJp3ZkSbp3AHOt4fgXfzTzWLnXiLA0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kqcODoa+UatN6mzpvJVNLJwry4u6zeMuFHCbswSlkSS1Q0lBvktNz1Bzyi4I/sa6aGs0Nt7g8m2hpggPn69HvOgNVo+Iw9CbUBNe7dPUoLbeRxpJSaDRc+Dw0XlxRGcSna9Cmx/xEwZ31dftoxFHtlLAI2+9d3smx936M51lLa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 441EB1C1FBC;
+	Mon, 18 May 2026 16:18:55 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf09.hostedemail.com (Postfix) with ESMTPA id 6DDB920028;
+	Mon, 18 May 2026 16:18:53 +0000 (UTC)
+Date: Mon, 18 May 2026 12:19:06 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Andrii Kuchmenko <capyenglishlite@gmail.com>
+Cc: linux-trace-kernel@vger.kernel.org, mhiramat@kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Jiri Olsa
+ <jolsa@kernel.org>
+Subject: Re: [PATCH] ftrace: fix race in __modify_ftrace_direct() between
+ tmp_ops registration and direct_functions update
+Message-ID: <20260518121906.4eebad77@gandalf.local.home>
+In-Reply-To: <20260517110155.21706-1-capyenglishlite@gmail.com>
+References: <20260517110155.21706-1-capyenglishlite@gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260515-unix-recv-wait-v1-0-76adb5f063d5@google.com>
- <20260515-unix-recv-wait-v1-1-76adb5f063d5@google.com> <CAAVpQUDJa0=h+iFqr6ZEJ72b5nYTX3Ay-Vbkk0-7Y-KZB_3SBg@mail.gmail.com>
-In-Reply-To: <CAAVpQUDJa0=h+iFqr6ZEJ72b5nYTX3Ay-Vbkk0-7Y-KZB_3SBg@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Mon, 18 May 2026 18:18:08 +0200
-X-Gm-Features: AVHnY4JEW223kfoVSQDlfwCDKkPQOQR08O4FxFyX9fT-m-RsU3KiMfxz6iu40fQ
-Message-ID: <CAG48ez08P0mRcbdiYAZaQCmbG-OcN8JZYT72wkC77zXHn1BV7A@mail.gmail.com>
-Subject: Re: [PATCH 1/3] af_unix: Fix UAF read of tail->len in unix_stream_data_wait()
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Hannes Frederic Sowa <hannes@stressinduktion.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+X-Stat-Signature: 7475nq6abdfq3z4jdpinuxnnqu4obzha
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18qzFd+SMwPAxg7uknzCaPo64VnjDt9WEg=
+X-HE-Tag: 1779121133-302350
+X-HE-Meta: U2FsdGVkX19s4pTNGOLCOqaFHty2QAGT3IrNkCzug/0/ivf5UnXxhuBD5QT7emIDTTXySdQj4tiH0l1LPX3mRMLiRvm6yvUz1dMqcgVqR1N0n8x55WlLOqjujswIrZKZmWYc4dFoizO5uBloIOhoJcxTuX64lcJaVdr7NbMlGuleQ7YJHU2eBA9aeoMZeyCsuP+cZmr0P9CZOCsBLc5ZZYZkuf8fmuQyLZtkxfYaOo+fkZngGS66FlNSn4gWrL2E3RkIaT8H96v0LHmYpoWJskMX2LRO00f+Dl6qZwaSIm90eSpWgnz4VU5Kb6UciV/yNnYwh3Q/lXA+9tsJ3hIjnQ8Bdtt24DKqgJcYjftlhMsoi02Om0K83arljoMSWPKk8QstqASH3LyoO20uXMOR7SV5GI+RieJUGaQ0YYQmheU9C1FgxtDfrSfE7M/Czzns0U+BRU1ysLo=
+X-Spamd-Result: default: False [-1.36 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[goodmis.org : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jannh@google.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249333-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid];
+	R_DKIM_NA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+]
-X-Rspamd-Queue-Id: 5C1C3570EA9
+	FROM_NEQ_ENVFROM(0.00)[rostedt@goodmis.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249334-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,goodmis.org:email]
+X-Rspamd-Queue-Id: 67443570C28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, May 17, 2026 at 9:21=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
-> On Fri, May 15, 2026 at 11:54=E2=80=AFAM Jann Horn <jannh@google.com> wro=
-te:
-> > unix_stream_data_wait() does skb_peek_tail(&sk->sk_receive_queue) witho=
-ut
-> > holding any lock that prevents SKBs on that queue from being dequeued a=
-nd
-> > freed.
-> > This has been the case since commit 79f632c71bea ("unix/stream: fix
-> > peeking with an offset larger than data in queue").
-> > The first consequence of this is that the pointer comparison
-> > `tail !=3D last` can be false even if `last` semantically refers to an
-> > already-freed SKB while `tail` is a new SKB allocated at the same addre=
-ss;
-> > which can cause unix_stream_data_wait() to wrongly keep blocking after =
-new
-> > data has arrived, but only in a weird scenario where a peeking recv() a=
-nd
-> > a normal recv() on the same socket are racing, which is probably not a
-> > real problem.
-> >
-> > But since commit 2b514574f7e8 ("net: af_unix: implement splice for stre=
-am
-> > af_unix sockets"), `tail` is actually dereferenced, which can cause UAF=
- in
-> > the following race scenario (where test_setup() runs single-threaded,
-> > and afterwards, test_thread1() and test_thread2() run concurrently in
-> > two threads:
-> > ```
-> > static int socks[2];
-> > void test_setup(void) {
-> >   socketpair(AF_UNIX, SOCK_STREAM, 0, socks);
-> >   send(socks[1], "A", 1, 0);
-> >   int peekoff =3D 1;
-> >   setsockopt(socks[0], SOL_SOCKET, SO_PEEK_OFF, &peekoff, sizeof(peekof=
-f));
-> > }
-> > void test_thread1(void) {
-> >   char dummy;
-> >   recv(socks[0], &dummy, 1, MSG_PEEK);
-> > }
-> > void test_thread2(void) {
-> >   char dummy;
-> >   recv(socks[0], &dummy, 1, 0);
-> >   shutdown(socks[1], SHUT_WR);
-> > }
-> > ```
-> >
-> > when racing like this:
-> > ```
-> > thread1                       thread2
-> > unix_stream_read_generic
-> >   mutex_lock(&u->iolock)
-> >   skb_peek(&sk->sk_receive_queue)
-> >   skb_peek_next(skb, &sk->sk_receive_queue)
-> >   mutex_unlock(&u->iolock)
-> >                               unix_stream_read_generic
-> >                                 unix_state_lock(sk)
-> >                                 skb_peek(&sk->sk_receive_queue)
-> >                                 unix_state_unlock(sk)
-> >   unix_stream_data_wait
-> >     unix_state_lock(sk)
-> >     tail =3D skb_peek_tail(&sk->sk_receive_queue)
-> >                                 spin_lock(&sk->sk_receive_queue.lock)
-> >                                 __skb_unlink(skb, &sk->sk_receive_queue=
-)
-> >                                 spin_unlock(&sk->sk_receive_queue.lock)
-> >                                 consume_skb(skb) [frees the SKB]
-> >     `tail !=3D last`: false
-> >     `tail`: true
-> >     `tail->len !=3D last_len` ***UAF***
-> > ```
-> >
-> > Fix the UAF by removing the read of tail->len; checking tail->len would
-> > only make sense if SKBs in the receive queue of a UNIX socket could gro=
-w,
-> > which AFAIK is not supposed to happen.
->
-> I posted the same patch 2 years ago (and forgot to respin),
-> which has the historical context.
-> https://lore.kernel.org/netdev/20240530164256.40223-1-kuniyu@amazon.com/
->
-> ---8<---
-> When commit 869e7c62486e ("net: af_unix: implement stream sendpage
-> support") added sendpage() support, data could be appended to the last
-> skb in the receiver's queue.
->
-> That's why we needed to check if the length of the last skb was changed
-> while waiting for new data in unix_stream_data_wait().
->
-> However, commit a0dbf5f818f9 ("af_unix: Support MSG_SPLICE_PAGES") and
-> commit 57d44a354a43 ("unix: Convert unix_stream_sendpage() to use
-> MSG_SPLICE_PAGES") refactored sendmsg(), and now data is always added
-> to a new skb.
-> ---8<---
+On Sun, 17 May 2026 14:01:53 +0300
+Andrii Kuchmenko <capyenglishlite@gmail.com> wrote:
 
-Ah, thanks, I will integrate that context in the commit message.
+> In __modify_ftrace_direct(), register_ftrace_function_nolock() makes
+> tmp_ops visible in ftrace_ops_list before entry->direct is updated
+> under ftrace_lock. During this window any CPU entering the traced
+> function calls call_direct_funcs(), reads the old address from
+> direct_functions via RCU, and jumps to it via
+> arch_ftrace_set_direct_caller(). If the caller freed or invalidated
+> the old trampoline before calling modify_ftrace_direct(), this is a
+> use-after-free in executable code context.
+>=20
+> The race window:
+>=20
+>   CPU 0 (__modify_ftrace_direct)       CPU 1 (executing traced func)
+>   =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80       =E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80
+>   register_ftrace_function_nolock()
+>     -> tmp_ops visible in ops_list =20
+>                                         call_direct_funcs()
+>                                           ftrace_find_rec_direct() -> old=
+_addr
+>                                           arch_ftrace_set_direct_caller(o=
+ld_addr)
+>                                           jump to old_addr  <- UAF if fre=
+ed
 
-> > Fixes: 2b514574f7e8 ("net: af_unix: implement splice for stream af_unix=
- sockets")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jann Horn <jannh@google.com>
->
-> Can you post this patch separately to net.git by specifying
-> [PATCH net v2] in Subject ?
+You do not state where old_addr is freed.
 
-Will do.
+>   mutex_lock(&ftrace_lock)
+>   entry->direct =3D addr   <- too late
+>   mutex_unlock(&ftrace_lock)
+>=20
+> Fix: update entry->direct under ftrace_lock BEFORE registering tmp_ops.
+> Any CPU that observes tmp_ops in ftrace_ops_list after this point will
+> already see the new address when it calls ftrace_find_rec_direct().
+> Add smp_wmb() between the store and the registration to ensure the
+> write is visible on weakly-ordered architectures before tmp_ops
+> becomes observable via ftrace_ops_list.
+>=20
+> On error from register_ftrace_function_nolock(), restore entry->direct
+> to old_addr since tmp_ops never became visible to other CPUs.
+
+The above statement is incorrect. The tmp_ops hash entries are also
+*shared* with the ops that is being updated. That is, by changing the entry=
+->direct, you=20
+
+>=20
+> This affects all callers of __modify_ftrace_direct(), including:
+>   - modify_ftrace_direct() used by kernel modules and live patching
+>   - modify_ftrace_direct_nolock() used by BPF trampolines
+>     (kernel/bpf/trampoline.c) reachable with CAP_BPF + CAP_PERFMON
+>=20
+> Fixes: 0567d6809440 ("ftrace: Add modify_ftrace_direct()")
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andrii Kuchmenko <capyenglishlite@gmail.com>
+> ---
+>  kernel/trace/ftrace.c | 35 +++++++++++++++++++++++++----------
+>  1 file changed, 25 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+> index a1b2c3d4e5f6..b7c8d9e0f1a2 100644
+> --- a/kernel/trace/ftrace.c
+> +++ b/kernel/trace/ftrace.c
+> @@ -5950,6 +5950,7 @@ static int __modify_ftrace_direct(struct ftrace_ops=
+ *ops, unsigned long addr)
+>  	struct ftrace_func_entry *entry;
+>  	struct ftrace_ops tmp_ops;
+> +	unsigned long old_addr;
+>  	int err;
+> =20
+>  	lockdep_assert_held(&direct_mutex);
+> @@ -5960,22 +5961,36 @@ static int __modify_ftrace_direct(struct ftrace_o=
+ps *ops, unsigned long addr)
+>  	if (!entry)
+>  		return -ENODEV;
+> =20
+> -	/*
+> -	 * tmp_ops is registered into ftrace_ops_list here, making it
+> -	 * visible to all CPUs executing the traced function. However,
+> -	 * entry->direct is not updated until after this call returns,
+> -	 * leaving a window where CPUs read the stale (possibly freed)
+> -	 * direct call address via ftrace_find_rec_direct().
+> -	 */
+
+Are you posting patches on top of your own patches that are not public?
+
+> -	err =3D register_ftrace_function_nolock(&tmp_ops);
+> -	if (err)
+> -		return err;
+> -
+> +	/* Save old address in case we need to roll back on error. */
+> +	old_addr =3D entry->direct;
+> +
+> +	/*
+> +	 * Update entry->direct BEFORE registering tmp_ops into
+> +	 * ftrace_ops_list. This closes the race window where a CPU
+> +	 * executing the traced function could read the old (potentially
+> +	 * freed) direct call address between tmp_ops becoming visible
+> +	 * and entry->direct being updated.
+> +	 *
+> +	 * Any CPU that observes tmp_ops in ftrace_ops_list after the
+> +	 * smp_wmb() below is guaranteed to see the new address when
+> +	 * it calls ftrace_find_rec_direct().
+> +	 */
+>  	mutex_lock(&ftrace_lock);
+>  	entry->direct =3D addr;
+>  	mutex_unlock(&ftrace_lock);
+> =20
+> +	/*
+> +	 * Ensure entry->direct store is ordered before tmp_ops
+> +	 * becomes visible via ftrace_ops_list on weakly-ordered archs.
+> +	 */
+> +	smp_wmb();
+
+You do realize that register_ftrace_function_nolock() is itself a full
+memory barrier? It's doing code modification which requires lots of
+barriers to work.
+
+Still, the only bug I see that is possible is that the caller may need to
+do some synchronize RCU calls before freeing an old trampoline.
+
+Can you show a path that doesn't do that?
+
+-- Steve
+
+
+> +
+> +	err =3D register_ftrace_function_nolock(&tmp_ops);
+> +	if (err) {
+> +		/* tmp_ops never became visible; safe to restore old_addr. */
+> +		mutex_lock(&ftrace_lock);
+> +		entry->direct =3D old_addr;
+> +		mutex_unlock(&ftrace_lock);
+> +		return err;
+> +	}
+> +
+>  	/*
+>  	 * Now that tmp_ops is registered and entry->direct is updated,
+>  	 * unregister the original ops and clean up.
+
 
