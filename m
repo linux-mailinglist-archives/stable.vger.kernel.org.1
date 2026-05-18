@@ -1,159 +1,191 @@
-Return-Path: <stable+bounces-249297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBLFCL4dC2o2DgUAu9opvQ
-	(envelope-from <stable+bounces-249297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:10:06 +0200
+	id CIUdGTIaC2reDQUAu9opvQ
+	(envelope-from <stable+bounces-249296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:54:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C7056E683
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:10:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 663D856E1AD
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9C86302EEC4
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:55:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 17FAD3022FFD
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1885648164F;
-	Mon, 18 May 2026 13:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13E148A2BA;
+	Mon, 18 May 2026 13:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="h86c7QF/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bXIHWG5l"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB4B48B389
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 13:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6127E480350;
+	Mon, 18 May 2026 13:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779112415; cv=none; b=IJEsL9tPaZzcBxm25E/bXu9tNf4X57Um2l/5cyZMtAYcV/uvL0HA+GmWxyGZoIYdJAuBuq4YV3szPrscDTTPfgO00KH/Ndx3UstaKdM2l/WchVcV8iTzIofqGmQoN5O2KT/ISJeB5i3izGHWtaeujY1I+eDT2H7oaMkJY3ro2ng=
+	t=1779112350; cv=none; b=Mbxybx0l9L8wKQEKtzgyElCxo1MFqYWmUqGQYk7tnbdb2caQIJ+e0CjbSnyl0KtxHZpQj+Qni99n4085FtHLO/FF5Q106Qo60NBjaYlvj3q6g8F2fNWrQw6rfADKn/zoNpodrQy9lCUGPUF9ciN1d9SzvqcnHHzCGS9Rbi6DEak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779112415; c=relaxed/simple;
-	bh=hN//C+6iSuLWrlrke8jTPf3i3Up46Cf0abiY1Odz8PU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cwD4tBvJhZEx4kFwydqmy00BeNFp02X+iKHCv1yQ9BTYoJ/CU50sW9Rb8XnbbhJxVcwJ8nZRV5GuieroBngExMzf/1vscbXsvGaXbjhfz14eOsWFoELFP/C8XYameQjjH8sZ8rrOyxHEEC9nkv4yvOs57FDnhKleU9cVn7cSgcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=h86c7QF/; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=1WmejweJGHojR0/4xZCjXb0R5xm+GiTyWqwBEXRANRw=;
-	b=h86c7QF/m9+comReSWPDOgUns9H/8dLexuGZOfQ+63k4jBeWYx4UbMcXDTAjO1ME5K3pGs8r5
-	bOjagifXzL4/TTF4/v+o7GhtSIGDKY6EcOVEco8NJqVEB3eU+9Gh8BkwEQMbco3lKD7OTjKejQh
-	UZSLnPwnO6cLmRuv+H5PgN0=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gJzbG29kNzLlZB;
-	Mon, 18 May 2026 21:45:46 +0800 (CST)
-Received: from kwepemr100008.china.huawei.com (unknown [7.202.195.119])
-	by mail.maildlp.com (Postfix) with ESMTPS id 263064056C;
-	Mon, 18 May 2026 21:53:26 +0800 (CST)
-Received: from localhost.localdomain (10.50.163.32) by
- kwepemr100008.china.huawei.com (7.202.195.119) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 18 May 2026 21:53:25 +0800
-From: ZongYu Wu <wuzongyu1@huawei.com>
-To: <fanghao11@huawei.com>, <liulongfang@huawei.com>,
-	<huangchenghai2@huawei.com>, <linwenkai6@h-partners.com>,
-	<lizhi206@huawei.com>, <panjunchong@h-partners.com>, <qianweili@huawei.com>,
-	<yangjiangshui@h-partners.com>, <yinzhushuai@huawei.com>
-CC: Michael Bommarito <michael.bommarito@gmail.com>, <stable@vger.kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5/6] crypto: krb5 - filter out async aead implementations at alloc
-Date: Mon, 18 May 2026 21:51:59 +0800
-Message-ID: <20260518135200.3573377-6-wuzongyu1@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260518135200.3573377-1-wuzongyu1@huawei.com>
-References: <20260518135200.3573377-1-wuzongyu1@huawei.com>
+	s=arc-20240116; t=1779112350; c=relaxed/simple;
+	bh=kWISkeVRfd8jvFcHNKLpQ1GFOQCP73gX7K3vEQF5lPE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JvX/1ViErCThzAYxrW8MZeN1jf9TErZ0zP70aV2KWRVr2pEO8gjYa26goKmaohVzPwlzxplT/vXlzVw2OKyUvWHgmhbTv/EtwyRPGE1xcGrJRp4yAX4j0tzelG3tiMOBBQ51dQnoefHFTx1FfvRxaTE2+rMx4qt2RHp0J/Qz9qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bXIHWG5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 02DEEC2BCB7;
+	Mon, 18 May 2026 13:52:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779112350;
+	bh=kWISkeVRfd8jvFcHNKLpQ1GFOQCP73gX7K3vEQF5lPE=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=bXIHWG5lnUkHm/CkMZ0P9a1AIvbJCOB261Yc70vYYWOiVhwUqG21qmOH/RLl9K7Sv
+	 YNatKPkTWv0ajWCP20rzPvEmMEDK/uCG0FH0NdfRdZNdRRcAKHwxvrGGg3+oIr+Jvi
+	 vhmpXxWJLiC3kIQKgpVAt/0vt+2/fdHHOxLfkvfjlXK5jU7IdJ4nBBv51AxpBhz0HU
+	 4KNI7vJTE582nOgdgImp/IyMzAccQjyPx0jEI1JByQAHKboKP41JPtGPqgac2sqBG2
+	 EizTY1r7YKOIlJepk2v9Vzdc4wBgPYiIoRkA3DfQuglthbN87mrj10mcSPX1PnjM0E
+	 g3SfiD3tCOXcQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E30C1CD4F50;
+	Mon, 18 May 2026 13:52:29 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Subject: [PATCH v7 0/5] soc: qcom: ice: Fix race between qcom_ice_probe()
+ and of_qcom_ice_get()
+Date: Mon, 18 May 2026 19:22:16 +0530
+Message-Id: <20260518-qcom-ice-fix-v7-0-2a595382185b@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemr100008.china.huawei.com (7.202.195.119)
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJAZC2oC/3XOwQrCMAwG4FeRnq3ENO2mJ99DPHRt1II6XXUos
+ nc320UZ7hL4f5KPvFXmJnFW69lbNdymnOqLhGI+U+HoLwfWKUpWCOgAl6BvoT7rFFjv01NH9MY
+ D2cpgVHJybVjqgdvuJB9TvtfNa9Bb7NsJqEUNehWWvrLRWcCwqXNe3B7+JFvnhQzVe635MdCMD
+ COGC96W5Ayu9sWEQV/DAI4MEgPY2YLA2xim/rC/RjkyrBhMBZeeqHKB/hhd130Al7QznHsBAAA
+ =
+X-Change-ID: 20260210-qcom-ice-fix-d2a3a045b32d
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
+ Adrian Hunter <adrian.hunter@intel.com>, Ulf Hansson <ulfh@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+ Sumit Garg <sumit.garg@oss.qualcomm.com>, stable@vger.kernel.org, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Ulf Hansson <ulfh@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2360;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=kWISkeVRfd8jvFcHNKLpQ1GFOQCP73gX7K3vEQF5lPE=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBqCxmYCvvALWkQZC2rYZ1PvIwFlbeupGGU1KLFO
+ g0x8cKNlvGJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCagsZmAAKCRBVnxHm/pHO
+ 9Q6zB/0fF5aKOehEDnZHrPz34NODgyB+ECsieVqHX9VV4Kmy3+UxjD5MrLQiO8dYt2/0eVBbgQ1
+ FnQhTG+rKcCBvS3gPmMFwehUwnQSGpymnBi9DASd6nHpef6sZxXTA0Sw/ORiZSBdKpNK4lLgqON
+ P+seFQ/0DljEM6jrlzS73Ewh3Or9C0W+V3f8+X3x5NfvL/mlg/gi0kdsZjwL75zzw1WCNnDTJAc
+ njmjXmcOnT7tM4ucirlONeEQFW4TbyFRlNi12CIx+LFAGXjBEtzV0V0OpAUfNZIVl3p+STo+Q2q
+ Fnjlm661UD6dOH3wDv1LjuxiGvIb1+HBk0zxEhCaP/UTwVJ8
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reply-To: manivannan.sadhasivam@oss.qualcomm.com
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,gondor.apana.org.au];
+	TAGGED_FROM(0.00)[bounces-249296-lists,stable=lfdr.de,manivannan.sadhasivam.oss.qualcomm.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-249297-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wuzongyu1@huawei.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	HAS_REPLYTO(0.00)[manivannan.sadhasivam@oss.qualcomm.com];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:mid,huawei.com:dkim]
-X-Rspamd-Queue-Id: 79C7056E683
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,oss.qualcomm.com:mid,oss.qualcomm.com:replyto,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 663D856E1AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+Hi,
 
-krb5_aead_encrypt(), krb5_aead_decrypt() in rfc3961_simplified.c and
-rfc8009_encrypt(), rfc8009_decrypt() in rfc8009_aes2.c set a NULL
-completion callback and treat any negative return from
-crypto_aead_{encrypt,decrypt}() as terminal, falling through to
-kfree_sensitive(buffer).  When the encrypt_name resolves to an
-async AEAD instance the request returns -EINPROGRESS, the buffer
-is freed while the backend's worker still holds a pointer, and the
-worker dereferences the freed slab on completion.
+This series fixes the race betwen qcom_ice_probe() and of_qcom_ice_get()
+but synchronizing the two APIs and properly propagating the error codes to
+clients.
 
-KASAN report under UML+SLUB with a synthetic async aead backend
-bound to krb5->encrypt_name:
+Merge Strategy
+==============
 
-  BUG: KASAN: slab-use-after-free in t5_stub_complete+0x7d/0xc7
+Due to dependency, all patches should go through Qcom SoC tree.
 
-The helpers were written synchronously, so filter the async
-instances out at allocation time instead of plumbing
-crypto_wait_req() through every call site.
-
-Reachable via net/rxrpc/rxgk.c, fs/afs/cm_security.c and
-net/ceph/crypto.c on systems with an async AEAD provider bound to
-the krb5 enctype name.
-
-Fixes: 00244da40f78 ("crypto/krb5: Implement the Kerberos5 rfc3961 encrypt and decrypt functions")
-Fixes: 6c3c0e86c2ac ("crypto/krb5: Implement the AES enctypes from rfc8009")
-Cc: stable@vger.kernel.org
-Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 ---
- crypto/krb5/krb5_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v7:
+- Rebased on top of v7.1-rc1
+- Collected tags
 
-diff --git a/crypto/krb5/krb5_api.c b/crypto/krb5/krb5_api.c
-index 23026d4206c8..2b20284fa0ab 100644
---- a/crypto/krb5/krb5_api.c
-+++ b/crypto/krb5/krb5_api.c
-@@ -165,7 +165,7 @@ struct crypto_aead *krb5_prepare_encryption(const struct krb5_enctype *krb5,
- 	struct crypto_aead *ci = NULL;
- 	int ret = -ENOMEM;
- 
--	ci = crypto_alloc_aead(krb5->encrypt_name, 0, 0);
-+	ci = crypto_alloc_aead(krb5->encrypt_name, 0, CRYPTO_ALG_ASYNC);
- 	if (IS_ERR(ci)) {
- 		ret = PTR_ERR(ci);
- 		if (ret == -ENOENT)
+Changes in v6:
+- Fixed sparse warnings
+- Link to v5: https://lore.kernel.org/r/20260308-qcom-ice-fix-v5-0-e47e8a44b6c4@oss.qualcomm.com
+
+Changes in v5:
+- Used Xarray instead of platform drvdata for passing the pointer since driver
+  core frees drvdata on probe failure.
+- Link to v4: https://lore.kernel.org/r/20260302-qcom-ice-fix-v4-0-0e65740a5dcc@oss.qualcomm.com
+
+Changes in v4:
+- For supporting multi-ice instances in a SoC, stored the err ptr in platform
+  drvdata instead of in a global pointer.
+- Link to v3: https://lore.kernel.org/r/20260223-qcom-ice-fix-v3-0-6ca5846329f7@oss.qualcomm.com
+
+Changes in v3:
+- Dropped the platform driver removal patch and used the ice_handle to pass
+  error codes. This was done as I learned that we need to have the platform
+  driver design going forward and also removing it introduces other issues.
+- Link to v2: https://lore.kernel.org/r/20260210-qcom-ice-fix-v2-0-9c1ab5d6502c@oss.qualcomm.com
+
+Changes in v2:
+
+- Added MODULE_* macros back
+- Removed spurious platform_device_put()
+- Added patches to remove NULL return
+
+---
+Manivannan Sadhasivam (5):
+      soc: qcom: ice: Fix race between qcom_ice_probe() and of_qcom_ice_get()
+      soc: qcom: ice: Return -ENODEV if the ICE platform device is not found
+      soc: qcom: ice: Return proper error codes from devm_of_qcom_ice_get() instead of NULL
+      mmc: sdhci-msm: Remove NULL check from devm_of_qcom_ice_get()
+      scsi: ufs: ufs-qcom: Remove NULL check from devm_of_qcom_ice_get()
+
+ drivers/mmc/host/sdhci-msm.c | 10 ++++-----
+ drivers/soc/qcom/ice.c       | 49 ++++++++++++++++++++++++++++++++------------
+ drivers/ufs/host/ufs-qcom.c  | 10 ++++-----
+ 3 files changed, 46 insertions(+), 23 deletions(-)
+---
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+change-id: 20260210-qcom-ice-fix-d2a3a045b32d
+
+Best regards,
 -- 
-2.33.0
+Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+
 
 
