@@ -1,210 +1,148 @@
-Return-Path: <stable+bounces-249312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249313-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4K35DmEoC2pAEAUAu9opvQ
-	(envelope-from <stable+bounces-249312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:55:29 +0200
+	id AKo1KmkoC2q5EAUAu9opvQ
+	(envelope-from <stable+bounces-249313-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:55:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A6856F513
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7C156F528
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:55:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E1D530815E5
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:40:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52C80308B7B8
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3418D36212D;
-	Mon, 18 May 2026 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E569329346F;
+	Mon, 18 May 2026 14:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KGlxgwB0";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="YYNmdcym";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KGlxgwB0";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="YYNmdcym"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O99mOYnI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DAA29346F
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 14:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C003CCFD2
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 14:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779115241; cv=none; b=VUxxig4TZkS2oHF6bdwoIp0MOsRQqjAg9FXchPiU/3rl8WVPT/Y6LNMJcDx5Qn+KLeaY2YUKTGHrTl9yuImBXj+neKGrnufHFymDnfeiChUBW2ecJ58nW/oip20qGSdX65KaKprxwRgh5NGQarmFNcgFamnuymKcnco13IPCz3s=
+	t=1779115245; cv=none; b=gRBjcbLEebnte/Z4tLtCuyaImthNuq80rjrtaqN/2pwcwM8V6kjd3QyiHJj/9bjU38PuhTFgWVs4OP7+3aIPqwoQsjLJjsEGetDFHD8PYLkYHAWB7uKU6EBYgWXdH80prWggipwKS3jjag2b07Hc8vJV+PEf0LanXczOyJz0oZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779115241; c=relaxed/simple;
-	bh=GVaBP4oVJyjWY/K0OzRzK2HxtrErElkr7Zh+AbpY6bw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=erAej8T4VumVyJDgLGjQhwWTZGu5dyDtU/7RBb2Q/70kg2mxFA5tSC1BE9ov38LnvNjr+MfPluugYSseewK/ZDO3bdsbWOcKUL/8H0cCvZimdp1IRKc+loNoVWNLZ5oWMtjyYMwulwujGpS8Dg89Sd5Gdeb6NyAgDWoZ63SQZgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KGlxgwB0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=YYNmdcym; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KGlxgwB0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=YYNmdcym; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B5BA66725B;
-	Mon, 18 May 2026 14:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779115237; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c/fQRnTtYxxVFuJiDKmaSBAEwcnc6ikm6RUoQyTq4bA=;
-	b=KGlxgwB05uqO/KH4rCC7W+vLoLQyVVqE05by0jFteXaFTOAUWrS/lMxCh1N5+vGhBv+ADl
-	L9CeUJfIRmILAyw/f6LuyoUAkJgWl1O6chMnivk43JWsxG64CCF8wEsgYPQKGgQXsDXwn0
-	rbFiDOAohFM0tHH5LDYl6erGXbegWU0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779115237;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c/fQRnTtYxxVFuJiDKmaSBAEwcnc6ikm6RUoQyTq4bA=;
-	b=YYNmdcymZIwt6f/6heZLQGOfLgKan7Gv3YXhwJ+nxZ+n57CLcu5OUyMNmrWBIQfxNXGmuT
-	JtONyHI771HET/Cw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779115237; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c/fQRnTtYxxVFuJiDKmaSBAEwcnc6ikm6RUoQyTq4bA=;
-	b=KGlxgwB05uqO/KH4rCC7W+vLoLQyVVqE05by0jFteXaFTOAUWrS/lMxCh1N5+vGhBv+ADl
-	L9CeUJfIRmILAyw/f6LuyoUAkJgWl1O6chMnivk43JWsxG64CCF8wEsgYPQKGgQXsDXwn0
-	rbFiDOAohFM0tHH5LDYl6erGXbegWU0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779115237;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c/fQRnTtYxxVFuJiDKmaSBAEwcnc6ikm6RUoQyTq4bA=;
-	b=YYNmdcymZIwt6f/6heZLQGOfLgKan7Gv3YXhwJ+nxZ+n57CLcu5OUyMNmrWBIQfxNXGmuT
-	JtONyHI771HET/Cw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 413D6593A8;
-	Mon, 18 May 2026 14:40:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7LGZOeIkC2p8FgAAD6G6ig
-	(envelope-from <ddiss@suse.de>); Mon, 18 May 2026 14:40:34 +0000
-Date: Tue, 19 May 2026 00:40:26 +1000
-From: David Disseldorp <ddiss@suse.de>
-To: Alexandru Hossu <hossu.alexandru@gmail.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, Bart Van Assche
- <bvanassche@acm.org>, target-devel@vger.kernel.org,
- linux-scsi@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: target: iscsi: validate CHAP_R length before
- base64 decode
-Message-ID: <20260519004026.3b7e07a2.ddiss@suse.de>
-In-Reply-To: <20260518121811.385350-1-hossu.alexandru@gmail.com>
-References: <20260518121811.385350-1-hossu.alexandru@gmail.com>
+	s=arc-20240116; t=1779115245; c=relaxed/simple;
+	bh=Z/ttCIPDWChr6uj09OT2vqed5zlrSKD5vgP5YAqbLZA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=W/PZrHuzeEGEzev+8ZkKaU/8lPIvJg4gqOAwfkcy6kbfpYhFGB3Zy+WFdRLjqI3Y6kwo3texYptwjFzPGkQF9sJyJB887HxC1KLaFYMCVcaopttnBnPip6CRXaNRkaQS0pFPUell0OvbyZwgdN2htBwnAF++tF6GOF7PAw8zNAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O99mOYnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990FAC2BCB7;
+	Mon, 18 May 2026 14:40:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779115245;
+	bh=Z/ttCIPDWChr6uj09OT2vqed5zlrSKD5vgP5YAqbLZA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=O99mOYnI5bBmvGXY18ojsCR6wcIrLDfTPzCSxT8pfVKAyShYRmvTjYUd62sdm5ExX
+	 9zAjACd0Ms8mY6wm9PwXst/XIZh109AlPijitFVGHu76GghjfjuxeuzL9ue0nErLTL
+	 0an6JJTcLOp1DArzkYomf0itiydtmmZXZz4FtOdSaL3tfKnovxkXBSU+nuD9ExrSMs
+	 Kqpj09A9Z72N84AmqIxxRhefi1Rw8F7ppvLzLN340HN12lZWHJi7cfZK+M94uZKzEE
+	 xXn5XDvsBD1Nqg8FXuXNmMAhSbRg5VdYpefLj9KymOMkdaVCcSkG81AWr85Mtfyt1y
+	 pTCqsgQfNGdQg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] mptcp: pm: ADD_ADDR rtx: fix potential data-race
+Date: Mon, 18 May 2026 10:40:42 -0400
+Message-ID: <20260518144042.1361354-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051216-stock-unloved-37a8@gregkh>
+References: <2026051216-stock-unloved-37a8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Score: -1.80
-X-Spam-Level: 
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249312-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249313-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ddiss@suse.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C8A6856F513
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4D7C156F528
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Alexandru,
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-Thanks for the report and follow up patch...
+[ Upstream commit 5cd6e0ad79d2615264f63929f8b457ad97ae550d ]
 
-On Mon, 18 May 2026 14:18:11 +0200, Alexandru Hossu wrote:
+This mptcp_pm_add_timer() helper is executed as a timer callback in
+softirq context. To avoid any data races, the socket lock needs to be
+held with bh_lock_sock().
 
-> chap_server_compute_hash() allocates client_digest as
-> kzalloc(chap->digest_size) and then, for BASE64-encoded responses,
-> passes chap_r directly to chap_base64_decode() without checking whether
-> the input length could produce more than digest_size bytes of output.
-> 
-> chap_base64_decode() writes to the destination unconditionally as long
-> as there is input to consume. With MAX_RESPONSE_LENGTH set to 128 and
-> the "0b" prefix stripped by extract_param(), up to 127 base64 characters
-> can reach the decoder. 127 characters decode to 95 bytes. For SHA-256
-> (digest_size=32) this overflows client_digest by 63 bytes; for MD5
-> (digest_size=16) the overflow is 79 bytes.
-> 
-> The length check at line 344 fires after the write has already happened.
-> 
-> The HEX branch in the same switch statement already validates the length
-> up front. Apply the same approach to the BASE64 branch: reject any input
-> whose maximum decoded length exceeds digest_size before calling the
-> decoder.
-> 
-> The formula (digest_size * 4 + 2) / 3 is the ceiling of digest_size *
-> 4/3, i.e. the maximum number of base64 characters that can decode to
-> exactly digest_size bytes.
-> 
-> Fixes: 1e5733883421 ("scsi: target: iscsi: Support base64 in CHAP")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
-> ---
->  drivers/target/iscsi/iscsi_target_auth.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/iscsi/iscsi_target_auth.c
-> index c46c69a..653be1a 100644
-> --- a/drivers/target/iscsi/iscsi_target_auth.c
-> +++ b/drivers/target/iscsi/iscsi_target_auth.c
-> @@ -341,6 +341,10 @@ static int chap_server_compute_hash(
->  		}
->  		break;
->  	case BASE64:
-> +		if (strlen(chap_r) > (chap->digest_size * 4 + 2) / 3) {
+If the socket is in use, retry again soon after, similar to what is done
+with the keepalive timer.
 
-nit: this could be DIV_ROUND_UP(chap->digest_size * 4, 3) to match
-base64.h BASE64_CHARS(), right?
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-3-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied hunk to `net/mptcp/pm_netlink.c` instead of `net/mptcp/pm.c` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mptcp/pm_netlink.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-> +			pr_err("Malformed CHAP_R: base64 payload too long\n");
-> +			goto out;
-> +		}
->  		if (chap_base64_decode(client_digest, chap_r, strlen(chap_r)) !=
->  		    chap->digest_size) {
->  			pr_err("Malformed CHAP_R: invalid BASE64\n");
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 6fb14148a96e0..bdfeba7dd9f24 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -330,6 +330,13 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 	if (!entry->addr.id)
+ 		return;
+ 
++	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		/* Try again later. */
++		sk_reset_timer(sk, timer, jiffies + HZ / 20);
++		goto out;
++	}
++
+ 	if (mptcp_pm_should_add_signal_addr(msk)) {
+ 		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
+ 		goto out;
+@@ -358,6 +365,7 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 		mptcp_pm_subflow_established(msk);
+ 
+ out:
++	bh_unlock_sock(sk);
+ 	__sock_put(sk);
+ }
+ 
+-- 
+2.53.0
 
-The above check doesn't appear to catch undersize base64 CHAP responses,
-unlike the hex path. How does that affect the handshake?
-
-Finally, don't we need a similar check for the mutual CHAP code-path?
-
-Thanks, David
 
