@@ -1,166 +1,143 @@
-Return-Path: <stable+bounces-249186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFOwD0enCmpy4wQAu9opvQ
-	(envelope-from <stable+bounces-249186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:44:39 +0200
+	id QBqAEfmuCmrJ5gQAu9opvQ
+	(envelope-from <stable+bounces-249187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:17:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB02566698
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:44:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585CB56696A
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4DB94301BA7A
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 05:44:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E166230048CD
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 06:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C083DA5D6;
-	Mon, 18 May 2026 05:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pr4rn+Rv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE27D3DD530;
+	Mon, 18 May 2026 06:17:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310D03D75D2;
-	Mon, 18 May 2026 05:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9B6384CEC
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 06:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779083053; cv=none; b=lvt0z6T2UiLBF5MA7Z6bQCFXJcCKruERJl8aPwbFmrPjnuRFbkiZPqP5ta7+N5wnH0FuTRO0BfbhprZCcjUPwW5fyQ9jsv1+jyuyhSeOts8dteXfwQq6s4CQTP6gsao/zFQime3FqV8YUQVXB3yNyRQUwu1QU2OlcwLtunwGozc=
+	t=1779085045; cv=none; b=PPX1Zovsuf3tS/rQufXUr9r0sNh2A9glB8wzNDKnEA0riIxUEG+2sA0EHXj0w22y+E/pmqy+z9nJeMUTmAdjfAono0srOgAn4ylVIj/jujU+WhcHU5Y+qccHahi664kyUbqmgKdC206C1l7Ts276/Vf26H8SO5exzpX2K/d07Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779083053; c=relaxed/simple;
-	bh=MWVZh93SX2090NJwWwTf27ANqalqElOvXJvA7w/3mis=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C3w4hnfRmvhqPZleB9u9I2gcGbFKWenkqx7Hs2dxWWN6eld6qXx+Jd93sjDcCHzuhBXYQr4GEaNk6TeUvMiLTb0h+H7yHV7AnmN/O+uo79yJfjsw+34tpbhJAg75V4MyA8xybg8skHSvsyHEl1+WgaMxZsVY1lCM+xdAlSIHEKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pr4rn+Rv; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64HMHmqn982643;
-	Mon, 18 May 2026 05:43:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=/d+b9k
-	oYYJ383tPUUP0AcYDRjFx6C12hgmW5OIErYV4=; b=pr4rn+RvoWjNY+nsJ1dyY2
-	Lk4xDETRtgC7TeurnKY4Cf58GljRoPDqNALkXl4PHgtgimN90TipQh9Uf8tPg7he
-	G4hFMGAlIiIm/LralVHSHWH7ykzoEljm9zoJJBnmxOVdeHHon8VyvAZhOKORwGFF
-	kUAuAJ8Us/JQ1V7kFVoBF/W/aj3F0Eede7KwQ8Aa7004VPdx89gmlyN8CaRLl/U6
-	F5HBDsTP3W3gi8P49xZ+kj667w8m0w3WYQwXGRrPpeMPYBgUEEwnSCtobrLKE5kI
-	YEihd/BW55f81ksXfUYZRziYqkQIve4nYjuvM3QlMy/VMfglS5jmYC3f8626OV/A
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8mebqx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 05:43:46 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64I5d3J9024830;
-	Mon, 18 May 2026 05:43:45 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e75kxv3kg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 05:43:45 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64I5hhZa31588776
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 May 2026 05:43:43 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A62E520040;
-	Mon, 18 May 2026 05:43:43 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4B2A720049;
-	Mon, 18 May 2026 05:43:40 +0000 (GMT)
-Received: from Linuxdev (unknown [9.43.43.25])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 18 May 2026 05:43:39 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, benh@kernel.crashing.org,
-        smaclennan@pikatech.com, Christophe Leroy <chleroy@kernel.org>,
-        Ma Ke <make24@iscas.ac.cn>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        akpm@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH] powerpc/warp: Fix error handling in pika_dtm_thread
-Date: Mon, 18 May 2026 11:13:38 +0530
-Message-ID: <177908291160.287704.16294849296370164231.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20251116024411.21968-1-make24@iscas.ac.cn>
-References: <20251116024411.21968-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1779085045; c=relaxed/simple;
+	bh=OVb1CG79JXFlip9/ZAYiuPG4ICq2blczfhrbOfzCkcY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=BRJH1ZcOfUltukmc1m3zew3hSFJ1FRXUWnKT2/jLUL1FZ/2j2fw/bE4gCBrk7P1985pej4h1eQhC/X6YI+zZVxhUPxyx8qL+NY49UUTfmPOPSN5MfZVzEHzqbc4GstXSQS5f0uC0KKEzxCdX4urSzZdkd5IXsyn39xJZtZQot7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 3731fdc8528111f1aa26b74ffac11d73-20260518
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_UNFAMILIAR, SRC_UNFAMILIAR
+	DN_TRUSTED, SRC_TRUSTED, SA_UNTRUSTED, SA_UNFAMILIAR, SN_UNTRUSTED
+	SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD_SPF
+	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:b415f90b-f7bd-4f27-8f92-34cd88dd04a9,IP:10,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:5
+X-CID-INFO: VERSION:1.3.12,REQID:b415f90b-f7bd-4f27-8f92-34cd88dd04a9,IP:10,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-META: VersionHash:e7bac3a,CLOUDID:747bc4ed4b19a4c3b0869a61123639ef,BulkI
+	D:260518141718A8ARMP8Q,BulkQuantity:0,Recheck:0,SF:19|66|72|78|81|82|102|1
+	27|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,B
+	ulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR
+	:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 3731fdc8528111f1aa26b74ffac11d73-20260518
+X-User: wangxuewen@kylinos.cn
+Received: from localhost.localdomain [(223.104.40.146)] by mailgw.kylinos.cn
+	(envelope-from <wangxuewen@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 683038474; Mon, 18 May 2026 14:17:15 +0800
+From: Xuewen Wang <wangxuewen@kylinos.cn>
+To: 18810879172@163.com
+Cc: Xuewen Wang <wangxuewen@kylinos.cn>,
+	stable@vger.kernel.org,
+	SeongJae Park <sj@kernel.org>
+Subject: [PATCH v2 1/3] tools/mm/slabinfo: Fix trace disable logic inversion
+Date: Mon, 18 May 2026 14:17:06 +0800
+Message-Id: <20260518061708.75006-2-wangxuewen@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260518061708.75006-1-wangxuewen@kylinos.cn>
+References: <20260518061708.75006-1-wangxuewen@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: osToTChQ8jajGyfxbqhQBOL5SDs6aD6B
-X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a0aa712 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=-GyfqmGyNljL1kGGE3gA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: UuZO23Y2vWK2vyeQJg-z0FiQ39VNilDL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDA1MSBTYWx0ZWRfXyHaHLqYTU1Vz
- N4BcCIQVyVx5BrJXcBs/Cc51xPVb6A1PfLQBUUmCErwa8w+mNrTguHZfFVZgcWb9e2ef/XVxXLJ
- 3x2pRQYIchCso8FuABFNmOFx5kc7EYXmTk1fFd19LQe6qrCpoHhhYavUtdE76vj68/Qg3Jrsl5s
- DSi5QTW3zQCqTyiZ4ZvjsC6OsVnMeELvxU5jj99hF4RDJWy540eluF3nKQo963hzRBrcpVm6ONU
- oizlYb4pHN3CgsYu5rdUai05Otg0bhBiuHr1FYR2rUly8Jh/UPUMFI7Ro9ZcS5bivXHh054N3P4
- thCm7rOpkh2N7mpzAJUC3D5T0/anfg6WYpFfWV1pt8LR2vjaHmzo/NQYOiVGQDCA9h0yn+Ch1oK
- tS1wkgj0vg5IX0fH0Utg2gEGXgqgqF2Wg+DtsFZsdPLcoADMfH20H4yKdoXacbJnQMRue+9KD+G
- 3lDl840Yt692R7XdfsA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-18_01,2026-05-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 suspectscore=0 spamscore=0 clxscore=1011 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180051
-X-Rspamd-Queue-Id: 9CB02566698
+X-Rspamd-Queue-Id: 585CB56696A
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249186-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[ellerman.id.au,gmail.com,kernel.crashing.org,pikatech.com,kernel.org,iscas.ac.cn];
+	TAGGED_FROM(0.00)[bounces-249187-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[163.com];
+	DMARC_NA(0.00)[kylinos.cn];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maddy@linux.ibm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[wangxuewen@kylinos.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,kylinos.cn:mid]
 X-Rspamd-Action: no action
 
-On Sun, 16 Nov 2025 10:44:11 +0800, Ma Ke wrote:
-> pika_dtm_thread() acquires client through of_find_i2c_device_by_node()
-> but fails to release it in error handling path. This could result in a
-> reference count leak, preventing proper cleanup and potentially
-> leading to resource exhaustion. Add put_device() to release the
-> reference in the error handling path.
-> 
-> Found by code review.
-> 
-> [...]
+The disable trace path in slab_debug() had a logic error where it would
+set trace=1 instead of trace=0. This made trace functionality permanently
+enabled once turned on for any slab cache.
 
-Applied to powerpc/fixes.
+Fixes: a87615b8f9e2 ("SLUB: slabinfo upgrade")
+Cc: stable@vger.kernel.org
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+---
+ tools/mm/slabinfo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[1/1] powerpc/warp: Fix error handling in pika_dtm_thread
-      https://git.kernel.org/powerpc/c/108d7f951271cbd36ca36efc5e5d106966f5180c
+diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
+index 54c7265ab52d..39f7eae7eecd 100644
+--- a/tools/mm/slabinfo.c
++++ b/tools/mm/slabinfo.c
+@@ -798,7 +798,7 @@ static void slab_debug(struct slabinfo *s)
+ 			fprintf(stderr, "%s can only enable trace for one slab at a time\n", s->name);
+ 	}
+ 	if (!tracing && s->trace)
+-		set_obj(s, "trace", 1);
++		set_obj(s, "trace", 0);
+ }
+ 
+ static void totals(void)
+-- 
+2.25.1
 
-cheers
 
