@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-249330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249331-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aM+oKewzC2qgEgUAu9opvQ
-	(envelope-from <stable+bounces-249330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:44:44 +0200
+	id yAh9FoU4C2qWEwUAu9opvQ
+	(envelope-from <stable+bounces-249331-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:04:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75E9570394
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 17:44:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29205708EB
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:04:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6DA05301AF10
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:43:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E973C304A622
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 15:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBE3451044;
-	Mon, 18 May 2026 15:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D109D48B365;
+	Mon, 18 May 2026 15:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NxRSy6EQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FehP4aGK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED9744D6B2;
-	Mon, 18 May 2026 15:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209CC48C412;
+	Mon, 18 May 2026 15:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779118999; cv=none; b=pxbNAACydpcRNyjUWGj6lxewMu8Omk92u/t5poOwEAgZO92DoVm3Ej6Q3LBwBaGfPWdeIM0tAEp8sTZPdpctbsE26d9IGPFYwzri9sV1cq2X2YHvIYYwSsKcq+anrG4/27jOvJMekunkWlL3vZtdtOAD2FnqDVpyAlGSxHV/YDQ=
+	t=1779119252; cv=none; b=cjOKcCiHkBm7hLMdAnuRkqiFtZB7oEfeqFKb7ZrMGMY/UGsXcGBBOukPOJUBwFcf56VAldWmTnq60TiLWogEhIkZAO4dgIZ1kgf+2U6wR3Be0tWvOhQzskXWPUBxKiV8XSv1zjxzNfUOltVklemS/nEwIZbQb80/PvEtK4UnQxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779118999; c=relaxed/simple;
-	bh=zk+PSPTETilcVCur56maJngwO4zTT9pKXV18BZNJjLw=;
+	s=arc-20240116; t=1779119252; c=relaxed/simple;
+	bh=wUP4HCFrB6MX5vlJebcDG589Qp6MWtnLG16Tg1qfRzQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ug2GBq5j4Ib3hXZ2uZCLleNE6L/jzem7jv9OWiTUJbhag0ze69qIQtnsziGa4ikuH6fENr15km0Gc+lHIb6PHoeHVawBRc/xpmsSJtr+cEcZwb3AymMpXnWZ/1YxKobVmWsGFbn8DSvPh42UV3tuW+AiIhSAQAzalZ+Fi/fPRME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NxRSy6EQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C842FC2BCB8;
-	Mon, 18 May 2026 15:43:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B/tC0Pow0otK2YlgSRQfGLIKX/ahMcDLQqwfQQOs9Wyf2WUFyVd0P7QCHTxABsqWzbi9SgRbNKzqbyhScolSxlFdGrqhO+Qgv3gWxzuU3g2Uhb3EK2Zyw+xU70UoSpbw06YfpLjAKnpC9d3p+a+tN8LuBPK5FBa9wZuMC0TVTxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FehP4aGK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E4CC2BCB7;
+	Mon, 18 May 2026 15:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779118998;
-	bh=zk+PSPTETilcVCur56maJngwO4zTT9pKXV18BZNJjLw=;
+	s=k20201202; t=1779119250;
+	bh=wUP4HCFrB6MX5vlJebcDG589Qp6MWtnLG16Tg1qfRzQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NxRSy6EQWSMXC0LJVE64L98ulAktP2pabm5M/0nbsMWuSX/d6YvBQ2kYvoATZwEGs
-	 ek1LVBIBmU8+FN3IyExTgWuqMifTesTuR1Ef1QdzysbdkyVOf6j+X8aDmkksqFJmfb
-	 fuIdsznGkBKEkANxMCca9aqj1bcNIWgTJQVHkqo+rAd6c9HXefK6T32K0Z/IqTKO59
-	 6LFGxxlvSSiZ0g35BMrcfFCKvnHzb1szLswVbdLb5/uDUOjlnfHQuaq4KsaKFGZVix
-	 ErpuRVw8YFJU+Ph6HDMiGQvwqgApNMo8x/EN2vp4Uwl1r2xuE/eg1mHQlXwXZ8+eJs
-	 QPovE+J+1LHnQ==
-Date: Mon, 18 May 2026 16:43:09 +0100
+	b=FehP4aGKJ8TqInoprZxmSRFNj3AUZEhiwnwiZXegGE9oiv5/dKo9xe1nETgPOdczZ
+	 G5c/vcKi7EQqmsjfbKxU8JzTs4FOr0mkDBYeTUHd4E1zFObeq2NCh/h5iXMn64SVr9
+	 HM74Pu/WNJE71MF4/5MW85XMZ/Tro0bmynNIRUDtmMaVkeGeTicraGmLr01Be+uHi7
+	 my9u4h+MxpQjRUn3KuHVPlB8jMkHcHW5FGsH4g0ZGhxNVrSL9mb67qcZjUDhxc/3z8
+	 5/yp7HkWCG8e5TkJ4IYspOOU9ZRtzpwrxvEhw6Kw3Cr+WlgbTE8dgbRyhYNrFpTYPX
+	 4glOv3fVtv1kw==
+Date: Mon, 18 May 2026 16:47:21 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Stepan Ionichev <sozdayvek@gmail.com>
 Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- hcazarim@yahoo.com, joshua.crofts1@gmail.com, gregkh@linuxfoundation.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] iio: light: tsl2591: return actual error from probe
- IRQ failure
-Message-ID: <20260518164309.04ed238f@jic23-huawei>
-In-Reply-To: <20260518163647.3b4966fb@jic23-huawei>
-References: <20260517181042.668-1-sozdayvek@gmail.com>
-	<20260518094311.2000-1-sozdayvek@gmail.com>
-	<20260518163647.3b4966fb@jic23-huawei>
+ hcazarim@yahoo.com, gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: temperature: tmp006: use devm_iio_trigger_register
+Message-ID: <20260518164721.73fcc8c7@jic23-huawei>
+In-Reply-To: <20260517182614.218-1-sozdayvek@gmail.com>
+References: <20260517182614.218-1-sozdayvek@gmail.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,111 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249330-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-249331-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[baylibre.com,analog.com,kernel.org,yahoo.com,linuxfoundation.org,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[baylibre.com,analog.com,kernel.org,yahoo.com,gmail.com,linuxfoundation.org,vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A75E9570394
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: F29205708EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 18 May 2026 16:40:48 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, 17 May 2026 23:26:13 +0500
+Stepan Ionichev <sozdayvek@gmail.com> wrote:
 
-> On Mon, 18 May 2026 14:43:11 +0500
-> Stepan Ionichev <sozdayvek@gmail.com> wrote:
+> tmp006_probe() allocates the DRDY trigger with devm_iio_trigger_alloc()
+> but registers it with plain iio_trigger_register(). The driver has no
+> .remove() callback, so on module unload the trigger stays in the global
+> trigger list while its memory is freed by devm, leaving a dangling
+> entry.
 > 
-> > When devm_request_threaded_irq() fails, probe logs the error and
-> > then returns -EINVAL, dropping the real error code and breaking the
-> > deferred-probe flow for -EPROBE_DEFER.
-> > 
-> > Return ret directly; the IRQ subsystem already prints on failure.
-> > 
-> > Fixes: 2335f0d7c790 ("iio: light: Added AMS tsl2591 driver implementation")  
+> Switch to devm_iio_trigger_register() so the registration is undone in
+> the same devm scope as the allocation.
 > 
-> Hmm. To me borderline on whether it's a fix.  In theory a board may exist
-> where the defer is a possibility.  In practice probably not given I don't
-> think we've ever had a report of this.
-> 
-> Meh, it's harmless enough and maybe helps someone.
-> 
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>  
-> New series versions should never be in reply to older series.
-> 
-> It tends to hide them in people's inboxes and brings little nor no benefit.
-> > ---
-> > v2:
-> > - Drop dev_err_probe(); just return ret (Andy)
-> > - Add Cc: stable@ as suggested by Joshua  
-> Mostly for IIO I add those to patches that I think need it but don't object
-> if people feel strongly enough and add them themselves.
-> 
-> Applied to the iio-fixes branch of iio.git.
-> 
-Actually dropped again.  I forgot to check sashiko and it raises a reasonable
-question:
-https://sashiko.dev/#/patchset/20260518094311.2000-1-sozdayvek%40gmail.com
+> Fixes: 91f75ccf9f03 ("iio: temperature: tmp006: add triggered buffer support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
+Looks 'obviously' correct enough that I'll pick it up with the very little time
+it's been on list.  If anyone disagrees do shout!
 
-Does completely removing dev_err_probe() here drop the deferred probe reason
-tracking?
-While this patch successfully fixes the return code, dev_err_probe() also
-records the deferral reason in debugfs via device_set_deferred_probe_reason()
-when ret is -EPROBE_DEFER.
-Could we keep the diagnostic tracking by returning the result of
-dev_err_probe() directly instead?
-        if (ret)
-                return dev_err_probe(&client->dev, ret, "IRQ request error\n");
+Applied to the fixes-togreg branch of iio.git
 
-Andy, what do you think?
+Thanks
 
-> > 
-> > v1: https://lore.kernel.org/all/20260517181042.668-1-sozdayvek@gmail.com/
-> > 
-> >  drivers/iio/light/tsl2591.c | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/iio/light/tsl2591.c b/drivers/iio/light/tsl2591.c
-> > index c5557867e..c5ccd833d 100644
-> > --- a/drivers/iio/light/tsl2591.c
-> > +++ b/drivers/iio/light/tsl2591.c
-> > @@ -1137,10 +1137,8 @@ static int tsl2591_probe(struct i2c_client *client)
-> >  						NULL, tsl2591_event_handler,
-> >  						IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-> >  						"tsl2591_irq", indio_dev);
-> > -		if (ret) {
-> > -			dev_err_probe(&client->dev, ret, "IRQ request error\n");
-> > -			return -EINVAL;
-> > -		}
-> > +		if (ret)
-> > +			return ret;
-> >  		indio_dev->info = &tsl2591_info;
-> >  	} else {
-> >  		indio_dev->info = &tsl2591_info_no_irq;  
+Jonathan
+
+> ---
+>  drivers/iio/temperature/tmp006.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/drivers/iio/temperature/tmp006.c b/drivers/iio/temperature/tmp006.c
+> index d8d8c8936..bf62143fa 100644
+> --- a/drivers/iio/temperature/tmp006.c
+> +++ b/drivers/iio/temperature/tmp006.c
+> @@ -350,7 +350,7 @@ static int tmp006_probe(struct i2c_client *client)
+>  
+>  		data->drdy_trig->ops = &tmp006_trigger_ops;
+>  		iio_trigger_set_drvdata(data->drdy_trig, indio_dev);
+> -		ret = iio_trigger_register(data->drdy_trig);
+> +		ret = devm_iio_trigger_register(&client->dev, data->drdy_trig);
+>  		if (ret)
+>  			return ret;
+>  
 
 
