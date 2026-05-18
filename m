@@ -1,161 +1,152 @@
-Return-Path: <stable+bounces-249192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKLdM0+0Cmpx5wQAu9opvQ
-	(envelope-from <stable+bounces-249192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:40:15 +0200
+	id 8AmHOJO0Cmpx5wQAu9opvQ
+	(envelope-from <stable+bounces-249193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:41:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01AA566D23
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15867566D56
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C760300AB1B
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 06:37:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1B6E302A6B2
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 06:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6105C386C30;
-	Mon, 18 May 2026 06:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8299B3C9EE7;
+	Mon, 18 May 2026 06:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="t6lho3Um"
+	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="K4p5WVAj"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EE232A3EC;
-	Mon, 18 May 2026 06:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FDF3890EF
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 06:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779086242; cv=none; b=nAlRKWQHJj9vxeSBIuxkONWv5mXamRAfZIbdIh6krRM1xSsZD64xWfRd5r3vlvmtaG8T5UTbMAKOIV+0PC6m72wjV37j1vJI8ZrzkkkeuWtboqcuFFOa1loPI9/9szUJ1LlNnZkiVvvC1l8fIMPRtrqZjmjrAKInUov3+ZuIY04=
+	t=1779086348; cv=none; b=XUle4dgTY/V4jr5sJ8vJMCECVz6kjSVUKvGSJMmETmexbIcBf/ktd0jpVN+/RLm06AAILJjGYuMzo3JE2DvY0iB+nQlflIQA1JY0V582g9mcRWtugdKo1N/f1OX07BXuKjmaBgwURVvxTREosug+eda1ESPmBRc9elGOSS+xC38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779086242; c=relaxed/simple;
-	bh=yQIbVnCjhAuXcMBGfVGIHYdxNObzjctBtEnLOIjQBZQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CYEpXtVM6MYzGqJriF33zDZl+VjgOIzPqrOv423myxjlPKRSkBNieRm5sn3im569+A4CuSOVqxBD9cctuBVJr10EsTmrXVUn66U7smyggMLuo8UZYk4y4VsFWGQfEiidCuqpO1Z6GX2nE4rIO+3gK+M8LyfFSIiGV5t4Og1IdkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=t6lho3Um; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 260C745BD;
-	Sun, 17 May 2026 23:37:11 -0700 (PDT)
-Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id ABCAD3F85F;
-	Sun, 17 May 2026 23:37:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779086236; bh=yQIbVnCjhAuXcMBGfVGIHYdxNObzjctBtEnLOIjQBZQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=t6lho3UmNLB5Cm7wXq1KfUS25waa1wm1w6iIg3gs5tcZD9vZrCzGj2pGb9GHydwwt
-	 UP7Fn+rcxcfuqkFXoTiKefdP5RtlpKm0efarKCueLZfXKF4d83qeyGcfWLfI+8UUeF
-	 sy6Jal5jsHiq0IHpP7D8fKztoqyImnje7LS/ewfU=
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: Dev Jain <dev.jain@arm.com>,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	baohua@kernel.org,
-	linux-mm@kvack.org,
+	s=arc-20240116; t=1779086348; c=relaxed/simple;
+	bh=buANpIYhImCPh66p/SAEazuwt0SkK6rVfe03JFcoyaY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JYEDu0BSVV/3Z3LqgMu+btYVbv+fNEwjuQJei0MKU5At09+tyjJ70x4r13YU/bk1kD5i1ROb21tPznlCUIgfPujW1VON3mhH7AR3E330779AyFVkpXteQrgnRw1PPLSEgHdzfEBNbdzwjXx/zpdnIMVAG1ti608FkOFoJ6SZBG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=K4p5WVAj; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
+	s=key1; t=1779086340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ZmlGCP7iSzr3ZczH67y0FAPPISnKn0z/q9xwzrmevE=;
+	b=K4p5WVAjRlJX0el7XwN0gkNfkGwAlVArvFv28J6f8v5FOVZZjG57JqRKIYu01+0+751qQP
+	trbTPhXEOokt1Te+w91gw9XzwHGPNKqeWhFEPuWJD9K2BkoGDxbb8GiTGovnl0TIl0JcP0
+	QoUwdeQy0563fZ6X+wek8HG7NoLtzKRIzhqD6MinErs/7ieJXY1d5nY58yKrDEmnhiRv8d
+	nb25pWMhLDo45+DWjK/Cs1cTpCF+7O1MRmstD+CVKIVKVNysTU4ztKiTW6/sQoA6Lmsb1g
+	xL0HzPFeNmlbEY1QdUC+tBR+P90ijxPh66BB3xH76TJmC13sIqhs4g/AEtCTAg==
+From: Devin Wittmayer <lucid_duck@justthetip.ca>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/rmap: initialize nr_pages to 1 at loop start in try_to_unmap_one
-Date: Mon, 18 May 2026 12:06:56 +0530
-Message-Id: <20260518063656.3721056-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.34.1
+	stable@vger.kernel.org,
+	Oscar Alfonso Diaz <oscar.alfonso.diaz@gmail.com>,
+	fjhhz1997@gmail.com
+Subject: [PATCH v2 0/1] wifi: mac80211: fix monitor mode frame capture for real chanctx drivers
+Date: Sun, 17 May 2026 23:38:52 -0700
+Message-ID: <20260518063853.96384-1-lucid_duck@justthetip.ca>
+In-Reply-To: <20260308164510.5927-1-fjhhz1997@gmail.com>
+References: <20260308164510.5927-1-fjhhz1997@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F01AA566D23
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 15867566D56
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249192-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[sipsolutions.net,nbd.name,kernel.org,vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249193-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FROM_NEQ_ENVFROM(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[arm.com:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,arm.com:mid,arm.com:dkim]
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[justthetip.ca:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:email]
 X-Rspamd-Action: no action
 
-Initialize nr_pages to 1 at the start of each loop iteration, like
-folio_referenced_one() does.
+This is v2 of fjh1997's patch, carried over at his request after his
+reply on morrownr/USB-WiFi#682. Compared to v1: the substantive
+change is the list_is_singular() guard agreed on in the v1 review
+thread, so the fallback only fires when the chanctx_list is
+unambiguous. The surrounding else block is also collapsed into a
+single else-if matching the shape d594cc6f2c58 used for the emulate
+case, and the v1 local ctx variable plus inline comment are dropped
+(the rationale lives here in the commit message instead).
 
-Without this, nr_pages computed by a previous folio_unmap_pte_batch() call
-can be reused on a later iteration that does not run
-folio_unmap_pte_batch() again.
+On the hang reports against the previous attempts at this fix (Oscar
+against v1 in his March 19 2026 lore reply, and Johannes's Dec 2025
+v2 at 20251216111909.25076-2-johannes@sipsolutions.net, held back for
+similar reasons), I reran the airgeddon evil-twin flow (hostapd AP +
+monitor VIF on the same phy + aireplay-ng deauth from the monitor) on
+three setups:
 
-mmap a 64K large folio with MAP_ANONYMOUS | MAP_DROPPABLE, then call
-madvise(MADV_FREE), then make the last page device-exclusive via
-HMM_DMIRROR_EXCLUSIVE.
+GMKtec NucBox K8 Plus (MT7922 PCIe, in-kernel mt7921e, kernel 7.0.5):
+  Stock and patched: no hang on 2.4 GHz or 5 GHz. dmesg clean.
 
-Trigger node reclaim through sysfs. Now, in try_to_unmap_one(), we will
-first clear the first 15 out of 16 entries mapping the lazyfree folio.
-This will set nr_pages to 15. In the next pvmw walk, this nr_pages gets
-reused on a device-exclusive pte, thus potentially corrupting folio
-refcount/mapcount.
+Pi 5 (Alfa AWUS036AXML USB, OOT mt76 carrying morrownr/mt76 commit
+903b05918523 "mt7921: assert sniffer enable on chanctx change",
+kernel 6.12.47):
+  Patched: no hang on 2.4 GHz or 5 GHz. dmesg clean.
 
-At the moment, I have a userspace program which can make the kernel spit
-out a trace, but the blow up is in folio_referenced_one(), because there
-are existing bugs in the interaction between device-private and rmap
-(which too I am investigating). I did a one liner kernel change to avoid
-going into folio_referenced_one(), and the kernel blows up at
-folio_remove_rmap_ptes in try_to_unmap_one which is what I wanted. 
+Kali Linux 2026.1 VM, kernel 6.19.14+kali-amd64 (matching Oscar's
+reported environment: Kali, MT7921U via USB passthrough of the Alfa
+AWUS036AXML to a KVM guest; airgeddon 11.61 installed; v2 mac80211
+built in-VM, installed, and loaded as the OOT-tainted module):
+  Patched: no hang on 2.4 GHz or 5 GHz. dmesg clean (0 errors,
+  0-1 warnings). Slab delta under 2 MB per 30 s run.
 
-Note that the bug is there not since file folio batching but lazyfree folio
-batching, since device-exclusive only works for anonymous folios.
+Patched did not hang on any of the three setups; K8 Plus stock also
+cleared the same flow on both bands (Pi 5 and the Kali VM were
+tested patched only). The prior reports look environment-specific to
+Oscar's rig rather than kernel-side. If Oscar sees a recurrence on
+this v2 I will iterate with him on the thread.
 
-Userspace visible effect is simply kernel crashing somewhere due to
-refcount/mapcount corruption.
+Discussion: https://github.com/morrownr/USB-WiFi/issues/682
 
-Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Barry Song <baohua@kernel.org>
----
-Applies on mm-unstable. This patch was part of
-https://lore.kernel.org/all/20260506094504.2588857-2-dev.jain@arm.com/
+傅继晗 (1):
+  wifi: mac80211: fix monitor mode frame capture for real chanctx drivers
 
- mm/rmap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/tx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index fb3c351f8c45..1c77d5dc06e9 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2030,6 +2030,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 	mmu_notifier_invalidate_range_start(&range);
- 
- 	while (page_vma_mapped_walk(&pvmw)) {
-+		nr_pages = 1;
-+
- 		/*
- 		 * If the folio is in an mlock()d vma, we must not swap it out.
- 		 */
--- 
+--
 2.43.0
-
 
