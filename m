@@ -1,188 +1,183 @@
-Return-Path: <stable+bounces-249215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249216-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMmsFMjKCmqf8AQAu9opvQ
-	(envelope-from <stable+bounces-249215-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:16:08 +0200
+	id WMR/NkbKCmqf8AQAu9opvQ
+	(envelope-from <stable+bounces-249216-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:13:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCD8568859
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:16:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728BA5687E1
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B74813017CD6
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:07:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E2433040DA1
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832ED3E0C70;
-	Mon, 18 May 2026 08:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KzJJPHAJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E513E024F;
+	Mon, 18 May 2026 08:08:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CA13E024F;
-	Mon, 18 May 2026 08:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97C42F7F18
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 08:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779091674; cv=none; b=Thf5J75gv4wjcuAOmxaPCdx9F5IDcfx52cXtoc9KLxtUSh3kNAOGIVsX4HUyXyg+lCEYsrKzS7q5xBLj0dm7wIMPJCazADEIMkOr6gG1ap3cAPgyJXL/6gvDZXWbJV10xUBToEzeH/GJt3d3hvLUEAXDB/KlDy88D9pP9UB4fiA=
+	t=1779091702; cv=none; b=u5mhUf8r33RPlt+AU054p1lSZ3bBKJnnMa032elFwk98FXcilxedDVdlu53lbdWfUEAXJd7+Nhs93Ia2H1+rH3JyGxpkBhkQ6GMJQJsmDB2BAyHF0IwQc+/c5q80CAdomPktvIv9st5N4K/qtrZa3MHOCZFIqQra3wmqiLiNROE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779091674; c=relaxed/simple;
-	bh=f3s71y9fZtkdUU8EDqgHsrGFOFj1SW6ZW7p89xOqcCg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dVtAxP0dUz/GgEBhCy1S8p8W/2WTrayX83Dmn4sH+W1BGzAxe8rFxi9Ro2gwZTMz4UwJRHsBT409ruSDq7dvdg0TGP30zs5FBGP0gHuvafHqDHbCh0le23T9jPqEooVfOKGhvc5wOkAoY6rngjt/rZBxglfIaBHBBKoXfxQZqj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KzJJPHAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDFCEC2BCB7;
-	Mon, 18 May 2026 08:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779091673;
-	bh=f3s71y9fZtkdUU8EDqgHsrGFOFj1SW6ZW7p89xOqcCg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KzJJPHAJIISUt1FdYf58bAeIYkOcE1zUWlLODgXPpZ6n6rAbaIvb9XzZ/frk9NDQr
-	 NhEuLaZtWyHIvNgDA9kqn+SHDn/nwwoiBzH8m8AUG1XEDBC+Bl3vQXuOMP9NyNT8TK
-	 1GHQBbCu5hM2bu3P3pFrUuIM7p716NVAWcw2nr7tmWZqoPVCaF+5evQYvWoRIWlnrj
-	 yuohzEkfN9T1OO/tdBLZIjTLDNP41t1MW+VChRB6QEuQlYBVPV5B/BDTc8bN6Czaqr
-	 K//s6/0fpGmC+qtOz2RKiWfqAAIcxm0Wk8JALWOzlXEmoUQRdAGmzZRwa/jeF1mnhs
-	 mTnOlDeXqlCPQ==
-Message-ID: <3249f38f-b1e4-4483-b4c2-156e184175d5@kernel.org>
-Date: Mon, 18 May 2026 10:07:48 +0200
+	s=arc-20240116; t=1779091702; c=relaxed/simple;
+	bh=zhB4j+JhWVd8A037JLrJiPDfZJuTf+SxKAz96boFBnI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MIWnu4QGQ4dcfUgFuFSRtMzFwuHC7D+xoxu4IFB6v5RAtonNEhQEqrp/1An+S0fpZrI9MlT/vT+0SJEhJL9UrRXlDnidCYBU8uUrLHWI1YZcAuqfE8R5x1XDcHQqe7BaA8f36sqV+zAaYy62v8FcOHb50CT8om6PzPRfmI7DozA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5751b7d147aso612390e0c.2
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 01:08:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779091700; x=1779696500;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JUYYkmPBjhPBpcIVZ7SX/KXLmdloPWmcos5I3ZD4vTQ=;
+        b=RrmMGNr6hvXZOLJ6pqpA1ho6IqQRsRUChohK5tnTZLgFSoPUka7wOjakOXC0GLJCFJ
+         nFj3f0BOWv6K0v44fUkTRm0qMySuAH3+tKWuLaLMjoV5kdOIMMjGzgBoI5PmdKf7xsT/
+         d2bu/Dk4e3XDYll/yGt6Oz/+lCMFDQ4qrrWfaHvxQzZkIEpXzsZSKInVT6Ntf6knTJJ0
+         Px/tgnV9IlGhXW6uMDgcKpdTvpfYlxjqM/9MDePxRumUkOA8Y9ADoGQK/FXaSJ1QWgxJ
+         +qt4q+m2yBV67jamqboAan1FEAZxf2blYqWR1BicJdkqm499wGvUmFhWjWSiYvNInV/+
+         wPRQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9E4JRV6LNfOv8TZ46tIe9tb0UYRbE9cgHlGLJPgRSlINrIUrRruM7Sea0z4LpD4c0G/3kuA74=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJZxT57fpsKDAwsVOQeoJTYmWubaVz+/499FG1tGi4w8DPJYYC
+	9KV/P4YNokTv+NTdjTql8HiuB9QqW+kE5DLQvQ6xxVQ+LNPjfbXZjuLstQ/kycUW
+X-Gm-Gg: Acq92OGeEkYgACSjiqjICSNqN1pSKnniTwO1T/dMtNNQzkgpcotZeGgk42x8yCoSm2l
+	Hi1nnwnLwo6p8+tI4/GP0+z1O+zoTQCj5FjwBPXIKhh5CSd9Hc0VCjW1QgX5/YVW1HKOBGxV280
+	fyIM0ZLnpl6OltfdUXhJnJIgLYuqORW1foFtnAMtanASgl+GeTUp0smbNYMcFDPvfe+kOLXlpr6
+	bF1vFD1u95vqvtVGbh3eYFCGX2iw79Xd9FCbAtsUIfYWyB7zzacuvRUVFhta6mQtwUpR0ymiwOh
+	Q0D4L6GTZFggdn3T63iko3cA8pRIlIA6CtOCNVM+gXWt6xxIT1k9udEt2a2VC1bHNMNbrwff68D
+	b6dHBHwwQgM/6PXO6V+C+rKhRo7HFWjYyPhPBhYX9jV9tMOdoJKOccY4JhJLUPquxb9HMGHCZXh
+	HYGcIO+WudWaj8cpbKDYHyLFfuGKeqtESnnuuvo7vYN6yTQz7jyjfI17aPB0lm
+X-Received: by 2002:a05:6122:2988:b0:56f:a3e2:66a4 with SMTP id 71dfb90a1353d-5760be39af3mr6845695e0c.1.1779091699646;
+        Mon, 18 May 2026 01:08:19 -0700 (PDT)
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com. [209.85.217.41])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5760fadc1dasm5638529e0c.16.2026.05.18.01.08.18
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 May 2026 01:08:18 -0700 (PDT)
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-6324ee4040cso544445137.0
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 01:08:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/l0udok+cDAe83Qno0OfPady7yrIR5LEQ0tUySpku0oZ2WWfUsvaRAbE7ruoG72q0dyS4DGvE=@vger.kernel.org
+X-Received: by 2002:a05:6102:6046:b0:631:b834:e052 with SMTP id
+ ada2fe7eead31-63a3d72bf03mr5639387137.12.1779091698017; Mon, 18 May 2026
+ 01:08:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/rmap: initialize nr_pages to 1 at loop start in
- try_to_unmap_one
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, baohua@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260518063656.3721056-1-dev.jain@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260518063656.3721056-1-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6CCD8568859
+References: <20260514174342.28451-1-sozdayvek@gmail.com> <CAHp75VfsA_LsbEKjxoeMdbhPbWj7OHZ7=0SYNA3c=ZLj_M94Bw@mail.gmail.com>
+In-Reply-To: <CAHp75VfsA_LsbEKjxoeMdbhPbWj7OHZ7=0SYNA3c=ZLj_M94Bw@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 18 May 2026 10:08:07 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUahvn5dr-sdN=4GP+0Mc2usG4CqVxYqkkzZz5RJbqZsQ@mail.gmail.com>
+X-Gm-Features: AVHnY4INWu1Mc1mhZBJHaVUhCQbAP7LxhrNHnPE0OdAz1Swwb3lrj_NGD_y1250
+Message-ID: <CAMuHMdUahvn5dr-sdN=4GP+0Mc2usG4CqVxYqkkzZz5RJbqZsQ@mail.gmail.com>
+Subject: Re: [PATCH] auxdisplay: line-display: fix OOB read on zero-length message_store()
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Stepan Ionichev <sozdayvek@gmail.com>, andy@kernel.org, hcazarim@yahoo.com, 
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 728BA5687E1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,yahoo.com,linuxfoundation.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-249216-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249215-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-m68k.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,arm.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-On 5/18/26 08:36, Dev Jain wrote:
-> Initialize nr_pages to 1 at the start of each loop iteration, like
-> folio_referenced_one() does.
-> 
-> Without this, nr_pages computed by a previous folio_unmap_pte_batch() call
-> can be reused on a later iteration that does not run
-> folio_unmap_pte_batch() again.
-> 
-> mmap a 64K large folio with MAP_ANONYMOUS | MAP_DROPPABLE, then call
-> madvise(MADV_FREE), then make the last page device-exclusive via
-> HMM_DMIRROR_EXCLUSIVE.
-> 
-> Trigger node reclaim through sysfs. Now, in try_to_unmap_one(), we will
-> first clear the first 15 out of 16 entries mapping the lazyfree folio.
-> This will set nr_pages to 15. In the next pvmw walk, this nr_pages gets
-> reused on a device-exclusive pte, thus potentially corrupting folio
-> refcount/mapcount.
-> 
-> At the moment, I have a userspace program which can make the kernel spit
-> out a trace, but the blow up is in folio_referenced_one(), because there
-> are existing bugs in the interaction between device-private and rmap
-> (which too I am investigating). I did a one liner kernel change to avoid
-> going into folio_referenced_one(), and the kernel blows up at
-> folio_remove_rmap_ptes in try_to_unmap_one which is what I wanted. 
-> 
-> Note that the bug is there not since file folio batching but lazyfree folio
-> batching, since device-exclusive only works for anonymous folios.
-> 
-> Userspace visible effect is simply kernel crashing somewhere due to
-> refcount/mapcount corruption.
-> 
-> Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> Acked-by: Barry Song <baohua@kernel.org>
-> ---
+Hi Andy,
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+On Fri, 15 May 2026 at 09:13, Andy Shevchenko <andy.shevchenko@gmail.com> w=
+rote:
+> On Thu, May 14, 2026 at 8:44=E2=80=AFPM Stepan Ionichev <sozdayvek@gmail.=
+com> wrote:
+> > linedisp_display() unconditionally reads msg[count - 1] before
+> > checking whether count is zero, so a write of zero bytes to the
+> > message sysfs attribute hits msg[-1]:
+> >
+> >         write(fd, "", 0);
+> >
+> >         -> message_store(..., buf, count=3D0)
+> >            -> linedisp_display(linedisp, buf, count=3D0)
+> >               -> msg[count - 1] =3D=3D '\n'  ; OOB read
+> >
+> > The kernfs write buffer for that store is a 1-byte allocation
+> > (kernfs_fop_write_iter() does kmalloc(len + 1) with len =3D=3D 0),
+> > so msg[-1] is a 1-byte read before the slab object. On a
+> > KASAN-enabled kernel this trips an out-of-bounds report and
+> > panics; on stock kernels it silently reads adjacent slab data
+> > and, if that byte happens to be '\n', the following count--
+> > wraps ssize_t 0 to -1 and is then passed to kmemdup_nul().
+> >
+> > linedisp_display() is reached from the message_store() sysfs
+> > callback (drivers/auxdisplay/line-display.c message attribute,
+> > mode 0644) and from the in-tree initial-message setup with
+> > count =3D=3D -1, so the OOB path is only userspace-triggerable via
+> > zero-byte writes;
+>
+> Isn't it also triggerable when  PANEL_BOOT_MESSAGE is left default
+> with PANEL_CHANGE_MESSAGE=3D"y"? (However these double quotes makes me
+> wonder if this even works, as usually we compare symbols against plain
+> 'n'. 'm', or 'y' (without any quotes).
+>
+> > vfs_write() does not short-circuit on
+> > count =3D=3D 0 and kernfs_fop_write_iter() dispatches the store
+> > callback regardless.
 
-Thanks!
+I think PANEL_BOOT_MESSAGE is the only way to trigger this, as
+writing an empty string to a device attribute is a no-op according
+to commit afcb5a811ff3ab39 ("auxdisplay: img-ascii-lcd: Fix lock-up
+when displaying empty string")? If that is still true, the issue
+was introduced by commit c8ffef985af564c1 ("auxdisplay: linedisp:
+Support configuring the boot message")?
 
--- 
-Cheers,
+Gr{oetje,eeting}s,
 
-David
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
