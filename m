@@ -1,183 +1,209 @@
-Return-Path: <stable+bounces-249212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OJlMk/ECmoI7gQAu9opvQ
-	(envelope-from <stable+bounces-249212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:48:31 +0200
+	id gPKODXDECmoI7gQAu9opvQ
+	(envelope-from <stable+bounces-249213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:49:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0D5568174
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:48:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D115681A4
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1095B30063B4
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:43:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF92E30414A3
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC263DE420;
-	Mon, 18 May 2026 07:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6183D669A;
+	Mon, 18 May 2026 07:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pIdOD8Se"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gIWBptgn";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YrjpdpZP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C093C13F8
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 07:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936953C3BF1
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 07:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779090183; cv=none; b=iY3/qiHZatyZL/IOOWIFhBiGSlsDwrG/y0c7egBWS9gTtYNlb4Q2cK+2wTeRbjKhnsFSff/LFn2KMkO/6teO1K+nTYRUAQkxhgAMTdluUqcM2utoxXGJm5THhk+anz/vyPQ3evgSSy4B8CArva5n6VcbaiMJZ7fvFmFy+Zq1xPw=
+	t=1779090207; cv=none; b=DZ5C3IqpZEAHcm3PFebesm/WNkblhCjbYfNsDGT7sHdEStC3aahdCRQV7Lk5YZiA5lD5iwCScwTI2RdF+zp45h1rkKmoqNkiyjaVd+SJEAJPHeTnN66egBporFIzHBk0RaxvK77QYkif0GjsLBW5vtlEin2aBJz/Us/hd3shI/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779090183; c=relaxed/simple;
-	bh=eSueVGjl9kpfrC/9O9pfTUZGg3av7Bo0jfk9t85JoS4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uEQf5QiGOMqIt0HCnnXydF+oEw5mTwiPqWRSmbaJYJp/ewctajKzoLx5SQhLvbfzEvQbzALYkIjaDzGsjSyFZX5dwtgREhgFmT4Z+BHYoc3eKPy+ow/6+IX7Ex5OcKvgWvrDDKlKVf5LMB3+U/L2cKC1f4cUwVXNbY88OGiq9hA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pIdOD8Se; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36810434abaso173671a91.0
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 00:43:02 -0700 (PDT)
+	s=arc-20240116; t=1779090207; c=relaxed/simple;
+	bh=MovC6lzwqjBIYUrOC7QBOqcc/WMNFxOnawRcJ7P2/Ik=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C9FP7JglnUV9bXPpYVToj0sy3ccwETJTxKAz2OUsav1sY6LkG8Mjys03Hk2WjVbUc9mDhyHew2FCbhI/tL/OarJBqZJX4Dp1QfbyZnmZ9vRd+GH29GJp17yKNAkYerqLjAAazP1abXDGHYWlmMGE/mxZn2x44U58A3bRxq+aLx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gIWBptgn; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YrjpdpZP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779090204;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dkz4o1HCLWz8eoAHqvdPjV97uEnFp10w6ezT5caacdg=;
+	b=gIWBptgnAbwkqCsUNwU4yU2ZqgknRyl3PQgkm+dnNaZowdY7+kIU3dkki6QgPrRGmSQWAK
+	xX8v50J8zQz1KZ20p8IyQc0ITYMzOM0VJVrdodJByFGaBw7FDhve02l4O80ciVIKHERV4M
+	8lMN6cfPW85Uy6z6bM5rzWeBWib+ko0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-385-ABZGV2dtMEaRySX_GvZbRA-1; Mon, 18 May 2026 03:43:22 -0400
+X-MC-Unique: ABZGV2dtMEaRySX_GvZbRA-1
+X-Mimecast-MFC-AGG-ID: ABZGV2dtMEaRySX_GvZbRA_1779090201
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48ff0eb77b5so17836665e9.0
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 00:43:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779090182; x=1779694982; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=k8yME935TMtR1RQ2fzR/XnTzQNsnJA37aJzNpTqM9xk=;
-        b=pIdOD8SeVbL7F/gl0FTHJs5dVrgwzJK2nMb96IgsgXYxy+BonXYiRNcJPV5MuiEhYF
-         REIlnS150rd2ZuRcRh8belDH5Fh0z+XCOGdKzLCkQjS28MCOaS54DRYEC3B/6CnnaOvI
-         2GACY3w+88Z2c+hHlhklHrOMf++a0jEXBJKy5OVcd6iNplokTX/nDHfs+nTEV/KydS4I
-         uXvQc4grdSZ6e6JtMEPzAp3miQaQjfdfxZJLwwQj0FZGwjqGo0bX2iFLTmmbtL+30TO3
-         oN4TPZ8+Zd0NTENU7WLVu7HEXvzdwC9JaGNBEEtQ1Wi6Z87PLvwSggoQY5XQr2W025Eu
-         rW4g==
+        d=redhat.com; s=google; t=1779090201; x=1779695001; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dkz4o1HCLWz8eoAHqvdPjV97uEnFp10w6ezT5caacdg=;
+        b=YrjpdpZPpC5tFQjqn0D83UeDnlOFSD8D3WERvz2u0OfkH546kE4GvZCtTYgbJCMvxt
+         bqVcWoph+GBR4i+eheXZZRGp7KhjJW0S6xKSU7hXrohu+bF9HHQ7+kXjfu9C2USEbWJz
+         tKq1bg2y4VVfFZVhotwnco5aYNQRr+gqhpbgFKuM4nqLdGjDER5GQ08xATNpfwQVr9Bt
+         huAsdIt8PeX1UJBgOtc/JVjdzuinE2nxU47InWwjZhrGsULn6pacPx4NNsLJ2fkeNwaB
+         o8ZycV1CF6tYzNFNKmrehZc6oAX7Z8ABnAtGykbW6Kq5oEW9o5MEnI5NWE90PcHs+gAe
+         MPvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779090182; x=1779694982;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k8yME935TMtR1RQ2fzR/XnTzQNsnJA37aJzNpTqM9xk=;
-        b=DLGNoNgZ3OtrXQaDJZv8DV9YPOsFx6dW5ZUcL1pLDV4wDGh+G0K5b7vXGDb+mhXiHb
-         gp6YQnIYbxp7gwEUDRMD9i1F+M3HlAGxvH397LZcqsL082rXqyfbFO+zmlucJRowuT47
-         KoLvfsgGWS2XTKIwQdBc/kxndkYuN0Wvgbt+juPrmUrOE4IYVnV+jKvtjnNo4PlU+Nne
-         T0Dmp7pIHH28BbYkSbVtUKgwm+cVg8pyYCG3uO3Jgd4a+Tyk1P83LThGFwrSmWbTemJ4
-         Vy0As5eKr5wxzsJYG3IaHcdM3LGF6bSCw7XmADSmIToI0aWyvgG+YCVw77SxQhk3sQwk
-         gu2A==
-X-Forwarded-Encrypted: i=1; AFNElJ/TinDCFzQhH6AIIfOHeOuZflGlqlGByafUpxejUlDvQGS6DSdJN2oK08mm/0DQ3+RxZfYwvK0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJKZT32TlH3PqTHkxwVnUPrmVgFD9eBX4mFTA9KiQ/22WfJHKY
-	AQHX5H/jqdWymGfhhvqbPG/RfZOWU+WRbPZCmRmLPow5wRDHnDT+fY+N
-X-Gm-Gg: Acq92OEE4TCEjHRkd6MXW+1Ycn3q7Vm24I+nd2dHnA0zFYOuQm8F1vR6AINjKIPeFUC
-	3qIz05gtdNXO9HDljNRk8YNRBAgLK+sfKHQ33mrK2bUoCtVrv/hIf7np9cj/py/Y51Zppwe3red
-	ao/7QlFgiebvgsNBSGU2ISmZJnJUV/0/6RZVoYAmlLWOWrOJk/WidXQQnZD+rcq6QmFAibHuM9j
-	4a4Aq+qd8BU1ErJx+6LUp8NUs5lgBn4rDoymemZ+XDIJafQ+DiB7Enka2NzkYbUVadeL48t2j6A
-	xGb9BG4OkYt2Ih78yj13/5S8D2obtYKHy90dRrHvcdy4ctV87HY00kI9Pk1czF/s4//hKyCEt7x
-	u90LW7jtQnMyrmod6kgXwBu53ajsn7gSQcZsO0rTjGR5a6qYw6hXiXxx63kGt80lKc+Vftqk1Ag
-	bky1/SPPmgD6NSG0H5murP+/MzCTSpGynJOsdnPkbY5Ushm1R4B+kSRfCUqxQrWgHmZqYFFmnDo
-	MsQIfTpLResX+hxNmZJqlohqws/NJgnLA==
-X-Received: by 2002:a17:90b:4d0d:b0:368:44d:bbac with SMTP id 98e67ed59e1d1-36951ca93d8mr7586429a91.6.1779090181689;
-        Mon, 18 May 2026 00:43:01 -0700 (PDT)
-Received: from localhost ([240d:f:a5c:fb00:b9d0:5976:9793:153b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-369517a8612sm10167726a91.12.2026.05.18.00.43.01
+        d=1e100.net; s=20251104; t=1779090201; x=1779695001;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dkz4o1HCLWz8eoAHqvdPjV97uEnFp10w6ezT5caacdg=;
+        b=V56pk/N9f4q4Y8jxMhQJjyiA/mRJPfUek+FdB2r9CU7LlkrNuiStv3jWjRl7mGHKrT
+         D4ukEcv0X6N7pyUzhIQNQFhf8WD17TYlSHjPWZ+XBATaYBdD/TTKldAAEhPVlQY8EsE8
+         C08pbK6L1UMEWYbQchDc0sdsyrLYrqZ0QOW5hSBf5rOYeFQK2nblI5KaMBRoncp5VAEH
+         19MbPcw1cDpIW4CFwSnZxiUzqKrW+VoK4j9iOFlgrUlTrkbKFwf2Py72kf0LKRni0bVX
+         dUCFnZNdc8hqzg8u2QxrNp4NaW1RjiLULpO1+6vEOMOw3L0DGkIINFhRNV2AaxiTjGr9
+         ff/g==
+X-Forwarded-Encrypted: i=1; AFNElJ8U4bFn2yjE4CugESOujnA1Za/03c6utxi2UcsotaBgEgn/dGJo4p9EwnJR89zczqHez0CsdC8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyfoM1qJpcyL09YfcvlcwtatJN8U2M6VtEW+YBZgwxb2wHYcMQ
+	NAC1SJiyXv8fqZ8NjvY8uF7d/qNPdwrvpkHIZ9VieS5voJuvc8VBiWIDW4hVhRTS18rHwPvgE+V
+	r8r3bgQhaGPtv/HKX6ZG5yAmjhEwlnpO2Pmy+XLz3S73248lA7iXQ6PCyOg==
+X-Gm-Gg: Acq92OF6WyShRpPdDDnlFS6DMHPol7XkdKBRMOx5a+GVbDdV9FpxihO6jL7T9c9orxO
+	m42tVSE3vuMieCdWKbp9oxj3lDkxEiSx7WKAImGVphwdF1I93fy4HG8sMGOUyuG5IprRgDLTxdX
+	DAVGbN5E5lG75EoNoTAt7Yyt0HATgOjs750nHa7KC9qlvrGablmZmX4ZiEFmoAoaTDAOAdHbHAE
+	NzIIdRUxuz1xzRDon06lmxOOT2RvdgtHZQbZpse+oBddLVnhB2gagbQEfi9/dcXc8Xgwfe+qvUe
+	F69SL6ys7wi0995LAO4kWYke1bTo8PHqzXlKvJzpk0i5U4YFIDq7jL8Q/kAIEkPqYDE01KZ0N3j
+	BCATcd31ksbZTuSokVW9YH0RzDag6kzrK1mbU7GppZVTS+GC1OLTA
+X-Received: by 2002:a05:600c:8189:b0:48a:9428:5522 with SMTP id 5b1f17b1804b1-48fe632249dmr217556745e9.16.1779090201291;
+        Mon, 18 May 2026 00:43:21 -0700 (PDT)
+X-Received: by 2002:a05:600c:8189:b0:48a:9428:5522 with SMTP id 5b1f17b1804b1-48fe632249dmr217556445e9.16.1779090200920;
+        Mon, 18 May 2026 00:43:20 -0700 (PDT)
+Received: from jlelli-thinkpadt14gen4.remote.csb ([151.29.56.132])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c834besm241779275e9.3.2026.05.18.00.43.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 00:43:01 -0700 (PDT)
-From: Aaron Esau <aaron1esau@gmail.com>
-To: linux-block@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Aaron Esau <aaron1esau@gmail.com>
-Subject: [PATCH] block: fix dio leak on integrity metadata mapping failure
-Date: Mon, 18 May 2026 16:42:58 +0900
-Message-ID: <20260518074258.1600307-1-aaron1esau@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        Mon, 18 May 2026 00:43:19 -0700 (PDT)
+Date: Mon, 18 May 2026 09:43:18 +0200
+From: "juri.lelli@redhat.com" <juri.lelli@redhat.com>
+To: batcain <batcain@protonmail.com>
+Cc: "peterz@infradead.org" <peterz@infradead.org>,
+	"jstultz@google.com" <jstultz@google.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: [REGRESSION] sched/deadline: Hard lockup during CPU offline
+ after commit 14a857056466
+Message-ID: <agrDFlsPQxzWa9Xs@jlelli-thinkpadt14gen4.remote.csb>
+References: <r16mBH1ydY4oK0PInLKwpYR2I5qZBsV5J0JsNLrXAh8OR_QC6z6lABKlcvpzgUiBuarTKtVTP977RLI4mqt64Ydtd2O3yfhRuRJkQ1JL8u8=@protonmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2B0D5568174
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <r16mBH1ydY4oK0PInLKwpYR2I5qZBsV5J0JsNLrXAh8OR_QC6z6lABKlcvpzgUiBuarTKtVTP977RLI4mqt64Ydtd2O3yfhRuRJkQ1JL8u8=@protonmail.com>
+X-Rspamd-Queue-Id: 91D115681A4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	FROM_DN_EQ_ADDR(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.dk,samsung.com,lst.de,kernel.org,vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[protonmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249212-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aaron1esau@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249213-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[juri.lelli@redhat.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-In __blkdev_direct_IO(), when bio_integrity_map_iter() fails on a bio
-after earlier bios have already been submitted, the goto fail path frees
-only the current bio and returns the error directly to the caller.
+Hello,
 
-This is incorrect because the fail label does not decrement dio->ref for
-the current bio, and does not return -EIOCBQUEUED. The in-flight bios
-each hold a reference via dio->ref, which was incremented before their
-submission. When they eventually complete, blkdev_bio_end_io() decrements
-dio->ref but it will never reach zero since the failing bio did not
-participate in the completion mechanism. This permanently leaks the
-embedded dio/bio structure from blkdev_dio_pool.
+On 16/05/26 03:07, batcain wrote:
+> [1.] One line summary of the problem:sched/deadline: Hard lockup
+> during CPU offline/migration due to frozen rq_clock loop in
+> update_dl_revised_wakeup()
+> 
+> [2.] Full description of the problem/report: A deterministic hard
+> lockup occurs during CPU hotplug (offlining a secondary core) on
+> stable kernels containing commit
+> 14a857056466be9d3d907a94e92a704ac1be149b.
+> 
+> When a CPU core is set offline, tasks are migrated within the
+> stop_machine() context where local interrupts are fully disabled
+> (irqs_disabled()). During task migration, enqueue_task_dl() calls
+> update_dl_entity(). Because of the new dl_defer rule introduced for
+> implicit dl_servers, the code is forced into the
+> update_dl_revised_wakeup() branch.
+> 
+> Inside update_dl_revised_wakeup(), the logic depends on rq_clock(rq)
+> to calculate laxity: u64 laxity = dl_se->deadline - rq_clock(rq);
+> 
+> However, under the stop_machine() noirq phase, the runqueue clock is
+> stale/frozen. Since the clock does not progress across iterations
+> within the enqueue loop, the mathematical state stalls. Consequently,
+> dl_entity_overflow() continuously evaluates to true, trapping the
+> processor core in an infinite loop inside the enqueue path, resulting
+> in a system-wide hard lockup.
 
-The trigger is deterministic: a multi-segment direct IO with integrity
-metadata where the user-provided metadata buffer is too small for all
-segments causes bio_integrity_map_iter() to return -EINVAL on a later
-bio after earlier bios are already in flight.
+I cannot immediately see how this issue can affect dl-server(s), as they
+cannot migrate and are de-activated on CPUs going offline.
 
-Fix this by handling the integrity mapping failure the same way
-blkdev_iov_iter_get_pages() failure is handled: set bi_status and call
-bio_endio() to enter the normal completion path, then break out of the
-loop so the function returns -EIOCBQUEUED for async IO.
+> [3.] Keywords (keywords of the affected subsystem): sched, deadline,
+> dl_server, cpuhp, hotplug, hard-lockup, regression
+> 
+> [4.] Kernel information (output of "uname -a" or version): Linux
+> workstation 7.0.7-hardened2-1-hardened #1 SMP PREEMPT_DYNAMIC Fri, 15
+> May 2026 00:03:13 +0000 x86_64 GNU/Linux
+> 
+> [5.] Most recent kernel version which did not have the bug: Any kernel
+> release prior to the integration/backport of commit 14a857056466.
+> 
+> [6.] Output of Oops/Panic/Bug/Objdump: No native kernel oops/panic
+> stack trace is written to disk/serial because the freeze occurs inside
+> stop_machine() with interrupts masked. NMI watchdog triggers a hard
+> lockup panic if aggressively armed.
+> 
+> [7.] A small program which triggers the problem: # echo 0 >
+> /sys/devices/system/cpu/cpu1/online
+> 
+> [8.] Environment description (Hardware, distribution, etc.): Hardware:
+> Confirmed on both AMD Zen 2 (Renoir) and AMD Zen 4 (Phoenix)
+> platforms. Distribution: Arch Linux (using official
+> extra/linux-hardened kernel package).
 
-Fixes: 3d8b5a22d404 ("block: add support to pass user meta buffer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aaron Esau <aaron1esau@gmail.com>
----
- block/fops.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Also cannot reproduce at my end.
 
-diff --git a/block/fops.c b/block/fops.c
-index bb6642b459..39280d761c 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -239,8 +239,11 @@ static ssize_t __blkdev_direct_IO(struct kiocb *iocb, struct iov_iter *iter,
- 		}
- 		if (iocb->ki_flags & IOCB_HAS_METADATA) {
- 			ret = bio_integrity_map_iter(bio, iocb->private);
--			if (unlikely(ret))
--				goto fail;
-+			if (unlikely(ret)) {
-+				bio->bi_status = BLK_STS_IOERR;
-+				bio_endio(bio);
-+				break;
-+			}
- 		}
- 
- 		if (is_read) {
--- 
-2.54.0
+Thanks,
+Juri
 
 
