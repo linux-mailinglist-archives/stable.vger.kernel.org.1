@@ -1,77 +1,60 @@
-Return-Path: <stable+bounces-249249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249250-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kW4QGWbtCmpU9wQAu9opvQ
-	(envelope-from <stable+bounces-249249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 12:43:50 +0200
+	id 8PcxHQ/2CmpZ+QQAu9opvQ
+	(envelope-from <stable+bounces-249250-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:20:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0037556AE1B
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 12:43:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D984B56B6D5
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D723B3010665
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:43:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B514930573F8
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 11:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2A83D5227;
-	Mon, 18 May 2026 10:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8718C3F2112;
+	Mon, 18 May 2026 11:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PllpDq6R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iaLD3APz"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9653340286;
-	Mon, 18 May 2026 10:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1831435E1C7;
+	Mon, 18 May 2026 11:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779100962; cv=none; b=EUUtO5SVbByrZ5+waGz1p6Ax9MNgmPfLfx67+Aw0a7OJAlX3TnN0YWbQZPTACYVjKDlZTwqdrJnxvZV5OXO86fNlpX180B3NANXqfmiTeVNVMFkW6iEl/LfC53upl4tKWwg0XiFBK9zmuegtpaHvxgcobANJwRf2CwRDjBTbIJI=
+	t=1779102151; cv=none; b=hYZ/gkyPNRhek3LDN8G8XSmR7Ua+Z5wt44FBAqiyruGVFMiyJXGToZykiH00SNiJAC6LszyY0Gj1o0xC/jmdg4cDtp6hq5nNPF22SF1wXl8Fi9v0zUD7uvtQ4XjmEK66b8noWMYrGCYf2E/9N9kmygaTeqWYxQGwo9TSpmC3xt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779100962; c=relaxed/simple;
-	bh=r1PVGf1rr4njrmbO5ueph0W/8kJGaLaf/v+erQVDj3M=;
+	s=arc-20240116; t=1779102151; c=relaxed/simple;
+	bh=g70XtJJPevCExq/iyrCHebLHBlkYshrO5L8eyIGBMHM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OLfjAmn6u02hVxqKtVK3TZGFneO/oj4ygX6Rm4KYzK1yuNivcwWDysREjp3YkMLdD3zL4B5pYOdA2SmF51H0mVEPNjK7M3S55cZSglEDGl/NFZSdO7M9KeAhi/8FervwAtLOKeHDgmV6K0VBr4guHaWgNFJePnVwnasLeE7qs2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PllpDq6R; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779100957; x=1810636957;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=r1PVGf1rr4njrmbO5ueph0W/8kJGaLaf/v+erQVDj3M=;
-  b=PllpDq6RqP5BvqjpUKam0DcAsxxLSqVQ0PwC6vK/RtHBAr9xfN6gb7ZU
-   hOo8ZKYCsuxw66roUdzmGdSGZOS36NKC/9dar/U3PwtlwZ3RktuHex8Rz
-   RjuND8IJgKXqhrplqovf0cx3ytJ9PiHkZQIpKjiQ0YmWQ50KFMY2GiffT
-   meXXHzKXXKHujbzEJqaLlCqHIzorCBCUg9vJS9U0e19mFvGulAnIt1Dh4
-   AWyTWM+2Y6ake7pOxKi3aYyBgYrs/zyzKeM+0VfQxAEvLrKztC6Xat4tp
-   LkXWMFrelTJJPRDUM5PFLq+RlCKo4KQ5yQMZrrnar9TuJxMA8JLYAXefF
-   Q==;
-X-CSE-ConnectionGUID: IKrNdqP5TZaVT+7SWtdqeg==
-X-CSE-MsgGUID: G4fRoKqEQUCIyOfrhHOLTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="79999385"
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="79999385"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 03:42:32 -0700
-X-CSE-ConnectionGUID: mEUjukxRRhGM+xtGNpMN0Q==
-X-CSE-MsgGUID: TJDmR4IzSOaf9c5sZE5RvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="239471393"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.244.3])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 03:42:29 -0700
-Date: Mon, 18 May 2026 13:42:27 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Stepan Ionichev <sozdayvek@gmail.com>
-Cc: jic23@kernel.org, mazziesaccount@gmail.com, dlechner@baylibre.com,
-	nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] iio: pressure: rohm-bm1390: notify trigger on all
- error paths
-Message-ID: <agrtE3refLIQfICE@ashevche-desk.local>
-References: <20260517160801.269-1-sozdayvek@gmail.com>
- <20260518094238.1986-1-sozdayvek@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=YJ+3hMe3FLu/Wi7brahVrbHar9vrgfr54i/SWN7qDkyzdrFhAWQBV3oih1sUqgGx+DKdnLo0ZRrWDxTFNMzh/opEtPvQ1HttSfD0QC/nnJenmBO005KDtxyAfNK2gpOoupJd3lgwX9RTwLnS1HWdPMR6sxhXa1T7eTTeLuojE30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iaLD3APz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DCBC2BCB8;
+	Mon, 18 May 2026 11:02:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779102150;
+	bh=g70XtJJPevCExq/iyrCHebLHBlkYshrO5L8eyIGBMHM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iaLD3APzLMg+QPrqeyqzAfh40yOr6tTNQBxRQyVAIYUzckafcMwfi4HqIU/dalg2M
+	 sQVyXYFPEG0w4acY7ctzh/yZUDI0pmJNXMHF9I0YbaTwKk6k75D5PK8zwijx1cYHF6
+	 uHIIsPh5HuGZP8uubWu6hXyIVj05zZQtu7QSTDghVK5jsswENRrGg/y+6CYYg/WaZy
+	 iN1ou2ZJf5tDKaiEdux88NoD6iYYFoi00gymofc7mJe//yf0QQF45ng57D2YvL8O75
+	 cQfV6LcwIipWNV0TOnFGt3oKK6D8ugtGKa16K8g55cL7FvtoKLO2gA0UDJSH1LPnJ7
+	 1a058Sm28VaIQ==
+Date: Mon, 18 May 2026 12:02:24 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com, 
+	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
+	baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	ryan.roberts@arm.com, anshuman.khandual@arm.com, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/rmap: initialize nr_pages to 1 at loop start in
+ try_to_unmap_one
+Message-ID: <agrxiWhWb-yHT9Bk@lucifer>
+References: <20260518063656.3721056-1-dev.jain@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,75 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260518094238.1986-1-sozdayvek@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Queue-Id: 0037556AE1B
+In-Reply-To: <20260518063656.3721056-1-dev.jain@arm.com>
+X-Rspamd-Queue-Id: D984B56B6D5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,baylibre.com,analog.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-249249-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-249250-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Action: no action
 
-On Mon, May 18, 2026 at 02:42:38PM +0500, Stepan Ionichev wrote:
-> bm1390_trigger_handler() returns from three error paths without
-> calling iio_trigger_notify_done(). The success path at the end
-> does, so on a single transient regmap or read failure the trigger
-> use_count is never decremented, and the !atomic_read(&trig->use_count)
-> guard in iio_trigger_poll_chained() drops every subsequent dispatch.
-> The buffered-data flow stays wedged until the trigger is detached.
-> 
-> Funnel all returns through a single done label that calls
-> iio_trigger_notify_done() and reports the outcome via IRQ_RETVAL().
+On Mon, May 18, 2026 at 12:06:56PM +0530, Dev Jain wrote:
+> Initialize nr_pages to 1 at the start of each loop iteration, like
+> folio_referenced_one() does.
+>
+> Without this, nr_pages computed by a previous folio_unmap_pte_batch() call
+> can be reused on a later iteration that does not run
+> folio_unmap_pte_batch() again.
 
-...
+Yikes!
 
-> +done:
->  	iio_trigger_notify_done(idev->trig);
+>
+> mmap a 64K large folio with MAP_ANONYMOUS | MAP_DROPPABLE, then call
+> madvise(MADV_FREE), then make the last page device-exclusive via
+> HMM_DMIRROR_EXCLUSIVE.
+>
+> Trigger node reclaim through sysfs. Now, in try_to_unmap_one(), we will
+> first clear the first 15 out of 16 entries mapping the lazyfree folio.
+> This will set nr_pages to 15. In the next pvmw walk, this nr_pages gets
+> reused on a device-exclusive pte, thus potentially corrupting folio
+> refcount/mapcount.
+>
+> At the moment, I have a userspace program which can make the kernel spit
+> out a trace, but the blow up is in folio_referenced_one(), because there
+> are existing bugs in the interaction between device-private and rmap
+> (which too I am investigating). I did a one liner kernel change to avoid
+> going into folio_referenced_one(), and the kernel blows up at
+> folio_remove_rmap_ptes in try_to_unmap_one which is what I wanted.
+>
+> Note that the bug is there not since file folio batching but lazyfree folio
+> batching, since device-exclusive only works for anonymous folios.
+>
+> Userspace visible effect is simply kernel crashing somewhere due to
+> refcount/mapcount corruption.
 
+Also yikes!
 
-Maybe it's better to make this as an implementation and wrap it in something like
+Thanks for the detailed commit message :)
 
-handle_trigger_irq()
-{
-	bool result;
+>
+> Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-	// that returns boolean and doesn't have notify call
-	result = this_old_function(...);
+Thanks, LGTM so:
 
-	iio_trigger_notify_done(idev->trig);
-	return IRQ_RETVAL(result);
-}
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
+> Acked-by: Barry Song <baohua@kernel.org>
+> ---
+> Applies on mm-unstable. This patch was part of
+> https://lore.kernel.org/all/20260506094504.2588857-2-dev.jain@arm.com/
+>
+>  mm/rmap.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index fb3c351f8c45..1c77d5dc06e9 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2030,6 +2030,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  	mmu_notifier_invalidate_range_start(&range);
+>
+>  	while (page_vma_mapped_walk(&pvmw)) {
+> +		nr_pages = 1;
+> +
+>  		/*
+>  		 * If the folio is in an mlock()d vma, we must not swap it out.
+>  		 */
+> --
+> 2.43.0
+>
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Cheers, Lorenzo
 
