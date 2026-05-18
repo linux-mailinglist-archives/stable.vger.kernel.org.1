@@ -1,121 +1,160 @@
-Return-Path: <stable+bounces-249301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHtnIWggC2reDgUAu9opvQ
-	(envelope-from <stable+bounces-249301-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:21:28 +0200
+	id cOnnJ7kiC2omDwUAu9opvQ
+	(envelope-from <stable+bounces-249307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:31:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 272C756EA0F
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:21:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED96356ED17
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 279C230475CE
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:19:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DD76930BA600
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 14:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295BA3EC2E0;
-	Mon, 18 May 2026 14:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6503E48C416;
+	Mon, 18 May 2026 14:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pfz5BP70"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="P4bLvHVV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7D93F58F1;
-	Mon, 18 May 2026 14:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD433436375
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 14:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779113939; cv=none; b=XI3Y39Jf1HPh2TnCbDF6tBdrSiSAU+to06Rn1iBbw6hSmb0P6AN42Uz9abbtwysLMEmHZzzmcdrp3AjeT1MvQIC7rixUbZv4GiEQ3CJm5/oa+mpFWu7KHDIo6pzRNbDg/PSzP8yBwa5gIMk5H3IP1CXZCR+X9v/MSv4Cyc2uFy4=
+	t=1779114226; cv=none; b=pD23j03pGsat6Bhp+656otKwAwDKmgFVaJ6BPwbuRZYb3n1G+ELR7ZR4rhdrDevh20IDuPMkp1wqFJxhUgFkp45b+U6sUjmygLlGbUefVDTjmt1ehhfLpPJN3nRKp1Y5myiydOLj/GdeW1rxJhhKhpg2PEYWajz126Zi1OavFUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779113939; c=relaxed/simple;
-	bh=xEvty+SNfuwEBnANkS9+nIKNWcEqJfW1amR6blsoroo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cDSezQQTAkf0oFDMBnMvCwLaYqgqmrREy4JcmNvZJos8tdBcTntxhldGJaTDqN21YEUBxgmrYI+8FrwfbMNlpo0MBt7Bx3LaijBZ4cS4oKaWdHjhHIpl1m/YqMUjt0IXk7GNAELM2MIYB11dEHbNZ+WXg8TV6ekzIXif3kCrAjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pfz5BP70; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EE3C2BCB7;
-	Mon, 18 May 2026 14:18:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779113938;
-	bh=xEvty+SNfuwEBnANkS9+nIKNWcEqJfW1amR6blsoroo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Pfz5BP70XZ/nRCuwxkVWEvWOCWGqcmu8x0Mw3d6PgOlBWi+9rWULGLwhq9VtVaajz
-	 Misc3g5MND9WBQQqVdZVGM1tMGhifJlc9+8mxTxo6YWRZNJJ/ForCIS8ydg0BXMj5S
-	 ZI7L6tOczLp7pmWSk1rDE6ExhrVYamsY2junGiVu8pv3CeMM0l/66QwaQ/4rxLT0px
-	 PlzC0q67AITHNMAfrfa0SEQtFuXvjK5o014mUwuDYDBEpZPBoKSMft98XFe3sv0R/T
-	 H12G/Y+WXibReYdPtH/o8nOxR1TlPD4TESkyeYvs8A+qXpSsTucIYwRMSNAtce5JKT
-	 mH/zEt0tz5k3g==
-Message-ID: <ddefecf4-0a2f-4382-99a9-26012f9e943a@kernel.org>
-Date: Mon, 18 May 2026 08:18:56 -0600
+	s=arc-20240116; t=1779114226; c=relaxed/simple;
+	bh=jf0TmQKmVeYC0gpsI55lB1pWbgi0el4/1nCal3luHvQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QXwEmNJn1uTI3iZKV/2TCTOVtzwNZSOcYCgH2oi/ocIDJCZ9pTGs/g5Iou066OfmKhL09U5Np/14G3En0fywURZGKyzldpjAZh6CF12wUKbf8ZDEFBlbj8dINjF+nOrlaYKNyBWjpIqFhbAs/1p4a24iIWnZamV+8M0UbcQ+DFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=P4bLvHVV; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779114218;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FwD5v3ONOdOsGGNvw1Tq8CqMFhIulXeR+lh+f9/MFGk=;
+	b=P4bLvHVVUqXHQigori2cShp4vvaLbI8qVETXb+uQfAsewoiOdl7dAQBp7HeaWXJuSMzqSe
+	YOgiqz+N++MNVVurtTM68VuybUIvi7AmorQq9DEHVvgFWG4JE5gC4IeVO5j7JBS6ad4iXh
+	WM/Ht6BketLxcVbdEYKL/cxKlVtheJ8=
+From: luka.gejak@linux.dev
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Kalle Valo <kvalo@kernel.org>,
+	Luka Gejak <luka.gejak@linux.dev>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v4] wifi: rtw88: increase TX report timeout to fix race condition
+Date: Mon, 18 May 2026 16:23:10 +0200
+Message-ID: <20260518142311.10328-1-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] ipv6: rpl: add NULL check for idev in
- ipv6_rpl_srh_rcv()
-Content-Language: en-US
-To: Andrea Mayer <andrea.mayer@uniroma2.it>, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- alex.aring@gmail.com, justin.iurman@gmail.com, bestswngs@gmail.com,
- stefano.salsano@uniroma2.it, stable@vger.kernel.org
-References: <20260518140630.24280-1-andrea.mayer@uniroma2.it>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260518140630.24280-1-andrea.mayer@uniroma2.it>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249301-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nvidia.com,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,uniroma2.it];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249307-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dsahern@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 272C756EA0F
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,realtek.com:email]
+X-Rspamd-Queue-Id: ED96356ED17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/18/26 8:06 AM, Andrea Mayer wrote:
-> diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-> index 03cbce842c1a..a4af6e63349c 100644
-> --- a/net/ipv6/exthdrs.c
-> +++ b/net/ipv6/exthdrs.c
-> @@ -499,6 +499,10 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
->  	u32 r;
->  
->  	idev = __in6_dev_get(skb->dev);
-> +	if (!idev) {
-> +		kfree_skb_reason(skb, SKB_DROP_REASON_IPV6DISABLED);
-> +		return -1;
-> +	}
->  
->  	accept_rpl_seg = min(READ_ONCE(net->ipv6.devconf_all->rpl_seg_enabled),
->  			     READ_ONCE(idev->cnf.rpl_seg_enabled));
+From: Luka Gejak <luka.gejak@linux.dev>
 
-ipv6_rpl_srh_rcv and ipv6_srh_rcv are both called by ipv6_rthdr_rcv and
-both of these functions check idev. Moving the check to ipv6_rthdr_rcv
-which already has an idev lookup would simplifying both paths -- and set
-the drop code reason the same.
+The driver expects the firmware to report TX status within 500ms.
+However, a timeout can be triggered when the hardware performs
+background scans while under TX load. During these scans, the firmware
+stays off-channel for periods exceeding 500ms, delaying the delivery of
+TX reports back to the driver.
+
+When this occurs, the purge timer fires prematurely and drops the
+tracking skbs from the queue. This results in the host stack
+interpreting the missing status as packet loss, leading to TCP window
+collapse. In testing with iperf3, this causes throughput to drop from
+~90 Mbps to near-zero for approximately 2 seconds until the connection
+recovers.
+
+Increase RTW_TX_PROBE_TIMEOUT to 2500ms for RTL8723DU. This duration is
+sufficient to accommodate off-channel dwell time during full background
+scans, ensuring the purge timer only trips during genuine firmware
+lockups and preventing unnecessary TCP retransmission cycles.
+
+Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
+Cc: stable@vger.kernel.org
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Tested-by: Luka Gejak <luka.gejak@linux.dev>
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+---
+Changes in v4:
+ - Picked up Acked-by tag.
+Changes in v3:
+ -Declared timeout with RTW_TX_PROBE_TIMEOUT as the default value and 
+ removed the else branch.
+ -Updated the Fixes tag to the commit that introduced USB support.
+Changes in v2:
+ -Isolated the change to RTL8723DU as requested by Ping-Ke
+
+ drivers/net/wireless/realtek/rtw88/tx.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index 3106edb84fb4..a6e43314a4e9 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -196,6 +196,7 @@ void rtw_tx_report_purge_timer(struct timer_list *t)
+ void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
+ {
+ 	struct rtw_tx_report *tx_report = &rtwdev->tx_report;
++	unsigned long timeout = RTW_TX_PROBE_TIMEOUT;
+ 	unsigned long flags;
+ 	u8 *drv_data;
+ 
+@@ -207,7 +208,11 @@ void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn)
+ 	__skb_queue_tail(&tx_report->queue, skb);
+ 	spin_unlock_irqrestore(&tx_report->q_lock, flags);
+ 
+-	mod_timer(&tx_report->purge_timer, jiffies + RTW_TX_PROBE_TIMEOUT);
++	if (rtwdev->chip->id == RTW_CHIP_TYPE_8723D &&
++	    rtwdev->hci.type == RTW_HCI_TYPE_USB)
++		timeout = msecs_to_jiffies(2500);
++
++	mod_timer(&tx_report->purge_timer, jiffies + timeout);
+ }
+ EXPORT_SYMBOL(rtw_tx_report_enqueue);
+ 
+-- 
+2.54.0
+
 
