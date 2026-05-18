@@ -1,183 +1,179 @@
-Return-Path: <stable+bounces-249216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMR/NkbKCmqf8AQAu9opvQ
-	(envelope-from <stable+bounces-249216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:13:58 +0200
+	id aOEjFd3MCmqf8AQAu9opvQ
+	(envelope-from <stable+bounces-249217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:25:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728BA5687E1
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:13:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A8A568AB6
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 10:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E2433040DA1
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:08:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EBE863060DFB
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 08:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E513E024F;
-	Mon, 18 May 2026 08:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9753E16B5;
+	Mon, 18 May 2026 08:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="zDn/ktmK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-235.mail.qq.com (out203-205-221-235.mail.qq.com [203.205.221.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97C42F7F18
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 08:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B063DE427;
+	Mon, 18 May 2026 08:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779091702; cv=none; b=u5mhUf8r33RPlt+AU054p1lSZ3bBKJnnMa032elFwk98FXcilxedDVdlu53lbdWfUEAXJd7+Nhs93Ia2H1+rH3JyGxpkBhkQ6GMJQJsmDB2BAyHF0IwQc+/c5q80CAdomPktvIv9st5N4K/qtrZa3MHOCZFIqQra3wmqiLiNROE=
+	t=1779092100; cv=none; b=pW/h8r2559a67HiepNfEAi3x/XrQD+djB5suIDq/5f0wWRXDJsJiCAtVe0Nf9dwp8JM+xPPi/qpj0mDoN4Sfz4jikqf39edwSH6TfsDdIhlizCdfkGNiYqxTSU6vXO3mAe7B5QiPr9Okm6gcb4NDljVsqEcoG9SUMJ59s1b9dIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779091702; c=relaxed/simple;
-	bh=zhB4j+JhWVd8A037JLrJiPDfZJuTf+SxKAz96boFBnI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MIWnu4QGQ4dcfUgFuFSRtMzFwuHC7D+xoxu4IFB6v5RAtonNEhQEqrp/1An+S0fpZrI9MlT/vT+0SJEhJL9UrRXlDnidCYBU8uUrLHWI1YZcAuqfE8R5x1XDcHQqe7BaA8f36sqV+zAaYy62v8FcOHb50CT8om6PzPRfmI7DozA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5751b7d147aso612390e0c.2
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 01:08:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779091700; x=1779696500;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JUYYkmPBjhPBpcIVZ7SX/KXLmdloPWmcos5I3ZD4vTQ=;
-        b=RrmMGNr6hvXZOLJ6pqpA1ho6IqQRsRUChohK5tnTZLgFSoPUka7wOjakOXC0GLJCFJ
-         nFj3f0BOWv6K0v44fUkTRm0qMySuAH3+tKWuLaLMjoV5kdOIMMjGzgBoI5PmdKf7xsT/
-         d2bu/Dk4e3XDYll/yGt6Oz/+lCMFDQ4qrrWfaHvxQzZkIEpXzsZSKInVT6Ntf6knTJJ0
-         Px/tgnV9IlGhXW6uMDgcKpdTvpfYlxjqM/9MDePxRumUkOA8Y9ADoGQK/FXaSJ1QWgxJ
-         +qt4q+m2yBV67jamqboAan1FEAZxf2blYqWR1BicJdkqm499wGvUmFhWjWSiYvNInV/+
-         wPRQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9E4JRV6LNfOv8TZ46tIe9tb0UYRbE9cgHlGLJPgRSlINrIUrRruM7Sea0z4LpD4c0G/3kuA74=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJZxT57fpsKDAwsVOQeoJTYmWubaVz+/499FG1tGi4w8DPJYYC
-	9KV/P4YNokTv+NTdjTql8HiuB9QqW+kE5DLQvQ6xxVQ+LNPjfbXZjuLstQ/kycUW
-X-Gm-Gg: Acq92OGeEkYgACSjiqjICSNqN1pSKnniTwO1T/dMtNNQzkgpcotZeGgk42x8yCoSm2l
-	Hi1nnwnLwo6p8+tI4/GP0+z1O+zoTQCj5FjwBPXIKhh5CSd9Hc0VCjW1QgX5/YVW1HKOBGxV280
-	fyIM0ZLnpl6OltfdUXhJnJIgLYuqORW1foFtnAMtanASgl+GeTUp0smbNYMcFDPvfe+kOLXlpr6
-	bF1vFD1u95vqvtVGbh3eYFCGX2iw79Xd9FCbAtsUIfYWyB7zzacuvRUVFhta6mQtwUpR0ymiwOh
-	Q0D4L6GTZFggdn3T63iko3cA8pRIlIA6CtOCNVM+gXWt6xxIT1k9udEt2a2VC1bHNMNbrwff68D
-	b6dHBHwwQgM/6PXO6V+C+rKhRo7HFWjYyPhPBhYX9jV9tMOdoJKOccY4JhJLUPquxb9HMGHCZXh
-	HYGcIO+WudWaj8cpbKDYHyLFfuGKeqtESnnuuvo7vYN6yTQz7jyjfI17aPB0lm
-X-Received: by 2002:a05:6122:2988:b0:56f:a3e2:66a4 with SMTP id 71dfb90a1353d-5760be39af3mr6845695e0c.1.1779091699646;
-        Mon, 18 May 2026 01:08:19 -0700 (PDT)
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com. [209.85.217.41])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5760fadc1dasm5638529e0c.16.2026.05.18.01.08.18
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2026 01:08:18 -0700 (PDT)
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-6324ee4040cso544445137.0
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 01:08:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/l0udok+cDAe83Qno0OfPady7yrIR5LEQ0tUySpku0oZ2WWfUsvaRAbE7ruoG72q0dyS4DGvE=@vger.kernel.org
-X-Received: by 2002:a05:6102:6046:b0:631:b834:e052 with SMTP id
- ada2fe7eead31-63a3d72bf03mr5639387137.12.1779091698017; Mon, 18 May 2026
- 01:08:18 -0700 (PDT)
+	s=arc-20240116; t=1779092100; c=relaxed/simple;
+	bh=vEN7JUqFS/Z338AaOtlOIsg9UfmeWvebb/hbi7DTIec=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=KHrKZsYWqkvImQqQZQsnU1gHQeZciUTVOscwWpPY4R79L8fv/ZD7e6VTEQmDL8wkWU7Rel/IWB3MBWJoj/w+kwIcUYdVovzaZY+6WFTGkvBC1MyxrlFl+1hlXqJ0mZMYKY22Gbq473NsxKmlCf3asKgeE9gPajOTGcoGUUhG7Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=zDn/ktmK; arc=none smtp.client-ip=203.205.221.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1779092088;
+	bh=+o30prBLPQWw1lGqJwc06DlyrybE3RbNC5Z3QM6FXaY=;
+	h=From:To:Cc:Subject:Date;
+	b=zDn/ktmKtmcbK5NELmmEXQOhSo6vwMgf6sqGSRBBuzsyLEhjrv6BBgjIRIWpVtNG6
+	 aLNAyOC7lfVvADUYeh8/39yKi8Nf/30qartZ5KZv/NJV0Bn+1CRl3enB7xKlaYK4z2
+	 0wcbKwhHnjFFjrJk4wIXb6M7XZgA0l5x2dbXRbX0=
+Received: from China-team ([47.95.114.252])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id 3AB380DA; Mon, 18 May 2026 16:14:43 +0800
+X-QQ-mid: xmsmtpt1779092083tu063d7b4
+Message-ID: <tencent_D303270C66A4818296B926E3A34112CDDA05@qq.com>
+X-QQ-XMAILINFO: MYM3WZNSjOp9eiVY8f9+WwG/g7icWVcONLbMAlI0dGCyzvuo1zDyl6lfCQK4cm
+	 3L5MvYqdlcsW5Ec22LXMHsYmWPMqmj7D84ocukB8vyVtYNag4sbLI1m+y//7aA4VIIe0IxVQSpBy
+	 8Rh2Ml80h20GEIeglEV2RprkchUHOQujF23i33ttqbD6sIkZkiDb07CqZpYstpBMQKuhT9+qPPUN
+	 VArMUQwM8anJ8jydGP14JaJIBSOIBmXKZnCzMvmEziOLGtpX4zgg11jlUjBpXRHIyhMc7T4MTEho
+	 1vS1K4CjUbLJrMBUyYklrOF5QeNpdmwsxPighN2ubPlX8lJh9+C0uJ/8XGhiNOiyskxa35Fi0Wuq
+	 8+1NzTmsxgJCU+QX+CGCCh4tFARhCb9RipQv5fCco94LoN8OAoRoUJTtnHt9A4bKELtcPiWue+UV
+	 hpcr4dbMe6Z+vMmB0dP5RctNlaxfabglaiC5ZLrkcipjhovCCb7dUV02oPJ1SMoVsNA7R81swFGr
+	 8+lTLHZzMtwefK1qdDibpdOsdcx7e44wc2gHLBII2AQOYvl2cEkF1ncAy3HXkW965GjSBa7U2We6
+	 5xTd3t4B3UGQCafrWIZqxJth2SDAm2V9y+2+/6W/bucpcmSXzVtXiIx2LVkL4FG0oy15wT06wzsc
+	 Inx2yyDKXRyGjMOQs4QiR/DW8axSXm6LtiBl7Tacfjf98zaEtIl7Exkd5pwpwcxP3+NcW0kQTWDI
+	 SqM37gzcOEGhdiufKbcUSOFrJgAKNzHTasUl+wOtdGohZg96ZPO7FOj5hgLlAd56UHE7BU8fl1pH
+	 MNH+CRKDp8Y09F1w7IxpKwUZRjhhbfMzNM/D5/DQhPg7cNFs7Gr00+Co4v3qmMRz2yc511uQcSiD
+	 p8FD7IXPcxzRzJT8JOENBrY/RCegQEYNBKLJNarXzcCahtcrmqfVZSwIRF/FNDSzNgqoDElvhVhg
+	 Fv3Anf+VLmeGexLfl+ZO3HuS3RX8pNCnENPkIb9/BNgV1is+CHhRDcqSFKmgSHAoDb0KM+APh9+u
+	 FpDT0YgdOHETWHF3AZRiz2r4apHrY=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+From: Alva Lan <alvalan9@foxmail.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	Liang Jie <liangjie@lixiang.com>,
+	Tom Talpey <tom@talpey.com>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.12.y 1/2] smb: client: correctly handle ErrorContextData as a flexible array
+Date: Mon, 18 May 2026 16:14:00 +0800
+X-OQ-MSGID: <20260518081401.21386-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260514174342.28451-1-sozdayvek@gmail.com> <CAHp75VfsA_LsbEKjxoeMdbhPbWj7OHZ7=0SYNA3c=ZLj_M94Bw@mail.gmail.com>
-In-Reply-To: <CAHp75VfsA_LsbEKjxoeMdbhPbWj7OHZ7=0SYNA3c=ZLj_M94Bw@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 18 May 2026 10:08:07 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUahvn5dr-sdN=4GP+0Mc2usG4CqVxYqkkzZz5RJbqZsQ@mail.gmail.com>
-X-Gm-Features: AVHnY4INWu1Mc1mhZBJHaVUhCQbAP7LxhrNHnPE0OdAz1Swwb3lrj_NGD_y1250
-Message-ID: <CAMuHMdUahvn5dr-sdN=4GP+0Mc2usG4CqVxYqkkzZz5RJbqZsQ@mail.gmail.com>
-Subject: Re: [PATCH] auxdisplay: line-display: fix OOB read on zero-length message_store()
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Stepan Ionichev <sozdayvek@gmail.com>, andy@kernel.org, hcazarim@yahoo.com, 
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 728BA5687E1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 52A8A568AB6
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
+	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,yahoo.com,linuxfoundation.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-249216-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-m68k.org];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-249217-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lixiang.com,talpey.com,microsoft.com,foxmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	R_DKIM_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[foxmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[foxmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talpey.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lixiang.com:email,foxmail.com:email,foxmail.com:dkim,qq.com:mid]
 X-Rspamd-Action: no action
 
-Hi Andy,
+From: Liang Jie <liangjie@lixiang.com>
 
-On Fri, 15 May 2026 at 09:13, Andy Shevchenko <andy.shevchenko@gmail.com> w=
-rote:
-> On Thu, May 14, 2026 at 8:44=E2=80=AFPM Stepan Ionichev <sozdayvek@gmail.=
-com> wrote:
-> > linedisp_display() unconditionally reads msg[count - 1] before
-> > checking whether count is zero, so a write of zero bytes to the
-> > message sysfs attribute hits msg[-1]:
-> >
-> >         write(fd, "", 0);
-> >
-> >         -> message_store(..., buf, count=3D0)
-> >            -> linedisp_display(linedisp, buf, count=3D0)
-> >               -> msg[count - 1] =3D=3D '\n'  ; OOB read
-> >
-> > The kernfs write buffer for that store is a 1-byte allocation
-> > (kernfs_fop_write_iter() does kmalloc(len + 1) with len =3D=3D 0),
-> > so msg[-1] is a 1-byte read before the slab object. On a
-> > KASAN-enabled kernel this trips an out-of-bounds report and
-> > panics; on stock kernels it silently reads adjacent slab data
-> > and, if that byte happens to be '\n', the following count--
-> > wraps ssize_t 0 to -1 and is then passed to kmemdup_nul().
-> >
-> > linedisp_display() is reached from the message_store() sysfs
-> > callback (drivers/auxdisplay/line-display.c message attribute,
-> > mode 0644) and from the in-tree initial-message setup with
-> > count =3D=3D -1, so the OOB path is only userspace-triggerable via
-> > zero-byte writes;
->
-> Isn't it also triggerable when  PANEL_BOOT_MESSAGE is left default
-> with PANEL_CHANGE_MESSAGE=3D"y"? (However these double quotes makes me
-> wonder if this even works, as usually we compare symbols against plain
-> 'n'. 'm', or 'y' (without any quotes).
->
-> > vfs_write() does not short-circuit on
-> > count =3D=3D 0 and kernfs_fop_write_iter() dispatches the store
-> > callback regardless.
+[ Upstream commit 215b7f9ecb8d7c14d56febdcdd246f3579c32aba ]
 
-I think PANEL_BOOT_MESSAGE is the only way to trigger this, as
-writing an empty string to a device attribute is a no-op according
-to commit afcb5a811ff3ab39 ("auxdisplay: img-ascii-lcd: Fix lock-up
-when displaying empty string")? If that is still true, the issue
-was introduced by commit c8ffef985af564c1 ("auxdisplay: linedisp:
-Support configuring the boot message")?
+The `smb2_symlink_err_rsp` structure was previously defined with
+`ErrorContextData` as a single `__u8` byte. However, the `ErrorContextData`
+field is intended to be a variable-length array based on `ErrorDataLength`.
+This mismatch leads to incorrect pointer arithmetic and potential memory
+access issues when processing error contexts.
 
-Gr{oetje,eeting}s,
+Updates the `ErrorContextData` field to be a flexible array
+(`__u8 ErrorContextData[]`). Additionally, it modifies the corresponding
+casts in the `symlink_data()` function to properly handle the flexible
+array, ensuring correct memory calculations and data handling.
 
-                        Geert
+These changes improve the robustness of SMB2 symlink error processing.
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Signed-off-by: Liang Jie <liangjie@lixiang.com>
+Suggested-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+---
+ fs/smb/client/smb2file.c | 4 ++--
+ fs/smb/client/smb2pdu.h  | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
+index b7ab18d4bedc..35d2933982d3 100644
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -42,14 +42,14 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
+ 		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
+ 		do {
+ 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
+-				sym = (struct smb2_symlink_err_rsp *)&p->ErrorContextData;
++				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
+ 				break;
+ 			}
+ 			cifs_dbg(FYI, "%s: skipping unhandled error context: 0x%x\n",
+ 				 __func__, le32_to_cpu(p->ErrorId));
+ 
+ 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
+-			p = (struct smb2_error_context_rsp *)((u8 *)&p->ErrorContextData + len);
++			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
+ 		} while (p < end);
+ 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
+ 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
+diff --git a/fs/smb/client/smb2pdu.h b/fs/smb/client/smb2pdu.h
+index 076d9e83e1a0..3c09a58dfd07 100644
+--- a/fs/smb/client/smb2pdu.h
++++ b/fs/smb/client/smb2pdu.h
+@@ -79,7 +79,7 @@ struct smb2_symlink_err_rsp {
+ struct smb2_error_context_rsp {
+ 	__le32 ErrorDataLength;
+ 	__le32 ErrorId;
+-	__u8  ErrorContextData; /* ErrorDataLength long array */
++	__u8  ErrorContextData[] __counted_by_le(ErrorDataLength);
+ } __packed;
+ 
+ /* ErrorId values */
+-- 
+2.43.0
+
 
