@@ -1,225 +1,276 @@
-Return-Path: <stable+bounces-249206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCaPLFPACmq87QQAu9opvQ
-	(envelope-from <stable+bounces-249206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:31:31 +0200
+	id ePOtCea+Cmrb7AQAu9opvQ
+	(envelope-from <stable+bounces-249204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:25:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0910A5679B9
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:31:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E33E7567794
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 09:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9ADE43006157
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:26:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 049653006690
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E571431F9B5;
-	Mon, 18 May 2026 07:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083473DFC70;
+	Mon, 18 May 2026 07:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="W20J4MJP"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PRwLO7yb"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012001.outbound.protection.outlook.com [52.101.66.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703E43D0BE5;
-	Mon, 18 May 2026 07:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779089173; cv=none; b=t6wrgaeWKk5REATxjJPKo426g9lNdMgK0KfOhfbkR2m7Eh2e0h7SEUgRtklbl6DaDQDa2beewgJNQeeAW12uxBhgmqt0XonVf6UXenMPfhZvEmXFyzKYt+hkC6jFGLwqJ478MOCAbnyaigaebTG7mFnrFQoqOIjth8wcsLlzo+Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779089173; c=relaxed/simple;
-	bh=ItILD+8MC/UCfiDqeGg6Vcn7s/U85Ya+y5BT7bVnPjQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AjhPYrmf3EFYmYJ6XP19iKePF2D7mGKOLHJ8TS7R4e+UrkEwPLpQNk7gO9m+5piE+ajM1MnPYHHGNqhvSLYpZ0y6X6+fVhEvkk3SVvxRpT5eAsKUSOAPWZjFFpixA1GZWrB2sguO1kbGEL1UmJmnSEfRLeOkYw5kbuXGXTWUUak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=W20J4MJP; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64I7HBUX3901160;
-	Mon, 18 May 2026 07:25:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=cb9nWJ
-	uF3hQ3miUzMebgNN6Kj7RqYUCcNl6nTWfgSd0=; b=W20J4MJP+al4K0g9lt0N+o
-	8Y4T0nr8BD/aG0V3GCwSjHdrdv449aFHU0NhIJ9FHBNeCEQpsVqfZH0WvIjw7BYV
-	9GOZ7nweeMzHOePMe/v0zqSVdzeLWxfPTQMXI1mObyBFh41I7VEHopccmCDvP9NP
-	mUIr4c+54w5eUeLK5nvogVEoowtFKm+iESo8G55q40dGbAT/Q4lzhHkHK6f/Fqrl
-	ZKN7kFTr+7xBvNnC/K2JgEWfA40fRUjVOFp90D4akemCDFChBzyczFsQByFR1aCU
-	7+hKB08j/daHXyIFGCAnqMXCjaALElxQGJprt2OG+gS6dNCXSQpavbbGXMBUt0iw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8mess7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 07:25:55 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64I7O4ri010865;
-	Mon, 18 May 2026 07:25:54 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e72wpvxku-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 07:25:54 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64I7Ppe244892500
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 May 2026 07:25:51 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1212420043;
-	Mon, 18 May 2026 07:25:51 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C10220040;
-	Mon, 18 May 2026 07:25:48 +0000 (GMT)
-Received: from [9.78.106.17] (unknown [9.78.106.17])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 18 May 2026 07:25:48 +0000 (GMT)
-Message-ID: <e074658e-401f-4d12-8997-4007d86b9826@linux.ibm.com>
-Date: Mon, 18 May 2026 12:55:47 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494AC3DF007;
+	Mon, 18 May 2026 07:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779089116; cv=fail; b=bJ4NWu7eA+FEEg6Za1gZ8vDmroS0CtZTFGkhhLXnVzav4MJ74nCG9TxXSm5FgVbw7ORA2LqSpyoGH+Uzini/g1OQQ6ilyzqSg7OHc7J0HvIXpkSuabt/KNfVL7Kly9fBKZhj5/ixO6agsXJJef/pZO1Zco3ku7p+Vv9ZNTt3j1M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779089116; c=relaxed/simple;
+	bh=6J/lxFYcfoOS+F5PMpXzcn0bha5p7YchSpFjkNoubNg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=G5tjgmPxHX77wc0V/cf6JFsWu89xaZoTIU3yOolkBGbjBm9IgWKSIBaWk+vIG0XCZCr6L+Hh7h7DqTfeQ+ZB7XVJGeS4bA06g2/aYqFcoWanhIeki1LAVHBoZhCPV+weGN1y4rtHut821Lpxe/YEJvHxIEnkJ2FGSEJ3Yz0gzBs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PRwLO7yb; arc=fail smtp.client-ip=52.101.66.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KNf6wIBLDpSqe3zF0KxModb/Pg6mTqHmAzGaqrSyKcrsvgOrnDRej6v5JRUI62XLi2wWLJUVzgLKexUUZZV0Sx8ip1/yrEJGe4fPWgfsFAS2QW5BGB1OL57aZxzZk+OGbq6gpUOmiMoaIbeumaloJY12p1qwpn2otG7f7VXqCk/yPrp1FPX5LYMhvWJ9EpQFBw7pPA0JRe1C/N+FyeWWOGSawDsNxO+DEqtawH1JcyQw5zQQKVzpeygmxPemlydCi3Svx7E5TxX4A6bRCY4H4BLz2acb+aBtxTVwOAK8gTf3gN2wdxAsDRR1pnjbtceAiqqSYpBOHxCVE+WLM2B+xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CO7yZe50uMoCexyziuiw5fJISB4NTG4nRCyWXqQlUOs=;
+ b=ra/JjAr+xn0heFD+y94auS+FxZCmORSuRM5Wi2TJ1dZkR4UZLfNKiIV45JhwmH5JXAj5K/u8uME4TKK3HzTjilgkHcIEEjYsfRFtre6iUrHYeFPlOk/nvM1Hipk3XAdwfdX1hcgV8bK3P8B/6arvDydNCgbMnBlYXeSep2rn7pdxQ0eKplR6J0mvneCvgim2g8o6u0e7mjo5ZtEYNjQClJm4KeK11Lj1C7dmUX4+V4/ktkZBRXbUjI+xDUaQcz1PYu6oIX/HYbVHC3BVIPj91uZMkPdYyUSh6QZ9YT5qqw7eRF82FQxP57MutIIUJ3k/WBEhj+DZ5T+gQLsqHqT9TA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CO7yZe50uMoCexyziuiw5fJISB4NTG4nRCyWXqQlUOs=;
+ b=PRwLO7ybaZ2vusADJTW9gGHaOeCDofKNTkUoHT7f1QmbgVKXOIQSECvY2bcSaUDFCkbt6lc2eFVlhggssIHhRVcgKBRkPYWLfeB453GM/Z0o+5A+gU6WWum/z2buvKxexiioGV7gwaFjPhK0ZtAL8ebnSiqkr1a/4PF/JZzAnKluA+sV5R/VASUIV86edOsQodMaL61W++Y9cMT05p6F5qpDu6YoW6bg65nUFOQQSgnOs+qKC+PGOMfpn1KwSP3LoE5BggsbF8wPH9gEG2vwRSG8HIV06STxFJpOidcZweVgI7JBfyZOu4Bo1r7A1dEQkijsSwm7QHzgJrADDlIPBw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from GV2PR04MB12019.eurprd04.prod.outlook.com
+ (2603:10a6:150:30c::14) by VI0PR04MB10998.eurprd04.prod.outlook.com
+ (2603:10a6:800:262::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.22; Mon, 18 May
+ 2026 07:25:11 +0000
+Received: from GV2PR04MB12019.eurprd04.prod.outlook.com
+ ([fe80::ed75:bac1:2554:5cbe]) by GV2PR04MB12019.eurprd04.prod.outlook.com
+ ([fe80::ed75:bac1:2554:5cbe%4]) with mapi id 15.21.0025.022; Mon, 18 May 2026
+ 07:25:11 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: frank.li@nxp.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	stable@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2 1/2] PCI: imx6: Configure REF_USE_PAD before PHY reset for i.MX95
+Date: Mon, 18 May 2026 15:27:14 +0800
+Message-Id: <20260518072715.3166514-2-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20260518072715.3166514-1-hongxing.zhu@nxp.com>
+References: <20260518072715.3166514-1-hongxing.zhu@nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: JH0PR02CA0026.apcprd02.prod.outlook.com
+ (2603:1096:990:76::24) To GV2PR04MB12019.eurprd04.prod.outlook.com
+ (2603:10a6:150:30c::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/5] powerpc/bpf: Move out dummy_tramp_addr after Long
- branch stub
-To: adubey@linux.ibm.com, bpf@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, ast@kernel.org,
-        andrii@kernel.org, daniel@iogearbox.net, shuah@kernel.org,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-References: <20260517214043.12975-1-adubey@linux.ibm.com>
- <20260517214043.12975-3-adubey@linux.ibm.com>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20260517214043.12975-3-adubey@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: MF7cg5mXDx7I93ljsD12K5d6Cutk981Z
-X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a0abf03 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=jJgxMy1UuW8321J8VzYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: MF7cg5mXDx7I93ljsD12K5d6Cutk981Z
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDA2NyBTYWx0ZWRfX40xScc2nOQVE
- d5L/d1A0SmTd3+AVfStaX/sD/c4t0HUwUFo3M4LuYuAL7obV6nQAHNUB4vJ0C07x1GVs+fEN4kJ
- GdpvEAyte2k5lbR3PtH4QS6EtqEfzBjRatJTwSDAG+shF2qPuIUnOMGls7itPjBwjHj8SZy7qDL
- NeFovnGAEFXEtZUcZjtRkJe5JP6LZD0Vcua8Pe+eyl+a7J3Gabn6KJNSkEWzOQ+7r3/GXjpMv3d
- 0WRcLVzUlODBBi4JvEnHpDPdPFhRo6jFmMLn+DYyVTPNpzJlrxDfF7QwmZa6WTro3XrIzNOEiCs
- RQKo4U4GhSWxA1lsNMBgh2vIxoBG27tpGzOOyzPnflSIo/YS+O2iT15RFWTvbtI+uHlYyDVZg15
- A2IVJrD5+BhgaNbCFm9rXvg2u4cgglY2H0rUS8BfsVS38AHbsuTIlLgGLWhGHBMMXfuD0nbWB+C
- IW4q8pVamAqsIR7ZJRg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-18_01,2026-05-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180067
-X-Rspamd-Queue-Id: 0910A5679B9
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB12019:EE_|VI0PR04MB10998:EE_
+X-MS-Office365-Filtering-Correlation-Id: 339b3f4f-bb4a-4cfd-22ba-08deb4ae98a5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|376014|52116014|7416014|1800799024|18002099003|22082099003|56012099003|3023799003|38350700014|921020|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	DxW37R1nDlO7XB+7lxH9o/DWCNPiNSKk3CcLe3eGSh6Lbt3X/pUlg6RdgEOnnMNXpRcXKU4r6Ve2Uav2IahtaX4tws8SLifzAw4Z1zctwlGg9EF6URz5AHW1jiEAxQOgowwWBsvYKyQzK1zkxk0SpxEoCpWN31k1kohfJWEeIpZucekxhk0jOrund3OtyKhSBHT41I1RbqvZ9ysAJpjBm2vizxvzxs3bJ3yW4WBc0VrRRn/+8+WD2GoP8z95UjBNVoz33O/VO3+cVimG5Lduy9VHhELUsTS3mfg5nRU8tSeF2DOqFvtgG67oXTROTdbhD/P+fFl8+/SUIXX2biXxVM9QpNxGkXudfXU7l++Gqde+31Que7+8WKrGzLpCPPI6/3I+M6AS5v1bpBKXD/LpsQgYSKrOIouFJyJ9WclaWAOsrbIo51c+/jg7e16HQ5e/yh/SWQ8ytmogeDpNXJQUyofE/QBroLr/cnbfsYk7bffBpEYF7A1zpjhJ986P4nbjNiaTEq6qVEAEg8fGH61WHubmZb2wY4yE3V2lbBf6OaiLRut319R5q0DOYPR5LwTl7QPqaQkOgd3p8aDcvH46v17kytgAhvpzS+X56SRX0Ln5Imx0QK36Fm78DRtQDjVY9BKD74JjCrIxEOu8aOK5Y1S1Y1y1KFmHgyCeZ+Tdym/21FmReI8dI4vq0qmY2CoXSuFZdy4uZ9hPhO1mJ9Ta37YBIGW+LrUBUNf7QaCCj1nzCicvPiasGwZrkfLwGLQ+sRgEJHmvphTdcLaXXWVhoA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12019.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(52116014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003)(3023799003)(38350700014)(921020)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?J7hByjWdgeVNlAjr49mtrATqqEdAVVV9GOyRNT2lJUEG/0nsIi/b5SszgTlH?=
+ =?us-ascii?Q?o5wORwpm15DpVlykddkoQYmtE3fpXRy13vE25/dF4k12tZTBIN0F1iIXzFvh?=
+ =?us-ascii?Q?z10lpvlaC8kT0SJTN+Qw8h9u6gJbU/d7yOuyaUEVwFP0aiiL6904Bv90JfF/?=
+ =?us-ascii?Q?YdoX61/67lPdJRfRMPPEomb0P2kxsoTYftmeqHUwJkLDHBE6jtHVBVNP7Jzv?=
+ =?us-ascii?Q?FWPJT58aD8IWjh8gXr7L4WCS1HR4i/STYgBOwd+PAWckhrdoTrR6etrZVddM?=
+ =?us-ascii?Q?q0G77QFLEwfKlwHJTyLF0lttSOBodr9pndFphaeEA2bYw4+DbCmKr4L9QVXK?=
+ =?us-ascii?Q?7FlzobeZD6pmrHvoIF6EHULvSspRhO5/uP8gzT8trznAxtnsHtfB+oS1egTG?=
+ =?us-ascii?Q?lIuPBxhg36G9O7wX7D8SfwDf8ax35akLHnlyDOQ5+DJ0Mb5sqYw+Kcawv0Ee?=
+ =?us-ascii?Q?T06kT8g6HADDdkGvBCLe6FiLlNzO0UI4Jc0epmstB1092RWuLI2qkTXw+DjV?=
+ =?us-ascii?Q?DFTUCx8n2RXKp/DuoLIrR0PdPTJ0QD7E6K8sLnNpYZKphrAT5XcuBs4ILnPZ?=
+ =?us-ascii?Q?4SX5Eg8YwWWCavWSCoa0GLHoHaRL+69uB9wY25TjeH1dEOo15j2DKwBvlFsb?=
+ =?us-ascii?Q?CTTSQRd+Z30LVttuYvoVNmKI7yKfhwuXiT1s/muQ9oZPJ1IJspVhiHgiKK6E?=
+ =?us-ascii?Q?B2vdxhoJfGbpFTW6ldzwzs2eIcRgL7anOC3QgcPfUCABpalsJeizZSL8uaxu?=
+ =?us-ascii?Q?IhEK8U0Y/8v7JKEu+GSKcemmwDsX06tRVxlCYhPdBSsq9i3PzuuxEzWKIsH8?=
+ =?us-ascii?Q?QH0Uq+/TCfJiN0a/Exgl5CN+5Cw2+Z6BZWLoEfCdOrvvm+1MD6MCpyXJw8/O?=
+ =?us-ascii?Q?JBH+2PNUYrn4XLvcOy0jizsJBp7+kIB0ykIypdXuClFM3K3NjK7kWMwAhgQH?=
+ =?us-ascii?Q?/5WFbF06P2nziyaHmkVHKaeNv2HH1d7DFy+7TrnA+bGpzq2K0F6OLRA98uby?=
+ =?us-ascii?Q?m+d1Wi+Vf3Q6kbN07NBnhD/I2WCLUJghqH0rk9B83kWXdMaeZOe4X94+3i3c?=
+ =?us-ascii?Q?k0et8fKJKJULb1pC2zAczhfVu/FzKPL3PkaVpE2wdcd8YsR5r9luOVP8J3lt?=
+ =?us-ascii?Q?nABUnoDveb3CTKk1UdW0nE1LPJM+uUlfVEsXC6spKYTRLwi42PtO3mZClkgq?=
+ =?us-ascii?Q?JJ/xYtssV0PDZvy5Pz07Oj48kdNqhiiqkHzGHX+hcfgg8msHgNHAH6Zs9v4M?=
+ =?us-ascii?Q?/MveA04HwTrIOVM2BmPqjlJY27HmTusTjQco86Qe6r85EDOU+4avEVa7vbzJ?=
+ =?us-ascii?Q?MLFSQlVF4BUdA08zvBdrFdUTmdxUpzNcA06dalq3eK6cgT0EhTnqrnp9Vv0H?=
+ =?us-ascii?Q?tj4trZDyhxsYLxf677BYy5o6ENaRw3lMjwxjs9Ju0WzHEz5Rjj3c7zZrm6n/?=
+ =?us-ascii?Q?/5RCQhFsH4s/+R4UJ5VujGoKHzCxOnsKKhSOdvBOECz0EgE2c5CIBAcMBQAb?=
+ =?us-ascii?Q?iMYWeEw9xrMpCsz65hCMf4RKiH0D0ZPgWgkIU/kMHezhEVADV+rP0PfiC8fe?=
+ =?us-ascii?Q?HdnRHIJCC9YRRkpRJ1BlWwKQi+p+u/1fbPTnvUZd5EyOjqlIPzx2wBExVoCE?=
+ =?us-ascii?Q?dFe+9SXAuq+hXMWhgl3Ur5jrm4CMNtK+6Np8sHhEEXDpUMQ9qoXHnR+mQovZ?=
+ =?us-ascii?Q?4Nritv5TQg45mM8RceA6GXuELMmciSGyrKowtVe3OEZFWmv+ehMINjYHTcOs?=
+ =?us-ascii?Q?SAW2g8BDcQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 339b3f4f-bb4a-4cfd-22ba-08deb4ae98a5
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12019.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 07:25:11.4922
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yw3FeT2jxs1oCLuvnSVh9hppDhDvXzcflDjtGs2BkmU0BgRRsEsKwD9xil/b/JefpsdFaDpunvEUzaCk1YwvHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10998
+X-Rspamd-Queue-Id: E33E7567794
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_FROM(0.00)[bounces-249206-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	TAGGED_FROM(0.00)[bounces-249204-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	FROM_NEQ_ENVFROM(0.00)[hbathini@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[nxp.com,pengutronix.de,kernel.org,google.com,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hongxing.zhu@nxp.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,nxp.com:mid,nxp.com:dkim]
 X-Rspamd-Action: no action
 
+According to the i.MX95 PCIe PHY Databook, the ref_use_pad signal in the
+Common Block Signals section selects the reference clock source connected
+to the PHY pads. Per the specification, any change to this input must be
+followed by a PHY reset assertion to take effect.
 
+Move the REF_USE_PAD configuration before the PHY reset toggle to comply
+with the required initialization sequence.
 
-On 18/05/26 3:10 am, adubey@linux.ibm.com wrote:
-> From: Abhishek Dubey <adubey@linux.ibm.com>
-> 
-> Move the long branch address space to the bottom of the long
-> branch stub. This allows uninterrupted disassembly until the
-> last 8 bytes. Exclude these last bytes from the overall
-> program length to prevent failure in assembly generation.
-> Also, align dummy_tramp_addr field with 8-byte boundary.
-> 
-> Following is disassembler output for test program with moved down
-> dummy_tramp_addr field:
-> .....
-> .....
-> pc:68    left:44     a6 03 08 7c  :  mtlr 0
-> pc:72    left:40     bc ff ff 4b  :  b .-68
-> pc:76    left:36     a6 02 68 7d  :  mflr 11
-> pc:80    left:32     05 00 9f 42  :  bcl 20, 31, .+4
-> pc:84    left:28     a6 02 88 7d  :  mflr 12
-> pc:88    left:24     14 00 8c e9  :  ld 12, 20(12)
-> pc:92    left:20     a6 03 89 7d  :  mtctr 12
-> pc:96    left:16     a6 03 68 7d  :  mtlr 11
-> pc:100   left:12     20 04 80 4e  :  bctr
-> pc:104   left:8      c0 34 1d 00  :
-> 
-> Failure log:
-> Can't disasm instruction at offset 104: c0 34 1d 00 00 00 00 c0
-> Disassembly logic can truncate at 104, ignoring last 8 bytes.
-> 
-> Update the dummy_tramp_addr field offset calculation from the end
-> of the program to reflect its new location, for bpf_arch_text_poke()
-> to update the actual trampoline's address in this field.
-> 
-> All BPF trampoline selftests continue to pass with this patch applied.
-> 
-> Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
-> ---
->   arch/powerpc/net/bpf_jit_comp.c | 34 +++++++++++++++++++--------------
->   1 file changed, 20 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-> index ef7614177cb1..b73bc9295c31 100644
-> --- a/arch/powerpc/net/bpf_jit_comp.c
-> +++ b/arch/powerpc/net/bpf_jit_comp.c
-> @@ -57,19 +57,21 @@ void bpf_jit_build_fentry_stubs(u32 *image, u32 *fimage, struct codegen_context
->   	 * In the final pass, align the mis-aligned dummy_tramp_addr field
->   	 * in the fimage. The alignment NOP must appear before OOL stub,
->   	 * to make ool_stub_idx & long_branch_stub_idx constant from end.
-> +	 *
-> +	 * The dummy_tramp_addr field is placed at bottom of Long branch stub.
->   	 */
->   #ifdef CONFIG_PPC64
->   	if (fimage && image) {
->   		/*
->   		 * pc points to first instruction of OOL stub,
-> -		 * dummy_tramp_addr is past 4/3 instructions depending on
-> +		 * dummy_tramp_addr is past 11/10 instructions depending on
->   		 * CONFIG_PPC_FTRACE_OUT_OF_LINE is enabled/not respectively.
->   		 *
->   		 * The decision to emit alignment NOP must depend on the alignment
->   		 * of dummy_tramp_addr field.
->   		 */
->   		unsigned long pc = (unsigned long)fimage + CTX_NIA(ctx);
+Fixes: 47f54a902dcd ("PCI: imx6: Toggle the core reset for i.MX95 PCIe")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-> -		pc += IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE) ? 4 : 3;
-> +		pc += IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE) ? 11 : 10;
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 002e0a0d9382..66e760015c92 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -138,6 +138,7 @@ struct imx_pcie_drvdata {
+ 	const u32 mode_off[IMX_PCIE_MAX_INSTANCES];
+ 	const u32 mode_mask[IMX_PCIE_MAX_INSTANCES];
+ 	const struct pci_epc_features *epc_features;
++	int (*init_pre_reset)(struct imx_pcie *pcie);
+ 	int (*init_phy)(struct imx_pcie *pcie);
+ 	int (*enable_ref_clk)(struct imx_pcie *pcie, bool enable);
+ 	int (*core_reset)(struct imx_pcie *pcie, bool assert);
+@@ -249,6 +250,24 @@ static unsigned int imx_pcie_grp_offset(const struct imx_pcie *imx_pcie)
+ 	return imx_pcie->controller_id == 1 ? IOMUXC_GPR16 : IOMUXC_GPR14;
+ }
+ 
++static int imx95_pcie_init_pre_reset(struct imx_pcie *imx_pcie)
++{
++	bool ext = imx_pcie->enable_ext_refclk;
++
++	/*
++	 * Regarding the Signal Descriptions of i.MX95 PCIe PHY, ref_use_pad is
++	 * used to select reference clock connected to a pair of pads.
++	 *
++	 * Any change in this input must be followed by phy_reset assertion.
++	 */
++
++	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_PHY_GEN_CTRL,
++			   IMX95_PCIE_REF_USE_PAD,
++			   ext ? IMX95_PCIE_REF_USE_PAD : 0);
++
++	return 0;
++}
++
+ static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
+ {
+ 	bool ext = imx_pcie->enable_ext_refclk;
+@@ -271,9 +290,6 @@ static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
+ 			IMX95_PCIE_PHY_CR_PARA_SEL,
+ 			IMX95_PCIE_PHY_CR_PARA_SEL);
+ 
+-	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_PHY_GEN_CTRL,
+-			   IMX95_PCIE_REF_USE_PAD,
+-			   ext ? IMX95_PCIE_REF_USE_PAD : 0);
+ 	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_0,
+ 			   IMX95_PCIE_REF_CLKEN,
+ 			   ext ? 0 : IMX95_PCIE_REF_CLKEN);
+@@ -1348,6 +1364,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+ 		pp->bridge->disable_device = imx_pcie_disable_device;
+ 	}
+ 
++	if (imx_pcie->drvdata->init_pre_reset)
++		imx_pcie->drvdata->init_pre_reset(imx_pcie);
++
+ 	imx_pcie_assert_core_reset(imx_pcie);
+ 
+ 	if (imx_pcie->drvdata->init_phy)
+@@ -2047,6 +2066,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 		.mode_mask[0] = IMX95_PCIE_DEVICE_TYPE,
+ 		.core_reset = imx95_pcie_core_reset,
+ 		.init_phy = imx95_pcie_init_phy,
++		.init_pre_reset = imx95_pcie_init_pre_reset,
+ 		.wait_pll_lock = imx95_pcie_wait_for_phy_pll_lock,
+ 		.enable_ref_clk = imx95_pcie_enable_ref_clk,
+ 		.clr_clkreq_override = imx95_pcie_clr_clkreq_override,
+@@ -2102,6 +2122,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 		.ltssm_mask = IMX95_PCIE_LTSSM_EN,
+ 		.mode_off[0]  = IMX95_PE0_GEN_CTRL_1,
+ 		.mode_mask[0] = IMX95_PCIE_DEVICE_TYPE,
++		.init_pre_reset = imx95_pcie_init_pre_reset,
+ 		.init_phy = imx95_pcie_init_phy,
+ 		.core_reset = imx95_pcie_core_reset,
+ 		.wait_pll_lock = imx95_pcie_wait_for_phy_pll_lock,
 
-To get the address, should multiply the instruction count with 4..
+base-commit: 40b7f61a1a4d7fd18188f3f87e15ff5a90ce1d31
+-- 
+2.37.1
 
-     pc += (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE) ? 11 : 10) * 4;
-
-Also, pc may not be appropriate name here. We are essentially
-calculating the pointer address of dummy_tramp_addr. `addrp` maybe?
-
-- Hari
 
