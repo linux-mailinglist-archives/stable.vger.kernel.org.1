@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-249344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ITwFBxEC2qsFAUAu9opvQ
-	(envelope-from <stable+bounces-249344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:53:48 +0200
+	id KLOrHvFEC2qsFAUAu9opvQ
+	(envelope-from <stable+bounces-249345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:57:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB405713C4
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:53:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFFC5714DD
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 18:57:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85363300FFA9
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:53:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 514C8309D490
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 16:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38622405C48;
-	Mon, 18 May 2026 16:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882B3495524;
+	Mon, 18 May 2026 16:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rn1wewad"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sFbqnw/Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476BD494A0A
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 16:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89699494A0B
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 16:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779123215; cv=none; b=ZYd3f7298TuSlpU7+RrmPhEPFrbv+2s7f13cMAXaNSJkl9nf2YvaPnbzMsIzGWyZSys/LK2/DMbELnGll4kGfRefxn5Zq2CD2rEn1EZdgNmoJJoxVPKSe7k+0+RdoOYtcPG5LXZiFMy9ZWia0lNrcR3La4gFSGbgfsADxZh4fLE=
+	t=1779123217; cv=none; b=qBLp0iMbyeaGtFN9ufnhacEjIaeFBW1y+V4DFEz1RgSuC/UGZOrAMAqIsbr2xq83KRr+JMKo5nBZf555r75m81dRB/ZRubS2WMDWoXYvC2EZTkYvekyzr0YHF4JfCDlv9ciu9hUBXTSHQK9HXV6cfWlqJ9cF0wNdvQ6/FCnoVrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779123215; c=relaxed/simple;
-	bh=URFYTieCVSZC7c5z09SQJ1b36jUaan5k48W0s0/ZCLA=;
+	s=arc-20240116; t=1779123217; c=relaxed/simple;
+	bh=NBZHuKv2ldtGIWJAnz+NCfK2xasjAlOHK3ocGE6MaRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MqVGLDzJzJZ92BaUBP4pSONTkj7RDwVcIedjrJZvfgsptgkxJGwlTzqv0k8WO2G0dm5YokdNkSmornvy+9MrZdqT5gtSZ47ZnZ5fCl1Z+5bub4TpyiDmjzUFoEltA1VNwlLM4jMZ7mxwouJAVzZM6wVCmo8wEkBdOG2LTEh0gLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rn1wewad; arc=none smtp.client-ip=74.125.224.52
+	 MIME-Version; b=UMBypa1XkVg232r0l3xLphj6hrurc/MOCk84Y9njgdb3syuk5atVFrCr4QNXGIRDfHG/gVfvoS4lf9yOzESKjBaA9ISbwOSWvi5QtiITvIEkW+D5adfcq0D7uG/NbaFRed94U8AJL4aMz86Iwfmdy0WRA0lPvLfhYJBKdfPGr0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sFbqnw/Q; arc=none smtp.client-ip=209.85.128.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-65e15fb394bso1880373d50.2
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 09:53:34 -0700 (PDT)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7bdc947aa88so16703497b3.3
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 09:53:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779123213; x=1779728013; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779123214; x=1779728014; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Qta+TGt8f8bCNU5lXsak/sMOHDnwEN56jda27IdO8xA=;
-        b=rn1wewadbMdYNBApEV9E1quik05bze1uz5pNbmVDetrKQLcHduphxPpJqPOlzFz4Ha
-         bemBwZR+M2j1Zy8C6IvX8LmT4YaYy/AyHH0TzZuB3J7P1Y72vmYNLnMWpcPrrZtZNVVe
-         G0fkHM2WnxxnDqPyBgAvBhfew7mxF/OzaXKV+Z7rN1MK3VWDYYpHaPTqWApqJ2bn/EYJ
-         kI2470hRWueZen/ObOtLjqSaH3TNn5QkaOlG/BLLlG20Wiamq6G17jxLIyYC8n8t3+Ze
-         /0Ot75kKWD0FRqO88wdKxQLWSAmF/3XfEnckEH5P1zDnjArhGInQnOi5pyG+aEoX2oAa
-         GYyw==
+        bh=taXFjdWmYy69nXOR8QvrAj+hN3E0MfqomsmbUhRahH0=;
+        b=sFbqnw/QVvvac7icwqA+B83l9++wx76rwbXAuqWO/ojKzdMas9pJCpQwc5fFaG9yBF
+         EpktwLP1DXu53HAdD+Rt/vXkh+Tl6iKvbGHylxqTnlsk6QCsVVVPVmWuWHXZ3udTi4a/
+         bNbEo3XgVtulBKKnaXSOHTRgudEuDJOaxbU5O9Cc5ec7BdjM4TeH9n2ndSrTc+ac/zi6
+         AIaONSvERsb9IBsXntp/ubp5tyOG283t6h4KQB9WgaXIHlL4ZkA+TG2/fofRh2/pNRBd
+         w9X5Ph5q7PAB6lKJGHarV1Yd+FHGOOc5dTTRuqEOybjtEasiImQwkYMu2t4/Tw+uqoVy
+         PJ1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779123213; x=1779728013;
+        d=1e100.net; s=20251104; t=1779123214; x=1779728014;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Qta+TGt8f8bCNU5lXsak/sMOHDnwEN56jda27IdO8xA=;
-        b=B0Fk5/x2ugLYbQqNPEGTf4eG+QQ3WUfPub/iElQZfGt3njqMfQVLtx5IqKeN0DXsAl
-         qT8gONAyllUQUIFfKB+PJMj0Ew1GwEQvZTySuyJIn9VNw2eU0/ayxE5lNXrKvby18oZa
-         vPWt4Dq5V3Jl/HGIiYhKDYs6HllkcYH87ISisI590kHgBMa9retnnPNA/enHg5grjH2D
-         j7wDBYk9hs4jBONPBYKJGcMey53N8KR8BsqJNKBaWJ45OOANv1x7ANo6K2pY3ZxmSnMH
-         C94NZGG3EvHWCUe9476d42AaQAYY4wAPJM/DFKbiozg1Ob6yfTNhAvdM8tVRPiqHphQf
-         WaLA==
-X-Forwarded-Encrypted: i=1; AFNElJ/a/ug5qU+55vEOq951ONgjIQ4d1XX9b9wc0olJyXhZ51HuN9m4sOKFtKm5KoHytJFn02mPX/0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8OCZ1Jv+gWYjCftkktYpsB9Qi2R1ZBncU3Hry0m3CIXi9lt9v
-	7XZnc43GN+Gm8mVGXetYUcnU4SkZgp3tgh/YcKAXrnybXUrdGuhbZs4E
-X-Gm-Gg: Acq92OEo9FOezS2dqKeAg6VFe4hoBz0rlUtybaEjkKjA82EykJSOKN1VZiKI00GWiyS
-	Z2vUc1A/S+2+6r3mzRsZEalZv9qQolHQuu0n3YeoJI5IGju/dYh/ZGYoAoDAlXHxbT+NA0a7Bus
-	DxS1qCPjoUF9cywDK1ibG0UUkTEgGrtHkHa1+DfP1XZuEm9SQnR4+a5qi8kWywiWMdsdBWKH0ip
-	kzFDIhtuYjvV2Nr+6pQLD75UD0nvHuY15bRMM61OGCZ234GUF8FtVryL4fCoo/VJECweqfA68sq
-	uR+aYWQ7i+Q8ePjKNYKZQL0DpuEM78sQfTY62pUwaqs0HUP2KDEHmdN8M1sXh/Tu6BbAIySrxoy
-	l9Oc9FGM1XAr9UVKA7zwFotoCpZLk016WCOzzefwNR56icQguIaPcKV6ATqcdaF+8o5jPg9GgmG
-	a4wbP1mu+rrFHId/k4I675ShOSyvlykTHpjid0xw79vDXV7vUq9x82Wv0PfA4/dtTZ/5xY7YIgL
-	FKGNoMzTZi0q6UI
-X-Received: by 2002:a05:690e:1482:b0:651:b13e:f9ef with SMTP id 956f58d0204a3-65e226d2c42mr16777704d50.14.1779123213099;
-        Mon, 18 May 2026 09:53:33 -0700 (PDT)
+        bh=taXFjdWmYy69nXOR8QvrAj+hN3E0MfqomsmbUhRahH0=;
+        b=R3mH5VMA2eAxlwR6zt6B5oVbcYBeGrvmxNVdDUlUsu7VIbeRg0dQ9oYlEZyyCXlBRl
+         GWuaRr9ElMFoxls/bRDj/fvWrYOtn7j42imYYy7Hlob8ersH90/cJ8pvIfDIkA3k/F3Y
+         Qsv9i/IduE2qPyrB7zSG1QY2TeqPlqnum9fNTc8B6PGREkBx8BfuBClmix6KXhi1BBwV
+         JwyNJsq677UUBfDzFD2b3mF0mVSuOK0z5xYPmxFOYbk2l/lT5+iXQq4FovRP5d5HUEnL
+         qDroac1InZ5wisgQTwauJ9PJJrv0mo54ex3fikY1SPQMiKeisEA5b00Xs/VjML7DAmjL
+         t9Uw==
+X-Forwarded-Encrypted: i=1; AFNElJ8Vm6CnDrHsSMpM9k4VtYfyVrTWHM05duy4FioQVGlDZGaE6Jt296SezKIXQfInM9XVf2+MX4Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwST82yNH1vPs8dcQnX1jwx8tMLnbBRFHY+h73Da6xI3l3c818Y
+	P87OlRonXfWQiN6VjTd5EZw4P8Fi0pZJfwzwAc1Hcc2y8Ntgu+vm+TZG
+X-Gm-Gg: Acq92OHRMiY3kqGALYYd+aJfgfA78xR2ecbBcKlhLvrFtbSqYkQSlMjU12v2zTVFoba
+	JsERwr++RCHwnhewMgKer335YgxUCQDfFU8zqq0ZijPinUd6fVmyGcbVKr9Q/CcCZAhf7MAXewT
+	Ar13n3KGYnSj1P2kxaBJ3yf+ypR5Zus9HnkzeOqHEAe9Fsi7lFBRCPkujtMsc7+9Aqht5DwytJL
+	69vqxJWFGgaaLG/fFiWJQE0mmp9sn/PpwwSlq2p/43e0Lo1X8MaFCYr3P3RLDB+wY+couydPfTJ
+	or2pKD/eK1I2k2FPP6snrVQMzkXetNeecviKNVon8QWvQ4z+vfhwc71YcW5F5kE6mtG8C8syWo1
+	WS+vc7INgXX4cQFmAcKK69S7vTEwvVWkJOYOwraFkmBWtP3DLg8wZfXp0v8neAdCP+Qj4EwgZKX
+	KIydt8ATaW5nwqhYcMjUV9bbysGW6KTqVPPc6Mh+lN3LiYhlgm+FQUXrD4sz5idEzKj9GvPhIDC
+	nk0jLdXvsj2RhrW9a4HWiyibBE=
+X-Received: by 2002:a05:690c:38b:b0:7c5:f6c:d132 with SMTP id 00721157ae682-7c95a967084mr182102907b3.17.1779123214581;
+        Mon, 18 May 2026 09:53:34 -0700 (PDT)
 Received: from localhost.localdomain ([186.151.100.108])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc965ab98dsm24232957b3.0.2026.05.18.09.53.31
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc965ab98dsm24232957b3.0.2026.05.18.09.53.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 09:53:32 -0700 (PDT)
+        Mon, 18 May 2026 09:53:34 -0700 (PDT)
 From: Sebastian Alba Vives <sebasjosue84@gmail.com>
 To: yilun.xu@linux.intel.com,
 	gregkh@linuxfoundation.org
@@ -86,9 +86,9 @@ Cc: linux-fpga@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Sebastian Alba Vives <sebasjosue84@gmail.com>
-Subject: [PATCH v7 1/3] fpga: dfl: add bounds check in dfh_get_param_size()
-Date: Mon, 18 May 2026 10:52:16 -0600
-Message-ID: <20260518165218.35388-2-sebasjosue84@gmail.com>
+Subject: [PATCH v7 2/3] fpga: dfl-afu: validate DMA mapping length in afu_dma_map_region()
+Date: Mon, 18 May 2026 10:52:17 -0600
+Message-ID: <20260518165218.35388-3-sebasjosue84@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260518165218.35388-1-sebasjosue84@gmail.com>
 References: <20260518165218.35388-1-sebasjosue84@gmail.com>
@@ -105,18 +105,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,microchip.com,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-249344-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249345-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sebasjosue84@gmail.com,stable@vger.kernel.org];
@@ -126,55 +126,49 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BDB405713C4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CBFFC5714DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-dfh_get_param_size() can return a parameter size larger than the feature
-region because the loop bounds check is evaluated before incrementing
-size. If the EOP (End of Parameters) bit is set in the same iteration,
-the inflated size is returned without re-validation against max.
+afu_ioctl_dma_map() accepts a 64-bit length from userspace via
+DFL_FPGA_PORT_DMA_MAP ioctl without an upper bound check. The value
+is passed to afu_dma_pin_pages() where npages is derived as
+length >> PAGE_SHIFT and passed to pin_user_pages_fast() which takes
+int nr_pages, causing implicit truncation if length is very large.
 
-This can cause create_feature_instance() to call memcpy_fromio() with a
-size exceeding the ioremap'd region when a malicious FPGA device provides
-crafted DFHv1 parameter headers.
+Validate map.length at the ioctl entry point before calling
+afu_dma_map_region(), rejecting values whose page count exceeds
+INT_MAX.
 
-Add a bounds check after the size increment to ensure the accumulated
-size never exceeds the feature boundary.
-
-Fixes: 4747ab89b4a6 ("fpga: dfl: add basic support for DFHv1")
 Signed-off-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
 ---
 Changes in v7:
-  - Correct the Fixes: tag commit hash (checkpatch).
-    Reported by Xu Yilun.
+  - No changes.
 Changes in v6:
   - Rebase onto linux-next. Add cover letter.
     Suggested by Xu Yilun.
-Changes in v5:
-  - Add blank line after the new bounds check.
-    Suggested by Xu Yilun.
-Changes in v2:
-  - Use (size > max) instead of (size + DFHv1_PARAM_HDR > max).
-    Suggested by Xu Yilun.
+Changes in v3:
+  - Move validation to afu_ioctl_dma_map() at the ioctl entry point.
+    Suggested by Greg Kroah-Hartman.
 ---
- drivers/fpga/dfl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/fpga/dfl-afu-main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/fpga/dfl.c b/drivers/fpga/dfl.c
-index 4087a36a0..4c63c7c85 100644
---- a/drivers/fpga/dfl.c
-+++ b/drivers/fpga/dfl.c
-@@ -1132,6 +1132,8 @@ static int dfh_get_param_size(void __iomem *dfh_base, resource_size_t max)
- 			return -EINVAL;
+diff --git a/drivers/fpga/dfl-afu-main.c b/drivers/fpga/dfl-afu-main.c
+index 3bf8e7338..097a97eee 100644
+--- a/drivers/fpga/dfl-afu-main.c
++++ b/drivers/fpga/dfl-afu-main.c
+@@ -723,6 +723,9 @@ afu_ioctl_dma_map(struct dfl_feature_dev_data *fdata, void __user *arg)
+ 	if (map.argsz < minsz || map.flags)
+ 		return -EINVAL;
  
- 		size += next * sizeof(u64);
-+		if (size > max)
-+			return -EINVAL;
- 
- 		if (FIELD_GET(DFHv1_PARAM_HDR_NEXT_EOP, v))
- 			return size;
++	if (map.length >> PAGE_SHIFT > (u64)INT_MAX)
++		return -EINVAL;
++
+ 	ret = afu_dma_map_region(fdata, map.user_addr, map.length, &map.iova);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
