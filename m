@@ -1,310 +1,162 @@
-Return-Path: <stable+bounces-249172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249173-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEmDM4N+Cmoo2AQAu9opvQ
-	(envelope-from <stable+bounces-249172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 04:50:43 +0200
+	id MBvlBl6ACmoo2AQAu9opvQ
+	(envelope-from <stable+bounces-249173-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 04:58:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700505652E3
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 04:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 735F8565388
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 04:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 854FD301906D
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 02:50:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55F133010C21
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 02:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2687037BE7D;
-	Mon, 18 May 2026 02:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D3C37C0F1;
+	Mon, 18 May 2026 02:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="eTswSKoo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rp+HOm4S"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E52405C49;
-	Mon, 18 May 2026 02:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E20304BB3
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 02:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779072635; cv=none; b=NpwRMlThahdz+3e/PvTWXY/hTtZo9FMOqcqF3o9Jo+Xiy4nqg4+m2V9AaylAdRYG4FYpjCrICauDfm+N9Es3YWDEnR4O64cu2UNB/eoj/rebTOlbYQ/sXLAiPhkVLmawah2e9KJNHCvsDHa0M8pfE/9OkIjJKejRBU+k19bp0GY=
+	t=1779073112; cv=none; b=VgjXCmVfTIcNc0c19wN1IkiJjCdfUZU9kJvul7zi04VydhyyV/u6Q/IeMeXQxq7IiWb8xQjA41hcp3RaprL4CDRZQUy8Du8t6gNRSdyCD0jcsPlWXDgy2gNoWkpQHqnxM+H+juyg8HGQs4iYSaFQIKkh9b9dzvMtEiEJDamCpV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779072635; c=relaxed/simple;
-	bh=kXx/uhDwWXesnq94JEolJT/pDNiJ7wGdabHSID0sl6w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f9YkYP9TE1/skpQwA6MLIRVrRe84KUthOHDaO7WQcMA/gAtUNa4cboMb9s/NPR7l/+HRiNw6vNBoNPsW3CiRVaY7XaoEzDM1QncU6wbSgLzS0WZ9iQmlMzPM13reYC/suVPeat0BV0JfR/nENVe6nhrhAGqol1b86OqxyU64D4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=eTswSKoo; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Xl
-	uZTSIZQlenLHugZ/HZvvlC7d5/oYyPXrnh/ShBstQ=; b=eTswSKoo5dC4y9Gizn
-	awRm+dfgSxGheKpbffK7wPGrNyRAp1YeVrfzc6iLEDoqw2Gv3Rte5yzi1SH1MoXS
-	4Wk63+lkbLjaJuJvo78itNTFX8SrKqoNgQd9O0n0pbgqTIOt0nT+APRgz3ATXRPe
-	859eYWNqEWUxJBHRAVPAs5W2o=
-Received: from 163.com (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgD3hDFPfgpqKzGbEA--.118S2;
-	Mon, 18 May 2026 10:50:05 +0800 (CST)
-From: <w15303746062@163.com>
-To: luiz.dentz@gmail.com,
-	pmenzel@molgen.mpg.de,
-	marcel@holtmann.org,
-	linux-bluetooth@vger.kernel.org
-Cc: linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	greg@kroah.com,
-	stable@vger.kernel.org,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Subject: [PATCH v9] Bluetooth: hci_uart: fix UAFs and race conditions in close and init paths
-Date: Mon, 18 May 2026 10:49:49 +0800
-Message-Id: <20260518024949.439299-1-w15303746062@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CABBYNZ+r3gm37FW5WqE79bRp+x9UZsaCtyvfz_FdixqEucAxGw@mail.gmail.com>
-References: <CABBYNZ+r3gm37FW5WqE79bRp+x9UZsaCtyvfz_FdixqEucAxGw@mail.gmail.com>
+	s=arc-20240116; t=1779073112; c=relaxed/simple;
+	bh=vWvEcAPRpUrI5RQk5fEbio9KQQHm1uMZbGz43aBrKdY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UeOSkowteX3gOwiZUKN2K83i3l4MEFuUHooRQZT2voy6pz2Aj9RRRsZBMN89ixKvnx875C6WdNdDBYNNZqT5AGFUTZHzcf6V0nzd4/K+MM2oFYeAHrMGIbY6vCizcj7CJ+SDAXZxsH72oDp4lNMzr6m3fB/MGmYDjSVtRxdXxBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rp+HOm4S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D33DC4AF09
+	for <stable@vger.kernel.org>; Mon, 18 May 2026 02:58:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779073112;
+	bh=vWvEcAPRpUrI5RQk5fEbio9KQQHm1uMZbGz43aBrKdY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Rp+HOm4SOKROhuwDRqFqNGajLMF7ovpI15zTzxBD1xnwduCPv4zPzCcBZkLqCyI4A
+	 qIKV+biW+SdTmKgtBjpYUTmPyDSIqjei7oLKIPoFi0atAX+3jRrRPwJUY2kkrSQxmL
+	 zpVg0ShhUpyPzPONr9P9YA7gja/jNYlVp4DE29cFWY4OiZjvxe3vqv6GPUCYEVO1V5
+	 vREf8mZwGOlznA/9f85vJZbmvjwQctfGhmWlM9WmKYUwSkNRksWvT0iyO+xK7dxdMc
+	 IuGilp+8W8f6k66rQVxl3A3DByrP9VK2Oy1Z5Wp0CZF18dE6hmiC0kv1I2CY3MUsKi
+	 OUDKkucpGa5XQ==
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6763cc8775cso6250355a12.0
+        for <stable@vger.kernel.org>; Sun, 17 May 2026 19:58:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8IK5puCnmUz0apUpTX6APoUmbSRSprvz2APZXtutXetlwUapGVhlFyco52jIYiYdCEob+GIw0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBoeJEX0KRUnhUQqAxSwIqkSEeH8ull8Zf/KWo8r/sa/3KBar8
+	m63URku+ijOoEpWvLyZEqa7LojWCcNb+SiEy3Ti27EM8VfI0cbcytXMNcKWH3VRnDwACD+1RMLp
+	YgzSJBO55XP8aiMaU4bcTH7PkixnwI6s=
+X-Received: by 2002:a17:907:940d:b0:bd4:f2c7:25e2 with SMTP id
+ a640c23a62f3a-bd51534c830mr562537066b.5.1779073110685; Sun, 17 May 2026
+ 19:58:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgD3hDFPfgpqKzGbEA--.118S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Xr1fZrWDtw18Xw4rCrWfXwb_yoWfWFW7pF
-	W5KF90kr4kXrW2kw1DZF48JF1rKF1fKayayw1fG3y5Jws8tr1YkF12kayF9F18Cryvkr4S
-	vr4UXrW5u3W7ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jefO7UUUUU=
-X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC4x3Tt2oKfl1aUwAA3Q
-X-Rspamd-Queue-Id: 700505652E3
+References: <20260517092432.1025008-1-chenhuacai@loongson.cn> <CAJF2gTSn-44So=SdVYxvF5ihJjWs9R7vFAyuPNpeLBwBpJrY9Q@mail.gmail.com>
+In-Reply-To: <CAJF2gTSn-44So=SdVYxvF5ihJjWs9R7vFAyuPNpeLBwBpJrY9Q@mail.gmail.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Mon, 18 May 2026 10:58:50 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4Zvqvb_Crx-cpunZV8tGcFu=2T6x0aG9iV31BPcO5xng@mail.gmail.com>
+X-Gm-Features: AVHnY4LGjaT_QdnD3nKcKvz3-lg9nRWT0Y2Sjfi2bQJMcSLBogKzGmXduJtJea4
+Message-ID: <CAAhV-H4Zvqvb_Crx-cpunZV8tGcFu=2T6x0aG9iV31BPcO5xng@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: Remove unused code to avoid build warning
+To: Guo Ren <guoren@kernel.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
+	Xuefeng Li <lixuefeng@loongson.cn>, Xuerui Wang <kernel@xen0n.name>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 735F8565388
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249172-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,molgen.mpg.de,holtmann.org,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-249173-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2600:3c0a:e001:db::12fc:5321:from];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	NEURAL_HAM(-0.00)[-0.996];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[163.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[100.90.174.1:received];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
 X-Rspamd-Action: no action
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+On Mon, May 18, 2026 at 9:42=E2=80=AFAM Guo Ren <guoren@kernel.org> wrote:
+>
+>
+>
+> On Sun, May 17, 2026 at 5:25=E2=80=AFPM Huacai Chen <chenhuacai@loongson.=
+cn> wrote:
+> >
+> > After commit feee6b2989165631b1 ("mm/memory_hotplug: shrink zones when
+> > offlining memory"), __remove_pages() doesn't need the "zone" parameter
+> > so the "page" variable is also unused. Remove the unused code to avoid
+> > such build warning:
+> >
+> > arch/loongarch/mm/init.c: In function 'arch_remove_memory':
+> > arch/loongarch/mm/init.c:134:22: warning: variable 'page' set but not u=
+sed [-Wunused-but-set-variable=3D]
+> >   134 |         struct page *page =3D pfn_to_page(start_pfn);
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+> >  arch/loongarch/mm/init.c | 4 ----
+> >  1 file changed, 4 deletions(-)
+> >
+> > diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
+> > index 3f9ab54114c5..031b39eb081c 100644
+> > --- a/arch/loongarch/mm/init.c
+> > +++ b/arch/loongarch/mm/init.c
+> > @@ -123,11 +123,7 @@ void arch_remove_memory(u64 start, u64 size, struc=
+t vmem_altmap *altmap)
+> >  {
+> >         unsigned long start_pfn =3D start >> PAGE_SHIFT;
+> >         unsigned long nr_pages =3D size >> PAGE_SHIFT;
+> > -       struct page *page =3D pfn_to_page(start_pfn);
+> >
+> > -       /* With altmap the first mapped page is offset from @start */
+> > -       if (altmap)
+> > -               page +=3D vmem_altmap_offset(altmap);
+> >         __remove_pages(start_pfn, nr_pages, altmap);
+>
+> Good cleanup, but does LoongArch forget to remove the linear mapping? If =
+the memory is unplugged, the mapping is still there. How does the core fetc=
+h data from there?
+LoongArch's linear mapping is based on DMW rather than TLB, so
+removing linear mapping is unnecessary.
 
-Vulnerabilities leading to Use-After-Free (UAF) and Null Pointer
-Dereference (NPD) conditions were observed in the lifecycle management
-of hci_uart.
 
-The primary issue arises because the workqueues (init_ready and
-write_work) are only flushed/cancelled if the HCI_UART_PROTO_READY
-flag is set during TTY close. If a hangup occurs before setup completes,
-hci_uart_tty_close() skips the teardown of these workqueues and
-proceeds to free the `hu` struct. When the scheduled work executes
-later, it blindly dereferences the freed `hu` struct.
-
-Furthermore, several data races and UAFs were identified in the teardown
-sequence:
-1. Calling hci_uart_flush() from hci_uart_close() without effectively
-   disabling write_work causes a race condition where both can concurrently
-   double-free hu->tx_skb. This happens because protocol timers can
-   concurrently invoke hci_uart_tx_wakeup() and requeue write_work.
-2. Calling hci_free_dev(hdev) before hu->proto->close(hu) causes a UAF
-   when vendor specific protocol close callbacks dereference hu->hdev.
-3. In the initialization error paths, failing to take the proto_lock
-   write lock before clearing PROTO_READY leads to races with active
-   readers. Additionally, hci_uart_tty_receive() accesses hu->hdev
-   outside the read lock, leading to UAFs if the initialization error
-   path frees hdev concurrently.
-
-Fix these synchronization and lifecycle issues by:
-1. Re-ordering hci_uart_tty_close() to clear HCI_UART_PROTO_READY first,
-   followed immediately by a cancel_work_sync(&hu->write_work). Clearing
-   the flag locks out concurrent protocol timers from successfully invoking
-   hci_uart_tx_wakeup(), effectively rendering the cancellation permanent
-   and preventing the tx_skb double-free.
-2. Note: Clearing PROTO_READY early causes hci_uart_close() to skip
-   hu->proto->flush(). This is perfectly safe in the tty_close path
-   because hu->proto->close() executes shortly after, which intrinsically
-   purges all protocol SKB queues and tears down the state.
-3. Relocating hu->proto->close(hu) strictly prior to hci_free_dev(hdev)
-   across all close and error paths to prevent vendor-level UAFs.
-4. Moving the hdev->stat.byte_rx increment in hci_uart_tty_receive()
-   inside the proto_lock read-side critical section to safely synchronize
-   with device unregistration.
-5. Adding cancel_work_sync(&hu->write_work) to hci_uart_close() to safely
-   flush the workqueue before hci_uart_flush() is invoked via the HCI core.
-6. Utilizing cancel_work_sync() instead of disable_work_sync() across
-   all paths to prevent permanently breaking user-space retry capabilities.
-
-Fixes: 3b799254cf6f ("Bluetooth: hci_uart: Cancel init work before unregistering")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
----
-Changes in v9:
-- Addressed a critical flaw identified in v8 where premature cancellation of write_work allowed active protocol timers to immediately reschedule it. The teardown sequence in hci_uart_tty_close() now strictly clears HCI_UART_PROTO_READY *before* calling cancel_work_sync(&hu->write_work). This permanently locks out hci_uart_tx_wakeup(), completely resolving the lingering UAF and double-free races.
-- Documented that skipping hu->proto->flush() via early flag clearance is intrinsically safe, as hu->proto->close() executes subsequently to purge all unacked/rel queues.
-
-Changes in v8:
-- Corrected the teardown sequence in hci_uart_tty_close() by unconditionally canceling write_work BEFORE hci_uart_close().
-- Moved hu->hdev->stat.byte_rx increment inside the proto_lock read-side critical section in hci_uart_tty_receive() to prevent read-side UAF against concurrent registration failures.
-- Added cancel_work_sync(&hu->write_work) inside hci_uart_close() to eliminate the race condition between write_work and hci_uart_flush() when the interface is brought down via the HCI core.
-
-Changes in v7:
-- Reverted disable_work_sync() back to cancel_work_sync() across all error and close paths to preserve user-space retry capabilities.
-- Synchronized workqueue teardown safely by atomically clearing PROTO_READY / PROTO_INIT under proto_lock prior to calling cancel_work_sync().
-- Fixed a Use-After-Free (UAF) vulnerability in the teardown sequence by relocating hu->proto->close(hu) strictly prior to hci_free_dev(hdev).
-- Added cancel_work_sync(&hu->init_ready) at the very beginning of hci_uart_tty_close() to serialize teardown against active asynchronous registration.
-
-Changes in v6:
-- Fixed missing `hu->proto_lock` write lock in hci_uart_init_work() error path to prevent race with readers (reported by Sashiko).
-- Added disable_work_sync() instead of cancel_work_sync() for `hu->write_work` in hci_uart_init_work() and hci_uart_register_dev() error paths.
-
-Changes in v5:
-- Relocated disable_work_sync() to the very top of hci_uart_tty_close(), 
-  before hci_uart_close(), to ensure no new work is submitted during device teardown.
-
-Changes in v4:
-- Adopted Luiz's suggestion to use disable_work_sync() instead of 
-  cancel_work_sync() in close path to prevent new work submissions.
-
-Changes in v3:
-- Added 'Cc: stable' tag as requested by the stable bot.
-
-Changes in v2:
-- Added KASAN/ODEBUG crash trace.
-
- drivers/bluetooth/hci_ldisc.c | 48 +++++++++++++++++++++++++++++------
- 1 file changed, 40 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index 275ea865bc29..47f4902b40b4 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -194,7 +194,15 @@ void hci_uart_init_work(struct work_struct *work)
- 	err = hci_register_dev(hu->hdev);
- 	if (err < 0) {
- 		BT_ERR("Can't register HCI device");
-+
-+		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
-+		percpu_up_write(&hu->proto_lock);
-+
-+		/* Safely cancel work after clearing flags */
-+		cancel_work_sync(&hu->write_work);
-+
-+		/* Close protocol before freeing hdev */
- 		hu->proto->close(hu);
- 		hdev = hu->hdev;
- 		hu->hdev = NULL;
-@@ -263,8 +271,12 @@ static int hci_uart_open(struct hci_dev *hdev)
- /* Close device */
- static int hci_uart_close(struct hci_dev *hdev)
- {
-+	struct hci_uart *hu = hci_get_drvdata(hdev);
-+
- 	BT_DBG("hdev %p", hdev);
- 
-+	cancel_work_sync(&hu->write_work);
-+
- 	hci_uart_flush(hdev);
- 	hdev->flush = NULL;
- 	return 0;
-@@ -531,6 +543,7 @@ static void hci_uart_tty_close(struct tty_struct *tty)
- {
- 	struct hci_uart *hu = tty->disc_data;
- 	struct hci_dev *hdev;
-+	bool proto_ready;
- 
- 	BT_DBG("tty %p", tty);
- 
-@@ -540,24 +553,38 @@ static void hci_uart_tty_close(struct tty_struct *tty)
- 	if (!hu)
- 		return;
- 
--	hdev = hu->hdev;
--	if (hdev)
--		hci_uart_close(hdev);
-+	/* Wait for init_ready to finish to prevent registration races */
-+	cancel_work_sync(&hu->init_ready);
- 
--	if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
-+	proto_ready = test_bit(HCI_UART_PROTO_READY, &hu->flags);
-+	if (proto_ready) {
- 		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
- 		percpu_up_write(&hu->proto_lock);
-+	}
- 
--		cancel_work_sync(&hu->init_ready);
--		cancel_work_sync(&hu->write_work);
-+	/*
-+	 * Unconditionally cancel write_work AFTER clearing PROTO_READY.
-+	 * This ensures that concurrent protocol timers cannot requeue
-+	 * write_work via hci_uart_tx_wakeup(), permanently preventing
-+	 * double-free races and UAFs.
-+	 */
-+	cancel_work_sync(&hu->write_work);
-+
-+	hdev = hu->hdev;
-+	if (hdev)
-+		hci_uart_close(hdev); /* proto->flush is safely skipped */
- 
-+	if (proto_ready) {
- 		if (hdev) {
- 			if (test_bit(HCI_UART_REGISTERED, &hu->flags))
- 				hci_unregister_dev(hdev);
--			hci_free_dev(hdev);
- 		}
-+		/* Close protocol before freeing hdev (intrinsically purges queues) */
- 		hu->proto->close(hu);
-+
-+		if (hdev)
-+			hci_free_dev(hdev);
- 	}
- 	clear_bit(HCI_UART_PROTO_SET, &hu->flags);
- 
-@@ -625,11 +652,12 @@ static void hci_uart_tty_receive(struct tty_struct *tty, const u8 *data,
- 	 * tty caller
- 	 */
- 	hu->proto->recv(hu, data, count);
--	percpu_up_read(&hu->proto_lock);
- 
- 	if (hu->hdev)
- 		hu->hdev->stat.byte_rx += count;
- 
-+	percpu_up_read(&hu->proto_lock);
-+
- 	tty_unthrottle(tty);
- }
- 
-@@ -695,6 +723,10 @@ static int hci_uart_register_dev(struct hci_uart *hu)
- 		percpu_down_write(&hu->proto_lock);
- 		clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
- 		percpu_up_write(&hu->proto_lock);
-+		/* Cancel work after clearing flags */
-+		cancel_work_sync(&hu->write_work);
-+
-+		/* Close protocol before freeing hdev */
- 		hu->proto->close(hu);
- 		hu->hdev = NULL;
- 		hci_free_dev(hdev);
--- 
-2.34.1
-
+Huacai
+>
+> --
+>
+> Best Regards
+>
+>   GUO Ren
 
