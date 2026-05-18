@@ -1,61 +1,81 @@
-Return-Path: <stable+bounces-249262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLM6IHv+Cmop/AQAu9opvQ
-	(envelope-from <stable+bounces-249262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:56:43 +0200
+	id SNapIxL/Cmp8/AQAu9opvQ
+	(envelope-from <stable+bounces-249264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:59:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 026D256C0FD
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:56:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F5D56C1B4
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 13:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 552D53054FEB
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 11:49:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1D402304EF44
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 11:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916E13F8712;
-	Mon, 18 May 2026 11:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB813F888F;
+	Mon, 18 May 2026 11:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CqFOazuw"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="oKl8gKZ+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5443F3F789A
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 11:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5023F870F;
+	Mon, 18 May 2026 11:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.192
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779104923; cv=none; b=hjD4VvNqHPiG/yH9uGb+tPXPZ+95+THckpeAItec+kUfF7E52XYZwM4U2pZzDfWa29gj1LWw5GevoznS3ZJcdSo44IlPG6mZ/0cVSzDIlVZ3GL5GLQ8hWOxYNS0T3KEq4/d/XT10Eilwdxw2mrggYYL6+4AeoUIZag+tT1JMguU=
+	t=1779105209; cv=none; b=lKZB2eyeuE8KZqbA9b5OtM8ecHot/tNXKF/gleKeAnB6Ofs0AmPWzRUKtOY2BqbWfspWL04tqFG7nKOL3hbfBa1qliAByjCRRyvUC57RJQsReAOnfuZgD7R1O23TOIgDk5+7KdKQOzcyg/YnmQV/ruMr4GkYBy9hjSK3Snwbo+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779104923; c=relaxed/simple;
-	bh=QRtzSJ2vmMLJk8YD9zc7q2U9gj8hI3VpM++SEZDRFt8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LplfAyjo6o/yjXXMo8SOybMa6FhK6bOpoveqr23qytWjf0w/fgsjAhggWwR47sKEeyJbtzSlLYbkLKU78ZT1CiILw4gXOPAI/mGLTM7cxfqMDXIBb4duvAcP93vMRyyn5r303eRYgCCwIAPFDLZoCL+iEMv52gLM21xBq68NtBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CqFOazuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CDAC2BCB7;
-	Mon, 18 May 2026 11:48:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779104923;
-	bh=QRtzSJ2vmMLJk8YD9zc7q2U9gj8hI3VpM++SEZDRFt8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CqFOazuwO556OWd8/3D5KZ4WmzdJilo1pMMYAimQ1zvDYropwHSAkc7NwEtCGdpeX
-	 hdv2Kq2Hs8c906MHGDFsS7xa8O9rsJksV0qga9jnSQGqtnJ02b7FBclg45Ymanki5Z
-	 k9d3uX/jw2D+UuNzg+Ciqrw1/n6r2wwtV8fJQhUw3mrHqqSxjwJJTLpE7RbY++ss28
-	 Gqq7wndNaEe71URxyzl6kQvC8OkYFPTDkOh3XkQvZphNKXtxfYNphUL3bLQscs3mO2
-	 HfMM6jaZ/rawXEqLsaFs/hqlylljyTy0GWjBC6mSUIQE4evtdKAR71YyT8bfXj+bc+
-	 mhdfJc9SomHwg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] mptcp: pm: prio: skip closed subflows
-Date: Mon, 18 May 2026 07:48:40 -0400
-Message-ID: <20260518114840.790663-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051228-credit-ship-91cd@gregkh>
-References: <2026051228-credit-ship-91cd@gregkh>
+	s=arc-20240116; t=1779105209; c=relaxed/simple;
+	bh=vOXqvyPbktfU4nViu1gg2q6M+WtpmquINDMz4D15gEs=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=qMyLne335Kss/HLyRYY2IdFn18a1tLhd8hzNMfd6nV22PWWpavbuGdZp4hUZ35IZnT+37stPuEXmk8TybJnK/GyLn6g/Oy2B7olq/HA36bGBnr+tvXxcQRjUnuB+p7UCJNjgDtEejC/quGJO86jYDLc0I650ck+N5EzlwkOlZBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=oKl8gKZ+; arc=none smtp.client-ip=203.205.221.192
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1779105194;
+	bh=2XNlZC/pNIKOxQdvoyAUjMKvunbUTotZ+x/yvWqeksA=;
+	h=From:To:Cc:Subject:Date;
+	b=oKl8gKZ+a5U6doPc4hWEfka3Mid78ysKInT7FDmHz+6DdfS9V5IkPtr9pJYB7M4/Y
+	 Y2oFe3IkZrYTou4QHsG8oYniA4jJn0lGXk03I+punMDaU3d2HFA302axTpM+Wkb2Gb
+	 LJZwv+kC/4q+i0vR7e7SUxvTyPxPJLfTJt1TULio=
+Received: from China-team ([47.95.114.252])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id D45BF675; Mon, 18 May 2026 19:53:05 +0800
+X-QQ-mid: xmsmtpt1779105185thwx7kqqn
+Message-ID: <tencent_A2DDAC857112606A1A6068F56ACE3EAE2409@qq.com>
+X-QQ-XMAILINFO: MK9ZM/6TSGijjHWBNvZGxqGnftSVzafbbNIzlaYwQKkLSIQrjOY54mREBuU1T2
+	 julvpDTSc0y3cx/vaW3gA2yKnPVbbsKxLRaCkfzZGg5qpyKkLXCzp2RrHcPhWm1N0KyT+3XPHm5h
+	 AbRj3Fy5crGYKfIGdVvc75Edfi5IGr7xODRKlosGG+3dUr2VmZtfFyRx6q44bW5tDWkfckoY7eTS
+	 WRuqkOCq5Bpmxl0LymYsu+PCqRLwXADZD5hzkCq2Ffd5qM/Wdmhz/e4E1xGRFODJU7kGN8rcRUmx
+	 +aMs2FjojPEjuDbWuqPFaItHxTArSJDN+GBWJaunUKOBzrUPOyiMBskix3bBNYhSreN8DheVqS1H
+	 bsXMCQ7ShlMFPQNNn4HGRdUryPUZAIW3D8mkHlyHFyQBbdCusFevU+9yFU47o+0rBzYLmnrt4/Ve
+	 ZYAU8Cj+NqAB8Whi6+88z0vNSlNn9wEBG3HM60ZNxXxwW1vK5cHFO1Alp4CvbrjT1akT8nZrseza
+	 Pwq64FmN8quvajqVQ3v+Nh9ixcXen/4nEHVZFwCXeuN8KHf2fFs7wpSfkuFzQYO538nvOjoGeM1m
+	 SlMF5PJ/FyvB3EDetCqjmYCh4jujo/gHBLexPZKHZ2pmTpYn4XUQwGsmKpGNLcs/gn7e0CtviPrH
+	 kHxmXrSmKPrsN5iBQOLHs7Y2pRjHAC+So5HiqKBWWuOvweCSig1DEpPmh9BN2GiGNYEnYngqpFSr
+	 dJ61sxtT1tCUhF7w9DhThG915Ks5MJHelrrjp9aZEuxhRdETme8xMDa35ca0gdKX+SjPUtJ5gaKC
+	 zVKi4unDJxprrlAR/3MYcpkw+luXFD7zRXF/CD4zsgUkKyrxooV0nrbNHqAaNA4LnRKzCbvmYsyu
+	 ssNmVd91wUTSS+dDC/ye3+TSxrpA2lLGj7vep4vzTet3TTrsajTaCGrgvX7+YuUWSCcPL0PKVEui
+	 9HwjWoduSxQlRnP1v/ZphQ9ZURLc6Nb3A1sNq5M8ni7EXqo9+3g+19mBeI94nZBiTWa/y9oyQMbS
+	 W2CUQRTi7AHIsANHc61TyAGIaxOaecwy8+kd1O5v1Q4i90rhGsjbUzk3Uih+tMcPUs3KzzhD2H6y
+	 gvy22KPkwZ8BKPWM1ZjsXKcwecAQ==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+From: Alva Lan <alvalan9@foxmail.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	Liang Jie <liangjie@lixiang.com>,
+	Tom Talpey <tom@talpey.com>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.1.y 1/2] smb: client: correctly handle ErrorContextData as a flexible array
+Date: Mon, 18 May 2026 19:52:51 +0800
+X-OQ-MSGID: <20260518115252.22162-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,77 +83,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 026D256C0FD
+X-Rspamd-Queue-Id: 33F5D56C1B4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
+	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249262-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249264-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lixiang.com,talpey.com,microsoft.com,foxmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[foxmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[foxmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qq.com:mid,foxmail.com:email,foxmail.com:dkim,lixiang.com:email]
 X-Rspamd-Action: no action
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Liang Jie <liangjie@lixiang.com>
 
-[ Upstream commit 166b78344031bf7ac9f55cb5282776cfd85f220e ]
+[ Upstream commit 215b7f9ecb8d7c14d56febdcdd246f3579c32aba ]
 
-When sending an MP_PRIO, closed subflows need to be skipped.
+The `smb2_symlink_err_rsp` structure was previously defined with
+`ErrorContextData` as a single `__u8` byte. However, the `ErrorContextData`
+field is intended to be a variable-length array based on `ErrorDataLength`.
+This mismatch leads to incorrect pointer arithmetic and potential memory
+access issues when processing error contexts.
 
-This fixes the case where the initial subflow got closed, re-opened
-later, then an MP_PRIO is needed for the same local address.
+Updates the `ErrorContextData` field to be a flexible array
+(`__u8 ErrorContextData[]`). Additionally, it modifies the corresponding
+casts in the `symlink_data()` function to properly handle the flexible
+array, ensuring correct memory calculations and data handling.
 
-Note that explicit MP_PRIO cannot be sent during the 3WHS, so it is fine
-to use __mptcp_subflow_active().
+These changes improve the robustness of SMB2 symlink error processing.
 
-Fixes: 067065422fcd ("mptcp: add the outgoing MP_PRIO support")
-Cc: stable@vger.kernel.org
-Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-9-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied to renamed function `mptcp_pm_nl_mp_prio_send_ack()` in `pm_netlink.c` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Liang Jie <liangjie@lixiang.com>
+Suggested-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Remove the __counted_by_le annotation in v6.1. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 ---
- net/mptcp/pm_netlink.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/client/smb2file.c | 4 ++--
+ fs/smb/client/smb2pdu.h  | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 3ac09bfe6e4b2..085cf338ced19 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -920,6 +920,9 @@ int mptcp_pm_nl_mp_prio_send_ack(struct mptcp_sock *msk,
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 		struct mptcp_addr_info local, remote;
+diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
+index fe016144f340..def2602ea0fb 100644
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -41,14 +41,14 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
+ 		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
+ 		do {
+ 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
+-				sym = (struct smb2_symlink_err_rsp *)&p->ErrorContextData;
++				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
+ 				break;
+ 			}
+ 			cifs_dbg(FYI, "%s: skipping unhandled error context: 0x%x\n",
+ 				 __func__, le32_to_cpu(p->ErrorId));
  
-+		if (!__mptcp_subflow_active(subflow))
-+			continue;
-+
- 		mptcp_local_address((struct sock_common *)ssk, &local);
- 		if (!mptcp_addresses_equal(&local, addr, addr->port))
- 			continue;
+ 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
+-			p = (struct smb2_error_context_rsp *)((u8 *)&p->ErrorContextData + len);
++			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
+ 		} while (p < end);
+ 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
+ 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
+diff --git a/fs/smb/client/smb2pdu.h b/fs/smb/client/smb2pdu.h
+index 2823526b66f7..d12ca9c7e62b 100644
+--- a/fs/smb/client/smb2pdu.h
++++ b/fs/smb/client/smb2pdu.h
+@@ -79,7 +79,7 @@ struct smb2_symlink_err_rsp {
+ struct smb2_error_context_rsp {
+ 	__le32 ErrorDataLength;
+ 	__le32 ErrorId;
+-	__u8  ErrorContextData; /* ErrorDataLength long array */
++	__u8  ErrorContextData[];
+ } __packed;
+ 
+ /* ErrorId values */
 -- 
-2.53.0
+2.43.0
 
 
