@@ -1,254 +1,166 @@
-Return-Path: <stable+bounces-249185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJSTL5CiCmqL4QQAu9opvQ
-	(envelope-from <stable+bounces-249185-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:24:32 +0200
+	id sFOwD0enCmpy4wQAu9opvQ
+	(envelope-from <stable+bounces-249186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:44:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C295661B7
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:24:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB02566698
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 07:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8951330243AF
-	for <lists+stable@lfdr.de>; Mon, 18 May 2026 05:23:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4DB94301BA7A
+	for <lists+stable@lfdr.de>; Mon, 18 May 2026 05:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5457939B955;
-	Mon, 18 May 2026 05:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C083DA5D6;
+	Mon, 18 May 2026 05:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O4+i1Ho2"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pr4rn+Rv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6629F3A1D14
-	for <stable@vger.kernel.org>; Mon, 18 May 2026 05:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310D03D75D2;
+	Mon, 18 May 2026 05:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779081707; cv=none; b=keGbyZGZif9QdFzvxzKpwvvL5FowbNhYR/tP27CL1YPqXE5J2PDI5g6SPSUUo4BovOBfw1f03YXs1TzvsoLFDpszweXd5eM7DjJBuyT2IHmfOlggNhTR5+671a97PoWHc3NpydRzUByii3Hk+IxAasduMfWk9lP/44H/O04x67M=
+	t=1779083053; cv=none; b=lvt0z6T2UiLBF5MA7Z6bQCFXJcCKruERJl8aPwbFmrPjnuRFbkiZPqP5ta7+N5wnH0FuTRO0BfbhprZCcjUPwW5fyQ9jsv1+jyuyhSeOts8dteXfwQq6s4CQTP6gsao/zFQime3FqV8YUQVXB3yNyRQUwu1QU2OlcwLtunwGozc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779081707; c=relaxed/simple;
-	bh=vNdKnsYYZlKkKhRJ8ehWd4hcpi7UO7QeQ3RXo2YHBqw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZkqdS0aTkrYc10qfq/OO3DWyJZhW3eK9yVUzMYIIBS+8EcA+ppAx5cErlTb5elHXXpWDyXTdj6mtbYCR+1ojflFsbaKwL6P8QyK59ZwEzaWyXFjxuPc9A+Er8LbL3yqHNFSUaD/wXXpHNyMIHqdsPjEQnkLz7SPNjp5BikkNbXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O4+i1Ho2; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a4113ab355so2248941e87.1
-        for <stable@vger.kernel.org>; Sun, 17 May 2026 22:21:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779081680; x=1779686480; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=COvqQNzUKLRtL3QdO0fWmfEMf02deV0mUukamXhTeL4=;
-        b=O4+i1Ho2ZPlGtLDsYR83zal+utYP1A/8ULtF3LhaUZm1ZSrLId4v1xiuH0tL7TundM
-         mCCcKMvLWP/N0uHWhBl+HOyGZw8jgLLij5y/QDPGYJl1cylLXXYyeESBqSLrAKZ/fAfl
-         SCqUHmJOtYexiOkSxPsXdXruFC6excpJcNubHoC1I4TNN64FWyki5qjiHq/y6/+uTSRI
-         8NL9+e1c4XsfXaMnaXUp3Y9bwMFLbc1+6vSavocVV3oaHUS9U5eRySQDpO9FYfHHkXtI
-         6DOL4nr7UsrVi0wZ/DFZR1FB159hTz5Bf5aoDwtuZxj2vunEMiXHglBu4akFXY+ncbEe
-         9HdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779081680; x=1779686480;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=COvqQNzUKLRtL3QdO0fWmfEMf02deV0mUukamXhTeL4=;
-        b=DjjZfNehvBgXvbAuQJxBu/n61W2lxnoyLK4hKVzCBK+drZn2R+enn9KlsKsN+PYhqf
-         oFKUJPhs5c1P6zETESqAGWlZERH7aEuufpF72TQYIR0nZwD6OCHPR5qoNN1fBksMVQmb
-         KIt+Q9sHtxdo+OWT7cATVOaNs8ThPbc3oOp7tARkWRa5hjtMflEc2r1QxkZPqEBxGSur
-         NULcF5M8vM/6ihBWh4oq0SisLElfm55NefbZKbejzOGI5iOKREJ6hOivkwUBuMTllpE2
-         E/Uaw8B36eIpHTEkaqr+yGyCKG+ExlDGLKTiJ0XvWv7Zu4bR7O3YrXykjfTKtoJ1TZRl
-         0cAA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Z1UBTY0KXHJggqF1wxnpLWsBa6MGTxm9E/Goc9Qo2GMIZCK3rHV/gumMR2WqZczAfkB4pgkI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbuiCJI8Ry8Ic4LkdnrazHSF+tmhwzHnLD9SVhpZKISG12Nngt
-	kTLa1TGEqmyelZ2q9/rtMVr2F/2Un3qzpznJjmrDNwsTlGlHZngblJ5E
-X-Gm-Gg: Acq92OESWkYM15WPZRlF59Ld6p3GXimvOw7XKCk2IiSbojETJhoI9beK1aGyj7/2Es8
-	w56Hk8eyLirTM6qkJmSvwKa5TzhXg1V+6b6VOoYXaJWPwHASEsw44yDAtDQlCgAuFAMIMOaz57c
-	X6+5tXvKi/iq5ic1UakjFRMOSxbGTpCWlcJKOP289TrAo2XWcaEBrfPQM6R0x5gPOI+o3cKHv1p
-	xyNm4u0M6lVP3esmNO1aJXd/k0epQTxvmdOCFX9eVbG4+L0SnFXQs9DHoGJZdKAIw0LWZStxc9B
-	tGD+Fqj0zVBN2dytZ1iTfklDdcy03mPD9OcXb+9LoqzfErvs6+C0ePU3MvZMXKTQmjzlMoGliJ/
-	GffIJulhdFBjK7PTUxG6YhjxeY/1aAK8pJb26IuuO6GqjwinjquZEY/HsgD7EtRwOLVsc/k0y3e
-	vUX2cX1fgEVgNqhdplcByeYHFjpH+wucHMlLhqdpPPF7BGcutFO7ICBRX+aLEyo0F1C8/LSzSsK
-	Vwwd/Uc1DcNV65bc2g=
-X-Received: by 2002:a05:6512:1193:b0:5a8:fc93:85c1 with SMTP id 2adb3069b0e04-5aa0e73c325mr3744302e87.32.1779081679717;
-        Sun, 17 May 2026 22:21:19 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-395882cf497sm10171221fa.16.2026.05.17.22.21.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 May 2026 22:21:18 -0700 (PDT)
-Message-ID: <3cb30f12-8b4f-415f-9a1d-823d8ff8c33b@gmail.com>
-Date: Mon, 18 May 2026 08:21:17 +0300
+	s=arc-20240116; t=1779083053; c=relaxed/simple;
+	bh=MWVZh93SX2090NJwWwTf27ANqalqElOvXJvA7w/3mis=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C3w4hnfRmvhqPZleB9u9I2gcGbFKWenkqx7Hs2dxWWN6eld6qXx+Jd93sjDcCHzuhBXYQr4GEaNk6TeUvMiLTb0h+H7yHV7AnmN/O+uo79yJfjsw+34tpbhJAg75V4MyA8xybg8skHSvsyHEl1+WgaMxZsVY1lCM+xdAlSIHEKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pr4rn+Rv; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64HMHmqn982643;
+	Mon, 18 May 2026 05:43:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=/d+b9k
+	oYYJ383tPUUP0AcYDRjFx6C12hgmW5OIErYV4=; b=pr4rn+RvoWjNY+nsJ1dyY2
+	Lk4xDETRtgC7TeurnKY4Cf58GljRoPDqNALkXl4PHgtgimN90TipQh9Uf8tPg7he
+	G4hFMGAlIiIm/LralVHSHWH7ykzoEljm9zoJJBnmxOVdeHHon8VyvAZhOKORwGFF
+	kUAuAJ8Us/JQ1V7kFVoBF/W/aj3F0Eede7KwQ8Aa7004VPdx89gmlyN8CaRLl/U6
+	F5HBDsTP3W3gi8P49xZ+kj667w8m0w3WYQwXGRrPpeMPYBgUEEwnSCtobrLKE5kI
+	YEihd/BW55f81ksXfUYZRziYqkQIve4nYjuvM3QlMy/VMfglS5jmYC3f8626OV/A
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8mebqx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 05:43:46 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64I5d3J9024830;
+	Mon, 18 May 2026 05:43:45 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e75kxv3kg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 05:43:45 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64I5hhZa31588776
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 May 2026 05:43:43 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A62E520040;
+	Mon, 18 May 2026 05:43:43 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4B2A720049;
+	Mon, 18 May 2026 05:43:40 +0000 (GMT)
+Received: from Linuxdev (unknown [9.43.43.25])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 18 May 2026 05:43:39 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: mpe@ellerman.id.au, npiggin@gmail.com, benh@kernel.crashing.org,
+        smaclennan@pikatech.com, Christophe Leroy <chleroy@kernel.org>,
+        Ma Ke <make24@iscas.ac.cn>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        akpm@linux-foundation.org, stable@vger.kernel.org
+Subject: Re: [PATCH] powerpc/warp: Fix error handling in pika_dtm_thread
+Date: Mon, 18 May 2026 11:13:38 +0530
+Message-ID: <177908291160.287704.16294849296370164231.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20251116024411.21968-1-make24@iscas.ac.cn>
+References: <20251116024411.21968-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: pressure: rohm-bm1390: notify trigger on all error
- paths
-To: David Lechner <dlechner@baylibre.com>,
- Stepan Ionichev <sozdayvek@gmail.com>
-Cc: jic23@kernel.org, nuno.sa@analog.com, andy@kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260517160801.269-1-sozdayvek@gmail.com>
- <54ee1fba-3209-4192-82c3-674a1ae3ca8f@baylibre.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <54ee1fba-3209-4192-82c3-674a1ae3ca8f@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 91C295661B7
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: osToTChQ8jajGyfxbqhQBOL5SDs6aD6B
+X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a0aa712 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=-GyfqmGyNljL1kGGE3gA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: UuZO23Y2vWK2vyeQJg-z0FiQ39VNilDL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDA1MSBTYWx0ZWRfXyHaHLqYTU1Vz
+ N4BcCIQVyVx5BrJXcBs/Cc51xPVb6A1PfLQBUUmCErwa8w+mNrTguHZfFVZgcWb9e2ef/XVxXLJ
+ 3x2pRQYIchCso8FuABFNmOFx5kc7EYXmTk1fFd19LQe6qrCpoHhhYavUtdE76vj68/Qg3Jrsl5s
+ DSi5QTW3zQCqTyiZ4ZvjsC6OsVnMeELvxU5jj99hF4RDJWy540eluF3nKQo963hzRBrcpVm6ONU
+ oizlYb4pHN3CgsYu5rdUai05Otg0bhBiuHr1FYR2rUly8Jh/UPUMFI7Ro9ZcS5bivXHh054N3P4
+ thCm7rOpkh2N7mpzAJUC3D5T0/anfg6WYpFfWV1pt8LR2vjaHmzo/NQYOiVGQDCA9h0yn+Ch1oK
+ tS1wkgj0vg5IX0fH0Utg2gEGXgqgqF2Wg+DtsFZsdPLcoADMfH20H4yKdoXacbJnQMRue+9KD+G
+ 3lDl840Yt692R7XdfsA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-18_01,2026-05-15_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 suspectscore=0 spamscore=0 clxscore=1011 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180051
+X-Rspamd-Queue-Id: 9CB02566698
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249185-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[baylibre.com,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249186-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[ellerman.id.au,gmail.com,kernel.crashing.org,pikatech.com,kernel.org,iscas.ac.cn];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mazziesaccount@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[maddy@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Action: no action
 
-On 17/05/2026 20:12, David Lechner wrote:
-> On 5/17/26 11:08 AM, Stepan Ionichev wrote:
->> bm1390_trigger_handler() has three error returns:
->>
->> 	if (ret || !status)
->> 		return IRQ_NONE;          /* status read failed */
->> 	...
->> 	if (ret) {
->> 		dev_warn(...);
->> 		return IRQ_NONE;          /* pressure read failed */
->> 	}
->> 	...
->> 	if (ret) {
->> 		dev_warn(...);
->> 		return IRQ_HANDLED;       /* temp read failed */
->> 	}
->>
->> None of them call iio_trigger_notify_done(). The success path at the
->> end does, so on a single transient regmap or pressure-read error the
->> trigger never sees its use_count decremented, and the
->> !atomic_read(&trig->use_count) guard in iio_trigger_poll_chained()
->> drops every subsequent dispatch for that trigger. The buffered-data
->> flow stays wedged until the trigger is detached.
-
-I don't really know the intended logic of the use_count, so I'll leave 
-this to those who understand it better. I'll just add some thoughts this 
-invoked.
-
-I think it is not really nice to require (or trust) drivers to call the 
-"iio_trigger_notify_done()" if the handler fails. Maybe it would be 
-better to do something like:
-
-void iio_trigger_poll_nested(struct iio_trigger *trig)
-{
-         int i;
-
-         if (!atomic_read(&trig->use_count)) {
-                 atomic_set(&trig->use_count, 
-CONFIG_IIO_CONSUMERS_PER_TRIGGER);
-
-                 for (i = 0; i < CONFIG_IIO_CONSUMERS_PER_TRIGGER; i++) {
-                         if (trig->subirqs[i].enabled)
-                                 handle_nested_irq(trig->subirq_base + i);
-                         else
-                                 iio_trigger_notify_done(trig);
-                 }
-		atomic_set(&trig->use_count, 0); /* Clear the use_count if drivers 
-didn't */
-         }
-}
-
-to prevent this class of problems once and for all. But yeah, wiser 
-minds have designed this - so let's hear some other opinions as well :)
-
->>
->> The IRQ_HANDLED return on the temperature path additionally leaves
->> the temp branch's last partial state in &data->buf.temp without
->> pushing the sample, which is the existing intended behaviour; only
->> the missing notify_done() needs fixing.
->>
->> Funnel all returns through a single 'done' label that calls
->> iio_trigger_notify_done() before returning the saved irqreturn_t.
->>
->> Fixes: 81ca5979b6ed ("iio: pressure: Support ROHM BU1390")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
->> ---
->>   drivers/iio/pressure/rohm-bm1390.c | 15 ++++++++++-----
->>   1 file changed, 10 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/iio/pressure/rohm-bm1390.c b/drivers/iio/pressure/rohm-bm1390.c
->> index 08146ca0f..c18352399 100644
->> --- a/drivers/iio/pressure/rohm-bm1390.c
->> +++ b/drivers/iio/pressure/rohm-bm1390.c
->> @@ -626,12 +626,15 @@ static irqreturn_t bm1390_trigger_handler(int irq, void *p)
->>   	struct iio_poll_func *pf = p;
->>   	struct iio_dev *idev = pf->indio_dev;
->>   	struct bm1390_data *data = iio_priv(idev);
->> +	irqreturn_t result = IRQ_HANDLED;
->>   	int ret, status;
->>   
->>   	/* DRDY is acked by reading status reg */
->>   	ret = regmap_read(data->regmap, BM1390_REG_STATUS, &status);
->> -	if (ret || !status)
->> -		return IRQ_NONE;
->> +	if (ret || !status) {
->> +		result = IRQ_NONE;
+On Sun, 16 Nov 2025 10:44:11 +0800, Ma Ke wrote:
+> pika_dtm_thread() acquires client through of_find_i2c_device_by_node()
+> but fails to release it in error handling path. This could result in a
+> reference count leak, preventing proper cleanup and potentially
+> leading to resource exhaustion. Add put_device() to release the
+> reference in the error handling path.
 > 
-> IRQ_NONE means that the interrupt wasn't handled, so it won't be cleared
-> and the handler will likely just run again immediately. So it probably
-> isn't the right thing to be returning in the first place.
+> Found by code review.
+> 
+> [...]
 
-This is exactly why IRQ-none is returned, and what it is used for. If 
-the problem with bus-access / device persists, the kernel will (after 
-XXXX fails indicated by IRQ_NONE - don't remember exact numbers) disable 
-the IRQ from the host side, and emit the, ass-saving, "nobody cared" -print.
+Applied to powerpc/fixes.
 
-This is (in my opinion) the only RightThing(tm). (Especially so, if the 
-device is accessed from the fast handler, and is system is single-core). 
-There is a tremendous difference when debugging a system which just 
-hangs in IRQ loop forever (and you can't get no contact to it), and when 
-debugging a system which, after a relatively short hang-up, let's you 
-see the magic "nobody cared" -print telling a misbehaving IRQ was disabled.
+[1/1] powerpc/warp: Fix error handling in pika_dtm_thread
+      https://git.kernel.org/powerpc/c/108d7f951271cbd36ca36efc5e5d106966f5180c
 
-Furthermore, if the status register read failure was a temporary one, 
-then we should be getting new IRQ as soon as the handler exists. This 
-should then successfully handle the IRQ.
-
-Yours,
-	-- Matti
-
--- 
----
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+cheers
 
