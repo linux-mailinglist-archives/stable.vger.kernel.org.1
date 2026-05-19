@@ -1,98 +1,51 @@
-Return-Path: <stable+bounces-249498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJUMJ2wqDGqwYAUAu9opvQ
-	(envelope-from <stable+bounces-249498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:16:28 +0200
+	id SEo3LJYqDGqwYAUAu9opvQ
+	(envelope-from <stable+bounces-249499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:17:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E986E57B0DA
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:16:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B76557B10D
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:17:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D87530707EA
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:07:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5A48318BE55
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FDFC3939B6;
-	Tue, 19 May 2026 09:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915993F165C;
+	Tue, 19 May 2026 09:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="p9TMxK8+";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="se5veVGX";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="p9TMxK8+";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="se5veVGX"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="HOAofCau"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4683F9F30
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 09:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA6B3F6C3D;
+	Tue, 19 May 2026 09:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779181531; cv=none; b=cmXJxAhuxnSbB3Oft7ol5mzSPACsToWK5DOXwxTof8EFUHiLuKOP3vx/5JeINydCxfTmF01bGUzjfzicoDmUaH21jLtY2Hp5niA9zyXSO3yDImF0Mh0nqx2NZ9+31q9PP8Iyd9keN0U6DywXng2LtD8rvMYGc6/Y4DL7yKFTSpI=
+	t=1779181586; cv=none; b=GsWBk8+Wnfw33lDp4ROraqJV/WKkJ+hhZHriFMbPVwEDDNLH7Bw4ciiTt0tkUFjsCdStkuGCUnGyCOmrx9dtpyOhZ8LizZH38B5fT2Wksn3IT7hcHWWNp5lSfjliLFzSopjfhUwU+3c3OvW874d8BkQ5k98qLXIIJdSEQF25Gdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779181531; c=relaxed/simple;
-	bh=ZeY6sBICWO016u/FFy0Y3XXP3PS6VU1qHEqab8YYf9Q=;
+	s=arc-20240116; t=1779181586; c=relaxed/simple;
+	bh=YZ8qCa5hmacJ+0fwYw5u1WZFYIdWda7ROTjpCvycpWU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fy3cUKhsJ8ZC9RN0+g4YUIBmDC6aBnS85ksjb2L6QgmjorQtoSkCk2SLTErXYkujLpuwn93E9tHZPSSWTaxjVbC4JEcXSlVUwyNsTZyYDD1hTHuc5J0yrq8DjkFMx9RMiujzFoT792l+81a0Vdiml4rdCzeCaMvc/qTFNh6hzDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=p9TMxK8+; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=se5veVGX; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=p9TMxK8+; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=se5veVGX; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A255B67F1A;
-	Tue, 19 May 2026 09:05:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779181523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BHjSMWSJH8BnvMOq4i0pukq/fJLFLZCu3uoiAcv9R60=;
-	b=p9TMxK8+fY2/i8pyWZkRrUuENSi23I4W9N3lSHZfG4mOSU/OOXiv6YcnwU0GLMlz7UqoW/
-	nQE4jLMGSlJdFHJo9cEWf41LC/B4xFQUZzoljC/ETpMVeSJ+y5155NkfshBL3YNX2w945W
-	OnNJ+EI65WBUvEGpkbAyAWoPsu9j6yA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779181523;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BHjSMWSJH8BnvMOq4i0pukq/fJLFLZCu3uoiAcv9R60=;
-	b=se5veVGXAXn+eAWcxzKRWLcO0hyGb/p0Qw6oyqVgEemZZRP5QfzSF/G/obDEmdpbVQMr/5
-	ggdDiGQTlGvSx0BQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779181523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BHjSMWSJH8BnvMOq4i0pukq/fJLFLZCu3uoiAcv9R60=;
-	b=p9TMxK8+fY2/i8pyWZkRrUuENSi23I4W9N3lSHZfG4mOSU/OOXiv6YcnwU0GLMlz7UqoW/
-	nQE4jLMGSlJdFHJo9cEWf41LC/B4xFQUZzoljC/ETpMVeSJ+y5155NkfshBL3YNX2w945W
-	OnNJ+EI65WBUvEGpkbAyAWoPsu9j6yA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779181523;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BHjSMWSJH8BnvMOq4i0pukq/fJLFLZCu3uoiAcv9R60=;
-	b=se5veVGXAXn+eAWcxzKRWLcO0hyGb/p0Qw6oyqVgEemZZRP5QfzSF/G/obDEmdpbVQMr/5
-	ggdDiGQTlGvSx0BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 77A29593A8;
-	Tue, 19 May 2026 09:05:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gLidHNMnDGoUMgAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 19 May 2026 09:05:23 +0000
-Message-ID: <14c670e6-0321-44f1-8d87-0d80f14423b8@suse.de>
-Date: Tue, 19 May 2026 11:05:19 +0200
+	 In-Reply-To:Content-Type; b=lznyzOBCnu5z5lxuYVdWFAWAHX5vQ4JgDBYq5xC52cGSAF3/e9sYqVSRekYJ2LbkkUiETe7jEUS2fRKO149bR9FnEAdbpQDDd7h0DMwwKczLjpiEwX1YgJMZkwijhk5K+N1BhLywl1MjbzJVB7Q5OWYleMdHOi/0k0JpqaRDGL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=HOAofCau; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E2EBE34FC;
+	Tue, 19 May 2026 02:06:18 -0700 (PDT)
+Received: from [10.57.21.217] (unknown [10.57.21.217])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EA3CC3F632;
+	Tue, 19 May 2026 02:06:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779181584; bh=YZ8qCa5hmacJ+0fwYw5u1WZFYIdWda7ROTjpCvycpWU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HOAofCaunu9kqKKbshr5Bv9mnrPJFV30N9w+YqVOHhLJs0wXjYRoT/gNbDEzKKw7R
+	 42xowttsiloJZMQ5bWdM7yhJbg5wuo0MKQNqqZyg3ZEdjnaqQjJLSMQQ5kr2l1Jsj1
+	 v5mjbnxM+YQuQGEBylikY81XL7JLvJD+65PxKLss=
+Message-ID: <26091753-3806-4c55-a953-3f3006160239@arm.com>
+Date: Tue, 19 May 2026 10:06:19 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,94 +53,115 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] scsi: smartpqi: use shost_to_hba() in
- pqi_scan_finished()
-To: Martin Wilck <martin.wilck@suse.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Christoph Hellwig <hch@lst.de>, Don Brace <don.brace@microchip.com>,
- ranjan.kumar@broadcom.com
-Cc: linux-scsi@vger.kernel.org, Lee Duncan <lduncan@suse.com>,
- Martin Wilck <mwilck@suse.com>, mpi3mr-linuxdrv.pdl@broadcom.com,
- storagedev@microchip.com, stable@vger.kernel.org
-References: <20260513174236.430465-1-mwilck@suse.com>
- <20260513174236.430465-2-mwilck@suse.com>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20260513174236.430465-2-mwilck@suse.com>
+Subject: Re: [PATCH] coresight: drop lookup reference in
+ coresight_get_sink_by_id()
+Content-Language: en-GB
+To: Ma Ke <make24@iscas.ac.cn>, mike.leach@arm.com, james.clark@linaro.org,
+ leo.yan@arm.com, alexander.shishkin@linux.intel.com,
+ mathieu.poirier@linaro.org, peterz@infradead.org, acme@redhat.com
+Cc: coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ stable@vger.kernel.org
+References: <20260519084317.1472444-1-make24@iscas.ac.cn>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260519084317.1472444-1-make24@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TAGGED_FROM(0.00)[bounces-249498-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249499-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[arm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hare@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[suzuki.poulose@arm.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,microchip.com:email,suse.de:email,suse.de:mid,suse.de:dkim,suse.com:email]
-X-Rspamd-Queue-Id: E986E57B0DA
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:mid,arm.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0B76557B10D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/13/26 19:42, Martin Wilck wrote:
-> From: Martin Wilck <martin.wilck@suse.com>
+On 19/05/2026 09:43, Ma Ke wrote:
+> bus_find_device() returns a device with its reference count
+> incremented. coresight_get_sink_by_id() only uses the returned device
+> to find the matching CoreSight sink by id and does not need to
+> transfer this lookup reference to its callers.
 > 
-> shost_to_hba() is used everywhere except to obtain pqi_ctrl_info
-> from shosti, except in pqi_scan_finished(), where shost_priv() is used.
-> This causes one pointer dereference to be missed, as shost->hostdata
-> is a pointer in smartpqi. Fix it.
+> Keeping the reference forces callers such as etm_setup_aux() to know
+> about the internal lookup implementation and to drop the reference
+> themselves. This is error-prone and led to a leaked reference when a
+> user-selected sink is used for perf AUX tracing.
 > 
-> Fixes: 6c223761eb54 ("smartpqi: initial commit of Microsemi smartpqi driver")
-> Signed-off-by: Martin Wilck <mwilck@suse.com>
-> Reviewed-by: Don Brace <don.brace@microchip.com>
-> Cc: Don Brace <don.brace@microchip.com>
-> Cc: storagedev@microchip.com
+> Drop the reference inside coresight_get_sink_by_id() after converting
+> the device to the corresponding coresight_device. The CoreSight path
+> code takes device references it needs when building/using the path.
+> 
+> Found by code review.
+
+Thanks for the report. But..
+
+
+> 
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 > Cc: stable@vger.kernel.org
+> Fixes: 226443925887 ("coresight: Use event attributes for sink selection")
+
+I would rather drop the reference in the etm_setup_aux, to make sure we
+are still dealing with a valid device, that has not been removed under
+our feet.
+
+Suzuki
+
+
+
 > ---
->   drivers/scsi/smartpqi/smartpqi_init.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/hwtracing/coresight/coresight-core.c | 15 ++++++++++++++-
+>   1 file changed, 14 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-> index 2026ac645d6a..5ec583dc2e7d 100644
-> --- a/drivers/scsi/smartpqi/smartpqi_init.c
-> +++ b/drivers/scsi/smartpqi/smartpqi_init.c
-> @@ -2642,7 +2642,7 @@ static int pqi_scan_finished(struct Scsi_Host *shost,
+> diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
+> index 46f247f73cf6..2cca4ed83e2c 100644
+> --- a/drivers/hwtracing/coresight/coresight-core.c
+> +++ b/drivers/hwtracing/coresight/coresight-core.c
+> @@ -624,11 +624,24 @@ static int coresight_sink_by_id(struct device *dev, const void *data)
+>   struct coresight_device *coresight_get_sink_by_id(u32 id)
 >   {
->   	struct pqi_ctrl_info *ctrl_info;
+>   	struct device *dev = NULL;
+> +	struct coresight_device *csdev;
 >   
-> -	ctrl_info = shost_priv(shost);
-> +	ctrl_info = shost_to_hba(shost);
+>   	dev = bus_find_device(&coresight_bustype, NULL, &id,
+>   			      coresight_sink_by_id);
+> +	if (!dev)
+> +		return NULL;
+> +
+> +	csdev = to_coresight_device(dev);
+> +
+> +	/*
+> +	 * bus_find_device() returns a device with its reference count
+> +	 * incremented. coresight_get_sink_by_id() only performs a lookup;
+> +	 * the CoreSight path code takes the references it needs when the
+> +	 * path is built, so drop the lookup reference here.
+> +	 */
+> +	put_device(dev);
 >   
->   	return !mutex_is_locked(&ctrl_info->scan_mutex);
+> -	return dev ? to_coresight_device(dev) : NULL;
+> +	return csdev;
 >   }
+>   
+>   /**
 
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
-
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
