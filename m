@@ -1,91 +1,80 @@
-Return-Path: <stable+bounces-249605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249606-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBJaAORxDGpKhgUAu9opvQ
-	(envelope-from <stable+bounces-249605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:21:24 +0200
+	id oG3jHSlyDGpKhgUAu9opvQ
+	(envelope-from <stable+bounces-249606-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:22:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CEAF5806E5
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:21:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7457580718
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B10430E60BB
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:13:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98F033105600
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D134028E6;
-	Tue, 19 May 2026 14:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC1F4028D9;
+	Tue, 19 May 2026 14:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="CppU7T38"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ieUzg1jV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFA24028C8
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 14:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F833403F4;
+	Tue, 19 May 2026 14:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779199989; cv=none; b=bsYCx2eiZL7jvaFMiVSi0Mf8a76Po2vvWrAs4ogZTknGwKkw8c0wMR5siPbiwohCIQ5FSv7RZNqh7ZW2BUbnsByvVCW/j6SDlLTRNIpH+uCZrz9OpdsOGmd/N32yxgT2QBCGGH4pqYFOBQe2NUzS3Zn6EMdz8vjoY4Y05sfQbBE=
+	t=1779200061; cv=none; b=dY8+mIDJL6mOA9b/nNLPUTFRhBaSU1NNG6QlY8sT1GlVSlFHf8x85s4zWxXilONg65xhwd6Bl21+DOizXlxLWyB/+joTZmhXIPukpXae2Nn/wEeGV04lG94tmornXm+qbfSWoys4MARp1L/U0WA59APXYgsqBD4Sb+6gnK9FqQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779199989; c=relaxed/simple;
-	bh=OCcqg1BGOlEZ4cGMnfxKFeTqP9wIJtR2x1vwkwbYYcg=;
+	s=arc-20240116; t=1779200061; c=relaxed/simple;
+	bh=UxyNgEu8F8lJ600LafBQhKRC7BR8d8IvR+LnJoYK0G0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XClpSEpxO9jauqIvsGvICTrdQCSse9MQV9Ta/9hj0de7yFmzxn96gphSVpacefeGA/2v6dF1OX7ZfW3hLunuoDC26ik3waM4W6mpkn7S4KQV4wPaPDPQsq2oSS2zsX8KXN1ffbYFmAiob8LezpoUUpfYQdwiKu+ocUzHYyWbFGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=CppU7T38; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8b6ea7716bfso46217286d6.0
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 07:13:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1779199987; x=1779804787; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0sGtfsMt+NWWfWgP1GuryhPZenTz+43P15Viqh/cz5I=;
-        b=CppU7T38mmEoWp84ksK0BtMrb274d8HsLH1m5dbqycunnZcChcQxhuB4/PqteH/s0W
-         bAs8FTT3DSw8AEEUTcmykUV1iXd/MoQIwV2m7SblaswCJZETFsHg7PnwF0zMdrrv8dzU
-         dcyRBdGfCKVl/YyxHSZBZ/oYRN2d5EQfv51wBFbiTAsmCdZWgJLo7ZnzH6tbl/PYXPRZ
-         xpagnbRWo0rPcxQfzAqK13Z8JIDvQueWzzyyls1RZXn8NZA1q4jdCFW6mcCkLjKJruXD
-         qxK+Y94GyJTG4eYoQfuL191zXCvdrq4I6xq3VNTyvz4lT5KwSRzL1Yc3b4BmTdgAoArk
-         Q5mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779199987; x=1779804787;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0sGtfsMt+NWWfWgP1GuryhPZenTz+43P15Viqh/cz5I=;
-        b=OLSeLRPEA43UbDvyGQTynAnmyy9XB+MWKmb1Qr3tjwqidcpnf7Wz77I3CxAKpLjOS8
-         57UL+ch+HzRqY2DaaaF+yLR+g3EW6bW2MIGewF9GvaNVgI60pka6BOQBl42h8YZzHNel
-         KNM3oADopKbAJoFkQz4x9kfV1AR9c6Fh+uFmjHhz8CNuFZoL6T5joUs8c2RBmPGJYhLz
-         QeeILrirU1IUA6csHPZGjeEhUfSQQ1moG5lhzkJkgJlclTWsdAuqp+glwCP2PVcohaSA
-         /cNxLPG+6G97b917DL8Wwq9c0aJE3EB0O8O1V+a8g89vkJW0HnaYu2JckoKjyd+UWH4Z
-         ccJw==
-X-Forwarded-Encrypted: i=1; AFNElJ8+SUfprgHPGaKcOcg+y0R2I5bujbRdMrPZBZyFXG6LaNVuzgKQkaubN6TEnf/FAnbPjW1v35g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZmaojLWQtixnYP1wRWJr3J3WqMekupM9CUflANiGRsSK0kiL2
-	VMJUjfsgC8AzKm3W1jTOdyyoujnyXvCly6b4Mx7z4QPxuigvDUdL5m6//LAY4BSGVAc=
-X-Gm-Gg: Acq92OH0q5GrNKrQqA1/cbxyUqxtlJLBq+2tq/Iw1+kx2uBRtSSLFxRRzS/gmRVc1OI
-	FPvqbKo05r33s0bqxcgac0flQPcw2Gj3PZEi/7kInKg/sy84O5kEqtDSfF9dm2rceESnQOqono1
-	B5SKAAo5FMWBDSRMOzQSj4vXs9JqQkVSvNuZiNth3fWzA0nfsBorxUUkmZBF6o7o+fS/4boqlcc
-	2EEqZFR82X+Vqph906ar76AhfEFpiuJNzKiMaBao+BwnMWeGh/10dkuDsnh4VJqhQd0OmbmJD+C
-	5kGRxDSZBCsE9J5xPXL0N3ECZGpqI5wzvSCbDlInoeZP3fBsBbkYLCvfaWQFpcSlsrhHSsTrjVl
-	pwMmjj7u1tg/zZuSzQbsRuuzQXZnCU+AzBxzfOXMKy6APuyDMBfcYCLOM9rj2vPNIGVaianbhKD
-	owjWoEjlWOG/epuNVrQEymZ2myw0B06DcZe7oLhy4nfViRQtS/mQU=
-X-Received: by 2002:a05:6214:590a:b0:8ae:5fcc:8069 with SMTP id 6a1803df08f44-8ca0f62bc61mr376033696d6.22.1779199986811;
-        Tue, 19 May 2026 07:13:06 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ca3608c424sm92013666d6.3.2026.05.19.07.13.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 07:13:06 -0700 (PDT)
-Date: Tue, 19 May 2026 14:13:05 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	 Content-Type:Content-Disposition:In-Reply-To; b=SdS21VpyC3Isxf4KqPEYic4p3ceqhk2r0iAvbm9qKpKxewRmae/vBeeLF/cQ3HsyV9QqOylibPerPXmeqjm1eGY0kmBH/6oieUg/q+IdVRgRGnT6O8oePwhubLtqBJd21hetI/xmtiua2j+CDXge/guMDL964g95hzBg0j2P3uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ieUzg1jV; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779200059; x=1810736059;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UxyNgEu8F8lJ600LafBQhKRC7BR8d8IvR+LnJoYK0G0=;
+  b=ieUzg1jVvGkc/5P39tfO7/+v22b4xdok1Mv3WmfS1+S3a1ekGR3JJdHU
+   T/mP1RE/JNJyuwHMxLyCdZUjfeBrIX2mO1HkqPjMs/O51NMdnyfovRqS0
+   danxs7EmeWgX4T6Hubashwith8wEK89vo4Y7msRTRCIq6R60F34wsBBz1
+   by6p+Bp4dyMAzMntzvpQ9Cyh/1NWn0FuZ1pORvPIzgXCsynE+WRCD32Te
+   kHagrFdW120fKVgn/NqysCyOMRhlXkaz9kEh9IdFMmq3l0442eiGDixqs
+   v5dYqrWdzTCtIi+FTZrWSb8MgcKJ7Xf/OY3YssEf7pfUJ4lY0mYuAuPFM
+   w==;
+X-CSE-ConnectionGUID: WjrUYifHSTG35YRMu0Npsg==
+X-CSE-MsgGUID: rBi3s7ZgRX+9MytVRDnWsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="79929639"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="79929639"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 07:14:19 -0700
+X-CSE-ConnectionGUID: xlNnMbNzRSyweFPnT6/mnQ==
+X-CSE-MsgGUID: 6wdeQIWqTl+BhN4tpP8MTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="239836235"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa009.jf.intel.com with ESMTP; 19 May 2026 07:14:17 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id AA75295; Tue, 19 May 2026 16:14:15 +0200 (CEST)
+Date: Tue, 19 May 2026 17:14:03 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] kho: fix order calculation for kho_unpreserve_pages()
-Message-ID: <agxv3w--GPrc85De@plex>
-References: <20260519133332.2498092-1-pratyush@kernel.org>
+Subject: Re: [PATCH 1/2] usb: typec: ucsi: Check if power role change
+ actually happened before handling
+Message-ID: <agxwK43LRZytVxPK@kuha>
+References: <20260519-ucsi-fix-2-v1-0-6f1239535187@qtmlabs.xyz>
+ <20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,65 +83,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260519133332.2498092-1-pratyush@kernel.org>
+In-Reply-To: <20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[soleen.com,reject];
-	R_DKIM_ALLOW(-0.20)[soleen.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249605-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[soleen.com:+];
+	TAGGED_FROM(0.00)[bounces-249606-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pasha.tatashin@soleen.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[heikki.krogerus@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[soleen.com:email,soleen.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6CEAF5806E5
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,chromium.org:url]
+X-Rspamd-Queue-Id: B7457580718
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 05-19 15:33, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On Tue, May 19, 2026 at 06:41:39PM +0700, Myrrh Periwinkle wrote:
+> The CrOS EC may send a connector status change event with the power
+> direction changed flag set even if the power direction hasn't actually
+> changed after initiating a SET_PDR command internally [1]. In practice
+> this happens on every system suspend due to other changes performed by
+> the EC [2][3][4], causing suspend to fail.
 > 
-> Commit 91e74fa8b1bc ("kho: make sure preservations do not span multiple
-> NUMA nodes") made sure preservations from kho_preserve_pages() do not
-> span multiple NUMA nodes. If they do, the order is reduced and tried
-> again.
+> Fix this by checking if the power role change actually happened before
+> handling it.
 > 
-> The same logic was not implemented for kho_unpreserve_pages(). This can
-> result in unpreserve calculating a different order than preserve, and
-> thus not actually unpreserving the pages.
+> [1]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=1689;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+> [2]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=3923;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+> [3]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=5094;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+> [4]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=2229;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
 > 
-> Fix this by moving the order calculation logic to
-> __kho_preserve_pages_order() and use it from both preserve and
-> unpreserve paths.
-> 
-> Move __kho_unpreserve() down to avoid having a forward declaration. Its
-> users are further down in the file anyway. Also, it results in grouping
-> for all the page-level preservation and unpreservation functions. This
-> unfortunately makes the diff hard to read, but the main change in
-> __kho_unpreserve() is to call __kho_preserve_pages_order() instead of
-> open-coding the order calculation.
-> 
-> Fixes: 91e74fa8b1bc ("kho: make sure preservations do not span multiple NUMA nodes")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
+> Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-Pasha
+> ---
+>  drivers/usb/typec/ucsi/ucsi.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+> index 5b7ad9e99cb9..e19b656609e4 100644
+> --- a/drivers/usb/typec/ucsi/ucsi.c
+> +++ b/drivers/usb/typec/ucsi/ucsi.c
+> @@ -1277,7 +1277,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+>  						  work);
+>  	struct ucsi *ucsi = con->ucsi;
+>  	u8 curr_scale, volt_scale;
+> -	enum typec_role role;
+> +	enum typec_role role, prev_role;
+>  	u16 change;
+>  	int ret;
+>  	u32 val;
+> @@ -1288,6 +1288,8 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+>  		dev_err_once(ucsi->dev, "%s entered without EVENT_PENDING\n",
+>  			     __func__);
+>  
+> +	prev_role = UCSI_CONSTAT(con, PWR_DIR);
+> +
+>  	ret = ucsi_get_connector_status(con, true);
+>  	if (ret) {
+>  		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
+> @@ -1304,7 +1306,7 @@ static void ucsi_handle_connector_change(struct work_struct *work)
+>  	change = UCSI_CONSTAT(con, CHANGE);
+>  	role = UCSI_CONSTAT(con, PWR_DIR);
+>  
+> -	if (change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
+> +	if ((change & UCSI_CONSTAT_POWER_DIR_CHANGE) && role != prev_role) {
+>  		typec_set_pwr_role(con->port, role);
+>  		ucsi_port_psy_changed(con);
+>  
+> 
+> -- 
+> 2.54.0
+
+-- 
+heikki
 
