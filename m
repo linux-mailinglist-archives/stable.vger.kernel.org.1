@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-249578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249579-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBEdIBdbDGodfwUAu9opvQ
-	(envelope-from <stable+bounces-249578-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:44:07 +0200
+	id gDssGD9bDGrMgAUAu9opvQ
+	(envelope-from <stable+bounces-249579-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:44:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87B457EEBC
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:44:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0FF157EF04
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 61F7A3008CBE
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:41:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63502304CF72
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DBBD4A340B;
-	Tue, 19 May 2026 12:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A73349250B;
+	Tue, 19 May 2026 12:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biZzhMCK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/K0Hsd3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDDC49250B
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 12:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F0C3F54D0
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 12:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779194508; cv=none; b=kpRHXYGCoWWwBeTKwOuujg06Aqoo8kiVTJbF043NT0xLimw8GxX5mEVb2pWiHhK1ijdyb5QnfGGyenAeptK5ZQ6VVl4Khaa94pywjfoj1J0ULnTFXRvkTtdYkOb5MzSIW7XsurJZ4eHPsgJ9RZ7ESe8FaBLPAgcOoQTDqCHCVXs=
+	t=1779194519; cv=none; b=NltrAS1tYQp6JMFJfNYDlGpvoWjQWgcsKpEmdJzIP/9/J2+dRcX5YDZJ6x5SUrDUt7WUDepFv0fmkE8N7baFeCFavVaIlI6aFrOSjRHJKlWCHbIrT6UhRm8mjbWcVYflncp7Tmle9XbUH8a/GSceen4UhOlca/ySqjFTIenjHng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779194508; c=relaxed/simple;
-	bh=dwP+OXohrTidDbd2EmF4tV6DHPVyn91FNGggTntRht4=;
+	s=arc-20240116; t=1779194519; c=relaxed/simple;
+	bh=xThAgdEOhi6zVUTTDyU6CRW0010CIKDiyBG/aEqSiY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAal9shZqk+PJYLLKxRpebMZck3pCHlvfDLj6rImi85TMAZJ8jUVwYWO5b6xOYo7avxZeaTGo6+qypVXC9L/1vcXYjxksB1k+jJPH9KvQ5QuJp9gxbOfmaKkUxUNw+wnKVGJMX1/aVTJ9yf1i4gQMg9xVDfidru82JIMoCQ2WOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biZzhMCK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C42C2BCB3;
-	Tue, 19 May 2026 12:41:46 +0000 (UTC)
+	 MIME-Version; b=Huy8Qn1Y1Np1+Pu0ck8iRzf7mEFk7eGXzf47LlA1o2HdFOIyy2pcxqIplL708nMk1tRtALo1CT71vSpwNkRSay5k6+uDOug6HkASmgbOb+YFGWFiNTeUBsqTgi+f7FlOrM3I0vN3/+L1Ajh3nAcQOUHeQt7GsfduKkvk7dZmwuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/K0Hsd3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49507C2BCB3;
+	Tue, 19 May 2026 12:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779194507;
-	bh=dwP+OXohrTidDbd2EmF4tV6DHPVyn91FNGggTntRht4=;
+	s=k20201202; t=1779194519;
+	bh=xThAgdEOhi6zVUTTDyU6CRW0010CIKDiyBG/aEqSiY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=biZzhMCKeTCpNQHLJ02HU1EHGJlwLRhpuwrKSGCYfqbE02m3CIm9pQDhXNcombGeT
-	 HH3aJqYiVL68/p3Mo/mXfl2c4pUN5MBS1Y3GXRuhYnlJC947LGZXwKxWZ+5rhqTeF+
-	 ZQ3/1rU/tmBEYBm+YP0eeHffuQ6+DE04/X3L8PwSr0GTpa9JEj5+QXd5NfJUl9cAOi
-	 U7JhqDu2DA0L7MWVMDdPRzWCPRqo3SLuncMpz0IyvG52wbzzJ8FMF4EPPoDo5+1w1E
-	 1h3tBorvLwkuX9FgAsKJyQcnjw5tarNPGNAPYE/vN8rpxKtEgu83HcTbqIXSI0RF+v
-	 XEHU2Yse5N/gA==
+	b=M/K0Hsd3BJh4NF/RZORWw6jnJ05KfXGqt4mH5k7RpNvtrty/bzl3lfV4t1t90p82v
+	 +QYiYSkjfQNcRX3fGRhmrSyaKkefuGXgVuj9U2Wvn5h3hKxZe15trnqNzxaTugeKDD
+	 Z77cQCfgNdWee6TojOyguTwh6WDPIjUh5xVVjaZ52K5dw1so16753maa+wdoS/u/r6
+	 pQVEm07SfqwCSPg5M1y/eM7rNo4f5eNBUiDThdfXtUbfkkC3o+rHSSWwP+4eaegS1/
+	 6MfDTH28d3RkKptuzyC4PxphcxzFwNy47HZlUs0Nj4duAlstmtDPu/FkdR38AEmxy2
+	 b0JzytMeZq8Rg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Yongpeng Yang <yangyongpeng@xiaomi.com>,
+Cc: Chao Yu <chao@kernel.org>,
 	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
+	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] f2fs: fix incorrect file address mapping when inline inode is unwritten
-Date: Tue, 19 May 2026 08:41:45 -0400
-Message-ID: <20260519124145.2443975-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] f2fs: fix false alarm of lockdep on cp_global_sem lock
+Date: Tue, 19 May 2026 08:41:56 -0400
+Message-ID: <20260519124156.2447314-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051214-racism-litter-8d43@gregkh>
-References: <2026051214-racism-litter-8d43@gregkh>
+In-Reply-To: <2026051239-booting-appendix-92a8@gregkh>
+References: <2026051239-booting-appendix-92a8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,12 +70,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249578-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249579-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -88,73 +88,109 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vm:email]
-X-Rspamd-Queue-Id: A87B457EEBC
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,wdc.com:email]
+X-Rspamd-Queue-Id: D0FF157EF04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 68a0178981a0f493295afa29f8880246e561494c ]
+[ Upstream commit 6a5e3de9c2bb0b691d16789a5d19e9276a09b308 ]
 
-When `fileinfo->fi_flags` does not have the `FIEMAP_FLAG_SYNC` bit set
-and inline data has not been persisted yet, the physical address of the
-extent is calculated incorrectly for unwritten inline inodes.
+lockdep reported a potential deadlock:
 
-root@vm:/mnt/f2fs# dd if=/dev/zero of=data.3k bs=3k count=1
-root@vm:/mnt/f2fs# f2fs_io fiemap 0 100 data.3k
-Fiemap: offset = 0 len = 100
-	logical addr.    physical addr.   length           flags
-0	0000000000000000 00000ffffffff16c 0000000000000c00 00000301
+a) TCMU device removal context:
+ - call del_gendisk() to get q->q_usage_counter
+ - call start_flush_work() to get work_completion of wb->dwork
+b) f2fs writeback context:
+ - in wb_workfn(), which holds work_completion of wb->dwork
+ - call f2fs_balance_fs() to get sbi->gc_lock
+c) f2fs vfs_write context:
+ - call f2fs_gc() to get sbi->gc_lock
+ - call f2fs_write_checkpoint() to get sbi->cp_global_sem
+d) f2fs mount context:
+ - call recover_fsync_data() to get sbi->cp_global_sem
+ - call f2fs_check_and_fix_write_pointer() to call blkdev_report_zones()
+   that goes down to blk_mq_alloc_request and get q->q_usage_counter
 
-This patch fixes the issue by checking if the inode's address is valid.
-If the inline inode is unwritten, set the physical address to 0 and
-mark the extent with `FIEMAP_EXTENT_UNKNOWN | FIEMAP_EXTENT_DELALLOC`
-flags.
+Original callstack is in Closes tag.
 
+However, I think this is a false alarm due to before mount returns
+successfully (context d), we can not access file therein via vfs_write
+(context c).
+
+Let's introduce per-sb cp_global_sem_key, and assign the key for
+cp_global_sem, so that lockdep can recognize cp_global_sem from
+different super block correctly.
+
+A lot of work are done by Shin'ichiro Kawasaki, thanks a lot for
+the work.
+
+Fixes: c426d99127b1 ("f2fs: Check write pointer consistency of open zones")
 Cc: stable@kernel.org
-Fixes: 67f8cf3cee6f ("f2fs: support fiemap for inline_data")
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
+Reported-and-tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/20260218125237.3340441-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ renamed `ifolio` to `ipage` in `inline_data_addr()` and `F2FS_INODE()` calls ]
+[ adapted context to use `init_f2fs_rwsem()` instead of the not-yet-backported `init_f2fs_rwsem_trace()` macro ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inline.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ fs/f2fs/f2fs.h  |  3 +++
+ fs/f2fs/super.c | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/fs/f2fs/inline.c b/fs/f2fs/inline.c
-index 3b91a95d42764..758ec6d3ae841 100644
---- a/fs/f2fs/inline.c
-+++ b/fs/f2fs/inline.c
-@@ -790,7 +790,7 @@ int f2fs_read_inline_dir(struct file *file, struct dir_context *ctx,
- int f2fs_inline_data_fiemap(struct inode *inode,
- 		struct fiemap_extent_info *fieinfo, __u64 start, __u64 len)
- {
--	__u64 byteaddr, ilen;
-+	__u64 byteaddr = 0, ilen;
- 	__u32 flags = FIEMAP_EXTENT_DATA_INLINE | FIEMAP_EXTENT_NOT_ALIGNED |
- 		FIEMAP_EXTENT_LAST;
- 	struct node_info ni;
-@@ -823,9 +823,14 @@ int f2fs_inline_data_fiemap(struct inode *inode,
- 	if (err)
- 		goto out;
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index ab0d9ed02092c..b094fdaf318dd 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1858,6 +1858,9 @@ struct f2fs_sb_info {
+ 	spinlock_t iostat_lat_lock;
+ 	struct iostat_lat_info *iostat_io_lat;
+ #endif
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lock_class_key cp_global_sem_key;
++#endif
+ };
  
--	byteaddr = (__u64)ni.blk_addr << inode->i_sb->s_blocksize_bits;
--	byteaddr += (char *)inline_data_addr(inode, ipage) -
--					(char *)F2FS_INODE(ipage);
-+	if (__is_valid_data_blkaddr(ni.blk_addr)) {
-+		byteaddr = (__u64)ni.blk_addr << inode->i_sb->s_blocksize_bits;
-+		byteaddr += (char *)inline_data_addr(inode, ipage) -
-+						(char *)F2FS_INODE(ipage);
-+	} else {
-+		f2fs_bug_on(F2FS_I_SB(inode), ni.blk_addr != NEW_ADDR);
-+		flags |= FIEMAP_EXTENT_DELALLOC | FIEMAP_EXTENT_UNKNOWN;
-+	}
- 	err = fiemap_fill_next_extent(fieinfo, start, byteaddr, ilen, flags);
- 	trace_f2fs_fiemap(inode, start, byteaddr, ilen, flags, err);
- out:
+ /* Definitions to access f2fs_sb_info */
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index f25a259f37f12..1bce35d6f4e25 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4490,6 +4490,11 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ 	init_f2fs_rwsem(&sbi->gc_lock);
+ 	mutex_init(&sbi->writepages);
+ 	init_f2fs_rwsem(&sbi->cp_global_sem);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	lockdep_register_key(&sbi->cp_global_sem_key);
++	lockdep_set_class(&sbi->cp_global_sem.internal_rwsem,
++					&sbi->cp_global_sem_key);
++#endif
+ 	init_f2fs_rwsem(&sbi->node_write);
+ 	init_f2fs_rwsem(&sbi->node_change);
+ 	spin_lock_init(&sbi->stat_lock);
+@@ -4963,6 +4968,9 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ free_sbi:
+ 	if (sbi->s_chksum_driver)
+ 		crypto_free_shash(sbi->s_chksum_driver);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	lockdep_unregister_key(&sbi->cp_global_sem_key);
++#endif
+ 	kfree(sbi);
+ 	sb->s_fs_info = NULL;
+ 
+@@ -5015,6 +5023,9 @@ static void kill_f2fs_super(struct super_block *sb)
+ 	/* Release block devices last, after fscrypt_destroy_keyring(). */
+ 	if (sbi) {
+ 		destroy_device_list(sbi);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++		lockdep_unregister_key(&sbi->cp_global_sem_key);
++#endif
+ 		kfree(sbi);
+ 		sb->s_fs_info = NULL;
+ 	}
 -- 
 2.53.0
 
