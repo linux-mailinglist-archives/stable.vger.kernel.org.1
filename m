@@ -1,174 +1,133 @@
-Return-Path: <stable+bounces-249451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKIRAavOC2oaOQUAu9opvQ
-	(envelope-from <stable+bounces-249451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:44:59 +0200
+	id WDonCufWC2omPAUAu9opvQ
+	(envelope-from <stable+bounces-249452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 05:20:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5828A576879
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:44:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF90576CA9
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 05:20:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5BD13044722
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:43:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97C09308410C
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 03:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB47328616;
-	Tue, 19 May 2026 02:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367292D46B3;
+	Tue, 19 May 2026 03:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyyHdPuv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvUtDs3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E0C61FCE
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 02:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3804DF59;
+	Tue, 19 May 2026 03:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779158595; cv=none; b=n+NpshrYN+pUPgl+8HUxOdqiEUO53SzJvgYhU+PY/sWEKkOgjX1KgyaIzNZDHAzewVwgm1B6eiqJmeh0lsKSWVJDI/4vjuqAjrl0o5uVsUkMyyUvms3VZDK+XaBm8JiMYruBVst0BEpaXr/ccH8ic3rDwEPaiWeQO/xP3eIXi2E=
+	t=1779160618; cv=none; b=QqDb3kWkI8NTiyi+GeM/q0QLHWzv2MKcm/mEcz55fE/9FYvERWnb/EMpv4cTmMMe7qnUrvxzaYpQqV58lTxm+lcK1xP2JksjjXo95Y9ZZD1F+oWqj1zppl6Q4BdAa48YhMv2SKzyitjcvP8c4WYMwNJxXwTQ7zry3LAOTWROIco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779158595; c=relaxed/simple;
-	bh=g/zjzA/bzCuAxetbGPuu1cu79TCQTtAmX7n37MWsntA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YxXAr6lL7M11pvlnzcD75kgzn2jXzbC6Jkj7qLYb8Nf+0AUkKOzrKiitZB5+ch95v4KZsCK9ofoy6MXHg9Go6980a5zhOXQKleNp1sJmtyjzbGRXha343Ds/hDWoipaUJ8uhfjXtcJk8GLdrlG/1ILJHUwkXfUHVKUEnBWMXdCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyyHdPuv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66FFC2BCB7;
-	Tue, 19 May 2026 02:43:13 +0000 (UTC)
+	s=arc-20240116; t=1779160618; c=relaxed/simple;
+	bh=wgeWKHyHwPdUULwaNcHnUzhB0xsI2UInesE/Ade8vR8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oDO4ivb/Jska8egKshV+DXRJsIOnzKPSVmnME1KLMzFCt7PjAPUA8YH2zs0Lut7b/1SVV7CeCpEuuOF4N2MPmwGQdzyOKaQvN6Ee8gMmigvdE2La0gKN0ITEqAdOfwSLr+MCaDNvV9ddhBwQM6vBti3Zlj+YBEg4rhyqW6gGTSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvUtDs3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7E9C2BCB7;
+	Tue, 19 May 2026 03:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779158594;
-	bh=g/zjzA/bzCuAxetbGPuu1cu79TCQTtAmX7n37MWsntA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dyyHdPuvQdCuur2HDeTPLxYAykBwKkUBEb0x4wWgFWHtuT/KX1LUrPU/xit63DxdZ
-	 8em1HxKUp1NGetkwT+ckiwBiXF+ryfvZCZSNl/LfI5UxlX9kmclXGK23Onx27ca56v
-	 zoSAWFDEc6uWpLs/lPV4j6fsVX5pbzHjFu54i/FMc50ARrEoYRqpb1N4q9q8bOgrQJ
-	 GISmjAIpPsWGM1FVqJ87zVNN2NsZZPK4F2aXAbTUfE9AlEk6K+n7GruIPrMYtujsni
-	 vPdpp3froYI7G9bXFrfKrTXbY5w7MdkTdpjE+earjxSKI4bxH9ukH5grZa8ixo0T58
-	 XM9N4K5mFgD9A==
-Message-ID: <21a6e01a-65ca-4c94-b8eb-4845e327c606@kernel.org>
-Date: Tue, 19 May 2026 12:43:11 +1000
+	s=k20201202; t=1779160616;
+	bh=wgeWKHyHwPdUULwaNcHnUzhB0xsI2UInesE/Ade8vR8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hvUtDs3o2ATIqdTXziPEcdvwsaeB6qWnLAlI/6jdhQiiv2eX5BISQTXt3iP8ZN0y3
+	 MLzXN20NVKwhXZNbBN5VyszldSNaiYOU5XO8GKmbkJbqQfRq8lHJcQRJyoYsQ7kEdP
+	 d7e1O1Riw7mxivJoJPNFpuZLrEGv6wORcn31OdD97WBDjXVsRTmRCi8+IJsvX8yan3
+	 oNUDZ6Z9HthqjxvfLtZCqXZOF9NAb5mIxvLUDgvMh9Y68OBaMcz0HPcJtZsX0YDRRJ
+	 kJXBnN/gJzV6ugwQUrJHSlg3Nu5OMzQ8qi+8gltETGWq5/xuvhvgPR8GEEd8WGdZTj
+	 fLvlIdKuS0sTQ==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulfh@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	stable@vger.kernel.org,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v7 0/5] soc: qcom: ice: Fix race between qcom_ice_probe() and of_qcom_ice_get()
+Date: Mon, 18 May 2026 22:16:47 -0500
+Message-ID: <177916060479.2063946.5158452853905388333.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260518-qcom-ice-fix-v7-0-2a595382185b@oss.qualcomm.com>
+References: <20260518-qcom-ice-fix-v7-0-2a595382185b@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 5.15.y] mptcp: pm: ADD_ADDR rtx: free sk if last
-Content-Language: fr
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Mat Martineau <martineau@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-References: <2026051243-patchwork-levitate-86db@gregkh>
- <20260519012340.2020999-1-sashal@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260519012340.2020999-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249451-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249452-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[andersson@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5828A576879
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BDF90576CA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Sasha,
 
-On 19/05/2026 11:23, Sasha Levin wrote:
-> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+On Mon, 18 May 2026 19:22:16 +0530, Manivannan Sadhasivam wrote:
+> This series fixes the race betwen qcom_ice_probe() and of_qcom_ice_get()
+> but synchronizing the two APIs and properly propagating the error codes to
+> clients.
 > 
-> [ Upstream commit b7b9a461569734d33d3259d58d2507adfac107ed ]
+> Merge Strategy
+> ==============
 > 
-> When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer(),
-> and released at the end.
-> 
-> If at that moment, it was the last reference being held, the sk would
-> not be freed. sock_put() should then be called instead of __sock_put().
-> 
-> But that's not enough: if it is the last reference, sock_put() will call
-> sk_free(), which will end up calling sk_stop_timer_sync() on the same
-> timer, and waiting indefinitely to finish. So it is needed to mark that
-> the timer is done at the end of the timer handler when it has not been
-> rescheduled, not to call sk_stop_timer_sync() on "itself".
-> 
-> Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Mat Martineau <martineau@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-5-fca8091060a4@kernel.org
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-See my comment for the same patch for 6.12: most conflicts fixed here
-shouldn't exist if patches you sent earlier are applied first.
+> [...]
 
-Cheers,
-Matt
+Applied, thanks!
+
+[1/5] soc: qcom: ice: Fix race between qcom_ice_probe() and of_qcom_ice_get()
+      commit: d922113ef91e6e7e8065e9070f349365341ba32e
+[2/5] soc: qcom: ice: Return -ENODEV if the ICE platform device is not found
+      commit: 5a4dc805a80e6fe303d6a4748cd451ea15987ffd
+[3/5] soc: qcom: ice: Return proper error codes from devm_of_qcom_ice_get() instead of NULL
+      commit: b9ab7217dd7d567c50311afa94d6d6746cb77e04
+[4/5] mmc: sdhci-msm: Remove NULL check from devm_of_qcom_ice_get()
+      commit: 2ccbb3fa5cf47d05849cf6722aad1b4cc14df6d9
+[5/5] scsi: ufs: ufs-qcom: Remove NULL check from devm_of_qcom_ice_get()
+      commit: 4ac19b36bf4108706238cbc4f300b17dba8b881e
+
+Best regards,
 -- 
-Sponsored by the NGI0 Core fund.
-
+Bjorn Andersson <andersson@kernel.org>
 
