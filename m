@@ -1,172 +1,314 @@
-Return-Path: <stable+bounces-249709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAW1B3jzDGqPqQUAu9opvQ
-	(envelope-from <stable+bounces-249709-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 01:34:16 +0200
+	id WE0UHlW8DGpdlgUAu9opvQ
+	(envelope-from <stable+bounces-249678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 21:39:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8813A5860BF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 01:34:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B898584405
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 21:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 334A03028F70
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:34:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C839F30247C4
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 19:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7E5372EF6;
-	Tue, 19 May 2026 23:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D0A3B47C9;
+	Tue, 19 May 2026 19:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wwx4K0Lt"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AahDoLvy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com [209.85.215.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2811630F543
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 23:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5458336D9E7;
+	Tue, 19 May 2026 19:38:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779233637; cv=none; b=SEUwnatVk8k+RE5KFeClVfCI8eRHVNEaVT6uI36lWH7cc+vjiLMyIG3WwIQZxJY1kwn4oWyFehhxoZLK9Wlg5GK3zqGSM9AfvXvbxPrWKU1Qs8/0kLrSCc9OgeFE19NcRQlphwtSgqcl5XYwUH5eHqLeuX/zIBMhAw0qcXtYKq4=
+	t=1779219504; cv=none; b=iPU96kjNdjl0oQr62gmCgs3XTEOgfjnwtpwM7WUIeTG9T0Dj1hJjcwGmtcssKxED+i20R1RT9vObkzq9pEAZEdShCo+l48Mmq82Q8FfaDIr2nGorTOII+S41Egw8M2xzOZ/xmZfKLsNj7DQzsgT8HUqfHMFZ0Fm3cs+n01lbzQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779233637; c=relaxed/simple;
-	bh=vWp1K7SkFtPXP8NpxuPbKqX8DiXUPCucssT7uxnbYHQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qYMwAILFZoiQooX2bn/1W2nWuUIVbDGYVLSFa4x6h+EdbHmAkoT+z9vv1/FXON2mdgYd50OCX2hlzIfHBJreNaZQ5fD4yhxFgck9XXUdwkB8ZDx8vuSHV1gXSxiYKvT0NxoOfnvDbHhpR4eDkR7R3P4rN32zrdPpm3EK3Ggykq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wwx4K0Lt; arc=none smtp.client-ip=209.85.215.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f195.google.com with SMTP id 41be03b00d2f7-b6ce6d1d3dcso1412809a12.3
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 16:33:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779233635; x=1779838435; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GhZ8XqsRht1If9UNrz6T/KJzsMWi9OQBMKb8F+sw0Zk=;
-        b=Wwx4K0LtyCyr/gYTf6l0rfMzYzM6afgNClodmb/UwMaTZX9p/NsFyCwOAsa9kZxNgk
-         eqRlaVYP5i1Wkc7u5BmnomkGWTbXWLqz4cXnuUCjafqMD8rrTXYHWxuMF+dWEyReJz9X
-         ELiMPqygE3RstQHDXDWJokXQ4CugNve7UlUk54IOoE1Ba8F6hM/MLJoj2Q5vf8UpY8rz
-         e0g3W8iQtAtPCG6Zt/Eol3FwiKleVT05n9bkqbiZCX19SmOZan6R5XlynJedxXJ06cpG
-         50rDSL+B3EOPNZF3C2CKbf4DyVzfBpK2mJf6Z+7cFThw0nm3VKmwgyUcj34i7QHhrOdl
-         8KRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779233635; x=1779838435;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GhZ8XqsRht1If9UNrz6T/KJzsMWi9OQBMKb8F+sw0Zk=;
-        b=avlOFETxPNx4z48cP7jcMRAovtwyHQ39NaFxpjxFjNSGEYKXreHvC99+VqSuCUQPjT
-         eON77U6+9yYqZiWBg07Wn0kAJWal91WNjuvyU9YPCmvkprOqmX0zIWg4zdqsF2q9sFEV
-         Pa5sFP73tO28p4+Wsq5VifK2xDyz7iPGMErkQLSuIAy7duAmBv00E5R/Lx9jm2PEZury
-         nSgyDME8koFZagnNyLUhCEFCt3h6NWf/QcMGFWYdGgOQ+JSFk9nEEsuNBq1sNiGeSsDR
-         4hh1fHEo+jy43frMMbggR+mjp/bQDHy3vXlKqfZk+Yvl1udq5Z8IjX3RowqZ7fBI1DGL
-         78Zw==
-X-Forwarded-Encrypted: i=1; AFNElJ8JkIDLQlAMN3nieMD9peq0RH9RfrOrAiz78HAtUCYQ0JxqyqSrQGpS09WBB9Je0fk5z/Bj5l4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1jZoTSea1Cha8n/WNiPun56mjD/at6VN6uayWxypp84mzqbu+
-	3JT2m8iyY4nUXM+e2Rdh1w8o1EDQ+OmqYNXl2juWbbMKURQEzz8HL9B9fdpgqkU0
-X-Gm-Gg: Acq92OFzmg6QemQE/BJAkHZAa3MdcNK++hdnWYIWw1Fe986u+sKb1x+NCz6T6m4mVZE
-	HUgnIWoCsqmZsKZQ9F6d29yrkSd+4ttwbOF4QgNgOByztyEABxf5ykXOGHL2DlzYhSI7wwVsf6I
-	qCRKMslg+PTI5as6uNF0tcjQhNeAkh/uKraxqg7oMxWEyB7i/DHQa+QG21WofelkhpZW2rVAaJf
-	AOkGHJA4VzHckmuxjZjWP0Y4R9artRLi5vAeQEQRaKCklWSSLpxBqumRlYI8uC3GzsLUUj2+5BN
-	lVyDpka0EtC5WzFUvcd21tQHqouzQu9NyuRITXMaWHvBKpK3xHnTFLplR7pN8TlTrdv1bdmp/Vw
-	S2izLlsfdNTEtjv8DOSi47sfv3MMW9MNjliiepO+aXURHz8Zv9thOCh2sdR4KhtOsS5dnf3MYx4
-	WstdrfIybzEbx2cxD0mIZbCbuwSg==
-X-Received: by 2002:a17:903:3c6b:b0:2b9:fb9a:1103 with SMTP id d9443c01a7336-2bd7e90ebafmr222425135ad.38.1779233635347;
-        Tue, 19 May 2026 16:33:55 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:2::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5cfe8698sm189776065ad.40.2026.05.19.16.33.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 16:33:54 -0700 (PDT)
-Date: Tue, 19 May 2026 16:33:54 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: David Carlier <devnexen@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	sdf@fomichev.me, kaiyuanz@google.com, almasrymina@google.com, 
-	bobbyeshleman@gmail.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: devmem: reject dma-buf bind with
- non-page-aligned size or SG length
-Message-ID: <agzzVHU8tt2rP4ip@devvm7509.cco0.facebook.com>
-References: <20260519203530.66310-1-devnexen@gmail.com>
+	s=arc-20240116; t=1779219504; c=relaxed/simple;
+	bh=HPF/db3yYwoEhSUmwrZgax09n583vG76bzmjhGogRbE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qIvg659DaUKlpnDl4FklqBG+3Jcu91hTnJKFQoA3c2/o/eevK6iJv5B3hOuzJ3GFlR3LCS1alej3VvAHQ9su9JP3HB4k6LTunyxH799yBU+XjrwUnAEjv+1lgyFsFsM/SOHz1S2Snn/m5JfmHCu8BTgepSLzRYENHzxv5v7KAcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AahDoLvy; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64JA1O5B1041837;
+	Tue, 19 May 2026 19:37:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=fRKtb3H4V/i0jW7DZVHIihN7cs5qU9m9+3J8j/NIV
+	Ok=; b=AahDoLvypVAwp4vspA4iMS5w7f8fBYo9XgNR2N4Y0Bmeoc8As2G/iZL3d
+	vsEFY148vV1qcfI21jWzpxLgtHdImsRzPR25LQzFfhmxKciM6S2hOsamghXJ1PHi
+	Pt5Nk5jPZKXm4dvc2EXIuwbvldeW1CnRvGOEH5CVUgJ0nD8AotL8oQehE3iIFpUt
+	FnkInLKvqaDEwoGiCbCs8zycpGPnZo85WLdg5U2x/E6Zj5ztzsb2ZLX0XSyAOda1
+	bGzRSnDRzqYOwjsHtXRbBYKl/TsSO2+iYkloKJ18KB4GdDid4DDAVK5h9b35XEnj
+	t5+y83N54im9LEiLpgnUGp9OTAplw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9xxvgc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 May 2026 19:37:57 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64JJO59f028479;
+	Tue, 19 May 2026 19:37:56 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e754gc0jn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 May 2026 19:37:56 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64JJbr3c49545652
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 May 2026 19:37:53 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3CD7320043;
+	Tue, 19 May 2026 19:37:53 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3179720040;
+	Tue, 19 May 2026 19:37:51 +0000 (GMT)
+Received: from ltcrain4-lp15.ltc.tadn.ibm.com (unknown [9.5.7.39])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 19 May 2026 19:37:51 +0000 (GMT)
+From: adubey@linux.ibm.com
+To: bpf@vger.kernel.org
+Cc: hbathini@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+        ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
+        shuah@kernel.org, linux-kselftest@vger.kernel.org,
+        stable@vger.kernel.org, Abhishek Dubey <adubey@linux.ibm.com>
+Subject: [PATCH v5 0/6] powerpc/bpf: Add support for verifier selftest
+Date: Tue, 19 May 2026 19:38:06 -0400
+Message-ID: <20260519233812.18787-1-adubey@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260519203530.66310-1-devnexen@gmail.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDE5NiBTYWx0ZWRfX0eW5aRuWtSQI
+ cNTXKoKvmmPH8F+bkugazgumo5HfnYAUApvIF6ssJzJr5iSFVM7VhaEenLzwhsoEY8jRFUpP32r
+ B/m1EO74t6dCifSKrygtpSnN4EA+TffI3vSTo0hjlj3jYbE+9U/EnzdFi7Q6w38u3755B9fhMHN
+ KugYgoEcfunoVxouranbp4plYmTtwE3sm/qez3Hzf8uI1TDMKkK2IGJmpcCC8twWm60q1YRuMij
+ rimvyEZJRpFKUuywMsSATd+PmNg8G/ygzxl/twdTIQQBHnXSvPfe2dBqUSvH3DJlq48i3WZw/ol
+ AfhNLmFF4/POPTUMeRaCveTSYNsfwK3Bsfi8mfmAjt3ZjEsVY/wGxsqNnCbJ0PdgnMOszwASUSt
+ XfTsl6p31n6Q0fBmb018IlxMLxQ1YPeTPd5TLBEcUm6ufax27QC9fwzS7BvRJ74m8sgctXzBpt1
+ IgFRotvedMKhPiyqtAg==
+X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0cbc15 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=D-oU5X2WxZXJlpUmpAoA:9
+X-Proofpoint-ORIG-GUID: WUhXL4KGh4tFUBjs9ywKfaOoCnSOD-yc
+X-Proofpoint-GUID: WUhXL4KGh4tFUBjs9ywKfaOoCnSOD-yc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-19_05,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605190196
+X-Spamd-Result: default: False [3.34 / 15.00];
+	DATE_IN_FUTURE(4.00)[3];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249709-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,fomichev.me,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-249678-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sdfkernel@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[devvm7509.cco0.facebook.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8813A5860BF
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 1B898584405
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 05/19, David Carlier wrote:
-> net_devmem_bind_dmabuf() trusts dmabuf->size and sg_dma_len() to be
-> PAGE_SIZE multiples without checking:
-> 
->   - tx_vec is sized dmabuf->size / PAGE_SIZE, and
->     net_devmem_get_niov_at() only bounds-checks virt_addr < dmabuf->size
->     before indexing tx_vec[virt_addr / PAGE_SIZE]. With size =
->     N*PAGE_SIZE + r (1 <= r < PAGE_SIZE), sendmsg() at iov_base =
->     N*PAGE_SIZE passes the bound check and reads tx_vec[N] -- one past.
-> 
->   - owner->area.num_niovs = len / PAGE_SIZE while gen_pool_add_owner()
->     covers the full byte len, so a non-page-multiple non-final sg
->     desyncs num_niovs from the gen_pool region for every later sg, on
->     both RX and TX.
-> 
-> dma-buf does not require page-aligned sizes, so the bind path has to
-> enforce what its own indexing assumes. Reject both with -EINVAL.
-> 
-> The size check is TX-only (only tx_vec is sized off dmabuf->size); the
-> SG-length check covers both directions.
-> 
-> Fixes: bd61848900bf ("net: devmem: Implement TX path")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Carlier <devnexen@gmail.com>
-> ---
-> Changes in v2:
->   - Reframe commit message around the kernel-side OOB instead of
->     "real exporters already page-align", which read as the OOB being
->     unreachable and undercut Cc: stable (Stanislav Fomichev).
->   - Hoist the SG-length check out of the if (TX) branch so it covers
->     RX too; RX has the same num_niovs / gen_pool desync on a
->     contract-violating exporter, just without an OOB. Keep the
->     size-multiple check TX-only (Stanislav Fomichev).
->   - Drop bool todevice; compare direction == DMA_TO_DEVICE inline to
->     match the existing call site at the tx_vec[] assignment
->     (Bobby Eshleman).
+From: Abhishek Dubey <adubey@linux.ibm.com>
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+The verifier selftest validates JITed instructions by matching expected
+disassembly output. The first two patches fix issues in powerpc instruction
+disassembly that were causing test flow failures. The fix is common for 
+64-bit & 32-bit powerpc. Add support for the powerpc-specific "__powerpc64"
+architecture tag in the third patch, enabling proper test filtering in
+verifier test files. Introduce verifier testcases for tailcalls on powerpc64
+in the final patch.
 
-Thanks!
+The first patch in series is fix patch, correcting memory alignment with
+8-byte boundary for long branch trampoline address. The subsequent
+patches enables verifier selftests on powerpc. The last but one patch in
+the series fixes inaccurate comparision of tailcall info with tailcall
+threshold.
+
+Issue Details:
+--------------
+
+    The Long branch stub in the trampoline implementation[1] provides
+    flexibility to handles short as well as long branch distance to
+    actual trampoline. Whereas, the 8 bytes long dummy_tramp_addr field
+    sitting before long branch stub leads to failure when enabling
+    verifier based seltest for ppc64.
+    
+    The verifier selftests require disassembing the final jited image
+    to get native instructions. Later the disassembled instruction
+    sequence is matched against sequence of instructions provided in
+    test-file under __jited() wrapper. The final jited image contains
+    Out-of-line stub and Long branch stub as part of epilogue jitting
+    for a bpf program. The 8 bytes space for dummy_tramp is sandwiched
+    between both above mentioned stubs. These 8 bytes contain memory
+    address of dummy trampoline during trampoline invocation which don't
+    correspond to any powerpc instructions. So, disassembly fails
+    resulting in failure of verifier selftests.
+    
+    The following code snippet shows the problem with current arrangement
+    made for dummy_tramp_addr.
+    
+    /* Out-of-line stub */
+    mflr    r0  
+    [b|bl]  tramp
+    mtlr    r0 //only with OOL 
+    b       bpf_func + 4 
+    /* Long branch stub */
+    .long   <dummy_tramp_addr>  <---Invalid bytes sequence, disassembly fails
+    mflr    r11 
+    bcl     20,31,$+4
+    mflr    r12 
+    ld      r12, -8-SZL(r12)
+    mtctr   r12 
+    mtlr    r11 //retain ftrace ABI 
+    bctr
+
+    Consider test program binary of size 112 bytes:
+    0:  00000060 10004de8 00002039 f8ff21f9 81ff21f8 7000e1fb 3000e13b
+    28: 3000e13b 2a006038 f8ff7ff8 00000039 7000e1eb 80002138 7843037d
+    56: 2000804e a602087c 00000060 a603087c bcffff4b c0341d00 000000c0
+    84: a602687d 05009f42 a602887d f0ff8ce9 a603897d a603687d 2004804e
+
+    Disassembly output of above binary for ppc64le:
+    pc:0     left:112    00 00 00 60  :  nop
+    pc:4     left:108    10 00 4d e8  :  ld 2, 16(13)
+    pc:8     left:104    00 00 20 39  :  li 9, 0
+    pc:12    left:100    f8 ff 21 f9  :  std 9, -8(1)
+    pc:16    left:96     81 ff 21 f8  :  stdu 1, -128(1)
+    pc:20    left:92     70 00 e1 fb  :  std 31, 112(1)
+    pc:24    left:88     30 00 e1 3b  :  addi 31, 1, 48
+    pc:28    left:84     30 00 e1 3b  :  addi 31, 1, 48
+    pc:32    left:80     2a 00 60 38  :  li 3, 42
+    pc:36    left:76     f8 ff 7f f8  :  std 3, -8(31)
+    pc:40    left:72     00 00 00 39  :  li 8, 0
+    pc:44    left:68     70 00 e1 eb  :  ld 31, 112(1)
+    pc:48    left:64     80 00 21 38  :  addi 1, 1, 128
+    pc:52    left:60     78 43 03 7d  :  mr    3, 8
+    pc:56    left:56     20 00 80 4e  :  blr
+    pc:60    left:52     a6 02 08 7c  :  mflr 0
+    pc:64    left:48     00 00 00 60  :  nop
+    pc:68    left:44     a6 03 08 7c  :  mtlr 0
+    pc:72    left:40     bc ff ff 4b  :  b .-68
+    pc:76    left:36     c0 34 1d 00  :
+    ...
+
+    Failure log:
+    Can't disasm instruction at offset 76: c0 34 1d 00 00 00 00 c0 a6 02 68 7d 05 00 9f 42
+    --------------------------------------
+
+    Observation:
+    Can't disasm instruction at offset 76 as this address has
+    ".long <dummy_tramp_addr>" (0xc0341d00000000c0)
+    But valid instructions follow at offset 84 onwards.
+
+    Move the long branch address space to the bottom of the long
+    branch stub. This allows uninterrupted disassembly until the
+    last 8 bytes. Exclude these last bytes from the overall
+    program length to prevent failure in assembly generation.
+
+    Following is disassembler output for same test program with moved down
+    dummy_tramp_addr field:
+    .....
+    .....
+    pc:68    left:44     a6 03 08 7c  :  mtlr 0
+    pc:72    left:40     bc ff ff 4b  :  b .-68
+    pc:76    left:36     a6 02 68 7d  :  mflr 11
+    pc:80    left:32     05 00 9f 42  :  bcl 20, 31, .+4
+    pc:84    left:28     a6 02 88 7d  :  mflr 12
+    pc:88    left:24     14 00 8c e9  :  ld 12, 20(12)
+    pc:92    left:20     a6 03 89 7d  :  mtctr 12
+    pc:96    left:16     a6 03 68 7d  :  mtlr 11
+    pc:100   left:12     20 04 80 4e  :  bctr
+    pc:104   left:8      c0 34 1d 00  :
+
+    Failure log:
+    Can't disasm instruction at offset 104: c0 34 1d 00 00 00 00 c0
+    ---------------------------------------
+    Disassembly logic can truncate at 104, ignoring last 8 bytes.
+
+    Update the dummy_tramp_addr field offset calculation from the end
+    of the program to reflect its new location, for bpf_arch_text_poke()
+    to update the actual trampoline's address in this field.
+
+    [1] https://lore.kernel.org/all/20241030070850.1361304-18-hbathini@linux.ibm.com
+
+v4->v5:
+  Handled alignment NOP emit logic and corresponding stub offsets
+  Handled image buffer overflow problem in last pass
+  Above changes took care of other bot reviews
+  Included LLVMDisposeMessage() for graceful freeing
+  Adjusted parameters in bpf_jit_build_fentry_stubs for ppc32
+  Adjusted expected JIT inst. in tailcall test for
+CONFIG_PPC_KERNEL_PCREL config
+  Added fix patch at last for inaccurate use of cmplwi inst. 
+
+v3->v4:
+  Changed logic for emitting alignment NOP
+
+v2->v3:
+  Removed fixed NOP from bottom of long branch stub
+  Rebased on top of bpf-next
+
+v1->v2:
+  Added fix-patch to correct memory alignment in-place
+  Moved the optional alignmnet NOP before OOL stub
+
+[v1]: https://lore.kernel.org/bpf/20260225013627.22098-1-adubey@linux.ibm.com
+[v2]: https://lore.kernel.org/bpf/20260403004011.44417-1-adubey@linux.ibm.com
+[v3]: https://lore.kernel.org/bpf/20260411221413.44304-1-adubey@linux.ibm.com
+[v4]: https://lore.kernel.org/bpf/20260517214043.12975-1-adubey@linux.ibm.com
+
+Abhishek Dubey (6):
+  powerpc/bpf: fix alignment of long branch trampoline address
+  powerpc/bpf: Move out dummy_tramp_addr after Long branch stub
+  selftest/bpf: Fixing powerpc JIT disassembly failure
+  selftest/bpf: Enable verifier selftest for powerpc64
+  powerpc64/bpf: fix compare instruction emitted for tailcall
+  selftest/bpf: Add tailcall verifier selftest for powerpc64
+
+ arch/powerpc/net/bpf_jit.h                    |  4 +-
+ arch/powerpc/net/bpf_jit_comp.c               | 65 ++++++++++++-----
+ arch/powerpc/net/bpf_jit_comp32.c             |  4 +-
+ arch/powerpc/net/bpf_jit_comp64.c             | 12 ++--
+ .../selftests/bpf/jit_disasm_helpers.c        | 16 ++++-
+ tools/testing/selftests/bpf/progs/bpf_misc.h  |  1 +
+ .../bpf/progs/verifier_tailcall_jit.c         | 69 +++++++++++++++++++
+ tools/testing/selftests/bpf/test_loader.c     |  5 ++
+ 8 files changed, 149 insertions(+), 27 deletions(-)
+
+-- 
+2.52.0
+
 
