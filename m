@@ -1,198 +1,232 @@
-Return-Path: <stable+bounces-249457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBtVB9PvC2oDRgUAu9opvQ
-	(envelope-from <stable+bounces-249457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:06:27 +0200
+	id UEVsMNXwC2psRgUAu9opvQ
+	(envelope-from <stable+bounces-249458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:10:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7891657757B
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:06:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBEE5775C7
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4255B3025729
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 05:06:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECA82302593B
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 05:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8720C23BD1B;
-	Tue, 19 May 2026 05:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927E731690E;
+	Tue, 19 May 2026 05:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="K5koFewW"
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="dx3x7mgh"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891BC30B517;
-	Tue, 19 May 2026 05:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.244.194.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A2C21C16A;
+	Tue, 19 May 2026 05:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779167169; cv=none; b=Z9nFuZyd+gvF611rBkjcII0wmAfNGr9P7LkX3niibglPT0NluMzWlA4/95Y/qbgMlufhMGOCNm2Xf6XEFAcPL2fSdQJ1uRJfHG46wgquV2Ukvw18N4G8nV0Wlp3jsMhvefhYUYV+VSKxDNJS2OTV4yLs8teKSfKMmZSj4WfCTD8=
+	t=1779167440; cv=none; b=cTMPhhAZim0+N/wXuJIebn6uVS2bhjhPC8QTtRwrPUIIAwwnGQ2Zm1SlD2Qchi6bhroZEqoyCdcFlmf/0C1POsbVJYrLX626TEmU0JDojQ3StXaR+s61xRafpWVDSMXPzdCSftgUC6RP9UOPFEQSyCUSieeZ5nxZQhSemcnbog4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779167169; c=relaxed/simple;
-	bh=FAiCEhzhtFbXPSs7rpt5n/p1t2w9wK7VlAtkJJg+KxY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rKQ/h/6P65Ndy+agKBHaS/sLqz2DlBgfvgswcl6WtsRlIardW/HuT+roqbmOvT7DuilotZBHec7Pmm3li0l+839g+YUUb9vDqemuFtxuieR+FJ/yL4miGm+UOr7hOiZs2S++bOLtmlGZPScXlxLqfGJ5IZko7IpCLmHc509Zi6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=K5koFewW; arc=none smtp.client-ip=185.244.194.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4gKN0z3wSZz94yW;
-	Tue, 19 May 2026 07:05:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1779167155;
-	bh=FAiCEhzhtFbXPSs7rpt5n/p1t2w9wK7VlAtkJJg+KxY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=K5koFewWjOv2W8vANcfdXTMyEtXNYiUyZ95mUequ8KmkWT+fgzDTFAXrIehrfI23b
-	 tpJMxJXRrvVJ7+xn5vN2JaIrLvqj8VkZRjgBgbIuNdmizmU7cJ/7Hv4VMJquKzpXFA
-	 qtIBP3sZqn/hWy6MGytcy8e0K5GDF/UCrxcuxvicfvI7VCEje9HMTNwevZZC+uy6xI
-	 /F7xPUTaUjgplsY4uSpTCo7RXmzjbxzOAhnD6NDTAh8OIOpu5JYk7prM5kb/RO5gdL
-	 tNDEgc4aRuVXxVkYJSAeOKxO1e/YIndepX0zm5SWrK/trrflexI7bgCDKojglYwwT0
-	 PIqNktQ2AJ3Rg==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4gKMzw5nYDz7v62;
-	Tue, 19 May 2026 07:05:00 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4gKMzw1QcXz8sbH;
-	Tue, 19 May 2026 07:05:00 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 311F861884;
-	Tue, 19 May 2026 07:04:59 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <ff4c4ba2-dc26-4b05-87c2-03cc70afdcc5@leemhuis.info>
-Date: Tue, 19 May 2026 07:04:58 +0200
+	s=arc-20240116; t=1779167440; c=relaxed/simple;
+	bh=FrJi6eMJPTp/hrB3W4VyUBh9mlJ7NkS5Pdsexv4muP8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u4jbuCa806ZT8PpQTj446p3QPXlMS4T7wjJP11wcdLpJXypWL+MEesvoaAo8wEtNsX68JjA+d6+9V+QosnsiXkE07/7x/stycGxUylred8mPcnDxcSh8YVGAc6dSVFO1IAoXiNceliNLYXkV3xq8jAlNWzkS+iTz/o76vuCsNaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=dx3x7mgh; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64J4AE7R3010977;
+	Tue, 19 May 2026 05:10:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=5QVHn2rKM
+	p6Nqt690ByPZTQtJSoAJVl/Z1wCWH4Zmno=; b=dx3x7mghZ/ChYXKLqZcBRFt24
+	zLQauMQ1mTM1VkVnpFYzP9BBx4Go0MNHiMY1pQyMJEC+AFzxpxrsj2EgdbB8yQWU
+	g5FQPV62QXdzu7gRhFsK8/GhPXNTpUvNiYaRByAL3zojoBd7u3KiLJRQufEfUBgC
+	JwIbVXyFz2+C9+f6ZP2D6x7spI/YYOx2D5ExkW9iVWCWk5I7Ynufy/m0JWOwYREp
+	pgPs/F0l6O3tQgsWPMM5DCS1bEuDkPZYca4hqXphb4qiig5JBWnvYbaoaNAjNCkT
+	Uydcas9su8qtiU8lAJeUMklAEkYiDi5/aN2jM2CuVE5prOS/TeCY0fnVh8Iwg==
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [128.224.246.37])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4e6ecf33hs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 19 May 2026 05:10:24 +0000 (GMT)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) by
+ ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.61; Mon, 18 May 2026 22:10:23 -0700
+Received: from pek-yzhou-d3.wrs.com (10.11.232.110) by
+ ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server id
+ 15.1.2507.61 via Frontend Transport; Mon, 18 May 2026 22:10:21 -0700
+From: Yun Zhou <yun.zhou@windriver.com>
+To: <mchehab@kernel.org>, <kees@kernel.org>, <hverkuil+cisco@kernel.org>,
+        <sakari.ailus@linux.intel.com>, <ribalda@chromium.org>,
+        <linma@zju.edu.cn>
+CC: <linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v2] media: dvb-core: fix use-after-free in dvb_frontend_open()
+Date: Tue, 19 May 2026 13:10:20 +0800
+Message-ID: <20260519051020.628298-1-yun.zhou@windriver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Bluetooth: MT7922 fails to initialize after
- "Bluetooth: btmtk: validate WMT event SKB length before struct access"
-To: Baley Eccles <baleycod@gmail.com>, linux-bluetooth@vger.kernel.org
-Cc: Marcel Holtmann <marcel@holtmann.org>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, regressions@lists.linux.dev,
- stable@vger.kernel.org
-References: 
- <CADCSNFD0Ut-jJohTQFczjBgaVf=mBrc2rq4hJQncVZpF4bCoxw@mail.gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: 
- <CADCSNFD0Ut-jJohTQFczjBgaVf=mBrc2rq4hJQncVZpF4bCoxw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <177916709967.849087.9352424421516320279@mxe9fb.netcup.net>
-X-NC-CID: vq9DJS+14lEdcttPEpzaRJbmdMSDWX9ZqxtKYJX+AwMCHyCP/iQ=
-X-Spamd-Result: default: False [-0.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: qe_ahwg5uvR9m68RQTj1LuoxG7cGDsHw
+X-Proofpoint-GUID: qe_ahwg5uvR9m68RQTj1LuoxG7cGDsHw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDA0NiBTYWx0ZWRfX0fc5lOAI1G8M
+ Y9veaxSGAwXDkSgOE+dpaBS9w5ShmDLkwvTOJXZG8Ndj2qrDJ6rRUcGt5pBExsa2NK6gpUEYoFk
+ X5TmPrDFzOS4oRa1Nt6tjun5T9HcpWtm/QIzbeFcOuLTA1KLzht7dKGD3w7PTIZxmBYgPV9uIk9
+ Z4InoliET1Wt3TYfHYDWeuiWv2LTsWA6oOJwXfp2a5J8mYoib31HJgB2DyW4FmAl4y05Uztr1ua
+ AJFtFywvAJWw5N7tx3C7BnWNcmJDzBkiO6ZzEpv2zE/6vddU2n1VJ9PiF3d6w3jfOl8x+lXoYHk
+ hy/ShmCrY15UTTIIR3mRxLgH6JHIy3saDBULLuPVeV/DRg7ik7wUNFkI+LM2WdmwR6st/o4YWVE
+ Q2q3MgjufglnbrHp650tN88273NUCb+W+C6Zo7NYj+hDy7e7dTMKF7kVIaygAty050jgxCtMbUf
+ xFdE3JPIZuG7sI6rGSQ==
+X-Authority-Analysis: v=2.4 cv=dK2WXuZb c=1 sm=1 tr=0 ts=6a0bf0c0 cx=c_pps
+ a=Lg6ja3A245NiLSnFpY5YKQ==:117 a=Lg6ja3A245NiLSnFpY5YKQ==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=bi6dqmuHe4P4UrxVR6um:22
+ a=klDOsUkWDRETUCZYPvoE:22 a=edf1wS77AAAA:8 a=hSkVLCK3AAAA:8 a=VwQbUJbxAAAA:8
+ a=t7CeM3EgAAAA:8 a=Rw0Jph7aeMS_YbH_6PgA:9 a=DcSpbTIhAlouE1Uv7lRv:22
+ a=cQPPKAXgyycSBL8etih5:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-19_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 clxscore=1011 phishscore=0
+ impostorscore=0 adultscore=0 suspectscore=0 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605190046
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	DMARC_POLICY_ALLOW(-0.50)[windriver.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[windriver.com:s=PPS06212021];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,leemhuis.info:mid,leemhuis.info:dkim];
-	TAGGED_FROM(0.00)[bounces-249457-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	FREEMAIL_CC(0.00)[holtmann.org,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249458-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yun.zhou@windriver.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 7891657757B
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[windriver.com:+];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,windriver.com:email,windriver.com:mid,windriver.com:dkim,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 2CBEE5775C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/19/26 06:31, Baley Eccles wrote:
-> Subject: [REGRESSION] Bluetooth: MT7922 fails to initialize after
-> "Bluetooth: btmtk: validate WMT event SKB length before struct access"
-> 
-> Hi all,
-> 
-> I have experienced and looked into a regression on a MediaTek MT7922
-> adapter. Bluetooth works on v6.18.29, fails on v6.18.30, and reverting
-> the bisected commit fixes it.
+dvb_frontend_open() calls dvb_generic_release() in its error path after
+dvb_generic_open() succeeds. dvb_generic_release() drops the device
+reference via dvb_device_put(), and then dvb_device_open() drops it again
+in its error handling, causing a use-after-free and refcount underflow.
 
-Thx for the report, there are quite a few similar ones already; the
-problem is known and the fix (see the link below) should be heading to
-mainline this week and from there go to various stable series.
+Fix this by introducing __dvb_generic_release() which only restores the
+users/readers/writers counters without dropping the device reference. Use
+it in dvb_frontend_open()'s error path so that dvb_device_open() remains
+the sole owner of the dvb_device_put() on open failure.
 
-Ciao, Thorsten
+Reported-by: syzbot+40339ea82afa8184ad5d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=40339ea82afa8184ad5d
+Cc: stable@vger.kernel.org
+Fixes: 0fc044b2b5e2 ("media: dvbdev: adopts refcnt to avoid UAF")
+Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+---
+v2:
+ - Fix Fixes tag commit title
+ - Add Closes: link after Reported-by
+ - Cc stable@vger.kernel.org
 
-#regzbot dup:
-https://lore.kernel.org/linux-bluetooth/770d36b07311bf88210c187923f243fb9f126f04.1777058551.git.pav@iki.fi/
+ drivers/media/dvb-core/dvb_frontend.c |  2 +-
+ drivers/media/dvb-core/dvbdev.c       | 17 ++++++++++++-----
+ include/media/dvbdev.h                | 12 ++++++++++++
+ 3 files changed, 25 insertions(+), 6 deletions(-)
 
-> Hardware:
-> MEDIATEK Corp. MT7922 802.11ax PCI Express Wireless Network Adapter [14c3:7922]
-> Subsystem: AzureWave ASUS PCE-AXE59BT [1a3b:5300]
-> 
-> Good kernel:
-> 6.18.29-p2-gentoo-dist
-> Upstream base: v6.18.29
-> 
-> Bad kernel:
-> 6.18.30-p1-gentoo-dist
-> Upstream base: v6.18.30
-> 
-> Failure:
-> bluetoothctl list prints nothing / no default controller is available.
-> 
-> Bad dmesg:
-> Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20260224103448
-> Bluetooth: hci0: Failed to send wmt func ctrl (-22)
-> Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is
-> advertised, but not supported.
-> 
-> Good dmesg:
-> Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20260224103448
-> Bluetooth: hci0: Device setup in 129909 usecs
-> Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is
-> advertised, but not supported.
-> Bluetooth: hci0: AOSP extensions version v1.00
-> Bluetooth: hci0: AOSP quality report is supported
-> Bluetooth: MGMT ver 1.23
-> 
-> Firmware:
-> /lib/firmware/mediatek/BT_RAM_CODE_MT7922_1_1_hdr.bin
-> /lib/firmware/mediatek/WIFI_MT7922_patch_mcu_1_1_hdr.bin
-> /lib/firmware/mediatek/WIFI_RAM_CODE_MT7922_1.bin
-> 
-> Bisect result:
-> 624fb79dadc1b65757986a9d0fdde5c0cf3fe179 is the first bad commit
-> 
-> Bluetooth: btmtk: validate WMT event SKB length before struct access
-> 
-> This is a stable backport of upstream commit:
-> 634a4408c0615c523cf7531790f4f14a422b9206
-> 
-> Reverting 624fb79dadc1b65757986a9d0fdde5c0cf3fe179 on top of v6.18.30
-> fixes the issue and Bluetooth works again.
-> 
-> Please let me know if there is any additional logging or testing I can provide.
-> 
-> #regzbot introduced: 624fb79dadc1b65757986a9d0fdde5c0cf3fe179
-> 
-> Cheers,
-> Baley
+diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
+index d082b6c57c76..497f5920b267 100644
+--- a/drivers/media/dvb-core/dvb_frontend.c
++++ b/drivers/media/dvb-core/dvb_frontend.c
+@@ -2887,7 +2887,7 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 	mutex_unlock(&fe->dvb->mdev_lock);
+ err2:
+ #endif
+-	dvb_generic_release(inode, file);
++	__dvb_generic_release(inode, file);
+ err1:
+ 	if (dvbdev->users == -1 && fe->ops.ts_bus_ctrl)
+ 		fe->ops.ts_bus_ctrl(fe, 0);
+diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
+index d753d329502a..3e0ad67b79a3 100644
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -152,19 +152,26 @@ int dvb_generic_open(struct inode *inode, struct file *file)
+ }
+ EXPORT_SYMBOL(dvb_generic_open);
+ 
+-int dvb_generic_release(struct inode *inode, struct file *file)
++void __dvb_generic_release(struct inode *inode, struct file *file)
+ {
+ 	struct dvb_device *dvbdev = file->private_data;
+ 
+-	if (!dvbdev)
+-		return -ENODEV;
+-
+ 	if ((file->f_flags & O_ACCMODE) == O_RDONLY)
+ 		dvbdev->readers++;
+ 	else
+ 		dvbdev->writers++;
+-
+ 	dvbdev->users++;
++}
++EXPORT_SYMBOL(__dvb_generic_release);
++
++int dvb_generic_release(struct inode *inode, struct file *file)
++{
++	struct dvb_device *dvbdev = file->private_data;
++
++	if (!dvbdev)
++		return -ENODEV;
++
++	__dvb_generic_release(inode, file);
+ 
+ 	dvb_device_put(dvbdev);
+ 
+diff --git a/include/media/dvbdev.h b/include/media/dvbdev.h
+index e5a00d126612..9e6e5cb43dcb 100644
+--- a/include/media/dvbdev.h
++++ b/include/media/dvbdev.h
+@@ -343,6 +343,18 @@ int dvb_create_media_graph(struct dvb_adapter *adap,
+  */
+ int dvb_generic_open(struct inode *inode, struct file *file);
+ 
++/*
++ * __dvb_generic_release - Undo dvb_generic_open() counters WITHOUT
++ *      dropping the device reference.
++ *
++ * @inode: pointer to &struct inode.
++ * @file: pointer to &struct file.
++ *
++ * Used in cases where the caller handles dvb_device_put() and ensures
++ * that dvbdev is valid.
++ */
++void __dvb_generic_release(struct inode *inode, struct file *file);
++
+ /**
+  * dvb_generic_release - Digital TV close function, used by DVB devices
+  *
+-- 
+2.43.0
 
 
