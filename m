@@ -1,246 +1,167 @@
-Return-Path: <stable+bounces-249683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249710-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIzTN7K8DGpdlgUAu9opvQ
-	(envelope-from <stable+bounces-249683-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 21:40:34 +0200
+	id YFSxOpD0DGqPqQUAu9opvQ
+	(envelope-from <stable+bounces-249710-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 01:38:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B37584465
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 21:40:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E592586131
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 01:38:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA2BF302EEC1
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 19:38:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F1EC9304CF7E
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FD03B47FC;
-	Tue, 19 May 2026 19:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2B136EAA8;
+	Tue, 19 May 2026 23:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KnVX9ccT"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eWSP2X0m"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F21A370D5C;
-	Tue, 19 May 2026 19:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03729343889;
+	Tue, 19 May 2026 23:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779219526; cv=none; b=chNQEh+sP3o9ckI3fH41K28UndGuU37CvRw40lVKWS8eEcA+YUiEyik5u9Jvt2c/gyg7dZNd+ZBj9VJQMQ+o8iwwQn/sBCVdZcp/AaYDNhLaWrp71hlIsBL6MAO4y1A52hDHaPdeVzfh4m+/F0b9MkIYPhqfhIHkifPcFxlPelU=
+	t=1779233932; cv=none; b=V/XUspxGS8eX/G5OVrkdTjephPLz3l3JGryacu0vcA8sFQ3GHlumVBz+ZUZPmP7bEtmETdR1g6ntfZ/w6gWQ2SU4uDhE1zQ9Ja4etXMJDkjNeBKE85dOUo6gPLQvHxwZpn0dHWihhTXXrjPUuGpE9E4tPvul+WIiOh6SRCVX7eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779219526; c=relaxed/simple;
-	bh=lPOO2MbYnbEWTpjWMan5sNtzyYWSfnV8BpJ/DPXay2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYi9FYnYSu8BA/y8ezBGHZxK8kmzCnjLsbEqudEgRZ/RznKTb3jtmiBUYXvyjiXCGpwjEJkGnkGN7JsRWmfoVUqEHIKwt2q0UfEPKSsxupf71mOXlXj5PENP+6f3/NS2oBXCvXQazXTUKX7U1o/H0p0lSNFgU54toCQmMCdm3kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KnVX9ccT; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64J8jxZU070161;
-	Tue, 19 May 2026 19:38:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=BVdo1hcXqTWtroWAQ
-	ylAGQcmZAyMaYVpqdzbBWR48D0=; b=KnVX9ccT5PfyoxixPC598facshLYxziSV
-	qJBPdEUytSNPProiP4YROnxwetMpzdDhjq5joojKxOsYZt/PxaZqj3ZUjMshC5eN
-	EFUvJ6ewKUeyzM4j2zK7vE9s7Noklg9edpdFBk6v7SephOeOcwWo02EAjcrhAw1Q
-	0TYYNkKzPZqRq6mNgtz2KngHXMSVOnMmYNckSCTd5zXQluUpS8B0dW45my3JXI4m
-	upB5MP7FvUQnmZ+CmR8fKTWxC/E/D8LbtjsSI2mVXlmx4WhEIb24NwYzaHHOYvZn
-	poifeHozQHpsBNs6uoPYahmQ0X0jKLZsZKmkX2c6sl4jCWXJiV8wQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8mpt8n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2026 19:38:31 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64JJO5Cc031238;
-	Tue, 19 May 2026 19:38:30 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e72wq4ea7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2026 19:38:30 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64JJcRvF13173100
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 May 2026 19:38:27 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E512B20043;
-	Tue, 19 May 2026 19:38:26 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E665E20040;
-	Tue, 19 May 2026 19:38:24 +0000 (GMT)
-Received: from ltcrain4-lp15.ltc.tadn.ibm.com (unknown [9.5.7.39])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 19 May 2026 19:38:24 +0000 (GMT)
-From: adubey@linux.ibm.com
-To: bpf@vger.kernel.org
-Cc: hbathini@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-        ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
-        shuah@kernel.org, linux-kselftest@vger.kernel.org,
-        stable@vger.kernel.org, Abhishek Dubey <adubey@linux.ibm.com>
-Subject: [PATCH v5 6/6] selftest/bpf: Add tailcall verifier selftest for powerpc64
-Date: Tue, 19 May 2026 19:38:12 -0400
-Message-ID: <20260519233812.18787-7-adubey@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260519233812.18787-1-adubey@linux.ibm.com>
-References: <20260519233812.18787-1-adubey@linux.ibm.com>
+	s=arc-20240116; t=1779233932; c=relaxed/simple;
+	bh=LpO4AGfvCs3ZVd7ZTSVCy35NcGWgtaHYMqiKe6Mig8E=;
+	h=Date:To:From:Subject:Message-Id; b=JiHinjm9wZHhQ9kY0FqmUCn8MdG1/N+iFOVeN80j94xuLb+uIsGo+GpM4uybhivZ8td17GZb0vDkX8n8nAQb0w7k2RyPVKcj1+DXhZoVjEb53Vt3NwLw3VIz/sP+dhEzjDrok8fM6IplPFlf9nkzpvvLKow5UQ9La6h0gvsSnp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eWSP2X0m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DAD91F000E9;
+	Tue, 19 May 2026 23:38:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779233930;
+	bh=0Afm1h8tIz9UFkG1QCkdBsiFKvajENQnOjSl1hzdMJo=;
+	h=Date:To:From:Subject;
+	b=eWSP2X0mNdTiNWV0Fx/2F+e77BZnCegoHP36PeskSie6UiWwTNJiU29HG6t4Cr/uR
+	 ZmRiqBpX+1dB3Ku5GyYwyy0o9eDIsPetFLoAbk1b7QLjiKO+TWeu1ygNVJtVoMmE6A
+	 9BvonpUwokjETUnCYsG5WaABmXdSuEveaM2R5qNU=
+Date: Tue, 19 May 2026 16:38:50 -0700
+To: mm-commits@vger.kernel.org,yuehaibing@huawei.com,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@kernel.org,almasrymina@google.com,devnexen@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-hugetlb-restore-reservation-on-error-in-hugetlb_mfill_atomic_pte-resubmission-path.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260519233850.8DAD91F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: H3_97TfRtEn2NR3jUEkvyEtczqupE7Re
-X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a0cbc37 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=v_EuApQnFJK-j3Uko2UA:9
-X-Proofpoint-ORIG-GUID: H3_97TfRtEn2NR3jUEkvyEtczqupE7Re
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDE5NiBTYWx0ZWRfX899HAlzJtCKW
- liPELhVl6bbUhhq8o2G85KZzOBUq84FYvmVzHZdARjoBJUtPTbQ9T4ivZF/jkX6Kqlt3uv0MXry
- C8FDm1nV9AmADTsOddbfkNHNqnbtGIbEZpcuaVcuw9mMkfC8Ke8L4Oef9bhyak0r/FwLP2v7Xfn
- 3FD+2OqIa/C7Qg25p3i5PshTGkRmBhqD4+NAzgfpXOXc72TOKi46fm/G57DTO5huH7AdXzYBNUb
- nSk6UmGvWRBxRFOVgjkQvtgaZYMl2wUhBaOQctMKnTPzpIjaw6+pUseLSuTaJeGKS+H7XcbnPLh
- uDgU7Cfst6++xKz2thGisLAyBFu+Bb26R1seJJT1Bioc/VoQhgtGJ1IL9s2CRU0MX2YSTJKBXN4
- sUW9JXqWPjn5Y+DhpQ1L28gZ53eFabcqnKRYeFBo3Z4G43uGvj42f/7Ac4EO75LHtKx+Pz6NDt+
- QSfMQyhwcZo/5I+rdbw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-19_05,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605190196
-X-Spamd-Result: default: False [3.34 / 15.00];
-	DATE_IN_FUTURE(4.00)[3];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-249710-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249683-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,suse.de,linux.dev,kernel.org,google.com,gmail.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 83B37584465
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,huawei.com:email,linux-foundation.org:email,linux-foundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: 8E592586131
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Abhishek Dubey <adubey@linux.ibm.com>
 
-Verifier testcase result for tailcalls:
+The patch titled
+     Subject: mm/hugetlb: restore reservation on error in hugetlb_mfill_atomic_pte() resubmission path
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-hugetlb-restore-reservation-on-error-in-hugetlb_mfill_atomic_pte-resubmission-path.patch
 
-# ./test_progs -t verifier_tailcall
-#618/1   verifier_tailcall/invalid map type for tail call:OK
-#618/2   verifier_tailcall/invalid map type for tail call @unpriv:OK
-#618     verifier_tailcall:OK
-#619/1   verifier_tailcall_jit/main:OK
-#619     verifier_tailcall_jit:OK
-Summary: 2/3 PASSED, 0 SKIPPED, 0 FAILED
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-restore-reservation-on-error-in-hugetlb_mfill_atomic_pte-resubmission-path.patch
 
-Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: David Carlier <devnexen@gmail.com>
+Subject: mm/hugetlb: restore reservation on error in hugetlb_mfill_atomic_pte() resubmission path
+Date: Sun, 22 Mar 2026 05:21:20 +0000
+
+When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
+hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. 
+If copy_user_large_folio() subsequently fails (e.g.  -EHWPOISON when the
+source page is hwpoisoned), folio_put() restores the global hugetlb pool
+count through free_huge_folio(), but the per-VMA reservation map entry is
+left marked consumed.
+
+User-visible effect: on a UFFDIO_COPY into a private hugetlb VMA where the
+resubmission path's copy fails, the reservation for that address is leaked
+from the VMA's reserve map.  A subsequent fault at the same address takes
+the no-reservation path, and under hugetlb pool pressure the task is
+SIGBUSed at an address it had previously reserved.  One map entry is
+leaked per occurrence.
+
+Add the missing restore_reserve_on_error() call before folio_put(),
+matching the first-attempt error path which already handles this
+correctly.
+
+Link: https://lore.kernel.org/20260519230503.121293-1-devnexen@gmail.com
+Link: https://lore.kernel.org/20260322052120.14021-1-devnexen@gmail.com
+Fixes: 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: yuehaibing <yuehaibing@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- .../bpf/progs/verifier_tailcall_jit.c         | 69 +++++++++++++++++++
- 1 file changed, 69 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_tailcall_jit.c b/tools/testing/selftests/bpf/progs/verifier_tailcall_jit.c
-index 8d60c634a114..b754b76420c9 100644
---- a/tools/testing/selftests/bpf/progs/verifier_tailcall_jit.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_tailcall_jit.c
-@@ -90,6 +90,75 @@ __jited("	popq	%rax")
- __jited("	jmp	{{.*}}")		/* jump to tail call tgt   */
- __jited("L0:	leave")
- __jited("	{{(retq|jmp	0x)}}")		/* return or jump to rethunk */
-+__arch_powerpc64
-+/* program entry for main(), regular function prologue */
-+__jited("	nop")
-+__jited("...")                          /* ld 2, 16(13) absent with CONFIG_PPC_KERNEL_PCREL */
-+__jited("	li 9, 0")
-+__jited("	std 9, -8(1)")
-+__jited("	mflr 0")
-+__jited("	std 0, 16(1)")
-+__jited("	stdu 1, {{.*}}(1)")
-+/* load address and call sub() via count register */
-+__jited("	lis 12, {{.*}}")
-+__jited("	sldi 12, 12, 32")
-+__jited("	oris 12, 12, {{.*}}")
-+__jited("	ori 12, 12, {{.*}}")
-+__jited("	mtctr 12")
-+__jited("	bctrl")
-+__jited("	mr	8, 3")
-+__jited("	li 8, 0")
-+__jited("	addi 1, 1, {{.*}}")
-+__jited("	ld 0, 16(1)")
-+__jited("	mtlr 0")
-+__jited("	mr	3, 8")
-+__jited("	blr")
-+__jited("...")
-+__jited("func #1")
-+/* subprogram entry for sub() */
-+__jited("	nop")
-+__jited("...")                          /* ld 2, 16(13) absent with CONFIG_PPC_KERNEL_PCREL */
-+/* tail call prologue for subprogram */
-+__jited("	ld 10, 0(1)")
-+__jited("	ld 9, -8(10)")
-+__jited("	cmpldi	9, 33")
-+__jited("	bt	{{.*}}, {{.*}}")
-+__jited("	addi 9, 10, -8")
-+__jited("	std 9, -8(1)")
-+__jited("	lis {{.*}}, {{.*}}")
-+__jited("	sldi {{.*}}, {{.*}}, 32")
-+__jited("	oris {{.*}}, {{.*}}, {{.*}}")
-+__jited("	ori {{.*}}, {{.*}}, {{.*}}")
-+__jited("	li {{.*}}, 0")
-+__jited("	lwz 9, {{.*}}({{.*}})")
-+__jited("	slwi {{.*}}, {{.*}}, 0")
-+__jited("	cmplw	{{.*}}, 9")
-+__jited("	bf	0, {{.*}}")
-+/* bpf_tail_call implementation */
-+__jited("	ld 9, -8(1)")
-+__jited("	cmpldi	9, 33")
-+__jited("	bf	{{.*}}, {{.*}}")
-+__jited("	ld 9, 0(9)")
-+__jited("	cmpldi	9, 33")
-+__jited("	bt	{{.*}}, {{.*}}")
-+__jited("	addi 9, 9, 1")
-+__jited("	mulli 10, {{.*}}, 8")
-+__jited("	add 10, 10, {{.*}}")
-+__jited("	ld 10, {{.*}}(10)")
-+__jited("	cmpldi	10, 0")
-+__jited("	bt	{{.*}}, {{.*}}")
-+__jited("	ld 10, {{.*}}(10)")
-+__jited("	addi 10, 10, {{.*}}")    /* offset depends on CONFIG_PPC_KERNEL_PCREL */
-+__jited("	mtctr 10")
-+__jited("	ld 10, -8(1)")
-+__jited("	cmpldi	10, 33")
-+__jited("	bt	{{.*}}, {{.*}}")
-+__jited("	addi 10, 1, -8")
-+__jited("	std 9, 0(10)")
-+__jited("	bctr")
-+__jited("	mr	3, 8")
-+__jited("	blr")
-+
- SEC("tc")
- __naked int main(void)
- {
--- 
-2.52.0
+ mm/hugetlb.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/mm/hugetlb.c~mm-hugetlb-restore-reservation-on-error-in-hugetlb_mfill_atomic_pte-resubmission-path
++++ a/mm/hugetlb.c
+@@ -6270,6 +6270,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
+ 		folio_put(*foliop);
+ 		*foliop = NULL;
+ 		if (ret) {
++			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
+ 			folio_put(folio);
+ 			goto out;
+ 		}
+_
+
+Patches currently in -mm which might be from devnexen@gmail.com are
+
+mm-hugetlb-restore-reservation-on-error-in-hugetlb_mfill_atomic_pte-resubmission-path.patch
+mm-page_io-rename-swap_iocb-fields-for-clarity.patch
+mm-shrinker-avoid-out-of-bounds-read-in-set_shrinker_bit.patch
+mm-swap-pm-hibernate-atomically-replace-hibernation-pin.patch
 
 
