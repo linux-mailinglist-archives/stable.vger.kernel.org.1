@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-249572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DZ6I7hUDGqmfAUAu9opvQ
-	(envelope-from <stable+bounces-249572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:16:56 +0200
+	id eH1+IphUDGqmfAUAu9opvQ
+	(envelope-from <stable+bounces-249571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:16:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEBF957E7D3
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2FE57E781
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 483B530BBD7C
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:07:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 307F73082E75
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BE54C77CA;
-	Tue, 19 May 2026 12:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7F84C77A9;
+	Tue, 19 May 2026 12:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPAceZru"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q3oCDcW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3628F4CA294;
-	Tue, 19 May 2026 12:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1B64B8DED;
+	Tue, 19 May 2026 12:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779192451; cv=none; b=pXB8KwwH8120IxvhnEp5inX8G6cChWmGdq6ygZUSLptKp4E5k0cYIj4sT+aEhtUXzkrLtUdsgpohBfrva34UEItMI3NDSg+wLn7insMA/Fg5XzA+SRwEDJkT/SMKQWkv1EUcDq0r4Lqd9R5/26kFqurVW+3pGtlRsRxFGy26AHk=
+	t=1779192425; cv=none; b=BUu6zW0z848CoDEjmvJ741xYB1Ie1bGgEnC+291KcvI5C6w4aIl5c39M03LAsftwO0EpbJLdokvlY1oKrQ+i9wLKb86maCCskuO/dZW1P/9SGyyyjcxmJoFf0tYrN9HB+0OR0JslPIcTCCJxHE+hslTQcK47keuqJy34F3IQWW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779192451; c=relaxed/simple;
-	bh=24gjXT5wmA214FuTksvBZxjgz04Ja4qpNigX7sxq6hM=;
+	s=arc-20240116; t=1779192425; c=relaxed/simple;
+	bh=DJY95g0ZmUO/h+FGNqx68XzzoKPdsYRRU7J5WDRm+ws=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ODCRDUYWlDM9bDMNPsoUOJLnVerjyqbhxeItlgFZfSNXItE8GXzOLRwlwWXCNxIs5T1PaDuYoyKKiIWzMtAtBHABw7u4hnewb4oXaRh1CpqLb9zoNtISaHHNfDmKA6slr/df0EuWRzpOI3RpoeOx0DusG4/t+oJy5WvQNZ8eMbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPAceZru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777D5C2BCC7;
-	Tue, 19 May 2026 12:07:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1779192451;
-	bh=24gjXT5wmA214FuTksvBZxjgz04Ja4qpNigX7sxq6hM=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=c6VMZyZC7+dHpG4OKPOPV5Ct4pMQmyp9lr1twQ1p0SwrSfASKGoWHW2KbKFPZD6jJZ8UlehKUMRaDUFG2517BJPC7K1iZD1WwrVZ3JyV6FimM8680XSVuQlxKhnJRcPlOMGxCLQowoqhQjr0vOuVyBMeFdvoJixST+eAp+7JhRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q3oCDcW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CFEC2BCB3;
+	Tue, 19 May 2026 12:07:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779192424;
+	bh=DJY95g0ZmUO/h+FGNqx68XzzoKPdsYRRU7J5WDRm+ws=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gPAceZru+S9ZuIhn16V91zK89WlwILsx+YuFd/0X3f6mr5V35bCAYgGzZxVQG94An
-	 XeLA3r777h01ClFUmPgrT+qG6kESsr7JJlPG8caR1aRWaxNz6iiadjiTWvOZ/2rBTs
-	 Ftcf22u/gnE0okDk/bJGyZnN1lx4JEEc36yQhWRw=
-Date: Tue, 19 May 2026 14:06:43 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Sasha Levin <sashal@kernel.org>, linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, davem@davemloft.net,
-	kuba@kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [GIT PULL] bluetooth 2026-05-14
-Message-ID: <2026051909-impurity-nemesis-2f65@gregkh>
-References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
- <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info>
- <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
- <2026051954-revision-sierra-6bb4@gregkh>
- <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
+	b=q3oCDcW+sCdTzW8lCRMorld9sc9qwpqK6QWGt3aVnLkJ0uLmsDYwx2KnSlZbovXJv
+	 lz3nRwxeNA49VZKeNVJKIYcOODXiJPFbbkZG9/Vzdpifx6C4plYR9WYefDq7QVu7tW
+	 eG/RMMruCk9MSbvTkTBr+jkbGMzjGS5VMSF37XkRQm5cmLBOSdPz7mgdL6T3jHhXN6
+	 r5/Ck12n8PAsB8oR5cLryIQnwReRyokbEDkIB+s6fLWQRBuudP75Nb2Y7U+uJ3+bKf
+	 XIDMdWEUDUZBfUoivtPhBlF6jl3yIr2EF/ke+Nw5yo2KoQYoM8H56qoKpuNpO0kajn
+	 rU6sqcMx9805w==
+Date: Tue, 19 May 2026 13:06:59 +0100
+From: Will Deacon <will@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Joerg Roedel <joro@8bytes.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, linux-kbuild@vger.kernel.org,
+	stable@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>,
+	Kees Cook <kees@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [v2] iommu, debugobjects: avoid gcc-16.1 section
+ mismatch warnings
+Message-ID: <agxSY-BnTXv2TQWo@willie-the-truck>
+References: <20260513145425.1579430-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,95 +67,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <20260513145425.1579430-1-arnd@kernel.org>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249572-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,davemloft.net,lists.linux.dev,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249571-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[will@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DEBF957E7D3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arndb.de:email]
+X-Rspamd-Queue-Id: ED2FE57E781
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis wrote:
-> On 5/19/26 12:30, Greg KH wrote:
-> > On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote:
-> >> On 5/15/26 17:10, Thorsten Leemhuis wrote:
-> >>> On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
-> >>>
-> >>>> The following changes since commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac:
-> >>>>   net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:12 +0200)
-> >>>>
-> >>>> are available in the Git repository at:
-> >>>>
-> >>>>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-14
-> >>>>
-> >>>> for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c00282:
-> >>>>
-> >>>>   Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-14 09:58:08 -0400)
-> >>>
-> >>> It seems this PR sadly came too late for this week's net PR to mainline
-> >>> that was merged yesterday.
-> >>>
-> >>> TWIMC, from my point of view, it would be great if we somehow could
-> >>> still get the changes from this PR or at least the btmtk fix it
-> >>> contains[1] to mainline this week before -rc4, as it is fixing a
-> >>> regression known since 2026-04-24 that at least five people encountered
-> >>> with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
-> >>> validate WMT event SKB length before struct access") [006b9943b982 in
-> >>> -next].
-> >>
-> >> Greg, Sasha, that [1] fix I was talking about now reached -next as
-> >> 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
-> >> events") and will likely hit mainline on Thursday or so with the weekly
-> >> -net PR to -mainline. If that's good enough for you, I'd say it would be
-> >> good to pick this up for the next round of stable kernels.
-> > 
-> > That "Fixes:" tag is referring to something that is also not in any
-> > tree, but that commit does have a cc: stable in it.  So do we need both
-> > of these:
+On Wed, May 13, 2026 at 04:53:54PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> Valid question, as yes, there is a slight mixup here:
+> gcc-16 has gained some more advanced inter-procedual optimization
+> techniques that enable it to inline the dummy_tlb_add_page() and
+> dummy_tlb_flush() function pointers into a specialized version of
+> __arm_v7s_unmap:
 > 
-> > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
+> WARNING: modpost: vmlinux: section mismatch in reference: __arm_v7s_unmap+0x2cc (section: .text) -> dummy_tlb_add_page (section: .init.text)
+> ERROR: modpost: Section mismatches detected.
 > 
-> That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is the
-> -next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
-> btmtk: validate WMT event SKB length before struct access") -- the one
-> that is causing the regression that I want to get fixed. So we now only
-> need:
+> From what I can tell, the transformation is correct, as this is only
+> called when __arm_v7s_unmap() is called from arm_v7s_do_selftests(),
+> which is also __init. Since __arm_v7s_unmap() however is not __init,
+> gcc cannot inline the inner function calls directly.
 > 
-> > 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL events")
+> In debug_objects_selftest(), the same thing happens. Both the
+> caller and the leaf function are __init, but the IPA pulls
+> it into a non-init one:
+> 
+> WARNING: modpost: vmlinux: section mismatch in reference: lookup_object_or_alloc+0x7c (section: .text.lookup_object_or_alloc) -> is_static_object (section: .init.text)
+> 
+> Marking the affected functions as not "__init" would reliably avoid this
+> issue but is not a good solution because it removes an otherwise correct
+> annotation. I tried marking the functions as 'noinline', but that ended
+> up not covering all the affected configurations.
+> 
+> With some more experimenting, I found that marking these functions as
+> __attribute__((noipa)) is both logical and reliable.
+> 
+> In order to keep the syntax readable, add a custom macro for this in
+> include/linux/compiler_attributes.h next to other related macros and
+> use it to annotate both files.
+> 
+> Link: https://lore.kernel.org/all/abRB6g-48ZX6Yl2r@willie-the-truck/
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Thomas Gleixner <tglx@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Miguel Ojeda <ojeda@kernel.org>
+> Cc: linux-kbuild@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> v2: I merged both patches into one, to simplify the dependency
+> on the new compiler_attributes.h macro.
+> ---
+>  drivers/iommu/io-pgtable-arm-v7s.c  | 18 ++++++++++++------
+>  include/linux/compiler_attributes.h | 11 +++++++++++
+>  lib/debugobjects.c                  |  2 +-
+>  3 files changed, 24 insertions(+), 7 deletions(-)
 
-Ok, but that "Fixes:" tag pointing to an invalid commit is going to be a
-nightmare to track over time, ugh.
+For the io-pgtable change:
 
-I'll go queue this up now, thanks.
+Acked-by: Will Deacon <will@kernel.org>
 
-greg k-h
+Thanks, Arnd.
+
+Will
 
