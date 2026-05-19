@@ -1,178 +1,184 @@
-Return-Path: <stable+bounces-249707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKZiBBTnDGoopwUAu9opvQ
-	(envelope-from <stable+bounces-249707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 00:41:24 +0200
+	id CHetMqnsDGq9pwUAu9opvQ
+	(envelope-from <stable+bounces-249708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 01:05:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2268D585C0C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 00:41:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C34585EB7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 01:05:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4ED7A300DA47
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 22:41:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A45CE301FD4F
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0358636E47A;
-	Tue, 19 May 2026 22:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316D435E931;
+	Tue, 19 May 2026 23:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WZ/rUNEF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IeHnFgUy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F2130E0E9
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 22:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779230476; cv=pass; b=az9fIrJk6nLCyrHdm1blsQ0o6heU96ZR4FFvalYOuuXEz383m/yLhbd1Qqkt+3t6N0/QY3Ppk4zqs5r2Yr3F96Kama5RbQkDmSMLtdEv5gKa9Ru44Zt6EEqkJ0bhTv3vdH/R8vtmYiGgJntA7oFhiyeB4pK5HMpM9FUuedMdv4w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779230476; c=relaxed/simple;
-	bh=SV+pkCYA9UqmBQ+Qp7eReLMWP7VcEgqdU1ufh5qr04Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sjqhAr1xbqW+/39kzjlrVMApiTYWin6l6XHgf4I0AgTVp68DQptHv/iXgjfWetloGzyWr9K3uYfKNhcAEL5hevSUOFbwfjbTAVoQuXKhqzfS07OOL1r4s30HTCjzlZ/RI+otSx34kjMOwreAHvhQQFp547nMvzKCXBXdAk0N7ds=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WZ/rUNEF; arc=pass smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5E978F2F
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 23:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779231910; cv=none; b=mqV4esWl7JCznzUxOjUTNRQJEuWk+UCtLu6LmLtO3U3ERxaCdtfovJm8su35ecSsOYABPAorI6Gab/1OXNuqp37i3hII2q4uKtj8EHSTkOzz/C/XLFTCg2oMGClvawSD8MxO2OeAnRyEnjvX2Ot2oafANv56+UUXWtYK1MwjfDM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779231910; c=relaxed/simple;
+	bh=kmljMs8Rf1PVvpETVY9rWE5evYqbcKNafcvaVomh9aU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cbhzPZ4nz8otyduyBcqe7Ay/iUzHwZGqCNZCFs6Munah/gKD/7VN6536S3RjmhvuJcwVxrTzpOS9pruN1cd5zn5REUiMvlaaO7w3AtB4K8Ii9+s1UWW0vSS9Wz+aW/ieoho660iiXNR9Qy4JSbTnjWr6PkDVkcOhnYoT0RqhrEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IeHnFgUy; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-43aaeb6c96bso1233948fac.3
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 15:41:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779230474; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ee/9BYtrmfaZ+3lbS9qkIgrcKiK3MyzMVsI7MwfG6y8IsMiikiRi/N5/i61WWIQ+9U
-         1nXKEZmm7zpGowYJt0Upa6qY/WVVUxBDBcjZn+9EBF9TmkMCRcfo67Jtqs9QyWHCLdO1
-         VqMY9kZWIUF/gsJwAVqL6CunHIbYbKJ5Jw4FoYx2D0lC1N6uj/CJH6ZklP5MreaM4P2n
-         iax/YVlvZMivNDNPphB9HbW0Kk3dBWI2aOo96C3HPKsBb55wIwjSoEJ4mEiWXvbHMJ1H
-         aynIXwmDaMqnDfrKon7Lu+7zOFgmAck0oFtZW3Sk7GAvnyicF5uVONSv/nwPQqYA+nBn
-         Y4pg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Oc7IUMGtW/r1T1j9OaU9cZaiuWsQdebfgPPEltdLKlk=;
-        fh=lbm2w0H6ZzwxgKGvLHoWggRdCXgk6W/J5qenUc8VbnM=;
-        b=E0g6i52nY9lbYsG5HhepOIfW/1SWH2R3mBXsN3LcZph/k0DjWHimr5qw4pKTA7RXAd
-         GvmyTZoClnZVLZtS3E/64fAtrKdpvH8fjABivwW1ZbU1Btci03jWDa0KQsPVaxb5aQ4s
-         b8VG6xutB/vltp4sA4/0UI+DWBACs8nwqfBdWWtICEPGI/Wph0ZsQamp8qLnK/4SB7rm
-         RB6YSPTZvLeYS9qB5vU6XEhvwEaWmkle5pOd1UOBdiUBDn2Tf7G1ydnQLfDoaesmZt33
-         VzUFzAzDOXDMCsOrGyKdyKdaJ8w8F0deSkWYvOn9CDGQmaPVltNa84CjS9LhNs0eGqnC
-         4U3Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488af96f6b2so45365695e9.0
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 16:05:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779230474; x=1779835274; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Oc7IUMGtW/r1T1j9OaU9cZaiuWsQdebfgPPEltdLKlk=;
-        b=WZ/rUNEFTc41hWAOFgoBx1UcO36zS7EYaqa2FmmYr2vB8KkVNCTTwAZk4QmEpopW+B
-         cAcfVrLwTEQesWeHa2jcfxqZFFv+RLTYP5A4AHUct+dwtw8K/GegKn2yiGFsC1B5ns4j
-         TFrbXog3Rhwz4i0Np+rN0wCVEX4sVEQJOxLf8GPG9IFI5vBQ6g9o1Yrero7h/ojvVsxc
-         csSkbkvHUUX005MY00RppWP277FWCeUXU6xr72UXKEKmH622s1jWGsqt23M95h2FlL+d
-         iahPEEBYxpS+VHqsJtD4mwCY+2WeJ6sAnXuylvUCrk39kO5T3JA0bjW5yC1i3/D5gTpf
-         TTdg==
+        d=gmail.com; s=20251104; t=1779231907; x=1779836707; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BL0u1dhtcx4RdNvWcLeas7d26YUbe0kObwGLJD5YkoQ=;
+        b=IeHnFgUymFEHamfPbsJqgwAaKtIlKsImHI4VhxEDvEQiBYHFi9/ar0PRW98jkEwQlv
+         6PLM0KHbat6pYSOX9QzZLAheJZtXgew394XqbzEBEsVswFCQfFRUaUcnhi6q3Wnm/piD
+         ESQNx5KwLbspeZKk07xZYM7W5q26iWEjlDhdHwHOAu1ckStcEyo6SJaWpz19tyrkJO02
+         D/THVJMet+pZbCQj6mgK/+COXG5fOflSMoCYpTjZ4h8A2vM1YPaCuW7yCqpGTMUaMK3S
+         //Ah+lXX16rMEQjxDsxLZfNr4SOmN1jrLAiHzkajDUoftL6DAEHjG01mfTdJwJe9d+Nl
+         mjFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779230474; x=1779835274;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1779231907; x=1779836707;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Oc7IUMGtW/r1T1j9OaU9cZaiuWsQdebfgPPEltdLKlk=;
-        b=VoHnDc2kSmqwVVj+p8mae79fVYam7K+cyWOuk2IeW0bEOBNUxwjwI3Ex5XYiQIEfpv
-         hjeanEtNACJ87Pfi9K/RIVwLdbby+ITxlMwMILUMNbpf+vMvSuXocWsZDYPlMKYyPfAA
-         e/q5UKIgCXT/jT1v18ZG4E+hsDJxbDUIcsUqRa9qrHq3bvJJ40ZuvDB6U5tVfrspEY58
-         pp/z3H2xBtErFs4ey4hYCw2ahcLxlXoQRiutIbi4hEmtK1g0POpV7HP3DiEYE90JDvfJ
-         g4fiRjJigghWMURtLknu1baddCOT/o5U7Zc+qk5tgtDs0YcbCpRbwDO2EaGlVZfHaSTU
-         PpsA==
-X-Forwarded-Encrypted: i=1; AFNElJ9CbMoU3wi70YaXkDNN/KgvY9m7Q6J7Y1HYrjNZPVPJRAIkqxkwiyth4uizY1IUFDWaoGicKWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcqSYL1hhfgooapqpb9emAbucbJk9V3dfejbBHokXG51wJQNG1
-	2b1rY7KViaWwruFNYCsyaqKgo5FOkX54uZW9M2rpcTgSoa63HoTZhRPa0zabLDpTHJ17xljxL0J
-	flST2fs/suVV5x7v+NNcngV83ev7/CAQ=
-X-Gm-Gg: Acq92OHMDoHSUH2ozyHGEPIuMR5A37zdGaPdbFzvNRl2TWsJHFNnf17XH7mznm7K0A4
-	6++QsQnN1IJeMGhlXwA7o5zzrQ0AxQfaBN7Xua5+6ANwyOaI6pkngYfGrWMHdw551PaE8exooiv
-	8bfwaX2nEbL8x9ejaTOHtd4M/gHXLn8WSVZDE5CUmi6hKxyGcvSGSpP8FLMScNEsdeVAOLhy/Og
-	yK3YXvtw8k6glgLJ8F5tfY4Tz8/V6nQdtZnmFKLY8lUMyy7pQIiTCfRSMslc33WDvKCAMvPzOyg
-	La08FT85Y0SO936l+bWHUXdvh3xuMi0XUdwX3gMPLtl/p2kc
-X-Received: by 2002:a05:6820:2203:b0:696:233b:20ef with SMTP id
- 006d021491bc7-69c943309afmr13061081eaf.1.1779230474075; Tue, 19 May 2026
- 15:41:14 -0700 (PDT)
+        bh=BL0u1dhtcx4RdNvWcLeas7d26YUbe0kObwGLJD5YkoQ=;
+        b=CxXc+sNiMURyx/4IvuLqrBrrEawl6vEuEcx9xTENN7uIyVMHcfIC7MnnEcPW1K7WTb
+         oAKUlwDfXaGF8Au4Gq1H8iGt5Hm7Hl1CUx2x98EivzouioiyLwvlFV1YR+wpdARhW3Bc
+         lzTbz9z3h9iQCMwyT+zfrECjLQtD27xTT1w0gZ0huRNLT2Zr7KD772NwCjq0IoQsTE7R
+         A5Ps3ZSi3tceusMFzbhPTXhSouhD1X+Tr6GwowdKq86EVy/cPTOyr+Qw2xPiSaGbx69C
+         JvN+LpAE+2dyyAEKoPlkDSF0KvVVVvaIq8uQ48KA6B2BkURYv0rI9EkZG69NFisAw24R
+         MPxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9LaQ5suvpg2jPzLSL1cSiQgnBLp8yb1uLCb2/t70eaWk+jdmRIDQOJo6HIUxY6ybsHinVqwIg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztBh1B6P3n/mvuHESvlMA7MJ60NuK5wrrHaH2LBRA7Frr5diTu
+	7eHUxp0CK9leKQqPfNSLiFeLmJriwyExGkmtQAE0Pu/jH/x1fYbnFfgu
+X-Gm-Gg: Acq92OGbxyKkGfPho9s6EE13MGkH1Ldqperr7K/jVaJJBGUvzfWQB/14e+YSDi+ntLg
+	8p9fJP4ilrNpuocIsCCCS66OeGQelF8lgQrGeHTxdtjVdnXaVIg0ZC5jIM9rFwxhnT0akfiqxUG
+	1YBQg3jSTY9dzoEWOzaxe0dZMDE3I0D2mVEbEDYbeEBk31f4oa6wT0zhHPuwwQtbiYO6Zxa40Yc
+	9Z9G+UPAcXR4vKGtdfmWsEHB4frYRDeTcKBHS2/YPtXrKZUn3DleDBYjoFX6bBRB4wOSh2Dwcex
+	20J83BkCU+X87WoUzWo7genFWME9gqU/qJq26tdkjIfqKyJ/OCjogPkqN8lIdHq1dsOebAwYzCW
+	82HB8sSUJ/cKIlMjR1kacas75EN1ARN3Zdu2VIaSl+/t8XckPajpYRZqie8IWWD6DK8EU6g8Skn
+	m9QlfUEvOe/3zedpJ/50sbbDhqe/j5IFT84Nj3LTaU4N4uc2IahD+Ha3FubVt4tH9rdsTT2DxLx
+	depSMp7y8U=
+X-Received: by 2002:a05:600c:3506:b0:485:40db:d40c with SMTP id 5b1f17b1804b1-48fe60e13d1mr327492765e9.3.1779231906632;
+        Tue, 19 May 2026 16:05:06 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0fe0fecsm45197684f8f.26.2026.05.19.16.05.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 16:05:05 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: akpm@linux-foundation.org
+Cc: muchun.song@linux.dev,
+	david@kernel.org,
+	almasrymina@google.com,
+	osalvador@suse.de,
+	yuehaibing@huawei.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH v2] mm/hugetlb: restore reservation on error in hugetlb_mfill_atomic_pte() resubmission path
+Date: Wed, 20 May 2026 00:05:03 +0100
+Message-ID: <20260519230503.121293-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260322052120.14021-1-devnexen@gmail.com> <EE9ACFDB-E601-4C1D-87D1-F5DAC2767CE2@linux.dev>
- <20260519145215.ef37484626f23a82fc7ef992@linux-foundation.org>
-In-Reply-To: <20260519145215.ef37484626f23a82fc7ef992@linux-foundation.org>
-From: David CARLIER <devnexen@gmail.com>
-Date: Tue, 19 May 2026 23:41:03 +0100
-X-Gm-Features: AVHnY4KpwUKI-oNYMLKNHdR25CFG2kd_rkQY2_D5LU7bDSFUMRfHw1eYs8vgCgY
-Message-ID: <CA+XhMqxzen7g3H5=tENdPKxq0MqGHxpDsYdPFkPsWG_Xuk5Fvw@mail.gmail.com>
-Subject: Re: [PATCH] mm/hugetlb: restore reservation on error in
- hugetlb_mfill_atomic_pte() resubmission path
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, YueHaibing <yuehaibing@huawei.com>, 
-	Mina Almasry <almasrymina@google.com>, linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249707-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linux.dev,kernel.org,google.com,suse.de,huawei.com,kvack.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-249708-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 2268D585C0C
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 36C34585EB7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
- On Tue, 19 May 2026 14:52:15 -0700 Andrew Morton
-<akpm@linux-foundation.org> wrote:
-  > David, your patch had cc:stable but I'm not seeing a description of the
-  > userspace-visible effects of the bug.  Can you please describe?
+When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
+hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed.
+If copy_user_large_folio() subsequently fails (e.g. -EHWPOISON when the
+source page is hwpoisoned), folio_put() restores the global hugetlb pool
+count through free_huge_folio(), but the per-VMA reservation map entry
+is left marked consumed.
 
-  When UFFDIO_COPY's resubmission copy_user_large_folio() fails (e.g.
-  -EHWPOISON on a hwpoisoned source page), the per-VMA reservation map
-  entry for dst_addr stays marked consumed while free_huge_folio() puts
-  h->resv_huge_pages back.  A later fault at the same address then takes
-  the no-reservation path and, under pool pressure, SIGBUSes the task at
-  an address it had already reserved.  Each hit leaks one map entry for
-  the lifetime of the mapping.
+User-visible effect: on a UFFDIO_COPY into a private hugetlb VMA where
+the resubmission path's copy fails, the reservation for that address is
+leaked from the VMA's reserve map. A subsequent fault at the same
+address takes the no-reservation path, and under hugetlb pool pressure
+the task is SIGBUSed at an address it had previously reserved. One map
+entry is leaked per occurrence.
 
-  On Sat, 4 Apr 2026 20:59:11 +0800 Muchun Song <muchun.song@linux.dev> wrote:
-  > Should the Fixes tag perhaps point to 1cb9dc4b475c instead?
+Add the missing restore_reserve_on_error() call before folio_put(),
+matching the first-attempt error path which already handles this
+correctly.
 
-  Yes.  copy_user_large_folio() was void at 8cc5fcbb5be8, so the failing
-  arm didn't exist yet; 1cb9dc4b475c is what made it int-returning and
-  added the `if (ret) { folio_put(folio); goto out; }` without
-  restore_reserve_on_error().  Will fix in v2.
+Fixes: 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+v2:
+  - Add user-visible effects paragraph in changelog (per akpm,
+    required for Cc: stable).
+  - Correct Fixes: tag to 1cb9dc4b475c (per Muchun) -- the failing
+    arm only exists since copy_user_large_folio() became int-returning.
 
-  > Does this imply we might have similar reservation leaks in other error
-  > paths touched by 1cb9dc4b475c?
+Andrew, please drop the v1 currently queued as 270157aef0d1 in
+mm-unstable.
 
-  copy_hugetlb_page_range()'s hugetlb_try_dup_anon_rmap() fallback has
-  the same shape and new_folio comes from alloc_hugetlb_folio(dst_vma,
-  addr, false), so it leaks the same way.  hugetlb_wp() is fine -- it
-  goes through out_release_all which already calls
-  restore_reserve_on_error().  I'll send the copy_hugetlb_page_range()
-  fix as a separate patch.
+v1: https://lore.kernel.org/all/20260322052120.14021-1-devnexen@gmail.com/
 
-Cheers.
+ mm/hugetlb.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 4b80b167cc9c..c6dee98840db 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6270,6 +6270,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+ 		folio_put(*foliop);
+ 		*foliop = NULL;
+ 		if (ret) {
++			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
+ 			folio_put(folio);
+ 			goto out;
+ 		}
+-- 
+2.53.0
+
 
