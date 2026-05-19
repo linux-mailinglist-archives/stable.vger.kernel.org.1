@@ -1,215 +1,161 @@
-Return-Path: <stable+bounces-249584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OE4nKgZeDGq5gQUAu9opvQ
-	(envelope-from <stable+bounces-249584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:56:38 +0200
+	id eLu0OvtdDGq5gQUAu9opvQ
+	(envelope-from <stable+bounces-249583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:56:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1717E57F227
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:56:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F66057F21F
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3002430AB81D
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:49:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50A393021EA2
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FB54E377E;
-	Tue, 19 May 2026 12:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78D14BCAD7;
+	Tue, 19 May 2026 12:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mi5Rgg1O"
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="xH8uJz5C"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F039A4E3763;
-	Tue, 19 May 2026 12:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C494C9567;
+	Tue, 19 May 2026 12:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779194985; cv=none; b=o0GTi8Je7vFrMpnutvF2ErljE5UyyNitpTEY0MwxdxvRKAr3Uu5+XkvV/HSY+2VtBJ+wNAaLzn4Iv0uh3mYjrpfDNKI31m1DwAGoQHn9WQ2qXQ9oNPkYtpN0FR9aMqgegPinhILaGjI2KU24fnMIIZIRMjwVj3grIKtNncX4odg=
+	t=1779194984; cv=none; b=D1hLZRu/wSe8ZU3lbKuOylaP66TXxVghYnKgxTssKQhCf4T6HQ9sX0prgUnkyadZ5HO/u1SXqedJJtmUv+FPLYcqVmdlihUCwViW2r8g63Kpif/KZ8SdNlmc0hcXqUdi9iEUOhy2Do3LodGO0BJgva9bdt84RBRSZ5McUU1sfTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779194985; c=relaxed/simple;
-	bh=eqjqNP7S444fzbeIgre3bD11ZF6b0frGn5B3goLhHXU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QB/lwo3ofH9Gisv6LL49F26i1lmekJngBSiBXdVFjC29O0t/1SIqVUdi+TryLJfF6xUzRkX+tcyjKtcuRBUtxKXUlzva4u12VFj9Pubh8aOGwmW6GyRDeTJzxTm3zFtmqqIqZt8f9RRVcIGVyGxXChfjop1w2m+yb14N0S/aUk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mi5Rgg1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E11C2BCB3;
-	Tue, 19 May 2026 12:49:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1779194984;
-	bh=eqjqNP7S444fzbeIgre3bD11ZF6b0frGn5B3goLhHXU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mi5Rgg1O6tyHGtgKJSao86QbGuasY0Fr9q+IHguBHFxT3sb5D4kkcPtO/07hqYuXk
-	 lrQpC75eUElj4HcidvDYQBVz0FhEM9qiHnuR0Qr2s6oTjLHFYOOCI4GWiGbN/8hepR
-	 TClJsBXZRyyDUuBReYn8wP+jDuCvxFUbW4ljbf8Q=
-Date: Tue, 19 May 2026 14:48:57 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Jiri Kosina <jikos@kernel.org>,
-	Filipe =?iso-8859-1?Q?La=EDns?= <lains@riseup.net>,
-	Bastien Nocera <hadess@hadess.net>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Viresh Kumar <vireshk@kernel.org>, Johan Hovold <johan@kernel.org>,
-	Alex Elder <elder@kernel.org>, Icenowy Zheng <uwu@icenowy.me>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	greybus-dev@lists.linaro.org, linux-staging@lists.linux.dev,
-	linux-usb@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] HID: Proper fix for OOM in hid-core
-Message-ID: <2026051937-hefty-registry-37b2@gregkh>
-References: <20260504-wip-fix-core-v3-0-ce1f11f4968f@kernel.org>
- <20260506091606.GB305027@google.com>
- <20260512101723.GU305027@google.com>
- <20260519111723.GU305027@google.com>
- <agxbD6k60vQYrJ6T@beelink>
+	s=arc-20240116; t=1779194984; c=relaxed/simple;
+	bh=PmRdx8FRHXEbQy7+lAOa4RyFLZUwwH/S0Yo3h+evwYY=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=i2on5J8cddnn1QRx60GfAvqKpZ62asyZzSjA1fG8rP5h5TQORrV/zaLMHMPLvCxmeAZf+iUGrZ3L4AxAxM5hS4ije41JCEos1CX1kXe21issJ7BBI506FNN+qJiNNfjFQ2mCor1wPvGPitWOsJMFRTJforxtTYMO9IlHQLi+zUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=xH8uJz5C; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 337BDA4FA2;
+	Tue, 19 May 2026 14:49:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1779194971; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=KYHK9v8QDbL8YKvFNpIhVX5SjY8D12WYNhJK8Mla/t0=;
+	b=xH8uJz5CyS1nIr22DGdlIQrbdTZcXek14ghLIo7lNXiUst5FiCopGRidLa8kI+dEN4UmXX
+	Z2H6vX2S+yl6Bn3TIFvV5KeKLxdkan7l/GIBWZX9vDjucLS6c+uwwYxpMqFpEqvJvD221G
+	Co768t1utmjTK9Dox7xKBZNc9ObVWqVgHTpNEi2JBGh+LTYPH4RVjJ2maYz2PksPmxFUTX
+	yNH9UUD/dNoLgMNy2mfERcbPlgzvg/9J/Lncq8nSV1swVxQ2mRqFBBFGjEhFqJYA4WfykM
+	Vgt9S6A+KpZ2KihPEK32Q/BMuBh7YSUpjQzxk9s+dUmU/dgTmCxyzKqhbPVw3g==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agxbD6k60vQYrJ6T@beelink>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Date: Tue, 19 May 2026 14:49:23 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: =?UTF-8?Q?Nerijus_Bend=C5=BEi=C5=ABnas?= <nerijus.bendziunas@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "Russell King (Oracle)"
+ <rmk+kernel@armlinux.org.uk>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: phy: skip EEE advertisement write when
+ autoneg is disabled
+In-Reply-To: <20260516150251.879680-1-nerijus.bendziunas@gmail.com>
+References: <20260516150251.879680-1-nerijus.bendziunas@gmail.com>
+Message-ID: <f8cb33492160a3d75669c573913a363f@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[tipi-net.de:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249584-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249583-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[tipi-net.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[tipi-net.de:+];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1717E57F227
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nb@tipi-net.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lunn.ch,gmail.com,armlinux.org.uk,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,lists.linux.dev];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8F66057F21F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 19, 2026 at 02:46:13PM +0200, Benjamin Tissoires wrote:
-> On May 19 2026, Lee Jones wrote:
-> > On Tue, 12 May 2026, Lee Jones wrote:
-> > 
-> > > On Wed, 06 May 2026, Lee Jones wrote:
-> > > 
-> > > > On Mon, 04 May 2026, Benjamin Tissoires wrote:
-> > > > 
-> > > > > Commit 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing
-> > > > > bogus memset()") enforced the provided data to be at least the size of
-> > > > > the declared buffer in the report descriptor to prevent a buffer
-> > > > > overflow.
-> > > > > 
-> > > > > We only had corner cases of malicious devices exposing the OOM because
-> > > > > in most cases, the buffer provided by the transport layer needs to be
-> > > > > allocated at probe time and is large enough to handle all the possible
-> > > > > reports.
-> > > > > 
-> > > > > However, the patch from above, which enforces the spec a little bit more
-> > > > > introduced both regressions for devices not following the spec (not
-> > > > > necesserally malicious), but also a stream of errors for those devices.
-> > > > > 
-> > > > > Let's revert to the old behavior by giving more information to HID core
-> > > > > to be able to decide whether it can or not memset the rest of the buffer
-> > > > > to 0 and continue the processing.
-> > > > > 
-> > > > > Note that the first commit makes an API change, but the callers are
-> > > > > relatively limited, so it should be fine on its own. The second patch
-> > > > > can't really make the same kind of API change because we have too many
-> > > > > callers in various subsystems. We can switch them one by one to the safe
-> > > > > approach when needed.
-> > > > > 
-> > > > > The last 2 patches are small cleanups I initially put together with the
-> > > > > 2 first patches, but they can be applied on their own and don't need to
-> > > > > be pulled in stable like the first 2.
-> > > > > 
-> > > > > Cheers,
-> > > > > Benjamin
-> > > > > 
-> > > > > Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-> > > > > ---
-> > > > > Changes in v3:
-> > > > > - fixed ghib -> ghid in greybus
-> > > > > - fixed i386 size_t debug size reported by kernel-bot
-> > > > > - Link to v2: https://lore.kernel.org/r/20260416-wip-fix-core-v2-0-be92570e5627@kernel.org
-> > > > > 
-> > > > > Changes in v2:
-> > > > > - added a small blurb explaining the difference between the safe and the
-> > > > >   non safe version of hid_safe_input_report
-> > > > > - Link to v1: https://lore.kernel.org/r/20260415-wip-fix-core-v1-0-ed3c4c823175@kernel.org
-> > > > > 
-> > > > > ---
-> > > > > Benjamin Tissoires (4):
-> > > > >       HID: pass the buffer size to hid_report_raw_event
-> > > > >       HID: core: introduce hid_safe_input_report()
-> > > > >       HID: multitouch: use __free(kfree) to clean up temporary buffers
-> > > > >       HID: wacom: use __free(kfree) to clean up temporary buffers
-> > > > > 
-> > > > >  drivers/hid/bpf/hid_bpf_dispatch.c |  6 ++--
-> > > > >  drivers/hid/hid-core.c             | 67 ++++++++++++++++++++++++++++++--------
-> > > > >  drivers/hid/hid-gfrm.c             |  4 +--
-> > > > >  drivers/hid/hid-logitech-hidpp.c   |  2 +-
-> > > > >  drivers/hid/hid-multitouch.c       | 18 ++++------
-> > > > >  drivers/hid/hid-primax.c           |  2 +-
-> > > > >  drivers/hid/hid-vivaldi-common.c   |  2 +-
-> > > > >  drivers/hid/i2c-hid/i2c-hid-core.c |  7 ++--
-> > > > >  drivers/hid/usbhid/hid-core.c      | 11 ++++---
-> > > > >  drivers/hid/wacom_sys.c            | 46 +++++++++-----------------
-> > > > >  drivers/staging/greybus/hid.c      |  2 +-
-> > > > >  include/linux/hid.h                |  6 ++--
-> > > > >  include/linux/hid_bpf.h            | 14 +++++---
-> > > > >  13 files changed, 109 insertions(+), 78 deletions(-)
-> > > > 
-> > > > What's the plan for this set Benjamin? -rcs or -next?
-> > > 
-> > > Are there any updates on this set please?
-> > > 
-> > > FYI, this set is still important to us.
-> > > 
-> > > Ideally, if all is well, it would go into the -rcs for v7.1.
-> > 
-> > I'm still actively tracking these.
-> > 
-> > It looks like Mark has been reverting them from -next and I'm getting
-> > complaints from the Stable folks that they are causing build errors.
-> > 
-> >   drivers/hid/hid-core.c: In function 'hid_safe_input_report':
-> >   drivers/hid/hid-core.c:2195:16: error: too many arguments to function '__hid_input_report'
-> >     2195 |         return __hid_input_report(hid, type, data, bufsize, size, interrupt, 0,
-> > 
-> > Are you folks still working on this set?
-> 
-> Well, everything is in Linus' tree:
-> 
-> not yet in a released rc (taken yesterday by Linus directly):
-> 
-> 4d3a2a466b8d HID: core: Fix size_t specifier in hid_report_raw_event()
-> 
-> Already in 7.1-rc4:
-> 
-> 206342541fc8 HID: core: introduce hid_safe_input_report()
-> 2c85c61d1332 HID: pass the buffer size to hid_report_raw_event
-> 
-> Not sure why the patches don't apply to stable, but from an upstream
-> subsystem point of view, everything is in order.
+Hi Nerijus
 
-We dropped them from stable because of the build breakage :(
+On 16.5.2026 17:02, Nerijus Bendžiūnas wrote:
+> genphy_c45_an_config_eee_aneg() writes the EEE advertisement to the
+> auto-negotiation device's MMD register space (MDIO_MMD_AN, register
+> MDIO_AN_EEE_ADV).  These registers are read by the link partner only
+> during auto-negotiation, so writing them while autoneg is disabled
+> cannot influence the link.  On some PHYs (e.g. Broadcom BCM54213PE)
+> the write nevertheless reaches the chip and disturbs the receive
+> datapath.
+> 
+> Concretely, running
+> 
+>     ethtool -s eth0 speed 100 duplex full autoneg off
+>     ethtool --set-eee eth0 eee off
+> 
+> leaves eth0 with TX working and RX completely silent on a
+> Raspberry Pi 4 / CM4 board (bcmgenet + BCM54213PE in rgmii-rxid).
+> Switching back to autoneg recovers the link.
+> 
 
-thanks,
+Can confirm this. A quick look at the BCM54213PE datasheet shows that 
+EEE is
+only applied if autoneg is enabled (as expected). With autoneg disabled 
+it
+is undefined behavior, but clearly breaks communication.
 
-greg k-h
+> [...]
+
+> 
+> diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+> index d48aa7231b37..126951741428 100644
+> --- a/drivers/net/phy/phy-c45.c
+> +++ b/drivers/net/phy/phy-c45.c
+> @@ -940,6 +940,14 @@ EXPORT_SYMBOL_GPL(genphy_c45_read_eee_abilities);
+>   */
+>  int genphy_c45_an_config_eee_aneg(struct phy_device *phydev)
+>  {
+> +	/* Writing MMD AN advertisements while autoneg is disabled has no
+> +	 * effect on link-partner negotiation, but on some PHYs (e.g. the
+> +	 * Broadcom BCM54213PE) the write itself disturbs the receive
+> +	 * datapath. Skip it.
+> +	 */
+> +	if (phydev->autoneg == AUTONEG_DISABLE)
+> +		return 0;
+> +
+>  	if (!phydev->eee_cfg.eee_enabled) {
+>  		__ETHTOOL_DECLARE_LINK_MODE_MASK(adv) = {};
+
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
+
+Thanks
+Nicolai
 
