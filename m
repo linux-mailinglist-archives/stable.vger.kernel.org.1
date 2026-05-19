@@ -1,206 +1,189 @@
-Return-Path: <stable+bounces-249517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLP0FC4yDGrdZAUAu9opvQ
-	(envelope-from <stable+bounces-249517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:49:34 +0200
+	id 7kpyOqYwDGrdZAUAu9opvQ
+	(envelope-from <stable+bounces-249518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:43:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD4757BA02
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:49:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E40757B7BC
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44CB5306BAB3
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:42:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C9850303927B
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCB24611CE;
-	Tue, 19 May 2026 09:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D98466B52;
+	Tue, 19 May 2026 09:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DsWvEJTx";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MO2yYzcL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GbTCACME"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F5A451049
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 09:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9063E44DB62;
+	Tue, 19 May 2026 09:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779183721; cv=none; b=e0RdaE/2xxPbEBTS7hlRrFlLMm8Q+xYV+7VHhyk5hBZqSyujVbFBZvqXvk37wYyzj3qNlvuWJmFULOjm4EjZ1Qlr0D31K6bY+u+UhZlc6LrnCwmjhnqjl5ubgvZvo26/yi6dM4malw/uG0puB0Zim5hMpwq1NEv8kWpf3MfooKw=
+	t=1779183732; cv=none; b=qFsBCd9fkGTbXAIJiKe5oJKebi+Crvx+okVZ6YE/Utc5WsosATHF/vaUsnhPig065FsJmmk+MywuMrFvWjkZFAu0lYRTAX8IOci9nSOrIrmx5/8CztqhuGovE/nHzrmobm8eikwe/POyloZoCPeW5wY78DiZuiTVGEIkKlDvv9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779183721; c=relaxed/simple;
-	bh=yt0H3bvBRFcuJ9DYVM0S3Grsofv+ydRaNi8hw/H/mjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HA4o5vYUWIEsZcOHOVMER+wVd1flqcNPfuZ+xNfvWirxQ4r9gmVGUamEjcovxUoJnLLYLGr28shnW454Ig4bN8gB5Yr31MkeVnh+f8DR0ar+NQTB2oFu5UnzGG0rsjAqTVLC0JAgTY2FsgGNFGfHAvghCJzMRD/7DXQguxwdvk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DsWvEJTx; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MO2yYzcL; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779183716;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tk6v1iOlM6Sc6be+bYwuVr8WIaK4VMHqbDmDqfyVw54=;
-	b=DsWvEJTxEjMz9QABqBLgiYO4614/hfm+wUx+WhKi81zif/3hna5r3c9rOMgvF5Ww1MvSjB
-	b+B3w+PcgGTlokrpLbc41nJOF7Z1bSVl7AgO2+LYf/eXr180GF/RAElB8Y9o1RBY17T3e6
-	IpLAVa2rVLpJS6gD9Vz1kmX4pgrGRF0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-gnACHvHaNoiasExUV9kRPg-1; Tue, 19 May 2026 05:41:54 -0400
-X-MC-Unique: gnACHvHaNoiasExUV9kRPg-1
-X-Mimecast-MFC-AGG-ID: gnACHvHaNoiasExUV9kRPg_1779183713
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-45aeac88af4so2729167f8f.3
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 02:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779183713; x=1779788513; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tk6v1iOlM6Sc6be+bYwuVr8WIaK4VMHqbDmDqfyVw54=;
-        b=MO2yYzcLm49L+93RMyfoZ7e3aSRE0Vt6y/zTmzYK3ivNwMrBbGczvi692nr+ZeTdoJ
-         HihyHPxRIxa13cvSWsGidW2MvMvaef5gCYGkMcQNC46Si8moHcHAAWYkAFGKATDL24ue
-         8LMNeHpPBIC9EjrD/anW7wBw+UKaIlBX4gEvX5wKOyIvyDPVvGVbxHIGY2C3vt9D9+jT
-         XF1kSxWcvfHfNo3B87rxrwr+nC/ixJD7O9dozQnvlq9HhbrluTL6y0uAFdC6VQ8252ok
-         LYtHeZBpDgjKyoecZIUNQdJiIvlNVp250dFO+hragUSVR1EGxYF/OSNQBLDe3g34LO1v
-         /ZRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779183713; x=1779788513;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tk6v1iOlM6Sc6be+bYwuVr8WIaK4VMHqbDmDqfyVw54=;
-        b=kChMLgR6i9NfItzPl67NfQHWRT3yn1BjjrLmJnjmAKPrKYkxCnfcAjdbx2YjjT00wX
-         G8VTxk5OMG8W7I8CfESht/vJDy8Qpc1SXIci6dch/yPeBCqBjrQWm1xasdzM5alWY7hM
-         Wv08aiqIVQLSlVVI4gWcE0zAgPsjfzbigq5wwjNfva9GWbXxsDzvPizpAqjaARX0g+j0
-         nO7bx8nKQlRtndD3bJCZmthMeexp3ITj8UE34wVP3tYrsQj5g0aBwExNmHWAVvVd1gJP
-         hx6uaxr0f5NW3uChzmRxpyTyWbC6yri3VZDTS6l7HbnOFEcBa0iGoWcHcoa+bPtpB3+1
-         orZg==
-X-Forwarded-Encrypted: i=1; AFNElJ/4BfNqMyoJgi+DA+AB+ATcXhcvPCLeVNOWfBLyTiYtRbW+zyW2UIKLIDTarDQMpgqtPjkkqxg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzsgyu2DiQjqj/7VBwK6eAOvkQZNX6BYdrOClrDx0LNZ7P+oY+W
-	enW4NyGrEOCVafcZCyIVMRf8UvvM8Rn3N51tKAQ5ZngXkKg3AYCTZZQYKxATk1GxH0HmUNhnImX
-	+WlkNOC9zE42tn71pcB26p6wcdNCKlwiQjT/aY/YNgUGJVm5Iu5H0QNavVA==
-X-Gm-Gg: Acq92OGL0Z2ZE2PnJFcI2ul9NLk8jHlvIv9s+UJSyK85FsqwPnQfI+RtsIW33QWonjb
-	MDB23wroFNHpmshcilnkEHZIGxPtImGbFBecu5GEIMcu5jjlihK2Y/p5nfip6TvcIMiNC0FAZa+
-	uJtRuih1SCQkFew14vWFWvsnMHSPoCQPeUnhGc2WNkLC8grGpjJ7HpyPOUoer7X0witoaXt1le1
-	x5tH4zlZvbvRdpEJs24w3pFA3CS6TXLBKKLFxNHCh+SYXLlYubSxpnsuNZg7kBBYbKEdz1NoWPm
-	gPaaCfzizIBAC1g0eg0eCxKYN/bqW0kaNMm7YcxhmE3h5zMCUaOSeku8+Ir9inZFKMZZXv5SuHx
-	OBqu9D3pGBK4msU9e5W5SDnJUHwmZ3ZBrCBj01uTe4lQJVf0YPPTMs974pBVENcEnOcFWnMdDWA
-	==
-X-Received: by 2002:a05:6000:25c1:b0:43c:fb48:6856 with SMTP id ffacd0b85a97d-45e5c5af3c9mr35164480f8f.13.1779183713278;
-        Tue, 19 May 2026 02:41:53 -0700 (PDT)
-X-Received: by 2002:a05:6000:25c1:b0:43c:fb48:6856 with SMTP id ffacd0b85a97d-45e5c5af3c9mr35164400f8f.13.1779183712778;
-        Tue, 19 May 2026 02:41:52 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ed2f738sm43263408f8f.16.2026.05.19.02.41.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 02:41:52 -0700 (PDT)
-Date: Tue, 19 May 2026 11:41:44 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Paolo Abeni <pabeni@redhat.com>, 
-	Minh Nguyen <minhnguyen.080505@gmail.com>, Bryan Tan <bryan-bt.tan@broadcom.com>
-Cc: Minh Nguyen <minhnguyen.080505@gmail.com>, 
-	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] vsock/vmci: fix UAF when peer resets connection
- during handshake
-Message-ID: <agwv3YkxYIC7mvyj@sgarzare-redhat>
-References: <20260512025851.189140-1-minhnguyen.080505@gmail.com>
- <3518e2b5-b669-4aaa-82ca-bbf479a85889@redhat.com>
+	s=arc-20240116; t=1779183732; c=relaxed/simple;
+	bh=Hhfs4nT6HC6MjT0jJEYdGh2bUJavvEbTjP0QQhz4c6M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=IxsHvbUqVu93zVivMKVkMr103qRN1Tkz5f21eG16tKVaK/5jYqPsp71A+OFQJi8tVl0niuuX8cwFFo9prre5wJhBEctt5WrkmI/avasPBnNk3e2dfzRTzl5kZyejzuWeuigeK4udhafVGPfEZysAJty6C96H1I4T7SoLMuUV+tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GbTCACME; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779183728; x=1810719728;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=Hhfs4nT6HC6MjT0jJEYdGh2bUJavvEbTjP0QQhz4c6M=;
+  b=GbTCACME8fZ3cVEAxOEPb+pMl5PcbLlje/GgSe5YwWMBtmyc0PlZV5Vc
+   svUO+VGo4Ei0FaUn448FcIFGzZNlw2Xi1y9ilVKXAfNSQxEQedQBxKks/
+   26MIhe0V5YXFvYAxWIcUgOhdbQuOtemVzpDnXDToT+id3HnD1sNNyuWLd
+   IOlyg60dlsjI689eVA8QbWTUHQPZwWRJpYOPeb7XWwr34X/AGNJ/z6pRW
+   gawl53W/zVxctCsLR7rRd6XIliUvLhoAfyIC3wQAI6+KM0QNkrLrNVCNS
+   V0Iry5BANmIUskSDvvTRqtcPC/NzvfTIPl7/G5GXzDwOOQEU5H4j8eyPV
+   g==;
+X-CSE-ConnectionGUID: e7Yy8COPTx+8xqyPIgIFdw==
+X-CSE-MsgGUID: JdMQNon4TqeebiKbNz5aOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="80107824"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="80107824"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 02:42:03 -0700
+X-CSE-ConnectionGUID: E06rSB3EQfKvvVdX2MGUQA==
+X-CSE-MsgGUID: 6zvRwQlASeG1cDcXcrC1Zg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="233340391"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.218])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 02:41:59 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Icenowy Zheng <zhengxingda@iscas.ac.cn>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Sam Ravnborg <sam@ravnborg.org>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, Icenowy
+ Zheng <uwu@icenowy.me>, Icenowy Zheng <zhengxingda@iscas.ac.cn>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] drm/client: check whether CRTC is active before waiting
+ for vblank
+In-Reply-To: <20260519092420.1124348-1-zhengxingda@iscas.ac.cn>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260519092420.1124348-1-zhengxingda@iscas.ac.cn>
+Date: Tue, 19 May 2026 12:41:56 +0300
+Message-ID: <889a09d63c62d88a85d8a31a85feb8bbc178534c@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <3518e2b5-b669-4aaa-82ca-bbf479a85889@redhat.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249517-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,gmail.com,broadcom.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	HAS_ORG_HEADER(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,broadcom.com,davemloft.net,google.com,kernel.org,vger.kernel.org,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-249518-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[iscas.ac.cn,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,ravnborg.org];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jani.nikula@linux.intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: AAD4757BA02
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,intel.com:mid,intel.com:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7E40757B7BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, May 14, 2026 at 03:26:28PM +0200, Paolo Abeni wrote:
->On 5/12/26 4:58 AM, Minh Nguyen wrote:
->> vmci_transport_recv_connecting_server() jumps to its destroy: label
->> and performs an unconditional sock_put(pending) to release the
->> explicit sock_hold() taken by vmci_transport_recv_listen() before
->> schedule_delayed_work().  The existing comment claimed this was safe
->> because the listen handler removes pending from the pending list on
->> the way out, which would prevent vsock_pending_work() from dropping
->> the same reference later.
+On Tue, 19 May 2026, Icenowy Zheng <zhengxingda@iscas.ac.cn> wrote:
+> Currently the implementaion of drm_client_modeset_wait_for_vblank()
+> assumes drm_vblank_get() will fail when the CRTC isn't active. However
+> it seems that this is not true, and running fbcon on a device with the
+> first CRTC inactive will lead to kernel warning in some cases (which
+> could be reproduced with the loongson driver).
 >
-
-[...]
-
->Sashiko says:
+> Change the implementation to add a check for the active state (atomic) /
+> enabled state (non-atomic) before calling drm_vblank_get(). As the
+> assumption of drm_vblank_get() failing for inactive CRTC isn't met, the
+> error status of drm_vblank_get() can now be exported too.
 >
->---
->Could this change lead to a socket memory leak if another packet arrives
->before vsock_pending_work() executes?
->If a peer RST is received (err == 0), the socket stays on the
->pending_links list with its state set to TCP_CLOSE, and the base
->reference is kept.
->If the peer then sends another packet (such as another RST) within the
->delay window before vsock_pending_work() runs,
->vmci_transport_get_pending() might find this same socket.
->Since its state is TCP_CLOSE, vmci_transport_recv_listen() would hit the
->default switch case, set err = -EINVAL, and call vsock_remove_pending().
->This removes the socket from the list and drops the list reference, but
->it bypasses vmci_transport_recv_connecting_server(), meaning the base
->reference is never dropped.
->When vsock_pending_work() runs later, vsock_is_pending() evaluates to false.
->This sets cleanup = false and bypasses the sock_put(sk) call, leaking
->the pending socket.
->While not introduced by this patch, does this error path leak
->sk_ack_backlog slots on failed handshakes?
->If a handshake fails due to an error, vmci_transport_recv_listen()
->handles it by calling vsock_remove_pending(). This removes the socket
->from the pending_links list but does not call sk_acceptq_removed(sk).
->When vsock_pending_work() runs later, vsock_is_pending() evaluates to
->false because the socket is no longer in the list. This causes the work
->function to skip its own sk_acceptq_removed(listener) call, meaning the
->listener's sk_ack_backlog is never decremented.
->---
+> Cc: stable@vger.kernel.org
+> Fixes: d8c4bddcd8bc ("drm/fb-helper: Synchronize dirty worker with vblank")
+> Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+> ---
+>  drivers/gpu/drm/drm_client_modeset.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
 >
->it looks like the above is trading an UaF for a leak ?!?
->
+> diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
+> index bb49b8361271a..1b03bf351256e 100644
+> --- a/drivers/gpu/drm/drm_client_modeset.c
+> +++ b/drivers/gpu/drm/drm_client_modeset.c
+> @@ -1310,7 +1310,7 @@ int drm_client_modeset_wait_for_vblank(struct drm_client_dev *client, unsigned i
+>  {
+>  	struct drm_device *dev = client->dev;
+>  	struct drm_crtc *crtc;
+> -	int ret;
+> +	int ret = 0;
+>  
+>  	/*
+>  	 * Rate-limit update frequency to vblank. If there's a DRM master
+> @@ -1326,15 +1326,24 @@ int drm_client_modeset_wait_for_vblank(struct drm_client_dev *client, unsigned i
+>  	 * Only wait for a vblank event if the CRTC is enabled, otherwise
+>  	 * just don't do anything, not even report an error.
+>  	 */
 
-@Minh @Bryan can you check this report?
-It seems a real issue, so the patch was not applied.
+I'll dodge the question whether the change below is right or not, but
+for sure the comment above needs to be amended to match the change.
 
-Thanks,
-Stefano
+(Please wait for other review comments before sending another version
+with the comment changed.)
 
+BR,
+Jani.
+
+> +	if (drm_drv_uses_atomic_modeset(dev)) {
+> +		if (!crtc->state || !crtc->state->active)
+> +			goto out;
+> +	} else {
+> +		if (!crtc->enabled)
+> +			goto out;
+> +	}
+> +
+>  	ret = drm_crtc_vblank_get(crtc);
+>  	if (!ret) {
+>  		drm_crtc_wait_one_vblank(crtc);
+>  		drm_crtc_vblank_put(crtc);
+>  	}
+>  
+> +out:
+>  	drm_master_internal_release(dev);
+>  
+> -	return 0;
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL(drm_client_modeset_wait_for_vblank);
+
+-- 
+Jani Nikula, Intel
 
