@@ -1,228 +1,214 @@
-Return-Path: <stable+bounces-249647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOufNVedDGq8jwUAu9opvQ
-	(envelope-from <stable+bounces-249647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 19:26:47 +0200
+	id uBguM/SfDGq8jwUAu9opvQ
+	(envelope-from <stable+bounces-249648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 19:37:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0EBF58305C
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 19:26:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C86C5832E3
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 19:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AF9F8300690F
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:26:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 584433052A8B
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C182E2F12B3;
-	Tue, 19 May 2026 17:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1817E376A0C;
+	Tue, 19 May 2026 17:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OL0a7HcA"
+	dkim=pass (2048-bit key) header.d=augustwikerfors.se header.i=@augustwikerfors.se header.b="lBMZD9Kd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from phan-van4.scw-tem.cloud (phan-van4.scw-tem.cloud [51.159.124.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B1226056C
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 17:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2E833F5B1
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 17:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.124.109
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779211602; cv=none; b=eaz/yIjVerRp7DJKgE/jmOtfgeelN/fJghIUr6LSeY/+3W6aGRciPccVkiXeA6Mt0+Ut1cXOAp56WQ5r0KrNOMmYi6L/x3wvwDK+c5hm7Luz1mX9wBA1R+tBfpGDwBoEbWffyZS9I6ncFDGpI9FBhh0zE1I0G7+SeSyqHXC1k04=
+	t=1779212271; cv=none; b=SxzTlNydYrS3NsgpwFyWeWn6cwrlE97lr07TElsusez1a82hvvtM3YVHXtbzMbV+rmvKBIwd5ap/cHwnjqf4PBk3T5+h/G4gXRYBlo08fjOIGyPOajqHpaJKzokxLGBgsVDOEh/Qk5GfSU+CZu8Mhy31gomIq6qcSdXyKS3s3uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779211602; c=relaxed/simple;
-	bh=egYyu/i+xaZaoDb0v9SpMFsflxy9+neCAhZXc7GqhbE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g+0P6xv50bUmcQjUJJeDZudwJbpT3J0qN4Y431EKjLD6I2HDvhApCbt/IXYUfcB0kaU7u7hD7R3tm7v57t4jaY3YgFFW9qmDxsoGrxy/IE0+n19hV1Acsrlv5XbXGbTWgdebTN+ZWiWspCNMBIOIzAK7Mu3fMYNrlN7bzz6n+3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OL0a7HcA; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488a8f97f6bso6848505e9.2
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 10:26:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779211599; x=1779816399; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1jbRD0zuDAkT/iOMZCuQC1mbw0VTyeq/zm8Dbw1smrw=;
-        b=OL0a7HcAqs1a/9RxYMErmtMmMwyloN3x4w5/kAYtSlD8uHq6WZF+y1rcgnGb1Ts1Pq
-         mE6ftoLWjoCn+GJSJrzqFK+W1XdLmq6dcFOQmJCkXZKkZhfPGwKKZ/RaCfZ1sgw6NgCe
-         3hhAGwIxJycZP9LHjdGrkkUWCF3xlp8BfHZsJzxysdWC1tud+/zXC4ZZoFip8mO6bDlv
-         SP6cXoZ1HhUF3f7T6tbm+qYyQx5MtXgY80dENYTfH9wzFqg5SUUOOO1KobR8l8oZscy1
-         aCjm9mGcp9NSJhQfkJE7wPgwQ2P8Z2CZeCkrrAmyKCLoOLulJfG0WNfANRRRhk2Uqk7+
-         Letw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779211599; x=1779816399;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1jbRD0zuDAkT/iOMZCuQC1mbw0VTyeq/zm8Dbw1smrw=;
-        b=AF6ua4LtKqEZar14ESlKv2m9gckjdAvpielR479Mg4GrUPTcgKGMq3XlTVwvm+xkNB
-         DpL90Y95SdBD44jy485ekXT896Fn62PIOb2+k/bEJHp1AS1whIJ/T9mMvuCpn5EJJv4A
-         dQ8TFWwJtgLIga6tVyj64R09ByWG/NUZ4X6h309ZJX/lxMg83P/CVwN1QfvfacIpGxCh
-         g0Mch8yGvhuvS+puEUfjvEZnh7kR40NbuzwVNoPtiKVqoTFh7LlLRnlmM57tO1FiqII3
-         FL5LmGA/QK15V7N9zYI2yd/s4DLbjQZIb1CMUVYCU3UBcegtpNk3CMj0DCzt9RWNOLZN
-         uA2Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9mmBHOpC2SCXnsGUMvbwcSf3UuNCSzmCOjVMiJGOH16w2ZAgfNnbsDljTnXt+DEsMeELzb74w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzazqEupUn6XSBtJw4WojHMcKTyo17R3XFCTSPEoe2rg9dwxQ8W
-	ZjFhRb2N8IrvzwhxlQOY8vr2a+Kq92a0/c2FH/GSDH0e5FsgLtUFh5Dz
-X-Gm-Gg: Acq92OE7cklYxthyfm9KygY4TRrUszXiZxycXxjm/hWoLL44PWdUk2ko27n2zKZQZDY
-	8CyLiiINlICZM5hzbBkUbHuuGjyTMGd9Rg4sl1va+vqUk6eXBFKYEorzPDCZb0AdBDdt81OtVET
-	kHkEYGjyk5zChQ4bmKoMwrTSvOiO9d0HWZi7v42GVcQGqtacKdKkSaZ/FM1BKL3uj4ENJMNxemb
-	OnBft3HUJ7BbF88jNmgzsgYPxv6ACViqgVUKcE5uzHZnl00pi3nfp3+ahH2jyBObvxWjeIwLYWb
-	0LLYhFvlX09YlqG8PiDK1bQd0cdwh3UFaPo4QG5uGAmoJUxjBv2K4ItkQTligKD5HrzJyl5cydM
-	Q/obxfg4xrHYAy+ZszC+pqLOxLKInZp7GUirZ16bs1qJB3nI/56JgIOsB12mH8CXm4KxbMEb3LM
-	xgRXxT8BlkwQCdcB7uhV6phDbtAZH6d6uz/hc3Lg7H4Dbd4dsiz44GsRsJAaeUa1UB2GgQG8uQj
-	vgDxmc=
-X-Received: by 2002:a05:600c:a48:b0:489:e696:127d with SMTP id 5b1f17b1804b1-48fe63022e8mr142076495e9.5.1779211599195;
-        Tue, 19 May 2026 10:26:39 -0700 (PDT)
-Received: from ast-epyc5.inf.ethz.ch (ast-epyc4.inf.ethz.ch. [129.132.161.179])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48feae166dasm128269335e9.9.2026.05.19.10.26.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 10:26:38 -0700 (PDT)
-From: Zijing Yin <yzjaurora@gmail.com>
-To: Remi Denis-Courmont <courmisch@gmail.com>
-Cc: Zijing Yin <yzjaurora@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] phonet/pep: disable BH around forwarded sk_receive_skb()
-Date: Tue, 19 May 2026 10:26:33 -0700
-Message-ID: <20260519172635.86304-1-yzjaurora@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1779212271; c=relaxed/simple;
+	bh=Hh1YcciGZumXppFcnqOssFAiw5yBXVmcqR70GJ2lvdg=;
+	h=Message-ID:Date:Mime-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FzZQMzgrwqpyZPAm3nqrD31SwQnNrBSXA5BjSSCsZfYD5DyfBS0vAKd69QdSZvDA/IBsFdeOTefr8HwUzIORHHNMofssN2X8D0iEbguW/5ZUFnNxbHd9Kdws3aLqyLOyTI6o2953615nJnzXvatqzCx6gpl/cgszGcnALy2lCRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=augustwikerfors.se; spf=pass smtp.mailfrom=augustwikerfors.se; dkim=pass (2048-bit key) header.d=augustwikerfors.se header.i=@augustwikerfors.se header.b=lBMZD9Kd; arc=none smtp.client-ip=51.159.124.109
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=augustwikerfors.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=augustwikerfors.se
+Message-ID: <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se>
+Date: Tue, 19 May 2026 19:37:35 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Subject: Re: [GIT PULL] bluetooth 2026-05-14
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Sasha Levin <sashal@kernel.org>, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
+ <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info>
+ <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
+ <2026051954-revision-sierra-6bb4@gregkh>
+ <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
+ <2026051909-impurity-nemesis-2f65@gregkh>
+ <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
+ <2026051942-uproar-drainpipe-6370@gregkh>
+ <CABBYNZKzWgL3nmeA=CtN9s80LRyDiJ97aQXgvfSm9vYUBw_SpA@mail.gmail.com>
+Content-Language: en-US
+From: August Wikerfors <git@augustwikerfors.se>
+In-Reply-To: <CABBYNZKzWgL3nmeA=CtN9s80LRyDiJ97aQXgvfSm9vYUBw_SpA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Scw-Domain: augustwikerfors.se
+X-Scw-Tem-Message-Id: 3098bb01-da34-49c0-930c-5c009e3d4d82
+DKIM-Signature: a=rsa-sha256; bh=Txy3fsJraKmT/pLDtNhESFuzdhjEx/YzrQC5SlbqiTY=;
+ c=relaxed/relaxed; d=augustwikerfors.se;
+ h=message-id:date:subject:to:cc:from;
+ s=812a4465-b64d-440c-bdd2-3148e8f56cf0; t=1779212260; v=1;
+ b=lBMZD9Kd+T5V+7XewGRsx0w0BZFXZO0Zk9NSl3kzyhehcF9E/YUIMHGil1mpX4Es+P+mhtU0
+ ZMqqlJ9MKTebANvtAraehHuBU9ld3Nj93udTNHLRs3pvYgCR15krTgAqM9UROkxRDZUvpJrS7Gy
+ RbH74EGsermX8dX9Cd1vrkzxl96q+jF0mvRwXzF1y9wdTAxt/2T4YkuxHNjJ9qWR3GnJ0+wFN1X
+ SUWBe2aTbyOZGTdk7knsXDY/eE/FqRpVhvsaU0g+6hJDZF7WWej1h6U6tNF+f/kptb2no/M8ny0
+ oLesXcJN22M3hV8wYUPpKLY8WE4yO6DWPsF+R6RtfzqIg==
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[augustwikerfors.se,quarantine];
+	R_DKIM_ALLOW(-0.20)[augustwikerfors.se:s=812a4465-b64d-440c-bdd2-3148e8f56cf0];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	URIBL_MULTI_FAIL(0.00)[pastebin.com:server fail,sin.lore.kernel.org:server fail,syzkaller.appspot.com:server fail];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-249647-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249648-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yzjaurora@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[git@augustwikerfors.se,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[augustwikerfors.se:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: B0EBF58305C
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,augustwikerfors.se:mid,augustwikerfors.se:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 6C86C5832E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The networking receive path is usually run from softirq context, but
-protocols that take the socket lock may have packets stored in the
-backlog and processed later from process context. In that case
-release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
-and then calls sk->sk_backlog_rcv() with bottom halves enabled.
+On 2026-05-19 17:49, Luiz Augusto von Dentz wrote:
+> Hi Greg,
+> 
+> On Tue, May 19, 2026 at 11:19 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+>>
+>> On Tue, May 19, 2026 at 09:44:39AM -0400, Luiz Augusto von Dentz wrote:
+>>> Hi Greg,
+>>>
+>>> On Tue, May 19, 2026 at 8:07 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+>>>>
+>>>> On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis wrote:
+>>>>> On 5/19/26 12:30, Greg KH wrote:
+>>>>>> On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote:
+>>>>>>> On 5/15/26 17:10, Thorsten Leemhuis wrote:
+>>>>>>>> On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
+>>>>>>>>
+>>>>>>>>> The following changes since commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac:
+>>>>>>>>>    net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:12 +0200)
+>>>>>>>>>
+>>>>>>>>> are available in the Git repository at:
+>>>>>>>>>
+>>>>>>>>>    git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-14
+>>>>>>>>>
+>>>>>>>>> for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c00282:
+>>>>>>>>>
+>>>>>>>>>    Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-14 09:58:08 -0400)
+>>>>>>>>
+>>>>>>>> It seems this PR sadly came too late for this week's net PR to mainline
+>>>>>>>> that was merged yesterday.
+>>>>>>>>
+>>>>>>>> TWIMC, from my point of view, it would be great if we somehow could
+>>>>>>>> still get the changes from this PR or at least the btmtk fix it
+>>>>>>>> contains[1] to mainline this week before -rc4, as it is fixing a
+>>>>>>>> regression known since 2026-04-24 that at least five people encountered
+>>>>>>>> with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
+>>>>>>>> validate WMT event SKB length before struct access") [006b9943b982 in
+>>>>>>>> -next].
+>>>>>>>
+>>>>>>> Greg, Sasha, that [1] fix I was talking about now reached -next as
+>>>>>>> 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
+>>>>>>> events") and will likely hit mainline on Thursday or so with the weekly
+>>>>>>> -net PR to -mainline. If that's good enough for you, I'd say it would be
+>>>>>>> good to pick this up for the next round of stable kernels.
+>>>>>>
+>>>>>> That "Fixes:" tag is referring to something that is also not in any
+>>>>>> tree, but that commit does have a cc: stable in it.  So do we need both
+>>>>>> of these:
+>>>>>
+>>>>> Valid question, as yes, there is a slight mixup here:
+>>>>>
+>>>>>> 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
+>>>>>
+>>>>> That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is the
+>>>>> -next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
+>>>>> btmtk: validate WMT event SKB length before struct access") -- the one
+>>>>> that is causing the regression that I want to get fixed. So we now only
+>>>>> need:
+>>>>>
+>>>>>> 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL events")
+>>>>
+>>>> Ok, but that "Fixes:" tag pointing to an invalid commit is going to be a
+>>>> nightmare to track over time, ugh.
+>>>
+>>> Hmm, did we get the wrong hash or something? Usually, that would show
+>>> up in the verify-fixes.sh, but perhaps it didn't capture it this time
+>>> for some reason, perhaps I'm running an outdated version or something
+>>> similar.
+>>
+>> Something went wrong if we ended up with a patch in the stable trees,
+>> yet this fix is referring to it as a different git sha.  Don't know
+>> where the disconnect happend :(
+> 
+> 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before
+> struct access")
+> 
+> I don't have that in any of our tree either, this is actually
+> 634a4408c061 on all trees in the chain:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git/commit/?id=634a4408c061
+> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=634a4408c061
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=634a4408c061
+> 
+> Or actually that was the hash before it got rebased on bluetooth-next tree:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git/commit/?id=041e88fb0c08
+> 
+> But I didn't send the PR from that three so perhaps somebody else sent
+> it to stable with the wrong fixes tag?
+I believe the confusion comes from "Bluetooth: btmtk: accept too short 
+WMT FUNC_CTRL events" itself currently having different commit hashes in 
+bluetooth (e3ac0d9f1a20) and bluetooth-next (162b1adeb057). The former 
+correctly refers to "Bluetooth: btmtk: validate WMT event SKB length 
+before struct access" as 634a4408c061 in the Fixes tag and was merged 
+into net yesterday heading for 7.1-rc5. The latter still refers to it as 
+041e88fb0c08. Both are now in next-20260519 but only the latter was in 
+next-20260518 which was the latest at the time of Thorsten's message.
 
-Typical sk_backlog_rcv handlers process the socket whose backlog is
-being drained, so the BH state at entry is irrelevant for the slocks
-they touch. pep_do_rcv() is different: when the inbound skb targets an
-existing PEP pipe, it forwards the skb to a different *child* socket
-via sk_receive_skb(). That helper takes the child slock with
-bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
-is already off. The same child slock therefore ends up acquired with
-BH on (process path) and with BH off (softirq path):
+Greg, this means picking e3ac0d9f1a20 instead of 162b1adeb057 should 
+result in a valid Fixes tag.
 
-  process context                   softirq context
-  ---------------                   ---------------
-  release_sock(listener)            __netif_receive_skb()
-   __release_sock()                  phonet_rcv()
-    spin_unlock_bh()                  __sk_receive_skb(listener)
-    [BH now ENABLED]                  [BH already disabled]
-    sk_backlog_rcv:                   sk_backlog_rcv:
-     pep_do_rcv()                      pep_do_rcv()
-      sk_receive_skb(child)             sk_receive_skb(child)
-       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
-       => SOFTIRQ-ON-W                   => IN-SOFTIRQ-W
-
-Lockdep flags this as inconsistent lock state, and it can become a real
-self-deadlock if a softirq on the same CPU tries to receive to the same
-child socket while its slock is held in the BH-enabled path:
-
-  WARNING: inconsistent lock state
-  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-   (slock-AF_PHONET/1){+.?.}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
-    __sk_receive_skb              net/core/sock.c:563
-    sk_receive_skb                include/net/sock.h:2022 [inline]
-    pep_do_rcv                    net/phonet/pep.c:675
-    sk_backlog_rcv                include/net/sock.h:1190
-    __release_sock                net/core/sock.c:3216
-    release_sock                  net/core/sock.c:3815
-    pep_sock_accept               net/phonet/pep.c:879
-
-Wrap the forwarded sk_receive_skb() in local_bh_disable() /
-local_bh_enable() so the child slock is always acquired with BH off.
-local_bh_disable() nests safely on the softirq path.
-
-Discovered via in-house syzkaller fuzzing; the same root cause also
-on the linux-6.1.y syzbot dashboard as extid 44f0626dd6284f02663c.
-Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
-https://pastebin.com/A3t8xzCR
-
-Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
-Link: https://syzkaller.appspot.com/bug?extid=44f0626dd6284f02663c
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
----
- net/phonet/pep.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/net/phonet/pep.c b/net/phonet/pep.c
-index 4dbf0914df7d..cc6226cc4343 100644
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -671,8 +671,23 @@ static int pep_do_rcv(struct sock *sk, struct sk_buff *skb)
- 
- 	/* Look for an existing pipe handle */
- 	sknode = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
--	if (sknode)
--		return sk_receive_skb(sknode, skb, 1);
-+	if (sknode) {
-+		int rc;
-+
-+		/*
-+		 * pep_do_rcv() runs from two contexts: from softirq via
-+		 * phonet_rcv() -> __sk_receive_skb() with BH disabled, and from
-+		 * process context via release_sock() -> __release_sock(), which
-+		 * drops the listener slock with spin_unlock_bh() before draining
-+		 * the backlog.  The child pipe slock is taken below via
-+		 * bh_lock_sock_nested(), which does not itself disable BH, so
-+		 * disable BH here to keep both acquire contexts consistent.
-+		 */
-+		local_bh_disable();
-+		rc = sk_receive_skb(sknode, skb, 1);
-+		local_bh_enable();
-+		return rc;
-+	}
- 
- 	switch (hdr->message_id) {
- 	case PNS_PEP_CONNECT_REQ:
-
-base-commit: edc502717be153674b0b3eefb8b40734c747c138
--- 
-2.43.0
-
+Regards,
+August Wikerfors
 
