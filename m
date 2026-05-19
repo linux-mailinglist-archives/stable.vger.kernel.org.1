@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-249530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iH5PHSk7DGp8aQUAu9opvQ
-	(envelope-from <stable+bounces-249530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:27:53 +0200
+	id gHx2Ny5TDGqmfAUAu9opvQ
+	(envelope-from <stable+bounces-249531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:10:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0C457C35E
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:27:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E23557E5E9
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A946430510D2
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:19:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C96A1312E5F5
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAD039446D;
-	Tue, 19 May 2026 10:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77207318EE7;
+	Tue, 19 May 2026 10:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrNjbO1h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toADC5xz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D682E2E03EA
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 10:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B539405C5F
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 10:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779185947; cv=none; b=KUpt5U1wZXbPuNSnBg25rlBJURWC9e4vuJAGZHkGHtdygqxp0VEt/MsRu3/5mqfxaBo9zLBREqKOqLMcXkM20KDe5KKueWOzHTzsKF34N3Nuyw9j0I0sh6z/3yipghG0Z0IcBqf5lSm9R957LVKYHeb57CltWJssaw7sgeoq2j4=
+	t=1779185978; cv=none; b=sqWkb1t+SZ+JeDVEKZD4JOC7SBpY8Sg9Xn7uiz+/g9ZFoTx+4NPC3o3lzQRkOhMT0ifszk3WbRAz8NUULxwxGG/runKY5j2DoKSmDDwl4B0OhlqgAhFIqEIDXo4ikmwHjhBLc+LfRf/04x6nfz/rsGT0o2mv5UO6kqHg9gE2rbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779185947; c=relaxed/simple;
-	bh=haSSlFOquKYACD3vN24SKa27aqCKj0jQuGdVwHuWVQg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KyghxSGNuurXTKhHb6nAClzC4Ue2DcVArOcT8ugXpHtSwxfgwCxxXfGFw5FgmSo22CvfWnbNcirsE0eA3JUuRktubATibAlyz7laVwKX64TfG5sWiObFqQPGdMVUT1nGTQC75nzIG+o4qGceZoCZ6adNreXb8TQS0WB2rXROCAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrNjbO1h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF80C2BCB3;
-	Tue, 19 May 2026 10:19:06 +0000 (UTC)
+	s=arc-20240116; t=1779185978; c=relaxed/simple;
+	bh=R6ulmIWrQA2HYo8D1d948fU8pjUir4ZrY00bzJN9k6E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qHcUXRa7MWKRtEOCQF0flkhQiHW/aXja+N2c/GXbIFFb6RmEj+ff/Hrf0GXz0Lshp9RNG9rRCdP2CYP0F2EBeR/0a0PsfM0ZIhIfkhDHBKS0nsyYwVjszrqsVGGhgL3ntKqztrcLP0sJpqgmiA0EDrMx7DGoUxFEW5M8a1k+4Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toADC5xz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E659C2BCC6;
+	Tue, 19 May 2026 10:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1779185947;
-	bh=haSSlFOquKYACD3vN24SKa27aqCKj0jQuGdVwHuWVQg=;
+	s=korg; t=1779185977;
+	bh=R6ulmIWrQA2HYo8D1d948fU8pjUir4ZrY00bzJN9k6E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mrNjbO1hLiPGWtGPQfUYDHgKBZUCuKtNJ/y+Xvp5z3WpRs3+/+XcrZSr0WQpqvEMa
-	 WCm8nQQZ1L9QWoGz4NatF8kG9+cbxzHdUQ9b3TPxXmUgMZIyaGJcbc+AhYzLc9l+j3
-	 BeLZNeL6qrfE13VU9Ot59hoeioaSEowPcmYkKdrk=
-Subject: FAILED: patch "[PATCH] ipv6: flowlabel: enforce per-netns limit for unprivileged" failed to apply to 5.10-stable tree
-To: maoyi.xie@ntu.edu.sg,kuba@kernel.org,willemb@google.com
+	b=toADC5xzwYuSdKXWbRL5Ny6s+1Hcm+S4IB2QRCO+prechWuNS1g3hjeXH0JNMBuuL
+	 ecsYZadtA15zr8/KbN8wFGpUM1MWF3s0YCFuuJr3fK1FDBUjllXJaS/IpsBOgU+Rhg
+	 n3X+pb33HnQfLeUFodJQDe3E1P68+tqz+JTSX3tI=
+Subject: FAILED: patch "[PATCH] cgroup/cpuset: Reset DL migration state on can_attach()" failed to apply to 6.18-stable tree
+To: zhangguopeng@kylinos.cn,chenridong@huaweicloud.com,longman@redhat.com,tj@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 19 May 2026 12:18:05 +0200
-Message-ID: <2026051905-vagueness-revise-b511@gregkh>
+Date: Tue, 19 May 2026 12:18:50 +0200
+Message-ID: <2026051950-charbroil-unbutton-3311@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,51 +54,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [7.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249530-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249531-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	MIME_TRACE(0.00)[0:+];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	GREYLIST(0.00)[pass,body];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ntu.edu.sg:email,linuxfoundation.org:dkim,gregkh:email,msgid.link:url]
-X-Rspamd-Queue-Id: 2E0C457C35E
-X-Rspamd-Action: no action
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,kylinos.cn:email]
+X-Rspamd-Queue-Id: 5E23557E5E9
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x e68eadffb724b36ffd3d5619e0efcaf29ec2a175
+git cherry-pick -x 4a39eda5fdd867fc39f3c039714dd432cee00268
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051905-vagueness-revise-b511@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051950-charbroil-unbutton-3311@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -110,124 +114,65 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e68eadffb724b36ffd3d5619e0efcaf29ec2a175 Mon Sep 17 00:00:00 2001
-From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Date: Wed, 6 May 2026 16:24:16 +0800
-Subject: [PATCH] ipv6: flowlabel: enforce per-netns limit for unprivileged
- callers
+From 4a39eda5fdd867fc39f3c039714dd432cee00268 Mon Sep 17 00:00:00 2001
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+Date: Sat, 9 May 2026 18:20:30 +0800
+Subject: [PATCH] cgroup/cpuset: Reset DL migration state on can_attach()
+ failure
 
-fl_size, fl_ht and ip6_fl_lock in net/ipv6/ip6_flowlabel.c are
-file scope and shared across netns. mem_check() reads fl_size to
-decide whether to deny non-CAP_NET_ADMIN callers. capable() runs
-against init_user_ns, so an unprivileged user in any non-init
-userns can push fl_size past FL_MAX_SIZE - FL_MAX_SIZE / 4 and
-starve every other unprivileged userns on the host.
+cpuset_can_attach() accumulates temporary SCHED_DEADLINE migration
+state in the destination cpuset while walking the taskset.
 
-Add struct netns_ipv6::flowlabel_count, bumped and decremented
-next to fl_size in fl_intern, ip6_fl_gc and ip6_fl_purge. The new
-field fills the existing 4-byte hole after ipmr_seq, so struct
-netns_ipv6 stays the same size on 64-bit builds.
+If a later task_can_attach() or security_task_setscheduler() check
+fails, cgroup_migrate_execute() treats cpuset as the failing subsystem
+and does not call cpuset_cancel_attach() for it. The partially
+accumulated state is then left behind and can be consumed by a later
+attach, corrupting cpuset DL task accounting and pending DL bandwidth
+accounting.
 
-Bump FL_MAX_SIZE from 4096 to 8192. It has been 4096 since the
-file was added. Machines and connection counts have grown.
+Reset the pending DL migration state from the common error exit when
+ret is non-zero. Successful can_attach() keeps the state for
+cpuset_attach() or cpuset_cancel_attach().
 
-mem_check() folds an extra per-netns ceiling into the existing
-non-CAP_NET_ADMIN conditional. The ceiling is half of the total
-budget that unprivileged callers have ever been able to use, i.e.
-(FL_MAX_SIZE - FL_MAX_SIZE / 4) / 2 = 3072 entries. With
-FL_MAX_SIZE doubled, this preserves the original per-user reach
-of 3K (what an unprivileged caller could already obtain before
-this change), while forcing an attacker to spread allocations
-across at least two netns to exhaust the global non-CAP_NET_ADMIN
-budget.
+Fixes: 2ef269ef1ac0 ("cgroup/cpuset: Free DL BW in case can_attach() fails")
+Cc: stable@vger.kernel.org # v6.10+
+Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
 
-CAP_NET_ADMIN against init_user_ns still bypasses both caps.
-
-The previous patch took ip6_fl_lock across mem_check and
-fl_intern, so the new flowlabel_count read in mem_check and the
-new flowlabel_count++ in fl_intern run under the same critical
-section. flowlabel_count is therefore plain int, like fl_size.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Link: https://patch.msgid.link/20260506082416.2259567-3-maoyixie.tju@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/include/net/netns/ipv6.h b/include/net/netns/ipv6.h
-index 499e4288170f..875916d60bfe 100644
---- a/include/net/netns/ipv6.h
-+++ b/include/net/netns/ipv6.h
-@@ -119,6 +119,7 @@ struct netns_ipv6 {
- 	struct fib_notifier_ops	*notifier_ops;
- 	struct fib_notifier_ops	*ip6mr_notifier_ops;
- 	atomic_t		ipmr_seq;
-+	int			flowlabel_count;
- 	struct {
- 		struct hlist_head head;
- 		spinlock_t	lock;
-diff --git a/net/ipv6/ip6_flowlabel.c b/net/ipv6/ip6_flowlabel.c
-index a8974643195a..b1ccdf0dc646 100644
---- a/net/ipv6/ip6_flowlabel.c
-+++ b/net/ipv6/ip6_flowlabel.c
-@@ -36,7 +36,7 @@
- /* FL hash table */
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index a48901a0416a..3fbf6e7f68c3 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -3050,16 +3050,13 @@ static int cpuset_can_attach(struct cgroup_taskset *tset)
+ 		int cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
  
- #define FL_MAX_PER_SOCK	32
--#define FL_MAX_SIZE	4096
-+#define FL_MAX_SIZE	8192
- #define FL_HASH_MASK	255
- #define FL_HASH(l)	(ntohl(l)&FL_HASH_MASK)
+ 		if (unlikely(cpu >= nr_cpu_ids)) {
+-			reset_migrate_dl_data(cs);
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
  
-@@ -162,8 +162,9 @@ static void ip6_fl_gc(struct timer_list *unused)
- 				ttd = fl->expires;
- 				if (time_after_eq(now, ttd)) {
- 					*flp = fl->next;
--					fl_free(fl);
- 					fl_size--;
-+					fl->fl_net->ipv6.flowlabel_count--;
-+					fl_free(fl);
- 					continue;
- 				}
- 				if (!sched || time_before(ttd, sched))
-@@ -197,6 +198,7 @@ static void __net_exit ip6_fl_purge(struct net *net)
- 				*flp = fl->next;
- 				fl_free(fl);
- 				fl_size--;
-+				net->ipv6.flowlabel_count--;
- 				continue;
- 			}
- 			flp = &fl->next;
-@@ -243,6 +245,7 @@ static struct ip6_flowlabel *fl_intern(struct net *net,
- 	fl->next = fl_ht[FL_HASH(fl->label)];
- 	rcu_assign_pointer(fl_ht[FL_HASH(fl->label)], fl);
- 	fl_size++;
-+	net->ipv6.flowlabel_count++;
- 	return NULL;
+ 		ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
+-		if (ret) {
+-			reset_migrate_dl_data(cs);
++		if (ret)
+ 			goto out_unlock;
+-		}
+ 
+ 		cs->dl_bw_cpu = cpu;
+ 	}
+@@ -3070,7 +3067,10 @@ static int cpuset_can_attach(struct cgroup_taskset *tset)
+ 	 * changes which zero cpus/mems_allowed.
+ 	 */
+ 	cs->attach_in_progress++;
++
+ out_unlock:
++	if (ret)
++		reset_migrate_dl_data(cs);
+ 	mutex_unlock(&cpuset_mutex);
+ 	return ret;
  }
- 
-@@ -460,6 +463,9 @@ fl_create(struct net *net, struct sock *sk, struct in6_flowlabel_req *freq,
- 
- static int mem_check(struct sock *sk)
- {
-+	const int unpriv_total_limit = FL_MAX_SIZE - (FL_MAX_SIZE / 4);
-+	const int unpriv_user_limit = unpriv_total_limit / 2;
-+	struct net *net = sock_net(sk);
- 	int room;
- 	struct ipv6_fl_socklist *sfl;
- 	int count = 0;
-@@ -478,7 +484,9 @@ static int mem_check(struct sock *sk)
- 
- 	if (room <= 0 ||
- 	    ((count >= FL_MAX_PER_SOCK ||
--	      (count > 0 && room < FL_MAX_SIZE/2) || room < FL_MAX_SIZE/4) &&
-+	      (count > 0 && room < FL_MAX_SIZE / 2) ||
-+	      room < FL_MAX_SIZE / 4 ||
-+	      net->ipv6.flowlabel_count >= unpriv_user_limit) &&
- 	     !capable(CAP_NET_ADMIN)))
- 		return -ENOBUFS;
- 
 
 
