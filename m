@@ -1,73 +1,66 @@
-Return-Path: <stable+bounces-249488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kKiEOIkXDGrrVwUAu9opvQ
-	(envelope-from <stable+bounces-249488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:55:53 +0200
+	id oC18KVIeDGqoWgUAu9opvQ
+	(envelope-from <stable+bounces-249489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:24:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B755797FC
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1845579F36
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AA1643031482
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:55:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 75E5B303D168
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 08:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877903DABE3;
-	Tue, 19 May 2026 07:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044A63E120A;
+	Tue, 19 May 2026 08:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="2F1K0J3s"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="DFcjKopM"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAB619644B;
-	Tue, 19 May 2026 07:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B0C3E1204;
+	Tue, 19 May 2026 08:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779177330; cv=none; b=qIQSbVPUztRoOGebI10tgZXv+F3Qrzvsib6DDSEM0rXYwq7wtEeeALQXNh3LjjJfegKi5dgCAnWAze4jeZDunRpH1P25krzR5L/u1FGd9X7HxVnlJ9N5N1yp5AI0I5NEHpee72TIARFHimM3/SVRPAIkhTlmcaMYwe/QZ7EGALM=
+	t=1779178983; cv=none; b=Bx/yBbNa9Cr6c2vF1ww0QPmVC/ZSphY27kl26WiXo1WNUbzdC+eAzHnfcpSAibrGkuU6TjOvCuR7Q4fM3qL5acrXqLORudCOwDXckT7PcVM2m8CPmkVcFYF9BhkQr3EIqsRwMaqEWawWymVE09UCVb9wvXAzeoSQ84SIYd/xObQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779177330; c=relaxed/simple;
-	bh=hvwJY0zgagSKeFkymx3E5hGWKUTh3knZ/BDqdUWZXUE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bO10K3QPW6oRVhmMBF6I9V0EH7JTyuGJB9jl8ZNZDHU0MCVov20RWKM1nW5aZQQC76LJjxjuP2Eaa5P1FCFMPuCtg0EBNV0t1lIWAbXH5q58NM6EkB0dkMf2100/LdYmaZU4PAV5jUz1UwK7HOYfteorsRhI2wRftyTepY7O0gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=2F1K0J3s; arc=none smtp.client-ip=120.232.169.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=2F1K0J3s1Gokcf+pR4XKMSorKna0Hh8p9Vfw3WOKT6kK61i1omLfMb2Tvygm6395iXfFiTCmRKpsl
-	 8IqYSxCAX9MLGuqhWliSzXf4XZ/wtlyKz3QPfNhsvw/i8Mgbkpw80NxHD50VwPIf+1vFg7XihRLIrG
-	 i7mX0xWx8bktkbrQ=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-24-12027 (RichMail) with SMTP id 2efb6a0c17611ba-021e2;
-	Tue, 19 May 2026 15:55:19 +0800 (CST)
-X-RM-TRANSID:2efb6a0c17611ba-021e2
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	pablo@netfilter.org
-Cc: patches@lists.linux.dev,
+	s=arc-20240116; t=1779178983; c=relaxed/simple;
+	bh=bmiF4hgiYvfm4DpcWrvdshUorT8fJivbWbXfyBprHZ0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UqhGd2RXGt6pVaIQkGEy513J/+dp7bw/KUvsIVl4B+LwmQjxAUAGWCoyBqqhNls3zB0ZsANYqgKZcDnOidDyPiQWMq1SHon67QEhbq641jurSUVK3Fr7Uti3eohOLmxwira9QfnCRR4xnyj5OagdCs8NdaIz1L5uykWypHQ66l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=DFcjKopM; arc=none smtp.client-ip=52.59.177.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1779178950;
+	bh=N4qacGr6j6nnaxJIu/bwPWo164GQqwran37q3vVYr2o=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=DFcjKopMiPrn/Sx0c+Nm5jiwzMxc9khb0bcectoFEJCA772IIqrhGNDADd9KejvUc
+	 VxXDFFCDru6wqPyp7ODnUEG8VmXvUQAcrVRmMq0B9EtWM5BsYizMaPJGR2mmPf8VnX
+	 AWNVJM/mZXtDSSodkbdTxOE6lv1WEEfK5gTomXmw=
+X-QQ-mid: esmtpgz15t1779178934t1c5a46ee
+X-QQ-Originating-IP: zo9ZWQiDkcjI48CRJGSauneMCr4+Z2hEUln1YNd48Jw=
+Received: from localhost.localdomain ( [124.126.19.250])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 19 May 2026 16:22:07 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 9981348278823218018
+EX-QQ-RecipientCnt: 7
+From: ZhaoJinming <zhaojinming@uniontech.com>
+To: srinivas.pandruvada@linux.intel.com,
+	hansg@kernel.org,
+	ilpo.jarvinen@linux.intel.com
+Cc: platform-driver-x86@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	kadlec@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	y0un9sa@gmail.com,
-	fw@strlen.de
-Subject: [PATCH 6.6.y] netfilter: nf_tables: unconditionally bump set->nelems before insertion
-Date: Tue, 19 May 2026 15:55:18 +0800
-Message-Id: <20260519075518.2106753-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	ZhaoJinming <zhaojinming@uniontech.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] platform/x86/intel/tpmi: Fix memory leak in mem_write() error path
+Date: Tue, 19 May 2026 16:21:36 +0800
+Message-Id: <20260519082136.2999917-1-zhaojinming@uniontech.com>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,128 +68,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.04 / 15.00];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: Mw43FEVz/zQ/LO8jTJsuGVbRD/4NCqAG3muPAYexi2guMipRAW1oVdqp
+	xwqs5BHaupmGFfoYJb2DoTunAIaYD/KdIqDMXV48yiHocRd5HimEMO/F4V1lLsSCWoBx41O
+	uxKFFE9YyZUWrGjNV0rwYZ8nm79SskLSR+SQgEioCDhhO8AHA7FPhNg7Ei6951Ukd/DTGyp
+	LKJkdg1+yu1fEocrkNS+NZheDvouREVltcRUsVkBYQOQuuM6J36Xy5dM766k0ZY38Zh114t
+	Ftj8CsddMi0D2gStDIr6yupbGLVs1VFOJ8yZ3LGoyN6Mm85M/fNxghMdnF7tKxjrVf55xn6
+	9vX3uJOtmRPdZqFfbWovlWL2x+ydO5dd4CYpCpW/G4JcCqgd2yAyYg1R7JavWWF4n7S1r4I
+	en0/xdU5pX4kfiuBW9s2GLaaILfWIu88tpv6K2yTPX4daYR6QvYv04F0khDeUbiAli/PazK
+	bWokz3Vqye6ru6ATmvnUQKYcFYy1Jyl9Bsm1e4bi45GPBJIdxZmRErjabQQblacfSadKObY
+	2VVIQFy6AzYMStKebA/i/AenBqvz3rgckfzWuz/XQfi7CB9n+KQrTlB+K8r+HDRtrM5MUD2
+	gLwZh6xyYOPOMBVt8mMPDifrmZxo6lvndsVSFg+q3/uBhabfLLEOjpAmQKWDNh7HUOTfSyP
+	DA+vVTXrj8Ych1UGOXVGkKv/zZiJvkvtSjtFekvGNrqMyVMWKxws0u1gX+L1GvT06WU3mlZ
+	fxKH0z5hCsuwDRmJE0Bg3ifc8ugD6Ry9yIpocvfKbL23FbqtmZkbpliNf2P6cNVR1q8AZiu
+	deZLbtLk3/+wMXmTSngfuQDjRvbwsE/q7mNvNlY2B0kZ9CoovgjiQBxk1Nyfquzyu69NWXx
+	lkj3zZxZoXvvWKB1tW0LbRAfcYoXI5XywGcxAea9SqX0d3kXRwBit3gHfGlQzaCuPYWL7wd
+	ZZciA1AuRH+eJGM8BGZCS8APeaJwLwNrV2SOfGYeoGUyagxHO5m4r8ZGzi5YsyIDdKUY+oT
+	QLZ+klAdt+NwmSh/jvADK67WfBCZ7oHhxg4ZGlTvstBPkld8TMCJ5zM31JwFLp99yaG3u4B
+	dGZOCYAVnD6mNC23plULP5XCvXewYDuoJcmy0HsfojJ
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,netfilter.org,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,strlen.de];
-	TAGGED_FROM(0.00)[bounces-249488-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DMARC_NA(0.00)[139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249489-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,139.com:mid,139.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,strlen.de:email]
-X-Rspamd-Queue-Id: 93B755797FC
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhaojinming@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim]
+X-Rspamd-Queue-Id: E1845579F36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+In mem_write(), when the IS_ALIGNED() check fails, the function returns
+-EINVAL directly without freeing the 'array' allocated by
+parse_int_array_user(). This causes a memory leak.
 
-[ Upstream commit def602e498a4f951da95c95b1b8ce8ae68aa733a ]
+Other error paths in the same function correctly use 'goto exit_write'
+to free the array before returning. Fix this inconsistency by using
+the same pattern for the alignment check.
 
-In case that the set is full, a new element gets published then removed
-without waiting for the RCU grace period, while RCU reader can be
-walking over it already.
-
-To address this issue, add the element transaction even if set is full,
-but toggle the set_full flag to report -ENFILE so the abort path safely
-unwinds the set to its previous state.
-
-As for element updates, decrement set->nelems to restore it.
-
-A simpler fix is to call synchronize_rcu() in the error path.
-However, with a large batch adding elements to already maxed-out set,
-this could cause noticeable slowdown of such batches.
-
-Fixes: 35d0ac9070ef ("netfilter: nf_tables: fix set->nelems counting with no NLM_F_EXCL")
-Reported-by: Inseo An <y0un9sa@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Fixes: 8e0a2fc68ec3 ("platform/x86/intel/tpmi: Use 32 bit aligned address for debugfs mem write")
+Cc: stable@vger.kernel.org
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
 ---
- net/netfilter/nf_tables_api.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ drivers/platform/x86/intel/vsec_tpmi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index a0914a92e07d..6fc88bf51109 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6803,6 +6803,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	struct nft_data_desc desc;
- 	enum nft_registers dreg;
- 	struct nft_trans *trans;
-+	bool set_full = false;
- 	u64 timeout;
- 	u64 expiration;
- 	int err, i;
-@@ -7095,10 +7096,18 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	if (err < 0)
- 		goto err_elem_free;
+diff --git a/drivers/platform/x86/intel/vsec_tpmi.c b/drivers/platform/x86/intel/vsec_tpmi.c
+index 16fd7aa41f20..2a428bfcb209 100644
+--- a/drivers/platform/x86/intel/vsec_tpmi.c
++++ b/drivers/platform/x86/intel/vsec_tpmi.c
+@@ -495,8 +495,10 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
+ 	addr = array[2];
+ 	value = array[3];
  
-+	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
-+		unsigned int max = nft_set_maxsize(set), nelems;
-+
-+		nelems = atomic_inc_return(&set->nelems);
-+		if (nelems > max)
-+			set_full = true;
+-	if (!IS_ALIGNED(addr, sizeof(u32)))
+-		return -EINVAL;
++	if (!IS_ALIGNED(addr, sizeof(u32))) {
++		ret = -EINVAL;
++		goto exit_write;
 +	}
-+
- 	trans = nft_trans_elem_alloc(ctx, NFT_MSG_NEWSETELEM, set);
- 	if (trans == NULL) {
- 		err = -ENOMEM;
--		goto err_elem_free;
-+		goto err_set_size;
- 	}
  
- 	ext->genmask = nft_genmask_cur(ctx->net);
-@@ -7130,23 +7139,16 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		goto err_element_clash;
- 	}
- 
--	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
--		unsigned int max = nft_set_maxsize(set);
--
--		if (!atomic_add_unless(&set->nelems, 1, max)) {
--			err = -ENFILE;
--			goto err_set_full;
--		}
--	}
--
- 	nft_trans_elem(trans) = elem;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
--	return 0;
- 
--err_set_full:
--	nft_setelem_remove(ctx->net, set, &elem);
-+	return set_full ? -ENFILE : 0;
-+
- err_element_clash:
- 	kfree(trans);
-+err_set_size:
-+	if (!(flags & NFT_SET_ELEM_CATCHALL))
-+		atomic_dec(&set->nelems);
- err_elem_free:
- 	nf_tables_set_elem_destroy(ctx, set, elem.priv);
- err_parse_data:
+ 	if (punit >= pfs->pfs_header.num_entries) {
+ 		ret = -EINVAL;
 -- 
-2.34.1
-
+2.20.1
 
 
