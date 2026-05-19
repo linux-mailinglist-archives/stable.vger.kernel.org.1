@@ -1,145 +1,197 @@
-Return-Path: <stable+bounces-249703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kKwgEenZDGrhoQUAu9opvQ
-	(envelope-from <stable+bounces-249703-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:45:13 +0200
+	id QN8sHcnbDGpbowUAu9opvQ
+	(envelope-from <stable+bounces-249704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:53:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31A558547A
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:45:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC99585523
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A29930151F8
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 21:45:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6CC7A301ECD7
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 21:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA21D26E165;
-	Tue, 19 May 2026 21:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FD13B52F5;
+	Tue, 19 May 2026 21:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LQeJNqp6"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MsYoRyby"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6745C382F39
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 21:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F82A395DAA
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 21:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779227110; cv=none; b=qFUb1eclsY5hBsSU8GAj0GT5ECnB+DDQbjVhHlkUW87TAnQNkMDm12A/jgwDCvGUOOpWkMSuYzN7V4a9/qZXxBV/CS9PKWl9Dcds6VRs4PxOxVhX9MfDXbMunfGXOeOX90faZDKRBHoxzQjaL022ecS+3cKNZiX52dmHZjMblwI=
+	t=1779227537; cv=none; b=EC53GT4S4jxmZ8w6hOvsv9YkU5HR2Pk4Z+FC7B39Bnb/V15vd/LTGuTUiZHklOBn9N6DNJjB6j/1Y9x5w24ja009lsh+W+6ZOBD4nhobz4dJz8mSv/bMgOLPgPkdNrAYchk1KP3YDARk3zvGieFIV4RcVpjlZIlgl0tpM685oTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779227110; c=relaxed/simple;
-	bh=7kokTyk71LzE1A4AqSCZob4mFW1/ZtmAHEM9Po10Jms=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNOlnI87h8b3sBhcycSjpKG9tKF0beP0+O9kYU/d7HuYolBPQ+SXtIszNyYluYuUHWvVTlI30HnAyq4GQa9P+moLQmgdwy25KVmCD/FR03c4u6P8WGETSnPxkFUf/QaxuN3O3dbyaeqtbqvs2B+eFsO9z8KbIiwUC0I5GXFJQ14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LQeJNqp6; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-44a5174670eso2309160f8f.1
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 14:45:09 -0700 (PDT)
+	s=arc-20240116; t=1779227537; c=relaxed/simple;
+	bh=gWTw3nIQBFCZ5yhMNWUHEDLOy2Bb2a9RdFo/9JSx3Rw=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=BkA77h7obnIh65D3q1W6benfIFxQQflkRTuoa/N0ERpj3zFM8TE2zoolbUZTEummNlecRASyZZM4gNzrbOzFiPktFtSEd3KmMgu3mg3IlIrWxO335tu/65phz1LHTiPK9T8UWd3ZIzfAt7UVIDKtgeqTfoMsWGVpsQl7HhciJsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MsYoRyby; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD7E1F000E9;
+	Tue, 19 May 2026 21:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779227108; x=1779831908; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7kokTyk71LzE1A4AqSCZob4mFW1/ZtmAHEM9Po10Jms=;
-        b=LQeJNqp6SzxQtaMeXvKzzFM2mXmq8XMlTjX8VyyzftynRtfDL2kxh38Eb1M94iegsg
-         gz4JYgpPJJyMiy1Zi2yxPv6Y0GoeYc6wUgQnGF9d0x0+P7IuPmC459fnNp4JWIHZ36ME
-         W4IMLQbwnWVacwlbJoY1wFRwQBPkdtcbjPjVSb+msJ4t8Ub7abmIKoj0RTz6fR62GXCD
-         CJd/+Gsmce/Q2STXX1AVXbgPTsE/uFuQWVmqRbs/ZYzrt9juD/usFznNBGpW+TY/myk2
-         xylJFHLe2QRZ4RWsUuHPAFJI2IBZOHbcE04+X14B/kRLv936fehe5sJV1g6c8zEyeVv/
-         rUKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779227108; x=1779831908;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7kokTyk71LzE1A4AqSCZob4mFW1/ZtmAHEM9Po10Jms=;
-        b=aaUL/0IXGAXEyvgQdjxHnTtvI6shzHBlr9f1WYBWNzFABOfLXaH1HMYhgyntwAUj73
-         5Wq04bejSXm6NED6r2C52lPhfrlPcAYqfWomOPtnF1gwM9fAdM/x+RPnreOmUpelBbLK
-         3yxyKUrsRpD4HuGXqpjpZ4lUVRV4xKq0Ep0LqHG8DkHmPw6Bv7/y5pRCwOwFTmEwpcFJ
-         3NBUHrP5gTQClmVmhsdxo7VSxzOYglXO0mD+yt6TD3dm7I/lMnJe/DLNFvSJMcEbzJJU
-         LaVZejp74M51q/f8VrKLPDrrGpGm1XH0ki1t/7P65cCZYXdWBtefL0+cb+v2fNWpyvXq
-         hWtg==
-X-Forwarded-Encrypted: i=1; AFNElJ+5XE6SbasPzlEU1VW4T/5VHR0pG+kcogh2go+5vjBmSMMogxcTbS5kEBfTHZh0pRWwxe/i+3A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRLMAGFlJS3jrAoqAJJzLpRlQpwN+jkbRl3VTwINInT1hKWU9r
-	lnJUewLbPMitYbEpZPwLmHAcjB5iVO1HbKyXTGBUM1uqbr1JzKbKPyTg
-X-Gm-Gg: Acq92OE27tW1oLV5OnlNS5+Pn6ocw7EC/MOW4DMoFxvg5ktGRRbFeRMKYprs38sR+K9
-	agWWwXSRWaKAW3qIlohtQvt3gkBz5M+CRf2d6FSyLLYmQZ2UjzgdXenqsrmPTKO5e/5dexG67Ui
-	4oiZH64+CNp4t8HLzzS9glTvn5fpXv4M7uBQEk3FO+fQfvV7l8hD07JlujJQ9ZV2lLjavwaCQcT
-	usJ4DxLCIq2tSuQeXnOKkhD14zyQiBgcDMMC5IKgdl6IUa04NDAZzanzdaxcwzCxGzTYWr8jkJK
-	JWwNqM41R8tcNEBkWCVs1sCB2HQ7t+C2DEJ3RSPZMjwzKIOpidx0xO8F5EAjfpYgFCBW9Ko4Q9f
-	OMScTH3tBktGVTSKcauqFSpAFq+o3OwQyYmzC4U2yltjH5prgF0wOIWD39tpb9JXtqYY2Ygvq4U
-	C+EEgHPyVCs8R+niXGeRKoPwN63N+aZA7FRx76/47rnI2pyHPkZ6Z8brHmaPSPdnTbNphism1mB
-	SYQ86zERfNK9RdRNBMZpoQ=
-X-Received: by 2002:a05:6000:2f83:b0:452:8286:86bf with SMTP id ffacd0b85a97d-45e5c58fe4fmr34127660f8f.1.1779227107783;
-        Tue, 19 May 2026 14:45:07 -0700 (PDT)
-Received: from node ([202.47.63.86])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45e6a135f0csm29797283f8f.27.2026.05.19.14.45.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 14:45:07 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: Re: [PATCH] netfilter: nf_conntrack_irc: fix parse_dcc() off-by-one OOB read
-Date: Tue, 19 May 2026 17:43:51 -0400
-Message-ID: <20260519214351.29908-1-meatuni001@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <agzWUpDy-32yvBcB@chamomile>
-References: <20260519212328.28290-1-meatuni001@gmail.com> <agzWUpDy-32yvBcB@chamomile>
+	d=linux-foundation.org; s=korg; t=1779227535;
+	bh=hbNL8A/9L4h5m2K9/Sbmf4X0mZVOLkpQOD2l2GUfgH8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=MsYoRybynENNTCGOj5Sb8uoJZTBelACh8X0O4u0SEIFR8bp3JIv7dY6FB8uFgA6A3
+	 xucxjzUu0ZeFXZyo1rMG8scATrsvJrwORBPMMZxfH5vwvSZ3uSlVEDkZmM7jf2JAC8
+	 1bTSmmO76PGlxvuLXyw7BV/GcLZkdFDTWtf40E4k=
+Date: Tue, 19 May 2026 14:52:15 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: David Carlier <devnexen@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
+ Mina Almasry <almasrymina@google.com>, linux-mm@kvack.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm/hugetlb: restore reservation on error in
+ hugetlb_mfill_atomic_pte() resubmission path
+Message-Id: <20260519145215.ef37484626f23a82fc7ef992@linux-foundation.org>
+In-Reply-To: <EE9ACFDB-E601-4C1D-87D1-F5DAC2767CE2@linux.dev>
+References: <20260322052120.14021-1-devnexen@gmail.com>
+	<EE9ACFDB-E601-4C1D-87D1-F5DAC2767CE2@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-249704-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[strlen.de,nwl.cc,vger.kernel.org,netfilter.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-249703-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_CC(0.00)[gmail.com,suse.de,kernel.org,huawei.com,google.com,kvack.org,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A31A558547A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,suse.de:email]
+X-Rspamd-Queue-Id: CDC99585523
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 19, 2026 at 05:29:54PM +0200, Pablo Neira Ayuso wrote:
-> Other helpers replaced simple_stroul() already which is probably the
-> way to go.
+On Sat, 4 Apr 2026 20:59:11 +0800 Muchun Song <muchun.song@linux.dev> wrote:
 
-I can send a follow-up patch replacing simple_strtoul() in parse_dcc()
-once this lands in nf-next, if that works for you.
+> 
+> 
+> > On Mar 22, 2026, at 13:21, David Carlier <devnexen@gmail.com> wrote:
+> > 
+> > When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
+> > hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. If
+> > copy_user_large_folio() subsequently fails, folio_put() restores the global
+> > hugetlb pool count through free_huge_folio(), but the per-VMA reservation
+> > map entry is left in an inconsistent state.
+> > 
+> > Add the missing restore_reserve_on_error() call before folio_put(), matching
+> > the first-attempt error path which already handles this correctly.
+> > 
+> > Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow on UFFDIO_COPY")
+> 
+> Hi David,
+> 
+> Thanks for this fix. The patch looks good to me and clearly solves the
+> reservation leak in the resubmission path of hugetlb_mfill_atomic_pte().
+> 
+> However, I'm a bit curious about the Fixes tag. While commit 8cc5fcbb5be8
+> did introduce this code structure and the retry path, it seems the bug
+> wasn't actually introduced there. At that time, copy_huge_page() returned
+> void, so the failure path simply did not exist.
+> 
+> Instead, looking at the git history, the failure branch `if (ret)` was
+> added later by commit 1cb9dc4b475c ("mm: hwpoison: support recovery from
+> HugePage copy-on-write faults"). It modified copy_user_large_folio() to
+> return an int and introduced error handling paths that unfortunately
+> missed restoring the reservations. Should the Fixes tag perhaps point to
+> 1cb9dc4b475c instead?
+> 
+> Furthermore, if commit 1cb9dc4b475c is indeed the root cause, I noticed
+> it also introduced similar error handling paths in other places. For
+> example, in copy_hugetlb_page_range():
+> 
+>         ret = copy_user_large_folio(new_folio, pte_folio, addr, dst_vma);
+>         folio_put(pte_folio);
+>         if (ret) {
+>                 folio_put(new_folio);
+>                 break;
+>         }
+> 
+> Here, new_folio was allocated with alloc_hugetlb_folio(), which consumes
+> reservations. But if the copy fails, new_folio is freed via folio_put()
+> without calling restore_reserve_on_error() first.
+> 
+> Does this imply we might have similar reservation leaks in other error
+> paths touched by 1cb9dc4b475c? I'd love to hear your thoughts on this.
 
-> This is nf-next material.
+It's been a while.  Can people please refocus on this?
 
-Understood.
+David, your patch had cc:stable but I'm not seeing a description of the
+userspace-visible effects of the bug.  Can you please describe?
+
+
+From: David Carlier <devnexen@gmail.com>
+Subject: mm/hugetlb: restore reservation on error in hugetlb_mfill_atomic_pte() resubmission path
+Date: Sun, 22 Mar 2026 05:21:20 +0000
+
+When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
+hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. 
+If copy_user_large_folio() subsequently fails, folio_put() restores the
+global hugetlb pool count through free_huge_folio(), but the per-VMA
+reservation map entry is left in an inconsistent state.
+
+Add the missing restore_reserve_on_error() call before folio_put(),
+matching the first-attempt error path which already handles this
+correctly.
+
+Link: https://lore.kernel.org/20260322052120.14021-1-devnexen@gmail.com
+Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow on UFFDIO_COPY")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: yuehaibing <yuehaibing@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/hugetlb.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/mm/hugetlb.c~mm-hugetlb-restore-reservation-on-error-in-hugetlb_mfill_atomic_pte-resubmission-path
++++ a/mm/hugetlb.c
+@@ -6290,6 +6290,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
+ 		folio_put(*foliop);
+ 		*foliop = NULL;
+ 		if (ret) {
++			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
+ 			folio_put(folio);
+ 			goto out;
+ 		}
+_
+
 
