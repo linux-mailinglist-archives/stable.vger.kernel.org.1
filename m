@@ -1,176 +1,263 @@
-Return-Path: <stable+bounces-249625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249626-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNA0FlaHDGo1iwUAu9opvQ
-	(envelope-from <stable+bounces-249625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:52:54 +0200
+	id 4Aj+MaiEDGrIigUAu9opvQ
+	(envelope-from <stable+bounces-249626-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:41:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06C8581C65
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:52:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23CE5819FC
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CF39312E574
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:21:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C97AE30507BA
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FDC400DF6;
-	Tue, 19 May 2026 15:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117A84EA373;
+	Tue, 19 May 2026 15:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pARPau/Z"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HNVQprvz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55A7400DFC;
-	Tue, 19 May 2026 15:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C394EA374;
+	Tue, 19 May 2026 15:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779203949; cv=none; b=MN481U65FwWBiN9EHirg/seJEbPbLAhw/0yqEix5/CRn31VuKd78KDdN1nxg/GfvkFwxKd+0rmKySt+Vd7/yUlsPy8xpi2o8w4zGcuhkluNeBNLTcMLcYirQGQHOFiu15IpxWicvsIBKVNk2BJSKKwLqm2p8fs61lrH0KcTrTaI=
+	t=1779204263; cv=none; b=aJ0f0HcaIhK9ZsKwJUFNOSIftdbvbdBAfVyU2I47ALJ0v+n9uKiYezsht4hKjVmVFLL9DDtA9eslEFIguSjxnw+qLmryTw3EQCd699/sKwTFNfwfhpNmDb/EnbADIiyN2bBOi9oshX0rvtCqTZKHXLexzmG9LPylc6+MN4r/YJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779203949; c=relaxed/simple;
-	bh=nNsxKpDn2GIl+ynVQyOFWi8VuSsq3U/b8KBRqO60zFM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AzyEk9ullhdkcIPCcggow4Xrpp6zSfEPFUgZ+sNAqxtatcMSQ1qcTAthTlvOt7Rkz0Zu03HT6eHnpcOlR0YfiSMygxDEHp4MLyP6yVZYdIKdcwwQ3qpQMa/AYj0v+GM0NIxysOoODOP/4VqnGjpKhda0s6yw2PVq+zlr8NQI8RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pARPau/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61DCC2BCB8;
-	Tue, 19 May 2026 15:19:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1779203949;
-	bh=nNsxKpDn2GIl+ynVQyOFWi8VuSsq3U/b8KBRqO60zFM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pARPau/Z0VNLvUTTeuvLQ1kKek93j9hxvsdWGgFgrcJFzbpxLC8Lq2BclUqNnOYfr
-	 RUb7w25Z0RUAZZW43ennx6Oe7UvVdovqifsnjYsDZ8/I9QZ5cNlmcHTwSAtLwobNe+
-	 bSfJb3SyPrQg0K36TyXXhH95lBzWq5uiBcd3WfaY=
-Date: Tue, 19 May 2026 17:18:22 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Sasha Levin <sashal@kernel.org>, linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [GIT PULL] bluetooth 2026-05-14
-Message-ID: <2026051942-uproar-drainpipe-6370@gregkh>
-References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
- <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info>
- <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
- <2026051954-revision-sierra-6bb4@gregkh>
- <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
- <2026051909-impurity-nemesis-2f65@gregkh>
- <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
+	s=arc-20240116; t=1779204263; c=relaxed/simple;
+	bh=FfCzn7uHy+J3UAlw1OK7AxoLigrqYDhUj+CNF3+qcX0=;
+	h=Date:To:From:Subject:Message-Id; b=qJH/X+/5XeZ3veFSHfaBmSwJ6z+4Y8pTVr5CGkx2GrO75GTo2kL2X8BSEUfv3xCHNLLCG7HYMG1mWOiAozOMTm7eLDvjjZ0ydFY8f35b4JUjHHRWPM3F6DmN3XtkpYfgcX1cWNpP8rAQ3r095ji46ELOcscGj/omYOBYYelOpJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HNVQprvz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D32C2BCB8;
+	Tue, 19 May 2026 15:24:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1779204263;
+	bh=FfCzn7uHy+J3UAlw1OK7AxoLigrqYDhUj+CNF3+qcX0=;
+	h=Date:To:From:Subject:From;
+	b=HNVQprvzNcRD2r6RIxG8tcxW1ZZyVMP4NI8I5LnnpdgwlsHr27Gnutnh0i7qUlLv+
+	 wxbr5fzPdb4leFxIvqFqriwVB+9zE/PBMYvOInAaWHOhzez3b4ul0SUFXB32gbEWDK
+	 DgkzkzJwgbBXavG9DWf+qgD4K2VJth3AuEEzs9G4=
+Date: Tue, 19 May 2026 08:24:22 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-sysfs-schemes-delete-tried-region-in-regions_rmdirs.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260519152423.40D32C2BCB8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249625-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249626-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A06C8581C65
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B23CE5819FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 19, 2026 at 09:44:39AM -0400, Luiz Augusto von Dentz wrote:
-> Hi Greg,
-> 
-> On Tue, May 19, 2026 at 8:07 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis wrote:
-> > > On 5/19/26 12:30, Greg KH wrote:
-> > > > On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote:
-> > > >> On 5/15/26 17:10, Thorsten Leemhuis wrote:
-> > > >>> On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
-> > > >>>
-> > > >>>> The following changes since commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac:
-> > > >>>>   net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:12 +0200)
-> > > >>>>
-> > > >>>> are available in the Git repository at:
-> > > >>>>
-> > > >>>>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-14
-> > > >>>>
-> > > >>>> for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c00282:
-> > > >>>>
-> > > >>>>   Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-14 09:58:08 -0400)
-> > > >>>
-> > > >>> It seems this PR sadly came too late for this week's net PR to mainline
-> > > >>> that was merged yesterday.
-> > > >>>
-> > > >>> TWIMC, from my point of view, it would be great if we somehow could
-> > > >>> still get the changes from this PR or at least the btmtk fix it
-> > > >>> contains[1] to mainline this week before -rc4, as it is fixing a
-> > > >>> regression known since 2026-04-24 that at least five people encountered
-> > > >>> with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
-> > > >>> validate WMT event SKB length before struct access") [006b9943b982 in
-> > > >>> -next].
-> > > >>
-> > > >> Greg, Sasha, that [1] fix I was talking about now reached -next as
-> > > >> 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
-> > > >> events") and will likely hit mainline on Thursday or so with the weekly
-> > > >> -net PR to -mainline. If that's good enough for you, I'd say it would be
-> > > >> good to pick this up for the next round of stable kernels.
-> > > >
-> > > > That "Fixes:" tag is referring to something that is also not in any
-> > > > tree, but that commit does have a cc: stable in it.  So do we need both
-> > > > of these:
-> > >
-> > > Valid question, as yes, there is a slight mixup here:
-> > >
-> > > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
-> > >
-> > > That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is the
-> > > -next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
-> > > btmtk: validate WMT event SKB length before struct access") -- the one
-> > > that is causing the regression that I want to get fixed. So we now only
-> > > need:
-> > >
-> > > > 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL events")
-> >
-> > Ok, but that "Fixes:" tag pointing to an invalid commit is going to be a
-> > nightmare to track over time, ugh.
-> 
-> Hmm, did we get the wrong hash or something? Usually, that would show
-> up in the verify-fixes.sh, but perhaps it didn't capture it this time
-> for some reason, perhaps I'm running an outdated version or something
-> similar.
 
-Something went wrong if we ended up with a patch in the stable trees,
-yet this fix is referring to it as a different git sha.  Don't know
-where the disconnect happend :(
+The patch titled
+     Subject: mm/damon/sysfs-schemes: delete tried region in regions_rmdirs()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-sysfs-schemes-delete-tried-region-in-regions_rmdirs.patch
 
-thanks,
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-schemes-delete-tried-region-in-regions_rmdirs.patch
 
-greg k-h
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/sysfs-schemes: delete tried region in regions_rmdirs()
+Date: Mon, 18 May 2026 08:25:58 -0700
+
+DAMON sysfs maintains the DAMOS tried region directory objects via a
+linked list.  When the user requests refresh of the directories, DAMON
+sysfs removes all the region directories first, and then generate updated
+regions directory on the empty space.  The removal function
+(damon_sysfs_scheme_regions_rm_dirs()) only puts the kobj objects. 
+Deletion of the container region object from the linked list is done
+inside the kobj release callback function.
+
+If somehow the callback invocation is delayed, the list will contain
+regions list that gonna be freed.  If the updated region directories
+creation is started in this situation, the list can be corrupted and
+use-after-free can happen.
+
+Because the kobj objects are managed by only DAMON sysfs, the issue cannot
+happen in normal situation.  But, such delays can be made on kernels that
+built with CONFIG_DEBUG_KOBJECT_RELEASE.  On the kernel, the issue can
+indeed be reproduced like below.
+
+    # damo start --damos_action stat
+    # cd /sys/kernel/mm/damon/admin/kdamonds/0/
+    # for i in {1..10}; do echo update_schemes_tried_regions > state; done
+    # dmesg | grep underflow
+    [   89.296152] refcount_t: underflow; use-after-free.
+
+Fix the issue by removing the region object from the list when
+decrementing the reference count.
+
+Also update damos_sysfs_populate_region_dir() to add the region object to
+the list only after the kobject_init_and_add() is success, so that fail of
+kobject_init_and_add() is not leaving the deallocated object on the list.
+
+The issue was discovered [1] by Sashiko.
+
+Link: https://lore.kernel.org/20260518152559.93038-1-sj@kernel.org
+Link: https://lore.kernel.org/20260513011920.119183-1-sj@kernel.org [1]
+Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.2.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/damon/sysfs-schemes.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+--- a/mm/damon/sysfs-schemes.c~mm-damon-sysfs-schemes-delete-tried-region-in-regions_rmdirs
++++ a/mm/damon/sysfs-schemes.c
+@@ -88,7 +88,6 @@ static void damon_sysfs_scheme_region_re
+ 	struct damon_sysfs_scheme_region *region = container_of(kobj,
+ 			struct damon_sysfs_scheme_region, kobj);
+ 
+-	list_del(&region->list);
+ 	kfree(region);
+ }
+ 
+@@ -164,7 +163,7 @@ static void damon_sysfs_scheme_regions_r
+ 	struct damon_sysfs_scheme_region *r, *next;
+ 
+ 	list_for_each_entry_safe(r, next, &regions->regions_list, list) {
+-		/* release function deletes it from the list */
++		list_del(&r->list);
+ 		kobject_put(&r->kobj);
+ 		regions->nr_regions--;
+ 	}
+@@ -2928,14 +2927,15 @@ void damos_sysfs_populate_region_dir(str
+ 	if (!region)
+ 		return;
+ 	region->sz_filter_passed = sz_filter_passed;
+-	list_add_tail(&region->list, &sysfs_regions->regions_list);
+-	sysfs_regions->nr_regions++;
+ 	if (kobject_init_and_add(&region->kobj,
+ 				&damon_sysfs_scheme_region_ktype,
+ 				&sysfs_regions->kobj, "%d",
+ 				sysfs_regions->nr_regions++)) {
+ 		kobject_put(&region->kobj);
++		return;
+ 	}
++	list_add_tail(&region->list, &sysfs_regions->regions_list);
++	sysfs_regions->nr_regions++;
+ }
+ 
+ int damon_sysfs_schemes_clear_regions(
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+mm-damon-sysfs-schemes-delete-tried-region-in-regions_rmdirs.patch
+mm-damon-core-make-charge_addr_from-aware-of-end-address-exclusivity.patch
+mm-damon-core-handle-min_region_sz-remaining-quota-as-empty.patch
+mm-damon-core-merge-regions-after-applying-damos-schemes.patch
+mm-damon-core-introduce-failed-region-quota-charge-ratio.patch
+mm-damon-sysfs-schemes-implement-fail_charge_numdenom-files.patch
+docs-mm-damon-design-document-fail_charge_numdenom.patch
+docs-admin-guide-mm-damon-usage-document-fail_charge_numdenom-files.patch
+docs-abi-damon-document-fail_charge_numdenom.patch
+mm-damon-tests-core-kunit-test-fail_charge_numdenom-committing.patch
+selftests-damon-_damon_sysfs-support-failed-region-quota-charge-ratio.patch
+selftests-damon-drgn_dump_damon_status-support-failed-region-quota-charge-ratio.patch
+selftests-damon-sysfspy-test-failed-region-quota-charge-ratio.patch
+docs-mm-damon-maintainer-profile-add-ai-review-usage-guideline.patch
+mm-damon-core-introduce-damon_ctx-paused.patch
+mm-damon-sysfs-add-pause-file-under-context-dir.patch
+docs-mm-damon-design-update-for-context-pause-resume-feature.patch
+docs-admin-guide-mm-damon-usage-update-for-pause-file.patch
+docs-abi-damon-update-for-pause-sysfs-file.patch
+mm-damon-tests-core-kunit-test-pause-commitment.patch
+selftests-damon-_damon_sysfs-support-pause-file-staging.patch
+selftests-damon-drgn_dump_damon_status-dump-pause.patch
+selftests-damon-sysfspy-check-pause-on-assert_ctx_committed.patch
+selftests-damon-sysfspy-pause-damon-before-dumping-status.patch
+mm-damon-introduce-damon_set_region_system_rams_default.patch
+mm-damon-reclaim-cover-all-system-rams.patch
+mm-damon-lru_sort-cover-all-system-rams.patch
+mm-damon-core-remove-damon_set_region_biggest_system_ram_default.patch
+mm-damon-stat-use-damon_set_region_system_rams_default.patch
+docs-admin-guide-mm-damon-reclaim-update-for-entire-memory-monitoring.patch
+docs-admin-guide-mm-damon-lru_sort-update-for-entire-memory-monitoring.patch
+docs-admin-guide-mm-damon-usage-mark-scheme-filters-sysfs-dir-as-deprecated.patch
+docs-abi-damon-mark-schemes-s-filters-deprecated.patch
+mm-damon-reclaim-add-autotune_monitoring_intervals-parameter.patch
+docs-admin-guide-mm-damon-reclaim-update-for-autotune_monitoring_intervals.patch
+mm-damon-stat-add-a-parameter-for-reading-kdamond-pid.patch
+docs-admin-guide-mm-damon-stat-document-kdamond_pid-parameter.patch
+mm-damon-core-introduce-struct-damon_probe.patch
+mm-damon-core-embed-damon_probe-objects-in-damon_ctx.patch
+mm-damon-core-introduce-damon_filter.patch
+mm-damon-core-commit-probes.patch
+mm-damon-core-introduce-damon_region-probe_hits.patch
+mm-damon-core-introduce-damon_ops-apply_probes.patch
+mm-damon-core-do-data-attributes-monitoring.patch
+mm-damon-paddr-support-data-attributes-monitoring.patch
+mm-damon-sysfs-implement-probes-dir.patch
+mm-damon-sysfs-implement-probe-dir.patch
+mm-damon-sysfs-implement-filters-directory.patch
+mm-damon-sysfs-implement-filter-dir.patch
+mm-damon-sysfs-implement-filter-dir-files.patch
+mm-damon-sysfs-setup-probes-on-damon-core-api-parameters.patch
+mm-damon-sysfs-schemes-implement-tried_regions-r-probes.patch
+mm-damon-sysfs-schemes-implement-probe-dir.patch
+mm-damon-sysfs-schemes-implement-probe-hits-file.patch
+mm-damon-trace-probe_hits.patch
+selftests-damon-sysfssh-test-probes-dir.patch
+docs-mm-damon-design-document-data-attributes-monitoring.patch
+docs-admin-guide-mm-damon-usage-document-data-attributes-monitoring.patch
+mm-damon-core-introduce-damon_filter_type_memcg.patch
+mm-damon-paddr-support-damon_filter_type_memcg.patch
+mm-damon-sysfs-add-filters-f-path-file.patch
+mm-damon-sysfs-schemes-move-memcg_path_to_id-to-sysfs-common.patch
+mm-damon-sysfs-setup-damon_filter-memcg_id-from-path.patch
+docs-mm-damon-design-update-for-memcg-damon-filter.patch
+docs-admin-guide-mm-damon-usage-update-for-memcg-damon-filter.patch
+
 
