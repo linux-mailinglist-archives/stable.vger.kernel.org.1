@@ -1,91 +1,79 @@
-Return-Path: <stable+bounces-249461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDQiMP33C2o3SgUAu9opvQ
-	(envelope-from <stable+bounces-249461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:41:17 +0200
+	id AOnCMOX1C2r0SAUAu9opvQ
+	(envelope-from <stable+bounces-249459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:32:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C34F5777F9
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:41:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B3457774F
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:32:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E2CC73033197
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 05:41:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 607FC300FC7D
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 05:31:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2B533F595;
-	Tue, 19 May 2026 05:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752432DB788;
+	Tue, 19 May 2026 05:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H0dbQHl7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QepWzXLF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA28533F5B1
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 05:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3B21C5D59;
+	Tue, 19 May 2026 05:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779169268; cv=none; b=cTJwwp1T+PG4Aac5oYDDnIJ51IIBPjQOUW6hg0N0HNQK31qLCVBWMGuBAXzLSoa3YjPQMxpON0T9uQ8wVwM+VFfSWtM0rMumfbSgUSwN5+W/GZnrTrqE8wyH4wV5c9OphUiFYY1T+5PLVW4Qr8AQAoNh6zi0b2uB0u9xwMF0Sy4=
+	t=1779168718; cv=none; b=ALmAYsB4r499CabndOrCkF+bphcZBo+XDZ+CD6TJDlV7yTUVIsG3+iha8cN1L21lyd3WHYc/RlXz2AuSIoRD0WTSM1hP6H1Mv2t+OM5xxrMPqZUjGGDcxGMbe+pPgywi6ZDunZ9haT1HUS9EkJ5qtxP1HLcUuN8PWis9BP/WeK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779169268; c=relaxed/simple;
-	bh=xj2PXqco0OYgzWLRRPhtDZOD1JPYK8pxo4cMRYsLjhM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ogzKOhF7iZU1gI+HZqvwI2TBEvqsNmZd5oFeL9BcoSJZhEHThZeMJz8f3+qNohAhFc9XnjPT9CVVIGNXBi3ub6VuDv2UJbOFXprKslHmCbmf7CAcNN+bGAqypdcH8D/JZrs8PsIKpg1ZsSolW3LXtRRvcL+kIbV0Ib6tpKlAVKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H0dbQHl7; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7c7fc722b50so21428317b3.2
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 22:41:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779169266; x=1779774066; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UxEHYRPXPUF5CcnWUlQth343O/vG0e4EfUADmNe/YLQ=;
-        b=H0dbQHl7i+rdo104I/RZyAWkBIsHuw8ULQbRdUpzqa701rSDxIPA8ZkI2F3Ka2o84/
-         KcLZvLJ6b8yD/yQ97V8v3Pn1CK55AVXfHYlGh2uCjFW9B90rNDHdhs+oam60ChkBf5O2
-         FElM3NXIlLpMgINQNOm8vtZi86vEPJj45iGbKsxQCvF+a9WhZCXdgaRUbJZUAI9pRYmy
-         pdYNNxJyUKgdNY2oEJjfXJspRxORx8jYL5R4HRid5205iYL4Dy5J+NVL3cnFeQXynbL2
-         WbctmJ3k/okvl3xaw6aCu7wH4xhtwHIioxaNm7zoiIrFp2FDpWXETVhYfM3iFO84zCbO
-         T5XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779169266; x=1779774066;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UxEHYRPXPUF5CcnWUlQth343O/vG0e4EfUADmNe/YLQ=;
-        b=qCsK94Gk6PrCSJhV3+D6byg0s2xCdBcpERJR/hLGRrBF6HUWsO2aIeqpbOYgSUUumb
-         iWRLD5maws3oxgl1mCezJq0r+0OrpPl0ESAteEZTA9R18okeUhldBmTug4ee15QsPFCC
-         HfOVxvD/tDjE37rzDxMbJxbzm8kMnWHDdUKLbR/8uUvwy4G46lHxRLs02vh+8bz2rZGs
-         MC1+BYncvlZOkZJj90KaNb867aClb8d0WgCNmZznTjXh7fZsUJFhehrmKMy7H6j9YTVB
-         iIf2fWT+rlB0mDZ6/XhD3uKaI8wbluODjkHGdIqv/igPW9HkTZSk7FCtYSJUtAdpwsmO
-         aXyg==
-X-Forwarded-Encrypted: i=1; AFNElJ9zgErZcn2fzehbx8Drb+yId/jLODTE/b4vxTxHUnXyHkd6ilk/8uX4MQLHFbf/faMT+owImn4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRxHSbwxIRhS5cTAbDFgsukd6YYg9TYUE8GHJlnVZyNcqVZjB8
-	qWqp9oAWVKopMuaKH9Z0ijDvf57KgcclwccLDrKk2KpuEddJiCrQ0JQC
-X-Gm-Gg: Acq92OFUHZytIhp87EylBG4HvqeV5PMLOVmN4z9jfl9j1ZYCkQZmPZTP0Xp+nS2p7Rg
-	uzR2/N4W4xqsOAqxdSExj0RaQ0BZHBKUqy7kFhVvSM1lmisx39GkWbxs0AEWHjfP4t1dYZ/Zn0F
-	dzQVb7Ya3FS5zaugfTnWwBlbMx/Qi4kgs1ol6tsq5Q2tzOPC7Mox/FK363GmPNb9YXwqbBcHAvr
-	zttrpZMbA1YwOy9h2nTZkiCKDVe7nqeOSjHjGmblJ6xhrGVV/PMpF/PQVe7HBLwz/D99EtQUkxs
-	AawjKX623399cCehhc7BkVkhCVcz2LaFReVvP4ANKpNH9nfp8ucLKvwk7DoGsBNMkwYpq2R42QB
-	4/ADZ6p8QXssQE/5kuny8UTK5RNbhPWeNeOzYDkgsYeyqsMuGu57ej6PqdsTH++RcskJdOJKfO3
-	5Ef+9ulfG6ijt9nH9K4mQ=
-X-Received: by 2002:a05:690c:e159:20b0:7ba:ded4:df53 with SMTP id 00721157ae682-7c95b82a65cmr144251357b3.32.1779169265906;
-        Mon, 18 May 2026 22:41:05 -0700 (PDT)
-Received: from localhost ([2a03:2880:f806:b::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc9bc0dafdsm32141597b3.30.2026.05.18.22.41.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 22:41:04 -0700 (PDT)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: miklos@szeredi.hu
-Cc: fuse-devel@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v1 2/2] fuse: re-lock request before returning from fuse_ref_folio()
-Date: Mon, 18 May 2026 22:28:07 -0700
-Message-ID: <20260519052807.1924269-2-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260519052807.1924269-1-joannelkoong@gmail.com>
-References: <20260519052807.1924269-1-joannelkoong@gmail.com>
+	s=arc-20240116; t=1779168718; c=relaxed/simple;
+	bh=HjTkr/tPr7oETfZJGHuuDY+CDYpJn32WLeQGOszhU9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fSWySRC4bXvT/JcAIYyPpaXZdauw4X88I72JQfVVQgwV0pMoVrP9igGGEIPubZ4e++x5sVI5pYcve+vUgJda5PhqcAtr/jsGzX5r7RteERED4C0yd0NMlazDrhVGbrvopFnZUGqfRWVJgjaj3wvISsAreGin+UB34fYQ1MQDFK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QepWzXLF; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779168717; x=1810704717;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=HjTkr/tPr7oETfZJGHuuDY+CDYpJn32WLeQGOszhU9w=;
+  b=QepWzXLFtX4Czj+XwZPyKk5Xe6NxH0ZegBhXty21Bc0LQ617BcXyXQIE
+   ZWO8Hj3I4dBJhtCo6nvZkdsrYEZZ2G1zFf6qKKo4l1CjbO8VEqEBvdxKr
+   b4BrEtO2Pyr+SAEeju78TRN3JTZjZyoe8FSTq5+v6hSxrHOwjPptWkCvE
+   9gUZeVh6CSaM9Q6c4gTu8Xa2vc5yti8FzY96FXpVt3vgrkqNu/UdjuBUu
+   J5968TJLSKHjthq6NGOXAHCE38U1RNhco/qO7skYbBQIWR028iSo1VzRn
+   Kso/ffMY7jxxpoB6R+ugPEm/NzG4NuNf9zNk0dxguRm2JeF1lXiRiByIM
+   w==;
+X-CSE-ConnectionGUID: F8IjmGUhSSyFuyqnrAK1WQ==
+X-CSE-MsgGUID: W4cg//KvQUqOHjX0RPasww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="90617165"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="90617165"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 22:31:56 -0700
+X-CSE-ConnectionGUID: OVVCC+xiSb+pt36LZi/tyA==
+X-CSE-MsgGUID: UpaDmT/0QkWL+hnTz60uWQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="263177221"
+Received: from allen-box.sh.intel.com ([10.239.159.52])
+  by fmviesa002.fm.intel.com with ESMTP; 18 May 2026 22:31:54 -0700
+From: Lu Baolu <baolu.lu@linux.intel.com>
+To: Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>
+Cc: iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	stable@vger.kernel.org,
+	Nareshkumar Gollakoti <naresh.kumar.g@intel.com>
+Subject: [PATCH 1/1] iommu/vt-d: Avoid WARNING in sva unbind path
+Date: Tue, 19 May 2026 13:29:17 +0800
+Message-ID: <20260519052917.3729796-1-baolu.lu@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,64 +84,127 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249459-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249461-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[baolu.lu@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_NONE(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4C34F5777F9
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,intel.com:dkim]
+X-Rspamd-Queue-Id: 26B3457774F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-fuse_ref_folio() unlocks the request but does not re-lock it before
-returning. fuse_chan_abort() can end the request and the async end
-callback (eg fuse_writepage_free()) can free the args while the
-subsequent copy chain logic after fuse_ref_folio() accesses them,
-leading to use-after-free issues.
+The Intel IOMMU driver allows SVA on devices even if they do not support
+PCI/PRI. Commit 39c20c4e83b9 ("iommu/vt-d: Only handle IOPF for SVA when
+PRI is supported") modified the SVA bind path to allow this configuration
+by skipping IOPF enablement when PRI is missing. However, it failed to
+update the unbind path.
 
-Fix this by locking the request in fuse_ref_folio() before returning.
+This creates an imbalance: the unbind path attempts to disable IOPF for
+a device that never had it enabled, triggering a WARNING in
+intel_iommu_disable_iopf():
 
-Fixes: c3021629a0d8 ("fuse: support splice() reading from fuse device")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+ WARNING: drivers/iommu/intel/iommu.c:3475 at intel_iommu_disable_iopf+0x4f/0x90d
+ Call Trace:
+  <TASK>
+  blocking_domain_set_dev_pasid+0x50/0x70
+  iommu_detach_device_pasid+0x89/0xc0
+  iommu_sva_unbind_device+0x73/0x150
+  xe_vm_close_and_put+0x4d2/0x1200 [xe]
+
+Fix this by bypassing IOPF operations for SVA domains on non-PRI hardware
+in both the bind and unbind paths.
+
+Fixes: 39c20c4e83b9 ("iommu/vt-d: Only handle IOPF for SVA when PRI is supported")
+Cc: stable@vger.kernel.org
+Reported-by: Nareshkumar Gollakoti <naresh.kumar.g@intel.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
 ---
- fs/fuse/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/intel/iommu.h | 11 +++++++++++
+ drivers/iommu/intel/svm.c   | 12 ++++--------
+ 2 files changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-index 37b11b89ce1b..a9385d3597cc 100644
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1227,7 +1227,7 @@ static int fuse_ref_folio(struct fuse_copy_state *cs, struct folio *folio,
- 	cs->nr_segs++;
- 	cs->len = 0;
+diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+index ef145560aa98..775f1c4ae346 100644
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -1254,18 +1254,29 @@ void intel_iommu_disable_iopf(struct device *dev);
+ static inline int iopf_for_domain_set(struct iommu_domain *domain,
+ 				      struct device *dev)
+ {
++	struct device_domain_info *info = dev_iommu_priv_get(dev);
++
+ 	if (!domain || !domain->iopf_handler)
+ 		return 0;
  
--	return 0;
-+	return lock_request(cs->req);
++	/* SVA with non-IOMMU/PRI IOPF handling is allowed. */
++	if (domain->type == IOMMU_DOMAIN_SVA && !info->pri_supported)
++		return 0;
++
+ 	return intel_iommu_enable_iopf(dev);
  }
  
- /*
+ static inline void iopf_for_domain_remove(struct iommu_domain *domain,
+ 					  struct device *dev)
+ {
++	struct device_domain_info *info = dev_iommu_priv_get(dev);
++
+ 	if (!domain || !domain->iopf_handler)
+ 		return;
+ 
++	if (domain->type == IOMMU_DOMAIN_SVA && !info->pri_supported)
++		return;
++
+ 	intel_iommu_disable_iopf(dev);
+ }
+ 
+diff --git a/drivers/iommu/intel/svm.c b/drivers/iommu/intel/svm.c
+index 57cd1db7207a..fea10acd4f02 100644
+--- a/drivers/iommu/intel/svm.c
++++ b/drivers/iommu/intel/svm.c
+@@ -164,12 +164,9 @@ static int intel_svm_set_dev_pasid(struct iommu_domain *domain,
+ 	if (IS_ERR(dev_pasid))
+ 		return PTR_ERR(dev_pasid);
+ 
+-	/* SVA with non-IOMMU/PRI IOPF handling is allowed. */
+-	if (info->pri_supported) {
+-		ret = iopf_for_domain_replace(domain, old, dev);
+-		if (ret)
+-			goto out_remove_dev_pasid;
+-	}
++	ret = iopf_for_domain_replace(domain, old, dev);
++	if (ret)
++		goto out_remove_dev_pasid;
+ 
+ 	/* Setup the pasid table: */
+ 	sflags = cpu_feature_enabled(X86_FEATURE_LA57) ? PASID_FLAG_FL5LP : 0;
+@@ -184,8 +181,7 @@ static int intel_svm_set_dev_pasid(struct iommu_domain *domain,
+ 
+ 	return 0;
+ out_unwind_iopf:
+-	if (info->pri_supported)
+-		iopf_for_domain_replace(old, domain, dev);
++	iopf_for_domain_replace(old, domain, dev);
+ out_remove_dev_pasid:
+ 	domain_remove_dev_pasid(domain, dev, pasid);
+ 	return ret;
 -- 
-2.52.0
+2.43.0
 
 
