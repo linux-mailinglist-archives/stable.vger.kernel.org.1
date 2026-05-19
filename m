@@ -1,175 +1,133 @@
-Return-Path: <stable+bounces-249693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249694-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJmSOlzHDGrAlwUAu9opvQ
-	(envelope-from <stable+bounces-249693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 22:26:04 +0200
+	id CEA2No3HDGp2lwUAu9opvQ
+	(envelope-from <stable+bounces-249694-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 22:26:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AD6584A57
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 22:26:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58581584A93
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 22:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F27B1301CF8B
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 20:26:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CBF2E302ACD9
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 20:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3CB3B9DAC;
-	Tue, 19 May 2026 20:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7062C3BB670;
+	Tue, 19 May 2026 20:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XJkTfs07"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nCXbCoje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04500320CD1;
-	Tue, 19 May 2026 20:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF242874E3;
+	Tue, 19 May 2026 20:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779222360; cv=none; b=X8riY+1CGSIayLjTSF654kWVQHGsNUPpscrYc50MZykfFMD1BEv6xgV4uAM3UjKnmHueh8596IjWAHmJOmbulDd9/RDMPosla66bO7pnC0+fReb3YG8GAayx/wfI8CmUPUNfPLvi/1Tb4Fm1Pw3sq7RAtEsrAXUgyGMFVm4txa0=
+	t=1779222381; cv=none; b=KfRroTn1Hxb0XTfBoVSvyD3Nt4r2ISYXfsLI5eIdQ8/kTHAtXgRPn9caEvPfbWNwpqE6q1HwwkISCK7R55j4EdUwXhkxYpG9m+NHl3r+HYP/+g8jvoodnvf59mfks0qWSyBueUXh6O+TrEE7OazPQqGSWABC8SuR9/zckjYfWLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779222360; c=relaxed/simple;
-	bh=dZgB580wV5B3eYlBodT39eUPujogWfrWstymW3sdKBM=;
-	h=Date:To:From:Subject:Message-Id; b=q1rVh+UqteL6lWEOGGJUEE21Mk4S0uj8rvghpuCBiXmnde3I//q/qlKAHRW9enrMt5SZsZSEAB5suMajs99dnZu4pba5ogyUA5Sxr7jE7RVLAyWy97FFtDkp4NCXDkUEL1ysHS4YntbuGz0GG+BTOHdAxgJHIyTF2tqIZJc58nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XJkTfs07; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DD81F000E9;
-	Tue, 19 May 2026 20:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779222358;
-	bh=TPNmf42vxRoK8xZFLzKh6LF3SyiQbTxiXq12ogleSAU=;
-	h=Date:To:From:Subject;
-	b=XJkTfs07Iz5M3FQgRcN4w6rDwbX+yJRnJbkPeI3j2dEO5xjAnQJxxti6WaGgTdlxw
-	 uSWLcVjp0sBAOLdIJTbmRxhxBjI2upHMOr8sBJuYVRNbGvHsqFxjGarkbChz4O47yr
-	 q5fwqNSL5geKm+5kmqgcOllFscGXi3kSrKUedujw=
-Date: Tue, 19 May 2026 13:25:57 -0700
-To: mm-commits@vger.kernel.org,vishal.l.verma@intel.com,stable@vger.kernel.org,rppt@kernel.org,rafael@kernel.org,osalvador@kernel.org,icheng@nvidia.com,gregkh@linuxfoundation.org,djakov@kernel.org,david@kernel.org,georgi.djakov@oss.qualcomm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + drivers-base-memory-set-mem-altmap-after-successful-device-registration.patch added to mm-new branch
-Message-Id: <20260519202558.52DD81F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1779222381; c=relaxed/simple;
+	bh=l6Cn7HEELqc4tHWwQOHslAPenl93wOtMeTnsCORUAJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aw65Zf8MaU6tY5kRQqwoAWlM1Bf2P61h34GxtR3MceU9M9YnXstNzvQTXI26HZcnmEECQoYrH56fTExW9ReRJ4AQfsJ2os4b0YE/o+iFsPW9lqeIUvv2NgeuAQQ+BqnCN+9VHskEsrQZ9CKAzfKdT/0ZFhc6mB5j67kaWHZXe1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nCXbCoje; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC411F000E9;
+	Tue, 19 May 2026 20:26:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779222379;
+	bh=1QaohRfK/Pp16YUyd3MuiVvxN0mjbrearDCh1e89Psc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nCXbCojeCCvfKedCNiIEtV7bDjml9LlzSW/PTswikOpX+BKEjtOon3XqRqo43h2Uv
+	 ft1HVLjMOZANUWZ+PS5kcmX1dacX0SOR/My6IcNjWvMX0cJyQuqGcygoeVdNtCY82W
+	 SHHxS9KYKwYtlFDT4iLZwHQPgg8Z/WgDyVKWyz18WNhGEfz8iGkX5mkzQzplRC6r2Z
+	 8GTS8J6+DhulZLgMa0bXRmjX22Ci/r8zULR61OiDEIcAQ/hHj1eLksh5Kb43K6ycmM
+	 ysdwUC9fnNgbbl/8P5iicMt6y8F+CrbVDWRvAaZOrWLE2glpvrvSScOxd4Jx9LTgET
+	 SfePCzXTcowfg==
+Date: Tue, 19 May 2026 21:26:14 +0100
+From: Simon Horman <horms@kernel.org>
+To: Dawei Feng <dawei.feng@seu.edu.cn>
+Cc: sgoutham@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn,
+	stable@vger.kernel.org, Zilin Guan <zilin@seu.edu.cn>
+Subject: Re: [PATCH net] octeontx2-pf: avoid double free of pool->stack on AQ
+ init failure
+Message-ID: <20260519202614.GA988238@horms.kernel.org>
+References: <20260515151826.1005397-1-dawei.feng@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260515151826.1005397-1-dawei.feng@seu.edu.cn>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249693-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249694-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linux-foundation.org:email,linux-foundation.org:dkim,nvidia.com:email,linuxfoundation.org:email,intel.com:email]
-X-Rspamd-Queue-Id: 51AD6584A57
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,horms.kernel.org:mid,sashiko.dev:url,seu.edu.cn:email]
+X-Rspamd-Queue-Id: 58581584A93
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, May 15, 2026 at 11:18:26PM +0800, Dawei Feng wrote:
+> otx2_pool_aq_init() frees pool->stack when mailbox sync or retry
+> allocation fails, but leaves the pointer unchanged. Later,
+> otx2_sq_aura_pool_init() unwinds the partial setup through
+> otx2_aura_pool_free(), which frees pool->stack again. The CN20K-specific
+> cn20k_pool_aq_init() implementation has the same bug in
+> its corresponding error path.
+> 
+> Set pool->stack to NULL immediately after the local free so the shared
+> cleanup path does not free the same stack again while cleaning up
+> partially initialized pool state.
+> 
+> The bug was first flagged by an experimental analysis tool we are
+> developing for kernel memory-management bugs while analyzing
+> v6.13-rc1. The tool is still under development and is not yet publicly
+> available. Manual inspection confirms that the bug is still present in
+> v7.1-rc3.
+> 
+> Runtime validation was not performed because reproducing this path
+> requires OcteonTX2/CN20K hardware.
+> 
+> Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
+> Fixes: d322fbd17203 ("octeontx2-pf: Initialize cn20k specific aura and pool contexts")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+> Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
 
-The patch titled
-     Subject: drivers/base/memory: set mem->altmap after successful device registration
-has been added to the -mm mm-new branch.  Its filename is
-     drivers-base-memory-set-mem-altmap-after-successful-device-registration.patch
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/drivers-base-memory-set-mem-altmap-after-successful-device-registration.patch
-
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-The mm-new branch of mm.git is not included in linux-next
-
-If a few days of testing in mm-new is successful, the patch will me moved
-into mm.git's mm-unstable branch, which is included in linux-next
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
-Subject: drivers/base/memory: set mem->altmap after successful device registration
-Date: Thu, 14 May 2026 02:26:57 -0700
-
-If __add_memory_block() fails at xa_store() (under memory pressure for
-example), device_unregister() is called, which eventually triggers
-memory_block_release() with mem->altmap still set, causing a
-WARN_ON(mem->altmap).  This was triggered by modifying virtio-mem driver.
-
-Fix this by delaying the assignment of mem->altmap until after
-__add_memory_block() has succeeded.
-
-Link: https://lore.kernel.org/20260514092657.3057141-1-georgi.djakov@oss.qualcomm.com
-Fixes: 1a8c64e11043 ("mm/memory_hotplug: embed vmem_altmap details in memory block")
-Signed-off-by: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Richard Cheng <icheng@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Georgi Djakov <djakov@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- drivers/base/memory.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/drivers/base/memory.c~drivers-base-memory-set-mem-altmap-after-successful-device-registration
-+++ a/drivers/base/memory.c
-@@ -797,7 +797,6 @@ static int add_memory_block(unsigned lon
- 	mem->start_section_nr = block_id * sections_per_block;
- 	mem->state = state;
- 	mem->nid = nid;
--	mem->altmap = altmap;
- 	INIT_LIST_HEAD(&mem->group_next);
- 
- #ifndef CONFIG_NUMA
-@@ -815,6 +814,8 @@ static int add_memory_block(unsigned lon
- 	if (ret)
- 		return ret;
- 
-+	mem->altmap = altmap;
-+
- 	if (group) {
- 		mem->group = group;
- 		list_add(&mem->group_next, &group->memory_blocks);
-_
-
-Patches currently in -mm which might be from georgi.djakov@oss.qualcomm.com are
-
-drivers-base-memory-set-mem-altmap-after-successful-device-registration.patch
-
+There is an AI generated review of this patch available on sashiko.dev
+I believe the issues raised there can be considered in the context of
+possible follow-up. I do not believe they should effect the progress
+of this patch.
 
