@@ -1,134 +1,126 @@
-Return-Path: <stable+bounces-249562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNa9Mg5NDGqWeAUAu9opvQ
-	(envelope-from <stable+bounces-249562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:44:14 +0200
+	id aD38JmRPDGqXegUAu9opvQ
+	(envelope-from <stable+bounces-249563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:54:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E2C57DE76
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:44:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1296257E19D
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:54:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC40630028BC
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:42:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6506D3091533
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634A34963B7;
-	Tue, 19 May 2026 11:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC6332BF44;
+	Tue, 19 May 2026 11:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qtmlabs.xyz header.i=@qtmlabs.xyz header.b="pZ9+DDUN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AyIyPC+T"
 X-Original-To: stable@vger.kernel.org
-Received: from s1.g1.infrastructure.qtmlabs.xyz (s1.g1.infrastructure.qtmlabs.xyz [107.172.1.117])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7321A4968EA;
-	Tue, 19 May 2026 11:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=107.172.1.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1D133688F
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 11:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779190918; cv=none; b=Ty3n7XL9XzvM8nsT1xDwnoVviGYuWC2EKl+wgLcIFcguprWPf9BNE0BJin360UxsP5+v9u60CSiyzzWeUVHpC7zGmgB4Z1GOvDj2B9x7JIWxqzBdMkHXMTSqgQQUrR+XWhYydm9ay9idnjIhaaOS0O520hck+9UvZbqcd4ASuH4=
+	t=1779191338; cv=none; b=HGGfmQDX/hqi62s9XCURb0jqA6wbACkgWM1VXNpGn4lu8R1Qqc7rAwzpft0v6RQRLfu+5Ui8/8ORYBywincpFm9CV+XmBa1dmD5//rQ1/r1MfoHRH1TRJ1q7kmiYD5fn6ENO4hrd3r+Yj2yuHlD6mT1KEwmOChoKEZaYQsAwIF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779190918; c=relaxed/simple;
-	bh=YjUy2YDdRmRqudKJsGT2J8c3flweY8fiADAo4FpfS6M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=swi1z9lSFjCvnb1y+ls9HVhfSGQQy6FkGLaEIEDeQ/NjcLfmqikm6ljREkx6GCtT3KppOOX+MEY9OqHk6q+9Pa6iJrAKmnT6tKkGQmS4R8c1SL2r8n52PTwTrVwYwLAfMae4CC3nkcq8D2TKcWr+p2/fs1C6iP0s6mJmD1ldLmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qtmlabs.xyz; spf=pass smtp.mailfrom=qtmlabs.xyz; dkim=pass (2048-bit key) header.d=qtmlabs.xyz header.i=@qtmlabs.xyz header.b=pZ9+DDUN; arc=none smtp.client-ip=107.172.1.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qtmlabs.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qtmlabs.xyz
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qtmlabs.xyz; s=dkim;
-	t=1779190915;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t6F5wUe5+M16cP+CoQiPBEbtaaRqMELGGUG6lgqwbMs=;
-	b=pZ9+DDUNXeWlTPPvXVtp3OyCmlmAxrSxFFtLmBNxFlaf2irIPamGMbgTZ01gWj68DspBiV
-	Cw9DdDqs+P1dvMBbfKGJnmLE4heFE6sgKeWKvdpxIXpjs8ww0yiBfXUCWoG0NBKy/6YbHh
-	pMFmhQD9NlQO9eNe2/UWgSalEgd5CptdpUdiwJqPgy1Ge6RCEK9PxfRTxEJnbPnXksfq6D
-	ccGSCantQu3VC/j+fDmxz8qznvf1d6y4VV4V464LE27tT3i9edIroSx//EOI8Lmnr3K1LH
-	8MniuG6gQR30YwdVLaazOAtIPu+nICiGiI7MIfgHwpV3skB7xFwC6NWKSxhiKg==
-Authentication-Results: s1.g1.infrastructure.qtmlabs.xyz;
-	auth=pass smtp.mailfrom=myrrhperiwinkle@qtmlabs.xyz
-Date: Tue, 19 May 2026 18:41:40 +0700
-Subject: [PATCH 2/2] usb: typec: ucsi: Don't update power_supply on power
- role change if not connected
+	s=arc-20240116; t=1779191338; c=relaxed/simple;
+	bh=P8tH35z/uw0sUKZFgOPDgy73UQSBzwGUIBPWsAuyH6s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nmqUFihRuiMKNxsjCjQvHc/9ytjiSr4xqWdrsy48JfkEkHeEWDEIj8BUVkwjsMuOgXXQH2T45XkdSfpXL3Do1drk9XuXB3NrnUjrifByWMWiXVway0PHM0MNcujZVzoe6NG3orft5oLTVfIcNeNrheh9W6cW9xNBrMTTwMeOzts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AyIyPC+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDF5C2BCFB
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 11:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779191338;
+	bh=P8tH35z/uw0sUKZFgOPDgy73UQSBzwGUIBPWsAuyH6s=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=AyIyPC+Th7V8akdW2YEbMD7D6pYR0JZw+wVug4nh6QxWBviCvESRqZsU9E8y3TUrF
+	 FOZREpj5dz9FH2KgXYy7g9biXVpVK8inm6xv8GG8AFxRBBow0lZlmArtlxlYUV/S5Q
+	 bm2siEC/VPlZYV8n0V/A0pi/5QTTI0XzbBwqKz0vKuY1KMMhie3NAw67j7CqXVddd+
+	 Kfrx6k2Aiehd7ebuR7WKGZqovjL+yjdp17CRl85zKQVAHT772t3TRRVO/dGL7vzmGj
+	 brtYp54Xfya0cTNcHG3/dARudZ01yO4tgQg8/Nw8IvCmoqrUAKp8s519tBEjWAvRtC
+	 desOjo5DtIt6g==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5aa0da74eaaso4308492e87.1
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 04:48:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/kI4WrQwk/uutXZP7xN+pqCotF4PGYpL66TY39An3NmNBnZeSxs+JXlyhKUtbCpJdX86o/gsg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCry5UmNWPCmEnMRdyYyr9w4C+1IvEzs+caLN7XbDK1ifSrNVZ
+	JGVgI2Bveo35HNzpkEUOhEkc6sxyHuO+WpyhDwzAZEAutxwmFVi12VPQ7d6rNt2o0i1McT/J1jF
+	lU1NDPerdGBjHhB71HC7J+6JHB9W5Yf8=
+X-Received: by 2002:a05:6512:15a7:b0:5a8:7ed5:7462 with SMTP id
+ 2adb3069b0e04-5a8ffc4b5cemr5829232e87.6.1779191336447; Tue, 19 May 2026
+ 04:48:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260519-ucsi-fix-2-v1-2-6f1239535187@qtmlabs.xyz>
-References: <20260519-ucsi-fix-2-v1-0-6f1239535187@qtmlabs.xyz>
-In-Reply-To: <20260519-ucsi-fix-2-v1-0-6f1239535187@qtmlabs.xyz>
-To: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>, stable@vger.kernel.org
-X-Spamd-Bar: -------
+References: <E2OXET.4X5GTP37VTNC3@kousu.ca> <4bba4c5a-debb-4844-a032-986f761a74af@leemhuis.info>
+In-Reply-To: <4bba4c5a-debb-4844-a032-986f761a74af@leemhuis.info>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 19 May 2026 13:48:42 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g6aHsdmNhW3Yr54KnGkOHn81bXFVHD-6+bvYWUsmZZdw@mail.gmail.com>
+X-Gm-Features: AVHnY4KxJPOE1zcY4KC6fhnc9_2se9KlcaGnCNlMQYBIAtVrV38iYDqoTJo8Dgs
+Message-ID: <CAJZ5v0g6aHsdmNhW3Yr54KnGkOHn81bXFVHD-6+bvYWUsmZZdw@mail.gmail.com>
+Subject: Re: [REGRESSION] Toshiba Fn keys + lidswitch
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Nick <nick@kousu.ca>, 
+	regressions@lists.linux.dev, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	todd.e.brandt@linux.intel.com, xi.pardee@linux.intel.com, 
+	platform-driver-x86@vger.kernel.org, stable@vger.kernel.org, 
+	Azael Avalos <coproscefalo@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qtmlabs.xyz,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[qtmlabs.xyz:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249562-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[intel.com,kousu.ca,lists.linux.dev,vger.kernel.org,linux.intel.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-249563-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qtmlabs.xyz:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[myrrhperiwinkle@qtmlabs.xyz,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qtmlabs.xyz:email,qtmlabs.xyz:mid,qtmlabs.xyz:dkim]
-X-Rspamd-Queue-Id: 93E2C57DE76
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid,leemhuis.info:email]
+X-Rspamd-Queue-Id: 1296257E19D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-We only need to update the power_supply on power role change if the port
-is connected, because otherwise the online status should be the same for
-both cases.
+On Tue, May 19, 2026 at 10:56=E2=80=AFAM Thorsten Leemhuis
+<regressions@leemhuis.info> wrote:
+>
+> [CCing Azael, just in case]
+>
+> On 5/12/26 18:49, Nick wrote:
+> > My Toshiba Tecra X40 laptop's function keys no longer send events.
+>
+> Rafael, have you seen that this regression seems to be caused by a
+> change of yours? Namely 57c31e6d620f13 ("ACPI: scan: Use
+> acpi_setup_gpe_for_wake() for buttons") [v7.0-rc1]
 
-Cc: stable@vger.kernel.org
-Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
----
- drivers/usb/typec/ucsi/ucsi.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Yes, I have.
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index e19b656609e4..c59c4d8ee076 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1308,7 +1308,12 @@ static void ucsi_handle_connector_change(struct work_struct *work)
- 
- 	if ((change & UCSI_CONSTAT_POWER_DIR_CHANGE) && role != prev_role) {
- 		typec_set_pwr_role(con->port, role);
--		ucsi_port_psy_changed(con);
-+
-+		/* Some power_supply properties vary depending on the power direction when
-+		 * connected
-+		 */
-+		if (UCSI_CONSTAT(con, CONNECTED))
-+			ucsi_port_psy_changed(con);
- 
- 		/* Complete pending power role swap */
- 		if (!completion_done(&con->complete))
+> No complains, just wondering, as it was easy to miss. Ciao, Thorsten
 
--- 
-2.54.0
-
+Sure, thanks for pointing this out.
 
