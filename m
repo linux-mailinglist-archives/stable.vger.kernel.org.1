@@ -1,224 +1,233 @@
-Return-Path: <stable+bounces-249523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yApBGek4DGq2aAUAu9opvQ
-	(envelope-from <stable+bounces-249523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:18:17 +0200
+	id sLw8FQ05DGq2aAUAu9opvQ
+	(envelope-from <stable+bounces-249524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:18:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0901F57C0A2
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:18:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF3257C0F9
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 642763036420
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:17:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56D2E300D477
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E864BC019;
-	Tue, 19 May 2026 10:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6D83A0E8E;
+	Tue, 19 May 2026 10:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DAG29ITP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMDjNXzJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD294C6EEC
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 10:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0056D37702C
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 10:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779185793; cv=none; b=XtW9Wx7seldGJ7EtUIfqtg56vyQooxMeOm6E2tQPuZ1t3Hqro254io1Lo3tFmUHbbiFK2qKbpQ9T3prn5PVl7G3IcJVpwee+YlsIatuy705D1tBhSpDwSCH/WKEkkmbTye44F3t69oQT/r5bbLdhqLdYbZuP/GWHRF52RL0Vx8o=
+	t=1779185929; cv=none; b=tQvN5s+gN0D2kdZjK4upv6CW4G5H3WpfKSsLiqu5V4digaFSpMmkV2XUc8H9YmcJpHIWfMv0yukboa8NnIRRO0BkTm+pTZJ9U1R7P3HWqJZcjw67/wHgwpddfllYTqzYAKitXP6p2qIAhP84OXVtXWY0oPbfySarDCwISe457fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779185793; c=relaxed/simple;
-	bh=A8lCk64tyDutpdWygpqGjJXORX5zZQ3IQ4DQQhG5Q8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qwYLI/vJ6ONh/NuZvDcPLpnI0TkqQR4FgKvCgJTPtKlkgXP6Nhi0zkGrjFsN+df93251uh12SByedpx/5mnBf1z1It1ICfWKVxUkxoCiC+0uo6y7GjZnZTjGu6idm+FY9MBCTCatrHpfyh2qz17w+Tts/SoumbJn7oK8ixayyMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DAG29ITP; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36974221f93so1598354a91.2
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 03:16:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779185786; x=1779790586; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a6PE6oczvQzlzFTW3XERm2G8PX98I8qUZJMdLKZ7oFc=;
-        b=DAG29ITPJ/oltyXTun/ebhMLfI83fqgSN5oYsS8vRj/qE1KkpfXMT5DP39bLfwUYKR
-         A6BsCPu6Q7ejgyDVjPGZzdCTDcGFuJbTDWldnF1AIX7qzyQw1hb4iD6DikwQIAm0hk5I
-         Joa75cPtaN+xi+JdCSK5IEGsGP3hy8FzGGDho8DnGsK1oNn69lBhVSWIg845okyayfgN
-         XwH2LITXECyTa/FmUOZYrrP84s1HQ60j6XeEqRarl27x7qAyK8IXwc6qoRQ0vsFFbI+L
-         W1KzxEBC7kFJYAPkvUiusmzN1FbPmLRmNtF5s8svPufgVbe2VqbgnTtzXMgWxtSxoerD
-         dO6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779185786; x=1779790586;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=a6PE6oczvQzlzFTW3XERm2G8PX98I8qUZJMdLKZ7oFc=;
-        b=byMJMpPr39+CeEcxahSKO8rDLrG0TDE1Wj1p9TGtDTgwaF3tzXAS583BHvt95SwtCN
-         Si9yKnUFI6oSI6aG0Crx/ZzaN8907L60i5LdRpJ7D+u1/DBdz7nXH4fy3ROMXVMRjMP0
-         VHKIzAFiHcOS3WF4vshEYHM3BhDkguw7rIisDwsOgdp24+daSlBbacxOFKe14ubzy+oG
-         OfuM9yd9nyIMczqoQ3rVoiCRIMZ5rr3ccafUL1n1ZIoF1gu1F6WAiN+mC/Vfb11BeThV
-         x7f70KxyNb6HgCNDv5qF0DfiuReaVsHb5MCxwuBDCoSJnH1Eee+5PgrOp/eonu5D7KID
-         W5og==
-X-Forwarded-Encrypted: i=1; AFNElJ8YvJHPdfU5flQcUaEAlgypa1ibc3S2FGkSCKeiQbvL+bhwWtwp/avmn57mVcw1Zv/xxU8mHZo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyedIr8zN1pnvj2qmFbI3F+eauS5PCNA8NodGrGbjtTzdUAkodH
-	U/RWjKgjiehw7pLJAVa8HHDsivApX283IFDp96rgLztA34HMoXESQlLM
-X-Gm-Gg: Acq92OHHDhBQ+IGOm05jJrf4M9mQ977EMiaFsVCQV55XeE2sG+xbaotTYb5WVxIGb1G
-	dmqysdyM/d/PTucA0Fmdvr/VBndOOV8nj0E9eVNWj19uRx+3fgMqHXrKj2EdoJdDbDg6NdQrOyn
-	Mozc8/8zfRLq/X1oVcwL4Bo2ZNy6Q9hLgLI/o3YHyYabExjEWxSDkIb5nDYoEjWtx91xMKMeXjZ
-	afj7r+ZdoUEzoUPkT50GrUQvMyugpSarT4HybED6iQsmIC3ii7PKBwfOrnCFTdnuyyuKA+GTx7v
-	+ROXRKDqs2QFVb2q/o/XVJjaPMYSY7BGquu5fVGu6YpG8F/jCChlnhBaXaOJj6sQMQODyK/T25z
-	PHKRTeHeR/xFGhbXz5JuirUqxAKOoPhqDEbcBMDWDvvSmM225a8L3K/IxRJHL7zdxPsjJJMSDx5
-	s6sxYa1Lo8CCoSHezP17OFnoexIA==
-X-Received: by 2002:a17:90b:2742:b0:368:cefe:ddd0 with SMTP id 98e67ed59e1d1-36951b82f8fmr19522119a91.15.1779185785623;
-        Tue, 19 May 2026 03:16:25 -0700 (PDT)
-Received: from fedora ([171.243.49.69])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d234540sm177683165ad.79.2026.05.19.03.16.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 03:16:24 -0700 (PDT)
-From: Minh Nguyen <minhnguyen.080505@gmail.com>
-To: pabeni@redhat.com,
-	bryan-bt.tan@broadcom.com
-Cc: sgarzare@redhat.com,
-	vishnu.dasa@broadcom.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org,
-	bcm-kernel-feedback-list@broadcom.com,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v3] vsock/vmci: fix UAF when peer resets connection during handshake
-Date: Tue, 19 May 2026 17:16:10 +0700
-Message-ID: <20260519101610.233070-1-minhnguyen.080505@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <agwv3YkxYIC7mvyj@sgarzare-redhat>
-References: <agwv3YkxYIC7mvyj@sgarzare-redhat>
+	s=arc-20240116; t=1779185929; c=relaxed/simple;
+	bh=vNj4WQaAFTe7YJl/VWgeRdvWqq+oX+ZZTFqD7ZYr6dY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EEDlo1xBS0uAWBkII8s+2QuXkyTdyI515EO3bpWY9jH62atSwzn8ZiQrjJvwPHYsVGmbIqULHl+Sc6HqVkYiIF/BFmcVFay/dnvTg/IbzTs5MDuEtifV+VHaWhImCC7AmI5RO3/m2/RTL7YsBiGPJCfzoZHFk8kXU0d5w6lF89k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMDjNXzJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB80C2BCB3;
+	Tue, 19 May 2026 10:18:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1779185928;
+	bh=vNj4WQaAFTe7YJl/VWgeRdvWqq+oX+ZZTFqD7ZYr6dY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=UMDjNXzJBEaDzA4sK4ScNDxbR7lgfQM5JXefoKM/kBI6/BTLBIft1pdxLLDsaE/2l
+	 9aASXDoUApm/4l3/FCsMbP1WqsjQJdNtpb1cviS63n++TCZ0roh4f2jkF365X3fqql
+	 QqCVplNT6elvfwhHxkLqnEIMOyeUSRu6qKCZvj/4=
+Subject: FAILED: patch "[PATCH] ipv6: flowlabel: enforce per-netns limit for unprivileged" failed to apply to 7.0-stable tree
+To: maoyi.xie@ntu.edu.sg,kuba@kernel.org,willemb@google.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 19 May 2026 12:18:00 +0200
+Message-ID: <2026051900-nanometer-dropkick-80d8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249523-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249524-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[minhnguyen080505@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0901F57C0A2
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AAF3257C0F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-vmci_transport_recv_connecting_server() returned err = 0 for a peer
-RST in its default switch arm:
 
-	err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
+The patch below does not apply to the 7.0-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-That made vmci_transport_recv_listen() skip vsock_remove_pending(),
-leaving the pending socket on the listener's pending_links with
-sk_state = TCP_CLOSE while destroy: still dropped the explicit
-reference taken before schedule_delayed_work().
+To reproduce the conflict and resubmit, you may use the following commands:
 
-One second later vsock_pending_work() observed is_pending=true and
-performed full cleanup: vsock_remove_pending() then the two trailing
-sock_put(sk) calls -- the first reached refcount 0 and __sk_freed
-the socket, and the second wrote into the freed object:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
+git checkout FETCH_HEAD
+git cherry-pick -x e68eadffb724b36ffd3d5619e0efcaf29ec2a175
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026051900-nanometer-dropkick-80d8@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
 
-  BUG: KASAN: slab-use-after-free in refcount_warn_saturate
-  Write of size 4 at addr ffff88800b1cac80 by task kworker
-  Workqueue: events vsock_pending_work
+Possible dependencies:
 
-Treat peer RST like any other unexpected packet type (err = -EINVAL).
-All destroy: arms now return err < 0, so vmci_transport_recv_listen()
-removes pending from pending_links synchronously and
-vsock_pending_work() takes the is_pending=false / !rejected branch,
-dropping only its own work reference.  This also closes the
-multi-packet race Sashiko reported on v2: pending is removed from
-the list before any subsequent packet can find it.
 
-The pre-existing sk_acceptq_removed() gap on the err < 0 path of
-vmci_transport_recv_listen() that Sashiko also noted is not
-introduced or changed by this patch.
 
-Tested on lts-6.12.79 with KASAN: 52/100 unpatched -> 0/100 patched.
+thanks,
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
----
-v3:
-  - Different approach to Sashiko/Paolo's "trading UAF for leak"
-    concern: normalize RST to err = -EINVAL so all destroy: arms
-    take the same err < 0 cleanup path -- no special case, no
-    multi-packet race.
-  - Sashiko's secondary observation ("while not introduced by this
-    patch, does this error path leak sk_ack_backlog slots on failed
-    handshakes?") is correct: the sk_acceptq_removed() gap on the
-    err < 0 branch of vmci_transport_recv_listen() is pre-existing
-    and is not introduced or changed by this patch.  v3 stays
-    focused on the UAF; a separate fix for that gap is needed and
-    would be welcome from anyone closer to that area.
+greg k-h
 
-v2: https://lore.kernel.org/netdev/20260512025851.189140-1-minhnguyen.080505@gmail.com/
+------------------ original commit in Linus's tree ------------------
 
-v1 was sent to security@kernel.org on 2026-05-10 (not on lore).
+From e68eadffb724b36ffd3d5619e0efcaf29ec2a175 Mon Sep 17 00:00:00 2001
+From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Date: Wed, 6 May 2026 16:24:16 +0800
+Subject: [PATCH] ipv6: flowlabel: enforce per-netns limit for unprivileged
+ callers
 
- net/vmw_vsock/vmci_transport.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+fl_size, fl_ht and ip6_fl_lock in net/ipv6/ip6_flowlabel.c are
+file scope and shared across netns. mem_check() reads fl_size to
+decide whether to deny non-CAP_NET_ADMIN callers. capable() runs
+against init_user_ns, so an unprivileged user in any non-init
+userns can push fl_size past FL_MAX_SIZE - FL_MAX_SIZE / 4 and
+starve every other unprivileged userns on the host.
 
-diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
-index 4296ca1..ba3a66e 100644
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -1161,10 +1161,17 @@ vmci_transport_recv_connecting_server(struct sock *listener,
- 		}
- 		break;
- 	default:
--		/* Close and cleanup the connection. */
-+		/* Close and cleanup the connection.  Peer RST is treated like
-+		 * any other unexpected packet type in this state so that the
-+		 * pending socket follows the same cleanup path as other
-+		 * handshake failures, instead of being left on the pending
-+		 * list for vsock_pending_work() to find later (which races
-+		 * with subsequent packets and was the source of a UAF when
-+		 * the cleanup work observed an inconsistent ref count).
-+		 */
- 		vmci_transport_send_reset(pending, pkt);
- 		skerr = EPROTO;
--		err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
-+		err = -EINVAL;
- 		goto destroy;
- 	}
+Add struct netns_ipv6::flowlabel_count, bumped and decremented
+next to fl_size in fl_intern, ip6_fl_gc and ip6_fl_purge. The new
+field fills the existing 4-byte hole after ipmr_seq, so struct
+netns_ipv6 stays the same size on 64-bit builds.
+
+Bump FL_MAX_SIZE from 4096 to 8192. It has been 4096 since the
+file was added. Machines and connection counts have grown.
+
+mem_check() folds an extra per-netns ceiling into the existing
+non-CAP_NET_ADMIN conditional. The ceiling is half of the total
+budget that unprivileged callers have ever been able to use, i.e.
+(FL_MAX_SIZE - FL_MAX_SIZE / 4) / 2 = 3072 entries. With
+FL_MAX_SIZE doubled, this preserves the original per-user reach
+of 3K (what an unprivileged caller could already obtain before
+this change), while forcing an attacker to spread allocations
+across at least two netns to exhaust the global non-CAP_NET_ADMIN
+budget.
+
+CAP_NET_ADMIN against init_user_ns still bypasses both caps.
+
+The previous patch took ip6_fl_lock across mem_check and
+fl_intern, so the new flowlabel_count read in mem_check and the
+new flowlabel_count++ in fl_intern run under the same critical
+section. flowlabel_count is therefore plain int, like fl_size.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Link: https://patch.msgid.link/20260506082416.2259567-3-maoyixie.tju@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/include/net/netns/ipv6.h b/include/net/netns/ipv6.h
+index 499e4288170f..875916d60bfe 100644
+--- a/include/net/netns/ipv6.h
++++ b/include/net/netns/ipv6.h
+@@ -119,6 +119,7 @@ struct netns_ipv6 {
+ 	struct fib_notifier_ops	*notifier_ops;
+ 	struct fib_notifier_ops	*ip6mr_notifier_ops;
+ 	atomic_t		ipmr_seq;
++	int			flowlabel_count;
+ 	struct {
+ 		struct hlist_head head;
+ 		spinlock_t	lock;
+diff --git a/net/ipv6/ip6_flowlabel.c b/net/ipv6/ip6_flowlabel.c
+index a8974643195a..b1ccdf0dc646 100644
+--- a/net/ipv6/ip6_flowlabel.c
++++ b/net/ipv6/ip6_flowlabel.c
+@@ -36,7 +36,7 @@
+ /* FL hash table */
  
-
-base-commit: be48e5fe51a5864566307998286a699d6b986934
--- 
-2.54.0
+ #define FL_MAX_PER_SOCK	32
+-#define FL_MAX_SIZE	4096
++#define FL_MAX_SIZE	8192
+ #define FL_HASH_MASK	255
+ #define FL_HASH(l)	(ntohl(l)&FL_HASH_MASK)
+ 
+@@ -162,8 +162,9 @@ static void ip6_fl_gc(struct timer_list *unused)
+ 				ttd = fl->expires;
+ 				if (time_after_eq(now, ttd)) {
+ 					*flp = fl->next;
+-					fl_free(fl);
+ 					fl_size--;
++					fl->fl_net->ipv6.flowlabel_count--;
++					fl_free(fl);
+ 					continue;
+ 				}
+ 				if (!sched || time_before(ttd, sched))
+@@ -197,6 +198,7 @@ static void __net_exit ip6_fl_purge(struct net *net)
+ 				*flp = fl->next;
+ 				fl_free(fl);
+ 				fl_size--;
++				net->ipv6.flowlabel_count--;
+ 				continue;
+ 			}
+ 			flp = &fl->next;
+@@ -243,6 +245,7 @@ static struct ip6_flowlabel *fl_intern(struct net *net,
+ 	fl->next = fl_ht[FL_HASH(fl->label)];
+ 	rcu_assign_pointer(fl_ht[FL_HASH(fl->label)], fl);
+ 	fl_size++;
++	net->ipv6.flowlabel_count++;
+ 	return NULL;
+ }
+ 
+@@ -460,6 +463,9 @@ fl_create(struct net *net, struct sock *sk, struct in6_flowlabel_req *freq,
+ 
+ static int mem_check(struct sock *sk)
+ {
++	const int unpriv_total_limit = FL_MAX_SIZE - (FL_MAX_SIZE / 4);
++	const int unpriv_user_limit = unpriv_total_limit / 2;
++	struct net *net = sock_net(sk);
+ 	int room;
+ 	struct ipv6_fl_socklist *sfl;
+ 	int count = 0;
+@@ -478,7 +484,9 @@ static int mem_check(struct sock *sk)
+ 
+ 	if (room <= 0 ||
+ 	    ((count >= FL_MAX_PER_SOCK ||
+-	      (count > 0 && room < FL_MAX_SIZE/2) || room < FL_MAX_SIZE/4) &&
++	      (count > 0 && room < FL_MAX_SIZE / 2) ||
++	      room < FL_MAX_SIZE / 4 ||
++	      net->ipv6.flowlabel_count >= unpriv_user_limit) &&
+ 	     !capable(CAP_NET_ADMIN)))
+ 		return -ENOBUFS;
+ 
 
 
