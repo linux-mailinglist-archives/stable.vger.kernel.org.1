@@ -1,184 +1,160 @@
-Return-Path: <stable+bounces-249580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJY5KVNbDGodfwUAu9opvQ
-	(envelope-from <stable+bounces-249580-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:45:07 +0200
+	id QNK0H4hcDGrMgAUAu9opvQ
+	(envelope-from <stable+bounces-249581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:50:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C6F57EF22
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:45:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAF157F01B
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:50:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E261F3061971
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:42:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6946D301F5D3
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C324A340B;
-	Tue, 19 May 2026 12:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctDSdFNy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692103161BE;
+	Tue, 19 May 2026 12:44:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D774A340C
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 12:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2521E4A340C;
+	Tue, 19 May 2026 12:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779194530; cv=none; b=ufe4uJQp230od7+1Fa9yg0xrE40HjrFyOBHBz9e754SdUGXq3n+H+DK6ABoj/cxHAqx+k8rdWR+QmqjOJ0lnaYdSsegCcZXWO9acX8nlm2ZMd7ZbGYmlub+86blXMj/i4o3LWF2ZeQ8hOzslmsmp4S1hw5NrfYIgsTuOD4JMr4Q=
+	t=1779194663; cv=none; b=L7bDkW1b98Jvfvxp6iy7YJ9hYKJQar2bB/5tU8gslIbDoUdiKgPAQ84L/16cJ7W7wk+dL2fqreMaVi7JYKSyCYw+EPg4E4b2N+4dH1YA7ck9y2rYJGM8G9kHCnbp1gXtdEniBSnrd2EWyCOgyvUyVnARJ5kk/CpvZanADjDUL0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779194530; c=relaxed/simple;
-	bh=DXoDL5wbX+53q/PO+mVk1bAErki3tsddN3QF3kPdHCE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DKKSVp49e1mswUnsZuPFvZD9T+qW5PggP/Mf+hIYu5RD9N2aBX5EuidCk1UmxAzIGa1DmWfDE3anj/A5PNqDFuCrV7hBs/Mfq8INdf7W7vDYV2do0GvOujky+MIhZHzfR6PttrtfNgL+FMG2mbrmFwKh7CRSCi5Q7RNgzFB18L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctDSdFNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD0BC2BCB8
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 12:42:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779194530;
-	bh=DXoDL5wbX+53q/PO+mVk1bAErki3tsddN3QF3kPdHCE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ctDSdFNyBOHqz6CAcgo9qhEP778cxGNNTgEMvl19T62JurnnLSI9g57UDJnrjqqiE
-	 /30JtgjILFNxj5eqC6hxZA6XjSMkF1u7abXrxTZcles4TG7bxxBKY8uRwqE6x9CYLm
-	 ZZkUGqDW2uCIYfQb3xTMGCxQQHAnWjMHEdERf7fIPd4HHLGZQ03tmjxXGWznpWqvvX
-	 y0/J+dkNtg8zp9NpYjkuO6sQbS5E5YT8+5qq+FxBKK0vFBB3K9yPZtRIxQHGJDJLtm
-	 5OqeUOwDQf19fd/ZjKRd5GjPEbGpmhtp91GbX6rIC+x7G4nbhKPSXxQOilfazDlaen
-	 Fva94Ni9CGpVg==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bccd251d622so598544066b.3
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 05:42:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8+gqpzuBzniwc6QSI9wQOeXQt8iA9l/vI7D4VhbpVbSbkzXiJRKM1NaFt0zogTox82SHJ8O8w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2abE5mtcpshizXkL2Jd3EEgkg/Eurd2UenuBxrCHVRG3uREg2
-	kOqPZfJqXCsUz1BVP6Uy/DmpJDgcDHjpuOrxegGflRQr1MLdfFt/XOcihlrCU70r45/SPqxLa1o
-	Cb9L3nCxszxsCPCHbFuEXMmY6Djp2cPE=
-X-Received: by 2002:a17:907:97cb:b0:bd6:6f5e:ea6f with SMTP id
- a640c23a62f3a-bd66f5efe1cmr680395766b.19.1779194528935; Tue, 19 May 2026
- 05:42:08 -0700 (PDT)
+	s=arc-20240116; t=1779194663; c=relaxed/simple;
+	bh=fF6Uoj9AQ8ugSOAAgLX/KKhg1RLSQ6zAcTIQddMFxBc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a8Gg+zR9NEHr00sYb0XHJkitPq2yGFJnpYOkeUVYE0ErHOdZhRggBFRDqbjboiNNYg0avzsjOpksXjCdnTzrDh5YvCeOh5h6msCUqPIBvZwDzjwCWBVpUVS754uU24xWh8Lg6XoIsxc4Wx6NygcxHXo4hB0Bv0es7FB4c9IWVL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from ubuntu.. (unknown [202.112.113.208])
+	by APP-03 (Coremail) with SMTP id rQCowAC32N8RWwxqEC+KEQ--.16549S2;
+	Tue, 19 May 2026 20:44:06 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: suzuki.poulose@arm.com,
+	mike.leach@arm.com,
+	james.clark@linaro.org,
+	leo.yan@arm.com,
+	alexander.shishkin@linux.intel.com,
+	mathieu.poirier@linaro.org
+Cc: coresight@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] coresight: etm-perf: Fix reference count leak in etm_setup_aux
+Date: Tue, 19 May 2026 20:43:57 +0800
+Message-ID: <20260519124357.1656180-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260517092432.1025008-1-chenhuacai@loongson.cn>
- <CAJF2gTSn-44So=SdVYxvF5ihJjWs9R7vFAyuPNpeLBwBpJrY9Q@mail.gmail.com>
- <CAAhV-H4Zvqvb_Crx-cpunZV8tGcFu=2T6x0aG9iV31BPcO5xng@mail.gmail.com> <CAJF2gTSAWP4X19t10f8kgd3xdufDEdyc_z4aiaLCmOieMd2ipQ@mail.gmail.com>
-In-Reply-To: <CAJF2gTSAWP4X19t10f8kgd3xdufDEdyc_z4aiaLCmOieMd2ipQ@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 19 May 2026 20:42:26 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6jKR-i3w3u9CJMLmzteZURQnazuBEtp9k2UkKRxUrOmQ@mail.gmail.com>
-X-Gm-Features: AVHnY4IV41hqOor1MsAuVKl_i-pFwmthCfjFjC_j4Q1cDdRW_i6CJ0nLrPoP7zU
-Message-ID: <CAAhV-H6jKR-i3w3u9CJMLmzteZURQnazuBEtp9k2UkKRxUrOmQ@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: Remove unused code to avoid build warning
-To: Guo Ren <guoren@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
-	Xuefeng Li <lixuefeng@loongson.cn>, Xuerui Wang <kernel@xen0n.name>, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAC32N8RWwxqEC+KEQ--.16549S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw4UAr17uF43tr4kJF48Crg_yoW8ZFy8pF
+	4jkws0yF98Gr40vws7Jr18Zay5uw4SvF4agryfKw4DuF4YqFW3ZFyjgryFyrn3CrZ5Kas0
+	g3WxtF409FWUJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249580-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,loongson.cn:email]
-X-Rspamd-Queue-Id: 24C6F57EF22
+	R_DKIM_NA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[make24@iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iscas.ac.cn:mid,iscas.ac.cn:email];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249581-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9AAF157F01B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, May 18, 2026 at 7:29=E2=80=AFPM Guo Ren <guoren@kernel.org> wrote:
->
-> On Mon, May 18, 2026 at 10:58=E2=80=AFAM Huacai Chen <chenhuacai@kernel.o=
-rg> wrote:
-> >
-> > On Mon, May 18, 2026 at 9:42=E2=80=AFAM Guo Ren <guoren@kernel.org> wro=
-te:
-> > >
-> > >
-> > >
-> > > On Sun, May 17, 2026 at 5:25=E2=80=AFPM Huacai Chen <chenhuacai@loong=
-son.cn> wrote:
-> > > >
-> > > > After commit feee6b2989165631b1 ("mm/memory_hotplug: shrink zones w=
-hen
-> > > > offlining memory"), __remove_pages() doesn't need the "zone" parame=
-ter
-> > > > so the "page" variable is also unused. Remove the unused code to av=
-oid
-> > > > such build warning:
-> > > >
-> > > > arch/loongarch/mm/init.c: In function 'arch_remove_memory':
-> > > > arch/loongarch/mm/init.c:134:22: warning: variable 'page' set but n=
-ot used [-Wunused-but-set-variable=3D]
-> > > >   134 |         struct page *page =3D pfn_to_page(start_pfn);
-> > > >
-> > > > Cc: <stable@vger.kernel.org>
-> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > ---
-> > > >  arch/loongarch/mm/init.c | 4 ----
-> > > >  1 file changed, 4 deletions(-)
-> > > >
-> > > > diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-> > > > index 3f9ab54114c5..031b39eb081c 100644
-> > > > --- a/arch/loongarch/mm/init.c
-> > > > +++ b/arch/loongarch/mm/init.c
-> > > > @@ -123,11 +123,7 @@ void arch_remove_memory(u64 start, u64 size, s=
-truct vmem_altmap *altmap)
-> > > >  {
-> > > >         unsigned long start_pfn =3D start >> PAGE_SHIFT;
-> > > >         unsigned long nr_pages =3D size >> PAGE_SHIFT;
-> > > > -       struct page *page =3D pfn_to_page(start_pfn);
-> > > >
-> > > > -       /* With altmap the first mapped page is offset from @start =
-*/
-> > > > -       if (altmap)
-> > > > -               page +=3D vmem_altmap_offset(altmap);
-> > > >         __remove_pages(start_pfn, nr_pages, altmap);
-> > >
-> > > Good cleanup, but does LoongArch forget to remove the linear mapping?=
- If the memory is unplugged, the mapping is still there. How does the core =
-fetch data from there?
-> > LoongArch's linear mapping is based on DMW rather than TLB, so
-> > removing linear mapping is unnecessary.
-> Do you mean SSEG tech? mips & csky also have that. But my question is:
-> how does the core fetch data/instructions from an unplugged memory
-> region, given that the mapping is established by DMW?
-Access unplugged memory region will cause ADE exception.
+bus_find_device() returns a device with its reference count
+incremented. When a user-selected sink is obtained through
+coresight_get_sink_by_id(), etm_setup_aux() keeps using the returned
+sink while building the path and allocating the sink buffer.
 
-Huacai
->
-> >
-> >
-> > Huacai
-> > >
-> > > --
-> > >
-> > > Best Regards
-> > >
-> > >   GUO Ren
->
->
->
-> --
-> Best Regards
->  Guo Ren
+Therefore the lookup reference must remain valid while etm_setup_aux()
+is still using the sink, otherwise the sink could be removed under the
+caller. Drop the lookup reference on the common exit path, after
+etm_setup_aux() no longer directly uses the user-selected sink.
+
+The CoreSight path code takes the references it needs for built paths,
+so the initial lookup reference from coresight_get_sink_by_id() is no
+longer needed after setup_aux finishes.
+
+Found by code review.
+
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Cc: stable@vger.kernel.org
+Fixes: 0e6c20517596 ("coresight: etm-perf: Allow an event to use different sinks")
+---
+Changes in v3:
+- do not drop the lookup reference in coresight_get_sink_by_id(), as 
+that would return a sink pointer without keeping the device reference 
+while etm_setup_aux() is still using it.
+- dropped the lookup reference in etm_setup_aux on the common exit path, 
+as suggested by Suzuki.
+- updated the commit message to describe why the reference is kept 
+until etm_setup_aux() finishes using the sink.
+Changes in v2:
+- modified the patch as suggestions.
+---
+ drivers/hwtracing/coresight/coresight-etm-perf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/hwtracing/coresight/coresight-etm-perf.c b/drivers/hwtracing/coresight/coresight-etm-perf.c
+index f85dedf89a3f..d5116177c1b9 100644
+--- a/drivers/hwtracing/coresight/coresight-etm-perf.c
++++ b/drivers/hwtracing/coresight/coresight-etm-perf.c
+@@ -456,6 +456,11 @@ static void *etm_setup_aux(struct perf_event *event, void **pages,
+ 		goto err;
+ 
+ out:
++	if (user_sink) {
++		put_device(&user_sink->dev);
++		user_sink = NULL;
++	}
++
+ 	return event_data;
+ 
+ err:
+-- 
+2.43.0
+
 
