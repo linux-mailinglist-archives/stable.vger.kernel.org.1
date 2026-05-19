@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-249590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOeCHNxnDGrihAUAu9opvQ
-	(envelope-from <stable+bounces-249590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:38:36 +0200
+	id SCkMAHBpDGo8hQUAu9opvQ
+	(envelope-from <stable+bounces-249591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:45:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B31657FD60
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:38:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC9657FEC8
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:45:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5FBD6302C8E2
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:38:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C7A930C9C01
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9532D0C63;
-	Tue, 19 May 2026 13:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9D13403E8;
+	Tue, 19 May 2026 13:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BTETNjWp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HU2Wki+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D52B3403E6
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 13:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C248C3403E6
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 13:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779197883; cv=none; b=RerYe0hSc6nTNCeyuZ22ekcnX4n8FovDBJKColGimIkLAn5GzlF6K+NE6q5vc/iJcbQrqE70E52+IE85QYL63wV1QV3ftPGOZojqsh9bB2sHNu+U7FB8CBG4UwbDJEJ5wm7d2lXcJwBEPsZB4p+vk4RS0ZWhnqqfRYM2V63lAGE=
+	t=1779197943; cv=none; b=IMGOKFyqzN8v8pfpV3/l4pLvH/Vz2BTkPbLfCqR8nf1LoOQJ09y3CqdQHHHErluQgp3p6QFJAEK9WBP4K3qNiZPOHt+rHD6CFRC39grTfKwDdFZeU6pmOYiubv13zmAqSuAvzqmG1nMEF7YGs9cGNnFbMKOz/rWUcDLu3/4+82A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779197883; c=relaxed/simple;
-	bh=7TGnHzPf4IjCwAy8UUmyN12Oe/y44q/ZonAMW3K3yhQ=;
+	s=arc-20240116; t=1779197943; c=relaxed/simple;
+	bh=/oUytM5NEWjbEzYOEVQxJkqDT72gJMtZvFyNGyCSQ6E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mDA1CBxahYnNarULJheNOWIIBRLEiOt85OSFD3+KTNuL10ktkIE29VaFDgwaufjoxywNU+H540qlQPwjPYjnpDsW65sCtfv0vcWA2a4Jh0HKeWHXNwkQ5khcFkCHzZlWA41OjrODgBLfPrFmzslkNtlkL0QNd0vnyjYR8ibqeow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BTETNjWp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926E3C2BCB3;
-	Tue, 19 May 2026 13:38:01 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=kYaaFqBL5ZPtiU5Gk01enNJGuQPabTNbiMGo8TtUoI04aqin5FFkOV2pD+hm4nCs91jXy4quKQ8HsOxpA44Apr4i8kJ45gr3njsY79dIgkcen2WJ1a2JiJwbQ29ZddqJyd7QQdCPTkhpgm01qQ2JLhOhX6LGuUl6BTkyKGSireg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HU2Wki+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8DEC2BCC6;
+	Tue, 19 May 2026 13:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779197883;
-	bh=7TGnHzPf4IjCwAy8UUmyN12Oe/y44q/ZonAMW3K3yhQ=;
+	s=k20201202; t=1779197943;
+	bh=/oUytM5NEWjbEzYOEVQxJkqDT72gJMtZvFyNGyCSQ6E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BTETNjWpGJIrRuX2QMlTkz8NYRWxxXCn4i9MPRze5zUiwu6c9kWvFkrvfRoLEK4Ju
-	 AKfxVNlfyRkEXU4lFyMKr72ScQ/K2uXRVccsMm2DiUCgwJX5BzJWZ1jIWF/Fsw/Tk+
-	 G8Hml9lhJs6oyRVFVwGP2taSomaFkkeTNS3XfuzVjRV3y0x+D+3LHMBEhhKNzIfLKD
-	 TqLYaFwzVyyck7NZnbTlRc5/2a989WmIBSAgWPwrpZ6jazGmGJWwfetGRAf7MLxoQx
-	 ukVEofzKk/deaXSlxgAtceX9rHKG2BL5DIuVnEl8oMqHDYtfxg/crMwQLLVFke7OfB
-	 z9EbM0ARm8HNQ==
-Message-ID: <5761ad75-750a-4acf-9ecb-d563b934384e@kernel.org>
-Date: Tue, 19 May 2026 23:37:58 +1000
+	b=HU2Wki+1FU58wHTZL21Hr2w4+gcWrktqYKH+es/szk47shcd1JPTjLYU/L5X0afwY
+	 m04oGWdFJWZqNAA8e61rHGzoXkXETx0GJT/Y21bSu/Gxc9aTgBs9//IKs/ewK1Eo8d
+	 EDcsVqymsDkAeXYGdLDwpHM/tIe9Pi9XbH9gkGAzrfVv+jBdplk+QH7BWqCyssL3DE
+	 meIBAjFxkMSub3F5bAtXi0V5dNN11E5n9wP8Gmpz2NY8YHCVJE8SgvYO9/yk6Sm6gx
+	 5fQGaMEsskRozQ+zZGKuq5JJANIqBnLt8ZFsLotC37PebKt7cqoEkzQagpcN9dEW0r
+	 zt3xzMm4Efolw==
+Message-ID: <786de99f-a568-4862-95e3-94f94cf7c132@kernel.org>
+Date: Tue, 19 May 2026 23:38:59 +1000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,13 +53,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 5.10.y] mptcp: pm: ADD_ADDR rtx: always decrease sk
- refcount
+Subject: Re: [PATCH 5.10.y] mptcp: pm: ADD_ADDR rtx: free sk if last
 Content-Language: fr
 To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
 Cc: Mat Martineau <martineau@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-References: <2026051232-imbecile-jolly-52df@gregkh>
- <20260519115222.2240665-1-sashal@kernel.org>
+References: <2026051243-blah-wound-3e54@gregkh>
+ <20260519115251.2241418-1-sashal@kernel.org>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -105,18 +104,18 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <20260519115222.2240665-1-sashal@kernel.org>
+In-Reply-To: <20260519115251.2241418-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249590-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249591-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	HAS_ORG_HEADER(0.00)[];
@@ -132,9 +131,9 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1B31657FD60
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5AC9657FEC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -143,30 +142,32 @@ Hi Sasha,
 On 19/05/2026 21:52, Sasha Levin wrote:
 > From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 > 
-> [ Upstream commit 9634cb35af17019baec21ca648516ce376fa10e6 ]
+> [ Upstream commit b7b9a461569734d33d3259d58d2507adfac107ed ]
 > 
-> When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer().
-> It should then be released in all cases at the end.
+> When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer(),
+> and released at the end.
 > 
-> Some (unlikely) checks were returning directly instead of calling
-> sock_put() to decrease the refcount. Jump to a new 'exit' label to call
-> __sock_put() (which will become sock_put() in the next commit) to fix
-> this potential leak.
+> If at that moment, it was the last reference being held, the sk would
+> not be freed. sock_put() should then be called instead of __sock_put().
 > 
-> While at it, drop the '!msk' check which cannot happen because it is
-> never reset, and explicitly mark the remaining one as "unlikely".
+> But that's not enough: if it is the last reference, sock_put() will call
+> sk_free(), which will end up calling sk_stop_timer_sync() on the same
+> timer, and waiting indefinitely to finish. So it is needed to mark that
+> the timer is done at the end of the timer handler when it has not been
+> rescheduled, not to call sk_stop_timer_sync() on "itself".
 > 
 > Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 > Cc: stable@vger.kernel.org
 > Reviewed-by: Mat Martineau <martineau@kernel.org>
 > Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-4-fca8091060a4@kernel.org
+> Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-5-fca8091060a4@kernel.org
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> [ reused existing `out:` label instead of introducing a new `exit:` label since stable's `out:` only does `__sock_put(sk)` ]
+> [ applied fix to pm_netlink.c instead of pm.c due to pre-split file layout ]
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
-See my comment for the same patch for 6.6: this conflict shouldn't exist
-if "mptcp: pm: ADD_ADDR rtx: fix potential data-race" you sent earlier
-is applied first. A new version is then needed.
+
+See my comment for the same patch for 6.12: most conflicts fixed here
+shouldn't exist if patches you sent earlier are applied first. So a new
+version is needed.
 
 Cheers,
 Matt
