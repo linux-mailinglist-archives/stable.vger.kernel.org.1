@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-249444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKmLGJTKC2onNwUAu9opvQ
-	(envelope-from <stable+bounces-249444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:27:32 +0200
+	id CPrSAlrLC2rLNwUAu9opvQ
+	(envelope-from <stable+bounces-249445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:30:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38955766DB
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:27:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FCD85766F4
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B2F083045A8F
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:27:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 316FE301BF4B
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3793164BA;
-	Tue, 19 May 2026 02:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E40325BF13;
+	Tue, 19 May 2026 02:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hrr6X+7v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XO4G3/HN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F170922576E
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 02:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1112F1EEA49
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 02:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779157648; cv=none; b=CbtgTK9AQV7w6z/PYkAbV9lFZop2AMm66CD8vNMUaePy2trxfSA9EFb5djSH0crxdOYzV2JiDIFUGB4W7XB1DbWCisaJR3rBQVbjtkhyLBNuoOVQsjmEBvfXgd15v8VbebxKL8Q3L0OeHk/K4QKgKX8UUre4OAwTYXoJ324OtVo=
+	t=1779157847; cv=none; b=FOvf2tFBlVf+5m+AltPmQRhA4Yb/tY9z6QtMe0BCQ10Y9pTZmRwY/nT4lfyNHLj8Qp3KHMHKgM76Yv5+vSyE8c8erfcLDkZbcc5BJ0HxwZ0fXAanZfKPqrFT+scLjydbHupGQQ+4UE5i3oDgt7KgWeemxuc9X0sNHIEIV4wJ84U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779157648; c=relaxed/simple;
-	bh=4+9uja8+UaTWD+lkLYEQatPOflCkarc3xZ+8uBIuDkc=;
+	s=arc-20240116; t=1779157847; c=relaxed/simple;
+	bh=JMyVxabjfsIitZefmzn7Z9FXyUFRkN4WnYZ/Y6JbV44=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bkbl2gjSSz14rab8YTd3akBk2Z6yPBJP3QCG6ktTHZZar45tcd4sNEmWbqjhxByKWeu1k8+2sPNmxZjCmnDMXyng4vdaR4k5BKMXm4UAgBHZf4U80r/Alfegdqqctk5GSPMXzHGxOMArT0COfEZbi7oWLYo8DtYlNRBJBSRwdPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hrr6X+7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0C2C2BCB7;
-	Tue, 19 May 2026 02:27:26 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=DikKCUxzMhmFulQHxMZNpHdpcBNg0CTIlu5SzNiSB+tgmF65VauaGiTJgmNWgWE0UhpO5ddz8zeDufUDr0LuBKolPdYFrKe5VBY/PDN7GsA+0wMffmL5lJCZtK3wbWQpqpne6lvy+XPrxgUfJnPxZHzMMscbjy592i7z5hymbhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XO4G3/HN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40102C2BCB7;
+	Tue, 19 May 2026 02:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779157647;
-	bh=4+9uja8+UaTWD+lkLYEQatPOflCkarc3xZ+8uBIuDkc=;
+	s=k20201202; t=1779157846;
+	bh=JMyVxabjfsIitZefmzn7Z9FXyUFRkN4WnYZ/Y6JbV44=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hrr6X+7v3pWEfH8uZ4hXcylEmfclckCWvauq9raioygbMucqGo0lGIfBCfTchgV57
-	 xUsyXMPAgQoHA0hfeLPd2CncfaPD1Z2gFkat65t+/7mXiClSf0UtLwy0krZWvQR3M7
-	 pK6qjZXFXWo7j7+LfV0DeRQayUSzVtKzXs4I0xxUWdfNfAr7TbOBQ+avx2ufhI/M6p
-	 VyqX5aoh9Mm4OwRY+vqusRNe6bItwTk+VZ9Pcyrw5tZA4KwDCwapZOKpCjzBvKbS0Q
-	 W/h7uaGFy0FjnBf4EqlmWMuz3XPIXjkqsBSzeQNG0Wit1tj6QmfY+seES8tCgNKfMz
-	 mljdn1J+KSi1A==
-Message-ID: <896b6b17-f503-474d-96c7-e46b09683a60@kernel.org>
-Date: Tue, 19 May 2026 12:27:23 +1000
+	b=XO4G3/HNavEeHJ+NKEZq54s7X3eSxpqQhhqIR8QBTgxdN0ikkZ5CFbp7zeY5nBNLW
+	 Uaqt5ii/BQbUcCBVbJKRK/kfHP2lh+u9jQIjqWDReXvbhxqeN0xrbf4tcF8mDscCoU
+	 aOdIB/8njO+FNQrYcFh71iZDlBt+no/TzNDyQJ8TdG5iPLycEtrxLDd6/pqu0oNRYj
+	 gPJKmDA6SE5bLwHMu/xF8Q/7jZtOUQL97CkyurHGBWRLVSrlzdPPoe3iKY6IBCfwNM
+	 1GbtE3DA2LSwRj9OJHX6Ra0VAb476y2bVZhUlm1ZDFb+5uIAnyV1gt16rTUSlKP0S2
+	 ttGVTFNVBx8+Q==
+Message-ID: <4083739e-6e78-4dd4-a39f-31adf75690be@kernel.org>
+Date: Tue, 19 May 2026 12:30:42 +1000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,13 +53,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 6.6.y] mptcp: pm: ADD_ADDR rtx: always decrease sk
+Subject: Re: [PATCH 6.1.y] mptcp: pm: ADD_ADDR rtx: always decrease sk
  refcount
 Content-Language: fr
 To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
 Cc: Mat Martineau <martineau@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-References: <2026051231-disrupt-dizziness-b157@gregkh>
- <20260519004542.1928600-1-sashal@kernel.org>
+References: <2026051231-fester-hedge-8062@gregkh>
+ <20260519005453.1978642-1-sashal@kernel.org>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -105,18 +105,18 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <20260519004542.1928600-1-sashal@kernel.org>
+In-Reply-To: <20260519005453.1978642-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249444-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249445-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	HAS_ORG_HEADER(0.00)[];
@@ -132,17 +132,15 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: C38955766DB
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7FCD85766F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Hi Sasha,
 
-Thank you for looking at solving these conflicts!
-
-On 19/05/2026 10:45, Sasha Levin wrote:
+On 19/05/2026 10:54, Sasha Levin wrote:
 > From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 > 
 > [ Upstream commit 9634cb35af17019baec21ca648516ce376fa10e6 ]
@@ -166,13 +164,9 @@ On 19/05/2026 10:45, Sasha Levin wrote:
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 > [ reused existing `out:` label instead of introducing a new `exit:` label since stable's `out:` only does `__sock_put(sk)` ]
 
-I guess you got this conflict, because your patch was not on top of
-another one you sent earlier: "mptcp: pm: ADD_ADDR rtx: fix potential
-data-race". This patch adds "bh_unlock_sock()" that is missing here, and
-cause the conflict.
-
-This comment also applied to the same "mptcp: pm: ADD_ADDR rtx: always
-decrease sk refcount" patch for the older trees: 6.1, 5.15 and 5.10.
+See my comment for the same patch for 6.6: this conflict shouldn't exist
+if "mptcp: pm: ADD_ADDR rtx: fix potential data-race" you sent earlier
+is applied first.
 
 Cheers,
 Matt
