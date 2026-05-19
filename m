@@ -1,222 +1,251 @@
-Return-Path: <stable+bounces-249659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKe7LnGpDGoIkgUAu9opvQ
-	(envelope-from <stable+bounces-249659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 20:18:25 +0200
+	id kEhfLAasDGrukgUAu9opvQ
+	(envelope-from <stable+bounces-249660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 20:29:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69045838AC
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 20:18:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE97583AC2
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 20:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 06B7930210C6
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:18:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEF9B30839EF
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC57367F26;
-	Tue, 19 May 2026 18:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CC536997A;
+	Tue, 19 May 2026 18:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qtGfUqBY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ITErD358"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39858352C54
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 18:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779214698; cv=none; b=b92gMIU184dXr59+cZOw+z4lSTbyhtd084R59XHOuLon5etR+kyBKarqkFkY1t7+NVtrBEY8p0n4MEU3HKHqVuN2m5HATECElL5AmsaLCyn/Ae8KeU23kcJrAUV/r5enpZhFs+9vGMhDvUVCnpfy4f4qO8Kf65gMXV+yZvBvQsg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779214698; c=relaxed/simple;
-	bh=eXHp82baqxaLH1q4iRY469trvVd0cOQSdBovZjXWxvQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qAcBa92irGMNKnqc/3F+twl6FTk6Pq4ViK9K2m0BoitxLnpecTGWzRkxZhlECJq2GMfA4HUh0kUIsW0UgiCnJOz/3A/CkEC/Y9LGzX2BPUsaE1Waua9LkRBVOFqPyZQuzXzDLi93T9edpWLW9qw9z9TLstX1nrDTRbz2b3fCbm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qtGfUqBY; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3230B367B92
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 18:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779215156; cv=pass; b=cFURK6CEuM7fiYvYKKcUop4BXGN1F1KNyi4DXnZ4yyN7zTAx/ilnNnLefqCed9DoHRaivKX/tKIpQYy1Ddc4v5sGILlSbosJT5WewxcrfV+xS8WxrhEf5+DkocaIfYC+ZrPzTqybIGikPvQPHL22iPp1F8mmJReyiEhVZbLqqi8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779215156; c=relaxed/simple;
+	bh=krRIe+SWQ9UydTxaBCAVuzteStmc8b0sHjGvDVOk5rw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pSQWi1tVF7pf0cpHafPwVJSfkM4rKpuJhxZVsagEUXXNgpDPN1QZamtHGpnulC//i6yuuhSviatjreBd4cERqDqFsqg/qlFDynErurR1V4DbUZwsNHcKiNhEf7rkXQLS93f98+jQjwLHqRYlXnPV9Zs11Y+i85bRn8ybmotjtPY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ITErD358; arc=pass smtp.client-ip=209.85.128.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-44a74032ff8so2800544f8f.1
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 11:18:17 -0700 (PDT)
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7c0dea734b8so34915477b3.3
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 11:25:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779215152; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Biwyy+ENHpaOSe4OLLjHqZWN06UdyXQYZs5nsyn+L2j2L1HnADryvkd/Ne/CXiGSlN
+         r3YzDBoRNDTZ373HfFQllfyYchNeElR7TEhERovH+lMtu4f0Si/JQSCMy94pomxnDsqC
+         0zxT2GzJ3+67JQ38HC0gG3vwc9XU+/GShZKVizK6TIJkY+wqZJgghc09+HIh9g18lEhP
+         anIbOclkGA7Pxo+2pp8kLh0wPpu1uOEJumIfVsjBl/2qIoK46L1mG7SAd+WvHybGOhZQ
+         jkUz2/D6CE3SzyGwns7RI2r7Zlvv7DLHFuRbh/nWbgG6VC2t/VRC3aik6CymEUeEzLkW
+         0gqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4YqY46vlRkF4fAbfB7mhKaAw8FZ7vCsOZe9CCi7etfk=;
+        fh=uKqe8OU2gKzvNvyLjHRA9sAGYykhhgIFc8MVLnpYnww=;
+        b=dHslxY8u4bCDAjCtoZu9dpnalRE6NKESzPgqxmWRSusfpoZ4/mdiPGpPgqLB5Gj6NU
+         bXbJ742ObqPOtIiSVzh5VCgmojsFhTHcK1M27Szs5sf+vvxcfrDsdl+opFAy0OrbzXN2
+         2r3n23mncESCdfUs5Rc0/ZosQUDjrtLKmwghaE9BOe07tEx4Gfv7pc7Ibh7KVunpoFG2
+         VGmjArTqbM7brqJsISVfsniISq+7uL4HyRq9D900uvyYhoJ32KRPPMVJujGlDz2OvHi0
+         sTTtWE0isUohZi5wZ1CTSLId3rGIPQRoihVy9q4eN4lboMKSn80Q8VSrrT5JMfGvPwaY
+         bm2w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779214695; x=1779819495; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779215152; x=1779819952; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MqmfQ0wqvW/5YkQLpj5T9YPDYLhpHMgWUpuXe2X6Ab4=;
-        b=qtGfUqBYduP1Yqkr80hR5CRBMSAVJ/GH5tic7dtOMSJy0cHxqs0oYFbEFMJXPIyDMa
-         vt5BYb2doWXGl5USANsICHwuIr8zrTlwZMbvyV59toTY14aIkI/DTpmKJ2VUQKu0iJx2
-         jG4TI6zNHoT9cAeRSG85IGvVr0weQpp02Mx8kUTlXQyJkmaGFdDk01FuOzomnKzuuTpz
-         kEeprK3vNKmY1yuDjLIEvI/7eiLxCenY7YL+zyOIIfrnP2cA7mDd1lmp4fGBgGilPLuc
-         XplfuMCpepzt/LvswZdv7UKJx2Wg58FgbM83dCvUrZk1UoVVFsRu41F9G0bbSHaIEg8t
-         rkXQ==
+        bh=4YqY46vlRkF4fAbfB7mhKaAw8FZ7vCsOZe9CCi7etfk=;
+        b=ITErD358uh7yiF7OORzuATGt12jzMIsnMPzOIdNjO4O1dxYtcqJqWPWN9iXQxD0BQH
+         dZKrpOO9ZAXEu9AiXomerItB659YABVzgRnCQyjfKa9LuoppI4ZyWyg7yltHzXUrqA4Q
+         83NaUfM6eqm+kWHnggT3ecawMCEF6yJcHqp/eg/PEb/Y11+nKMXKYJ8nLkIC592Ev1Nq
+         u9cwFNlX69PPPOVDuLvYLkzkQM7DmZ7XOX6lTOduk7YJArw5Eg8us8vfxSUuerutq/HK
+         99L+WiqBcAaUw2pt1ajAfnnH0Erv+FB4J39dM/Mghw7I0TrmvOolkwnvPOSe83cy/eLT
+         AUzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779214695; x=1779819495;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1779215152; x=1779819952;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=MqmfQ0wqvW/5YkQLpj5T9YPDYLhpHMgWUpuXe2X6Ab4=;
-        b=jXFPphzcaAGHo2krZBOBMxMOufZkvJM/O3MbOOmuZKgQWSHmxV3/ZNnL4lQyGBRi8D
-         RL5eJeY5x+YdoRLtEEC5QHwKRvBYCq6WgoyFH2mHJdeYpSPQ5fQrxZL6vyBQ2ZYqu9fM
-         7FzAg9HnpGC7GdIuA8rE2WUawEd8UrBUiaVMqRPv5eV+uDx/aBz03qoRM67chzMFKicI
-         kL/9JWaFkSYvol4Wnv0hD3VmOHH7k1pkoZgVErrKeYplItAhFhzogiBj5bY98jxlJUZ0
-         x551BN3mri7y1zL9sMp8CHnc62zh1DLSa5jWWcyJfq0/bW90MV0xYDb50p8GNRpIuobS
-         Hujw==
-X-Forwarded-Encrypted: i=1; AFNElJ9sWLzH48q6l5iCd+UJSfVEMTfUarAhiWzmIOKxkIL/wJxg+J82yxrAVmlNMgtPVeyraY6Mo58=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlTbIFb3P1371nUGOowye56+B8TLujClwahVqGb2PjSIleIc77
-	XCsSRqA8+kPBYF8G+2qo3va/gFodTWqYVZ8206MOYpF9LS28CwvYTPkU
-X-Gm-Gg: Acq92OGLN19Kl5XC+QrSzMGNYS31BlkpvnHy87/o7H2iBZLJwZ+XZsN6VFTe4jHoPnZ
-	crrrHjtrfVke6nhU9zHOjbke8MdAv3f0AQ3+jZXghSS2dX4qWLVu6AoubEc44TTAI+JhvKummBI
-	X7D45E6zzfaAiDvBQSacP5aenTSuvHmg+m1ydCCIdOKeU1MWnTX3YQldaei7pWxR2rCW/hrE/C/
-	6xLRMan5ZCZt5RlzArAlqmt2Y/NGJ2Hi4o/QDMrppshX0iWdI+4dXS5OmhS0ADJfL6kFf3BcEnH
-	aPtaZDL5Y5rY80+jba4IQCRk6kp6XHnU1Wf5LbiQVi/nHbMISIpv4e2slcax6LdjpVYY9OA+L6v
-	QqKuKwluStjFzBLkuLKP9XjSqWpLnxG7f5uv8X+lLgJpm0GAiV+mTNBG8XEU8q/hMQMFidZ9y05
-	VSnR+e+ERI2aP04tC0sm53imWP8cCsMnFLKf+G2FqXaGBoc4QlBYDm7fkldcaOMEisV4WrA03KF
-	QV4M6J64Mys
-X-Received: by 2002:a05:6000:1845:b0:43d:309b:9c4f with SMTP id ffacd0b85a97d-45e5c57d2fdmr33277547f8f.6.1779214695304;
-        Tue, 19 May 2026 11:18:15 -0700 (PDT)
-Received: from node ([202.47.63.86])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0a1aeafsm49915487f8f.23.2026.05.19.11.18.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 11:18:14 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: linux-bluetooth@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	stable@vger.kernel.org,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: [PATCH v3] Bluetooth: RFCOMM: add minimum length check in rfcomm_recv_frame
-Date: Tue, 19 May 2026 14:17:49 -0400
-Message-ID: <20260519181749.15746-1-meatuni001@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260519042017.29564-1-meatuni001@gmail.com>
-References: <20260519042017.29564-1-meatuni001@gmail.com>
+        bh=4YqY46vlRkF4fAbfB7mhKaAw8FZ7vCsOZe9CCi7etfk=;
+        b=KcaIVmp35gatJ4kwOzOCwD2VBH3SBZFSQ6L5TsKawhtq5L1rsWrLSGHNxfV2dWdYCd
+         9Rz3//VUsxAzVFZCZdBHtSAOa/YHQ7QTirCInl8Z5bSxndjGJTMzV4jsLKqgeK5oiT7T
+         4Jvb5y0VaisWzQL1/Ia/Qjg6/PlHVwEV6+PymmIn5/yHne5n9uJIyyYtstFXhT+i8nRy
+         rgFjfcBtlSzEQgvGScnVg0UHF9qbzYd52B6xK+U6wlDO0PPizEzWkSY3N4DcdDWeZzoQ
+         /fPgthuPpuIsasT14dklDz4AtgM84lY+xVxtSeTwrxrv0gcx6aS/cWNIWBB+JMWCdxbG
+         IRXA==
+X-Forwarded-Encrypted: i=1; AFNElJ+ue7bMfyOHvA88XZzrKw5mJSfbFasUZIqcVE7Z2GmkgcHtRqhNn85jHhy6eN4+jjN5N3JaAIs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFSw0wgEKpGuFEl+y68KBqCE9uZ3jFc3GCZhIuYYGQIK8xrupz
+	VoYfQRMTzuQk/AEfJ8qDEniXD/5srg2JFU4x3ghXu/Am2tSKJLiSVxvKxQnygyWnhZeS/Ppvcfq
+	3xYJERIvHiAypPq8xizZONV5Evkj9kZ4=
+X-Gm-Gg: Acq92OFjdZ1l008acmhjnHGfdG3GryZbNcwfig8bzUGszPSYSW/L72MbqJbuXZlkHEk
+	Gmn2c9TxJSTWF6HV49XpdauSTdUWvivBA/kSdyg44pHhtqbScC9DPQY7ke1oDWw4Do47VNT4z7U
+	ovczBtQdqrglz2DG1+Ln5XqbB+LXD5N9DLi7AtNh9JTauuldvYhaZGfAs2+SNkJTbcx0PQuN9bV
+	wOlNy0U85mRgwaa6DIglfDu/MS4zafb7zkY8YU22tK53bxPN+0HJCW7soA5R6nYgkfjl8TIks+U
+	/eMokALnljIofrPJvE7fR2S6uK1c21BSrVlnA3LAld/54BkNU3tj6vdMsTtExJcAO7/PvQ==
+X-Received: by 2002:a05:690e:1913:b0:65e:3bde:1bc4 with SMTP id
+ 956f58d0204a3-65e3bde3490mr14311058d50.46.1779215152099; Tue, 19 May 2026
+ 11:25:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+References: <20260519042017.29564-1-meatuni001@gmail.com> <20260519181749.15746-1-meatuni001@gmail.com>
+In-Reply-To: <20260519181749.15746-1-meatuni001@gmail.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Tue, 19 May 2026 14:25:41 -0400
+X-Gm-Features: AVHnY4I7-gjlkVDjFs7yHIvtQGGx6X0cwJO5cT0tfa1y3yINopyHlcyV6aiZJ10
+Message-ID: <CABBYNZKFZpUh-nb-8wLQ_fy1U04BAwUdjQikbuzfrzCcMe=VPw@mail.gmail.com>
+Subject: Re: [PATCH v3] Bluetooth: RFCOMM: add minimum length check in rfcomm_recv_frame
+To: Muhammad Bilal <meatuni001@gmail.com>
+Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>, 
+	Kees Cook <kees@kernel.org>, Jakub Kicinski <kuba@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,holtmann.org,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-249659-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249660-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C69045838AC
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 1CE97583AC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-rfcomm_recv_frame() casts skb->data to struct rfcomm_hdr * and
-immediately dereferences hdr->addr and hdr->ctrl without first
-validating that skb->len is large enough to hold the header. A
-remote device can send a crafted short RFCOMM frame over L2CAP to
-trigger an out-of-bounds read before any session state is checked.
+Hi Muhammad,
 
-The FCS trimming code that follows compounds the problem:
+On Tue, May 19, 2026 at 2:18=E2=80=AFPM Muhammad Bilal <meatuni001@gmail.co=
+m> wrote:
+>
+> rfcomm_recv_frame() casts skb->data to struct rfcomm_hdr * and
+> immediately dereferences hdr->addr and hdr->ctrl without first
+> validating that skb->len is large enough to hold the header. A
+> remote device can send a crafted short RFCOMM frame over L2CAP to
+> trigger an out-of-bounds read before any session state is checked.
+>
+> The FCS trimming code that follows compounds the problem:
+>
+>         skb->len--; skb->tail--;
+>
+> If skb->len is already zero the decrement wraps to UINT_MAX, causing
+> skb_tail_pointer() to return a pointer far outside the skb and
+> producing a second out-of-bounds read when the FCS byte is consumed.
+>
+> Replace the open-coded cast with skb_pull_data() which validates
+> skb->len against sizeof(*hdr) and advances skb->data atomically.
+> Save the original skb->data as frame_start before the pull so that
+> __check_fcs() receives the header bytes as required by the RFCOMM
+> FCS specification. Guard against a missing FCS byte with an explicit
+> skb->len < 1 check. Replace the unsafe skb->tail decrement and
+> skb_tail_pointer() call with a direct end-of-data index and skb_trim().
+>
+> Note: SeungJu Cheon posted a related patch that adds equivalent
+> length checks inside the individual MCC sub-handlers
+> (rfcomm_recv_pn, rfcomm_recv_rpn, rfcomm_recv_rls, rfcomm_recv_msc,
+> rfcomm_recv_mcc). That fix and this one are complementary and
+> independent; neither subsumes the other.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+>
+> ---
+> v3:
+>  - Replace open-coded cast with skb_pull_data() per Luiz's review
+>  - Save frame_start before skb_pull_data(); pass it to __check_fcs()
+>    to preserve correct FCS validation over the header bytes
+>  - Replace skb->tail decrement with skb_trim() per Luiz's review
+> v2:
+>  - Fix GitLint B3: replace tab with spaces in commit body
+>  - Add Cc: stable@vger.kernel.org
+> ---
+>  net/bluetooth/rfcomm/core.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
+>
+> diff --git a/net/bluetooth/rfcomm/core.c b/net/bluetooth/rfcomm/core.c
+> index d11bd5337..66eee8a86 100644
+> --- a/net/bluetooth/rfcomm/core.c
+> +++ b/net/bluetooth/rfcomm/core.c
+> @@ -1741,23 +1741,29 @@ static int rfcomm_recv_data(struct rfcomm_session=
+ *s, u8 dlci, int pf, struct sk
+>  static struct rfcomm_session *rfcomm_recv_frame(struct rfcomm_session *s=
+,
+>                                                 struct sk_buff *skb)
+>  {
+> -       struct rfcomm_hdr *hdr =3D (void *) skb->data;
+> +       struct rfcomm_hdr *hdr;
+> +       u8 *frame_start;
+>         u8 type, dlci, fcs;
+>
+>         if (!s) {
+> -               /* no session, so free socket data */
 
-        skb->len--; skb->tail--;
+Doesn't seem relevant to remove this comment.
 
-If skb->len is already zero the decrement wraps to UINT_MAX, causing
-skb_tail_pointer() to return a pointer far outside the skb and
-producing a second out-of-bounds read when the FCS byte is consumed.
+>                 kfree_skb(skb);
+>                 return s;
+>         }
+>
+> +       frame_start =3D skb->data;
+> +       hdr =3D skb_pull_data(skb, sizeof(*hdr));
+> +       if (!hdr || skb->len < 1) {
+> +               kfree_skb(skb);
+> +               return s;
+> +       }
 
-Replace the open-coded cast with skb_pull_data() which validates
-skb->len against sizeof(*hdr) and advances skb->data atomically.
-Save the original skb->data as frame_start before the pull so that
-__check_fcs() receives the header bytes as required by the RFCOMM
-FCS specification. Guard against a missing FCS byte with an explicit
-skb->len < 1 check. Replace the unsafe skb->tail decrement and
-skb_tail_pointer() call with a direct end-of-data index and skb_trim().
+Add a empty line after if blocks.
 
-Note: SeungJu Cheon posted a related patch that adds equivalent
-length checks inside the individual MCC sub-handlers
-(rfcomm_recv_pn, rfcomm_recv_rpn, rfcomm_recv_rls, rfcomm_recv_msc,
-rfcomm_recv_mcc). That fix and this one are complementary and
-independent; neither subsumes the other.
+>         dlci =3D __get_dlci(hdr->addr);
+>         type =3D __get_type(hdr->ctrl);
+>
+>         /* Trim FCS */
+> -       skb->len--; skb->tail--;
+> -       fcs =3D *(u8 *)skb_tail_pointer(skb);
+> +       fcs =3D skb->data[skb->len - 1];
+> +       skb_trim(skb, skb->len - 1);
+>
+> -       if (__check_fcs(skb->data, type, fcs)) {
+> +       if (__check_fcs(frame_start, type, fcs)) {
+>                 BT_ERR("bad checksum in packet");
+>                 kfree_skb(skb);
+>                 return s;
+> --
+> 2.54.0
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Other than that looks good.
 
----
-v3:
- - Replace open-coded cast with skb_pull_data() per Luiz's review
- - Save frame_start before skb_pull_data(); pass it to __check_fcs()
-   to preserve correct FCS validation over the header bytes
- - Replace skb->tail decrement with skb_trim() per Luiz's review
-v2:
- - Fix GitLint B3: replace tab with spaces in commit body
- - Add Cc: stable@vger.kernel.org
----
- net/bluetooth/rfcomm/core.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/rfcomm/core.c b/net/bluetooth/rfcomm/core.c
-index d11bd5337..66eee8a86 100644
---- a/net/bluetooth/rfcomm/core.c
-+++ b/net/bluetooth/rfcomm/core.c
-@@ -1741,23 +1741,29 @@ static int rfcomm_recv_data(struct rfcomm_session *s, u8 dlci, int pf, struct sk
- static struct rfcomm_session *rfcomm_recv_frame(struct rfcomm_session *s,
- 						struct sk_buff *skb)
- {
--	struct rfcomm_hdr *hdr = (void *) skb->data;
-+	struct rfcomm_hdr *hdr;
-+	u8 *frame_start;
- 	u8 type, dlci, fcs;
- 
- 	if (!s) {
--		/* no session, so free socket data */
- 		kfree_skb(skb);
- 		return s;
- 	}
- 
-+	frame_start = skb->data;
-+	hdr = skb_pull_data(skb, sizeof(*hdr));
-+	if (!hdr || skb->len < 1) {
-+		kfree_skb(skb);
-+		return s;
-+	}
- 	dlci = __get_dlci(hdr->addr);
- 	type = __get_type(hdr->ctrl);
- 
- 	/* Trim FCS */
--	skb->len--; skb->tail--;
--	fcs = *(u8 *)skb_tail_pointer(skb);
-+	fcs = skb->data[skb->len - 1];
-+	skb_trim(skb, skb->len - 1);
- 
--	if (__check_fcs(skb->data, type, fcs)) {
-+	if (__check_fcs(frame_start, type, fcs)) {
- 		BT_ERR("bad checksum in packet");
- 		kfree_skb(skb);
- 		return s;
--- 
-2.54.0
-
+--=20
+Luiz Augusto von Dentz
 
