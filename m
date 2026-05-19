@@ -1,203 +1,156 @@
-Return-Path: <stable+bounces-249607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249608-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GWqMm1wDGpKhgUAu9opvQ
-	(envelope-from <stable+bounces-249607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:15:09 +0200
+	id uINzKDtzDGqihwUAu9opvQ
+	(envelope-from <stable+bounces-249608-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:27:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A6D580582
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:15:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8AB58081E
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:27:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9D99F303396E
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:14:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 797A130053E8
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508BF3ED3CD;
-	Tue, 19 May 2026 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D104028FE;
+	Tue, 19 May 2026 14:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="hRKJuhlL"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B76F3ED3C8
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 14:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779200082; cv=none; b=OHubo3AIUIJmzx1SpV/lZgQawETFJo1xTKLAeVPXETDwN6dLSO4DimB1Q9IGXr3ojtTdFG1GASjTOeNenB+2Qfbo5HPqZIKxr7cWZp2gBqXmN38jlPCRpYoLa1dlyoshkCTqwJzVKmxNEqeQpWrsDoq6K0jguZcKv1urGnHUZSA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779200082; c=relaxed/simple;
-	bh=HyEdZse8WgfGRDtxp2FnnQR/kSOabgWhq4eSbQSCVwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kw1modlJNfJxWzmamoB/0AEQl4RKnVf76PrJQK4aZl/XnABMds064imTtWgjQ5J11PMIJGmGndzqVdJb/XtmLAuDrrqY+y20MNaZ9Xcsst2cCNRpqSo3qxmZb3FKPniDjRYdeSKdNNN6rccVxJ1gAJuVlBoRctaPetfcVHl4zQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wPLDQ-0002qV-H0; Tue, 19 May 2026 16:14:36 +0200
-From: Michael Tretter <m.tretter@pengutronix.de>
-To: stable@vger.kernel.org
-Cc: Michael Tretter <m.tretter@pengutronix.de>
-Subject: [PATCH 6.18.y] media: staging: imx: configure src_mux in csi_start
-Date: Tue, 19 May 2026 16:14:36 +0200
-Message-ID: <20260519141436.784770-1-m.tretter@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026051552-pasta-scariness-9d08@gregkh>
-References: <2026051552-pasta-scariness-9d08@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE91C4028DF
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 14:22:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779200528; cv=pass; b=Wt5Ux07fWf+G1tXHLGflvqXIH+gYr8ZTO2aeDAnWOKnpziatH+m2rK0v8eDmCcLrMC8avLHuPx7h9gNj2MsGdbSutsgr8i4E6EnuC1BFIuMiJDEJl4tWEinVq2wwElX4oKTzQ2I6mo4rYlCYgbq9yICQPJ5JSPd3xSKF4GVNG0A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779200528; c=relaxed/simple;
+	bh=y+M1i1Jwkb3OqjTadF8kS1TR5MfxLtXzn9n20tTMyW4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NBYmygFWtbFQqi6eRgwT7XWieepEKdG0+APH0omvaSrTJG2MCtaIZT06sDDlGG6mHePmM2aNqtWjfxYF2iqYOvlDJ4fWDZ7GFtp6KCcSJLKTafTksu8SzmqrN7DAv+uQvvLu1WGfLYuqVBIAwikv7NQg7BzsH7VkxsWlIJqN//E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=hRKJuhlL; arc=pass smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50e5bea4045so27855181cf.3
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 07:22:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779200526; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NUOlxQ0CR/umXG3/PJ1RjFF8BT0+kdk9QggA/hFzEVZeHD23E6LGUxTiOx0QaLsUxZ
+         oq/9q0xCBwgDnbfW1JSXiBLlM2FosqhpfmAjlAVtz6CDEj4Ig3hS2dCKzUA+XPLhooyv
+         XOEXuTGlqorkGKU223vcXIYUdayrjHx+o+SaFmMMdQcv7/r7BAfbKsU+89+WOUY66/6A
+         rmt1M5r6pj94BdLy/dhV+U+Nfs6r3VUuySR4latMCrVk4vB4uG4oCywYDkO25gfRXhUd
+         GZIifO65vomy53ONta7TdsQpLo/K2Wvy72SP7R8ctqx56AsZ+nm07Ygtp67+yTvFLsci
+         nDpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=y+M1i1Jwkb3OqjTadF8kS1TR5MfxLtXzn9n20tTMyW4=;
+        fh=Rn+eYcT2x2M6CSQhPkajO40UvhRR/5EYRv4y7Llim5o=;
+        b=AM8YDBtXC8ckWQ9+QCFxILoob5CgCEAYaIvB2zs7L35GPXHBKcpTx4CNVKIWJhs81U
+         FoejuBhkHWQ2Dzl2TCtuJDCx4XGlLpmhAnxFzlICmbRUvmeRhRkcJb7/K7yE+wFAhkJ6
+         pZuXGo13lBm3VOHWQ12hEPS4NxxgVHzUG9r9ZSRBH2RzXaHihDibBfhPCYnhgXowLPiZ
+         2oKzqAkgsWCSZjQVCDZvYvkaRi6qb+n8NnNZwNowMPCaoWOh9j7Y0+WcizxmJgG5nCu2
+         gVRC2UuwHyTKkutDveK25sxaVhl6CPHaXMMYvMlrR3ViiLzMWScYsYEFHT8dIk02B5/G
+         cPIg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1779200526; x=1779805326; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=y+M1i1Jwkb3OqjTadF8kS1TR5MfxLtXzn9n20tTMyW4=;
+        b=hRKJuhlL58fyI7+79yckyoy52Q7uISZB+DFfJ2STt94ZK/v0rRuR7uu+4jYm9aZsKF
+         7pzSZlsx0jO3F3QeXyZsyo/AKwi/VMj3Ss9LEdGybuKqjH1XYBzSJ76LoY02mPHlAMec
+         3M/hGo/NgXzXr/jVvyCUuhMCTDv2Zqrj87fKA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779200526; x=1779805326;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y+M1i1Jwkb3OqjTadF8kS1TR5MfxLtXzn9n20tTMyW4=;
+        b=SSvbZzUtwTazHJRB5L81dDVitZjH52FFFIv7rsWIYRdZ4Ga1OFEL2p4anN85WNJh6O
+         +ZLvX9YbCGdypjsGvci2/XcUQ2gg0LuKxeu/ds/Wh4w5CeZwP41VsuT7pnwxXR04I8DF
+         1kPmtGy1+YRkUAo5Wm0LGwqC+u98NeLYZsIH5q2puz8PDQh06P7z+yroWfjlTUczHBjc
+         BA5GOOdlmNK2GMW9xvov1dMB/4NLO4m+9jMACve3Jok1nYXQGRDIqSsQWiFlqQ1H2ClY
+         FVsTSY0ekt0Cvt9eF1FfxhqKoLDIlqG2k4A+HyB09/Crso6PQ3DeO+bPcCMPLp0ZU62I
+         +HMQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+J5jQn+3nAFC3MWC1UlSzK3mg7st9c5TAeTGVRueoRzQCBtuS+65PrNnAedEE9l8VRm+shtcQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGyOuT82fkny9shtvNEIu6py9MM5YUs0r5wpU7/aM7wa+HZyyI
+	KhglU+DzFD8AMA8wUt1nRaM7HpSif3WE0LGeKkvRC6AZ3AnlT79yyAfCFNfCVVTUpOuDWiJcvV8
+	0x7GphqjQozSAxdKgEXiSpVBDmg54/Y29d+2Iguo7Ug==
+X-Gm-Gg: Acq92OEBuQk8uY/05nva/bQJAwYGFKv4P8erWgCjwSOtyvfetmEt+4nYk0GaZgs/jz5
+	a4vdYkrGjO9EC5K+IolDWpmjd5Kwa9QtWjIPP1A6fGm4uZHzWxFn12vYeCP4a2+wmR4ZP264J7V
+	1jKLZ1Xc8wYc8VW12brfqeOHbx220Dvl/UabYq1YqLxLQJCPihHbS5A6+DtUsa/Fu8BoPtgPZWq
+	WIlqKt2UUyosAzyvHKBeKNgEIHf6tcsGgY+M81fOryqs/1yW+YbIQn5GgfOsIVpOtcaHP1B1vJy
+	1oiaGBO0psdSwwriT/OdYyxWQXzlHmMUb9nSuGk=
+X-Received: by 2002:a05:622a:28c:b0:50f:b4c0:62ff with SMTP id
+ d75a77b69052e-5165a26a6f9mr287555641cf.54.1779200525585; Tue, 19 May 2026
+ 07:22:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::54
-X-SA-Exim-Mail-From: m.tretter@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+References: <20260519-fuse-dir-pagecache-v1-1-1f060c65930d@google.com>
+ <CAJfpegv63pO9k1mvYct_U+aSuiHHVBxCdNgsaj3FhK8ZX_m0Mg@mail.gmail.com> <CAG48ez2gP5nfASBgZe_QiFcAQfnHd2D68gDiofOjxuGix2jajQ@mail.gmail.com>
+In-Reply-To: <CAG48ez2gP5nfASBgZe_QiFcAQfnHd2D68gDiofOjxuGix2jajQ@mail.gmail.com>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Tue, 19 May 2026 16:21:54 +0200
+X-Gm-Features: AVHnY4Kj6tkpT6WfW6pmL4BP3mlQS7MBLS5jfC_rf2HODZRB_pKQgRciMoje7gs
+Message-ID: <CAJfpegv6N3oQnTmvjNbHYno7nn_4yuy47mKYvUHU76F8bC-asw@mail.gmail.com>
+Subject: Re: [PATCH] fuse: reject fuse_notify() pagecache ops on directories
+To: Jann Horn <jannh@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[szeredi.hu,quarantine];
+	R_DKIM_ALLOW(-0.20)[szeredi.hu:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[m.tretter@pengutronix.de,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	R_DKIM_NA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249607-lists,stable=lfdr.de];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miklos@szeredi.hu,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249608-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[szeredi.hu:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nxp.com:email]
-X-Rspamd-Queue-Id: 72A6D580582
+	DKIM_TRACE(0.00)[szeredi.hu:+]
+X-Rspamd-Queue-Id: CE8AB58081E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-After media_pipeline_start() was called, the media graph is assumed to
-be validated. It won't be validated again if a second stream starts.
+On Tue, 19 May 2026 at 16:12, Jann Horn <jannh@google.com> wrote:
 
-The imx-media-csi driver, however, changes hardware configuration in the
-link_validate() callback. This can result in started streams with
-misconfigured hardware.
+> Should it be `!(S_ISREG() || S_ISBLK())` ?
+> I think block devices are supposed to act roughly like regular files
+> in terms of pagecache, but IDK how that works in the context of FUSE.
+> Let me know which way you prefer and I'll send a v2.
 
-In the concrete example, the ipu2_csi1 is driven by a parallel video
-input. After the media pipeline has been started with this
-configuration, a second stream is configured to use ipu1_csi0 with
-MIPI-CSI input from imx6-mipi-csi2. This may require the reconfiguration
-of ipu1_csi0 with ipu_set_csi_src_mux(). Since the media pipeline is
-already running, link_validate won't be called, and the ipu1_csi0 won't
-be reconfigured. The resulting video is broken, because the ipu1_csi0 is
-misconfigured, but no error is reported.
+Handling I/O on block devices (or any special files for that matter)
+is completely out of fuse's control.
 
-Move ipu_set_csi_src_mux from csi_link_validate to csi_start to ensure
-that input to ipu1_csi0 is configured correctly when starting the
-stream. This is a local reconfiguration in ipu1_csi0 and is possible
-while the media pipeline is running.
+So definitely shouldn't allow manipulating the cache for those, though
+I don't think it would actually do that since in the case of block
+devices the page cache resides in struct block_device, not on the fs's
+device node.
 
-Since csi_start() is called with priv->lock already locked,
-csi_set_src() must not lock priv->lock again. Thus, the mutex_lock() is
-dropped.
-
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-(cherry picked from commit ebeec2b000a90cd8aae86d1931ff5ef23af8284e)
----
- drivers/staging/media/imx/imx-media-csi.c | 44 ++++++++++++-----------
- 1 file changed, 24 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
-index 55a7d8f38465..1bc644f73a9d 100644
---- a/drivers/staging/media/imx/imx-media-csi.c
-+++ b/drivers/staging/media/imx/imx-media-csi.c
-@@ -744,6 +744,28 @@ static int csi_setup(struct csi_priv *priv,
- 	return 0;
- }
- 
-+static void csi_set_src(struct csi_priv *priv,
-+			struct v4l2_mbus_config *mbus_cfg)
-+{
-+	bool is_csi2;
-+
-+	is_csi2 = !is_parallel_bus(mbus_cfg);
-+	if (is_csi2) {
-+		/*
-+		 * NOTE! It seems the virtual channels from the mipi csi-2
-+		 * receiver are used only for routing by the video mux's,
-+		 * or for hard-wired routing to the CSI's. Once the stream
-+		 * enters the CSI's however, they are treated internally
-+		 * in the IPU as virtual channel 0.
-+		 */
-+		ipu_csi_set_mipi_datatype(priv->csi, 0,
-+					  &priv->format_mbus[CSI_SINK_PAD]);
-+	}
-+
-+	/* select either parallel or MIPI-CSI2 as input to CSI */
-+	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
-+}
-+
- static int csi_start(struct csi_priv *priv)
- {
- 	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
-@@ -760,6 +782,8 @@ static int csi_start(struct csi_priv *priv)
- 	input_fi = &priv->frame_interval[CSI_SINK_PAD];
- 	output_fi = &priv->frame_interval[priv->active_output_pad];
- 
-+	csi_set_src(priv, &mbus_cfg);
-+
- 	/* start upstream */
- 	ret = v4l2_subdev_call(priv->src_sd, video, s_stream, 1);
- 	ret = (ret && ret != -ENOIOCTLCMD) ? ret : 0;
-@@ -1130,7 +1154,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
- {
- 	struct csi_priv *priv = v4l2_get_subdevdata(sd);
- 	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
--	bool is_csi2;
- 	int ret;
- 
- 	ret = v4l2_subdev_link_validate_default(sd, link,
-@@ -1145,25 +1168,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
- 		return ret;
- 	}
- 
--	mutex_lock(&priv->lock);
--
--	is_csi2 = !is_parallel_bus(&mbus_cfg);
--	if (is_csi2) {
--		/*
--		 * NOTE! It seems the virtual channels from the mipi csi-2
--		 * receiver are used only for routing by the video mux's,
--		 * or for hard-wired routing to the CSI's. Once the stream
--		 * enters the CSI's however, they are treated internally
--		 * in the IPU as virtual channel 0.
--		 */
--		ipu_csi_set_mipi_datatype(priv->csi, 0,
--					  &priv->format_mbus[CSI_SINK_PAD]);
--	}
--
--	/* select either parallel or MIPI-CSI2 as input to CSI */
--	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
--
--	mutex_unlock(&priv->lock);
- 	return ret;
- }
- 
--- 
-2.47.3
-
+Thanks,
+Miklos
 
