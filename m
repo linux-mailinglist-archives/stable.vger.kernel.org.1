@@ -1,143 +1,227 @@
-Return-Path: <stable+bounces-249478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGT5FjsLDGo5UQUAu9opvQ
-	(envelope-from <stable+bounces-249478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:03:23 +0200
+	id gENrMHcMDGqFUwUAu9opvQ
+	(envelope-from <stable+bounces-249479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:08:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CDA57892B
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D20F578AAF
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AE2953011369
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:02:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 388983026F2D
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC613ACA7C;
-	Tue, 19 May 2026 07:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1643B3C0F;
+	Tue, 19 May 2026 07:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="SAvInOgf"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="TN0ErKKY"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BA52F83A0;
-	Tue, 19 May 2026 07:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1223F3B388A;
+	Tue, 19 May 2026 07:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.244.194.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779174157; cv=none; b=WIAIYKCKkFqaiB1vgCW8XIRiE7C9JrRH759Sx0SbdcXDf3A1e0gaGzBR0hOI7XcDOjHeoKWk+dJPakcPh9NTjJ8/gHyWeGT6fREiuwBjaliy8nvGasmwQdOswpf/Re5x0kmNJ2Bi4re2lzyjpwxIBZ5FyUiKn8wdy3zQaWHVsqY=
+	t=1779174425; cv=none; b=GH2fM1XNas6lK4/l8AuvrpmKzDXxLgNwWkHc5srswtspF+RjKSX8iwCK2+5SlMVH9uZizfqk6C7hLDBo80UngH6JKgJCXi57sRiUAWaOrS809hZwYBF8S0wuBC3WVpgv6j+5QvlIV4xfrhKjwKap0aI71wReYQnyyF6mnccm1Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779174157; c=relaxed/simple;
-	bh=6PoyY0m7W6XKHBGJZRQ61x55K0oEosn/NInIgnJN9FM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mDOFNTB8dPEUPSt8NzSApyOyqrIPsuJ5EygUH8HfjAS0t/P9oPhRwZViDrp+Rk+K4Xwocb13rbDH4OR7/4vo0S5HDuYyz6EbOBJHOC5G47Bjvx4so4dADvN5BZ8UhI6GkrsJwfIROidwWbFRoI2i3MsltYhx3dqBkA+FbBVl6lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=SAvInOgf; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=w9roBW/hrwP1cQbCmYo3jAZ+BV7bIoSQT26LbPLuzVE=;
-	t=1779174155; x=1780383755; b=SAvInOgfDIsNcw4Y0HJKUllcU/q+sEB2AHE9CuqyTGtV8+T
-	88Gl7ylmRt1Tha7ogzewFwpn7gNYckHbwGqVAUWENrLaHfnIx1z+3v+prW/klQLxqMM3uZ8xt3mJO
-	X7uP5Uve+Nu/99s+a3JRWqZkoo+BVVDaSprbN5u0twzut6HO3LDFD0WciTgPASliQHOwyy3EPvtPd
-	oJWhQzcsNAk5Ku6EVsDGU9mlfXzSfbnjtI0tJ4gz3YBc9d5XIC3+m5mazidu373OzAh83DhrNxBvB
-	BXTbGeJY4v2/ETquiEjf/JszeTXumqFVzOkgmZaWeILUjl/I8BGy+PjFX1Ps6Kdw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wPET9-00000005kRd-2TEx;
-	Tue, 19 May 2026 09:02:24 +0200
-Message-ID: <58d6ee4054473af391eb5ae8b4382e6964dc3ab6.camel@sipsolutions.net>
-Subject: Re: [PATCH v3] wifi: mac80211: fix monitor mode frame capture for
- real chanctx drivers
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Devin Wittmayer <lucid_duck@justthetip.ca>, 
-	linux-wireless@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Oscar Alfonso Diaz
-	 <oscar.alfonso.diaz@gmail.com>, fjhhz1997@gmail.com
-Date: Tue, 19 May 2026 09:02:22 +0200
-In-Reply-To: <20260518170147.13885-2-lucid_duck@justthetip.ca>
-References: <20260308164510.5927-1-fjhhz1997@gmail.com>
-	 <20260518170147.13885-1-lucid_duck@justthetip.ca>
-	 <20260518170147.13885-2-lucid_duck@justthetip.ca>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1779174425; c=relaxed/simple;
+	bh=Kbi02mnUFXxeexEHvbh0wMhOy1M0F4jrVLISqBF8Tbw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=qj1wXz5cSyfAPUWL4wb0Lqw1Zz1iuh9bkYuaN9ZVpO99G0tnr4kyqCOcocPzxnm7wUfK1DIbLHQqkqw9y08wg1+nHYPAi2X4x7RmijEL0aWPa9JtmUJlAA0R5tyqwor+Px0Uu4T+0zFyhnl9P4RStc3aqjce3nzkA3K/mMh6nVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=TN0ErKKY; arc=none smtp.client-ip=185.244.194.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
+	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4gKQf26W0dz96MW;
+	Tue, 19 May 2026 09:04:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1779174282;
+	bh=Kbi02mnUFXxeexEHvbh0wMhOy1M0F4jrVLISqBF8Tbw=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=TN0ErKKYRQSuKIq7C2e5MFoo5n0VF25zRxXqyYU65XjDGkAfVe0Am549XQbqMtaos
+	 YqSQLVskTs1JVHz5gss6kdBZmymbqr1wk6vThOY3kAS3wlzGNmbu9fYKn5ySDrw0Ip
+	 NbottmFZFbVgOCXp4ALD0DB4YECF3MSd7d8qFFTk4fzwbbi9A2Pvdkm5xUPgj5Yq+j
+	 7H06OKrHBV+wVnTk4V3WLufpgn7S8YpeJn8nHjiy6jRkKc25p5Nraq7+9XdzVNfRbb
+	 vvH5wZsiEa6MuuI2IubYmKV4cIh3NhDlxTlF6zPsfCMfpnu/ATlKWUBedorizMKiiZ
+	 k45i9/Fgx/dfA==
+Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
+	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4gKQf25nn1z7vS1;
+	Tue, 19 May 2026 09:04:42 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
+X-Spam-Flag: NO
+X-Spam-Score: -2.898
+X-Spam-Level: 
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4gKQf02kjWz8tbD;
+	Tue, 19 May 2026 09:04:40 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 573CD61840;
+	Tue, 19 May 2026 09:04:39 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
+Date: Tue, 19 May 2026 09:04:38 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL] bluetooth 2026-05-14
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+To: Greg KH <gregkh@linuxfoundation.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Sasha Levin <sashal@kernel.org>
+Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, davem@davemloft.net,
+ kuba@kernel.org, Linux kernel regressions list
+ <regressions@lists.linux.dev>, Linus Torvalds <torvalds@linux-foundation.org>
+References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
+ <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: 
+ <177917427974.1028416.13755667585499179933@mxe9fb.netcup.net>
+X-NC-CID: DUzrp9NfZvXVLNpdroel/q9mtQMCKy5sP1vj16MOZXEFJ2YL3nM=
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,fedoraproject.org:url,leemhuis.info:mid,leemhuis.info:dkim];
+	TAGGED_FROM(0.00)[bounces-249479-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249478-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	DMARC_NA(0.00)[leemhuis.info];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,davemloft.net,kernel.org,lists.linux.dev,linux-foundation.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,vger.kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: E6CDA57892B
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 5D20F578AAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Devin,
+On 5/15/26 17:10, Thorsten Leemhuis wrote:
+> On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
+>
+>> The following changes since commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac:
+>>   net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:12 +0200)
+>>
+>> are available in the Git repository at:
+>>
+>>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-14
+>>
+>> for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c00282:
+>>
+>>   Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-14 09:58:08 -0400)
+> 
+> It seems this PR sadly came too late for this week's net PR to mainline
+> that was merged yesterday.
+> 
+> TWIMC, from my point of view, it would be great if we somehow could
+> still get the changes from this PR or at least the btmtk fix it
+> contains[1] to mainline this week before -rc4, as it is fixing a
+> regression known since 2026-04-24 that at least five people encountered
+> with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
+> validate WMT event SKB length before struct access") [006b9943b982 in
+> -next].
 
-Please don't nest the threads - it gets confusing quickly.
+Greg, Sasha, that [1] fix I was talking about now reached -next as
+162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
+events") and will likely hit mainline on Thursday or so with the weekly
+-net PR to -mainline. If that's good enough for you, I'd say it would be
+good to pick this up for the next round of stable kernels.
 
+Ciao, Thorsten
 
-> +	} else if (local->emulate_chanctx) {
->  		chandef =3D &local->hw.conf.chandef;
-> -	else
-> -		goto fail_rcu;
-> +	} else {
-> +		struct ieee80211_chanctx *ctx;
-> +
-> +		ctx =3D list_first_or_null_rcu(&local->chanctx_list,
-> +					     struct ieee80211_chanctx, list);
-> +		if (!ctx ||
-> +		    rcu_access_pointer(ctx->list.next) !=3D &local->chanctx_list)
-> +			goto fail_rcu;
-> +		chandef =3D &ctx->conf.def;
-> +	}
+P.S.: Side note, in case anyone cares: this regression meanwhile was
+reported at least 14 times by now (only counting upstream reports, there
+are many more in various downstreams).
 
-I'm sure we can basically get rid of the "emulate" check now, because
-emulation will always lead to exactly (zero or) one channel context(s)
-being present.
+> Another reason: Greg a few hours ago backported the culprit for the
+> regression to v7.0.7, v6.18.30, and v6.12.88, which led to a bunch of
+> other reports coming in[3]. Greg could, of course, revert it, but
+> usually he prefers to just merge the fix. But of course the fix must
+> first hit mainline (or at least -next) -- and that might only happen
+> next Thursday, as there usually is only one net PR per week. Luiz even
+> wanted to "expedite a PR to have it fixed asap"[4], but that didn't work
+> out afaics, hence this mail.
+> 
+> Ciao, Thorsten
+> 
+> [1] btmtk: accept too short WMT FUNC_CTRL events – also available here:
+> https://lore.kernel.org/all/770d36b07311bf88210c187923f243fb9f126f04.1777058551.git.pav@iki.fi/
+> 
+> [2]
+> https://lore.kernel.org/lkml/20260508173121.27526-1-mikhail.v.gavrilov@gmail.com/
+> https://lore.kernel.org/lkml/f652d5d9841a9b7c100dd19ee97c86099f580724.camel@gmail.com/
+> https://bugzilla.kernel.org/show_bug.cgi?id=221511
+> https://lore.kernel.org/lkml/20260514-bluetooh-fix-mt7922-v1-1-499c878af1e5@zohomail.in/
+> https://lore.kernel.org/lkml/20260514-bluetooh-fix-mt7922-v1-1-499c878af1e5@zohomail.in/
+> (+ one more report in a Fedora kernel chatroom)
+> 
+> [3]
+> https://bugzilla.kernel.org/show_bug.cgi?id=221521
+> https://lore.kernel.org/lkml/51b55b97-615b-4f5e-b454-df646f4058b7@augustwikerfors.se/
+> + a four more people in
+> https://bodhi.fedoraproject.org/updates/FEDORA-2026-6b173ffc2a#comment-4646633
+> 
+> [4]
+> https://lore.kernel.org/all/CABBYNZ+FfhYtU2=J-V4pjKf_vKV=Y5LhVhxS_epKe-qaUUt8_g@mail.gmail.com/
+> 
+> 
+>> ----------------------------------------------------------------
+>> bluetooth pull request for net:
+>>
+>>  - af_bluetooth: serialize accept_q access
+>>  - L2CAP: ecred_reconfigure: send packed pdu, not stack pointer
+>>  - btmtk: accept too short WMT FUNC_CTRL events
+>>  - hci_qca: Convert timeout from jiffies to ms
+>>
+>> ----------------------------------------------------------------
+>> Jiexun Wang (1):
+>>       Bluetooth: serialize accept_q access
+>>
+>> Michael Bommarito (1):
+>>       Bluetooth: L2CAP: ecred_reconfigure: send packed pdu, not stack pointer
+>>
+>> Pauli Virtanen (1):
+>>       Bluetooth: btmtk: accept too short WMT FUNC_CTRL events
+>>
+>> Shuai Zhang (1):
+>>       Bluetooth: hci_qca: Convert timeout from jiffies to ms
+>>
+>>  drivers/bluetooth/btmtk.c         |  4 +-
+>>  drivers/bluetooth/hci_qca.c       | 33 +++++++--------
+>>  include/net/bluetooth/bluetooth.h |  1 +
+>>  net/bluetooth/af_bluetooth.c      | 87 +++++++++++++++++++++++++++++----------
+>>  net/bluetooth/l2cap_core.c        |  2 +-
+>>  5 files changed, 85 insertions(+), 42 deletions(-)
+>>
+> 
 
-And then it's equivalent to my original v2 patch:
-https://lore.kernel.org/linux-wireless/20251216111909.25076-2-johannes@sips=
-olutions.net/
-
-(even if that expressed the logic somewhat differently)
-
-
-And that version was _definitely_ reported to crash. So what changed?
-Could you do some investigation if mt76 got bugfixes in this area
-perhaps? Or are you just using slightly different devices than Oscar?
-
-johannes
 
