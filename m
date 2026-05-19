@@ -1,94 +1,77 @@
-Return-Path: <stable+bounces-249486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJv7Fo0UDGoZVQUAu9opvQ
-	(envelope-from <stable+bounces-249486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:43:09 +0200
+	id iM/sC0YUDGoZVQUAu9opvQ
+	(envelope-from <stable+bounces-249484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:41:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34595794E3
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5DA57949D
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:41:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6A7A7302471A
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:43:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C6FE3024246
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 07:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662413DA7E0;
-	Tue, 19 May 2026 07:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F0E3D1712;
+	Tue, 19 May 2026 07:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b="fcibrqSu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HvwsZu2/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D540E3D967D
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 07:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE90337883C
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 07:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779176585; cv=none; b=LmPcPGAhK3AAeZuydhInXQAXWc5zioD46xAahoeXA45wAFjwGHktJ//CDRbRCwNeqHkY3BRIbf/TS4Oyj+vz9EHWlJHNNeZVGooYVxXZtTJf0hvkZLvUfc7j4cr4PJbqfVRfA3C9PsAtVpl5u4pcRhFaYH2nzMH8m16hGqDQPGo=
+	t=1779176514; cv=none; b=PG9w+OqMdF97avWpg/t0FbO3+8BtI7B8pT6yP7Od6uxxiFs3NL3zl1SjE8SMrr4ExQI7y2aSjxxWigudSkogCM1+1HHSwpPZxEr9l4Hd/DCTWxCD1JAld1IIgTAkSCC9XsmSvz7r9XbPu2jYUKceopIdp52MTNWWRNlyxIxXwLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779176585; c=relaxed/simple;
-	bh=PqBOXKIcL2LFH254HZC8CVkLl+stNhZQ5ZbAKeES868=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XTRaDGizeykLkz9Qjtg0WvEx07iT4FnCgGMQmvHbOP/Q2fVubW37xd2ubW1oGss+viilXa3NuM6u+UsfapCpmhFsv5MSQLwAZYUazFf2jP7CH2FIgbKuTBwskisDiqr57sLmZ0DepHv3Yzo0u7sunNXE/1cREUiVxRaUydxnDeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20251104.gappssmtp.com header.i=@cse-iitm-ac-in.20251104.gappssmtp.com header.b=fcibrqSu; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-83d5bbef760so1346136b3a.1
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 00:43:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cse-iitm-ac-in.20251104.gappssmtp.com; s=20251104; t=1779176582; x=1779781382; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=g/tERIhcgTY407JXDkFbxFgApJOVjg4hy+8W+lvT7Ww=;
-        b=fcibrqSuE6qyEsDuG9FMrvdHztLMUk42O/jagA/vo8hLB09lWyKo6ljvNwpjWK2an9
-         xKlTUlMlYADUKa6xCE+KFseSaCPvD8pZxO12gPo8lKY9qfKp5/yqdKaVFG2M6LNr+6d4
-         9KgShMzZy8gcMk/2iDVERHM5MbsYnxnew9wwwt6HqqbSXcKq56ztT3+pjGWUeo1qyfXi
-         RonPNy0l1157I5JgY/5NYAj5v0EjvPHqTwHGgVFNL5zKXU3AxkLzBnweAWgLPaeNCkIR
-         IU1KfRxcHEyU0ZFX8uZauyqxq3OL/NAeHURmmF/aLQAE+ZcW3NBxpsZfJFNhLfUFFyTs
-         Q1Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779176582; x=1779781382;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g/tERIhcgTY407JXDkFbxFgApJOVjg4hy+8W+lvT7Ww=;
-        b=lh0DoiFv7iSwMHsttDdH3Xm5Q89FTXTzgBMBDIpZFuoE64s9hIw/Mv+xwoi6Ja/9FP
-         iKWL8vK4Jsi3e5sayCjqRCFMydGuf3Z3x/ClbNjHpYRoS8ed+whdGnNT5dbejEJe3rTy
-         JWLhXML1w4g7iVE7QDsq1Zi+96d7ZXLRDtIOH12EE9PFptLwrLKL2cJnqGVQPV9oXZ2o
-         jWRaSqBYXPPz10/b9u/rCMN31NqJLNyTiWOXo60aV9i5mlEeRCUn2m9/yOmW2+8Cbzph
-         7zrtDF7Yf6AmDt8wbumGwptDyfRZ93e7bUn9IC1UHNVsuCXjt5Kmzx8BsZfFfmjLf/GT
-         3RBA==
-X-Forwarded-Encrypted: i=1; AFNElJ8/Zz+Bj2LxH4gWwvsSUdhdC0NBDsgr+M3ISBmdIVZnDUJZzUjP3llTkT3ZeqmWhWT9DSvmHxc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6AzR0aQZFMN2vbAYXuhQ3LinoQKjkDI3o+8HOnFZY9sC9hdKY
-	953T8qTWw1x/silNwEX4YKYGqZMdmmTF+Qljw5GesBlmzmjdedsBWTBDqEdIGM26Nz0=
-X-Gm-Gg: Acq92OFIP9pwYBE1/N5SmqCfQvqFSUoUGSgYMYggb86vt6zHdUk49w9cYb97LTar5xo
-	/st7zcEfp8wRuhXztEuLPdfJRAs7tQzioObeluchaNaMIkH78e0ApzXrfhGwSOGdz8SdCauK4f5
-	nSsb5C9/+RqT3X2At3Vw3rIX79fQoMkRiu2wPHj/knk9L5CEthgE7Y90SVZYfJ8rVXtWvMTA5Tk
-	jpc9NAcDvHe16SD9NfRWWkMGh3p04a52oGMK0hc09vjOsDiO+pwUhVS0pTRxLxPX69ZwEznv6Rc
-	BzlQK8XD+ZPIIHhF3B6Rob5rI/sLC4ChNkj5yHhF/6n+ci1iP9IEM7Txgn0oBgELvbq81WV4LOf
-	89FJB3RnnKMzJBLhKNkoMkNy+wI6vt7NukOrnnKR/6qMPz8Gt8uFBWfHDXP7ymNAoNAzQNVup1w
-	91DyiKX329Sb+dg6ViEWpnpqJnLOV0S32MP1RvyYnUv4kShyRDaPec2MVUsZITdP+V75hW/Bvid
-	eP+CYjZniGSeYyWs/TqltWT9kBxEWrmO5jHXGYQ3olPn0/2CN2HFj2YEQ==
-X-Received: by 2002:a05:6a00:1908:b0:834:df57:9d67 with SMTP id d2e1a72fcca58-83f33cf0bddmr18987872b3a.32.1779176581994;
-        Tue, 19 May 2026 00:43:01 -0700 (PDT)
-Received: from localhost.localdomain ([103.158.43.41])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-83f19f7cc9asm21029127b3a.53.2026.05.19.00.42.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 00:43:01 -0700 (PDT)
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-To: justin.tee@broadcom.com
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	paul.ely@broadcom.com,
-	James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jsmart2021@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: lpfc: fix potential memory leak in lpfc_read_object()
-Date: Tue, 19 May 2026 13:12:28 +0530
-Message-ID: <20260519074230.110624-1-nihaal@cse.iitm.ac.in>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1779176514; c=relaxed/simple;
+	bh=3hIsISCVTPH0EQKueOEFFXhsxHwXcccPYq7/eFktsxo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l1lN2idDqa82qaaejZyBFBKFgouLnnqpPlF5WSiaNMRER+tHGEI4BtM2lF4z9zb5t1PR06cAr30Uc00lRJa8LDGrCMYaOa+f9KT+OlShDp7/BXxcmJCDEQq4lrOCBa/jgCvjhBfanQ25Z/0YwkrpgaZOLlonJO4JG9VqB6oj6E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HvwsZu2/; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779176513; x=1810712513;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3hIsISCVTPH0EQKueOEFFXhsxHwXcccPYq7/eFktsxo=;
+  b=HvwsZu2/jbUtGTAm/7wEZrhMoT1A0tqEReMAu6GTZK1cFr4pSpQIIfoQ
+   tIGp72NZige+jFd4+VyrTyxawaZpAZjeKNhcizsshQFu2gUnFzxp5hqM6
+   gL75g0IkEjSUS5MGv9gt85999JNz9c+GsLgVpcnb/MjG5CvLt2qk9nfcd
+   ugvmw80PcxZJsAWPQx7xwlma5SpHWKN1NnOYdgGyvy7tyyUUmAQ+2ftEA
+   kOsyR+BNKq4Bs3cdYQcZjI6cuTjWnJZ5+ohgS9jDtcRKsYYYD8Z1jC/38
+   lFSggxyD/EDGkR8SOa4RoV7aTAb9xwa4FOHbL6hytlBjkmKdkzN4JvtRb
+   g==;
+X-CSE-ConnectionGUID: 7klRH2VoTUW9i5RWaR2/cA==
+X-CSE-MsgGUID: 0iURrRVATESa+Sj6xGccQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="80025910"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="80025910"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 00:41:53 -0700
+X-CSE-ConnectionGUID: +QM1njEERKG96iKdipAZoA==
+X-CSE-MsgGUID: Guzy/myRTX21HNGvhi/IBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="239561838"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
+  by orviesa008.jf.intel.com with ESMTP; 19 May 2026 00:41:50 -0700
+From: Pranay Samala <pranay.samala@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: karthik.b.s@intel.com,
+	sameer.lattannavar@intel.com,
+	pranay.samala@intel.com,
+	stable@vger.kernel.org,
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Uma Shankar <uma.shankar@intel.com>
+Subject: [PATCH] drm/i915/color: Fix HDR pre-CSC LUT programming loop
+Date: Tue, 19 May 2026 13:22:45 +0530
+Message-Id: <20260519075245.383864-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,65 +79,63 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.06 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[cse-iitm-ac-in.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249486-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249484-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[cse.iitm.ac.in,broadcom.com,HansenPartnership.com,oracle.com,vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pranay.samala@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[cse-iitm-ac-in.20251104.gappssmtp.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,cse.iitm.ac.in:mid]
-X-Rspamd-Queue-Id: F34595794E3
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CD5DA57949D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The memory allocated for sge_array inside lpfc_sli4_config() which is
-attached to mbox, is not freed in one of the error path in
-lpfc_read_object(). Fix that by calling lpfc_sli4_mbox_cmd_free()
-instead of directly freeing the mbox.
+The integer lut programming loop never executes completely due to
+incorrect condition (i++ > 130).
 
-Fixes: 72df8a452883 ("scsi: lpfc: Add support for cm enablement buffer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Fix to properly program 129th+ entries for values > 1.0.
+
+Cc: <stable@vger.kernel.org> #v6.19
+Fixes: 82caa1c8813f ("drm/i915/color: Program Pre-CSC registers")
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
 ---
-Compile tested only. Issue found using static analysis.
-
- drivers/scsi/lpfc/lpfc_sli.c | 2 +-
+ drivers/gpu/drm/i915/display/intel_color.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index d38fb374b379..fe7d9942ebd2 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -22302,7 +22302,7 @@ lpfc_read_object(struct lpfc_hba *phba, char *rdobject, uint32_t *datap,
- 		pcmd->virt = lpfc_mbuf_alloc(phba, MEM_PRI, &pcmd->phys);
- 	if (!pcmd || !pcmd->virt) {
- 		kfree(pcmd);
--		mempool_free(mbox, phba->mbox_mem_pool);
-+		lpfc_sli4_mbox_cmd_free(phba, mbox);
- 		return -ENOMEM;
- 	}
- 	memset((void *)pcmd->virt, 0, LPFC_BPL_SIZE);
+diff --git a/drivers/gpu/drm/i915/display/intel_color.c b/drivers/gpu/drm/i915/display/intel_color.c
+index 2d318e922671..3bfe09d81a4c 100644
+--- a/drivers/gpu/drm/i915/display/intel_color.c
++++ b/drivers/gpu/drm/i915/display/intel_color.c
+@@ -3976,7 +3976,7 @@ xelpd_program_plane_pre_csc_lut(struct intel_dsb *dsb,
+ 				intel_de_write_dsb(display, dsb,
+ 						   PLANE_PRE_CSC_GAMC_DATA_ENH(pipe, plane, 0),
+ 						   (1 << 24));
+-			} while (i++ > 130);
++			} while (i++ < 130);
+ 		} else {
+ 			for (i = 0; i < lut_size; i++) {
+ 				u32 v = (i * ((1 << 24) - 1)) / (lut_size - 1);
 -- 
-2.43.0
+2.34.1
 
 
