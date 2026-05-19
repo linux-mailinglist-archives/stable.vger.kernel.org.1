@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-249508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PWYDKIwDGpuZAUAu9opvQ
-	(envelope-from <stable+bounces-249508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:42:58 +0200
+	id YKCZLvUwDGpuZAUAu9opvQ
+	(envelope-from <stable+bounces-249509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:44:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 952F057B7B3
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:42:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1536757B83C
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 91B703067F9B
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:37:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83F8A301693D
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 09:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6393F88B9;
-	Tue, 19 May 2026 09:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F4537DE98;
+	Tue, 19 May 2026 09:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xi6Eba91"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HxoYCZ9C"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35008340A57
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 09:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841A63DB65A
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 09:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779183420; cv=none; b=Lk481WIITXoi4zOzMgSv/16Kc3MdxvFMEEzVC2FlzQKHJzFM9o6cvpRx5E/6IkPILsZBEPSbiA1NW9TRdZwsLQWo2SUfyMdOgwNvxdMrvkWNuahTNxtOTCc9zjMQIUzHHKKlzV3ZSXOU0KVkWURRdk1IyJFFXQpPcRHIofQTQjc=
+	t=1779183428; cv=none; b=i01H7NC+m/euxVwwE78v4OvKCHaGc5jhWZkaljzdp0RzzX8161/tgYZFv5WIuSaGMX+S04pbU4ovRNpWtNeM9aqRTEnUiGLneKCOhzmxU8ISSxtRZaVhEOQF2CrYQNP2/bSF+ouCKkZhZNd19nWQAQvXMKpIVVbd20XCOUsex/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779183420; c=relaxed/simple;
-	bh=BAybKMloOzo/7eFMXNhtUm5cPUbvLw41sIfPnA0akO0=;
+	s=arc-20240116; t=1779183428; c=relaxed/simple;
+	bh=HMLIMtsfl6OLQ7vhtU7AxU0029j1Uze2GS3kI7LukYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bQqsSCkMaUGIUgUoW9ea7KFfPy9c0zGU5KV9OOCKXB4V6b8omcrU38j0JJI6DJdD2zkCPP+NVC68Qf+nqgP4EHWpnqKP8QK2Gkrr8W5OC2q8gymj9FfBIt/2UVmO1EZmD5qeRoBkWtI6O0UrH7fAvpIoRLvXTcqjBiIBclekVcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xi6Eba91; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version:Content-Type; b=chRr/pt3PcPQRpalo62bx2w/sZI3FBkGRoT+kSjDj3RqbgPthgDi8bt00Dwa/CjbHylgQkE010ksNLiyuRSfHygjGSGPdtG7aGrotoaCBu9qX9oHbtW3umdQyvUaJQ59d/yM5MhF6hu7Ck+dHaft6d5v/yvjpEwGuRhN1T17mRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HxoYCZ9C; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779183419; x=1810719419;
+  t=1779183428; x=1810719428;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BAybKMloOzo/7eFMXNhtUm5cPUbvLw41sIfPnA0akO0=;
-  b=Xi6Eba91GXzD7cIwzWjCaLZrRuPsDoS6hd/Jtve65RenFWroZLjX8dIT
-   rc1opjl9DE02ekbbCOEeyNykTMVd6h5NyuMG1DZSNEruXtGW3Xi4tzJSN
-   XpE9S9AmLKeAwk+c7BCA9RzUGKEvBS8DfGb6+imIydRfXVGmbuegLeifn
-   ZDLbpG8Rs+VrAaqMjVW3uou6fLxiBo661JEtvCAosMC3R8Z6qLzxruYzi
-   gEEIRx1PAsMAdYRkGrUdnPzHGra9WHZR0JzuP0QENgfEsxT4AYbn69h/o
-   BMKhPb2vMUKHfZjXRHI0F2LWczX0aGx36lti0J2JFdKOEQpbB0Yq8T67u
-   A==;
-X-CSE-ConnectionGUID: Kp6b6NnUSx+rSoron9YZaQ==
-X-CSE-MsgGUID: ejcmRugVTeaOXKl3aYDG+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="67583830"
+  bh=HMLIMtsfl6OLQ7vhtU7AxU0029j1Uze2GS3kI7LukYI=;
+  b=HxoYCZ9CKLiQyv3NXmK9rqaKB9snmIfSI55QsHjnP0WMK+WxgC0sdhIf
+   DgN+cKKFqIVRudWTkp8Ei2DSmtKScuuo0I/pMNMTal9HqHBob1gVfqh7/
+   12fQ97rcrMDe7SeFdgbqN4p9uSDIS55VreQBpErf6RdrFCkSHpDupFpX/
+   dzWA7t4fmWjxD7a+Zi2whqs0ynkwLUpSrRKIc3++L2fgVhBZy3M//+NoR
+   +ds/46qT7Mm4g0VwYHEUVU2ePmNOQbmBuSpAWz6ZBPg2SckgifOZky7CX
+   MoLxwIfbXBQYIQVF7h3yfzIBB9QUBqH7Dz4X6aUQa9T7SWtuvufQyCmm6
+   g==;
+X-CSE-ConnectionGUID: Mo562Fh2Syi5qNmdjafSEg==
+X-CSE-MsgGUID: poFvbYbqT1ichUFQuyqBZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="83912889"
 X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="67583830"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 02:36:58 -0700
-X-CSE-ConnectionGUID: NXzvVLgiTc6GjNER9GhAUw==
-X-CSE-MsgGUID: A1mrJzNeQ6+PeikoplEPJw==
+   d="scan'208";a="83912889"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 02:37:06 -0700
+X-CSE-ConnectionGUID: 91ZAE7I+Tqyc6i9iCtaNOg==
+X-CSE-MsgGUID: 6JaDpcOUS4C6oy8jAJr4aQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="244701655"
+   d="scan'208";a="241551465"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.236])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 02:36:55 -0700
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 02:37:03 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
@@ -68,9 +68,9 @@ Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
 	jodeliukas@gmail.com,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 02/10] resource: Pass full extent of empty space to resource_alignf callback
-Date: Tue, 19 May 2026 12:36:25 +0300
-Message-ID: <20260519093633.16395-3-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 03/10] resource: Rename 'tmp' variable to 'full_avail'
+Date: Tue, 19 May 2026 12:36:26 +0300
+Message-ID: <20260519093633.16395-4-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260519093633.16395-1-ilpo.jarvinen@linux.intel.com>
 References: <20260519093633.16395-1-ilpo.jarvinen@linux.intel.com>
@@ -86,12 +86,12 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249508-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249509-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[leemhuis.info,gmail.com,linux.intel.com,google.com];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -104,280 +104,92 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,intel.com:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 952F057B7B3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,msgid.link:url,linux.intel.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1536757B83C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit f699bcc8bcdf99565928a7b1fc7ee656f6c81815 upstream.
+commit 66475b5dc4e4f88f1ed6f403067e08bd90286af5 upstream.
 
-__find_resource_space() calculates the full extent of empty space but only
-passes the aligned space to resource_alignf callback. In some situations,
-the callback may choose take advantage of the free space before the
-requested alignment.
-
-Pass the full extent of the calculated empty space to resource_alignf
-callback as an additional parameter.
+__find_resource_space() has variable called 'tmp'. Rename it to
+'full_avail' to better indicate its purpose.
 
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Tested-by: Xifer <xiferdev@gmail.com>
-Link: https://patch.msgid.link/20260324165633.4583-3-ilpo.jarvinen@linux.intel.com
+Link: https://patch.msgid.link/20260324165633.4583-4-ilpo.jarvinen@linux.intel.com
 ---
- arch/alpha/kernel/pci.c          | 1 +
- arch/arm/kernel/bios32.c         | 4 +++-
- arch/m68k/kernel/pcibios.c       | 4 +++-
- arch/mips/pci/pci-generic.c      | 3 ++-
- arch/mips/pci/pci-legacy.c       | 1 +
- arch/parisc/kernel/pci.c         | 4 +++-
- arch/powerpc/kernel/pci-common.c | 4 +++-
- arch/s390/pci/pci.c              | 1 +
- arch/sh/drivers/pci/pci.c        | 4 +++-
- arch/x86/pci/i386.c              | 3 ++-
- arch/xtensa/kernel/pci.c         | 1 +
- drivers/pci/setup-res.c          | 3 ++-
- drivers/pcmcia/rsrc_nonstatic.c  | 3 ++-
- include/linux/ioport.h           | 2 ++
- include/linux/pci.h              | 7 ++++---
- kernel/resource.c                | 3 ++-
- 16 files changed, 35 insertions(+), 13 deletions(-)
+ kernel/resource.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/alpha/kernel/pci.c b/arch/alpha/kernel/pci.c
-index 51a8a4c4572a..11df411b1d18 100644
---- a/arch/alpha/kernel/pci.c
-+++ b/arch/alpha/kernel/pci.c
-@@ -125,6 +125,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_ANY_ID, PCI_ANY_ID, pcibios_fixup_final);
- 
- resource_size_t
- pcibios_align_resource(void *data, const struct resource *res,
-+		       const struct resource *empty_res,
- 		       resource_size_t size, resource_size_t align)
- {
- 	struct pci_dev *dev = data;
-diff --git a/arch/arm/kernel/bios32.c b/arch/arm/kernel/bios32.c
-index b5793e8fbdc1..5b9b4fcd0e54 100644
---- a/arch/arm/kernel/bios32.c
-+++ b/arch/arm/kernel/bios32.c
-@@ -560,7 +560,9 @@ char * __init pcibios_setup(char *str)
-  * which might be mirrored at 0x0100-0x03ff..
-  */
- resource_size_t pcibios_align_resource(void *data, const struct resource *res,
--				resource_size_t size, resource_size_t align)
-+				       const struct resource *empty_res,
-+				       resource_size_t size,
-+				       resource_size_t align)
- {
- 	struct pci_dev *dev = data;
- 	resource_size_t start = res->start;
-diff --git a/arch/m68k/kernel/pcibios.c b/arch/m68k/kernel/pcibios.c
-index e6ab3f9ff5d8..1415f6e4e5ce 100644
---- a/arch/m68k/kernel/pcibios.c
-+++ b/arch/m68k/kernel/pcibios.c
-@@ -27,7 +27,9 @@
-  * which might be mirrored at 0x0100-0x03ff..
-  */
- resource_size_t pcibios_align_resource(void *data, const struct resource *res,
--	resource_size_t size, resource_size_t align)
-+				       const struct resource *empty_res,
-+				       resource_size_t size,
-+				       resource_size_t align)
- {
- 	resource_size_t start = res->start;
- 
-diff --git a/arch/mips/pci/pci-generic.c b/arch/mips/pci/pci-generic.c
-index d2d68bac3d25..f4957c26efc7 100644
---- a/arch/mips/pci/pci-generic.c
-+++ b/arch/mips/pci/pci-generic.c
-@@ -22,7 +22,8 @@
-  * which might have be mirrored at 0x0100-0x03ff..
-  */
- resource_size_t pcibios_align_resource(void *data, const struct resource *res,
--				resource_size_t size, resource_size_t align)
-+				       const struct resource *empty_res,
-+				       resource_size_t size, resource_size_t align)
- {
- 	struct pci_dev *dev = data;
- 	resource_size_t start = res->start;
-diff --git a/arch/mips/pci/pci-legacy.c b/arch/mips/pci/pci-legacy.c
-index d04b7c1294b6..817e97402afe 100644
---- a/arch/mips/pci/pci-legacy.c
-+++ b/arch/mips/pci/pci-legacy.c
-@@ -52,6 +52,7 @@ unsigned long pci_address_to_pio(phys_addr_t address)
-  */
- resource_size_t
- pcibios_align_resource(void *data, const struct resource *res,
-+		       const struct resource *empty_res,
- 		       resource_size_t size, resource_size_t align)
- {
- 	struct pci_dev *dev = data;
-diff --git a/arch/parisc/kernel/pci.c b/arch/parisc/kernel/pci.c
-index cf285b17a5ae..f99b20795d5a 100644
---- a/arch/parisc/kernel/pci.c
-+++ b/arch/parisc/kernel/pci.c
-@@ -196,7 +196,9 @@ void __ref pcibios_init_bridge(struct pci_dev *dev)
-  * than res->start.
-  */
- resource_size_t pcibios_align_resource(void *data, const struct resource *res,
--				resource_size_t size, resource_size_t alignment)
-+				       const struct resource *empty_res,
-+				       resource_size_t size,
-+				       resource_size_t alignment)
- {
- 	resource_size_t mask, align, start = res->start;
- 
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index a7a2fb605971..e7bfa15da043 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -1132,7 +1132,9 @@ static int skip_isa_ioresource_align(struct pci_dev *dev)
-  * which might have be mirrored at 0x0100-0x03ff..
-  */
- resource_size_t pcibios_align_resource(void *data, const struct resource *res,
--				resource_size_t size, resource_size_t align)
-+				       const struct resource *empty_res,
-+				       resource_size_t size,
-+				       resource_size_t align)
- {
- 	struct pci_dev *dev = data;
- 	resource_size_t start = res->start;
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 2a430722cbe4..39bd2adfc240 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -266,6 +266,7 @@ static int zpci_cfg_store(struct zpci_dev *zdev, int offset, u32 val, u8 len)
- }
- 
- resource_size_t pcibios_align_resource(void *data, const struct resource *res,
-+				       const struct resource *empty_res,
- 				       resource_size_t size,
- 				       resource_size_t align)
- {
-diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
-index a3903304f33f..7a0522316ee3 100644
---- a/arch/sh/drivers/pci/pci.c
-+++ b/arch/sh/drivers/pci/pci.c
-@@ -168,7 +168,9 @@ subsys_initcall(pcibios_init);
-  * modulo 0x400.
-  */
- resource_size_t pcibios_align_resource(void *data, const struct resource *res,
--				resource_size_t size, resource_size_t align)
-+				       const struct resource *empty_res,
-+				       resource_size_t size,
-+				       resource_size_t align)
- {
- 	struct pci_dev *dev = data;
- 	struct pci_channel *hose = dev->sysdata;
-diff --git a/arch/x86/pci/i386.c b/arch/x86/pci/i386.c
-index c4ec39ad276b..6fbd4b34c3f7 100644
---- a/arch/x86/pci/i386.c
-+++ b/arch/x86/pci/i386.c
-@@ -153,7 +153,8 @@ skip_isa_ioresource_align(struct pci_dev *dev) {
-  */
- resource_size_t
- pcibios_align_resource(void *data, const struct resource *res,
--			resource_size_t size, resource_size_t align)
-+		       const struct resource *empty_res,
-+		       resource_size_t size, resource_size_t align)
- {
- 	struct pci_dev *dev = data;
- 	resource_size_t start = res->start;
-diff --git a/arch/xtensa/kernel/pci.c b/arch/xtensa/kernel/pci.c
-index 62c900e400d6..64ccb7e0d92f 100644
---- a/arch/xtensa/kernel/pci.c
-+++ b/arch/xtensa/kernel/pci.c
-@@ -39,6 +39,7 @@
-  */
- resource_size_t
- pcibios_align_resource(void *data, const struct resource *res,
-+		       const struct resource *empty_res,
- 		       resource_size_t size, resource_size_t align)
- {
- 	struct pci_dev *dev = data;
-diff --git a/drivers/pci/setup-res.c b/drivers/pci/setup-res.c
-index d11babcb1290..050ef79621a4 100644
---- a/drivers/pci/setup-res.c
-+++ b/drivers/pci/setup-res.c
-@@ -253,10 +253,11 @@ static int pci_revert_fw_address(struct resource *res, struct pci_dev *dev,
-  */
- resource_size_t __weak pcibios_align_resource(void *data,
- 					      const struct resource *res,
-+					      const struct resource *empty_res,
- 					      resource_size_t size,
- 					      resource_size_t align)
- {
--       return res->start;
-+	return res->start;
- }
- 
- static int __pci_assign_resource(struct pci_bus *bus, struct pci_dev *dev,
-diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
-index 0679dd434719..949e69921fe9 100644
---- a/drivers/pcmcia/rsrc_nonstatic.c
-+++ b/drivers/pcmcia/rsrc_nonstatic.c
-@@ -602,7 +602,8 @@ static resource_size_t pcmcia_common_align(struct pcmcia_align_data *align_data,
- 
- static resource_size_t
- pcmcia_align(void *align_data, const struct resource *res,
--	resource_size_t size, resource_size_t align)
-+	     const struct resource *empty_res,
-+	     resource_size_t size, resource_size_t align)
- {
- 	struct pcmcia_align_data *data = align_data;
- 	struct resource_map *m;
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 19d5e04564d9..3c73c9c0d4f7 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -202,6 +202,7 @@ enum {
-  * typedef resource_alignf - Resource alignment callback
-  * @data:	Private data used by the callback
-  * @res:	Resource candidate range (an empty resource space)
-+ * @empty_res:	Empty resource range without alignment applied
-  * @size:	The minimum size of the empty space
-  * @align:	Alignment from the constraints
-  *
-@@ -212,6 +213,7 @@ enum {
-  */
- typedef resource_size_t (*resource_alignf)(void *data,
- 					   const struct resource *res,
-+					   const struct resource *empty_res,
- 					   resource_size_t size,
- 					   resource_size_t align);
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 1c270f1d5123..ac332ff9da9f 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1206,9 +1206,10 @@ int __must_check pcibios_enable_device(struct pci_dev *, int mask);
- char *pcibios_setup(char *str);
- 
- /* Used only when drivers/pci/setup.c is used */
--resource_size_t pcibios_align_resource(void *, const struct resource *,
--				resource_size_t,
--				resource_size_t);
-+resource_size_t pcibios_align_resource(void *data, const struct resource *res,
-+				       const struct resource *empty_res,
-+				       resource_size_t size,
-+				       resource_size_t align);
- 
- /* Generic PCI functions used internally */
- 
 diff --git a/kernel/resource.c b/kernel/resource.c
-index 1e2f1dfc0edd..1b8d3101bdc6 100644
+index 1b8d3101bdc6..8c5fcb30fc33 100644
 --- a/kernel/resource.c
 +++ b/kernel/resource.c
-@@ -759,7 +759,8 @@ static int __find_resource_space(struct resource *root, struct resource *old,
+@@ -727,39 +727,39 @@ static int __find_resource_space(struct resource *root, struct resource *old,
+ 				 struct resource_constraint *constraint)
+ {
+ 	struct resource *this = root->child;
+-	struct resource tmp = *new, avail, alloc;
++	struct resource full_avail = *new, avail, alloc;
+ 	resource_alignf alignf = constraint->alignf;
+ 
+-	tmp.start = root->start;
++	full_avail.start = root->start;
+ 	/*
+ 	 * Skip past an allocated resource that starts at 0, since the assignment
+-	 * of this->start - 1 to tmp->end below would cause an underflow.
++	 * of this->start - 1 to full_avail->end below would cause an underflow.
+ 	 */
+ 	if (this && this->start == root->start) {
+-		tmp.start = (this == old) ? old->start : this->end + 1;
++		full_avail.start = (this == old) ? old->start : this->end + 1;
+ 		this = this->sibling;
+ 	}
+ 	for(;;) {
+ 		if (this)
+-			tmp.end = (this == old) ?  this->end : this->start - 1;
++			full_avail.end = (this == old) ?  this->end : this->start - 1;
+ 		else
+-			tmp.end = root->end;
++			full_avail.end = root->end;
+ 
+-		if (tmp.end < tmp.start)
++		if (full_avail.end < full_avail.start)
+ 			goto next;
+ 
+-		resource_clip(&tmp, constraint->min, constraint->max);
+-		arch_remove_reservations(&tmp);
++		resource_clip(&full_avail, constraint->min, constraint->max);
++		arch_remove_reservations(&full_avail);
+ 
+ 		/* Check for overflow after ALIGN() */
+-		avail.start = ALIGN(tmp.start, constraint->align);
+-		avail.end = tmp.end;
++		avail.start = ALIGN(full_avail.start, constraint->align);
++		avail.end = full_avail.end;
+ 		avail.flags = new->flags;
+-		if (avail.start >= tmp.start) {
++		if (avail.start >= full_avail.start) {
  			alloc.flags = avail.flags;
  			if (alignf) {
  				alloc.start = alignf(constraint->alignf_data,
--						     &avail, size, constraint->align);
-+						     &avail, &tmp,
-+						     size, constraint->align);
+-						     &avail, &tmp,
++						     &avail, &full_avail,
+ 						     size, constraint->align);
  			} else {
  				alloc.start = avail.start;
- 			}
+@@ -777,7 +777,7 @@ next:		if (!this || this->end == root->end)
+ 			break;
+ 
+ 		if (this != old)
+-			tmp.start = this->end + 1;
++			full_avail.start = this->end + 1;
+ 		this = this->sibling;
+ 	}
+ 	return -EBUSY;
 -- 
 2.47.3
 
