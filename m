@@ -1,161 +1,212 @@
-Return-Path: <stable+bounces-249638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGfsJUSNDGokjAUAu9opvQ
-	(envelope-from <stable+bounces-249638-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:18:12 +0200
+	id oJ4IE6+PDGqGjAUAu9opvQ
+	(envelope-from <stable+bounces-249639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:28:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F81582206
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7D25825F1
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD966302776B
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:18:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0D30E305083B
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547263AFCFA;
-	Tue, 19 May 2026 16:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED2940961F;
+	Tue, 19 May 2026 16:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsSptZa5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AOJL2ScV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E21314A65
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 16:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779207490; cv=none; b=OuMtR7QA/jdZ87Hp3yecTutB7grypBb4H4ymU/L9QgsdQ1OrFLGSnbCmJ7Dgur5iqomzP5nYAqpW+v5cmIbIs3o8Ya+dv1xpEhrhJ37Fgh772TLxSp7Wa/U3VVRfYHHOEnBMUw2zt1iqsHjjUGkDIISqPCpVU0GoSV9xxZ3YvLc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779207490; c=relaxed/simple;
-	bh=jMOSc0K6obowYap8b3A6azLyeOsP08u7HPE5bDR6LdI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HN0sYPPR/oq70OprVU2O1VtyhE0jFmHX554wAoWjD1g9sjouDxcHmfIA8sqLs80Zpk81VonNZCVnMn1W3WhMqik0vzfdWVLa12ce3xjwqKj0rZ7HPQI3GVQhFTxplkXlxXGDqvgJGnrEJWOPYRIeVyOuMEdJtbfySNO4CrSRQJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsSptZa5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499A9C2BCB3;
-	Tue, 19 May 2026 16:18:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779207490;
-	bh=jMOSc0K6obowYap8b3A6azLyeOsP08u7HPE5bDR6LdI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XsSptZa5K0t7XnXe2mqmJAlrBTV3+FAN2Ka0Z9zsSCXiRSLDMwQhz/hbB3Wm8GK+g
-	 i/C5+gv7h5HfAJAM/0z/94MmWL/nxLLf4qOhzjXFtvB+R7fKiih+fALZkE26Wat8dk
-	 1jh1/cciVx6lxhVDYcjfj+P69qBTnUb6jWT3aSH162okc5LzbCzHHgrLIx2yDQBlTA
-	 ozCj5bR4zKycQBCCXg7WQ/JY8CAJE0HvMmDfYHRfKq/KPdeN9emoUzir3OuUV2h2XN
-	 ucUSxbvWfzWlf0lRJgLidPu7ZUEzVk4it7y4TTU7GL2cdXDLM5fdbzSXidD1qCOCOW
-	 /4CzJprjCEXAA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] f2fs: fix incorrect file address mapping when inline inode is unwritten
-Date: Tue, 19 May 2026 12:18:07 -0400
-Message-ID: <20260519161807.2778184-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051214-savings-amino-1fbb@gregkh>
-References: <2026051214-savings-amino-1fbb@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C7E3EA961
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 16:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779208044; cv=pass; b=Vnh1uJdI9YnlCR2khNI0yCOk0+UStrdnOUDaFPhsDAdN4ikwoJ9QF0SPGw6BCJS5dChoABQa5f+ytrZghoTzu5DOagY0yVFhMH2xZD9Fh0YfQi5qyitmG8HPxt2tE7i+Lx//+6yvzzIxARtGv00cMXSqtoR5MyEwmuIzygtfEfQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779208044; c=relaxed/simple;
+	bh=B6BJ3Zsa1dczVVp0M9UD9HVDpJCBAvt2NLaHwYhQoew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Fq2wTR/b2c4zGUDP4tOzOe2mOFd91Kq4DQGl4xLKR2csgL6wMyOBn9Fda5z31UhmR0KhbYBYc3a3LUkES44PHfK9Iu0C2UOvsV7N3lQJCpRjA11VGcd15ZDsYYRLuREnCOUxbgBXQA/A9JdPY7FEfWj12B2T50+QAf17qKlrEgc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AOJL2ScV; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67be871ed3fso8541650a12.1
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 09:27:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779208042; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Mw4xTbHJQp5pcXVZ11irBIe7hA+1jeS6o+pydxa5gWSmRxuL9HREjhtQRTNRYOQ4St
+         GANxPseVbG3YKdkBxW1P/nYlLDoVzefR8Zv3KfkLXfz9E+5g7Fba5PQtV7BovD3C5kAH
+         LKC40gHQESU+x6MSwKFG4Sc99Zeb9bhhwtZpndC/SrJWbxCEiGyRyp3sGp8aJzyKteKx
+         /Cyu/skr9xr06n1tGQ7LwO9Iu8Gg3v0WKs1rt15xPSD9MjBxYaF7cJMO/ttmXzfQYj3i
+         f39hFEV2W3KAKnx9QfJnKOF+flab3DBB9iGEvXegK5obHTZlk/OSGr5g//EAun6oXNjn
+         mpEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5usbpjdW6V4GRZxIENdpTSPGB2A/F8Hn+HvhpsraCUY=;
+        fh=Bj0OGKGfw9tBcOhwF0uXUg+irJ1w6Qb9ZFiZveDEdvo=;
+        b=cQeq4AmUK9ACgM65wxJc19KSNXlOaw06LWCuXDMI+9haZT4UE2L+NPEVQWJ2LYMwB8
+         ms5Ry947CX3CqqO2XQ5+aLxLeP8sUCCMX5/VojnhXVM7eZqHDqRuMFf6leQvt7BG763Z
+         hCDHugGMX1TwI0kxUU9jCO1JahR0vi+deN83GgiJc+cGRGvki9BG8cYQfqfCiOOumAlr
+         kTFbWDNv1z/R3+rLOj/8fztNkCOls1/PuWY0sei0mUrH/ZVbO65gWNeNF318Njk7TS9c
+         V91lkdqXY6vHdL2HU0ugWfNPka4fxXqIyosp09Nki7fjBl+hHk+dPnRf2shxLUVoRwRc
+         D4Gg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779208042; x=1779812842; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5usbpjdW6V4GRZxIENdpTSPGB2A/F8Hn+HvhpsraCUY=;
+        b=AOJL2ScV0gHxhzWMeYgnozojKksV50S1PyHfAe/SxObvSctFfnHXVg8CUtIYaQIjkJ
+         UYoxR1Cc1HkdTH017gSzgDk/Q3vi/IF1JyAO8VQ2S2iCiFZIDISVzjhA8qFGOeQI+ZyQ
+         VN0gWXhJQ9XewAy1hq0dzeuh38Pho5sLIsMxdnMgiry6+8+PtGABzkOwEimxQv+Anl81
+         WEaOqwvpBFdE/StwUKuesxG5tfcICuoYMlHULWFbgbhffOxillFKB5su4gH/5Izr7cLr
+         NbESmd31uNVV/4hxMNvFFBbWYldaeFIc8GHEocRTp14kN1nvaPARPYLC9TuDey3HnuCF
+         mmfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779208042; x=1779812842;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5usbpjdW6V4GRZxIENdpTSPGB2A/F8Hn+HvhpsraCUY=;
+        b=AtPb0G/nWDrW24ERZC5vgcdRFCB5v8N/7eZVCHci5vMHWr6nR7p10bnuWqgc0/sZa1
+         C12pOJtmjos+Ah+7sSTfkN6zPHb2XHG27e2wgfmKBglSeOBhNgAQaDhKbCqPsw06uzxH
+         lhfGH/EGHJtanCX260F3uXTfQZJ85r5GWEdYY4bnlrQOn4g7kOP3cLvyuEVWkYOxx2j8
+         SekcbQ7p+o9dJ2QH6IXAIEizKN5Qh23XyRnc/ozhNsmBMKLMx49NaouHIQc22OGqWIf5
+         RGqclgz8ni0Boi645jqVzHNPv4FmmGu4DlbpG0WFhL+8jGeKkpIkqvhq1ReiCpoCE9BM
+         w/Bg==
+X-Forwarded-Encrypted: i=1; AFNElJ9adggffv0fyZIfQdTt6RNhxa9kjsVQ+0KioCDgFz69J9wWknKdldUPbTEinV7XyHKV00RIju8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxF6jU5fUpv7wnzGIM0bGRTk+d5Nw4/jN0ek/ytvmhIMKUIYJ+a
+	SF0XheLuy3e46V1OQ9kNMf9wgi5GUqkpUgrPuf6R4l3kPo5ySYsm69lGmYEIaLGr1fRotWFio34
+	k4lIo/IPbLoc+7c+DfIufAMmbYr1kW5A=
+X-Gm-Gg: Acq92OFhxj0YrzHT/OHKNQH4fbZfCgLoj+Fx+60eRrgyhSOMvKptYQBd/Ncib3neuxh
+	CLH1P9xV4Gn/x2GdRMUVKqIQ1+mostusmX7uz56JVx3872o7T66qJCDvjtepWi2nce3RW3/ak8a
+	2vrlZ9bxTDGMWYeVqpvmOfDOoghn+3p0wXjGDF05g7NU9zTHvn2uaYCGzxMZOT347mEm6fiaoRz
+	23uh7P1o2938HhPvIwiDa0U4HWUUjaiFX/MR06TmkWux7rDNxvM16N10PzHmlDXcUHwvM0OkSTc
+	L6d3s1DEGHU2Kz2CFn2nxkBIZ9AkvQN3bjej5ZWy
+X-Received: by 2002:a17:907:9719:b0:bd5:2a43:b471 with SMTP id
+ a640c23a62f3a-bd52a43b4bfmr929160266b.48.1779208041621; Tue, 19 May 2026
+ 09:27:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+References: <20260519151008.1399226-1-qkrwngud825@gmail.com> <5d00b63c-1802-450f-8e54-8da6c0aeedc2@intel.com>
+In-Reply-To: <5d00b63c-1802-450f-8e54-8da6c0aeedc2@intel.com>
+From: Juhyung Park <qkrwngud825@gmail.com>
+Date: Wed, 20 May 2026 01:27:10 +0900
+X-Gm-Features: AVHnY4LdRR3qD6dMJRp9P0dqGJ2iwd73wpIsKyKrAimUaQe9thTXgPYirbbLgfM
+Message-ID: <CAD14+f2p7D6eco+-O0X6zWwi-XaxGLs0nQKDAC8eVWhQmB1VhA@mail.gmail.com>
+Subject: Re: [PATCH] x86/mm: fix vmemmap leak on memory hot-remove
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: linux-mm@kvack.org, stable@vger.kernel.org, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	David Hildenbrand <david@kernel.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dan Williams <djbw@kernel.org>, Dave Jiang <dave.jiang@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, linux-cxl@vger.kernel.org, 
+	nvdimm@lists.linux.dev, Matthew Wilcox <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249638-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249639-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[qkrwngud825@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vm:email]
-X-Rspamd-Queue-Id: 63F81582206
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid,intel.com:email]
+X-Rspamd-Queue-Id: ED7D25825F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Hi Dave,
 
-[ Upstream commit 68a0178981a0f493295afa29f8880246e561494c ]
+On Wed, May 20, 2026 at 1:02=E2=80=AFAM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> On 5/19/26 08:10, Juhyung Park wrote:
+> >  #endif
+> >       } else {
+> > -             pagetable_free(page_ptdesc(page));
+> > +             /*
+> > +              * Use __free_pages() to honor @order: vmemmap PMD leaves
+> > +              * freed here are not compound pages, so pagetable_free()
+> > +              * would lose leak 511 of 512 pages per 2 MB chunk.
+> > +              */
+> > +             __free_pages(page, order);
+> >       }
+> >  }
+>
+> I find myself really wondering how much of this came from a human and
+> how much from the LLM. Could you share that with us?
 
-When `fileinfo->fi_flags` does not have the `FIEMAP_FLAG_SYNC` bit set
-and inline data has not been persisted yet, the physical address of the
-extent is calculated incorrectly for unwritten inline inodes.
+Not my first kernel contribution, just so you know. (first in mm tho)
 
-root@vm:/mnt/f2fs# dd if=/dev/zero of=data.3k bs=3k count=1
-root@vm:/mnt/f2fs# f2fs_io fiemap 0 100 data.3k
-Fiemap: offset = 0 len = 100
-	logical addr.    physical addr.   length           flags
-0	0000000000000000 00000ffffffff16c 0000000000000c00 00000301
+I asked Claude to write both the commit body and comment and it was
+too verbose. I manually trimmed it down.
+Sorry if it still sounds too LLM-ish.
 
-This patch fixes the issue by checking if the inode's address is valid.
-If the inline inode is unwritten, set the physical address to 0 and
-mark the extent with `FIEMAP_EXTENT_UNKNOWN | FIEMAP_EXTENT_DELALLOC`
-flags.
+This was tested on a VM with virtualized CXL device and toggling it
+back and forth was visibly causing leaks. kmemleak was unable to catch
+this (rightfully so), so I skeptically asked Claude to see if it can
+figure it out while pwd was the kernel source the VM was running.
+"Access the VM at "ssh -p2223 root@192.168.0.185". There's a memory
+leak whenever CXL memory switches modes via: daxctl reconfigure-device
+--mode=3Dsystem-ram dax0.0 --force, daxctl reconfigure-device
+--mode=3Ddevdax dax0.0 --force. Figure out why. If you need to reboot
+the VM, do not do it yourself and ask me."
 
-Cc: stable@kernel.org
-Fixes: 67f8cf3cee6f ("f2fs: support fiemap for inline_data")
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ renamed `ifolio` to `ipage` in `inline_data_addr()` and `F2FS_INODE()` calls ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/f2fs/inline.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+It did in 6 minutes and it basically told me to revert bf9e4e30f353. I
+was very skeptical and reviewed manually (with my short knowledge of
+mm) why this would be a correct fix.
 
-diff --git a/fs/f2fs/inline.c b/fs/f2fs/inline.c
-index d5e8f3e40cc93..92bbdb272a6d9 100644
---- a/fs/f2fs/inline.c
-+++ b/fs/f2fs/inline.c
-@@ -791,7 +791,7 @@ int f2fs_read_inline_dir(struct file *file, struct dir_context *ctx,
- int f2fs_inline_data_fiemap(struct inode *inode,
- 		struct fiemap_extent_info *fieinfo, __u64 start, __u64 len)
- {
--	__u64 byteaddr, ilen;
-+	__u64 byteaddr = 0, ilen;
- 	__u32 flags = FIEMAP_EXTENT_DATA_INLINE | FIEMAP_EXTENT_NOT_ALIGNED |
- 		FIEMAP_EXTENT_LAST;
- 	struct node_info ni;
-@@ -824,9 +824,14 @@ int f2fs_inline_data_fiemap(struct inode *inode,
- 	if (err)
- 		goto out;
- 
--	byteaddr = (__u64)ni.blk_addr << inode->i_sb->s_blocksize_bits;
--	byteaddr += (char *)inline_data_addr(inode, ipage) -
--					(char *)F2FS_INODE(ipage);
-+	if (__is_valid_data_blkaddr(ni.blk_addr)) {
-+		byteaddr = (__u64)ni.blk_addr << inode->i_sb->s_blocksize_bits;
-+		byteaddr += (char *)inline_data_addr(inode, ipage) -
-+						(char *)F2FS_INODE(ipage);
-+	} else {
-+		f2fs_bug_on(F2FS_I_SB(inode), ni.blk_addr != NEW_ADDR);
-+		flags |= FIEMAP_EXTENT_DELALLOC | FIEMAP_EXTENT_UNKNOWN;
-+	}
- 	err = fiemap_fill_next_extent(fieinfo, start, byteaddr, ilen, flags);
- 	trace_f2fs_fiemap(inode, start, byteaddr, ilen, flags, err);
- out:
--- 
-2.53.0
+>
+> We're trying to get _away_ from using the 'struct page' APIs on page
+> tables. This goes backwards. Worst case, do:
+>
+>         /* vmemmap PMD leaves are not compound pages */
+>         for (i =3D 0; i < 1<<order; i++)
+>                 pagetable_free(page_ptdesc(&page[i]));
+>
+> Right?
 
+Shouldn't I worry about the loop overhead? With order =3D=3D 9, that's 512
+iterations. That's compounded to O(N) when the entire memory size is
+in consideration.
+
+>
+> Even better would be to *make* these compound pages.
+>
+> Even better than that would be to use some 'struct ptdesc' space to
+> explicitly store the order, just like compound pages. But that's
+> probably not trivial and probably not great for a bug fix.
 
