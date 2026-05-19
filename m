@@ -1,158 +1,145 @@
-Return-Path: <stable+bounces-249636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aAN4DdmNDGo3jAUAu9opvQ
-	(envelope-from <stable+bounces-249636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:20:41 +0200
+	id eJrcFTCUDGp1jAUAu9opvQ
+	(envelope-from <stable+bounces-249637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:47:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46D35822D0
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:20:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B231F58298B
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 279B830A4703
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:09:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4B2031212A6
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC69F30566E;
-	Tue, 19 May 2026 16:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92ED33AFCFA;
+	Tue, 19 May 2026 16:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="MuRv7sY5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mBtnbLvW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAB834040E
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 16:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5653D2DF153
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 16:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779206998; cv=none; b=O3Ndzb+u0W4+pIEY4zPJ2+hYwBhS4rNO5YRqTGVvf904l3tT2qR7tZkK7sUfE7bmG9ok9MYg3WYCp7HAL9kFFT7PLlEOSmyjmH28nV8ZoCvE/knrxh9olDh7gCFlQRbJcWbLm/+bp9dS+p4KHwa+ro4XtaMW4NI9iX/3PYCnsEU=
+	t=1779207487; cv=none; b=I3L4sWCrqz8UGFvE51UzbIbG8l0CBPNiup9Cio8sZ8JXcaoAKwM74jbjCWr2ZO14lio2unGQ5qkFv/zJCDgKrmQgQcoqw0QvB8f22KXhCe4K/EIRMudQ1QODeUGEwnPEKQK66LALUT/WlC7UrmYBwOFDVU1kGcxayko54dn7jMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779206998; c=relaxed/simple;
-	bh=7uyGLvJw6AtWUK1RVg4o/7eEXEFkAcv1E67M7hUayfc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ei/UO6w6WLGIBuWD3ptC2g1FhXiHC/tlZLVCnUl+nNa4muS30bPSVPRH5TzXodguQUXYpCW7lv1VGmsiBvaQiBDLY59XwG6a2PGPSVGcPxsqzgKSK3sxuqpKiMI6cMJ5rzeyiXhKNKY2OodOvUDyvyPZtqWmjWFm/FrN4+mdL/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=MuRv7sY5; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=7uyG
-	LvJw6AtWUK1RVg4o/7eEXEFkAcv1E67M7hUayfc=; b=MuRv7sY5uY78LvPUOjdE
-	51YjpmhWhS4B7RJUsR3aUN9A8dy8wLzcG69iaBcZ5FJNDdQgBBmKCc4duOCFerMo
-	UoC1wItxgdTc4fsDRfkiRiJ5wMpumLubYwbDwsFp7skn/aoXRRcIjm+om80soK7h
-	r/clQX31wdZF+UtBe/YfEp+PVpB5qZXx1mryZsQ51b7a0F8Umc7TdcEPC/qdQSmG
-	9zRo/r8ZTdhU9TZC0oEhKzw5+No4wbUdipx3FsPh5AvUXdW9QxPpkCMs0siHrhll
-	1MCfZBYK99Z2gtA6v0dyE430IacpcQYE+8RrNvTVykP+FPcweZ+Jop1J1A8q34Gw
-	DQ==
-Received: (qmail 333552 invoked from network); 19 May 2026 18:09:51 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 19 May 2026 18:09:51 +0200
-X-UD-Smtp-Session: l3s3148p1@yBSx6C1SoNEujnsJ
-Date: Tue, 19 May 2026 18:09:50 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Ulf Hansson <ulfh@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>, linux-mmc@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] mmc: renesas_sdhi: Add OF entry for RZ/G2H SoC
-Message-ID: <agyLTlaWHEYH6NY1@shikoro>
-References: <20260519135342.623943-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20260519135342.623943-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+	s=arc-20240116; t=1779207487; c=relaxed/simple;
+	bh=UUgEgdUf1RF3uDD1vHHFC0lscEIFdEbZVrEia622mv4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gz2S20dISXnTw8eXlePD6Trb9+l1A8ZXMDuf+3rPuOU56SDOa00sGERt7qFdm7dnyyo0n8NDUArWk34aA4ua+x3eWc9E21M4LGgcCmywiA5TKk629bXxoxx3TAZ7gyZ8Judxh2G1zmAm6dRoyQEYK5Rr/UUxxdeGJNB+dLTeIXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mBtnbLvW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428AFC2BCB3;
+	Tue, 19 May 2026 16:18:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779207486;
+	bh=UUgEgdUf1RF3uDD1vHHFC0lscEIFdEbZVrEia622mv4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mBtnbLvWYuR2UgfAUkwsW1yvJo81IbIrdNelq3Rju2kfu3vuV8zr++42k7CWEypkt
+	 CC3dXCO+sWgd9kSqswONFw9HDln+sLE6spV4e1MzLlVHkTAlSf5tT6fZh+3CIWdmNe
+	 Zc2Ikr/oUdV3t12W0FrJPgZTPHHKJk9yHkXQEkH0xTQTCkUYFEPrL5OraD6lhLZvPf
+	 oDAX4/qfZZvSXFufHURmH/MvTAoYutcAup31sjX4I2/LYbI+v6qW+9ynDN+ocj9JLi
+	 bIPZ6N5x8BA4w07cG4stO8m3TIVFc76wOCl7UHCf0ouqj4C1hv1OG6N7xC1GTfexHe
+	 9+gSsNtegS8jA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] mptcp: pm: ADD_ADDR rtx: resched blocked ADD_ADDR quicker
+Date: Tue, 19 May 2026 12:18:04 -0400
+Message-ID: <20260519161804.2778143-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051254-repackage-dropper-5c90@gregkh>
+References: <2026051254-repackage-dropper-5c90@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6oZYoyatC5FFSgIj"
-Content-Disposition: inline
-In-Reply-To: <20260519135342.623943-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Spamd-Result: default: False [-1.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[sang-engineering.com:s=k1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sang-engineering.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-249636-lists,stable=lfdr.de,renesas];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[sang-engineering.com:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wsa@sang-engineering.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,glider.be,gmail.com,vger.kernel.org,bp.renesas.com,renesas.com];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249637-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sang-engineering.com:email,sang-engineering.com:dkim]
-X-Rspamd-Queue-Id: C46D35822D0
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: B231F58298B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
---6oZYoyatC5FFSgIj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 3cf12492891c4b5ff54dda404a2de4ec54c9e1b5 ]
 
-On Tue, May 19, 2026 at 02:53:40PM +0100, Prabhakar wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->=20
-> The RZ/G2H (R8A774E1) SoC was previously handled via the generic
-> "renesas,rcar-gen3-sdhi" fallback compatible string. However, because
-> the SDHI IP on RZ/G2H is identical with the R-Car H3-N (R8A77951), it
-> requires the specific quirks and configuration defined in
-> `of_r8a7795_compatible` rather than the generic Gen3 data.
->=20
-> Add the explicit "renesas,sdhi-r8a774e1" match entry to map it correctly.
-> Note that the DT binding file renesas,sdhi.yaml does not need an update
-> as the entry for this SoC is already present.
->=20
-> Fixes: 31941342888d ("arm64: dts: renesas: r8a774e1: Add SDHI nodes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+When an ADD_ADDR needs to be retransmitted and another one has already
+been prepared -- e.g. multiple ADD_ADDRs have been sent in a row and
+need to be retransmitted later -- this additional retransmission will
+need to wait.
 
-Thank you, Geert, for the review of v1!
+In this case, the timer was reset to TCP_RTO_MAX / 8, which is ~15
+seconds. This delay is unnecessary long: it should just be rescheduled
+at the next opportunity, e.g. after the retransmission timeout.
 
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Without this modification, some issues can be seen from time to time in
+the selftests when multiple ADD_ADDRs are sent, and the host takes time
+to process them, e.g. the "signal addresses, ADD_ADDR timeout" MPTCP
+Join selftest, especially with a debug kernel config.
 
+Note that on older kernels, 'timeout' is not available. It should be
+enough to replace it by one second (HZ).
 
---6oZYoyatC5FFSgIj
-Content-Type: application/pgp-signature; name="signature.asc"
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-6-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ replaced `TCP_RTO_MAX / 8` with `HZ` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mptcp/pm_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 6fb14148a96e0..3a35f51b32ed8 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -331,7 +331,7 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 		return;
+ 
+ 	if (mptcp_pm_should_add_signal_addr(msk)) {
+-		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
++		sk_reset_timer(sk, timer, jiffies + HZ);
+ 		goto out;
+ 	}
+ 
+-- 
+2.53.0
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmoMi0sACgkQFA3kzBSg
-KbYWBBAAgotHuGeXexs5uDsfBlxdZD1hYaCjV8R1vDciX99iNJWoKy4anpmPfHHo
-p00fJL/0NzuHGsnbqYiXxBgRNSRiQwHCojM535Kg8DoJbJJdW3bjZTt/pjWPueCI
-WRzy17IihcoXnoGEjoyq+bSOuQOAJslEfclXzses4/QRTr0Pg5ly2eF8XEMwY164
-nJZjxVubFl0MgEY3K+BsRGNDc+pKhpy1OXgOVXOIvN0gT5zbaUNhLMU8g8/5YbIp
-Op1t/Fd5p0fpspMa4mmVuzu+wETyzcEdxgdg19DcSQLtX7WIsHTByFwyDSSjYnFi
-rFFYGjO92JH+Vuaj5jMeVneQxXXUCjpDAGgt5D3T7KhLIpwrDyMTYG/sQ6z01/Op
-6ZRgnPqmTkkQtt7gwD+NBRh8FskDji74AD/KN+WXQ3XAJ0JtO76N4qqwfxdbvU1g
-zXXJlXLxw45H3LfurtyufbkTx8eLZr7ozk7UiWbqjE+R9vN/Y2bKQN3vMv9u4NPy
-C/FwqRANbGXvBQGgDgxC1KEkLQihInxEqfrsi7ASPVmcqZMV20MhLCkkb7ri7gm2
-KRTjgoU4i7jh1jageUiDzXZpN7zWDlGZgFWfSzE49alh7A/6j1vnqgPr1FeuuXUL
-wEDkbVt5IAaEFUuyFH6bUkU2Fe5rDfC9riX4ewVcQ3u2GfDWQMc=
-=29Dp
------END PGP SIGNATURE-----
-
---6oZYoyatC5FFSgIj--
 
