@@ -1,177 +1,238 @@
-Return-Path: <stable+bounces-249591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SCkMAHBpDGo8hQUAu9opvQ
-	(envelope-from <stable+bounces-249591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:45:20 +0200
+	id UMWOC8FqDGo8hQUAu9opvQ
+	(envelope-from <stable+bounces-249592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:50:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC9657FEC8
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:45:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E01B580037
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C7A930C9C01
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:39:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7D933080FBF
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9D13403E8;
-	Tue, 19 May 2026 13:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F223E3BCD17;
+	Tue, 19 May 2026 13:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HU2Wki+1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e5DffAy5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C248C3403E6
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 13:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779197943; cv=none; b=IMGOKFyqzN8v8pfpV3/l4pLvH/Vz2BTkPbLfCqR8nf1LoOQJ09y3CqdQHHHErluQgp3p6QFJAEK9WBP4K3qNiZPOHt+rHD6CFRC39grTfKwDdFZeU6pmOYiubv13zmAqSuAvzqmG1nMEF7YGs9cGNnFbMKOz/rWUcDLu3/4+82A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779197943; c=relaxed/simple;
-	bh=/oUytM5NEWjbEzYOEVQxJkqDT72gJMtZvFyNGyCSQ6E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kYaaFqBL5ZPtiU5Gk01enNJGuQPabTNbiMGo8TtUoI04aqin5FFkOV2pD+hm4nCs91jXy4quKQ8HsOxpA44Apr4i8kJ45gr3njsY79dIgkcen2WJ1a2JiJwbQ29ZddqJyd7QQdCPTkhpgm01qQ2JLhOhX6LGuUl6BTkyKGSireg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HU2Wki+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8DEC2BCC6;
-	Tue, 19 May 2026 13:39:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779197943;
-	bh=/oUytM5NEWjbEzYOEVQxJkqDT72gJMtZvFyNGyCSQ6E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HU2Wki+1FU58wHTZL21Hr2w4+gcWrktqYKH+es/szk47shcd1JPTjLYU/L5X0afwY
-	 m04oGWdFJWZqNAA8e61rHGzoXkXETx0GJT/Y21bSu/Gxc9aTgBs9//IKs/ewK1Eo8d
-	 EDcsVqymsDkAeXYGdLDwpHM/tIe9Pi9XbH9gkGAzrfVv+jBdplk+QH7BWqCyssL3DE
-	 meIBAjFxkMSub3F5bAtXi0V5dNN11E5n9wP8Gmpz2NY8YHCVJE8SgvYO9/yk6Sm6gx
-	 5fQGaMEsskRozQ+zZGKuq5JJANIqBnLt8ZFsLotC37PebKt7cqoEkzQagpcN9dEW0r
-	 zt3xzMm4Efolw==
-Message-ID: <786de99f-a568-4862-95e3-94f94cf7c132@kernel.org>
-Date: Tue, 19 May 2026 23:38:59 +1000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECAC34041F
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 13:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779198293; cv=pass; b=PP2Td9iq6aY7REmOoUYfBVcnVg8ymazyE8zokHb2mDm0Viu6sZnoMxN+PqOGZT8Mg2JPm1BnC3MYQKvomYO10RqE9x3OyerPMyVwYWAAR6xNKuJ+Eb62LHr0MXzDUdWFvkau7NnQzwSSJAUH7l8jjm6lzXobRi6WuEZOyz9he8k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779198293; c=relaxed/simple;
+	bh=TPvCxuHJtKVGhQ/GlHUaH8cPjA9QMgDJQzp3fZRPCXg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jw0R02chdlU48CS0Ay18ei8Bqn1bayrlPl/sZJqzAHXFux+z89MEr6nOovt3tlsSrInfmLA2/ClqsuOLP4WTz18Zo6KQed6rFWDSyZn2ZGmwRiZh8VVCYISY8PYJAO4DJ9G3QhzEOwWwbMU/SlxWy9zlRTQgnuCqBR64snd0JZ0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e5DffAy5; arc=pass smtp.client-ip=74.125.224.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-65890a6ca20so3956626d50.0
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 06:44:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779198291; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IK6tfeBmwZp2OFZcvq3cg+FWJe6v6HI+RJ3YxRJIbannBRVE5nSKVUkUVVvyYhsii4
+         OcJ3S+ZZysQmy2OhcFyYsdDW/fWMHZkFpOd9qLidC0L8JaFmg1r9nq97EbPhhvHGvFfV
+         WPjbpz8yrJ/2RLrrpH7UtGrT92TFjEdwxcpYHL+tF1XPQ8KFOvUic1kTsHzudrPan49H
+         DrQ9Z5ZJmSMwRctDn8/thYxlhA61vn1fskxJdF989i1V35pKZWzYXxj0bYTE4UFg3a+O
+         rIoQN89No9ASdJNZz1VyNCcv1v/qtlsb6OcrQL2adyYYHtXeL67sXGmf7HA2gTya3KZU
+         9aqg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8vQ2huze1xO1NqJdBFnf6nbs9kGsrUpnagEQxYLNrLw=;
+        fh=kHrJoIcCMl6kMH7opqfcpCz32TIstN1ioteCEuSbbp4=;
+        b=CHPYuMJx0gVxCWyTRPNI/GqxKn36uXELShECwf+53FjehfTRv5q/Qd730YGK+XJrF9
+         DBSmqcVwswCUxZZnAp+J1qCbdyyjh5fn/5jEBPhGbh0NuE1NusOOOKkK14ZNx/ELqpxj
+         oSRfs/IXUD3WtqhS2sbiimAFJa5sRV+fWPgd8oxrW3mAlRemPuE3XuNKGaEA7MPAtZTQ
+         xdLPfKmcjRGvzlpM+4cVOEFy7s2yM7wktd4ToMIcoJcminhCJjx+WSYJ3WFqwCx66xtx
+         hdVSlfrhF1KytAlqMLYpAhnIN5CJ6xH7e6enPoWdWW4Mdm0QuobkqawkDTYKSXRO2UZj
+         iTbw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779198291; x=1779803091; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8vQ2huze1xO1NqJdBFnf6nbs9kGsrUpnagEQxYLNrLw=;
+        b=e5DffAy5YmQTHnCkxba0f59RXxKgLjRM56xRjEt56UTVgdcmoyLfLbbjjl751b45Bg
+         9IYFIbiyqN5DdOlpywDf6Ssb4Gg2oNZgX/6WpKBPV43CR7a/rfAeFZAlqW+pN73WLFGr
+         ptdzW7ne1l2Rhrwp802akVViUwo/JK6MhvgDMM2ZJw1m6AX0tkOKSnd4/MBLWbFKuKHN
+         zBMGyDcmKRLKyasmpq3ClzUbpl34hd7+Vf8IZqlps2gyT1/4rwklVtPsriByd/f3IrV+
+         pt4Eg/4c34h0swJ7rX9wFoU2Ya/Ij8sibcssFB5SL4YQ1aoLSvv5eIE/LgRApxqPCzph
+         DxHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779198291; x=1779803091;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8vQ2huze1xO1NqJdBFnf6nbs9kGsrUpnagEQxYLNrLw=;
+        b=QM9p4zjrGB9adUabFAwm8OAaK6yUaO2G/FmvrY5TD+xTIBR+Oz7SrUCg/mriUnMO4e
+         lricfSZsQfr0pEg/SNWJuxIBH7xZRREPXCzq54pwHtuyW2LRlwfxHySmNL4FmcuA88gh
+         gwn7ZTIuQIRMq3c2Epy1Xa2fktVyiWDzLgJdYjpcJg8Ut9MO0NYeS5LSfW0pdW2d1DnN
+         omWEB72AUwv1QendwVFLzV6vOjq4wP5hmrv1iEoCymn5Jdvg373k6f7Y5IIyQ0iGqbDf
+         qXyjQkhyIYX8HpWzKBAscRLdzxVxEVXXjMtdpFt7wH4iwD4S3Iq4rrz4GP9lxSJ3j/jt
+         zlqQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9KFuxhuB1GMZ+rGtw/bcz4wcmbhQ0igdrUUAh4ncnVtIRmNQTWhn0w8YEjIss52fbigS3IuRU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6Boc8ZQqdAat6LNo0vYpHy3cUN3HNVBLXsoAxwhIu+E1WQfMM
+	Z3jHQmVSN2aaCr5KTh5M9wRt4/zRKLLgiZC+WK6fZysJ0/1wFIC30YuoAPMqFr3KElEYW3YFKDr
+	q7wh0frScS729OJM1R2B73Q9YmBDpxIk=
+X-Gm-Gg: Acq92OEFPYBemf+xnElzwqoQb31QPOJPiYfuMRD2Cz6su7hOL/NNUzR85tWI+yf0PRn
+	swXeNgn+cPKi25mc56bTRdAi8besYpmP7B+zptz9CTsJEzPr5d0TH0Oue9ztygtuR/3eXdwYV8H
+	dhLpi7wkjPMLEqozS0jXwBmk/UvYy38/uMTYyayYLslrBQgueCjZzrvfHY2LkNb8U4BQi6TAGLx
+	dbrU3VKP10AioGLm195fxjoO19POCMdxlc6/e14/12VHD4fKBnaIDbW1TMBfEDB2JWaMRFg8Lxe
+	87MHpOWeimvTy6ebU6O+zCBHtqdLsJGLkZeOEtvqjFRZ2r0jm+QVFIr2e4TlPSRw7k82tQ==
+X-Received: by 2002:a05:690e:1586:10b0:65c:17fe:6d49 with SMTP id
+ 956f58d0204a3-65e2287ddbamr15415688d50.61.1779198291234; Tue, 19 May 2026
+ 06:44:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 5.10.y] mptcp: pm: ADD_ADDR rtx: free sk if last
-Content-Language: fr
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Mat Martineau <martineau@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-References: <2026051243-blah-wound-3e54@gregkh>
- <20260519115251.2241418-1-sashal@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260519115251.2241418-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
+ <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info> <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
+ <2026051954-revision-sierra-6bb4@gregkh> <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
+ <2026051909-impurity-nemesis-2f65@gregkh>
+In-Reply-To: <2026051909-impurity-nemesis-2f65@gregkh>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Tue, 19 May 2026 09:44:39 -0400
+X-Gm-Features: AVHnY4J8lmhWqH_MENNxHDU5i3eOmFVjrJt3J47QyY0UJsMFJDc4Qg43-D2Njck
+Message-ID: <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
+Subject: Re: [GIT PULL] bluetooth 2026-05-14
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>, 
+	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, davem@davemloft.net, 
+	kuba@kernel.org, Linux kernel regressions list <regressions@lists.linux.dev>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249591-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249592-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5AC9657FEC8
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,verify-fixes.sh:url]
+X-Rspamd-Queue-Id: 8E01B580037
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Sasha,
+Hi Greg,
 
-On 19/05/2026 21:52, Sasha Levin wrote:
-> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-> 
-> [ Upstream commit b7b9a461569734d33d3259d58d2507adfac107ed ]
-> 
-> When an ADD_ADDR is retransmitted, the sk is held in sk_reset_timer(),
-> and released at the end.
-> 
-> If at that moment, it was the last reference being held, the sk would
-> not be freed. sock_put() should then be called instead of __sock_put().
-> 
-> But that's not enough: if it is the last reference, sock_put() will call
-> sk_free(), which will end up calling sk_stop_timer_sync() on the same
-> timer, and waiting indefinitely to finish. So it is needed to mark that
-> the timer is done at the end of the timer handler when it has not been
-> rescheduled, not to call sk_stop_timer_sync() on "itself".
-> 
-> Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Mat Martineau <martineau@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-5-fca8091060a4@kernel.org
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> [ applied fix to pm_netlink.c instead of pm.c due to pre-split file layout ]
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Tue, May 19, 2026 at 8:07=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis wrote:
+> > On 5/19/26 12:30, Greg KH wrote:
+> > > On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote:
+> > >> On 5/15/26 17:10, Thorsten Leemhuis wrote:
+> > >>> On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
+> > >>>
+> > >>>> The following changes since commit c78bdba7b9666020c0832150a4fc4c0=
+aebc7c6ac:
+> > >>>>   net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:=
+12 +0200)
+> > >>>>
+> > >>>> are available in the Git repository at:
+> > >>>>
+> > >>>>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetoot=
+h.git tags/for-net-2026-05-14
+> > >>>>
+> > >>>> for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c=
+00282:
+> > >>>>
+> > >>>>   Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-=
+14 09:58:08 -0400)
+> > >>>
+> > >>> It seems this PR sadly came too late for this week's net PR to main=
+line
+> > >>> that was merged yesterday.
+> > >>>
+> > >>> TWIMC, from my point of view, it would be great if we somehow could
+> > >>> still get the changes from this PR or at least the btmtk fix it
+> > >>> contains[1] to mainline this week before -rc4, as it is fixing a
+> > >>> regression known since 2026-04-24 that at least five people encount=
+ered
+> > >>> with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
+> > >>> validate WMT event SKB length before struct access") [006b9943b982 =
+in
+> > >>> -next].
+> > >>
+> > >> Greg, Sasha, that [1] fix I was talking about now reached -next as
+> > >> 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
+> > >> events") and will likely hit mainline on Thursday or so with the wee=
+kly
+> > >> -net PR to -mainline. If that's good enough for you, I'd say it woul=
+d be
+> > >> good to pick this up for the next round of stable kernels.
+> > >
+> > > That "Fixes:" tag is referring to something that is also not in any
+> > > tree, but that commit does have a cc: stable in it.  So do we need bo=
+th
+> > > of these:
+> >
+> > Valid question, as yes, there is a slight mixup here:
+> >
+> > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before=
+ struct access")
+> >
+> > That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is the
+> > -next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
+> > btmtk: validate WMT event SKB length before struct access") -- the one
+> > that is causing the regression that I want to get fixed. So we now only
+> > need:
+> >
+> > > 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL event=
+s")
+>
+> Ok, but that "Fixes:" tag pointing to an invalid commit is going to be a
+> nightmare to track over time, ugh.
 
-See my comment for the same patch for 6.12: most conflicts fixed here
-shouldn't exist if patches you sent earlier are applied first. So a new
-version is needed.
+Hmm, did we get the wrong hash or something? Usually, that would show
+up in the verify-fixes.sh, but perhaps it didn't capture it this time
+for some reason, perhaps I'm running an outdated version or something
+similar.
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+I will try making the Bluetooth CI run the verify-fixes.sh to detect
+this sort of issue early on.
 
+> I'll go queue this up now, thanks.
+>
+> greg k-h
+
+
+
+--=20
+Luiz Augusto von Dentz
 
