@@ -1,152 +1,166 @@
-Return-Path: <stable+bounces-249521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOapGTc3DGoKaAUAu9opvQ
-	(envelope-from <stable+bounces-249521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:11:03 +0200
+	id sKTDFKc8DGp8aQUAu9opvQ
+	(envelope-from <stable+bounces-249522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:34:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0864357BF01
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:11:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C45B57C53B
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 93C343051ECD
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:04:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6E36030400A0
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81F5481226;
-	Tue, 19 May 2026 10:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4227481A80;
+	Tue, 19 May 2026 10:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="cxuyoSUn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZewBbeZU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C842480DEF
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 10:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779185072; cv=pass; b=RAcZw0LtmYEiD6j9Flerajghein6QNHFMG7FY2I6G5iGx4rcYsr3RMHmiUcIw+WtJYU/d3BVQpoHt2c7d7zOYeAfEbDCckYfUnKv0O/cjFqcPRzJgPQyW+E8ktGIdXJ6sqmrNd2TGMDwTvGqsB9oiRBwJUusNnz7bgnj/eFK6/A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779185072; c=relaxed/simple;
-	bh=Dhc6kVUygSwb3/WTWYpM6RSnRMfkL+MN9Utka5VIF60=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K3eEsHWNr/MYeafot4dTaIPWcSv52dMwx/NvkwB3pHNec2Te0ChFDxMsYbpjGYaDO8BYzPI1hLUe0kpv6PeZD+9tKOHLyN/cYgplpM3b1G91nceUcNTa37eOYfHRa/qcoKXrYHN1natxEzipSQdUf1H9mYBa8064J5HzwDETBCM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=cxuyoSUn; arc=pass smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9116861f004so821463185a.3
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 03:04:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779185070; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FnwuTe0k4M+xkdrQCk1i4nMFxNRFEBMWfpy1NazqpmkVYGLa84oCYtfZYvNZwJkSC6
-         LaGtRKKUEzPcDKt9RmwfAOD75YJ34S2bepsMeqHJDW+ZXbKgh+yVfIHKXJcefQ42be5y
-         QgSOtZkdw/GsL0XRTuy6LjGdStyx4qqR/b45O19ZoPCg+RolopeSPezSlCovwouFPJI6
-         F2QFdtoBJjBKUgQfII0jvJaOmWpLo0ZAgSmEeDMxSjEKzCrt0SGVOVTs+dnh1p4COaEV
-         OX9me3WgjdTLLuJh3XCppCIhO3+KV6Qt2DL8caY9fg+y30wzFRqyp6LLVqNkK6UQVOvQ
-         JXLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ctTJbFngTGuiEcSoy3QpBTsjTTAFbNNyypIjJbvOChE=;
-        fh=RvNb1DYn1q9kFT+w0pGRhc9uOBGvhoa1QmyDDmHoniM=;
-        b=UrdoJg1mZ3yUFLozLAco1GTXp5Lct83lKBFB80+r03+BCZwzSGM8XgqXxsMib+GiTy
-         EdH9tgGfdY2i9P45mssgRlVbINL7D1Ui9f1eZ5Uc/DqwzJhitd7jh35ZiZ6/O5PEh5xD
-         elpSanuQouZtCBqKB7zZTbdYEYnyZKgu2TGmbfzJC+/n/OiRuEZH45XA5/bfct0r3Elu
-         SaD/BZccXyPBfIPGiY4oqBMhKJYazBkg9PC+PUU1NMDSb0gaRHVlGeJOICqTAyQ4QNys
-         xXX+EnnWJ1SDuOByDA84ySuvrwlDidSoYQZl+voE4G7LJLb8YJ6Jm5llZGjT1kfKe5m2
-         FlOw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1779185070; x=1779789870; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ctTJbFngTGuiEcSoy3QpBTsjTTAFbNNyypIjJbvOChE=;
-        b=cxuyoSUn5VY0tansFe0w8a/pw3NirbNH35hG1sWOggCl4mNzAfr6JhA0HmnUUnZhx6
-         tSm8tjb0Iu0nuzXmIekFprk1nhhY+ryaa2uG2luWrasuuLiLu74tbWKAPtgdC9Gf1f6y
-         HEirliOlgEEt9giqoGcF9hewlZVyqPZwaXxAw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779185070; x=1779789870;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ctTJbFngTGuiEcSoy3QpBTsjTTAFbNNyypIjJbvOChE=;
-        b=HpLNFj2UwGNE6eLiqSgOqlZx7zagHJayQYI+U97J0iQF6HL7GUskpMpkITvIuGkWES
-         Yf/SWrlaTPHUbbRSyiRg6J7KtPvPrqGlo0GqOnNS3tJ66zLxYaT6Xx3M9QV6vAWoJINp
-         b63ANIZNVGz4lquyS4EvomU2tCiKSyntQPREVSejHjeX8RWyI1HDrlEuvDjWoYNKzOao
-         zGG5QIRFyFzAilwO667MQpc6sZQE0P0eFzYgwEH1y2dngqSKvU6jhoRzPCYGt7coDv77
-         +M8RDnwii8+VxknwVCv5egzuI7UTlsirfW+5mV6tXgx26gEZJHd19uWBKTlQGl8DCRSO
-         qIrQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/wNWBgDZ7+Y+V+n/H2o/ndjX2iu2Crny1wFjsTJH3Da42xvukqADlC2nnjCbTB20U8VmBtyrg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGCMwZl2xbREPJOHYddoOK1AkQOo3j/ZpIS8/QBLZNd5mynNIk
-	FfZigxw3FmER3+4Phh13r1UOvZn2nFlrxtGYWlBZzW/MwzTdimYDYCni85xfzro9nE2TlUKSjkl
-	83FPVlcX5+He9qoHe25cL7m3wK+3hz+O85mPyOGYt7+CeWI2NBe6eERM=
-X-Gm-Gg: Acq92OENiE9i1lhgLB8pHyt4Dh8WOBMHOAX3M1w/UX7PWSFqWRGjaOJHXRHxv2z//w4
-	SQANF5o0fL5c2k0VLw4AAe7u3Vf9z3K+SAe06BtbmEVWut2CoU/wPf91BXPT4kg4gwt3CyjPROP
-	youjPiXNuvaHpuGidopRX5FkIiCmT7QOvaOXXLezo7okRLmqT+crlA38FHEqEO42j0taosLHTno
-	/A9Mth879eAQEnKGROfSlEIHqluZwNZ8t9Y8GpzH0GXu1na9k6sAqoG57QwhuhV/VwPbLO6w3wE
-	ruKWSGRY22Zc4cAaHl2ufHFAdF/HhqAKCZKIv5W5MfsU0s0f1w==
-X-Received: by 2002:a05:622a:1313:b0:50d:9b2e:7ee3 with SMTP id
- d75a77b69052e-5165a0ccdd9mr263610661cf.38.1779185070146; Tue, 19 May 2026
- 03:04:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A3A481660
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 10:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779185246; cv=none; b=vF3wCRInKm9PP7CrzZ/c/gwEoUSvVNczjbwfEE0x1O93WqUhQkYm8o2BjuMwrY/7jCoxkkLAwBKtnBMntVQ+412lWPG/8gcbBVyYA3bxCjTeDI8yXg7I10nHXUSdYACVWGBBm1sjL+03/IC4+iz2JiCTeYEgF7w+Vzxe3mMzhnM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779185246; c=relaxed/simple;
+	bh=tJKyOO4VfZJZZx2TNPYjiq75o/ggCQn5QI69/5uhi5o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=qNR8TZ/UG4cQLxTRtBAGfLFEVhIbPS/5mv8XoXAX+4t158YbTZUN4jG1Vco4vwUFudiRn+xU80ZBSilPFur8jbl8NTmuMvM2Zkc0wzhwxcYguwEqtuK4VjWTnEjlPJfHtAbS5aIojpaAXdtgNUutzS0QlE1WyUaXkbuXGvhyPiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZewBbeZU; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779185245; x=1810721245;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=tJKyOO4VfZJZZx2TNPYjiq75o/ggCQn5QI69/5uhi5o=;
+  b=ZewBbeZU6Pswu1xvvp3wHNeCuViKRXFYHNQBmsAaYo/wrfUY/1fFzaUQ
+   4p/tth+1VVHGlZhds4RPUtFFjcXMxsPi9V5f1FjCcTdmdlZTV6lohNAv4
+   AigNOUGhY36ENg33BAQYF+Z0EDTA2o0niKwMUPjhtFzOa0TsDSTK6FwBN
+   mfVe0EK7+iStgGFDXgERLyGN4upiBa775A5G5uK3OPxdEq6jCC026IhFW
+   3WKDfQGnrs75DVkXyn6pwseTupqiHf3/5wCwL3SuMoKKvrBokN2YueU7x
+   79019lwQJnSr917KMOZmZIkH2Z9K9cp+4huGhQMlKdTg3mbZ1ly/dk0uC
+   Q==;
+X-CSE-ConnectionGUID: i4btc47KR6WyE0RoLgJpEg==
+X-CSE-MsgGUID: 6Kr4uO4eQGeW4jUHBAxg8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="91162564"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="91162564"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 03:07:24 -0700
+X-CSE-ConnectionGUID: Cp4vG1DCQIK+oiU3/dzTvw==
+X-CSE-MsgGUID: xQfic02cRk6wjwYLa8o4Ig==
+X-ExtLoop1: 1
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.218])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 03:07:20 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Pranay Samala <pranay.samala@intel.com>, intel-gfx@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
+ pranay.samala@intel.com, stable@vger.kernel.org, Chaitanya Kumar Borah
+ <chaitanya.kumar.borah@intel.com>, Uma Shankar <uma.shankar@intel.com>
+Subject: Re: [PATCH] drm/i915/color: Fix HDR pre-CSC LUT programming loop
+In-Reply-To: <20260519075245.383864-1-pranay.samala@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260519075245.383864-1-pranay.samala@intel.com>
+Date: Tue, 19 May 2026 13:07:18 +0300
+Message-ID: <ff124be8331d2c720c6369d85316fc95a325437c@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519004746.3203156-1-mochs@nvidia.com>
-In-Reply-To: <20260519004746.3203156-1-mochs@nvidia.com>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Tue, 19 May 2026 12:04:19 +0200
-X-Gm-Features: AVHnY4I6Nw30PU4eMzbpo1rRva11FapaZNtSMDO0MpY3BrJ8caDZotUSuHZn_vA
-Message-ID: <CAJfpegsTsKqq+QQKyBexQFP1=EGd8YiMT=rbaCOPeTBvLsY_JQ@mail.gmail.com>
-Subject: Re: [PATCH v3] fuse: back uncached readdir buffers with pages
-To: "Matthew R. Ochs" <mochs@nvidia.com>
-Cc: Bernd Schubert <bschubert@ddn.com>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[szeredi.hu,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[szeredi.hu:s=google];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_MATCH_TO(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-249522-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miklos@szeredi.hu,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249521-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid,nvidia.com:email];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[szeredi.hu:+]
-X-Rspamd-Queue-Id: 0864357BF01
+	FROM_NEQ_ENVFROM(0.00)[jani.nikula@linux.intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,intel.com:mid,intel.com:dkim]
+X-Rspamd-Queue-Id: 5C45B57C53B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 19 May 2026 at 02:47, Matthew R. Ochs <mochs@nvidia.com> wrote:
-
-> This was observed with a 64K-page guest on a 4K-page host, using an
-> overlayfs mount whose lower directory is on virtiofs. Reading a merged
-> directory through overlayfs failed with:
+On Tue, 19 May 2026, Pranay Samala <pranay.samala@intel.com> wrote:
+> The integer lut programming loop never executes completely due to
+> incorrect condition (i++ > 130).
 >
->   ls: reading directory '<path>': Cannot allocate memory
+> Fix to properly program 129th+ entries for values > 1.0.
+>
+> Cc: <stable@vger.kernel.org> #v6.19
+> Fixes: 82caa1c8813f ("drm/i915/color: Program Pre-CSC registers")
+> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+> Reviewed-by: Uma Shankar <uma.shankar@intel.com>
 
-IDGI, the patch makes FUSE_READDIR supply an array of folios.
-Virtiofs shouldn't need to allocate a large argbuf after that.
+Okay, so this is a stable worthy fix, first sent 2=C2=BD months ago [1], and
+we're still tossing it around? Folks, there needs to be more urgency
+with obvious fixes like this.
 
-What am I missing?
+I see this was sent separately to intel-gfx and intel-xe [2] lists. The
+way to go is to just cross-post it. (Don't send it again, but do check
+the CI results for both.)
 
-Thanks,
-Miklos
+
+BR,
+Jani.
+
+
+[1] https://lore.kernel.org/r/20260306165307.3233194-6-chaitanya.kumar.bora=
+h@intel.com
+[2] https://lore.kernel.org/r/20260519075308.383877-1-pranay.samala@intel.c=
+om
+
+
+> ---
+>  drivers/gpu/drm/i915/display/intel_color.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/i915/display/intel_color.c b/drivers/gpu/drm=
+/i915/display/intel_color.c
+> index 2d318e922671..3bfe09d81a4c 100644
+> --- a/drivers/gpu/drm/i915/display/intel_color.c
+> +++ b/drivers/gpu/drm/i915/display/intel_color.c
+> @@ -3976,7 +3976,7 @@ xelpd_program_plane_pre_csc_lut(struct intel_dsb *d=
+sb,
+>  				intel_de_write_dsb(display, dsb,
+>  						   PLANE_PRE_CSC_GAMC_DATA_ENH(pipe, plane, 0),
+>  						   (1 << 24));
+> -			} while (i++ > 130);
+> +			} while (i++ < 130);
+>  		} else {
+>  			for (i =3D 0; i < lut_size; i++) {
+>  				u32 v =3D (i * ((1 << 24) - 1)) / (lut_size - 1);
+
+--=20
+Jani Nikula, Intel
 
