@@ -1,213 +1,201 @@
-Return-Path: <stable+bounces-249588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mISCCztnDGpXggUAu9opvQ
-	(envelope-from <stable+bounces-249588-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:35:55 +0200
+	id SD+hLBppDGo8hQUAu9opvQ
+	(envelope-from <stable+bounces-249589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:43:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E669457FC99
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:35:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CFE357FE92
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E2F7F3015856
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:33:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF27330566C7
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640A8348C65;
-	Tue, 19 May 2026 13:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21E6370AEC;
+	Tue, 19 May 2026 13:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eau0cman"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eBUMJ0D5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AA0348C51;
-	Tue, 19 May 2026 13:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779197624; cv=none; b=MlcVZfBVHKZKUHXnWtrmUpkXGT1wNp8qMWgj0auYS2iFGnsJsSaNXlqfPx22dZuo9Bwz+P6Dg5f916ntK5V2h+tla3/q8u5dWnkA0DnwiQGlaLMvJz4OTqAMve4FHuLRqjIT/cSKpJpV0W8ZrER+9MJZYE9UMBG0W/qbDo19IF0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779197624; c=relaxed/simple;
-	bh=JxQkTyZSRlzMs7ib8qBrrp+DMXE6y2eWvhI1wckhkbU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YdA5RLfDGSJW5vWCyEnZszrVBPZftn6Q53x9deU571Z7GEo9V3c7n9C4a4f+JrxKsqdI+6sXD8HNvPC37AH+YWPb78gz9ucRzZietvuT5iWbkhCalSXp01qAe/J/gXxVUE6DITmS8xkrcgBuDEyKbD1RgPzZQWmUT0mMhGFUuik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eau0cman; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D31C2BCB3;
-	Tue, 19 May 2026 13:33:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779197623;
-	bh=JxQkTyZSRlzMs7ib8qBrrp+DMXE6y2eWvhI1wckhkbU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Eau0cmanZKHslnj0CVI8LxPTFGCh1FTLiuC+Lkq1wU6hXTEkwm3YjuIn13sBtWjTU
-	 5k+RRgEs8l1OjQqtmCeVW6GFmcWX6zZs2+HnvOx4PEGYX259ZNIPI0FTwxEj8onqAj
-	 +RXegkCMlEwSyn7oFbe6erQM01UBm2ucDcfDEV3jv0+Vxs4jFFBF53fBL7TOC8Haam
-	 jeIPjJESRmjSJcflE3K6FL5vNeZ8Q63KLJ5B03EYRgXAhHoVgZmKLwfxU5yEOWbOSK
-	 l9aAnt+zDwBdIG8b3mNwWnGUe9gWji6Qz0n3KOlgA2spnUYYs7J6kFWFu1S2rRvO3p
-	 /wc8VgON+0C5Q==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] kho: fix order calculation for kho_unpreserve_pages()
-Date: Tue, 19 May 2026 15:33:30 +0200
-Message-ID: <20260519133332.2498092-1-pratyush@kernel.org>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C534F35202C
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 13:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779197867; cv=pass; b=eauf1lMNR1pB6NyYGBKTGdgnUYLcUEwK9LcMPEtKwvh4+Qh8w7KS12kd+k0QW53nLJLAOYqMqiJuqwHr+ksdhTx9/gF/I57GySynl3Bpuv+12PHxCSAhY9wi+7Y6AuB3ESk8ufCpCGtenptYyADFC2RmFGiS1F3+uUlUdDO/urQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779197867; c=relaxed/simple;
+	bh=a+6vVJmOZ3ZG/v6p+ChaawK/jURoxlUIsJFp9JcF6Eo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UnqNzdc+RKjbPoqrUuWgFXKpbj7komN3PEVYwH/c8qaB6HLNtDXH/kYQ0HLLAJqKas32nE8CNeMUWiSughCuleJf3rA6W98GN1njxMiBy265tm5rzYXq0WCdkL0g9sstgyqS87tXvUENo5orLtF98NuHZ2V4EdAi/INAEbP9vbs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eBUMJ0D5; arc=pass smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-449d6c68ed8so907279f8f.0
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 06:37:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779197862; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TUFJLYfmA9EIKXa961dj6Dl1paauVUCEtgDtu+tX0LXsUsBwgmi6D1nD01jJcD3tGL
+         IwrVGGqDa2Tx7p7pX51Vjsg82jw89SJIRrER0A48ZaoO4pi34XykvNZdbvbC4wAMpVRV
+         B4Ex05AS9SAqm830v2t+E6A1GlZMlztFkVzFd1Pm1EhvtBGH4X6d/XOMdJipX7Em1mgG
+         IE9L5rpO4jv0BuS/Ym1nbD5HeznSN1ZubfzocD63ZeohyUKWh7v8UGrYJzqJq5EEBBxJ
+         EkE21ZH/amgPoCfzdz4Mo0d+W2mlCRsYA2GguuiB2vDw3IxZrn2kmS0pDvbAzrMTdpm9
+         kbTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+/ja8jc+FHQMYyLaMU5qKpBDmFJx8YQVV0WGsvU+fWE=;
+        fh=tsPic/YrpGH1hUPH6cWtoBjB/fKXqxBx5eV8w7cJ4kQ=;
+        b=lRBJTuQXaIHyhXH0jr5l7Rbv4Y2yxcI7c+ZpmSTlFBZyA2py+I3RBgSg2DxK6UrgG2
+         v50+dn/mU6RL+wqMxMWxoc4zeFn2viE8lNfkIdwjJzfVidMI6+1CdHZHiOYDqplkx97R
+         EygSnWuFvtrPRrzGO7+CiAD8OeUSDzUI+jFBUYeplyn/oMjIv3YaB/wrHI6dpBdpSUH4
+         wXVNHwxs/FuF3pEaM60yLXnMPv09dbTlQpszqYNP2M5M89iBjFGvvK2tLPA0Uz+QjXat
+         /dacbWmH/IU2n4350TDRjfUfTzSYYyR9HwlNl59mDH11dNIpNOip+zufF0vIL0024rYM
+         dNnw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779197862; x=1779802662; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+/ja8jc+FHQMYyLaMU5qKpBDmFJx8YQVV0WGsvU+fWE=;
+        b=eBUMJ0D5qz5yuUY2vA1ejwq6sp99nSXgj5qOPe57Pxoy/dgBM41o2zA3YFlbLk5lS0
+         3KO0USOyZnalnhnkLaAJtpU6W0BAR3DF1vnl59RNsypd82qmIQ5VV/wPUKP8ZP/PF3Nk
+         QTV7fbSicD61E+ehBaU5uoVgLLWYz10/NPkFtJ7KRIcymmZLGuf30WqmKR0nGf5Er3z6
+         Px2QCL6bl+DfbsJQrUJ8vYj8vHt1t8lABrQyJ75Tl3h3I1I2g59IQN3JokcOsVSwpC/S
+         Gi0hEV/UqtbVUr8IeB0kS4Q4YTr3LBU03fI/YbY8I6naR8OdX7jOvf4fZbppA+AYP2kQ
+         /pgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779197862; x=1779802662;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+/ja8jc+FHQMYyLaMU5qKpBDmFJx8YQVV0WGsvU+fWE=;
+        b=tU6F9/12uNQVCBBnEtRvJ0kGdZuyI26WP0v/wrRGOnBFmValAmZNKiRCeJ4+oOtcwM
+         /dAiP8Ccha8sptufo1gwXYkRsaYyt34PS7OA7SZr3g/f0LPohubf0uvN8VwsFFwkxmS9
+         Z4wL1y8ywTol/wkp0sB+/arpFvrHN8zFSu/fSJb8OrfEu3qRh8ClBLy9M1i/3WAgH8Bz
+         zjmb3QkmUKVeYf/iYFlONNgd8bArWPnlQRAhCZboTaUQ+/g8zcQFrfMcotamVrKFBRXg
+         2EnofeBqXDme0unhzEePIGhdTwsJaFv5WUxQ28HEpVhFhlPHAePZSlXYUllBl8PsBl2Y
+         Dufg==
+X-Forwarded-Encrypted: i=1; AFNElJ+NZ2oE/gDESOiyy0IGP6b0z0Q6GSH5iQT5MHUMcVG6VxJlm53EhCM6ul2iUh3YkMAefw3Xwqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKt1/gmKehQXTOReUTDFoeCKSgu74U1Tw4g8aMZ61HhJYOK33C
+	AI0+rAIODtGkvmMGvEmUzhy/TB+NWSASuAy2Pk45jXt1Yw/5QlneIZWAyOZThzKsGYg3qbelizO
+	Eab32gXApNzkvhZLux8IiO04aoLLw3UikNwH4mD0vpg==
+X-Gm-Gg: Acq92OHqDhUfTH1FCyVaFtM2dBr5NttubmwCCUy2odmpKK3kd1SpHb4hqd4iPbXn3YG
+	1YjDeO0WOk0pt2DIGZg4iXOTcFgYk2btTgZyq3mMvw08fhnoza+hpdKsed49/pM1kjBqhT8Jmqm
+	6KiQpwLVBw9sJV2v8u5NAMGgym9s3fvDyZXg/NHigv4ESQTkl5xlEkqnSs6oKUzu5Ay74Wpw/5m
+	LdqhUSqRXWlpltd+TBjbJakDfnQONr/EUJeKRWflmVK7UTgF+VgpyUmyosGPEnLIIqt/EbTZNTg
+	NNlk0NrYEJmpvH/7hgmpSYvULaqgNCLNzyZvdWJnbUVeDUfVRxz8b7MpDZweiUKcq3qH
+X-Received: by 2002:a05:6000:1ace:b0:43b:3b80:6776 with SMTP id
+ ffacd0b85a97d-45e5c594c2cmr30428288f8f.30.1779197862459; Tue, 19 May 2026
+ 06:37:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260514212024.1624517-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20260514212024.1624517-2-prabhakar.mahadev-lad.rj@bp.renesas.com> <CAMuHMdXDAJjWGRLQb6jfvzUPAWymmTC3yE89UPyiydykHN4u6w@mail.gmail.com>
+In-Reply-To: <CAMuHMdXDAJjWGRLQb6jfvzUPAWymmTC3yE89UPyiydykHN4u6w@mail.gmail.com>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Tue, 19 May 2026 14:37:16 +0100
+X-Gm-Features: AVHnY4I3urEZt5J-xjsCBTxOrtCMrr3KZW2teP8VKCgNB9fs0VDzkYcmhM5yTss
+Message-ID: <CA+V-a8uTXh2ieeBRCQC8Gzg_hCSFVFCOv0S_V+6MoGdX0F4VNA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] mmc: renesas_sdhi: Apply bad taps quirk to RZ/G2H
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, Ulf Hansson <ulfh@kernel.org>, 
+	linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249588-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249589-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pratyush@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[prabhakarcsengg@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E669457FC99
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,renesas.com:email,linux-m68k.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1CFE357FE92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+Hi Geert,
 
-Commit 91e74fa8b1bc ("kho: make sure preservations do not span multiple
-NUMA nodes") made sure preservations from kho_preserve_pages() do not
-span multiple NUMA nodes. If they do, the order is reduced and tried
-again.
+Thank you for the review.
 
-The same logic was not implemented for kho_unpreserve_pages(). This can
-result in unpreserve calculating a different order than preserve, and
-thus not actually unpreserving the pages.
+On Mon, May 18, 2026 at 2:07=E2=80=AFPM Geert Uytterhoeven <geert@linux-m68=
+k.org> wrote:
+>
+> Hi Prabhakar,
+>
+> On Thu, 14 May 2026 at 23:20, Prabhakar <prabhakar.csengg@gmail.com> wrot=
+e:
+> > From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> >
+> > Apply the sdhi_quirks_bad_taps2367 quirk to the RZ/G2H (R8A774E1)
+> > SoC.
+> >
+> > RZ/G2H is identical to the R-Car H3-N (R8A77951), which already uses
+> > this quirk to avoid unreliable tuning tap positions. Use the same
+> > quirk entry for RZ/G2H to ensure consistent SDHI tuning behaviour.
+> >
+> > Fixes: 31941342888d ("arm64: dts: renesas: r8a774e1: Add SDHI nodes")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+>
+> Thanks for your patch!
+>
+> > --- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+> > +++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+> > @@ -224,6 +224,7 @@ static const struct renesas_sdhi_quirks sdhi_quirks=
+_rzg2l =3D {
+> >   */
+> >  static const struct soc_device_attribute sdhi_quirks_match[]  =3D {
+>
+> This array is meant for quirks, i.e. to address issues on specific
+> SoC variants that cannot just be identified by the compatible value.
+>
+Ok, I will drop it from the quirks list.
 
-Fix this by moving the order calculation logic to
-__kho_preserve_pages_order() and use it from both preserve and
-unpreserve paths.
+> >         { .soc_id =3D "r8a774a1", .revision =3D "ES1.[012]", .data =3D =
+&sdhi_quirks_4tap_nohs400 },
+> > +       { .soc_id =3D "r8a774e1", .data =3D &sdhi_quirks_bad_taps2367 }=
+,
+>
+> Hence I think this should be RZ/G2H should be added to
+> renesas_sdhi_internal_dmac_of_match[] instead, referring to
+> of_r8a7795_compatible.
+>
+Ok I will add an entry in  renesas_sdhi_internal_dmac_of_match[] (same
+for patches 2 and 3).
 
-Move __kho_unpreserve() down to avoid having a forward declaration. Its
-users are further down in the file anyway. Also, it results in grouping
-for all the page-level preservation and unpreservation functions. This
-unfortunately makes the diff hard to read, but the main change in
-__kho_unpreserve() is to call __kho_preserve_pages_order() instead of
-open-coding the order calculation.
-
-Fixes: 91e74fa8b1bc ("kho: make sure preservations do not span multiple NUMA nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
----
- kernel/liveupdate/kexec_handover.c | 56 +++++++++++++++++-------------
- 1 file changed, 32 insertions(+), 24 deletions(-)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 4fde8325c49f..11855e275397 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -357,20 +357,6 @@ int kho_radix_walk_tree(struct kho_radix_tree *tree,
- }
- EXPORT_SYMBOL_GPL(kho_radix_walk_tree);
- 
--static void __kho_unpreserve(struct kho_radix_tree *tree,
--			     unsigned long pfn, unsigned long end_pfn)
--{
--	unsigned int order;
--
--	while (pfn < end_pfn) {
--		order = min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
--
--		kho_radix_del_page(tree, pfn, order);
--
--		pfn += 1 << order;
--	}
--}
--
- /* For physically contiguous 0-order pages. */
- static void kho_init_pages(struct page *page, unsigned long nr_pages)
- {
-@@ -855,6 +841,37 @@ void kho_unpreserve_folio(struct folio *folio)
- }
- EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
- 
-+static unsigned int __kho_preserve_pages_order(unsigned long start_pfn,
-+					       unsigned long end_pfn)
-+{
-+	unsigned int order = min(count_trailing_zeros(start_pfn),
-+				 ilog2(end_pfn - start_pfn));
-+
-+	/*
-+	 * Make sure all the pages in a single preservation are in the same NUMA
-+	 * node. The restore machinery can not cope with a preservation spanning
-+	 * multiple NUMA nodes.
-+	 */
-+	while (pfn_to_nid(start_pfn) != pfn_to_nid(start_pfn + (1UL << order) - 1))
-+		order--;
-+
-+	return order;
-+}
-+
-+static void __kho_unpreserve(struct kho_radix_tree *tree,
-+			     unsigned long pfn, unsigned long end_pfn)
-+{
-+	unsigned int order;
-+
-+	while (pfn < end_pfn) {
-+		order = __kho_preserve_pages_order(pfn, end_pfn);
-+
-+		kho_radix_del_page(tree, pfn, order);
-+
-+		pfn += 1 << order;
-+	}
-+}
-+
- /**
-  * kho_preserve_pages - preserve contiguous pages across kexec
-  * @page: first page in the list.
-@@ -880,16 +897,7 @@ int kho_preserve_pages(struct page *page, unsigned long nr_pages)
- 	}
- 
- 	while (pfn < end_pfn) {
--		unsigned int order =
--			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
--
--		/*
--		 * Make sure all the pages in a single preservation are in the
--		 * same NUMA node. The restore machinery can not cope with a
--		 * preservation spanning multiple NUMA nodes.
--		 */
--		while (pfn_to_nid(pfn) != pfn_to_nid(pfn + (1UL << order) - 1))
--			order--;
-+		unsigned int order = __kho_preserve_pages_order(pfn, end_pfn);
- 
- 		err = kho_radix_add_page(tree, pfn, order);
- 		if (err) {
-
-base-commit: b1378127003b61930ce30064328640503ad3ef6d
--- 
-2.54.0.563.g4f69b47b94-goog
-
+Cheers,
+Prabhakar
 
