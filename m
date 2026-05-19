@@ -1,161 +1,210 @@
-Return-Path: <stable+bounces-249583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eLu0OvtdDGq5gQUAu9opvQ
-	(envelope-from <stable+bounces-249583-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:56:27 +0200
+	id EAnDCsxdDGq5gQUAu9opvQ
+	(envelope-from <stable+bounces-249585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:55:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F66057F21F
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:56:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7E957F1D4
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50A393021EA2
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:50:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B94F302B774
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 12:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78D14BCAD7;
-	Tue, 19 May 2026 12:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281524EA373;
+	Tue, 19 May 2026 12:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="xH8uJz5C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9jLI4eo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f193.google.com (mail-lj1-f193.google.com [209.85.208.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C494C9567;
-	Tue, 19 May 2026 12:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779194984; cv=none; b=D1hLZRu/wSe8ZU3lbKuOylaP66TXxVghYnKgxTssKQhCf4T6HQ9sX0prgUnkyadZ5HO/u1SXqedJJtmUv+FPLYcqVmdlihUCwViW2r8g63Kpif/KZ8SdNlmc0hcXqUdi9iEUOhy2Do3LodGO0BJgva9bdt84RBRSZ5McUU1sfTs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779194984; c=relaxed/simple;
-	bh=PmRdx8FRHXEbQy7+lAOa4RyFLZUwwH/S0Yo3h+evwYY=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=i2on5J8cddnn1QRx60GfAvqKpZ62asyZzSjA1fG8rP5h5TQORrV/zaLMHMPLvCxmeAZf+iUGrZ3L4AxAxM5hS4ije41JCEos1CX1kXe21issJ7BBI506FNN+qJiNNfjFQ2mCor1wPvGPitWOsJMFRTJforxtTYMO9IlHQLi+zUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=xH8uJz5C; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 337BDA4FA2;
-	Tue, 19 May 2026 14:49:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1779194971; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=KYHK9v8QDbL8YKvFNpIhVX5SjY8D12WYNhJK8Mla/t0=;
-	b=xH8uJz5CyS1nIr22DGdlIQrbdTZcXek14ghLIo7lNXiUst5FiCopGRidLa8kI+dEN4UmXX
-	Z2H6vX2S+yl6Bn3TIFvV5KeKLxdkan7l/GIBWZX9vDjucLS6c+uwwYxpMqFpEqvJvD221G
-	Co768t1utmjTK9Dox7xKBZNc9ObVWqVgHTpNEi2JBGh+LTYPH4RVjJ2maYz2PksPmxFUTX
-	yNH9UUD/dNoLgMNy2mfERcbPlgzvg/9J/Lncq8nSV1swVxQ2mRqFBBFGjEhFqJYA4WfykM
-	Vgt9S6A+KpZ2KihPEK32Q/BMuBh7YSUpjQzxk9s+dUmU/dgTmCxyzKqhbPVw3g==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B82F4DB571
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 12:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.193
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779194985; cv=pass; b=caekBsig9gyE7TaBrSBX56F8F9okKkW4lEM9KVzeQgouEd4vpj6g/92BNsvy4u8MkF8sQYoddGl2yexexvaEIWxCzxIjLwfw3WQCLHbpfhQUAXom1Ahq3Cl0D37MxE7diKQ2OZoV392240e36iNALUnQ9cbpRUZp7HXZQVyhxR8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779194985; c=relaxed/simple;
+	bh=jfPV2780Bs9BUkpIrmBKLD8IB9nmDhWvo+NzhoVNkFE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PNdZEWKqD7HNyyHQCMaVh2PbmKCCP71P7ORm6Gb4pAUACknq+kWDlF1n9g50k7A6mLJ5x6JHiZV+n34fpRkDw1/x6Dg92VHrkNi+XkwcR7tTweGqZybpiMHmFlC88Vjue8DMJlvZHZ0BbIr75slakHCF9vB0cga6SiCh/WkGsls=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9jLI4eo; arc=pass smtp.client-ip=209.85.208.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f193.google.com with SMTP id 38308e7fff4ca-394095009beso31655871fa.3
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 05:49:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779194982; cv=none;
+        d=google.com; s=arc-20240605;
+        b=G/CXXk49PUG1TTQ/vZTCXLFYZi5MxYvQ1Cbu23WNa3eA70/Q8nn9iDbKjeJeTlhVve
+         pskvfYFGNMUUZDvOFcu6hyYZHH9u0zrdlHAiO7wV0o2sF0j9/hVOrAaoDwVub5+DYi/Z
+         Cj2w73SAz8Er/ZU4OIWV8i0reIdpPWu2fhj3OqCCQ8UofmUtnyXYSC5wxZEKHbHGqpg6
+         a8l/7pbrA5c9xnI5JFYbctWqka4/62pbR+LchQH769VbmYGTVmYDi0sijsCCKsR+4iSp
+         fb4/5CbfBvK2ddMy7cNy0SgKeud/Fs9nk3I+dAuof6wdL1FAAXeXW7z1r6G/HKcH1bbL
+         FNYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=TptvFrw7YTp9kcu5BiXjspbxBVKusRMLEntVA9ShJ50=;
+        fh=VV6l5FiJwjefZY+oTE593rirryzbN8yKDRliQ2YCSvI=;
+        b=VTdspeZnnB6ndRza5kYyfAvg1uIHiJRWmGU+eFDaAlhPciYXNtLrYL22fQUsNIl/EX
+         /G7McackYOTgNFc6t7e2PdYq35nR7JLK1ybOir8KlD5hMKMgm6Umr9LNJLxr7U0SIVRW
+         5SmMJFydISuYIh4/phgOy/RmrbIqga8gL1CWziSW4f1KPTgTqy8lFaPtsCUjesbIpRke
+         IkdqD1qiW1Oykwg958B9jXUXM38k7uXkIyIWwFBR5Hj0wAWWyT+7QAj6SXoPMnPo+ZvU
+         t3SAt6IwRSwq349xpRocp4uTlHd/FIpHRTNcBymUQAymohAG51lVLrjVdKtIfMcf8hDk
+         I+oA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779194982; x=1779799782; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TptvFrw7YTp9kcu5BiXjspbxBVKusRMLEntVA9ShJ50=;
+        b=N9jLI4eo2vECRRoJjR0+xJiwcHFgpCD7gK2ufIuWiULajhYT4zFgikiZ0qzUnJ17mw
+         3Kcg8i7wI9c5VBuSiN13PdFTM4OlmVcglvFiJZSd28HuGe6xrMTMr9pl9kQ5/SPnaffr
+         a8SOdSzCsVdWgs8ex8529WHQ/kQdCL1L+/Ty98iNgH1fsWoIjObCZ+XqZEaMExjNQnt/
+         iwH23AHFfK9+jPKVT4CxT5P2yM64PidlPio0Jw2Kti+1koR3PHhJLYhnEBMm9RstNcn3
+         9KzoOKg2BFohCnmcPUt4wnVQz3HH+OmEo2t9JTOATgKfNantgdqs/O2JevFPqbl6NlGj
+         pLxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779194982; x=1779799782;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TptvFrw7YTp9kcu5BiXjspbxBVKusRMLEntVA9ShJ50=;
+        b=il16HZ7c8cLItj6me8Z/EHK40YE4v57hutwW5GXTwLnwsRcLGZczT/AEgcFczNUlBR
+         NjmXsd9WinmCBv2zpE20SeVDk1pzYJ4xavaBJ7QR7iFv/T837Kog4V4GbwX7X4NOgE1y
+         kilMw7iiUBnxbGD1kdHK+bPHzP8Kny64JPZOUa5NXzXj6cVC/6Cde6V+0nreG87jqqPI
+         WCcLhmiuxXR2L1iRp4NfLrMD/OO0Z2cgftc6crxKFSkF+xsA9YswEBjMR7Gt1zN0jBw8
+         BpcOoFvWiueY/327Su8QDHFYEvvRfshGR5MyvpXaCENRc6VZ6+7xwXWbBp0roV2UsxwA
+         BkpQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/LvLc7SJP1P46MJEuwXo8mwRDeRk1Bh3csv+hULzS523LlXb2zDCQLmSvmW9H455ZO7rtgDEg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywf84UoDllWlt6p6QCYX9MsSatHzdRQ5lxTBX3WlAyyRY0kS3Gj
+	GTEPf4uL/sGoy+dnGjdMEFWedXxlQwZPyYfQIWSi6GX0+LZ5qaaDM+qM9GUHGDwE5X8USDOOyyc
+	QH94jZ/rMxHJKT1GJBBrMOVDYR0i9t3s=
+X-Gm-Gg: Acq92OHjrMUcD67TR4FqwpX6f9nKwC/RsjQ1+nhcHUMkIxHQkJLXsjbHbZl3VvMH36+
+	xTMs2oN6gCtt9GzwzZvvYu2a9y9IksTkbc03o0J9BrwVIW4rCCcZBty4Lvd8psfDZ8EQD9QCfbn
+	cRta/pCzTK8f5COPe3CR8dWXUDgBRitrxVOvn4/EV3PTvMYwTPmzHJ70/3w49K42QFXzhn7Z40a
+	qND/IfWvOS0bcYmCs4YCX3DECkv67oxqMdxSayJVH49F9LYQMwafWKO/CXzjqRSg7/vL1TviSE5
+	jbSz6vq5ZzXNQcJ6HcAPa7UAuMeciQ==
+X-Received: by 2002:a05:651c:515:b0:393:cb61:1808 with SMTP id
+ 38308e7fff4ca-39561d2b1a2mr54005981fa.24.1779194982145; Tue, 19 May 2026
+ 05:49:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 19 May 2026 14:49:23 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: =?UTF-8?Q?Nerijus_Bend=C5=BEi=C5=ABnas?= <nerijus.bendziunas@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, "Russell King (Oracle)"
- <rmk+kernel@armlinux.org.uk>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: phy: skip EEE advertisement write when
- autoneg is disabled
-In-Reply-To: <20260516150251.879680-1-nerijus.bendziunas@gmail.com>
-References: <20260516150251.879680-1-nerijus.bendziunas@gmail.com>
-Message-ID: <f8cb33492160a3d75669c573913a363f@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-0.16 / 15.00];
+References: <20260517121626.406516-1-rollkingzzc@gmail.com> <rclmtymkiaor247n7gwi6ggmpwi2hyu5hicggroopeohspfnyv@7ryrgezzs63q>
+In-Reply-To: <rclmtymkiaor247n7gwi6ggmpwi2hyu5hicggroopeohspfnyv@7ryrgezzs63q>
+From: Cen Zhang <rollkingzzc@gmail.com>
+Date: Tue, 19 May 2026 20:49:30 +0800
+X-Gm-Features: AVHnY4KBYOwaqhirihEC-ocC8POXVpSAtu8Xd7aeNb3NGD8F1HYlRbpjjVodKoI
+Message-ID: <CAB7XQsGe8ZA_WRYcGgkOa--f+XdB6d98_g4VedbFPK01eH0rBw@mail.gmail.com>
+Subject: Re: [PATCH v2] bpf, sockmap: keep sk_msg copy state in sync
+To: John Fastabend <john.fastabend@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Jakub Sitnicki <jakub@cloudflare.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	zerocling0077@gmail.com, 2045gemini@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[tipi-net.de:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249583-lists,stable=lfdr.de];
 	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[tipi-net.de];
+	TAGGED_FROM(0.00)[bounces-249585-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[tipi-net.de:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nb@tipi-net.de,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lunn.ch,gmail.com,armlinux.org.uk,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,lists.linux.dev];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rollkingzzc@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,linux.dev,fomichev.me,cloudflare.com,davemloft.net,google.com,redhat.com,vger.kernel.org,gmail.com];
+	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8F66057F21F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 8B7E957F1D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Nerijus
+Hi John,
 
-On 16.5.2026 17:02, Nerijus Bendžiūnas wrote:
-> genphy_c45_an_config_eee_aneg() writes the EEE advertisement to the
-> auto-negotiation device's MMD register space (MDIO_MMD_AN, register
-> MDIO_AN_EEE_ADV).  These registers are read by the link partner only
-> during auto-negotiation, so writing them while autoneg is disabled
-> cannot influence the link.  On some PHYs (e.g. Broadcom BCM54213PE)
-> the write nevertheless reaches the chip and disturbs the receive
-> datapath.
-> 
-> Concretely, running
-> 
->     ethtool -s eth0 speed 100 duplex full autoneg off
->     ethtool --set-eee eth0 eee off
-> 
-> leaves eth0 with TX working and RX completely silent on a
-> Raspberry Pi 4 / CM4 board (bcmgenet + BCM54213PE in rgmii-rxid).
-> Switching back to autoneg recovers the link.
-> 
+Thanks a lot for the review.
 
-Can confirm this. A quick look at the BCM54213PE datasheet shows that 
-EEE is
-only applied if autoneg is enabled (as expected). With autoneg disabled 
-it
-is undefined behavior, but clearly breaks communication.
+On Tue, May 19, 2026 at 05:32:00AM +0000, John Fastabend wrote:
 
-> [...]
+> Important note here on where this actually happens. It will only
+> effect users of BPF programs that are making the push/pop/..
+> calls. So most/all users should not be impacted. Agree though lets
+> fix this.
 
-> 
-> diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-> index d48aa7231b37..126951741428 100644
-> --- a/drivers/net/phy/phy-c45.c
-> +++ b/drivers/net/phy/phy-c45.c
-> @@ -940,6 +940,14 @@ EXPORT_SYMBOL_GPL(genphy_c45_read_eee_abilities);
->   */
->  int genphy_c45_an_config_eee_aneg(struct phy_device *phydev)
->  {
-> +	/* Writing MMD AN advertisements while autoneg is disabled has no
-> +	 * effect on link-partner negotiation, but on some PHYs (e.g. the
-> +	 * Broadcom BCM54213PE) the write itself disturbs the receive
-> +	 * datapath. Skip it.
-> +	 */
-> +	if (phydev->autoneg == AUTONEG_DISABLE)
-> +		return 0;
-> +
->  	if (!phydev->eee_cfg.eee_enabled) {
->  		__ETHTOOL_DECLARE_LINK_MODE_MASK(adv) = {};
+Thanks, that makes sense. We will make the impact scope clearer in the
+next version.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
+> To make this easier to read I think having a,
+>
+> static void sk_msg_clear_elem_copy(struct sk_msg *msg, u32 i, bool copy)
+> {
+> __clear_bit(i, msg->sg.copy);
+> }
+>
+> is nice to have. Otherwise we get lots of
+>
+> ```
+> sk_msg_clear_elem_copy(..., false)
+> ```
+>
+> Or just direclty call __clear_bit() is also cleaner.
+> This is sk_msg_sg_move()?
 
-Thanks
-Nicolai
+Agreed. We will clean this up in v3, either by directly clearing the bit
+where appropriate or by using a small helper if that makes the move logic
+clearer.
+
+> I think we need another fix here,
+>
+> ```
+>            rsge.offset += start - offset;
+> ```
+>
+> Probably carry in another patch. I can do it if you want?
+> sk_msg_sg_move()?
+>
+> I think this is good with small cleanup. The bot report (need to check
+> again), but I think it was calling out another issue with a different
+> fix/patch needed.
+>
+> Do you want to follow up with the other couple addons or should I?
+>
+> Also please add a test for this so we capture it in selftests.
+
+We would like to follow up with a patch series to address this and the
+related fixes. We will also do our best to add a selftest for this. We are
+not very familiar with the BPF selftest infrastructure yet, but we will
+do our best to follow the existing tests.
+
+Thanks again for the guidance.
+
+Thanks,
+Zhang Cen
 
