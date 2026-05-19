@@ -1,312 +1,165 @@
-Return-Path: <stable+bounces-249442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6F5wEcbEC2qWMQUAu9opvQ
-	(envelope-from <stable+bounces-249442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:02:46 +0200
+	id WD2JBLzJC2pSNQUAu9opvQ
+	(envelope-from <stable+bounces-249443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:23:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E281B5763EB
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:02:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854D357668C
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9EEE13043FEA
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:00:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 601A73046CC7
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445AC305660;
-	Tue, 19 May 2026 02:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EE5314B6D;
+	Tue, 19 May 2026 02:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KBzepstn"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="RWBdVxlY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02A42FFF89;
-	Tue, 19 May 2026 02:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF7530567B;
+	Tue, 19 May 2026 02:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779156012; cv=none; b=AUY1/WI3+uMcEPTcWzmYnw3qDY3uuFf/sh72PpsMAIonPvKwcmcOoUj4tWLJPO2xEqwI/FreEWKovdlTLJF7cm9BbK9LWnAhLKEWAju6vNkDqMOFroVfupMx3hKBYQRYcvz0xqqDcNCyKFm1qUlgXLFEeXlby+JCSDEBgFm+05c=
+	t=1779157428; cv=none; b=i6en8/Oyaa9bRQQOQ0tbpwy/IUITKQmBW53ytfDLPQ6vhxDAgacrnVfjzgqKDvWN8BJaCdJNLbiU74YUlR/71QG1cr3gJGdM9HcIUm7/D+rjFYxzG1rKoCPkzyEvWD4NRw3poS1JynCdoi8Wrtww5B+Lfs7zgsKOT5k2cb6Na+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779156012; c=relaxed/simple;
-	bh=dMBn9Q5YwYpTQV65Unhm1gUR2/2iTLWElfEtxBIY02o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxTVtvTgwXWwxJ/AcU+scnRwTWDc7qkKC8BytUIQtPu+2I5Pl5N9fzBejJfpCJ1bL68plNER1+Q2d1cQAqcDQenXv0I90UWHP1gcOOCLrHTIrbKBTrgashIi9Cl73G5bu8/PZEMJvjZdIn4W2K4TLAdjx0r+tQme48rd4lCKyGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KBzepstn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1550C2BCB7;
-	Tue, 19 May 2026 02:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779156011;
-	bh=dMBn9Q5YwYpTQV65Unhm1gUR2/2iTLWElfEtxBIY02o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KBzepstnDm2aqkQ3d6bnQLnHOkbd1O04xlr3pXxMxtyDL1+nXO9bjsUjvA+sNCSS6
-	 HY+BwVsLEbu74P6mdPHuxQcV30T8VEneRINMNLzNlBrW6HF3YRGUhuTgghEkFdwhgi
-	 rU57pbibkGutFqef3ON68n3YLOXkWAurapuL6vxtEC8y+LVdwHeSHWtqIpZRh8Us4M
-	 HPzxgVVcx0bAiLmjkCxi/qFGmYP2TXjDrlwJSEFg+hR+kY0kGOWILGcoGl0eKCQAZH
-	 Bk4WutlVgZjqBwNyFYUB9AT7iqSGRJPfvtiVECQ0E8SO/SXwjHVep6c4HtlgOhbFOX
-	 C6DPkiBwIQiAQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: anthony.l.nguyen@intel.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	kohei@enjuk.jp,
-	dima.ruinskiy@intel.com,
-	faizal.abdul.rahim@linux.intel.com,
-	chwee.lin.choong@intel.com,
-	kohei.enju@gmail.com,
-	vladimir.oltean@nxp.com,
-	stable@vger.kernel.org,
-	horms@kernel.org,
-	avigailx.dahan@intel.com
-Subject: Re: [PATCH net 10/10] e1000e: correct TIMINCA on ADP/TGP systems with wrong XTAL frequency
-Date: Mon, 18 May 2026 19:00:09 -0700
-Message-ID: <20260519020009.3408105-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515182419.1597859-11-anthony.l.nguyen@intel.com>
-References: <20260515182419.1597859-11-anthony.l.nguyen@intel.com>
+	s=arc-20240116; t=1779157428; c=relaxed/simple;
+	bh=Knl8UtAw20hG171E3Y2R0L4KyzCebChTrQDwjiOISdA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cABhc0ZEvSpGZCzftPE0ItEcyJ1gwQZXH89LF0ALGXx5nkIoM7i8J2mDowr9r86X/HWIk8IGOaKv2sCmNvf5AATw/xzihB1ssWvHlfFJq6Q9wTH8q9940mfQYMx4XjtSUNOVUtC/Qmacwxlz/KPsvf+hybNKzqbzVAy343C8LeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=RWBdVxlY; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1779157416;
+	bh=Knl8UtAw20hG171E3Y2R0L4KyzCebChTrQDwjiOISdA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=RWBdVxlY4/rIHXqIyPBttw4OUkcK/EolNRZjFQFpbZ1WJXFDmcFiY9HctRgDomwEw
+	 KMvk+uiZrWFTnKilQniWZ1HvKinPqD/ct7bfoWvPAw5Z4ImQ+dgFPt33fV3/G+mCcE
+	 8PVoVDy27uhwZGVm0/Eqs7K55kaFdgYaUmxo9g9E=
+Received: from [IPv6:2409:8a4c:e16:3881:40e6:9163:b33e:104b] (unknown [IPv6:2409:8a4c:e16:3881:40e6:9163:b33e:104b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 2892D6597E;
+	Mon, 18 May 2026 22:23:29 -0400 (EDT)
+Message-ID: <9d815df3b33a63223112b97440c01247935363c1.camel@xry111.site>
+Subject: Re: [PATCH v8] PCI: loongson: Override PCIe bridge supported speeds
+ for Loongson-3C6000 series
+From: Xi Ruoyao <xry111@xry111.site>
+To: Mario Limonciello <mario.limonciello@amd.com>, Bjorn Helgaas
+	 <helgaas@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof
+ =?gb2312?Q?Wilczy=A8=BDski?=	 <kwilczynski@kernel.org>, Manivannan
+ Sadhasivam <mani@kernel.org>, Rob Herring	 <robh@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Ziyao Li	 <liziyao@uniontech.com>,
+ niecheng1@uniontech.com, zhanjun@uniontech.com, 	guanwentao@uniontech.com,
+ Kexy Biscuit <kexybiscuit@aosc.io>, 	linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	loongarch@lists.linux.dev,
+ kernel@uniontech.com, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>, Lain Fearyncess Yang <fsf@live.com>, Ayden
+ Meng <aydenmeng@yeah.net>,  Mingcong Bai <jeffbai@aosc.io>,
+ stable@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Huacai Chen	
+ <chenhuacai@loongson.cn>
+Date: Tue, 19 May 2026 10:23:22 +0800
+In-Reply-To: <37823e80-01c4-48ef-b873-c3424024625e@amd.com>
+References: <20260518172138.GA626799@bhelgaas>
+	 <37823e80-01c4-48ef-b873-c3424024625e@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249442-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249443-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,uniontech.com,aosc.io,vger.kernel.org,lists.linux.dev,linux.intel.com,live.com,yeah.net,loongson.cn];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,davemloft.net,redhat.com,google.com,lunn.ch,vger.kernel.org,enjuk.jp,intel.com,linux.intel.com,gmail.com,nxp.com];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[xry111.site:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E281B5763EB
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,xry111.site:email,xry111.site:mid,xry111.site:dkim]
+X-Rspamd-Queue-Id: 854D357668C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-e1000e: correct TIMINCA on ADP/TGP systems with wrong XTAL frequency
+On Mon, 2026-05-18 at 13:53 -0500, Mario Limonciello wrote:
+> > > Also, the amdgpu driver reads the value by pcie_get_speed_cap() in
+> > > amdgpu_device_partner_bandwidth(), for its dynamic adjustment of PCIe
+> > > clocks and lanes in power management. We hope this patch can prevent
+> > > similar problems in future driver changes (similar checks may be
+> > > implemented in other GPU, storage controller, NIC, etc. drivers).
+> >=20
+> > Why is this paragraph here?=C2=A0 Is there code in
+> > amdgpu_device_partner_bandwidth() that wouldn't be needed after this
+> > patch?
+>=20
+> I don't think that would be the case as this patch is a pure quirk for
+> one device.
+>=20
+> The policy we have in amdgpu_device_partner_bandwidth() takes into=20
+> account specifically the topology of dGPUs that have integrated PCI=20
+> switches.
+>=20
+> We need to look at the speed and width of the link partner connected to=
+=20
+> the switch not between the switch and the GPU PCI device.
 
-This commit adds a runtime workaround for some Tiger Lake and Alder Lake
-platforms where the XTAL clock is misreported as 24 MHz instead of the
-actual 38.4 MHz. After e1000e_systim_reset() it samples PHC vs system
-time over ~1 ms via cross-timestamps and, if the delta exceeds 100 us,
-reprograms TIMINCA for the 38.4 MHz profile and reinitializes the
-timecounter.
+Yes, the paragraph was intended to explain why the lower speed only
+manifests on some (not all) PCIe devices, for example amdgpu, with the
+incorrect LinkCap2 from hardware.
 
-> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-> index 7ce0cc8ab8f4..db2080541f19 100644
-> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
-> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-> @@ -3902,6 +3902,81 @@ static void e1000_flush_desc_rings(struct e1000_adapter *adapter)
->  		e1000_flush_rx_ring(adapter);
->  }
->  
-> +/**
-> + * e1000e_xtal_tgp_workaround - Adjust XTAL clock based on PHC and system
-> + * clock delta.
-> + * @adapter: Pointer to the private adapter structure
-> + *
-> + * Measures the time difference between the PHC (Precision Hardware Clock)
-> + * and the system clock over a 1 millisecond interval. If the delta
-> + * exceeds 100 microseconds, reconfigure the XTAL clock to 38.4 MHz.
-> + */
+> > This patch updates pdev->supported_speeds, which is used by
+> > pcie_get_speed_cap(), which is in turn used by
+> > amdgpu_device_partner_bandwidth().
+> >=20
+> > Is the point just that users of pcie_get_speed_cap() (currently just
+> > amdgpu, radeon, and sysfs) will now see the correct maximum link speed
+> > for Loongson-3C6000 bridges?
+> >=20
+> > And the "checks" you refer to would be the tests in
+> > amdgpu_device_get_pcie_info() that use the results of
+> > pcie_get_speed_cap()?
+>=20
+> I think I agree with Bjorn to drop the paragraph, it just adds confusion=
+=20
+> to the reader.
+>=20
+> You can have a sentence along the lines of "Updating the speeds to the
+> correct actual support of the hardware avoids quirks in drivers=20
+> consuming the speed information".
 
-[Low]
-The kernel-doc says "Adjust XTAL clock" and the body comment below says
-"reconfigure the XTAL clock to 38.4 MHz", but nothing here reprograms a
-crystal or PLL.  The function only writes TIMINCA and updates
-adapter->cc.shift / adapter->tc to compensate in software for the
-misreported XTAL frequency.  Could the comments be reworded to describe
-what is actually being changed (TIMINCA / cyclecounter shift) so that
-future readers do not look for an XTAL register write that does not
-exist?
+Yes, it will seem better.
 
-> +static void e1000e_xtal_tgp_workaround(struct e1000_adapter *adapter)
-> +{
-> +	s64 phc_delta, sys_delta, sys_start_ns, sys_end_ns, delta_ns;
-> +	struct ptp_system_timestamp sys_start = {}, sys_end = {};
-> +	struct ptp_clock_info *info = &adapter->ptp_clock_info;
-> +	struct timespec64 phc_start, phc_end;
-> +	struct e1000_hw *hw = &adapter->hw;
-> +	struct netlink_ext_ack extack = {};
-> +	unsigned long flags;
-> +	u32 timinca;
-> +	s32 ret_val;
-> +
-> +	/* Capture start */
-> +	if (info->gettimex64(info, &phc_start, &sys_start)) {
-> +		e_dbg("PHC gettimex(start) failed\n");
-> +		return;
-> +	}
-> +
-> +	/* Small interval to measure increment */
-> +	usleep_range(1000, 1100);
-> +
-> +	/* Capture end */
-> +	if (info->gettimex64(info, &phc_end, &sys_end)) {
-> +		e_dbg("PHC gettimex(end) failed\n");
-> +		return;
-> +	}
-> +
-> +	/* Compute deltas */
-> +	phc_delta = timespec64_to_ns(&phc_end) -
-> +		    timespec64_to_ns(&phc_start);
-> +
-> +	sys_start_ns = (timespec64_to_ns(&sys_start.pre_ts) +
-> +			timespec64_to_ns(&sys_start.post_ts)) >> 1;
-> +
-> +	sys_end_ns = (timespec64_to_ns(&sys_end.pre_ts) +
-> +		      timespec64_to_ns(&sys_end.post_ts)) >> 1;
-> +
-> +	sys_delta = sys_end_ns - sys_start_ns;
-> +
-> +	delta_ns = phc_delta - sys_delta;
-> +	if (delta_ns > 100000) {
+Bjorn: do you need a v9 or would you just amend the message in your
+tree?
 
-[Low]
-Is a single ~1 ms sample with a one-directional threshold robust enough
-to commit to a permanent (until-next-reset) clock-configuration change?
-
-Scheduling jitter, virtualization steal time on a guest, or an SMI/NMI
-that straddles either gettimex64 capture can skew sys_delta or phc_delta
-in either direction.  There is no sanity bound on sys_delta (for example,
-800 us..1.5 ms) and no median/min over multiple samples.
-
-The commit message phrasing "differs from system time beyond the
-expected tolerance" reads as a tolerance check, but the code only catches
-the positive direction, so a hardware that runs slow than reference
-time would not be flagged.  Would a multi-sample median, a sys_delta
-sanity range, or an abs() comparison make detection less fragile?
-
-> +		e_dbg("Corrected PHC frequency: TIMINCA set for 38.4 MHz\n");
-> +		/* Program TIMINCA for 38.4 MHz */
-> +		spin_lock_irqsave(&adapter->systim_lock, flags);
-> +		adapter->cc.shift = INCVALUE_SHIFT_38400KHZ;
-> +		timinca = (INCPERIOD_38400KHZ <<
-> +			   E1000_TIMINCA_INCPERIOD_SHIFT) |
-> +			  (((INCVALUE_38400KHZ <<
-> +			     adapter->cc.shift) &
-> +			   E1000_TIMINCA_INCVALUE_MASK));
-> +		ew32(TIMINCA, timinca);
-
-[High]
-Is this correction durable against the next ptp4l/phc2sys adjfine call?
-
-After this branch sets adapter->cc.shift = INCVALUE_SHIFT_38400KHZ and
-writes the 38.4 MHz TIMINCA, e1000e_phc_adjfine() in
-drivers/net/ethernet/intel/e1000e/ptp.c calls e1000e_get_base_timinca()
-on every adjfine, which on these parts hits:
-
-    case e1000_pch_cnp:
-    case e1000_pch_tgp:
-    case e1000_pch_adp:
-    case e1000_pch_nvp:
-        if (er32(TSYNCRXCTL) & E1000_TSYNCRXCTL_SYSCFI) {
-            /* Stable 24MHz frequency */
-            incperiod = INCPERIOD_24MHZ;
-            incvalue  = INCVALUE_24MHZ;
-            shift     = INCVALUE_SHIFT_24MHZ;
-            adapter->cc.shift = shift;
-        } else {
-            ...
-        }
-
-On the affected systems the SYSCFI bit is the very thing that is
-mis-reported, so e1000e_get_base_timinca() takes the 24 MHz branch
-again, overwrites adapter->cc.shift back to INCVALUE_SHIFT_24MHZ, and
-e1000e_phc_adjfine() programs a 24 MHz-based TIMINCA back into the
-register.  ptp4l/phc2sys issue adjfine continuously, so the correction
-appears to last only until the first adjfine after each systim_reset.
-
-Could the detection set a per-adapter "force 38.4 MHz" flag on first
-trip, and have e1000e_get_base_timinca() honor that flag so the 38.4 MHz
-selection becomes durable across adjfine and any future reset?
-
-[Medium]
-Does this path drop the user-space-applied frequency adjustment from
-hardware?
-
-e1000e_systim_reset() first calls info->adjfine(info,
-adapter->ptp_delta), which goes through e1000e_phc_adjfine() and
-programs TIMINCA with the per-ppm-scaled INCVALUE via
-adjust_by_scaled_ppm():
-
-    incvalue = timinca & E1000_TIMINCA_INCVALUE_MASK;
-    incvalue = adjust_by_scaled_ppm(incvalue, delta);
-    timinca &= ~E1000_TIMINCA_INCVALUE_MASK;
-    timinca |= incvalue;
-    ew32(TIMINCA, timinca);
-
-Immediately after, this hunk unconditionally writes a clean 38.4 MHz
-baseline:
-
-    timinca = (INCPERIOD_38400KHZ << E1000_TIMINCA_INCPERIOD_SHIFT) |
-              (((INCVALUE_38400KHZ << adapter->cc.shift) &
-                E1000_TIMINCA_INCVALUE_MASK));
-    ew32(TIMINCA, timinca);
-
-adapter->ptp_delta is left in software but is no longer reflected in
-hardware, so any frequency calibration the PTP daemon had previously
-servoed onto is discarded until it re-converges.  Should the workaround
-re-apply the saved delta (for example via info->adjfine(info,
-adapter->ptp_delta), or by feeding the new incvalue through
-adjust_by_scaled_ppm()) before re-initializing the timecounter?
-
-> +
-> +		/* reset the systim ns time counter */
-> +		timecounter_init(&adapter->tc, &adapter->cc,
-> +				 ktime_get_real_ns());
-> +		spin_unlock_irqrestore(&adapter->systim_lock, flags);
-> +
-> +		/* restore the previous hwtstamp configuration settings */
-> +		ret_val = e1000e_config_hwtstamp(adapter,
-> +						 &adapter->hwtstamp_config,
-> +						 &extack);
-> +		if (ret_val && extack._msg)
-> +			e_err("%s\n", extack._msg);
-> +	}
-> +}
-> +
->  /**
->   * e1000e_systim_reset - reset the timesync registers after a hardware reset
->   * @adapter: board private structure
-> @@ -3953,6 +4028,9 @@ static void e1000e_systim_reset(struct e1000_adapter *adapter)
->  		if (extack._msg)
->  			e_err("%s\n", extack._msg);
->  	}
-> +
-> +	if (hw->mac.type == e1000_pch_adp || hw->mac.type == e1000_pch_tgp)
-> +		e1000e_xtal_tgp_workaround(adapter);
->  }
-
-Because this hook runs on every systim_reset (ifup, suspend/resume,
-error recovery), and e1000e_get_base_timinca() picks 24 MHz first,
-there is also a window between the 24 MHz programming above and the
-1 ms sleep + rewrite inside e1000e_xtal_tgp_workaround() during which
-TIMINCA is wrong.  Hardware timestamps captured during that window
-would use the 24 MHz cyclecounter conversion.  Is that intentional?
+--=20
+Xi Ruoyao <xry111@xry111.site>
 
