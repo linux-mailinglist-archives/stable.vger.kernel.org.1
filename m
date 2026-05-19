@@ -1,51 +1,66 @@
-Return-Path: <stable+bounces-249440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOIZO/LCC2qWMQUAu9opvQ
-	(envelope-from <stable+bounces-249440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 03:54:58 +0200
+	id mM3uMm/DC2qWMQUAu9opvQ
+	(envelope-from <stable+bounces-249441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 03:57:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B5C576315
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 03:54:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3369B57634C
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 03:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A27433008FFE
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 01:54:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCC66301CFB9
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 01:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16C22EE262;
-	Tue, 19 May 2026 01:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=senarytech.com header.i=@senarytech.com header.b="HVGJrnm5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAF62FB97B;
+	Tue, 19 May 2026 01:55:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m1973184.qiye.163.com (mail-m1973184.qiye.163.com [220.197.31.84])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CFD22257E
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 01:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26BB2F7F06;
+	Tue, 19 May 2026 01:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779155692; cv=none; b=AWOgH3aX1ZubBZRc6CzHK481Cpz3A2+NpWyRxlwILcrZ1qsrBM/ep43wL9KfceVcg8+abnx+hFR0D3Y/tayH1WtaWMjQAWaxnx+nB9YN3OZNCWpyEKje1fH8b8ZXQal/5g/98hgG9OuVkgPKoogHLZRSb1J+NhD0aSjtuFiRN/M=
+	t=1779155748; cv=none; b=oTGirTK++RaAK0UnZrpa416aGMuk+DewHeK8+tFmEhsdVg/uIhTj9/ZphxFQKPe+FySSkBKkS44YxdFbfyrhNmv00R+N9WfcE+Pbs1GIwxm3/SZD3cM8BOq8cZIYQPWKT+Z2Eyv0da2z+Z4x/r07AcRySKASOqyap9OSi8jij64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779155692; c=relaxed/simple;
-	bh=XMHmCIpx0UnQDSjerejScAS9qmpys3C3vCwvEjhNq/Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JBlytUkGZ0ksMLF/+BXhY6+MSM3nqUOOkjQy8V023XlfvjT4QOQOdH1HKMDJW4+5jmRK4XWReUSqZBB6O+kJ8sPyw9/DQKVBzDBoqOc8pIsng6LB46ELqgI7InXbJLhNRaxxoxO3mnDQCw3P9TfzxZzCV5fiArRhSRqDFbViXtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=senarytech.com; spf=pass smtp.mailfrom=senarytech.com; dkim=pass (1024-bit key) header.d=senarytech.com header.i=@senarytech.com header.b=HVGJrnm5; arc=none smtp.client-ip=220.197.31.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=senarytech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=senarytech.com
-Received: from localhost.localdomain (unknown [112.95.78.112])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3ee8886a9;
-	Tue, 19 May 2026 09:49:32 +0800 (GMT+08:00)
-From: Mao Weiming <alex.mao@senarytech.com>
-To: alex.mao@senarytech.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH v2] cpuidle: coupled: Fix use-after-free on device unregister
-Date: Tue, 19 May 2026 01:49:22 +0000
-Message-Id: <20260519014922.38-1-alex.mao@senarytech.com>
+	s=arc-20240116; t=1779155748; c=relaxed/simple;
+	bh=nf28pJ59nDhuZOr+0R/U1TAm+wzjP87fB2KYAmbySBM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oiUTSFYvv+EaqJwojETXRZWJgegTcMsar0hdbd6UOC7HAwleqWYKT4uGpfe72oh0yXek5fKFrKNgEjgSs1UsxjHlmiLKrFJDxjehnpmBzVeAzdp14qPF1NPZZbHGATbQf3g+DPO8JUyYB4YVYjGU174CvvIs9v2E9fj5uyH+aGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: d6698100532511f1aa26b74ffac11d73-20260519
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:7ff2886c-bac6-40f0-98b2-480c472d4a4c,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:a9200c13f5912a947860e68ca0c26465,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|865|898,TC:nil,Content:0|15|50,EDM:-
+	3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
+	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: d6698100532511f1aa26b74ffac11d73-20260519
+X-User: zhangheng@kylinos.cn
+Received: from thinksys.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zhangheng@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1973911358; Tue, 19 May 2026 09:55:40 +0800
+From: Zhang Heng <zhangheng@kylinos.cn>
+To: perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda/realtek: Fix mute and mic-mute LEDs for HP 16 Piston OmniBook X
+Date: Tue, 19 May 2026 09:55:35 +0800
+Message-Id: <20260519015535.891156-1-zhangheng@kylinos.cn>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260518064324.<v1-msgid>-1-alex.mao@senarytech.com>
-References: <20260518064324.<v1-msgid>-1-alex.mao@senarytech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,106 +68,58 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e3dec898f09d1kunm8aa8360f3a7b15
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDShlJVkhOSh9NQxpDQktMTVYVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlKSklVQk5VTENVSkpJWVdZFhoPEhUdFFlBWU9LSFVKT0
-	1MTk9MVUpLS1VKQktCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=HVGJrnm5CserPMAeeUmyT8YsZFGwj8UHI6a0RL8VOuN8QiIT2+qLvtwvPQdf0cKVaVgBwwSdSH+EyFNJ/1PqRKGaa1Ltr/8pOjgfwO3xqbfZrbreNZwjuUFgDfsqLdtZOQH8j4Fjjhe+TWyYbpin6MUPkyG0CLY+apHEvc3gBZQ=; c=relaxed/relaxed; s=default; d=senarytech.com; v=1;
-	bh=NtpIfGfp7Zep09C5MBG8n8u+2XAw+1BZqdy5wKDEbBw=;
-	h=date:mime-version:subject:message-id:from;
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[senarytech.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[senarytech.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex.mao@senarytech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhangheng@kylinos.cn,stable@vger.kernel.org];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[kylinos.cn];
+	TAGGED_FROM(0.00)[bounces-249441-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249440-lists,stable=lfdr.de];
-	TO_DN_NONE(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[senarytech.com:+]
-X-Rspamd-Queue-Id: 06B5C576315
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:mid,kylinos.cn:email]
+X-Rspamd-Queue-Id: 3369B57634C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This issue was found by code review of drivers/cpuidle/coupled.c, not
-from a crash report.
+The ALC245 sound card on this machine requires the quirk
+`ALC245_FIXUP_HP_ENVY_X360_15_FH0XXX` to fix the mic and mute LED.
 
-cpuidle_coupled_unregister_device() has had its refcount check inverted
-ever since the function was added:
-
-	if (--coupled->refcnt)
-		kfree(coupled);
-	dev->coupled = NULL;
-
-A struct cpuidle_coupled is shared by every CPU in a coupled set.
-cpuidle_coupled_register_device() either allocates a new instance with
-refcnt = 1, or reuses an existing one and bumps refcnt. The struct must
-therefore only be freed once refcnt drops back to zero. The current
-code does the exact opposite:
-
-  - With N >= 2 CPUs in the set, the first CPU to unregister decrements
-    refcnt from N to N-1, the condition becomes true, and the struct is
-    kfree()'d while the remaining N-1 CPUs still hold dev->coupled
-    pointers to that memory.
-
-  - When the last CPU finally unregisters, refcnt becomes 0, the
-    condition is false, and the struct is leaked.
-
-Subsequent unregister calls in the same loop then dereference and
-decrement coupled->refcnt on the freed object, and any CPU hotplug
-callback racing into coupled_cpu_online() / coupled_cpu_up_prepare()
-between the kfree() and the final dev->coupled = NULL assignment will
-also touch the dangling pointer.
-
-Fix it by freeing the struct only when refcnt reaches zero, matching
-the kerneldoc above the function and the symmetric increment in
-cpuidle_coupled_register_device().
-
-Fixes: 4126c0197bc8 ("cpuidle: add support for states that affect multiple cpus")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mao Weiming <alex.mao@senarytech.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221509
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
 ---
-Changes since v1:
-  - Use full name "Mao Weiming" in the patch's From: and Signed-off-by:
-    trailers to match the email's From: header.
-  - No code or commit-message changes.
-
-v1: https://lore.kernel.org/all/20260518064324.3240-1-alex.mao@senarytech.com/
-
- drivers/cpuidle/coupled.c | 2 +-
+ sound/hda/codecs/realtek/alc269.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/coupled.c b/drivers/cpuidle/coupled.c
-index fb91a9e0e3c2..25d8a6b27a51 100644
---- a/drivers/cpuidle/coupled.c
-+++ b/drivers/cpuidle/coupled.c
-@@ -687,7 +687,7 @@ void cpuidle_coupled_unregister_device(struct cpuidle_device *dev)
- 	if (cpumask_empty(&dev->coupled_cpus))
- 		return;
- 
--	if (--coupled->refcnt)
-+	if (!--coupled->refcnt)
- 		kfree(coupled);
- 	dev->coupled = NULL;
- }
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 55bb98e2e55a..9b6e7106d3ef 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7221,7 +7221,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8da0, "HP 16 Clipper OmniBook 7(X360)", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8da1, "HP 16 Clipper OmniBook X", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8da7, "HP 14 Enstrom OmniBook X", ALC287_FIXUP_CS35L41_I2C_2),
+-	SND_PCI_QUIRK(0x103c, 0x8da8, "HP 16 Piston OmniBook X", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x8da8, "HP 16 Piston OmniBook X", ALC245_FIXUP_HP_ENVY_X360_15_FH0XXX),
+ 	SND_PCI_QUIRK(0x103c, 0x8dc9, "HP Laptop 15-fc0xxx", ALC236_FIXUP_HP_DMIC),
+ 	SND_PCI_QUIRK(0x103c, 0x8dd4, "HP EliteStudio 8 AIO", ALC274_FIXUP_HP_AIO_BIND_DACS),
+ 	SND_PCI_QUIRK(0x103c, 0x8dd7, "HP Laptop 15-fd0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
 -- 
-2.25.1
+2.34.1
 
 
